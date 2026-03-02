@@ -10,6 +10,7 @@ import {
   Shield, Copy, Download, Eye, Search, Lock, CheckCircle,
   Code2, Package, ChevronDown, ChevronUp, FileCode, Globe,
   Zap, Loader2, ArrowUpDown, DollarSign, TrendingUp,
+  BarChart3, ArrowUp, Filter,
 } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
@@ -57,7 +58,6 @@ const MODULE_COLORS: Record<string, string> = {
   SYSTEM: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   DEFENSE: "bg-rose-500/20 text-rose-400 border-rose-500/30",
   ANALYTICS: "bg-teal-500/20 text-teal-400 border-teal-500/30",
-  // Expansion modules
   SOVEREIGN: "bg-amber-600/20 text-amber-300 border-amber-500/30",
   ORACLE: "bg-sky-500/20 text-sky-400 border-sky-500/30",
   CONSCIENCE: "bg-emerald-600/20 text-emerald-300 border-emerald-500/30",
@@ -78,42 +78,31 @@ function getCJPIColor(cjpi: number): string {
   return "text-muted-foreground bg-muted border-border";
 }
 
+function getTierLabel(cjpi: number): string {
+  if (cjpi >= 95) return 'Apex';
+  if (cjpi >= 85) return 'Enterprise';
+  if (cjpi >= 70) return 'Architect';
+  return 'Creator';
+}
+
 const LANGUAGES = getAllLanguages();
 const ADAPTERS = getAllAdapters();
 
-// ─── Types for promoted discoveries ─────────────────────────────────
-
 // ─── Market Value Estimation ────────────────────────────────────────
-// Estimates licensing/market value based on CJPI, category, and module chain depth
 
 type SortMode = 'cjpi' | 'market_value' | 'name' | 'category';
 
 const CATEGORY_MARKET_MULTIPLIERS: Record<string, number> = {
-  security: 1.8,
-  governance: 1.6,
-  cognitive: 1.5,
-  evolution: 1.4,
-  orchestration: 1.3,
-  routing: 1.2,
-  learning: 1.3,
-  observability: 1.1,
-  integration: 1.0,
+  security: 1.8, governance: 1.6, cognitive: 1.5, evolution: 1.4,
+  orchestration: 1.3, routing: 1.2, learning: 1.3, observability: 1.1, integration: 1.0,
 };
 
 function estimateMarketValue(cjpi: number, category: string, moduleChainLength: number): number {
-  // Base value: CJPI maps to $5K–$500K range using exponential scaling
-  const normalized = Math.max(0, cjpi - 60) / 40; // 0-1 range for CJPI 60-100
+  const normalized = Math.max(0, cjpi - 60) / 40;
   const baseValue = 5000 + Math.pow(normalized, 2.5) * 495000;
-  
-  // Category multiplier
   const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
-  
-  // Complexity bonus: deeper module chains = more integration value
   const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.08;
-  
-  // Apex premium: CJPI >= 95 gets a scarcity premium
   const apexMult = cjpi >= 95 ? 1.5 : cjpi >= 92 ? 1.2 : 1.0;
-  
   return Math.round(baseValue * catMult * complexityMult * apexMult);
 }
 
@@ -138,35 +127,143 @@ interface PromotedDiscovery {
   run_id: string;
 }
 
+// ─── Analytics Summary Panel ────────────────────────────────────────
+
+function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STierEntry[]; promoted: PromotedDiscovery[] }) {
+  const stats = useMemo(() => {
+    // Registry stats
+    const byModule: Record<string, number> = {};
+    const byTier = { Apex: 0, Enterprise: 0, Architect: 0, Creator: 0 };
+    let totalRegValue = 0;
+    for (const e of registryEntries) {
+      byModule[e.module] = (byModule[e.module] ?? 0) + 1;
+      const tier = getTierLabel(e.cjpi);
+      byTier[tier as keyof typeof byTier]++;
+      totalRegValue += estimateMarketValue(e.cjpi, e.type, 1);
+    }
+
+    // Promoted stats
+    const promByCategory: Record<string, number> = {};
+    let totalPromValue = 0;
+    for (const d of promoted) {
+      promByCategory[d.category] = (promByCategory[d.category] ?? 0) + 1;
+      totalPromValue += estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length);
+    }
+
+    const avgCjpi = registryEntries.length > 0
+      ? Math.round(registryEntries.reduce((s, e) => s + e.cjpi, 0) / registryEntries.length * 10) / 10
+      : 0;
+
+    const codeReady = registryEntries.filter(e => e.hasCode).length;
+    const approved = registryEntries.filter(e => e.approved).length;
+    const moduleCoverage = Object.keys(byModule).length;
+    const totalModules = (registryData.canonicalModules as string[]).length;
+
+    return {
+      byModule, byTier, totalRegValue, promByCategory, totalPromValue,
+      avgCjpi, codeReady, approved, moduleCoverage, totalModules,
+    };
+  }, [registryEntries, promoted]);
+
+  const topModules = useMemo(() =>
+    Object.entries(stats.byModule).sort((a, b) => b[1] - a[1]).slice(0, 8),
+    [stats.byModule]
+  );
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-foreground">{registryEntries.length}</div>
+          <div className="text-[10px] text-muted-foreground">Registry Artifacts</div>
+        </CardContent>
+      </Card>
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-amber-400">{promoted.length}</div>
+          <div className="text-[10px] text-muted-foreground">Discovered</div>
+        </CardContent>
+      </Card>
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
+          <div className="text-[10px] text-muted-foreground">Total Est. Value</div>
+        </CardContent>
+      </Card>
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-foreground">{stats.avgCjpi}</div>
+          <div className="text-[10px] text-muted-foreground">Avg CJPI</div>
+        </CardContent>
+      </Card>
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
+          <div className="text-[10px] text-muted-foreground">Module Coverage</div>
+        </CardContent>
+      </Card>
+      <Card className="border-border/50">
+        <CardContent className="p-3 text-center">
+          <div className="text-2xl font-bold text-foreground">{stats.codeReady}</div>
+          <div className="text-[10px] text-muted-foreground">Code Ready</div>
+        </CardContent>
+      </Card>
+
+      {/* Tier breakdown */}
+      <Card className="col-span-2 border-border/50">
+        <CardContent className="p-3">
+          <div className="text-[10px] font-medium text-muted-foreground mb-2">Tier Breakdown</div>
+          <div className="space-y-1">
+            {Object.entries(stats.byTier).map(([tier, count]) => (
+              <div key={tier} className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">{tier}</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-20 h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${(count / registryEntries.length) * 100}%` }}
+                    />
+                  </div>
+                  <span className="font-mono w-6 text-right">{count}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Top modules */}
+      <Card className="col-span-2 sm:col-span-2 lg:col-span-4 border-border/50">
+        <CardContent className="p-3">
+          <div className="text-[10px] font-medium text-muted-foreground mb-2">Top Modules</div>
+          <div className="flex flex-wrap gap-1.5">
+            {topModules.map(([mod, count]) => (
+              <Badge key={mod} variant="outline" className={`text-[10px] ${MODULE_COLORS[mod] ?? ''}`}>
+                {mod} ({count})
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // ─── Artifact Card (Mobile-first, no truncation) ────────────────────
 
 function ArtifactCard({
-  entry,
-  onViewCode,
-  onExport,
-  loadingCode,
-  expanded,
-  onToggle,
+  entry, onViewCode, onExport, loadingCode, expanded, onToggle,
 }: {
-  entry: STierEntry;
-  onViewCode: (e: STierEntry) => void;
-  onExport: (e: STierEntry) => void;
-  loadingCode: boolean;
-  expanded: boolean;
-  onToggle: () => void;
+  entry: STierEntry; onViewCode: (e: STierEntry) => void; onExport: (e: STierEntry) => void;
+  loadingCode: boolean; expanded: boolean; onToggle: () => void;
 }) {
   return (
     <Card className="border-border/50 hover:border-border transition-colors">
       <CardContent className="p-3 sm:p-4">
-        {/* Top row: rank, CJPI, module, approval */}
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <span className="font-mono text-sm font-bold text-muted-foreground">#{entry.rank}</span>
-          <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(entry.cjpi)}`}>
-            {entry.cjpi}
-          </Badge>
-          <Badge variant="outline" className={`text-xs border ${MODULE_COLORS[entry.module] ?? "bg-muted text-muted-foreground"}`}>
-            {entry.module}
-          </Badge>
+          <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(entry.cjpi)}`}>{entry.cjpi}</Badge>
+          <Badge variant="outline" className={`text-xs border ${MODULE_COLORS[entry.module] ?? "bg-muted text-muted-foreground"}`}>{entry.module}</Badge>
           <Badge variant="outline" className="text-xs">{entry.type}</Badge>
           {entry.approved ? (
             <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
@@ -174,25 +271,13 @@ function ArtifactCard({
             <Lock className="w-4 h-4 text-muted-foreground/50 ml-auto shrink-0" />
           )}
         </div>
-
-        {/* Name — never truncated */}
-        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">
-          {entry.name}
-        </h3>
-
-        {/* Description — never truncated */}
-        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">
-          {entry.description}
-        </p>
-
-        {/* Metadata row */}
+        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{entry.name}</h3>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">{entry.description}</p>
         <div className="flex items-center gap-2 flex-wrap text-xs text-muted-foreground mb-3">
           <code className="font-mono bg-muted/50 px-1.5 py-0.5 rounded">{entry.signatureHash}</code>
           <span>v{entry.version}</span>
           <span>{entry.exportMode === 'PureStandalone' ? '✦ Standalone' : '⚡ Adapter Required'}</span>
         </div>
-
-        {/* Dependency footprint */}
         {entry.dependencyFootprint.length > 0 && (
           <div className="flex items-center gap-1 flex-wrap mb-3">
             <span className="text-xs text-muted-foreground">Deps:</span>
@@ -201,8 +286,6 @@ function ArtifactCard({
             ))}
           </div>
         )}
-
-        {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
           {entry.hasCode && (
             <Button variant="outline" size="sm" onClick={() => onViewCode(entry)} disabled={loadingCode} className="gap-1.5 text-xs">
@@ -217,8 +300,6 @@ function ArtifactCard({
             {expanded ? 'Less' : 'Details'}
           </Button>
         </div>
-
-        {/* Expanded details */}
         {expanded && (
           <div className="mt-3 pt-3 border-t border-border/50 space-y-2 text-xs">
             <div className="grid grid-cols-2 gap-2">
@@ -241,15 +322,11 @@ function ArtifactCard({
 // ─── Promoted Discovery Card ───────────────────────────────────────
 
 function PromotedCard({
-  discovery,
-  onExport,
-  expanded,
-  onToggle,
+  discovery, onExport, onPromote, expanded, onToggle, promoting,
 }: {
-  discovery: PromotedDiscovery;
-  onExport: (d: PromotedDiscovery) => void;
-  expanded: boolean;
-  onToggle: () => void;
+  discovery: PromotedDiscovery; onExport: (d: PromotedDiscovery) => void;
+  onPromote: (d: PromotedDiscovery) => void;
+  expanded: boolean; onToggle: () => void; promoting: boolean;
 }) {
   const modules = discovery.module_chain || [];
   return (
@@ -259,49 +336,38 @@ function PromotedCard({
           <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">
             <Zap className="w-3 h-3 mr-1" /> DISCOVERED
           </Badge>
-          <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(discovery.cjpi)}`}>
-            {discovery.cjpi}
-          </Badge>
+          <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(discovery.cjpi)}`}>{discovery.cjpi}</Badge>
           <Badge variant="outline" className="text-xs capitalize">{discovery.category}</Badge>
           <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
             <DollarSign className="w-3 h-3 mr-0.5" />
-            {formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, (discovery.module_chain || []).length))}
+            {formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, modules.length))}
           </Badge>
           {discovery.export_ready && (
             <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
           )}
         </div>
-
-        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">
-          {discovery.name}
-        </h3>
-
-        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">
-          {discovery.description}
-        </p>
-
-        {/* Module chain */}
+        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{discovery.name}</h3>
+        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">{discovery.description}</p>
         {modules.length > 0 && (
           <div className="flex items-center gap-1 flex-wrap mb-3">
             <span className="text-xs text-muted-foreground">Pipeline:</span>
             {modules.map((m, i) => (
-              <Badge key={`${m}-${i}`} variant="outline" className={`text-[10px] px-1.5 py-0 ${MODULE_COLORS[m] ?? ''}`}>
-                {m}
-              </Badge>
+              <Badge key={`${m}-${i}`} variant="outline" className={`text-[10px] px-1.5 py-0 ${MODULE_COLORS[m] ?? ''}`}>{m}</Badge>
             ))}
           </div>
         )}
-
         <div className="flex items-center gap-2 flex-wrap">
           <Button variant="outline" size="sm" onClick={() => onExport(discovery)} className="gap-1.5 text-xs border-amber-500/40 text-amber-400 hover:bg-amber-500/10">
             <Globe className="w-3.5 h-3.5" /> Universal Export
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => onPromote(discovery)} disabled={promoting} className="gap-1.5 text-xs border-green-500/40 text-green-400 hover:bg-green-500/10">
+            <ArrowUp className="w-3.5 h-3.5" /> Promote to Registry
           </Button>
           <Button variant="ghost" size="sm" onClick={onToggle} className="ml-auto gap-1 text-xs">
             {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             {expanded ? 'Less' : 'Details'}
           </Button>
         </div>
-
         {expanded && (
           <div className="mt-3 pt-3 border-t border-border/50 space-y-2 text-xs">
             <div className="grid grid-cols-2 gap-2">
@@ -311,9 +377,7 @@ function PromotedCard({
               <div><span className="text-muted-foreground">Tier:</span> {discovery.tier}</div>
               <div><span className="text-muted-foreground">Status:</span> {discovery.status}</div>
               <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
-              <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
-              <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
-              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, (discovery.module_chain || []).length))}</span></div>
+              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, modules.length))}</span></div>
               <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
               <div className="col-span-2"><span className="text-muted-foreground">Run:</span> <code className="font-mono text-[10px]">{discovery.run_id}</code></div>
             </div>
@@ -327,26 +391,19 @@ function PromotedCard({
 // ─── Export Dialog ──────────────────────────────────────────────────
 
 function ExportDialog({
-  entry,
-  sourceCode,
-  onClose,
+  entry, sourceCode, onClose,
 }: {
   entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string };
-  sourceCode: string;
-  onClose: () => void;
+  sourceCode: string; onClose: () => void;
 }) {
   const [selectedLang, setSelectedLang] = useState<ExportLanguage>('typescript');
   const [selectedAdapter, setSelectedAdapter] = useState<ExportAdapter>('standalone');
   const [previewCode, setPreviewCode] = useState<string>('');
 
   const artifact: ExportableArtifact = {
-    id: entry.id,
-    name: entry.name,
-    rank: entry.rank,
-    cjpi: entry.cjpi,
-    module: entry.module,
-    description: entry.description,
-    sourceCode,
+    id: entry.id, name: entry.name, rank: entry.rank,
+    cjpi: entry.cjpi, module: entry.module,
+    description: entry.description, sourceCode,
   };
 
   const handlePreview = useCallback(() => {
@@ -360,10 +417,7 @@ function ExportDialog({
   };
 
   const handleDownloadAll = async () => {
-    const targets: ExportTarget[] = LANGUAGES.map(l => ({
-      language: l.value,
-      adapter: selectedAdapter,
-    }));
+    const targets: ExportTarget[] = LANGUAGES.map(l => ({ language: l.value, adapter: selectedAdapter }));
     const bundle = generateExportBundle(artifact, targets);
     await downloadBundle(bundle);
   };
@@ -377,79 +431,51 @@ function ExportDialog({
             <span>Universal Export — {entry.name}</span>
           </DialogTitle>
         </DialogHeader>
-
         <div className="space-y-4">
-          {/* Controls */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Language</label>
               <Select value={selectedLang} onValueChange={v => setSelectedLang(v as ExportLanguage)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {LANGUAGES.map(l => (
-                    <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
-                  ))}
+                  {LANGUAGES.map(l => (<SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-1 block">Adapter</label>
               <Select value={selectedAdapter} onValueChange={v => setSelectedAdapter(v as ExportAdapter)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {ADAPTERS.map(a => (
-                    <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>
-                  ))}
+                  {ADAPTERS.map(a => (<SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>))}
                 </SelectContent>
               </Select>
             </div>
           </div>
-
-          {/* Action buttons */}
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline" onClick={handlePreview} className="gap-1.5">
-              <Eye className="w-3.5 h-3.5" /> Preview
-            </Button>
-            <Button size="sm" variant="outline" onClick={handleDownloadSingle} className="gap-1.5">
-              <FileCode className="w-3.5 h-3.5" /> Download {LANGUAGES.find(l => l.value === selectedLang)?.label}
-            </Button>
-            <Button size="sm" onClick={handleDownloadAll} className="gap-1.5">
-              <Download className="w-3.5 h-3.5" /> Download All Languages (ZIP)
-            </Button>
+            <Button size="sm" variant="outline" onClick={handlePreview} className="gap-1.5"><Eye className="w-3.5 h-3.5" /> Preview</Button>
+            <Button size="sm" variant="outline" onClick={handleDownloadSingle} className="gap-1.5"><FileCode className="w-3.5 h-3.5" /> Download {LANGUAGES.find(l => l.value === selectedLang)?.label}</Button>
+            <Button size="sm" onClick={handleDownloadAll} className="gap-1.5"><Download className="w-3.5 h-3.5" /> Download All Languages (ZIP)</Button>
           </div>
-
-          {/* Supported targets summary */}
           <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Software Languages</h4>
             <div className="flex flex-wrap gap-1.5 mb-3">
               {LANGUAGES.filter(l => !['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
-                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer" onClick={() => setSelectedLang(l.value)}>
-                  {l.label}
-                </Badge>
+                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer" onClick={() => setSelectedLang(l.value)}>{l.label}</Badge>
               ))}
             </div>
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Hardware / HDL (FPGA &amp; ASIC)</h4>
             <div className="flex flex-wrap gap-1.5">
               {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel'].includes(l.value)).map(l => (
-                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>
-                  ⚡ {l.label}
-                </Badge>
+                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>⚡ {l.label}</Badge>
               ))}
             </div>
           </div>
-
-          {/* Code Preview */}
           {previewCode && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-medium">Preview</h4>
-                <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(previewCode)} className="gap-1 text-xs">
-                  <Copy className="w-3 h-3" /> Copy
-                </Button>
+                <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(previewCode)} className="gap-1 text-xs"><Copy className="w-3 h-3" /> Copy</Button>
               </div>
               <ScrollArea className="h-[40vh] sm:h-[50vh]">
                 <pre className="text-xs font-mono bg-muted/50 p-4 rounded-lg overflow-x-auto whitespace-pre break-words">{previewCode}</pre>
@@ -472,20 +498,24 @@ export default function STierVault() {
   const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string } | null>(null);
   const [loadingCode, setLoadingCode] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [showAnalytics, setShowAnalytics] = useState(true);
 
   // Promoted discoveries from DB
   const [promoted, setPromoted] = useState<PromotedDiscovery[]>([]);
   const [loadingPromoted, setLoadingPromoted] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
+  const [promoting, setPromoting] = useState(false);
 
-  useEffect(() => {
-    loadPromoted();
-  }, []);
+  // Discovered tab filters
+  const [discCategoryFilter, setDiscCategoryFilter] = useState<string | null>(null);
+  const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
+  const [discModuleFilter, setDiscModuleFilter] = useState<string | null>(null);
+
+  useEffect(() => { loadPromoted(); }, []);
 
   const loadPromoted = async () => {
     setLoadingPromoted(true);
     try {
-      // Paginate to bypass PostgREST 1000-row default limit
       const all: PromotedDiscovery[] = [];
       let from = 0;
       const pageSize = 1000;
@@ -517,45 +547,50 @@ export default function STierVault() {
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(e =>
-        e.name.toLowerCase().includes(q) ||
-        e.id.toLowerCase().includes(q) ||
-        e.module.toLowerCase().includes(q) ||
-        e.description.toLowerCase().includes(q)
+        e.name.toLowerCase().includes(q) || e.id.toLowerCase().includes(q) ||
+        e.module.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)
       );
     }
     if (moduleFilter) result = result.filter(e => e.module === moduleFilter);
     return result;
   }, [search, moduleFilter]);
 
+  // Discovered tab: derived filter options
+  const discCategories = useMemo(() => [...new Set(promoted.map(d => d.category))].sort(), [promoted]);
+  const discTiers = useMemo(() => [...new Set(promoted.map(d => d.tier))].sort(), [promoted]);
+  const discModules = useMemo(() => {
+    const mods = new Set<string>();
+    for (const d of promoted) for (const m of (d.module_chain || [])) mods.add(m);
+    return [...mods].sort();
+  }, [promoted]);
+
   const filteredPromoted = useMemo(() => {
     let result = [...promoted];
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(d =>
-        d.name.toLowerCase().includes(q) ||
-        d.description.toLowerCase().includes(q) ||
+        d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) ||
         d.category.toLowerCase().includes(q) ||
         (d.module_chain || []).some(m => m.toLowerCase().includes(q))
       );
     }
-    // Sort
+    if (discCategoryFilter) result = result.filter(d => d.category === discCategoryFilter);
+    if (discTierFilter) result = result.filter(d => d.tier === discTierFilter);
+    if (discModuleFilter) result = result.filter(d => (d.module_chain || []).includes(discModuleFilter));
+
     result.sort((a, b) => {
       switch (sortMode) {
         case 'market_value':
           return estimateMarketValue(b.cjpi, b.category, (b.module_chain || []).length) -
                  estimateMarketValue(a.cjpi, a.category, (a.module_chain || []).length);
-        case 'cjpi':
-          return b.cjpi - a.cjpi;
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'category':
-          return a.category.localeCompare(b.category) || b.cjpi - a.cjpi;
-        default:
-          return 0;
+        case 'cjpi': return b.cjpi - a.cjpi;
+        case 'name': return a.name.localeCompare(b.name);
+        case 'category': return a.category.localeCompare(b.category) || b.cjpi - a.cjpi;
+        default: return 0;
       }
     });
     return result;
-  }, [search, promoted, sortMode]);
+  }, [search, promoted, sortMode, discCategoryFilter, discTierFilter, discModuleFilter]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {
@@ -568,12 +603,7 @@ export default function STierVault() {
   const loadSourceCode = async (entry: STierEntry): Promise<string> => {
     const loader = CODE_FILES[entry.rank];
     if (!loader) return '// Source code scaffold — export generates full implementation';
-    try {
-      const mod = await loader();
-      return mod.default;
-    } catch {
-      return '// Code not available';
-    }
+    try { const mod = await loader(); return mod.default; } catch { return '// Code not available'; }
   };
 
   const handleViewCode = async (entry: STierEntry) => {
@@ -592,98 +622,85 @@ export default function STierVault() {
 
   const handleExportPromoted = (d: PromotedDiscovery) => {
     const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-    setExportingEntry({
-      id: d.discovery_id,
-      name: d.name,
-      rank: 0,
-      cjpi: d.cjpi,
-      module: primaryModule,
-      description: d.description,
-      code: '',
-    });
+    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '' });
+  };
+
+  const handlePromoteToRegistry = async (d: PromotedDiscovery) => {
+    setPromoting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { toast.error('Authentication required'); return; }
+
+      // Log the promotion as an audit event
+      await supabase.from('audit_logs').insert({
+        action: 'vault_promotion',
+        entity_type: 'discovery',
+        entity_id: d.discovery_id,
+        performed_by: user.id,
+        details: {
+          name: d.name,
+          cjpi: d.cjpi,
+          category: d.category,
+          module_chain: d.module_chain,
+          tier: d.tier,
+          promoted_from: 'discovered',
+          promoted_to: 'registry',
+          timestamp: new Date().toISOString(),
+        },
+      });
+
+      // Update vault_promotions status
+      await supabase
+        .from('vault_promotions')
+        .update({ status: 'registry_promoted' })
+        .eq('id', d.id);
+
+      toast.success(`"${d.name}" promoted to registry with audit trail`);
+      await loadPromoted();
+    } catch (err: any) {
+      toast.error(`Promotion failed: ${err.message}`);
+    } finally {
+      setPromoting(false);
+    }
   };
 
   const buildExportZip = async (
-    discoveries: typeof promoted,
-    languages: ExportTarget[],
-    filename: string,
-    label: string
+    discoveries: typeof promoted, languages: ExportTarget[], filename: string, label: string
   ) => {
     if (discoveries.length === 0) return;
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
     const root = zip.folder(filename.replace('.zip', ''))!;
-
     for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-      const artifact: ExportableArtifact = {
-        id: d.discovery_id,
-        name: d.name,
-        rank: 0,
-        cjpi: d.cjpi,
-        module: primaryModule,
-        description: d.description,
-        sourceCode: '',
-      };
-
+      const artifact: ExportableArtifact = { id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, sourceCode: '' };
       const bundle = generateExportBundle(artifact, languages);
       const slug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
       const folder = root.folder(slug)!;
       folder.file('README.md', bundle.readme);
-      for (const file of bundle.files) {
-        folder.file(file.filename, file.content);
-      }
+      for (const file of bundle.files) folder.file(file.filename, file.content);
     }
-
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
+    const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
     toast.success(`Exported ${discoveries.length} discoveries — ${label}`);
   };
 
   const handleExportSoftware = () => {
     const targets: ExportTarget[] = [
-      { language: 'typescript', adapter: 'standalone' },
-      { language: 'python', adapter: 'standalone' },
-      { language: 'go', adapter: 'standalone' },
-      { language: 'rust', adapter: 'standalone' },
-      { language: 'java', adapter: 'standalone' },
-      { language: 'csharp', adapter: 'standalone' },
-      { language: 'ruby', adapter: 'standalone' },
-      { language: 'php', adapter: 'standalone' },
-      { language: 'swift', adapter: 'standalone' },
-      { language: 'kotlin', adapter: 'standalone' },
-      { language: 'elixir', adapter: 'standalone' },
-      { language: 'lua', adapter: 'standalone' },
-      { language: 'c', adapter: 'standalone' },
-      { language: 'cpp', adapter: 'standalone' },
-      { language: 'dart', adapter: 'standalone' },
-      { language: 'zig', adapter: 'standalone' },
-      { language: 'scala', adapter: 'standalone' },
-      { language: 'haskell', adapter: 'standalone' },
-    ];
+      'typescript','python','go','rust','java','csharp','ruby','php','swift','kotlin','elixir','lua','c','cpp','dart','zig','scala','haskell'
+    ].map(l => ({ language: l as any, adapter: 'standalone' as any }));
     buildExportZip(promoted, targets, 'discoveries-software-export.zip', '18 software languages');
   };
 
   const handleExportHardware = () => {
-    const targets: ExportTarget[] = [
-      { language: 'verilog', adapter: 'fpga-synth' },
-      { language: 'vhdl', adapter: 'fpga-synth' },
-      { language: 'systemverilog', adapter: 'fpga-synth' },
-      { language: 'chisel', adapter: 'fpga-synth' },
-      { language: 'amaranth', adapter: 'fpga-synth' },
-      { language: 'spice', adapter: 'fpga-synth' },
-    ];
+    const targets: ExportTarget[] = ['verilog','vhdl','systemverilog','chisel','amaranth','spice']
+      .map(l => ({ language: l as any, adapter: 'fpga-synth' as any }));
     buildExportZip(promoted, targets, 'discoveries-hardware-export.zip', '6 hardware languages');
   };
 
-  const handleCopyCode = () => {
-    if (viewingCode) navigator.clipboard.writeText(viewingCode.code);
-  };
+  const handleCopyCode = () => { if (viewingCode) navigator.clipboard.writeText(viewingCode.code); };
 
   const handleExportTS = () => {
     if (!viewingCode) return;
@@ -715,80 +732,52 @@ export default function STierVault() {
             </div>
           </div>
           <div className="flex gap-2 self-start sm:self-auto">
+            <Button variant="outline" size="sm" onClick={() => setShowAnalytics(!showAnalytics)} className="gap-1.5">
+              <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
+            </Button>
             <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5">
               <Download className="w-4 h-4" /> Registry JSON
             </Button>
           </div>
         </div>
 
+        {/* Analytics Summary */}
+        {showAnalytics && <AnalyticsSummary registryEntries={entries} promoted={promoted} />}
+
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search artifacts by name, module, description..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="pl-9"
-          />
+          <Input placeholder="Search artifacts by name, module, description..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
         </div>
 
-        {/* Tabs: Registry vs Promoted */}
+        {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="registry" className="gap-1.5">
-              <Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})
-            </TabsTrigger>
-            <TabsTrigger value="promoted" className="gap-1.5">
-              <Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})
-            </TabsTrigger>
+            <TabsTrigger value="registry" className="gap-1.5"><Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})</TabsTrigger>
+            <TabsTrigger value="promoted" className="gap-1.5"><Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})</TabsTrigger>
           </TabsList>
 
           {/* ─── Registry Tab ─── */}
           <TabsContent value="registry" className="space-y-4 mt-4">
-            {/* Module filters */}
             <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
               <div className="flex gap-1.5 min-w-max pb-1">
-                <Badge
-                  variant={moduleFilter === null ? "default" : "outline"}
-                  className="cursor-pointer text-xs shrink-0"
-                  onClick={() => setModuleFilter(null)}
-                >
-                  All ({entries.length})
-                </Badge>
+                <Badge variant={moduleFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setModuleFilter(null)}>All ({entries.length})</Badge>
                 {modules.map(m => {
                   const count = entries.filter(e => e.module === m).length;
                   return (
-                    <Badge
-                      key={m}
-                      variant={moduleFilter === m ? "default" : "outline"}
-                      className={`cursor-pointer text-xs shrink-0 ${moduleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`}
-                      onClick={() => setModuleFilter(moduleFilter === m ? null : m)}
-                    >
+                    <Badge key={m} variant={moduleFilter === m ? "default" : "outline"} className={`cursor-pointer text-xs shrink-0 ${moduleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`} onClick={() => setModuleFilter(moduleFilter === m ? null : m)}>
                       {m} ({count})
                     </Badge>
                   );
                 })}
               </div>
             </div>
-
-            <p className="text-xs text-muted-foreground">
-              Showing {filtered.length} of {entries.length} artifacts
-            </p>
-
+            <p className="text-xs text-muted-foreground">Showing {filtered.length} of {entries.length} artifacts</p>
             <div className="space-y-3">
               {filtered.map(entry => (
-                <ArtifactCard
-                  key={entry.id}
-                  entry={entry}
-                  onViewCode={handleViewCode}
-                  onExport={handleExport}
-                  loadingCode={loadingCode}
-                  expanded={expandedIds.has(entry.id)}
-                  onToggle={() => toggleExpand(entry.id)}
-                />
+                <ArtifactCard key={entry.id} entry={entry} onViewCode={handleViewCode} onExport={handleExport} loadingCode={loadingCode} expanded={expandedIds.has(entry.id)} onToggle={() => toggleExpand(entry.id)} />
               ))}
             </div>
-
             {filtered.length === 0 && (
               <div className="text-center py-12">
                 <Shield className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
@@ -806,23 +795,66 @@ export default function STierVault() {
               </div>
             ) : (
               <>
+                {/* Filter chips for Discovered tab */}
+                {promoted.length > 0 && (
+                  <div className="space-y-2">
+                    {/* Category filters */}
+                    {discCategories.length > 1 && (
+                      <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+                        <div className="flex items-center gap-1.5 min-w-max pb-1">
+                          <Filter className="w-3 h-3 text-muted-foreground shrink-0" />
+                          <Badge variant={discCategoryFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setDiscCategoryFilter(null)}>All Categories</Badge>
+                          {discCategories.map(c => (
+                            <Badge key={c} variant={discCategoryFilter === c ? "default" : "outline"} className="cursor-pointer text-xs shrink-0 capitalize" onClick={() => setDiscCategoryFilter(discCategoryFilter === c ? null : c)}>
+                              {c} ({promoted.filter(d => d.category === c).length})
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tier filters */}
+                    {discTiers.length > 1 && (
+                      <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+                        <div className="flex items-center gap-1.5 min-w-max pb-1">
+                          <Shield className="w-3 h-3 text-muted-foreground shrink-0" />
+                          <Badge variant={discTierFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setDiscTierFilter(null)}>All Tiers</Badge>
+                          {discTiers.map(t => (
+                            <Badge key={t} variant={discTierFilter === t ? "default" : "outline"} className="cursor-pointer text-xs shrink-0 capitalize" onClick={() => setDiscTierFilter(discTierFilter === t ? null : t)}>
+                              {t} ({promoted.filter(d => d.tier === t).length})
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Module filters */}
+                    {discModules.length > 1 && (
+                      <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+                        <div className="flex items-center gap-1.5 min-w-max pb-1">
+                          <Zap className="w-3 h-3 text-muted-foreground shrink-0" />
+                          <Badge variant={discModuleFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setDiscModuleFilter(null)}>All Modules</Badge>
+                          {discModules.map(m => (
+                            <Badge key={m} variant={discModuleFilter === m ? "default" : "outline"} className={`cursor-pointer text-xs shrink-0 ${discModuleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`} onClick={() => setDiscModuleFilter(discModuleFilter === m ? null : m)}>
+                              {m}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {promoted.length > 0 && (
                   <div className="space-y-3">
-                    {/* Sort + Export controls */}
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground" />
                         <Select value={sortMode} onValueChange={v => setSortMode(v as SortMode)}>
-                          <SelectTrigger className="w-[180px] h-8 text-xs">
-                            <SelectValue />
-                          </SelectTrigger>
+                          <SelectTrigger className="w-[180px] h-8 text-xs"><SelectValue /></SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="market_value">
-                              <span className="flex items-center gap-1.5"><TrendingUp className="w-3 h-3" /> Market Value</span>
-                            </SelectItem>
-                            <SelectItem value="cjpi">
-                              <span className="flex items-center gap-1.5"><Zap className="w-3 h-3" /> CJPI Score</span>
-                            </SelectItem>
+                            <SelectItem value="market_value"><span className="flex items-center gap-1.5"><TrendingUp className="w-3 h-3" /> Market Value</span></SelectItem>
+                            <SelectItem value="cjpi"><span className="flex items-center gap-1.5"><Zap className="w-3 h-3" /> CJPI Score</span></SelectItem>
                             <SelectItem value="name">Name (A-Z)</SelectItem>
                             <SelectItem value="category">Category</SelectItem>
                           </SelectContent>
@@ -836,7 +868,7 @@ export default function STierVault() {
                           )}
                         </span>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
                         <Button size="sm" onClick={handleExportSoftware} className="gap-1.5">
                           <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
                         </Button>
@@ -854,8 +886,10 @@ export default function STierVault() {
                       key={d.id}
                       discovery={d}
                       onExport={handleExportPromoted}
+                      onPromote={handlePromoteToRegistry}
                       expanded={expandedIds.has(d.id)}
                       onToggle={() => toggleExpand(d.id)}
+                      promoting={promoting}
                     />
                   ))}
                 </div>
@@ -866,7 +900,7 @@ export default function STierVault() {
                     <p className="text-muted-foreground">
                       {promoted.length === 0
                         ? 'No promoted discoveries yet — run the Discovery Engine to find Crown Jewels'
-                        : 'No discoveries match your search'}
+                        : 'No discoveries match your filters'}
                     </p>
                   </div>
                 )}
@@ -887,17 +921,10 @@ export default function STierVault() {
             </DialogTitle>
           </DialogHeader>
           <div className="flex gap-2 mb-2 flex-wrap">
-            <Button size="sm" variant="outline" onClick={handleCopyCode} className="gap-1.5">
-              <Copy className="w-3 h-3" />Copy
-            </Button>
-            <Button size="sm" variant="outline" onClick={handleExportTS} className="gap-1.5">
-              <Download className="w-3 h-3" />Export .ts
-            </Button>
+            <Button size="sm" variant="outline" onClick={handleCopyCode} className="gap-1.5"><Copy className="w-3 h-3" />Copy</Button>
+            <Button size="sm" variant="outline" onClick={handleExportTS} className="gap-1.5"><Download className="w-3 h-3" />Export .ts</Button>
             {viewingCode && (
-              <Button size="sm" onClick={() => {
-                setExportingEntry({ ...viewingCode.entry, code: viewingCode.code });
-                setViewingCode(null);
-              }} className="gap-1.5">
+              <Button size="sm" onClick={() => { setExportingEntry({ ...viewingCode.entry, code: viewingCode.code }); setViewingCode(null); }} className="gap-1.5">
                 <Globe className="w-3 h-3" />Universal Export
               </Button>
             )}
@@ -910,11 +937,7 @@ export default function STierVault() {
 
       {/* Universal Export Dialog */}
       {exportingEntry && (
-        <ExportDialog
-          entry={exportingEntry}
-          sourceCode={exportingEntry.code}
-          onClose={() => setExportingEntry(null)}
-        />
+        <ExportDialog entry={exportingEntry} sourceCode={exportingEntry.code} onClose={() => setExportingEntry(null)} />
       )}
     </div>
   );
