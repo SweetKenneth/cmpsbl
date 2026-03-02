@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Shield, Copy, Download, Eye, Search, Lock, CheckCircle,
   Code2, Package, ChevronDown, ChevronUp, FileCode, Globe,
+  Zap, Loader2,
 } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
@@ -20,6 +21,8 @@ import {
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
 } from "@/lib/export/universal-adapter";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const entries = registryData.entries as STierEntry[];
 
@@ -53,6 +56,7 @@ const MODULE_COLORS: Record<string, string> = {
   EVOLUTION: "bg-lime-500/20 text-lime-400 border-lime-500/30",
   SYSTEM: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   DEFENSE: "bg-rose-500/20 text-rose-400 border-rose-500/30",
+  ANALYTICS: "bg-teal-500/20 text-teal-400 border-teal-500/30",
 };
 
 function getCJPIColor(cjpi: number): string {
@@ -64,6 +68,23 @@ function getCJPIColor(cjpi: number): string {
 
 const LANGUAGES = getAllLanguages();
 const ADAPTERS = getAllAdapters();
+
+// ─── Types for promoted discoveries ─────────────────────────────────
+
+interface PromotedDiscovery {
+  id: string;
+  discovery_id: string;
+  name: string;
+  cjpi: number;
+  category: string;
+  module_chain: string[];
+  description: string;
+  status: string;
+  tier: string;
+  export_ready: boolean;
+  promoted_at: string;
+  run_id: string;
+}
 
 // ─── Artifact Card (Mobile-first, no truncation) ────────────────────
 
@@ -165,6 +186,85 @@ function ArtifactCard({
   );
 }
 
+// ─── Promoted Discovery Card ───────────────────────────────────────
+
+function PromotedCard({
+  discovery,
+  onExport,
+  expanded,
+  onToggle,
+}: {
+  discovery: PromotedDiscovery;
+  onExport: (d: PromotedDiscovery) => void;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const modules = discovery.module_chain || [];
+  return (
+    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-colors bg-amber-500/5">
+      <CardContent className="p-3 sm:p-4">
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">
+            <Zap className="w-3 h-3 mr-1" /> DISCOVERED
+          </Badge>
+          <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(discovery.cjpi)}`}>
+            {discovery.cjpi}
+          </Badge>
+          <Badge variant="outline" className="text-xs capitalize">{discovery.category}</Badge>
+          {discovery.export_ready && (
+            <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
+          )}
+        </div>
+
+        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">
+          {discovery.name}
+        </h3>
+
+        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">
+          {discovery.description}
+        </p>
+
+        {/* Module chain */}
+        {modules.length > 0 && (
+          <div className="flex items-center gap-1 flex-wrap mb-3">
+            <span className="text-xs text-muted-foreground">Pipeline:</span>
+            {modules.map((m, i) => (
+              <Badge key={`${m}-${i}`} variant="outline" className={`text-[10px] px-1.5 py-0 ${MODULE_COLORS[m] ?? ''}`}>
+                {m}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button variant="outline" size="sm" onClick={() => onExport(discovery)} className="gap-1.5 text-xs border-amber-500/40 text-amber-400 hover:bg-amber-500/10">
+            <Globe className="w-3.5 h-3.5" /> Universal Export
+          </Button>
+          <Button variant="ghost" size="sm" onClick={onToggle} className="ml-auto gap-1 text-xs">
+            {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            {expanded ? 'Less' : 'Details'}
+          </Button>
+        </div>
+
+        {expanded && (
+          <div className="mt-3 pt-3 border-t border-border/50 space-y-2 text-xs">
+            <div className="grid grid-cols-2 gap-2">
+              <div><span className="text-muted-foreground">Discovery ID:</span> <code className="font-mono text-[10px]">{discovery.discovery_id}</code></div>
+              <div><span className="text-muted-foreground">CJPI:</span> {discovery.cjpi}</div>
+              <div><span className="text-muted-foreground">Category:</span> {discovery.category}</div>
+              <div><span className="text-muted-foreground">Tier:</span> {discovery.tier}</div>
+              <div><span className="text-muted-foreground">Status:</span> {discovery.status}</div>
+              <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">Run:</span> <code className="font-mono text-[10px]">{discovery.run_id}</code></div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // ─── Export Dialog ──────────────────────────────────────────────────
 
 function ExportDialog({
@@ -172,7 +272,7 @@ function ExportDialog({
   sourceCode,
   onClose,
 }: {
-  entry: STierEntry;
+  entry: { id: string; name: string; rank: number; cjpi: number; module: string; description: string };
   sourceCode: string;
   onClose: () => void;
 }) {
@@ -306,12 +406,38 @@ function ExportDialog({
 // ─── Main Vault Page ───────────────────────────────────────────────
 
 export default function STierVault() {
+  const [activeTab, setActiveTab] = useState("registry");
   const [search, setSearch] = useState("");
   const [moduleFilter, setModuleFilter] = useState<string | null>(null);
   const [viewingCode, setViewingCode] = useState<{ entry: STierEntry; code: string } | null>(null);
-  const [exportingEntry, setExportingEntry] = useState<{ entry: STierEntry; code: string } | null>(null);
+  const [exportingEntry, setExportingEntry] = useState<{ id: string; name: string; rank: number; cjpi: number; module: string; description: string; code: string } | null>(null);
   const [loadingCode, setLoadingCode] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+
+  // Promoted discoveries from DB
+  const [promoted, setPromoted] = useState<PromotedDiscovery[]>([]);
+  const [loadingPromoted, setLoadingPromoted] = useState(false);
+
+  useEffect(() => {
+    loadPromoted();
+  }, []);
+
+  const loadPromoted = async () => {
+    setLoadingPromoted(true);
+    try {
+      const { data, error } = await supabase
+        .from('vault_promotions')
+        .select('*')
+        .eq('export_ready', true)
+        .order('cjpi', { ascending: false });
+      if (error) throw error;
+      setPromoted((data || []) as unknown as PromotedDiscovery[]);
+    } catch (err) {
+      console.error('Failed to load promoted discoveries:', err);
+    } finally {
+      setLoadingPromoted(false);
+    }
+  };
 
   const modules = useMemo(() => [...new Set(entries.map(e => e.module))].sort(), []);
 
@@ -329,6 +455,17 @@ export default function STierVault() {
     if (moduleFilter) result = result.filter(e => e.module === moduleFilter);
     return result;
   }, [search, moduleFilter]);
+
+  const filteredPromoted = useMemo(() => {
+    if (!search) return promoted;
+    const q = search.toLowerCase();
+    return promoted.filter(d =>
+      d.name.toLowerCase().includes(q) ||
+      d.description.toLowerCase().includes(q) ||
+      d.category.toLowerCase().includes(q) ||
+      (d.module_chain || []).some(m => m.toLowerCase().includes(q))
+    );
+  }, [search, promoted]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {
@@ -359,8 +496,66 @@ export default function STierVault() {
   const handleExport = async (entry: STierEntry) => {
     setLoadingCode(true);
     const code = await loadSourceCode(entry);
-    setExportingEntry({ entry, code });
+    setExportingEntry({ id: entry.id, name: entry.name, rank: entry.rank, cjpi: entry.cjpi, module: entry.module, description: entry.description, code });
     setLoadingCode(false);
+  };
+
+  const handleExportPromoted = (d: PromotedDiscovery) => {
+    const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
+    setExportingEntry({
+      id: d.discovery_id,
+      name: d.name,
+      rank: 0,
+      cjpi: d.cjpi,
+      module: primaryModule,
+      description: d.description,
+      code: '',
+    });
+  };
+
+  const handleExportAllPromoted = async () => {
+    if (promoted.length === 0) return;
+    const JSZip = (await import('jszip')).default;
+    const zip = new JSZip();
+    const root = zip.folder('promoted-discoveries-export')!;
+
+    for (const d of promoted) {
+      const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
+      const artifact: ExportableArtifact = {
+        id: d.discovery_id,
+        name: d.name,
+        rank: 0,
+        cjpi: d.cjpi,
+        module: primaryModule,
+        description: d.description,
+        sourceCode: '',
+      };
+
+      const targets: ExportTarget[] = [
+        { language: 'typescript', adapter: 'standalone' },
+        { language: 'python', adapter: 'standalone' },
+        { language: 'go', adapter: 'standalone' },
+        { language: 'rust', adapter: 'standalone' },
+        { language: 'verilog', adapter: 'fpga-synth' },
+      ];
+
+      const bundle = generateExportBundle(artifact, targets);
+      const slug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+      const folder = root.folder(slug)!;
+      folder.file('README.md', bundle.readme);
+      for (const file of bundle.files) {
+        folder.file(file.filename, file.content);
+      }
+    }
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'promoted-discoveries-full-export.zip';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${promoted.length} discoveries across 5 languages`);
   };
 
   const handleCopyCode = () => {
@@ -385,18 +580,22 @@ export default function STierVault() {
   return (
     <div className="min-h-screen bg-background text-foreground p-3 sm:p-6">
       <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
-        {/* Header — stacks on mobile */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-400 shrink-0" />
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">S-Tier Crown Jewel Vault</h1>
-              <p className="text-xs sm:text-sm text-muted-foreground">{entries.length} artifacts • Ranked by CJPI descending • Universal export</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                {entries.length} registry artifacts • {promoted.length} promoted discoveries • Universal export
+              </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5 self-start sm:self-auto">
-            <Download className="w-4 h-4" /> Export JSON
-          </Button>
+          <div className="flex gap-2 self-start sm:self-auto">
+            <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5">
+              <Download className="w-4 h-4" /> Registry JSON
+            </Button>
+          </div>
         </div>
 
         {/* Search */}
@@ -410,58 +609,117 @@ export default function STierVault() {
           />
         </div>
 
-        {/* Module filters — scrollable on mobile */}
-        <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
-          <div className="flex gap-1.5 min-w-max pb-1">
-            <Badge
-              variant={moduleFilter === null ? "default" : "outline"}
-              className="cursor-pointer text-xs shrink-0"
-              onClick={() => setModuleFilter(null)}
-            >
-              All ({entries.length})
-            </Badge>
-            {modules.map(m => {
-              const count = entries.filter(e => e.module === m).length;
-              return (
+        {/* Tabs: Registry vs Promoted */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="w-full sm:w-auto">
+            <TabsTrigger value="registry" className="gap-1.5">
+              <Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})
+            </TabsTrigger>
+            <TabsTrigger value="promoted" className="gap-1.5">
+              <Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})
+            </TabsTrigger>
+          </TabsList>
+
+          {/* ─── Registry Tab ─── */}
+          <TabsContent value="registry" className="space-y-4 mt-4">
+            {/* Module filters */}
+            <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+              <div className="flex gap-1.5 min-w-max pb-1">
                 <Badge
-                  key={m}
-                  variant={moduleFilter === m ? "default" : "outline"}
-                  className={`cursor-pointer text-xs shrink-0 ${moduleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`}
-                  onClick={() => setModuleFilter(moduleFilter === m ? null : m)}
+                  variant={moduleFilter === null ? "default" : "outline"}
+                  className="cursor-pointer text-xs shrink-0"
+                  onClick={() => setModuleFilter(null)}
                 >
-                  {m} ({count})
+                  All ({entries.length})
                 </Badge>
-              );
-            })}
-          </div>
-        </div>
+                {modules.map(m => {
+                  const count = entries.filter(e => e.module === m).length;
+                  return (
+                    <Badge
+                      key={m}
+                      variant={moduleFilter === m ? "default" : "outline"}
+                      className={`cursor-pointer text-xs shrink-0 ${moduleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`}
+                      onClick={() => setModuleFilter(moduleFilter === m ? null : m)}
+                    >
+                      {m} ({count})
+                    </Badge>
+                  );
+                })}
+              </div>
+            </div>
 
-        {/* Results count */}
-        <p className="text-xs text-muted-foreground">
-          Showing {filtered.length} of {entries.length} artifacts
-        </p>
+            <p className="text-xs text-muted-foreground">
+              Showing {filtered.length} of {entries.length} artifacts
+            </p>
 
-        {/* Artifact list — card-based, mobile-first, no truncation */}
-        <div className="space-y-3">
-          {filtered.map(entry => (
-            <ArtifactCard
-              key={entry.id}
-              entry={entry}
-              onViewCode={handleViewCode}
-              onExport={handleExport}
-              loadingCode={loadingCode}
-              expanded={expandedIds.has(entry.id)}
-              onToggle={() => toggleExpand(entry.id)}
-            />
-          ))}
-        </div>
+            <div className="space-y-3">
+              {filtered.map(entry => (
+                <ArtifactCard
+                  key={entry.id}
+                  entry={entry}
+                  onViewCode={handleViewCode}
+                  onExport={handleExport}
+                  loadingCode={loadingCode}
+                  expanded={expandedIds.has(entry.id)}
+                  onToggle={() => toggleExpand(entry.id)}
+                />
+              ))}
+            </div>
 
-        {filtered.length === 0 && (
-          <div className="text-center py-12">
-            <Shield className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
-            <p className="text-muted-foreground">No artifacts match your search</p>
-          </div>
-        )}
+            {filtered.length === 0 && (
+              <div className="text-center py-12">
+                <Shield className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
+                <p className="text-muted-foreground">No artifacts match your search</p>
+              </div>
+            )}
+          </TabsContent>
+
+          {/* ─── Promoted Discoveries Tab ─── */}
+          <TabsContent value="promoted" className="space-y-4 mt-4">
+            {loadingPromoted ? (
+              <div className="text-center py-12">
+                <Loader2 className="w-8 h-8 mx-auto animate-spin text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Loading promoted discoveries...</p>
+              </div>
+            ) : (
+              <>
+                {promoted.length > 0 && (
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground">
+                      {filteredPromoted.length} export-ready discoveries • Auto-promoted from reactor (CJPI ≥ 90)
+                    </p>
+                    <Button size="sm" onClick={handleExportAllPromoted} className="gap-1.5">
+                      <Download className="w-3.5 h-3.5" /> Export All ({promoted.length}) as ZIP
+                    </Button>
+                  </div>
+                )}
+
+                <div className="space-y-3">
+                  {filteredPromoted.map(d => (
+                    <PromotedCard
+                      key={d.id}
+                      discovery={d}
+                      onExport={handleExportPromoted}
+                      expanded={expandedIds.has(d.id)}
+                      onToggle={() => toggleExpand(d.id)}
+                    />
+                  ))}
+                </div>
+
+                {filteredPromoted.length === 0 && (
+                  <div className="text-center py-12">
+                    <Zap className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
+                    <p className="text-muted-foreground">
+                      {promoted.length === 0
+                        ? 'No promoted discoveries yet — run the Discovery Engine to find Crown Jewels'
+                        : 'No discoveries match your search'}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Code Viewer Dialog */}
@@ -483,7 +741,7 @@ export default function STierVault() {
             </Button>
             {viewingCode && (
               <Button size="sm" onClick={() => {
-                setExportingEntry(viewingCode);
+                setExportingEntry({ ...viewingCode.entry, code: viewingCode.code });
                 setViewingCode(null);
               }} className="gap-1.5">
                 <Globe className="w-3 h-3" />Universal Export
@@ -499,7 +757,7 @@ export default function STierVault() {
       {/* Universal Export Dialog */}
       {exportingEntry && (
         <ExportDialog
-          entry={exportingEntry.entry}
+          entry={exportingEntry}
           sourceCode={exportingEntry.code}
           onClose={() => setExportingEntry(null)}
         />
