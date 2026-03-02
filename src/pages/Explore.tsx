@@ -26,6 +26,7 @@ import { AgentsSection } from "@/components/home/AgentsSection";
 import { GovernanceSignal } from "@/components/home/GovernanceSignal";
 import { BuiltForSection } from "@/components/home/BuiltForSection";
 import { EvolutionCTA } from "@/components/home/EvolutionCTA";
+import { EnginesCTA } from "@/components/home/EnginesCTA";
 import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
@@ -98,6 +99,9 @@ export default function Explore() {
 
       {/* EVOLUTION CTA — right below the hero */}
       <EvolutionCTA />
+
+      {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
+      <EnginesCTA />
 
       {/* Choose Your Path */}
       <BuiltForSection />

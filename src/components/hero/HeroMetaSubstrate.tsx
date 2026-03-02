@@ -231,13 +231,14 @@ export function HeroMetaSubstrate() {
               </p>
               <div className="mt-1 sm:mt-2 text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.15em]">
                 <TypedText 
-                  texts={["persist.", "evolve.", "coordinate.", "compound.", "dream."]}
+                  texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
                   ]}
                 />
               </div>
@@ -252,7 +253,7 @@ export function HeroMetaSubstrate() {
             >
               Governed cognitive infrastructure with{' '}
               <span className="text-foreground font-semibold">persistent memory</span>,{' '}
-              <span className="text-foreground font-semibold">artifact packs</span> that activate capabilities on demand, and a{' '}
+              <span className="text-foreground font-semibold">20 composable engines</span> forged from Crown Jewel artifacts, and a{' '}
               <span className="text-foreground font-semibold">governed runtime</span> that enforces safety at every layer.{' '}
               Start free — 3 artifact slots, full access, no credit card.
             </motion.p>
