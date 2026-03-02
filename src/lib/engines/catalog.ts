@@ -33,6 +33,8 @@ export interface Engine {
   isSubscription?: boolean;
   subscriptionLabel?: string;
   externalPath?: string;
+  /** True if engine is free (no checkout required) */
+  isFree?: boolean;
 }
 
 export const ENGINES: Engine[] = [
@@ -156,27 +158,30 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "beacon", codename: "BEACON", tagline: "Observability & Monitoring Stack",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 0, priceBundled: 0, priceDisplay: "FREE", bundleDisplay: "FREE",
     priceId: "price_1T6MgmQ7FtTiAL4alod5LfHD", icon: Radio, color: "145 80% 40%", tier: "CORE",
-    edition: "Edition 001 of ∞",
+    edition: "Edition 001 of ∞ — Free",
+    isFree: true,
     briefing: "BEACON illuminates everything. Metrics, distributed tracing, structured logging, and health monitoring unified into a single pane of glass.",
     capabilities: ["Unified metrics collection", "Distributed request tracing", "Structured log aggregation", "Real-time health dashboards", "Alert & threshold management", "SLA tracking & reporting"],
     threatLevel: "LOW — OBSERVABILITY", clearance: "LEVEL 5 — STANDARD",
   },
   {
     slug: "bastion", codename: "BASTION", tagline: "Intelligent Load Balancing",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 0, priceBundled: 0, priceDisplay: "FREE", bundleDisplay: "FREE",
     priceId: "price_1T6MgnQ7FtTiAL4awLLlqw6v", icon: Castle, color: "200 50% 40%", tier: "CORE",
-    edition: "Edition 001 of ∞",
+    edition: "Edition 001 of ∞ — Free",
+    isFree: true,
     briefing: "BASTION distributes load like a strategist. Health-aware routing, weighted distribution, and automatic failover that keeps your services responsive under any traffic pattern.",
     capabilities: ["Health-aware traffic routing", "Weighted load distribution", "Automatic failover", "Session affinity support", "Connection pooling", "Capacity-based scaling triggers"],
     threatLevel: "LOW — INFRASTRUCTURE", clearance: "LEVEL 5 — STANDARD",
   },
   {
     slug: "cipher", codename: "CIPHER", tagline: "Distributed Cache System",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 0, priceBundled: 0, priceDisplay: "FREE", bundleDisplay: "FREE",
     priceId: "price_1T6MgoQ7FtTiAL4a6gr1sH7E", icon: Lock, color: "280 100% 55%", tier: "CORE",
-    edition: "Edition 001 of ∞",
+    edition: "Edition 001 of ∞ — Free",
+    isFree: true,
     briefing: "CIPHER remembers so your servers don't have to. Distributed caching with intelligent invalidation, cache coherency, and tiered storage that makes every read instant.",
     capabilities: ["Distributed in-memory caching", "Intelligent cache invalidation", "Cache coherency protocols", "Tiered storage (hot/warm/cold)", "TTL & eviction policies", "Cache-aside pattern support"],
     threatLevel: "LOW — PERFORMANCE", clearance: "LEVEL 4 — OPEN",

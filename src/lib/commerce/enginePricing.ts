@@ -52,8 +52,8 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   creator: {
     id: 'creator',
     name: 'Creator',
-    monthlyPrice: 9,
-    yearlyPrice: 108,
+    monthlyPrice: 29,
+    yearlyPrice: 276,
     description: 'Everything in Free, plus all 80 engines + 8 meta-engines',
     features: [
       'Everything in Free, plus:',
@@ -71,8 +71,8 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   architect: {
     id: 'architect',
     name: 'Architect',
-    monthlyPrice: 19,
-    yearlyPrice: 228,
+    monthlyPrice: 79,
+    yearlyPrice: 756,
     description: 'Everything in Creator, plus 18 meta-engines',
     features: [
       'Everything in Creator, plus:',

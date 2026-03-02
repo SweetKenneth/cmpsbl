@@ -92,7 +92,9 @@ function EngineCard({ engine, index }: { engine: Engine; index: number }) {
           <div className="flex items-end justify-between mt-auto">
             <div>
               <span className="text-2xl font-black tracking-tight">{engine.priceDisplay}</span>
-              {engine.isSubscription ? (
+              {engine.isFree ? (
+                <span className="text-xs text-emerald-400 font-semibold ml-1">No card required</span>
+              ) : engine.isSubscription ? (
                 <span className="text-xs text-muted-foreground ml-1">/ year</span>
               ) : (
                 <>
@@ -216,11 +218,18 @@ export default function Engines() {
             <div className="inline-flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl border border-border/40 bg-card/50">
               <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
                 Every license includes a numbered Ownership Certificate, full documentation,
-                and lifetime access to the sealed runtime binary.
+                and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-xs font-mono text-muted-foreground/50">
-                $199 standalone · $99 bundled · Crown Jewel certified · Collector's license included
+                3 free · 17 at $199 standalone · $99 bundled · Crown Jewel certified
               </p>
+              <div className="flex gap-3 mt-2">
+                <Button asChild variant="outline" size="sm" className="gap-1">
+                  <Link to="/composable-cognitives">
+                    Browse 20 Agents — 40% off bundled
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>

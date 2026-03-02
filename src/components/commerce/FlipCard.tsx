@@ -23,9 +23,12 @@ interface FlipCardProps {
 
   /** Back card content */
   backCapabilities?: string[];
-  backCta?: { label: string; href: string };
+  backCta?: { label: string; href?: string };
   backPrice?: string;
   backPriceLabel?: string;
+
+  /** Action callback — fires when CTA is clicked (overrides href navigation) */
+  onAction?: () => void;
 
   /** Styling */
   className?: string;
@@ -46,12 +49,22 @@ export function FlipCard({
   backCta,
   backPrice,
   backPriceLabel,
+  onAction,
   className,
   borderClass = "border-border",
   glowClass,
   index = 0,
 }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
+
+  const handleCtaClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onAction) {
+      onAction();
+    } else if (backCta?.href && backCta.href !== '#') {
+      window.location.href = backCta.href;
+    }
+  };
 
   return (
     <motion.div
@@ -167,7 +180,7 @@ export function FlipCard({
                 <div>
                   <span className="text-lg font-black tracking-tight">{backPrice}</span>
                   {backPriceLabel && (
-                    <span className="text-[10px] text-muted-foreground ml-1">{backPriceLabel}</span>
+                    <span className="block text-[10px] text-muted-foreground leading-tight mt-0.5">{backPriceLabel}</span>
                   )}
                 </div>
               )}
@@ -175,13 +188,10 @@ export function FlipCard({
                 <Button
                   size="sm"
                   className="gap-1 h-7 text-xs"
-                  asChild
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={handleCtaClick}
                 >
-                  <a href={backCta.href}>
-                    {backCta.label}
-                    <ArrowRight className="w-3 h-3" />
-                  </a>
+                  {backCta.label}
+                  <ArrowRight className="w-3 h-3" />
                 </Button>
               )}
             </div>

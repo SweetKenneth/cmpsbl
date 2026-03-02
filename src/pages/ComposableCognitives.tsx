@@ -5,13 +5,14 @@
  * All 20 agents with DREAM Synthesis
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
   Download, Sparkles, Shield, Zap, CheckCircle, Lock,
   Brain, Code, Palette, TrendingUp, ChevronDown, ChevronUp, Package,
+  ArrowRight, Star, Users, Clock, HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -78,8 +79,35 @@ function priceLabel(item: CognitiveItem): string {
 
 function bundleLabel(item: CognitiveItem): string {
   if (item.isFree) return 'FREE';
-  return `$${item.bundlePriceCents / 100} bundled`;
+  return `$${item.bundlePriceCents / 100}`;
 }
+
+const FAQ_ITEMS = [
+  {
+    q: "What is a Sealed Runtime Agent?",
+    a: "A self-contained cognitive program with persistent memory, autonomous learning (DREAM Synthesis), and a unique personality. It's minted at purchase — capturing all capabilities as a versioned artifact you own forever.",
+  },
+  {
+    q: "What does DREAM Synthesis actually do?",
+    a: "DREAM (Distill, Recognize, Encode, Apply, Measure) is a five-phase learning loop built into every agent. It distills patterns from your interactions, encodes them into persistent memory, applies improvements in real-time, and measures the performance delta. Your agent gets better every time you use it.",
+  },
+  {
+    q: "How does the 40% bundle discount work?",
+    a: "When you purchase any agent with a CMPSBL Composable Engine, the agent price drops by 40%. Elite agents go from $159 → $95. Professional from $129 → $77. Toggle 'Bundle with Engine' above to see discounted prices.",
+  },
+  {
+    q: "Can I use agents without a CMPSBL Engine?",
+    a: "Absolutely. Every agent works standalone with any LLM provider (OpenAI, Anthropic, Groq, etc.). The engine is optional but unlocks deeper orchestration, cross-agent memory, and priority routing.",
+  },
+  {
+    q: "What's included in a free agent?",
+    a: "Free agents include the same core runtime, DREAM Synthesis, and persistent memory as paid agents. They have 3–5 capabilities and work with any provider. No credit card required.",
+  },
+  {
+    q: "Do I need an account to purchase?",
+    a: "No. You can checkout as a guest. Your license, ownership certificate, and download link are emailed instantly after purchase.",
+  },
+];
 
 /* ───── Main Page ───── */
 export default function ComposableCognitives() {
@@ -87,13 +115,45 @@ export default function ComposableCognitives() {
   const [chosenName, setChosenName] = useState("");
   const [dreamOpen, setDreamOpen] = useState(false);
   const [bundleMode, setBundleMode] = useState(false);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
+  const [purchaseSuccess, setPurchaseSuccess] = useState<string | null>(null);
   const canceled = searchParams.get("canceled") === "1";
+  const licensedAgent = searchParams.get("licensed");
+  const sessionId = searchParams.get("session_id");
+
+  // ── Post-purchase verification ──
+  useEffect(() => {
+    if (licensedAgent && sessionId) {
+      supabase.functions.invoke("agent-verify", {
+        body: { session_id: sessionId, agent_id: licensedAgent },
+      }).then(({ data }) => {
+        if ((data as any)?.success) {
+          setPurchaseSuccess((data as any).agent || licensedAgent.toUpperCase());
+          pushToast({
+            message: `${(data as any).agent || licensedAgent.toUpperCase()} Agent activated! Check your email for your ownership certificate.`,
+            variant: "success",
+            anchor: "center",
+            durationMs: 8000,
+          });
+        }
+      }).catch(() => {});
+    }
+    // Free agent activation
+    const activated = searchParams.get("activated");
+    if (activated) {
+      setPurchaseSuccess(activated.toUpperCase());
+      pushToast({
+        message: `${activated.toUpperCase()} Agent activated! Ready to use.`,
+        variant: "success",
+        anchor: "center",
+        durationMs: 5000,
+      });
+    }
+  }, [licensedAgent, sessionId, searchParams]);
 
   const handleBuy = useCallback(async (sku: string) => {
     const item = PUBLIC_CATALOG.find(c => c.sku === sku);
-    if (item?.isFree) {
-      // Free agents skip name validation
-    } else {
+    if (!item?.isFree) {
       const validation = validateCognitiveName(chosenName);
       if (!validation.valid) {
         pushToast({ message: validation.error || "Name your Mind first", variant: "warning", anchor: "center", durationMs: 5000 });
@@ -111,7 +171,7 @@ export default function ComposableCognitives() {
       console.error("Checkout error:", err);
       pushToast({ message: "Checkout failed. Please try again.", variant: "error", anchor: "center", durationMs: 5000 });
     }
-  }, [chosenName]);
+  }, [chosenName, bundleMode]);
 
   const grouped = AGENTS_BY_CATEGORY();
   const categoryOrder: AgentCategory[] = [
@@ -121,8 +181,8 @@ export default function ComposableCognitives() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Composable Minds — CMPSBL®</title>
-        <meta name="description" content="20 Sealed Runtime Agents with DREAM Synthesis. Persistent memory, tiered pricing, and autonomous learning. Download once. Run forever." />
+        <title>Composable Minds — Sealed Runtime Agents | CMPSBL®</title>
+        <meta name="description" content="20 Sealed Runtime Agents with DREAM Synthesis. Persistent memory, autonomous learning, tiered pricing from free to $159. Own forever." />
       </Helmet>
 
       <PublicNav />
@@ -131,6 +191,19 @@ export default function ComposableCognitives() {
       <div className="container mx-auto px-4 pt-20">
         <PublicBreadcrumb />
       </div>
+
+      {/* ═══ SUCCESS BANNER ═══ */}
+      {purchaseSuccess && (
+        <div className="container mx-auto px-4 pt-4">
+          <Alert className="border-emerald-500/30 bg-emerald-500/10">
+            <CheckCircle className="h-4 w-4 text-emerald-400" />
+            <AlertDescription className="text-emerald-300">
+              <strong>{purchaseSuccess} Agent</strong> activated successfully! Your ownership certificate and download link have been emailed.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
       {/* ═══ HERO ═══ */}
       <section className="relative pt-10 pb-20 overflow-hidden">
         <div className="absolute inset-0 gradient-mesh pointer-events-none" />
@@ -152,9 +225,24 @@ export default function ComposableCognitives() {
 
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Each agent is a <span className="text-foreground font-semibold">sealed cognitive runtime</span> with 
-              persistent memory, DREAM Synthesis for autonomous improvement, and a unique personality archetype. 
-              <span className="text-foreground font-semibold"> 40% off when bundled with a CMPSBL Engine.</span>
+              persistent memory, DREAM Synthesis for autonomous improvement, and a unique personality archetype.
+              Purchase once — own forever. No subscriptions.
             </p>
+
+            {/* Trust signals */}
+            <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+              {[
+                { icon: Shield, text: 'Source-blocked & tamper-proof' },
+                { icon: Brain, text: 'DREAM learning in every agent' },
+                { icon: Clock, text: 'Perpetual license' },
+                { icon: Users, text: '20 specialized archetypes' },
+              ].map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-center gap-1.5">
+                  <Icon className="w-3.5 h-3.5 text-primary/60" />
+                  <span>{text}</span>
+                </div>
+              ))}
+            </div>
 
             {/* Tier pills */}
             <div className="flex flex-wrap justify-center gap-3">
@@ -167,6 +255,33 @@ export default function ComposableCognitives() {
               ))}
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ TIER COMPARISON ═══ */}
+      <section className="container mx-auto px-4 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {([
+              { tier: 'free' as const, powers: '3–5', agents: '3', highlight: 'Start free' },
+              { tier: 'starter' as const, powers: '5', agents: '5', highlight: 'Best value' },
+              { tier: 'professional' as const, powers: '5', agents: '9', highlight: 'Full stack' },
+              { tier: 'elite' as const, powers: '5', agents: '3', highlight: 'Maximum power' },
+            ]).map(({ tier, powers, agents, highlight }) => (
+              <div key={tier} className="rounded-xl border border-border/50 bg-card/50 p-4 text-center space-y-2">
+                <div className={cn("w-3 h-3 rounded-full mx-auto", TIER_ACCENT[tier])} />
+                <div className={cn("text-sm font-black", TIER_CONFIG[tier].color)}>{TIER_CONFIG[tier].label}</div>
+                <div className="text-2xl font-black">{TIER_CONFIG[tier].price}</div>
+                <div className="text-[10px] text-muted-foreground space-y-0.5">
+                  <div>{powers} Crown Jewel powers</div>
+                  <div>{agents} agents</div>
+                  <div>DREAM Synthesis included</div>
+                  <div>Persistent memory</div>
+                </div>
+                <div className="text-[10px] font-semibold text-primary">{highlight}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -212,8 +327,8 @@ export default function ComposableCognitives() {
           </div>
           <div className="flex items-center gap-3 p-4 rounded-xl border border-primary/20 bg-primary/5 shrink-0">
             <div>
-              <p className="text-sm font-bold">Bundle with Engine</p>
-              <p className="text-[11px] text-muted-foreground">Save 40% on agent price</p>
+              <p className="text-sm font-bold">Bundle with CMPSBL Engine</p>
+              <p className="text-[11px] text-muted-foreground">Save 40% — pairs with any Composable Engine</p>
             </div>
             <Switch checked={bundleMode} onCheckedChange={setBundleMode} />
           </div>
@@ -273,12 +388,12 @@ export default function ComposableCognitives() {
                       { label: '', value: 'DREAM', icon: <Brain className="w-3 h-3 text-primary" /> },
                     ]}
                     backCapabilities={item.capabilities}
-                    backPrice={bundleMode && !item.isFree ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}
-                    backPriceLabel={item.isFree ? '' : bundleMode ? '40% bundle discount applied' : `${bundleLabel(item)} w/ engine`}
-                    backCta={item.isFree
-                      ? { label: 'Free Download', href: '#' }
-                      : { label: `Acquire — ${bundleMode ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}`, href: '#' }
-                    }
+                    backPrice={bundleMode && !item.isFree ? bundleLabel(item) : priceLabel(item)}
+                    backPriceLabel={item.isFree ? 'No card required' : bundleMode ? '40% bundle discount' : `${bundleLabel(item)} w/ engine`}
+                    backCta={{
+                      label: item.isFree ? 'Activate Free' : `Acquire — ${bundleMode ? bundleLabel(item) : priceLabel(item)}`,
+                    }}
+                    onAction={() => handleBuy(item.sku)}
                     borderClass={catConfig.border}
                   />
                 );
@@ -288,23 +403,66 @@ export default function ComposableCognitives() {
         );
       })}
 
-      {/* ═══ BUNDLE CTA ═══ */}
-      <section className="container mx-auto px-4 pb-20">
+      {/* ═══ CROSS-SELL: ENGINES ═══ */}
+      <section className="container mx-auto px-4 pb-12">
         <div className="max-w-3xl mx-auto text-center p-8 rounded-2xl border border-primary/20 bg-primary/5">
           <Badge variant="outline" className="font-mono text-[10px] border-primary/30 text-primary mb-4">
             BUNDLE DEAL
           </Badge>
-          <h2 className="text-2xl font-black mb-2">40% Off Every Agent</h2>
-          <p className="text-muted-foreground text-sm mb-4">
-            Combine any agent with a CMPSBL Composable Engine and save 40% on the agent price. 
-            Elite agents drop from $159 to $95. Professional from $129 to $77.
+          <h2 className="text-2xl font-black mb-2">40% Off Every Agent When Bundled</h2>
+          <p className="text-muted-foreground text-sm mb-6">
+            Combine any agent with a CMPSBL Composable Engine — the sealed runtime that powers orchestration, routing, 
+            self-healing, and security. Elite agents drop from $159 → $95. Professional from $129 → $77.
           </p>
-          <Button asChild size="lg" className="gap-2">
-            <a href="/engines">
-              <Zap className="w-4 h-4" />
-              Browse Engines
-            </a>
-          </Button>
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <Button asChild size="lg" className="gap-2">
+              <a href="/engines">
+                <Zap className="w-4 h-4" />
+                Browse 20 Engines
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2">
+              <a href="/cmpsbl-engine">
+                <Star className="w-4 h-4" />
+                ARCHITECT Engine — $999/yr
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ═══ */}
+      <section className="container mx-auto px-4 pb-20">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center gap-3 mb-8">
+            <HelpCircle className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-black">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-2">
+            {FAQ_ITEMS.map((faq, i) => (
+              <div key={i} className="border border-border/50 rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/20 transition-colors"
+                >
+                  <span className="text-sm font-semibold pr-4">{faq.q}</span>
+                  {faqOpen === i ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />}
+                </button>
+                <AnimatePresence>
+                  {faqOpen === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="px-4 pb-4 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
