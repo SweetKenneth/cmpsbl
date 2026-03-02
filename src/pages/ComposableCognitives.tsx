@@ -273,11 +273,11 @@ export default function ComposableCognitives() {
                       { label: '', value: 'DREAM', icon: <Brain className="w-3 h-3 text-primary" /> },
                     ]}
                     backCapabilities={item.capabilities}
-                    backPrice={priceLabel(item)}
-                    backPriceLabel={item.isFree ? '' : `${bundleLabel(item)} w/ engine`}
+                    backPrice={bundleMode && !item.isFree ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}
+                    backPriceLabel={item.isFree ? '' : bundleMode ? '40% bundle discount applied' : `${bundleLabel(item)} w/ engine`}
                     backCta={item.isFree
                       ? { label: 'Free Download', href: '#' }
-                      : { label: `Acquire — ${priceLabel(item)}`, href: '#' }
+                      : { label: `Acquire — ${bundleMode ? bundleLabel(item).replace(' bundled', '') : priceLabel(item)}`, href: '#' }
                     }
                     borderClass={catConfig.border}
                   />
