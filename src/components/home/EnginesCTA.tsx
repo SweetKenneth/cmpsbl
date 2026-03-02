@@ -1,6 +1,6 @@
 /**
  * EnginesCTA — Cinematic call-to-action for the 20 Composable Engines
- * Positioned below the hero on the homepage
+ * Positioned below the hero on the homepage — polished
  */
 
 import { Link } from "react-router-dom";
@@ -31,14 +31,14 @@ export function EnginesCTA() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7 }}
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40"
         >
           {/* Dark gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-card via-background to-card" />
 
-          {/* Animated grid overlay */}
+          {/* Subtle grid overlay */}
           <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
@@ -88,11 +88,10 @@ export function EnginesCTA() {
                 <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
                   Black-boxed runtimes forged from our highest-scoring Crown Jewel artifacts.
                   Each engine is tamper-proof, zero-dependency, and built for a single mission.
-                  You don't see the source — you see the results.
                 </p>
               </div>
 
-              <div className="flex flex-col items-start sm:items-end gap-2">
+              <div className="flex flex-col items-start sm:items-end gap-1.5">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl sm:text-4xl font-black text-primary">$99</span>
                   <span className="text-sm text-muted-foreground">bundled</span>
@@ -109,7 +108,7 @@ export function EnginesCTA() {
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
+                  transition={{ delay: 0.1 + i * 0.04 }}
                   className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
                 >
                   <div className="flex items-center gap-2 mb-1">
