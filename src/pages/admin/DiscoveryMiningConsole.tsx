@@ -584,7 +584,7 @@ function AutoMinerTab() {
             </div>
             <div className="flex-1 min-w-0">
               <div className={`font-semibold text-sm ${phase.color}`}>{phase.label}</div>
-              <div className="text-xs text-muted-foreground truncate">{state.lastActivity || 'Ready to mine'}</div>
+              <div className="text-xs text-muted-foreground break-words">{state.lastActivity || 'Ready to mine'}</div>
             </div>
             {state.phase !== 'idle' && (
               <Badge variant="outline" className="text-xs font-mono shrink-0">

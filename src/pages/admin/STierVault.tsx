@@ -972,8 +972,8 @@ export default function STierVault() {
                           <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 7 HDLs
                         </Button>
                       </div>
-                    </div>
-                  </div>
+      </div>
+    </AdminLayout>
                 )}
 
                 <div className="space-y-3">
