@@ -24,6 +24,7 @@ import {
 import {
   verilogPipelineTransform, vhdlPipelineTransform, svPipelineTransform,
   chiselPipelineTransform, amaranthPipelineTransform, spicePipelineTransform,
+  systemcPipelineTransform,
 } from './hardware-synthesizer';
 import {
   generateTypeScriptTest, generatePythonTest, generateGoTest, generateVerilogTestbench,
@@ -35,7 +36,7 @@ export type ExportLanguage =
   | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
   | 'scala' | 'haskell'
   | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel'
-  | 'amaranth' | 'spice';
+  | 'amaranth' | 'spice' | 'systemc';
 
 export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
   'typescript', 'python', 'go', 'rust', 'java', 'csharp',
@@ -44,7 +45,7 @@ export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
 ];
 
 export const HARDWARE_LANGUAGES: ExportLanguage[] = [
-  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice',
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice', 'systemc',
 ];
 
 export type ExportAdapter =
@@ -89,7 +90,7 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
   scala: 'scala', haskell: 'hs',
   verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
-  amaranth: 'py', spice: 'sp',
+  amaranth: 'py', spice: 'sp', systemc: 'cpp',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
@@ -99,7 +100,7 @@ const LANG_LABELS: Record<ExportLanguage, string> = {
   c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
   scala: 'Scala', haskell: 'Haskell',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
-  amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist',
+  amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist', systemc: 'SystemC (C++)',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -201,7 +202,7 @@ function getMimeType(lang: ExportLanguage): string {
     c: 'text/x-c', cpp: 'text/x-c++', dart: 'text/x-dart', zig: 'text/x-zig',
     scala: 'text/x-scala', haskell: 'text/x-haskell',
     verilog: 'text/x-verilog', vhdl: 'text/x-vhdl', systemverilog: 'text/x-systemverilog',
-    chisel: 'text/x-scala', amaranth: 'text/x-python', spice: 'text/plain',
+    chisel: 'text/x-scala', amaranth: 'text/x-python', spice: 'text/plain', systemc: 'text/x-c++',
   };
   return map[lang] ?? 'text/plain';
 }
@@ -242,6 +243,7 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   chisel: genChisel,
   amaranth: genAmaranth,
   spice: genSPICE,
+  systemc: genSystemC,
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {
