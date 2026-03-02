@@ -254,10 +254,29 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
   }
 
   try {
-    // 2. Generate candidates from templates
+    // 2. Fetch already-promoted discovery IDs to skip rediscovery
+    const { data: existingPromotions } = await supabase
+      .from('vault_promotions')
+      .select('discovery_id');
+    const promotedIds = new Set((existingPromotions ?? []).map((p: any) => p.discovery_id));
+
+    // 3. Fetch already-discovered IDs (across all runs)
+    const { data: existingDiscoveries } = await supabase
+      .from('discoveries')
+      .select('id');
+    const knownIds = new Set((existingDiscoveries ?? []).map((d: any) => d.id));
+
+    // 4. Generate candidates from templates, skipping already-known ones
     const candidates: ReactorCandidate[] = [];
+    let skippedCount = 0;
     for (const template of SYNTHESIS_TEMPLATES) {
       const stableId = computeStableHash(template.namePattern, template.modulePattern, template.category);
+
+      // Skip if already promoted to vault or already discovered
+      if (promotedIds.has(stableId) || knownIds.has(stableId)) {
+        skippedCount++;
+        continue;
+      }
 
       const baseCjpi = computeCJPI(template.baseBreakdown);
       const synergyMultiplier = computeSynergyMultiplier(template.modulePattern);
@@ -285,6 +304,8 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
         rationale: template.rationale,
       });
     }
+
+    console.log(`[Reactor] Skipped ${skippedCount} already-known discoveries, ${candidates.length} new candidates`);
 
     // 4. Sort by CJPI descending
     candidates.sort((a, b) => b.cjpi - a.cjpi);
