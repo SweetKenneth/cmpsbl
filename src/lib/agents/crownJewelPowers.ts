@@ -1,6 +1,7 @@
 /**
- * Crown Jewel Powers — 20 Agents × 3 Unique Powers Each = 60 Total
- * Every power is sourced from a specific Sealed Runtime Engine or Meta-Engine.
+ * Crown Jewel Powers — 20 Agents with Persistent Memory + Unique Powers
+ * Every agent ships with the 4-Tier Portable Memory System as a universal capability.
+ * Elite agents get 5 powers, Flagships get 3, Standard/Free get 3 — all on top of memory.
  */
 
 import {
