@@ -69,6 +69,19 @@ const ORIGINAL_MODULE_PROFILES: ModuleHardeningProfile[] = [
   { name: 'memory',        maxConcurrent: 10,  rateLimit: 100,  healthThreshold: 40 },
   { name: 'economy',       maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 40 },
   { name: 'identity',      maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 45 },
+
+  // ── Expansion Modules (37-Node Architecture) ──────────────
+  { name: 'sovereign',     maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 50 },
+  { name: 'oracle',        maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 40 },
+  { name: 'conscience',    maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 50 },
+  { name: 'phantom',       maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 45 },
+  { name: 'forge',         maxConcurrent: 10,  rateLimit: 100,  healthThreshold: 40 },
+  { name: 'lingua',        maxConcurrent: 10,  rateLimit: 120,  healthThreshold: 40 },
+  { name: 'compass',       maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 40 },
+  { name: 'echo',          maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 35 },
+  { name: 'treaty',        maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 50 },
+  { name: 'harvest',       maxConcurrent: 10,  rateLimit: 100,  healthThreshold: 40 },
+  { name: 'reflex',        maxConcurrent: 12,  rateLimit: 150,  healthThreshold: 35 },
 ];
 
 // ═══════════════════════════════════════════════════════════════════

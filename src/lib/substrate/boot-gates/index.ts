@@ -17,7 +17,10 @@ export type ModuleName =
   | 'defense' | 'nexus' | 'vision' | 'encode'
   | 'system' | 'modernizer' | 'integration' | 'inclusive'
   | 'cortex' | 'atlas'
-  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox';
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
+  // Expansion Modules (37-Node Architecture)
+  | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
+  | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
 export type GateVerdict = 'pass' | 'warn' | 'block';
 
@@ -66,6 +69,18 @@ export const BOOT_ORDER: Array<{ module: ModuleName; order: number; deps: Module
   { module: 'inclusive',    order: 20, deps: ['core', 'system'] },
   { module: 'cortex',      order: 21, deps: ['core', 'nexus', 'system', 'vision'] },
   { module: 'atlas',       order: 22, deps: ['core', 'system'] },
+  // Phase 6: Expansion Modules (37-Node Architecture)
+  { module: 'sovereign',   order: 23, deps: ['core', 'defense', 'access'] },
+  { module: 'oracle',      order: 24, deps: ['core', 'brain', 'vision'] },
+  { module: 'conscience',  order: 25, deps: ['core', 'defense'] },
+  { module: 'phantom',     order: 26, deps: ['core', 'defense', 'identity'] },
+  { module: 'forge',       order: 27, deps: ['core', 'encode'] },
+  { module: 'lingua',      order: 28, deps: ['core', 'decode', 'nexus'] },
+  { module: 'compass',     order: 29, deps: ['core', 'vision', 'brain'] },
+  { module: 'echo',        order: 30, deps: ['core', 'memory'] },
+  { module: 'treaty',      order: 31, deps: ['core', 'sovereign', 'access'] },
+  { module: 'harvest',     order: 32, deps: ['core', 'memory', 'economy'] },
+  { module: 'reflex',      order: 33, deps: ['core', 'nexus', 'vision'] },
 ];
 
 // ═══════════════════════════════════════════════════════════════
