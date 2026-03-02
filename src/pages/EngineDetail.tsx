@@ -2,12 +2,13 @@
  * Engine Detail — Mission Briefing + Unlock Ceremony + Checkout
  * Uses standalone-engine-checkout for one-time $199 purchases
  * Uses cmpsbl-engine-checkout for ARCHITECT $999/yr subscription
+ * Handles free engines (BEACON, BASTION, CIPHER)
  */
 
 import { useParams, Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, ShieldCheck, ArrowLeft, Check, Download, FileText, Sparkles, ArrowRight } from "lucide-react";
+import { Lock, ShieldCheck, ArrowLeft, Check, Download, FileText, Sparkles, ArrowRight, Zap, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -129,13 +130,14 @@ export default function EngineDetail() {
   if (engine.externalPath) return <Navigate to={engine.externalPath} replace />;
 
   const handlePurchase = async () => {
+    if (engine.isFree) {
+      toast.success(`${engine.codename} is free! Access documentation below.`);
+      setLicensed(true);
+      return;
+    }
     setLoading(true);
     try {
-      // Route to the correct checkout function:
-      // - ARCHITECT ($999/yr) → cmpsbl-engine-checkout (subscription)
-      // - All others ($199) → standalone-engine-checkout (one-time payment)
       const checkoutFn = engine.isSubscription ? "cmpsbl-engine-checkout" : "standalone-engine-checkout";
-      
       const { data, error } = await supabase.functions.invoke(checkoutFn, {
         body: { price_id: engine.priceId, engine_slug: engine.slug },
       });
@@ -263,9 +265,9 @@ export default function EngineDetail() {
                   <div>
                     <div className="text-4xl font-black tracking-tight">{engine.priceDisplay}</div>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {engine.isSubscription ? "Annual subscription" : "One-time license — yours forever"}
+                      {engine.isFree ? "Free — no payment required" : engine.isSubscription ? "Annual subscription" : "One-time license — yours forever"}
                     </p>
-                    {!engine.isSubscription && (
+                    {!engine.isSubscription && !engine.isFree && (
                       <p className="text-sm text-primary font-semibold mt-1.5">
                         {engine.bundleDisplay} when bundled with another engine
                       </p>
@@ -284,6 +286,18 @@ export default function EngineDetail() {
                           View Documentation
                         </Link>
                       </Button>
+                    </div>
+                  ) : engine.isFree ? (
+                    <div className="space-y-3">
+                      <Button
+                        size="lg"
+                        className="w-full h-13 text-base font-bold rounded-xl"
+                        onClick={handlePurchase}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Activate Free
+                      </Button>
+                      <p className="text-xs text-center text-muted-foreground">No account or credit card required</p>
                     </div>
                   ) : (
                     <Button
