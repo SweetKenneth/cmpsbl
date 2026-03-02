@@ -127,8 +127,12 @@ export default function ComposableCognitives() {
 
       <PublicNav />
 
+      {/* Breadcrumb trail */}
+      <div className="container mx-auto px-4 pt-20">
+        <PublicBreadcrumb />
+      </div>
       {/* ═══ HERO ═══ */}
-      <section className="relative pt-28 pb-20 overflow-hidden">
+      <section className="relative pt-10 pb-20 overflow-hidden">
         <div className="absolute inset-0 gradient-mesh pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{
           backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
