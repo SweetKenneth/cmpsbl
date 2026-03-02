@@ -2167,8 +2167,8 @@ B_BUSY BUSY 0 V = V(START) - DELAY(V(START), {T_CLK * 4})
 
 .MEAS TRAN confidence_val FIND V(CONFIDENCE) AT={T_CLK*6}
 
-* ─── Provenance Metadata ──────────────────────────────────────
-* CJPI:   ${a.cjpi}
+* ─── Provenance Metadata ──────────────────────────────────
+* Crown Jewel: ${a.name}
 * Rank:   #${a.rank}
 * Module: ${a.module}
 * ID:     ${a.id}
