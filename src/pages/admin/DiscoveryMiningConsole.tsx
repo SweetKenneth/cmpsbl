@@ -2,7 +2,7 @@
  * Admin → Discovery Mining Console
  * Mobile-first, no truncation, full audit trail.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useDiscoveryReactor } from '@/hooks/admin/useDiscoveryReactor';
 import { Button } from '@/components/ui/button';
@@ -12,10 +12,15 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { toast } from 'sonner';
 import {
   Zap, Play, History, FlaskConical, Target, TrendingUp,
   Shield, Brain, Cpu, Eye, Scale, GitBranch, Loader2,
-  Download, Star, ChevronDown, ChevronUp,
+  Download, Star, ChevronDown, ChevronUp, Plus, Copy, Check,
 } from 'lucide-react';
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
 
