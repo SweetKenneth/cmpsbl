@@ -141,6 +141,9 @@ export * from './stier';
 // Operations integration
 export * from './operations';
 
+// Discovery epoch — Wave 7 crystallized pipeline mining
+export * from './discovery-epoch';
+
 // Auto-register executors — ALL executors are immune-wrapped via universal Immunity Mesh
 import { registerSynergyExecutor } from './registry';
 import { registerAllExecutors } from './executors';
