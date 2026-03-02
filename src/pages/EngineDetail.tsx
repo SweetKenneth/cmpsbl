@@ -315,6 +315,7 @@ export default function EngineDetail() {
             </motion.div>
           </div>
         </div>
+        <EnhancedFooter />
       </div>
     </>
   );
