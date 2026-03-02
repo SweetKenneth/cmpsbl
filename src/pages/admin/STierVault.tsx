@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Shield, Copy, Download, Eye, Search, Lock, CheckCircle,
   Code2, Package, ChevronDown, ChevronUp, FileCode, Globe,
-  Zap, Loader2,
+  Zap, Loader2, ArrowUpDown, DollarSign, TrendingUp,
 } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
@@ -57,6 +57,18 @@ const MODULE_COLORS: Record<string, string> = {
   SYSTEM: "bg-slate-500/20 text-slate-400 border-slate-500/30",
   DEFENSE: "bg-rose-500/20 text-rose-400 border-rose-500/30",
   ANALYTICS: "bg-teal-500/20 text-teal-400 border-teal-500/30",
+  // Expansion modules
+  SOVEREIGN: "bg-amber-600/20 text-amber-300 border-amber-500/30",
+  ORACLE: "bg-sky-500/20 text-sky-400 border-sky-500/30",
+  CONSCIENCE: "bg-emerald-600/20 text-emerald-300 border-emerald-500/30",
+  PHANTOM: "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
+  FORGE: "bg-orange-600/20 text-orange-300 border-orange-500/30",
+  LINGUA: "bg-blue-600/20 text-blue-300 border-blue-500/30",
+  COMPASS: "bg-cyan-600/20 text-cyan-300 border-cyan-500/30",
+  ECHO: "bg-purple-600/20 text-purple-300 border-purple-500/30",
+  TREATY: "bg-yellow-600/20 text-yellow-300 border-yellow-500/30",
+  HARVEST: "bg-green-600/20 text-green-300 border-green-500/30",
+  REFLEX: "bg-red-600/20 text-red-300 border-red-500/30",
 };
 
 function getCJPIColor(cjpi: number): string {
@@ -70,6 +82,46 @@ const LANGUAGES = getAllLanguages();
 const ADAPTERS = getAllAdapters();
 
 // ─── Types for promoted discoveries ─────────────────────────────────
+
+// ─── Market Value Estimation ────────────────────────────────────────
+// Estimates licensing/market value based on CJPI, category, and module chain depth
+
+type SortMode = 'cjpi' | 'market_value' | 'name' | 'category';
+
+const CATEGORY_MARKET_MULTIPLIERS: Record<string, number> = {
+  security: 1.8,
+  governance: 1.6,
+  cognitive: 1.5,
+  evolution: 1.4,
+  orchestration: 1.3,
+  routing: 1.2,
+  learning: 1.3,
+  observability: 1.1,
+  integration: 1.0,
+};
+
+function estimateMarketValue(cjpi: number, category: string, moduleChainLength: number): number {
+  // Base value: CJPI maps to $5K–$500K range using exponential scaling
+  const normalized = Math.max(0, cjpi - 60) / 40; // 0-1 range for CJPI 60-100
+  const baseValue = 5000 + Math.pow(normalized, 2.5) * 495000;
+  
+  // Category multiplier
+  const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
+  
+  // Complexity bonus: deeper module chains = more integration value
+  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.08;
+  
+  // Apex premium: CJPI >= 95 gets a scarcity premium
+  const apexMult = cjpi >= 95 ? 1.5 : cjpi >= 92 ? 1.2 : 1.0;
+  
+  return Math.round(baseValue * catMult * complexityMult * apexMult);
+}
+
+function formatMarketValue(value: number): string {
+  if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+  if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
+  return `$${value}`;
+}
 
 interface PromotedDiscovery {
   id: string;
@@ -211,6 +263,10 @@ function PromotedCard({
             {discovery.cjpi}
           </Badge>
           <Badge variant="outline" className="text-xs capitalize">{discovery.category}</Badge>
+          <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+            <DollarSign className="w-3 h-3 mr-0.5" />
+            {formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, (discovery.module_chain || []).length))}
+          </Badge>
           {discovery.export_ready && (
             <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
           )}
@@ -255,6 +311,9 @@ function PromotedCard({
               <div><span className="text-muted-foreground">Tier:</span> {discovery.tier}</div>
               <div><span className="text-muted-foreground">Status:</span> {discovery.status}</div>
               <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
+              <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, (discovery.module_chain || []).length))}</span></div>
               <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
               <div className="col-span-2"><span className="text-muted-foreground">Run:</span> <code className="font-mono text-[10px]">{discovery.run_id}</code></div>
             </div>
@@ -417,6 +476,7 @@ export default function STierVault() {
   // Promoted discoveries from DB
   const [promoted, setPromoted] = useState<PromotedDiscovery[]>([]);
   const [loadingPromoted, setLoadingPromoted] = useState(false);
+  const [sortMode, setSortMode] = useState<SortMode>('market_value');
 
   useEffect(() => {
     loadPromoted();
@@ -468,15 +528,34 @@ export default function STierVault() {
   }, [search, moduleFilter]);
 
   const filteredPromoted = useMemo(() => {
-    if (!search) return promoted;
-    const q = search.toLowerCase();
-    return promoted.filter(d =>
-      d.name.toLowerCase().includes(q) ||
-      d.description.toLowerCase().includes(q) ||
-      d.category.toLowerCase().includes(q) ||
-      (d.module_chain || []).some(m => m.toLowerCase().includes(q))
-    );
-  }, [search, promoted]);
+    let result = [...promoted];
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(d =>
+        d.name.toLowerCase().includes(q) ||
+        d.description.toLowerCase().includes(q) ||
+        d.category.toLowerCase().includes(q) ||
+        (d.module_chain || []).some(m => m.toLowerCase().includes(q))
+      );
+    }
+    // Sort
+    result.sort((a, b) => {
+      switch (sortMode) {
+        case 'market_value':
+          return estimateMarketValue(b.cjpi, b.category, (b.module_chain || []).length) -
+                 estimateMarketValue(a.cjpi, a.category, (a.module_chain || []).length);
+        case 'cjpi':
+          return b.cjpi - a.cjpi;
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'category':
+          return a.category.localeCompare(b.category) || b.cjpi - a.cjpi;
+        default:
+          return 0;
+      }
+    });
+    return result;
+  }, [search, promoted, sortMode]);
 
   const toggleExpand = (id: string) => {
     setExpandedIds(prev => {
@@ -728,17 +807,43 @@ export default function STierVault() {
             ) : (
               <>
                 {promoted.length > 0 && (
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                    <p className="text-xs text-muted-foreground">
-                      {filteredPromoted.length} export-ready discoveries • Auto-promoted from reactor (CJPI ≥ 90)
-                    </p>
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={handleExportSoftware} className="gap-1.5">
-                        <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={handleExportHardware} className="gap-1.5">
-                        <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 6 HDLs
-                      </Button>
+                  <div className="space-y-3">
+                    {/* Sort + Export controls */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground" />
+                        <Select value={sortMode} onValueChange={v => setSortMode(v as SortMode)}>
+                          <SelectTrigger className="w-[180px] h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="market_value">
+                              <span className="flex items-center gap-1.5"><TrendingUp className="w-3 h-3" /> Market Value</span>
+                            </SelectItem>
+                            <SelectItem value="cjpi">
+                              <span className="flex items-center gap-1.5"><Zap className="w-3 h-3" /> CJPI Score</span>
+                            </SelectItem>
+                            <SelectItem value="name">Name (A-Z)</SelectItem>
+                            <SelectItem value="category">Category</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <span className="text-xs text-muted-foreground">
+                          {filteredPromoted.length} discoveries
+                          {sortMode === 'market_value' && filteredPromoted.length > 0 && (
+                            <> • Total est. {formatMarketValue(
+                              filteredPromoted.reduce((s, d) => s + estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length), 0)
+                            )}</>
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={handleExportSoftware} className="gap-1.5">
+                          <Download className="w-3.5 h-3.5" /> Software ZIP ({promoted.length}) · 18 langs
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={handleExportHardware} className="gap-1.5">
+                          <Download className="w-3.5 h-3.5" /> Hardware ZIP ({promoted.length}) · 6 HDLs
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 )}
