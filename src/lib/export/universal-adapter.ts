@@ -13,8 +13,20 @@
 export type ExportLanguage =
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
-  | 'elixir' | 'lua'
-  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel';
+  | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
+  | 'scala' | 'haskell'
+  | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel'
+  | 'amaranth' | 'spice';
+
+export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
+  'typescript', 'python', 'go', 'rust', 'java', 'csharp',
+  'ruby', 'php', 'swift', 'kotlin', 'elixir', 'lua',
+  'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
+];
+
+export const HARDWARE_LANGUAGES: ExportLanguage[] = [
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice',
+];
 
 export type ExportAdapter =
   | 'standalone' | 'rest-api' | 'grpc-stub' | 'cli'
@@ -53,15 +65,20 @@ export interface ExportBundle {
 const LANG_EXT: Record<ExportLanguage, string> = {
   typescript: 'ts', python: 'py', go: 'go', rust: 'rs', java: 'java',
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
-  elixir: 'ex', lua: 'lua',
+  elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
+  scala: 'scala', haskell: 'hs',
   verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
+  amaranth: 'py', spice: 'sp',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
   typescript: 'TypeScript', python: 'Python', go: 'Go', rust: 'Rust',
   java: 'Java', csharp: 'C#', ruby: 'Ruby', php: 'PHP',
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
+  c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
+  scala: 'Scala', haskell: 'Haskell',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
+  amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -146,8 +163,10 @@ function getMimeType(lang: ExportLanguage): string {
     rust: 'text/x-rust', java: 'text/x-java', csharp: 'text/x-csharp',
     ruby: 'text/x-ruby', php: 'text/x-php', swift: 'text/x-swift',
     kotlin: 'text/x-kotlin', elixir: 'text/x-elixir', lua: 'text/x-lua',
+    c: 'text/x-c', cpp: 'text/x-c++', dart: 'text/x-dart', zig: 'text/x-zig',
+    scala: 'text/x-scala', haskell: 'text/x-haskell',
     verilog: 'text/x-verilog', vhdl: 'text/x-vhdl', systemverilog: 'text/x-systemverilog',
-    chisel: 'text/x-scala',
+    chisel: 'text/x-scala', amaranth: 'text/x-python', spice: 'text/plain',
   };
   return map[lang] ?? 'text/plain';
 }
@@ -176,10 +195,18 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   kotlin: genKotlin,
   elixir: genElixir,
   lua: genLua,
+  c: genC,
+  cpp: genCpp,
+  dart: genDart,
+  zig: genZig,
+  scala: genScala,
+  haskell: genHaskell,
   verilog: genVerilog,
   vhdl: genVHDL,
   systemverilog: genSystemVerilog,
   chisel: genChisel,
+  amaranth: genAmaranth,
+  spice: genSPICE,
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {
