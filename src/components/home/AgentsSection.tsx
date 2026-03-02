@@ -52,6 +52,8 @@ function AgentCard({ agent, index, expanded, onToggle }: {
             <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">{agent.name}</h3>
             {agent.isFlagship ? (
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">$129</span>
+            ) : agent.isElite ? (
+              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/25">$159 · ELITE</span>
             ) : agent.isFree ? (
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">FREE</span>
             ) : (
