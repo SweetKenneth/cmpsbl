@@ -5,6 +5,7 @@
  * and anomaly-triggered instability.
  * 
  * Phase 1: Proposal Gate (no direct auto-enforcement)
+ * Phase 2: Threshold Clamping System
  */
 
 // Types
@@ -30,6 +31,22 @@ export {
   setSpikeActive,
   isSpikeActive,
 } from './proposal-store';
+
+// Threshold Clamping
+export {
+  clamp,
+  enforceDeltaCap,
+  registerThreshold,
+  requestThresholdAdjustment,
+  getThresholdState,
+  listThresholds,
+  clearThresholds,
+  type ThresholdBounds,
+  type ThresholdConfig,
+  type ThresholdState,
+  type ClampResult,
+  type DeltaCapResult,
+} from './threshold-clamp';
 
 // Structured Logger
 export {
