@@ -41,11 +41,11 @@ export const COGNITIVE_REALITY_DEFINITION = 'A Cognitive Reality is a persistent
 
 /**
  * Canonical architecture breakdown.
- * 24 total Execution Surfaces, classified into 4 groups.
+ * 37 total nodes across 11 sectors.
  */
 export const ARCHITECTURE = {
-  /** Total execution surfaces in the substrate */
-  totalSurfaces: 24,
+  /** Total active nodes in the substrate */
+  totalNodes: 37,
 
   /** 1 Kernel — the standalone boot authority */
   kernel: {
@@ -54,18 +54,18 @@ export const ARCHITECTURE = {
     description: 'The standalone boot authority. Initializes all downstream layers and maintains the canonical registry.',
   },
 
+  /** 1 System — lifecycle management */
+  system: {
+    count: 1,
+    names: ['SYSTEM'] as const,
+    description: 'Lifecycle administration, heartbeat, backup, and orchestration.',
+  },
+
   /** 11 Execution Modules — the user-facing cognitive primitives */
-  modules: {
+  execution: {
     count: 11,
     names: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'NERVE', 'INTEGRATION'] as const,
     description: 'Public-facing cognitive primitives that developers interact with directly.',
-  },
-
-  /** 5 Mesh Overlays — cross-cutting behavioral layers (Fields + Plane + Shell) */
-  meshOverlays: {
-    count: 5,
-    names: ['DEFENSE', 'IMMUNITY', 'EVOLUTION', 'INTENT', 'GOVERNANCE'] as const,
-    description: 'Cross-cutting behavioral layers that span all nodes. Not modules — they are overlays.',
   },
 
   /** CCR — Clockless Cognitive Reality (Layer 0) */
@@ -103,11 +103,32 @@ export const ARCHITECTURE = {
     description: 'Synthesis, localization, privacy, and data acquisition.',
   },
 
+  /** Fields — cross-cutting behavioral fabric (3) */
+  fields: {
+    count: 3,
+    names: ['EVOLUTION', 'IMMUNITY', 'INTENT'] as const,
+    description: 'Cross-cutting behavioral layers that span all nodes.',
+  },
+
+  /** Plane — supervisory governance blanket (1) */
+  plane: {
+    count: 1,
+    names: ['GOVERNANCE'] as const,
+    description: 'Supervisory governance blanket — ethical and coherence constraints.',
+  },
+
+  /** Shell — outer containment boundary (1) */
+  shell: {
+    count: 1,
+    names: ['DEFENSE'] as const,
+    description: 'Outer containment boundary — security, anomaly detection, threat response.',
+  },
+
   /** Sectors in the architecture */
   sectors: 11,
 
-  /** Total active nodes */
-  totalNodes: 37,
+  /** @deprecated Use totalNodes */
+  totalSurfaces: 37,
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════

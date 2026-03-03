@@ -27,27 +27,29 @@ Clockless adopts and implements LLMS.txt as its primary machine context.
 
 ## About
 
-Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 10 public entities, 5 mesh overlays, 9 hidden zones, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37 active nodes across 11 sectors, real-time observability, adaptive learning, and multi-provider routing.
 
-## Architecture (10 + 5 + 9)
+## Architecture (37 Nodes / 11 Sectors)
 
-### CORE (Standalone Kernel)
+### CORE (Kernel)
 - CORE — Boot sequencing, circuit breakers, config, job scheduling
 
-### CCR Zones (Layer 0 — Hidden Meta-Engine)
+### SYSTEM
 - SYSTEM — Lifecycle administration
+
+### CCR — Clockless Cognitive Reality (3)
 - BRAIN — Reasoning, reflection
 - MEMORY — Persistent storage, vector/RAG
 - DREAM — Synthesis, pattern consolidation
 
-### CCL Zones (Layer 1 — Hidden Infrastructure)
+### OCG — Operational Compliance Grid (5)
 - RIPPLE — Event bus, signal propagation
 - ACCESS — Entitlements, API keys
 - IDENTITY — Session, actor attribution
 - RELAY — Webhook delivery, outbound routing
 - AUDIT — Compliance logging, integrity ledger
 
-### Execution Surfaces (9 Modules)
+### Execution (11)
 - DECODE — Intent parsing, entity extraction
 - ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
@@ -56,6 +58,8 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 10
 - ECONOMY — Cost attribution, budgeting
 - SANDBOX — Isolated execution environments
 - INCLUSIVE — Accessibility, WCAG compliance
+- MEDIC — Autonomous diagnostics, self-healing
+- NERVE — Inter-node signaling, stimulus routing
 - INTEGRATION — Enterprise connectors (boots last)
 
 ### Mesh Overlays (5 — outermost → innermost)
