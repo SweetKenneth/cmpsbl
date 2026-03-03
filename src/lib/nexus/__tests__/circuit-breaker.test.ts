@@ -9,8 +9,8 @@ import {
   recordSuccess,
   recordFailure,
   resetCircuit,
-  getCircuitState,
-  configureCircuitBreaker,
+  getCircuitStatus,
+  updateCircuitConfig,
 } from '../circuitBreaker';
 
 describe('NEXUS Circuit Breaker', () => {
