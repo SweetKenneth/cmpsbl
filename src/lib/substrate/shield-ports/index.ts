@@ -29,11 +29,12 @@ export {
 // 5. Performance Monitor
 export { performanceMonitor } from './performance-monitor';
 
-// 6. Protection Client
+// 6. Protection Client (hardened: configurable weights, entropy confidence, hash-only transit)
 export {
   ProtectionClient,
   type ProtectionConfig,
   type ProtectionResult,
+  type ScoreWeights,
 } from './protection-client';
 
 // 7. Consent-Gated Tracking
