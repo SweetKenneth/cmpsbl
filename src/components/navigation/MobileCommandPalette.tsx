@@ -80,7 +80,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Current Projects", href: "/projects", section: "Company", icon: Layers },
 
   // Resources
-  { name: "Documentation", href: "/documentation", section: "Resources", icon: FileText },
+  { name: "Changelog", href: "/changelog", section: "Resources", icon: FileText },
   { name: "Use Cases", href: "/use-cases", section: "Solutions", icon: Layers },
   { name: "Solutions", href: "/solutions", section: "Solutions", icon: Layers },
   { name: "Support", href: "/support", section: "Resources", icon: Users, keywords: ["help", "faq"] },

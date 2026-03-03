@@ -104,7 +104,7 @@ export const adminNavConfig: NavGroup[] = [
     title: "Resources",
     items: [
       { id: "docs", label: "Documentation", path: "/documentation", icon: BookOpen },
-      { id: "library", label: "Library", path: "/documentation", icon: FileText },
+      { id: "library", label: "Library", path: "/changelog", icon: FileText },
       { id: "developers", label: "Developers", path: "/developers", icon: Users },
       { id: "changelog", label: "Changelog", path: "/changelog", icon: Activity },
     ],

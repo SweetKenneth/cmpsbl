@@ -212,9 +212,9 @@ export default function Foundations() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button className="w-full gap-2" asChild>
-                  <Link to="/documentation">
+                  <Link to="/foundations">
                     <BookOpen className="w-4 h-4" />
-                    Browse Documentation
+                    Browse Foundations
                   </Link>
                 </Button>
                 <Button variant="outline" className="w-full gap-2" asChild>
@@ -338,8 +338,8 @@ export default function Foundations() {
                   </div>
                 </div>
                 <div className="flex gap-1 shrink-0">
-                  <Button variant="ghost" size="sm" asChild title="View Documentation">
-                    <Link to="/documentation">
+                  <Button variant="ghost" size="sm" asChild title="View Foundations">
+                    <Link to="/foundations">
                       <FileText className="w-4 h-4" />
                     </Link>
                   </Button>
