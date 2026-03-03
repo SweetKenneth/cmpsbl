@@ -176,8 +176,8 @@ const InclusiveModuleMission = () => {
               <span className="font-semibold">All Modules — Full Catalog</span>
               <Zap className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/library" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
-              <span className="font-semibold">Documentation Library</span>
+            <Link to="/documentation" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">
+              <span className="font-semibold">Documentation</span>
               <Zap className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link to="/" className="flex items-center justify-between p-4 bg-background rounded-lg border border-border hover:border-primary transition-colors group">

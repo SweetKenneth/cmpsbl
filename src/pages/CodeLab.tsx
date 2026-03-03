@@ -362,7 +362,7 @@ export default function CodeLab() {
                         </Link>
                       </Button>
                       <Button asChild variant="outline" size="sm" className="gap-2">
-                        <Link to="/library">
+                        <Link to="/documentation">
                           <BookOpen className="w-4 h-4" />
                           API Reference
                         </Link>

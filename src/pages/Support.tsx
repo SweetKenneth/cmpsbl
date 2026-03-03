@@ -80,8 +80,8 @@ export default function Support() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <a href="/library" className="text-primary text-sm font-medium hover:underline">
-                    View Library →
+                  <a href="/documentation" className="text-primary text-sm font-medium hover:underline">
+                    View Documentation →
                   </a>
                 </CardContent>
               </Card>
