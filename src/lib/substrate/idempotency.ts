@@ -34,16 +34,17 @@ export async function withIdempotency<T>(
   if (existing) {
     if (existing.status === 'complete') return existing.result as T;
     if (existing.status === 'pending') {
-      // Wait for completion (poll)
+      // Wait for completion (poll with proper cleanup)
       return new Promise((resolve, reject) => {
         const check = setInterval(() => {
           const e = store.get(key);
-          if (!e || e.status === 'failed') { clearInterval(check); reject(new Error('Idempotent operation failed')); }
-          if (e?.status === 'complete') { clearInterval(check); resolve(e.result as T); }
+          if (!e || e.status === 'failed') { clearInterval(check); clearTimeout(deadline); reject(new Error('Idempotent operation failed')); }
+          if (e?.status === 'complete') { clearInterval(check); clearTimeout(deadline); resolve(e.result as T); }
         }, 100);
-        setTimeout(() => { clearInterval(check); reject(new Error('Idempotency wait timeout')); }, 10000);
+        const deadline = setTimeout(() => { clearInterval(check); reject(new Error('Idempotency wait timeout')); }, 10000);
       });
     }
+    // status === 'failed' — allow re-execution by falling through
   }
 
   store.set(key, { key, result: null, status: 'pending', createdAt: Date.now(), expiresAt: Date.now() + ttlMs });
