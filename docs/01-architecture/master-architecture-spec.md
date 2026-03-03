@@ -6,16 +6,16 @@ This document defines the complete architectural specification for the CMPSBL su
 
 ## 2. System Thesis
 
-The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **37 modules** across an **11-sector** Spine / Grid / Zone / Field / Plane / Shell topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
+The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **38 modules** across a **12-sector** Spine / Grid / Zone / Field / Plane / Shell topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
 
 The substrate is not an application — it is infrastructure. It provides the execution surface on which cognitive agents, memory systems, and compliance grids operate.
 
 ## 3. Architectural Principles
 
 - **Dependency-ordered boot**: Modules initialize in strict topological order.
-- **Weighted integrity**: System health is a deterministic weighted sum across all 37 nodes (Σ = 1.000).
+- **Weighted integrity**: System health is a deterministic weighted sum across all 38 nodes (Σ = 1.000).
 - **Circuit-breaker isolation**: Every module has independent failure tracking; open breakers force health to 0.
-- **Field permeation**: Fields (EVOLUTION, IMMUNITY, INTENT) cross-cut all layers rather than stacking.
+- **Field permeation**: Fields (IMMUNITY, INTENT) cross-cut all layers rather than stacking.
 - **GOVERNANCE supervision**: Every mutating action requires legitimacy approval.
 - **DEFENSE terminal enforcement**: The outermost boundary is non-negotiable.
 - **NEXUS routing authority**: All external requests route through NEXUS.
@@ -119,12 +119,13 @@ graph TD
 | Execution | 11 modules | 0.250 | Public-facing cognitive capabilities |
 | ESZ | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 0.080 | Governance expansion, compliance, ethics |
 | EPZ | COMPASS, ECHO, REFLEX | 0.060 | Perception, simulation, edge computing |
-| EMZ | FORGE, LINGUA, PHANTOM, HARVEST | 0.060 | Manufacturing, translation, privacy, data |
-| Fields | EVOLUTION, IMMUNITY, INTENT | 0.060 | Cross-cutting transformation fabric |
+| EMZ | FORGE, LINGUA, HARVEST | 0.050 | Manufacturing, translation, data |
+| CSZ | EVOLUTION, SHADOW, PHANTOM | 0.050 | Self-improvement, shadow testing, stealth |
+| Fields | IMMUNITY, INTENT | 0.040 | Cross-cutting transformation fabric |
 | Plane | GOVERNANCE | 0.030 | Supervisory legitimacy checks |
 | Shell | DEFENSE | 0.030 | Terminal containment boundary |
 
-**Total: 37 Matrix Nodes across 11 Sectors, Σ(weight) = 1.000**
+**Total: 38 Matrix Nodes across 12 Sectors, Σ(weight) = 1.000**
 
 ## 6. Component Registry
 
@@ -206,10 +207,10 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 8. Response returns through NEXUS → DEFENSE → Client.
 
 ### State Transitions
-- **Boot** → CORE initializes → layers cascade → all 37 nodes online.
+- **Boot** → CORE initializes → layers cascade → all 38 nodes online.
 - **Steady State** → Request processing, health monitoring, periodic persistence.
 - **Degraded** → Circuit breaker open on one or more nodes; system continues with reduced capability.
-- **Zone Isolated** → Entire expansion zone (ESZ/EPZ/EMZ) degraded; core operations continue.
+- **Zone Isolated** → Entire expansion zone (ESZ/EPZ/EMZ/CSZ) degraded; core operations continue.
 - **Recovery** → Breaker reset, state reconciliation, audit verification.
 
 ## 9. Isolation Boundaries

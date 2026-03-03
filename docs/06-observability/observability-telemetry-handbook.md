@@ -39,10 +39,10 @@ All telemetry events follow a standardized schema:
 
 ## 4. Health Scoring Model
 
-System health is a deterministic weighted sum across all 37 matrix nodes:
+System health is a deterministic weighted sum across all 38 matrix nodes:
 
 ```
-health = Σ(node_weight × node_health) for all 37 nodes
+health = Σ(node_weight × node_health) for all 38 nodes
 ```
 
 | Health Range | Status | Action |
