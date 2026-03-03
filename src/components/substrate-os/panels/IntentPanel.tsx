@@ -412,8 +412,9 @@ export default function IntentPanel() {
               <CardDescription className="text-[11px] sm:text-xs">Latest governance messages from the INTENT Hub</CardDescription>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
-              <div className="space-y-2">
-                {messages.slice(0, 5).map((msg, i) => {
+              <ScrollArea className="h-[400px]">
+              <div className="space-y-2 pr-3">
+                {messages.slice(0, 20).map((msg, i) => {
                   const MsgIcon = typeIcon(msg.type);
                   return (
                     <div key={i} className="flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 hover:bg-muted/20 transition-colors">
@@ -431,6 +432,7 @@ export default function IntentPanel() {
                   );
                 })}
               </div>
+              </ScrollArea>
               <Button
                 variant="ghost"
                 size="sm"
