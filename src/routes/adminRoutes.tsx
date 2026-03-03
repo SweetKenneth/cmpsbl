@@ -16,6 +16,7 @@ const IntelPanel = lazy(() => import("@/pages/admin/IntelPanel"));
 const STierVault = lazy(() => import("@/pages/admin/STierVault"));
 const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningConsole"));
 const Diligence = lazy(() => import("@/pages/Diligence"));
+const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
 
 export const adminRoutes = (
   <>
@@ -29,6 +30,7 @@ export const adminRoutes = (
     <Route path="/admin/intel" element={<AdminRoute><IntelPanel /></AdminRoute>} />
     <Route path="/admin/s-tier-vault" element={<AdminRoute><STierVault /></AdminRoute>} />
     <Route path="/admin/discovery-mining" element={<AdminRoute><DiscoveryMiningConsole /></AdminRoute>} />
+    <Route path="/admin/gate" element={<AdminRoute><GateEngineDashboard /></AdminRoute>} />
     <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
     <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
