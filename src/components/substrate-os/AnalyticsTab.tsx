@@ -111,20 +111,21 @@ export function AnalyticsTab() {
       const immuneRows = (immuneRes.data || []) as any[];
       const escalationRows = (escalationsRes.data || []) as any[];
 
-      // Build daily time series
+      // Build daily time series from sampled data
       const dayCounts = new Map<string, number>();
-      const allRecords = [
+      const sampledRecords = [
         ...brainEvents.map(e => e.created_at),
-        ...brainMetrics.map(m => m.created_at),
         ...usage.map(u => u.created_at),
-        ...access.map(a => a.created_at),
         ...audit.map(a => a.created_at),
       ].filter(Boolean);
 
-      allRecords.forEach(ts => {
+      sampledRecords.forEach(ts => {
         const day = ts!.split('T')[0];
         dayCounts.set(day, (dayCounts.get(day) || 0) + 1);
       });
+
+      // Total ops uses exact counts, not limited row counts
+      const totalOps = brainEventsCount + brainMetricsCount + usageCount + accessCount + auditCount;
 
       const series: { date: string; ops: number }[] = [];
       const displayDays = Math.min(days, 30);
@@ -183,12 +184,12 @@ export function AnalyticsTab() {
         : 0;
 
       setData({
-        brainEvents: brainEvents.length,
-        brainMetrics: brainMetrics.length,
-        apiCalls: usage.length,
-        accessOps: access.length,
-        auditActions: audit.length,
-        totalOps: allRecords.length,
+        brainEvents: brainEventsCount,
+        brainMetrics: brainMetricsCount,
+        apiCalls: usageCount,
+        accessOps: accessCount,
+        auditActions: auditCount,
+        totalOps,
         series,
         topModules,
         eventBreakdown,
