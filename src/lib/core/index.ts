@@ -154,14 +154,17 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Expansion Manufacturing Zone (EMZ)
   forge: 'zone-emz',
   lingua: 'zone-emz',
-  phantom: 'zone-emz',
   harvest: 'zone-emz',
+  // Covert Systems Zone (CSZ)
+  evolution: 'zone-csz',
+  shadow: 'zone-csz',
+  phantom: 'zone-csz',
 };
 
 /**
  * Field order — system-wide transformation fabric (no hierarchy, permeate the spine)
  */
-export const FIELD_ORDER = ['evolution', 'immunity', 'intent'] as const;
+export const FIELD_ORDER = ['immunity', 'intent'] as const;
 
 // Legacy compat alias
 export type ModuleLayer = EntityType;
@@ -326,7 +329,7 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     defense: ['core'],
     // Standalone
     integration: ['core'],
-    // Expansion Modules (37-Node Architecture)
+    // Expansion Modules (38-Node Architecture)
     sovereign: ['core', 'defense', 'access'],
     oracle: ['core', 'brain', 'vision'],
     conscience: ['core', 'defense'],
@@ -338,6 +341,7 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     treaty: ['core', 'access'],
     harvest: ['core', 'memory', 'economy'],
     reflex: ['core', 'nexus', 'vision'],
+    shadow: ['core', 'defense'],
   };
   
   return deps[module] || [];
