@@ -1243,7 +1243,7 @@ export const CROWN_JEWEL_EXPANSION_SUMMARY = {
 /**
  * Get all Crown Jewel expansion capabilities for a specific module
  */
-export function getCrownJewelsByModule(module: string): (CapabilityDefinition & { id: CrownJewelCapabilityId })[] {
+export function getCrownJewelsByModule(module: string) {
   return Object.values(CROWN_JEWEL_EXPANSION).filter(cap =>
     cap.modules.includes(module.toUpperCase())
   );
@@ -1252,6 +1252,6 @@ export function getCrownJewelsByModule(module: string): (CapabilityDefinition & 
 /**
  * Get all 325 Crown Jewel expansion capabilities
  */
-export function getAllCrownJewelExpansion(): (CapabilityDefinition & { id: CrownJewelCapabilityId })[] {
+export function getAllCrownJewelExpansion() {
   return Object.values(CROWN_JEWEL_EXPANSION);
 }
