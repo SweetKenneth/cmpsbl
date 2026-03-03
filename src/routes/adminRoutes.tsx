@@ -1,0 +1,36 @@
+/**
+ * Admin Routes — Governor-only protected routes
+ */
+import { lazy } from "react";
+import { Route, Navigate } from "react-router-dom";
+import { AdminRoute } from "@/components/admin/AdminRoute";
+
+const AdminPatches = lazy(() => import("@/pages/AdminPatches"));
+const ShadowMeshPage = lazy(() => import("@/pages/admin/ShadowMeshPage"));
+const ImmunityMeshDashboard = lazy(() => import("@/pages/admin/ImmunityMeshDashboard"));
+const OwnerReports = lazy(() => import("@/pages/admin/OwnerReports"));
+const EvolutionMeshDashboard = lazy(() => import("@/pages/admin/EvolutionMeshDashboard"));
+const GovernanceControlPlane = lazy(() => import("@/pages/admin/GovernanceControlPlane"));
+const QuarryDashboard = lazy(() => import("@/pages/admin/QuarryDashboard"));
+const IntelPanel = lazy(() => import("@/pages/admin/IntelPanel"));
+const STierVault = lazy(() => import("@/pages/admin/STierVault"));
+const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningConsole"));
+const Diligence = lazy(() => import("@/pages/Diligence"));
+
+export const adminRoutes = (
+  <>
+    <Route path="/admin/patches" element={<AdminRoute><AdminPatches /></AdminRoute>} />
+    <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
+    <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
+    <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
+    <Route path="/admin/evolution" element={<AdminRoute><EvolutionMeshDashboard /></AdminRoute>} />
+    <Route path="/admin/governance" element={<AdminRoute><GovernanceControlPlane /></AdminRoute>} />
+    <Route path="/admin/quarry" element={<AdminRoute><QuarryDashboard /></AdminRoute>} />
+    <Route path="/admin/intel" element={<AdminRoute><IntelPanel /></AdminRoute>} />
+    <Route path="/admin/s-tier-vault" element={<AdminRoute><STierVault /></AdminRoute>} />
+    <Route path="/admin/discovery-mining" element={<AdminRoute><DiscoveryMiningConsole /></AdminRoute>} />
+    <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
+    <Route path="/admin/*" element={<Navigate to="/" replace />} />
+    <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
+  </>
+);
