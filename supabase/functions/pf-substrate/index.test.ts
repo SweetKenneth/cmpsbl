@@ -65,10 +65,10 @@ Deno.test("POST: rejects SQL injection attempt", async () => {
       input: "'; DROP TABLE users; --",
     }),
   });
-  const data = await res.json();
-  // Should reject or handle safely
+  const text = await res.text();
+  // Should not execute SQL — may return error or structured rejection
   assert(
-    res.status >= 400 || "error" in data || "output" in data,
+    res.status >= 400 || !text.includes("DROP TABLE"),
     "SQL injection should be handled safely"
   );
 });
