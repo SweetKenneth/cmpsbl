@@ -54,6 +54,17 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 30,
     radioMinutesPerDay: 30,
   },
+  studio: {
+    maxMemoryNamespaces: 6,
+    memoryDepth: 'expanded_plus',
+    allowBackgroundOptimization: true,
+    allowAutomationScheduling: true,
+    nexusRoutingPriority: 'high',
+    safeEvolutionAccess: false,
+    exportTraceAccess: true,
+    crystallizedAssetCap: 45,
+    radioMinutesPerDay: 45,
+  },
   architect: {
     maxMemoryNamespaces: 12,
     memoryDepth: 'dedicated',
