@@ -16,7 +16,7 @@ export type ModuleName =
   | 'brain' | 'decode' | 'dream'
   | 'defense' | 'nexus' | 'vision' | 'encode'
   | 'system' | 'modernizer' | 'integration' | 'inclusive'
-  | 'cortex' | 'atlas'
+  | 'cortex' | 'atlas' | 'medic'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'nerve'   // OCG — inter-node signaling
   | 'shadow'  // CSZ — shadow mesh operations
