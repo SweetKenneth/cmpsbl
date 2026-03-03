@@ -173,6 +173,8 @@ export async function runSecurityPass(): Promise<PassResult> {
   if (edgeFuncOk) {
     notes.push('✓ Edge function service_role usage looks correct');
   }
+
+  return {
     pass: 6,
     name: 'SECURITY',
     status: highSeverity > 0 ? 'FAIL' : 'PASS',
