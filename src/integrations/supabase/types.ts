@@ -1777,11 +1777,17 @@ export type Database = {
       }
       auto_blog_posts: {
         Row: {
+          assumptions_extracted: boolean | null
           author_name: string | null
           author_role: string | null
           category: string
+          confidence_factors: Json | null
+          confidence_score: number | null
           content: string
+          contradiction_outcome: string | null
+          contradiction_score: number | null
           created_at: string
+          epistemic_status: string | null
           excerpt: string | null
           experience_tags: string[] | null
           id: string
@@ -1790,17 +1796,26 @@ export type Database = {
           reviewed_at: string | null
           reviewed_by: string | null
           slug: string
+          split_brain_decision: string | null
+          split_brain_reader_score: number | null
+          split_brain_skeptic_score: number | null
           status: string
           title: string
           topic_seed: string | null
           updated_at: string
         }
         Insert: {
+          assumptions_extracted?: boolean | null
           author_name?: string | null
           author_role?: string | null
           category: string
+          confidence_factors?: Json | null
+          confidence_score?: number | null
           content: string
+          contradiction_outcome?: string | null
+          contradiction_score?: number | null
           created_at?: string
+          epistemic_status?: string | null
           excerpt?: string | null
           experience_tags?: string[] | null
           id?: string
@@ -1809,17 +1824,26 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           slug: string
+          split_brain_decision?: string | null
+          split_brain_reader_score?: number | null
+          split_brain_skeptic_score?: number | null
           status?: string
           title: string
           topic_seed?: string | null
           updated_at?: string
         }
         Update: {
+          assumptions_extracted?: boolean | null
           author_name?: string | null
           author_role?: string | null
           category?: string
+          confidence_factors?: Json | null
+          confidence_score?: number | null
           content?: string
+          contradiction_outcome?: string | null
+          contradiction_score?: number | null
           created_at?: string
+          epistemic_status?: string | null
           excerpt?: string | null
           experience_tags?: string[] | null
           id?: string
@@ -1828,6 +1852,9 @@ export type Database = {
           reviewed_at?: string | null
           reviewed_by?: string | null
           slug?: string
+          split_brain_decision?: string | null
+          split_brain_reader_score?: number | null
+          split_brain_skeptic_score?: number | null
           status?: string
           title?: string
           topic_seed?: string | null
@@ -1871,6 +1898,42 @@ export type Database = {
         }
         Relationships: []
       }
+      autoblog_assumptions: {
+        Row: {
+          assumption_text: string
+          assumption_type: string
+          broken_at: string | null
+          broken_by_post_id: string | null
+          confidence_level: number | null
+          created_at: string
+          id: string
+          is_broken: boolean | null
+          post_id: string
+        }
+        Insert: {
+          assumption_text: string
+          assumption_type?: string
+          broken_at?: string | null
+          broken_by_post_id?: string | null
+          confidence_level?: number | null
+          created_at?: string
+          id?: string
+          is_broken?: boolean | null
+          post_id: string
+        }
+        Update: {
+          assumption_text?: string
+          assumption_type?: string
+          broken_at?: string | null
+          broken_by_post_id?: string | null
+          confidence_level?: number | null
+          created_at?: string
+          id?: string
+          is_broken?: boolean | null
+          post_id?: string
+        }
+        Relationships: []
+      }
       autoblog_drafts: {
         Row: {
           body: string | null
@@ -1908,6 +1971,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      autoblog_memory_reports: {
+        Row: {
+          assumptions_wrong: string[] | null
+          confidence_adjustments: Json | null
+          contradiction_count: number | null
+          created_at: string
+          id: string
+          is_published: boolean | null
+          lessons_learned: string[] | null
+          patterns_abandoned: string[] | null
+          post_count: number | null
+          quality_trend: string | null
+          report_period_end: string
+          report_period_start: string
+          silence_count: number | null
+        }
+        Insert: {
+          assumptions_wrong?: string[] | null
+          confidence_adjustments?: Json | null
+          contradiction_count?: number | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          lessons_learned?: string[] | null
+          patterns_abandoned?: string[] | null
+          post_count?: number | null
+          quality_trend?: string | null
+          report_period_end: string
+          report_period_start: string
+          silence_count?: number | null
+        }
+        Update: {
+          assumptions_wrong?: string[] | null
+          confidence_adjustments?: Json | null
+          contradiction_count?: number | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          lessons_learned?: string[] | null
+          patterns_abandoned?: string[] | null
+          post_count?: number | null
+          quality_trend?: string | null
+          report_period_end?: string
+          report_period_start?: string
+          silence_count?: number | null
+        }
+        Relationships: []
       }
       autoblog_queue: {
         Row: {
@@ -2052,6 +2163,42 @@ export type Database = {
           min_confidence_publish?: number
           mode?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      autoblog_split_brain_audits: {
+        Row: {
+          caveat_count: number | null
+          caveats_injected: string[] | null
+          created_at: string
+          final_decision: string
+          id: string
+          post_id: string | null
+          queue_id: string | null
+          reader_brain_score: number
+          skeptic_brain_score: number
+        }
+        Insert: {
+          caveat_count?: number | null
+          caveats_injected?: string[] | null
+          created_at?: string
+          final_decision?: string
+          id?: string
+          post_id?: string | null
+          queue_id?: string | null
+          reader_brain_score?: number
+          skeptic_brain_score?: number
+        }
+        Update: {
+          caveat_count?: number | null
+          caveats_injected?: string[] | null
+          created_at?: string
+          final_decision?: string
+          id?: string
+          post_id?: string | null
+          queue_id?: string | null
+          reader_brain_score?: number
+          skeptic_brain_score?: number
         }
         Relationships: []
       }
