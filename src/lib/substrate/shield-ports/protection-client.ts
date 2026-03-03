@@ -176,6 +176,13 @@ export class ProtectionClient {
     if (!this.fingerprint.webgl) riskSignals.push('webgl_blocked');
     if (this.fingerprint.plugins.length === 0) riskSignals.push('no_plugins');
     if (entropyConfidence < 0.3) riskSignals.push('entropy_collapse');
+    // Enterprise signals
+    if (this.fingerprint.webdriver) riskSignals.push('webdriver_detected');
+    if (this.fingerprint.cdpDetected) riskSignals.push('cdp_leak');
+    if (this.fingerprint.performanceAPITampered) riskSignals.push('perf_api_tampered');
+    if (this.fingerprint.browserInconsistencies.length > 0) {
+      riskSignals.push(`browser_inconsistencies:${this.fingerprint.browserInconsistencies.length}`);
+    }
 
     // Weighted scoring
     const w = this.weights;
