@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
-/** 37 Matrix Nodes across 11 sectors */
+/** 38 Matrix Nodes across 12 sectors */
 const MODULES_CONFIG = [
   // CORE + SYSTEM
   { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
@@ -20,13 +20,14 @@ const MODULES_CONFIG = [
   { id: 'brain', label: 'BRAIN', icon: Brain, color: 'text-purple-400', hsl: '270, 67%, 58%' },
   { id: 'memory', label: 'MEMORY', icon: Database, color: 'text-cyan-300', hsl: '187, 92%, 69%' },
   { id: 'dream', label: 'DREAM', icon: Moon, color: 'text-violet-400', hsl: '258, 90%, 66%' },
-  // OCG — Operational Compliance Grid
+  // OCG — Operational Compliance Grid (6 nodes)
   { id: 'ripple', label: 'RIPPLE', icon: Radio, color: 'text-cyan-400', hsl: '188, 86%, 53%' },
   { id: 'access', label: 'ACCESS', icon: Key, color: 'text-amber-400', hsl: '38, 92%, 50%' },
   { id: 'identity', label: 'IDENTITY', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
   { id: 'relay', label: 'RELAY', icon: Send, color: 'text-amber-300', hsl: '45, 93%, 58%' },
   { id: 'audit', label: 'AUDIT', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
-  // Execution (11 nodes)
+  { id: 'nerve', label: 'NERVE', icon: Zap, color: 'text-sky-300', hsl: '199, 89%, 68%' },
+  // Execution (10 nodes)
   { id: 'decode', label: 'DECODE', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
   { id: 'encode', label: 'ENCODE', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
   { id: 'vision', label: 'VISION', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
@@ -36,24 +37,25 @@ const MODULES_CONFIG = [
   { id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
   { id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
   { id: 'medic', label: 'MEDIC', icon: Activity, color: 'text-rose-300', hsl: '350, 80%, 70%' },
-  { id: 'nerve', label: 'NERVE', icon: Zap, color: 'text-sky-300', hsl: '199, 89%, 68%' },
   { id: 'integration', label: 'INTEGRATION', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
-  // ESZ — Ethical Sovereignty Zone
+  // ESZ — Expansion Sovereignty Zone
   { id: 'sovereign', label: 'SOVEREIGN', icon: Globe, color: 'text-orange-300', hsl: '25, 95%, 63%' },
   { id: 'oracle', label: 'ORACLE', icon: Eye, color: 'text-amber-300', hsl: '38, 92%, 60%' },
   { id: 'conscience', label: 'CONSCIENCE', icon: Brain, color: 'text-rose-300', hsl: '340, 82%, 65%' },
   { id: 'treaty', label: 'TREATY', icon: ClipboardCheck, color: 'text-emerald-300', hsl: '155, 72%, 55%' },
-  // EPZ — Environmental Perception Zone
+  // EPZ — Expansion Perception Zone
   { id: 'compass', label: 'COMPASS', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
   { id: 'echo', label: 'ECHO', icon: Radio, color: 'text-indigo-300', hsl: '230, 84%, 70%' },
   { id: 'reflex', label: 'REFLEX', icon: Zap, color: 'text-pink-300', hsl: '330, 81%, 70%' },
-  // EMZ — Emergent Manufacturing Zone
+  // EMZ — Expansion Manufacturing Zone (3 nodes)
   { id: 'forge', label: 'FORGE', icon: Cpu, color: 'text-orange-400', hsl: '20, 90%, 50%' },
   { id: 'lingua', label: 'LINGUA', icon: Globe, color: 'text-teal-300', hsl: '173, 80%, 55%' },
-  { id: 'phantom', label: 'PHANTOM', icon: Shield, color: 'text-slate-300', hsl: '215, 16%, 60%' },
   { id: 'harvest', label: 'HARVEST', icon: Database, color: 'text-lime-300', hsl: '84, 81%, 55%' },
-  // Fields + Plane + Shell (Mesh Overlays)
+  // CSZ — Covert Systems Zone (3 nodes)
   { id: 'evolution', label: 'EVOLUTION', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'shadow', label: 'SHADOW', icon: Shield, color: 'text-gray-400', hsl: '220, 9%, 46%' },
+  { id: 'phantom', label: 'PHANTOM', icon: Shield, color: 'text-slate-300', hsl: '215, 16%, 60%' },
+  // Fields + Plane + Shell
   { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-rose-300', hsl: '350, 80%, 70%' },
   { id: 'intent', label: 'INTENT', icon: Brain, color: 'text-amber-400', hsl: '38, 92%, 50%' },
   { id: 'governance', label: 'GOVERNANCE', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },

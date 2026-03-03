@@ -1,6 +1,6 @@
 /**
  * Execution Surface Registry
- * 37-Node Matrix across 11 Sectors
+ * 38-Node Matrix across 12 Sectors
  * 
  * visibility:
  *   'public'  → shown on /modules hub cards

@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -17,11 +17,11 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 37 active nodes across 11 sectors */
-export const NODES_COUNT = 37;
+/** 38 active nodes across 12 sectors */
+export const NODES_COUNT = 38;
 
-/** 11 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell */
-export const SECTORS_COUNT = 11;
+/** 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
+export const SECTORS_COUNT = 12;
 
 /** @deprecated Use NODES_COUNT — kept for backward compatibility */
 export const ENTITIES_COUNT = NODES_COUNT;
@@ -29,11 +29,11 @@ export const ENTITIES_COUNT = NODES_COUNT;
 /** @deprecated Use NODES_COUNT — kept for backward compatibility */
 export const MODULES_COUNT = NODES_COUNT;
 
-/** 5 mesh overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost) */
-export const MESH_OVERLAY_COUNT = 5;
+/** 4 mesh overlays: DEFENSE (outermost) → IMMUNITY → INTENT → GOVERNANCE (innermost) */
+export const MESH_OVERLAY_COUNT = 4;
 
-/** 3 shielded expansion zones: ESZ (4 nodes), EPZ (3 nodes), EMZ (4 nodes) */
-export const EXPANSION_ZONE_COUNT = 3;
+/** 4 shielded expansion zones: ESZ (4 nodes), EPZ (3 nodes), EMZ (3 nodes), CSZ (3 nodes) */
+export const EXPANSION_ZONE_COUNT = 4;
 
 /** @deprecated Legacy zone count — now subsumed by sector topology */
 export const ZONE_COUNT = 9;
@@ -91,7 +91,7 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities across all 37 Matrix Nodes
+ * Registered capabilities across all 38 Matrix Nodes
  * 525 base + 150 expansion (high-value-v10) = 675+
  */
 export const CAPABILITIES_COUNT = 675;
@@ -106,7 +106,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
 // =============================================================================
 
 /**
- * Total terminal commands across all 37 nodes
+ * Total terminal commands across all 38 nodes
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
 export const TERMINAL_COMMANDS_COUNT = 500;

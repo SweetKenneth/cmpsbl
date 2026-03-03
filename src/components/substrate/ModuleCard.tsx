@@ -253,6 +253,12 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Edge computing & real-time response',
     color: 'text-red-600',
   },
+  shadow: {
+    icon: Activity,
+    label: 'SHADOW',
+    description: 'Covert execution & shadow mesh operations',
+    color: 'text-gray-500',
+  },
 };
 
 export function ModuleCard({ module, status, onClick }: ModuleCardProps) {

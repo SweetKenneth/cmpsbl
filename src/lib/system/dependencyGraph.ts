@@ -81,7 +81,7 @@
     // ── Shell ── (outer containment)
     defense: ['core', 'system', 'identity', 'ripple'],
 
-    // ── Expansion Modules (37-Node Architecture) ──
+    // ── Expansion Modules (38-Node Architecture) ──
     sovereign: ['core', 'defense', 'access'],
     oracle: ['core', 'brain', 'vision'],
     conscience: ['core', 'defense'],
@@ -93,6 +93,7 @@
     treaty: ['core', 'access'],
     harvest: ['core', 'memory', 'economy'],
     reflex: ['core', 'nexus', 'vision'],
+    shadow: ['core', 'defense'],
   };
  
  // Build and cache the graph

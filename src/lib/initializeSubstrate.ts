@@ -2,7 +2,7 @@
  * CMPSBL® Substrate Initialization
  * CONTRACT Epoch — Complete AI Operating System
  *
- * Architecture: CORE → CCR → OCG → 9 Modules (INTEGRATION boots last) ← 5 Mesh Overlays (DEFENSE outermost)
+ * Architecture: CORE → CCR → OCG (6) → Execution (10) → ESZ/EPZ/EMZ → CSZ → Fields/Plane/Shell
  *
  * Performance: Triple-deferred initialization for zero main-thread blocking
  */
@@ -36,17 +36,18 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('⚡ Booting CMPSBL® Substrate...');
     console.log('─────────────────────────────────────────');
     
-    // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → Fields → Plane → Shell
+    // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
     const executionModules = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-      'medic', 'nerve',
+      'medic',
       'integration', // boots last among execution modules
     ] as const;
     const eszModules = ['sovereign', 'oracle', 'conscience', 'treaty'] as const;
     const epzModules = ['compass', 'echo', 'reflex'] as const;
-    const emzModules = ['forge', 'lingua', 'phantom', 'harvest'] as const;
+    const emzModules = ['forge', 'lingua', 'harvest'] as const;
+    const cszModules = ['evolution', 'shadow', 'phantom'] as const;
     const meshOverlays = [
-      'governance', 'intent', 'evolution', 'immunity', 'defense', // innermost → outermost
+      'governance', 'intent', 'immunity', 'defense', // innermost → outermost
     ] as const;
     
     // 1. Boot CORE (standalone kernel)
@@ -69,11 +70,11 @@ export async function initializeSubstrate(): Promise<void> {
     } catch { /* graceful */ }
     
     if (coreResult.success && ccrBooted && ocgBooted) {
-      console.log('✅ CORE + CCR + OCG active → 37-node matrix online | Health: 100%');
+      console.log('✅ CORE + CCR + OCG active → 38-node matrix online | Health: 100%');
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
-      const allModules = [...executionModules, ...eszModules, ...epzModules, ...emzModules];
+      const allModules = [...executionModules, ...eszModules, ...epzModules, ...emzModules, ...cszModules];
       for (const module of allModules) {
         await yieldToMain();
         const result = await substrate.invoke({ module, action: 'pulse' });
@@ -85,7 +86,7 @@ export async function initializeSubstrate(): Promise<void> {
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/37 nodes active across 11 sectors`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/38 nodes active across 12 sectors`);
     }
     
     console.log('─────────────────────────────────────────');

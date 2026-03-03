@@ -16,9 +16,11 @@ export type ModuleName =
   | 'brain' | 'decode' | 'dream'
   | 'defense' | 'nexus' | 'vision' | 'encode'
   | 'system' | 'modernizer' | 'integration' | 'inclusive'
-  | 'cortex' | 'atlas'
+  | 'cortex' | 'atlas' | 'medic'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
-  // Expansion Modules (37-Node Architecture)
+  | 'nerve'   // OCG — inter-node signaling
+  | 'shadow'  // CSZ — shadow mesh operations
+  // Expansion Modules (38-Node Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
@@ -48,39 +50,47 @@ export const BOOT_ORDER: Array<{ module: ModuleName; order: number; deps: Module
   // Phase 2: CCR Zones
   { module: 'memory',      order: 2,  deps: ['core'] },
   { module: 'brain',       order: 3,  deps: ['core'] },
-  // Phase 3: OCG Zones
+  // Phase 3: OCG — Operational Compliance Grid (6 nodes)
   { module: 'ripple',      order: 4,  deps: ['core'] },
   { module: 'access',      order: 5,  deps: ['core'] },
   { module: 'identity',    order: 6,  deps: ['core', 'access'] },
   { module: 'relay',       order: 7,  deps: ['core', 'ripple'] },
   { module: 'audit',       order: 8,  deps: ['core'] },
-  // Phase 4: Execution Modules
-  { module: 'nexus',       order: 9,  deps: ['core'] },
-  { module: 'decode',      order: 10, deps: ['core', 'nexus'] },
-  { module: 'dream',       order: 11, deps: ['core', 'nexus'] },
-  { module: 'encode',      order: 12, deps: ['core', 'nexus'] },
-  { module: 'defense',     order: 13, deps: ['core', 'ripple'] },
-  { module: 'vision',      order: 14, deps: ['core', 'ripple'] },
-  { module: 'economy',     order: 15, deps: ['core', 'access'] },
-  { module: 'sandbox',     order: 16, deps: ['core'] },
-  { module: 'integration', order: 17, deps: ['core', 'ripple', 'access'] },
-  { module: 'system',      order: 18, deps: ['core', 'vision'] },
-  { module: 'modernizer',  order: 19, deps: ['core', 'system', 'vision'] },
-  { module: 'inclusive',    order: 20, deps: ['core', 'system'] },
-  { module: 'cortex',      order: 21, deps: ['core', 'nexus', 'system', 'vision'] },
-  { module: 'atlas',       order: 22, deps: ['core', 'system'] },
-  // Phase 6: Expansion Modules (37-Node Architecture)
-  { module: 'sovereign',   order: 23, deps: ['core', 'defense', 'access'] },
-  { module: 'oracle',      order: 24, deps: ['core', 'brain', 'vision'] },
-  { module: 'conscience',  order: 25, deps: ['core', 'defense'] },
-  { module: 'phantom',     order: 26, deps: ['core', 'defense', 'identity'] },
-  { module: 'forge',       order: 27, deps: ['core', 'encode'] },
-  { module: 'lingua',      order: 28, deps: ['core', 'decode', 'nexus'] },
+  { module: 'nerve',       order: 9,  deps: ['core', 'ripple'] },
+  // Phase 4: Execution Modules (10 nodes)
+  { module: 'nexus',       order: 10, deps: ['core'] },
+  { module: 'decode',      order: 11, deps: ['core', 'nexus'] },
+  { module: 'dream',       order: 12, deps: ['core', 'nexus'] },
+  { module: 'encode',      order: 13, deps: ['core', 'nexus'] },
+  { module: 'defense',     order: 14, deps: ['core', 'ripple'] },
+  { module: 'vision',      order: 15, deps: ['core', 'ripple'] },
+  { module: 'economy',     order: 16, deps: ['core', 'access'] },
+  { module: 'sandbox',     order: 17, deps: ['core'] },
+  { module: 'integration', order: 18, deps: ['core', 'ripple', 'access'] },
+  { module: 'medic',       order: 19, deps: ['core', 'vision'] },
+  // Phase 5: System + Orchestration
+  { module: 'system',      order: 20, deps: ['core', 'vision'] },
+  { module: 'modernizer',  order: 21, deps: ['core', 'system', 'vision'] },
+  { module: 'inclusive',    order: 22, deps: ['core', 'system'] },
+  { module: 'cortex',      order: 23, deps: ['core', 'nexus', 'system', 'vision'] },
+  { module: 'atlas',       order: 24, deps: ['core', 'system'] },
+  // Phase 6: ESZ — Expansion Sovereignty Zone (4 nodes)
+  { module: 'sovereign',   order: 25, deps: ['core', 'defense', 'access'] },
+  { module: 'oracle',      order: 26, deps: ['core', 'brain', 'vision'] },
+  { module: 'conscience',  order: 27, deps: ['core', 'defense'] },
+  { module: 'treaty',      order: 28, deps: ['core', 'sovereign', 'access'] },
+  // Phase 7: EPZ — Expansion Perception Zone (3 nodes)
   { module: 'compass',     order: 29, deps: ['core', 'vision', 'brain'] },
   { module: 'echo',        order: 30, deps: ['core', 'memory'] },
-  { module: 'treaty',      order: 31, deps: ['core', 'sovereign', 'access'] },
-  { module: 'harvest',     order: 32, deps: ['core', 'memory', 'economy'] },
-  { module: 'reflex',      order: 33, deps: ['core', 'nexus', 'vision'] },
+  { module: 'reflex',      order: 31, deps: ['core', 'nexus', 'vision'] },
+  // Phase 8: EMZ — Expansion Manufacturing Zone (3 nodes)
+  { module: 'forge',       order: 32, deps: ['core', 'encode'] },
+  { module: 'lingua',      order: 33, deps: ['core', 'decode', 'nexus'] },
+  { module: 'harvest',     order: 34, deps: ['core', 'memory', 'economy'] },
+  // Phase 9: CSZ — Covert Systems Zone (3 nodes)
+  { module: 'phantom',     order: 35, deps: ['core', 'defense', 'identity'] },
+  { module: 'shadow',      order: 36, deps: ['core', 'defense'] },
+  // Note: EVOLUTION boots via Fields phase but is organizationally in CSZ
 ];
 
 // ═══════════════════════════════════════════════════════════════

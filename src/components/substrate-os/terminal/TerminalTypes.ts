@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * Terminal Configuration — 37-Node / 11-Sector Topology (500+ commands)
+ * Terminal Configuration — 38-Node / 12-Sector Topology (500+ commands)
  */
 
 export interface CommandResult {
@@ -44,32 +44,32 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  CMPSBL® SUBSTRATE — 37-NODE MATRIX ▓',
+  '  ▓  CMPSBL® SUBSTRATE — 38-NODE MATRIX ▓',
   '  ▓                                     ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
-  '  ┌─ 11-SECTOR TOPOLOGY ──────────────────┐',
+  '  ┌─ 12-SECTOR TOPOLOGY ──────────────────┐',
   '  │                                       │',
   '  │  ⬢ CORE        ◇ SYSTEM              │',
   '  │  ◈ CCR:  brain memory dream           │',
   '  │  ◆ OCG:  ripple access identity       │',
-  '  │          relay audit                  │',
+  '  │          relay audit nerve            │',
   '  │  ★ EXEC: decode encode vision cortex │',
   '  │          nexus economy sandbox        │',
-  '  │          inclusive medic nerve        │',
+  '  │          inclusive medic              │',
   '  │          integration                  │',
   '  │  ◎ ESZ:  sovereign oracle             │',
   '  │          conscience treaty            │',
   '  │  ◎ EPZ:  compass echo reflex          │',
-  '  │  ◎ EMZ:  forge lingua phantom         │',
-  '  │          harvest                      │',
-  '  │  ≋ FLD:  evolution immunity intent    │',
+  '  │  ◎ EMZ:  forge lingua harvest         │',
+  '  │  ◎ CSZ:  evolution shadow phantom     │',
+  '  │  ≋ FLD:  immunity intent              │',
   '  │  ◉ PLN:  governance                   │',
   '  │  ◉ SHL:  defense                      │',
   '  │                                       │',
   '  └───────────────────────────────────────┘',
   '',
-  '  ◉ 37 nodes operational | 11 sectors',
+  '  ◉ 38 nodes operational | 12 sectors',
   '  ◉ 500+ commands available',
   '  ◉ 675+ capabilities | Σw = 1.000',
   '  ◉ Health: 100%',

@@ -1,8 +1,8 @@
 /**
  * Substrate Module Hooks — Barrel Export
- * 37-Node / 11-Sector Architecture Hooks
+ * 38-Node / 12-Sector Architecture Hooks
  *
- * Sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell
+ * Sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell
  */
 
 // Kernel Layer
@@ -10,7 +10,7 @@ export { useCore, type UseCoreReturn } from './useCore';
 export { useRipple, type UseRippleReturn } from './useRipple';
 export { useAccess, type UseAccessReturn } from './useAccess';
 
-// Cognitive Layer
+// Cognitive Layer (CCR)
 export { useBrain, type UseBrainReturn } from './useBrain';
 export { useDecode, type UseDecodeReturn } from './useDecode';
 
@@ -31,7 +31,7 @@ export { useCortex, type UseCortexReturn } from './useCortex';
 export { useEncode, type UseEncodeReturn } from './useEncode';
 export { useEncodeOrchestration, type UseEncodeOrchestrationReturn } from './useEncodeOrchestration';
 
-// Infrastructure Layer (Zones)
+// OCG — Operational Compliance Grid (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE)
 export { useMemoryModule, type UseMemoryModuleReturn } from './useMemoryModule';
 export { useRelay, type UseRelayReturn } from './useRelay';
 export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
@@ -40,29 +40,28 @@ export { useEconomy, type UseEconomyReturn } from './useEconomy';
 export { useSandbox, type UseSandboxReturn } from './useSandbox';
 
 // ═══════════════════════════════════════════════════════════════════
-// EXPANSION MODULES (37-Node Architecture)
+// EXPANSION MODULES (38-Node Architecture)
 // ═══════════════════════════════════════════════════════════════════
 
-// Compliance & Governance
+// ESZ — Expansion Sovereignty Zone
 export { useSovereign, type UseSovereignReturn } from './useSovereign';
 export { useConscience, type UseConscienceReturn } from './useConscience';
 export { useTreaty, type UseTreatyReturn } from './useTreaty';
-
-// Predictive & Simulation
 export { useOracle, type UseOracleReturn } from './useOracle';
+
+// EPZ — Expansion Perception Zone
 export { useCompass, type UseCompassReturn } from './useCompass';
 export { useEcho, type UseEchoReturn } from './useEcho';
+export { useReflex, type UseReflexReturn } from './useReflex';
 
-// Privacy & Data
-export { usePhantom, type UsePhantomReturn } from './usePhantom';
-export { useHarvest, type UseHarvestReturn } from './useHarvest';
-
-// Manufacturing & Translation
+// EMZ — Expansion Manufacturing Zone (FORGE, LINGUA, HARVEST)
 export { useForge, type UseForgeReturn } from './useForge';
 export { useLingua, type UseLinguaReturn } from './useLingua';
+export { useHarvest, type UseHarvestReturn } from './useHarvest';
 
-// Edge Computing
-export { useReflex, type UseReflexReturn } from './useReflex';
+// CSZ — Covert Systems Zone (EVOLUTION, SHADOW, PHANTOM)
+export { usePhantom, type UsePhantomReturn } from './usePhantom';
+export { useShadow, type UseShadowReturn } from './useShadow';
 
 // Self-Evolving Agent
 export { useSEBAHook as useSEBA, type UseSEBAHookReturn } from './useSEBA';

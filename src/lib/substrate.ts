@@ -1,12 +1,14 @@
 /**
  * CMPSBL® Substrate Client
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  *
- * CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
- *   → Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION)
+ * CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM)
+ *   → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE)
+ *   → Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION)
  *   → ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY) → EPZ (COMPASS, ECHO, REFLEX)
- *   → EMZ (FORGE, LINGUA, PHANTOM, HARVEST)
- *   → Fields (EVOLUTION, IMMUNITY, INTENT) → Plane (GOVERNANCE) → Shell (DEFENSE)
+ *   → EMZ (FORGE, LINGUA, HARVEST)
+ *   → CSZ (EVOLUTION, SHADOW, PHANTOM)
+ *   → Fields (IMMUNITY, INTENT) → Plane (GOVERNANCE) → Shell (DEFENSE)
  *
  * All nodes expose: status(), pulse(), and domain-specific methods
  * All nodes wired into: terminal, CLM, parity, events, health, BRAIN writeback
@@ -16,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { recordSuccess as cbRecordSuccess, recordFailure as cbRecordFailure, canExecute as cbCanExecute } from '@/lib/substrate/circuit-breaker';
 import { recordSample } from '@/lib/substrate/predictive-failure';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -1736,7 +1738,7 @@ export const matrix = {
   },
 };
 
-// Quick access — 37 nodes across 11 sectors
+// Quick access — 38 nodes across 12 sectors
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;

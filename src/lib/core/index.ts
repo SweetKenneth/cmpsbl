@@ -68,24 +68,26 @@ export const SUBSTRATE_MODULES = [
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
   'medic', 'nerve',
   // Fields (system-wide transformation fabric)
-  'evolution', 'immunity', 'intent',
+  'immunity', 'intent',
   // Overlay Plane (supervisory)
   'governance',
   // Shell (outer containment)
   'defense',
   // Module (boots last)
   'integration',
-  // Expansion Modules (37-Node Architecture)
-  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  // Expansion Modules (38-Node Architecture)
+  'sovereign', 'oracle', 'conscience', 'forge',
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
+  // CSZ — Covert Systems Zone
+  'evolution', 'shadow', 'phantom',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
 export const PUBLIC_MODULE_COUNT = 12;
 // Field count (system-wide transformation fabric)
-export const FIELD_COUNT = 3;
-// OCG Zone count
-export const OCG_ZONE_COUNT = 5;
+export const FIELD_COUNT = 2;
+// OCG Zone count (now includes NERVE)
+export const OCG_ZONE_COUNT = 6;
 // CCR Zone count (SYSTEM extracted)
 export const CCR_ZONE_COUNT = 3;
 
@@ -101,7 +103,7 @@ export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Entity classification — new taxonomy
-export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed' | 'zone-esz' | 'zone-epz' | 'zone-emz';
+export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed' | 'zone-esz' | 'zone-epz' | 'zone-emz' | 'zone-csz';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Kernel (boots first)
@@ -112,15 +114,16 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   brain: 'zone-ccr',
   memory: 'zone-ccr',
   dream: 'zone-ccr',
-  // OCG Zones (Operational Compliance Grid)
+  // OCG Zones (Operational Compliance Grid — includes NERVE)
   ripple: 'zone-ocg',
   access: 'zone-ocg',
   identity: 'zone-ocg',
   relay: 'zone-ocg',
   audit: 'zone-ocg',
+  nerve: 'zone-ocg',
   // Absorbed
   modernizer: 'absorbed',
-  // 10 Public Modules (includes MEDIC + NERVE)
+  // Execution Modules
   decode: 'module',
   encode: 'module',
   vision: 'module',
@@ -130,9 +133,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   sandbox: 'module',
   inclusive: 'module',
   medic: 'module',
-  nerve: 'module',
   // Fields (system-wide transformation fabric)
-  evolution: 'field',
   immunity: 'field',
   intent: 'field',
   // Overlay Plane (supervisory blanket)
@@ -153,14 +154,17 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Expansion Manufacturing Zone (EMZ)
   forge: 'zone-emz',
   lingua: 'zone-emz',
-  phantom: 'zone-emz',
   harvest: 'zone-emz',
+  // Covert Systems Zone (CSZ)
+  evolution: 'zone-csz',
+  shadow: 'zone-csz',
+  phantom: 'zone-csz',
 };
 
 /**
  * Field order — system-wide transformation fabric (no hierarchy, permeate the spine)
  */
-export const FIELD_ORDER = ['evolution', 'immunity', 'intent'] as const;
+export const FIELD_ORDER = ['immunity', 'intent'] as const;
 
 // Legacy compat alias
 export type ModuleLayer = EntityType;
@@ -325,7 +329,7 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     defense: ['core'],
     // Standalone
     integration: ['core'],
-    // Expansion Modules (37-Node Architecture)
+    // Expansion Modules (38-Node Architecture)
     sovereign: ['core', 'defense', 'access'],
     oracle: ['core', 'brain', 'vision'],
     conscience: ['core', 'defense'],
@@ -337,6 +341,7 @@ export function getModuleDependencies(module: SubstrateModuleName): SubstrateMod
     treaty: ['core', 'access'],
     harvest: ['core', 'memory', 'economy'],
     reflex: ['core', 'nexus', 'vision'],
+    shadow: ['core', 'defense'],
   };
   
   return deps[module] || [];
