@@ -1,6 +1,13 @@
 /**
- * AutoBlog Primitive v3.0.0
- * Governed, autonomous, self-learning blog automation with intelligent content
+ * AutoBlog Primitive v4.0.0
+ * Governed, autonomous, self-learning blog automation with quality pipeline
+ *
+ * v4 additions (ported from RCRDBL):
+ *  - Confidence Engine (multi-factor scoring)
+ *  - Contradiction Engine (adversarial quality gate)
+ *  - Split Brain Evaluation (reader/skeptic dual review)
+ *  - Assumption Labeler (extract + track assumptions)
+ *  - Monthly Memory Compression (self-reflection)
  */
 
 // Core orchestration
@@ -21,7 +28,30 @@ export { seedAutoblogPosts, quickSeed } from './seeder';
 export { publishDraft, publishAllReady, assessContent } from './publisher';
 export { generateInsightfulContent, pickOptimalTopic, getTopicInventory, DEEP_TOPICS } from './content-intelligence';
 
+// Quality pipeline (v4)
+export {
+  runQualityPipeline,
+  computeConfidence,
+  runContradictionEngine,
+  runSplitBrain,
+  extractAssumptions,
+  checkAssumptionBreaks,
+  type QualityPipelineResult,
+  type ConfidenceResult,
+  type ContradictionResult,
+  type SplitBrainResult,
+  type ExtractedAssumption,
+} from './quality-pipeline';
+
+// Memory compression (v4)
+export {
+  runMemoryCompression,
+  shouldRunMemoryCompression,
+  getLatestMemoryReport,
+  type MemoryReport,
+} from './memory-compression';
+
 // Types
 export type { AutoblogSettings, AutoblogQueueItem, AutoblogDraft, AutoblogRun, AutonomousState } from './types';
 
-export const AUTOBLOG_VERSION = '3.0.0';
+export const AUTOBLOG_VERSION = '4.0.0';

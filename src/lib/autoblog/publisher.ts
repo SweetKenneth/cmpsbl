@@ -1,12 +1,14 @@
 /**
  * AutoBlog Publisher
  * Actually publishes drafts to auto_blog_posts table
+ * Now includes Quality Pipeline (Confidence + Contradiction + Split Brain + Assumptions)
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import { getDraft, updateQueueStatus, recordRun, getAutoblogSettings } from './store';
 import { reportSuccess, reportFailure } from './circuit';
 import { captureAutoblogLearning } from './brain-integration';
+import { runQualityPipeline, storeAssumptions, logSplitBrainAudit } from './quality-pipeline';
 import type { AutoblogQueueItem, AutoblogDraft } from './types';
 
 export interface PublishResult {
@@ -222,23 +224,53 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
   }
 
   try {
+    // --- Quality Pipeline ---
+    const pipelineResult = await runQualityPipeline(
+      { title: draft.title || '', body: draft.body },
+      queueItem.channel,
+    );
+
+    if (!pipelineResult.passed) {
+      await updateQueueStatus(queueId, 'aborted', {
+        error: `Quality pipeline blocked: ${pipelineResult.blockReason}`,
+      });
+      await recordRun({
+        queueId,
+        phase: 'verify',
+        outcome: 'blocked',
+        reason: pipelineResult.blockReason || 'Quality pipeline rejected',
+      });
+      return { ok: false, error: pipelineResult.blockReason || 'Quality pipeline blocked' };
+    }
+
+    // Use pipeline-modified body (may include merged objections / caveats)
+    const publishBody = pipelineResult.modifiedBody || draft.body;
+
     const slug = generateSlug(draft.title || 'untitled-' + Date.now());
     const category = mapChannelToCategory(queueItem.channel);
-    const excerpt = extractExcerpt(draft.body);
+    const excerpt = extractExcerpt(publishBody);
     const now = new Date().toISOString();
 
-    // Insert into auto_blog_posts
+    // Insert into auto_blog_posts with quality metadata
     const { data: post, error } = await supabase
       .from('auto_blog_posts')
       .insert({
         title: draft.title || 'Untitled Post',
         slug: slug + '-' + Date.now().toString(36),
-        content: draft.body,
+        content: publishBody,
         excerpt,
         category,
         status: 'published',
         published_at: now,
         topic_seed: queueItem.topic,
+        confidence_score: pipelineResult.confidence.score,
+        confidence_factors: pipelineResult.confidence.factors as any,
+        split_brain_reader_score: pipelineResult.splitBrain.readerBrainScore,
+        split_brain_skeptic_score: pipelineResult.splitBrain.skepticBrainScore,
+        split_brain_decision: pipelineResult.splitBrain.finalDecision,
+        contradiction_outcome: pipelineResult.contradiction.winner,
+        contradiction_score: pipelineResult.contradiction.primaryScore,
+        assumptions_extracted: pipelineResult.assumptions.length > 0,
       })
       .select()
       .single();
@@ -249,6 +281,12 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
       return { ok: false, error: error.message };
     }
 
+    // Store quality audit artifacts
+    await Promise.all([
+      logSplitBrainAudit(post.id, queueId, pipelineResult.splitBrain),
+      storeAssumptions(post.id, pipelineResult.assumptions),
+    ]);
+
     // Update queue status
     await updateQueueStatus(queueId, 'published');
     
@@ -257,7 +295,7 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
       queueId,
       phase: 'publish',
       outcome: 'success',
-      reason: `Published with score ${assessment.overallScore.toFixed(2)}`,
+      reason: `Published with confidence ${pipelineResult.confidence.score.toFixed(2)}, split_brain=${pipelineResult.splitBrain.finalDecision}`,
     });
 
     // Report success to circuit breaker
@@ -269,11 +307,14 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
       insights: [
         `Published: ${draft.title}`,
         `Category: ${category}`,
-        `Assessment: importance=${assessment.importance.toFixed(2)}, uniqueness=${assessment.uniqueness.toFixed(2)}, tone=${assessment.toneMatch.toFixed(2)}`,
+        `Confidence: ${pipelineResult.confidence.score.toFixed(2)} (${pipelineResult.confidence.toneModifier})`,
+        `Split Brain: reader=${pipelineResult.splitBrain.readerBrainScore.toFixed(2)}, skeptic=${pipelineResult.splitBrain.skepticBrainScore.toFixed(2)}`,
+        `Contradiction: ${pipelineResult.contradiction.winner} (primary=${pipelineResult.contradiction.primaryScore.toFixed(2)})`,
+        `Assumptions extracted: ${pipelineResult.assumptions.length}`,
         ...assessment.reasoning,
       ],
       source: 'publisher',
-      confidence: assessment.overallScore,
+      confidence: pipelineResult.confidence.score,
     });
 
     // Log brain event
@@ -285,6 +326,9 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
         slug: post.slug,
         category,
         assessment_score: assessment.overallScore,
+        confidence_score: pipelineResult.confidence.score,
+        split_brain_decision: pipelineResult.splitBrain.finalDecision,
+        contradiction_outcome: pipelineResult.contradiction.winner,
         queue_id: queueId,
       },
       outcome: 'completed',
