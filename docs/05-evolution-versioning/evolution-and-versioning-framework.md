@@ -20,7 +20,19 @@ Evolution is a system property, not a deployment event.
 - Patches contain fixes only — no behavioral changes.
 - Epoch names are chosen for thematic significance, not marketing.
 
-## 3. Shadow Run Model
+## 3. Evolution Architecture (CSZ)
+
+Evolution operates within the **Covert Systems Zone** (CSZ) containing three nodes:
+
+| Node | Role |
+|------|------|
+| **EVOLUTION** | Proposal intake, SEBA pipeline orchestration, promotion execution |
+| **SHADOW** | Isolated shadow runs, divergence scoring, behavioral comparison |
+| **PHANTOM** | Decoy operations, threat detection, A/B variant testing |
+
+The CSZ is zone-shielded — failures within it cannot propagate to production.
+
+## 4. Shadow Run Model
 
 A shadow run is a trial execution of a proposed change against real inputs, writing results to isolated storage rather than production.
 
@@ -40,19 +52,38 @@ Proposal → Validation → Shadow Execution → Comparison → Scoring → Repo
 - Shadow runs cannot trigger AUDIT production entries.
 - Shadow run metrics are tracked separately from production.
 
-## 4. Validation Gates
+### Divergence Scoring Formula
 
-| Gate | Check | Threshold |
-|------|-------|-----------|
-| Schema | Migration compatibility | Must pass |
-| Behavioral | Output equivalence vs. production | ≥ 95% |
-| Performance | Latency regression | < 10% degradation |
-| Error Rate | Errors during shadow run | < 1% |
-| Resource | Memory/CPU delta | < 20% increase |
-| Governance | GOVERNANCE approval | Required |
-| Security | DEFENSE review (if trust boundary crossed) | Required |
+```
+divergence = 0.50 × output_divergence + 0.30 × latency_divergence + 0.20 × error_divergence
+```
 
-## 5. Confidence Scoring Logic
+- Divergence < 0.05: Pass (high fidelity)
+- Divergence 0.05–0.15: Review required
+- Divergence > 0.15: Fail
+
+## 5. 7-Gate SEBA Validation Pipeline
+
+| Gate | Check | Threshold | Owner |
+|------|-------|-----------|-------|
+| 1. Schema | Migration compatibility | Must pass | EVOLUTION |
+| 2. Behavioral | Output equivalence vs. production | ≥ 95% | SHADOW |
+| 3. TSAC | Truth Shadow Arbitration Check | Divergence < 0.05 | SHADOW |
+| 4. Performance | Latency regression | < 10% degradation | EVOLUTION |
+| 5. Error Rate | Errors during shadow run | < 1% | EVOLUTION |
+| 6. GOVERNANCE | GOVERNANCE approval via Node Inbox | Required | GOVERNANCE |
+| 7. Security | DEFENSE review (if trust boundary crossed) | Required | DEFENSE |
+
+### TSAC (Truth Shadow Arbitration Check)
+
+Gate 3 — TSAC — is a specialized validation ensuring evolution candidates preserve system truth:
+
+- Compares shadow output semantic equivalence against production truth baseline.
+- Detects meaning drift even when syntactic output differs.
+- Flags candidates that subtly alter system behavior without explicit intent.
+- TSAC failures trigger mandatory governor review with full divergence report.
+
+## 6. Confidence Scoring Logic
 
 Confidence is a weighted score combining shadow run results:
 
@@ -73,7 +104,7 @@ confidence = (
 | 0.70–0.84 | Low confidence | Additional shadow runs needed |
 | < 0.70 | Insufficient | Proposal rejected |
 
-## 6. Convergence Criteria
+## 7. Convergence Criteria
 
 A change is considered converged when:
 
@@ -82,31 +113,56 @@ A change is considered converged when:
 3. No regression in any validation gate.
 4. GOVERNANCE has not vetoed.
 5. Rollback plan is documented and tested.
+6. TSAC divergence < 0.05 for all cycles.
 
-## 7. Promotion Workflow Diagram
+## 8. Evolution Control Center
+
+The Evolution Control Center (`/evolution`) provides mission-control UI:
+
+| Feature | Description |
+|---------|-------------|
+| **Pipeline View** | Real-time SEBA gate status for all active proposals |
+| **Shadow Run Dashboard** | Divergence scores, cycle counts, pass/fail history |
+| **Dry-Run Preview** | Impact analysis before promotion — shows affected modules and dependencies |
+| **One-Click Rollback** | Restore previous state from snapshot + WAL replay |
+| **Scan Trends** | Scanner Orchestrator findings over time, regression detection |
+| **Agent Connect** | JWT-authenticated external agent integration for automated proposals |
+
+### ENGINEER Integration
+
+The ENGINEER node generates evolution proposals based on:
+- Health scan findings across 76 engines and 24 meta-engines.
+- CLM topic mastery signals indicating capability readiness.
+- INTEL enriched signals flagging optimization opportunities.
+
+ENGINEER proposals enter the SEBA pipeline at Gate 1 and follow the same validation path as manual proposals.
+
+## 9. Promotion Workflow Diagram
 
 ```mermaid
 graph TD
     A[Change Proposal] --> B[EVOLUTION Receives]
-    B --> C[Shadow Run Initiated]
+    B --> C[SHADOW Run Initiated]
     C --> D{Min 10 Cycles?}
     D -- No --> C
-    D -- Yes --> E{Confidence >= 0.95?}
+    D -- Yes --> E{TSAC Pass?}
     E -- No --> F[Deviation Report]
-    F --> G{Retry?}
-    G -- Yes --> C
-    G -- No --> H[Proposal Rejected]
-    E -- Yes --> I[GOVERNANCE Review]
-    I --> J{Approved?}
-    J -- No --> H
-    J -- Yes --> K[Promotion to Production]
-    K --> L[30-min Monitoring]
-    L --> M{Stable?}
-    M -- Yes --> N[Promotion Complete]
-    M -- No --> O[Automatic Rollback]
+    E -- Yes --> G{Confidence >= 0.95?}
+    G -- No --> F
+    F --> H{Retry?}
+    H -- Yes --> C
+    H -- No --> I[Proposal Rejected]
+    G -- Yes --> J[GOVERNANCE Review — Node Inbox]
+    J --> K{Approved?}
+    K -- No --> I
+    K -- Yes --> L[Promotion to Production]
+    L --> M[30-min Monitoring — Ironclad]
+    M --> N{Stable?}
+    N -- Yes --> O[Promotion Complete]
+    N -- No --> P[Automatic Rollback]
 ```
 
-## 8. Rollback Triggers
+## 10. Rollback Triggers
 
 ### Automatic Rollback
 
@@ -114,14 +170,17 @@ graph TD
 - CORE integrity score drops below 0.700.
 - Any Spine module enters circuit-breaker open state.
 - GOVERNANCE issues post-promotion veto.
+- Ironclad detects bulkhead pressure exceeding safe threshold.
+- Scanner Orchestrator detects regression in promoted change.
 
 ### Manual Rollback
 
-- Operator initiates via SYSTEM control plane.
+- Operator initiates via Evolution Control Center one-click rollback.
 - Restores previous state from snapshot + WAL replay.
 - Rollback is logged in AUDIT with operator identity and justification.
+- Dry-run preview available before execution.
 
-## 9. Immutable Revision Stamping
+## 11. Immutable Revision Stamping
 
 Every promoted change receives an immutable revision stamp:
 
@@ -133,6 +192,8 @@ Every promoted change receives an immutable revision stamp:
   "promoted_at": "ISO-8601",
   "confidence_score": 0.97,
   "shadow_cycles": 14,
+  "tsac_divergence": 0.02,
+  "seba_gates_passed": 7,
   "governance_approver": "system|operator_id",
   "rollback_snapshot": "snapshot_id",
   "checksum": "sha256"
@@ -141,7 +202,16 @@ Every promoted change receives an immutable revision stamp:
 
 Revision stamps are stored in AUDIT and cannot be modified or deleted.
 
-## 10. Compatibility Matrix
+## 12. Scanner Orchestrator Integration
+
+The Scanner Orchestrator provides continuous evolution quality monitoring:
+
+- **Regression Detection**: Compares post-promotion metrics against baseline.
+- **Coverage Gap Alerts**: Identifies modules without recent shadow runs.
+- **Priority Scoring**: Ranks technical debt findings for ENGINEER proposal generation.
+- **Trend Analysis**: Tracks finding density over time via Evolution Control Center.
+
+## 13. Compatibility Matrix
 
 | From Version | To Version | Compatibility | Migration Required |
 |-------------|-----------|--------------|-------------------|
@@ -150,7 +220,7 @@ Revision stamps are stored in AUDIT and cannot be modified or deleted.
 | v13.1 → v13.1.x | Patch | Fully compatible | No |
 | v13.x → v14.0 | Epoch boundary | Breaking changes possible | Yes |
 
-## 11. Deprecation Policy
+## 14. Deprecation Policy
 
 1. Deprecated capabilities are announced one minor version before removal.
 2. Deprecated capabilities continue to function during the deprecation window.
@@ -159,11 +229,12 @@ Revision stamps are stored in AUDIT and cannot be modified or deleted.
 5. Removal occurs at the next minor version boundary.
 6. Crown Jewel capabilities are never deprecated — they are either active or removed.
 
-## 12. Revision History
+## 15. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift detection |
+| 2026-03-03 | System | Added 7-gate SEBA pipeline, TSAC, CSZ architecture, Evolution Control Center, ENGINEER integration, Scanner Orchestrator, Ironclad references |
+| 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor |
 | 2026-03-01 | System | Initial canonical evolution and versioning framework |
 
 ---
