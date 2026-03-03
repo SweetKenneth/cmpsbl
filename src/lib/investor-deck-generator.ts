@@ -291,7 +291,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="card-grid">
     <div class="info-card">
       <h3>Integrated Architecture</h3>
-      <p>37 matrix nodes across 11 sectors designed as a unified substrate — extremely hard to replicate.</p>
+      <p>38 matrix nodes across 12 sectors designed as a unified substrate — extremely hard to replicate.</p>
     </div>
     <div class="info-card">
       <h3>Self-Evolution (SEBA)</h3>
@@ -312,7 +312,7 @@ export function generateInvestorDeckHTML(): string {
 <div class="page">
   <h2>Technical Milestones</h2>
   <ul class="checklist">
-    <li>37-node matrix: 11 sectors with hot-swappable modules and 675+ capabilities</li>
+    <li>38-node matrix: 12 sectors with hot-swappable modules and 675+ capabilities</li>
     <li>Self-evolution engine operational (SEBA)</li>
     <li>Multi-provider AI routing (Nexus Fleet v5.0)</li>
     <li>Enterprise security layer</li>
@@ -330,7 +330,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="info-card" style="margin-top:16px;">
     <h3 style="color:var(--text);">Kenneth E. Sweet Jr.</h3>
     <p><strong>Founder & Chief Cognitive Engineer</strong></p>
-    <p style="margin-top:8px;">Creator and architect of the 37-node / 11-sector substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
+    <p style="margin-top:8px;">Creator and architect of the 38-node / 12-sector substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
     <p style="margin-top:8px;">ORCID: 0009-0001-4237-1243</p>
   </div>
 

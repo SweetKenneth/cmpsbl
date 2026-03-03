@@ -10,7 +10,7 @@ const HowPromptFluidWorks = () => {
         <title>How the CMPSBL Cognitive Substrate Works | Architecture Deep Dive</title>
         <meta 
           name="description" 
-           content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 37-node kernel, and how autonomous AI systems learn and evolve." 
+           content="Deep dive into CMPSBL's cognitive substrate architecture. Dream cycles, neural orchestration, 38-node kernel, and how autonomous AI systems learn and evolve." 
         />
         <meta name="keywords" content="CMPSBL architecture, cognitive substrate, AI orchestration, dream cycles, autonomous learning, cognitive kernel" />
         <link rel="canonical" href="https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem" />
@@ -95,7 +95,7 @@ const HowPromptFluidWorks = () => {
 
             <p className="text-lg leading-relaxed">
               This comprehensive guide reveals how the CMPSBL substrate works under the hood, why its cognitive engine represents a 
-              paradigm shift in intelligent automation, and how the unified 37-node architecture delivers capabilities that 
+              paradigm shift in intelligent automation, and how the unified 38-node architecture delivers capabilities that 
               isolated AI tools simply cannot match.
             </p>
           </section>
@@ -396,10 +396,10 @@ const HowPromptFluidWorks = () => {
 
           {/* Section 3: The CMPSBL Ecosystem */}
           <section className="mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 37 Nodes Across 11 Sectors</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">The CMPSBL Ecosystem: 38 Nodes Across 12 Sectors</h2>
             
             <p className="text-lg leading-relaxed mb-8">
-              The cognitive engine doesn't operate in isolation—it powers an integrated ecosystem of 37 nodes organized across 11 sectors, including 3 shielded expansion zones, designed to work 
+              The cognitive engine doesn't operate in isolation—it powers an integrated ecosystem of 38 nodes organized across 12 sectors, including 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ), designed to work 
               seamlessly together. Each component serves a specific purpose while contributing to the collective 
               intelligence of the entire substrate. Here are the core modules:
             </p>
