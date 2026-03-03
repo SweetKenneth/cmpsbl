@@ -25,15 +25,16 @@ async function loadNotificationConfig(): Promise<NotificationConfig | null> {
 
     if (error || !data) return null;
 
+    const row = data as any;
     return {
-      emailRecipients: data.email_recipients ?? [],
-      webhookUrl: (data as any).webhook_url ?? undefined,
-      webhookSecret: (data as any).webhook_secret ?? undefined,
-      notifyOnFailure: data.notify_on_failure ?? true,
-      notifyOnSuccess: data.notify_on_success ?? false,
-      notifyOnPartial: data.notify_on_partial ?? true,
-      atlasNotifications: data.atlas_notifications ?? true,
-      enabled: data.enabled ?? true,
+      emailRecipients: row.email_recipients ?? [],
+      webhookUrl: row.webhook_url ?? undefined,
+      webhookSecret: row.webhook_secret ?? undefined,
+      notifyOnFailure: row.notify_on_failure ?? true,
+      notifyOnSuccess: row.notify_on_success ?? false,
+      notifyOnPartial: row.notify_on_partial ?? true,
+      atlasNotifications: row.atlas_notifications ?? true,
+      enabled: row.enabled ?? true,
     };
   } catch {
     return null;
