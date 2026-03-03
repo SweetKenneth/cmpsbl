@@ -46,6 +46,39 @@ function createMeasurements(): PerfMeasurement[] {
         return performance.now() - s;
       },
     },
+    {
+      name: 'Correlation ID generation (1000x)',
+      budgetMs: 100,
+      async measure() {
+        const { generateCorrelationId } = await import('@/lib/substrate/correlation-id/index');
+        const s = performance.now();
+        for (let i = 0; i < 1000; i++) generateCorrelationId();
+        return performance.now() - s;
+      },
+    },
+    {
+      name: 'Cost estimation (100x)',
+      budgetMs: 200,
+      async measure() {
+        const { estimateCost } = await import('@/lib/nexus/costEstimation');
+        const s = performance.now();
+        for (let i = 0; i < 100; i++) {
+          estimateCost('groq' as any, 'llama-3-70b', 'A test prompt for cost estimation benchmarking');
+        }
+        return performance.now() - s;
+      },
+    },
+    {
+      name: 'Circuit breaker state check (1000x)',
+      budgetMs: 50,
+      async measure() {
+        const { isProviderAvailable, resetCircuit } = await import('@/lib/nexus/circuitBreaker');
+        resetCircuit('perf-bench');
+        const s = performance.now();
+        for (let i = 0; i < 1000; i++) isProviderAvailable('perf-bench');
+        return performance.now() - s;
+      },
+    },
   ];
 }
 

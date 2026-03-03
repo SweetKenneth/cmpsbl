@@ -99,6 +99,67 @@ function createTests(): IntegrationTest[] {
         }
       },
     },
+    // === NEW: NEXUS circuit breaker integration ===
+    {
+      name: 'NEXUS circuit breaker lifecycle',
+      async run() {
+        try {
+          const { isProviderAvailable, recordFailure, resetCircuit, updateCircuitConfig } = await import('@/lib/nexus/circuitBreaker');
+          updateCircuitConfig({ failure_threshold: 3, cooldown_ms: 50 });
+          resetCircuit('integration-test-provider');
+          
+          // Should be available initially
+          if (!isProviderAvailable('integration-test-provider')) {
+            return { ok: false, note: 'Provider not available on fresh circuit' };
+          }
+          
+          // Trip the breaker
+          for (let i = 0; i < 3; i++) recordFailure('integration-test-provider');
+          if (isProviderAvailable('integration-test-provider')) {
+            return { ok: false, note: 'Circuit did not open after threshold' };
+          }
+          
+          resetCircuit('integration-test-provider');
+          return { ok: true, note: 'Circuit breaker open/reset lifecycle verified' };
+        } catch (e: any) {
+          return { ok: false, note: `Circuit breaker test failed: ${e.message}` };
+        }
+      },
+    },
+    // === NEW: Correlation ID propagation ===
+    {
+      name: 'Correlation ID context propagation',
+      async run() {
+        try {
+          const { createContext, forkContext, extractHeaders, cleanupContexts } = await import('@/lib/substrate/correlation-id/index');
+          const root = createContext('GATE', 'release-check');
+          const child = forkContext(root, 'CHILD', 'sub-op');
+          const headers = extractHeaders(child);
+          
+          const ok = !!headers['x-correlation-id'] && !!headers['x-root-id'] && child.rootId === root.rootId;
+          cleanupContexts(0);
+          return { ok, note: ok ? 'Correlation ID propagates root→child→headers' : 'Propagation broken' };
+        } catch (e: any) {
+          return { ok: false, note: `Correlation ID failed: ${e.message}` };
+        }
+      },
+    },
+    // === NEW: Cost ceiling gate ===
+    {
+      name: 'NEXUS cost ceiling enforcement',
+      async run() {
+        try {
+          const { setCostCeilingConfig, getCostCeilingConfig } = await import('@/lib/nexus/cost-ceiling');
+          setCostCeilingConfig({ dailyLimit: 500000 });
+          const cfg = getCostCeilingConfig();
+          const ok = cfg.dailyLimit === 500000;
+          setCostCeilingConfig({}); // reset
+          return { ok, note: ok ? 'Cost ceiling config set/get verified' : 'Config not stored' };
+        } catch (e: any) {
+          return { ok: false, note: `Cost ceiling failed: ${e.message}` };
+        }
+      },
+    },
   ];
 }
 
