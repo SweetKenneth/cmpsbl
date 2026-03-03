@@ -1,9 +1,9 @@
 /**
  * CMPSBL® Substrate Core Exports
- * 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 37-Node / 11-Sector Field-Based Topology
  * 
  * Complete export of all substrate engines, hooks, and utilities.
- * 3-Layer Architecture: Capabilities (525+) → Engines (76) → Meta-Engines (24)
+ * 3-Layer Architecture: Capabilities (675+) → Engines (76) → Meta-Engines (24)
  */
 
 // Engine Bus - Canonical Routing Layer (v6.4.0)

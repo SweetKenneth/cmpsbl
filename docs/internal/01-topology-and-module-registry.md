@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-This document defines the complete 26-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
+This document defines the complete 37-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
 
 ## 2. System Topology
 
@@ -85,17 +85,22 @@ Fields are not stacked layers — they **permeate** the entire spine:
 | GOVERNANCE (Plane) | Policy enforcement, veto authority, compliance audit, drift detection. Self-referential. |
 | DEFENSE (Shell) | Terminal boundary enforcement. Outermost containment. |
 
-## 3. Boot Order (Canonical)
+## 3. Boot Order (Canonical — 37 Nodes)
 
 ```
 Phase 1 — Kernel:        CORE (1)
-Phase 2 — CCR:           MEMORY (2), BRAIN (3)
-Phase 3 — OCG:           RIPPLE (4), ACCESS (5), IDENTITY (6), RELAY (7), AUDIT (8)
-Phase 4 — Execution:     NEXUS (9), DECODE (10), DREAM (11), ENCODE (12),
-                         DEFENSE (13), VISION (14), ECONOMY (15), SANDBOX (16),
-                         MEDIC (17), NERVE (18), INTEGRATION (19),
-                         SYSTEM (20), MODERNIZER (21),
-                         INCLUSIVE (22), CORTEX (23), ATLAS (24)
+Phase 2 — System:        SYSTEM (2)
+Phase 3 — CCR:           MEMORY (3), BRAIN (4), DREAM (5)
+Phase 4 — OCG:           RIPPLE (6), ACCESS (7), IDENTITY (8), RELAY (9), AUDIT (10)
+Phase 5 — Execution:     NEXUS (11), DECODE (12), ENCODE (13),
+                         VISION (14), CORTEX (15), ECONOMY (16), SANDBOX (17),
+                         INCLUSIVE (18), MEDIC (19), NERVE (20), INTEGRATION (21)
+Phase 6 — ESZ:           SOVEREIGN (22), ORACLE (23), CONSCIENCE (24), TREATY (25)
+Phase 7 — EPZ:           COMPASS (26), ECHO (27), REFLEX (28)
+Phase 8 — EMZ:           FORGE (29), LINGUA (30), PHANTOM (31), HARVEST (32)
+Phase 9 — Fields:        EVOLUTION (33), IMMUNITY (34), INTENT (35)
+Phase 10 — Plane:        GOVERNANCE (36)
+Phase 11 — Shell:        DEFENSE (37)
 ```
 
 Boot is dependency-ordered. A module cannot boot until all its dependencies report healthy. Boot gate checks verify health thresholds before cascading activation.
@@ -150,15 +155,19 @@ graph TD
 | Layer | Modules | Count |
 |-------|---------|-------|
 | Kernel | CORE | 1 |
+| System | SYSTEM | 1 |
 | Cognitive (CCR) | BRAIN, MEMORY, DREAM | 3 |
 | Infrastructure (OCG) | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT | 5 |
-| Execution | NEXUS, DECODE, ENCODE, VISION, DEFENSE, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION, MEDIC, NERVE | 11 |
-| Orchestration | SYSTEM, MODERNIZER, CORTEX, ATLAS | 4 |
+| Execution | NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION | 11 |
+| ESZ (Sovereignty) | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 4 |
+| EPZ (Perception) | COMPASS, ECHO, REFLEX | 3 |
+| EMZ (Manufacturing) | FORGE, LINGUA, PHANTOM, HARVEST | 4 |
 | Fields | EVOLUTION, IMMUNITY, INTENT | 3 |
 | Plane | GOVERNANCE | 1 |
-| **Total** | | **26 nodes** |
+| Shell | DEFENSE | 1 |
+| **Total** | | **37 nodes** |
 
-Production module count validation target: **26 nodes**.
+Production module count validation target: **37 nodes across 11 sectors**.
 
 ## 6. Architecture Invariants
 

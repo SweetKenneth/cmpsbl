@@ -102,7 +102,7 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
 
         {/* Sector Breakdown */}
         <div className="space-y-1.5 mb-3">
-          {(['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'] as MatrixSector[]).map((sector) => {
+          {(['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'field', 'plane', 'shell'] as MatrixSector[]).map((sector) => {
             const data = report.sectors[sector] ?? { health: 0, nodeCount: 0, weight: 0 };
             const sectorColor = SECTOR_COLORS[sector] ?? 'text-muted-foreground';
             const sectorLabel = (SECTOR_LABELS[sector] ?? sector.toUpperCase()).replace(' Sector', '');

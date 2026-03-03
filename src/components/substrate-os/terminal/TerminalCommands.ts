@@ -1,8 +1,8 @@
 /**
  * Terminal Command Registry
- * 430+ commands across 10 entities + 5 meshes + 9 zones + 3 control plane nodes
- * Complete list of all substrate commands organized by entity
- * 
+ * 500+ commands across 37 nodes / 11 sectors
+ * Complete list of all substrate commands organized by sector
+ *
  * Tier Gating: free | creator | architect | governor
  *   free      = Status, pulse, read-only queries
  *   creator   = Actions, mutations, basic operations ($29/mo)
