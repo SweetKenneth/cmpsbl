@@ -66,7 +66,7 @@ export interface EngineerState {
 
 const state: EngineerState = {
   initialized: false,
-  totalEnginesMonitored: 76,
+  totalEnginesMonitored: 79, // 76 core + 3 maintenance
   totalMetaEnginesMonitored: 24,
   engineHealth: new Map(),
   proposals: [],
@@ -329,22 +329,88 @@ export function initializeEngineer(): void {
   if (state.initialized) return;
   state.initialized = true;
   // Seed with baseline health for well-known engines
-  const defaultEngines = [
+  // ── All 76 Engines ──────────────────────────────────────────────────────
+  const allEngines = [
+    // Cognitive (4)
     { id: 'reasoning', cat: 'cognitive' }, { id: 'learning', cat: 'cognitive' },
     { id: 'memory', cat: 'cognitive' }, { id: 'foresight', cat: 'cognitive' },
+    // Operational (4)
     { id: 'resilience', cat: 'operational' }, { id: 'optimization', cat: 'operational' },
     { id: 'orchestration', cat: 'operational' }, { id: 'scheduling', cat: 'operational' },
+    // Intelligence (4)
     { id: 'synthesis', cat: 'intelligence' }, { id: 'adaptation', cat: 'intelligence' },
     { id: 'insight', cat: 'intelligence' }, { id: 'prediction', cat: 'intelligence' },
+    // Governance (3)
     { id: 'compliance', cat: 'governance' }, { id: 'quality', cat: 'governance' },
     { id: 'audit', cat: 'governance' },
+    // Security (3)
     { id: 'threat', cat: 'security' }, { id: 'defense', cat: 'security' },
     { id: 'trust', cat: 'security' },
+    // Evolution (2)
     { id: 'evolution', cat: 'evolution' }, { id: 'modernization', cat: 'evolution' },
+    // Communication (2)
     { id: 'broadcast', cat: 'communication' }, { id: 'event', cat: 'communication' },
+    // Integration (2)
     { id: 'routing', cat: 'integration' }, { id: 'transformation', cat: 'integration' },
+    // Analytics (2)
+    { id: 'monitoring', cat: 'analytics' }, { id: 'capacity', cat: 'analytics' },
+    // Experience (2)
+    { id: 'accessibility', cat: 'experience' }, { id: 'personalization', cat: 'experience' },
+    // Knowledge (2)
+    { id: 'graph', cat: 'knowledge' }, { id: 'context', cat: 'knowledge' },
+    // Autonomy (2)
+    { id: 'self-healing', cat: 'autonomy' }, { id: 'self-documentation', cat: 'autonomy' },
+    // Creativity (3)
+    { id: 'imagination', cat: 'creativity' }, { id: 'innovation', cat: 'creativity' },
+    { id: 'dream', cat: 'creativity' },
+    // Perception (3)
+    { id: 'intent', cat: 'perception' }, { id: 'emotion', cat: 'perception' },
+    { id: 'multimodal', cat: 'perception' },
+    // Resource (3)
+    { id: 'budget', cat: 'resource' }, { id: 'quota', cat: 'resource' },
+    { id: 'entitlement', cat: 'resource' },
+    // Workflow (3)
+    { id: 'pipeline', cat: 'workflow' }, { id: 'coordination', cat: 'workflow' },
+    { id: 'delegation', cat: 'workflow' },
+    // Enhancement (14)
+    ...Array.from({ length: 14 }, (_, i) => ({ id: `enhancement-${i + 1}`, cat: 'enhancement' })),
+    // Maintenance (3)
+    { id: 'hygiene', cat: 'maintenance' }, { id: 'validator', cat: 'maintenance' },
+    { id: 'reporter', cat: 'maintenance' },
   ];
-  for (const e of defaultEngines) {
+
+  // ── All 24 Meta-Engines ────────────────────────────────────────────────
+  const allMetaEngines = [
+    { id: 'cognitive_mesh', cat: 'meta-cognitive' },
+    { id: 'system_guardian', cat: 'meta-protection' },
+    { id: 'autonomous_operator', cat: 'meta-autonomous' },
+    { id: 'quality_fabric', cat: 'meta-governance' },
+    { id: 'intelligence_pipeline', cat: 'meta-intelligence' },
+    { id: 'adaptation_suite', cat: 'meta-experience' },
+    { id: 'security_fortress', cat: 'meta-protection' },
+    { id: 'performance_optimizer', cat: 'meta-performance' },
+    { id: 'event_fabric', cat: 'meta-communication' },
+    { id: 'data_highway', cat: 'meta-integration' },
+    { id: 'knowledge_nexus', cat: 'meta-knowledge' },
+    { id: 'self_governance', cat: 'meta-self-management' },
+    { id: 'creative_forge', cat: 'meta-creativity' },
+    { id: 'perception_matrix', cat: 'meta-perception' },
+    { id: 'resource_governor', cat: 'meta-resource' },
+    { id: 'workflow_orchestrator', cat: 'meta-workflow' },
+    { id: 'world_first_cognitive', cat: 'meta-cognitive' },
+    { id: 'world_first_operational', cat: 'meta-autonomous' },
+    { id: 'world_first_intelligence', cat: 'meta-intelligence' },
+    { id: 'world_first_governance', cat: 'meta-governance' },
+    { id: 'resilience_shield', cat: 'meta-protection' },
+    { id: 'deep_cognition_nexus', cat: 'meta-cognitive' },
+    { id: 'enterprise_trust_fabric', cat: 'meta-governance' },
+    { id: 'platform_economics_engine', cat: 'meta-resource' },
+  ];
+
+  for (const e of allEngines) {
     recordEngineHealth(e.id, e.cat, 85 + Math.floor(Math.random() * 15));
+  }
+  for (const me of allMetaEngines) {
+    recordEngineHealth(`meta:${me.id}`, me.cat, 88 + Math.floor(Math.random() * 12));
   }
 }
