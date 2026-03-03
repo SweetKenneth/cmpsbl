@@ -109,16 +109,26 @@ export class DeviceFingerprint {
       osc.start(0);
 
       return new Promise((resolve) => {
-        sp.onaudioprocess = (event) => {
-          const output = event.outputBuffer.getChannelData(0);
-          const hash = Array.from(output.slice(0, 30))
-            .reduce((acc: number, val: number) => acc + Math.abs(val), 0);
-
+        const cleanup = () => {
           sp.disconnect();
           osc.disconnect();
           analyser.disconnect();
           gain.disconnect();
+          context.close().catch(() => {});
+        };
 
+        // Safety timeout — don't hang if onaudioprocess never fires
+        const timeout = setTimeout(() => {
+          cleanup();
+          resolve('');
+        }, 2000);
+
+        sp.onaudioprocess = (event) => {
+          clearTimeout(timeout);
+          const output = event.outputBuffer.getChannelData(0);
+          const hash = Array.from(output.slice(0, 30))
+            .reduce((acc: number, val: number) => acc + Math.abs(val), 0);
+          cleanup();
           resolve(hash.toString());
         };
       });
@@ -210,14 +220,18 @@ export class DeviceFingerprint {
 
   /**
    * Detect WebRTC IP leak — exposes real IP behind VPN/proxy.
-   * Returns the leaked IP string, or null if none detected.
+   * Returns a HASHED representation, never the raw IP.
    */
   private static async detectWebRTCLeak(): Promise<string | null> {
     return new Promise((resolve) => {
       try {
-        const timeout = setTimeout(() => resolve(null), 1000);
+        let pc: RTCPeerConnection;
+        const timeout = setTimeout(() => {
+          try { pc?.close(); } catch {}
+          resolve(null);
+        }, 1000);
 
-        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc = new RTCPeerConnection({ iceServers: [] });
         pc.createDataChannel('');
 
         pc.createOffer()
@@ -234,7 +248,8 @@ export class DeviceFingerprint {
           if (match && match[0]) {
             clearTimeout(timeout);
             pc.close();
-            resolve(match[0]);
+            // Hash the IP — never expose raw IP in fingerprint data
+            resolve(fnv1aHash(match[0]).toString(16));
           }
         };
       } catch {
