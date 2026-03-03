@@ -396,7 +396,7 @@ export type CrownJewelCapabilityId =
 // CAPABILITY DEFINITIONS — 325 Crown Jewels
 // ============================================================================
 
-export const CROWN_JEWEL_EXPANSION: Record<CrownJewelCapabilityId, CapabilityDefinition & { id: CrownJewelCapabilityId }> = {
+export const CROWN_JEWEL_EXPANSION: Record<string, CapabilityDefinition & { id: string }> = {
 
   // ═══════════════════════════════════════════════════════════════════════════
   // ENGINEER Module (25) — Autonomous Maintenance Intelligence
