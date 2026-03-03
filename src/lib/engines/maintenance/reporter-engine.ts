@@ -64,7 +64,7 @@ async function persistToDb(result: MaintenanceRunResult): Promise<string | null>
       console.error('[REPORTER] DB persist failed:', error.message);
       return null;
     }
-    return data?.id ?? null;
+    return (data as any)?.id ?? null;
   } catch (err: any) {
     console.error('[REPORTER] DB persist error:', err?.message);
     return null;
