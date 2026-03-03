@@ -1,0 +1,119 @@
+# 29 — Universal Export Adapter
+
+**Classification:** 🔒 INTERNAL  
+**Version:** v13.1.0 — IRONCLAD Epoch
+
+---
+
+## 1. Purpose
+
+The Universal Export Adapter enables any Crown Jewel discovery to be exported to 25 distinct target languages. Every export is delivered as a complete, plug-and-play ZIP package with build tooling, test harnesses, and the standalone Micro-Substrate runtime.
+
+## 2. Target Languages
+
+### 2.1 Software Languages (18)
+
+| Language | Build Tool | Test Framework |
+|----------|-----------|----------------|
+| TypeScript | tsc + esbuild | Vitest |
+| JavaScript | esbuild | Jest |
+| Python | pip + setuptools | pytest |
+| Rust | Cargo | built-in |
+| Go | go build | go test |
+| Java | Maven | JUnit |
+| Kotlin | Gradle | JUnit |
+| Swift | Swift Package Manager | XCTest |
+| C# | dotnet | xUnit |
+| C++ | CMake | Google Test |
+| Ruby | Bundler | RSpec |
+| PHP | Composer | PHPUnit |
+| Dart | pub | dart test |
+| Scala | sbt | ScalaTest |
+| Elixir | mix | ExUnit |
+| Haskell | Stack | HSpec |
+| Lua | LuaRocks | busted |
+| R | devtools | testthat |
+
+### 2.2 Hardware/HDL Targets (7)
+
+| Target | Toolchain | Simulation |
+|--------|-----------|------------|
+| VHDL | GHDL | GHDL sim |
+| Verilog | Icarus Verilog | iverilog |
+| SystemVerilog | Verilator | Verilator sim |
+| Chisel | sbt + Chisel3 | ChiselTest |
+| Amaranth | Python + Amaranth | built-in sim |
+| SPICE | ngspice | ngspice sim |
+| SystemC | CMake + SystemC | built-in sim |
+
+## 3. Bundle Structure
+
+Every export, including single-language files, is delivered as a complete ZIP:
+
+```
+cmpsbl-export-{language}-{timestamp}/
+├── src/                          — Generated source code
+│   └── {discovery-name}.{ext}    — Primary implementation
+├── test/                         — Auto-generated test harness
+│   └── {discovery-name}_test.{ext}
+├── _runtime/
+│   ├── standalone-runtime.ts     — Micro-Substrate runtime
+│   └── standalone-discovery-engine.ts
+├── Makefile                      — Build & test commands
+├── {package-manifest}            — Language-specific (package.json, Cargo.toml, etc.)
+├── LICENSE                       — CMPSBL® Proprietary License
+└── README.md                     — Usage instructions
+```
+
+## 4. Test Harness Generator
+
+**File:** `src/lib/export/test-harness-generator.ts`
+
+Auto-generates language-appropriate tests:
+- Imports the exported discovery
+- Validates CJPI metadata is preserved
+- Tests basic invocation and output shape
+- Includes performance benchmarks where applicable
+
+## 5. Micro-Substrate Runtime
+
+The standalone runtime (`standalone-runtime.ts`) provides:
+
+| Capability | Description |
+|------------|-------------|
+| CJPI scoring | Full Crown Jewel Pipeline Index computation |
+| Auto-tiering | S/A/B/C/D tier assignment |
+| Pipeline orchestration | Sequential chain execution |
+| Manifest parsing | Import/export discovery manifests |
+
+Zero external dependencies — runs in any TypeScript/Node environment.
+
+## 6. Export Process
+
+1. Read discovery manifest entry from S-Tier Vault
+2. Map module chain to target language primitives
+3. Generate language-specific scaffold with CJPI metadata embedded
+4. Generate test harness for the target language
+5. Include standalone runtime (TypeScript; other languages get stubs)
+6. Package with build configuration and license
+7. Deliver as ZIP download
+8. Log export to AUDIT trail
+
+## 7. Security
+
+- All exports include the CMPSBL® Proprietary License
+- Export events are audit-logged with user, timestamp, and discovery ID
+- Source code in exports is functional but does not expose internal algorithms
+- The standalone runtime is the only substrate code included
+
+---
+
+## Revision History
+
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-03-03 | System | Initial Universal Export Adapter documentation — v13.1.0 |
+
+---
+
+© 2025–2026 PromptFluid®. Confidential.
