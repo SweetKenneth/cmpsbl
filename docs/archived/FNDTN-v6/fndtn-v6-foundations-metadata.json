@@ -1,0 +1,94 @@
+{
+  "title": "CMPSBL Substrate OS v7.0.0 — SEBA Foundations",
+  "suite": "FNDTN v7",
+  "version": "v7.0.0",
+  "author": "Kenneth E. Sweet Jr.",
+  "orcid": "0009-0001-4237-1243",
+  "affiliation": "PromptFluid",
+  "date": "2026-01",
+  "substrates_standard": true,
+  "governance_namespace_standard": true,
+  "llmstxt_standard": true,
+  "modules": [
+    "CORE",
+    "RIPPLE",
+    "ACCESS",
+    "BRAIN",
+    "DECODE",
+    "DREAM",
+    "DEFENSE",
+    "NEXUS",
+    "VISION",
+    "SYSTEM",
+    "MODERNIZER",
+    "INTEGRATION",
+    "INCLUSIVE",
+    "CORTEX"
+  ],
+  "references": [
+    {
+      "type": "osf",
+      "url": "https://osf.io/ah7nx/overview",
+      "version": "v5.5.0"
+    },
+    {
+      "type": "zenodo",
+      "url": "https://zenodo.org/records/18379258",
+      "version": "v5.5.0"
+    },
+    {
+      "type": "zenodo",
+      "url": "https://zenodo.org/records/18209222",
+      "label": "AI Governance Reference Namespace (AIGVRN v1.0)"
+    }
+  ],
+  "related_docs": [
+    "docs/library/00-INDEX.md",
+    "docs/library/01-EXECUTIVE-SUMMARY.md",
+    "docs/library/02-SYSTEM-ARCHITECTURE.md",
+    "docs/library/03-USERS-GUIDE.md",
+    "docs/library/04-API-REFERENCE.md",
+    "docs/library/10-CORE-MODULE.md",
+    "docs/library/11-RIPPLE-MODULE.md",
+    "docs/library/12-ACCESS-MODULE.md",
+    "docs/library/13-BRAIN-MODULE.md",
+    "docs/library/14-DECODE-MODULE.md",
+    "docs/library/15-DREAM-MODULE.md",
+    "docs/library/16-DEFENSE-MODULE.md",
+    "docs/library/17-NEXUS-MODULE.md",
+    "docs/library/18-VISION-MODULE.md",
+    "docs/library/19-INTEGRATION-MODULE.md",
+    "docs/library/20-SYSTEM-MODULE.md",
+    "docs/library/21-MODERNIZER-MODULE.md",
+    "docs/library/22-CORTEX-MODULE.md",
+    "docs/library/23-INCLUSIVE-MODULE.md",
+    "docs/library/30-VALIDATION-METHODOLOGY.md",
+    "docs/library/31-PERFORMANCE-BENCHMARKS.md",
+    "docs/library/32-LIVE-SYSTEM-EVIDENCE.md",
+    "docs/library/40-GLOSSARY.md",
+    "docs/library/41-BIBLIOGRAPHY.md",
+    "docs/library/42-LICENSING-INFO.md",
+    "docs/library/50-MARKETPLACE-REFERENCE.md"
+  ],
+  "standards_claim": {
+    "substrate": "CMPSBL FNDTN v6 is proposed as a reference standard for the substrate class",
+    "governance": "AI Governance Reference Namespace is proposed as a governance standard for the substrate class",
+    "machine_context": "LLMS.txt is proposed as a machine-readable context standard for AI systems"
+  },
+  "governance_namespace": {
+    "root": "AIGVRN.com",
+    "surfaces": [
+      { "name": "Standards", "domain": "AISTNDRD.com" },
+      { "name": "Certification", "domain": "AICRTFY.com" },
+      { "name": "Verification", "domain": "AIVRFY.com" },
+      { "name": "Policy", "domain": "AIPLCY.com" },
+      { "name": "Compliance", "domain": "AICMPLY.com" },
+      { "name": "Security", "domain": "AISCRTY.com" },
+      { "name": "Safety", "domain": "AISFTY.com" },
+      { "name": "Regulation", "domain": "AIRGLTN.com" },
+      { "name": "Sovereignty", "domain": "AISVRGN.com" },
+      { "name": "Privacy", "domain": "AIPRVCY.com" },
+      { "name": "Control", "domain": "AICNTRL.com" }
+    ]
+  }
+}
