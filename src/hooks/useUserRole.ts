@@ -18,7 +18,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-export type SubstrateRole = 'free' | 'creator' | 'architect' | 'governor';
+export type SubstrateRole = 'free' | 'creator' | 'studio' | 'architect' | 'governor';
 
 interface UserRoleState {
   role: SubstrateRole;
@@ -144,6 +144,7 @@ export function useUserRole(): UserRoleState {
             const tierMap: Record<string, SubstrateRole> = {
               'enterprise': 'architect',
               'pro': 'architect',
+              'studio': 'studio',
               'builder': 'creator',
               'free': 'free',
             };

@@ -80,29 +80,42 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║                CMPSBL® OS Substrate                    ║
-  ║               Cognitive OS                                  ║
+  ║              CMPSBL® OS — 37-Node Matrix                ║
+  ║             11-Sector Cognitive Topology                  ║
   ╠═══════════════════════════════════════════════════════════╣
   ║                                                           ║
-  ║    ┏━━━━━━━━━━ KERNEL LAYER ━━━━━━━━━━┓                   ║
-  ║    ┃  ⬢ CORE      ⬢ RIPPLE    ⬢ ACCESS ┃                   ║
-  ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
-  ║          ╲                         ╱                       ║
-  ║    ┏━━━━━━━━━ COGNITIVE LAYER ━━━━━━━━━┓                   ║
-  ║    ┃  ◈ BRAIN     ◈ DECODE    ◈ DREAM  ┃                   ║
-  ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
-  ║          ╲                         ╱                       ║
-  ║    ┏━━━━━━━━ OPERATIONS LAYER ━━━━━━━━━┓                   ║
-  ║    ┃ ◆ DEFENSE  ◆ NEXUS  ◆ VISION      ┃                   ║
-  ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
-  ║          ╲                         ╱                       ║
-  ║    ┏━━━━━━━━━━ ADMIN LAYER ━━━━━━━━━━━━┓                   ║
-  ║    ┃ ◇ SYSTEM  ◇ EVOLUTION  ◇ INCLUSIVE┃                   ║
-  ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                   ║
-  ║                    ╲   ╱                                   ║
-  ║    ┏━━━━━━━━━ ORCHESTRATOR LAYER ━━━━━━━┓                  ║
-  ║    ┃  ★ CORTEX      ★ INTEGRATION       ┃                  ║
-  ║    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛                  ║
+  ║  ┏━━━━━━━━━━━━ CORE + SYSTEM ━━━━━━━━━━━━┓               ║
+  ║  ┃  ⬢ CORE (kernel)    ◇ SYSTEM (lifecycle) ┃             ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛             ║
+  ║        ╲                           ╱                       ║
+  ║  ┏━━━━━━━ CCR (Cognitive Core) ━━━━━━━━━━┓               ║
+  ║  ┃  ◈ BRAIN     ◈ MEMORY     ◈ DREAM     ┃               ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
+  ║  ┏━━━━ OCG (Operational Compliance) ━━━━━┓               ║
+  ║  ┃  ◆ RIPPLE  ◆ ACCESS  ◆ IDENTITY       ┃               ║
+  ║  ┃  ◆ RELAY   ◆ AUDIT                    ┃               ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
+  ║        ╲                           ╱                       ║
+  ║  ┏━━━━━━━ EXECUTION (11 nodes) ━━━━━━━━━━┓               ║
+  ║  ┃  ★ DECODE  ★ ENCODE  ★ VISION  ★ CORTEX┃              ║
+  ║  ┃  ★ NEXUS   ★ ECONOMY ★ SANDBOX         ┃              ║
+  ║  ┃  ★ INCLUSIVE ★ MEDIC  ★ NERVE           ┃              ║
+  ║  ┃  ★ INTEGRATION                          ┃              ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛              ║
+  ║        ╲                           ╱                       ║
+  ║  ┏━ ESZ (Sovereignty) ━┓ ┏━ EPZ (Perception) ━┓          ║
+  ║  ┃ ◎ SOVEREIGN ◎ ORACLE┃ ┃ ◎ COMPASS ◎ ECHO   ┃          ║
+  ║  ┃ ◎ CONSCIENCE◎TREATY ┃ ┃ ◎ REFLEX            ┃          ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━┛ ┗━━━━━━━━━━━━━━━━━━━━┛          ║
+  ║  ┏━ EMZ (Manufacturing) ━━━━━━━━━━━━━━━━━━━━━┓           ║
+  ║  ┃ ◎ FORGE  ◎ LINGUA  ◎ PHANTOM  ◎ HARVEST   ┃           ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛           ║
+  ║        ╲                           ╱                       ║
+  ║  ┏━━━━━━ FIELDS + PLANE + SHELL ━━━━━━━━━┓               ║
+  ║  ┃  ≋ EVOLUTION  ≋ IMMUNITY  ≋ INTENT     ┃               ║
+  ║  ┃  ◉ GOVERNANCE (Plane)                   ┃               ║
+  ║  ┃  ◉ DEFENSE (Shell)                      ┃               ║
+  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
   ║                                                           ║
   ╚═══════════════════════════════════════════════════════════╝
 `;

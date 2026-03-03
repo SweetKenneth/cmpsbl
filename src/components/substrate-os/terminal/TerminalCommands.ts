@@ -10,7 +10,7 @@
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle, AlertTriangle, RefreshCw, BookOpen, Inbox, Compass, TestTube } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle, AlertTriangle, RefreshCw, BookOpen, Inbox, Compass, TestTube, ClipboardCheck, Network, Fingerprint } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { SubstrateRole } from '@/hooks/useUserRole';
 
@@ -19,7 +19,7 @@ export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | '
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity';
   icon: LucideIcon;
   /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
@@ -31,7 +31,7 @@ export interface CommandDefinition {
 
 /** Check if a user's tier meets the command requirement */
 export function meetsRequiredTier(userTier: CommandTier, requiredTier: CommandTier): boolean {
-  const tierOrder: CommandTier[] = ['free', 'creator', 'architect', 'governor'];
+  const tierOrder: CommandTier[] = ['free', 'creator', 'studio', 'architect', 'governor'];
   return tierOrder.indexOf(userTier) >= tierOrder.indexOf(requiredTier);
 }
 
@@ -45,6 +45,7 @@ export function getCommandTier(cmd: CommandDefinition): CommandTier {
 const TIER_LABELS: Record<CommandTier, string> = {
   free: 'FREE',
   creator: 'CREATOR',
+  studio: 'STUDIO',
   architect: 'ARCHITECT',
   governor: 'GOVERNOR',
 };
@@ -56,6 +57,7 @@ export function getTierLabel(tier: CommandTier): string {
 const TIER_ICONS: Record<CommandTier, string> = {
   free: '○',
   creator: '◆',
+  studio: '◈',
   architect: '★',
   governor: '◉',
 };
@@ -1097,6 +1099,173 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
+// ═══ ESZ — Expansion Sovereignty Zone Commands ═══
+export const SOVEREIGN_COMMANDS: CommandDefinition[] = [
+  { command: 'sovereign.status', description: 'Jurisdiction classifier status', category: 'sovereign', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sovereign.jurisdictions', description: 'Active jurisdiction map', category: 'sovereign', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sovereign.compliance', description: 'Data sovereignty compliance', category: 'sovereign', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sovereign.classify', description: 'Classify data by jurisdiction', category: 'sovereign', icon: Layers, requiresOperator: true, requiredTier: 'studio', args: '<data_ref>' },
+  { command: 'sovereign.residency', description: 'Data residency report', category: 'sovereign', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sovereign.transfer', description: 'Cross-border transfer audit', category: 'sovereign', icon: Send, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'sovereign.policies', description: 'Active sovereignty policies', category: 'sovereign', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'sovereign.violations', description: 'Policy violation log', category: 'sovereign', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const ORACLE_COMMANDS: CommandDefinition[] = [
+  { command: 'oracle.status', description: 'Predictive engine status', category: 'oracle', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.predict', description: 'Generate prediction', category: 'oracle', icon: Sparkles, requiresOperator: true, requiredTier: 'studio', args: '<signal> [horizon]' },
+  { command: 'oracle.forecasts', description: 'Active forecast registry', category: 'oracle', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.accuracy', description: 'Prediction accuracy tracker', category: 'oracle', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.bayesian', description: 'Bayesian optimizer status', category: 'oracle', icon: Brain, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.anomalies', description: 'Predicted anomaly alerts', category: 'oracle', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.confidence', description: 'Confidence interval map', category: 'oracle', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'oracle.retrain', description: 'Retrain prediction model', category: 'oracle', icon: RefreshCw, requiresOperator: true, requiredTier: 'architect' },
+];
+
+export const CONSCIENCE_COMMANDS: CommandDefinition[] = [
+  { command: 'conscience.status', description: 'Ethical framework status', category: 'conscience', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.evaluate', description: 'Ethical evaluation of action', category: 'conscience', icon: Brain, requiresOperator: true, requiredTier: 'studio', args: '<action_ref>' },
+  { command: 'conscience.bias', description: 'Bias detection scanner', category: 'conscience', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.fairness', description: 'Fairness metrics dashboard', category: 'conscience', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.audit', description: 'Ethics audit trail', category: 'conscience', icon: ClipboardCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.framework', description: 'Active ethical framework', category: 'conscience', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.overrides', description: 'Override log', category: 'conscience', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'conscience.score', description: 'Composite ethics score', category: 'conscience', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const TREATY_COMMANDS: CommandDefinition[] = [
+  { command: 'treaty.status', description: 'Contract engine status', category: 'treaty', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'treaty.contracts', description: 'Active contracts registry', category: 'treaty', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'treaty.validate', description: 'Validate contract terms', category: 'treaty', icon: CheckCircle, requiresOperator: true, requiredTier: 'studio', args: '<contract_id>' },
+  { command: 'treaty.sla', description: 'SLA compliance monitor', category: 'treaty', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'treaty.breaches', description: 'Contract breach log', category: 'treaty', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'treaty.negotiate', description: 'Initiate contract negotiation', category: 'treaty', icon: Sparkles, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'treaty.templates', description: 'Contract templates', category: 'treaty', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ EPZ — Expansion Perception Zone Commands ═══
+export const COMPASS_COMMANDS: CommandDefinition[] = [
+  { command: 'compass.status', description: 'Strategic compass status', category: 'compass', icon: Compass, requiresOperator: false, requiredTier: 'free' },
+  { command: 'compass.bearing', description: 'Current strategic bearing', category: 'compass', icon: Compass, requiresOperator: false, requiredTier: 'free' },
+  { command: 'compass.waypoints', description: 'Active waypoint registry', category: 'compass', icon: Compass, requiresOperator: false, requiredTier: 'free' },
+  { command: 'compass.drift', description: 'Strategic drift detector', category: 'compass', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'compass.calibrate', description: 'Recalibrate compass', category: 'compass', icon: RefreshCw, requiresOperator: true, requiredTier: 'studio' },
+  { command: 'compass.horizon', description: 'Horizon scanning results', category: 'compass', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'compass.alignment', description: 'Goal alignment score', category: 'compass', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const ECHO_COMMANDS: CommandDefinition[] = [
+  { command: 'echo.status', description: 'Simulation engine status', category: 'echo', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'echo.simulate', description: 'Run what-if simulation', category: 'echo', icon: TestTube, requiresOperator: true, requiredTier: 'studio', args: '<scenario>' },
+  { command: 'echo.results', description: 'Simulation result history', category: 'echo', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'echo.replay', description: 'Replay historical scenario', category: 'echo', icon: RefreshCw, requiresOperator: true, requiredTier: 'studio', args: '<scenario_id>' },
+  { command: 'echo.divergence', description: 'Timeline divergence analysis', category: 'echo', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'echo.sandbox', description: 'Simulation sandbox status', category: 'echo', icon: Box, requiresOperator: false, requiredTier: 'free' },
+  { command: 'echo.confidence', description: 'Simulation confidence map', category: 'echo', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const REFLEX_COMMANDS: CommandDefinition[] = [
+  { command: 'reflex.status', description: 'Edge compute status', category: 'reflex', icon: Zap, requiresOperator: false, requiredTier: 'free' },
+  { command: 'reflex.latency', description: 'Edge latency map', category: 'reflex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'reflex.nodes', description: 'Active edge nodes', category: 'reflex', icon: Server, requiresOperator: false, requiredTier: 'free' },
+  { command: 'reflex.cache', description: 'Edge cache stats', category: 'reflex', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'reflex.deploy', description: 'Deploy edge function', category: 'reflex', icon: Zap, requiresOperator: true, requiredTier: 'architect', args: '<function_id>' },
+  { command: 'reflex.throughput', description: 'Edge throughput monitor', category: 'reflex', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'reflex.failover', description: 'Edge failover config', category: 'reflex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ EMZ — Expansion Manufacturing Zone Commands ═══
+export const FORGE_COMMANDS: CommandDefinition[] = [
+  { command: 'forge.status', description: 'Asset forge status', category: 'forge', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.templates', description: 'Template registry', category: 'forge', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.generate', description: 'Generate asset from template', category: 'forge', icon: Sparkles, requiresOperator: true, requiredTier: 'studio', args: '<template_id>' },
+  { command: 'forge.queue', description: 'Generation queue', category: 'forge', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.quality', description: 'Output quality metrics', category: 'forge', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.pipeline', description: 'Manufacturing pipeline', category: 'forge', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.artifacts', description: 'Generated artifact log', category: 'forge', icon: Database, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const LINGUA_COMMANDS: CommandDefinition[] = [
+  { command: 'lingua.status', description: 'Translation engine status', category: 'lingua', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'lingua.translate', description: 'Translate content', category: 'lingua', icon: Globe, requiresOperator: true, requiredTier: 'creator', args: '<text> <target_lang>' },
+  { command: 'lingua.languages', description: 'Supported languages', category: 'lingua', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'lingua.glossary', description: 'Domain glossary', category: 'lingua', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'lingua.quality', description: 'Translation quality score', category: 'lingua', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'lingua.localize', description: 'Full localization run', category: 'lingua', icon: Globe, requiresOperator: true, requiredTier: 'studio', args: '<locale>' },
+];
+
+export const PHANTOM_COMMANDS: CommandDefinition[] = [
+  { command: 'phantom.status', description: 'Privacy engine status', category: 'phantom', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'phantom.anonymize', description: 'Anonymize dataset', category: 'phantom', icon: Shield, requiresOperator: true, requiredTier: 'studio', args: '<dataset_ref>' },
+  { command: 'phantom.pii', description: 'PII detection scan', category: 'phantom', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'phantom.mask', description: 'Data masking rules', category: 'phantom', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'phantom.retention', description: 'Data retention policy', category: 'phantom', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'phantom.purge', description: 'Execute data purge', category: 'phantom', icon: AlertTriangle, requiresOperator: true, requiredTier: 'architect', args: '<scope>' },
+  { command: 'phantom.audit', description: 'Privacy audit trail', category: 'phantom', icon: ClipboardCheck, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const HARVEST_COMMANDS: CommandDefinition[] = [
+  { command: 'harvest.status', description: 'Data pipeline status', category: 'harvest', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.pipelines', description: 'Active data pipelines', category: 'harvest', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.ingest', description: 'Ingest data source', category: 'harvest', icon: Database, requiresOperator: true, requiredTier: 'studio', args: '<source_ref>' },
+  { command: 'harvest.transform', description: 'Transformation rules', category: 'harvest', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.quality', description: 'Data quality score', category: 'harvest', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.throughput', description: 'Pipeline throughput', category: 'harvest', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.errors', description: 'Pipeline error log', category: 'harvest', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══ MEDIC & NERVE Commands ═══
+export const MEDIC_COMMANDS: CommandDefinition[] = [
+  { command: 'medic.status', description: 'Autonomous diagnostics status', category: 'medic', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'medic.diagnose', description: 'Run diagnostic cycle', category: 'medic', icon: Activity, requiresOperator: true, requiredTier: 'creator' },
+  { command: 'medic.health_map', description: 'Module health heatmap', category: 'medic', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'medic.prescribe', description: 'Generate healing prescription', category: 'medic', icon: Sparkles, requiresOperator: true, requiredTier: 'studio' },
+  { command: 'medic.repair_log', description: 'Self-repair history', category: 'medic', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'medic.triage', description: 'Issue triage queue', category: 'medic', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'medic.quarantine', description: 'Quarantined modules', category: 'medic', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const NERVE_COMMANDS: CommandDefinition[] = [
+  { command: 'nerve.status', description: 'Inter-node signaling status', category: 'nerve', icon: Zap, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.topology', description: 'Signal topology map', category: 'nerve', icon: Network, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.latency', description: 'Signal latency matrix', category: 'nerve', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.consensus', description: 'Consensus repair status', category: 'nerve', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.heartbeat', description: 'Distributed heartbeat log', category: 'nerve', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.partitions', description: 'Network partition detector', category: 'nerve', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'nerve.broadcast', description: 'Broadcast signal to all nodes', category: 'nerve', icon: Radio, requiresOperator: true, requiredTier: 'architect', args: '<signal>' },
+];
+
+// ═══ Mesh Overlay Commands (EVOLUTION, IMMUNITY, GOVERNANCE) ═══
+export const EVOLUTION_COMMANDS: CommandDefinition[] = [
+  { command: 'evolution.status', description: 'Mutation pipeline status', category: 'evolution', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.proposals', description: 'Pending mutation proposals', category: 'evolution', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.shadow', description: 'Shadow run results', category: 'evolution', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.promote', description: 'Promote mutation to production', category: 'evolution', icon: Zap, requiresOperator: true, requiredTier: 'architect', args: '<mutation_id>' },
+  { command: 'evolution.rollback', description: 'Rollback last mutation', category: 'evolution', icon: RefreshCw, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'evolution.fitness', description: 'Fitness function scores', category: 'evolution', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.generations', description: 'Generation history', category: 'evolution', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const IMMUNITY_COMMANDS: CommandDefinition[] = [
+  { command: 'immunity.status', description: 'Self-healing mesh status', category: 'immunity', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.threats', description: 'Threat correlation map', category: 'immunity', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.antibodies', description: 'Active defense patterns', category: 'immunity', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.inoculate', description: 'Inoculate against known threat', category: 'immunity', icon: Shield, requiresOperator: true, requiredTier: 'studio', args: '<threat_sig>' },
+  { command: 'immunity.gates', description: 'Capability gate status', category: 'immunity', icon: Lock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.heal', description: 'Trigger self-healing cycle', category: 'immunity', icon: RefreshCw, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'immunity.history', description: 'Immune response log', category: 'immunity', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+];
+
+export const GOVERNANCE_COMMANDS: CommandDefinition[] = [
+  { command: 'governance.status', description: 'Policy enforcement status', category: 'governance', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.policies', description: 'Active policy registry', category: 'governance', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.veto', description: 'Veto authority log', category: 'governance', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.drift', description: 'Policy drift detector', category: 'governance', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.compliance', description: 'Compliance audit report', category: 'governance', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.override', description: 'Policy override (governor)', category: 'governance', icon: Lock, requiresOperator: true, requiredTier: 'governor', args: '<policy_id>' },
+  { command: 'governance.self_audit', description: 'Self-referential audit', category: 'governance', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -1136,6 +1305,25 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...RIPPLE_HARDENING_COMMANDS,
   ...SANDBOX_HARDENING_COMMANDS,
   ...INCLUSIVE_HARDENING_COMMANDS,
+  // Expansion Zones
+  ...SOVEREIGN_COMMANDS,
+  ...ORACLE_COMMANDS,
+  ...CONSCIENCE_COMMANDS,
+  ...TREATY_COMMANDS,
+  ...COMPASS_COMMANDS,
+  ...ECHO_COMMANDS,
+  ...REFLEX_COMMANDS,
+  ...FORGE_COMMANDS,
+  ...LINGUA_COMMANDS,
+  ...PHANTOM_COMMANDS,
+  ...HARVEST_COMMANDS,
+  // Infrastructure
+  ...MEDIC_COMMANDS,
+  ...NERVE_COMMANDS,
+  // Mesh Overlays
+  ...EVOLUTION_COMMANDS,
+  ...IMMUNITY_COMMANDS,
+  ...GOVERNANCE_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -1174,6 +1362,27 @@ export const COMMAND_CATEGORIES = {
   ripple_hardening: { label: 'RIPPLE HARDENING', color: 'text-cyan-300', borderColor: 'border-cyan-400/30', commands: RIPPLE_HARDENING_COMMANDS },
   sandbox_hardening: { label: 'SANDBOX HARDENING', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: SANDBOX_HARDENING_COMMANDS },
   inclusive_hardening: { label: 'INCLUSIVE HARDENING', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: INCLUSIVE_HARDENING_COMMANDS },
+  // ESZ — Expansion Sovereignty Zone
+  sovereign: { label: 'SOVEREIGN', color: 'text-orange-300', borderColor: 'border-orange-400/30', commands: SOVEREIGN_COMMANDS },
+  oracle: { label: 'ORACLE', color: 'text-amber-300', borderColor: 'border-amber-400/30', commands: ORACLE_COMMANDS },
+  conscience: { label: 'CONSCIENCE', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: CONSCIENCE_COMMANDS },
+  treaty: { label: 'TREATY', color: 'text-emerald-300', borderColor: 'border-emerald-400/30', commands: TREATY_COMMANDS },
+  // EPZ — Expansion Perception Zone
+  compass: { label: 'COMPASS', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: COMPASS_COMMANDS },
+  echo: { label: 'ECHO', color: 'text-indigo-300', borderColor: 'border-indigo-400/30', commands: ECHO_COMMANDS },
+  reflex: { label: 'REFLEX', color: 'text-pink-300', borderColor: 'border-pink-400/30', commands: REFLEX_COMMANDS },
+  // EMZ — Expansion Manufacturing Zone
+  forge: { label: 'FORGE', color: 'text-orange-400', borderColor: 'border-orange-500/30', commands: FORGE_COMMANDS },
+  lingua: { label: 'LINGUA', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: LINGUA_COMMANDS },
+  phantom: { label: 'PHANTOM', color: 'text-slate-300', borderColor: 'border-slate-400/30', commands: PHANTOM_COMMANDS },
+  harvest: { label: 'HARVEST', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: HARVEST_COMMANDS },
+  // Infrastructure
+  medic: { label: 'MEDIC', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: MEDIC_COMMANDS },
+  nerve: { label: 'NERVE', color: 'text-sky-300', borderColor: 'border-sky-400/30', commands: NERVE_COMMANDS },
+  // Mesh Overlays
+  evolution: { label: 'EVOLUTION', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: EVOLUTION_COMMANDS },
+  immunity: { label: 'IMMUNITY', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: IMMUNITY_COMMANDS },
+  governance: { label: 'GOVERNANCE', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: GOVERNANCE_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {

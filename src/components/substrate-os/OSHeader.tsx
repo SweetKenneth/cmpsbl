@@ -104,6 +104,13 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
       text: 'text-purple-400',
       icon: Sparkles
     },
+    studio: { 
+      label: 'STUDIO', 
+      color: 'bg-gradient-to-r from-indigo-500 to-violet-600', 
+      border: 'border-indigo-500/50',
+      text: 'text-indigo-400',
+      icon: Sparkles
+    },
     creator: { 
       label: 'CREATOR', 
       color: 'bg-gradient-to-r from-amber-500 to-orange-600', 
