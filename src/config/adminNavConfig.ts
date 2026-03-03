@@ -80,6 +80,7 @@ export const adminNavConfig: NavGroup[] = [
     id: "system",
     title: "System",
     items: [
+      { id: "gate", label: "GATE Engine", path: "/admin/gate", icon: Shield, isNew: true },
       { id: "governance", label: "Governance", path: "/admin/governance", icon: Shield },
       { id: "immunity-mesh", label: "Immunity Mesh", path: "/admin/immunity-mesh", icon: Shield },
       { id: "evolution", label: "Evolution", path: "/admin/evolution", icon: Zap },
