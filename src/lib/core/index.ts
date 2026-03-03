@@ -36,7 +36,7 @@ export const CORE_CODENAME = 'Foundation';
  *   CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → Modules → INTEGRATION
  *
  * Grid (Boundary enforcement):
- *   OCG Zones (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+ *   OCG Zones (6): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
  *
  * Fields (System-wide transformation fabric):
  *   EVOLUTION, IMMUNITY, INTENT — permeate the entire spine
@@ -60,13 +60,13 @@ export const SUBSTRATE_MODULES = [
   'system',
   // CCR Zones (backward compat — route to Layer 0, hot-swappable)
   'brain', 'memory', 'dream',
-  // OCG Zones (Operational Compliance Grid — formerly CCL)
-  'ripple', 'access', 'identity', 'relay', 'audit',
+  // OCG Zones (Operational Compliance Grid — includes NERVE)
+  'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
   // Absorbed (routes to evolution field)
   'modernizer',
-  // 10 Public Modules (MEDIC + NERVE promoted from phantom → canonical)
+  // 9 Execution Modules (NERVE moved to OCG)
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-  'medic', 'nerve',
+  'medic',
   // Fields (system-wide transformation fabric)
   'immunity', 'intent',
   // Overlay Plane (supervisory)
@@ -94,8 +94,8 @@ export const CCR_ZONE_COUNT = 3;
 // CCR Zone modules — SYSTEM extracted, now standalone
 export const CCR_ZONE_MODULES = ['brain', 'memory', 'dream'] as const;
 
-// OCG Zone modules (Operational Compliance Grid — formerly CCL)
-export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
+// OCG Zone modules (Operational Compliance Grid — formerly CCL, includes NERVE)
+export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
 
 // Absorbed (route to a field)
 export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field

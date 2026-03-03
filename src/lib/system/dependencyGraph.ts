@@ -35,7 +35,7 @@
    * Module dependency graph — Field-Based Topology
    * 
    * Spine:  CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM)
-   * Grid:   OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) — taps off CORE
+   * Grid:   OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE) — taps off CORE
    * Exec:   Execution nodes depend on CCR + OCG upstream
    * Fields: EVOLUTION, IMMUNITY, INTENT — permeate CCR + Execution
    * Plane:  GOVERNANCE — supervisory blanket over all spine nodes

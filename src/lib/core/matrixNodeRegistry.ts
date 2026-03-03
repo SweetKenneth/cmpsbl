@@ -1,17 +1,17 @@
 /**
  * Matrix Node Registry — Read-Only Abstraction Layer
- * 37-Node Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  * 
  * Topology:
  *   Shell: DEFENSE (outer containment boundary)
  *   Plane: GOVERNANCE (supervisory blanket)
- *   Fields: EVOLUTION, IMMUNITY, INTENT (system-wide transformation fabric)
+ *   Fields: IMMUNITY, INTENT (system-wide transformation fabric)
  *   Spine: CORE → SYSTEM → CCR → Modules → RESOLVERS
- *   Grid: OCG (Operational Compliance Grid — boundary enforcement)
- *   Branch: CLM (lateral intelligence)
+ *   Grid: OCG (Operational Compliance Grid — boundary enforcement, 6 nodes)
  *   ESZ: Expansion Sovereignty Zone (SOVEREIGN, ORACLE, CONSCIENCE, TREATY)
  *   EPZ: Expansion Perception Zone (COMPASS, ECHO, REFLEX)
- *   EMZ: Expansion Manufacturing Zone (FORGE, LINGUA, PHANTOM, HARVEST)
+ *   EMZ: Expansion Manufacturing Zone (FORGE, LINGUA, HARVEST)
+ *   CSZ: Covert Systems Zone (EVOLUTION, SHADOW, PHANTOM)
  * 
  * Integrity Equation:
  *   matrixIntegrity = Σ(node.health × node.weight)
@@ -29,7 +29,7 @@ import type { SubstrateModuleName } from './index';
 export type MatrixSector =
   | 'core' | 'system' | 'ccr' | 'ocg'
   | 'execution' | 'field' | 'plane' | 'shell'
-  | 'esz' | 'epz' | 'emz';
+  | 'esz' | 'epz' | 'emz' | 'csz';
 
 export type BreakerState = 'closed' | 'half-open' | 'open' | 'rerouting';
 
@@ -68,18 +68,19 @@ export interface MatrixIntegrityReport {
 // ============ Node Definitions ============
 
 /** 
- * Weight distribution across 37 Matrix Nodes, normalized to 1.0.
+ * Weight distribution across 38 Matrix Nodes, normalized to 1.0.
  * 
  * Topology weights:
- *   CORE (Kernel)        = 0.120 (12%)
+ *   CORE (Kernel)        = 0.110 (11%)
  *   SYSTEM (Standalone)  = 0.040 (4%)
  *   CCR (3 zones)        = 0.120 (12%)  — BRAIN, MEMORY, DREAM
- *   OCG (5 zones)        = 0.150 (15%)  — RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
- *   Execution (11 nodes) = 0.250 (25%)  — DECODE..INTEGRATION
+ *   OCG (6 zones)        = 0.150 (15%)  — RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
+ *   Execution (9 nodes)  = 0.200 (20%)  — DECODE..INTEGRATION (NERVE moved to OCG)
  *   ESZ (4 nodes)        = 0.080 (8%)   — SOVEREIGN, ORACLE, CONSCIENCE, TREATY
  *   EPZ (3 nodes)        = 0.060 (6%)   — COMPASS, ECHO, REFLEX
- *   EMZ (4 nodes)        = 0.060 (6%)   — FORGE, LINGUA, PHANTOM, HARVEST
- *   Fields (3 nodes)     = 0.060 (6%)
+ *   EMZ (3 nodes)        = 0.045 (4.5%) — FORGE, LINGUA, HARVEST
+ *   CSZ (3 nodes)        = 0.055 (5.5%) — EVOLUTION, SHADOW, PHANTOM
+ *   Fields (2 nodes)     = 0.040 (4%)   — IMMUNITY, INTENT
  *   Plane (1 node)       = 0.030 (3%)
  *   Shell (1 node)       = 0.030 (3%)
  *   ─────────────────────────────────
@@ -87,7 +88,7 @@ export interface MatrixIntegrityReport {
  */
 const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState' | 'failureCount' | 'lastRecovery'>[] = [
   // ─── CORE — Kernel (Spine root) ────────────────────────────────
-  { id: 'core', label: 'CORE', sector: 'core', weight: 0.120, description: 'Kernel orchestration & boot authority' },
+  { id: 'core', label: 'CORE', sector: 'core', weight: 0.110, description: 'Kernel orchestration & boot authority' },
 
   // ─── SYSTEM — Standalone layer ─────────────────────────────────
   { id: 'system', label: 'SYSTEM', sector: 'system', weight: 0.040, description: 'Lifecycle management, configuration, diagnostics' },
@@ -97,25 +98,27 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'memory', label: 'MEMORY', sector: 'ccr', weight: 0.040, description: 'Tiered memory storage zone' },
   { id: 'dream', label: 'DREAM', sector: 'ccr', weight: 0.040, description: 'Dream synthesis zone' },
 
-  // ─── OCG — Operational Compliance Grid (5 nodes, 0.15 total) ───
-  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.030, description: 'Signal & event bus' },
-  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.030, description: 'Entitlements & API keys' },
-  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.030, description: 'Session & role management' },
-  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.030, description: 'Webhook dispatch' },
-  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.030, description: 'Integrity ledger' },
+  // ─── OCG — Operational Compliance Grid (6 nodes, 0.15 total) ───
+  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.025, description: 'Signal & event bus' },
+  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.025, description: 'Entitlements & API keys' },
+  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.025, description: 'Session & role management' },
+  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.025, description: 'Webhook dispatch' },
+  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.025, description: 'Integrity ledger' },
+  { id: 'nerve', label: 'NERVE', sector: 'ocg', weight: 0.025, description: 'Inter-node signaling & consensus repair' },
 
-  // ─── Execution Sector (11 nodes, 0.25 total) ───────────────────
+  // ─── Execution Sector (9 nodes, 0.20 total) ────────────────────
   { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.023, description: 'Epistemic interpreter' },
   { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.023, description: 'Code generation pipeline' },
   { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.023, description: 'Observability & telemetry' },
   { id: 'cortex', label: 'CORTEX', sector: 'execution', weight: 0.023, description: 'Autonomous orchestrator' },
   { id: 'nexus', label: 'NEXUS', sector: 'execution', weight: 0.023, description: 'AI provider routing' },
-  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.022, description: 'Metering & billing' },
-  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.022, description: 'Isolated execution' },
-  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.022, description: 'WCAG compatibility' },
-  { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.023, description: 'Autonomous diagnostics & self-repair' },
-  { id: 'nerve', label: 'NERVE', sector: 'execution', weight: 0.023, description: 'Inter-node signaling & consensus repair' },
-  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.023, description: 'Dependency resolver (boots last)' },
+  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.021, description: 'Metering & billing' },
+  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.021, description: 'Isolated execution' },
+  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.021, description: 'WCAG compatibility' },
+  { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.022, description: 'Autonomous diagnostics & self-repair' },
+
+  // ─── Integration (boots last among execution) ──────────────────
+  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.000, description: 'Dependency resolver (boots last)' },
 
   // ─── ESZ — Expansion Sovereignty Zone (4 nodes, 0.08 total) ────
   { id: 'sovereign', label: 'SOVEREIGN', sector: 'esz', weight: 0.020, description: 'Data sovereignty & jurisdictional compliance' },
@@ -128,14 +131,17 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'echo', label: 'ECHO', sector: 'epz', weight: 0.020, description: 'Digital twin simulation & replay' },
   { id: 'reflex', label: 'REFLEX', sector: 'epz', weight: 0.020, description: 'Edge computing orchestration' },
 
-  // ─── EMZ — Expansion Manufacturing Zone (4 nodes, 0.06 total) ──
+  // ─── EMZ — Expansion Manufacturing Zone (3 nodes, 0.045 total) ─
   { id: 'forge', label: 'FORGE', sector: 'emz', weight: 0.015, description: 'Artifact synthesis & manufacturing' },
   { id: 'lingua', label: 'LINGUA', sector: 'emz', weight: 0.015, description: 'Translation & localization' },
-  { id: 'phantom', label: 'PHANTOM', sector: 'emz', weight: 0.015, description: 'Privacy protection & anonymization' },
   { id: 'harvest', label: 'HARVEST', sector: 'emz', weight: 0.015, description: 'Data acquisition & ETL pipelines' },
 
+  // ─── CSZ — Covert Systems Zone (3 nodes, 0.055 total) ──────────
+  { id: 'evolution', label: 'EVOLUTION', sector: 'csz', weight: 0.020, description: 'Mutation lifecycle & self-evolution' },
+  { id: 'shadow', label: 'SHADOW', sector: 'csz', weight: 0.018, description: 'Divergence testing & shadow mesh operations' },
+  { id: 'phantom', label: 'PHANTOM', sector: 'csz', weight: 0.017, description: 'Privacy protection & anonymization' },
+
   // ─── Fields — System-wide transformation fabric ────────────────
-  { id: 'evolution', label: 'EVOLUTION', sector: 'field', weight: 0.020, description: 'Evolution lifecycle field' },
   { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.020, description: 'Resilience field' },
   { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.020, description: 'Capability discovery field' },
 
@@ -178,6 +184,7 @@ export const SECTOR_LABELS: Record<MatrixSector, string> = {
   esz: 'ESZ (Expansion Sovereignty Zone)',
   epz: 'EPZ (Expansion Perception Zone)',
   emz: 'EMZ (Expansion Manufacturing Zone)',
+  csz: 'CSZ (Covert Systems Zone)',
   field: 'Fields (Transformation Fabric)',
   plane: 'Overlay Plane (Supervision)',
   shell: 'DEFENSE Shell (Containment)',
@@ -250,7 +257,7 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
       ? 'MATRIX DEGRADED'
       : 'MATRIX STABLE';
 
-  const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'field', 'plane', 'shell'];
+  const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
   for (const sector of allSectors) {
     const sectorNodes = nodes.filter(n => n.sector === sector);

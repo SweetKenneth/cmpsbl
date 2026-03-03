@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 37-NODE RESPONSE FORMATTERS
+// SYSTEM-WIDE 38-NODE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
@@ -279,13 +279,14 @@ const ALL_EXECUTION_SURFACES = [
   { key: 'brain', label: 'BRAIN', layer: 'CCR' },
   { key: 'memory', label: 'MEMORY', layer: 'CCR' },
   { key: 'dream', label: 'DREAM', layer: 'CCR' },
-  // OCG — Operational Compliance Grid (5)
+  // OCG — Operational Compliance Grid (6)
   { key: 'ripple', label: 'RIPPLE', layer: 'OCG' },
   { key: 'access', label: 'ACCESS', layer: 'OCG' },
   { key: 'identity', label: 'IDENTITY', layer: 'OCG' },
   { key: 'relay', label: 'RELAY', layer: 'OCG' },
   { key: 'audit', label: 'AUDIT', layer: 'OCG' },
-  // Execution (11)
+  { key: 'nerve', label: 'NERVE', layer: 'OCG' },
+  // Execution (9)
   { key: 'decode', label: 'DECODE', layer: 'Execution' },
   { key: 'encode', label: 'ENCODE', layer: 'Execution' },
   { key: 'vision', label: 'VISION', layer: 'Execution' },
@@ -295,24 +296,25 @@ const ALL_EXECUTION_SURFACES = [
   { key: 'sandbox', label: 'SANDBOX', layer: 'Execution' },
   { key: 'inclusive', label: 'INCLUSIVE', layer: 'Execution' },
   { key: 'medic', label: 'MEDIC', layer: 'Execution' },
-  { key: 'nerve', label: 'NERVE', layer: 'Execution' },
   { key: 'integration', label: 'INTEGRATION', layer: 'Execution' },
-  // ESZ — Ethical Sovereignty Zone (4)
+  // ESZ — Expansion Sovereignty Zone (4)
   { key: 'sovereign', label: 'SOVEREIGN', layer: 'ESZ' },
   { key: 'oracle', label: 'ORACLE', layer: 'ESZ' },
   { key: 'conscience', label: 'CONSCIENCE', layer: 'ESZ' },
   { key: 'treaty', label: 'TREATY', layer: 'ESZ' },
-  // EPZ — Environmental Perception Zone (3)
+  // EPZ — Expansion Perception Zone (3)
   { key: 'compass', label: 'COMPASS', layer: 'EPZ' },
   { key: 'echo', label: 'ECHO', layer: 'EPZ' },
   { key: 'reflex', label: 'REFLEX', layer: 'EPZ' },
-  // EMZ — Emergent Manufacturing Zone (4)
+  // EMZ — Expansion Manufacturing Zone (3)
   { key: 'forge', label: 'FORGE', layer: 'EMZ' },
   { key: 'lingua', label: 'LINGUA', layer: 'EMZ' },
-  { key: 'phantom', label: 'PHANTOM', layer: 'EMZ' },
   { key: 'harvest', label: 'HARVEST', layer: 'EMZ' },
-  // Fields (3) + Plane (1) + Shell (1)
-  { key: 'evolution', label: 'EVOLUTION', layer: 'Field' },
+  // CSZ — Covert Systems Zone (3)
+  { key: 'evolution', label: 'EVOLUTION', layer: 'CSZ' },
+  { key: 'shadow', label: 'SHADOW', layer: 'CSZ' },
+  { key: 'phantom', label: 'PHANTOM', layer: 'CSZ' },
+  // Fields (2) + Plane (1) + Shell (1)
   { key: 'immunity', label: 'IMMUNITY', layer: 'Field' },
   { key: 'intent', label: 'INTENT', layer: 'Field' },
   { key: 'governance', label: 'GOVERNANCE', layer: 'Plane' },
@@ -331,10 +333,10 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Nodes:     37/37 (11 sectors — CORE·SYSTEM·CCR·OCG·Exec·ESZ·EPZ·EMZ·Fields·Plane·Shell) ║
+║  Nodes:     38/38 (12 sectors — CORE·SYSTEM·CCR·OCG·Exec·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell) ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  const layers = ['Kernel', 'System', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'Field', 'Plane', 'Shell'];
+  const layers = ['Kernel', 'System', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Field', 'Plane', 'Shell'];
   for (const layer of layers) {
     const layerModules = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer);
     output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
@@ -484,8 +486,8 @@ function generateFullHelp(): string {
 ┌─────────────────────────────────────────────────────────────┐
 │          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 37 / 11 Sectors           │
-│  Architecture: 37-node matrix │ 675+ caps │ 300 Synergies  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 38 / 12 Sectors           │
+│  Architecture: 38-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
@@ -861,7 +863,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  37-Node / 11-Sector Field-Based Topology — Full AI Operating System
+│  38-Node / 12-Sector Field-Based Topology — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
@@ -903,7 +905,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  37 nodes | 11 sectors | 500+ commands | 300 synergy pipelines | health: 100%
+│  38 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
