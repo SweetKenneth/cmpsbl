@@ -52,7 +52,7 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 10-Entity + 5-Mesh-Overlay + 9-Zone Architecture
+ * 37-Node / 11-Sector Field-Based Topology
  *
  * CORE (kernel, boots first)
  * 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE

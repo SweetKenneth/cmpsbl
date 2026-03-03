@@ -27,7 +27,7 @@ const LIBRARY_DOCS = [
   { id: "00", name: "INDEX", title: "Documentation Overview", description: "Complete guide to CMPSBL documentation" },
   { id: "01", name: "EXECUTIVE-SUMMARY", title: "Executive Summary", description: "High-level overview for investors" },
   { id: "02", name: "WHAT-IS-CMPSBL", title: "What is CMPSBL?", description: "Introduction to cognitive infrastructure" },
-  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "10-entity + 5-mesh architecture deep dive" },
+  { id: "03", name: "KEY-CAPABILITIES", title: "Key Capabilities", description: "37-node / 11-sector architecture deep dive" },
   { id: "04", name: "USE-CASES", title: "Use Cases", description: "Real-world applications" },
   { id: "05", name: "ARCHITECTURE", title: "Architecture Overview", description: "Technical foundation" },
   { id: "06", name: "GETTING-STARTED", title: "Getting Started", description: "Quick start guide" },
@@ -146,7 +146,7 @@ export default function Foundations() {
           </CardContent>
         </Card>
 
-        {/* 10-Entity + 5-Mesh Architecture */}
+        {/* 37-Node / 11-Sector Architecture */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
             <Layers className="w-6 h-6 text-primary" />

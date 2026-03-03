@@ -108,7 +108,7 @@ export const DEEP_TOPICS = {
     },
     {
       topic: 'Cost Engineering: Running Enterprise AI on a Bootstrap Budget',
-      hook: 'We run 10 entities, 5 mesh overlays, 525+ capabilities, and zero-cost AI routing. Here\'s how.',
+      hook: 'We run 37 nodes, 11 sectors, 675+ capabilities, and zero-cost AI routing. Here\'s how.',
       keyPoints: ['Free-tier provider mesh architecture', 'Intelligent caching eliminating 68% of API calls', 'Compute optimization through task batching', 'The $0 AI bill: a monthly reality, not a marketing claim'],
       seoKeywords: ['AI cost optimization', 'free-tier AI routing', 'enterprise AI on a budget'],
     },

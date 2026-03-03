@@ -62,7 +62,7 @@ const INITIAL_MODULES: ModuleState[] = [
   { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'module', status: 'idle', color: 'rose', description: 'Accessibility' },
   // INTEGRATION (module — boots last)
   { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'module', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
-  // 5 MESH OVERLAYS (protective layers wrapping modules — outermost to innermost)
+  // MESH OVERLAYS (Fields + Plane + Shell — protective layers wrapping all sectors)
   { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Outermost — Security Shield' },
   { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Resilience Layer' },
   { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh-overlay', status: 'idle', color: 'pink', description: 'Self-Improvement Layer' },
@@ -102,8 +102,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration', 'governance', 'intent', 'evolution', 'immunity', 'defense'],
-    description: '10 entities + 5 mesh overlays + 9 zones — full substrate orchestration',
+    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest', 'governance', 'intent', 'evolution', 'immunity', 'defense'],
+    description: '37 nodes across 11 sectors — full substrate orchestration',
     icon: Sparkles,
   },
 ];

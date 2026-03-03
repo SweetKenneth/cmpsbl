@@ -1,6 +1,6 @@
 /**
  * Meta-Engine Registry
- * 24 Meta-Engines Orchestrating 76 Engines → 525+ Capabilities
+ * 24 Meta-Engines Orchestrating 76 Engines → 675+ Capabilities
  * 
  * Meta-Engines provide the highest level of abstraction,
  * combining multiple engines into unified execution pipelines.

@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 37-Node / 11-Sector Field-Based Topology
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -17,20 +17,29 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 10 public entities: CORE + 8 modules + INTEGRATION */
-export const ENTITIES_COUNT = 10;
+/** 37 active nodes across 11 sectors */
+export const NODES_COUNT = 37;
 
-/** @deprecated Use ENTITIES_COUNT — kept for backward compatibility */
-export const MODULES_COUNT = ENTITIES_COUNT;
+/** 11 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell */
+export const SECTORS_COUNT = 11;
+
+/** @deprecated Use NODES_COUNT — kept for backward compatibility */
+export const ENTITIES_COUNT = NODES_COUNT;
+
+/** @deprecated Use NODES_COUNT — kept for backward compatibility */
+export const MODULES_COUNT = NODES_COUNT;
 
 /** 5 mesh overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost) */
 export const MESH_OVERLAY_COUNT = 5;
 
-/** 9 internal zones: CCR (4) + OCG (5) */
+/** 3 shielded expansion zones: ESZ (4 nodes), EPZ (3 nodes), EMZ (4 nodes) */
+export const EXPANSION_ZONE_COUNT = 3;
+
+/** @deprecated Legacy zone count — now subsumed by sector topology */
 export const ZONE_COUNT = 9;
 
-/** @deprecated Use ENTITIES_COUNT — legacy 6-layer model no longer applies */
-export const LAYERS_COUNT = 3; // Kernel + Modules + Meshes
+/** @deprecated Use SECTORS_COUNT — legacy layer model no longer applies */
+export const LAYERS_COUNT = 3;
 
 /**
  * Synergy pipelines defined in capabilities/synergies/registry.ts
@@ -82,10 +91,10 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities (edge-adapted + native + archived + high-value + infra + apex + SPARTA expansion)
- * 525+ total capabilities across 24 Matrix Nodes
+ * Registered capabilities across all 37 Matrix Nodes
+ * 525 base + 150 expansion (high-value-v10) = 675+
  */
-export const CAPABILITIES_COUNT = 525;
+export const CAPABILITIES_COUNT = 675;
 
 /**
  * Archived/legacy capabilities available for adaptation
@@ -97,10 +106,10 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
 // =============================================================================
 
 /**
- * Total terminal commands across all modules
+ * Total terminal commands across all 37 nodes
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
-export const TERMINAL_COMMANDS_COUNT = 360;
+export const TERMINAL_COMMANDS_COUNT = 500;
 
 // =============================================================================
 // INTEGRATION ADAPTERS
@@ -117,7 +126,7 @@ export const INTEGRATION_ADAPTERS_COUNT = 35;
 
 /**
  * Approximate lines of code in the substrate
- * Last verified: 2026-02
+ * Last verified: 2026-03
  */
 export const LINES_OF_CODE = 175_000;
 
@@ -194,8 +203,11 @@ export const WCAG_LEVEL = 'WCAG 2.2 AA';
  */
 export function getAllMarketingFacts() {
   return {
-    entities: ENTITIES_COUNT,
+    nodes: NODES_COUNT,
+    sectors: SECTORS_COUNT,
+    entities: ENTITIES_COUNT, // backward compat alias
     meshOverlays: MESH_OVERLAY_COUNT,
+    expansionZones: EXPANSION_ZONE_COUNT,
     zones: ZONE_COUNT,
     modules: MODULES_COUNT, // backward compat alias
     layers: LAYERS_COUNT,

@@ -4,7 +4,7 @@
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
  * CLM calls these hooks during autonomous learning cycles within the
- * 10-Entity + 5-Mesh + 9-Zone (24-module) architecture.
+ * 37-node / 11-sector field-based topology.
  */
 
 import { supabase } from '@/integrations/supabase/client';

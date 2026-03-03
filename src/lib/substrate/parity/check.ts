@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * All 24 execution surfaces at full parity
+ * All 37 nodes at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -34,20 +34,24 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 24 substrate modules in boot order (10 entities + 5 mesh + 9 zones)
+// All 37 substrate nodes in boot order (11 sectors)
 const SUBSTRATE_MODULES = [
-  // Kernel
-  'core',
-  // Execution surface entities
-  'ripple', 'access', 'brain', 'vision', 'cortex',
-  'decode', 'encode', 'nexus', 'dream', 'integration', 'inclusive',
-  // Mesh overlays
-  'defense', 'immunity', 'evolution', 'intent', 'governance',
-  // Zones
-  'system', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
-  // Expansion Modules (37-Node Architecture)
-  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
-  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
+  // CORE + SYSTEM
+  'core', 'system',
+  // CCR (Cognitive Core Reality)
+  'brain', 'memory', 'dream',
+  // OCG (Operational Compliance Grid)
+  'ripple', 'access', 'identity', 'relay', 'audit',
+  // Execution (11 nodes — INTEGRATION boots last)
+  'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration',
+  // ESZ (Ethical Sovereignty Zone)
+  'sovereign', 'oracle', 'conscience', 'treaty',
+  // EPZ (Environmental Perception Zone)
+  'compass', 'echo', 'reflex',
+  // EMZ (Emergent Manufacturing Zone)
+  'forge', 'lingua', 'phantom', 'harvest',
+  // Fields + Plane + Shell (Mesh Overlays)
+  'evolution', 'immunity', 'intent', 'governance', 'defense',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
@@ -145,7 +149,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 24 execution surfaces have index exports in their respective directories
+      // All 37 nodes have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

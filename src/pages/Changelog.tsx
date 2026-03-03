@@ -114,7 +114,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Downstream distributions were operating without neural substrate parity — no embedding engine, no vector recall, no drift detection",
     adaptations: [
       "Full Neural Substrate Layer dispatched downstream — 5 engines and 15 capabilities unlocked at free tier",
-      "Field-based topology aligned across distributions — 24 Matrix Nodes with Spine/Grid/Field/Plane/Shell classification",
+      "Field-based topology aligned across distributions — 37 Matrix Nodes with 11-sector classification",
       "10 automated maintenance tasks now run on CLM cron cycles — zero manual operations required",
     ],
     phenotype: [

@@ -5,8 +5,8 @@
  * aliases, macros, scheduling, watch mode, audit trail, and smart suggestions
  * 
  * Features:
- * - 360+ terminal commands across 24 Matrix Nodes
- * - 525+ capabilities across 24 modules
+ * - 500+ terminal commands across 37 Matrix Nodes
+ * - 675+ capabilities across 37 nodes
  * - Improved visual feedback for command execution
  * - Better animation states for results
  * - Enhanced mobile responsiveness with word-wrap fixes

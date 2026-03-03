@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * 10 entities + 5 meshes + 9 zones | 360+ commands | 300 synergy pipelines
+ * 37 nodes / 11 sectors | 500+ commands | 300 synergy pipelines
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 24-MODULE RESPONSE FORMATTERS
+// SYSTEM-WIDE 37-NODE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
@@ -334,8 +334,8 @@ function formatSystemStatus(data: any): string {
 
   output += `
 ╠══════════════════════════════════════════════════════════════╣
-║  360+ commands | 200 synergy pipelines | 100 engines         ║
-║  400+ capabilities | 76 base + 24 meta-engines               ║
+║  500+ commands | 300 synergy pipelines | 100 engines         ║
+║  675+ capabilities | 76 base + 24 meta-engines               ║
 ╚══════════════════════════════════════════════════════════════╝`;
 
   return output;
@@ -845,7 +845,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  10-Entity + 5-Mesh + 9-Zone Architecture — Full AI Operating System
+│  37-Node / 11-Sector Field-Based Topology — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
@@ -887,8 +887,8 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  24 execution surfaces | 360+ commands | 300 synergy pipelines | health: 100%
-│  525+ capabilities | 100 engines (76 base + 24 meta)
+│  37 nodes | 11 sectors | 500+ commands | 300 synergy pipelines | health: 100%
+│  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
 └──────────────────────────────────────────────────────────────`;
@@ -1481,7 +1481,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 24 execution surfaces
+      // Non-destructive verification of all 37 nodes
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
