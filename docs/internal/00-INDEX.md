@@ -30,6 +30,10 @@ This library is the single source of truth for all internal knowledge required t
 | 20 | [Autonomous Software Foundry](./20-autonomous-foundry.md) | Reactor architecture, CJPI scoring, production metrics |
 | 21 | [Discovery Engine Internals](./21-discovery-engine-internals.md) | Recursive reactor, candidate generation, semantic dedup, self-discovery |
 | 22 | [S-Tier Vault Internals](./22-s-tier-vault-internals.md) | Vault data model, export adapter, verification, access control |
+| 23 | [ENGINEER Node (Mechanist)](./23-engineer-node.md) | Health monitoring, findings, proposals, CLM integration, INTEL dispatch |
+| 24 | [INTEL Aggregation Pipeline](./24-intel-aggregation-pipeline.md) | Signal ingestion, deduplication, IntelCards, NEXUS-CLM Bridge |
+| 25 | [INTENT Mesh & Hub](./25-intent-mesh-and-hub.md) | Affinity matrix, pattern recognition, module discovery, governance translation |
+| 26 | [SHADOW Module](./26-shadow-module.md) | Shadow runs, divergence detection, TSAC, SEBA integration |
 
 ## Classification Policy
 
