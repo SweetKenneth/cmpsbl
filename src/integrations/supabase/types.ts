@@ -15866,6 +15866,7 @@ export type Database = {
       cleanup_old_analytics: { Args: never; Returns: undefined }
       cleanup_old_daily_state: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
+      cleanup_retention: { Args: never; Returns: Json }
       compress_warm_memories: {
         Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
         Returns: Json
@@ -15915,6 +15916,19 @@ export type Database = {
           p_user_id: string
         }
         Returns: Json
+      }
+      detect_orphan_records: { Args: never; Returns: Json }
+      detect_stale_scheduled_tasks: {
+        Args: never
+        Returns: {
+          agency_id: string
+          hours_overdue: number
+          id: string
+          last_run_at: string
+          next_run_at: string
+          task_type: string
+          title: string
+        }[]
       }
       generate_bot_sniper_api_key: {
         Args: { p_key_name: string; p_user_id: string }
