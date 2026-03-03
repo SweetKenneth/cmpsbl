@@ -814,6 +814,76 @@ export default function STierVault() {
     URL.revokeObjectURL(url);
   };
 
+  const handleSaveOfflineManifest = async () => {
+    // Build a comprehensive offline manifest combining registry + promoted discoveries
+    const manifest = {
+      _meta: {
+        type: 'CMPSBL® Offline Vault Manifest',
+        purpose: 'Complete disaster-recovery snapshot of all discovered and curated software. If the server is ever lost, this file contains everything needed to reconstruct the vault.',
+        generatedAt: new Date().toISOString(),
+        generatedBy: 'S-Tier Crown Jewel Vault — Offline Manifest System',
+        copyright: '© 2025–2026 PromptFluid®. All rights reserved.',
+        architect: 'Kenneth E. Sweet Jr. — ORCID 0009-0001-4237-1243',
+      },
+      registry: {
+        version: registryData.version,
+        totalArtifacts: registryData.totalArtifacts,
+        canonicalModules: registryData.canonicalModules,
+        entries: entries.map(e => ({
+          rank: e.rank, id: e.id, name: e.name, cjpi: e.cjpi,
+          module: e.module, type: e.type, description: e.description,
+          dependencyFootprint: e.dependencyFootprint, exportMode: e.exportMode,
+          signatureHash: e.signatureHash, version: e.version,
+          approved: e.approved, hasCode: e.hasCode,
+        })),
+      },
+      discoveries: promoted.map(d => ({
+        id: d.discovery_id, name: d.name, cjpi: d.cjpi,
+        category: d.category, tier: d.tier, description: d.description,
+        module_chain: d.module_chain, status: d.status,
+        export_ready: d.export_ready, promoted_at: d.promoted_at,
+        estimatedValue: formatMarketValue(estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length)),
+      })),
+      summary: {
+        registryArtifacts: entries.length,
+        promotedDiscoveries: promoted.length,
+        totalSoftware: entries.length + promoted.length,
+        tiers: {
+          apex: entries.filter(e => e.cjpi >= 95).length + promoted.filter(d => d.cjpi >= 95).length,
+          enterprise: entries.filter(e => e.cjpi >= 85 && e.cjpi < 95).length + promoted.filter(d => d.cjpi >= 85 && d.cjpi < 95).length,
+          architect: entries.filter(e => e.cjpi >= 70 && e.cjpi < 85).length + promoted.filter(d => d.cjpi >= 70 && d.cjpi < 85).length,
+        },
+        exportTargets: {
+          softwareLanguages: 18,
+          hardwareLanguages: 7,
+          totalCombinations: '25 languages × 8 adapters = 200 outputs',
+        },
+        categories: [...new Set(promoted.map(d => d.category))].sort(),
+      },
+      instructions: {
+        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software artifact. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
+        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance, or use the standalone-runtime.ts and standalone-discovery-engine.ts (included in any full ZIP export) to re-score and re-tier all entries.',
+        howToExport: 'Each artifact can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cmpsbl-vault-manifest-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // Also save to localStorage for true offline access
+    try {
+      localStorage.setItem('cmpsbl-vault-offline-manifest', JSON.stringify(manifest));
+      toast.success(`Offline manifest saved — ${entries.length + promoted.length} artifacts cached locally + downloaded`);
+    } catch {
+      toast.success(`Manifest downloaded — ${entries.length + promoted.length} artifacts`);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6">
