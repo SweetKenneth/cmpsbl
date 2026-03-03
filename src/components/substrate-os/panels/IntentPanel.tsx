@@ -1,9 +1,9 @@
 /**
  * INTENT Panel — Module mesh monitoring & governance
- * Big governance surface for monitoring module interactions, affinity, and hub messages.
+ * Mobile-first with polished spacing and overflow handling.
  */
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Brain, Network, Activity, MessageSquare, Zap, Eye, Shield,
   RefreshCw, TrendingUp, BarChart3, Loader2, AlertCircle,
@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useMeshToggle } from '@/lib/substrate/intent-mesh/toggle';
 
-// Intent types from the mesh documentation
 const INTENT_TYPES = [
   { type: 'query', label: 'Query', handlers: ['DECODE', 'BRAIN', 'MEMORY'], color: 'bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border-cyan-500/25' },
   { type: 'generate', label: 'Generate', handlers: ['ENCODE', 'FORGE', 'NEXUS'], color: 'bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/25' },
@@ -29,7 +28,6 @@ const INTENT_TYPES = [
   { type: 'secure', label: 'Secure', handlers: ['DEFENSE', 'PHANTOM'], color: 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/25' },
 ];
 
-// High-affinity pairs from the substrate's intent mesh
 const AFFINITY_PAIRS = [
   { a: 'BRAIN', b: 'MEMORY', score: 0.95, label: 'Cognitive recall' },
   { a: 'DECODE', b: 'NEXUS', score: 0.91, label: 'Conversational routing' },
@@ -43,11 +41,8 @@ const AFFINITY_PAIRS = [
   { a: 'IDENTITY', b: 'ACCESS', score: 0.90, label: 'Auth resolution' },
 ];
 
-// Simulated hub messages (from the Intent Hub documentation)
 function generateHubMessages() {
-  const sources = ['ENGINEER', 'EVOLUTION', 'DEFENSE', 'VISION', 'CORTEX', 'BRAIN'];
-  const types: Array<'proposal' | 'alert' | 'status' | 'request'> = ['proposal', 'alert', 'status', 'request'];
-  const msgs = [
+  return [
     { source: 'ENGINEER', type: 'proposal' as const, summary: 'CLM detected 3 engines below performance threshold — recommend rebalancing', urgency: 'medium' as const, age: '2m' },
     { source: 'DEFENSE', type: 'alert' as const, summary: 'Rate limiting spike on /api/nexus endpoint — 12 blocked in last 5min', urgency: 'high' as const, age: '30s' },
     { source: 'EVOLUTION', type: 'status' as const, summary: 'Mutation pipeline completed — 4 improvements applied, 1 rolled back', urgency: 'low' as const, age: '15m' },
@@ -55,7 +50,6 @@ function generateHubMessages() {
     { source: 'BRAIN', type: 'status' as const, summary: 'Memory consolidation cycle complete — 847 patterns archived', urgency: 'low' as const, age: '1h' },
     { source: 'CORTEX', type: 'proposal' as const, summary: 'Pipeline efficiency can be improved 12% by reordering ENCODE → NEXUS flow', urgency: 'medium' as const, age: '8m' },
   ];
-  return msgs;
 }
 
 export default function IntentPanel() {
@@ -78,95 +72,95 @@ export default function IntentPanel() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/15 to-purple-500/10 border border-amber-500/25 flex items-center justify-center">
-            <Brain className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500/15 to-purple-500/10 border border-amber-500/25 flex items-center justify-center shrink-0">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
           </div>
-          <div>
-            <h2 className="text-lg font-bold tracking-tight">INTENT Mesh & Hub</h2>
-            <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">MODULE ORCHESTRATION · AFFINITY MATRIX · GOVERNANCE BUS</p>
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-bold tracking-tight">INTENT Mesh & Hub</h2>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MODULE ORCHESTRATION · AFFINITY MATRIX</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className={cn(
-            "text-[10px] font-mono gap-1.5",
-            meshToggle.enabled
-              ? "border-emerald-500/25 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5"
-              : "border-red-500/25 text-red-600 dark:text-red-400 bg-red-500/5"
-          )}>
-            <span className={cn("w-1.5 h-1.5 rounded-full", meshToggle.enabled ? "bg-emerald-500" : "bg-red-500")} />
-            {meshToggle.enabled ? 'MESH ACTIVE' : 'MESH DISABLED'}
-          </Badge>
-        </div>
+        <Badge variant="outline" className={cn(
+          "text-[10px] font-mono gap-1.5 self-start sm:self-auto shrink-0",
+          meshToggle.enabled
+            ? "border-emerald-500/25 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5"
+            : "border-red-500/25 text-red-600 dark:text-red-400 bg-red-500/5"
+        )}>
+          <span className={cn("w-1.5 h-1.5 rounded-full", meshToggle.enabled ? "bg-emerald-500" : "bg-red-500")} />
+          {meshToggle.enabled ? 'MESH ACTIVE' : 'MESH DISABLED'}
+        </Badge>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-muted/15 border border-border/15 gap-0.5">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1.5">
-            <Eye className="w-3.5 h-3.5" /> Overview
-          </TabsTrigger>
-          <TabsTrigger value="hub" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1.5">
-            <MessageSquare className="w-3.5 h-3.5" /> Hub
-            <Badge variant="secondary" className="h-4 px-1 text-[9px] bg-amber-500/15 text-amber-600 dark:text-amber-400 border-none ml-1">{hubMessages.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="affinity" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1.5">
-            <Network className="w-3.5 h-3.5" /> Affinity Matrix
-          </TabsTrigger>
-          <TabsTrigger value="classification" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1.5">
-            <BarChart3 className="w-3.5 h-3.5" /> Classification
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Eye className="w-3.5 h-3.5 hidden sm:block" /> Overview
+            </TabsTrigger>
+            <TabsTrigger value="hub" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <MessageSquare className="w-3.5 h-3.5 hidden sm:block" /> Hub
+              <Badge variant="secondary" className="h-4 px-1 text-[9px] bg-amber-500/15 text-amber-600 dark:text-amber-400 border-none ml-0.5">{hubMessages.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="affinity" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Network className="w-3.5 h-3.5 hidden sm:block" /> Affinity
+            </TabsTrigger>
+            <TabsTrigger value="classification" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Classify
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* ── Overview ── */}
         <TabsContent value="overview" className="mt-4 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
             {[
               { label: 'Intent Types', value: '6', sub: 'Classification categories', icon: Brain, color: 'text-amber-500' },
-              { label: 'Affinity Pairs', value: AFFINITY_PAIRS.length.toString(), sub: 'High co-resolution pairs', icon: Network, color: 'text-cyan-500' },
+              { label: 'Affinity Pairs', value: AFFINITY_PAIRS.length.toString(), sub: 'High co-resolution', icon: Network, color: 'text-cyan-500' },
               { label: 'Hub Messages', value: hubMessages.length.toString(), sub: `${hubMessages.filter(m => m.urgency === 'high').length} high urgency`, icon: MessageSquare, color: 'text-purple-500' },
               { label: 'Mesh Status', value: meshToggle.enabled ? 'Active' : 'Off', sub: 'Cross-module routing', icon: Zap, color: meshToggle.enabled ? 'text-emerald-500' : 'text-red-500' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="rounded-xl border border-border/15 dark:border-border/10 p-4 bg-card/50 dark:bg-card/20"
+                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
               >
-                <stat.icon className={cn("w-4 h-4 mb-2", stat.color)} />
-                <div className="text-xl font-bold font-mono">{stat.value}</div>
-                <div className="text-[10px] text-muted-foreground/50 mt-0.5">{stat.sub}</div>
-                <div className="text-[9px] text-muted-foreground/35 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
+                <stat.icon className={cn("w-4 h-4 mb-1.5 sm:mb-2", stat.color)} />
+                <div className="text-lg sm:text-xl font-bold font-mono leading-tight">{stat.value}</div>
+                <div className="text-[9px] sm:text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">{stat.sub}</div>
+                <div className="text-[8px] sm:text-[9px] text-muted-foreground/35 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </div>
 
           {/* Recent Hub Activity */}
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-primary" />
+                <MessageSquare className="w-4 h-4 text-primary shrink-0" />
                 Recent Hub Activity
               </CardTitle>
-              <CardDescription className="text-xs">Latest governance messages from the INTENT Hub</CardDescription>
+              <CardDescription className="text-[11px] sm:text-xs">Latest governance messages from the INTENT Hub</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               <div className="space-y-2">
                 {hubMessages.slice(0, 4).map((msg, i) => {
                   const MsgIcon = typeIcon(msg.type);
                   return (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 hover:bg-muted/20 transition-colors">
+                    <div key={i} className="flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 hover:bg-muted/20 transition-colors">
                       <MsgIcon className="w-4 h-4 mt-0.5 text-muted-foreground/60 shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
+                        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 flex-wrap">
                           <span className="text-[10px] font-mono font-bold text-primary">{msg.source}</span>
                           <Badge variant="outline" className={cn("text-[8px] h-4 px-1", urgencyColor(msg.urgency))}>{msg.urgency}</Badge>
-                          <span className="text-[9px] text-muted-foreground/40 ml-auto">{msg.age}</span>
+                          <span className="text-[9px] text-muted-foreground/40 ml-auto shrink-0">{msg.age}</span>
                         </div>
-                        <p className="text-xs text-muted-foreground/80 leading-relaxed">{msg.summary}</p>
+                        <p className="text-[11px] sm:text-xs text-muted-foreground/80 leading-relaxed">{msg.summary}</p>
                       </div>
                     </div>
                   );
@@ -177,64 +171,62 @@ export default function IntentPanel() {
         </TabsContent>
 
         {/* ── Hub Messages ── */}
-        <TabsContent value="hub" className="mt-4 space-y-4">
-          <div className="space-y-2">
-            {hubMessages.map((msg, i) => {
-              const MsgIcon = typeIcon(msg.type);
-              return (
-                <motion.div
-                  key={i}
-                  className="flex items-start gap-3 p-4 rounded-xl border border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 hover:bg-card/80 transition-colors"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", urgencyColor(msg.urgency))}>
-                    <MsgIcon className="w-4 h-4" />
+        <TabsContent value="hub" className="mt-4 space-y-2.5 sm:space-y-3">
+          {hubMessages.map((msg, i) => {
+            const MsgIcon = typeIcon(msg.type);
+            return (
+              <motion.div
+                key={i}
+                className="flex items-start gap-2.5 sm:gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 hover:bg-card/80 transition-colors"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", urgencyColor(msg.urgency))}>
+                  <MsgIcon className="w-4 h-4" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 sm:gap-2 mb-1 flex-wrap">
+                    <span className="text-xs font-mono font-bold text-foreground">{msg.source}</span>
+                    <Badge variant="outline" className="text-[9px] h-4">{msg.type}</Badge>
+                    <Badge variant="outline" className={cn("text-[9px] h-4", urgencyColor(msg.urgency))}>{msg.urgency}</Badge>
+                    <span className="text-[10px] text-muted-foreground/40 ml-auto flex items-center gap-1 shrink-0"><Clock className="w-3 h-3" />{msg.age}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-mono font-bold text-foreground">{msg.source}</span>
-                      <Badge variant="outline" className="text-[9px] h-4">{msg.type}</Badge>
-                      <Badge variant="outline" className={cn("text-[9px] h-4", urgencyColor(msg.urgency))}>{msg.urgency}</Badge>
-                      <span className="text-[10px] text-muted-foreground/40 ml-auto flex items-center gap-1"><Clock className="w-3 h-3" />{msg.age}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground/80 leading-relaxed">{msg.summary}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                  <p className="text-[12px] sm:text-sm text-muted-foreground/80 leading-relaxed">{msg.summary}</p>
+                </div>
+              </motion.div>
+            );
+          })}
         </TabsContent>
 
         {/* ── Affinity Matrix ── */}
         <TabsContent value="affinity" className="mt-4 space-y-4">
-          <p className="text-xs text-muted-foreground/60 px-1">
+          <p className="text-[11px] sm:text-xs text-muted-foreground/60 px-1">
             The Affinity Matrix tracks co-resolution success rates between module pairs. High-affinity pairs are pre-warmed for faster composition.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             {AFFINITY_PAIRS.map((pair, i) => (
               <motion.div
                 key={`${pair.a}-${pair.b}`}
-                className="rounded-xl border border-border/15 dark:border-border/10 p-4 bg-card/50 dark:bg-card/20"
+                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-primary">{pair.a}</span>
-                    <Network className="w-3 h-3 text-muted-foreground/30" />
-                    <span className="text-xs font-mono font-bold text-primary">{pair.b}</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <span className="text-[11px] sm:text-xs font-mono font-bold text-primary">{pair.a}</span>
+                    <Network className="w-3 h-3 text-muted-foreground/30 shrink-0" />
+                    <span className="text-[11px] sm:text-xs font-mono font-bold text-primary">{pair.b}</span>
                   </div>
                   <span className={cn(
-                    "text-sm font-bold font-mono",
+                    "text-sm font-bold font-mono shrink-0 ml-2",
                     pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400"
                   )}>
                     {Math.round(pair.score * 100)}%
                   </span>
                 </div>
-                <Progress value={pair.score * 100} className="h-1.5 mb-2" />
+                <Progress value={pair.score * 100} className="h-1.5 mb-1.5 sm:mb-2" />
                 <p className="text-[10px] text-muted-foreground/50">{pair.label}</p>
               </motion.div>
             ))}
@@ -243,14 +235,14 @@ export default function IntentPanel() {
 
         {/* ── Classification ── */}
         <TabsContent value="classification" className="mt-4 space-y-4">
-          <p className="text-xs text-muted-foreground/60 px-1">
+          <p className="text-[11px] sm:text-xs text-muted-foreground/60 px-1">
             Every user input is classified by intent type and routed to optimal module combinations.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
             {INTENT_TYPES.map((intent, i) => (
               <motion.div
                 key={intent.type}
-                className={cn("rounded-xl border p-4", intent.color)}
+                className={cn("rounded-lg sm:rounded-xl border p-3 sm:p-4", intent.color)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}
