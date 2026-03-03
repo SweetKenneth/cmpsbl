@@ -17,7 +17,7 @@ import type {
 async function loadNotificationConfig(): Promise<NotificationConfig | null> {
   try {
     const { data, error } = await supabase
-      .from('maintenance_notification_config')
+      .from('maintenance_notification_config' as any)
       .select('*')
       .eq('enabled', true)
       .limit(1)
