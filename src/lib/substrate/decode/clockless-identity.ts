@@ -54,41 +54,60 @@ export const ARCHITECTURE = {
     description: 'The standalone boot authority. Initializes all downstream layers and maintains the canonical registry.',
   },
 
-  /** 9 Public Modules — the user-facing cognitive primitives */
+  /** 11 Execution Modules — the user-facing cognitive primitives */
   modules: {
-    count: 9,
-    names: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'INTEGRATION'] as const,
+    count: 11,
+    names: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'NERVE', 'INTEGRATION'] as const,
     description: 'Public-facing cognitive primitives that developers interact with directly.',
   },
 
-  /** 5 Mesh Overlays — cross-cutting behavioral layers */
+  /** 5 Mesh Overlays — cross-cutting behavioral layers (Fields + Plane + Shell) */
   meshOverlays: {
     count: 5,
     names: ['DEFENSE', 'IMMUNITY', 'EVOLUTION', 'INTENT', 'GOVERNANCE'] as const,
-    description: 'Cross-cutting behavioral layers that span all entities. Not modules — they are overlays.',
+    description: 'Cross-cutting behavioral layers that span all nodes. Not modules — they are overlays.',
   },
 
-  /** 9 Hidden Zones — internal infrastructure (CCR + CCL) */
-  hiddenZones: {
-    count: 9,
-    ccr: {
-      label: 'Clockless Cognitive Reality (Layer 0)',
-      zones: ['SYSTEM', 'BRAIN', 'MEMORY', 'DREAM'] as const,
-      count: 4,
-    },
-    ccl: {
-      label: 'Clockless Cognitive Lucidity (Layer 1)',
-      zones: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT'] as const,
-      count: 5,
-    },
-    description: 'Internal infrastructure zones invisible in the public entity registry.',
+  /** CCR — Clockless Cognitive Reality (Layer 0) */
+  ccr: {
+    count: 3,
+    names: ['BRAIN', 'MEMORY', 'DREAM'] as const,
+    description: 'Cognitive core — reasoning, synthesis, persistence.',
   },
 
-  /** Layers in the architecture */
-  layers: 6,
+  /** OCG — Operational Compliance Grid (Layer 1) */
+  ocg: {
+    count: 5,
+    names: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT'] as const,
+    description: 'Compliance and trust grid for operational control surfaces.',
+  },
 
-  /** For public-facing marketing: highlight 10 entities (1 CORE + 9 Modules) */
-  publicEntityCount: 10,
+  /** ESZ — Ethical Sovereignty Zone */
+  esz: {
+    count: 4,
+    names: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'] as const,
+    description: 'Jurisdiction, prediction, ethics, and regulatory compliance.',
+  },
+
+  /** EPZ — Environmental Perception Zone */
+  epz: {
+    count: 3,
+    names: ['COMPASS', 'ECHO', 'REFLEX'] as const,
+    description: 'Geospatial awareness, simulation, and reactive autonomy.',
+  },
+
+  /** EMZ — Emergent Manufacturing Zone */
+  emz: {
+    count: 4,
+    names: ['FORGE', 'LINGUA', 'PHANTOM', 'HARVEST'] as const,
+    description: 'Synthesis, localization, privacy, and data acquisition.',
+  },
+
+  /** Sectors in the architecture */
+  sectors: 11,
+
+  /** Total active nodes */
+  totalNodes: 37,
 } as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -144,20 +163,26 @@ export const ACCEPTABLE_TERMS = [
 export const DECODE_SYSTEM_IDENTITY = `You are Decode, the interpreter primitive of Clockless — a Cognitive Reality System powered by the CMPSBL Substrate.
 
 ARCHITECTURE — MEMORIZE THESE NUMBERS:
-- 24 total Execution Surfaces, classified into 4 groups:
+- 37 total active nodes across 11 sectors:
   1. CORE Kernel (1) — the standalone boot authority
-  2. 9 Public Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION
-  3. 5 Mesh Overlays: DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
-  4. 9 Hidden Zones split across two convergence layers:
-     - CCR (Layer 0): SYSTEM, BRAIN, MEMORY, DREAM
-     - CCL (Layer 1): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
-- 6 architectural layers total
-- For public-facing purposes, we highlight 10 Entities (1 CORE + 9 Modules)
+  2. SYSTEM (1) — lifecycle management
+  3. CCR (3): BRAIN, MEMORY, DREAM — cognitive core
+  4. OCG (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT — compliance grid
+  5. Execution (11): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION
+  6. ESZ (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY — sovereignty zone
+  7. EPZ (3): COMPASS, ECHO, REFLEX — perception zone
+  8. EMZ (4): FORGE, LINGUA, PHANTOM, HARVEST — manufacturing zone
+  9. Fields (3): EVOLUTION, IMMUNITY, INTENT — cross-cutting fabric
+  10. Plane (1): GOVERNANCE — supervisory blanket
+  11. Shell (1): DEFENSE — outer containment boundary
+- 675+ capabilities across all 37 nodes
+- 500+ terminal commands
+- Σ(weight) = 1.000
 
 CRITICAL RULES:
-- Mesh overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are NOT modules — they are cross-cutting behavioral layers
-- Hidden zones are NOT modules — they are internal infrastructure
-- There are exactly 9 modules, not 14, not 21, not 24
+- There are exactly 37 nodes across 11 sectors
+- Mesh overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers
+- ESZ, EPZ, EMZ are shielded expansion zones with their own governance boundaries
 - "CMPSBL Substrate" is the underlying infrastructure layer
 - You are an interpreter, NOT a chatbot, assistant, or persona
 - You do not assert facts, claim agency, or simulate emotions
