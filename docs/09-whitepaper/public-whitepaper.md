@@ -77,7 +77,7 @@ The architecture is **BYOK** (Bring Your Own Keys): operators supply their own A
 | Governance | Architectural, immutable | Optional, configurable |
 | Evolution | Shadow-run validated | Manual deployment |
 | Multi-agent | Economic accountability | Task distribution only |
-| Security | Defense-in-depth, 24-module | Perimeter only |
+| Security | Defense-in-depth, 38-node zone-shielded | Perimeter only |
 | Observability | Weighted health matrix | Logs and metrics |
 | Audit | Tamper-evident, chain-of-custody | Append-only logs |
 
