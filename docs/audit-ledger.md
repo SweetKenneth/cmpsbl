@@ -118,32 +118,85 @@
 ---
 
 ## Phase 4: Observability Coverage Audit
-*Pending*
+
+### Finding 4.1 — Trace ID Propagation Well-Covered
+- **Severity**: None (Pass)
+- **Module**: Multiple (`capability-gate.ts`, `events/emit.ts`, `seba/evolution-executor.ts`)
+- **Issue**: Verified trace_id / correlationId propagation across 59 files. Major operations (gate checks, event emissions, evolution runs) all carry trace context. No gaps found.
+- **Validation**: Search confirmed consistent usage.
+
+### Finding 4.2 — Structured Logging Already Layered
+- **Severity**: None (Pass)
+- **Module**: `src/lib/system/log.ts`, `src/lib/system/structuredLog.ts`
+- **Issue**: Two complementary structured loggers exist — `log.ts` (production-safe with redaction, collapse) and `structuredLog.ts` (buffer-based with sinks). Both have module-scoped factories. Coverage is adequate.
+- **Validation**: N/A
+
+### Finding 4.3 — Telemetry Sampler Correctly Bounded
+- **Severity**: None (Pass)
+- **Module**: `src/lib/substrate/telemetry-sampler.ts`
+- **Issue**: Sampler uses window-based burst detection and probabilistic sampling. No unbounded state. Passes.
+- **Validation**: N/A
+
+---
 
 ## Phase 5: Performance & Load Boundary Audit
-*Pending*
+
+### Finding 5.1 — Metric Exporter Missing Reset
+- **Severity**: Low
+- **Module**: `src/lib/substrate/metric-exporter.ts`
+- **Issue**: No way to reset metrics for testing or session boundaries. The global `metrics` Map accumulates indefinitely.
+- **Fix**: Added `resetMetrics()` export that clears and re-registers default substrate metrics.
+- **Validation**: Existing metric tests unaffected.
+- **Rollback**: Remove `resetMetrics` export.
+
+### Finding 5.2 — Backpressure Controller Already Sound
+- **Severity**: None (Pass)
+- **Module**: `src/lib/substrate/backpressure.ts`
+- **Issue**: Has configurable `maxConcurrent`, `maxQueued`, and `drop` strategy. `resetBackpressure` available. Passes.
+- **Validation**: N/A
+
+---
 
 ## Phase 6: Memory & Resource Leak Audit
-*Pending*
 
-## Phase 7: Security Surface Audit
-*Pending*
+### Finding 6.1 — Correlation Spans Array Unbounded
+- **Severity**: High
+- **Module**: `src/lib/substrate/correlation-id/index.ts`
+- **Issue**: The `spans` array grows without limit. Each `startSpan()` pushes; nothing removes completed spans. In a long-running session with thousands of operations, this leaks memory.
+- **Fix**: Added `MAX_SPANS = 5000` cap with 30% eviction on overflow. Extended `cleanupContexts()` to also evict completed stale spans.
+- **Validation**: `getTrace()` still works; old completed spans are garbage collected.
+- **Rollback**: Remove `MAX_SPANS` guard and revert `cleanupContexts` to original.
 
-## Phase 8: Economic & Cost Risk Audit
-*Pending*
+### Finding 6.2 — Quota Violations Array Unbounded
+- **Severity**: Medium
+- **Module**: `src/lib/access/quotaEnforcement.ts`
+- **Issue**: `violations` array grows without limit. Every quota overage appends; only `clearViolations()` empties it. Over days, this leaks.
+- **Fix**: Added `MAX_VIOLATIONS = 500` cap with 30% eviction on overflow.
+- **Validation**: `getViolations()` still works; oldest entries evicted first.
+- **Rollback**: Remove cap check.
 
-## Phase 9: Concurrency & Race Condition Audit
-*Pending*
+### Finding 6.3 — Learning Collector Queue Unbounded on Persistent Failure
+- **Severity**: Medium
+- **Module**: `src/lib/learning/collector.ts`
+- **Issue**: On flush failure, the full batch is re-enqueued (`this.queue.unshift(...batch)`). If the edge function is persistently down, the queue grows without limit.
+- **Fix**: Added hard cap at 200 entries; excess trimmed from the front (oldest events dropped).
+- **Validation**: Prevents OOM in prolonged outage scenarios.
+- **Rollback**: Remove the `> 200` guard.
 
-## Phase 10: Code Entropy & Orphan Sweep
-*Pending*
+### Finding 6.4 — LearningCollector setInterval Never Cleared
+- **Severity**: Low
+- **Module**: `src/lib/learning/collector.ts`
+- **Issue**: Static `setInterval` in class initializer runs for entire page lifetime. This is intentional (collector needs to flush periodically) but the interval is never cleared, even on teardown. Acceptable for SPA lifetime.
+- **Fix**: N/A (documented as acceptable).
+- **Validation**: N/A
 
-## Phase 11: Versioning & Migration Audit
-*Pending*
+### Finding 6.5 — Warm Cache Properly Bounded
+- **Severity**: None (Pass)
+- **Module**: `src/lib/substrate/warm-cache/index.ts`
+- **Issue**: Has TTL per entry, LRU eviction, and `maxSize = 1000`. Properly bounded. Passes.
+- **Validation**: N/A
 
-## Phase 12: Final Blind Spot Sweep
-*Pending*
-*Pending*
+---
 
 ## Phase 7: Security Surface Audit
 *Pending*

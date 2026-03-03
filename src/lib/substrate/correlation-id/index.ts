@@ -31,6 +31,7 @@ export interface TraceSpan {
 
 const activeContexts = new Map<string, CorrelationContext>();
 const spans: TraceSpan[] = [];
+const MAX_SPANS = 5000;
 let idCounter = 0;
 
 /**
@@ -96,6 +97,7 @@ export function startSpan(ctx: CorrelationContext, operation?: string): TraceSpa
     tags: {},
   };
   spans.push(span);
+  if (spans.length > MAX_SPANS) spans.splice(0, Math.floor(MAX_SPANS * 0.3));
   return span;
 }
 
@@ -141,13 +143,21 @@ export function getAllSpans(): TraceSpan[] {
   return [...spans];
 }
 
-/** Clean up completed contexts older than maxAgeMs */
+/** Clean up completed contexts and stale spans older than maxAgeMs */
 export function cleanupContexts(maxAgeMs: number = 3_600_000): number {
   const cutoff = Date.now() - maxAgeMs;
   let removed = 0;
   for (const [id, ctx] of activeContexts) {
     if (ctx.startedAt < cutoff) {
       activeContexts.delete(id);
+      removed++;
+    }
+  }
+  // Also evict completed spans older than cutoff
+  let i = spans.length;
+  while (i--) {
+    if (spans[i].status !== 'active' && spans[i].startedAt < cutoff) {
+      spans.splice(i, 1);
       removed++;
     }
   }
