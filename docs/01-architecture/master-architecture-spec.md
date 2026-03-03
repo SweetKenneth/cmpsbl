@@ -308,8 +308,9 @@ DEFENSE — encloses all sectors
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-01 | System | Initial canonical specification (24 nodes) |
+| 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
 | 2026-03-03 | System | Expanded to 37-node architecture with ESZ/EPZ/EMZ zone shielding |
+| 2026-03-01 | System | Initial canonical specification (24 nodes) |
 
 ## 16. Related Documents
 

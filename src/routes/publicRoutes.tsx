@@ -81,7 +81,7 @@ const HumansTxt = lazy(() => import("@/pages/HumansTxt"));
 const Foundations = lazy(() => import("@/pages/Foundations"));
 const Namespace = lazy(() => import("@/pages/Namespace"));
 const Insights = lazy(() => import("@/pages/Insights"));
-const Library = lazy(() => import("@/pages/Library"));
+
 const Support = lazy(() => import("@/pages/Support"));
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const Auth = lazy(() => import("@/pages/Auth"));
@@ -172,7 +172,7 @@ export const publicRoutes = (
     <Route path="/namespace" element={<Namespace />} />
     <Route path="/insights" element={<Insights />} />
     <Route path="/register" element={<Navigate to="/auth" replace />} />
-    <Route path="/library" element={<Library />} />
+    <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
     <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />

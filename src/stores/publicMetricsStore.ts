@@ -81,7 +81,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '13.0.0',
+  version: '13.1.0',
   codename: 'IRONCLAD',
   epoch: 'IRONCLAD',
   buildDate: new Date().toISOString().split('T')[0],

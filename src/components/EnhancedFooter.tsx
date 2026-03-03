@@ -89,7 +89,7 @@ export function EnhancedFooter() {
     { name: "Licensing", href: "mailto:hello@CMPSBL.com" },
     { name: "Solutions", href: "/solutions" },
     { name: "Support", href: "/support" },
-    { name: "Library", href: "/library" },
+    { name: "Documentation", href: "/documentation" },
     { name: "Namespace", href: "/namespace" },
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
