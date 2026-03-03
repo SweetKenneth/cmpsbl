@@ -39,6 +39,20 @@ const DEFAULT_LIMITS: Record<string, RateLimitConfig> = {
   'pf-defense-analyze': { endpoint: 'pf-defense-analyze', windowMs: 60000, maxRequests: 200, burstLimit: 50 },
 };
 
+// ── Register all adaptive thresholds with guardrail bounds ──────
+for (const [key, cfg] of Object.entries(DEFAULT_LIMITS)) {
+  registerThreshold(
+    {
+      key: `rate_limit:${key}`,
+      bounds: { min: Math.round(cfg.maxRequests * 0.5), max: Math.round(cfg.maxRequests * 2) },
+      maxDailyDeltaPct: 0.25,    // Max 25% change per day
+      cooldownMs: 5 * 60_000,    // 5 minute cooldown between adjustments
+      requiredConfirmations: 2,  // 2 consecutive same-direction confirmations
+    },
+    cfg.maxRequests
+  );
+}
+
 /**
  * Get consolidated rate limit status across all endpoints
  */
