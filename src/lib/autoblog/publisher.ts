@@ -191,7 +191,7 @@ export async function publishDraft(queueId: string): Promise<PublishResult> {
   try {
     // --- GOVERNOR CHECK ---
     const circuitStatus = await checkAutoblogCircuit();
-    const breakerHealth = circuitStatus.ok ? 1.0 : 0.2;
+    const breakerHealth = circuitStatus.canProceed ? 1.0 : 0.2;
 
     const { data: queuedItems } = await supabase
       .from('autoblog_queue')
