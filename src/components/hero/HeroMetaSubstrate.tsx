@@ -251,12 +251,11 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              Internal proprietary cognitive infrastructure with{' '}
+              Composable cognitive infrastructure with{' '}
               <span className="text-foreground font-semibold">persistent memory</span>,{' '}
               <span className="text-foreground font-semibold">20 composable engines</span> forged from Crown Jewel artifacts, and a{' '}
               <span className="text-foreground font-semibold">governed runtime</span> that enforces safety at every layer.{' '}
-              Inquire about licensing or acquisition at{' '}
-              <a href="mailto:hello@CMPSBL.com" className="text-primary font-semibold hover:underline">hello@CMPSBL.com</a>.
+              Start free or subscribe for deeper capacity.
             </motion.p>
             
             {/* CTAs */}
@@ -271,11 +270,11 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <a href="mailto:hello@CMPSBL.com">
+                <Link to="/upgrade">
                   <Sparkles className="w-4 h-4" />
-                  Inquire About Licensing
+                  View Plans
                   <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+                </Link>
               </Button>
               <Button 
                 asChild 

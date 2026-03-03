@@ -329,22 +329,22 @@ export default function About() {
         <div className="container mx-auto max-w-4xl text-center">
           <motion.div {...fadeUp}>
             <Badge className="mb-6 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/30">
-              Internal Proprietary Software
+              Composable AI Infrastructure
             </Badge>
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Licensing & Acquisition Inquiries</h2>
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Build?</h2>
              <p className="text-xl text-muted-foreground mb-4">
-               The CMPSBL Substrate is internal proprietary software built for use by our internal development team.
+               Start free with 3 artifact slots, or subscribe for expanded capacity and deeper cognitive infrastructure.
              </p>
              <p className="text-lg text-muted-foreground mb-8">
-               Interested in licensing or potential acquisition? Reach out to our team.
+               Builder (free) · Creator ($29/mo) · Architect ($79/mo)
              </p>
              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-               <a href="mailto:hello@CMPSBL.com">
+               <Link to="/upgrade">
                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                   Email hello@CMPSBL.com
+                   View Plans
                    <ArrowRight className="w-4 h-4 ml-2" />
                  </Button>
-               </a>
+               </Link>
                <Link to="/publication">
                  <Button size="lg" variant="outline">
                    Read Our Publication

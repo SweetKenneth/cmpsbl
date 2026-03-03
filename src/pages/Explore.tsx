@@ -176,14 +176,14 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">The Future is Cognitive</span>
               </motion.div>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
-                Internal{" "}
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
+                Composable{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Proprietary Software</span>
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">AI Infrastructure</span>
               </h2>
               <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                The CMPSBL Substrate is internal proprietary software built for use by our internal development team.
-                Inquire about licensing or potential acquisition by contacting us.
+                The CMPSBL Substrate powers cognitive infrastructure with persistent memory, composable engines, and governed runtime.
+                Start free or subscribe for deeper capacity.
               </p>
               
               {/* Mini stats row */}
@@ -203,11 +203,11 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <a href="mailto:hello@CMPSBL.com">
+                  <Link to="/upgrade">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Inquire About Licensing
+                    View Plans
                     <ArrowRight className="w-4 h-4 ml-2" />
-                  </a>
+                  </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
                   <Link to="/about">

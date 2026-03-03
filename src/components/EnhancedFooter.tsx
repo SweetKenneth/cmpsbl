@@ -117,17 +117,17 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Internal Proprietary Software
+                Composable AI Infrastructure
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
-                Cognitive infrastructure for our internal development team.
+                Cognitive infrastructure with persistent memory, composable engines, and governed runtime.
               </p>
-              <a 
-                href="mailto:hello@CMPSBL.com" 
+              <Link 
+                to="/upgrade" 
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors mb-4"
               >
-                Licensing inquiries → hello@CMPSBL.com
-              </a>
+                View Plans → Builder (free) · Creator · Architect
+              </Link>
 
               {/* Social Links */}
               <div className="flex items-center gap-2">
