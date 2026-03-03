@@ -45,6 +45,7 @@ export function EnhancedFooter() {
       title: "Products",
       links: [
         { name: "Artifact Packs", href: "/packs" },
+        { name: "Dream Eater", href: "/feed-dream-eater" },
         { name: "Engines", href: "/engines", highlight: true },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Minds", href: "/composable-cognitives", highlight: true },
@@ -66,12 +67,12 @@ export function EnhancedFooter() {
     {
       title: "Discover",
       links: [
-        { name: "Blog", href: "/blog" },
         { name: "Capability Map", href: "/capability-map" },
         { name: "Community", href: "/community" },
         { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Fossil Record", href: "/changelog" },
         { name: "Showcase", href: "/showcase" },
+        { name: "Use Cases", href: "/use-cases" },
       ]
     },
   ];
