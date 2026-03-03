@@ -28,6 +28,10 @@ This document enumerates the strategic differentiators that constitute the subst
 | SEBA/CORTEX recursive self-improvement | Permanently hidden from all tiers |
 | Memory graph embedding strategies | Service-role write only, authenticated read |
 | Artifact Pack construction logic | Source visibility disabled |
+| Autonomous Software Foundry reactor | Trade secret — source never exposed (see page 20) |
+| Discovery Engine CJPI scoring model | Trade secret — weights/thresholds internal (see page 21) |
+| S-Tier Vault data model & export adapter | Admin-only, no public API (see page 22) |
+| Standalone Discovery Engine packaging | Included in exports but obfuscated |
 
 ## 3. Competitive Moat Components
 
