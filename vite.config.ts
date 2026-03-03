@@ -32,6 +32,19 @@ export default defineConfig(({ mode }) => ({
         workbox: {
           skipWaiting: true,
           clientsClaim: true,
+          navigateFallbackDenylist: [/^\/~oauth/],
+          // Cache vault and admin routes for offline access
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/bxodolqqczjuahwdrswy\.supabase\.co\/rest\/v1\/.*/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'supabase-api-cache',
+                expiration: { maxEntries: 100, maxAgeSeconds: 86400 },
+                networkTimeoutSeconds: 5,
+              },
+            },
+          ],
         },
       }),
 
