@@ -1,9 +1,11 @@
 /**
  * CMPSBL® DEFENSE — Consolidated Rate Limiting
  * Unified rate limiting middleware with adaptive thresholds
+ * Guarded by Phase 2 threshold clamping system
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { registerThreshold, clamp as guardClamp } from './guardrail';
 
 export interface RateLimitConfig {
   endpoint: string;
