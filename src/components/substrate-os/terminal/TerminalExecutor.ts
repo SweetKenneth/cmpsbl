@@ -272,35 +272,51 @@ function formatPersonalityInterpret(result: {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
-  // CORE kernel
+  // CORE + SYSTEM (2)
   { key: 'core', label: 'CORE', layer: 'Kernel' },
-  // Execution Surfaces (9 modules)
-  { key: 'decode', label: 'DECODE', layer: 'Cognitive' },
-  { key: 'encode', label: 'ENCODE', layer: 'Orchestrator' },
-  { key: 'vision', label: 'VISION', layer: 'Operations' },
-  { key: 'cortex', label: 'CORTEX', layer: 'Orchestrator' },
-  { key: 'nexus', label: 'NEXUS', layer: 'Operations' },
-  { key: 'economy', label: 'ECONOMY', layer: 'Infrastructure' },
-  { key: 'sandbox', label: 'SANDBOX', layer: 'Infrastructure' },
-  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Admin' },
-  { key: 'integration', label: 'INTEGRATION', layer: 'Orchestrator' },
-  // Mesh Overlays (5)
-  { key: 'defense', label: 'DEFENSE', layer: 'Mesh Overlay' },
-  { key: 'immunity', label: 'IMMUNITY', layer: 'Mesh Overlay' },
-  { key: 'evolution', label: 'EVOLUTION', layer: 'Mesh Overlay' },
-  { key: 'intent', label: 'INTENT', layer: 'Mesh Overlay' },
-  { key: 'governance', label: 'GOVERNANCE', layer: 'Mesh Overlay' },
-  // CCR Zones (4)
-  { key: 'system', label: 'SYSTEM', layer: 'CCR Zone' },
-  { key: 'brain', label: 'BRAIN', layer: 'CCR Zone' },
-  { key: 'memory', label: 'MEMORY', layer: 'CCR Zone' },
-  { key: 'dream', label: 'DREAM', layer: 'CCR Zone' },
-  // CCL Zones (5)
-  { key: 'ripple', label: 'RIPPLE', layer: 'CCL Zone' },
-  { key: 'access', label: 'ACCESS', layer: 'CCL Zone' },
-  { key: 'identity', label: 'IDENTITY', layer: 'CCL Zone' },
-  { key: 'relay', label: 'RELAY', layer: 'CCL Zone' },
-  { key: 'audit', label: 'AUDIT', layer: 'CCL Zone' },
+  { key: 'system', label: 'SYSTEM', layer: 'System' },
+  // CCR — Clockless Cognitive Reality (3)
+  { key: 'brain', label: 'BRAIN', layer: 'CCR' },
+  { key: 'memory', label: 'MEMORY', layer: 'CCR' },
+  { key: 'dream', label: 'DREAM', layer: 'CCR' },
+  // OCG — Operational Compliance Grid (5)
+  { key: 'ripple', label: 'RIPPLE', layer: 'OCG' },
+  { key: 'access', label: 'ACCESS', layer: 'OCG' },
+  { key: 'identity', label: 'IDENTITY', layer: 'OCG' },
+  { key: 'relay', label: 'RELAY', layer: 'OCG' },
+  { key: 'audit', label: 'AUDIT', layer: 'OCG' },
+  // Execution (11)
+  { key: 'decode', label: 'DECODE', layer: 'Execution' },
+  { key: 'encode', label: 'ENCODE', layer: 'Execution' },
+  { key: 'vision', label: 'VISION', layer: 'Execution' },
+  { key: 'cortex', label: 'CORTEX', layer: 'Execution' },
+  { key: 'nexus', label: 'NEXUS', layer: 'Execution' },
+  { key: 'economy', label: 'ECONOMY', layer: 'Execution' },
+  { key: 'sandbox', label: 'SANDBOX', layer: 'Execution' },
+  { key: 'inclusive', label: 'INCLUSIVE', layer: 'Execution' },
+  { key: 'medic', label: 'MEDIC', layer: 'Execution' },
+  { key: 'nerve', label: 'NERVE', layer: 'Execution' },
+  { key: 'integration', label: 'INTEGRATION', layer: 'Execution' },
+  // ESZ — Ethical Sovereignty Zone (4)
+  { key: 'sovereign', label: 'SOVEREIGN', layer: 'ESZ' },
+  { key: 'oracle', label: 'ORACLE', layer: 'ESZ' },
+  { key: 'conscience', label: 'CONSCIENCE', layer: 'ESZ' },
+  { key: 'treaty', label: 'TREATY', layer: 'ESZ' },
+  // EPZ — Environmental Perception Zone (3)
+  { key: 'compass', label: 'COMPASS', layer: 'EPZ' },
+  { key: 'echo', label: 'ECHO', layer: 'EPZ' },
+  { key: 'reflex', label: 'REFLEX', layer: 'EPZ' },
+  // EMZ — Emergent Manufacturing Zone (4)
+  { key: 'forge', label: 'FORGE', layer: 'EMZ' },
+  { key: 'lingua', label: 'LINGUA', layer: 'EMZ' },
+  { key: 'phantom', label: 'PHANTOM', layer: 'EMZ' },
+  { key: 'harvest', label: 'HARVEST', layer: 'EMZ' },
+  // Fields (3) + Plane (1) + Shell (1)
+  { key: 'evolution', label: 'EVOLUTION', layer: 'Field' },
+  { key: 'immunity', label: 'IMMUNITY', layer: 'Field' },
+  { key: 'intent', label: 'INTENT', layer: 'Field' },
+  { key: 'governance', label: 'GOVERNANCE', layer: 'Plane' },
+  { key: 'defense', label: 'DEFENSE', layer: 'Shell' },
 ];
 
 function formatSystemStatus(data: any): string {
@@ -315,10 +331,10 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Surfaces:  24/24 (1 kernel + 9 modules + 5 meshes + 9 zones) ║
+║  Nodes:     37/37 (11 sectors — CORE·SYSTEM·CCR·OCG·Exec·ESZ·EPZ·EMZ·Fields·Plane·Shell) ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
-  const layers = ['Kernel', 'Cognitive', 'Operations', 'Admin', 'Orchestrator', 'Infrastructure', 'Mesh Overlay', 'CCR Zone', 'CCL Zone'];
+  const layers = ['Kernel', 'System', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'Field', 'Plane', 'Shell'];
   for (const layer of layers) {
     const layerModules = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer);
     output += `\n║  ┌─ ${layer.toUpperCase()} LAYER ──────────────────────────────────────`;
@@ -355,7 +371,7 @@ function formatSystemHealth(data: any): string {
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
 ║  Threat Level:    ${threatLevel.toUpperCase().padEnd(10)}                                ║
-║  Modules:         21/21 reporting                            ║
+║  Modules:         37/37 reporting                             ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  MODULE HEALTH REPORT                                        ║
 ╠══════════════════════════════════════════════════════════════╣`;

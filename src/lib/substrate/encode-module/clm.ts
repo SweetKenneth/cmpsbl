@@ -164,7 +164,7 @@ export async function runEncodeCLMCycle(): Promise<CLMReport> {
   // Study 4: Module interconnection awareness
   codebaseInsights.push({
     area: 'module-boundaries',
-    finding: 'All 24 execution surfaces follow single-entrypoint pattern (index.ts) with typed exports',
+    finding: 'All 37 matrix nodes follow single-entrypoint pattern (index.ts) with typed exports across 11 sectors',
     actionable: true,
     priority: 95,
   });
