@@ -212,9 +212,9 @@ export default function Foundations() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button className="w-full gap-2" asChild>
-                  <Link to="/library">
+                  <Link to="/documentation">
                     <BookOpen className="w-4 h-4" />
-                    Browse Documentation Library
+                    Browse Documentation
                   </Link>
                 </Button>
                 <Button variant="outline" className="w-full gap-2" asChild>
