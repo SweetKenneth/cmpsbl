@@ -25,7 +25,7 @@ const BREAKER_STYLES: Record<BreakerState, { color: string; bg: string; icon: ty
   rerouting: { color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', icon: RefreshCw, label: 'REROUTING' },
 };
 
-const SECTOR_ORDER: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'field', 'plane', 'shell'];
+const SECTOR_ORDER: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
 const SECTOR_COLORS: Record<MatrixSector, string> = {
   core: 'border-orange-500/30',
   system: 'border-yellow-500/30',

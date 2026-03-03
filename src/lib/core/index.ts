@@ -60,8 +60,8 @@ export const SUBSTRATE_MODULES = [
   'system',
   // CCR Zones (backward compat — route to Layer 0, hot-swappable)
   'brain', 'memory', 'dream',
-  // OCG Zones (Operational Compliance Grid — formerly CCL)
-  'ripple', 'access', 'identity', 'relay', 'audit',
+  // OCG Zones (Operational Compliance Grid — includes NERVE)
+  'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
   // Absorbed (routes to evolution field)
   'modernizer',
   // 9 Execution Modules (NERVE moved to OCG)
