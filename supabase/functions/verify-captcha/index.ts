@@ -1,6 +1,6 @@
 /**
  * Verify CAPTCHA Response — Ported from aetherion-shield
- * Token-based verification with expiry and status tracking.
+ * Token-based verification with expiry, status tracking, and rate limiting.
  * Target nodes: DEFENSE, SITE-GUARD
  */
 
@@ -19,9 +19,63 @@ interface VerifyRequest {
   ip_address?: string;
 }
 
+// ── Rate limiter (in-memory, per-IP hash) ────────────────────────
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 20; // max 20 verify attempts per minute
+const rateBuckets = new Map<string, { count: number; windowStart: number }>();
+
+function hashIp(ip: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < ip.length; i++) {
+    h ^= ip.charCodeAt(i);
+    h = (h * 0x01000193) >>> 0;
+  }
+  return h.toString(16);
+}
+
+function checkRateLimit(key: string): boolean {
+  const now = Date.now();
+  const bucket = rateBuckets.get(key);
+  if (!bucket || (now - bucket.windowStart) > RATE_LIMIT_WINDOW_MS) {
+    rateBuckets.set(key, { count: 1, windowStart: now });
+    return true;
+  }
+  bucket.count++;
+  return bucket.count <= RATE_LIMIT_MAX;
+}
+
+function pruneRateBuckets(): void {
+  if (rateBuckets.size > 500) {
+    const now = Date.now();
+    for (const [key, bucket] of rateBuckets) {
+      if (now - bucket.windowStart > RATE_LIMIT_WINDOW_MS * 2) {
+        rateBuckets.delete(key);
+      }
+    }
+  }
+}
+
 Deno.serve(withMiddleware(async (req: Request) => {
   if (req.method !== 'POST') {
     throw new EdgeError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
+  }
+
+  // Rate limit by hashed IP
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const ipHash = hashIp(clientIp);
+  pruneRateBuckets();
+
+  if (!checkRateLimit(ipHash)) {
+    // Log rate limit event
+    const supabaseLog = createAdminClient();
+    await supabaseLog.from('defense_events').insert({
+      fingerprint_hash: ipHash,
+      action: 'challenge',
+      event_type: 'rate_limited',
+      metadata: { endpoint: 'verify-captcha', reason: 'rate_limit_exceeded' },
+    }).catch(() => {});
+
+    throw new EdgeError('Rate limit exceeded', 429, 'RATE_LIMITED');
   }
 
   const body = await parseBody<VerifyRequest>(req);
