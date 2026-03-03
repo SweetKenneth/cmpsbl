@@ -52,7 +52,7 @@ export interface RouteEntry {
 // ─── The Manifest ────────────────────────────────────────────────────────────
 
 /**
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  *
  * CORE (kernel, boots first)
  * 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
@@ -61,7 +61,8 @@ export interface RouteEntry {
  *
  * Hidden layers with surgically hot-swappable Zones:
  *   CCR (Layer 0) — 4 Zones: SYSTEM, BRAIN, MEMORY, DREAM
- *   CCL (Layer 1) — 5 Zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+ *   OCG (Layer 1) — 6 Zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
+ *   CSZ (Layer 2) — 3 Zones: EVOLUTION, SHADOW, PHANTOM
  *   Absorbed: MODERNIZER → EVOLUTION mesh
  */
 export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
@@ -493,5 +494,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
-  return `CMPSBL Substrate: ${moduleCount} modules across 11 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell), ${componentCount} registered UI components. 37 Matrix Nodes total. Σ(weight) = 1.000.`;
+  return `CMPSBL Substrate: ${moduleCount} modules across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell), ${componentCount} registered UI components. 38 Matrix Nodes total. Σ(weight) = 1.000.`;
 }

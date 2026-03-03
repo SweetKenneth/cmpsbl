@@ -1499,7 +1499,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 37 nodes
+      // Non-destructive verification of all 38 nodes
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
@@ -1664,7 +1664,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (37 node status calls)          ║
+║    2: + module-status-polling (38 node status calls)          ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (Supabase channels)           ║
 ║                                                              ║
@@ -5145,8 +5145,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
     }
 
-    // ═══ REGISTRY-BACKED MODULE HANDLERS (All 37 Nodes + Cross-Cutting) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.')) {
+    // ═══ REGISTRY-BACKED MODULE HANDLERS (All 38 Nodes + Cross-Cutting) ═══
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.')) {
       try {
         // Lazy-register all registry-backed handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');

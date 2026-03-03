@@ -19,7 +19,7 @@ import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "Modular Cognitive Architecture", desc: "First cognitive infrastructure with 37 nodes across 11 sectors and hot-swappable protective layers", badge: "Production" },
+  { title: "Modular Cognitive Architecture", desc: "First cognitive infrastructure with 38 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
   { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
@@ -78,9 +78,9 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: `37 matrix nodes across 11 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
+    { icon: Rocket, title: "Production Infrastructure", description: `38 matrix nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + marketplace revenue share. 90%+ gross margins." },
-    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + 11-sector architecture = a technical gap that widens daily. Can't be replicated quickly." },
+    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + 12-sector architecture = a technical gap that widens daily. Can't be replicated quickly." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
 
