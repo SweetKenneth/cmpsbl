@@ -1,14 +1,17 @@
 /**
  * Matrix Node Registry — Read-Only Abstraction Layer
- * Field-Based Topology
+ * 37-Node Field-Based Topology
  * 
  * Topology:
  *   Shell: DEFENSE (outer containment boundary)
  *   Plane: GOVERNANCE (supervisory blanket)
  *   Fields: EVOLUTION, IMMUNITY, INTENT (system-wide transformation fabric)
- *   Spine: CORE → SYSTEM → CCR → MODULES → RESOLVERS
+ *   Spine: CORE → SYSTEM → CCR → Modules → RESOLVERS
  *   Grid: OCG (Operational Compliance Grid — boundary enforcement)
  *   Branch: CLM (lateral intelligence)
+ *   ESZ: Expansion Sovereignty Zone (SOVEREIGN, ORACLE, CONSCIENCE, TREATY)
+ *   EPZ: Expansion Perception Zone (COMPASS, ECHO, REFLEX)
+ *   EMZ: Expansion Manufacturing Zone (FORGE, LINGUA, PHANTOM, HARVEST)
  * 
  * Integrity Equation:
  *   matrixIntegrity = Σ(node.health × node.weight)
@@ -23,7 +26,10 @@ import type { SubstrateModuleName } from './index';
 
 // ============ Types ============
 
-export type MatrixSector = 'core' | 'system' | 'ccr' | 'ocg' | 'execution' | 'field' | 'plane' | 'shell';
+export type MatrixSector =
+  | 'core' | 'system' | 'ccr' | 'ocg'
+  | 'execution' | 'field' | 'plane' | 'shell'
+  | 'esz' | 'epz' | 'emz';
 
 export type BreakerState = 'closed' | 'half-open' | 'open' | 'rerouting';
 
@@ -62,59 +68,81 @@ export interface MatrixIntegrityReport {
 // ============ Node Definitions ============
 
 /** 
- * Weight distribution across 26 Matrix Nodes, normalized to 1.0.
+ * Weight distribution across 37 Matrix Nodes, normalized to 1.0.
  * 
  * Topology weights:
- *   CORE (Kernel)     = 0.180 (18%)  — reduced from 0.200 to accommodate MEDIC+NERVE
- *   SYSTEM (Standalone)= 0.050 (5%)
- *   CCR (3 zones)     = 0.150 (15%)
- *   OCG (5 zones)     = 0.180 (18%) — reduced from 0.200 to accommodate MEDIC+NERVE
- *   Execution (11 nodes)= 0.290 (29%) — expanded from 9→11 nodes
- *   Fields (3 nodes)  = 0.090 (9%)
- *   Plane (1 node)    = 0.030 (3%)
- *   Shell (1 node)    = 0.030 (3%)
+ *   CORE (Kernel)        = 0.120 (12%)
+ *   SYSTEM (Standalone)  = 0.040 (4%)
+ *   CCR (3 zones)        = 0.120 (12%)  — BRAIN, MEMORY, DREAM
+ *   OCG (5 zones)        = 0.150 (15%)  — RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+ *   Execution (11 nodes) = 0.250 (25%)  — DECODE..INTEGRATION
+ *   ESZ (4 nodes)        = 0.080 (8%)   — SOVEREIGN, ORACLE, CONSCIENCE, TREATY
+ *   EPZ (3 nodes)        = 0.060 (6%)   — COMPASS, ECHO, REFLEX
+ *   EMZ (4 nodes)        = 0.060 (6%)   — FORGE, LINGUA, PHANTOM, HARVEST
+ *   Fields (3 nodes)     = 0.060 (6%)
+ *   Plane (1 node)       = 0.030 (3%)
+ *   Shell (1 node)       = 0.030 (3%)
+ *   ─────────────────────────────────
+ *   Total                = 1.000 (100%)
  */
 const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState' | 'failureCount' | 'lastRecovery'>[] = [
-  // CORE — Kernel (Spine root)
-  { id: 'core', label: 'CORE', sector: 'core', weight: 0.180, description: 'Kernel orchestration & boot authority' },
+  // ─── CORE — Kernel (Spine root) ────────────────────────────────
+  { id: 'core', label: 'CORE', sector: 'core', weight: 0.120, description: 'Kernel orchestration & boot authority' },
 
-  // SYSTEM — Standalone layer (extracted from CCR, sits between CORE and CCR on the Spine)
-  { id: 'system', label: 'SYSTEM', sector: 'system', weight: 0.050, description: 'Lifecycle management, configuration, diagnostics' },
+  // ─── SYSTEM — Standalone layer ─────────────────────────────────
+  { id: 'system', label: 'SYSTEM', sector: 'system', weight: 0.040, description: 'Lifecycle management, configuration, diagnostics' },
 
-  // CCR Sector (3 zones, 0.15 total = 0.05 each) — SYSTEM extracted
-  { id: 'brain', label: 'BRAIN', sector: 'ccr', weight: 0.050, description: 'Reasoning & cognition zone' },
-  { id: 'memory', label: 'MEMORY', sector: 'ccr', weight: 0.050, description: 'Tiered memory storage zone' },
-  { id: 'dream', label: 'DREAM', sector: 'ccr', weight: 0.050, description: 'Dream synthesis zone' },
+  // ─── CCR — Cognitive Core Reality (3 zones, 0.12 total) ────────
+  { id: 'brain', label: 'BRAIN', sector: 'ccr', weight: 0.040, description: 'Reasoning & cognition zone' },
+  { id: 'memory', label: 'MEMORY', sector: 'ccr', weight: 0.040, description: 'Tiered memory storage zone' },
+  { id: 'dream', label: 'DREAM', sector: 'ccr', weight: 0.040, description: 'Dream synthesis zone' },
 
-  // OCG — Operational Compliance Grid (5 nodes, 0.18 total = 0.036 each)
-  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.036, description: 'Signal & event bus' },
-  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.036, description: 'Entitlements & API keys' },
-  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.036, description: 'Session & role management' },
-  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.036, description: 'Webhook dispatch' },
-  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.036, description: 'Integrity ledger' },
+  // ─── OCG — Operational Compliance Grid (5 nodes, 0.15 total) ───
+  { id: 'ripple', label: 'RIPPLE', sector: 'ocg', weight: 0.030, description: 'Signal & event bus' },
+  { id: 'access', label: 'ACCESS', sector: 'ocg', weight: 0.030, description: 'Entitlements & API keys' },
+  { id: 'identity', label: 'IDENTITY', sector: 'ocg', weight: 0.030, description: 'Session & role management' },
+  { id: 'relay', label: 'RELAY', sector: 'ocg', weight: 0.030, description: 'Webhook dispatch' },
+  { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.030, description: 'Integrity ledger' },
 
-  // Execution Sector (11 nodes, 0.29 total ≈ 0.0264 each)
-  { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.026, description: 'Epistemic interpreter' },
-  { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.026, description: 'Code generation pipeline' },
-  { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.026, description: 'Observability & telemetry' },
-  { id: 'cortex', label: 'CORTEX', sector: 'execution', weight: 0.026, description: 'Autonomous orchestrator' },
-  { id: 'nexus', label: 'NEXUS', sector: 'execution', weight: 0.026, description: 'AI provider routing' },
-  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.026, description: 'Metering & billing' },
-  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.026, description: 'Isolated execution' },
-  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.026, description: 'WCAG compatibility' },
-  { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.028, description: 'Autonomous diagnostics & self-repair coordination' },
-  { id: 'nerve', label: 'NERVE', sector: 'execution', weight: 0.028, description: 'Inter-node signaling & consensus repair' },
-  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.026, description: 'Dependency resolver' },
+  // ─── Execution Sector (11 nodes, 0.25 total) ───────────────────
+  { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.023, description: 'Epistemic interpreter' },
+  { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.023, description: 'Code generation pipeline' },
+  { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.023, description: 'Observability & telemetry' },
+  { id: 'cortex', label: 'CORTEX', sector: 'execution', weight: 0.023, description: 'Autonomous orchestrator' },
+  { id: 'nexus', label: 'NEXUS', sector: 'execution', weight: 0.023, description: 'AI provider routing' },
+  { id: 'economy', label: 'ECONOMY', sector: 'execution', weight: 0.022, description: 'Metering & billing' },
+  { id: 'sandbox', label: 'SANDBOX', sector: 'execution', weight: 0.022, description: 'Isolated execution' },
+  { id: 'inclusive', label: 'INCLUSIVE', sector: 'execution', weight: 0.022, description: 'WCAG compatibility' },
+  { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.023, description: 'Autonomous diagnostics & self-repair' },
+  { id: 'nerve', label: 'NERVE', sector: 'execution', weight: 0.023, description: 'Inter-node signaling & consensus repair' },
+  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.023, description: 'Dependency resolver (boots last)' },
 
-  // Fields — System-wide transformation fabric (permeate the spine)
-  { id: 'evolution', label: 'EVOLUTION', sector: 'field', weight: 0.030, description: 'Evolution lifecycle field' },
-  { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.030, description: 'Resilience field' },
-  { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.030, description: 'Capability discovery field' },
+  // ─── ESZ — Expansion Sovereignty Zone (4 nodes, 0.08 total) ────
+  { id: 'sovereign', label: 'SOVEREIGN', sector: 'esz', weight: 0.020, description: 'Data sovereignty & jurisdictional compliance' },
+  { id: 'oracle', label: 'ORACLE', sector: 'esz', weight: 0.020, description: 'Predictive modeling & probabilistic reasoning' },
+  { id: 'conscience', label: 'CONSCIENCE', sector: 'esz', weight: 0.020, description: 'Ethical assessment & bias detection' },
+  { id: 'treaty', label: 'TREATY', sector: 'esz', weight: 0.020, description: 'Contract negotiation & SLA enforcement' },
 
-  // Plane — Supervisory blanket (under Defense Shell)
+  // ─── EPZ — Expansion Perception Zone (3 nodes, 0.06 total) ─────
+  { id: 'compass', label: 'COMPASS', sector: 'epz', weight: 0.020, description: 'Geospatial analysis & navigation' },
+  { id: 'echo', label: 'ECHO', sector: 'epz', weight: 0.020, description: 'Digital twin simulation & replay' },
+  { id: 'reflex', label: 'REFLEX', sector: 'epz', weight: 0.020, description: 'Edge computing orchestration' },
+
+  // ─── EMZ — Expansion Manufacturing Zone (4 nodes, 0.06 total) ──
+  { id: 'forge', label: 'FORGE', sector: 'emz', weight: 0.015, description: 'Artifact synthesis & manufacturing' },
+  { id: 'lingua', label: 'LINGUA', sector: 'emz', weight: 0.015, description: 'Translation & localization' },
+  { id: 'phantom', label: 'PHANTOM', sector: 'emz', weight: 0.015, description: 'Privacy protection & anonymization' },
+  { id: 'harvest', label: 'HARVEST', sector: 'emz', weight: 0.015, description: 'Data acquisition & ETL pipelines' },
+
+  // ─── Fields — System-wide transformation fabric ────────────────
+  { id: 'evolution', label: 'EVOLUTION', sector: 'field', weight: 0.020, description: 'Evolution lifecycle field' },
+  { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.020, description: 'Resilience field' },
+  { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.020, description: 'Capability discovery field' },
+
+  // ─── Plane — Supervisory blanket ───────────────────────────────
   { id: 'governance', label: 'GOVERNANCE', sector: 'plane', weight: 0.030, description: 'Policy enforcement overlay plane' },
 
-  // Shell — Outer containment boundary
+  // ─── Shell — Outer containment boundary ────────────────────────
   { id: 'defense', label: 'DEFENSE', sector: 'shell', weight: 0.030, description: 'Outer containment shell' },
 ];
 
@@ -144,9 +172,12 @@ export function getNodesBySector(sector: MatrixSector) {
 export const SECTOR_LABELS: Record<MatrixSector, string> = {
   core: 'CORE Kernel',
   system: 'SYSTEM Layer',
-  ccr: 'CCR (Cognitive Reality)',
+  ccr: 'CCR (Cognitive Core Reality)',
   ocg: 'OCG (Operational Compliance Grid)',
   execution: 'Execution Sector',
+  esz: 'ESZ (Expansion Sovereignty Zone)',
+  epz: 'EPZ (Expansion Perception Zone)',
+  emz: 'EMZ (Expansion Manufacturing Zone)',
   field: 'Fields (Transformation Fabric)',
   plane: 'Overlay Plane (Supervision)',
   shell: 'DEFENSE Shell (Containment)',
@@ -219,8 +250,9 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
       ? 'MATRIX DEGRADED'
       : 'MATRIX STABLE';
 
+  const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
-  for (const sector of ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'] as MatrixSector[]) {
+  for (const sector of allSectors) {
     const sectorNodes = nodes.filter(n => n.sector === sector);
     const sectorWeight = sectorNodes.reduce((s, n) => s + n.weight, 0);
     const sectorHealth = sectorNodes.length > 0

@@ -25,13 +25,16 @@ const BREAKER_STYLES: Record<BreakerState, { color: string; bg: string; icon: ty
   rerouting: { color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', icon: RefreshCw, label: 'REROUTING' },
 };
 
-const SECTOR_ORDER: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'];
+const SECTOR_ORDER: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'field', 'plane', 'shell'];
 const SECTOR_COLORS: Record<MatrixSector, string> = {
   core: 'border-orange-500/30',
   system: 'border-yellow-500/30',
   ccr: 'border-purple-500/30',
   ocg: 'border-cyan-500/30',
   execution: 'border-blue-500/30',
+  esz: 'border-amber-500/30',
+  epz: 'border-teal-500/30',
+  emz: 'border-indigo-500/30',
   field: 'border-emerald-500/30',
   plane: 'border-red-500/30',
   shell: 'border-rose-500/30',

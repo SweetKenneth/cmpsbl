@@ -36,12 +36,15 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('⚡ Booting CMPSBL® Substrate...');
     console.log('─────────────────────────────────────────');
     
-    // Boot order: CORE → CCR → CCL → Modules → INTEGRATION (last) → Mesh Overlays activate
-    const publicModules = [
+    // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → Fields → Plane → Shell
+    const executionModules = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-      'medic', 'nerve', // promoted from phantom → canonical (Wave 5)
-      'integration', // boots last among modules
+      'medic', 'nerve',
+      'integration', // boots last among execution modules
     ] as const;
+    const eszModules = ['sovereign', 'oracle', 'conscience', 'treaty'] as const;
+    const epzModules = ['compass', 'echo', 'reflex'] as const;
+    const emzModules = ['forge', 'lingua', 'phantom', 'harvest'] as const;
     const meshOverlays = [
       'governance', 'intent', 'evolution', 'immunity', 'defense', // innermost → outermost
     ] as const;
@@ -66,23 +69,23 @@ export async function initializeSubstrate(): Promise<void> {
     } catch { /* graceful */ }
     
     if (coreResult.success && ccrBooted && ocgBooted) {
-      console.log('✅ CORE + CCR Layer 0 + OCG Layer 1 active → 12 entities + 5 mesh overlays | Health: 100%');
+      console.log('✅ CORE + CCR + OCG active → 37-node matrix online | Health: 100%');
     } else {
-      // Fallback: ping individual modules
+      // Fallback: ping all sectors
       let activeCount = 0;
-      for (const module of publicModules) {
+      const allModules = [...executionModules, ...eszModules, ...epzModules, ...emzModules];
+      for (const module of allModules) {
         await yieldToMain();
         const result = await substrate.invoke({ module, action: 'pulse' });
         if (result.success) activeCount++;
       }
-      // Activate mesh overlays
       for (const mesh of meshOverlays) {
         await yieldToMain();
         const result = await substrate.invoke({ module: mesh, action: 'pulse' });
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/12 entities + mesh overlays active`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/37 nodes active across 11 sectors`);
     }
     
     console.log('─────────────────────────────────────────');

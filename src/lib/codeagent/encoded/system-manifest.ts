@@ -239,6 +239,111 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependencies: ['core'],
     dependents: [],
   },
+
+  // ─── ESZ — Expansion Sovereignty Zone ─────────────────────────────────────
+  sovereign: {
+    id: 'sovereign',
+    name: 'SOVEREIGN',
+    layer: 'operational',
+    description: 'Data sovereignty & jurisdictional compliance. GDPR, CCPA, residency rules.',
+    corePath: 'src/lib/substrate/sovereign-module/',
+    dependencies: ['core', 'defense', 'access'],
+    dependents: [],
+  },
+  oracle: {
+    id: 'oracle',
+    name: 'ORACLE',
+    layer: 'cognitive',
+    description: 'Predictive modeling, Bayesian networks, Monte Carlo simulation.',
+    corePath: 'src/lib/substrate/oracle-module/',
+    dependencies: ['core', 'brain', 'vision'],
+    dependents: [],
+  },
+  conscience: {
+    id: 'conscience',
+    name: 'CONSCIENCE',
+    layer: 'operational',
+    description: 'Ethical assessment, bias detection, fairness scoring.',
+    corePath: 'src/lib/substrate/conscience-module/',
+    dependencies: ['core', 'defense'],
+    dependents: [],
+  },
+  treaty: {
+    id: 'treaty',
+    name: 'TREATY',
+    layer: 'operational',
+    description: 'Contract negotiation, SLA enforcement, multi-party agreements.',
+    corePath: 'src/lib/substrate/treaty-module/',
+    dependencies: ['core', 'access'],
+    dependents: [],
+  },
+
+  // ─── EPZ — Expansion Perception Zone ──────────────────────────────────────
+  compass: {
+    id: 'compass',
+    name: 'COMPASS',
+    layer: 'cognitive',
+    description: 'Geospatial analysis, navigation intelligence, location-aware routing.',
+    corePath: 'src/lib/substrate/compass-module/',
+    dependencies: ['core', 'vision', 'brain'],
+    dependents: [],
+  },
+  echo: {
+    id: 'echo',
+    name: 'ECHO',
+    layer: 'cognitive',
+    description: 'Digital twin simulation, state replay, scenario modeling.',
+    corePath: 'src/lib/substrate/echo-module/',
+    dependencies: ['core', 'memory'],
+    dependents: [],
+  },
+  reflex: {
+    id: 'reflex',
+    name: 'REFLEX',
+    layer: 'infrastructure',
+    description: 'Edge computing orchestration, low-latency decision loops.',
+    corePath: 'src/lib/substrate/reflex-module/',
+    dependencies: ['core', 'nexus', 'vision'],
+    dependents: [],
+  },
+
+  // ─── EMZ — Expansion Manufacturing Zone ───────────────────────────────────
+  forge: {
+    id: 'forge',
+    name: 'FORGE',
+    layer: 'orchestration',
+    description: 'Artifact synthesis, code manufacturing, template generation.',
+    corePath: 'src/lib/substrate/forge-module/',
+    dependencies: ['core', 'encode'],
+    dependents: [],
+  },
+  lingua: {
+    id: 'lingua',
+    name: 'LINGUA',
+    layer: 'cognitive',
+    description: 'Translation, localization, multi-language processing.',
+    corePath: 'src/lib/substrate/lingua-module/',
+    dependencies: ['core', 'decode', 'nexus'],
+    dependents: [],
+  },
+  phantom: {
+    id: 'phantom',
+    name: 'PHANTOM',
+    layer: 'operational',
+    description: 'Privacy protection, anonymization, PII detection & masking.',
+    corePath: 'src/lib/substrate/phantom-module/',
+    dependencies: ['core', 'defense', 'identity'],
+    dependents: [],
+  },
+  harvest: {
+    id: 'harvest',
+    name: 'HARVEST',
+    layer: 'infrastructure',
+    description: 'Data acquisition, ETL pipelines, ingestion orchestration.',
+    corePath: 'src/lib/substrate/harvest-module/',
+    dependencies: ['core', 'memory', 'economy'],
+    dependents: [],
+  },
 };
 
 // ─── Key UI Components ───────────────────────────────────────────────────────
@@ -387,5 +492,6 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
-  return `CMPSBL Substrate: 12 entities (CORE + 10 Modules + INTEGRATION) + 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost) + 9 Zones (4 CCR + 5 OCG), ${componentCount} registered UI components. Meshes wrap modules as protective layers. 26 Matrix Nodes total.`;
+  const moduleCount = Object.keys(SYSTEM_MODULES).length;
+  return `CMPSBL Substrate: ${moduleCount} modules across 11 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell), ${componentCount} registered UI components. 37 Matrix Nodes total. Σ(weight) = 1.000.`;
 }
