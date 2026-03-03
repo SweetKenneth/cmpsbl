@@ -17,7 +17,23 @@ export interface ModuleNode {
 
 const graph = new Map<string, ModuleNode>();
 
+/** Clear all registered modules — essential for test isolation and HMR */
+export function clearGraph(): void {
+  graph.clear();
+}
+
+/** Get current graph size */
+export function getGraphSize(): number {
+  return graph.size;
+}
+
 export function registerModule(id: string, name: string, dependencies: string[] = []): ModuleNode {
+  // Warn on unknown dependencies (non-fatal; they may be registered later)
+  for (const dep of dependencies) {
+    if (!graph.has(dep)) {
+      console.warn(`[dependency-graph] Module "${name}" declares dependency on unregistered module "${dep}"`);
+    }
+  }
   const node: ModuleNode = { id, name, dependencies, bootOrder: null, status: 'unloaded', loadTimeMs: null };
   graph.set(id, node);
   return node;
@@ -28,26 +44,35 @@ export function computeBootOrder(): { order: string[]; cycles: string[][] } {
   const stack = new Set<string>();
   const order: string[] = [];
   const cycles: string[][] = [];
+  const inCycle = new Set<string>();
 
   function visit(nodeId: string, path: string[]): boolean {
     if (stack.has(nodeId)) {
       const cycleStart = path.indexOf(nodeId);
-      cycles.push(path.slice(cycleStart));
+      const cycle = path.slice(cycleStart);
+      cycles.push(cycle);
+      cycle.forEach(id => inCycle.add(id));
       return false;
     }
     if (visited.has(nodeId)) return true;
 
     stack.add(nodeId);
     const node = graph.get(nodeId);
+    let hasCycle = false;
     if (node) {
       for (const dep of node.dependencies) {
-        visit(dep, [...path, nodeId]);
+        if (!visit(dep, [...path, nodeId])) {
+          hasCycle = true;
+        }
       }
     }
     stack.delete(nodeId);
     visited.add(nodeId);
-    order.push(nodeId);
-    return true;
+    // Only add to boot order if not part of a cycle
+    if (!hasCycle && !inCycle.has(nodeId)) {
+      order.push(nodeId);
+    }
+    return !hasCycle;
   }
 
   for (const nodeId of graph.keys()) {
@@ -59,6 +84,15 @@ export function computeBootOrder(): { order: string[]; cycles: string[][] } {
     const node = graph.get(id);
     if (node) node.bootOrder = i;
   });
+
+  // Mark cyclic nodes as failed
+  for (const id of inCycle) {
+    const node = graph.get(id);
+    if (node) {
+      node.status = 'failed';
+      node.bootOrder = null;
+    }
+  }
 
   return { order, cycles };
 }
