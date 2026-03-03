@@ -3,20 +3,16 @@
  * Validates token counting, cost estimation, and budget enforcement
  */
 
-// Must polyfill localStorage BEFORE any imports that touch supabase
-if (typeof globalThis.localStorage === 'undefined') {
-  (globalThis as any).localStorage = {
-    _data: {} as Record<string, string>,
-    getItem(k: string) { return this._data[k] ?? null; },
-    setItem(k: string, v: string) { this._data[k] = v; },
-    removeItem(k: string) { delete this._data[k]; },
-    clear() { this._data = {}; },
-    get length() { return Object.keys(this._data).length; },
-    key(i: number) { return Object.keys(this._data)[i] ?? null; },
-  };
-}
+import { describe, it, expect, vi } from 'vitest';
 
-import { describe, it, expect } from 'vitest';
+// Mock supabase client to avoid localStorage dependency
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    from: () => ({ select: () => ({ eq: () => ({ data: [], error: null }) }) }),
+    rpc: () => ({ data: null, error: null }),
+  },
+}));
+
 import { estimateCost } from '../costEstimation';
 
 describe('NEXUS Cost Estimation', () => {
