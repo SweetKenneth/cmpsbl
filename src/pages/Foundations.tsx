@@ -338,8 +338,8 @@ export default function Foundations() {
                   </div>
                 </div>
                 <div className="flex gap-1 shrink-0">
-                  <Button variant="ghost" size="sm" asChild title="View in Library">
-                    <Link to={`/library?doc=${doc.id}-${doc.name}`}>
+                  <Button variant="ghost" size="sm" asChild title="View Documentation">
+                    <Link to="/documentation">
                       <FileText className="w-4 h-4" />
                     </Link>
                   </Button>
