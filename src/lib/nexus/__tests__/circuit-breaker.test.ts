@@ -16,7 +16,7 @@ import {
 describe('NEXUS Circuit Breaker', () => {
   beforeEach(() => {
     resetCircuit('test-provider');
-    configureCircuitBreaker({
+    updateCircuitConfig({
       failure_threshold: 3,
       success_threshold: 2,
       cooldown_ms: 100,
@@ -26,7 +26,7 @@ describe('NEXUS Circuit Breaker', () => {
 
   it('starts closed and available', () => {
     expect(isProviderAvailable('test-provider')).toBe(true);
-    const state = getCircuitState('test-provider');
+    const state = getCircuitStatus('test-provider');
     expect(state.state).toBe('closed');
   });
 
@@ -35,7 +35,7 @@ describe('NEXUS Circuit Breaker', () => {
       recordFailure('test-provider');
     }
     expect(isProviderAvailable('test-provider')).toBe(false);
-    const state = getCircuitState('test-provider');
+    const state = getCircuitStatus('test-provider');
     expect(state.state).toBe('open');
   });
 
@@ -52,7 +52,7 @@ describe('NEXUS Circuit Breaker', () => {
     // Wait for cooldown
     await new Promise(r => setTimeout(r, 150));
     expect(isProviderAvailable('test-provider')).toBe(true);
-    const state = getCircuitState('test-provider');
+    const state = getCircuitStatus('test-provider');
     expect(state.state).toBe('half-open');
   });
 
@@ -63,7 +63,7 @@ describe('NEXUS Circuit Breaker', () => {
 
     recordSuccess('test-provider');
     recordSuccess('test-provider');
-    const state = getCircuitState('test-provider');
+    const state = getCircuitStatus('test-provider');
     expect(state.state).toBe('closed');
   });
 
@@ -73,7 +73,7 @@ describe('NEXUS Circuit Breaker', () => {
     isProviderAvailable('test-provider'); // trigger half-open
 
     recordFailure('test-provider');
-    const state = getCircuitState('test-provider');
+    const state = getCircuitStatus('test-provider');
     expect(state.state).toBe('open');
   });
 
