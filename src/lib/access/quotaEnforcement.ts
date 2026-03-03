@@ -40,6 +40,7 @@ export interface UsageMeter {
 // ============ In-Memory Tracking ============
 
 const usageMeters: Map<string, UsageMeter> = new Map();
+const MAX_METERS = 2000;
 const quotaRules: Map<string, QuotaRule> = new Map();
 const violations: QuotaViolation[] = [];
 const MAX_VIOLATIONS = 500;
@@ -99,6 +100,17 @@ export async function recordUsage(
   // Get or create meter
   let meter = usageMeters.get(meterKey);
   if (!meter || isPeriodExpired(meter)) {
+    // Evict expired meters when at cap
+    if (usageMeters.size >= MAX_METERS) {
+      for (const [k, m] of usageMeters) {
+        if (isPeriodExpired(m)) usageMeters.delete(k);
+      }
+      // If still at cap, evict oldest
+      if (usageMeters.size >= MAX_METERS) {
+        const firstKey = usageMeters.keys().next().value;
+        if (firstKey) usageMeters.delete(firstKey);
+      }
+    }
     meter = createNewMeter(resourceType);
     usageMeters.set(meterKey, meter);
   }
