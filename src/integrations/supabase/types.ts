@@ -8427,6 +8427,93 @@ export type Database = {
         }
         Relationships: []
       }
+      maintenance_notification_config: {
+        Row: {
+          atlas_notifications: boolean
+          created_at: string
+          cron_schedule: string | null
+          email_recipients: string[]
+          enabled: boolean
+          id: string
+          notify_on_failure: boolean
+          notify_on_partial: boolean
+          notify_on_success: boolean
+          updated_at: string
+          webhook_secret: string | null
+          webhook_url: string | null
+        }
+        Insert: {
+          atlas_notifications?: boolean
+          created_at?: string
+          cron_schedule?: string | null
+          email_recipients?: string[]
+          enabled?: boolean
+          id?: string
+          notify_on_failure?: boolean
+          notify_on_partial?: boolean
+          notify_on_success?: boolean
+          updated_at?: string
+          webhook_secret?: string | null
+          webhook_url?: string | null
+        }
+        Update: {
+          atlas_notifications?: boolean
+          created_at?: string
+          cron_schedule?: string | null
+          email_recipients?: string[]
+          enabled?: boolean
+          id?: string
+          notify_on_failure?: boolean
+          notify_on_partial?: boolean
+          notify_on_success?: boolean
+          updated_at?: string
+          webhook_secret?: string | null
+          webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      maintenance_reports: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          duration_ms: number | null
+          engine: string
+          findings: Json
+          id: string
+          metadata: Json | null
+          pass_results: Json | null
+          status: string
+          summary: Json
+          trigger_source: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          engine: string
+          findings?: Json
+          id?: string
+          metadata?: Json | null
+          pass_results?: Json | null
+          status?: string
+          summary?: Json
+          trigger_source?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          engine?: string
+          findings?: Json
+          id?: string
+          metadata?: Json | null
+          pass_results?: Json | null
+          status?: string
+          summary?: Json
+          trigger_source?: string
+        }
+        Relationships: []
+      }
       marketplace_generated_templates: {
         Row: {
           ai_provider: string | null
