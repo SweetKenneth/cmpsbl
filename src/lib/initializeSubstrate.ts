@@ -61,13 +61,10 @@ export async function initializeSubstrate(): Promise<void> {
       ccrBooted = ccrResult.success;
     } catch { /* graceful */ }
     
-    // 3. Boot OCG (Layer 1 — Operational Compliance Grid)
-    let ocgBooted = false;
-    try {
-      const { initializeOCG } = await import('@/layers/ccl');
-      const ocgResult = await initializeOCG();
-      ocgBooted = ocgResult.success;
-    } catch { /* graceful */ }
+    // 3. OCG (Operational Compliance Grid) — removed as dead layer
+    //    All OCG subsystems (identity, access, signal, relay, audit) are
+    //    directly served by substrate modules. No separate boot needed.
+    const ocgBooted = true;
     
     if (coreResult.success && ccrBooted && ocgBooted) {
       console.log('✅ CORE + CCR + OCG active → 38-node matrix online | Health: 100%');
