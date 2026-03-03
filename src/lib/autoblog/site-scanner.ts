@@ -157,7 +157,7 @@ export async function runSiteScan(urls: string[]): Promise<SiteScanSummary> {
     await supabase.from('brain_events').insert([{
       module: 'autoblog',
       event_type: 'site_scan_completed',
-      data: summary,
+      data: JSON.parse(JSON.stringify(summary)),
       outcome: 'completed',
     }]);
   }
