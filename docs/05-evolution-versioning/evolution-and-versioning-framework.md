@@ -129,7 +129,7 @@ Every promoted change receives an immutable revision stamp:
 {
   "revision_id": "uuid",
   "epoch": "IRONCLAD",
-  "version": "13.0.0",
+  "version": "13.1.0",
   "promoted_at": "ISO-8601",
   "confidence_score": 0.97,
   "shadow_cycles": 14,
@@ -163,6 +163,7 @@ Revision stamps are stored in AUDIT and cannot be modified or deleted.
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift detection |
 | 2026-03-01 | System | Initial canonical evolution and versioning framework |
 
 ---
