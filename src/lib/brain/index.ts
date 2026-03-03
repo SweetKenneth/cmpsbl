@@ -64,17 +64,7 @@ export {
   searchNodes,
 } from './knowledgeGraph';
 
-// Re-export cost tracking
-export {
-  type ModelCost,
-  MODEL_COSTS,
-  getCheapestModel,
-  calculateCost,
-  logModelFeedback,
-  getModelStats,
-  assessComplexity,
-  shouldBatchTask,
-} from './costTracker';
+// costTracker removed — superseded by NEXUS costEstimation + cost-ceiling
 
 // Re-export context classifier
 export {
