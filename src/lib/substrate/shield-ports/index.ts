@@ -1,7 +1,7 @@
 /**
  * Shield Ports — Barrel Export
  * Security features ported from aetherion-shield
- * 7 capabilities for DEFENSE, SITE-GUARD, IMMUNITY, VISION, NERVE
+ * 8 capabilities for DEFENSE, SITE-GUARD, IMMUNITY, VISION, NERVE
  */
 
 // 1. Device Fingerprinting
@@ -47,3 +47,16 @@ export {
   clearConsentTrackingData,
   getConsentTrackingData,
 } from './consent-tracking';
+
+// 8. Fingerprint Cache + Drift Helpers
+export {
+  getCachedFingerprint,
+  setRegenWindow,
+  getRegenWindow,
+  invalidateFingerprintCache,
+  clearPersistentFingerprintCache,
+  hasCachedFingerprint,
+  getCacheAge,
+  setFingerprintPersistCache,
+  type FingerprintCacheResult,
+} from './fingerprint-cache';

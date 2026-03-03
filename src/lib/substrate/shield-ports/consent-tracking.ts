@@ -23,6 +23,12 @@ export function grantTrackingConsent(): void {
 export function revokeTrackingConsent(): void {
   secureSet(CONSENT_KEY, 'denied');
   clearConsentTrackingData();
+  // Clear persistent fingerprint cache on consent revoke
+  import('./fingerprint-cache').then(({ clearPersistentFingerprintCache }) => {
+    clearPersistentFingerprintCache();
+  }).catch(() => {
+    // fingerprint-cache may not be loaded yet — safe to ignore
+  });
 }
 
 // ── Data stores ──────────────────────────────────────────────────────

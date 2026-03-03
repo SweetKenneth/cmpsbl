@@ -1,6 +1,7 @@
 /**
- * Device Fingerprint Reputation — Ported from aetherion-shield
- * 5-tier reputation engine with automation property scanning and historical tracking.
+ * Device Fingerprint Reputation — Enhanced with Drift Tolerance
+ * 5-tier reputation engine with automation scanning, historical tracking,
+ * and drift-tolerant scoring for returning devices.
  * Target nodes: DEFENSE, SITE-GUARD
  */
 
@@ -17,6 +18,16 @@ interface ReputationRequest {
   fingerprint_data?: Record<string, any>;
   ip_address?: string;
   user_agent?: string;
+  /** Drift evaluation result (from fingerprint-drift-evaluate) */
+  drift_result?: {
+    drift_score: number;
+    is_within_tolerance: boolean;
+    recommended_action: string;
+  };
+  /** Hashed signal data for snapshot storage */
+  signal_hashes?: Record<string, string>;
+  signal_buckets?: Record<string, string | number>;
+  flags?: Record<string, boolean>;
 }
 
 interface DeviceReputation {
@@ -27,6 +38,8 @@ interface DeviceReputation {
   first_seen: string;
   last_seen: string;
   reasons: string[];
+  drift_score?: number;
+  drift_action?: string;
 }
 
 // Known automation global properties
@@ -40,6 +53,39 @@ const AUTOMATION_PROPS = [
   '__nightmare', '_phantom', 'phantom', 'callPhantom',
 ];
 
+// ── Rate limiter (per-fingerprint, windowed) ─────────────────────
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT_MAX = 15; // max 15 requests per minute per fingerprint
+const rateBuckets = new Map<string, { count: number; windowStart: number }>();
+
+function checkRateLimit(key: string): boolean {
+  const now = Date.now();
+  const bucket = rateBuckets.get(key);
+
+  if (!bucket || (now - bucket.windowStart) > RATE_LIMIT_WINDOW_MS) {
+    rateBuckets.set(key, { count: 1, windowStart: now });
+    return true;
+  }
+
+  bucket.count++;
+  if (bucket.count > RATE_LIMIT_MAX) {
+    return false;
+  }
+  return true;
+}
+
+// Prune stale buckets periodically (max 500 entries)
+function pruneRateBuckets(): void {
+  if (rateBuckets.size > 500) {
+    const now = Date.now();
+    for (const [key, bucket] of rateBuckets) {
+      if (now - bucket.windowStart > RATE_LIMIT_WINDOW_MS * 2) {
+        rateBuckets.delete(key);
+      }
+    }
+  }
+}
+
 Deno.serve(withMiddleware(async (req: Request) => {
   if (req.method !== 'POST') {
     throw new EdgeError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
@@ -49,6 +95,21 @@ Deno.serve(withMiddleware(async (req: Request) => {
 
   if (!body.fingerprint_hash || body.fingerprint_hash.length < 1 || body.fingerprint_hash.length > 128) {
     throw new EdgeError('Invalid fingerprint_hash', 400, 'INVALID_INPUT');
+  }
+
+  // ── Rate limit check ──────────────────────────────────────────
+  pruneRateBuckets();
+  if (!checkRateLimit(body.fingerprint_hash)) {
+    // Log rate limit event
+    const supabaseLog = createAdminClient();
+    await supabaseLog.from('defense_events').insert({
+      fingerprint_hash: body.fingerprint_hash,
+      action: 'challenge',
+      event_type: 'rate_limited',
+      metadata: { endpoint: 'device-fingerprint-reputation', reason: 'rate_limit_exceeded' },
+    }).catch(() => {});
+
+    throw new EdgeError('Rate limit exceeded', 429, 'RATE_LIMITED');
   }
 
   const supabase = createAdminClient();
@@ -135,7 +196,7 @@ Deno.serve(withMiddleware(async (req: Request) => {
     .limit(100);
 
   const now = new Date().toISOString();
-  let reputation: DeviceReputation;
+  let isTrusted = false;
 
   if (events && events.length > 0) {
     const totalEvents = events.length;
@@ -150,6 +211,8 @@ Deno.serve(withMiddleware(async (req: Request) => {
     } else if (blockRate > 0.3) {
       riskScore += 30;
       signals.push('MEDIUM: Elevated block rate');
+    } else if (blockRate < 0.1 && totalEvents >= 10) {
+      isTrusted = true;
     }
 
     if (suspiciousEvents / totalEvents > 0.4) {
@@ -167,29 +230,50 @@ Deno.serve(withMiddleware(async (req: Request) => {
         signals.push('HIGH: Rapid request pattern');
       }
     }
-
-    reputation = {
-      fingerprint_hash: body.fingerprint_hash,
-      reputation_score: Math.max(0, 100 - riskScore),
-      risk_level: getRiskLevel(riskScore),
-      total_requests: totalEvents,
-      first_seen: events[events.length - 1].created_at,
-      last_seen: now,
-      reasons: signals.length > 0 ? signals : ['established_device'],
-    };
-  } else {
-    reputation = {
-      fingerprint_hash: body.fingerprint_hash,
-      reputation_score: Math.max(0, 100 - riskScore),
-      risk_level: getRiskLevel(riskScore),
-      total_requests: 0,
-      first_seen: now,
-      last_seen: now,
-      reasons: signals.length > 0 ? signals : ['new_device'],
-    };
   }
 
-  console.log('[DEFENSE] Device reputation:', reputation.risk_level, 'score:', reputation.reputation_score);
+  // ── 5. DRIFT TOLERANCE INTEGRATION ────────────────────────────
+  let driftScore: number | undefined;
+  let driftAction: string | undefined;
+
+  if (body.drift_result) {
+    driftScore = body.drift_result.drift_score;
+    driftAction = body.drift_result.recommended_action;
+
+    if (body.drift_result.is_within_tolerance && isTrusted) {
+      // Trusted device with low drift — reduce risk impact
+      riskScore = Math.max(0, riskScore - 15);
+      signals.push('DRIFT: Within tolerance (trusted device bonus)');
+    } else if (driftScore > 0.6 && !isTrusted) {
+      // High drift on untrusted device — increase risk
+      riskScore += 20;
+      signals.push('DRIFT: High drift on untrusted device');
+    } else if (driftScore > 0.35) {
+      riskScore += 10;
+      signals.push('DRIFT: Moderate drift detected');
+    }
+
+    // Hard negatives from drift always override trust
+    if (body.drift_result.recommended_action === 'block') {
+      riskScore += 30;
+      signals.push('DRIFT: Hard negative flags triggered block');
+    }
+  }
+
+  // ── Build reputation ──────────────────────────────────────────
+  const reputation: DeviceReputation = {
+    fingerprint_hash: body.fingerprint_hash,
+    reputation_score: Math.max(0, 100 - riskScore),
+    risk_level: getRiskLevel(riskScore),
+    total_requests: events ? events.length : 0,
+    first_seen: events && events.length > 0 ? events[events.length - 1].created_at : now,
+    last_seen: now,
+    reasons: signals.length > 0 ? signals : (events && events.length > 0 ? ['established_device'] : ['new_device']),
+    drift_score: driftScore,
+    drift_action: driftAction,
+  };
+
+  console.log('[DEFENSE] Device reputation:', reputation.risk_level, 'score:', reputation.reputation_score, 'drift:', driftScore ?? 'n/a');
 
   return jsonResponse(reputation);
 }));
