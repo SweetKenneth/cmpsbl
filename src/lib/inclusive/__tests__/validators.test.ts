@@ -10,7 +10,7 @@ import {
   validateForms,
   validateKeyboard,
   validateMedia,
-  validateHeadings,
+  validateStructure,
   validateImages,
   runAllValidators,
 } from '../validators';
@@ -57,7 +57,7 @@ describe('INCLUSIVE Validators', () => {
   describe('validateAria', () => {
     it('passes for valid ARIA roles', () => {
       const issues = validateAria(goodHtml);
-      const ariaIssues = issues.filter(i => i.wcagCriterion === '4.1.2');
+      const ariaIssues = issues.filter(i => i.wcagCriteria?.includes('4.1.2'));
       expect(ariaIssues).toHaveLength(0);
     });
     it('detects invalid ARIA roles', () => {
@@ -84,9 +84,9 @@ describe('INCLUSIVE Validators', () => {
     });
   });
 
-  describe('validateHeadings', () => {
+  describe('validateStructure (headings)', () => {
     it('detects skipped heading levels', () => {
-      const issues = validateHeadings(badHtml);
+      const issues = validateStructure(badHtml);
       expect(issues.some(i => i.type === 'heading_skip')).toBe(true);
     });
   });
