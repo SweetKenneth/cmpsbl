@@ -4,7 +4,7 @@
  */
 
 import { execSync } from 'child_process';
-import { readdirSync, readFileSync, statSync } from 'fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import type { PassResult } from '../types';
 
