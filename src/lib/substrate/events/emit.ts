@@ -40,7 +40,14 @@ async function flushEvents(): Promise<void> {
   if (eventQueue.length === 0) return;
 
   // Don't attempt to flush if user is not authenticated
-  const { data: { session } } = await supabase.auth.getSession();
+  // Guard against missing auth object (test env / SSR)
+  let session: any = null;
+  try {
+    const result = await supabase.auth?.getSession?.();
+    session = result?.data?.session;
+  } catch {
+    // supabase not initialized — drain and bail
+  }
   if (!session) {
     // Silently drain the queue — unauthenticated writes will always fail
     eventQueue.length = 0;
