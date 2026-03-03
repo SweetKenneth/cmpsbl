@@ -898,9 +898,12 @@ export default function STierVault() {
               </p>
             </div>
           </div>
-          <div className="flex gap-2 self-start sm:self-auto">
+          <div className="flex gap-2 self-start sm:self-auto flex-wrap">
             <Button variant="outline" size="sm" onClick={() => setShowAnalytics(!showAnalytics)} className="gap-1.5">
               <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleSaveOfflineManifest} className="gap-1.5">
+              <Download className="w-4 h-4" /> Offline Manifest
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5">
               <Download className="w-4 h-4" /> Registry JSON
