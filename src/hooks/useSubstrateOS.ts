@@ -286,25 +286,26 @@ export function useSystemConfig(key?: string) {
 
 /**
  * Layer-weighted health score for dashboard
- * 37-Node / 11-Sector Field-Based Topology — weighted aggregation:
- *   CORE+SYSTEM: 15% | CCR: 15% | OCG: 15% | Execution: 20% | ESZ+EPZ+EMZ: 15% | Fields+Plane+Shell: 20%
+ * 38-Node / 12-Sector Field-Based Topology — weighted aggregation:
+ *   CORE+SYSTEM: 12% | CCR: 12% | OCG: 15% | Execution: 18% | ESZ+EPZ+EMZ: 13% | CSZ: 10% | Fields+Plane+Shell: 20%
  *
  * Batched into a single useQuery to prevent parallel network request storms.
  */
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions — 37-node / 11-sector topology
+  // Layer definitions — 38-node / 12-sector topology
   const CORE_SYSTEM = ['core', 'system'] as const;
   const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
-  const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
-  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration'] as const;
-  const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest'] as const;
-  const MESH_OVERLAYS = ['evolution', 'immunity', 'intent', 'governance', 'defense'] as const;
+  const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
+  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration'] as const;
+  const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest'] as const;
+  const CSZ_ZONES = ['evolution', 'shadow', 'phantom'] as const;
+  const MESH_OVERLAYS = ['immunity', 'intent', 'governance', 'defense'] as const;
 
   const ALL_MODULES = [
     ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...MESH_OVERLAYS, 'modernizer',
+    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...MESH_OVERLAYS, 'modernizer',
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
@@ -342,7 +343,8 @@ export function useSubstrateHealthScore() {
     phantom: () => cortex.status(),
     harvest: () => cortex.status(),
     medic: () => core.status(),
-    nerve: () => core.status(),
+    // CSZ — Covert Systems Zone
+    shadow: () => defense.status(),
     // Mesh overlays
     immunity: () => defense.status(),
     evolution: () => modernizer.status(),
@@ -381,7 +383,7 @@ export function useSubstrateHealthScore() {
   for (const m of ALL_MODULES) defaultModules[m] = true;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation — 37-node / 11-sector
+  // Layer-weighted health calculation — 38-node / 12-sector
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
     const healthy = keys.filter(k => modules[k] !== false).length;
@@ -393,14 +395,16 @@ export function useSubstrateHealthScore() {
   const ocgHealth = layerHealth(OCG_ZONES);
   const surfaceHealth = layerHealth(EXECUTION_SURFACES);
   const expansionHealth = layerHealth(EXPANSION_ZONES);
+  const cszHealth = layerHealth(CSZ_ZONES);
   const meshHealth = layerHealth(MESH_OVERLAYS);
 
   const healthScore = Math.round(
-    coreSysHealth * 0.15 +
-    ccrHealth * 0.15 +
+    coreSysHealth * 0.12 +
+    ccrHealth * 0.12 +
     ocgHealth * 0.15 +
-    surfaceHealth * 0.20 +
-    expansionHealth * 0.15 +
+    surfaceHealth * 0.18 +
+    expansionHealth * 0.13 +
+    cszHealth * 0.10 +
     meshHealth * 0.20
   );
 
@@ -424,6 +428,7 @@ export function useSubstrateHealthScore() {
       ocg: ocgHealth,
       surfaces: surfaceHealth,
       expansion: expansionHealth,
+      csz: cszHealth,
       mesh: meshHealth,
     },
   };
