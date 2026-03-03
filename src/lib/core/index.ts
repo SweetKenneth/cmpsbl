@@ -101,7 +101,7 @@ export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Entity classification — new taxonomy
-export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed';
+export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed' | 'zone-esz' | 'zone-epz' | 'zone-emz';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Kernel (boots first)
@@ -141,18 +141,20 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   defense: 'shell',
   // Module (boots last)
   integration: 'module',
-  // Expansion Modules (37-Node Architecture)
-  sovereign: 'module',
-  oracle: 'module',
-  conscience: 'module',
-  phantom: 'module',
-  forge: 'module',
-  lingua: 'module',
-  compass: 'module',
-  echo: 'module',
-  treaty: 'module',
-  harvest: 'module',
-  reflex: 'module',
+  // Expansion Sovereignty Zone (ESZ)
+  sovereign: 'zone-esz',
+  oracle: 'zone-esz',
+  conscience: 'zone-esz',
+  treaty: 'zone-esz',
+  // Expansion Perception Zone (EPZ)
+  compass: 'zone-epz',
+  echo: 'zone-epz',
+  reflex: 'zone-epz',
+  // Expansion Manufacturing Zone (EMZ)
+  forge: 'zone-emz',
+  lingua: 'zone-emz',
+  phantom: 'zone-emz',
+  harvest: 'zone-emz',
 };
 
 /**
