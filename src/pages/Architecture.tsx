@@ -71,9 +71,9 @@ export default function Architecture() {
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses an 11-phase boot sequence: CORE initializes all sectors, maintains the module registry, and orchestrates lifecycle events across 37 nodes.' },
-          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 37 nodes across 11 sectors: CORE, SYSTEM, CCR (3), OCG (5), Execution (11), ESZ (4), EPZ (3), EMZ (4), Fields (3), Plane (1), and Shell (1).' },
-          { question: 'What are the protective layers?', answer: 'Three shielded expansion zones (ESZ, EPZ, EMZ) group specialized modules, while Fields (EVOLUTION, IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a 12-phase boot sequence: CORE initializes all sectors, maintains the module registry, and orchestrates lifecycle events across 38 nodes.' },
+          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 38 nodes across 12 sectors: CORE, SYSTEM, CCR (3), OCG (6), Execution (10), ESZ (4), EPZ (3), EMZ (3), CSZ (3), Fields (2), Plane (1), and Shell (1).' },
+          { question: 'What are the protective layers?', answer: 'Four shielded expansion zones (ESZ, EPZ, EMZ, CSZ) group specialized modules, while Fields (IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
         ]}
       />
 

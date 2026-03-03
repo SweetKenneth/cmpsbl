@@ -186,7 +186,7 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Inter-node signaling, consensus repair',
     color: 'text-violet-600',
   },
-  // Expansion Modules (37-Node Architecture)
+  // Expansion Modules (38-Node Architecture)
   sovereign: {
     icon: Crown,
     label: 'SOVEREIGN',

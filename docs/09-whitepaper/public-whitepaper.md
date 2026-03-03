@@ -19,15 +19,16 @@ These gaps make AI systems unsuitable for production infrastructure, enterprise 
 
 ## 3. System Thesis
 
-The CMPSBL substrate solves these problems by providing a **37-module cognitive kernel** organized into a weighted topology across 11 sectors:
+The CMPSBL substrate solves these problems by providing a **38-module cognitive kernel** organized into a weighted topology across 12 sectors:
 
 - A **Spine** for core reasoning and memory (CORE, SYSTEM, CCR).
-- An **Operational Compliance Grid** (OCG) for boundary enforcement.
-- An **Execution layer** for public-facing capabilities (11 nodes).
+- An **Operational Compliance Grid** (OCG) for boundary enforcement (6 nodes).
+- An **Execution layer** for public-facing capabilities (10 nodes).
 - **Expansion Sovereignty Zone** (ESZ) for compliance, prediction, ethics, and contracts.
 - **Expansion Perception Zone** (EPZ) for simulation, geospatial awareness, and edge computing.
-- **Expansion Manufacturing Zone** (EMZ) for artifact production, translation, privacy, and data ingestion.
-- **Fields** that permeate all layers for evolution, immunity, and intent alignment.
+- **Expansion Manufacturing Zone** (EMZ) for artifact production, translation, and data ingestion.
+- **Covert Systems Zone** (CSZ) for evolution, shadow testing, and phantom operations.
+- **Fields** that permeate all layers for immunity and intent alignment.
 - A **Governance Plane** that supervises every action.
 - A **Defense Shell** that enforces the outermost trust boundary.
 
@@ -54,16 +55,17 @@ The substrate consists of:
 | Spine: CORE | 1 | Kernel boot, integrity calculation |
 | Spine: SYSTEM | 1 | Lifecycle, configuration |
 | Spine: CCR | 3 | Reasoning, memory, synthesis |
-| Grid: OCG | 5 | Compliance, access control, audit |
-| Execution | 11 | AI capabilities (routing, encoding, decoding, orchestration, diagnostics) |
+| Grid: OCG | 6 | Compliance, access control, audit, signaling |
+| Execution | 10 | AI capabilities (routing, encoding, decoding, orchestration, diagnostics) |
 | ESZ | 4 | Sovereignty, prediction, ethics, contracts |
 | EPZ | 3 | Simulation, geospatial, edge computing |
-| EMZ | 4 | Manufacturing, translation, privacy, data |
-| Fields | 3 | Cross-cutting concerns (evolution, immunity, intent) |
+| EMZ | 3 | Manufacturing, translation, data |
+| CSZ | 3 | Evolution, shadow testing, phantom ops |
+| Fields | 2 | Cross-cutting concerns (immunity, intent) |
 | Plane | 1 | Governance supervision |
 | Shell | 1 | Security boundary |
 
-**Total: 37 nodes across 11 sectors, Σ(weight) = 1.000**
+**Total: 38 nodes across 12 sectors, Σ(weight) = 1.000**
 
 The architecture is **BYOK** (Bring Your Own Keys): operators supply their own AI provider keys, database, and infrastructure. No data leaves the operator's environment.
 
