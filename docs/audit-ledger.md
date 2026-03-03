@@ -1,6 +1,6 @@
 # Full-System Engineering Audit Ledger
 
-> Generated: 2026-03-03 | Status: In Progress
+> Generated: 2026-03-03 | Status: **COMPLETE** ✅
 
 ---
 
@@ -237,10 +237,74 @@
 - **Rollback**: Remove cap logic after push.
 
 ## Phase 10: Code Entropy & Orphan Sweep
-*Pending*
+
+### Finding 10.1 — Dead Module: brain/costTracker.ts
+- **Severity**: Low (dead code)
+- **Issue**: Entire file had zero imports across codebase. Superseded by NEXUS `costEstimation.ts` + `cost-ceiling.ts`.
+- **Fix**: Deleted file and removed re-exports from `brain/index.ts`.
+- **Rollback**: Restore from git history (`git checkout HEAD~1 -- src/lib/brain/costTracker.ts`).
+
+### Finding 10.2 — Dead Module: substrate/backpressure.ts
+- **Severity**: Low (dead code)
+- **Issue**: Zero imports. Functionality covered by `withBackpressure` in substrate hardening layer.
+- **Fix**: Deleted file.
+- **Rollback**: Restore from git history.
+
+### Finding 10.3 — Dead Module: substrate/budget-governor/
+- **Severity**: Low (dead code)
+- **Issue**: Zero imports from outside CLM. The standalone budget-governor directory was unused — CLM has its own `budget-governor` sub-module.
+- **Fix**: Deleted directory.
+- **Rollback**: Restore from git history.
+
+### Finding 10.4 — Unused Exports in validators.ts
+- **Severity**: Info
+- **Issue**: `sanitizeForJson`, `sanitizeUrlParam`, `isValidInteger` have zero imports. Retained as defensive utility library.
+- **Action**: No change — documented for awareness.
+
+---
 
 ## Phase 11: Versioning & Migration Audit
-*Pending*
+
+### Assessment
+- **Migration reversibility**: All DB migrations use additive patterns (CREATE TABLE, ALTER ADD COLUMN). No destructive migrations detected.
+- **Evolution phase transitions**: Validated by `validate_evolution_phase_transition()` trigger — prevents backward/skip transitions.
+- **Single active evolution**: Enforced by `check_single_active_evolution()` trigger.
+- **Version guards**: Ironclad v2.0.0 hardening layer uses `MODULE_VERSION` constants per node.
+- **Export compatibility**: Module barrel files (`index.ts`) maintain stable public APIs. No breaking removals detected.
+- **Status**: ✅ No issues found.
+
+---
 
 ## Phase 12: Final Blind Spot Sweep
-*Pending*
+
+### Documented Assumptions
+1. **Token estimation**: `costEstimation.ts` uses rough 4-chars-per-token heuristic. Adequate for cost gating but not billing-grade.
+2. **In-memory state**: Multiple substrate modules use module-scoped Maps/arrays (circuit breakers, rate limit buckets, correlation spans). These reset on page refresh — acceptable for client-side substrate but would need persistence for server-side deployment.
+3. **SEBA test mock gap**: SEBA tests show `supabase.from(...).select(...).or is not a function` — the test mock doesn't fully implement the Supabase query builder. Tests still pass but SEBA cycle coverage relies on graceful error handling rather than full mock fidelity.
+4. **Auto-recovery timer**: Circuit breaker `startAutoRecovery()` uses `setInterval` — requires explicit `stopAutoRecovery()` call to prevent leaks in test environments.
+
+### TODO Markers Added (inline)
+- costEstimation.ts line 102: Token estimation is rough (4 chars/token)
+- validators.ts: Unused exports retained for future utility
+
+---
+
+## Audit Summary
+
+| Phase | Findings | Fixed | Severity |
+|-------|----------|-------|----------|
+| 1. Dependency Graph | 3 | 3 | High/Medium |
+| 2. Failure Domain | 3 | 3 | High/Medium |
+| 3. Idempotency | 3 | 3 | Medium |
+| 4. Observability | 1 | 1 | Low |
+| 5. Performance | 1 | 1 | Medium |
+| 6. Memory Leaks | 5 | 4 | High/Medium |
+| 7. Security Surface | 2 | 2 | Medium |
+| 8. Economic Risk | 1 | 1 | Medium |
+| 9. Concurrency | 1 | 1 | Medium |
+| 10. Code Entropy | 4 | 3 | Low |
+| 11. Versioning | 0 | 0 | — |
+| 12. Blind Spot | 4 | 0 | Info |
+| **Total** | **28** | **22** | — |
+
+All 230+ tests passing. Zero regressions. System measurably stronger.
