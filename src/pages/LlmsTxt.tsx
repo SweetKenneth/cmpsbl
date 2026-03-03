@@ -27,9 +27,9 @@ Clockless adopts and implements LLMS.txt as its primary machine context.
 
 ## About
 
-Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37 active nodes across 11 sectors, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 38 active nodes across 12 sectors, real-time observability, adaptive learning, and multi-provider routing.
 
-## Architecture (37 Nodes / 11 Sectors)
+## Architecture (38 Nodes / 12 Sectors)
 
 ### CORE (Kernel)
 - CORE — Boot sequencing, circuit breakers, config, job scheduling
@@ -42,14 +42,15 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37
 - MEMORY — Persistent storage, vector/RAG
 - DREAM — Synthesis, pattern consolidation
 
-### OCG — Operational Compliance Grid (5)
+### OCG — Operational Compliance Grid (6)
 - RIPPLE — Event bus, signal propagation
 - ACCESS — Entitlements, API keys
 - IDENTITY — Session, actor attribution
 - RELAY — Webhook delivery, outbound routing
 - AUDIT — Compliance logging, integrity ledger
+- NERVE — Inter-node signaling, stimulus routing
 
-### Execution (11)
+### Execution (10)
 - DECODE — Intent parsing, entity extraction
 - ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
@@ -59,7 +60,6 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37
 - SANDBOX — Isolated execution environments
 - INCLUSIVE — Accessibility, WCAG compliance
 - MEDIC — Autonomous diagnostics, self-healing
-- NERVE — Inter-node signaling, stimulus routing
 - INTEGRATION — Enterprise connectors (boots last)
 
 ### ESZ — Ethical Sovereignty Zone (4)
@@ -73,14 +73,17 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37
 - ECHO — Simulation, scenario modeling
 - REFLEX — Reactive autonomy, stimulus response
 
-### EMZ — Emergent Manufacturing Zone (4)
+### EMZ — Emergent Manufacturing Zone (3)
 - FORGE — Code generation, AST transformation
 - LINGUA — Localization, translation pipelines
-- PHANTOM — Privacy enforcement, data masking
 - HARVEST — Data acquisition, ETL orchestration
 
-### Fields (3) + Plane (1) + Shell (1) — Mesh Overlays
+### CSZ — Covert Systems Zone (3)
 - EVOLUTION — Self-improvement lifecycle (shadow mode)
+- SHADOW — Divergence testing, shadow mesh operations
+- PHANTOM — Privacy enforcement, data masking
+
+### Fields (2) + Plane (1) + Shell (1) — Mesh Overlays
 - IMMUNITY — Adaptive resilience, self-healing
 - INTENT — Cross-module intent routing
 - GOVERNANCE — Ethical constraints, coherence

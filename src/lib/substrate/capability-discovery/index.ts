@@ -1,6 +1,6 @@
 /**
  * Module Capability Discovery
- * Auto-detects module functionality via endpoint probing (37-node architecture)
+ * Auto-detects module functionality via endpoint probing (38-node / 12-sector architecture)
  * 
  * Scans registered modules to discover available operations,
  * health status, and capability coverage.
@@ -56,7 +56,7 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   IDENTITY: ['status', 'verify', 'provision', 'revoke', 'federate'],
   AUDIT: ['status', 'log', 'query', 'export', 'retain'],
   MEDIC: ['status', 'diagnose', 'heal', 'quarantine', 'report'],
-  // Expansion modules (37-node architecture)
+  // Expansion modules (38-node / 12-sector architecture)
   SOVEREIGN: ['status', 'classify_jurisdiction', 'enforce_regulation', 'attest', 'audit_compliance'],
   ORACLE: ['status', 'forecast', 'model', 'simulate', 'calibrate'],
   CONSCIENCE: ['status', 'assess_impact', 'detect_bias', 'score_fairness', 'audit_ethics'],
@@ -68,6 +68,8 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   TREATY: ['status', 'negotiate', 'sign', 'enforce', 'audit_contract'],
   HARVEST: ['status', 'discover', 'ingest', 'deduplicate', 'score_quality'],
   REFLEX: ['status', 'dispatch', 'decide', 'coordinate', 'sync'],
+  // CSZ — Covert Systems Zone (38-node architecture)
+  SHADOW: ['status', 'execute_run', 'configure_mesh', 'divergence_report', 'stealth_validate'],
 };
 
 const DEFAULT_CONFIG: DiscoveryConfig = {

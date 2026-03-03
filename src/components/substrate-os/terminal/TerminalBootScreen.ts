@@ -1,14 +1,14 @@
 /**
  * Terminal Boot Screen
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  * Mobile-friendly with no mid-word line breaks
  * 
  * Architecture:
- * - 37 active nodes across 11 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell)
+ * - 38 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
  * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
  * - 675+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 500+ commands across all 37 nodes + infrastructure
+ * - 500+ commands across all 38 nodes + infrastructure
  * - CLM across all modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
@@ -80,23 +80,23 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-  ║              CMPSBL® OS — 37-Node Matrix                ║
-  ║             11-Sector Cognitive Topology                  ║
-  ╠═══════════════════════════════════════════════════════════╣
-  ║                                                           ║
-  ║  ┏━━━━━━━━━━━━ CORE + SYSTEM ━━━━━━━━━━━━┓               ║
-  ║  ┃  ⬢ CORE (kernel)    ◇ SYSTEM (lifecycle) ┃             ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛             ║
+   ║              CMPSBL® OS — 38-Node Matrix                ║
+   ║             12-Sector Cognitive Topology                  ║
+   ╠═══════════════════════════════════════════════════════════╣
+   ║                                                           ║
+   ║  ┏━━━━━━━━━━━━ CORE + SYSTEM ━━━━━━━━━━━━┓               ║
+   ║  ┃  ⬢ CORE (kernel)    ◇ SYSTEM (lifecycle) ┃             ║
+   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛             ║
+   ║        ╲                           ╱                       ║
+   ║  ┏━━━━━━━ CCR (Cognitive Core) ━━━━━━━━━━┓               ║
+   ║  ┃  ◈ BRAIN     ◈ MEMORY     ◈ DREAM     ┃               ║
+   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
+   ║  ┏━━━━ OCG (Operational Compliance) ━━━━━┓               ║
+   ║  ┃  ◆ RIPPLE  ◆ ACCESS  ◆ IDENTITY       ┃               ║
+   ║  ┃  ◆ RELAY   ◆ AUDIT   ◆ NERVE          ┃               ║
+   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
   ║        ╲                           ╱                       ║
-  ║  ┏━━━━━━━ CCR (Cognitive Core) ━━━━━━━━━━┓               ║
-  ║  ┃  ◈ BRAIN     ◈ MEMORY     ◈ DREAM     ┃               ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
-  ║  ┏━━━━ OCG (Operational Compliance) ━━━━━┓               ║
-  ║  ┃  ◆ RIPPLE  ◆ ACCESS  ◆ IDENTITY       ┃               ║
-  ║  ┃  ◆ RELAY   ◆ AUDIT                    ┃               ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
-  ║        ╲                           ╱                       ║
-  ║  ┏━━━━━━━ EXECUTION (11 nodes) ━━━━━━━━━━┓               ║
+  ║  ┏━━━━━━━ EXECUTION (10 nodes) ━━━━━━━━━━┓               ║
   ║  ┃  ★ DECODE  ★ ENCODE  ★ VISION  ★ CORTEX┃              ║
   ║  ┃  ★ NEXUS   ★ ECONOMY ★ SANDBOX         ┃              ║
   ║  ┃  ★ INCLUSIVE ★ MEDIC  ★ NERVE           ┃              ║
@@ -131,7 +131,7 @@ export function generateMobileBootScreen(): string[] {
     `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
-    '  ┌─ 37-NODE MATRIX ───────────────┐',
+    '  ┌─ 38-NODE MATRIX ───────────────┐',
     '  │                                │',
     '  │  ⬢ CORE Kernel                 │',
     '  │    core                         │',
@@ -142,12 +142,12 @@ export function generateMobileBootScreen(): string[] {
     '  │    brain  memory  dream        │',
     '  │  ◆ OCG (Compliance Grid)       │',
     '  │    ripple access identity      │',
-    '  │    relay  audit                │',
+    '  │    relay  audit  nerve         │',
     '  │                                │',
-    '  │  ★ Execution (11 nodes)        │',
+    '  │  ★ Execution (10 nodes)        │',
     '  │    decode encode vision cortex │',
     '  │    nexus economy sandbox       │',
-    '  │    inclusive medic nerve       │',
+    '  │    inclusive medic             │',
     '  │    integration                 │',
     '  │                                │',
     '  │  ◎ ESZ (Sovereignty)           │',
@@ -156,17 +156,18 @@ export function generateMobileBootScreen(): string[] {
     '  │  ◎ EPZ (Perception)            │',
     '  │    compass echo reflex         │',
     '  │  ◎ EMZ (Manufacturing)         │',
-    '  │    forge lingua phantom        │',
-    '  │    harvest                     │',
+    '  │    forge lingua harvest        │',
+    '  │  ◎ CSZ (Covert Systems)        │',
+    '  │    evolution shadow phantom    │',
     '  │                                │',
     '  │  ≋ Fields                      │',
-    '  │    evolution immunity intent   │',
+    '  │    immunity intent             │',
     '  │  ◉ Plane: governance           │',
     '  │  ◉ Shell: defense              │',
     '  │                                │',
     '  └────────────────────────────────┘',
     '',
-    '  ◉ 37 nodes | 11 sectors',
+    '  ◉ 38 nodes | 12 sectors',
     '  ◉ 500+ commands available',
     '  ◉ 300 synergies | 125 executors',
     '  ◉ 675+ capabilities | 100 engines',
@@ -207,7 +208,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░                                                       ░',
     '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
     '',
-    '  ┌─ 37-NODE / 11-SECTOR TOPOLOGY ────────────────────────┐',
+    '  ┌─ 38-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
     '  │                                                       │',
     '  │  ⬢ CORE KERNEL ───────────────────────────────────    │',
     '  │    ◉ core (boots first, cascade authority)             │',
@@ -220,13 +221,13 @@ export function generateDesktopBootScreen(): string[] {
     '  │                                                       │',
     '  │  ◆ OCG — Operational Compliance Grid ─────────────    │',
     '  │    ◉ ripple     ◉ access       ◉ identity             │',
-    '  │    ◉ relay      ◉ audit                               │',
+    '  │    ◉ relay      ◉ audit        ◉ nerve                │',
     '  │                                                       │',
-    '  │  ★ EXECUTION SECTOR (11 nodes) ───────────────────    │',
+    '  │  ★ EXECUTION SECTOR (10 nodes) ───────────────────    │',
     '  │    ◉ decode     ◉ encode       ◉ vision               │',
     '  │    ◉ cortex     ◉ nexus        ◉ economy              │',
     '  │    ◉ sandbox    ◉ inclusive     ◉ medic                │',
-    '  │    ◉ nerve      ◉ integration                         │',
+    '  │    ◉ integration                                       │',
     '  │                                                       │',
     '  │  ◎ ESZ — Expansion Sovereignty Zone ──────────────    │',
     '  │    ◉ sovereign  ◉ oracle       ◉ conscience           │',
@@ -236,11 +237,13 @@ export function generateDesktopBootScreen(): string[] {
     '  │    ◉ compass    ◉ echo         ◉ reflex               │',
     '  │                                                       │',
     '  │  ◎ EMZ — Expansion Manufacturing Zone ────────────    │',
-    '  │    ◉ forge      ◉ lingua       ◉ phantom              │',
-    '  │    ◉ harvest                                           │',
+    '  │    ◉ forge      ◉ lingua       ◉ harvest              │',
+    '  │                                                       │',
+    '  │  ◎ CSZ — Covert Systems Zone ─────────────────────    │',
+    '  │    ◉ evolution  ◉ shadow       ◉ phantom              │',
     '  │                                                       │',
     '  │  ≋ FIELDS — Transformation Fabric ────────────────    │',
-    '  │    ◉ evolution  ◉ immunity     ◉ intent               │',
+    '  │    ◉ immunity   ◉ intent                              │',
     '  │                                                       │',
     '  │  ◉ OVERLAY PLANE: governance                          │',
     '  │  ◉ DEFENSE SHELL: defense                             │',
@@ -248,7 +251,7 @@ export function generateDesktopBootScreen(): string[] {
     '  └───────────────────────────────────────────────────────┘',
     '',
     '  ╔═══════════════════════════════════════════════════════╗',
-    '  ║  37 NODES │ 11 SECTORS │ 500+ CMDS │ 675+ CAPS       ║',
+    '  ║  38 NODES │ 12 SECTORS │ 500+ CMDS │ 675+ CAPS       ║',
     '  ║  Σ(weight) = 1.000 │ CLM: all modules reporting      ║',
     '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
     '  ╚═══════════════════════════════════════════════════════╝',

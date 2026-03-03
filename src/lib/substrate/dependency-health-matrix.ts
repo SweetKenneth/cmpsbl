@@ -18,7 +18,7 @@ export interface DependencyHealthNode {
   cascadeRisk: number; // 0–1, how much this module's failure affects others
 }
 
-// Static dependency graph for the 37-node / 11-sector substrate
+// Static dependency graph for the 38-node / 12-sector substrate
 const DEPENDENCY_GRAPH: DependencyEdge[] = [
   // CCR dependencies
   { from: 'brain', to: 'nexus', type: 'required', weight: 0.9 },

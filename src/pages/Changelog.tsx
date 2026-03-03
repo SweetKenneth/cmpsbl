@@ -114,7 +114,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Downstream distributions were operating without neural substrate parity — no embedding engine, no vector recall, no drift detection",
     adaptations: [
       "Full Neural Substrate Layer dispatched downstream — 5 engines and 15 capabilities unlocked at free tier",
-      "Field-based topology aligned across distributions — 37 Matrix Nodes with 11-sector classification",
+      "Field-based topology aligned across distributions — 38 Matrix Nodes with 12-sector classification",
       "10 automated maintenance tasks now run on CLM cron cycles — zero manual operations required",
     ],
     phenotype: [
@@ -187,7 +187,7 @@ const stratumSparta: Specimen[] = [
     phenotype: [
       "Each Zone can be surgically hot-swapped without affecting siblings or parent layers",
       "Circuit breaker trips identify the exact Zone at fault — no more blaming entire convergence layers",
-      "Architecture correctly represented as 37 matrix nodes across 11 sectors",
+      "Architecture correctly represented as 38 matrix nodes across 12 sectors",
     ],
     affectedNodes: ["SYSTEM", "BRAIN", "MEMORY", "DREAM", "RIPPLE", "ACCESS", "IDENTITY", "RELAY", "AUDIT"],
   },
@@ -386,7 +386,7 @@ const stratumFormation: Specimen[] = [
       "200+ legacy version references swept and unified",
     ],
     phenotype: [
-      "The substrate is a 37-node cognitive architecture across 11 sectors",
+      "The substrate is a 38-node cognitive architecture across 12 sectors",
       "Single source of truth for all versioning — one file, one function, every surface",
     ],
   },
