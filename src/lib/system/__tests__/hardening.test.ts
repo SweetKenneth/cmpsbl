@@ -1,9 +1,10 @@
 /**
- * Hardening Utilities — Unit Tests
- * Validates production-grade safety primitives
+ * Hardening Utilities — Comprehensive Unit Tests
+ * Covers: withTimeout, clampNumber, validateStringInput, safeParse,
+ *         boundArray, safeExecute, deepFreeze, sanitizeText, fnv1aHash, debounce
  */
 
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   withTimeout,
   clampNumber,
@@ -11,8 +12,13 @@ import {
   safeParse,
   boundArray,
   safeExecute,
+  deepFreeze,
+  sanitizeText,
+  fnv1aHash,
+  debounce,
 } from '../hardening';
 
+// ── clampNumber ──────────────────────────────────────────
 describe('clampNumber', () => {
   it('clamps value within range', () => {
     expect(clampNumber(50, 0, 100, 0)).toBe(50);
@@ -47,8 +53,14 @@ describe('clampNumber', () => {
   it('handles negative ranges', () => {
     expect(clampNumber(-5, -10, -1, 0)).toBe(-5);
   });
+
+  it('handles boundary values', () => {
+    expect(clampNumber(0, 0, 100, 50)).toBe(0);
+    expect(clampNumber(100, 0, 100, 50)).toBe(100);
+  });
 });
 
+// ── validateStringInput ──────────────────────────────────
 describe('validateStringInput', () => {
   it('returns valid string', () => {
     expect(validateStringInput('hello')).toBe('hello');
@@ -86,6 +98,7 @@ describe('validateStringInput', () => {
   });
 });
 
+// ── safeParse ────────────────────────────────────────────
 describe('safeParse', () => {
   it('parses valid JSON', () => {
     expect(safeParse('{"a":1}')).toEqual({ a: 1 });
@@ -120,10 +133,11 @@ describe('safeParse', () => {
   });
 });
 
+// ── boundArray ───────────────────────────────────────────
 describe('boundArray', () => {
   it('returns array unchanged when under limit', () => {
     const arr = [1, 2, 3];
-    expect(boundArray(arr, 5)).toBe(arr); // same reference
+    expect(boundArray(arr, 5)).toBe(arr);
   });
 
   it('trims from front when over limit', () => {
@@ -144,6 +158,7 @@ describe('boundArray', () => {
   });
 });
 
+// ── withTimeout ──────────────────────────────────────────
 describe('withTimeout', () => {
   it('resolves when operation completes before timeout', async () => {
     const result = await withTimeout(() => Promise.resolve(42), 1000, 'test');
@@ -181,6 +196,7 @@ describe('withTimeout', () => {
   });
 });
 
+// ── safeExecute ──────────────────────────────────────────
 describe('safeExecute', () => {
   it('returns success with data', async () => {
     const result = await safeExecute(() => Promise.resolve(42));
@@ -207,5 +223,102 @@ describe('safeExecute', () => {
     const result = await safeExecute(() => Promise.reject('string error'));
     expect(result.success).toBe(false);
     expect(result.error).toBe('string error');
+  });
+});
+
+// ── deepFreeze ───────────────────────────────────────────
+describe('deepFreeze', () => {
+  it('freezes object at top level', () => {
+    const obj = deepFreeze({ a: 1, b: 'hello' });
+    expect(Object.isFrozen(obj)).toBe(true);
+  });
+
+  it('freezes nested objects recursively', () => {
+    const obj = deepFreeze({ nested: { deep: { value: 42 } } });
+    expect(Object.isFrozen(obj.nested)).toBe(true);
+    expect(Object.isFrozen(obj.nested.deep)).toBe(true);
+  });
+
+  it('returns the same reference', () => {
+    const original = { x: 1 };
+    const frozen = deepFreeze(original);
+    expect(frozen).toBe(original);
+  });
+});
+
+// ── sanitizeText ─────────────────────────────────────────
+describe('sanitizeText', () => {
+  it('strips HTML tags', () => {
+    expect(sanitizeText('<script>alert("xss")</script>Hello')).toBe('alert("xss")Hello');
+    expect(sanitizeText('<b>bold</b>')).toBe('bold');
+  });
+
+  it('handles non-string input', () => {
+    expect(sanitizeText(null as any)).toBe('');
+    expect(sanitizeText(123 as any)).toBe('');
+  });
+
+  it('respects maxLength', () => {
+    const long = 'a'.repeat(20000);
+    expect(sanitizeText(long, 100).length).toBeLessThanOrEqual(100);
+  });
+
+  it('handles empty string', () => {
+    expect(sanitizeText('')).toBe('');
+  });
+});
+
+// ── fnv1aHash ────────────────────────────────────────────
+describe('fnv1aHash', () => {
+  it('produces consistent hashes', () => {
+    expect(fnv1aHash('hello')).toBe(fnv1aHash('hello'));
+  });
+
+  it('produces different hashes for different inputs', () => {
+    expect(fnv1aHash('hello')).not.toBe(fnv1aHash('world'));
+  });
+
+  it('returns a number', () => {
+    expect(typeof fnv1aHash('test')).toBe('number');
+  });
+
+  it('handles empty string', () => {
+    expect(typeof fnv1aHash('')).toBe('number');
+  });
+});
+
+// ── debounce ─────────────────────────────────────────────
+describe('debounce', () => {
+  beforeEach(() => { vi.useFakeTimers(); });
+  afterEach(() => { vi.useRealTimers(); });
+
+  it('delays execution', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100);
+    debounced();
+    expect(fn).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(100);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it('resets timer on subsequent calls', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100);
+    debounced();
+    vi.advanceTimersByTime(50);
+    debounced();
+    vi.advanceTimersByTime(50);
+    expect(fn).not.toHaveBeenCalled();
+    vi.advanceTimersByTime(50);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it('supports leading edge', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100, true);
+    debounced();
+    expect(fn).toHaveBeenCalledTimes(1);
+    debounced();
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 });
