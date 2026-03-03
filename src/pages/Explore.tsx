@@ -116,15 +116,6 @@ export default function Explore() {
       {/* Artifact Packs — How the activation model works */}
       <ArtifactPacksSection />
 
-      <SectionDivider />
-
-      {/* Agents — Practical entry points */}
-      <AgentsSection />
-
-      <SectionDivider />
-
-      {/* Governance Signal — Technical credibility */}
-      <GovernanceSignal />
 
       {/* Final CTA — Cinematic closing */}
       <section className="relative z-10 px-4 py-14 sm:py-32">
