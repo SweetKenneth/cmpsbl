@@ -10,7 +10,7 @@
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 
-import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle, AlertTriangle, RefreshCw, BookOpen, Inbox, Compass, TestTube } from 'lucide-react';
+import { Brain, Shield, Eye, Zap, MessageSquare, Moon, Settings, Terminal, Cpu, Clock, Search, Database, Activity, Lock, Router, Gauge, Sparkles, Radio, Key, Server, Send, List, PlayCircle, Plug, Globe, Workflow, Users, CreditCard, GitBranch, Box, Wand2, FileText, PenTool, FileEdit, FileCheck, Layers, CheckCircle, XCircle, AlertTriangle, RefreshCw, BookOpen, Inbox, Compass, TestTube, ClipboardCheck, Network, Fingerprint } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { SubstrateRole } from '@/hooks/useUserRole';
 
