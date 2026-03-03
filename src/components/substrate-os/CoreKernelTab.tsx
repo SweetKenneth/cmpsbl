@@ -1,6 +1,6 @@
 /**
  * CORE Kernel Tab — Job Scheduler, System State, Lifecycle
- * 10 entities + 5 mesh overlays + 9 zones (24-module architecture)
+ * 37-node / 11-sector field-based topology
  */
 
 import { useState } from 'react';

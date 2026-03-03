@@ -14,7 +14,7 @@ This library is the single source of truth for all internal knowledge required t
 
 | Page | Document | Scope |
 |------|----------|-------|
-| 01 | [Topology & Module Registry](./01-topology-and-module-registry.md) | 24-node architecture, layer definitions, boot order, dependency graph |
+| 01 | [Topology & Module Registry](./01-topology-and-module-registry.md) | 37-node / 11-sector architecture, layer definitions, boot order, dependency graph |
 | 02 | [Proprietary Algorithms](./02-proprietary-algorithms.md) | All scoring, routing, integrity, and learning algorithms |
 | 03 | [Trade Secrets & Competitive Moat](./03-trade-secrets-and-moat.md) | Crown jewels, strategic differentiators, IP protection |
 | 04 | [Control Plane & Persistence](./04-control-plane-and-persistence.md) | Durability layer, WAL, snapshots, leader election, rehydration |

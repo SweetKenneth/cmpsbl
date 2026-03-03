@@ -6,7 +6,7 @@
  * escalates uncertainty, and produces audit-safe responses.
  * 
  * Integrations with substrate architecture:
- * - 1 CORE Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 Execution Surfaces
+ * - 37 nodes across 11 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell)
  * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Observability & monitoring

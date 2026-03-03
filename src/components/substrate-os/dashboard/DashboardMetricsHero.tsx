@@ -25,7 +25,7 @@ const MODULES_CONFIG = [
   { id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
   { id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
   { id: 'integration', label: 'INTEGRATION', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
-  // 5 Mesh Overlays (DEFENSE → GOVERNANCE)
+  // Mesh Overlays (Fields + Plane + Shell)
   { id: 'defense', label: 'DEFENSE', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
   { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-rose-300', hsl: '350, 80%, 70%' },
   { id: 'modernizer', label: 'EVOLUTION', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
