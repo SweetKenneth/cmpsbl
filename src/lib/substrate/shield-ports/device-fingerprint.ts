@@ -1,6 +1,8 @@
 /**
- * Device Fingerprinting — Ported from aetherion-shield
+ * Device Fingerprinting — Ported from aetherion-shield (Enterprise Edition)
  * Multi-signal browser fingerprinting (Canvas, WebGL, Audio, Font, Screen)
+ * + Enterprise signals: Webdriver, CDP, WebRTC Leak, Performance API,
+ *   Browser Inconsistencies, HTTP/2, Request Timing, Session State
  * Target nodes: DEFENSE, SITE-GUARD, IMMUNITY
  */
 
@@ -17,6 +19,10 @@ export interface FingerprintData {
     colorDepth: number;
     pixelRatio: number;
   };
+  viewport: {
+    width: number;
+    height: number;
+  };
   timezone: string;
   language: string;
   platform: string;
@@ -24,6 +30,16 @@ export interface FingerprintData {
   deviceMemory?: number;
   plugins: string[];
   userAgent: string;
+  // Enterprise-level detection signals
+  webdriver: boolean;
+  cdpDetected: boolean;
+  webrtcLeak: string | null;
+  performanceAPITampered: boolean;
+  browserInconsistencies: string[];
+  // Advanced signals
+  http2Fingerprint?: Record<string, unknown>;
+  requestTiming?: Record<string, number>;
+  sessionState?: Record<string, unknown>;
 }
 
 export class DeviceFingerprint {
@@ -161,9 +177,271 @@ export class DeviceFingerprint {
     return plugins;
   }
 
-  /** Generate the full fingerprint object */
+  // ═══════════════════════════════════════════════════════════════
+  // ENTERPRISE DETECTION SIGNALS
+  // ═══════════════════════════════════════════════════════════════
+
+  /** Detect navigator.webdriver flag (Selenium, Puppeteer, Playwright) */
+  private static detectWebdriver(): boolean {
+    return !!(navigator as any).webdriver;
+  }
+
+  /**
+   * Detect CDP (Chrome DevTools Protocol) leak.
+   * Used by Puppeteer, Playwright, and other CDP-based automation.
+   */
+  private static detectCDP(): boolean {
+    try {
+      let detected = false;
+      const e = new Error();
+      Object.defineProperty(e, 'stack', {
+        get() {
+          detected = true;
+          return '';
+        },
+      });
+      // Trigger serialization (CDP behavior)
+      console.debug(e);
+      return detected;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Detect WebRTC IP leak — exposes real IP behind VPN/proxy.
+   * Returns the leaked IP string, or null if none detected.
+   */
+  private static async detectWebRTCLeak(): Promise<string | null> {
+    return new Promise((resolve) => {
+      try {
+        const timeout = setTimeout(() => resolve(null), 1000);
+
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel('');
+
+        pc.createOffer()
+          .then((offer) => pc.setLocalDescription(offer))
+          .catch(() => {});
+
+        pc.onicecandidate = (ice) => {
+          if (!ice || !ice.candidate) return;
+
+          const candidate = ice.candidate.candidate;
+          const ipRegex = /([0-9]{1,3}\.){3}[0-9]{1,3}/;
+          const match = candidate.match(ipRegex);
+
+          if (match && match[0]) {
+            clearTimeout(timeout);
+            pc.close();
+            resolve(match[0]);
+          }
+        };
+      } catch {
+        resolve(null);
+      }
+    });
+  }
+
+  /** Check if Performance API timing is tampered (automation fingerprint) */
+  private static checkPerformanceAPITampered(): boolean {
+    try {
+      if (!window.performance || !window.performance.now) return false;
+
+      const t1 = performance.now();
+      const t2 = performance.now();
+
+      // performance.now should always increase
+      if (t2 <= t1) return true;
+
+      // Suspiciously perfect timing resolution = automation
+      const diff = t2 - t1;
+      return diff > 0 && diff < 0.001;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Detect browser inconsistencies — cross-signal validation.
+   * Correlates multiple signals to detect spoofing.
+   */
+  private static detectInconsistencies(): string[] {
+    const inconsistencies: string[] = [];
+
+    try {
+      const ua = navigator.userAgent;
+      const platform = navigator.platform;
+
+      // UA vs platform mismatch
+      if (ua.includes('Windows') && !platform.includes('Win')) {
+        inconsistencies.push('ua_platform_mismatch');
+      }
+      if (ua.includes('Mac') && !platform.includes('Mac')) {
+        inconsistencies.push('ua_platform_mismatch');
+      }
+      if (ua.includes('Linux') && !platform.includes('Linux')) {
+        inconsistencies.push('ua_platform_mismatch');
+      }
+
+      // Mobile UA but desktop screen
+      const isMobileUA = /mobile|android|iphone|ipad/i.test(ua);
+      const isDesktopScreen = window.screen.width >= 1024;
+      if (isMobileUA && isDesktopScreen) {
+        inconsistencies.push('mobile_ua_desktop_screen');
+      }
+
+      // Touch capability vs device type
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (!hasTouch && isMobileUA) {
+        inconsistencies.push('mobile_no_touch');
+      }
+
+      // Language consistency
+      const languages = navigator.languages;
+      const language = navigator.language;
+      if (languages && languages.length > 0 && languages[0] !== language) {
+        inconsistencies.push('language_mismatch');
+      }
+
+      // deviceMemory vs hardwareConcurrency correlation
+      const memory = (navigator as any).deviceMemory;
+      const cores = navigator.hardwareConcurrency;
+      if (memory && cores) {
+        if (memory === 2 && cores >= 12) inconsistencies.push('unrealistic_memory_cores');
+        if (memory >= 16 && cores <= 2) inconsistencies.push('unrealistic_memory_cores');
+      }
+
+      // Viewport exceeds screen
+      if (window.innerWidth > window.screen.width || window.innerHeight > window.screen.height) {
+        inconsistencies.push('viewport_exceeds_screen');
+      }
+
+      // No plugins (headless browsers)
+      if (navigator.plugins.length === 0) {
+        inconsistencies.push('no_plugins');
+      }
+
+      // WebGL SwiftShader detection (headless Chrome)
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl');
+        if (gl) {
+          const debugInfo = (gl as any).getExtension('WEBGL_debug_renderer_info');
+          if (debugInfo) {
+            const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+            if (renderer.toLowerCase().includes('swiftshader')) {
+              inconsistencies.push('swiftshader_detected');
+            }
+          }
+        }
+      } catch {
+        // ignore
+      }
+    } catch (error) {
+      console.error('[DEFENSE] Cross-signal validation error:', error);
+    }
+
+    return inconsistencies;
+  }
+
+  /** Detect HTTP/2 and connection characteristics */
+  private static detectHTTP2Fingerprint(): Record<string, unknown> {
+    try {
+      const connectionInfo: Record<string, unknown> = {
+        protocol: 'unknown',
+        rtt: null,
+        downlink: null,
+        effectiveType: null,
+        saveData: false,
+      };
+
+      if ((navigator as any).connection) {
+        const conn = (navigator as any).connection;
+        connectionInfo.rtt = conn.rtt || null;
+        connectionInfo.downlink = conn.downlink || null;
+        connectionInfo.effectiveType = conn.effectiveType || null;
+        connectionInfo.saveData = conn.saveData || false;
+      }
+
+      // Protocol detection via PerformanceResourceTiming
+      try {
+        if (window.performance && window.performance.getEntriesByType) {
+          const resources = window.performance.getEntriesByType('navigation');
+          if (resources.length > 0) {
+            const nav = resources[0] as any;
+            connectionInfo.protocol = nav.nextHopProtocol || 'unknown';
+          }
+        }
+      } catch {
+        // ignore
+      }
+
+      return connectionInfo;
+    } catch {
+      return { protocol: 'unknown' };
+    }
+  }
+
+  /** Analyze request timing patterns — detects automation via performance API */
+  private static analyzeRequestTiming(): Record<string, number> {
+    try {
+      const timing: Record<string, number> = {};
+
+      if (window.performance && window.performance.timing) {
+        const t = window.performance.timing;
+        timing.requestStart = t.requestStart - t.navigationStart;
+        timing.responseStart = t.responseStart - t.navigationStart;
+        timing.domComplete = t.domComplete - t.navigationStart;
+        timing.loadEventEnd = t.loadEventEnd - t.navigationStart;
+        timing.connectTime = t.connectEnd - t.connectStart;
+        timing.renderTime = t.domComplete - t.domLoading;
+      }
+
+      return timing;
+    } catch {
+      return {};
+    }
+  }
+
+  /** Check session and cookie state — bots often have empty session state */
+  private static analyzeSessionState(): Record<string, unknown> {
+    try {
+      return {
+        hasLocalStorage: typeof localStorage !== 'undefined',
+        hasSessionStorage: typeof sessionStorage !== 'undefined',
+        hasCookies: navigator.cookieEnabled,
+        localStorageSize: this.getStorageSize('localStorage'),
+        sessionStorageSize: this.getStorageSize('sessionStorage'),
+        cookieCount: document.cookie ? document.cookie.split(';').length : 0,
+        hasServiceWorker: 'serviceWorker' in navigator,
+        hasIndexedDB: 'indexedDB' in window,
+      };
+    } catch {
+      return { hasCookies: false };
+    }
+  }
+
+  private static getStorageSize(storageType: 'localStorage' | 'sessionStorage'): number {
+    try {
+      const storage = storageType === 'localStorage' ? localStorage : sessionStorage;
+      return Object.keys(storage).length;
+    } catch {
+      return 0;
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // PUBLIC API
+  // ═══════════════════════════════════════════════════════════════
+
+  /** Generate the full fingerprint object with enterprise signals */
   static async generate(): Promise<FingerprintData> {
-    const audio = await this.getAudioFingerprint();
+    const [audio, webrtcLeak] = await Promise.all([
+      this.getAudioFingerprint(),
+      this.detectWebRTCLeak(),
+    ]);
+
     return {
       canvas: this.getCanvasFingerprint(),
       webgl: this.getWebGLFingerprint(),
@@ -175,6 +453,10 @@ export class DeviceFingerprint {
         colorDepth: window.screen.colorDepth,
         pixelRatio: window.devicePixelRatio,
       },
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       language: navigator.language,
       platform: navigator.platform,
@@ -182,6 +464,16 @@ export class DeviceFingerprint {
       deviceMemory: (navigator as any).deviceMemory,
       plugins: this.getPlugins(),
       userAgent: navigator.userAgent,
+      // Enterprise signals
+      webdriver: this.detectWebdriver(),
+      cdpDetected: this.detectCDP(),
+      webrtcLeak,
+      performanceAPITampered: this.checkPerformanceAPITampered(),
+      browserInconsistencies: this.detectInconsistencies(),
+      // Advanced signals
+      http2Fingerprint: this.detectHTTP2Fingerprint(),
+      requestTiming: this.analyzeRequestTiming(),
+      sessionState: this.analyzeSessionState(),
     };
   }
 
