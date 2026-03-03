@@ -123,7 +123,56 @@ export async function runSecurityPass(): Promise<PassResult> {
     notes.push('✓ No unauthorized password collection in UI');
   }
 
-  return {
+  // 5. CSP headers configured
+  const cspPaths = [
+    join(process.cwd(), 'supabase/functions/_shared/cors.ts'),
+    join(process.cwd(), 'src/lib/system/csp.ts'),
+  ];
+  let hasCsp = false;
+  for (const p of cspPaths) {
+    if (existsSync(p)) {
+      const content = readFileSync(p, 'utf-8');
+      if (content.includes('Content-Security-Policy') || content.includes('content-security-policy')) {
+        hasCsp = true;
+        break;
+      }
+    }
+  }
+  if (hasCsp) {
+    notes.push('✓ CSP headers configured');
+  } else {
+    notes.push('⚠ No Content-Security-Policy headers found');
+    medSeverity++;
+  }
+
+  // 6. No Lovable AI references (per project policy)
+  let lovableAiRefs = 0;
+  for (const dir of SCAN_DIRS) {
+    scanFiles(dir, (path, content) => {
+      if (content.includes('LOVABLE_API_KEY') || content.includes('ai.gateway.lovable.dev')) {
+        lovableAiRefs++;
+        notes.push(`🔴 ${path}: Lovable AI reference detected (must use NEXUS)`);
+      }
+    });
+  }
+  if (lovableAiRefs > 0) {
+    highSeverity += lovableAiRefs;
+  } else {
+    notes.push('✓ No Lovable AI references — NEXUS router enforced');
+  }
+
+  // 7. Edge functions use service_role appropriately
+  let edgeFuncOk = true;
+  scanFiles('supabase/functions', (path, content) => {
+    if (content.includes('SUPABASE_SERVICE_ROLE_KEY') && !content.includes('createClient')) {
+      edgeFuncOk = false;
+      notes.push(`⚠ ${path}: SERVICE_ROLE_KEY used without Supabase client`);
+      medSeverity++;
+    }
+  });
+  if (edgeFuncOk) {
+    notes.push('✓ Edge function service_role usage looks correct');
+  }
     pass: 6,
     name: 'SECURITY',
     status: highSeverity > 0 ? 'FAIL' : 'PASS',
