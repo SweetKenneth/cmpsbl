@@ -12,6 +12,9 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { getEffectiveWeights } from './confidence-governor';
+import { evaluateSemanticDrift, type SemanticDriftResult } from './semantic-drift';
+import { getTopicSeedAlignment } from './site-scanner';
 
 // ---------------------------------------------------------------------------
 // 1. CONFIDENCE ENGINE
@@ -98,12 +101,20 @@ export async function computeConfidence(
     uniqueness,
   };
 
+  // Use adaptive weights from governance
+  const weights = await getEffectiveWeights();
+
+  // Apply topic seed alignment bonus
+  const draftKeywords = combined.split(/\s+/).filter(w => w.length > 4);
+  const seedBonus = await getTopicSeedAlignment(draftKeywords);
+  const adjustedSourceStability = Math.min(1, sourceStability + seedBonus);
+
   const score = Math.min(1, Math.max(0,
-    sourceStability * 0.20 +
-    recentSuccessRate * 0.20 +
-    topicFamiliarity * 0.10 +
-    contentDensity * 0.25 +
-    uniqueness * 0.25,
+    adjustedSourceStability * weights.sourceStability +
+    recentSuccessRate * weights.recentSuccessRate +
+    topicFamiliarity * weights.topicFamiliarity +
+    contentDensity * weights.contentDensity +
+    uniqueness * weights.uniqueness,
   ));
 
   let toneModifier: ToneModifier;
@@ -533,6 +544,7 @@ export interface QualityPipelineResult {
   splitBrain: SplitBrainResult;
   assumptions: ExtractedAssumption[];
   brokenAssumptions: string[];
+  semanticDrift: SemanticDriftResult;
   modifiedBody?: string;
   blockReason?: string;
 }
@@ -550,8 +562,24 @@ export async function runQualityPipeline(
   draft: { title: string; body: string },
   channel: string,
 ): Promise<QualityPipelineResult> {
+  const defaultDrift: SemanticDriftResult = {
+    driftScore: 0, driftDirection: 'aligned', confidencePenalty: 0, tokenOverlap: 1, comparedAgainst: 0,
+  };
+
   // Step 1: Confidence
   const confidence = await computeConfidence(draft, channel);
+
+  // Step 1b: Semantic Drift (calibration only, never blocks)
+  let semanticDrift = defaultDrift;
+  try {
+    semanticDrift = await evaluateSemanticDrift(draft);
+    // Apply drift penalty to confidence (max -0.1)
+    if (semanticDrift.confidencePenalty < 0) {
+      confidence.score = Math.max(0, confidence.score + semanticDrift.confidencePenalty);
+    }
+  } catch {
+    console.warn('[AutoBlog QP] Semantic drift evaluation failed, continuing');
+  }
 
   // Step 2: Contradiction
   const contradiction = await runContradictionEngine(draft, confidence);
@@ -564,6 +592,7 @@ export async function runQualityPipeline(
       splitBrain: { readerBrainScore: 0, skepticBrainScore: 0, caveatsToInject: [], finalDecision: 'block' },
       assumptions: [],
       brokenAssumptions: [],
+      semanticDrift,
       blockReason: contradiction.blockReason,
     };
   }
@@ -592,6 +621,7 @@ export async function runQualityPipeline(
       splitBrain,
       assumptions: [],
       brokenAssumptions: [],
+      semanticDrift,
       modifiedBody,
       blockReason: 'Split Brain evaluation blocked: skeptic credibility too low',
     };
@@ -614,6 +644,7 @@ export async function runQualityPipeline(
     splitBrain,
     assumptions,
     brokenAssumptions,
+    semanticDrift,
     modifiedBody,
   };
 }

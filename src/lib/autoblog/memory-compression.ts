@@ -12,6 +12,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { getEffectiveWeights, updateWeights, type ConfidenceWeights } from './confidence-governor';
 
 export interface MemoryReport {
   lessonsLearned: string[];
@@ -150,6 +151,42 @@ Respond ONLY in JSON:
     contradictionCount,
     qualityTrend,
   };
+
+  // --- ADAPTIVE WEIGHT GOVERNANCE ---
+  try {
+    const currentWeights = await getEffectiveWeights();
+    const newWeights: ConfidenceWeights = { ...currentWeights };
+    const reasons: string[] = [];
+
+    // If contradictionCount > 30% of posts: reduce contentDensity weight
+    if (posts.length > 0 && contradictionCount / posts.length > 0.3) {
+      newWeights.contentDensity = Math.max(0.05, newWeights.contentDensity - 0.05);
+      reasons.push('High contradiction rate: reduced contentDensity weight');
+    }
+
+    // If broken assumptions exceed threshold: reduce sourceStability
+    if (brokenAssumptions.length > 3) {
+      newWeights.sourceStability = Math.max(0.05, newWeights.sourceStability - 0.05);
+      reasons.push('Many broken assumptions: reduced sourceStability weight');
+    }
+
+    // If high confidence but low skeptic scores: widen assertive threshold
+    const avgSkeptic = posts.length > 0
+      ? posts.reduce((s: number, p: any) => s + (p.split_brain_skeptic_score || 0.5), 0) / posts.length
+      : 0.5;
+
+    if (avgConfidence > 0.7 && avgSkeptic < 0.4) {
+      newWeights.uniqueness = Math.max(0.05, newWeights.uniqueness - 0.03);
+      reasons.push('High confidence / low skeptic: adjusted uniqueness weight');
+    }
+
+    if (reasons.length > 0) {
+      await updateWeights(newWeights, `Memory compression cycle: ${reasons.join('; ')}`);
+      console.log('[AutoBlog Memory] Adjusted confidence weights:', reasons);
+    }
+  } catch (err) {
+    console.warn('[AutoBlog Memory] Weight adjustment failed:', err);
+  }
 
   // Store the report
   await supabase.from('autoblog_memory_reports' as any).insert({
