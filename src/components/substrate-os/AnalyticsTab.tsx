@@ -50,7 +50,12 @@ export function AnalyticsTab() {
       const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
-      const [brainEventsRes, brainMetricsRes, usageRes, accessRes, auditRes, immuneRes, escalationsRes] = await Promise.all([
+      // Use count queries for accurate totals instead of limited selects
+      const [brainEventsCountRes, brainEventsRes, brainMetricsCountRes, usageCountRes, usageRes, accessCountRes, auditCountRes, auditRes, immuneRes, escalationsRes] = await Promise.all([
+        supabase
+          .from('brain_events')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', startDate),
         supabase
           .from('brain_events')
           .select('id, event_type, module, outcome, created_at')
@@ -59,24 +64,30 @@ export function AnalyticsTab() {
           .limit(1000),
         supabase
           .from('brain_metrics')
-          .select('id, created_at, metric_name')
-          .gte('created_at', startDate)
-          .limit(1000),
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', startDate),
+        supabase
+          .from('ai_usage_log')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', startDate),
         supabase
           .from('ai_usage_log')
           .select('id, provider, category, success, created_at')
           .gte('created_at', startDate)
-          .limit(500),
+          .limit(1000),
         supabase
           .from('access_usage')
-          .select('id, module, action, created_at')
-          .gte('created_at', startDate)
-          .limit(500),
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', startDate),
+        supabase
+          .from('audit_logs')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', startDate),
         supabase
           .from('audit_logs')
           .select('id, action, entity_type, created_at')
           .gte('created_at', startDate)
-          .limit(200),
+          .limit(500),
         supabase
           .from('immune_metrics')
           .select('executor, total_runs, repair_successes, escalations, safe_failures')
@@ -84,31 +95,37 @@ export function AnalyticsTab() {
         supabase
           .from('immune_escalations')
           .select('status, claimed_by')
-          .limit(500),
+          .limit(1000),
       ]);
 
+      // Use exact counts from count queries (not limited by row fetch)
+      const brainEventsCount = brainEventsCountRes.count ?? 0;
+      const brainMetricsCount = brainMetricsCountRes.count ?? 0;
+      const usageCount = usageCountRes.count ?? 0;
+      const accessCount = accessCountRes.count ?? 0;
+      const auditCount = auditCountRes.count ?? 0;
+
       const brainEvents = brainEventsRes.data || [];
-      const brainMetrics = brainMetricsRes.data || [];
       const usage = usageRes.data || [];
-      const access = accessRes.data || [];
       const audit = auditRes.data || [];
       const immuneRows = (immuneRes.data || []) as any[];
       const escalationRows = (escalationsRes.data || []) as any[];
 
-      // Build daily time series
+      // Build daily time series from sampled data
       const dayCounts = new Map<string, number>();
-      const allRecords = [
+      const sampledRecords = [
         ...brainEvents.map(e => e.created_at),
-        ...brainMetrics.map(m => m.created_at),
         ...usage.map(u => u.created_at),
-        ...access.map(a => a.created_at),
         ...audit.map(a => a.created_at),
       ].filter(Boolean);
 
-      allRecords.forEach(ts => {
+      sampledRecords.forEach(ts => {
         const day = ts!.split('T')[0];
         dayCounts.set(day, (dayCounts.get(day) || 0) + 1);
       });
+
+      // Total ops uses exact counts, not limited row counts
+      const totalOps = brainEventsCount + brainMetricsCount + usageCount + accessCount + auditCount;
 
       const series: { date: string; ops: number }[] = [];
       const displayDays = Math.min(days, 30);
@@ -167,12 +184,12 @@ export function AnalyticsTab() {
         : 0;
 
       setData({
-        brainEvents: brainEvents.length,
-        brainMetrics: brainMetrics.length,
-        apiCalls: usage.length,
-        accessOps: access.length,
-        auditActions: audit.length,
-        totalOps: allRecords.length,
+        brainEvents: brainEventsCount,
+        brainMetrics: brainMetricsCount,
+        apiCalls: usageCount,
+        accessOps: accessCount,
+        auditActions: auditCount,
+        totalOps,
         series,
         topModules,
         eventBreakdown,

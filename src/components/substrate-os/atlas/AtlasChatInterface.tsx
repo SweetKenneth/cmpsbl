@@ -324,8 +324,8 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
         </div>
       </div>
 
-      {/* Input */}
-      <div className="p-3 border-t border-border/50 bg-background/50">
+      {/* Input — elevated z-index to stay above DECODE floating icon */}
+      <div className="p-3 border-t border-border/50 bg-background/50 relative z-50">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <textarea
@@ -336,7 +336,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
               placeholder="Ask Atlas anything..."
               rows={1}
               className={cn(
-                "w-full px-4 py-3 pr-12",
+                "w-full px-4 py-3 pr-14",
                 "bg-muted/50 border border-border/50 rounded-xl",
                 "text-sm placeholder:text-muted-foreground/60",
                 "focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/50",
@@ -350,7 +350,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
               disabled={!input.trim() || isProcessing}
               onClick={sendMessage}
               className={cn(
-                "absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-lg",
+                "absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-lg z-50",
                 "bg-gradient-to-r from-cyan-600 to-primary",
                 "hover:from-cyan-500 hover:to-primary/90",
                 "disabled:opacity-40"

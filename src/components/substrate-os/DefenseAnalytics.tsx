@@ -89,7 +89,7 @@ export function DefenseAnalytics() {
         .from('defense_events')
         .select('*')
         .order('detected_at', { ascending: false })
-        .limit(100);
+        .limit(500);
 
       if (error) throw error;
       const typed = (data || []) as DefenseEvent[];
@@ -141,7 +141,7 @@ export function DefenseAnalytics() {
       .channel('defense-live')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'defense_events' }, (payload) => {
         const newEvent = payload.new as DefenseEvent;
-        setEvents(prev => [newEvent, ...prev].slice(0, 100));
+        setEvents(prev => [newEvent, ...prev].slice(0, 500));
         // Re-calculate stats on next render
         fetchEvents();
       })
@@ -255,7 +255,7 @@ export function DefenseAnalytics() {
 
         {/* Live Feed */}
         <TabsContent value="feed" className="mt-4">
-          <ScrollArea className="h-[500px]">
+          <ScrollArea className="h-[700px]">
             <div className="space-y-2">
               {events.length === 0 ? (
                 <Card className="p-8 text-center">
