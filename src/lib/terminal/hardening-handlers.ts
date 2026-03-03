@@ -1144,7 +1144,7 @@ export function registerHardeningHandlers(): void {
   registerHandler('engineer.cycle', async () => {
     const { runMaintenanceCycle, initializeEngineer } = await import('@/lib/substrate/engineer/engineer-core');
     initializeEngineer();
-    return { success: true, data: runMaintenanceCycle() };
+    return { success: true, data: await runMaintenanceCycle() };
   });
 
   registerHandler('engineer.study', async () => {
