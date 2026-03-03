@@ -35,7 +35,6 @@ export function EnhancedFooter() {
       links: [
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
         { name: "Architecture", href: "/architecture" },
-        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Foundations", href: "/foundations" },
         { name: "Proof Mode", href: "/proof" },
         { name: "Runtime", href: "/runtime" },
@@ -46,10 +45,8 @@ export function EnhancedFooter() {
       title: "Products",
       links: [
         { name: "Artifact Packs", href: "/packs" },
-        { name: "Dream Eater", href: "/feed-dream-eater" },
         { name: "Engines", href: "/engines", highlight: true },
         { name: "Enterprise", href: "/enterprise" },
-        { name: "Evolution Scanner", href: "/scanner", highlight: true },
         { name: "Minds", href: "/composable-cognitives", highlight: true },
         { name: "Persistent Memory", href: "/persistent-memory" },
         { name: "World Engine", href: "/gaming" },
@@ -62,7 +59,6 @@ export function EnhancedFooter() {
         { name: "API Access", href: "/api-access" },
         { name: "DevTools", href: "/devtools" },
         { name: "Documentation", href: "/documentation" },
-        { name: "Evolution Control", href: "/evolution", highlight: true },
         { name: "Integrations", href: "/integrations" },
         { name: "Start Here", href: "/start-here", highlight: true },
       ]
@@ -73,10 +69,9 @@ export function EnhancedFooter() {
         { name: "Blog", href: "/blog" },
         { name: "Capability Map", href: "/capability-map" },
         { name: "Community", href: "/community" },
+        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Fossil Record", href: "/changelog" },
-        { name: "Roadmap", href: "/roadmap" },
         { name: "Showcase", href: "/showcase" },
-        { name: "Use Cases", href: "/use-cases" },
       ]
     },
   ];
