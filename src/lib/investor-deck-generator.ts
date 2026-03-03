@@ -291,7 +291,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="card-grid">
     <div class="info-card">
       <h3>Integrated Architecture</h3>
-      <p>10 entities + 5 mesh overlays + 9 zones designed as a unified substrate — extremely hard to replicate.</p>
+      <p>37 matrix nodes across 11 sectors designed as a unified substrate — extremely hard to replicate.</p>
     </div>
     <div class="info-card">
       <h3>Self-Evolution (SEBA)</h3>
@@ -312,7 +312,7 @@ export function generateInvestorDeckHTML(): string {
 <div class="page">
   <h2>Technical Milestones</h2>
   <ul class="checklist">
-    <li>Zone architecture: 10 entities + 5 mesh overlays + 9 hot-swappable zones</li>
+    <li>37-node matrix: 11 sectors with hot-swappable modules and 675+ capabilities</li>
     <li>Self-evolution engine operational (SEBA)</li>
     <li>Multi-provider AI routing (Nexus Fleet v5.0)</li>
     <li>Enterprise security layer</li>

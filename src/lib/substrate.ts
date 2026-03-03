@@ -1736,7 +1736,7 @@ export const matrix = {
   },
 };
 
-// Quick access — 10 entities + zones + meshes + SEBA
+// Quick access — 37 nodes across 11 sectors
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;

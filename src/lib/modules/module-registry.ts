@@ -1,11 +1,11 @@
 /**
  * Execution Surface Registry
- * 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones = 24 surfaces
+ * 37-Node Matrix across 11 Sectors
  * 
  * visibility:
  *   'public'  → shown on /modules hub cards
  *   'mesh'    → shown in mesh overlay section
- *   'hidden'  → CCR/CCL zones, detail pages only (not hub cards)
+ *   'hidden'  → internal zones, detail pages only (not hub cards)
  */
 
 import {
