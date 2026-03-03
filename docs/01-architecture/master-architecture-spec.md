@@ -99,6 +99,7 @@ graph TD
     EXL --> ESZ
     EXL --> EPZ
     EXL --> EMZ
+    EXL --> CSZ
     EXL --> INTEGRATION
     Fields -.- Spine
     Fields -.- OCG
@@ -106,6 +107,7 @@ graph TD
     Fields -.- ESZ
     Fields -.- EPZ
     Fields -.- EMZ
+    Fields -.- CSZ
     GOVERNANCE -.- Spine
     GOVERNANCE -.- OCG
     GOVERNANCE -.- EXL
@@ -312,8 +314,9 @@ DEFENSE — encloses all sectors
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
-| 2026-03-03 | System | Expanded to 37-node architecture with ESZ/EPZ/EMZ zone shielding |
+| 2026-03-03 | System | Expanded to 38-node architecture with ESZ/EPZ/EMZ/CSZ zone shielding |
 | 2026-03-01 | System | Initial canonical specification (24 nodes) |
 
 ## 16. Related Documents
@@ -322,6 +325,10 @@ DEFENSE — encloses all sectors
 - [Security Architecture](../03-security/security-architecture.md)
 - [Data & Memory Model](../04-data-memory/data-and-memory-model.md)
 - [Evolution & Versioning Framework](../05-evolution-versioning/evolution-and-versioning-framework.md)
+- [Observability & Telemetry Handbook](../06-observability/observability-telemetry-handbook.md)
+- [Engineering Proof & Scale](../14-engineering-proof/engineering-proof-and-scale.md)
+- [Internal: Topology & Module Registry](../internal/01-topology-and-module-registry.md)
+- [Internal: Ironclad Hardening Fabric](../internal/30-ironclad-hardening-fabric.md)
 
 ---
 
