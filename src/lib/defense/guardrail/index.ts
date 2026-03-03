@@ -6,6 +6,8 @@
  * 
  * Phase 1: Proposal Gate (no direct auto-enforcement)
  * Phase 2: Threshold Clamping System
+ * Phase 3: Traffic Spike Protection
+ * Phase 4: Shadow Mode Validation
  */
 
 // Types
@@ -65,3 +67,19 @@ export {
   clearSpikeState,
   type SpikeConfig,
 } from './spike-detector';
+
+// Shadow Mode Validation (Phase 4)
+export {
+  startShadowTest,
+  recordShadowResult,
+  evaluateShadowSession,
+  finalizeShadowSession,
+  updateBaseline,
+  saveConfigSnapshot,
+  getLastStableSnapshot,
+  checkRollbackCondition,
+  configureShadowMode,
+  getActiveShadowSessions,
+  clearShadowState,
+  type ShadowConfig,
+} from './shadow-validator';
