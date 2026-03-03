@@ -56,7 +56,9 @@ MEDIC and NERVE capabilities emerged across Waves 2–5 but are orphaned — ass
 2. **Routing confusion** — inter-node signaling shared between RIPPLE, SYSTEM, mesh overlays
 3. **Governance gaps** — no single authority for health diagnostics or consensus repair
 
-### Proposal: 26-Node Architecture
+### Proposal: 26-Node Architecture (Now Superseded by 37-Node)
+
+> **Note:** This proposal was accepted and later expanded to the current 37-node / 11-sector topology.
 
 | Module | Boot Order | Sector | Weight | Role |
 |--------|-----------|--------|--------|------|
@@ -65,7 +67,7 @@ MEDIC and NERVE capabilities emerged across Waves 2–5 but are orphaned — ass
 
 **Weight redistribution:** Subtract 0.020 from CORE (0.200 → 0.180) and 0.020 from OCG pool (0.200 → 0.180) to maintain Σ = 1.000.
 
-### Alternative: 24-Node Absorption
+### Alternative: 24-Node Absorption (Rejected)
 
 If 24 remains the hard target:
 - **MEDIC** absorbs into **SYSTEM** as a formal subsystem (SYSTEM.MEDIC)
@@ -80,7 +82,7 @@ If 24 remains the hard target:
 
 ### Recommendation
 
-**Go to 26 nodes.** The 24-node count was a design target, not an invariant. MEDIC and NERVE have accumulated 28 S+A artifacts across 4 waves — more than RELAY (8), IDENTITY (7), or ATLAS (5). They've earned module status.
+**Go to 26 nodes.** The 24-node count was a design target, not an invariant. MEDIC and NERVE have accumulated 28 S+A artifacts across 4 waves — more than RELAY (8), IDENTITY (7), or ATLAS (5). They've earned module status. *(Subsequently expanded to 37 nodes with the addition of ESZ, EPZ, EMZ expansion zones.)*
 
 ---
 

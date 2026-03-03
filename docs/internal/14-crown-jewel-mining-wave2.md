@@ -366,7 +366,7 @@ ENCODE       ██ 2
 | A-82 | Knowledge Map Topology | MEMORY | 70 | Semantic knowledge graph |
 | A-83 | Edge Health Monitor | RELAY | 70 | Backend function monitoring |
 | A-84 | Streaming Pipeline Engine | NEXUS | 70 | SSE/streaming orchestration |
-| A-85 | Heartbeat Monitor (24-node) | SYSTEM | 70 | Continuous liveness detection |
+| A-85 | Heartbeat Monitor (37-node) | SYSTEM | 70 | Continuous liveness detection |
 
 ---
 
@@ -570,7 +570,7 @@ Cascade Detector (S-17) × Sector Killswitch (S-20) × Immutable Incidents (A-55
 ### Wave 2 Critical Protection Targets
 
 1. **Saga Compensation Graph** (S-15) — Enables competitors to replicate distributed transaction safety
-2. **Boot Gate Topology** (S-16) — Reveals all 24-node dependency relationships
+2. **Boot Gate Topology** (S-16) — Reveals all 37-node dependency relationships
 3. **Cascade Detection Algorithm** (S-17) — Error velocity formula is proprietary
 4. **TSAC Shadow Verdict Protocol** (S-18) — Mutation verification logic is core IP
 5. **Idempotency Key Generation** (S-19) — Content hash + timestamp + caller identity formula
