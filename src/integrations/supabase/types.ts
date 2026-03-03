@@ -7067,6 +7067,57 @@ export type Database = {
           },
         ]
       }
+      gate_runs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          duration_ms: number | null
+          failed_count: number
+          git_branch: string | null
+          git_sha: string | null
+          id: string
+          metadata: Json | null
+          pass_results: Json
+          passed_count: number
+          skipped_count: number
+          status: string
+          total_passes: number
+          triggered_by: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          failed_count?: number
+          git_branch?: string | null
+          git_sha?: string | null
+          id?: string
+          metadata?: Json | null
+          pass_results?: Json
+          passed_count?: number
+          skipped_count?: number
+          status?: string
+          total_passes?: number
+          triggered_by?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          failed_count?: number
+          git_branch?: string | null
+          git_sha?: string | null
+          id?: string
+          metadata?: Json | null
+          pass_results?: Json
+          passed_count?: number
+          skipped_count?: number
+          status?: string
+          total_passes?: number
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
       global_correlation: {
         Row: {
           correlation_score: number
