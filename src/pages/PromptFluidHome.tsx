@@ -173,7 +173,7 @@ export default function PromptFluidHome() {
                   <p className="text-primary font-semibold">AI Infrastructure Lab — Dallas, TX</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  CMPSBL® is a cognitive operating system with 10 entities, 5 mesh overlays, and 9 zones spanning 175,000+ lines of production code. 
+                  CMPSBL® is a cognitive operating system with 37 matrix nodes across 11 sectors spanning 175,000+ lines of production code. 
                   Our team focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   We serve as the canonical architects and technical experts for all substrate development.
                 </p>

@@ -1,12 +1,8 @@
 /**
  * Substrate Module Hooks — Barrel Export
- * 10-Entity + 5-Mesh + 9-Zone + 11-Expansion Architecture Hooks
+ * 37-Node / 11-Sector Architecture Hooks
  *
- * CORE (standalone kernel)
- * CCR zones: SYSTEM, BRAIN, MEMORY, DREAM (hooks exported for backcompat)
- * CCL zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT (hooks exported as facades)
- * MODERNIZER → routed to EVOLUTION mesh (hook exported for backcompat)
- * EXPANSION: SOVEREIGN, ORACLE, CONSCIENCE, PHANTOM, FORGE, LINGUA, COMPASS, ECHO, TREATY, HARVEST, REFLEX
+ * Sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell
  */
 
 // Kernel Layer

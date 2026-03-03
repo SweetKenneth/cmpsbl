@@ -431,7 +431,7 @@ VISION           ██ 2
 | A-142 | Canary Deploy Health Checker | EVOLUTION | 70 | Progressive rollout validation |
 | A-143 | Immutable Incident Forensics | DEFENSE | 70 | Tamper-proof investigation |
 | A-144 | System Diagnostics Aggregator | SYSTEM | 70 | Cross-module health rollup |
-| A-145 | Node Canary Probe (24-node) | SYSTEM | 70 | Per-node pre-failure detection |
+| A-145 | Node Canary Probe (37-node) | SYSTEM | 70 | Per-node pre-failure detection |
 | A-146 | Reasoning Engine (Multi-Hop) | BRAIN | 70 | Complex inference chains |
 | A-147 | Evolution Snapshot Comparator | EVOLUTION | 70 | Pre/post mutation analysis |
 | A-148 | Relay Event Replay Controller | RELAY | 70 | Webhook event re-delivery |

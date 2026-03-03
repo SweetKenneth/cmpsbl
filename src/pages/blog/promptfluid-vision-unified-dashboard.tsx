@@ -57,7 +57,7 @@ const VisionModuleGuide = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                VISION serves as the control plane for the entire CMPSBL World Engine, providing a single interface to monitor, analyze, and manage all 10 entities and 5 mesh overlays.
+                VISION serves as the control plane for the entire CMPSBL World Engine, providing a single interface to monitor, analyze, and manage all 37 matrix nodes across 11 sectors.
               </p>
               <p>
                 Unlike fragmented monitoring tools that require jumping between multiple interfaces, VISION unifies operational visibility. One dashboard shows the complete state of your AI infrastructure.

@@ -269,7 +269,7 @@ GOVERNANCE      █ 1
 | **Composability** | 13/15 — Boot policies per environment (dev, staging, prod) |
 | **Governance Influence** | 10/10 — Boot gate verdicts are governance-enforced |
 | **Moat Sensitivity** | 9/10 — Boot topology reveals architecture dependencies |
-| **Behavior** | Resolves the 26-node boot dependency graph into a valid execution order. Performs: (1) Topological sort of the dependency DAG; (2) Cycle detection with diagnostic output; (3) Parallel boot where independent nodes boot simultaneously; (4) Health gate verification — each node must report healthy before dependents boot; (5) Timeout handling — blocked dependencies escalate to MEDIC; (6) Partial boot — graceful degradation when non-critical nodes fail. Boot timing telemetry feeds into VISION for regression detection. |
+| **Behavior** | Resolves the 37-node boot dependency graph into a valid execution order. Performs: (1) Topological sort of the dependency DAG; (2) Cycle detection with diagnostic output; (3) Parallel boot where independent nodes boot simultaneously; (4) Health gate verification — each node must report healthy before dependents boot; (5) Timeout handling — blocked dependencies escalate to MEDIC; (6) Partial boot — graceful degradation when non-critical nodes fail. Boot timing telemetry feeds into VISION for regression detection. |
 
 ### S-109: VISION Resource Waste Profiler
 
@@ -829,11 +829,11 @@ GOVERNANCE      █ 1
 | Wave 4 | 24 | Execution: ENCODE, IMMUNE, MESH, MODERNIZER, SANDBOX |
 | Wave 5 | 26 | Compliance: MEDIC, NERVE, AUDIT, IDENTITY, ATLAS, RELAY |
 | **Wave 6** | **48** | **All remaining: NEXUS, DECODE, VISION, MEMORY, DEFENSE, INTEGRATION, ECONOMY, SYSTEM, CORE, ACCESS, BRAIN, DREAM, EVOLUTION, IMMUNITY, INTENT, GOVERNANCE** |
-| **Total** | **~180** | **All 26 nodes + 3 fields + governance plane** |
+| **Total** | **~180** | **All 37 nodes across 11 sectors** |
 
 ### Coverage Verification
 
-Every node in the 26-node architecture now has at minimum:
+Every node in the 37-node architecture now has at minimum:
 
 | Module | S-Tier Count | Status |
 |--------|-------------|--------|
