@@ -214,7 +214,7 @@ function getTabGroups(hasAgency: boolean): TabGroup[] {
         { id: 'mesh', label: 'Intent Mesh', icon: Network, color: 'amber', description: 'Capability mesh', tier: 'architect' },
         { id: 'codeagent', label: 'ENCODE', icon: Bot, color: 'fuchsia', description: 'Code pipeline', tier: 'architect' },
         { id: 'cortex', label: 'CORTEX', icon: Wand2, color: 'violet', description: 'Orchestrator', tier: 'architect' },
-        { id: 'modules', label: 'Zones', icon: Cpu, color: 'orange', description: 'CCR · CCL zones', tier: 'architect' },
+        { id: 'modules', label: 'Zones', icon: Cpu, color: 'orange', description: 'CCR · OCG zones', tier: 'architect' },
         { id: 'atlas', label: 'Atlas', icon: Gauge, color: 'cyan', description: 'Control plane', tier: 'architect' },
       ],
     },
@@ -569,12 +569,12 @@ function MergedModulesTab({ enabled }: { enabled: boolean }) {
   
   return (
     <TabPane id="modules">
-      <TabHeader icon={Cpu} title="Kernel & Zones" subtitle="CORE · CCR zones · CCL zones" color="orange" tier="architect" />
+      <TabHeader icon={Cpu} title="Kernel & Zones" subtitle="CORE · CCR zones · OCG zones" color="orange" tier="architect" />
       <SubTabBar
         tabs={[
           { id: 'core', label: 'CORE Kernel', icon: Cpu },
-          { id: 'ripple', label: 'RIPPLE (CCL)', icon: Radio },
-          { id: 'access', label: 'ACCESS (CCL)', icon: Key },
+          { id: 'ripple', label: 'RIPPLE (OCG)', icon: Radio },
+          { id: 'access', label: 'ACCESS (OCG)', icon: Key },
         ]}
         active={activeModule}
         onChange={(id) => setActiveModule(id as typeof activeModule)}

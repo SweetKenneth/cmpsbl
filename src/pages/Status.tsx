@@ -41,33 +41,50 @@ const STATUS_CONFIG: Record<ModuleStatus, { label: string; color: string; icon: 
 const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType }[] = [
   // CORE Kernel
   { name: "Core", layer: "Kernel", icon: Cpu },
-  // CCR Zones
-  { name: "Brain", layer: "CCR Zone", icon: Brain },
-  { name: "Dream", layer: "CCR Zone", icon: Moon },
-  { name: "System", layer: "CCR Zone", icon: Settings },
-  { name: "Memory", layer: "CCR Zone", icon: Database },
-  // CCL Zones
-  { name: "Ripple", layer: "CCL Zone", icon: Radio },
-  { name: "Access", layer: "CCL Zone", icon: Key },
-  { name: "Identity", layer: "CCL Zone", icon: Fingerprint },
-  { name: "Relay", layer: "CCL Zone", icon: Radio },
-  { name: "Audit", layer: "CCL Zone", icon: FileCheck },
-  // Execution Surfaces
-  { name: "Decode", layer: "Surface", icon: MessageSquare },
-  { name: "Encode", layer: "Surface", icon: FlaskConical },
-  { name: "Vision", layer: "Surface", icon: Eye },
-  { name: "Cortex", layer: "Surface", icon: Sparkles },
-  { name: "Nexus", layer: "Surface", icon: Zap },
-  { name: "Economy", layer: "Surface", icon: Coins },
-  { name: "Sandbox", layer: "Surface", icon: Code2 },
-  { name: "Inclusive", layer: "Surface", icon: Accessibility },
-  { name: "Integration", layer: "Surface", icon: Layers },
-  // Overlays
-  { name: "Defense", layer: "Overlay", icon: Shield },
-  { name: "Immunity", layer: "Overlay", icon: RefreshCw },
-  { name: "Evolution", layer: "Overlay", icon: Send },
-  { name: "Intent", layer: "Overlay", icon: Sparkles },
-  { name: "Governance", layer: "Overlay", icon: FileCheck },
+  // SYSTEM
+  { name: "System", layer: "System", icon: Settings },
+  // CCR — Clockless Cognitive Reality
+  { name: "Brain", layer: "CCR", icon: Brain },
+  { name: "Dream", layer: "CCR", icon: Moon },
+  { name: "Memory", layer: "CCR", icon: Database },
+  // OCG — Operational Compliance Grid
+  { name: "Ripple", layer: "OCG", icon: Radio },
+  { name: "Access", layer: "OCG", icon: Key },
+  { name: "Identity", layer: "OCG", icon: Fingerprint },
+  { name: "Relay", layer: "OCG", icon: Radio },
+  { name: "Audit", layer: "OCG", icon: FileCheck },
+  // Execution (11)
+  { name: "Decode", layer: "Execution", icon: MessageSquare },
+  { name: "Encode", layer: "Execution", icon: FlaskConical },
+  { name: "Vision", layer: "Execution", icon: Eye },
+  { name: "Cortex", layer: "Execution", icon: Sparkles },
+  { name: "Nexus", layer: "Execution", icon: Zap },
+  { name: "Economy", layer: "Execution", icon: Coins },
+  { name: "Sandbox", layer: "Execution", icon: Code2 },
+  { name: "Inclusive", layer: "Execution", icon: Accessibility },
+  { name: "Medic", layer: "Execution", icon: Activity },
+  { name: "Nerve", layer: "Execution", icon: Zap },
+  { name: "Integration", layer: "Execution", icon: Layers },
+  // ESZ — Ethical Sovereignty Zone
+  { name: "Sovereign", layer: "ESZ", icon: Shield },
+  { name: "Oracle", layer: "ESZ", icon: Eye },
+  { name: "Conscience", layer: "ESZ", icon: Brain },
+  { name: "Treaty", layer: "ESZ", icon: FileCheck },
+  // EPZ — Environmental Perception Zone
+  { name: "Compass", layer: "EPZ", icon: Activity },
+  { name: "Echo", layer: "EPZ", icon: Radio },
+  { name: "Reflex", layer: "EPZ", icon: Zap },
+  // EMZ — Emergent Manufacturing Zone
+  { name: "Forge", layer: "EMZ", icon: Cpu },
+  { name: "Lingua", layer: "EMZ", icon: MessageSquare },
+  { name: "Phantom", layer: "EMZ", icon: Shield },
+  { name: "Harvest", layer: "EMZ", icon: Database },
+  // Fields + Plane + Shell
+  { name: "Evolution", layer: "Field", icon: Send },
+  { name: "Immunity", layer: "Field", icon: RefreshCw },
+  { name: "Intent", layer: "Field", icon: Sparkles },
+  { name: "Governance", layer: "Plane", icon: FileCheck },
+  { name: "Defense", layer: "Shell", icon: Shield },
 ];
 
 function useSystemStatus() {
@@ -220,7 +237,7 @@ export default function Status() {
     return groups;
   }, [modules]);
 
-  const layerOrder = ["Kernel", "CCR Zone", "CCL Zone", "Surface", "Overlay"];
+  const layerOrder = ["Kernel", "System", "CCR", "OCG", "Execution", "ESZ", "EPZ", "EMZ", "Field", "Plane", "Shell"];
 
   return (
     <div className="min-h-screen bg-background">
