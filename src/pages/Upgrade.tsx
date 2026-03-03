@@ -72,7 +72,6 @@ const TIERS: {
     description: '6 artifact slots, expanded memory, executable capabilities, and priority routing.',
     accent: 'from-violet-500 to-purple-500',
     icon: Sparkles,
-    popular: true,
     stripeTier: 'creator' as EngineSubscriptionTier,
     features: [
       '6 Artifact Slots',
@@ -81,6 +80,28 @@ const TIERS: {
       'Executable capabilities',
       'Priority routing',
       'Email support',
+    ],
+  },
+  {
+    key: 'studio',
+    name: 'Studio',
+    price: '$49',
+    annualPrice: '$39',
+    period: '/mo',
+    tagline: '9 template packs. Maximum creative output.',
+    description: '9 artifact slots, 9 template packs, trace exports, and high-priority Nexus routing.',
+    accent: 'from-blue-500 to-indigo-500',
+    icon: Layers,
+    popular: true,
+    stripeTier: 'studio' as EngineSubscriptionTier,
+    features: [
+      '9 Artifact Slots',
+      '9 template packs included',
+      'Expanded memory partitions',
+      'Trace & audit exports',
+      'High-priority Nexus routing',
+      'Advanced automation pipelines',
+      'Priority email support',
     ],
   },
   {
@@ -241,7 +262,9 @@ export default function Upgrade() {
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
-    ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'operator' :
+    currentTier === 'studio' ? 'studio' :
+    ['architect', 'pro'].includes(currentTier) ? 'architect' :
+    ['creator', 'builder'].includes(currentTier) ? 'operator' :
     'builder';
 
   const slotState = useArtifactSlots(currentTier);
@@ -254,7 +277,7 @@ export default function Upgrade() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Pricing — CMPSBL"
-        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), or Architect ($79/mo)."
+        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), Studio ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
@@ -274,7 +297,7 @@ export default function Upgrade() {
               One Runtime. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
+              24 artifact packs. Every pack = 1 slot. Choose 3, 6, 9, or 12.
             </p>
             {slotState.activeCount > 0 && (
               <div className="flex justify-center mt-4">
