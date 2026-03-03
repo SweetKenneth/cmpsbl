@@ -152,19 +152,22 @@ const memoryTierProbe: DiagnosticProbe = {
     const start = performance.now();
     try {
       const { data, error } = await supabase
-        .from('neural_memory')
-        .select('tier', { count: 'exact' })
-        .limit(1000);
+        .from('brain_events')
+        .select('data')
+        .eq('event_type', 'memory_tier_snapshot')
+        .order('created_at', { ascending: false })
+        .limit(1);
 
       if (error) throw error;
 
-      const tiers: Record<string, number> = {};
-      for (const row of data ?? []) {
-        const tier = (row as any).tier ?? 'unknown';
-        tiers[tier] = (tiers[tier] ?? 0) + 1;
-      }
+      const snapshot = (data?.[0]?.data as Record<string, number> | null) ?? {};
+      const tiers: Record<string, number> = {
+        hot: snapshot.hot ?? 0,
+        warm: snapshot.warm ?? 0,
+        cold: snapshot.cold ?? 0,
+      };
 
-      const total = data?.length ?? 0;
+      const total = Object.values(tiers).reduce((a, b) => a + b, 0);
       const hotRatio = (tiers['hot'] ?? 0) / Math.max(1, total);
       
       // Hot tier should be < 30% of total
