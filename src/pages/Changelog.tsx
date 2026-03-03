@@ -59,11 +59,85 @@ interface Stratum {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STRATUM I — IRONCLAD (v13.0.0)
-// The substrate grew armor.
+// STRATUM I — IRONCLAD (v13.0.0 → v13.1.0)
+// The substrate grew armor, then learned to govern its own rhythm.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const stratumIronclad: Specimen[] = [
+  {
+    id: "IRNC-005",
+    fossilized: "2026-03-03",
+    origin: "autonomous",
+    stimulus: "The AutoBlog published on a fixed schedule regardless of content quality or system health — frequency was disconnected from readiness",
+    adaptations: [
+      "Adaptive Publish Governor introduced: token bucket (max 3.0) + composite readiness score gates every publish decision",
+      "Readiness score computed from confidence (35%), skeptic review (35%), success rate (15%), and drift calibration (15%)",
+      "Cooldown triggers on breaker critical, 3 consecutive failures, or anomaly severity >= 70",
+      "Every publish decision — approve or defer — is logged with full signal breakdown for auditability",
+    ],
+    phenotype: [
+      "The substrate decides when to publish based on epistemic readiness, not arbitrary schedules",
+      "Publish frequency self-adjusts: more when quality signals are strong, less when the system detects uncertainty",
+      "Full decision transparency — every defer and every publish has a traceable reason chain",
+    ],
+    affectedNodes: ["AUTOBLOG", "GOVERNANCE"],
+  },
+  {
+    id: "IRNC-004",
+    fossilized: "2026-03-03",
+    origin: "cognition",
+    stimulus: "Content quality pipeline had no drift awareness — posts could slowly diverge from the substrate's domain without detection",
+    adaptations: [
+      "Semantic Drift Engine compares every draft against the last 20 published posts via token overlap analysis",
+      "Drift score (0.0–1.0) and drift direction (aligned/diverging/reversing) computed for every draft",
+      "High drift (>0.6) applies a calibrated confidence penalty (max -0.1) — never blocks, only adjusts posture",
+      "Adaptive Confidence Weights replace static multipliers — weights are persisted and dynamically tuned by memory compression cycles",
+      "Monthly memory compression now auto-adjusts weight distributions based on contradiction rates and broken assumption patterns",
+    ],
+    phenotype: [
+      "The substrate detects when content is drifting from its domain and self-corrects through confidence recalibration",
+      "Confidence weights evolve over time based on actual publishing outcomes — no manual tuning required",
+      "Epistemic calibration without censorship: drift awareness informs but never vetoes",
+    ],
+    affectedNodes: ["AUTOBLOG", "MEMORY", "BRAIN"],
+  },
+  {
+    id: "IRNC-003",
+    fossilized: "2026-03-03",
+    origin: "architecture",
+    stimulus: "Published content lacked structural density — no contextual interlinking, insufficient visual density, and word-length was random",
+    adaptations: [
+      "Contextual Interlinker scans 30 internal URLs and injects 3–7 keyword-matched links per post — no spam patterns, no code block insertion",
+      "Image Expander places up to 8 contextual images after intro and major H2 sections with generated alt text",
+      "Cyclical Length Cadence enforces 850/850/1200 word targets on a rolling 3-post cycle",
+      "Incremental Site Scanner crawls max 5 URLs per day, extracts topic signals, and seeds the confidence engine — never auto-generates drafts",
+    ],
+    phenotype: [
+      "Every published post is structurally dense: interlinked, visually rich, and length-governed",
+      "Topic seeding is passive and slow — the substrate absorbs domain signals without acting on them prematurely",
+      "Content quality is architecturally enforced, not editorially negotiated",
+    ],
+    affectedNodes: ["AUTOBLOG", "INTEGRATION"],
+  },
+  {
+    id: "IRNC-002",
+    fossilized: "2026-03-03",
+    origin: "survival",
+    stimulus: "AutoBlog quality pipeline was effective but lacked adversarial depth — no contradiction testing, no assumption tracking, no split-brain evaluation",
+    adaptations: [
+      "Confidence Engine computes multi-factor quality scores (source stability, success rate, topic familiarity, content density) driving tone and length modifiers",
+      "Contradiction Engine generates adversarial counter-arguments and blocks publication if credibility falls below 0.35",
+      "Split Brain Evaluation: dual Reader (clarity) and Skeptic (credibility) reviews with caveat injection when skeptic score < 0.5",
+      "Assumption Labeler extracts and tracks implicit assumptions across posts, detecting 'breakage' when future content contradicts prior premises",
+      "Monthly Memory Compression consolidates lessons learned and adjusts confidence parameters on a 30-day cycle",
+    ],
+    phenotype: [
+      "The AutoBlog subjects every draft to adversarial testing before publication",
+      "Content assumptions are tracked over time — broken assumptions trigger confidence recalibration",
+      "The system develops institutional memory about its own publishing quality",
+    ],
+    affectedNodes: ["AUTOBLOG", "BRAIN", "MEMORY"],
+  },
   {
     id: "IRNC-001",
     fossilized: "2026-03-01",
@@ -83,21 +157,6 @@ const stratumIronclad: Specimen[] = [
       "Operators can diagnose any module from the terminal without touching code",
     ],
     affectedNodes: ["ALL 22 MODULES", "ATLAS", "ENGINEER", "INTENT"],
-  },
-  {
-    id: "IRNC-002",
-    fossilized: "2026-03-01",
-    origin: "architecture",
-    stimulus: "12 documentation libraries had accumulated across epochs with overlapping content — cognitive overhead was unsustainable",
-    adaptations: [
-      "All prior documentation archived into a single geological layer (docs/archived/)",
-      "Clean documentation surface established for the IRONCLAD epoch — zero legacy noise",
-      "Subject-based library system preserved for historical reference but removed from active navigation",
-    ],
-    phenotype: [
-      "Contributors and AI agents operate against a single clean documentation surface",
-      "Historical context is preserved but doesn't interfere with current-epoch work",
-    ],
   },
 ];
 
