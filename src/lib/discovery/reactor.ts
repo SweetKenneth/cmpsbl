@@ -65,7 +65,7 @@ export interface ReactorRunResult {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CANONICAL_MODULES = [
-  // 37-node architecture (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell)
+  // 38-node architecture (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
   'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',

@@ -27,9 +27,9 @@ Clockless adopts and implements LLMS.txt as its primary machine context.
 
 ## About
 
-Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37 active nodes across 11 sectors, real-time observability, adaptive learning, and multi-provider routing.
+Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 38 active nodes across 12 sectors, real-time observability, adaptive learning, and multi-provider routing.
 
-## Architecture (37 Nodes / 11 Sectors)
+## Architecture (38 Nodes / 12 Sectors)
 
 ### CORE (Kernel)
 - CORE — Boot sequencing, circuit breakers, config, job scheduling
