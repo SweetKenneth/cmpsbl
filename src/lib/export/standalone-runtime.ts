@@ -507,7 +507,7 @@ export function computeSynergyMultiplier(moduleChain: string[]): number {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §10 — CANONICAL MODULES (37-node matrix)
+// §10 — CANONICAL MODULES (38-node matrix)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const CANONICAL_MODULES = [

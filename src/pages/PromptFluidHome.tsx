@@ -46,15 +46,15 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 37 nodes across 11 sectors, powered by the CMPSBL Substrate." },
+  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 38 nodes across 12 sectors, powered by the CMPSBL Substrate." },
   { year: "2025", title: "175k+ Lines of Code", description: "Grew to 675+ capabilities, 13-provider AI routing, and composable cognitive infrastructure." },
-  { year: "2026", title: "Zone Architecture", description: "Surgically hot-swappable subsystems with circuit-breaker isolation, 3 shielded expansion zones, and autonomous evolution." },
+  { year: "2026", title: "Zone Architecture", description: "Surgically hot-swappable subsystems with circuit-breaker isolation, 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ), and autonomous evolution." },
 ];
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
   { icon: Cpu, title: "Multi-Provider Routing", description: "13-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
-  { icon: Layers, title: "Zone Architecture", description: "37 nodes across 11 sectors with 3 shielded expansion zones (ESZ, EPZ, EMZ) and circuit-breaker isolation." },
+  { icon: Layers, title: "Zone Architecture", description: "38 nodes across 12 sectors with 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ) and circuit-breaker isolation." },
   { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
   { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },
   { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },
@@ -173,7 +173,7 @@ export default function PromptFluidHome() {
                   <p className="text-primary font-semibold">AI Infrastructure Lab — Dallas, TX</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  CMPSBL® is a cognitive operating system with 37 matrix nodes across 11 sectors spanning 175,000+ lines of production code. 
+                  CMPSBL® is a cognitive operating system with 38 matrix nodes across 12 sectors spanning 175,000+ lines of production code. 
                   Our team focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   We serve as the canonical architects and technical experts for all substrate development.
                 </p>
