@@ -60,8 +60,21 @@ export function observe(name: string, value: number): void {
   const m = metrics.get(k);
   if (m && m.type === 'histogram' && m.observations) {
     m.observations.push(value);
-    if (m.observations.length > 10000) m.observations.splice(0, 5000);
+    // Use ring-buffer style eviction to avoid expensive splice
+    if (m.observations.length > 10000) {
+      m.observations.splice(0, 5000);
+    }
   }
+}
+
+/** Reset all metrics (for testing / session boundaries) */
+export function resetMetrics(): void {
+  metrics.clear();
+  // Re-register defaults
+  counter('substrate_invocations_total', 'Total substrate invocations');
+  counter('substrate_errors_total', 'Total substrate errors');
+  gauge('substrate_active_modules', 'Currently active modules');
+  histogram('substrate_latency_ms', 'Substrate invocation latency');
 }
 
 /** Export all metrics in Prometheus text exposition format */

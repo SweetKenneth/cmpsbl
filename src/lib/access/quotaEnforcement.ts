@@ -42,6 +42,7 @@ export interface UsageMeter {
 const usageMeters: Map<string, UsageMeter> = new Map();
 const quotaRules: Map<string, QuotaRule> = new Map();
 const violations: QuotaViolation[] = [];
+const MAX_VIOLATIONS = 500;
 
 // Default quota rules
 const DEFAULT_RULES: QuotaRule[] = [
@@ -126,6 +127,7 @@ export async function recordUsage(
       };
       
       violations.push(violation);
+      if (violations.length > MAX_VIOLATIONS) violations.splice(0, Math.floor(MAX_VIOLATIONS * 0.3));
       
       // Log to database
       await logViolation(developerId, violation);

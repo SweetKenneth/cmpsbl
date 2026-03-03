@@ -51,6 +51,11 @@ export class LearningCollector {
       }
     });
 
+    // Cap queue to prevent unbounded growth on repeated flush failures
+    if (this.queue.length > 200) {
+      this.queue.splice(0, this.queue.length - 100);
+    }
+
     // Flush if queue is full
     if (this.queue.length >= this.BATCH_SIZE) {
       await this.flush();
