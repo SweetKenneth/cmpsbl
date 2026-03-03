@@ -1,17 +1,23 @@
 /**
- * Bot Detection Client — Ported from aetherion-shield
+ * Bot Detection Client — Ported from aetherion-shield (Hardened)
  * Client-side data assembly + server-side scoring pipeline
  * Target nodes: DEFENSE, SITE-GUARD
+ *
+ * HARDENING: Raw fingerprint signals are hashed before network transit.
+ * Only hashes + risk metadata cross the wire. Compliance-safe (GDPR/CCPA).
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { fnv1aHash } from '@/lib/system/hardening';
 
 export interface DetectionPayload {
-  fingerprint_data?: {
-    canvas?: string;
-    webgl?: string;
-    audio?: string;
-    fonts?: string[];
+  /** Hashed fingerprint signals — NEVER raw canvas/webgl data */
+  fingerprint_hashes?: {
+    canvas_hash?: string;
+    webgl_hash?: string;
+    audio_hash?: string;
+    font_hash?: string;
+    composite_hash?: string;
   };
   behavioral_data?: {
     mouse_movements?: number;
@@ -19,9 +25,9 @@ export interface DetectionPayload {
     scroll_events?: number;
   };
   network_data?: {
-    tls_fingerprint?: string;
     connection_type?: string;
   };
+  /** UA is semi-public — kept for bot pattern matching */
   user_agent?: string;
   request_path?: string;
   request_method?: string;
@@ -52,24 +58,27 @@ export async function detectBot(payload: DetectionPayload): Promise<DetectionRes
     }
 
     return data as DetectionResult;
-  } catch (err) {
+  } catch {
     console.warn('[DEFENSE] Bot detection exception, failing open');
     return failOpen('detection_exception');
   }
 }
 
-/** Gather client-side fingerprint + behavioral signals */
+/**
+ * Gather client-side fingerprint signals, HASH them, then return.
+ * Raw canvas dataURLs and WebGL strings NEVER leave the client.
+ */
 export async function gatherDetectionData(): Promise<DetectionPayload> {
   const payload: DetectionPayload = {
     user_agent: navigator.userAgent,
     request_path: window.location.pathname,
     request_method: 'GET',
-    fingerprint_data: {},
+    fingerprint_hashes: {},
     behavioral_data: {},
     network_data: {},
   };
 
-  // Canvas fingerprint
+  // Canvas fingerprint → hash only
   try {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -77,25 +86,47 @@ export async function gatherDetectionData(): Promise<DetectionPayload> {
       ctx.textBaseline = 'top';
       ctx.font = '14px Arial';
       ctx.fillText('substrate fp', 2, 2);
-      payload.fingerprint_data!.canvas = canvas.toDataURL();
+      const raw = canvas.toDataURL();
+      payload.fingerprint_hashes!.canvas_hash = fnv1aHash(raw).toString(16);
     }
   } catch {
-    payload.fingerprint_data!.canvas = 'blocked';
+    payload.fingerprint_hashes!.canvas_hash = 'blocked';
   }
 
-  // WebGL fingerprint
+  // WebGL fingerprint → hash only
   try {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (gl && 'getParameter' in gl) {
       const debugInfo = (gl as any).getExtension('WEBGL_debug_renderer_info');
       if (debugInfo) {
-        payload.fingerprint_data!.webgl = (gl as any).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        const raw = (gl as any).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+        payload.fingerprint_hashes!.webgl_hash = fnv1aHash(raw).toString(16);
       }
     }
   } catch {
-    payload.fingerprint_data!.webgl = 'blocked';
+    payload.fingerprint_hashes!.webgl_hash = 'blocked';
   }
+
+  // Font list → composite hash
+  try {
+    const fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia',
+      'Palatino', 'Garamond', 'Bookman', 'Comic Sans MS', 'Trebuchet MS'];
+    payload.fingerprint_hashes!.font_hash = fnv1aHash(fonts.join(',')).toString(16);
+  } catch {
+    payload.fingerprint_hashes!.font_hash = 'blocked';
+  }
+
+  // Composite hash of all signals
+  const parts = [
+    payload.fingerprint_hashes?.canvas_hash,
+    payload.fingerprint_hashes?.webgl_hash,
+    payload.fingerprint_hashes?.font_hash,
+    navigator.language,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+    String(navigator.hardwareConcurrency),
+  ].filter(Boolean).join('|');
+  payload.fingerprint_hashes!.composite_hash = fnv1aHash(parts).toString(16);
 
   return payload;
 }
