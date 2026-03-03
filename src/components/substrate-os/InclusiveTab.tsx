@@ -2,7 +2,7 @@
  * INCLUSIVE Module Tab — Human Compatibility Pipeline
  * WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
- * Full glue layer integration across 24 execution surfaces:
+ * Full glue layer integration across 37 nodes:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk pipeline

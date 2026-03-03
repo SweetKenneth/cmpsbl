@@ -1,6 +1,6 @@
 /**
  * Terminal Command Aliases
- * Shorthand aliases for 360+ commands
+ * Shorthand aliases for 500+ commands
  */
 
 export interface AliasDefinition {

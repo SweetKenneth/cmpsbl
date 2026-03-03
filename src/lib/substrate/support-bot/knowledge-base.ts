@@ -575,11 +575,18 @@ For urgent issues, phone is recommended. For complex technical questions, email 
     answer: `CMPSBL (Composable) is the cognitive infrastructure substrate powering the Clockless Cognitive Reality System. It is NOT an operating system — it is a substrate.
 
 **Architecture:**
-• 24 total Execution Surfaces across 6 layers
+• 37 total nodes across 11 sectors
 • 1 CORE Kernel — the standalone boot authority
-• 9 Public Modules — DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, INTEGRATION
-• 5 Mesh Overlays — DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE
-• 9 Hidden Zones — CCR (SYSTEM, BRAIN, MEMORY, DREAM) + CCL (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
+• 1 SYSTEM — lifecycle management
+• CCR (3): BRAIN, MEMORY, DREAM — cognitive core
+• OCG (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT — compliance grid
+• Execution (11): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION
+• ESZ (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY — sovereignty zone
+• EPZ (3): COMPASS, ECHO, REFLEX — perception zone
+• EMZ (4): FORGE, LINGUA, PHANTOM, HARVEST — manufacturing zone
+• Fields (3): EVOLUTION, IMMUNITY, INTENT — cross-cutting fabric
+• Plane (1): GOVERNANCE — supervisory blanket
+• Shell (1): DEFENSE — outer containment boundary
 
 **Key characteristics:**
 • Persistent memory systems (no resets)
@@ -681,9 +688,13 @@ For best experience, use the latest version of Chrome or Firefox. Some features 
   {
     id: 'general_006',
     question_pattern: 'How many modules does the substrate have?',
-    answer: `The CMPSBL Substrate has exactly **9 public modules**:
+    answer: `The CMPSBL Substrate has **37 active nodes** across **11 sectors**:
 
-1. DECODE — Interpreter (human-machine interface)
+1. **CORE** — Standalone kernel boot authority
+2. **SYSTEM** — Lifecycle management
+3. **CCR** (3): BRAIN, MEMORY, DREAM
+4. **OCG** (5): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT
+5. **Execution** (11): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION
 2. ENCODE — Code execution & generation
 3. VISION — Observability & monitoring
 4. CORTEX — Analytics & intelligence
