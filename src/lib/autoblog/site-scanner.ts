@@ -154,12 +154,12 @@ export async function runSiteScan(urls: string[]): Promise<SiteScanSummary> {
 
   // Log scan event
   if (summary.urlsScanned > 0) {
-    await supabase.from('brain_events').insert({
+    await supabase.from('brain_events').insert([{
       module: 'autoblog',
       event_type: 'site_scan_completed',
       data: summary,
       outcome: 'completed',
-    });
+    }]);
   }
 
   return summary;
