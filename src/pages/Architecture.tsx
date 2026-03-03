@@ -71,9 +71,9 @@ export default function Architecture() {
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a layered boot sequence: CORE initializes all layers, maintains the module registry, and orchestrates lifecycle events across 9 production modules.' },
-          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 24 components: 9 public modules, 5 protective layers, 9 internal infrastructure zones, and the CORE boot authority.' },
-          { question: 'What are the protective layers?', answer: 'Five layers wrap all modules: DEFENSE (outermost), IMMUNITY, EVOLUTION, INTENT, and GOVERNANCE (innermost). They provide security, resilience, and governed evolution.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses an 11-phase boot sequence: CORE initializes all sectors, maintains the module registry, and orchestrates lifecycle events across 37 nodes.' },
+          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 37 nodes across 11 sectors: CORE, SYSTEM, CCR (3), OCG (5), Execution (11), ESZ (4), EPZ (3), EMZ (4), Fields (3), Plane (1), and Shell (1).' },
+          { question: 'What are the protective layers?', answer: 'Three shielded expansion zones (ESZ, EPZ, EMZ) group specialized modules, while Fields (EVOLUTION, IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
         ]}
       />
 

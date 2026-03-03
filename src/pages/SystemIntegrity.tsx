@@ -229,7 +229,8 @@ export default function SystemIntegrity() {
     ccr: health.layers?.ccr ?? 100,
     ocg: health.layers?.ocg ?? 100,
     surfaces: health.layers?.surfaces ?? 100,
-    overlays: health.layers?.overlays ?? 100,
+    expansion: health.layers?.expansion ?? 100,
+    mesh: health.layers?.mesh ?? 100,
   };
 
   return (

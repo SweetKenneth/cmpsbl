@@ -1,16 +1,15 @@
 /**
  * CMPSBL® Substrate Client
- * 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 37-Node / 11-Sector Field-Based Topology
  *
- * CORE (standalone kernel)
- *   → CCR Layer 0 (zones: SYSTEM, BRAIN, MEMORY, DREAM)
- *   → CCL Layer 1 (zones: RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
- *   → 8 Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
- *   → INTEGRATION (module, boots last)
- *   ← 5 Mesh Overlays: DEFENSE (outermost) → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE (innermost)
+ * CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
+ *   → Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, NERVE, INTEGRATION)
+ *   → ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY) → EPZ (COMPASS, ECHO, REFLEX)
+ *   → EMZ (FORGE, LINGUA, PHANTOM, HARVEST)
+ *   → Fields (EVOLUTION, IMMUNITY, INTENT) → Plane (GOVERNANCE) → Shell (DEFENSE)
  *
- * All entities expose: status(), pulse(), and domain-specific methods
- * All entities wired into: terminal, CLM, parity, events, health, BRAIN writeback
+ * All nodes expose: status(), pulse(), and domain-specific methods
+ * All nodes wired into: terminal, CLM, parity, events, health, BRAIN writeback
  */
 
 import { supabase } from '@/integrations/supabase/client';

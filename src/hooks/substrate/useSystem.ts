@@ -1,7 +1,7 @@
 /**
  * useSystem Hook — SYSTEM zone (Administration) operations
  * 
- * Part of the 10-Entity + 5-Mesh + 9-Zone Cognitive Architecture
+ * Part of the 37-Node / 11-Sector Field-Based Topology
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

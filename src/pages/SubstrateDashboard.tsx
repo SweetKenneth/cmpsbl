@@ -66,7 +66,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 10-entity + 5-mesh + 9-zone architecture organized by layer
+// 37-node / 11-sector field-based topology organized by layer
 const modulesByLayer = {
   kernel: [
     {

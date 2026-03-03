@@ -468,8 +468,8 @@ function generateFullHelp(): string {
 ┌─────────────────────────────────────────────────────────────┐
 │          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Entities: 10 + 5 Mesh + 9 Zones  │
-│  Architecture: 24-module / 5-layer + 300 Synergy Pipelines  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 37 / 11 Sectors           │
+│  Architecture: 37-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │

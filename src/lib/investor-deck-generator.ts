@@ -6,7 +6,7 @@
 const WORLD_FIRSTS = [
   { achievement: "Autonomous AI Dream State", description: "First AI system to enter an offline dream state for memory synthesis, consolidation, and creative recombination (Simnap & Cascade)", evidence: "Zenodo DOI: 10.5281/zenodo.18234910" },
   { achievement: "Self-Evolving Bounded Agent (SEBA)", description: "First verifiable self-improving AI system with cryptographic evolution stamps, rollback semantics, and human-in-the-loop governance", evidence: "Substrate v7.0.0+" },
-  { achievement: "10-Entity Cognitive OS", description: "First complete cognitive operating system with 10 public entities, 5 mesh overlays, and 9 hot-swappable zones, operating as a unified substrate", evidence: "Production-grade field-based topology" },
+  { achievement: "37-Node Cognitive OS", description: "First complete cognitive operating system with 37 nodes across 11 sectors, 675+ capabilities, and 3 shielded expansion zones, operating as a unified substrate", evidence: "Production-grade field-based topology" },
   { achievement: "Intent Mesh", description: "First emergent capability discovery system where modules advertise, compose, and crystallize cross-module pipelines autonomously", evidence: "100 crystallized Crown Jewel pipelines" },
   { achievement: "Universal Brain Transfer Pipeline", description: "First system to automatically route memories from a central BRAIN to all entities based on relevance scoring and tag affinity", evidence: "CLM Engine v2.0" },
   { achievement: "DECODE → ENCODE Pipeline", description: "First governed natural-language-to-code execution pipeline where AI never receives raw input — all intent passes through normalization, enrichment, and safety gates", evidence: "v10.5.3" },
@@ -330,7 +330,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="info-card" style="margin-top:16px;">
     <h3 style="color:var(--text);">Kenneth E. Sweet Jr.</h3>
     <p><strong>Founder & Chief Cognitive Engineer</strong></p>
-    <p style="margin-top:8px;">Creator and architect of the 10-entity + 5-mesh substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
+    <p style="margin-top:8px;">Creator and architect of the 37-node / 11-sector substrate. Deep expertise in cognitive systems and AI infrastructure.</p>
     <p style="margin-top:8px;">ORCID: 0009-0001-4237-1243</p>
   </div>
 

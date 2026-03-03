@@ -2,7 +2,7 @@
  * Substrate Utilities
  * Helper Functions & Common Patterns
  * 
- * Provides utility functions for common substrate operations across the 10-entity + 5-mesh + 9-zone architecture.
+ * Provides utility functions for common substrate operations across the 37-node / 11-sector architecture.
  */
 
 import { substrate, type SubstrateModule, type SubstrateResponse } from '../substrate';
