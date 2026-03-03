@@ -4,7 +4,9 @@
  */
 
 const inflight = new Map<string, Promise<unknown>>();
+const inflightTimestamps = new Map<string, number>();
 const stats = { coalesced: 0, total: 0 };
+const MAX_INFLIGHT_AGE_MS = 60_000; // Safety net: evict stuck promises after 60s
 
 /** Generate a cache key from module + action + payload hash */
 function makeKey(module: string, action: string, payload?: unknown): string {
@@ -25,6 +27,14 @@ export async function coalesce<T>(
   stats.total++;
   const key = makeKey(module, action, payload);
 
+  // Evict stale entries (safety net for stuck promises)
+  const now = Date.now();
+  const staleTs = inflightTimestamps.get(key);
+  if (staleTs && now - staleTs > MAX_INFLIGHT_AGE_MS) {
+    inflight.delete(key);
+    inflightTimestamps.delete(key);
+  }
+
   const existing = inflight.get(key);
   if (existing) {
     stats.coalesced++;
@@ -33,9 +43,11 @@ export async function coalesce<T>(
 
   const promise = executor().finally(() => {
     inflight.delete(key);
+    inflightTimestamps.delete(key);
   });
 
   inflight.set(key, promise);
+  inflightTimestamps.set(key, now);
   return promise;
 }
 
