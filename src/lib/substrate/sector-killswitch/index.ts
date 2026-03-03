@@ -20,7 +20,7 @@ export interface KillSwitchState {
 }
 
 const killStates = new Map<MatrixSector, KillSwitchState>();
-const ALL_SECTORS: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell'];
+const ALL_SECTORS: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'field', 'plane', 'shell', 'esz', 'epz', 'emz', 'csz'] as MatrixSector[];
 
 function initState(sector: MatrixSector): KillSwitchState {
   return {
@@ -88,7 +88,7 @@ export function getKilledSectors(): MatrixSector[] {
 }
 
 export function killAllNonEssential(reason: string, by = 'auto'): KillSwitchState[] {
-  const nonEssential: MatrixSector[] = ['execution', 'field'];
+  const nonEssential = ['execution', 'field', 'esz', 'epz', 'emz', 'csz'] as MatrixSector[];
   return nonEssential.map(s => killSector(s, reason, by));
 }
 

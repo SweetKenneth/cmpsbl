@@ -73,12 +73,13 @@ export async function withGracefulExec<T>(
   let lastError: string | undefined;
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
+      let timer: ReturnType<typeof setTimeout>;
       const result = await Promise.race([
         fn(),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)
-        ),
-      ]);
+        new Promise<never>((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout);
+        }),
+      ]).finally(() => clearTimeout(timer!));
 
       // Success — record and return
       if (opts.circuitModule) {

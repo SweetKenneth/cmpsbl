@@ -15,13 +15,27 @@ export interface DeadLetter {
   correlationId?: string;
 }
 
+const MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours TTL
+
 const deadLetters: DeadLetter[] = [];
 const MAX_DLQ_SIZE = 200;
+
+/** Evict entries older than MAX_AGE_MS */
+function evictStale(): void {
+  const cutoff = Date.now() - MAX_AGE_MS;
+  let i = 0;
+  while (i < deadLetters.length && new Date(deadLetters[i].timestamp).getTime() < cutoff) {
+    i++;
+  }
+  if (i > 0) deadLetters.splice(0, i);
+}
 
 /**
  * Add a failed dispatch to the DLQ.
  */
 export function addDeadLetter(letter: Omit<DeadLetter, 'id' | 'timestamp'>): DeadLetter {
+  evictStale();
+
   const entry: DeadLetter = {
     ...letter,
     id: crypto.randomUUID(),

@@ -258,11 +258,8 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
 }
 
 export async function healAllSubsystems(force = false): Promise<SubsystemHealResult[]> {
-  const results: SubsystemHealResult[] = [];
-  for (const id of ALL_SUBSYSTEM_IDS) {
-    results.push(await healSubsystem(id, force));
-  }
-  return results;
+  // Run heals in parallel — subsystems are independent
+  return Promise.all(ALL_SUBSYSTEM_IDS.map(id => healSubsystem(id, force)));
 }
 
 // ═══ Diagnostics ═════════════════════════════════════════════════
