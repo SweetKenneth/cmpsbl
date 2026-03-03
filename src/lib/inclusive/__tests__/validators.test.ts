@@ -69,46 +69,46 @@ describe('INCLUSIVE Validators', () => {
   describe('validateLinks', () => {
     it('detects generic link text', () => {
       const issues = validateLinks(badHtml);
-      expect(issues.some(i => i.type === 'generic_link_text')).toBe(true);
+      expect(issues.some(i => i.type === 'link_generic_text')).toBe(true);
     });
   });
 
   describe('validateImages', () => {
     it('detects missing alt text', () => {
       const issues = validateImages(badHtml);
-      expect(issues.some(i => i.type === 'missing_alt')).toBe(true);
+      expect(issues.some(i => i.type === 'image_missing_alt')).toBe(true);
     });
     it('passes for images with alt', () => {
       const issues = validateImages(goodHtml);
-      expect(issues.filter(i => i.type === 'missing_alt')).toHaveLength(0);
+      expect(issues.filter(i => i.type === 'image_missing_alt')).toHaveLength(0);
     });
   });
 
   describe('validateStructure (headings)', () => {
     it('detects skipped heading levels', () => {
       const issues = validateStructure(badHtml);
-      expect(issues.some(i => i.type === 'heading_skip')).toBe(true);
+      expect(issues.some(i => i.type === 'structure_skipped_heading')).toBe(true);
     });
   });
 
   describe('validateForms', () => {
     it('detects inputs without labels', () => {
       const issues = validateForms(badHtml);
-      expect(issues.some(i => i.type === 'input_no_label')).toBe(true);
+      expect(issues.some(i => i.type === 'form_missing_label')).toBe(true);
     });
   });
 
   describe('validateMedia', () => {
     it('detects videos without captions', () => {
       const issues = validateMedia(badHtml);
-      expect(issues.some(i => i.type === 'video_no_captions')).toBe(true);
+      expect(issues.some(i => i.type === 'media_video_no_captions')).toBe(true);
     });
   });
 
   describe('validateKeyboard', () => {
     it('detects missing skip link', () => {
       const issues = validateKeyboard(badHtml);
-      expect(issues.some(i => i.type === 'no_skip_link')).toBe(true);
+      expect(issues.some(i => i.type === 'keyboard_no_skip_link')).toBe(true);
     });
   });
 
