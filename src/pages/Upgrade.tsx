@@ -277,7 +277,7 @@ export default function Upgrade() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Pricing — CMPSBL"
-        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), or Architect ($79/mo)."
+        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), Studio ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
@@ -297,7 +297,7 @@ export default function Upgrade() {
               One Runtime. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              24 artifact packs. Every pack = 1 slot. Choose 3, 6, or 12.
+              24 artifact packs. Every pack = 1 slot. Choose 3, 6, 9, or 12.
             </p>
             {slotState.activeCount > 0 && (
               <div className="flex justify-center mt-4">
