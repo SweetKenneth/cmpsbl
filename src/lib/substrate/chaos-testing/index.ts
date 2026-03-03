@@ -89,6 +89,9 @@ export function injectChaos(action: ChaosAction, targetNode: string): ChaosExper
   }
 
   experiments.push(experiment);
+  if (experiments.length > MAX_EXPERIMENTS) {
+    experiments.splice(0, Math.floor(MAX_EXPERIMENTS * 0.3));
+  }
 
   emit({
     module: 'system',
