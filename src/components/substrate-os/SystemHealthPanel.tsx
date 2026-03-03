@@ -95,13 +95,14 @@ export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
   const totalCount = allItems.length;
 
   // Layer health from the hook
-  const layerHealthValues = healthScore.layers || { core: 100, ccr: 100, ocg: 100, surfaces: 100, overlays: 100 };
+  const layerHealthValues = healthScore.layers || { core: 100, ccr: 100, ocg: 100, surfaces: 100, expansion: 100, mesh: 100 };
   const layerHealthMap: Record<string, number> = {
-    'CORE': layerHealthValues.core,
+    'CORE + SYSTEM': layerHealthValues.core,
     'CCR ZONES': layerHealthValues.ccr,
     'OCG ZONES': layerHealthValues.ocg,
-    'EXECUTION SURFACES': layerHealthValues.surfaces,
-    'OVERLAYS': layerHealthValues.overlays,
+    'EXECUTION': layerHealthValues.surfaces,
+    'ESZ / EPZ / EMZ': layerHealthValues.expansion,
+    'FIELDS / PLANE / SHELL': layerHealthValues.mesh,
   };
 
   // Show CRITICAL only when CORE breaker open OR CCR/OCG < 40
