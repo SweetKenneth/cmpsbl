@@ -84,10 +84,11 @@ describe('Trace System', () => {
   });
 
   describe('cleanupOldTraces', () => {
-    it('cleans traces older than maxAgeMs', () => {
+    it('cleans traces older than maxAgeMs', async () => {
       createTraceContext('OLD', 'test');
-      // With maxAge=0, all traces are "old"
-      const cleaned = cleanupOldTraces(0);
+      // Wait 5ms so the trace is older than 1ms
+      await new Promise(r => setTimeout(r, 5));
+      const cleaned = cleanupOldTraces(1);
       expect(cleaned).toBeGreaterThanOrEqual(1);
     });
 
