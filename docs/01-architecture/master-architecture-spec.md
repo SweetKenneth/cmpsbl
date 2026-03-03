@@ -43,9 +43,10 @@ graph TD
         IDENTITY[IDENTITY]
         RELAY[RELAY]
         AUDIT_NODE[AUDIT]
+        NERVE_NODE[NERVE]
     end
 
-    subgraph EXL[Execution Layer - 11 Nodes]
+    subgraph EXL[Execution Layer - 10 Nodes]
         DECODE[DECODE]
         ENCODE[ENCODE]
         VISION[VISION]
@@ -55,7 +56,6 @@ graph TD
         SANDBOX[SANDBOX]
         INCLUSIVE[INCLUSIVE]
         MEDIC[MEDIC]
-        NERVE_NODE[NERVE]
         INTEGRATION[INTEGRATION]
     end
 
@@ -75,12 +75,16 @@ graph TD
     subgraph EMZ[EMZ - Expansion Manufacturing Zone]
         FORGE[FORGE]
         LINGUA[LINGUA]
-        PHANTOM[PHANTOM]
         HARVEST[HARVEST]
     end
 
-    subgraph Fields
+    subgraph CSZ[CSZ - Covert Systems Zone]
         EVOLUTION[EVOLUTION]
+        SHADOW[SHADOW]
+        PHANTOM[PHANTOM]
+    end
+
+    subgraph Fields
         IMMUNITY[IMMUNITY]
         INTENT[INTENT]
     end
@@ -115,8 +119,8 @@ graph TD
 | Spine: CORE | CORE | 0.120 | Kernel boot, matrix ownership, integrity calculation |
 | Spine: SYSTEM | SYSTEM | 0.040 | Lifecycle, configuration, environment management |
 | Spine: CCR | BRAIN, MEMORY, DREAM | 0.120 | Reasoning, persistent state, synthesis |
-| Grid: OCG | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT | 0.150 | Boundary enforcement, compliance, event routing |
-| Execution | 11 modules | 0.250 | Public-facing cognitive capabilities |
+| Grid: OCG | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE | 0.150 | Boundary enforcement, compliance, event routing, signaling |
+| Execution | 10 modules | 0.250 | Public-facing cognitive capabilities |
 | ESZ | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 0.080 | Governance expansion, compliance, ethics |
 | EPZ | COMPASS, ECHO, REFLEX | 0.060 | Perception, simulation, edge computing |
 | EMZ | FORGE, LINGUA, HARVEST | 0.050 | Manufacturing, translation, data |
