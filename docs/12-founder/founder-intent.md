@@ -10,7 +10,7 @@ This document records the non-negotiable principles, ethical boundaries, and fou
 2. **GOVERNANCE cannot be bypassed.** Every mutating action must pass through governance evaluation. There are no shortcuts, debug flags, or operator overrides that skip governance.
 3. **DEFENSE is terminal.** The outer security boundary is enforced unconditionally. No internal module may override a DEFENSE block decision.
 4. **Data belongs to the operator.** The substrate is BYOK. No data is sent to, stored by, or accessible to the substrate provider. Operators own their keys, their data, and their infrastructure.
-5. **Module names are permanent.** The 24-module topology and naming are architectural invariants. Modules may evolve internally but not be renamed, merged, or deleted.
+5. **Module names are permanent.** The 38-node topology and naming are architectural invariants. Modules may evolve internally but not be renamed, merged, or deleted.
 
 ## 3. System Purpose
 

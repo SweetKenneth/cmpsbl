@@ -6,7 +6,7 @@ This document defines the governance model, autonomy boundaries, and escalation 
 
 ## 2. Scope
 
-This doctrine applies to all 24 modules, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
+This doctrine applies to all 38 nodes across 12 sectors, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
 
 ## 3. Autonomy Model
 
@@ -152,6 +152,7 @@ Manual rollback available:
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Updated to 38-node topology; added AutoBlog autonomous governance (publish governor, adaptive confidence weights) |
 | 2026-03-01 | System | Initial canonical doctrine |
 
 ---
