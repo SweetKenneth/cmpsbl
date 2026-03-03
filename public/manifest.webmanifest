@@ -45,6 +45,13 @@
   ],
   "shortcuts": [
     {
+      "name": "S-Tier Vault",
+      "short_name": "Vault",
+      "description": "Crown Jewel Pipeline Vault",
+      "url": "/admin/s-tier-vault",
+      "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
+    },
+    {
       "name": "Substrate OS",
       "short_name": "OS",
       "description": "Open CMPSBL Substrate Runtime",
@@ -52,10 +59,10 @@
       "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
     },
     {
-      "name": "Blog",
-      "short_name": "Blog",
-      "description": "Read CMPSBL Blog",
-      "url": "/blog",
+      "name": "Discovery Mining",
+      "short_name": "Mining",
+      "description": "Capability Discovery Mining Console",
+      "url": "/admin/discovery-mining",
       "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
     }
   ],
