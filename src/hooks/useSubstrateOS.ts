@@ -419,11 +419,12 @@ export function useSubstrateHealthScore() {
     refetch: () => batchQuery.refetch(),
     // Layer breakdown for System Integrity page
     layers: {
-      core: coreHealth,
+      core: coreSysHealth,
       ccr: ccrHealth,
       ocg: ocgHealth,
       surfaces: surfaceHealth,
-      overlays: overlayHealth,
+      expansion: expansionHealth,
+      mesh: meshHealth,
     },
   };
 }
