@@ -453,6 +453,15 @@ export default function EvolutionControlCenter() {
                   {cmd}
                 </Badge>
               ))}
+              <Button
+                size="sm"
+                variant="outline"
+                className="shrink-0 text-[10px] sm:text-xs h-7 border-primary/30 hover:bg-primary/10"
+                onClick={() => navigate('/admin/gate')}
+              >
+                <Shield className="w-3 h-3 mr-1" />
+                Run GATE
+              </Button>
             </div>
           </div>
         </section>
