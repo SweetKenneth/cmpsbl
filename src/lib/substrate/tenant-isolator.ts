@@ -23,6 +23,7 @@ interface TenantState {
 }
 
 const tenants = new Map<string, TenantState>();
+const MAX_TENANTS = 500;
 
 const DEFAULT_QUOTA: TenantQuota = {
   maxRequestsPerMinute: 60,
@@ -33,6 +34,18 @@ const DEFAULT_QUOTA: TenantQuota = {
 
 function ensureTenant(id: string): TenantState {
   if (!tenants.has(id)) {
+    // Evict oldest inactive tenant if at cap
+    if (tenants.size >= MAX_TENANTS) {
+      let oldestKey: string | null = null;
+      let oldestReset = Infinity;
+      for (const [key, t] of tenants) {
+        if (t.active === 0 && t.minuteReset < oldestReset) {
+          oldestReset = t.minuteReset;
+          oldestKey = key;
+        }
+      }
+      if (oldestKey) tenants.delete(oldestKey);
+    }
     tenants.set(id, {
       id,
       quota: { ...DEFAULT_QUOTA },
