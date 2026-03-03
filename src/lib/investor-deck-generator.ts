@@ -6,7 +6,7 @@
 const WORLD_FIRSTS = [
   { achievement: "Autonomous AI Dream State", description: "First AI system to enter an offline dream state for memory synthesis, consolidation, and creative recombination (Simnap & Cascade)", evidence: "Zenodo DOI: 10.5281/zenodo.18234910" },
   { achievement: "Self-Evolving Bounded Agent (SEBA)", description: "First verifiable self-improving AI system with cryptographic evolution stamps, rollback semantics, and human-in-the-loop governance", evidence: "Substrate v7.0.0+" },
-  { achievement: "37-Node Cognitive OS", description: "First complete cognitive operating system with 37 nodes across 11 sectors, 675+ capabilities, and 3 shielded expansion zones, operating as a unified substrate", evidence: "Production-grade field-based topology" },
+  { achievement: "38-Node Cognitive OS", description: "First complete cognitive operating system with 38 nodes across 12 sectors, 675+ capabilities, and 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ), operating as a unified substrate", evidence: "Production-grade field-based topology" },
   { achievement: "Intent Mesh", description: "First emergent capability discovery system where modules advertise, compose, and crystallize cross-module pipelines autonomously", evidence: "100 crystallized Crown Jewel pipelines" },
   { achievement: "Universal Brain Transfer Pipeline", description: "First system to automatically route memories from a central BRAIN to all entities based on relevance scoring and tag affinity", evidence: "CLM Engine v2.0" },
   { achievement: "DECODE → ENCODE Pipeline", description: "First governed natural-language-to-code execution pipeline where AI never receives raw input — all intent passes through normalization, enrichment, and safety gates", evidence: "v10.5.3" },
