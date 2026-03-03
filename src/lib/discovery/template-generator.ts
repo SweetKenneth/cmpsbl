@@ -48,12 +48,12 @@ export interface RetiredCombo {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const MODULES = [
-  // Original 26-node architecture
+  // 37-node architecture (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell)
   'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
   'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
   'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
   'MODERNIZER', 'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
-  // Expansion modules (37-node architecture)
+  // Expansion zones: ESZ, EPZ, EMZ
   'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
   'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
 ];

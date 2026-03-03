@@ -18,11 +18,14 @@ export interface DependencyHealthNode {
   cascadeRisk: number; // 0–1, how much this module's failure affects others
 }
 
-// Static dependency graph for the substrate
+// Static dependency graph for the 37-node / 11-sector substrate
 const DEPENDENCY_GRAPH: DependencyEdge[] = [
-  // CORE dependencies
+  // CCR dependencies
   { from: 'brain', to: 'nexus', type: 'required', weight: 0.9 },
   { from: 'brain', to: 'memory', type: 'required', weight: 0.8 },
+  { from: 'dream', to: 'brain', type: 'required', weight: 0.7 },
+  { from: 'dream', to: 'memory', type: 'required', weight: 0.6 },
+  // Execution dependencies
   { from: 'decode', to: 'nexus', type: 'required', weight: 0.95 },
   { from: 'decode', to: 'brain', type: 'optional', weight: 0.5 },
   { from: 'encode', to: 'nexus', type: 'required', weight: 0.9 },
@@ -30,10 +33,33 @@ const DEPENDENCY_GRAPH: DependencyEdge[] = [
   { from: 'cortex', to: 'brain', type: 'required', weight: 0.8 },
   { from: 'cortex', to: 'memory', type: 'required', weight: 0.7 },
   { from: 'vision', to: 'ripple', type: 'event', weight: 0.4 },
-  { from: 'defense', to: 'ripple', type: 'event', weight: 0.5 },
   { from: 'economy', to: 'access', type: 'required', weight: 0.8 },
   { from: 'integration', to: 'nexus', type: 'required', weight: 0.9 },
+  { from: 'medic', to: 'vision', type: 'required', weight: 0.7 },
+  { from: 'nerve', to: 'ripple', type: 'event', weight: 0.6 },
+  // OCG dependencies
   { from: 'system', to: 'ripple', type: 'event', weight: 0.3 },
+  { from: 'audit', to: 'ripple', type: 'event', weight: 0.5 },
+  { from: 'relay', to: 'ripple', type: 'required', weight: 0.6 },
+  // ESZ dependencies
+  { from: 'sovereign', to: 'governance', type: 'required', weight: 0.8 },
+  { from: 'oracle', to: 'brain', type: 'required', weight: 0.7 },
+  { from: 'oracle', to: 'memory', type: 'optional', weight: 0.5 },
+  { from: 'conscience', to: 'governance', type: 'required', weight: 0.8 },
+  { from: 'treaty', to: 'sovereign', type: 'required', weight: 0.7 },
+  // EPZ dependencies
+  { from: 'compass', to: 'vision', type: 'required', weight: 0.6 },
+  { from: 'echo', to: 'ripple', type: 'event', weight: 0.5 },
+  { from: 'reflex', to: 'nexus', type: 'required', weight: 0.7 },
+  // EMZ dependencies
+  { from: 'forge', to: 'encode', type: 'required', weight: 0.8 },
+  { from: 'lingua', to: 'decode', type: 'required', weight: 0.7 },
+  { from: 'phantom', to: 'defense', type: 'required', weight: 0.6 },
+  { from: 'harvest', to: 'integration', type: 'required', weight: 0.7 },
+  // Mesh / Shell dependencies
+  { from: 'defense', to: 'ripple', type: 'event', weight: 0.5 },
+  { from: 'immunity', to: 'defense', type: 'required', weight: 0.6 },
+  { from: 'evolution', to: 'brain', type: 'optional', weight: 0.4 },
 ];
 
 /**

@@ -1,8 +1,8 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * 10-Entity + 5-Mesh + 9-Zone Architecture
+ * 37-Node / 11-Sector Field-Based Topology
  *
- * CORE → SYSTEM → CCR → MODULES → OCG → Fields → Shell
+ * CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → Fields → Plane → Shell
  */
 
 import { useState, useEffect, useCallback } from 'react';

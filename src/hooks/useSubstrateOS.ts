@@ -286,24 +286,25 @@ export function useSystemConfig(key?: string) {
 
 /**
  * Layer-weighted health score for dashboard
- * v11.5 Field-Based Topology — 5-layer weighted aggregation:
- *   CORE health: 20% | CCR Zones: 20% | OCG Zones: 20% | Execution Surfaces: 20% | Overlays: 20%
+ * 37-Node / 11-Sector Field-Based Topology — weighted aggregation:
+ *   CORE+SYSTEM: 15% | CCR: 15% | OCG: 15% | Execution: 20% | ESZ+EPZ+EMZ: 15% | Fields+Plane+Shell: 20%
  *
  * Batched into a single useQuery to prevent parallel network request storms.
  */
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions
-  const CORE_MODULES = ['core'] as const;
-  const CCR_ZONES = ['system', 'brain', 'memory', 'dream'] as const;
+  // Layer definitions — 37-node / 11-sector topology
+  const CORE_SYSTEM = ['core', 'system'] as const;
+  const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
   const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
-  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'] as const;
-  const OVERLAYS = ['defense', 'immunity', 'evolution', 'intent', 'governance'] as const;
+  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration'] as const;
+  const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest'] as const;
+  const MESH_OVERLAYS = ['evolution', 'immunity', 'intent', 'governance', 'defense'] as const;
 
   const ALL_MODULES = [
-    ...CORE_MODULES, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...OVERLAYS, 'modernizer',
+    ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
+    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...MESH_OVERLAYS, 'modernizer',
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
@@ -328,11 +329,25 @@ export function useSubstrateHealthScore() {
     economy: () => economyMod.status(),
     sandbox: () => sandboxMod.status(),
     encode: () => encodeMod.status(),
-    // Mesh overlays — reuse defense for circuit-breaker-tracked overlays
-    immunity: () => defense.status(), // Immunity mesh inherits defense pathway
-    evolution: () => modernizer.status(), // Evolution mesh routed via modernizer
-    intent: () => cortex.status(), // Intent mesh via cortex
-    governance: () => cortex.status(), // Governance mesh via cortex
+    // Expansion zones — graceful proxies
+    sovereign: () => cortex.status(),
+    oracle: () => cortex.status(),
+    conscience: () => cortex.status(),
+    treaty: () => cortex.status(),
+    compass: () => cortex.status(),
+    echo: () => cortex.status(),
+    reflex: () => cortex.status(),
+    forge: () => cortex.status(),
+    lingua: () => cortex.status(),
+    phantom: () => cortex.status(),
+    harvest: () => cortex.status(),
+    medic: () => core.status(),
+    nerve: () => core.status(),
+    // Mesh overlays
+    immunity: () => defense.status(),
+    evolution: () => modernizer.status(),
+    intent: () => cortex.status(),
+    governance: () => cortex.status(),
   };
 
   const batchQuery = useQuery({
@@ -366,25 +381,27 @@ export function useSubstrateHealthScore() {
   for (const m of ALL_MODULES) defaultModules[m] = true;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation (20% each)
+  // Layer-weighted health calculation — 37-node / 11-sector
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
     const healthy = keys.filter(k => modules[k] !== false).length;
     return Math.round((healthy / keys.length) * 100);
   }
 
-  const coreHealth = layerHealth(CORE_MODULES);
+  const coreSysHealth = layerHealth(CORE_SYSTEM);
   const ccrHealth = layerHealth(CCR_ZONES);
   const ocgHealth = layerHealth(OCG_ZONES);
   const surfaceHealth = layerHealth(EXECUTION_SURFACES);
-  const overlayHealth = layerHealth(OVERLAYS);
+  const expansionHealth = layerHealth(EXPANSION_ZONES);
+  const meshHealth = layerHealth(MESH_OVERLAYS);
 
   const healthScore = Math.round(
-    coreHealth * 0.20 +
-    ccrHealth * 0.20 +
-    ocgHealth * 0.20 +
+    coreSysHealth * 0.15 +
+    ccrHealth * 0.15 +
+    ocgHealth * 0.15 +
     surfaceHealth * 0.20 +
-    overlayHealth * 0.20
+    expansionHealth * 0.15 +
+    meshHealth * 0.20
   );
 
   const totalModules = ALL_MODULES.length;
