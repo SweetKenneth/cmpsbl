@@ -99,6 +99,11 @@ export async function calculateAdaptiveThreshold(
 ): Promise<AdaptiveThreshold> {
   const baseConfig = DEFAULT_LIMITS[endpoint] || { maxRequests: 100 };
   
+  // ── Guardrail: Absolute bounds & delta cap ────────────────────
+  const ABSOLUTE_MIN_MULTIPLIER = 0.5;  // Never drop below 50% of base
+  const ABSOLUTE_MAX_MULTIPLIER = 2.0;  // Never exceed 200% of base
+  const MAX_ADJUSTMENT_MAGNITUDE = 0.3; // Max ±30% per calculation
+  
   try {
     // Get recent error rates
     const { data: errors } = await supabase
@@ -127,7 +132,7 @@ export async function calculateAdaptiveThreshold(
     let reason = 'Normal operating conditions';
     
     if (errorRate > 0.2) {
-      adjustment = -0.3; // Reduce limit by 30%
+      adjustment = -0.3;
       reason = 'High error rate detected';
     } else if (errorRate > 0.1) {
       adjustment = -0.15;
@@ -136,11 +141,18 @@ export async function calculateAdaptiveThreshold(
       adjustment = -0.2;
       reason = 'High response latency';
     } else if (errorRate < 0.02 && avgTime < 500) {
-      adjustment = 0.2; // Increase limit by 20%
+      adjustment = 0.2;
       reason = 'Excellent system health';
     }
     
-    const currentLimit = Math.round(baseConfig.maxRequests * (1 + adjustment));
+    // ── Guardrail: Clamp adjustment magnitude ───────────────────
+    adjustment = Math.max(-MAX_ADJUSTMENT_MAGNITUDE, Math.min(MAX_ADJUSTMENT_MAGNITUDE, adjustment));
+    
+    // ── Guardrail: Clamp final limit to absolute bounds ─────────
+    const rawLimit = Math.round(baseConfig.maxRequests * (1 + adjustment));
+    const minLimit = Math.round(baseConfig.maxRequests * ABSOLUTE_MIN_MULTIPLIER);
+    const maxLimit = Math.round(baseConfig.maxRequests * ABSOLUTE_MAX_MULTIPLIER);
+    const currentLimit = Math.max(minLimit, Math.min(maxLimit, rawLimit));
     
     return {
       baseLimit: baseConfig.maxRequests,

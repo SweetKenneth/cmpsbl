@@ -85,3 +85,6 @@ export * from './defense-hardening';
 
 // DEFENSE Hardening v3.0.0 "Citadel" — 30 breach-prevention upgrades
 export * from './defense-hardening-v3';
+
+// DEFENSE Guardrail Layer — prevents auto-locking and runaway escalation
+export * from './guardrail';
