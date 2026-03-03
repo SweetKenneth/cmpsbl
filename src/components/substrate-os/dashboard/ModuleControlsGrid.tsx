@@ -6,7 +6,7 @@ import {
   Brain, MessageSquare, Shield, Zap, Eye, Moon, Cpu, Sparkles, 
   Radio, Key, Settings, Layers, Plug, Activity, Network, 
   RefreshCw, Wrench, GitBranch, Accessibility, Code, Database,
-  Send, ClipboardCheck, Fingerprint, DollarSign, Box
+  Send, ClipboardCheck, Fingerprint, DollarSign, Box, Globe
 } from 'lucide-react';
 import { ModuleControlCard } from './ModuleControlCard';
 import { 
