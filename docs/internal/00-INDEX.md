@@ -34,6 +34,14 @@ This library is the single source of truth for all internal knowledge required t
 | 24 | [INTEL Aggregation Pipeline](./24-intel-aggregation-pipeline.md) | Signal ingestion, deduplication, IntelCards, NEXUS-CLM Bridge |
 | 25 | [INTENT Mesh & Hub](./25-intent-mesh-and-hub.md) | Affinity matrix, pattern recognition, module discovery, governance translation |
 | 26 | [SHADOW Module](./26-shadow-module.md) | Shadow runs, divergence detection, TSAC, SEBA integration |
+| 27 | [CLM (Constant Learning Mode)](./27-clm-constant-learning-mode.md) | Topic pipeline, high-velocity training, mastery thresholds, distillation |
+| 28 | [AutoBlog Quality Pipeline](./28-autoblog-quality-pipeline.md) | Confidence engine, contradiction engine, split brain, assumption labeling |
+| 29 | [Universal Export Adapter](./29-universal-export-adapter.md) | 25 target languages, ZIP bundling, test harnesses, Micro-Substrate runtime |
+| 30 | [Ironclad v2.0.0 Hardening Fabric](./30-ironclad-hardening-fabric.md) | Unified resilience layer, rate limiting, bulkhead isolation, auto-restore |
+| 31 | [Evolution Control Center](./31-evolution-control-center.md) | Mission control, dry-run, rollback, scan trends, agent connect |
+| 32 | [Agents & Cognitives Marketplace](./32-agents-and-cognitives.md) | 20 agents, sealed runtime, DREAM synthesis, tiered pricing |
+| 33 | [Scanner Orchestrator](./33-scanner-orchestrator.md) | Substrate-integrated scanning, prioritization, regression detection |
+| 34 | [ATLAS v2.0.0 (Prometheus)](./34-atlas-governance-hub.md) | 7-tab governance hub, Node Inbox, governance modes, marketplace |
 
 ## Classification Policy
 
