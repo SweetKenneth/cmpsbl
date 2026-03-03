@@ -4,7 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { isEnabled, createFlag, getFlag } from '@/lib/substrate/feature-flags';
+import { isEnabled, createFlag, getFlag } from '@/lib/substrate/feature-flags/index';
 
 // Register autoblog governor flags (idempotent)
 if (!getFlag('autoblog_publish_governor_enabled')) createFlag('autoblog_publish_governor_enabled', 'AutoBlog Publish Governor', true, 100);
