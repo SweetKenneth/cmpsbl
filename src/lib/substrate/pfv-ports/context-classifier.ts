@@ -1,17 +1,27 @@
 /**
- * PFV Port → Context Classifier
- * Content-type-aware routing with priority scoring
+ * PFV Port → Context Classifier (Multi-Label)
+ * Content-type-aware routing with primary + secondary classification
  * Benefits: DECODE, MEMORY, BRAIN
  * Source: PromptFluid-Vision brain/contextClassifier.ts
+ *
+ * FIX: Now supports multi-label output instead of single-winner.
+ * Mixed content (e.g. "code + plan") returns primary + secondaries.
  */
 
 export type ContextType = 'code' | 'doc' | 'chat' | 'plan';
 
 export interface ClassificationResult {
+  /** Primary (highest-scoring) context */
   context: ContextType;
   confidence: number;
   suggestedPriority: number;
   suggestedTags: Record<string, any>;
+  /** All contexts with their individual scores */
+  scores: Record<ContextType, number>;
+  /** Secondary contexts that also matched significantly */
+  secondaryContexts: ContextType[];
+  /** True if content matched multiple categories meaningfully */
+  isMultiLabel: boolean;
 }
 
 const CODE_PATTERNS = [
@@ -38,7 +48,22 @@ const PRIORITY_MAP: Record<ContextType, number> = {
 };
 
 /**
- * Classify content into context category with confidence scoring
+ * Secondary threshold: if a context scores >= this fraction of the winner,
+ * it becomes a secondary label.
+ */
+const SECONDARY_THRESHOLD_RATIO = 0.5;
+
+/**
+ * Minimum absolute score for a context to be considered a secondary label.
+ */
+const SECONDARY_MIN_SCORE = 1;
+
+/**
+ * Classify content with multi-label support.
+ *
+ * Returns a primary context (highest score) plus any secondaries
+ * that scored significantly. "code + plan" mixed content will produce:
+ * { context: 'code', secondaryContexts: ['plan'], isMultiLabel: true }
  */
 export function classifyContext(
   content: string,
@@ -70,11 +95,30 @@ export function classifyContext(
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const confidence = total > 0 ? winner[1] / total : 0.5;
 
+  // ── Multi-label detection ──
+  const winnerScore = winner[1];
+  const secondaryThreshold = Math.max(
+    winnerScore * SECONDARY_THRESHOLD_RATIO,
+    SECONDARY_MIN_SCORE
+  );
+
+  const secondaryContexts: ContextType[] = sorted
+    .slice(1)
+    .filter(([, score]) => score >= secondaryThreshold)
+    .map(([ctx]) => ctx);
+
+  const isMultiLabel = secondaryContexts.length > 0;
+
   const suggestedTags: Record<string, any> = {
     confidence,
     auto_classified: true,
     timestamp: new Date().toISOString(),
+    multi_label: isMultiLabel,
   };
+
+  if (isMultiLabel) {
+    suggestedTags.secondary_contexts = secondaryContexts;
+  }
 
   if (metadata) {
     suggestedTags.source_module = metadata.source_module || 'unknown';
@@ -87,6 +131,9 @@ export function classifyContext(
     confidence,
     suggestedPriority: PRIORITY_MAP[winner[0]],
     suggestedTags,
+    scores: { ...scores },
+    secondaryContexts,
+    isMultiLabel,
   };
 }
 
