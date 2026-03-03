@@ -62,12 +62,29 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 37
 - NERVE — Inter-node signaling, stimulus routing
 - INTEGRATION — Enterprise connectors (boots last)
 
-### Mesh Overlays (5 — outermost → innermost)
-- DEFENSE — AI-powered security perimeter
-- IMMUNITY — Adaptive resilience, self-healing
+### ESZ — Ethical Sovereignty Zone (4)
+- SOVEREIGN — Jurisdiction classification, deployment sovereignty
+- ORACLE — Bayesian prediction, forecasting
+- CONSCIENCE — Bias detection, ethical scoring
+- TREATY — Regulatory compliance, policy enforcement
+
+### EPZ — Environmental Perception Zone (3)
+- COMPASS — Geospatial awareness, location intelligence
+- ECHO — Simulation, scenario modeling
+- REFLEX — Reactive autonomy, stimulus response
+
+### EMZ — Emergent Manufacturing Zone (4)
+- FORGE — Code generation, AST transformation
+- LINGUA — Localization, translation pipelines
+- PHANTOM — Privacy enforcement, data masking
+- HARVEST — Data acquisition, ETL orchestration
+
+### Fields (3) + Plane (1) + Shell (1) — Mesh Overlays
 - EVOLUTION — Self-improvement lifecycle (shadow mode)
+- IMMUNITY — Adaptive resilience, self-healing
 - INTENT — Cross-module intent routing
 - GOVERNANCE — Ethical constraints, coherence
+- DEFENSE — AI-powered security perimeter
 
 ## AI Governance Reference Namespace
 
