@@ -2,7 +2,7 @@
  * Substrate React Hooks
  * React Integration Layer
  * 
- * Provides React hooks for all substrate engines across the 37-node / 11-sector architecture.
+ * Provides React hooks for all substrate engines across the 38-node / 12-sector architecture.
  * Enables seamless integration of cognitive capabilities (675+) into React components.
  * 
  * Respects debugMode — when enabled, auto-refresh intervals are skipped

@@ -97,7 +97,7 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Layers,
       items: [
-        { name: "All Modules", href: "/modules", description: "37 nodes across 11 sectors", icon: Layers },
+        { name: "All Modules", href: "/modules", description: "38 nodes across 12 sectors", icon: Layers },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
         { name: "EVOLUTION", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
         { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },

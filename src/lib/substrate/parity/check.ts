@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * All 37 nodes at full parity
+ * All 38 nodes at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -34,24 +34,26 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 37 substrate nodes in boot order (11 sectors)
+// All 38 substrate nodes in boot order (12 sectors)
 const SUBSTRATE_MODULES = [
   // CORE + SYSTEM
   'core', 'system',
   // CCR (Cognitive Core Reality)
   'brain', 'memory', 'dream',
-  // OCG (Operational Compliance Grid)
-  'ripple', 'access', 'identity', 'relay', 'audit',
-  // Execution (11 nodes — INTEGRATION boots last)
-  'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration',
+  // OCG (Operational Compliance Grid — 6 nodes)
+  'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
+  // Execution (10 nodes — INTEGRATION boots last)
+  'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration',
   // ESZ (Ethical Sovereignty Zone)
   'sovereign', 'oracle', 'conscience', 'treaty',
   // EPZ (Environmental Perception Zone)
   'compass', 'echo', 'reflex',
   // EMZ (Emergent Manufacturing Zone)
-  'forge', 'lingua', 'phantom', 'harvest',
+  'forge', 'lingua', 'harvest',
+  // CSZ (Covert Systems Zone)
+  'evolution', 'shadow', 'phantom',
   // Fields + Plane + Shell (Mesh Overlays)
-  'evolution', 'immunity', 'intent', 'governance', 'defense',
+  'immunity', 'intent', 'governance', 'defense',
 ] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
@@ -91,6 +93,7 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   treaty: 'src/hooks/substrate/useTreaty.ts',
   harvest: 'src/hooks/substrate/useHarvest.ts',
   reflex: 'src/hooks/substrate/useReflex.ts',
+  shadow: 'src/hooks/substrate/useShadow.ts',
 };
 
 // Module configuration registry - tracks what exists for each module
@@ -149,7 +152,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 37 nodes have index exports in their respective directories
+      // All 38 nodes have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

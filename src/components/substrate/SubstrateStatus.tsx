@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate Status Widget
- * 37-node / 11-sector health indicator
+ * 38-node / 12-sector health indicator
  */
 
 import { Activity, CheckCircle2, AlertCircle } from 'lucide-react';
