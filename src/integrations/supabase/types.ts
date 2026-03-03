@@ -5726,6 +5726,39 @@ export type Database = {
         }
         Relationships: []
       }
+      device_fingerprint_snapshots: {
+        Row: {
+          created_at: string
+          drift_history: Json | null
+          fingerprint_hash: string
+          flags: Json
+          id: string
+          signal_buckets: Json
+          signal_hashes: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          drift_history?: Json | null
+          fingerprint_hash: string
+          flags?: Json
+          id?: string
+          signal_buckets?: Json
+          signal_hashes?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          drift_history?: Json | null
+          fingerprint_hash?: string
+          flags?: Json
+          id?: string
+          signal_buckets?: Json
+          signal_hashes?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       discoveries: {
         Row: {
           category: string
