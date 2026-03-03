@@ -172,16 +172,14 @@ export function useAutoMiner() {
       }
     }
 
-    // Phase 3: Mining — if discoveries were found, keep mining until exhausted
+    // Phase 3: Mining — if discoveries were found, run up to 2 capped mining passes
     let miningRuns = 0;
+    const maxMiningRuns = 2;
 
     if (totalDiscoveries > 0 && !abortRef.current) {
-      setState(prev => ({ ...prev, phase: 'mining', lastActivity: `Cycle ${cycleNum}: Discoveries found! Deep mining...` }));
+      setState(prev => ({ ...prev, phase: 'mining', lastActivity: `Cycle ${cycleNum}: Discoveries found! Mining (max ${maxMiningRuns} runs)...` }));
 
-      let consecutiveEmpty = 0;
-      const maxConsecutiveEmpty = 2;
-
-      while (consecutiveEmpty < maxConsecutiveEmpty && !abortRef.current) {
+      while (miningRuns < maxMiningRuns && !abortRef.current) {
         await sleep(config.delayBetweenRuns);
 
         const mineResult = await runReactor({
@@ -194,20 +192,20 @@ export function useAutoMiner() {
         miningRuns++;
 
         if (mineResult.status === 'completed' && mineResult.acceptedCount > 0) {
-          consecutiveEmpty = 0;
           totalDiscoveries += mineResult.acceptedCount;
           setState(prev => ({
             ...prev,
             totalRuns: prev.totalRuns + 1,
             totalDiscoveries: prev.totalDiscoveries + mineResult.acceptedCount,
-            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} found ${mineResult.acceptedCount} more (total: ${totalDiscoveries})`,
+            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns}/${maxMiningRuns} found ${mineResult.acceptedCount} more (total: ${totalDiscoveries})`,
           }));
         } else {
-          consecutiveEmpty++;
           setState(prev => ({
             ...prev,
-            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns} empty (${consecutiveEmpty}/${maxConsecutiveEmpty} to retire)`,
+            totalRuns: prev.totalRuns + 1,
+            lastActivity: `Cycle ${cycleNum}: Mining run ${miningRuns}/${maxMiningRuns} empty — moving to retire`,
           }));
+          break; // No point running remaining mining passes if this one was empty
         }
       }
     }
