@@ -26,6 +26,10 @@ This library is the single source of truth for all internal knowledge required t
 | 10 | [Maintenance Runbook](./10-maintenance-runbook.md) | Daily, weekly, monthly checklists, incident response |
 | 11 | [Circuit Breaker & Resilience](./11-circuit-breaker-and-resilience.md) | Failure isolation, DLQ, retry budgets, chaos testing |
 | 12 | [Memory & Learning Internals](./12-memory-and-learning-internals.md) | SM-2 engine, tiering, decay, dream cycles, knowledge compounding |
+| 13–19 | Crown Jewel Mining Reports (Waves 1–6 + Master Ranking) | Discovery mining run results and master rankings |
+| 20 | [Autonomous Software Foundry](./20-autonomous-foundry.md) | Reactor architecture, CJPI scoring, production metrics |
+| 21 | [Discovery Engine Internals](./21-discovery-engine-internals.md) | Recursive reactor, candidate generation, semantic dedup, self-discovery |
+| 22 | [S-Tier Vault Internals](./22-s-tier-vault-internals.md) | Vault data model, export adapter, verification, access control |
 
 ## Classification Policy
 
