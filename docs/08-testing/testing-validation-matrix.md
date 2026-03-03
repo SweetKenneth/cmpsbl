@@ -75,6 +75,7 @@ This document defines the testing strategy, coverage expectations, and validatio
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Verified testing matrix for v13.1.0 |
 | 2026-03-01 | System | Initial canonical testing matrix |
 
 ---
