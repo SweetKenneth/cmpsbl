@@ -68,24 +68,26 @@ export const SUBSTRATE_MODULES = [
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
   'medic', 'nerve',
   // Fields (system-wide transformation fabric)
-  'evolution', 'immunity', 'intent',
+  'immunity', 'intent',
   // Overlay Plane (supervisory)
   'governance',
   // Shell (outer containment)
   'defense',
   // Module (boots last)
   'integration',
-  // Expansion Modules (37-Node Architecture)
-  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  // Expansion Modules (38-Node Architecture)
+  'sovereign', 'oracle', 'conscience', 'forge',
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
+  // CSZ — Covert Systems Zone
+  'evolution', 'shadow', 'phantom',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
 export const PUBLIC_MODULE_COUNT = 12;
 // Field count (system-wide transformation fabric)
-export const FIELD_COUNT = 3;
-// OCG Zone count
-export const OCG_ZONE_COUNT = 5;
+export const FIELD_COUNT = 2;
+// OCG Zone count (now includes NERVE)
+export const OCG_ZONE_COUNT = 6;
 // CCR Zone count (SYSTEM extracted)
 export const CCR_ZONE_COUNT = 3;
 
