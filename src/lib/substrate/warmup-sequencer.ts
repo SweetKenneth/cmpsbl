@@ -18,15 +18,17 @@ export interface WarmUpStage {
 export const BOOT_SEQUENCE: WarmUpStage[] = [
   { stage: 0, modules: ['system', 'ripple'], label: 'Infrastructure' },
   { stage: 1, modules: ['memory', 'access', 'defense'], label: 'Foundation' },
-  { stage: 2, modules: ['nexus', 'identity', 'relay'], label: 'Connectivity' },
+  { stage: 2, modules: ['nexus', 'identity', 'relay', 'nerve'], label: 'Connectivity & OCG' },
   { stage: 3, modules: ['brain', 'vision', 'economy'], label: 'Intelligence' },
   { stage: 4, modules: ['decode', 'encode', 'cortex'], label: 'Cognitive' },
   { stage: 5, modules: ['integration', 'dream'], label: 'Extended' },
-  // Expansion Modules (37-Node Architecture)
-  { stage: 6, modules: ['sovereign', 'conscience', 'phantom'], label: 'Governance & Privacy' },
+  // Expansion Modules (38-Node / 12-Sector Architecture)
+  { stage: 6, modules: ['sovereign', 'conscience'], label: 'Sovereignty & Ethics' },
   { stage: 7, modules: ['oracle', 'compass', 'echo'], label: 'Predictive & Simulation' },
   { stage: 8, modules: ['forge', 'lingua', 'harvest'], label: 'Manufacturing & Data' },
   { stage: 9, modules: ['treaty', 'reflex'], label: 'Compliance & Edge' },
+  // CSZ — Covert Systems Zone (38-Node Architecture)
+  { stage: 10, modules: ['evolution', 'shadow', 'phantom'], label: 'Covert Systems' },
 ];
 
 export interface WarmUpResult {

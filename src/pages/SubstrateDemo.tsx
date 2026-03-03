@@ -1,8 +1,8 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  *
- * CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → Fields → Plane → Shell
+ * CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -102,8 +102,8 @@ const DEMO_SCENARIOS = [
   },
   {
     name: 'Full Orchestration',
-    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'nerve', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest', 'governance', 'intent', 'evolution', 'immunity', 'defense'],
-    description: '37 nodes across 11 sectors — full substrate orchestration',
+    sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'governance', 'intent', 'immunity', 'defense'],
+    description: '38 nodes across 12 sectors — full substrate orchestration',
     icon: Sparkles,
   },
 ];
@@ -210,9 +210,9 @@ export default function SubstrateDemo() {
                 className="text-3xl md:text-5xl font-bold mb-4"
               >
                 <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  37 Nodes
+                  38 Nodes
                 </span>
-                <span className="text-foreground"> · 11 Sectors · 675+ Capabilities</span>
+                <span className="text-foreground"> · 12 Sectors · 675+ Capabilities</span>
               </motion.h1>
 
               <motion.p 

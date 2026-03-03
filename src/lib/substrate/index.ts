@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Core Exports
- * 37-Node / 11-Sector Field-Based Topology
+ * 38-Node / 12-Sector Field-Based Topology
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (675+) → Engines (76) → Meta-Engines (24)
@@ -640,7 +640,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (37 nodes across 11 sectors)
+  // Quick access module aliases (38 nodes across 12 sectors)
   core,
   brain,
   decode,
@@ -969,7 +969,7 @@ export {
 } from './hardened-invoke';
 
 // ═══════════════════════════════════════════════════════════════════
-// EXPANSION MODULES v1.0.0 — 11-Node Expansion (37-Node Architecture)
+// EXPANSION MODULES v1.0.0 — 14-Node Expansion (38-Node Architecture)
 // ═══════════════════════════════════════════════════════════════════
 
 // SOVEREIGN — Data Sovereignty & Jurisdictional Compliance
