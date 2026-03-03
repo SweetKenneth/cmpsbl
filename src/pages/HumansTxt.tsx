@@ -69,8 +69,8 @@ Dream: Memory consolidation engine
 /* COLOPHON */
 
 CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
-24 Core Modules • 400+ Terminal Commands
-525+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
+37 Nodes • 11 Sectors • 500+ Terminal Commands
+675+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
 
 promptfluid® — AI That Flows.
 

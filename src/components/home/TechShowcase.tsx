@@ -1,7 +1,7 @@
 /**
  * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * 9 modules + 5 meshes + 9 zones = 24 execution surfaces
+ * 37 nodes across 11 sectors
  */
 
 import { useState, useEffect, useMemo } from "react";

@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * All 24 execution surfaces at full parity
+ * All 37 nodes at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -149,7 +149,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 24 execution surfaces have index exports in their respective directories
+      // All 37 nodes have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

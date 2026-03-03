@@ -1,6 +1,6 @@
 /**
  * Command Palette — Quick actions terminal-style
- * OS-like command interface for substrate operations (360+ commands)
+ * OS-like command interface for substrate operations (500+ commands)
  */
 
 import { useState, useRef, useEffect } from 'react';

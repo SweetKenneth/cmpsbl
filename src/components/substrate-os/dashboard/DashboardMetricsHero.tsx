@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
-/** 24 Matrix Nodes across all topology layers */
+/** 37 Matrix Nodes across 11 sectors */
 const MODULES_CONFIG = [
   // CORE Kernel
   { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },

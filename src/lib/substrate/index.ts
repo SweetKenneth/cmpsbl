@@ -549,7 +549,7 @@ export {
   isVersionCompatible,
 } from './versions';
 
-// Cognitive Engines — 76 Engines + 24 Meta-Engines orchestrating 525+ capabilities
+// Cognitive Engines — 76 Engines + 24 Meta-Engines orchestrating 675+ capabilities
 export {
   // Types
   type EngineCategory,

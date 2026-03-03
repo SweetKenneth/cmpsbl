@@ -429,7 +429,7 @@ export const ephemeralEnv = new EphemeralEnvironment();`
   {
     id: 'cross-module-health-aggregator',
     name: 'Cross-Module Health Aggregator',
-    description: 'Unified health score computed from all 24 execution surface telemetry feeds with degradation alerts',
+    description: 'Unified health score computed from all 37 node telemetry feeds with degradation alerts',
     icon: Activity,
     category: 'vision',
     difficulty: 'intermediate',

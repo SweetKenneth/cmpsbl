@@ -695,9 +695,9 @@ For best experience, use the latest version of Chrome or Firefox. Some features 
 
 **Important distinctions:**
 • There is also 1 CORE Kernel (boot authority) — totaling 10 public entities
-• 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are NOT modules — they are cross-cutting behavioral layers
-• 9 Hidden Zones (SYSTEM, BRAIN, MEMORY, DREAM, RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT) are internal infrastructure
-• Grand total: 24 Execution Surfaces across 6 layers
+• 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers
+• 3 Shielded Expansion Zones: ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, PHANTOM, HARVEST)
+• Grand total: 37 nodes across 11 sectors
 
 Do NOT confuse overlays or zones with modules.`,
     category: 'question',

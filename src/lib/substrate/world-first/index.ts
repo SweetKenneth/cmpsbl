@@ -1,6 +1,6 @@
 /**
  * World-First Enhancements
- * Central export for all 56 high-value autonomous functions across 24 execution surfaces
+ * Central export for all 56 high-value autonomous functions across 37 nodes
  */
 import { getMetric } from '@/stores/publicMetricsStore';
 

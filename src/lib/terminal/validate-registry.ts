@@ -1,6 +1,6 @@
 /**
  * Terminal Registry Validator
- * Ensures all 360+ commands are properly wired
+ * Ensures all 500+ commands are properly wired
  */
 
 import { log } from '@/lib/system/log';
