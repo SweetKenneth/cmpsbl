@@ -13,7 +13,7 @@ import { setSpikeActive as _setSpikeActive } from './proposal-store';
 
 // ── Configuration ──────────────────────────────────────────────
 
-interface SpikeConfig {
+export interface SpikeConfig {
   /** Rolling window size for computing average (ms) */
   windowMs: number;
   /** Number of buckets to divide the window into */
