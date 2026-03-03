@@ -456,8 +456,8 @@ const stratumFormation: Specimen[] = [
 const STRATA: Stratum[] = [
   {
     epoch: "IRONCLAD",
-    codename: "The substrate grew armor",
-    range: "v13.0.0",
+    codename: "The substrate grew armor, then learned to govern its own rhythm",
+    range: "v13.0.0 → v13.1.0",
     color: "bg-amber-500/10 text-amber-400",
     borderColor: "border-amber-500/30",
     dotColor: "bg-amber-500",
