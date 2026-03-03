@@ -14,6 +14,8 @@ This document defines the procedures for ensuring the CMPSBL substrate survives 
 | Admin credentials | Encrypted cold storage | Multi-party recovery | 2-of-3 key holders |
 | Domain / DNS | Registrar account | Account transfer protocol | Legal entity |
 | Code repository | Version control platform | Ownership transfer | Legal entity |
+| Stripe / payment keys | Encrypted vault | Sealed transfer protocol | Founder |
+| Agent JWT secrets | Per-agent scoped vault | Rotated on transfer | Successor |
 
 ### Dead-Man Switch
 
@@ -29,14 +31,15 @@ If the primary credential holder is unreachable for 30 consecutive days:
 - The substrate IP is held by the legal entity (PromptFluid®), not by individuals.
 - Ownership transfer follows standard corporate asset transfer procedures.
 - The Founder Intent document (doc 12) survives ownership changes — it is an architectural constraint, not a policy preference.
-- Any new owner must acknowledge and preserve the non-negotiables.
+- Any new owner must acknowledge and preserve the non-negotiables (including SEBA validation, CLM continuity, and agent sealing).
 
 ## 4. Governance Continuity
 
 - GOVERNANCE module logic is immutable and survives personnel changes.
 - Governance policies are stored in version-controlled configuration, not in operator memory.
-- Policy changes require EVOLUTION shadow runs and GOVERNANCE approval.
+- Policy changes require EVOLUTION shadow runs and GOVERNANCE approval (7-gate SEBA).
 - No single individual can modify governance unilaterally.
+- ATLAS governance hub provides 4 modes (ACTIVE, OBSERVE, LOCKDOWN, EVOLVE) that persist across operator transitions.
 
 ### Succession of Authority
 
@@ -50,7 +53,22 @@ Legal Entity Representative
 Open Source Stewardship (if applicable)
 ```
 
-## 5. Emergency Procedures
+## 5. System Self-Sufficiency
+
+The substrate is designed to operate autonomously during succession transitions:
+
+| System | Continuity Guarantee |
+|--------|---------------------|
+| CLM (Constant Learning) | Continues cycling topics without operator input |
+| ENGINEER | Continues health scans and proposal generation |
+| INTEL | Continues signal aggregation and IntelCard generation |
+| Ironclad | Auto-restore loop runs every 30 seconds |
+| NEXUS | Provider failover operates independently |
+| AutoBlog | Publish governor manages cadence autonomously |
+| Scanner Orchestrator | Regression detection continues automatically |
+| SHADOW | Shadow runs for queued proposals continue |
+
+## 6. Emergency Procedures
 
 ### Founder Incapacity
 
@@ -58,6 +76,7 @@ Open Source Stewardship (if applicable)
 2. Successor receives credentials and operational authority.
 3. System continues operating — no manual intervention required for steady-state.
 4. Successor reviews and acknowledges Founder Intent document.
+5. ATLAS governance mode defaults to ACTIVE during transition.
 
 ### Key Person Loss (Non-Founder)
 
@@ -65,6 +84,7 @@ Open Source Stewardship (if applicable)
 2. AUDIT review of recent actions by the departed person.
 3. Access revocation within 4 hours of confirmed departure.
 4. Knowledge transfer documentation updated.
+5. Agent JWT secrets rotated if person had agent access.
 
 ### Legal Entity Dissolution
 
@@ -72,18 +92,20 @@ Open Source Stewardship (if applicable)
 2. Self-hosted licensees retain perpetual rights per license agreement.
 3. Source code disposition follows legal entity dissolution terms.
 4. AUDIT records are preserved for compliance retention periods.
+5. Agent marketplace purchases are perpetual — no ongoing dependency.
 
-## 6. System Survival Guarantees
+## 7. System Survival Guarantees
 
 | Scenario | Survival Method |
 |----------|----------------|
 | Founder incapacity | Dead-man switch + designated successor |
-| Team turnover | Documentation-driven operations, immutable governance |
+| Team turnover | Documentation-driven operations (34-page internal library), immutable governance |
 | Infrastructure provider change | BYOK model, standard PostgreSQL + Deno |
 | AI provider shutdown | NEXUS multi-provider routing, operator swaps keys |
 | Legal entity change | Founder Intent preserved as architectural constraint |
 | Internet disruption | Self-hosted deployments operate independently |
 | Economic downturn | Self-hosted perpetual license, no ongoing payments required |
+| Knowledge loss | CLM preserves and compounds learned knowledge; 34-page internal library documents all trade secrets |
 
 ### Minimum Viable Operation
 
@@ -94,11 +116,13 @@ The substrate can operate with:
 - One AI provider API key.
 - One operator with admin credentials.
 - No external dependencies beyond the above.
+- CLM, ENGINEER, and Ironclad continue automated operations.
 
-## 7. Revision History
+## 8. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Added system self-sufficiency guarantees, CLM/ENGINEER/INTEL/Ironclad continuity, agent JWT transfer, 34-page library reference, ATLAS governance mode default |
 | 2026-03-03 | System | Verified succession protocol for v13.1.0 |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial survivability and succession protocol |
 

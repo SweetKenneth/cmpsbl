@@ -14,6 +14,7 @@ Current AI systems are stateless, ungoverned, and fragile. They lack:
 - **Evolution** mechanisms that validate changes before deployment.
 - **Multi-agent coordination** with economic accountability.
 - **Security architecture** designed for adversarial environments.
+- **Continuous learning** that compounds knowledge over time.
 
 These gaps make AI systems unsuitable for production infrastructure, enterprise deployment, and regulated environments.
 
@@ -22,8 +23,8 @@ These gaps make AI systems unsuitable for production infrastructure, enterprise 
 The CMPSBL substrate solves these problems by providing a **38-module cognitive kernel** organized into a weighted topology across 12 sectors:
 
 - A **Spine** for core reasoning and memory (CORE, SYSTEM, CCR).
-- An **Operational Compliance Grid** (OCG) for boundary enforcement (6 nodes).
-- An **Execution layer** for public-facing capabilities (10 nodes).
+- An **Operational Compliance Grid** (OCG) for boundary enforcement (6 nodes: ACCESS, IDENTITY, AUDIT, NERVE, RELAY, RIPPLE).
+- An **Execution layer** for public-facing capabilities (10 nodes: DECODE, ENCODE, NEXUS, CORTEX, ECONOMY, VISION, BRAIN, SANDBOX, INCLUSIVE, INTEGRATION).
 - **Expansion Sovereignty Zone** (ESZ) for compliance, prediction, ethics, and contracts.
 - **Expansion Perception Zone** (EPZ) for simulation, geospatial awareness, and edge computing.
 - **Expansion Manufacturing Zone** (EMZ) for artifact production, translation, and data ingestion.
@@ -34,21 +35,48 @@ The CMPSBL substrate solves these problems by providing a **38-module cognitive 
 
 Every module has independent health monitoring, circuit-breaker isolation, and audit logging. The system health is a deterministic weighted sum — not a heuristic. Expansion zones are zone-shielded, allowing independent degradation without affecting the substrate core.
 
-## 4. Governance Positioning
+## 4. Key Differentiators
 
-CMPSBL operates under **supervised autonomy**:
+### Cognitive Engine System
 
-- The system handles routine operations independently.
-- Policy-sensitive actions require GOVERNANCE approval.
-- All actions are logged immutably in AUDIT.
-- Human operators can override any decision.
-- The system cannot modify its own governance logic.
+The substrate consolidates 675+ individual capabilities into **76 compound engines** and **24 meta-engines** across 18 categories (Cognitive, Operational, Intelligence, Governance, Security, Evolution, Communication, Integration, Analytics, Experience, Knowledge, Autonomy, Creativity, Perception, Resource, Workflow, Enhancement, Orchestration). Engines provide 2–8x synergy amplification over individual capabilities.
+
+### Constant Learning Mode (CLM)
+
+CLM operates as a high-velocity training pipeline running up to 14,400 AI calls per day. Topics are sourced 70% from system telemetry (ENGINEER findings, INTEL signals) and 30% from scheduled curriculum. Knowledge is distilled and compounded into permanent memory.
+
+### 7-Gate Evolution Pipeline (SEBA)
+
+Every change to production behavior passes through 7 validation gates including the **Truth Shadow Arbitration Check** (TSAC) — ensuring evolution candidates preserve system truth. Shadow runs execute against real inputs in isolated storage with divergence scoring.
+
+### Autonomous Agent Marketplace
+
+20 sealed-runtime cognitive agents organized into 5 categories, each with 3–5 Crown Jewel powers and autonomous DREAM synthesis for self-improvement. Agents are source-blocked, memory-isolated, and version-stamped.
+
+### AutoBlog Quality Pipeline
+
+Autonomous content generation with confidence scoring, contradiction detection, semantic drift monitoring, and split-brain evaluation (Reader vs. Skeptic). An adaptive publish governor controls output cadence.
+
+### Universal Export Adapter
+
+Export the substrate to 25 target languages (18 software, 7 hardware/HDL) with standalone Micro-Substrate runtime, test harnesses, and ZIP bundling.
+
+## 5. Governance Positioning
+
+CMPSBL operates under **supervised autonomy** with four governance modes:
+
+| Mode | Behavior |
+|------|----------|
+| **ACTIVE** | Full governance enforcement, all approvals required |
+| **OBSERVE** | Governance monitors but does not block |
+| **LOCKDOWN** | No mutations permitted; read-only operation |
+| **EVOLVE** | Relaxed gates for controlled experimentation |
+
+The **ATLAS** governance hub provides a 7-tab mission control: Topology, Node Inbox, Evolution, Scanner, Agents, Analytics, and Settings. Every governance decision is logged immutably in AUDIT.
 
 This positions CMPSBL uniquely among AI orchestration platforms: it is the only system where governance is architecturally enforced, not bolted on.
 
-## 5. Architecture Overview
-
-The substrate consists of:
+## 6. Architecture Overview
 
 | Layer | Nodes | Purpose |
 |-------|-------|---------|
@@ -69,25 +97,38 @@ The substrate consists of:
 
 The architecture is **BYOK** (Bring Your Own Keys): operators supply their own AI provider keys, database, and infrastructure. No data leaves the operator's environment.
 
-## 6. Competitive Framing
+## 7. Control Plane & Resilience
+
+The substrate includes a first-class control plane:
+
+- **INTEL**: Aggregation pipeline with signal deduplication and IntelCard generation for governor review.
+- **ENGINEER**: Internal maintenance node scanning 76 engines + 24 meta-engines, generating findings and proposals.
+- **INTENT Mesh**: Affinity matrix tracking module co-resolution success; translates technical signals to governance requests.
+- **Ironclad Fabric**: Unified resilience layer with per-module rate limiting, bulkhead isolation, and 30-second auto-restore health loop.
+
+## 8. Competitive Framing
 
 | Capability | CMPSBL | Typical AI Platform |
 |-----------|--------|-------------------|
-| Persistent memory | Multi-tier, governed | Stateless or session-only |
-| Governance | Architectural, immutable | Optional, configurable |
-| Evolution | Shadow-run validated | Manual deployment |
-| Multi-agent | Economic accountability | Task distribution only |
-| Security | Defense-in-depth, 38-node zone-shielded | Perimeter only |
-| Observability | Weighted health matrix | Logs and metrics |
+| Persistent memory | Multi-tier, governed, CLM-compounded | Stateless or session-only |
+| Governance | Architectural, immutable, 4-mode | Optional, configurable |
+| Evolution | 7-gate SEBA with TSAC | Manual deployment |
+| Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only |
+| Security | Defense-in-depth, 38-node zone-shielded, Ironclad | Perimeter only |
+| Observability | Weighted health matrix, INTEL pipeline | Logs and metrics |
 | Audit | Tamper-evident, chain-of-custody | Append-only logs |
+| Learning | CLM — 14,400 calls/day continuous | None |
+| Export | 25 target languages, standalone runtime | None |
+| Content | AutoBlog with quality pipeline | None |
 
-## 7. Future Roadmap Direction
+## 9. Future Roadmap Direction
 
 - Federated substrate instances with cross-instance governance.
 - Expanded field modules for compliance-specific domains.
 - Hardware-attested integrity seals.
 - Formalized capability marketplace with economic scoring.
 - Multi-language SDK support beyond TypeScript.
+- Cross-agency DREAM pooling with privacy-preserving aggregation.
 
 ---
 
