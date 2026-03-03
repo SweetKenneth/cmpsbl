@@ -59,9 +59,9 @@ Node health is binary when circuit breaker is open: **0.000**.
 Integrity seals are deterministic checks that confirm system state validity:
 
 - **Matrix seal**: Weighted sum equals 1.000 ± 0.001.
-- **Node count seal**: Exactly 24 registered matrix nodes.
+- **Node count seal**: Exactly 38 registered matrix nodes across 12 sectors.
 - **Boot seal**: All Spine modules initialized before Execution.
-- **Audit seal**: Chain-of-custody checksums verified.
+- **Sector seal**: Zone shielding verified — expansion zones independently circuit-broken.
 - **Config seal**: Runtime configuration matches declared state.
 
 Failed integrity seals trigger Level 2 escalation.
@@ -128,10 +128,22 @@ Failed integrity seals trigger Level 2 escalation.
 - Cross-module correlation is supported via `request_id` and `session_id`.
 - Audit queries support time-range, module, actor, and action filtering.
 
-## 10. Revision History
+## 10. Recent Additions (v13.1.0)
+
+| System | Observability Integration |
+|--------|--------------------------|
+| AutoBlog Quality Pipeline | Confidence scores, contradiction scores, drift metrics tracked per post |
+| CLM (Constant Learning Mode) | Topic mastery levels, call throughput, distillation efficiency |
+| Scanner Orchestrator | Finding priority scores, regression detection verdicts, coverage gap alerts |
+| Ironclad Hardening Fabric | Per-module rate limit utilization, auto-restore events, bulkhead pressure |
+| ENGINEER Node | Finding counts, proposal pipeline status, CLM topic health |
+| INTEL Aggregation | Signal volume, deduplication ratio, IntelCard generation rate |
+
+## 11. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Added recent feature observability, updated node count seal to 38 nodes |
 | 2026-03-03 | System | Verified health scoring model matches 38-node weighted topology |
 | 2026-03-01 | System | Initial canonical observability handbook |
 

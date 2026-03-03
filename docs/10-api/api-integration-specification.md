@@ -18,10 +18,17 @@ POST /api/v1/{module}/{action}
 | ENCODE | `generate`, `format` | Content generation |
 | VISION | `analyze`, `render` | Visual processing |
 | CORTEX | `pipeline`, `compose` | Multi-step orchestration |
-| NEXUS | `route`, `health` | Routing and system health |
+| NEXUS | `route`, `health`, `consensus` | Routing, health, multi-model consensus |
 | MEMORY | `store`, `retrieve`, `search` | Persistent memory operations |
 | BRAIN | `reason`, `learn` | Reasoning and pattern recognition |
 | ECONOMY | `usage`, `quota`, `cost` | Usage tracking and billing |
+| FORGE | `generate`, `template` | Artifact manufacturing |
+| LINGUA | `translate`, `detect` | Translation and language detection |
+| HARVEST | `ingest`, `normalize` | Data collection and ETL |
+| ORACLE | `predict`, `simulate` | Forecasting and scenario modeling |
+| COMPASS | `trends`, `navigate` | Strategic trend analysis |
+| SOVEREIGN | `classify`, `comply` | Jurisdiction and compliance |
+| MEDIC | `diagnose`, `repair` | Health diagnostics and self-repair |
 
 ### Request Format
 
@@ -161,6 +168,7 @@ Webhooks are signed with HMAC-SHA256. Consumers must verify signatures before pr
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | v13.1.0 — Added expansion zone endpoints (FORGE, LINGUA, HARVEST, ORACLE, COMPASS, SOVEREIGN, MEDIC), consensus routing |
 | 2026-03-03 | System | Verified API contracts for v13.1.0 |
 | 2026-03-01 | System | Initial canonical API specification |
 
