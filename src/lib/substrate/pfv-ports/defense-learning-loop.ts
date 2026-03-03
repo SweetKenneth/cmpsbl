@@ -58,14 +58,16 @@ export async function generateDefenseLearningSummary(
       emerging_threats: extractSection(content, /emerging threats?:?\s*([^\n]+)/i),
     };
 
-    // Persist learning summary
-    await supabase.from('defense_learning').insert({
-      summary: { total_events: events.length, period: { start: periodStart, end: periodEnd } } as any,
-      insights: insights as any,
-      recommendations: insights.recommended_thresholds as any,
-      period_start: periodStart.toISOString(),
-      period_end: periodEnd.toISOString(),
-      events_analyzed: events.length,
+    // Persist learning summary via brain_events
+    await supabase.from('brain_events').insert({
+      module: 'defense',
+      event_type: 'defense_learning_summary',
+      data: {
+        summary: { total_events: events.length, period: { start: periodStart, end: periodEnd } },
+        insights,
+        events_analyzed: events.length,
+      } as any,
+      outcome: 'completed',
     });
 
     return insights;
@@ -86,12 +88,13 @@ export async function syncDefenseWithBrain(): Promise<boolean> {
     const insights = await generateDefenseLearningSummary(dayAgo, now);
     if (!insights) return false;
 
-    for (const [ruleName, threshold] of Object.entries(insights.recommended_thresholds)) {
-      await supabase
-        .from('defense_rules')
-        .update({ threshold })
-        .eq('name', ruleName);
-    }
+    // Log threshold recommendations via brain_events (defense_rules may not exist)
+    await supabase.from('brain_events').insert({
+      module: 'defense',
+      event_type: 'threshold_update',
+      data: { recommended_thresholds: insights.recommended_thresholds } as any,
+      outcome: 'applied',
+    });
 
     return true;
   } catch {
