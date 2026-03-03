@@ -30,6 +30,7 @@ export interface TraceSpan {
 }
 
 const activeContexts = new Map<string, CorrelationContext>();
+const MAX_CONTEXTS = 2000;
 const spans: TraceSpan[] = [];
 const MAX_SPANS = 5000;
 let idCounter = 0;
@@ -59,6 +60,11 @@ export function createContext(moduleId: string, operation: string, metadata?: Re
     metadata: metadata ?? {},
   };
   activeContexts.set(id, ctx);
+  // Evict oldest contexts if over cap
+  if (activeContexts.size > MAX_CONTEXTS) {
+    const firstKey = activeContexts.keys().next().value;
+    if (firstKey) activeContexts.delete(firstKey);
+  }
   return ctx;
 }
 
@@ -97,7 +103,12 @@ export function startSpan(ctx: CorrelationContext, operation?: string): TraceSpa
     tags: {},
   };
   spans.push(span);
-  if (spans.length > MAX_SPANS) spans.splice(0, Math.floor(MAX_SPANS * 0.3));
+  // Evict oldest 30% when over cap (avoid frequent splices)
+  if (spans.length > MAX_SPANS) {
+    const evictCount = Math.floor(MAX_SPANS * 0.3);
+    spans.copyWithin(0, evictCount);
+    spans.length -= evictCount;
+  }
   return span;
 }
 
