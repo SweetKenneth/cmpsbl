@@ -68,7 +68,7 @@ const LIBRARY_DOCS = [
     name: "KEY-CAPABILITIES", 
     title: "Key Capabilities",
     category: "technical",
-    description: "Deep dive into the 24-module architecture and synergies",
+    description: "Deep dive into the 37-node / 11-sector architecture and synergies",
     featured: true,
     readTime: "8 min"
   },
