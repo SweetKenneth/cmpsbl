@@ -4,7 +4,7 @@
  * 
  * Provides React integration for the support bot engine.
  * Respects debugMode — when enabled, auto-refresh is disabled.
- * Integrated with the 37-node / 11-sector cognitive architecture.
+ * Integrated with the 38-node / 12-sector cognitive architecture.
  */
 
 import { useState, useCallback, useEffect } from 'react';

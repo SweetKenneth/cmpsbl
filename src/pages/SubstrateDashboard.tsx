@@ -66,7 +66,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 37-node / 11-sector field-based topology organized by layer
+// 38-node / 12-sector field-based topology organized by layer
 const modulesByLayer = {
   kernel: [
     {
