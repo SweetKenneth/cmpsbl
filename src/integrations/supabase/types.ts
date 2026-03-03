@@ -4153,6 +4153,36 @@ export type Database = {
         }
         Relationships: []
       }
+      captcha_challenges: {
+        Row: {
+          challenge_text: string
+          correct_answer: string
+          created_at: string
+          id: string
+          solved_at: string | null
+          status: string
+          token: string
+        }
+        Insert: {
+          challenge_text: string
+          correct_answer: string
+          created_at?: string
+          id?: string
+          solved_at?: string | null
+          status?: string
+          token: string
+        }
+        Update: {
+          challenge_text?: string
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          solved_at?: string | null
+          status?: string
+          token?: string
+        }
+        Relationships: []
+      }
       cascade_conversations: {
         Row: {
           created_at: string | null
