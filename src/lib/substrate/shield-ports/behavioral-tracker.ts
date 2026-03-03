@@ -73,20 +73,23 @@ export class BehavioralTracker {
       );
     };
 
-    const onFocus = (focused: boolean) => () => {
+    const addFocusEntry = (focused: boolean) => {
       this.data.page_focus_times = boundArray(
         [...this.data.page_focus_times, { focused, timestamp: Date.now() }],
         MAX_EVENTS
       );
     };
 
+    const onFocus = () => addFocusEntry(true);
+    const onBlur = () => addFocusEntry(false);
+
     document.addEventListener('mousemove', onMouse);
     document.addEventListener('keydown', onKey);
     document.addEventListener('keyup', onKey);
     document.addEventListener('scroll', onScroll);
     document.addEventListener('click', onClick);
-    window.addEventListener('focus', onFocus(true));
-    window.addEventListener('blur', onFocus(false));
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('blur', onBlur);
 
     this.cleanupFns = [
       () => document.removeEventListener('mousemove', onMouse),
@@ -94,8 +97,8 @@ export class BehavioralTracker {
       () => document.removeEventListener('keyup', onKey),
       () => document.removeEventListener('scroll', onScroll),
       () => document.removeEventListener('click', onClick),
-      () => window.removeEventListener('focus', onFocus(true)),
-      () => window.removeEventListener('blur', onFocus(false)),
+      () => window.removeEventListener('focus', onFocus),
+      () => window.removeEventListener('blur', onBlur),
     ];
   }
 

@@ -10,6 +10,7 @@ import {
   createAdminClient,
   jsonResponse,
   parseBody,
+  EdgeError,
 } from "../_shared/edge-middleware.ts";
 
 interface AnomalyScore {
@@ -25,6 +26,10 @@ interface AnomalyScore {
 }
 
 Deno.serve(withMiddleware(async (req: Request) => {
+  if (req.method !== 'POST') {
+    throw new EdgeError('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
+  }
+
   // Admin-only endpoint
   await requireAdmin(req);
 

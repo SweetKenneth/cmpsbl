@@ -109,16 +109,26 @@ export class DeviceFingerprint {
       osc.start(0);
 
       return new Promise((resolve) => {
-        sp.onaudioprocess = (event) => {
-          const output = event.outputBuffer.getChannelData(0);
-          const hash = Array.from(output.slice(0, 30))
-            .reduce((acc: number, val: number) => acc + Math.abs(val), 0);
-
+        const cleanup = () => {
           sp.disconnect();
           osc.disconnect();
           analyser.disconnect();
           gain.disconnect();
+          context.close().catch(() => {});
+        };
 
+        // Safety timeout — don't hang if onaudioprocess never fires
+        const timeout = setTimeout(() => {
+          cleanup();
+          resolve('');
+        }, 2000);
+
+        sp.onaudioprocess = (event) => {
+          clearTimeout(timeout);
+          const output = event.outputBuffer.getChannelData(0);
+          const hash = Array.from(output.slice(0, 30))
+            .reduce((acc: number, val: number) => acc + Math.abs(val), 0);
+          cleanup();
           resolve(hash.toString());
         };
       });
