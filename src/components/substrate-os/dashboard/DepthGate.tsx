@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 const TIER_LABELS: Record<SubstrateRole, string> = {
   free: 'Free',
   creator: 'Creator',
+  studio: 'Studio',
   architect: 'Architect',
   governor: 'Governor',
 };
@@ -21,6 +22,7 @@ const TIER_LABELS: Record<SubstrateRole, string> = {
 const TIER_PRICES: Record<SubstrateRole, string> = {
   free: '',
   creator: '$29/mo',
+  studio: '$49/mo',
   architect: '$79/mo',
   governor: '',
 };
