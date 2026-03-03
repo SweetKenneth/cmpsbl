@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 
-export type SubscriptionTier = 'free' | 'starter' | 'creator' | 'builder' | 'pro' | 'architect' | 'enterprise';
+export type SubscriptionTier = 'free' | 'starter' | 'creator' | 'studio' | 'builder' | 'pro' | 'architect' | 'enterprise';
 
 interface EngineSubscriptionState {
   subscribed: boolean;
@@ -110,9 +110,10 @@ export function useEngineSubscription() {
       starter: 0, // legacy alias
       creator: 1,
       builder: 1, // legacy alias
-      architect: 2,
-      pro: 2, // legacy alias
-      enterprise: 3,
+      studio: 2,
+      architect: 3,
+      pro: 3, // legacy alias
+      enterprise: 4,
     };
     return (tierPriority[state.tier] ?? 0) >= (tierPriority[requiredTier] ?? 0);
   }, [state.tier]);

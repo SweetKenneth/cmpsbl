@@ -52,6 +52,26 @@ export const UNIFIED_TIERS = {
     ],
     checkout_enabled: true,
   },
+  studio: {
+    product_id: 'prod_U4vfFrx4XIT6Ah',
+    price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
+    amount: 4900, // $49/month
+    interval: 'month' as const,
+    name: 'Studio',
+    tagline: '9 template packs with expanded depth',
+    description: '9 artifact slots, expanded memory, template packs, trace exports, and high-priority Nexus routing.',
+    features: [
+      'Everything in Creator, plus:',
+      '9 Artifact Slots',
+      '9 template packs included',
+      'Expanded memory partitions',
+      'Trace & audit exports',
+      'High-priority Nexus routing',
+      'Advanced automation pipelines',
+      'Priority email support',
+    ],
+    checkout_enabled: true,
+  },
   architect: {
     product_id: 'prod_TzwJm6Ji4E3Vca',
     price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
