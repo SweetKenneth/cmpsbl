@@ -3,7 +3,22 @@
  * Validates token counting, cost estimation, and budget enforcement
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
+
+// Mock localStorage for supabase client
+beforeAll(() => {
+  if (typeof globalThis.localStorage === 'undefined') {
+    (globalThis as any).localStorage = {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+      length: 0,
+      key: () => null,
+    };
+  }
+});
+
 import { estimateCost } from '../costEstimation';
 
 describe('NEXUS Cost Estimation', () => {

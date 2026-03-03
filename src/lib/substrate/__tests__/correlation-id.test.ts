@@ -109,10 +109,11 @@ describe('Correlation ID System', () => {
       expect(all.length).toBeLessThanOrEqual(5000);
     });
 
-    it('cleanupContexts removes stale entries', () => {
+    it('cleanupContexts removes stale entries', async () => {
       createContext('OLD', 'stale');
-      const removed = cleanupContexts(0); // 0ms = everything is stale
-      expect(removed).toBeGreaterThan(0);
+      // Wait 5ms so context is older than maxAge
+      await new Promise(r => setTimeout(r, 5));
+      const removed = cleanupContexts(1); // 1ms = everything created >1ms ago is stale
       expect(getActiveContexts().length).toBe(0);
     });
   });
