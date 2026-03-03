@@ -179,6 +179,7 @@ Rate limits are enforced at the NEXUS gateway level. Exceeded limits return HTTP
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Verified against 38-node topology and zone-shielded architecture |
 | 2026-03-01 | System | Initial canonical security architecture |
 
 ---

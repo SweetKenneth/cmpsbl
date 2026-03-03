@@ -41,6 +41,7 @@ erDiagram
 | Analytics | `analytics_events`, `analytics_snapshots` | System telemetry and reporting |
 | Audit | `audit_logs` | Immutable event logging |
 | Content | `auto_blog_posts`, `auto_blog_schedule`, `autoblog_queue`, `autoblog_drafts` | Automated content generation |
+| Content Quality | `autoblog_assumptions`, `autoblog_memory_reports`, `autoblog_split_brain_audits`, `autoblog_confidence_weights`, `autoblog_topic_seeds`, `autoblog_publish_cycle`, `autoblog_publish_governor_state`, `autoblog_publish_governor_logs` | Quality pipeline, drift detection, adaptive governance |
 | Cognitive | `cognitive_registry`, `agent_competency` | Agent identity and skill tracking |
 | Capabilities | `atlas_capabilities` | Feature flag and capability registry |
 | Scanning | `access_scans`, `accessibility_scans` | Security and accessibility scanning |
@@ -138,6 +139,7 @@ Creation → Validation → Storage → Active Use → Archival → Deletion
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Added AutoBlog quality pipeline tables (assumptions, memory reports, split brain audits, confidence weights, topic seeds, publish governor) |
 | 2026-03-01 | System | Initial canonical data and memory model |
 
 ---

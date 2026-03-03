@@ -86,6 +86,7 @@ Any → Self-Hosted: License agreement + infrastructure setup
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Verified licensing model for v13.1.0 |
 | 2026-03-01 | System | Initial canonical licensing model |
 
 ---

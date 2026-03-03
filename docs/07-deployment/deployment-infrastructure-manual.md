@@ -99,6 +99,7 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Verified deployment topology for v13.1.0 |
 | 2026-03-01 | System | Initial canonical deployment manual |
 
 ---

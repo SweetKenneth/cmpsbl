@@ -41,6 +41,7 @@
 | IDENTITY | OCG | User and entity resolution |
 | RELAY | OCG | Cross-module message routing |
 | AUDIT | OCG | Immutable logging, chain-of-custody |
+| NERVE | OCG | Operational signaling and coordination |
 | DECODE | Execution | Natural language understanding |
 | ENCODE | Execution | Content generation, output formatting |
 | VISION | Execution | Visual processing, dashboard rendering |
@@ -49,8 +50,21 @@
 | ECONOMY | Execution | Cost tracking, ROI calculation |
 | SANDBOX | Execution | Isolated execution environment |
 | INCLUSIVE | Execution | Accessibility compliance |
+| MEDIC | Execution | Self-healing diagnostics |
 | INTEGRATION | Execution | External service connectivity |
-| EVOLUTION | Field | Version management, shadow runs |
+| COMPLIANCE | ESZ | Regulatory compliance engine |
+| PREDICT | ESZ | Predictive analytics |
+| ETHICS | ESZ | Ethical decision boundaries |
+| CONTRACT | ESZ | Agreement and SLA enforcement |
+| SIMULATE | EPZ | Scenario simulation |
+| GEOSPATIAL | EPZ | Location-aware processing |
+| EDGE | EPZ | Edge compute orchestration |
+| FORGE | EMZ | Artifact production |
+| TRANSLATE | EMZ | Multi-language processing |
+| INGEST | EMZ | Data pipeline ingestion |
+| EVOLUTION | CSZ | Version management, shadow runs |
+| SHADOW | CSZ | Shadow testing and validation |
+| PHANTOM | CSZ | Phantom operations and probes |
 | IMMUNITY | Field | Threat adaptation, resilience |
 | INTENT | Field | Purpose alignment, goal tracking |
 | GOVERNANCE | Plane | Action legitimacy supervision |
