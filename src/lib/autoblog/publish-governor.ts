@@ -4,7 +4,11 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { isEnabled } from '@/lib/substrate/feature-flags';
+import { isEnabled, createFlag } from '@/lib/substrate/feature-flags';
+
+// Register autoblog governor flags
+createFlag('autoblog_publish_governor_enabled', 'AutoBlog Publish Governor', true, 100);
+createFlag('autoblog_publish_freeze', 'AutoBlog Publish Freeze', false, 0);
 
 export type GovernorDecision = 'publish' | 'defer' | 'cooldown';
 
