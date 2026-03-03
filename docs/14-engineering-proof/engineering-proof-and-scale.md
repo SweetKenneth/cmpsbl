@@ -44,24 +44,34 @@ Vibe-coded systems work in demos. They fail in production. They accumulate debt 
 | Domain libraries (`src/lib/`) | 55+ specialized domains |
 | Component directories (`src/components/`) | 45+ UI domains |
 | Page routes | 60+ distinct routes |
-| Supabase database tables | 30+ production tables |
+| Supabase database tables | 50+ production tables |
 | Edge functions | Multiple deployed backend functions |
 | Audit check categories | 10 distinct verification domains |
-| Documentation pages | 28+ canonical documents across 4 tiers |
+| Documentation pages | 80+ documents across canonical, internal, and archived tiers |
+| Internal library pages | 34 classified internal documents |
+| Registered capabilities | 675+ operations across 38 nodes |
+| Terminal commands | 500+ |
 
 ### 3.2 Substrate node count
 
-The runtime kernel tracks **24 named matrix nodes** across five architectural layers:
+The runtime kernel tracks **38 named matrix nodes** across twelve architectural sectors:
 
-| Layer | Nodes |
-|-------|-------|
-| Spine (vertical flow) | CORE, SYSTEM, BRAIN, DREAM |
-| OCG (operational compliance) | RIPPLE, ACCESS, DEFENSE |
-| Execution (specialized) | NEXUS, DECODE, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER, ENCODE |
-| Fields / Planes | GOVERNANCE, OBSERVABILITY, ANALYTICS |
-| Fabrics & Shell | EVOLUTION, IMMUNITY, INTENT, MESH, ECONOMY, SANDBOX |
+| Sector | Nodes | Weight |
+|--------|-------|--------|
+| Spine: CORE | CORE | 0.120 |
+| Spine: SYSTEM | SYSTEM | 0.040 |
+| Spine: CCR | BRAIN, MEMORY, DREAM | 0.120 |
+| Grid: OCG | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE | 0.150 |
+| Execution | NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION | 0.250 |
+| ESZ (Sovereignty) | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 0.080 |
+| EPZ (Perception) | COMPASS, ECHO, REFLEX | 0.060 |
+| EMZ (Manufacturing) | FORGE, LINGUA, HARVEST | 0.050 |
+| CSZ (Covert) | EVOLUTION, SHADOW, PHANTOM | 0.050 |
+| Fields | IMMUNITY, INTENT | 0.040 |
+| Plane | GOVERNANCE | 0.030 |
+| Shell | DEFENSE | 0.030 |
 
-Each node implements a standardized interface with `boot`, `pulse`, `invoke`, and `healthCheck` methods. Boot order is deterministic: CORE → CCR → OCG → 9 Modules → INTEGRATION (last) → 5 Mesh Overlays (DEFENSE outermost).
+Each node implements a standardized interface with `boot`, `pulse`, `invoke`, and `healthCheck` methods. Boot order is deterministic across 12 phases: CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell.
 
 ### 3.3 Infrastructure depth
 
@@ -96,7 +106,7 @@ The system ships with a built-in audit runner (`src/lib/audit/audit-runner.ts`) 
 |--------|-------------------|
 | `system-manifest` | Boot integrity, version consistency, required fields present |
 | `routes` | Route registry completeness, no orphaned paths |
-| `modules` | All 24 matrix nodes responding to health checks |
+| `modules` | All 38 matrix nodes responding to health checks |
 | `hooks` | React hook contracts — no rules-of-hooks violations |
 | `branding` | Zero unauthorized third-party branding in rendered output |
 | `provider-branding` | Provider attribution compliance |
@@ -293,6 +303,7 @@ This is what it looks like when software is engineered, not generated.
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | v13.1.0 — Updated to 38-node/12-sector topology, 675+ capabilities, 50+ tables |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial publication |
 
 ## 9. Related documents
@@ -302,6 +313,7 @@ This is what it looks like when software is engineered, not generated.
 - [Topology & Module Registry](../internal/01-topology-and-module-registry.md)
 - [Proprietary Algorithms](../internal/02-proprietary-algorithms.md)
 - [Trade Secrets & Competitive Moat](../internal/03-trade-secrets-and-moat.md)
+- [Ironclad Hardening Fabric](../internal/30-ironclad-hardening-fabric.md)
 - [Maintenance Runbook](../internal/10-maintenance-runbook.md)
 
 ---
