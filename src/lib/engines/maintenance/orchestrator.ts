@@ -81,11 +81,9 @@ export async function runQuickHealthCheck(): Promise<{
     const { quickStructuralCheck } = await import('@/lib/audit/substrate-health-check');
     const report = quickStructuralCheck();
     return {
-      healthy: report.verdict === 'HEALTHY',
-      score: report.score,
-      issues: report.layerResults
-        .filter(l => !l.passed)
-        .map(l => `${l.layerId}: ${l.checks.filter(c => !c.passed).map(c => c.name).join(', ')}`),
+      healthy: report.verdict === 'PASS',
+      score: report.issues === 0 ? 100 : Math.max(0, 100 - report.issues * 10),
+      issues: report.issues > 0 ? [`${report.issues} structural issue(s) detected`] : [],
     };
   } catch {
     return { healthy: false, score: 0, issues: ['Health check failed to execute'] };

@@ -71,22 +71,22 @@ async function runSubstrateHealthPass(): Promise<MaintenanceFinding[]> {
 
     findings.push({
       id: 'substrate_health',
-      severity: report.verdict === 'HEALTHY' ? 'info' : report.verdict === 'DEGRADED' ? 'warn' : 'error',
+      severity: report.overall_verdict === 'PASS' ? 'info' : 'error',
       category: 'substrate',
-      title: `Substrate health: ${report.verdict} (${report.score}/100)`,
-      detail: `${report.layerResults.filter(l => l.passed).length}/${report.layerResults.length} layers passed. Duration: ${report.durationMs}ms`,
+      title: `Substrate health: ${report.overall_verdict} (${report.structural_issues} issues)`,
+      detail: `${report.layers.filter(l => l.verdict === 'PASS').length}/${report.layers.length} layers passed. Duration: ${report.duration_ms}ms`,
     });
 
     // Report failed layers
-    for (const layer of report.layerResults) {
-      if (!layer.passed) {
-        const failedChecks = layer.checks.filter(c => !c.passed);
+    for (const layer of report.layers) {
+      if (layer.verdict === 'FAIL') {
+        const failedChecks = layer.checks.filter(c => !c.pass);
         findings.push({
-          id: `substrate_layer_${layer.layerId}`,
+          id: `substrate_layer_${layer.layer}`,
           severity: 'warn',
           category: 'substrate',
-          title: `Layer ${layer.layerId} degraded`,
-          detail: failedChecks.map(c => `${c.name}: ${c.detail ?? 'failed'}`).join('; '),
+          title: `Layer ${layer.layer} degraded`,
+          detail: failedChecks.map(c => `${c.id}: ${c.detail ?? c.message}`).join('; '),
         });
       }
     }

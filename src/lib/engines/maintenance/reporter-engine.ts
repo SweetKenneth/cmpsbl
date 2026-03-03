@@ -45,7 +45,7 @@ async function loadNotificationConfig(): Promise<NotificationConfig | null> {
 async function persistToDb(result: MaintenanceRunResult): Promise<string | null> {
   try {
     const { data, error } = await supabase
-      .from('maintenance_reports')
+      .from('maintenance_reports' as any)
       .insert({
         engine: result.engine,
         status: result.status,
@@ -56,7 +56,7 @@ async function persistToDb(result: MaintenanceRunResult): Promise<string | null>
         pass_results: result.passResults as any,
         completed_at: new Date().toISOString(),
         metadata: result.metadata ?? {},
-      })
+      } as any)
       .select('id')
       .single();
 
