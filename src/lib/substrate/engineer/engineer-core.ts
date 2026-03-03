@@ -238,7 +238,7 @@ export interface MaintenanceCycleResult {
  * 4. Shift CLM study focus
  * 5. Send proposals to INTENT
  */
-export function runMaintenanceCycle(): MaintenanceCycleResult {
+export async function runMaintenanceCycle(): Promise<MaintenanceCycleResult> {
   state.cycleCount++;
   state.lastCycleAt = Date.now();
 
@@ -269,6 +269,21 @@ export function runMaintenanceCycle(): MaintenanceCycleResult {
       `Health at ${engine.health}%, trend: ${engine.degradationTrend}`,
       engine.health < 30 ? 100 : engine.health < 50 ? 75 : 50,
     );
+  }
+
+  // Trigger maintenance engines via ENGINEER orchestration (async, non-blocking)
+  try {
+    const { engineerTriggeredMaintenance } = await import('@/lib/engines/maintenance');
+    engineerTriggeredMaintenance().then(result => {
+      if (result) {
+        findings.push(`Maintenance orchestrator: ${result.overallStatus} (${result.totalDurationMs}ms)`);
+        recordEngineHealth('hygiene', 'maintenance', result.overallStatus === 'passed' ? 95 : 60);
+        recordEngineHealth('validator', 'maintenance', result.overallStatus === 'passed' ? 95 : 60);
+        recordEngineHealth('reporter', 'maintenance', result.overallStatus === 'passed' ? 95 : 60);
+      }
+    }).catch(() => { /* non-blocking */ });
+  } catch {
+    // maintenance engines not available — non-critical
   }
 
   return {
