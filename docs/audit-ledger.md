@@ -199,13 +199,42 @@
 ---
 
 ## Phase 7: Security Surface Audit
-*Pending*
+
+### Finding 7.1 — Unbounded Denial Log (Memory DoS)
+- **Severity**: Medium
+- **Module**: `src/lib/substrate/capability-gate/index.ts`
+- **Issue**: `denialLog` array grows without limit. Attacker can flood denied requests to exhaust memory.
+- **Fix**: Added `MAX_DENIAL_LOG = 500` cap with 30% overflow eviction.
+- **Rollback**: Remove cap logic, revert to original push-only pattern.
+
+### Finding 7.2 — Unbounded Reputation & Bucket Maps
+- **Severity**: Medium
+- **Module**: `src/lib/substrate/adaptive-rate-limit/index.ts`
+- **Issue**: `reputationScores` and `buckets` Maps grow unbounded per tenant. Stale entries never evicted.
+- **Fix**: Added `evictStaleBuckets()` with age-based and hard-cap eviction (10K buckets, 5K reputations).
+- **Rollback**: Remove `evictStaleBuckets` function and caps.
+
+---
 
 ## Phase 8: Economic & Cost Risk Audit
-*Pending*
+
+### Finding 8.1 — Unbounded Spending Tracker Maps
+- **Severity**: Medium
+- **Module**: `src/lib/nexus/costEstimation.ts`
+- **Issue**: `spendingTracker.daily` and `.monthly` Maps accumulate date keys forever across sessions.
+- **Fix**: Added `pruneTracker()` with `MAX_TRACKER_ENTRIES = 60`, called after each `recordSpending`.
+- **Rollback**: Remove `pruneTracker` calls and constant.
+
+---
 
 ## Phase 9: Concurrency & Race Condition Audit
-*Pending*
+
+### Finding 9.1 — Unbounded Chaos Experiments Array
+- **Severity**: Medium
+- **Module**: `src/lib/substrate/chaos-testing/index.ts`
+- **Issue**: `experiments` array grows without limit during extended chaos runs.
+- **Fix**: Added `MAX_EXPERIMENTS = 500` cap with 30% overflow eviction on push.
+- **Rollback**: Remove cap logic after push.
 
 ## Phase 10: Code Entropy & Orphan Sweep
 *Pending*
