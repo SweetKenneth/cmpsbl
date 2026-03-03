@@ -314,10 +314,17 @@
  /**
   * Update detector configuration
   */
- export function updateAnomalyConfig(updates: Partial<AnomalyDetectorConfig>): AnomalyDetectorConfig {
-   config = { ...config, ...updates };
-   return { ...config };
- }
+export function updateAnomalyConfig(updates: Partial<AnomalyDetectorConfig>): AnomalyDetectorConfig {
+  // Guardrail: clamp all config values to safe ranges
+  config = {
+    ...config,
+    rate_spike_threshold: Math.max(1.5, Math.min(20, updates.rate_spike_threshold ?? config.rate_spike_threshold)),
+    temporal_deviation_threshold: Math.max(0.05, Math.min(0.95, updates.temporal_deviation_threshold ?? config.temporal_deviation_threshold)),
+    behavioral_score_threshold: Math.max(0.1, Math.min(0.95, updates.behavioral_score_threshold ?? config.behavioral_score_threshold)),
+    signal_ttl_minutes: Math.max(5, Math.min(1440, updates.signal_ttl_minutes ?? config.signal_ttl_minutes)),
+  };
+  return { ...config };
+}
  
  /**
   * Clear all signals

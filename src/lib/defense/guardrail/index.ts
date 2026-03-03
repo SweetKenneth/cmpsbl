@@ -8,6 +8,8 @@
  * Phase 2: Threshold Clamping System
  * Phase 3: Traffic Spike Protection
  * Phase 4: Shadow Mode Validation
+ * Phase 5: Immunity Learning Sandbox
+ * Phase 6: Observability (integrated via logger.ts)
  */
 
 // Types
@@ -83,3 +85,18 @@ export {
   clearShadowState,
   type ShadowConfig,
 } from './shadow-validator';
+
+// Immunity Learning Sandbox (Phase 5)
+export {
+  submitToSandbox,
+  recordEvidence,
+  markPromoted,
+  getSandboxEntry,
+  listSandboxEntries,
+  getSandboxStats,
+  configureSandbox,
+  clearSandbox,
+  type SandboxConfig,
+  type SandboxEntry,
+  type SandboxEvidence,
+} from './learning-sandbox';
