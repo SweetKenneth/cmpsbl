@@ -11,6 +11,7 @@
 
 import { DeviceFingerprint, FingerprintData } from './device-fingerprint';
 import { BehavioralTracker, BehavioralData } from './behavioral-tracker';
+import { getCachedFingerprint } from './fingerprint-cache';
 import { clampNumber, boundArray } from '@/lib/system/hardening';
 
 // ── A) GOVERNANCE-configurable score weights ─────────────────────────
@@ -78,6 +79,8 @@ export interface ProtectionResult {
   entropyConfidence: number;
   /** Only hash + metadata, never raw signals */
   fingerprintHash: string | null;
+  /** Drift score from last-known snapshot (0-1, lower = less drift) */
+  driftScore?: number;
   challenge?: { type: string; token: string; data: unknown };
 }
 
@@ -141,8 +144,10 @@ export class ProtectionClient {
 
   private async initialize(): Promise<void> {
     try {
-      this.fingerprint = await DeviceFingerprint.generate();
-      this.fingerprintHash = await DeviceFingerprint.hash(this.fingerprint);
+      // Use cached fingerprint to avoid redundant CPU-heavy generation
+      const cached = await getCachedFingerprint();
+      this.fingerprint = cached.fingerprint;
+      this.fingerprintHash = cached.hash;
 
       if (this.config.trackBehavior) {
         this.tracker.start();
