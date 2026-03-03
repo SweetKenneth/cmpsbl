@@ -1787,14 +1787,18 @@ export type Database = {
           contradiction_outcome: string | null
           contradiction_score: number | null
           created_at: string
+          drift_direction: string | null
           epistemic_status: string | null
           excerpt: string | null
           experience_tags: string[] | null
           id: string
+          image_count: number | null
+          internal_links_count: number | null
           published_at: string | null
           review_status: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          semantic_drift_score: number | null
           slug: string
           split_brain_decision: string | null
           split_brain_reader_score: number | null
@@ -1803,6 +1807,7 @@ export type Database = {
           title: string
           topic_seed: string | null
           updated_at: string
+          word_count: number | null
         }
         Insert: {
           assumptions_extracted?: boolean | null
@@ -1815,14 +1820,18 @@ export type Database = {
           contradiction_outcome?: string | null
           contradiction_score?: number | null
           created_at?: string
+          drift_direction?: string | null
           epistemic_status?: string | null
           excerpt?: string | null
           experience_tags?: string[] | null
           id?: string
+          image_count?: number | null
+          internal_links_count?: number | null
           published_at?: string | null
           review_status?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          semantic_drift_score?: number | null
           slug: string
           split_brain_decision?: string | null
           split_brain_reader_score?: number | null
@@ -1831,6 +1840,7 @@ export type Database = {
           title: string
           topic_seed?: string | null
           updated_at?: string
+          word_count?: number | null
         }
         Update: {
           assumptions_extracted?: boolean | null
@@ -1843,14 +1853,18 @@ export type Database = {
           contradiction_outcome?: string | null
           contradiction_score?: number | null
           created_at?: string
+          drift_direction?: string | null
           epistemic_status?: string | null
           excerpt?: string | null
           experience_tags?: string[] | null
           id?: string
+          image_count?: number | null
+          internal_links_count?: number | null
           published_at?: string | null
           review_status?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          semantic_drift_score?: number | null
           slug?: string
           split_brain_decision?: string | null
           split_brain_reader_score?: number | null
@@ -1859,6 +1873,7 @@ export type Database = {
           title?: string
           topic_seed?: string | null
           updated_at?: string
+          word_count?: number | null
         }
         Relationships: []
       }
@@ -1931,6 +1946,30 @@ export type Database = {
           id?: string
           is_broken?: boolean | null
           post_id?: string
+        }
+        Relationships: []
+      }
+      autoblog_confidence_weights: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          reason: string | null
+          weights: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          reason?: string | null
+          weights?: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          reason?: string | null
+          weights?: Json
         }
         Relationships: []
       }
@@ -2017,6 +2056,93 @@ export type Database = {
           report_period_end?: string
           report_period_start?: string
           silence_count?: number | null
+        }
+        Relationships: []
+      }
+      autoblog_publish_cycle: {
+        Row: {
+          id: string
+          publish_count: number
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          publish_count?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          publish_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      autoblog_publish_governor_logs: {
+        Row: {
+          cooldown_until: string | null
+          decided_at: string
+          decision: string
+          id: string
+          post_id: string | null
+          queue_id: string | null
+          reason: Json | null
+          signals: Json | null
+          tokens_after: number | null
+          tokens_before: number | null
+        }
+        Insert: {
+          cooldown_until?: string | null
+          decided_at?: string
+          decision: string
+          id?: string
+          post_id?: string | null
+          queue_id?: string | null
+          reason?: Json | null
+          signals?: Json | null
+          tokens_after?: number | null
+          tokens_before?: number | null
+        }
+        Update: {
+          cooldown_until?: string | null
+          decided_at?: string
+          decision?: string
+          id?: string
+          post_id?: string | null
+          queue_id?: string | null
+          reason?: Json | null
+          signals?: Json | null
+          tokens_after?: number | null
+          tokens_before?: number | null
+        }
+        Relationships: []
+      }
+      autoblog_publish_governor_state: {
+        Row: {
+          cooldown_until: string | null
+          id: string
+          last_decision_at: string | null
+          last_publish_at: string | null
+          publish_streak: number
+          tokens: number
+          updated_at: string
+        }
+        Insert: {
+          cooldown_until?: string | null
+          id?: string
+          last_decision_at?: string | null
+          last_publish_at?: string | null
+          publish_streak?: number
+          tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          cooldown_until?: string | null
+          id?: string
+          last_decision_at?: string | null
+          last_publish_at?: string | null
+          publish_streak?: number
+          tokens?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -2199,6 +2325,39 @@ export type Database = {
           queue_id?: string | null
           reader_brain_score?: number
           skeptic_brain_score?: number
+        }
+        Relationships: []
+      }
+      autoblog_topic_seeds: {
+        Row: {
+          created_at: string
+          id: string
+          keywords: Json
+          last_scanned: string | null
+          scan_count: number
+          updated_at: string
+          url: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keywords?: Json
+          last_scanned?: string | null
+          scan_count?: number
+          updated_at?: string
+          url: string
+          weight?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keywords?: Json
+          last_scanned?: string | null
+          scan_count?: number
+          updated_at?: string
+          url?: string
+          weight?: number
         }
         Relationships: []
       }
