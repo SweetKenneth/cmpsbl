@@ -423,7 +423,7 @@ export default function SubstrateOS() {
 
             {activeTab === 'cortex' && (
               <PanelContainer id="cortex">
-                <Suspense fallback={<PanelLoader />}><CortexTab /></Suspense>
+                <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
               </PanelContainer>
             )}
 
