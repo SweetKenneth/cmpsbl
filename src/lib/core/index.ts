@@ -103,7 +103,7 @@ export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
 // Entity classification — new taxonomy
-export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed' | 'zone-esz' | 'zone-epz' | 'zone-emz';
+export type EntityType = 'kernel' | 'system-layer' | 'module' | 'field' | 'plane' | 'shell' | 'zone-ccr' | 'zone-ocg' | 'absorbed' | 'zone-esz' | 'zone-epz' | 'zone-emz' | 'zone-csz';
 
 export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   // Kernel (boots first)
@@ -114,15 +114,16 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   brain: 'zone-ccr',
   memory: 'zone-ccr',
   dream: 'zone-ccr',
-  // OCG Zones (Operational Compliance Grid)
+  // OCG Zones (Operational Compliance Grid — includes NERVE)
   ripple: 'zone-ocg',
   access: 'zone-ocg',
   identity: 'zone-ocg',
   relay: 'zone-ocg',
   audit: 'zone-ocg',
+  nerve: 'zone-ocg',
   // Absorbed
   modernizer: 'absorbed',
-  // 10 Public Modules (includes MEDIC + NERVE)
+  // Execution Modules
   decode: 'module',
   encode: 'module',
   vision: 'module',
@@ -132,9 +133,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   sandbox: 'module',
   inclusive: 'module',
   medic: 'module',
-  nerve: 'module',
   // Fields (system-wide transformation fabric)
-  evolution: 'field',
   immunity: 'field',
   intent: 'field',
   // Overlay Plane (supervisory blanket)
