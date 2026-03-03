@@ -54,3 +54,14 @@ export {
   getGuardrailLogs,
   clearGuardrailLogs,
 } from './logger';
+
+// Spike Detector (Phase 3)
+export {
+  recordTrafficEvent,
+  isSpikeActive as isSpikeDetected,
+  isConservativeMode,
+  getSpikeState,
+  configureSpikeDetector,
+  clearSpikeState,
+  type SpikeConfig,
+} from './spike-detector';
