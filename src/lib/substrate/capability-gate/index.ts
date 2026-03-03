@@ -29,6 +29,7 @@ const DEFAULT_GATE_CONFIG: CapabilityGateConfig = {
 };
 
 let currentConfig = { ...DEFAULT_GATE_CONFIG };
+const MAX_DENIAL_LOG = 500;
 const denialLog: Array<{ capabilityId: string; tier: DistributionTier; timestamp: number }> = [];
 
 /**
@@ -39,6 +40,9 @@ export function checkGate(capabilityId: string, userTier: DistributionTier): Gat
 
   if (!allowed && currentConfig.logDenials) {
     denialLog.push({ capabilityId, tier: userTier, timestamp: Date.now() });
+    if (denialLog.length > MAX_DENIAL_LOG) {
+      denialLog.splice(0, Math.floor(MAX_DENIAL_LOG * 0.3));
+    }
   }
 
   // Determine required tier by checking each level

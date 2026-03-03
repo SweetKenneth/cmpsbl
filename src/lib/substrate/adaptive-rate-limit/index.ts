@@ -157,3 +157,30 @@ export function getAllBuckets(): RateLimitBucket[] {
 export function configureRateLimit(updates: Partial<AdaptiveRateConfig>) {
   config = { ...config, ...updates };
 }
+
+/** Evict stale buckets and reputation entries older than maxAgeMs */
+const MAX_BUCKETS = 10_000;
+const MAX_REPUTATIONS = 5_000;
+
+export function evictStaleBuckets(maxAgeMs = 3_600_000): number {
+  const now = Date.now();
+  let evicted = 0;
+  for (const [key, bucket] of buckets) {
+    if (now - bucket.lastRefillAt > maxAgeMs) {
+      buckets.delete(key);
+      evicted++;
+    }
+  }
+  // Hard cap if still over limit
+  if (buckets.size > MAX_BUCKETS) {
+    const sorted = [...buckets.entries()].sort((a, b) => a[1].lastRefillAt - b[1].lastRefillAt);
+    const toRemove = sorted.slice(0, buckets.size - MAX_BUCKETS);
+    for (const [key] of toRemove) buckets.delete(key);
+    evicted += toRemove.length;
+  }
+  if (reputationScores.size > MAX_REPUTATIONS) {
+    const keys = [...reputationScores.keys()];
+    keys.slice(0, reputationScores.size - MAX_REPUTATIONS).forEach(k => reputationScores.delete(k));
+  }
+  return evicted;
+}

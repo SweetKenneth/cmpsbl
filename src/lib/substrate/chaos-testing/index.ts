@@ -34,6 +34,7 @@ export interface ChaosSchedule {
   shadowOnly: boolean; // only run in shadow mode
 }
 
+const MAX_EXPERIMENTS = 500;
 const experiments: ChaosExperiment[] = [];
 let schedule: ChaosSchedule = {
   enabled: false,

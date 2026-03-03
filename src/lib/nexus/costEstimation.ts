@@ -79,11 +79,19 @@ const DEFAULT_BUDGET: BudgetConfig = {
   hardStop: true,
 };
 
-// In-memory spending tracker
+// In-memory spending tracker (capped to prevent unbounded growth)
+const MAX_TRACKER_ENTRIES = 60;
 const spendingTracker = {
   daily: new Map<string, number>(),
   monthly: new Map<string, number>(),
 };
+
+function pruneTracker(map: Map<string, number>, maxEntries: number): void {
+  if (map.size <= maxEntries) return;
+  const sorted = [...map.keys()].sort();
+  const toRemove = sorted.slice(0, map.size - maxEntries);
+  toRemove.forEach(k => map.delete(k));
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COST ESTIMATION
@@ -267,6 +275,8 @@ export async function recordSpending(
   // Update trackers
   spendingTracker.daily.set(today, (spendingTracker.daily.get(today) ?? 0) + actualCost);
   spendingTracker.monthly.set(month, (spendingTracker.monthly.get(month) ?? 0) + actualCost);
+  pruneTracker(spendingTracker.daily, MAX_TRACKER_ENTRIES);
+  pruneTracker(spendingTracker.monthly, MAX_TRACKER_ENTRIES);
 
   // Log to database
   await supabase.from('brain_events').insert({
