@@ -1,15 +1,15 @@
 /**
  * Terminal Boot Screen
- * Unique neural-organic visualization of the 24 execution surfaces
+ * 37-Node / 11-Sector Field-Based Topology
  * Mobile-friendly with no mid-word line breaks
  * 
  * Architecture:
- * - 300 synergy pipelines, 125 executors, 32 S-tier discoveries
- * - 24 execution surfaces: 1 kernel + 9 modules + 5 mesh overlays + 9 zones
- * - 525+ capabilities, 100 engines (76 base + 24 meta)
+ * - 37 active nodes across 11 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, Fields, Plane, Shell)
+ * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
+ * - 675+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 360+ commands across all execution surfaces + infrastructure
- * - CLM across all 9 modules
+ * - 500+ commands across all 37 nodes + infrastructure
+ * - CLM across all modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
  */
@@ -44,16 +44,34 @@ const DNA_HELIX = `
  * Module status indicators (compact for mobile)
  */
 const MODULE_STATUS = [
-  '  ├─ KERNEL ───────────────────────────',
-  '  │  ◉ core      ◉ ripple     ◉ access',
-  '  ├─ COGNITIVE ─────────────────────────',
-  '  │  ◉ brain     ◉ decode     ◉ dream',
-  '  ├─ OPERATIONS ────────────────────────',
-  '  │  ◉ defense   ◉ nexus      ◉ vision',
-  '  ├─ ADMIN ─────────────────────────────',
-  '  │  ◉ system    ◉ evolution  ◉ inclusive',
-  '  ├─ ORCHESTRATOR ──────────────────────',
-  '  │  ◉ cortex    ◉ integration',
+  '  ├─ CORE Kernel ────────────────────────',
+  '  │  ◉ core                               ',
+  '  ├─ SYSTEM Layer ───────────────────────',
+  '  │  ◉ system                             ',
+  '  ├─ CCR (Cognitive Core Reality) ────────',
+  '  │  ◉ brain     ◉ memory     ◉ dream    ',
+  '  ├─ OCG (Operational Compliance Grid) ──',
+  '  │  ◉ ripple    ◉ access     ◉ identity ',
+  '  │  ◉ relay     ◉ audit                  ',
+  '  ├─ Execution Sector ───────────────────',
+  '  │  ◉ decode    ◉ encode     ◉ vision   ',
+  '  │  ◉ cortex    ◉ nexus      ◉ economy  ',
+  '  │  ◉ sandbox   ◉ inclusive  ◉ medic    ',
+  '  │  ◉ nerve     ◉ integration            ',
+  '  ├─ ESZ (Sovereignty Zone) ─────────────',
+  '  │  ◉ sovereign ◉ oracle     ◉ conscience',
+  '  │  ◉ treaty                              ',
+  '  ├─ EPZ (Perception Zone) ──────────────',
+  '  │  ◉ compass   ◉ echo       ◉ reflex   ',
+  '  ├─ EMZ (Manufacturing Zone) ───────────',
+  '  │  ◉ forge     ◉ lingua     ◉ phantom  ',
+  '  │  ◉ harvest                             ',
+  '  ├─ Fields (Transformation Fabric) ─────',
+  '  │  ◉ evolution ◉ immunity   ◉ intent   ',
+  '  ├─ Overlay Plane ──────────────────────',
+  '  │  ◉ governance                          ',
+  '  ├─ DEFENSE Shell ──────────────────────',
+  '  │  ◉ defense                             ',
   '  └─────────────────────────────────────',
 ];
 
@@ -96,41 +114,52 @@ export function generateMobileBootScreen(): string[] {
   return [
     '',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓     CMPSBL® OS                  ▓',
-  `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
+    '  ▓     CMPSBL® OS                  ▓',
+    `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
-    '  ┌─ BOOTSTRAP ────────────────────┐',
+    '  ┌─ 37-NODE MATRIX ───────────────┐',
     '  │                                │',
-    '  │  ⬢ KERNEL                      │',
-    '  │    core  ripple  access        │',
+    '  │  ⬢ CORE Kernel                 │',
+    '  │    core                         │',
+    '  │  ◇ SYSTEM Layer                │',
+    '  │    system                       │',
     '  │                                │',
-    '  │  ◈ COGNITIVE                   │',
-    '  │    brain  decode  dream        │',
+    '  │  ◈ CCR (Cognitive Core)        │',
+    '  │    brain  memory  dream        │',
+    '  │  ◆ OCG (Compliance Grid)       │',
+    '  │    ripple access identity      │',
+    '  │    relay  audit                │',
     '  │                                │',
-    '  │  ◆ OPERATIONS                  │',
-    '  │    defense  nexus  vision      │',
+    '  │  ★ Execution (11 nodes)        │',
+    '  │    decode encode vision cortex │',
+    '  │    nexus economy sandbox       │',
+    '  │    inclusive medic nerve       │',
+    '  │    integration                 │',
     '  │                                │',
-    '  │  ◇ ADMIN                       │',
-    '  │    system  evolution            │',
-    '  │    inclusive                   │',
+    '  │  ◎ ESZ (Sovereignty)           │',
+    '  │    sovereign oracle            │',
+    '  │    conscience treaty           │',
+    '  │  ◎ EPZ (Perception)            │',
+    '  │    compass echo reflex         │',
+    '  │  ◎ EMZ (Manufacturing)         │',
+    '  │    forge lingua phantom        │',
+    '  │    harvest                     │',
     '  │                                │',
-    '  │  ★ ORCHESTRATOR                │',
-    '  │    cortex  integration  encode │',
-    '  │                                │',
-    '  │  ⬡ INFRASTRUCTURE             │',
-    '  │    memory  relay  audit        │',
-    '  │    identity  economy  sandbox  │',
+    '  │  ≋ Fields                      │',
+    '  │    evolution immunity intent   │',
+    '  │  ◉ Plane: governance           │',
+    '  │  ◉ Shell: defense              │',
     '  │                                │',
     '  └────────────────────────────────┘',
     '',
-  '  ◉ 10 entities + 5 meshes + 9 zones',
-  '  ◉ 360+ commands available',
-  '  ◉ 200+ synergies | 125 executors',
-  '  ◉ 400+ capabilities | 100 engines',
-  '  ◉ 7 infrastructure systems',
-  '  ◉ CLM: all modules reporting',
-  '  ◉ Health: 100%',
+    '  ◉ 37 nodes | 11 sectors',
+    '  ◉ 500+ commands available',
+    '  ◉ 300 synergies | 125 executors',
+    '  ◉ 675+ capabilities | 100 engines',
+    '  ◉ 7 infrastructure systems',
+    '  ◉ CLM: all modules reporting',
+    '  ◉ Health: 100%',
     '',
     '  Type \'help\' for commands',
     '',
