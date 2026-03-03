@@ -16,6 +16,7 @@ import { checkHooksContracts } from './checks/hooks-contracts';
 import { checkBrandingContracts } from './checks/branding-contracts';
 import { checkProviderBranding } from './checks/provider-branding';
 import { checkSupabaseContracts } from './checks/supabase-contracts';
+import { checkMemoryBounds } from './checks/memory-bounds';
 
 function uid(): string {
   return `audit_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`;
@@ -60,6 +61,7 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     ...runSyncCheck('hooks', checkHooksContracts),
     ...runSyncCheck('branding', checkBrandingContracts),
     ...runSyncCheck('provider-branding', checkProviderBranding),
+    ...runSyncCheck('memory-bounds', checkMemoryBounds),
   ];
 
   // Terminal check only if detected
