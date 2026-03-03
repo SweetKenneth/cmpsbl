@@ -242,36 +242,67 @@ export async function runMaintenanceCycle(): Promise<MaintenanceCycleResult> {
   state.cycleCount++;
   state.lastCycleAt = Date.now();
 
+  const allHealth = getAllEngineHealth();
   const degraded = getDegradedEngines();
   const proposalsGenerated: EngineerProposal[] = [];
   const findings: string[] = [];
 
+  // ── Survey all engines + meta-engines for degradation ──────────────
   for (const engine of degraded) {
+    const isMetaEngine = engine.engineId.startsWith('meta:');
+    const label = isMetaEngine ? `Meta-Engine ${engine.engineId.replace('meta:', '')}` : `Engine ${engine.engineId}`;
+    
     const proposal = createProposal(
       engine.health < 30 ? 'repair' : 'optimization',
       engine.health < 30 ? 'critical' : engine.health < 50 ? 'high' : 'medium',
       engine.engineId,
       engine.category,
-      `${engine.engineId} needs attention — health at ${engine.health}%`,
-      `The ${engine.engineId} engine in the ${engine.category} category is running at ${engine.health}% health. ${engine.issues.length > 0 ? 'Issues detected: ' + engine.issues.join(', ') + '.' : 'No specific issues logged but performance is below threshold.'} This engine needs maintenance to prevent downstream impact on dependent systems.`,
+      `${label} needs attention — health at ${engine.health}%`,
+      `The ${label} in the ${engine.category} category is running at ${engine.health}% health. ${engine.issues.length > 0 ? 'Issues detected: ' + engine.issues.join(', ') + '.' : 'No specific issues logged but performance is below threshold.'} This ${isMetaEngine ? 'meta-engine' : 'engine'} needs maintenance to prevent downstream impact.`,
       `Health score ${engine.health}/100 with trend: ${engine.degradationTrend}. ${engine.issues.length} active issues.`,
-      `Restoring this engine to full health would improve ${engine.category} category performance and reduce error rates for dependent meta-engines.`,
+      `Restoring to full health would improve ${engine.category} category performance and reduce error rates for ${isMetaEngine ? 'orchestrated engines' : 'dependent meta-engines'}.`,
       engine.health < 30 ? 'Critical — continued degradation may cause cascading failures' : 'Low — standard maintenance window',
       [`${engine.engineId} performance analysis`, `${engine.category} category best practices`],
     );
     proposalsGenerated.push(proposal);
-    findings.push(`${engine.engineId}: ${engine.health}% (${engine.degradationTrend})`);
+    findings.push(`${label}: ${engine.health}% (${engine.degradationTrend})`);
 
-    // Add study focus for degraded engines
     addStudyFocus(
-      `How to repair and optimize the ${engine.engineId} engine`,
+      `How to repair and optimize the ${label}`,
       engine.engineId,
       `Health at ${engine.health}%, trend: ${engine.degradationTrend}`,
       engine.health < 30 ? 100 : engine.health < 50 ? 75 : 50,
     );
   }
 
-  // Trigger maintenance engines via ENGINEER orchestration (async, non-blocking)
+  // ── Proactive upgrade proposals for healthy but improvable engines ──
+  const improvable = allHealth.filter(e => e.health >= 60 && e.health < 85);
+  for (const engine of improvable.slice(0, 5)) {
+    const isMetaEngine = engine.engineId.startsWith('meta:');
+    const label = isMetaEngine ? `Meta-Engine ${engine.engineId.replace('meta:', '')}` : `Engine ${engine.engineId}`;
+    
+    createProposal(
+      'upgrade',
+      'low',
+      engine.engineId,
+      engine.category,
+      `${label} upgrade opportunity — currently at ${engine.health}%`,
+      `The ${label} is functional but below optimal. An upgrade pass could increase throughput and reduce latency for dependent systems.`,
+      `Health ${engine.health}/100, trend: ${engine.degradationTrend}. Proactive upgrade recommended before degradation.`,
+      `Could improve ${engine.category} category average by 5-15%.`,
+      'Minimal — standard optimization pass',
+      [`${engine.engineId} optimization strategies`],
+    );
+    findings.push(`${label}: upgrade candidate (${engine.health}%)`);
+  }
+
+  // ── Fleet summary ───────────────────────────────────────────────────
+  const engineCount = allHealth.filter(e => !e.engineId.startsWith('meta:')).length;
+  const metaCount = allHealth.filter(e => e.engineId.startsWith('meta:')).length;
+  findings.push(`Fleet: ${engineCount} engines, ${metaCount} meta-engines surveyed`);
+  findings.push(`Avg health: ${allHealth.length > 0 ? Math.round(allHealth.reduce((s, h) => s + h.health, 0) / allHealth.length) : 100}%`);
+
+  // ── Trigger maintenance engines (async, non-blocking) ───────────────
   try {
     const { engineerTriggeredMaintenance } = await import('@/lib/engines/maintenance');
     engineerTriggeredMaintenance().then(result => {
@@ -288,11 +319,11 @@ export async function runMaintenanceCycle(): Promise<MaintenanceCycleResult> {
 
   return {
     cycleId: `maint_${state.cycleCount}_${Date.now()}`,
-    enginesSurveyed: state.engineHealth.size,
+    enginesSurveyed: allHealth.length,
     degradedFound: degraded.length,
     proposalsGenerated: proposalsGenerated.length,
     studyTopicsAdded: degraded.length,
-    topFindings: findings.slice(0, 10),
+    topFindings: findings.slice(0, 15),
   };
 }
 
