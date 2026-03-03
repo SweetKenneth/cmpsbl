@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate — Command Center
- * Rebuilt for the 38-node matrix, 675+ capabilities, and real operational utility.
+ * Mobile-first, rebuilt for 38-node matrix with 675+ capabilities.
  * Enterprise in light mode, Neon Dreams in dark.
  */
 
@@ -48,9 +48,9 @@ const CognitivesPanel = lazy(() => import('@/components/substrate-os/CognitivesP
 // ── Loading state ──
 function PanelLoader() {
   return (
-    <div className="flex items-center justify-center py-32">
-      <motion.div className="text-center space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <div className="relative w-10 h-10 mx-auto">
+    <div className="flex items-center justify-center py-20 sm:py-32">
+      <motion.div className="text-center space-y-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div className="relative w-9 h-9 sm:w-10 sm:h-10 mx-auto">
           <div className="absolute inset-0 rounded-xl bg-primary/5 border border-primary/10" />
           <Loader2 className="absolute inset-0 m-auto w-4 h-4 text-primary/60 animate-spin" />
         </div>
@@ -72,27 +72,18 @@ interface TabDef {
 
 function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
-    // Command — the daily drivers
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
     { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
-
-    // Intelligence — orchestration & routing
     { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine' },
     { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane' },
-
-    // Execution — engines, encode, mesh
     { id: 'engines', label: 'Engines', icon: Layers, group: 'Execution', description: 'Execute & manage' },
     { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
-
-    // Extend — cognitives, agency
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes' },
     ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center' }] : []),
-
-    // Govern — security + admin merged
     { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit' },
     { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true },
   ];
@@ -175,14 +166,14 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
                   >
                     <div className={cn(
                       "w-6 h-6 rounded-md flex items-center justify-center shrink-0 transition-colors",
-                      active ? "bg-primary/15" : "group-hover:bg-muted/50"
+                      active ? "bg-primary/15" : ""
                     )}>
                       <tab.icon className={cn("w-3.5 h-3.5", active ? "text-primary" : "")} />
                     </div>
                     {!collapsed && (
                       <>
                         <span className="flex-1 text-left truncate">{tab.label}</span>
-                        {active && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+                        {active && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                       </>
                     )}
                   </button>
@@ -219,12 +210,12 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
   );
 }
 
-// ── Panel Container ──
+// ── Panel Container — mobile-first padding ──
 function PanelContainer({ children, id }: { children: React.ReactNode; id: string }) {
   return (
     <motion.div
       key={id}
-      className="w-full max-w-7xl mx-auto px-3 sm:px-5 lg:px-8 py-4 sm:py-6 lg:py-8"
+      className="w-full max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-4 sm:py-6 lg:py-8"
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
@@ -271,18 +262,18 @@ export default function SubstrateOS() {
 
   if (authLoading || roleLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <motion.div className="text-center space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <div className="relative w-16 h-16 mx-auto">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div className="text-center space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 mx-auto">
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20" />
-            <Cpu className="absolute inset-0 m-auto w-7 h-7 text-primary" />
+            <Cpu className="absolute inset-0 m-auto w-6 h-6 sm:w-7 sm:h-7 text-primary" />
             <motion.div
               className="absolute inset-0 rounded-2xl border border-primary/25"
               animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
           </div>
-          <p className="text-sm font-semibold font-mono text-primary tracking-wide">CMPSBL Substrate</p>
+          <p className="text-xs sm:text-sm font-semibold font-mono text-primary tracking-wide">CMPSBL Substrate</p>
         </motion.div>
       </div>
     );
@@ -297,12 +288,12 @@ export default function SubstrateOS() {
         keywords={['CMPSBL Substrate', 'Clockless Cognitive Reality', 'persistent intelligence', 'cognitive orchestration']}
       />
 
-      {/* Ambient background — Enterprise clean in light, Neon Dreams in dark */}
+      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="dark:block hidden">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[hsl(185,100%,50%,0.03)] rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[hsl(280,100%,65%,0.03)] rounded-full blur-[130px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[hsl(210,100%,50%,0.02)] rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-[hsl(185,100%,50%,0.03)] rounded-full blur-[100px] sm:blur-[150px]" />
+          <div className="absolute bottom-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[hsl(280,100%,65%,0.03)] rounded-full blur-[80px] sm:blur-[130px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-[hsl(210,100%,50%,0.02)] rounded-full blur-[70px] sm:blur-[100px]" />
         </div>
       </div>
 
@@ -310,7 +301,7 @@ export default function SubstrateOS() {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block shrink-0">
           <DashboardSidebar
             tabs={tabs}
             activeTab={activeTab}
@@ -322,8 +313,11 @@ export default function SubstrateOS() {
         </div>
 
         {/* Mobile Bottom Nav */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/25 safe-area-pb">
-          <div className="grid grid-cols-5 px-0.5 py-1" style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}>
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/25">
+          <div
+            className="grid grid-cols-5 px-1 py-1"
+            style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
+          >
             {['overview', 'terminal', 'nexus', 'security'].map(id => {
               const tab = tabs.find(t => t.id === id)!;
               const active = activeTab === id;
@@ -332,22 +326,22 @@ export default function SubstrateOS() {
                   key={id}
                   onClick={() => setActiveTab(id)}
                   className={cn(
-                    "flex flex-col items-center justify-center gap-0.5 py-1.5 min-h-[44px] rounded-lg transition-all touch-manipulation",
+                    "relative flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg transition-all touch-manipulation",
                     active ? "text-primary" : "text-muted-foreground/45"
                   )}
                 >
-                  <tab.icon className={cn("w-[18px] h-[18px]", active && "scale-110")} />
-                  <span className="text-[9px] font-medium leading-none">{tab.label}</span>
-                  {active && <motion.div className="absolute top-0.5 w-5 h-[2px] rounded-full bg-primary" layoutId="mob-tab" />}
+                  <tab.icon className={cn("w-5 h-5", active && "scale-110")} />
+                  <span className="text-[10px] font-medium leading-none">{tab.label}</span>
+                  {active && <motion.div className="absolute top-0.5 w-6 h-[2px] rounded-full bg-primary" layoutId="mob-tab" />}
                 </button>
               );
             })}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex flex-col items-center justify-center gap-0.5 py-1.5 min-h-[44px] rounded-lg text-muted-foreground/45 touch-manipulation"
+              className="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg text-muted-foreground/45 touch-manipulation"
             >
-              <Menu className="w-[18px] h-[18px]" />
-              <span className="text-[9px] font-medium leading-none">More</span>
+              <Menu className="w-5 h-5" />
+              <span className="text-[10px] font-medium leading-none">More</span>
             </button>
           </div>
         </div>
@@ -355,9 +349,9 @@ export default function SubstrateOS() {
         {/* Mobile Sheet */}
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="p-0 w-[280px] bg-background">
-            <div className="flex items-center justify-between px-3 py-3 border-b border-border/20">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border/20">
               <h3 className="font-semibold text-sm">Navigation</h3>
-              <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => setSidebarOpen(false)}>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setSidebarOpen(false)}>
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -373,8 +367,8 @@ export default function SubstrateOS() {
           </SheetContent>
         </Sheet>
 
-        {/* Content */}
-        <div className="flex-1 overflow-auto pb-20 lg:pb-0">
+        {/* Content — extra bottom padding on mobile for bottom nav */}
+        <div className="flex-1 overflow-auto pb-24 lg:pb-0">
           <AnimatePresence mode="wait">
             {activeTab === 'overview' && (
               <PanelContainer id="overview">
@@ -392,7 +386,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'terminal' && (
-              <motion.div key="terminal" className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <Suspense fallback={<PanelLoader />}>
                   <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
                 </Suspense>

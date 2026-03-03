@@ -1,6 +1,6 @@
 /**
- * Overview Panel — The new command center dashboard.
- * Replaces the old 40-button dump with purposeful, actionable widgets.
+ * Overview Panel — Mobile-first command center dashboard.
+ * Purposeful, actionable widgets with polished spacing.
  */
 
 import { useState, useMemo, lazy, Suspense } from 'react';
@@ -93,18 +93,18 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* ── Hero Strip ── */}
       <motion.div
-        className="rounded-2xl border border-border/25 dark:border-border/15 overflow-hidden bg-card/80 dark:bg-card/40 backdrop-blur-xl"
+        className="rounded-xl sm:rounded-2xl border border-border/25 dark:border-border/15 overflow-hidden bg-card/80 dark:bg-card/40 backdrop-blur-xl"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="p-5 sm:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-          {/* Health Ring — compact */}
+        <div className="p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
+          {/* Health Ring */}
           <div className="relative shrink-0">
-            <svg className="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+            <svg className="w-24 h-24 sm:w-28 sm:h-28 -rotate-90" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="42" fill="none" strokeWidth="4" className="stroke-border/15" />
               <motion.circle
                 cx="50" cy="50" r="42" fill="none" strokeWidth="6" strokeLinecap="round"
@@ -116,13 +116,13 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={cn("text-3xl font-black font-mono", statusColor)}>{healthScore.healthScore}</span>
+              <span className={cn("text-2xl sm:text-3xl font-black font-mono", statusColor)}>{healthScore.healthScore}</span>
               <span className="text-[8px] text-muted-foreground/50 font-mono uppercase tracking-[0.3em]">health</span>
             </div>
           </div>
 
           {/* KPI cards */}
-          <div className="flex-1 w-full grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="flex-1 w-full grid grid-cols-2 gap-2.5 sm:gap-3">
             {[
               { label: 'Status', value: statusLabel, sub: `v${version}`, color: statusColor },
               { label: 'Matrix Nodes', value: `${healthScore.activeCount}/${healthScore.totalModules}`, sub: `${integrity.operational}% integrity`, color: 'text-primary' },
@@ -131,14 +131,14 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}
-                className="rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10"
+                className="rounded-lg sm:rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.08 }}
               >
-                <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-[0.15em] block mb-1">{kpi.label}</span>
-                <span className={cn("text-lg sm:text-xl font-bold font-mono block", kpi.color)}>{kpi.value}</span>
-                <span className="text-[10px] text-muted-foreground/40">{kpi.sub}</span>
+                <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-[0.15em] block mb-0.5">{kpi.label}</span>
+                <span className={cn("text-base sm:text-lg lg:text-xl font-bold font-mono block leading-tight", kpi.color)}>{kpi.value}</span>
+                <span className="text-[10px] text-muted-foreground/40 leading-tight">{kpi.sub}</span>
               </motion.div>
             ))}
           </div>
@@ -146,11 +146,11 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
       </motion.div>
 
       {/* ── Quick Actions + Topology ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         {/* Quick Actions */}
-        <div className="xl:col-span-1 space-y-3">
-          <h3 className="text-xs font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Quick Actions</h3>
-          <div className="grid grid-cols-2 xl:grid-cols-1 gap-2">
+        <div className="lg:col-span-1 space-y-3">
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Quick Actions</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
             {[
               { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-emerald-500' },
               { id: 'backup', label: 'Backup', icon: Server, onClick: handleBackup, pending: backupMutation.isPending, color: 'text-cyan-500' },
@@ -160,23 +160,23 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               <Button
                 key={action.id}
                 variant="outline"
-                className="justify-start h-auto py-3 px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 w-full"
+                className="justify-start h-auto py-3 px-3 sm:px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 w-full text-left"
                 onClick={action.onClick}
                 disabled={action.pending || !isOperator}
               >
                 {action.pending ? (
-                  <Loader2 className="w-4 h-4 mr-3 animate-spin text-muted-foreground" />
+                  <Loader2 className="w-4 h-4 mr-2.5 sm:mr-3 animate-spin text-muted-foreground shrink-0" />
                 ) : (
-                  <action.icon className={cn("w-4 h-4 mr-3", action.color)} />
+                  <action.icon className={cn("w-4 h-4 mr-2.5 sm:mr-3 shrink-0", action.color)} />
                 )}
-                <span className="text-sm font-medium">{action.label}</span>
+                <span className="text-xs sm:text-sm font-medium truncate">{action.label}</span>
               </Button>
             ))}
           </div>
 
           {/* Navigation shortcuts */}
-          <h3 className="text-xs font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 pt-2">Navigate</h3>
-          <div className="grid grid-cols-2 xl:grid-cols-1 gap-1.5">
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 pt-1">Navigate</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
             {[
               { label: 'INTENT Mesh', tab: 'intent', icon: Brain },
               { label: 'NEXUS Fleet', tab: 'nexus', icon: Zap },
@@ -186,36 +186,36 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               <button
                 key={link.tab}
                 onClick={() => onNavigate(link.tab)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all text-left"
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-all text-left min-h-[40px]"
               >
-                <link.icon className="w-3.5 h-3.5" />
-                <span>{link.label}</span>
-                <ArrowUpRight className="w-3 h-3 ml-auto opacity-40" />
+                <link.icon className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">{link.label}</span>
+                <ArrowUpRight className="w-3 h-3 ml-auto opacity-40 shrink-0" />
               </button>
             ))}
           </div>
         </div>
 
         {/* Sector Topology */}
-        <div className="xl:col-span-2">
+        <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-3 px-1">
-            <h3 className="text-xs font-semibold text-muted-foreground/60 uppercase tracking-[0.15em]">Sector Topology</h3>
-            <Button variant="ghost" size="sm" className="h-6 px-2 text-[10px]" onClick={() => healthScore.refetch()} disabled={healthScore.isLoading}>
+            <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em]">Sector Topology</h3>
+            <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={() => healthScore.refetch()} disabled={healthScore.isLoading}>
               <RefreshCw className={cn("w-3 h-3 mr-1", healthScore.isLoading && "animate-spin")} />
               Refresh
             </Button>
           </div>
           <TooltipProvider delayDuration={50}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2">
               {SECTORS.map(sector => (
                 <motion.div
                   key={sector.id}
-                  className="rounded-xl border border-border/15 dark:border-border/10 p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 transition-colors"
+                  className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-2.5 sm:p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 transition-colors"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
                     <span className={cn("text-[10px] font-bold font-mono tracking-wider", sector.color)}>{sector.id}</span>
                     <span className="text-[9px] text-muted-foreground/40 ml-auto">{sector.nodes.length}</span>
                   </div>
@@ -227,7 +227,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
                         <Tooltip key={node}>
                           <TooltipTrigger asChild>
                             <div className={cn(
-                              "px-1.5 py-0.5 rounded text-[9px] font-mono font-medium transition-all cursor-default",
+                              "px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono font-medium transition-all cursor-default",
                               isActive
                                 ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20"
                                 : "bg-muted/20 text-muted-foreground/30 border border-border/10"
@@ -250,13 +250,13 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
       </div>
 
       {/* ── Live Event Stream + System Health ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
         <div>
-          <h3 className="text-xs font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">Live Events</h3>
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">Live Events</h3>
           <EventStream />
         </div>
         <div>
-          <h3 className="text-xs font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">System Health</h3>
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">System Health</h3>
           <Suspense fallback={<div className="h-48 rounded-xl border border-border/15 animate-pulse bg-muted/10" />}>
             <SystemHealthPanel enabled={isOperator} />
           </Suspense>

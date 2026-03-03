@@ -1,6 +1,6 @@
 /**
- * Governor Panel — Admin controls + admin surfaces merged into the dashboard.
- * Kill switches, telemetry, GATE engine, Intel, Quarry, Governance — all in one.
+ * Governor Panel — Admin controls merged into the dashboard.
+ * Mobile-first with proper touch targets, scrollable tabs, and overflow handling.
  */
 
 import { useState, useEffect, lazy, Suspense } from 'react';
@@ -30,7 +30,7 @@ const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard')
 
 function Loader() {
   return (
-    <div className="flex items-center justify-center py-24">
+    <div className="flex items-center justify-center py-20 sm:py-24">
       <Loader2 className="w-5 h-5 text-muted-foreground/40 animate-spin" />
     </div>
   );
@@ -108,7 +108,6 @@ export default function GovernorPanel() {
     fetch();
   }, []);
 
-  // Audit feed formatting
   const getOutcomeColor = (outcome: string) => {
     if (outcome === 'success' || outcome === 'completed') return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20';
     if (outcome === 'error' || outcome === 'failed') return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20';
@@ -116,21 +115,21 @@ export default function GovernorPanel() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500/15 to-amber-500/10 border border-red-500/25 flex items-center justify-center">
-          <ShieldAlert className="w-5 h-5 text-red-600 dark:text-red-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-red-500/15 to-amber-500/10 border border-red-500/25 flex items-center justify-center shrink-0">
+          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
         </div>
-        <div>
-          <h2 className="text-lg font-bold tracking-tight">Governor</h2>
-          <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">ADMIN CONTROLS · KILL SWITCHES · TELEMETRY · GOVERNANCE</p>
+        <div className="min-w-0 flex-1">
+          <h2 className="text-base sm:text-lg font-bold tracking-tight">Governor</h2>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">ADMIN CONTROLS · KILL SWITCHES · TELEMETRY</p>
         </div>
-        <Badge className="ml-auto text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20">ADMIN</Badge>
+        <Badge className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 shrink-0">ADMIN</Badge>
       </div>
 
       {/* Telemetry Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {[
           { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, color: 'text-blue-500' },
           { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, color: 'text-cyan-500' },
@@ -138,45 +137,47 @@ export default function GovernorPanel() {
           { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'text-red-500' : 'text-emerald-500' },
         ].map(stat => (
           <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <stat.icon className={cn("w-4 h-4", stat.color)} />
-                <span className="text-[10px] text-muted-foreground/50 font-mono uppercase">{stat.label}</span>
+            <CardContent className="p-3">
+              <div className="flex items-center gap-1.5 mb-1">
+                <stat.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", stat.color)} />
+                <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-mono uppercase truncate">{stat.label}</span>
               </div>
-              {telLoading ? <Skeleton className="h-6 w-16" /> : <span className="text-xl font-bold font-mono">{stat.value}</span>}
+              {telLoading ? <Skeleton className="h-5 sm:h-6 w-12 sm:w-16" /> : <span className="text-lg sm:text-xl font-bold font-mono">{stat.value}</span>}
             </CardContent>
           </Card>
         ))}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-muted/15 border border-border/15 gap-0.5 flex-wrap">
-          <TabsTrigger value="controls" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1.5">
-            <Power className="w-3.5 h-3.5" /> Kill Switches
-          </TabsTrigger>
-          <TabsTrigger value="audit-feed" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1.5">
-            <Activity className="w-3.5 h-3.5" /> Live Audit
-          </TabsTrigger>
-          <TabsTrigger value="admin" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1.5">
-            <Settings className="w-3.5 h-3.5" /> Admin Surfaces
-          </TabsTrigger>
-          <TabsTrigger value="advisory" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1.5">
-            <Brain className="w-3.5 h-3.5" /> Signal Feed
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
+            <TabsTrigger value="controls" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Power className="w-3.5 h-3.5 hidden sm:block" /> Switches
+            </TabsTrigger>
+            <TabsTrigger value="audit-feed" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Activity className="w-3.5 h-3.5 hidden sm:block" /> Audit
+            </TabsTrigger>
+            <TabsTrigger value="admin" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Settings className="w-3.5 h-3.5 hidden sm:block" /> Surfaces
+            </TabsTrigger>
+            <TabsTrigger value="advisory" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Brain className="w-3.5 h-3.5 hidden sm:block" /> Signal
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Kill Switches */}
         <TabsContent value="controls" className="mt-4">
           <Card className="border-amber-500/15 dark:border-amber-500/10 bg-card/50 dark:bg-card/20">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Power className="w-4 h-4 text-amber-500" />
+                <Power className="w-4 h-4 text-amber-500 shrink-0" />
                 System Kill Switches
               </CardTitle>
-              <CardDescription className="text-xs">Global toggles for critical subsystems</CardDescription>
+              <CardDescription className="text-[11px] sm:text-xs">Global toggles for critical subsystems</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid sm:grid-cols-2 gap-3">
+            <CardContent className="px-4 sm:px-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 {[
                   { key: 'mesh', label: 'Intent Mesh', desc: 'Cross-module routing', icon: Network, color: 'text-amber-500', checked: meshToggle.enabled, toggle: () => { meshToggle.toggle(); toast.success(meshToggle.enabled ? 'Mesh disabled' : 'Mesh enabled'); } },
                   { key: 'defense_enabled', label: 'DEFENSE', desc: 'Threat detection', icon: Shield, color: 'text-red-500', checked: killSwitches.defense_enabled, toggle: () => toggleKs('defense_enabled') },
@@ -184,15 +185,15 @@ export default function GovernorPanel() {
                   { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
                   { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-emerald-500', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
                 ].map(sw => (
-                  <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15">
-                    <div className="flex items-center gap-2">
-                      <sw.icon className={cn("w-4 h-4", sw.color)} />
-                      <div>
-                        <p className="text-sm font-medium">{sw.label}</p>
-                        <p className="text-[10px] text-muted-foreground/50">{sw.desc}</p>
+                  <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px]">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      <sw.icon className={cn("w-4 h-4 shrink-0", sw.color)} />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{sw.label}</p>
+                        <p className="text-[10px] text-muted-foreground/50 truncate">{sw.desc}</p>
                       </div>
                     </div>
-                    <Switch checked={sw.checked} onCheckedChange={sw.toggle} disabled={ksLoading} />
+                    <Switch checked={sw.checked} onCheckedChange={sw.toggle} disabled={ksLoading} className="ml-2 shrink-0" />
                   </div>
                 ))}
               </div>
@@ -203,35 +204,35 @@ export default function GovernorPanel() {
         {/* Live Audit Feed */}
         <TabsContent value="audit-feed" className="mt-4">
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Activity className="w-4 h-4 text-primary" />
+                <Activity className="w-4 h-4 text-primary shrink-0" />
                 Live Audit Feed
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[400px]">
+            <CardContent className="px-4 sm:px-6">
+              <ScrollArea className="h-[350px] sm:h-[400px]">
                 <div className="space-y-2">
                   {(liveAuditFeed.data || []).map((entry: any, i: number) => (
-                    <div key={entry.id || i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
-                      <div className="text-[10px] text-muted-foreground/40 font-mono shrink-0 w-14">
+                    <div key={entry.id || i} className="flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                      <div className="text-[9px] sm:text-[10px] text-muted-foreground/40 font-mono shrink-0 w-12 sm:w-14 pt-0.5">
                         {entry.created_at ? formatDistanceToNow(new Date(entry.created_at), { addSuffix: false }) : '—'}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium">{entry.action}</span>
+                        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                          <span className="text-[11px] sm:text-xs font-medium truncate">{entry.action}</span>
                           {entry.details?.outcome && (
-                            <Badge variant="outline" className={cn("text-[8px] h-4 px-1", getOutcomeColor(entry.details.outcome))}>{entry.details.outcome}</Badge>
+                            <Badge variant="outline" className={cn("text-[8px] h-4 px-1 shrink-0", getOutcomeColor(entry.details.outcome))}>{entry.details.outcome}</Badge>
                           )}
                         </div>
                         {entry.entity_type && (
-                          <span className="text-[10px] text-muted-foreground/40 font-mono">{entry.entity_type}</span>
+                          <span className="text-[9px] sm:text-[10px] text-muted-foreground/40 font-mono truncate block">{entry.entity_type}</span>
                         )}
                       </div>
                     </div>
                   ))}
                   {(!liveAuditFeed.data || liveAuditFeed.data.length === 0) && (
-                    <p className="text-sm text-muted-foreground/40 text-center py-8">No audit events</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground/40 text-center py-8">No audit events</p>
                   )}
                 </div>
               </ScrollArea>
@@ -239,9 +240,9 @@ export default function GovernorPanel() {
           </Card>
         </TabsContent>
 
-        {/* Admin Surfaces — quick access to admin pages */}
+        {/* Admin Surfaces */}
         <TabsContent value="admin" className="mt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             {[
               { label: 'INTEL Panel', desc: 'Aggregation & founder insights', path: '/admin/intel', icon: Eye, color: 'text-primary' },
               { label: 'GATE Engine', desc: 'Production validation gauntlet', path: '/admin/gate', icon: Shield, color: 'text-amber-500' },
@@ -255,24 +256,24 @@ export default function GovernorPanel() {
               <motion.div key={surface.path} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
                 <Button
                   variant="outline"
-                  className="justify-between h-auto p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20"
+                  className="justify-between h-auto p-3 sm:p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20 min-h-[56px]"
                   onClick={() => navigate(surface.path)}
                 >
-                  <div className="flex items-center gap-3 text-left">
-                    <surface.icon className={cn("w-5 h-5 shrink-0", surface.color)} />
-                    <div>
-                      <p className="text-sm font-medium">{surface.label}</p>
-                      <p className="text-[10px] text-muted-foreground/50">{surface.desc}</p>
+                  <div className="flex items-center gap-2.5 sm:gap-3 text-left min-w-0 flex-1">
+                    <surface.icon className={cn("w-4 h-4 sm:w-5 sm:h-5 shrink-0", surface.color)} />
+                    <div className="min-w-0">
+                      <p className="text-xs sm:text-sm font-medium truncate">{surface.label}</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground/50 truncate">{surface.desc}</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground/30 shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground/30 shrink-0 ml-2" />
                 </Button>
               </motion.div>
             ))}
           </div>
         </TabsContent>
 
-        {/* Signal Feed / Advisory */}
+        {/* Signal Feed */}
         <TabsContent value="advisory" className="mt-4">
           <Suspense fallback={<Loader />}>
             <SoundingBoard />
