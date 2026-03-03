@@ -11,6 +11,7 @@
  */
 
 import { guardrailLog } from './logger';
+import { isSpikeActive } from './spike-detector';
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -182,6 +183,22 @@ export function requestThresholdAdjustment(
 
   const now = Date.now();
   const previousValue = state.currentValue;
+
+  // ── Guard 0: Spike freeze ────────────────────────────────────
+  if (isSpikeActive()) {
+    guardrailLog('threshold_clamped', {
+      previous_value: previousValue,
+      proposed_value: proposedValue,
+      final_value: previousValue,
+      reason: 'Traffic spike active — all threshold adjustments frozen',
+      metadata: { key },
+    });
+    return {
+      accepted: false,
+      finalValue: previousValue,
+      reason: 'Traffic spike active — adjustments frozen',
+    };
+  }
 
   // ── Guard 1: Cooldown ─────────────────────────────────────────
   if (state.lastAdjustedAt > 0 && now - state.lastAdjustedAt < config.cooldownMs) {
