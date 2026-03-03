@@ -8,6 +8,8 @@ The CMPSBL substrate operates in an adversarial environment where threats origin
 - **Malicious API consumers**: Abuse of legitimate access for data exfiltration or cost inflation.
 - **Compromised providers**: AI provider outages or manipulated responses.
 - **Internal drift**: Configuration errors, unvalidated promotions, governance gaps.
+- **Agent runtime escape**: Cognitive agents attempting to breach sealed isolation.
+- **Evolution poisoning**: Malicious proposals designed to weaken system integrity.
 
 The security model assumes **zero trust** at every boundary. No component is implicitly trusted; every action is verified.
 
@@ -26,14 +28,18 @@ graph LR
     end
 
     subgraph Trusted
-        OCG_Z[OCG Grid]
-        CCR_Z[CCR Cognitive]
-        CORE_Z[CORE Kernel]
+        OCG_Z[OCG Grid — ACCESS, IDENTITY, AUDIT, NERVE, RELAY, RIPPLE]
+        CCR_Z[CCR Cognitive — BRAIN, MEMORY, DREAM]
+        CORE_Z[CORE Kernel + SYSTEM]
+    end
+
+    subgraph Covert
+        CSZ_Z[CSZ — EVOLUTION, SHADOW, PHANTOM]
     end
 
     subgraph Restricted
-        GOVERNANCE_Z[GOVERNANCE]
-        AUDIT_Z[AUDIT]
+        GOVERNANCE_Z[GOVERNANCE Plane]
+        INTEL_Z[INTEL Aggregation]
         SECRETS[Secrets Vault]
     end
 
@@ -43,7 +49,8 @@ graph LR
     OCG_Z --> CCR_Z
     CCR_Z --> CORE_Z
     GOVERNANCE_Z -.- OCG_Z
-    AUDIT_Z -.- OCG_Z
+    INTEL_Z -.- OCG_Z
+    CSZ_Z -.- CORE_Z
     EXTAPI --> INTEGRATION
 ```
 
@@ -60,6 +67,7 @@ graph LR
 | API Key | Developer/programmatic access | Until revoked |
 | Session Token | Browser/interactive access | 1 hour (refresh available) |
 | Admin Credential | Operator access | 30 minutes (no refresh) |
+| Agent JWT | Agent Connect (Evolution CC) | Per-session, scoped to agent |
 
 ## 4. Authorization Model (RBAC Matrix)
 
@@ -73,6 +81,8 @@ graph LR
 
 **Crown Jewel Capabilities**: 54 capabilities are classified as Crown Jewels — excluded from all external tiers, not visible in API catalogs, admin-only.
 
+**Agent Permissions**: Agents operate within sealed runtimes with 3–5 Crown Jewel powers. Agent access is scoped to their designated powers; no lateral movement.
+
 ## 5. Tenant Isolation Strategy
 
 - **Database**: Row-Level Security (RLS) enforces per-user data isolation at the PostgreSQL level.
@@ -80,6 +90,8 @@ graph LR
 - **Storage**: File paths are namespaced by tenant ID.
 - **Secrets**: AES-GCM encrypted vault with per-module scoping.
 - **Audit**: Tenant-scoped audit trails; no cross-tenant log visibility.
+- **Agents**: Memory-isolated per agency; no cross-agency state sharing.
+- **DREAM Pool**: Consent-gated sharing with configurable privacy levels.
 
 ## 6. Data Encryption Model
 
@@ -89,6 +101,7 @@ graph LR
 | In Transit | TLS 1.3 | Certificate rotation via provider |
 | Secrets Vault | AES-GCM | Per-module scoping, operator-managed |
 | Backup | Encrypted snapshots | Same key hierarchy |
+| Agent State | Encrypted per-agent namespace | Sealed runtime keys |
 
 ## 7. Secrets Management
 
@@ -98,7 +111,9 @@ graph LR
 - Secret access is logged in AUDIT.
 - No secrets are stored in code, environment variables (except infrastructure-level), or client-side storage.
 
-## 8. Rate Limiting Policy
+## 8. Rate Limiting Policy (Ironclad Fabric)
+
+The Ironclad v2.0.0 hardening fabric enforces multi-layer rate limiting:
 
 | Tier | Requests/Minute | Requests/Day | Burst Allowance |
 |------|-----------------|-------------|----------------|
@@ -107,18 +122,30 @@ graph LR
 | Enterprise | 300 | 50,000 | 5x for 60s |
 | Admin | 600 | Unlimited | No limit |
 
-Rate limits are enforced at the NEXUS gateway level. Exceeded limits return HTTP 429 with retry-after header.
+### Module-Specific Rate Limits
+
+| Module | Limit | Justification |
+|--------|-------|---------------|
+| REFLEX | 500/s | High-frequency edge computing |
+| NEXUS | 200/s | Provider routing gateway |
+| DECODE | 100/s | Conversational throughput |
+| EVOLUTION | 5/s | Controlled mutation rate |
+| GOVERNANCE | 10/s | Policy evaluation |
+
+Rate limits are enforced at both the NEXUS gateway level and per-module via Ironclad bulkhead isolation. Exceeded limits return HTTP 429 with retry-after header.
 
 ## 9. Attack Surface Analysis
 
 | Surface | Exposure | Controls |
 |---------|----------|----------|
-| NEXUS API Gateway | Public | DEFENSE screening, rate limiting, auth required |
+| NEXUS API Gateway | Public | DEFENSE screening, Ironclad rate limiting, auth required |
 | Database | Internal only | RLS, encrypted connections, no direct access |
 | Edge Functions | Public (via NEXUS) | Input validation, execution timeout, memory limits |
-| AI Providers | Outbound only | Request sanitization, response validation |
-| Admin Interface | Authenticated | MFA, session limits, IP allowlisting |
+| AI Providers | Outbound only | Request sanitization, response validation, consensus routing |
+| Admin Interface (ATLAS) | Authenticated | MFA, session limits, IP allowlisting |
 | Webhook Endpoints | Public | Signature verification, replay protection |
+| Agent Runtimes | Isolated | Sealed execution, source-blocked, memory-isolated |
+| Evolution Pipeline | Internal | SEBA 7-gate validation, TSAC verification |
 
 ## 10. Logging & Forensics
 
@@ -127,58 +154,77 @@ Rate limits are enforced at the NEXUS gateway level. Exceeded limits return HTTP
 - Log retention: 90 days for operational, indefinite for security incidents.
 - Forensic queries support time-range, actor, action, and resource filtering.
 - DEFENSE threat events include full request fingerprint for pattern analysis.
+- INTEL aggregation pipeline enriches security signals into IntelCards for governor review.
 
 ## 11. Incident Response Workflow
 
 ```
 1. Detection
    → DEFENSE identifies threat / anomaly detected by telemetry
+   → Scanner Orchestrator flags regression or coverage gap
 
 2. Containment
-   → Immediate blocking of source
+   → Immediate blocking of source (Ironclad rate limit + IP block)
    → Circuit breaker activation if module compromised
+   → Bulkhead isolation prevents lateral spread
 
 3. Assessment
    → Incident record created in AUDIT
    → Severity classification (Critical / High / Medium / Low)
+   → INTEL generates IntelCard for governor dashboard
 
 4. Response
    → Pattern stored in BRAIN for future recognition
-   → Alert sent to SYSTEM
+   → Alert sent to SYSTEM and ATLAS Node Inbox
    → Related requests reviewed for lateral movement
 
 5. Recovery
    → Credential rotation if needed
    → State verification via integrity seals
+   → Ironclad auto-restore loop (30s cycle) monitors recovery
    → Monitoring escalation for 24 hours
 
 6. Post-Incident
    → Root cause analysis documented
    → IMMUNITY adapts defenses
    → EVOLUTION hardens affected paths
+   → Scanner Orchestrator regression test added
 ```
 
-## 12. Security Assumptions
+## 12. Covert Systems Zone (CSZ) Security
+
+The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
+
+- **Isolation**: Zone-shielded from production; independent circuit breakers.
+- **SHADOW**: All shadow runs write to isolated storage only; no production mutation.
+- **PHANTOM**: Decoy operations for threat detection; isolated from real data.
+- **EVOLUTION**: 7-gate SEBA pipeline prevents unvalidated changes from reaching production.
+- **TSAC**: Truth Shadow Arbitration Check ensures evolution candidates preserve system truth.
+
+## 13. Security Assumptions
 
 - The underlying infrastructure provider (database, edge runtime) is trusted.
 - TLS termination is handled correctly by the infrastructure layer.
 - Operator credentials are stored securely outside the substrate.
 - AI provider responses may be adversarial and must be validated.
 - Clock synchronization across nodes is within acceptable bounds.
+- Sealed agent runtimes are correctly isolated by the runtime environment.
 
-## 13. Residual Risk Statement
+## 14. Residual Risk Statement
 
 | Risk | Status | Justification |
 |------|--------|--------------|
-| AI provider response manipulation | Accepted | Mitigated by response validation; full elimination not possible |
+| AI provider response manipulation | Accepted | Mitigated by response validation and consensus routing; full elimination not possible |
 | Infrastructure-level compromise | Accepted | Outside substrate boundary; mitigated by encryption at rest |
 | Zero-day in runtime environment | Accepted | Mitigated by regular patching; detection via DEFENSE behavioral analysis |
 | Social engineering of operator | Accepted | Mitigated by MFA and audit trail; human factor not fully eliminable |
+| Agent sealed runtime escape | Accepted | Mitigated by memory isolation + source blocking; theoretically possible in runtime bugs |
 
-## 14. Revision History
+## 15. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-03 | System | Added Ironclad fabric, CSZ security, agent isolation, INTEL/Scanner integration, consensus routing |
 | 2026-03-03 | System | Verified against 38-node topology and zone-shielded architecture |
 | 2026-03-01 | System | Initial canonical security architecture |
 
