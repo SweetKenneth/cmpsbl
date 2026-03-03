@@ -51,6 +51,7 @@ const SECTOR_DEPENDENCIES: Record<MatrixSector, MatrixSector[]> = {
   esz: ['core', 'execution'],
   epz: ['core', 'execution'],
   emz: ['core', 'execution'],
+  csz: ['core', 'execution'],
   field: ['execution', 'ccr'],
   plane: ['core'],
   shell: ['core'],

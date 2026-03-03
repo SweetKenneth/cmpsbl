@@ -35,6 +35,7 @@ const SECTOR_COLORS: Record<MatrixSector, string> = {
   esz: 'border-amber-500/30',
   epz: 'border-teal-500/30',
   emz: 'border-indigo-500/30',
+  csz: 'border-violet-500/30',
   field: 'border-emerald-500/30',
   plane: 'border-red-500/30',
   shell: 'border-rose-500/30',

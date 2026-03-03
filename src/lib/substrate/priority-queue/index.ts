@@ -40,6 +40,7 @@ const SECTOR_BOOST: Record<MatrixSector, number> = {
   esz: -2,
   epz: -3,
   emz: -3,
+  csz: -4,
   field: -5,
   plane: -5,
   shell: -5,
