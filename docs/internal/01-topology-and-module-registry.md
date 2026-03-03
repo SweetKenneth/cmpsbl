@@ -6,7 +6,7 @@
 
 ## 1. Purpose
 
-This document defines the complete 26-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
+This document defines the complete 37-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
 
 ## 2. System Topology
 
