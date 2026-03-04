@@ -93,13 +93,12 @@ export function SubstratePackageManager() {
       return data;
     },
     onSuccess: (data) => {
-      // Check if we have a download URL
       if (data?.download_url) {
-        // Trigger proper download
+        // Trigger proper download from URL
         const link = document.createElement('a');
         link.href = data.download_url;
         link.download = `substrate-${data.package_id || 'package'}.json`;
-        link.target = '_blank'; // Open in new tab if download fails
+        link.target = '_blank';
         document.body.appendChild(link);
         link.click();
         setTimeout(() => document.body.removeChild(link), 100);
@@ -107,10 +106,24 @@ export function SubstratePackageManager() {
         toast.success('Package download started', {
           description: `${data.size_mb || 0} MB — ${(data.total_records || 0).toLocaleString()} records`,
         });
+      } else if (data?.package_data || data?.data) {
+        // Inline data — create blob download
+        const content = JSON.stringify(data.package_data || data.data || data, null, 2);
+        const blob = new Blob([content], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `substrate-${data.package_id || 'backup'}-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 100);
+        
+        toast.success('Package downloaded', {
+          description: `${(content.length / 1024).toFixed(1)} KB — ${(data.total_records || 0).toLocaleString()} records`,
+        });
       } else {
-        // Fallback: create blob download from inline package data if returned
         toast.info('Package created', {
-          description: 'Check your downloads folder for the package file.',
+          description: 'No download data returned from the server.',
         });
       }
     },
