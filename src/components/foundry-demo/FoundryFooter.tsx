@@ -28,7 +28,7 @@ export function FoundryFooter() {
           <span className="text-primary">Under 9 hours.</span>
         </h2>
         <p className="text-muted-foreground/60 max-w-lg mx-auto mb-12">
-          Every module you add changes the topology. Every discovery compounds the next.
+          Every system you add changes the topology. Every discovery compounds the next.
           The foundry doesn't stop — it accelerates.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

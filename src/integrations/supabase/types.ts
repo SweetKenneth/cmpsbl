@@ -7436,6 +7436,231 @@ export type Database = {
           },
         ]
       }
+      foundry_bias_audit: {
+        Row: {
+          action: string
+          admin_id: string
+          created_at: string
+          id: string
+          new_state: Json | null
+          previous_state: Json | null
+        }
+        Insert: {
+          action: string
+          admin_id: string
+          created_at?: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string
+          created_at?: string
+          id?: string
+          new_state?: Json | null
+          previous_state?: Json | null
+        }
+        Relationships: []
+      }
+      foundry_bias_config: {
+        Row: {
+          bias_enabled: boolean
+          bias_weight: number
+          id: string
+          splash_active: boolean
+          splash_end: string | null
+          splash_start: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          bias_enabled?: boolean
+          bias_weight?: number
+          id?: string
+          splash_active?: boolean
+          splash_end?: string | null
+          splash_start?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          bias_enabled?: boolean
+          bias_weight?: number
+          id?: string
+          splash_active?: boolean
+          splash_end?: string | null
+          splash_start?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      foundry_inventory: {
+        Row: {
+          artifact_description: string | null
+          artifact_id: string
+          artifact_name: string
+          category: string | null
+          id: string
+          metadata: Json | null
+          obtained_at: string
+          public_tier: string
+          score: number
+          source: string
+          system_chain: string[] | null
+          user_id: string
+          valuation_display: number
+        }
+        Insert: {
+          artifact_description?: string | null
+          artifact_id: string
+          artifact_name: string
+          category?: string | null
+          id?: string
+          metadata?: Json | null
+          obtained_at?: string
+          public_tier: string
+          score: number
+          source?: string
+          system_chain?: string[] | null
+          user_id: string
+          valuation_display?: number
+        }
+        Update: {
+          artifact_description?: string | null
+          artifact_id?: string
+          artifact_name?: string
+          category?: string | null
+          id?: string
+          metadata?: Json | null
+          obtained_at?: string
+          public_tier?: string
+          score?: number
+          source?: string
+          system_chain?: string[] | null
+          user_id?: string
+          valuation_display?: number
+        }
+        Relationships: []
+      }
+      foundry_mine_events: {
+        Row: {
+          best_score: number | null
+          blocked_reason: string | null
+          duration_ms: number | null
+          id: string
+          rate_limit_bucket: string | null
+          requested_at: string
+          result_count: number
+          run_id: string | null
+          tier_breakdown: Json | null
+          user_id: string
+        }
+        Insert: {
+          best_score?: number | null
+          blocked_reason?: string | null
+          duration_ms?: number | null
+          id?: string
+          rate_limit_bucket?: string | null
+          requested_at?: string
+          result_count?: number
+          run_id?: string | null
+          tier_breakdown?: Json | null
+          user_id: string
+        }
+        Update: {
+          best_score?: number | null
+          blocked_reason?: string | null
+          duration_ms?: number | null
+          id?: string
+          rate_limit_bucket?: string | null
+          requested_at?: string
+          result_count?: number
+          run_id?: string | null
+          tier_breakdown?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      foundry_tier_config: {
+        Row: {
+          concurrency_cap: number
+          created_at: string
+          display_name: string
+          fast_lane: boolean
+          id: string
+          max_results_per_mine: number
+          mines_per_day: number
+          mines_per_hour: number
+          price_cents: number
+          updated_at: string
+        }
+        Insert: {
+          concurrency_cap?: number
+          created_at?: string
+          display_name: string
+          fast_lane?: boolean
+          id: string
+          max_results_per_mine: number
+          mines_per_day: number
+          mines_per_hour: number
+          price_cents: number
+          updated_at?: string
+        }
+        Update: {
+          concurrency_cap?: number
+          created_at?: string
+          display_name?: string
+          fast_lane?: boolean
+          id?: string
+          max_results_per_mine?: number
+          mines_per_day?: number
+          mines_per_hour?: number
+          price_cents?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      foundry_user_state: {
+        Row: {
+          active_run_id: string | null
+          created_at: string
+          last_mine_at: string | null
+          last_streak_date: string | null
+          preferred_mode: string
+          streak_days: number
+          total_mines: number
+          tutorial_completed: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_run_id?: string | null
+          created_at?: string
+          last_mine_at?: string | null
+          last_streak_date?: string | null
+          preferred_mode?: string
+          streak_days?: number
+          total_mines?: number
+          tutorial_completed?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_run_id?: string | null
+          created_at?: string
+          last_mine_at?: string | null
+          last_streak_date?: string | null
+          preferred_mode?: string
+          streak_days?: number
+          total_mines?: number
+          tutorial_completed?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       gate_runs: {
         Row: {
           completed_at: string | null

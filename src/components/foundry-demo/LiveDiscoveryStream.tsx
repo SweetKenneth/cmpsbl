@@ -98,7 +98,7 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
               Discovery Stream
             </h2>
             <p className="text-muted-foreground/60 text-sm mt-1">
-              Real pipelines. Real scores. Real modules.
+              Real pipelines. Real scores. Real systems.
             </p>
           </div>
           <div className="flex items-center gap-2">
