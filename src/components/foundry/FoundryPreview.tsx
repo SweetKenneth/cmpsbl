@@ -3,6 +3,7 @@
  */
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryPreview() {
   const navigate = useNavigate();
@@ -34,10 +35,15 @@ export function FoundryPreview() {
           <span className="text-primary">Pipelines</span>
         </h1>
 
-        <p className="text-lg text-muted-foreground/70 max-w-xl mx-auto mb-12">
-          Discover crystallized pipelines drifting through the Memory Stream.
-          Sign in to crystallize, collect, and export what you pull.
+        <p className="text-lg text-muted-foreground/70 max-w-xl mx-auto mb-8">
+          The Memory Stream continuously produces crystallized pipelines.
+          Sign in to discover and collect them.
         </p>
+
+        {/* Memory Stream visualization */}
+        <div className="relative w-full h-20 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
+          <MemoryRiver />
+        </div>
 
         {/* Tier preview */}
         <div className="flex items-center justify-center gap-3 mb-12 flex-wrap">

@@ -14,6 +14,7 @@ import { FoundryMiningPanel } from '@/components/foundry/FoundryMiningPanel';
 import { FoundryInventory } from '@/components/foundry/FoundryInventory';
 import { FoundryStats } from '@/components/foundry/FoundryStats';
 import { FoundryTierLegend } from '@/components/foundry/FoundryTierLegend';
+import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
@@ -43,7 +44,7 @@ export default function Foundry() {
         ) : (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
                 Memory Stream
               </div>
@@ -51,9 +52,15 @@ export default function Foundry() {
                 Crystallize Pipelines
               </h1>
               <p className="text-muted-foreground/70 max-w-lg mx-auto text-sm">
-                Discover crystallized pipelines from the Memory Stream — real, scored software you can export and use.
-                Quality floor: 68+. No filler.
+                The Memory Stream is a continuous substrate of evolving software systems.
+                The engine samples the stream and crystallizes viable pipelines.
+                Quality floor: 68+. No filler. Only stable systems survive.
               </p>
+            </div>
+
+            {/* Memory Stream visualization */}
+            <div className="relative w-full h-24 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
+              <MemoryRiver />
             </div>
 
             {/* Stats row */}
