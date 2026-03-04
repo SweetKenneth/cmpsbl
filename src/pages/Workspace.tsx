@@ -97,7 +97,7 @@ export default function Workspace() {
       <SEO
         title="Workspace — Build on the Substrate | CMPSBL"
         description="Your personal builder space. Access SDKs, crystallize pipelines, and build on the cognitive substrate — free tier included."
-        path="/workspace"
+        canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
 
