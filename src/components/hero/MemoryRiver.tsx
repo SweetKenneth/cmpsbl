@@ -259,7 +259,7 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
   ], []);
 
   return (
-    <div className="w-full max-w-xl mx-auto lg:max-w-none">
+    <div className="w-full max-w-full mx-auto lg:max-w-none overflow-hidden">
       <RiverStyles />
 
       {/* Tagline */}
@@ -274,7 +274,7 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
 
       {/* River */}
       <motion.div
-        className="relative w-full h-36 sm:h-40 md:h-48 lg:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-border/20 bg-background/30"
+        className="relative w-full h-28 sm:h-36 md:h-48 lg:h-52 rounded-lg sm:rounded-xl overflow-hidden border border-border/20 bg-background/30"
         initial={{ opacity: 0, scaleY: 0.7 }}
         animate={{
           opacity: 1,

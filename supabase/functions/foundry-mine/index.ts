@@ -9,6 +9,27 @@ const corsHeaders = {
 // Quality floor: absolute minimum score
 const QUALITY_FLOOR = 68;
 
+// ─── Weighted Tier Distribution ─────────────────────────────────
+// Mint (68-79): 65%, Prime (80-89): 25%, Relic (90-93): 7%, Mythic (94-99): 2.5%, Apex (100): 0.5%
+const TIER_WEIGHTS = [
+  { min: 68, max: 79, weight: 0.65, tier: 'Mint' },
+  { min: 80, max: 89, weight: 0.25, tier: 'Prime' },
+  { min: 90, max: 93, weight: 0.07, tier: 'Relic' },
+  { min: 94, max: 99, weight: 0.025, tier: 'Mythic' },
+  { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
+];
+
+function pickWeightedTierRange(): { min: number; max: number } {
+  const roll = Math.random();
+  let cumulative = 0;
+  for (const t of TIER_WEIGHTS) {
+    cumulative += t.weight;
+    if (roll <= cumulative) return { min: t.min, max: t.max };
+  }
+  // Fallback: Mint
+  return { min: 68, max: 79 };
+}
+
 // Public tier mapping — aligned with 94+ hardware gate
 function scoreToPublicTier(score: number): string | null {
   if (score < QUALITY_FLOOR) return null;
@@ -145,52 +166,9 @@ serve(async (req) => {
       });
     }
 
-    // Mine: single randomized query instead of offset loop
+    // ─── Weighted Mining ─────────────────────────────────────────
+    // For each result slot, roll a weighted tier range, then pull from that range
     const maxResults = tierConfig.max_results_per_mine;
-
-    const { data: discoveries } = await supabase
-      .rpc('get_random_discoveries', { 
-        min_score: QUALITY_FLOOR, 
-        max_count: maxResults * 3 
-      });
-
-    // Fallback if RPC not available — single ordered query with random offset
-    let candidates = discoveries;
-    if (!candidates || candidates.length === 0) {
-      const { count: totalEligible } = await supabase
-        .from('discoveries')
-        .select('id', { count: 'exact', head: true })
-        .gte('cjpi', QUALITY_FLOOR);
-
-      if (!totalEligible || totalEligible === 0) {
-        await supabase.from('foundry_mine_events').insert({
-          user_id: user.id,
-          result_count: 0,
-          rate_limit_bucket: foundryTier,
-        });
-        return new Response(JSON.stringify({
-          ok: true, results: [], bestScore: null,
-          tierBreakdown: {}, rerollCredit: true,
-        }), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        });
-      }
-
-      const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - maxResults * 3));
-      const { data: fallbackDisc } = await supabase
-        .from('discoveries')
-        .select('id, name, description, cjpi, category, module_chain')
-        .gte('cjpi', QUALITY_FLOOR)
-        .range(randomOffset, randomOffset + maxResults * 3 - 1);
-
-      candidates = fallbackDisc || [];
-    }
-
-    // Shuffle candidates for randomness
-    for (let i = candidates.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
-    }
 
     // Get user's existing artifact IDs to avoid duplicates
     const { data: existingItems } = await supabase
@@ -200,25 +178,118 @@ serve(async (req) => {
 
     const ownedIds = new Set((existingItems || []).map((e: any) => e.artifact_id));
 
-    // Build results (filter dupes, enforce floor)
     const results: any[] = [];
-    for (const disc of candidates) {
-      if (results.length >= maxResults) break;
-      if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
-      if (ownedIds.has(disc.id)) continue;
+    const attemptedRanges: { min: number; max: number }[] = [];
 
-      const tier = scoreToPublicTier(disc.cjpi);
-      if (tier) {
-        results.push({
-          id: disc.id,
-          name: disc.name,
-          description: disc.description,
-          score: disc.cjpi,
-          publicTier: tier,
-          valuationDisplay: computeDisplayValuation(disc.cjpi),
-          category: disc.category,
-          systemChain: disc.module_chain || [],
-        });
+    // Roll weighted tiers for each result slot
+    for (let slot = 0; slot < maxResults; slot++) {
+      const range = pickWeightedTierRange();
+      attemptedRanges.push(range);
+    }
+
+    // Batch query: fetch candidates for each unique range
+    const uniqueRanges = [...new Map(attemptedRanges.map(r => [`${r.min}-${r.max}`, r])).values()];
+    const rangedCandidates: Map<string, any[]> = new Map();
+
+    for (const range of uniqueRanges) {
+      const key = `${range.min}-${range.max}`;
+      // Fetch more than needed to allow for deduplication
+      const fetchCount = maxResults * 4;
+
+      const { data: rpcResult } = await supabase.rpc('get_random_discoveries', {
+        min_score: range.min,
+        max_count: fetchCount,
+      });
+
+      let candidates = rpcResult;
+
+      // Fallback if RPC not available
+      if (!candidates || candidates.length === 0) {
+        const { count: totalEligible } = await supabase
+          .from('discoveries')
+          .select('id', { count: 'exact', head: true })
+          .gte('cjpi', range.min)
+          .lte('cjpi', range.max);
+
+        if (totalEligible && totalEligible > 0) {
+          const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
+          const { data: fallbackDisc } = await supabase
+            .from('discoveries')
+            .select('id, name, description, cjpi, category, module_chain')
+            .gte('cjpi', range.min)
+            .lte('cjpi', range.max)
+            .range(randomOffset, randomOffset + fetchCount - 1);
+
+          candidates = fallbackDisc || [];
+        } else {
+          candidates = [];
+        }
+      } else {
+        // Filter RPC results to the target range
+        candidates = candidates.filter((c: any) => c.cjpi >= range.min && c.cjpi <= range.max);
+      }
+
+      // Shuffle
+      for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+
+      rangedCandidates.set(key, candidates);
+    }
+
+    // Build results from weighted rolls
+    for (const range of attemptedRanges) {
+      if (results.length >= maxResults) break;
+      const key = `${range.min}-${range.max}`;
+      const pool = rangedCandidates.get(key) || [];
+
+      for (const disc of pool) {
+        if (results.length >= maxResults) break;
+        if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
+        if (ownedIds.has(disc.id)) continue;
+        if (results.some(r => r.id === disc.id)) continue;
+
+        const tier = scoreToPublicTier(disc.cjpi);
+        if (tier) {
+          results.push({
+            id: disc.id,
+            name: disc.name,
+            description: disc.description,
+            score: disc.cjpi,
+            publicTier: tier,
+            valuationDisplay: computeDisplayValuation(disc.cjpi),
+            category: disc.category,
+            systemChain: disc.module_chain || [],
+          });
+          ownedIds.add(disc.id); // prevent dupes within same mine
+        }
+      }
+
+      // If the weighted range had no results, try falling back to Mint
+      if (results.length < maxResults && pool.length === 0 && range.min > 68) {
+        const mintPool = rangedCandidates.get('68-79') || [];
+        for (const disc of mintPool) {
+          if (results.length >= maxResults) break;
+          if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
+          if (ownedIds.has(disc.id)) continue;
+          if (results.some(r => r.id === disc.id)) continue;
+
+          const tier = scoreToPublicTier(disc.cjpi);
+          if (tier) {
+            results.push({
+              id: disc.id,
+              name: disc.name,
+              description: disc.description,
+              score: disc.cjpi,
+              publicTier: tier,
+              valuationDisplay: computeDisplayValuation(disc.cjpi),
+              category: disc.category,
+              systemChain: disc.module_chain || [],
+            });
+            ownedIds.add(disc.id);
+          }
+        }
       }
     }
 

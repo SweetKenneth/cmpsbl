@@ -1,13 +1,14 @@
 /**
  * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
- * Simple mode: one big button, result reveal, no cringe.
+ * Includes save-to-vault action for each result.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pickaxe, Loader2 } from 'lucide-react';
+import { Pickaxe, Loader2, Download, Check } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
+import { toast } from 'sonner';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
 
@@ -17,6 +18,31 @@ function scoreColor(score: number): string {
   if (score >= 90) return 'text-amber-400';
   if (score >= 80) return 'text-sky-400';
   return 'text-emerald-400';
+}
+
+function exportResultsAsJSON(results: any[]) {
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    source: 'CMPSBL Memory Stream',
+    pipelineCount: results.length,
+    pipelines: results.map(r => ({
+      name: r.name,
+      description: r.description,
+      score: r.score,
+      tier: r.publicTier,
+      valuation: r.valuationDisplay,
+      category: r.category,
+      systemChain: r.systemChain,
+    })),
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `memory-stream-crystallization-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast.success('Crystallization exported');
 }
 
 interface Props {
@@ -113,9 +139,24 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
             exit={{ opacity: 0, y: -10 }}
             className="space-y-3"
           >
-            <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-2">
-              Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
+                Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
+              </div>
+              <button
+                onClick={() => exportResultsAsJSON(lastResult.results)}
+                className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+              >
+                <Download className="w-3 h-3" />
+                Export
+              </button>
             </div>
+
+            <div className="text-[10px] font-mono text-emerald-400/70 flex items-center gap-1.5 mb-3">
+              <Check className="w-3 h-3" />
+              Auto-saved to your Vault
+            </div>
+
             {lastResult.results.map((result, i) => (
               <motion.div
                 key={result.id}

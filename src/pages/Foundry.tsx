@@ -15,6 +15,8 @@ import { FoundryInventory } from '@/components/foundry/FoundryInventory';
 import { FoundryStats } from '@/components/foundry/FoundryStats';
 import { FoundryTierLegend } from '@/components/foundry/FoundryTierLegend';
 import { MemoryRiver } from '@/components/hero/MemoryRiver';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
@@ -39,6 +41,8 @@ export default function Foundry() {
         <meta name="description" content="Discover crystallized pipelines from the Memory Stream. Every pull is a production-grade pipeline scored and tiered by quality." />
       </Helmet>
 
+      <PublicNav />
+
       <div className="min-h-screen bg-background text-foreground">
         {!user ? (
           <FoundryPreview />
@@ -60,7 +64,7 @@ export default function Foundry() {
             </div>
 
             {/* Memory Stream visualization */}
-            <div className="relative w-full h-24 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
+            <div className="relative w-full h-32 sm:h-24 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
               <MemoryRiver crystallizing={crystallizing} />
             </div>
 
@@ -114,6 +118,8 @@ export default function Foundry() {
           </div>
         )}
       </div>
+
+      <EnhancedFooter />
     </>
   );
 }

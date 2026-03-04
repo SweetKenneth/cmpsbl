@@ -1,9 +1,11 @@
 /**
- * FoundryInventory — User's vault of crystallized pipelines
+ * FoundryInventory — User's vault of crystallized pipelines with export
  */
 import { motion } from 'framer-motion';
+import { Download } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
+import { toast } from 'sonner';
 
 interface InventoryItem {
   id: string;
@@ -20,6 +22,33 @@ interface InventoryItem {
 
 interface Props {
   inventory: InventoryItem[];
+}
+
+function exportVaultAsJSON(inventory: InventoryItem[]) {
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    source: 'CMPSBL Memory Stream Vault',
+    pipelineCount: inventory.length,
+    totalValuation: inventory.reduce((s, i) => s + i.valuationDisplay, 0),
+    pipelines: inventory.map(item => ({
+      name: item.artifactName,
+      score: item.score,
+      tier: item.publicTier,
+      valuation: item.valuationDisplay,
+      category: item.category,
+      systemChain: item.systemChain,
+      obtainedAt: item.obtainedAt,
+      source: item.source,
+    })),
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `memory-stream-vault-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast.success(`Exported ${inventory.length} pipelines`);
 }
 
 export function FoundryInventory({ inventory }: Props) {
@@ -46,8 +75,17 @@ export function FoundryInventory({ inventory }: Props) {
         <div className="text-xs font-mono text-muted-foreground">
           {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
         </div>
-        <div className="text-xs font-mono text-muted-foreground">
-          Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+        <div className="flex items-center gap-4">
+          <div className="text-xs font-mono text-muted-foreground">
+            Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+          </div>
+          <button
+            onClick={() => exportVaultAsJSON(inventory)}
+            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+          >
+            <Download className="w-3 h-3" />
+            Export Vault
+          </button>
         </div>
       </div>
 
