@@ -83,6 +83,7 @@ const Foundations = lazy(() => import("@/pages/Foundations"));
 const Namespace = lazy(() => import("@/pages/Namespace"));
 const Insights = lazy(() => import("@/pages/Insights"));
 const SystemOverview = lazy(() => import("@/pages/SystemOverview"));
+const Workspace = lazy(() => import("@/pages/Workspace"));
 
 const Support = lazy(() => import("@/pages/Support"));
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
@@ -112,6 +113,7 @@ export const publicRoutes = (
     <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
     <Route path="/changelog" element={<Changelog />} />
     <Route path="/codelab" element={<CodeLab />} />
+    <Route path="/workspace" element={<Workspace />} />
     <Route path="/templates" element={<Navigate to="/upgrade" replace />} />
     <Route path="/forge" element={<Navigate to="/" replace />} />
     <Route path="/forge/catalog" element={<Navigate to="/" replace />} />

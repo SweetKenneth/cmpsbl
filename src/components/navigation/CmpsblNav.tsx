@@ -125,8 +125,9 @@ export function CmpsblNav() {
       items: [
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "API Access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
+        { name: "Builder Workspace", href: "/workspace", description: "SDK, terminal & build tools — free tier included", icon: Terminal, badge: "NEW", highlight: true },
         { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "Developer Guide", href: "/developers/guide", description: "SDK setup for traditional stacks", icon: BookOpen, badge: "NEW" },
+        { name: "Developer Guide", href: "/developers/guide", description: "SDK setup for traditional stacks", icon: BookOpen },
         { name: "Developer Showcase", href: "/developers", description: "Community builds & integrations", icon: Users },
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
         { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
