@@ -2,9 +2,14 @@
  * RegisterPasskey — Face ID setup prompt shown after magic link login
  * Automatically appears when user lands on /os after verifying email.
  * Also available as a standalone button for settings.
+ * 
+ * Detection strategy (resilient to cross-browser magic link clicks):
+ * 1. Primary: Check if user just arrived via magic link (URL hash or auth event)
+ * 2. Secondary: Check localStorage flag (works when same browser)
+ * 3. Server check: Only prompt if user has no passkeys registered
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,37 +20,70 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { secureGet, secureRemove } from '@/lib/system/secureStorage';
 
+/** Session key to prevent re-prompting within the same session */
+const DISMISSED_KEY = 'cmpsbl_passkey_prompt_dismissed';
+
 export function RegisterPasskeyPrompt() {
   const { user, session } = useAuth();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const checkedRef = useRef(false);
 
   useEffect(() => {
     if (!user || !session) return;
-    
-    // Check if there's a pending passkey registration (set during login/signup)
-    const pendingEmail = secureGet<string>('cmpsbl_pending_passkey_email');
-    
-    // Show prompt if:
-    // 1. There's a pending email that matches the logged-in user
-    // 2. OR if user just logged in and hasn't registered a passkey yet
-    const shouldPrompt = pendingEmail && pendingEmail === user.email;
-    
-    if (shouldPrompt) {
-      // Small delay so the /os page renders first
-      const timer = setTimeout(() => {
-        isPlatformAuthenticatorAvailable().then(available => {
-          if (available) {
-            setShow(true);
-          } else {
-            // Clean up if device doesn't support it
-            secureRemove('cmpsbl_pending_passkey_email');
-          }
+    if (checkedRef.current) return;
+    checkedRef.current = true;
+
+    // Don't re-prompt if user already dismissed in this session
+    if (sessionStorage.getItem(DISMISSED_KEY) === 'true') return;
+
+    // Determine if this looks like a fresh sign-in (magic link landing)
+    const hasPendingFlag = secureGet<string>('cmpsbl_pending_passkey_email') === user.email;
+    const urlHash = window.location.hash || '';
+    const isMagicLinkLanding = urlHash.includes('access_token') || urlHash.includes('type=magiclink') || urlHash.includes('type=signup');
+    const justSignedIn = hasPendingFlag || isMagicLinkLanding;
+
+    // If no signal of fresh sign-in, check if user signed in within last 60 seconds
+    const sessionCreatedAt = session.expires_at 
+      ? (session.expires_at * 1000) - (3600 * 1000) // expires_at minus 1 hour = created ~
+      : 0;
+    const isRecentSession = Date.now() - sessionCreatedAt < 120_000; // 2 min window
+
+    if (!justSignedIn && !isRecentSession) return;
+
+    // Check device support then check if user already has passkeys
+    const timer = setTimeout(async () => {
+      try {
+        const available = await isPlatformAuthenticatorAvailable();
+        if (!available) {
+          secureRemove('cmpsbl_pending_passkey_email');
+          return;
+        }
+
+        // Ask the server if user already has passkeys registered
+        const { data, error } = await supabase.functions.invoke('passkey-auth/list', {
+          method: 'POST',
+          body: {},
         });
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
+
+        // If server check fails, still show prompt (worst case user sees it with existing passkeys)
+        const hasPasskeys = !error && data?.passkeys && data.passkeys.length > 0;
+        
+        if (!hasPasskeys) {
+          setShow(true);
+        } else {
+          // User already has passkeys, clean up
+          secureRemove('cmpsbl_pending_passkey_email');
+        }
+      } catch {
+        // Fallback: show prompt anyway if we can't check
+        const available = await isPlatformAuthenticatorAvailable().catch(() => false);
+        if (available) setShow(true);
+      }
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, [user, session]);
 
   const handleRegister = useCallback(async () => {
@@ -91,6 +129,7 @@ export function RegisterPasskeyPrompt() {
   const handleSkip = () => {
     setShow(false);
     secureRemove('cmpsbl_pending_passkey_email');
+    sessionStorage.setItem(DISMISSED_KEY, 'true');
     toast.info('You can set up Face ID later from your settings.', { duration: 4000 });
   };
 
