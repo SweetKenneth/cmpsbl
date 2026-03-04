@@ -23,11 +23,11 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Documentation — Developer Guide | CMPSBL"
-        description="Complete technical documentation: module reference, API specs, configuration guides, and deployment patterns for production systems."
+        title="Memory Stream Documentation — CMPSBL"
+        description="Complete technical documentation for the Memory Stream: system reference, API specs, crystallization guides, and deployment patterns."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
-        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'module documentation', 'agentic AI docs']}
+        keywords={['CMPSBL documentation', 'memory stream docs', 'AI API reference', 'crystallization docs', 'signal to silicon']}
       />
 
       <PublicNav />
@@ -56,12 +56,12 @@ export default function Documentation() {
             </Badge>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              Documentation
+              Memory Stream Docs
             </h1>
             
             <p className="text-xl text-muted-foreground">
-              Complete guide to the CMPSBL Substrate. Integrated execution surfaces, {capabilitiesCount}+ capabilities, and everything you need to build cognitive AI systems.
-              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for Substrate operators.</span>
+              Complete guide to the CMPSBL Memory Stream. {capabilitiesCount}+ capabilities across 38 nodes and 12 sectors — everything you need to crystallize from signal to silicon.
+              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for Stream operators.</span>
             </p>
           </div>
         </div>
@@ -90,10 +90,10 @@ export default function Documentation() {
 
             <TabsContent value="overview" className="space-y-6">
               <Card className="p-8 bg-card border-border">
-                <h2 className="text-2xl font-bold mb-4 text-foreground">CMPSBL Substrate</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Memory Stream Substrate</h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  CMPSBL is a cognitive orchestration substrate that provides routing, memory, learning cycles,
-                  observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.
+                  The Memory Stream is a continuous cognitive substrate that provides routing, memory, learning cycles,
+                  observability, defense, and execution coordination for AI systems. Model-agnostic, provider-agnostic, evolving continuously.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
