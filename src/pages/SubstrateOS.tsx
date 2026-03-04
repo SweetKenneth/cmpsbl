@@ -27,6 +27,8 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { cn } from '@/lib/utils';
+import { TierGate, TierLockBadge } from '@/components/substrate-os/TierGate';
+import { type SubstrateRole } from '@/hooks/useUserRole';
 
 // ── Lazy-loaded panels ──
 const OverviewPanel = lazy(() => import('@/components/substrate-os/panels/OverviewPanel'));
@@ -75,30 +77,45 @@ interface TabDef {
   group: string;
   description: string;
   governorOnly?: boolean;
+  /** Minimum tier required. Defaults to 'free' (everyone). */
+  minTier?: SubstrateRole;
 }
 
+/**
+ * Tier gating strategy:
+ * FREE     — Overview, Analytics, Operations (enough telemetry to be interesting)
+ * CREATOR  — Terminal, NEXUS, CCR, FORGE, Cognitives (hands-on tools)
+ * STUDIO   — INTENT, CORTEX, ATLAS, Maintenance, ENCODE, Mesh (deep orchestration)
+ * ARCHITECT— EVOLUTION, SHADOW, ORACLE, Security (advanced controls)
+ * GOVERNOR — Governor panel (admin only, already gated)
+ */
 function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
+    // ── Free tier ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
-    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
-    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine' },
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance' },
-    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration' },
-    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane' },
-    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM' },
     { id: 'operations', label: 'Operations', icon: Layers, group: 'Cognitive', description: 'DECODE · VISION · ECONOMY + 4' },
-    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
-    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
-    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline' },
-    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC' },
-    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo' },
-    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST' },
-    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes' },
-    ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center' }] : []),
-    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit' },
-    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true },
+    // ── Creator tier ──
+    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
+    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
+    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
+    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
+    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', minTier: 'creator' },
+    ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
+    // ── Studio tier ──
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance', minTier: 'studio' },
+    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration', minTier: 'studio' },
+    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers', minTier: 'studio' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline', minTier: 'studio' },
+    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
+    // ── Architect tier ──
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline', minTier: 'architect' },
+    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', minTier: 'architect' },
+    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', minTier: 'architect' },
+    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', minTier: 'architect' },
+    // ── Governor ──
+    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true, minTier: 'governor' },
   ];
 }
 
@@ -114,9 +131,10 @@ interface SidebarProps {
   isGovernor: boolean;
   healthScore: number;
   collapsed?: boolean;
+  currentTier: SubstrateRole;
 }
 
-function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed }: SidebarProps) {
+function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed, currentTier }: SidebarProps) {
   const version = useMetric('version');
   const grouped = useMemo(() => {
     const map: Record<string, TabDef[]> = {};
@@ -186,7 +204,8 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
                     {!collapsed && (
                       <>
                         <span className="flex-1 text-left truncate">{tab.label}</span>
-                        {active && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
+                        {tab.minTier && <TierLockBadge requiredTier={tab.minTier} currentTier={currentTier} />}
+                        {active && !tab.minTier && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                       </>
                     )}
                   </button>
@@ -322,6 +341,7 @@ export default function SubstrateOS() {
             onLogout={handleLogout}
             isGovernor={isGovernor}
             healthScore={healthScore.healthScore}
+            currentTier={role}
           />
         </div>
 
@@ -376,6 +396,7 @@ export default function SubstrateOS() {
               onLogout={handleLogout}
               isGovernor={isGovernor}
               healthScore={healthScore.healthScore}
+              currentTier={role}
             />
           </SheetContent>
         </Sheet>
@@ -399,11 +420,13 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'terminal' && (
-              <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Suspense fallback={<PanelLoader />}>
-                  <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
-                </Suspense>
-              </motion.div>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing pipelines in real-time.">
+                <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <Suspense fallback={<PanelLoader />}>
+                    <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
+                  </Suspense>
+                </motion.div>
+              </TierGate>
             )}
 
             {activeTab === 'analytics' && (
@@ -413,67 +436,87 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'nexus' && (
-              <PanelContainer id="nexus">
-                <Suspense fallback={<PanelLoader />}><NexusTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="Multi-model fleet routing engine. Route prompts across providers with intelligent cost/quality optimization.">
+                <PanelContainer id="nexus">
+                  <Suspense fallback={<PanelLoader />}><NexusTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'intent' && (
-              <PanelContainer id="intent">
-                <ModuleErrorBoundary moduleName="INTENT">
-                  <Suspense fallback={<PanelLoader />}>
-                    <IntentPanel />
-                  </Suspense>
-                </ModuleErrorBoundary>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="INTENT" description="Module mesh governance hub. Monitor inter-module communication, approve actions, and manage intent routing across the 38-node matrix.">
+                <PanelContainer id="intent">
+                  <ModuleErrorBoundary moduleName="INTENT">
+                    <Suspense fallback={<PanelLoader />}>
+                      <IntentPanel />
+                    </Suspense>
+                  </ModuleErrorBoundary>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'cortex' && (
-              <PanelContainer id="cortex">
-                <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Pipeline orchestration engine. Design, monitor, and debug multi-step execution pipelines with real-time tracing.">
+                <PanelContainer id="cortex">
+                  <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'atlas' && (
-              <PanelContainer id="atlas">
-                <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ATLAS" description="Control plane management. Configure capability toggles, revision snapshots, and environment-scoped settings.">
+                <PanelContainer id="atlas">
+                  <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'engines' && (
-              <PanelContainer id="engines">
-                <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with circuit breakers. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
+                <PanelContainer id="engines">
+                  <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'encode' && (
-              <PanelContainer id="encode">
-                <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation pipeline. Monitor code agent execution, review outputs, and track pipeline performance.">
+                <PanelContainer id="encode">
+                  <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'mesh' && (
-              <PanelContainer id="mesh">
-                <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="Mesh Activity" description="Live capability mesh visualization. Track inter-node communication patterns, throughput, and mesh topology.">
+                <PanelContainer id="mesh">
+                  <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'evolution' && (
-              <PanelContainer id="evolution">
-                <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution pipeline with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
+                <PanelContainer id="evolution">
+                  <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'shadow' && (
-              <PanelContainer id="shadow">
-                <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="SHADOW" description="Adversarial probe monitoring and TSAC divergence detection. Inspect immunity mesh activity and shadow execution traces.">
+                <PanelContainer id="shadow">
+                  <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'ccr' && (
-              <PanelContainer id="ccr">
-                <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — tiered MEMORY management and DREAM synthesis cycles. Monitor hot/warm/cold memory tiers and heuristic consolidation.">
+                <PanelContainer id="ccr">
+                  <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'operations' && (
@@ -483,39 +526,49 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'oracle' && (
-              <PanelContainer id="oracle">
-                <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, scenario simulation (COMPASS), and pattern detection (ECHO). Advanced foresight for system optimization.">
+                <PanelContainer id="oracle">
+                  <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'forge' && (
-              <PanelContainer id="forge">
-                <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production pipeline with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
+                <PanelContainer id="forge">
+                  <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'cognitives' && (
-              <PanelContainer id="cognitives">
-                <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
+                <PanelContainer id="cognitives">
+                  <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'agency' && (
-              <PanelContainer id="agency">
-                <Suspense fallback={<PanelLoader />}>
-                  <AgencyGallery />
-                </Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
+                <PanelContainer id="agency">
+                  <Suspense fallback={<PanelLoader />}>
+                    <AgencyGallery />
+                  </Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'security' && (
-              <PanelContainer id="security">
-                <ModuleErrorBoundary moduleName="Security">
-                  <Suspense fallback={<PanelLoader />}>
-                    <SecurityPanel isGovernor={isGovernor} isOperator={isOperator} />
-                  </Suspense>
-                </ModuleErrorBoundary>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail. Advanced threat monitoring, vulnerability assessment, and incident response.">
+                <PanelContainer id="security">
+                  <ModuleErrorBoundary moduleName="Security">
+                    <Suspense fallback={<PanelLoader />}>
+                      <SecurityPanel isGovernor={isGovernor} isOperator={isOperator} />
+                    </Suspense>
+                  </ModuleErrorBoundary>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'governor' && isGovernor && (
