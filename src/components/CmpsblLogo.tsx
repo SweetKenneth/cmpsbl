@@ -4,7 +4,7 @@
  * Restricted to navigation bar and footer
  */
 
-import cmpsblLogo from "@/assets/cmpsbl-logo.webp";
+import cmpsblLogo from "@/assets/cmpsbl-logo.png";
 import { cn } from "@/lib/utils";
 
 interface CmpsblLogoProps {
@@ -29,9 +29,8 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md", priority 
       alt="CMPSBL"
       width={width}
       height={height}
-      loading={priority ? "eager" : "lazy"}
-      decoding={priority ? "sync" : "async"}
-      {...(priority ? { fetchpriority: "high" } : {})}
+      loading="lazy"
+      decoding="async"
       className={cn(
         sizeClass,
         "w-auto object-contain",
