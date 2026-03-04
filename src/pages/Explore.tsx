@@ -44,16 +44,8 @@ function SectionDivider() {
 
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const hostname = window.location.hostname;
   const providersCount = useMetric('providersCount');
   const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
-
-  // Show PromptFluid business page when entering through promptfluid.com
-  const isPromptFluid = hostname === "promptfluid.com" || hostname === "www.promptfluid.com";
-  if (isPromptFluid) {
-    return <PromptFluidHome />;
-  }
-
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
