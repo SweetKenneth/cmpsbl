@@ -45,7 +45,7 @@ export function EnhancedFooter() {
     {
       title: "Products",
       links: [
-        { name: "Artifact Packs", href: "/packs" },
+        { name: "Pipeline Packs", href: "/packs" },
         { name: "Dream Eater", href: "/feed-dream-eater" },
         { name: "Engines", href: "/engines", highlight: true },
         { name: "Enterprise", href: "/enterprise" },

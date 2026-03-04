@@ -44,7 +44,7 @@ export function PackGate({ packId, children, fallback, silent }: PackGateProps) 
           <Package className="w-5 h-5 text-muted-foreground shrink-0" />
           <div className="min-w-0">
             <p className="text-sm font-medium truncate">{packName}</p>
-            <p className="text-xs text-muted-foreground">This feature requires an active artifact pack.</p>
+            <p className="text-xs text-muted-foreground">This feature requires an active pipeline pack.</p>
           </div>
         </div>
         <Button variant="outline" size="sm" asChild className="shrink-0">
