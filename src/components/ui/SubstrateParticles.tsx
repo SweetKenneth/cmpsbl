@@ -34,7 +34,15 @@ export const SubstrateParticles = memo(function SubstrateParticles({
 }: SubstrateParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
-  const particlesRef = useRef<Particle[]>([]);
+  const particlesRef = useRef<Array<{
+    x: number; y: number;
+    vx: number; vy: number;
+    size: number;
+    life: number;
+    maxLife: number;
+    isAccent: boolean;
+    trail: { x: number; y: number }[];
+  }>>([]);
   const crystallizingRef = useRef(crystallizing);
 
   crystallizingRef.current = crystallizing;
