@@ -6958,7 +6958,7 @@ export type Database = {
       }
       evolution_circuit: {
         Row: {
-          auto_reset_after: unknown
+          auto_reset_after: string | null
           circuit_id: string
           created_at: string
           last_trip_at: string | null
@@ -6967,7 +6967,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          auto_reset_after?: unknown
+          auto_reset_after?: string | null
           circuit_id?: string
           created_at?: string
           last_trip_at?: string | null
@@ -6976,7 +6976,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          auto_reset_after?: unknown
+          auto_reset_after?: string | null
           circuit_id?: string
           created_at?: string
           last_trip_at?: string | null
