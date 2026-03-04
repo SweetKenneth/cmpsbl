@@ -70,6 +70,13 @@ import clocklessSetupImg from "@/assets/blog/clockless-account-setup-artifact-pa
 import clocklessDifferentImg from "@/assets/blog/what-makes-clockless-different.jpg";
 import clocklessModulesImg from "@/assets/blog/clockless-modules-deep-dive.jpg";
 
+// Memory Stream series images
+import memoryStreamGuideImg from "@/assets/blog/memory-stream-crystallization-guide.jpg";
+import signalToSiliconImg from "@/assets/blog/signal-to-silicon-narrative.jpg";
+import tierAnatomyImg from "@/assets/blog/memory-stream-tier-anatomy.jpg";
+import vaultMasteryImg from "@/assets/blog/memory-stream-vault-mastery.jpg";
+import discoveryEngineImg from "@/assets/blog/autonomous-discovery-engine.jpg";
+
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
 import autoblog2 from '@/assets/autoblog/autoblog-2.jpg';
@@ -390,6 +397,47 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
 
 // ─── Static human posts ───
 const HUMAN_POSTS: BlogPost[] = [
+  // ═══ MEMORY STREAM SERIES (FEATURED) ═══
+  {
+    id: 'ms-crystallization-guide', title: "Memory Stream: The Complete Crystallization Guide",
+    excerpt: "Everything you need to know about the Memory Stream — crystallization phases, five quality tiers, your personal Vault, and exporting pipelines as production-grade JSON artifacts.",
+    href: "/blog/memory-stream-crystallization-guide", category: "Platform",
+    date: "2026-03-04", readTime: "24 min", image: memoryStreamGuideImg,
+    imageAlt: "Crystalline data pipelines materializing from a flowing digital memory stream",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+  },
+  {
+    id: 'ms-signal-silicon', title: "Signal → Silicon: How Raw Signals Become Crystallized Software",
+    excerpt: "The complete narrative behind CMPSBL's Signal → Silicon pipeline — from behavioral signals through 38-node processing to physical silicon.",
+    href: "/blog/signal-to-silicon-narrative", category: "Research",
+    date: "2026-03-04", readTime: "20 min", image: signalToSiliconImg,
+    imageAlt: "Digital signals flowing through neural pathways and condensing into a silicon microprocessor",
+    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+  },
+  {
+    id: 'ms-tier-anatomy', title: "Anatomy of Memory Stream Tiers: Rarity, Scoring & What Each Tier Means",
+    excerpt: "A deep breakdown of Mint, Prime, Relic, Mythic, and Apex tiers — the weighted rarity system, scoring dimensions, and what makes each tier special.",
+    href: "/blog/memory-stream-tier-anatomy-rarity", category: "Platform",
+    date: "2026-03-04", readTime: "18 min", image: tierAnatomyImg,
+    imageAlt: "Five quality tier crystals in ascending pyramid from green Mint to diamond Apex",
+    source: 'human', featured: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+  },
+  {
+    id: 'ms-vault-mastery', title: "Your Vault: Mastering Pipeline Management in the Memory Stream",
+    excerpt: "How to manage, organize, and export your crystallized pipelines — from auto-save mechanics to JSON materialization and tier-based analytics.",
+    href: "/blog/memory-stream-vault-mastery", category: "Platform",
+    date: "2026-03-04", readTime: "16 min", image: vaultMasteryImg,
+    imageAlt: "Digital vault with crystallized software artifacts organized by tier on illuminated shelves",
+    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+  },
+  {
+    id: 'ms-discovery-engine', title: "Inside the Autonomous Discovery Engine: How CMPSBL Finds Software",
+    excerpt: "A technical deep-dive into the engine that powers the Memory Stream — sampling, scoring across five dimensions, weighted tier selection, and the recursive discovery loop.",
+    href: "/blog/autonomous-discovery-engine-architecture", category: "Technology",
+    date: "2026-03-04", readTime: "22 min", image: discoveryEngineImg,
+    imageAlt: "Autonomous discovery engine with recursive orbital loops around a central processing core",
+    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+  },
   // ═══ NEW PILLAR/CLUSTER POSTS ═══
   {
     id: 'clockless-setup', title: "Getting Started with Clockless: Account Setup & Artifact Pack Guide",
