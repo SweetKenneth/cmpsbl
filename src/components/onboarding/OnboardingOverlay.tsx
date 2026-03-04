@@ -1,12 +1,15 @@
 /**
- * User Onboarding Flow — first-run guided experience
- * Item #23: Highlight key features to reduce bounce rate
+ * User Onboarding Flow — Memory Stream themed
+ * Explains crystallized pipelines, free-tier value, and upgrade path
  */
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Scan, Brain, FlaskConical, Package, Terminal, X, ArrowRight, Sparkles, ChevronLeft } from 'lucide-react';
+import { 
+  Sparkles, Brain, Zap, Terminal, X, ArrowRight, ChevronLeft,
+  Gem, Rocket, Shield, Layers, Crown
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const ONBOARDING_KEY = 'cmpsbl_onboarded';
@@ -15,6 +18,7 @@ interface OnboardingStep {
   icon: React.ReactNode;
   title: string;
   description: string;
+  detail?: string;
   link: string;
   linkLabel: string;
   gradient: string;
@@ -24,52 +28,67 @@ interface OnboardingStep {
 
 const STEPS: OnboardingStep[] = [
   {
-    icon: <Scan className="h-7 w-7" />,
-    title: 'Evolution Scanner',
-    description: 'A 4-phase cognitive scanner that audits edge functions, database integrity, module health, and AI capabilities — then builds an actionable plan.',
-    link: '/scan',
-    linkLabel: 'Explore Scanner',
-    gradient: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
-    accentColor: 'text-cyan-400',
-    accentBg: 'bg-cyan-500/10',
+    icon: <Sparkles className="h-7 w-7" />,
+    title: 'Welcome to the Memory Stream',
+    description: 'The substrate captures cognitive signals — patterns, decisions, and discoveries — and crystallizes them into production-grade software pipelines you can collect, export, and deploy.',
+    detail: 'Every interaction feeds the stream. Every crystallization produces real, scored software.',
+    link: '/foundry',
+    linkLabel: 'Open Memory Stream',
+    gradient: 'from-sky-500/20 via-indigo-500/10 to-transparent',
+    accentColor: 'text-sky-400',
+    accentBg: 'bg-sky-500/10',
   },
   {
-    icon: <Brain className="h-7 w-7" />,
-    title: 'Persistent Memory',
-    description: 'Give your AI agent permanent memory with hot/warm/cold tiering, contradiction detection, and SM-2 spaced repetition.',
-    link: '/persistent-memory',
-    linkLabel: 'Explore Memory',
-    gradient: 'from-violet-500/20 via-violet-500/5 to-transparent',
+    icon: <Gem className="h-7 w-7" />,
+    title: 'What Is a Crystallized Pipeline?',
+    description: 'A crystallized pipeline is an autonomous software program discovered and scored by the substrate. Each one receives a Crown Jewel Pipeline Index (CJPI) score from 68–100, determining its quality tier and value.',
+    detail: 'Mint (68–79) · Prime (80–89) · Relic (90–93) · Mythic (94–99) · Apex (100)',
+    link: '/foundry',
+    linkLabel: 'Start Crystallizing',
+    gradient: 'from-violet-500/20 via-purple-500/10 to-transparent',
     accentColor: 'text-violet-400',
     accentBg: 'bg-violet-500/10',
   },
   {
-    icon: <FlaskConical className="h-7 w-7" />,
-    title: 'Experimentation Lab',
-    description: 'Test substrate modules in a live sandbox environment. Isolated execution with real-time telemetry.',
-    link: '/lab',
-    linkLabel: 'Open Lab',
+    icon: <Crown className="h-7 w-7" />,
+    title: 'Free Tier — First-Class Citizen',
+    description: 'You get persistent memory, Memory Stream access, rare agent discovery, 12 terminal commands, SDK templates, and full module telemetry — all at $0. Every tier can discover Relic and Mythic-grade software.',
+    detail: 'No feature walls. No trials. Build, crystallize, and collect from day one.',
+    link: '/workspace',
+    linkLabel: 'Open Workspace',
     gradient: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
     accentColor: 'text-emerald-400',
     accentBg: 'bg-emerald-500/10',
   },
   {
-    icon: <Package className="h-7 w-7" />,
-    title: 'Artifact Packs',
-    description: 'Activate modular capability packs across 6 strategic domains. Each pack uses 1 slot — swap anytime.',
-    link: '/os',
-    linkLabel: 'Choose Packs',
-    gradient: 'from-amber-500/20 via-amber-500/5 to-transparent',
+    icon: <Brain className="h-7 w-7" />,
+    title: 'Persistent Memory — Included Free',
+    description: 'Your agents remember across sessions. Store, recall, and search memories with vector search, contradiction detection, and automatic tiering. One namespace free — upgrade for more.',
+    detail: 'Works with our agents, your own agents, or any software you build on the substrate.',
+    link: '/persistent-memory',
+    linkLabel: 'Explore Memory',
+    gradient: 'from-purple-500/20 via-fuchsia-500/10 to-transparent',
+    accentColor: 'text-purple-400',
+    accentBg: 'bg-purple-500/10',
+  },
+  {
+    icon: <Terminal className="h-7 w-7" />,
+    title: 'Build & Command',
+    description: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. The terminal starts with 12 free commands and grows to 66+ as you upgrade — unlocking NEXUS routing, EVOLUTION control, and pipeline export.',
+    detail: 'Creator ($29) · Studio ($49) · Architect ($79) — depth, not feature walls.',
+    link: '/workspace',
+    linkLabel: 'Open Terminal',
+    gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
     accentColor: 'text-amber-400',
     accentBg: 'bg-amber-500/10',
   },
   {
-    icon: <Terminal className="h-7 w-7" />,
-    title: 'DECODE Terminal',
-    description: 'Natural language interface to the cognitive substrate. Scan, evolve, query, and control — all from one prompt.',
-    link: '/decode',
-    linkLabel: 'Try DECODE',
-    gradient: 'from-rose-500/20 via-rose-500/5 to-transparent',
+    icon: <Rocket className="h-7 w-7" />,
+    title: 'Upgrade When You\'re Ready',
+    description: 'Paid tiers unlock deeper control — more memory namespaces, advanced pipeline export (TypeScript, Python, Rust, even Verilog), EVOLUTION access, and priority NEXUS routing. The substrate runs the same for everyone — tiers govern depth, not capability.',
+    link: '/upgrade',
+    linkLabel: 'View Plans',
+    gradient: 'from-rose-500/20 via-pink-500/10 to-transparent',
     accentColor: 'text-rose-400',
     accentBg: 'bg-rose-500/10',
   },
@@ -114,19 +133,33 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="relative bg-card border border-border/60 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden"
         >
-          {/* Gradient header */}
-          <div className={`relative h-28 sm:h-32 bg-gradient-to-br ${current.gradient} overflow-hidden`}>
-            {/* Subtle grid pattern */}
-            <div className="absolute inset-0 opacity-[0.03]" style={{
-              backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
-              backgroundSize: '20px 20px',
-            }} />
+          {/* Gradient header with Memory Stream aesthetic */}
+          <div className={`relative h-32 sm:h-36 bg-gradient-to-br ${current.gradient} overflow-hidden`}>
+            {/* Flowing stream lines */}
+            <div className="absolute inset-0 overflow-hidden">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
+                  style={{ top: `${20 + i * 15}%`, width: '120%', left: '-10%' }}
+                  animate={{ x: ['-10%', '10%', '-10%'] }}
+                  transition={{ duration: 4 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
+                />
+              ))}
+            </div>
+
+            {/* Header label */}
+            <div className="absolute top-3 left-4">
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/60">
+                Memory Stream
+              </span>
+            </div>
             
             {/* Close button */}
             <button
               onClick={onDismiss}
               className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
-              aria-label="Close onboarding"
+              aria-label="Close"
             >
               <X className="h-4 w-4" />
             </button>
@@ -141,7 +174,7 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
                 transition={{ type: 'spring', damping: 15 }}
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-10"
               >
-                <div className={`p-3.5 rounded-2xl bg-card border border-border shadow-lg ${current.accentColor}`}>
+                <div className={`p-4 rounded-2xl bg-card border border-border shadow-lg ${current.accentColor}`}>
                   {current.icon}
                 </div>
               </motion.div>
@@ -149,15 +182,14 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
           </div>
 
           {/* Content */}
-          <div className="px-6 pt-10 pb-4">
+          <div className="px-6 pt-12 pb-4">
             {/* Step indicator */}
-            <div className="flex items-center justify-center gap-1.5 mb-4">
+            <div className="flex items-center justify-center gap-1.5 mb-5">
               {STEPS.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setStep(i)}
-                  className="group"
-                  aria-label={`Go to step ${i + 1}`}
+                  aria-label={`Step ${i + 1}`}
                 >
                   <motion.div
                     className={`h-1.5 rounded-full transition-colors ${
@@ -180,9 +212,15 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
                 className="text-center"
               >
                 <h3 className="text-xl font-bold text-foreground mb-2">{current.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-sm mx-auto">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-sm mx-auto">
                   {current.description}
                 </p>
+
+                {current.detail && (
+                  <p className="text-xs font-mono text-primary/70 leading-relaxed mb-4 max-w-sm mx-auto px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
+                    {current.detail}
+                  </p>
+                )}
 
                 <Link to={current.link} onClick={onDismiss}>
                   <Button variant="outline" size="sm" className="gap-1.5 border-border/60 hover:border-primary/40 transition-colors">
@@ -201,7 +239,7 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
                 onClick={onDismiss}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors px-1 py-1"
               >
-                Skip tour
+                Skip
               </button>
               <div className="flex gap-2">
                 {step > 0 && (
@@ -216,7 +254,7 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
                   </Button>
                 ) : (
                   <Button size="sm" onClick={onDismiss} className="gap-1.5 text-xs h-8">
-                    Get Started <Sparkles className="w-3 h-3" />
+                    Start Building <Sparkles className="w-3 h-3" />
                   </Button>
                 )}
               </div>
