@@ -178,10 +178,7 @@ export function HeroMetaSubstrate() {
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center mb-8 sm:mb-20">
           
           {/* Left column — Copy */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+          <div
             className="text-center lg:text-left order-1"
           >
             {/* Engine badge */}
@@ -310,7 +307,7 @@ export function HeroMetaSubstrate() {
                 <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
               </a>
             </motion.div>
-          </motion.div>
+          </div>
           
           {/* Right column — Memory River visualization + context */}
           <motion.div
