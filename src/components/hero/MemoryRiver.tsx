@@ -305,6 +305,27 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
         </AnimatePresence>
         <RiverChannel />
         {particles.map((p) => <Particle key={p.id} {...p} />)}
+
+        {/* Ghost pipeline drift nodes */}
+        {ghostPipelines.map(p => (
+          <div
+            key={p.id}
+            className="absolute z-[15] pointer-events-none"
+            style={{
+              left: `${p.x}%`,
+              top: "20%",
+              animation: `ghostDrift 3.5s ease-in ${p.delay}s forwards`,
+            }}
+          >
+            <div
+              className="w-3 h-3 rounded-sm rotate-45 border border-primary/40"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.05))",
+                boxShadow: "0 0 12px 2px hsl(var(--primary) / 0.15)",
+              }}
+            />
+          </div>
+        ))}
         {crystals.map((c) => <CrystallizedNode key={c.label} {...c} />)}
 
         {/* Left origin glow */}
