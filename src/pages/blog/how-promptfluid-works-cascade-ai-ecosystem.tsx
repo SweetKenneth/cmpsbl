@@ -870,7 +870,7 @@ const HowPromptFluidWorks = () => {
             <h2 className="text-4xl font-bold mb-6 text-foreground">The Future of Intelligent Automation</h2>
             
             <p className="text-lg leading-relaxed mb-6">
-              CMPSBL — built by PromptFluid — represents a fundamental shift in how we interact with artificial intelligence. 
+              CMPSBL represents a fundamental shift in how we interact with artificial intelligence. 
               Rather than treating AI as a tool you must constantly direct, the substrate enables AI that flows—adapting to 
               challenges, learning from outcomes, and operating autonomously while remaining completely aligned with 
               your objectives.

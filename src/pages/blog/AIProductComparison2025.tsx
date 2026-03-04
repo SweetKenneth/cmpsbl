@@ -171,7 +171,7 @@ const AIProductComparison2025 = () => {
               </p>
               
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-6">
-                <h3 className="font-bold text-foreground mb-4">PromptFluid Free-Tier Network</h3>
+                <h3 className="font-bold text-foreground mb-4">CMPSBL NEXUS Free-Tier Network</h3>
                 <ul className="space-y-2">
                   <li><strong className="text-primary">Groq:</strong> Ultra-fast inference with Llama 3.3-70B</li>
                   <li><strong className="text-primary">Cerebras:</strong> High-performance fallback</li>
@@ -202,7 +202,7 @@ const AIProductComparison2025 = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">PromptFluid Free-Tier</h4>
+                    <h4 className="font-medium mb-2">CMPSBL NEXUS Free-Tier</h4>
                     <ul className="space-y-1 text-muted-foreground">
                       <li>Cost: $0.00/request</li>
                       <li>Response: 0.5-2 seconds</li>
@@ -224,7 +224,7 @@ const AIProductComparison2025 = () => {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-medium mb-2">PromptFluid Free-Tier</h4>
+                    <h4 className="font-medium mb-2">CMPSBL NEXUS Free-Tier</h4>
                     <ul className="space-y-1 text-muted-foreground">
                       <li>Cost: $0.00/article</li>
                       <li>Generation: 30 seconds</li>
@@ -267,7 +267,7 @@ const AIProductComparison2025 = () => {
           <section className="bg-card border border-border rounded-lg p-8 text-center">
             <h3 className="text-xl font-bold mb-4 text-foreground">Try Multi-Model Orchestration</h3>
             <p className="text-muted-foreground mb-6">
-              See intelligent routing in action with PromptFluid.
+              See intelligent routing in action with CMPSBL NEXUS.
             </p>
             <Link 
               to="/" 
