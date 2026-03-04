@@ -12,7 +12,7 @@ import {
   Building2, Cpu, Shield, Layers, Eye, LogOut, Home, Network, Zap,
   Menu, X, Brain, Gauge, HardDrive, FileText, Settings,
   GitBranch, Wrench, AlertTriangle, MessageSquare, Dna,
-  Users, Wand2, Key, Radio,
+  Users, Wand2, Key, Radio, Hammer, Compass,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
