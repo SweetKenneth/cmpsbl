@@ -420,11 +420,13 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'terminal' && (
-              <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Suspense fallback={<PanelLoader />}>
-                  <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
-                </Suspense>
-              </motion.div>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing pipelines in real-time.">
+                <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <Suspense fallback={<PanelLoader />}>
+                    <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
+                  </Suspense>
+                </motion.div>
+              </TierGate>
             )}
 
             {activeTab === 'analytics' && (
@@ -434,67 +436,87 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'nexus' && (
-              <PanelContainer id="nexus">
-                <Suspense fallback={<PanelLoader />}><NexusTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="Multi-model fleet routing engine. Route prompts across providers with intelligent cost/quality optimization.">
+                <PanelContainer id="nexus">
+                  <Suspense fallback={<PanelLoader />}><NexusTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'intent' && (
-              <PanelContainer id="intent">
-                <ModuleErrorBoundary moduleName="INTENT">
-                  <Suspense fallback={<PanelLoader />}>
-                    <IntentPanel />
-                  </Suspense>
-                </ModuleErrorBoundary>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="INTENT" description="Module mesh governance hub. Monitor inter-module communication, approve actions, and manage intent routing across the 38-node matrix.">
+                <PanelContainer id="intent">
+                  <ModuleErrorBoundary moduleName="INTENT">
+                    <Suspense fallback={<PanelLoader />}>
+                      <IntentPanel />
+                    </Suspense>
+                  </ModuleErrorBoundary>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'cortex' && (
-              <PanelContainer id="cortex">
-                <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Pipeline orchestration engine. Design, monitor, and debug multi-step execution pipelines with real-time tracing.">
+                <PanelContainer id="cortex">
+                  <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'atlas' && (
-              <PanelContainer id="atlas">
-                <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ATLAS" description="Control plane management. Configure capability toggles, revision snapshots, and environment-scoped settings.">
+                <PanelContainer id="atlas">
+                  <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'engines' && (
-              <PanelContainer id="engines">
-                <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with circuit breakers. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
+                <PanelContainer id="engines">
+                  <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'encode' && (
-              <PanelContainer id="encode">
-                <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation pipeline. Monitor code agent execution, review outputs, and track pipeline performance.">
+                <PanelContainer id="encode">
+                  <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'mesh' && (
-              <PanelContainer id="mesh">
-                <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="Mesh Activity" description="Live capability mesh visualization. Track inter-node communication patterns, throughput, and mesh topology.">
+                <PanelContainer id="mesh">
+                  <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'evolution' && (
-              <PanelContainer id="evolution">
-                <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution pipeline with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
+                <PanelContainer id="evolution">
+                  <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'shadow' && (
-              <PanelContainer id="shadow">
-                <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="SHADOW" description="Adversarial probe monitoring and TSAC divergence detection. Inspect immunity mesh activity and shadow execution traces.">
+                <PanelContainer id="shadow">
+                  <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'ccr' && (
-              <PanelContainer id="ccr">
-                <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — tiered MEMORY management and DREAM synthesis cycles. Monitor hot/warm/cold memory tiers and heuristic consolidation.">
+                <PanelContainer id="ccr">
+                  <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'operations' && (
@@ -504,39 +526,49 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'oracle' && (
-              <PanelContainer id="oracle">
-                <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, scenario simulation (COMPASS), and pattern detection (ECHO). Advanced foresight for system optimization.">
+                <PanelContainer id="oracle">
+                  <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'forge' && (
-              <PanelContainer id="forge">
-                <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production pipeline with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
+                <PanelContainer id="forge">
+                  <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'cognitives' && (
-              <PanelContainer id="cognitives">
-                <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
+                <PanelContainer id="cognitives">
+                  <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'agency' && (
-              <PanelContainer id="agency">
-                <Suspense fallback={<PanelLoader />}>
-                  <AgencyGallery />
-                </Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
+                <PanelContainer id="agency">
+                  <Suspense fallback={<PanelLoader />}>
+                    <AgencyGallery />
+                  </Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'security' && (
-              <PanelContainer id="security">
-                <ModuleErrorBoundary moduleName="Security">
-                  <Suspense fallback={<PanelLoader />}>
-                    <SecurityPanel isGovernor={isGovernor} isOperator={isOperator} />
-                  </Suspense>
-                </ModuleErrorBoundary>
-              </PanelContainer>
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail. Advanced threat monitoring, vulnerability assessment, and incident response.">
+                <PanelContainer id="security">
+                  <ModuleErrorBoundary moduleName="Security">
+                    <Suspense fallback={<PanelLoader />}>
+                      <SecurityPanel isGovernor={isGovernor} isOperator={isOperator} />
+                    </Suspense>
+                  </ModuleErrorBoundary>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'governor' && isGovernor && (
