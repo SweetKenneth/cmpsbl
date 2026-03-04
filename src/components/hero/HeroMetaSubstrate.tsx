@@ -3,7 +3,7 @@
  * Studio-grade hero with cinematic typography and fluid motion
  */
 
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef, useMemo, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";
+
+const SubstrateParticlesComponent = lazy(() => import("@/components/ui/SubstrateParticles").then(m => ({ default: m.SubstrateParticles })));
+function SubstrateParticlesLazy() {
+  return (
+    <Suspense fallback={null}>
+      <SubstrateParticlesComponent count={25} speed={0.4} glow className="opacity-60" />
+    </Suspense>
+  );
+}
 
 // ─── Typing Animation ──────────────────────────────────────────
 function TypedText({ texts, gradientColors, className }: { 
@@ -138,9 +147,12 @@ function HeroBackground() {
       {/* Base */}
       <div className="absolute inset-0 bg-background" />
       
-      {/* Gradient orbs — reduced count, bigger, softer */}
+      {/* Substrate particle field */}
+      <SubstrateParticlesLazy />
+      
+      {/* Gradient orbs with Memory Stream drift animation */}
       <motion.div
-        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full"
+        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full animate-memory-drift"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.08) 0%, transparent 60%)" }}
         animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
@@ -151,15 +163,16 @@ function HeroBackground() {
         animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
-      
-      {/* Subtle grid */}
-      <div 
-        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
-        style={{
-          backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
-          backgroundSize: "80px 80px",
-        }}
+      {/* Third orb — purple accent for Memory Stream */}
+      <motion.div
+        className="absolute top-1/3 left-1/2 w-[500px] h-[500px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
+        animate={{ x: [0, -40, 20, 0], y: [0, 30, -20, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
       />
+      
+      {/* Substrate grid */}
+      <div className="absolute inset-0 substrate-grid-bg opacity-[0.3] dark:opacity-[0.5]" />
       
       {/* Vignette */}
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 100%)" }} />

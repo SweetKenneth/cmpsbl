@@ -64,17 +64,29 @@ export function UnifiedAdminSidebar() {
 
   return (
     <Sidebar className={cn(collapsed ? "w-14" : "w-64")} collapsible="icon">
-      <SidebarContent className="glass-panel border-r border-border/50">
+      <SidebarContent className="glass-panel border-r border-border/50 relative overflow-hidden">
+        {/* Substrate ambient glow in sidebar */}
+        <div className="absolute inset-0 pointer-events-none animate-substrate-breathe">
+          <div 
+            className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full blur-3xl"
+            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.08), transparent)" }}
+          />
+          <div 
+            className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl"
+            style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.06), transparent)" }}
+          />
+        </div>
+        
         {/* Logo Section */}
-        <div className="p-3 sm:p-4 border-b border-border/50">
+        <div className="p-3 sm:p-4 border-b border-border/50 relative">
           <NavLink to="/admin/dashboard" className="flex items-center gap-3" onClick={handleNavClick}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center animate-pulse-glow flex-shrink-0">
-              <Brain className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center animate-signal-pulse flex-shrink-0">
+              <Brain className="w-5 h-5 text-primary-foreground" />
             </div>
             {!collapsed && (
               <div className="min-w-0">
-                <h2 className="font-bold text-sm gradient-text truncate">CMPSBL</h2>
-                <p className="text-xs text-muted-foreground truncate">Substrate Admin</p>
+                <h2 className="font-bold text-sm memory-stream-gradient-text truncate">CMPSBL</h2>
+                <p className="text-[10px] text-muted-foreground tracking-widest uppercase truncate">Signal → Silicon</p>
               </div>
             )}
           </NavLink>
@@ -213,9 +225,10 @@ export function UnifiedAdminSidebar() {
 
         {/* Footer */}
         {!collapsed && (
-          <div className="p-3 sm:p-4 border-t border-border/50">
-            <p className="text-xs text-muted-foreground text-center">
-              CMPSBL Admin
+          <div className="p-3 sm:p-4 border-t border-border/50 relative">
+            <div className="h-[2px] w-full rounded-full memory-stream-bar mb-3 opacity-60" />
+            <p className="text-[10px] text-muted-foreground text-center tracking-widest uppercase">
+              Memory Stream · Admin
             </p>
           </div>
         )}
