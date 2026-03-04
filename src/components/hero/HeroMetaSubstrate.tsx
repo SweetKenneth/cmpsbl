@@ -307,7 +307,7 @@ export function HeroMetaSubstrate() {
                 <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
               </a>
             </motion.div>
-          </motion.div>
+          </div>
           
           {/* Right column — Memory River visualization + context */}
           <motion.div
