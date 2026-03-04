@@ -4,6 +4,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { MemoryRiver } from '@/components/hero/MemoryRiver';
+import { MEMORY_STREAM_SUBTITLE, MEMORY_STREAM_CTA_AUTH } from '@/lib/branding/memory-stream';
 
 export function FoundryPreview() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export function FoundryPreview() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative text-center max-w-3xl"
+        className="relative text-center max-w-3xl w-full"
       >
         <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
           Memory Stream — CMPSBL®
@@ -36,13 +37,12 @@ export function FoundryPreview() {
         </h1>
 
         <p className="text-lg text-muted-foreground/70 max-w-xl mx-auto mb-8">
-          The Memory Stream continuously produces crystallized pipelines.
-          Sign in to discover and collect them.
+          {MEMORY_STREAM_SUBTITLE}
         </p>
 
-        {/* Memory Stream visualization */}
-        <div className="relative w-full h-20 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
-          <MemoryRiver />
+        {/* Memory Stream visualization — autoCrystallize for ambient life */}
+        <div className="mb-10">
+          <MemoryRiver autoCrystallize />
         </div>
 
         {/* Tier preview */}
@@ -91,7 +91,7 @@ export function FoundryPreview() {
           onClick={() => navigate('/auth')}
           className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-mono text-sm font-bold hover:bg-primary/90 transition-colors"
         >
-          Sign in to Start Crystallizing
+          {MEMORY_STREAM_CTA_AUTH}
         </button>
 
         <motion.div
