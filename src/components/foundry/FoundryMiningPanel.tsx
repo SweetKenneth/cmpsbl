@@ -23,16 +23,21 @@ interface Props {
   isMining: boolean;
   lastResult: MineResponse | null;
   onMine: () => void;
+  onCrystallizing?: (v: boolean) => void;
 }
 
-export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
+export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizing }: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
 
   const handleCrystallize = () => {
+    onCrystallizing?.(true);
     setPhase('sampling');
     setTimeout(() => setPhase('condensing'), 700);
     setTimeout(() => setPhase('crystallizing'), 1400);
-    setTimeout(() => setPhase(null), 2100);
+    setTimeout(() => {
+      setPhase(null);
+      onCrystallizing?.(false);
+    }, 2200);
     onMine();
   };
 
