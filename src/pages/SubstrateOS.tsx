@@ -35,6 +35,7 @@ const NexusTab = lazy(() => import('@/components/substrate-os/NexusTab').then(m 
 const IntentPanel = lazy(() => import('@/components/substrate-os/panels/IntentPanel'));
 const CortexTab = lazy(() => import('@/components/substrate-os/CortexTab').then(m => ({ default: m.CortexTab })));
 const EnginesTab = lazy(() => import('@/components/substrate-os/EnginesTab').then(m => ({ default: m.EnginesTab })));
+const MaintenanceTab = lazy(() => import('@/components/substrate-os/MaintenanceTab').then(m => ({ default: m.MaintenanceTab })));
 const SecurityPanel = lazy(() => import('@/components/substrate-os/panels/SecurityPanel'));
 const AnalyticsTab = lazy(() => import('@/components/substrate-os/AnalyticsTab').then(m => ({ default: m.AnalyticsTab })));
 const GovernorPanel = lazy(() => import('@/components/substrate-os/panels/GovernorPanel'));
@@ -429,7 +430,7 @@ export default function SubstrateOS() {
 
             {activeTab === 'engines' && (
               <PanelContainer id="engines">
-                <Suspense fallback={<PanelLoader />}><EnginesTab enabled={isOperator} /></Suspense>
+                <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
               </PanelContainer>
             )}
 
