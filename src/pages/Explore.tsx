@@ -4,7 +4,6 @@
  */
 
 import { useRef } from "react";
-import PromptFluidHome from "./PromptFluidHome";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
