@@ -102,6 +102,8 @@ export function EnhancedFooter() {
   return (
     <>
       <footer className="relative z-20 border-t border-border bg-gradient-to-b from-background to-muted/30" role="contentinfo">
+        {/* Memory Stream flowing accent bar at top of footer */}
+        <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
