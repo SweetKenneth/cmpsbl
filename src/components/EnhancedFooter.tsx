@@ -114,10 +114,10 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Composable AI Infrastructure
+                Signal → Silicon
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
-                Cognitive infrastructure with persistent memory, composable engines, and governed runtime.
+                The Memory Stream captures raw system behavior and crystallizes it into production-grade software — and when exceptional, into physical silicon.
               </p>
               <Link 
                 to="/upgrade" 

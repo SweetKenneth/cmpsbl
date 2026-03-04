@@ -4,10 +4,11 @@ import { Sparkles, Home, BookOpen, Terminal, Search, ArrowRight } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
+import { motion } from "framer-motion";
 
 // Popular destinations for suggestions
 const SUGGESTIONS = [
-  { name: "Modules", href: "/modules", description: "Browse all substrate modules" },
+  { name: "Memory Stream", href: "/foundry", description: "Crystallize pipelines from the stream" },
   { name: "Documentation", href: "/documentation", description: "API reference & guides" },
   { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers" },
   { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents" },
@@ -24,7 +25,6 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-    // Track 404 in analytics
     import('@/integrations/supabase/client').then(({ supabase }) => {
       supabase.from('analytics_events').insert({
         event_type: '404',
@@ -36,11 +36,9 @@ const NotFound = () => {
     });
   }, [location.pathname]);
 
-  // Fuzzy match suggestions based on the attempted path
   const smartSuggestions = useMemo(() => {
     const pathParts = location.pathname.toLowerCase().split("/").filter(Boolean);
     if (pathParts.length === 0) return SUGGESTIONS.slice(0, 4);
-    
     return SUGGESTIONS.filter(s => 
       pathParts.some(p => 
         s.name.toLowerCase().includes(p) || 
@@ -60,33 +58,67 @@ const NotFound = () => {
     : displayedSuggestions;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
-      <SEO title="Page Not Found — CMPSBL" description="This page doesn't exist in the substrate." noindex />
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      <SEO title="Signal Lost — CMPSBL" description="This path dissolved before crystallization." noindex />
       
-      {/* Ambient background */}
+      {/* Memory Stream ambient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-[80px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-violet-500/5 blur-[60px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-sky-500/5 blur-[60px]" />
+        {/* Drifting stream lines */}
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
+            style={{ top: `${30 + i * 20}%`, left: 0, right: 0 }}
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ duration: 12 + i * 4, repeat: Infinity, ease: 'linear' }}
+          />
+        ))}
       </div>
 
       <div className="relative z-10 text-center max-w-lg w-full">
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center gap-2 mb-8"
+        >
           <Sparkles className="w-5 h-5 text-primary/60" />
-          <span className="text-sm text-muted-foreground">Lost in the substrate</span>
-        </div>
+          <span className="text-sm text-muted-foreground font-mono">Signal dissolved before crystallization</span>
+        </motion.div>
 
-        <h1 className="text-6xl font-light text-foreground mb-4">404</h1>
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="text-6xl font-light text-foreground mb-4"
+        >
+          404
+        </motion.h1>
         
-        <p className="text-lg text-muted-foreground mb-6">
-          This path dissolves into the void.
-        </p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg text-muted-foreground mb-2"
+        >
+          This path never crystallized from the Memory Stream.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-xs font-mono text-muted-foreground/50 mb-6"
+        >
+          Quality floor: 68 · Only stable systems survive
+        </motion.p>
 
         {/* Search box */}
         <div className="relative mb-6 max-w-sm mx-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search for a page..."
+            placeholder="Search the stream..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-3 bg-muted/30 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
@@ -95,8 +127,8 @@ const NotFound = () => {
 
         {/* Smart suggestions */}
         <div className="mb-8 space-y-2 max-w-sm mx-auto text-left">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider px-1">
-            {query.trim() ? "Results" : "Maybe you meant"}
+          <p className="text-xs text-muted-foreground uppercase tracking-wider px-1 font-mono">
+            {query.trim() ? "Results" : "Crystallized paths"}
           </p>
           {filteredSuggestions.map((s) => (
             <Link
@@ -114,18 +146,14 @@ const NotFound = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button
-            onClick={() => navigate('/')}
-            variant="outline"
-            className="gap-2"
-          >
+          <Button onClick={() => navigate('/')} variant="outline" className="gap-2">
             <Home className="w-4 h-4" />
             Home
           </Button>
           <Button asChild variant="outline" className="gap-2">
-            <Link to="/documentation">
-              <BookOpen className="w-4 h-4" />
-              Docs
+            <Link to="/foundry">
+              <Sparkles className="w-4 h-4" />
+              Memory Stream
             </Link>
           </Button>
           <Button asChild variant="outline" className="gap-2">

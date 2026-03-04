@@ -232,8 +232,8 @@ export function CmpsblNav() {
             >
               <CmpsblLogo size="sm" priority className="transition-transform duration-300 group-hover:scale-105" />
               <div className="hidden sm:flex flex-col">
-                <span className="text-lg font-bold tracking-tight leading-none">Clockless</span>
-                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Cognitive Reality</span>
+                <span className="text-lg font-bold tracking-tight leading-none">Memory Stream</span>
+                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
               </div>
             </Link>
 

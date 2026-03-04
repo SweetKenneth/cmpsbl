@@ -164,25 +164,25 @@ export default function Explore() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8"
               >
                 <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white/90">The Future is Cognitive</span>
+                <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </motion.div>
               
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
-                Composable{" "}
+                The Memory{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">AI Infrastructure</span>
+                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Stream Awaits</span>
               </h2>
               <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                The CMPSBL Substrate powers cognitive infrastructure with persistent memory, composable engines, and governed runtime.
-                Start free or subscribe for deeper capacity.
+                From raw signal capture to crystallized software — and when exceptional, into physical silicon.
+                Start free with 3 pipeline slots. Every pull is real software.
               </p>
               
               {/* Mini stats row */}
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                   { value: "9", label: "Modules" },
-                   { value: "24", label: "Artifact Packs" },
-                   { value: String(providersCount), label: "AI Providers" },
+                   { value: "1,143+", label: "Crystallized" },
+                   { value: "24", label: "Pipeline Packs" },
+                   { value: "68+", label: "Quality Floor" },
                    { value: "99.9%", label: "Uptime" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
@@ -194,16 +194,16 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/upgrade">
+                  <Link to="/foundry">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    View Plans
+                    Enter the Memory Stream
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
-                  <Link to="/about">
+                  <Link to="/upgrade">
                     <Terminal className="w-5 h-5 mr-2" />
-                    About CMPSBL
+                    View Plans
                   </Link>
                 </Button>
               </div>
