@@ -658,7 +658,7 @@ export class AtlasCommandInterpreter {
     
     // Fetch usage stats
     const { data: usage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used, tokens_used')
       .gte('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
@@ -669,7 +669,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -691,7 +691,7 @@ export class AtlasCommandInterpreter {
   private async handleUsageQuery(command: ParsedCommand): Promise<CommandResult> {
     // Fetch today's usage
     const { data: todayUsage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used, tokens_used')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
@@ -702,7 +702,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -728,7 +728,7 @@ export class AtlasCommandInterpreter {
   private async handleCycleRun(command: ParsedCommand): Promise<CommandResult> {
     // Check usage first
     const { data: todayUsage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
@@ -814,7 +814,7 @@ export class AtlasCommandInterpreter {
     
     // Check free tier usage
     const { data: usage } = await supabase
-      .from('ai_daily_quota')
+      .from('lovable_ai_usage')
       .select('calls_used')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
