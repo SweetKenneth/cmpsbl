@@ -27,7 +27,8 @@ import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { useMetric } from '@/stores/publicMetricsStore';
 import { OSHeader } from '@/components/substrate-os/OSHeader';
 import { cn } from '@/lib/utils';
-import { TierGate, TierLockBadge, type SubstrateRole } from '@/components/substrate-os/TierGate';
+import { TierGate, TierLockBadge } from '@/components/substrate-os/TierGate';
+import { type SubstrateRole } from '@/hooks/useUserRole';
 
 // ── Lazy-loaded panels ──
 const OverviewPanel = lazy(() => import('@/components/substrate-os/panels/OverviewPanel'));
