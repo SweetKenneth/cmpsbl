@@ -36,6 +36,8 @@ const IntentPanel = lazy(() => import('@/components/substrate-os/panels/IntentPa
 const CortexTab = lazy(() => import('@/components/substrate-os/CortexTab').then(m => ({ default: m.CortexTab })));
 const EnginesTab = lazy(() => import('@/components/substrate-os/EnginesTab').then(m => ({ default: m.EnginesTab })));
 const MaintenanceTab = lazy(() => import('@/components/substrate-os/MaintenanceTab').then(m => ({ default: m.MaintenanceTab })));
+const EvolutionTab = lazy(() => import('@/components/substrate-os/EvolutionTab').then(m => ({ default: m.EvolutionTab })));
+const ShadowTab = lazy(() => import('@/components/substrate-os/ShadowTab').then(m => ({ default: m.ShadowTab })));
 const SecurityPanel = lazy(() => import('@/components/substrate-os/panels/SecurityPanel'));
 const AnalyticsTab = lazy(() => import('@/components/substrate-os/AnalyticsTab').then(m => ({ default: m.AnalyticsTab })));
 const GovernorPanel = lazy(() => import('@/components/substrate-os/panels/GovernorPanel'));
@@ -83,6 +85,8 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers' },
     { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline' },
+    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC' },
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes' },
     ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center' }] : []),
     { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit' },
