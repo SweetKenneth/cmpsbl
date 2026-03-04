@@ -30,7 +30,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the architecture library covering all 9 modules, 5 meshes, and 9 zones."
+    description: "Full access to the architecture library covering all 38 nodes across 12 sectors."
   },
   {
     icon: BookOpen,
