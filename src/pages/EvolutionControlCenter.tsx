@@ -3,7 +3,7 @@
  * Mobile-first, design-system-aligned, with animated hero diagram
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import { SEO } from '@/components/SEO';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,12 +23,12 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import evolutionHero from '@/assets/evolution-hero.jpg';
 
-// Lazy-load the tool panels
-import { DryRunPreview } from '@/components/evolution/DryRunPreview';
-import { RollbackPanel } from '@/components/evolution/RollbackPanel';
-import { ScanTrendDashboard } from '@/components/evolution/ScanTrendDashboard';
-import { FalsePositiveFeedback } from '@/components/evolution/FalsePositiveFeedback';
-import { AgentConnectGuide } from '@/components/evolution/AgentConnectGuide';
+// Lazy-load tool panels to avoid pulling recharts/heavy deps into initial bundle
+const DryRunPreview = lazy(() => import('@/components/evolution/DryRunPreview').then(m => ({ default: m.DryRunPreview })));
+const RollbackPanel = lazy(() => import('@/components/evolution/RollbackPanel').then(m => ({ default: m.RollbackPanel })));
+const ScanTrendDashboard = lazy(() => import('@/components/evolution/ScanTrendDashboard').then(m => ({ default: m.ScanTrendDashboard })));
+const FalsePositiveFeedback = lazy(() => import('@/components/evolution/FalsePositiveFeedback').then(m => ({ default: m.FalsePositiveFeedback })));
+const AgentConnectGuide = lazy(() => import('@/components/evolution/AgentConnectGuide').then(m => ({ default: m.AgentConnectGuide })));
 
 // ── Case studies ────────────────────────────────────────────
 const CASE_STUDIES = [
