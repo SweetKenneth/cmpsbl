@@ -1,6 +1,6 @@
 /**
- * Module Control Card
- * Gradient accents, real-time status, action buttons with Substrate Voice
+ * Stream Control Card
+ * Gradient accents, real-time status, action buttons with Memory Stream Voice
  */
 
 import { useState } from 'react';

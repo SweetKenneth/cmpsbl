@@ -293,7 +293,7 @@ export function BuiltForSection() {
             <span className="text-xs">Built For You</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            Choose Your{" "}
+            Crystallize Your{" "}
             <span 
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-amber)))",
@@ -303,12 +303,12 @@ export function BuiltForSection() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Path
+              Signal
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The same cognitive infrastructure adapts to your use case. 
-            Pre-configured packages ready for 
+            The Memory Stream adapts to your use case. 
+            Pre-configured pipeline packs ready for 
             <span className="text-foreground font-medium"> gaming</span>, 
             <span className="text-foreground font-medium"> development</span>, and 
             <span className="text-foreground font-medium"> enterprise</span>.

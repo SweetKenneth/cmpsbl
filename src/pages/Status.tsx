@@ -242,10 +242,10 @@ export default function Status() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="System Status | CMPSBL"
-        description="Real-time operational status of the CMPSBL platform — all modules, protective layers, and infrastructure zones."
+        title="Memory Stream Status — CMPSBL"
+        description="Real-time operational status of the Memory Stream — all systems, protective layers, and signal zones."
         canonical="https://cmpsbl.com/status"
-        keywords={["system status", "uptime", "CMPSBL status", "substrate health"]}
+        keywords={["memory stream status", "uptime", "CMPSBL status", "stream health"]}
       />
       <PublicNav />
 
@@ -256,9 +256,9 @@ export default function Status() {
             <Activity className="w-3 h-3" />
             <span className="text-xs font-semibold">Live Status</span>
           </Badge>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">System Status</h1>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">Memory Stream Status</h1>
           <p className="text-muted-foreground">
-            Real-time health of all production modules · Auto-refreshes every 30 seconds
+            Real-time health of all stream systems · Auto-refreshes every 30 seconds
           </p>
         </motion.div>
 
@@ -363,7 +363,7 @@ export default function Status() {
 
         {/* Footer note */}
         <div className="mt-8 text-center text-xs text-muted-foreground/50">
-          <p>Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Immunity Mesh + ENCODE</p>
+          <p>Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Memory Stream Immunity</p>
         </div>
       </main>
 

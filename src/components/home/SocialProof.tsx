@@ -15,13 +15,13 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "CMPSBL's persistent memory changed how our agents operate. They finally remember context across sessions.",
+    quote: "The Memory Stream changed how our agents operate. Persistent crystallization means they finally remember context across sessions.",
     author: "Engineering Lead",
     role: "Fortune 500 AI Team",
     rating: 5,
   },
   {
-    quote: "The modular architecture means we only pay for what we use. DREAM cycles alone saved us 40 hours/month on retraining.",
+    quote: "The stream architecture means we only pay for what we crystallize. DREAM cycles alone saved us 40 hours/month on retraining.",
     author: "CTO",
     role: "Series B Startup",
     rating: 5,
@@ -40,10 +40,10 @@ export function SocialProof() {
       <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-            Trusted by builders who ship AI
+            Trusted by builders crystallizing from the stream
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-            Teams using the substrate to build AI that compounds.
+            Teams using the Memory Stream to build intelligence that compounds.
           </p>
         </div>
 

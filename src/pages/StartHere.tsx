@@ -77,7 +77,7 @@ export default function StartHere() {
           {/* Body */}
           <div className="space-y-8">
             <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl">
-               CMPSBL is the operating system for AI applications. Drop in persistent memory, intelligent routing, and governed orchestration — and your AI stops forgetting, starts learning, and stays secure.
+               The Memory Stream is a continuous substrate of evolving software systems. Drop in persistent memory, intelligent routing, and governed orchestration — your signal crystallizes into silicon.
              </motion.p>
              <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
                Everything below is free. No credit card, no trial. Pick a product, build something real, and see the difference.
@@ -146,7 +146,7 @@ export default function StartHere() {
             className="mt-16 pt-8 border-t border-border/30"
           >
             <p className="text-sm text-muted-foreground italic">
-              The infrastructure compounds because of the architecture, not any single feature. Start with one module. See for yourself.
+              The stream compounds because of the architecture, not any single system. Start with one crystallization. See for yourself.
             </p>
           </motion.div>
         </div>

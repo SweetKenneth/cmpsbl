@@ -79,8 +79,8 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
               <Activity className="w-4 h-4 text-emerald-400" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Matrix Integrity</h3>
-              <p className="text-[10px] text-muted-foreground font-mono">{report.nodeCount} nodes · Σw = {report.totalWeight}</p>
+              <h3 className="text-sm font-semibold text-foreground">Stream Integrity</h3>
+              <p className="text-[10px] text-muted-foreground font-mono">{report.nodeCount} nodes · Σw = {report.totalWeight} · Signal → Silicon</p>
             </div>
           </div>
           <Badge variant="outline" className={cn('text-xs', statusBg, statusColor)}>
