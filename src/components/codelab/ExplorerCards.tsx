@@ -65,7 +65,7 @@ const modules: ModuleConfig[] = [
   {
     id: "ripple",
     name: "Ripple",
-    description: "Pub/sub messaging, event queues, inter-module communication",
+    description: "Pub/sub messaging, event queues, inter-system communication",
     icon: MessageSquare,
     color: "text-indigo-500",
     bgColor: "bg-indigo-500/10",
@@ -99,7 +99,7 @@ const modules: ModuleConfig[] = [
     color: "text-cyan-500",
     bgColor: "bg-cyan-500/10",
     actions: [
-      { name: "status", description: "Get brain module status" },
+      { name: "status", description: "Get BRAIN system status" },
       { name: "query", description: "Query memories", params: [{ name: "query_text", type: "string", required: true, placeholder: "What do you remember about..." }] },
       { name: "remember", description: "Store a memory", params: [{ name: "content", type: "string", required: true }, { name: "memory_type", type: "string", required: true, placeholder: "fact|insight|experience" }] },
       { name: "reflect", description: "Trigger reflection cycle" },
@@ -114,7 +114,7 @@ const modules: ModuleConfig[] = [
     color: "text-purple-500",
     bgColor: "bg-purple-500/10",
     actions: [
-      { name: "status", description: "Get decode module status" },
+      { name: "status", description: "Get DECODE system status" },
       { name: "chat", description: "Chat with interpreter", params: [{ name: "message", type: "string", required: true, placeholder: "Your message..." }] },
       { name: "intent", description: "Extract intent", params: [{ name: "message", type: "string", required: true }] },
       { name: "propose", description: "Submit proposal", params: [{ name: "idea", type: "string", required: true }] },
@@ -143,7 +143,7 @@ const modules: ModuleConfig[] = [
     color: "text-amber-500",
     bgColor: "bg-amber-500/10",
     actions: [
-      { name: "status", description: "Get defense module status" },
+      { name: "status", description: "Get DEFENSE system status" },
       { name: "analyze", description: "Analyze request", params: [{ name: "ip", type: "string", placeholder: "IP address" }] },
       { name: "reputation", description: "Check IP reputation", params: [{ name: "ip_address", type: "string", required: true }] },
       { name: "posture", description: "Get security posture" },
@@ -158,7 +158,7 @@ const modules: ModuleConfig[] = [
     color: "text-green-500",
     bgColor: "bg-green-500/10",
     actions: [
-      { name: "status", description: "Get nexus module status" },
+      { name: "status", description: "Get NEXUS system status" },
       { name: "text", description: "Generate text", params: [{ name: "prompt", type: "string", required: true }, { name: "model", type: "string", placeholder: "openai|anthropic|google" }] },
       { name: "route", description: "Auto-route task", params: [{ name: "task", type: "string", required: true }] },
       { name: "providers", description: "List available providers" },
@@ -204,7 +204,7 @@ const modules: ModuleConfig[] = [
     bgColor: "bg-emerald-500/10",
     actions: [
       { name: "status", description: "Get evolution status" },
-      { name: "scan", description: "Scan for improvements", params: [{ name: "module", type: "string", placeholder: "brain|defense|nexus" }] },
+      { name: "scan", description: "Scan for improvements", params: [{ name: "system", type: "string", placeholder: "brain|defense|nexus" }] },
       { name: "jobs", description: "List recent scan jobs" },
       { name: "quota", description: "Check scan quota" },
     ],

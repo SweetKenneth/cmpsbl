@@ -397,7 +397,7 @@ const health = engine.status();
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">Sealed Runtime. Protected IP.</h2>
               <p className="text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
                 You get the full power of the engine without seeing a single line of its internals.
-                Delivered as a sealed, obfuscated module — ready to run, impossible to reverse.
+                Delivered as a sealed, obfuscated runtime — ready to run, impossible to reverse.
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-xs font-mono text-muted-foreground">
                 <span className="px-3 py-1.5 rounded-full border border-border/50 bg-card">Source Sealed</span>
