@@ -1,6 +1,7 @@
 /**
  * CMPSBL® DECODE Chat
  * User-facing cognitive interface to the substrate
+ * Now with full conversation memory — DECODE remembers the entire thread.
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -8,7 +9,6 @@ import { MessageCircle, X, Send, Sparkles, RefreshCw, WifiOff } from "lucide-rea
 import { DecodeMarkdown } from "./decode/DecodeMarkdown";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { decode, substrate } from "@/lib/substrate";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
@@ -28,12 +28,34 @@ interface ConnectionState {
   retryCount: number;
 }
 
+const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode-chat`;
+const SESSION_STORAGE_KEY = 'decode_chat_messages';
+
+/** Persist messages to sessionStorage so refreshes within a tab keep context */
+function persistMessages(msgs: Message[]) {
+  try {
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(msgs.slice(-60)));
+  } catch { /* storage full — ignore */ }
+}
+
+function loadPersistedMessages(): Message[] {
+  try {
+    const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* corrupt — ignore */ }
+  return [];
+}
+
 export function DecodeChat() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate Matrix Nodes.\n\nHow can I help you?' }
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const persisted = loadPersistedMessages();
+    if (persisted.length > 0) return persisted;
+    return [
+      { role: 'assistant', content: 'DECODE online. Sovereign cognitive interface active.\n\nState your intent, Operator.' }
+    ];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<'customer_service' | 'admin'>('customer_service');
@@ -55,6 +77,13 @@ export function DecodeChat() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  // Persist messages whenever they change
+  useEffect(() => {
+    if (messages.length > 1) {
+      persistMessages(messages);
+    }
+  }, [messages]);
+
   // Cleanup retry timeout on unmount
   useEffect(() => {
     return () => {
@@ -64,41 +93,24 @@ export function DecodeChat() {
     };
   }, []);
 
-  // Self-healing connection recovery - must be before any conditional returns
+  // Self-healing connection recovery
   const attemptRecovery = useCallback(async () => {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
       toast.error('Connection issues', {
-        description: 'Unable to reach Decode. Please try again later.'
+        description: 'Unable to reach DECODE. Please try again later.'
       });
       return;
     }
 
-    console.log(`🔄 Attempting connection recovery (attempt ${connection.retryCount + 1})...`);
-    
-    try {
-      const response = await substrate.invoke({ module: 'decode', action: 'status' });
-
-      if (response.success) {
-        setConnection({
-          status: 'connected',
-          lastSuccess: Date.now(),
-          retryCount: 0
-        });
-        toast.success('Connection restored', {
-          description: 'Decode is back online.'
-        });
-      }
-    } catch (e) {
-      setConnection(prev => ({
-        ...prev,
-        retryCount: prev.retryCount + 1,
-        status: 'degraded'
-      }));
-    }
+    setConnection(prev => ({
+      ...prev,
+      retryCount: prev.retryCount + 1,
+      status: 'degraded'
+    }));
   }, [connection.retryCount]);
 
-  // Hide on homepage and decode page - return AFTER all hooks
+  // Hide on homepage and decode page
   const hiddenPaths = ['/', '/decode'];
   if (hiddenPaths.includes(location.pathname)) {
     return null;
@@ -109,80 +121,125 @@ export function DecodeChat() {
     if (!userMessage || isLoading) return;
 
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    const newUserMsg: Message = { role: 'user', content: userMessage };
+    const updatedMessages = [...messages, newUserMsg];
+    setMessages(updatedMessages);
     setIsLoading(true);
     setShowMenu(false);
 
     try {
-      // Use the substrate client directly
-      const response = await decode.chat(userMessage, `session_${Date.now()}`);
+      // Build the messages payload for the LLM — full conversation history
+      const llmMessages = updatedMessages
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .map(m => ({ role: m.role, content: m.content }));
 
-      if (!response.success) throw new Error(response.error || 'Chat failed');
-
-      const data = response.data as any;
-
-      // Update connection state on success
-      setConnection({
-        status: 'connected',
-        lastSuccess: Date.now(),
-        retryCount: 0
+      const resp = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          messages: llmMessages,
+          agentId: "decode-global",
+          agentName: "DECODE",
+          agentSubtitle: "Sovereign Cognitive Interface",
+          agentPowers: ["Intent Interpretation", "Memory Recall", "Module Routing", "Personality Engine"],
+        }),
       });
 
-      if (data?.mode) {
-        setMode(data.mode);
+      if (!resp.ok || !resp.body) {
+        const errorData = resp.status === 429 || resp.status === 402
+          ? await resp.json()
+          : null;
+        const errorMsg = errorData?.error || "DECODE relay offline. Retry.";
+        setMessages(prev => [...prev, { role: 'assistant', content: `⚠ ${errorMsg}` }]);
+        setIsLoading(false);
+        return;
       }
 
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: data?.reply || 'Request processed.',
-        imageUrl: data?.imageUrl,
-        generatedText: data?.generatedText,
-        provider: data?.provider,
-        healthScore: data?.healthScore
-      }]);
+      // Stream the response
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let assistantSoFar = "";
+      let streamDone = false;
 
-      if (data?.isAdmin) {
-        toast.success('Admin mode activated', {
-          description: 'Elevated permissions granted.'
-        });
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+          let line = buffer.slice(0, newlineIndex);
+          buffer = buffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") { streamDone = true; break; }
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantSoFar += content;
+              setMessages(prev => {
+                const last = prev[prev.length - 1];
+                if (last?.role === "assistant" && prev.length > 1 && prev[prev.length - 2]?.content === userMessage) {
+                  return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
+                }
+                return [...prev, { role: "assistant", content: assistantSoFar }];
+              });
+            }
+          } catch { buffer = line + "\n" + buffer; break; }
+        }
       }
 
-      // Show provider info for admins
-      if (data?.provider && mode === 'admin') {
-        console.log(`📡 Response via ${data.provider} (health: ${data.healthScore}%)`);
+      // Flush remaining buffer
+      if (buffer.trim()) {
+        for (let raw of buffer.split("\n")) {
+          if (!raw) continue;
+          if (raw.endsWith("\r")) raw = raw.slice(0, -1);
+          if (raw.startsWith(":") || raw.trim() === "") continue;
+          if (!raw.startsWith("data: ")) continue;
+          const jsonStr = raw.slice(6).trim();
+          if (jsonStr === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantSoFar += content;
+              setMessages(prev => {
+                const last = prev[prev.length - 1];
+                if (last?.role === "assistant") {
+                  return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
+                }
+                return [...prev, { role: "assistant", content: assistantSoFar }];
+              });
+            }
+          } catch { /* ignore partial leftovers */ }
+        }
       }
+
+      // Update connection state on success
+      setConnection({ status: 'connected', lastSuccess: Date.now(), retryCount: 0 });
 
     } catch (error: any) {
       console.error('Chat error:', error);
-      
-      // Update connection state and attempt recovery
       setConnection(prev => ({
         status: 'degraded',
         lastSuccess: prev.lastSuccess,
         retryCount: prev.retryCount + 1
       }));
-
-      // Show graceful error with retry option
-      toast.error('Request failed', {
-        description: 'Connection interrupted. Retrying...',
-        action: {
-          label: 'Retry Now',
-          onClick: () => sendMessage(userMessage)
-        }
-      });
-
-      // Add graceful fallback message
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: 'Connection interrupted. Attempting recovery...',
+        content: '⚠ Connection interrupted. Attempting recovery…',
         provider: 'fallback'
       }]);
-
-      // Schedule automatic retry
-      retryTimeoutRef.current = setTimeout(() => {
-        attemptRecovery();
-      }, 3000);
-
+      retryTimeoutRef.current = setTimeout(() => attemptRecovery(), 3000);
     } finally {
       setIsLoading(false);
     }
@@ -193,6 +250,15 @@ export function DecodeChat() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const clearHistory = () => {
+    const fresh: Message[] = [
+      { role: 'assistant', content: 'DECODE online. Memory cleared. Sovereign cognitive interface active.\n\nState your intent, Operator.' }
+    ];
+    setMessages(fresh);
+    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    setShowMenu(true);
   };
 
   const quickActions = [
@@ -206,7 +272,7 @@ export function DecodeChat() {
       icon: "🧠",
       title: "What Do You Know?",
       description: "Recall your memories",
-      prompt: "What do you know about me? Show me everything you've learned."
+      prompt: "What do you know about me? Show me everything you've learned from our conversation."
     },
     {
       icon: "🛡️",
@@ -253,7 +319,7 @@ export function DecodeChat() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
-        aria-label="Open Decode AI chat"
+        aria-label="Open DECODE chat"
       >
         <MessageCircle className="w-6 h-6" />
         {connection.status !== 'connected' && (
@@ -271,8 +337,8 @@ export function DecodeChat() {
           <Sparkles className="w-5 h-5 text-primary animate-pulse" />
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold">Decode</h3>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">substrate</span>
+              <h3 className="font-semibold">DECODE</h3>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">sovereign</span>
             </div>
             <div className="flex items-center gap-2">
               <p className="text-xs text-muted-foreground">
@@ -282,14 +348,25 @@ export function DecodeChat() {
             </div>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsOpen(false)}
-          className="hover:bg-destructive/10"
-        >
-          <X className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={clearHistory}
+            className="hover:bg-primary/10 w-8 h-8"
+            title="Clear conversation"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-muted-foreground" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(false)}
+            className="hover:bg-destructive/10"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Messages */}
@@ -310,11 +387,7 @@ export function DecodeChat() {
             >
               {msg.imageUrl && (
                 <div className="mb-3 rounded-lg overflow-hidden">
-                  <img 
-                    src={msg.imageUrl} 
-                    alt="Generated" 
-                    className="w-full h-auto"
-                  />
+                  <img src={msg.imageUrl} alt="Generated" className="w-full h-auto" />
                 </div>
               )}
               {msg.generatedText && (
@@ -324,7 +397,6 @@ export function DecodeChat() {
                 </div>
               )}
               <DecodeMarkdown content={msg.content} isUser={msg.role === 'user'} className="text-[1.05rem]" />
-              {/* Admin: show provider badge */}
               {mode === 'admin' && msg.provider && msg.provider !== 'fallback' && (
                 <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
                   <span className="px-1.5 py-0.5 rounded bg-primary/10">{msg.provider}</span>
@@ -340,14 +412,12 @@ export function DecodeChat() {
         ))}
         
         {/* Quick Actions Menu */}
-        {showMenu && messages.length === 1 && !isLoading && (
+        {showMenu && messages.length <= 1 && !isLoading && (
           <div className="grid grid-cols-2 gap-2 px-2 animate-fade-in">
             {quickActions.map((action, idx) => (
               <button
                 key={idx}
-                onClick={() => {
-                  sendMessage(action.prompt);
-                }}
+                onClick={() => sendMessage(action.prompt)}
                 className="flex flex-col items-start p-3 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 hover:border-primary/40 transition-all hover:scale-105 text-left group"
               >
                 <span className="text-2xl mb-1">{action.icon}</span>
@@ -383,7 +453,7 @@ export function DecodeChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Decode anything..."
+            placeholder="Speak to DECODE…"
             className="flex-1"
             disabled={isLoading || connection.status === 'disconnected'}
           />
