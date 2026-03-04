@@ -277,7 +277,7 @@ export default function Upgrade() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Pricing — CMPSBL"
-        description="One runtime, your capacity. 24 artifact packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), Studio ($49/mo), or Architect ($79/mo)."
+        description="One stream, your capacity. 24 pipeline packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), Studio ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
@@ -291,13 +291,13 @@ export default function Upgrade() {
           >
             <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
               <Package className="w-3 h-3 mr-1.5 inline" />
-              Artifact Capacity Model
+              Memory Stream Capacity
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              One Runtime. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
+              One Stream. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              24 artifact packs. Every pack = 1 slot. Choose 3, 6, 9, or 12.
+              24 pipeline packs. Every pack = 1 slot. Crystallize from the Memory Stream with 3, 6, 9, or 12 slots.
             </p>
             {slotState.activeCount > 0 && (
               <div className="flex justify-center mt-4">
