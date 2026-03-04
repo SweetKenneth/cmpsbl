@@ -77,30 +77,45 @@ interface TabDef {
   group: string;
   description: string;
   governorOnly?: boolean;
+  /** Minimum tier required. Defaults to 'free' (everyone). */
+  minTier?: SubstrateRole;
 }
 
+/**
+ * Tier gating strategy:
+ * FREE     — Overview, Analytics, Operations (enough telemetry to be interesting)
+ * CREATOR  — Terminal, NEXUS, CCR, FORGE, Cognitives (hands-on tools)
+ * STUDIO   — INTENT, CORTEX, ATLAS, Maintenance, ENCODE, Mesh (deep orchestration)
+ * ARCHITECT— EVOLUTION, SHADOW, ORACLE, Security (advanced controls)
+ * GOVERNOR — Governor panel (admin only, already gated)
+ */
 function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
+    // ── Free tier ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
-    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
-    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine' },
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance' },
-    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration' },
-    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane' },
-    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM' },
     { id: 'operations', label: 'Operations', icon: Layers, group: 'Cognitive', description: 'DECODE · VISION · ECONOMY + 4' },
-    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
-    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
-    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline' },
-    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC' },
-    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo' },
-    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST' },
-    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes' },
-    ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center' }] : []),
-    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit' },
-    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true },
+    // ── Creator tier ──
+    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
+    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
+    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
+    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
+    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', minTier: 'creator' },
+    ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
+    // ── Studio tier ──
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance', minTier: 'studio' },
+    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration', minTier: 'studio' },
+    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers', minTier: 'studio' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline', minTier: 'studio' },
+    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
+    // ── Architect tier ──
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline', minTier: 'architect' },
+    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', minTier: 'architect' },
+    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', minTier: 'architect' },
+    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', minTier: 'architect' },
+    // ── Governor ──
+    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true, minTier: 'governor' },
   ];
 }
 
