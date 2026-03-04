@@ -122,8 +122,8 @@ export default function GovernorPanel() {
           <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 className="text-base sm:text-lg font-bold tracking-tight">Governor</h2>
-          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">ADMIN CONTROLS · KILL SWITCHES · TELEMETRY</p>
+          <h2 className="text-base sm:text-lg font-bold tracking-tight">Stream Governor</h2>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">STREAM CONTROLS · KILL SWITCHES · TELEMETRY</p>
         </div>
         <Badge className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 shrink-0">ADMIN</Badge>
       </div>

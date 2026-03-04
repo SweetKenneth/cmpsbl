@@ -133,9 +133,9 @@ export function OnboardingFlow({ tier, onComplete }: OnboardingFlowProps) {
                 <Sparkles className="w-7 h-7 text-primary" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-foreground">Welcome to the Substrate</h3>
+                <h3 className="text-lg font-bold text-foreground">Welcome to the Memory Stream</h3>
                 <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                  You have <span className="font-semibold text-foreground">{slots.capacity} Artifact Slots</span> available.
+                  You have <span className="font-semibold text-foreground">{slots.capacity} Pipeline Slots</span> available.
                   Choose your starter packs — you can change your mind anytime.
                 </p>
               </div>

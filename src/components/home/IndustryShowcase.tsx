@@ -144,8 +144,8 @@ export function IndustryShowcase() {
             </span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Persistent memory, autonomous learning, and self-optimization adapt to any vertical—
-            from immersive games to mission-critical enterprise systems.
+            The Memory Stream's persistent memory, autonomous learning, and self-optimization crystallize
+            intelligence for any vertical — from immersive games to mission-critical enterprise systems.
           </p>
         </motion.div>
         
