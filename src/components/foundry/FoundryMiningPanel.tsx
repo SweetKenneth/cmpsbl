@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
+import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
@@ -74,7 +74,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
           </div>
         </motion.button>
         <div className="text-[10px] font-mono text-muted-foreground/50 mt-2">
-          Quality floor: 68+ · Every pull is real software
+          {MEMORY_STREAM_QUALITY_NOTE}
         </div>
 
         {/* Crystallization phase animation */}
@@ -96,9 +96,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 }`}
               />
               <span className="text-xs font-mono text-muted-foreground animate-fade-in">
-                {phase === 'sampling' && 'Sampling Memory Stream...'}
-                {phase === 'condensing' && 'Condensing topology...'}
-                {phase === 'crystallizing' && 'Crystallizing pipeline...'}
+                {CRYSTALLIZATION_PHASES.find(p => p.key === phase)?.label}
               </span>
             </motion.div>
           )}
@@ -145,7 +143,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                       </p>
                     )}
                     <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
-                      {MEMORY_STREAM_EVENT}
+                      {MEMORY_STREAM_PROVENANCE}
                     </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {result.systemChain.map(s => (

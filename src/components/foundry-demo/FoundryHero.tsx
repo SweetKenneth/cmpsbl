@@ -3,6 +3,7 @@
  * All metrics are real production data from the substrate.
  */
 import { motion } from 'framer-motion';
+import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryHero() {
   return (
@@ -23,7 +24,7 @@ export function FoundryHero() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
-        className="relative text-center max-w-4xl"
+        className="relative text-center max-w-4xl w-full"
       >
         <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
           Memory Stream — CMPSBL®
@@ -35,11 +36,16 @@ export function FoundryHero() {
           <span className="text-primary">crystallizes software</span>
         </h1>
 
-        <p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-12">
+        <p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-10">
           A recursive discovery engine that surfaces high-quality software pipelines
           directly from silicon. 1,143 programs discovered in under 9 hours.
           The stream never ends.
         </p>
+
+        {/* Memory Stream visualization */}
+        <div className="mb-12">
+          <MemoryRiver autoCrystallize />
+        </div>
 
         {/* Key stat trio */}
         <div className="flex items-center justify-center gap-8 md:gap-16 font-mono">
@@ -49,7 +55,7 @@ export function FoundryHero() {
             transition={{ delay: 0.6 }}
           >
             <div className="text-3xl md:text-4xl font-black text-foreground">1,143</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Pipelines Discovered</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Pipelines Crystallized</div>
           </motion.div>
           <div className="w-px h-10 bg-border/30" />
           <motion.div

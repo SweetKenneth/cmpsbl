@@ -7,8 +7,8 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const PHASES = [
-  { id: 'discover', label: 'DISCOVER', description: 'Auto-Stream surfaces novel system combinations', icon: '🔬', color: 'hsl(var(--primary))' },
-  { id: 'crystallize', label: 'CRYSTALLIZE', description: 'Score via CJPI → tier into Apex/Enterprise/Architect', icon: '💎', color: 'hsl(280, 80%, 65%)' },
+  { id: 'discover', label: 'DISCOVER', description: 'Memory Stream surfaces novel system combinations', icon: '🔬', color: 'hsl(var(--primary))' },
+  { id: 'crystallize', label: 'CRYSTALLIZE', description: 'Score via CJPI → tier into Mint / Prime / Relic / Mythic / Apex', icon: '💎', color: 'hsl(280, 80%, 65%)' },
   { id: 'hotswap', label: 'HOT-SWAP', description: 'Zero-downtime engine replacement at runtime', icon: '⚡', color: 'hsl(45, 95%, 55%)' },
   { id: 'expand', label: 'EXPAND', description: 'New systems shift the combinatorial topology', icon: '🌐', color: 'hsl(160, 70%, 50%)' },
 ] as const;
@@ -38,10 +38,10 @@ export function RecursiveLoop() {
       
       <div className="max-w-5xl mx-auto relative">
         <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
-          The Recursive Engine
+          The Crystallization Engine
         </h2>
         <p className="text-center text-muted-foreground/60 mb-16 max-w-2xl mx-auto">
-          Each cycle expands the search space. Discovery is not linear — it compounds.
+          Each cycle expands the search space. Crystallization is not linear — it compounds.
         </p>
 
         {/* Loop visualization */}

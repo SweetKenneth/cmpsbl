@@ -3,7 +3,7 @@
  */
 import { motion } from 'framer-motion';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { MEMORY_STREAM_EVENT } from '@/lib/branding/memory-stream';
+import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 
 interface InventoryItem {
   id: string;
@@ -80,7 +80,7 @@ export function FoundryInventory({ inventory }: Props) {
                   {item.artifactName}
                 </div>
                 <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
-                  Crystallized Memory Stream Pipeline
+                  {MEMORY_STREAM_PROVENANCE}
                 </div>
                 {item.systemChain && item.systemChain.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">

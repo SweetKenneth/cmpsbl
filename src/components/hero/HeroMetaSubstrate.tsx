@@ -253,7 +253,7 @@ export function HeroMetaSubstrate() {
             >
               Composable cognitive infrastructure with{' '}
               <span className="text-foreground font-semibold">persistent memory</span>,{' '}
-              <span className="text-foreground font-semibold">20 composable engines</span> forged from Crown Jewel artifacts, and a{' '}
+              <span className="text-foreground font-semibold">20 composable engines</span> forged from Apex pipelines, and a{' '}
               <span className="text-foreground font-semibold">governed runtime</span> that enforces safety at every layer.{' '}
               Start free or subscribe for deeper capacity.
             </motion.p>
@@ -407,7 +407,7 @@ export function HeroMetaSubstrate() {
           {[
             { icon: Sparkles, label: "Free to Start", href: "/auth" },
             { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
-            { icon: Layers, label: "24 Artifact Packs", href: "/packs" },
+            { icon: Layers, label: "24 Pipeline Packs", href: "/packs" },
             { icon: Shield, label: "Governed Runtime", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
