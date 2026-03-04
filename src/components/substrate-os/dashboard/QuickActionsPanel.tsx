@@ -5,8 +5,9 @@
 
 import { 
   Wrench, Server, Activity, Loader2, Shield, 
-  Zap, Terminal, CheckCircle2
+  Zap, Terminal, CheckCircle2, Sparkles
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
