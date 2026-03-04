@@ -16629,6 +16629,17 @@ export type Database = {
       }
       get_discovery_stats: { Args: never; Returns: Json }
       get_public_live_stats: { Args: never; Returns: Json }
+      get_random_discoveries: {
+        Args: { max_count: number; min_score: number }
+        Returns: {
+          category: string
+          cjpi: number
+          description: string
+          id: string
+          module_chain: string[]
+          name: string
+        }[]
+      }
       governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
         | {

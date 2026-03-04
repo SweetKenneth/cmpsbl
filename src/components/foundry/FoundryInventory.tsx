@@ -90,7 +90,8 @@ export function FoundryInventory({ inventory }: Props) {
               </div>
               <div className="text-right shrink-0">
                 <div className={`text-xl font-mono font-black ${
-                  item.score >= 95 ? 'text-primary' :
+                  item.score >= 100 ? 'text-primary' :
+                  item.score >= 94 ? 'text-purple-400' :
                   item.score >= 90 ? 'text-amber-400' :
                   item.score >= 80 ? 'text-sky-400' : 'text-emerald-400'
                 }`}>

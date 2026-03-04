@@ -9,11 +9,11 @@ const corsHeaders = {
 // Quality floor: absolute minimum score
 const QUALITY_FLOOR = 68;
 
-// Public tier mapping
+// Public tier mapping — aligned with 94+ hardware gate
 function scoreToPublicTier(score: number): string | null {
   if (score < QUALITY_FLOOR) return null;
-  if (score >= 100) return 'Apex';
-  if (score >= 95) return 'Mythic';
+  if (score === 100) return 'Apex';
+  if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
   return 'Mint';
@@ -55,7 +55,6 @@ serve(async (req) => {
     // Parse body — REJECT any bias parameter
     const body = await req.json().catch(() => ({}));
     if ('bias' in body || 'highValueBias' in body || 'bias_enabled' in body) {
-      // Log attempted bias injection
       await supabase.from('foundry_mine_events').insert({
         user_id: user.id,
         result_count: 0,
@@ -72,7 +71,6 @@ serve(async (req) => {
       headers: { authorization: authHeader },
     });
     
-    // Map engine tier to foundry tier
     let foundryTier = 'free';
     const engineTier = subData?.tier || 'free';
     if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'mythic_miner';
@@ -147,71 +145,80 @@ serve(async (req) => {
       });
     }
 
-    // Mine: select random discoveries from the discoveries table, filtered by quality floor
+    // Mine: single randomized query instead of offset loop
     const maxResults = tierConfig.max_results_per_mine;
-    
-    // Get total count of eligible discoveries
-    const { count: totalEligible } = await supabase
-      .from('discoveries')
-      .select('id', { count: 'exact', head: true })
-      .gte('cjpi', QUALITY_FLOOR);
 
-    if (!totalEligible || totalEligible === 0) {
-      await supabase.from('foundry_mine_events').insert({
-        user_id: user.id,
-        result_count: 0,
-        rate_limit_bucket: foundryTier,
+    const { data: discoveries } = await supabase
+      .rpc('get_random_discoveries', { 
+        min_score: QUALITY_FLOOR, 
+        max_count: maxResults * 3 
       });
-      return new Response(JSON.stringify({
-        ok: true, results: [], bestScore: null,
-        tierBreakdown: {}, rerollCredit: true,
-      }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
 
-    // Random offset selection for varied results
-    const offsets = new Set<number>();
-    while (offsets.size < Math.min(maxResults * 3, totalEligible)) {
-      offsets.add(Math.floor(Math.random() * totalEligible));
-    }
+    // Fallback if RPC not available — single ordered query with random offset
+    let candidates = discoveries;
+    if (!candidates || candidates.length === 0) {
+      const { count: totalEligible } = await supabase
+        .from('discoveries')
+        .select('id', { count: 'exact', head: true })
+        .gte('cjpi', QUALITY_FLOOR);
 
-    // Fetch candidates
-    const results: any[] = [];
-    for (const offset of offsets) {
-      if (results.length >= maxResults) break;
-      
-      const { data: disc } = await supabase
+      if (!totalEligible || totalEligible === 0) {
+        await supabase.from('foundry_mine_events').insert({
+          user_id: user.id,
+          result_count: 0,
+          rate_limit_bucket: foundryTier,
+        });
+        return new Response(JSON.stringify({
+          ok: true, results: [], bestScore: null,
+          tierBreakdown: {}, rerollCredit: true,
+        }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - maxResults * 3));
+      const { data: fallbackDisc } = await supabase
         .from('discoveries')
         .select('id, name, description, cjpi, category, module_chain')
         .gte('cjpi', QUALITY_FLOOR)
-        .order('cjpi', { ascending: false })
-        .range(offset, offset)
-        .single();
+        .range(randomOffset, randomOffset + maxResults * 3 - 1);
 
-      if (disc && disc.cjpi >= QUALITY_FLOOR) {
-        // Check if user already has this
-        const { count: existing } = await supabase
-          .from('foundry_inventory')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', user.id)
-          .eq('artifact_id', disc.id);
+      candidates = fallbackDisc || [];
+    }
 
-        if (!existing || existing === 0) {
-          const tier = scoreToPublicTier(disc.cjpi);
-          if (tier) {
-            results.push({
-              id: disc.id,
-              name: disc.name,
-              description: disc.description,
-              score: disc.cjpi,
-              publicTier: tier,
-              valuationDisplay: computeDisplayValuation(disc.cjpi),
-              category: disc.category,
-              systemChain: disc.module_chain || [],
-            });
-          }
-        }
+    // Shuffle candidates for randomness
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    // Get user's existing artifact IDs to avoid duplicates
+    const { data: existingItems } = await supabase
+      .from('foundry_inventory')
+      .select('artifact_id')
+      .eq('user_id', user.id);
+
+    const ownedIds = new Set((existingItems || []).map((e: any) => e.artifact_id));
+
+    // Build results (filter dupes, enforce floor)
+    const results: any[] = [];
+    for (const disc of candidates) {
+      if (results.length >= maxResults) break;
+      if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
+      if (ownedIds.has(disc.id)) continue;
+
+      const tier = scoreToPublicTier(disc.cjpi);
+      if (tier) {
+        results.push({
+          id: disc.id,
+          name: disc.name,
+          description: disc.description,
+          score: disc.cjpi,
+          publicTier: tier,
+          valuationDisplay: computeDisplayValuation(disc.cjpi),
+          category: disc.category,
+          systemChain: disc.module_chain || [],
+        });
       }
     }
 
