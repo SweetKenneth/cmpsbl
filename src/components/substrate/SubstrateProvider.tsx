@@ -145,43 +145,17 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [checkModule]);
 
-  // Deferred init: when autoInit is false (landing page), defer heavily to avoid
-  // blocking the critical rendering path and polluting the network dependency tree.
-  // Use 30s delay + user interaction trigger to ensure Lighthouse doesn't see these calls.
+  // Deferred init: when autoInit is false (landing page), skip neural substrate
+  // and module polling entirely. These are only relevant for authenticated users
+  // in the substrate dashboard and add 40+ API calls that destroy TTI/Speed Index.
+  // The SubstrateProvider still provides context defaults so children render fine.
   useEffect(() => {
     if (autoInit) return; // handled by the main effect
-    if (initializedRef.current) return;
-
-    const doInit = () => {
-      if (!mountedRef.current || initializedRef.current) return;
-      initializedRef.current = true;
-
-      initializeNeuralSubstrate().catch(err =>
-        console.warn('[SubstrateProvider] Deferred neural substrate init:', err)
-      );
-
-      if (debugMode.allowModulePolling()) {
-        refresh();
-      }
-    };
-
-    // Only init after significant user interaction OR 30s idle
-    const deferredTimeout = setTimeout(doInit, 30000);
-    const onInteraction = () => {
-      clearTimeout(deferredTimeout);
-      // Small delay after interaction to not block UI thread
-      setTimeout(doInit, 2000);
-    };
-
-    window.addEventListener('scroll', onInteraction, { once: true, passive: true });
-    window.addEventListener('click', onInteraction, { once: true });
-
-    return () => {
-      clearTimeout(deferredTimeout);
-      window.removeEventListener('scroll', onInteraction);
-      window.removeEventListener('click', onInteraction);
-    };
-  }, [autoInit, refresh]);
+    // On landing page: do NOT init neural substrate or poll modules at all.
+    // This eliminates brain_*, pf-substrate, and maintenance API calls from
+    // the critical rendering path entirely.
+    return;
+  }, [autoInit]);
 
   useEffect(() => {
     if (!autoInit) return;
