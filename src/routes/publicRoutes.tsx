@@ -174,6 +174,7 @@ export const publicRoutes = (
     <Route path="/foundations" element={<Foundations />} />
     <Route path="/namespace" element={<Namespace />} />
     <Route path="/insights" element={<Insights />} />
+    <Route path="/overview" element={<SystemOverview />} />
     <Route path="/register" element={<Navigate to="/auth" replace />} />
     <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
