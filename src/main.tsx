@@ -3,8 +3,17 @@ import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 
 // Defer full Tailwind CSS — critical CSS is inlined in index.html for FCP
-// This makes the 42KB stylesheet non-render-blocking
-requestAnimationFrame(() => { import("./index.css"); });
+// Use ?url import to get hashed asset path without Vite injecting a render-blocking <link>
+// Then load it as print→all to make it fully non-render-blocking
+requestAnimationFrame(async () => {
+  const { default: cssUrl } = await import('./index.css?url');
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssUrl;
+  link.media = 'print';
+  link.onload = () => { link.media = 'all'; };
+  document.head.appendChild(link);
+});
 
 // Pre-render cache safety: validate persisted Zustand stores before React mounts.
 // If any persisted store has corrupted/stale data, clear it so the app starts fresh.
