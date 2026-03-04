@@ -450,7 +450,18 @@ export default function SubstrateOS() {
               </PanelContainer>
             )}
 
-            {activeTab === 'cognitives' && (
+            {activeTab === 'evolution' && (
+              <PanelContainer id="evolution">
+                <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
+              </PanelContainer>
+            )}
+
+            {activeTab === 'shadow' && (
+              <PanelContainer id="shadow">
+                <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
+              </PanelContainer>
+            )}
+
               <PanelContainer id="cognitives">
                 <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
               </PanelContainer>
