@@ -1,7 +1,7 @@
 /**
- * S-Tier Crown Jewel #13 — BRAIK State Machine
+ * S-Tier Crown Jewel #13 — BRAIN State Machine
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Rank: 13 | CJPI: 94 | Module: BRAIK | Type: Architecture
+ * Rank: 13 | CJPI: 94 | Module: BRAIN | Type: Architecture
  *
  * Finite state machine with guards, effects, entry/exit hooks,
  * transition history, hierarchical states, and persistence hooks.

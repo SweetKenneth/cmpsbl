@@ -1,7 +1,7 @@
 /**
- * S-Tier Crown Jewel #19 — BRAIK Scheduler Engine
+ * S-Tier Crown Jewel #19 — BRAIN Scheduler Engine
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Rank: 19 | CJPI: 91 | Module: BRAIK | Type: Architecture
+ * Rank: 19 | CJPI: 91 | Module: BRAIN | Type: Architecture
  *
  * Deferred execution engine with interval scheduling, cron-like
  * recurrence, retry with backoff, dead-letter queue, priority

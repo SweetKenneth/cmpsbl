@@ -25,7 +25,7 @@ const SECTORS = [
   { name: "PLANE", modules: ["INTENT", "SHADOW", "ATLAS"], desc: "Goal decomposition, shadow runs, capability mapping", icon: Network },
   { name: "SHELL", modules: ["VISION", "INCLUSIVE", "INTEGRATION"], desc: "Observability, accessibility, external connectors", icon: Eye },
   { name: "ESZ", modules: ["ECONOMY", "SIGNAL", "ZERO"], desc: "Cost tracking, event propagation, zero-trust validation", icon: DollarSign },
-  { name: "EPZ", modules: ["ENGINEER", "INTEL", "BRAIK"], desc: "Autonomous foundry, intelligence gathering, cognitive braking", icon: Code },
+  { name: "EPZ", modules: ["ENGINEER", "INTEL", "BRAIN"], desc: "Autonomous foundry, intelligence gathering, cognitive processing", icon: Code },
   { name: "EMZ", modules: ["MEMORY", "DREAM", "PERSIST"], desc: "Tiered memory, DREAM synthesis, durable persistence", icon: Fingerprint },
   { name: "CSZ", modules: ["SCANNER", "EXPORT", "BLOG"], desc: "Vulnerability scanning, format adaptation, autonomous publishing", icon: Radio },
   { name: "NERVE", modules: ["NERVE", "MEDIC"], desc: "Health monitoring, self-healing diagnostics", icon: Landmark },

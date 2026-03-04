@@ -89,7 +89,7 @@ export function MaintenanceTab() {
       if (cbs.length === 0) {
         const defaultModules = [
           'DEFENSE', 'NEXUS', 'CORTEX', 'ENGINEER', 'INTENT',
-          'DECODE', 'MEMORY', 'BRAIK', 'NERVE', 'ATLAS'
+          'DECODE', 'MEMORY', 'BRAIN', 'NERVE', 'ATLAS'
         ];
         defaultModules.forEach(name => {
           cbs.push({ name, state: 'closed', failures: 0, lastFailure: null, successRate: 100 });
