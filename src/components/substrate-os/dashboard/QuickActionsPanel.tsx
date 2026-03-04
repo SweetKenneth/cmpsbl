@@ -5,8 +5,9 @@
 
 import { 
   Wrench, Server, Activity, Loader2, Shield, 
-  Zap, Terminal, CheckCircle2
+  Zap, Terminal, CheckCircle2, Sparkles
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -23,6 +24,7 @@ interface QuickActionsPanelProps {
 }
 
 export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanelProps) {
+  const navigate = useNavigate();
   const healthScore = useSubstrateHealthScore();
   const healMutation = useSystemHeal();
   const backupMutation = useSystemBackup();
@@ -115,6 +117,15 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
       iconGradient: 'bg-gradient-to-br from-fuchsia-500 to-fuchsia-600',
       isPending: false,
       onClick: onOpenTerminal,
+    },
+    {
+      id: 'crystallize', label: 'Memory Stream', icon: Sparkles,
+      description: 'Crystallize pipelines',
+      borderClass: 'border-sky-500/15 hover:border-sky-500/40',
+      bgGradient: 'from-sky-500/[0.06]', glowBg: 'bg-sky-500/10',
+      iconGradient: 'bg-gradient-to-br from-sky-500 to-indigo-600',
+      isPending: false,
+      onClick: () => navigate('/foundry'),
     },
   ];
 
