@@ -7,7 +7,7 @@ import type { AuditFinding } from '../audit-types';
 import { SYSTEM_MODULES, SYSTEM_ROUTES } from '@/lib/codeagent/encoded/system-manifest';
 import { getNodeDefinitions } from '@/lib/core/matrixNodeRegistry';
 
-const EXPECTED_NODE_COUNT = 37;
+const EXPECTED_NODE_COUNT = 38;
 
 export function checkSystemManifest(): AuditFinding[] {
   const findings: AuditFinding[] = [];
