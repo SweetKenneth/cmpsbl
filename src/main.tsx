@@ -1,7 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
-import "./index.css";
+
+// Defer full Tailwind CSS — critical CSS is inlined in index.html for FCP
+// This makes the 42KB stylesheet non-render-blocking
+requestAnimationFrame(() => { import("./index.css"); });
 
 // Pre-render cache safety: validate persisted Zustand stores before React mounts.
 // If any persisted store has corrupted/stale data, clear it so the app starts fresh.
