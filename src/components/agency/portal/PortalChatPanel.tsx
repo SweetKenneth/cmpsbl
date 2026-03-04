@@ -137,9 +137,16 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
       const prompt = command ? buildPromptFromCommand(command, args) : userMessage.content;
       const startTime = Date.now();
 
+      // Build full conversation history for context
+      const allMessages = [...messages, userMessage];
+      const chatHistory = allMessages
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .map(m => ({ role: m.role, content: m.content }));
+
       const { data, error } = await supabase.functions.invoke('pf-agency-chat', {
         body: {
           message: prompt,
+          messages: chatHistory,
           agencyId: agency.id,
           agencyName: agency.name,
           teamComposition: agency.members.map(m => ({
