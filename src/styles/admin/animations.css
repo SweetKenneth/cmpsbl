@@ -295,3 +295,115 @@
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
+
+/* === Memory Stream Crystallization Animations === */
+@keyframes crystallize {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(45deg);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotate(45deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(45deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes flowingGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes signalPulse {
+  0%, 100% {
+    box-shadow: 0 0 4px hsl(var(--primary) / 0.2),
+                0 0 12px hsl(var(--primary) / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.5),
+                0 0 32px hsl(var(--primary) / 0.2),
+                0 0 48px hsl(var(--neon-cyan) / 0.1);
+  }
+}
+
+@keyframes siliconShift {
+  0% { border-color: hsl(var(--primary) / 0.15); }
+  33% { border-color: hsl(var(--neon-cyan) / 0.25); }
+  66% { border-color: hsl(var(--neon-purple) / 0.2); }
+  100% { border-color: hsl(var(--primary) / 0.15); }
+}
+
+@keyframes memoryDrift {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translateY(-8px) translateX(4px);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-2px) translateX(-3px);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-10px) translateX(2px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes substrateBreathe {
+  0%, 100% { opacity: 0.03; }
+  50% { opacity: 0.08; }
+}
+
+.animate-crystallize {
+  animation: crystallize 0.8s var(--ease-bounce) forwards;
+}
+
+.animate-flowing-gradient {
+  background-size: 300% 300%;
+  animation: flowingGradient 8s ease infinite;
+}
+
+.animate-signal-pulse {
+  animation: signalPulse 3s ease-in-out infinite;
+}
+
+.animate-silicon-shift {
+  animation: siliconShift 6s ease-in-out infinite;
+}
+
+.animate-memory-drift {
+  animation: memoryDrift 6s ease-in-out infinite;
+}
+
+.animate-substrate-breathe {
+  animation: substrateBreathe 5s ease-in-out infinite;
+}
+
+/* Flowing gradient accent bar */
+.memory-stream-bar {
+  background: linear-gradient(90deg, 
+    hsl(var(--neon-cyan)) 0%, 
+    hsl(var(--primary)) 25%,
+    hsl(var(--neon-purple)) 50%,
+    hsl(var(--primary)) 75%,
+    hsl(var(--neon-cyan)) 100%);
+  background-size: 200% 100%;
+  animation: flowingGradient 4s linear infinite;
+}
+
+/* Signal to Silicon border glow */
+.signal-border {
+  position: relative;
+  border: 1px solid hsl(var(--border) / 0.3);
+  animation: siliconShift 6s ease-in-out infinite;
+}
