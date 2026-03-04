@@ -20,8 +20,8 @@ export interface PublicTierConfig {
 export const PUBLIC_TIERS: PublicTierConfig[] = [
   { id: 'Mint',   min: 68, max: 79, color: 'hsl(160, 60%, 50%)',  accent: 'text-emerald-400', description: 'Solid discovery — production-viable' },
   { id: 'Prime',  min: 80, max: 89, color: 'hsl(200, 80%, 60%)',  accent: 'text-sky-400',     description: 'High-quality pipeline' },
-  { id: 'Relic',  min: 90, max: 94, color: 'hsl(45, 95%, 55%)',   accent: 'text-amber-400',   description: 'Rare find — exceptional capability' },
-  { id: 'Mythic', min: 95, max: 99, color: 'hsl(280, 80%, 65%)',  accent: 'text-purple-400',  description: 'Near-perfect synthesis' },
+  { id: 'Relic',  min: 90, max: 93, color: 'hsl(45, 95%, 55%)',   accent: 'text-amber-400',   description: 'Rare find — exceptional capability' },
+  { id: 'Mythic', min: 94, max: 99, color: 'hsl(280, 80%, 65%)',  accent: 'text-purple-400',  description: 'Near-perfect synthesis — silicon-eligible' },
   { id: 'Apex',   min: 100, max: 100, color: 'hsl(var(--primary))', accent: 'text-primary',   description: 'Perfect score — crown achievement' },
 ];
 
@@ -30,10 +30,11 @@ export const PUBLIC_TIERS: PublicTierConfig[] = [
  */
 export function scoreToPublicTier(score: number): PublicTier | null {
   if (score < QUALITY_FLOOR) return null;
-  for (const tier of PUBLIC_TIERS) {
-    if (score >= tier.min && score <= tier.max) return tier.id;
-  }
-  return 'Apex'; // 100+
+  if (score === 100) return 'Apex';
+  if (score >= 94) return 'Mythic';
+  if (score >= 90) return 'Relic';
+  if (score >= 80) return 'Prime';
+  return 'Mint';
 }
 
 /**
