@@ -337,7 +337,7 @@ export function HeroMetaSubstrate() {
               </p>
             </motion.div>
 
-            <MemoryRiver />
+            <MemoryRiver autoCrystallize />
 
             {/* Below River — Live system pulse */}
             <motion.div
