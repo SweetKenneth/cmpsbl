@@ -76,17 +76,7 @@ export const SubstrateParticles = memo(function SubstrateParticles({
     };
 
     // Init particles
-    interface Particle {
-      x: number; y: number;
-      vx: number; vy: number;
-      size: number;
-      life: number;
-      maxLife: number;
-      isAccent: boolean;
-      trail: { x: number; y: number }[];
-    }
-
-    const spawn = (): Particle => ({
+    const spawn = () => ({
       x: Math.random() * (w || 800),
       y: Math.random() * (h || 600),
       vx: (Math.random() - 0.5) * 0.3 * speed,
