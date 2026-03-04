@@ -59,11 +59,11 @@ export function CrownJewelShowcase() {
     <section ref={ref} className="py-24 md:py-40 px-6">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
-          Crown Jewels — What the Foundry Discovers
+          Apex Discoveries — What the Foundry Discovers
         </h2>
         <p className="text-center text-muted-foreground/60 mb-16 max-w-2xl mx-auto text-sm">
-          These aren't toy programs. Each is a production-grade software pipeline with a perfect CJPI score
-          of 100, discovered autonomously by combining substrate modules in novel configurations.
+          These aren't toy programs. Each is a production-grade software pipeline with a perfect score
+          of 100, discovered autonomously by combining substrate systems in novel configurations.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,9 +125,9 @@ export function CrownJewelShowcase() {
         >
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-6 py-3">
             <div className="text-xs font-mono text-muted-foreground">
-              <span className="text-foreground font-bold">Key insight:</span> The same 15 modules produce 1,143 unique programs.
+              <span className="text-foreground font-bold">Key insight:</span> The same 15 systems produce 1,143 unique programs.
               <br />
-              Adding just one new module changes the entire combinatorial topology.
+              Adding just one new system changes the entire combinatorial topology.
             </div>
           </div>
         </motion.div>
