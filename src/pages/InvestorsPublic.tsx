@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * Production Architecture
+ * Memory Stream · Signal → Silicon
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
@@ -15,27 +15,29 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
+import { downloadUserGuide } from "@/lib/user-guide-generator";
 
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "Modular Cognitive Architecture", desc: "First cognitive infrastructure with 38 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
-  { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
+  { title: "38-Node Memory Stream", desc: "First cognitive infrastructure with 38 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
+  { title: "Intent Mesh Crystallization", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
   { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
-  { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN Zone to all modules via relevance scoring", badge: "CLM" },
-  { title: "Memory Tiering + Staleness", desc: "First hot/warm/cold memory tiering with embedding staleness detection", badge: "MEMORY Zone" },
-  { title: "Actor Reputation Scoring", desc: "First AI identity system with 5-tier trust scores and cross-agency portability", badge: "IDENTITY Zone" },
+  { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN to all systems via relevance scoring", badge: "CLM" },
+  { title: "Memory Tiering + Staleness", desc: "First hot/warm/cold memory tiering with embedding staleness detection", badge: "MEMORY" },
+  { title: "Actor Reputation Scoring", desc: "First AI identity system with 5-tier trust scores and cross-agency portability", badge: "IDENTITY" },
   { title: "Multi-Provider Fleet Affinity", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "NEXUS" },
   { title: "AI Governance Namespace", desc: "First published namespace standard (AIGVRN v1.0) for AI governance terminology", badge: "Zenodo" },
   { title: "Predictive Cost Forecasting", desc: "First linear regression cost forecasting with per-capability attribution for AI ops", badge: "ECONOMY" },
-  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across system dependency graphs", badge: "RIPPLE Zone" },
+  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across system dependency graphs", badge: "RIPPLE" },
 ];
 
 export default function InvestorsPublic() {
   const navigate = useNavigate();
   const [downloading, setDownloading] = useState(false);
+  const [downloadingGuide, setDownloadingGuide] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const modulesCount = useMetric('modulesCount');
   const layersCount = useMetric('layersCount');
@@ -50,9 +52,7 @@ export default function InvestorsPublic() {
     setDownloading(true);
     try {
       downloadInvestorDeck();
-      toast.success("Investor deck downloaded", {
-        description: "Open the HTML file in any browser to view.",
-      });
+      toast.success("Investor deck downloaded", { description: "Open the HTML file in any browser to view." });
     } catch (err) {
       console.error('Error generating deck:', err);
       toast.error("Failed to generate investor deck");
@@ -61,36 +61,49 @@ export default function InvestorsPublic() {
     }
   };
 
+  const handleDownloadGuide = () => {
+    setDownloadingGuide(true);
+    try {
+      downloadUserGuide();
+      toast.success("User guide downloaded", { description: "Open the HTML file in any browser to view." });
+    } catch (err) {
+      console.error('Error generating guide:', err);
+      toast.error("Failed to generate user guide");
+    } finally {
+      setDownloadingGuide(false);
+    }
+  };
+
   const metrics = [
-    { icon: Layers, label: "Entities", value: String(modulesCount), color: "text-primary" },
+    { icon: Layers, label: "Stream Nodes", value: "38", color: "text-primary" },
     { icon: Zap, label: "Crystallized Pipelines", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
-    { icon: Globe, label: "Architecture Layers", value: String(layersCount), color: "text-violet-400" }
+    { icon: Globe, label: "Capabilities", value: "675+", color: "text-violet-400" }
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN Zone", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
-    { icon: Eye, name: "VISION", subtitle: "Full Observability", description: "Real-time introspection, metrics collection, and system-wide transparency layer." },
-    { icon: Shield, name: "DEFENSE Mesh", subtitle: "Outermost Security", description: "Bot protection, threat detection, and governance guardrails — outermost mesh overlay." },
+    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering within the Memory Stream." },
+    { icon: Eye, name: "VISION", subtitle: "Stream Observability", description: "Real-time introspection, metrics collection, and system-wide transparency across all 38 stream nodes." },
+    { icon: Shield, name: "DEFENSE", subtitle: "Stream Security", description: "Bot protection, threat detection, and governance guardrails — outermost protective shell of the Memory Stream." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT Mesh", subtitle: "Emergent Orchestration", description: "Systems advertise, compose, and crystallize cross-system pipelines autonomously." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system pipelines autonomously from the Memory Stream." },
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Production Infrastructure", description: `38 matrix nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
-    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + marketplace revenue share. 90%+ gross margins." },
-    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated learning + 12-sector architecture = a technical gap that widens daily. Can't be replicated quickly." },
+    { icon: Rocket, title: "Memory Stream Infrastructure", description: `38 stream nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
+    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + pipeline marketplace + sealed engine licensing. 90%+ gross margins." },
+    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated crystallization + 12-sector topology = a technical gap that widens daily. Can't be replicated." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Investor Relations — CMPSBL® Cognitive Infrastructure"
-        description="CMPSBL: layered cognitive OS with mesh overlays and hot-swappable zones. Documented world firsts, crystallized Crown Jewel pipelines. Seeking seed investment."
+        title="Investor Relations — CMPSBL® Memory Stream"
+        description="CMPSBL: the Memory Stream — a cognitive OS where raw signal crystallizes into production software and silicon. 14 documented world firsts. Seeking seed investment."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI startup investment', 'cognitive infrastructure', 'AI IP portfolio', 'seed investment AI', 'zone architecture']}
+        keywords={['CMPSBL investment', 'AI startup investment', 'memory stream', 'signal to silicon', 'seed investment AI']}
       />
       
       <PublicNav />
@@ -105,18 +118,20 @@ export default function InvestorsPublic() {
       {/* Hero */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-4xl">
-          <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
+          <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <TrendingUp className="w-3 h-3 mr-2" />
-            CMPSBL
+            Signal → Silicon
           </Badge>
+          
+          <div className="text-xs font-mono text-muted-foreground/60 uppercase tracking-[0.3em] mb-4">Memory Stream · Investor Relations</div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">
             Seeking <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">Seed Investment</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the cognitive operating system for AI applications. {modulesCount} entities wrapped by 5 mesh overlays across 9 zones — 14 documented world firsts 
-            and a self-evolving architecture that compounds daily.
+            Building the Memory Stream — the cognitive operating system where raw signal crystallizes into production software. 
+            38 nodes across 12 sectors, 675+ capabilities, and 14 documented world firsts.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -126,12 +141,17 @@ export default function InvestorsPublic() {
               disabled={downloading}
               className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90"
             >
-              {downloading ? (
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              ) : (
-                <Download className="w-5 h-5 mr-2" />
-              )}
+              {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
+            </Button>
+            <Button 
+              size="lg"
+              variant="outline"
+              onClick={handleDownloadGuide}
+              disabled={downloadingGuide}
+            >
+              {downloadingGuide ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <FileText className="w-5 h-5 mr-2" />}
+              {downloadingGuide ? "Generating..." : "Download User Guide"}
             </Button>
             <Button 
               size="lg"
@@ -159,14 +179,14 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
-      {/* World Firsts Section */}
+      {/* World Firsts */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center gap-3 mb-2">
           <Award className="w-7 h-7 text-amber-500" />
           <h2 className="text-3xl font-semibold text-foreground">14 Documented World Firsts</h2>
         </div>
         <p className="text-muted-foreground mb-8 text-sm italic max-w-3xl">
-          To the best of our knowledge, the following are industry firsts achieved by CMPSBL® through the CMPSBL OS Substrate. We welcome any evidence of prior art.
+          To the best of our knowledge, the following are industry firsts achieved by CMPSBL® through the Memory Stream substrate. We welcome any evidence of prior art.
         </p>
 
         <div className="grid md:grid-cols-2 gap-4">
@@ -187,7 +207,7 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
-      {/* Verified Claim — Zenodo */}
+      {/* Zenodo */}
       <section className={`relative z-10 container mx-auto px-6 py-8 transition-all duration-1000 delay-350 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <a 
           href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ" 
@@ -198,13 +218,9 @@ export default function InvestorsPublic() {
           <div className="bg-card/60 backdrop-blur border border-border/50 rounded-2xl p-8 hover:border-primary/40 transition-all">
             <div className="flex items-center gap-3 mb-4">
               <Brain className="w-6 h-6 text-primary" />
-              <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
-                Zenodo DOI Verified
-              </Badge>
+              <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">Zenodo DOI Verified</Badge>
             </div>
-            <h2 className="text-2xl md:text-3xl font-semibold mb-2 text-foreground">
-              World's First Autonomous Dreaming AI
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-semibold mb-2 text-foreground">World's First Autonomous Dreaming AI</h2>
             <p className="text-muted-foreground">
               SimNap → Cascade architecture with DOI deposit: 10.5281/zenodo.18234910
               <span className="text-primary ml-2 group-hover:underline">View on Zenodo →</span>
@@ -215,9 +231,9 @@ export default function InvestorsPublic() {
 
       {/* Product Portfolio */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <h2 className="text-3xl font-semibold mb-4 text-foreground">The Substrate</h2>
+        <h2 className="text-3xl font-semibold mb-4 text-foreground">The Memory Stream</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
-          {modulesCount} entities wrapped by 5 mesh overlays across 9 hot-swappable zones. Production-ready cognitive infrastructure.
+          38 systems across 12 sectors. A continuous substrate of evolving software — production-ready cognitive infrastructure.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -237,10 +253,7 @@ export default function InvestorsPublic() {
       {/* Investment Highlights */}
       <section className={`relative z-10 py-16 transition-all duration-1000 delay-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-semibold text-center mb-12 text-foreground">
-            Investment Highlights
-          </h2>
-
+          <h2 className="text-3xl font-semibold text-center mb-12 text-foreground">Investment Highlights</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {highlights.map((highlight, index) => (
               <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50">
@@ -255,26 +268,21 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
-      {/* Publication Section */}
+      {/* Publication */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-550 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <Card className="p-8 bg-card/60 backdrop-blur border-border/50 max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <FileText className="w-6 h-6 text-primary" />
-            <Badge className="bg-primary/10 text-primary border-primary/30">
-              January 2026
-            </Badge>
+            <Badge className="bg-primary/10 text-primary border-primary/30">January 2026</Badge>
           </div>
-          
           <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-foreground">
-            Substrate Publication & Research Artifact
+            Memory Stream Publication & Research Artifact
           </h2>
-          
           <p className="text-muted-foreground mb-6 leading-relaxed">
-            In January 2026, the CMPSBL substrate was formally published as a research artifact 
+            In January 2026, the CMPSBL Memory Stream was formally published as a research artifact 
             and indexed under a persistent DOI — positioning it as a standards-bearing cognitive 
             architecture suitable for enterprise, interoperability frameworks, and academic collaboration.
           </p>
-          
           <div className="flex flex-wrap gap-3">
             <Button onClick={() => navigate('/publication')}>View DOI</Button>
             <Button variant="outline" onClick={() => navigate('/substrate')}>Technical Spec</Button>
@@ -282,12 +290,12 @@ export default function InvestorsPublic() {
         </Card>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className={`relative z-10 container mx-auto px-6 py-20 transition-all duration-1000 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold mb-4 text-foreground">Ready to Learn More?</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-foreground">Ready to Explore the Stream?</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Download our comprehensive investor deck or reach out directly.
+            Download our investor deck, the user guide, or reach out directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -296,11 +304,7 @@ export default function InvestorsPublic() {
               disabled={downloading}
               className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90"
             >
-              {downloading ? (
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              ) : (
-                <Download className="w-5 h-5 mr-2" />
-              )}
+              {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
             </Button>
             <Button 
