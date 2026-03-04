@@ -1,5 +1,5 @@
 /**
- * SlotCapacityIndicator — Persistent UI showing artifact slot usage
+ * SlotCapacityIndicator — Persistent UI showing pipeline slot usage
  * Dynamic color shift at 80% capacity. Tooltip explains model.
  */
 import { Package } from 'lucide-react';
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/tooltip';
 import { PRODUCT_TIER_LABELS } from '@/lib/quarry/types';
 import type { SlotState } from '@/hooks/useArtifactSlots';
+import { PIPELINE_SLOTS_LABEL, PIPELINE_SLOT_TOOLTIP } from '@/lib/branding/memory-stream';
 
 interface SlotCapacityIndicatorProps {
   slotState: SlotState;
@@ -26,6 +27,7 @@ export function SlotCapacityIndicator({
 }: SlotCapacityIndicatorProps) {
   const { activeCount, capacity, tier, atCapacity, nearCapacity } = slotState;
   const percentage = capacity > 0 ? (activeCount / capacity) * 100 : 0;
+  const remaining = capacity - activeCount;
 
   const colorClass = atCapacity
     ? 'text-destructive'
@@ -59,12 +61,9 @@ export function SlotCapacityIndicator({
             </div>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="max-w-xs">
-            <p className="font-semibold mb-1">Artifact Slots — {PRODUCT_TIER_LABELS[tier]}</p>
+            <p className="font-semibold mb-1">{PIPELINE_SLOTS_LABEL} — {PRODUCT_TIER_LABELS[tier]}</p>
             <p className="text-xs text-muted-foreground">
-              {activeCount} of {capacity} slots active. Every artifact pack uses exactly 1 slot.
-              {atCapacity
-                ? ' Deactivate a pack or upgrade to unlock more slots.'
-                : ` ${capacity - activeCount} slot${capacity - activeCount !== 1 ? 's' : ''} remaining.`}
+              {PIPELINE_SLOT_TOOLTIP(activeCount, capacity, remaining, atCapacity)}
             </p>
           </TooltipContent>
         </Tooltip>
@@ -78,7 +77,7 @@ export function SlotCapacityIndicator({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Package className={cn('w-4 h-4', colorClass)} />
-          <span className="text-sm font-medium">Artifact Slots</span>
+          <span className="text-sm font-medium">{PIPELINE_SLOTS_LABEL}</span>
         </div>
         <span className={cn('text-sm font-mono font-bold', colorClass)}>
           {activeCount} / {capacity}
@@ -91,7 +90,7 @@ export function SlotCapacityIndicator({
         />
       </div>
       <p className="text-xs text-muted-foreground">
-        {PRODUCT_TIER_LABELS[tier]} plan · {capacity - activeCount} slot{capacity - activeCount !== 1 ? 's' : ''} remaining
+        {PRODUCT_TIER_LABELS[tier]} plan · {remaining} slot{remaining !== 1 ? 's' : ''} remaining
       </p>
     </div>
   );

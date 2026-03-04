@@ -1,54 +1,28 @@
 /**
- * ArtifactPacksSection — Clear explanation of the pack activation model
+ * PipelinePacksSection — Clear explanation of the pack activation model
  * Free start → Packs activate capabilities → Slots create structure → Governance enforces boundaries
  */
 
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Package, Layers, Shield, Sparkles, ArrowRight, Check } from "lucide-react";
+import { Package, Layers, Shield, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { PRODUCT_TIERS } from "@/lib/quarry/types";
+import {
+  PIPELINE_PACKS_LABEL,
+  PIPELINE_PACK_DESCRIPTION,
+  PIPELINE_STEPS,
+} from "@/lib/branding/memory-stream";
 
-const steps = [
-  {
-    icon: Sparkles,
-    number: "01",
-    title: "Start free",
-    description: "Create an account and get 3 artifact slots immediately. No credit card. Full runtime access.",
-    color: "text-emerald-500",
-    borderColor: "border-emerald-500/20",
-    bg: "bg-emerald-500/5",
-  },
-  {
-    icon: Package,
-    number: "02",
-    title: "Activate packs",
-    description: "Choose from 24 artifact packs across 6 strategic domains. Each pack unlocks a specific set of capabilities.",
-    color: "text-primary",
-    borderColor: "border-primary/20",
-    bg: "bg-primary/5",
-  },
-  {
-    icon: Layers,
-    number: "03",
-    title: "Slots create structure",
-    description: "Every pack uses exactly one slot. Your plan controls how many slots you have — not which packs you can see.",
-    color: "text-violet-500",
-    borderColor: "border-violet-500/20",
-    bg: "bg-violet-500/5",
-  },
-  {
-    icon: Shield,
-    number: "04",
-    title: "Governance enforces boundaries",
-    description: "Activation is atomic and server-enforced. No race conditions, no overflows, no ungoverned capability sprawl.",
-    color: "text-amber-500",
-    borderColor: "border-amber-500/20",
-    bg: "bg-amber-500/5",
-  },
-];
+const stepIcons = [Sparkles, Package, Layers, Shield] as const;
+const stepColors = [
+  { color: "text-emerald-500", borderColor: "border-emerald-500/20", bg: "bg-emerald-500/5" },
+  { color: "text-primary", borderColor: "border-primary/20", bg: "bg-primary/5" },
+  { color: "text-violet-500", borderColor: "border-violet-500/20", bg: "bg-violet-500/5" },
+  { color: "text-amber-500", borderColor: "border-amber-500/20", bg: "bg-amber-500/5" },
+] as const;
 
 const tiers = [
   { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-emerald-500 to-emerald-600" },
@@ -69,7 +43,7 @@ export function ArtifactPacksSection() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Package className="w-3 h-3 mr-1.5 text-primary" />
-            <span className="text-xs font-semibold">Artifact Packs</span>
+            <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Activate What You{" "}
@@ -84,33 +58,37 @@ export function ArtifactPacksSection() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            24 artifact packs. 6 strategic domains. Every pack = 1 slot. 
-            Choose capabilities that match your workload — swap anytime.
+            {PIPELINE_PACK_DESCRIPTION}
           </p>
         </motion.div>
 
         {/* How it works — 4 steps */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
-          {steps.map((step, idx) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className={cn(
-                "relative rounded-xl border p-5",
-                step.borderColor, step.bg
-              )}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span className={cn("text-2xl font-black font-mono opacity-30", step.color)}>{step.number}</span>
-                <step.icon className={cn("w-5 h-5", step.color)} />
-              </div>
-              <h3 className="font-bold text-foreground mb-1.5">{step.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
-            </motion.div>
-          ))}
+          {PIPELINE_STEPS.map((step, idx) => {
+            const Icon = stepIcons[idx];
+            const colors = stepColors[idx];
+            const number = String(idx + 1).padStart(2, "0");
+            return (
+              <motion.div
+                key={number}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={cn(
+                  "relative rounded-xl border p-5",
+                  colors.borderColor, colors.bg
+                )}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={cn("text-2xl font-black font-mono opacity-30", colors.color)}>{number}</span>
+                  <Icon className={cn("w-5 h-5", colors.color)} />
+                </div>
+                <h3 className="font-bold text-foreground mb-1.5">{step.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Tier comparison — compact */}
