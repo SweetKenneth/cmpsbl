@@ -27,10 +27,16 @@ export function AdminHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 glass-panel border-b border-border/50">
+    <header className="sticky top-0 z-50 glass-panel border-b border-border/50 relative">
       {/* Memory Stream flowing accent bar */}
-      <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar" />
+      <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar z-10" />
+      <div className="flex items-center justify-between px-4 lg:px-6 h-16">
         {/* Left Section */}
+        <div className="flex items-center gap-4 flex-1">
+          <SidebarTrigger />
+          
+          <AdminBreadcrumb />
+        </div>
         <div className="flex items-center gap-4 flex-1">
           <SidebarTrigger />
           
