@@ -161,8 +161,8 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
               <Cpu className="w-3.5 h-3.5 text-primary" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-foreground tracking-tight">CMPSBL</div>
-              <div className="text-[9px] text-muted-foreground/50 font-mono">substrate v{version}</div>
+              <div className="text-xs font-bold text-foreground tracking-tight">Memory Stream</div>
+              <div className="text-[9px] text-muted-foreground/50 font-mono">signal → silicon v{version}</div>
             </div>
           </div>
         </div>
@@ -305,7 +305,7 @@ export default function SubstrateOS() {
               transition={{ duration: 2, repeat: Infinity }}
             />
           </div>
-          <p className="text-xs sm:text-sm font-semibold font-mono text-primary tracking-wide">CMPSBL Substrate</p>
+          <p className="text-xs sm:text-sm font-semibold font-mono text-primary tracking-wide">Memory Stream</p>
         </motion.div>
       </div>
     );
@@ -314,10 +314,10 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="CMPSBL Substrate — Command Center"
-        description="The CMPSBL Substrate command center: autonomous execution surfaces, zones, and overlays persisting, evolving, and orchestrating intelligence in real-time."
+        title="Memory Stream — Command Center"
+        description="The CMPSBL Memory Stream command center: autonomous execution surfaces, zones, and overlays — from signal capture to crystallized software to silicon."
         canonical="https://cmpsbl.com/os"
-        keywords={['CMPSBL Substrate', 'Clockless Cognitive Reality', 'persistent intelligence', 'cognitive orchestration']}
+        keywords={['CMPSBL', 'Memory Stream', 'Signal to Silicon', 'cognitive orchestration']}
       />
 
       {/* Ambient background */}

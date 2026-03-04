@@ -226,14 +226,14 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
             <div className="min-w-0">
               <h1 className="text-base sm:text-xl font-bold tracking-tight flex items-center gap-1.5 sm:gap-2">
                 <span className="relative">
-                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 bg-clip-text text-transparent">Clockless</span>
+                  <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-fuchsia-400 bg-clip-text text-transparent">Memory Stream</span>
                   <Sparkles className="absolute -top-1 -right-3 sm:-right-4 w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-400 animate-pulse" />
                 </span>
               </h1>
               <div className="flex items-center gap-1.5 sm:gap-2 mt-0.5">
                 <p className="text-[8px] sm:text-[10px] text-muted-foreground font-mono uppercase tracking-widest truncate">
-                  <span className="hidden sm:inline">cognitive reality • CMPSBL substrate</span>
-                  <span className="sm:hidden">CMPSBL substrate</span>
+                  <span className="hidden sm:inline">signal → silicon • CMPSBL substrate</span>
+                  <span className="sm:hidden">signal → silicon</span>
                 </p>
                 <span className="text-muted-foreground/30 hidden sm:inline">|</span>
                 <span className="text-[8px] sm:text-[10px] font-mono text-cyan-400/80 shrink-0">

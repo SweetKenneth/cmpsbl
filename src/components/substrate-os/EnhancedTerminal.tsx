@@ -675,13 +675,13 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           {isBiohack ? (
             <>
               <Dna className="w-4 h-4 text-[hsl(180_100%_60%)]" style={{ filter: 'drop-shadow(0 0 8px hsl(180 100% 50%))' }} />
-              <span className="biohack-title">neural://substrate.os</span>
+              <span className="biohack-title">stream://memory.crystallize</span>
               <Brain className="w-4 h-4 text-[hsl(280_100%_70%)]" style={{ filter: 'drop-shadow(0 0 8px hsl(280 100% 60%))' }} />
             </>
           ) : (
             <>
               <Terminal className={cn("w-4 h-4", currentTheme.accent)} />
-              <span className="text-xs text-muted-foreground">substrate://terminal</span>
+              <span className="text-xs text-muted-foreground">stream://memory-terminal</span>
             </>
           )}
         </div>
