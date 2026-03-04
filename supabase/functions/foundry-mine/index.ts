@@ -87,17 +87,28 @@ serve(async (req) => {
       });
     }
 
-    // Determine user tier (from engine subscription)
+    // Determine user tier (from engine subscription + admin role)
     const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
       headers: { authorization: authHeader },
     });
-    
+
+    // Check admin role for Admin-tier (200/day)
+    const { data: isAdmin } = await supabase.rpc('has_role_text', {
+      _user_id: user.id,
+      _role: 'admin',
+    });
+
     let foundryTier = 'free';
-    const engineTier = subData?.tier || 'free';
-    if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'mythic_miner';
-    else if (engineTier === 'studio') foundryTier = 'excavator';
-    else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'prospector';
-    else if (engineTier !== 'free') foundryTier = 'explorer';
+    if (isAdmin) {
+      foundryTier = 'mythic_miner'; // Admin: 200/day
+    } else {
+      const engineTier = subData?.tier || 'free';
+      // Clean plan ladder: Free → Creator → Pro → Architect → Admin
+      if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';     // Architect: 25/day
+      else if (engineTier === 'studio') foundryTier = 'prospector';                                 // Pro: 15/day
+      else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';               // Creator: 10/day
+      // else free: 5/day
+    }
 
     // Get tier config
     const { data: tierConfig } = await supabase
