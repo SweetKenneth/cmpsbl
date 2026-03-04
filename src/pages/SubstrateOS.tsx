@@ -79,7 +79,7 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane' },
-    { id: 'engines', label: 'Engines', icon: Layers, group: 'Execution', description: 'Execute & manage' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers' },
     { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes' },
