@@ -140,7 +140,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
                 Sealed Runtime
               </h4>
               <p className="text-sm text-zinc-400 max-w-xs mx-auto">
-                This artifact is delivered as a black-boxed runtime. Source code is permanently sealed to protect proprietary architecture.
+                This capability is delivered as a black-boxed runtime. Source code is permanently sealed to protect proprietary architecture.
               </p>
             </div>
             <Badge variant="outline" className="text-[10px] border-orange-500/50 text-orange-400 gap-1">

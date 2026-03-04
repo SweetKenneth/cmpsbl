@@ -20,7 +20,7 @@ const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
   { title: "Modular Cognitive Architecture", desc: "First cognitive infrastructure with 38 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
-  { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-module crystallization", badge: "50 Crystallized" },
+  { title: "Intent Mesh", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
   { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
@@ -30,7 +30,7 @@ const WORLD_FIRSTS = [
   { title: "Multi-Provider Fleet Affinity", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "NEXUS" },
   { title: "AI Governance Namespace", desc: "First published namespace standard (AIGVRN v1.0) for AI governance terminology", badge: "Zenodo" },
   { title: "Predictive Cost Forecasting", desc: "First linear regression cost forecasting with per-capability attribution for AI ops", badge: "ECONOMY" },
-  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across module dependency graphs", badge: "RIPPLE Zone" },
+  { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across system dependency graphs", badge: "RIPPLE Zone" },
 ];
 
 export default function InvestorsPublic() {
@@ -74,7 +74,7 @@ export default function InvestorsPublic() {
     { icon: Shield, name: "DEFENSE Mesh", subtitle: "Outermost Security", description: "Bot protection, threat detection, and governance guardrails — outermost mesh overlay." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
     { icon: Code, name: "ENCODE", subtitle: "Governed Code Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT Mesh", subtitle: "Emergent Orchestration", description: "Modules advertise, compose, and crystallize cross-module pipelines autonomously." },
+    { icon: Sparkles, name: "INTENT Mesh", subtitle: "Emergent Orchestration", description: "Systems advertise, compose, and crystallize cross-system pipelines autonomously." },
   ];
 
   const highlights = [
