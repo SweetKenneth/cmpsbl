@@ -207,7 +207,9 @@ export default function Explore() {
         </motion.div>
       </section>
 
-      <EnhancedFooter />
+      <Suspense fallback={<div className="min-h-[100px]" />}>
+        <EnhancedFooter />
+      </Suspense>
     </div>
   );
 }
