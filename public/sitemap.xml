@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL Substrate Sitemap — Updated 2026-02-28 -->
+<!-- CMPSBL® Memory Stream Sitemap — Updated 2026-03-04 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -7,121 +7,126 @@
   <!-- HOMEPAGE -->
   <url>
     <loc>https://cmpsbl.com/</loc>
-    <lastmod>2026-02-28</lastmod>
+    <lastmod>2026-03-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cmpsbl.com/" />
+    <image:image>
+      <image:loc>https://cmpsbl.com/og-memory-stream.jpg</image:loc>
+      <image:title>CMPSBL Memory Stream — Signal to Silicon</image:title>
+    </image:image>
   </url>
 
   <!-- CORE SUBSTRATE -->
-  <url><loc>https://cmpsbl.com/os</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
-  <url><loc>https://cmpsbl.com/ai-operating-system</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/architecture</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/modules</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/intelligence</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/demo</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/demos</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/os</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
+  <url><loc>https://cmpsbl.com/ai-operating-system</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/architecture</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/modules</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/intelligence</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/demo</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/demos</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
 
   <!-- PRODUCTS & FEATURES -->
-  <url><loc>https://cmpsbl.com/engines</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/composable-cognitives</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/store</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/marketplace</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/decode</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/proof</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/feed-dream-eater</loc><lastmod>2026-02-28</lastmod><changefreq>daily</changefreq><priority>0.80</priority></url>
-  <url><loc>https://cmpsbl.com/gaming</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/system-feed</loc><lastmod>2026-02-28</lastmod><changefreq>daily</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/evolution-mesh</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/intent-mesh</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/products/encode</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/engines</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/composable-cognitives</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/store</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/marketplace</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/decode</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/proof</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/foundry</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/feed-dream-eater</loc><lastmod>2026-03-04</lastmod><changefreq>daily</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/gaming</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/system-feed</loc><lastmod>2026-03-04</lastmod><changefreq>daily</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/evolution-mesh</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/intent-mesh</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/products/encode</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
 
   <!-- STANDARDS -->
-  <url><loc>https://cmpsbl.com/foundations</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/namespace</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/library</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/llms-txt</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/foundations</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/namespace</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/library</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/llms-txt</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
 
   <!-- DEVELOPER -->
-  <url><loc>https://cmpsbl.com/developers</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/documentation</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/docs/persistent-memory</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/docs/substrate/capabilities</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/academy</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/devtools</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/codelab</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/start-here</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/changelog</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://cmpsbl.com/evolution-log</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/developers</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/documentation</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/docs/persistent-memory</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/docs/substrate/capabilities</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/academy</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/devtools</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/codelab</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/start-here</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/changelog</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/evolution-log</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
 
   <!-- ENTERPRISE -->
-  <url><loc>https://cmpsbl.com/pricing</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/substrate/licensing</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/solutions</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://cmpsbl.com/use-cases</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/lab</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/pricing</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/substrate/licensing</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/solutions</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/use-cases</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/lab</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
 
   <!-- COMPANY -->
-  <url><loc>https://cmpsbl.com/about</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://cmpsbl.com/investors</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/contact</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/support</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/roadmap</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/insights</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/publication</loc><lastmod>2026-02-28</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/humans-txt</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
+  <url><loc>https://cmpsbl.com/about</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/investors</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/contact</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/support</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/roadmap</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/insights</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/publication</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/humans-txt</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.55</priority></url>
 
   <!-- CLUSTERS -->
-  <url><loc>https://cmpsbl.com/cluster/inclusive-module-accessibility</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://cmpsbl.com/cluster/studio-autonomous-site-generator</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/cluster/verify-worlds-first-ai-plugin-certification</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/cluster/inclusive-module-accessibility</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/cluster/studio-autonomous-site-generator</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/cluster/verify-worlds-first-ai-plugin-certification</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
 
   <!-- BLOG -->
-  <url><loc>https://cmpsbl.com/blog</loc><lastmod>2026-02-28</lastmod><changefreq>daily</changefreq><priority>0.90</priority></url>
-  <url><loc>https://cmpsbl.com/blog/machine-protocol-standards-architect-epoch</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/autonomous-ai-governance-runtime-enforcement</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/adversarial-ai-defense-module-response-2026</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/evolving-software-v6-breakthrough</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/rag-without-infrastructure</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/blog/agent-memory-anti-patterns</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/blog/langchain-memory-integration</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
-  <url><loc>https://cmpsbl.com/blog/why-agents-forget</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/blog/building-agents-that-learn</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://cmpsbl.com/blog/llms-txt-protocol-ai-context</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/inclusive-module-accessibility-mission</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/accessibility-free-for-all</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/wordpress-accessibility-guide</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/wcag-2-2-wordpress-changes</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-systems-that-dream-press-release</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/wordpress-bot-defense</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
-  <url><loc>https://cmpsbl.com/blog/top-security-plugins-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-cybersecurity-evolution-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-hackers-underground-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/cascade-ai-adaptive-intelligence-brain</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-studio-build-apps-that-think</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-triad-intelligent-routing</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-brain-adaptive-learning-core</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-vision-unified-dashboard</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-defense-ai-security</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-ripple-network-integration</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-access-identity-billing</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-nexus-api-gateway</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-product-comparison-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/promptfluid-market-disruptor</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
-  <url><loc>https://cmpsbl.com/blog/product-roadmap-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-automation-trends-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
-  <url><loc>https://cmpsbl.com/blog/ai-business-operations-2025</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://cmpsbl.com/blog</loc><lastmod>2026-03-04</lastmod><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/blog/machine-protocol-standards-architect-epoch</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/autonomous-ai-governance-runtime-enforcement</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/adversarial-ai-defense-module-response-2026</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/evolving-software-v6-breakthrough</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/rag-without-infrastructure</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/agent-memory-anti-patterns</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/langchain-memory-integration</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://cmpsbl.com/blog/why-agents-forget</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/building-agents-that-learn</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/llms-txt-protocol-ai-context</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/inclusive-module-accessibility-mission</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/accessibility-free-for-all</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wordpress-accessibility-guide</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wcag-2-2-wordpress-changes</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-systems-that-dream-press-release</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wordpress-bot-defense</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/top-security-plugins-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-cybersecurity-evolution-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-hackers-underground-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/how-promptfluid-works-cascade-ai-ecosystem</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/cascade-ai-adaptive-intelligence-brain</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-studio-build-apps-that-think</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-triad-intelligent-routing</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-brain-adaptive-learning-core</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-vision-unified-dashboard</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-defense-ai-security</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-ripple-network-integration</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-access-identity-billing</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-nexus-api-gateway</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-product-comparison-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/promptfluid-market-disruptor</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/product-roadmap-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-automation-trends-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-business-operations-2025</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.68</priority></url>
 
   <!-- LEGAL -->
-  <url><loc>https://cmpsbl.com/privacy</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://cmpsbl.com/terms</loc><lastmod>2026-02-28</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://cmpsbl.com/privacy</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://cmpsbl.com/terms</loc><lastmod>2026-03-04</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
 
   <!-- STATUS -->
-  <url><loc>https://cmpsbl.com/status</loc><lastmod>2026-02-28</lastmod><changefreq>daily</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/status</loc><lastmod>2026-03-04</lastmod><changefreq>daily</changefreq><priority>0.75</priority></url>
 
 </urlset>
