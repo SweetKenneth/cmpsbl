@@ -7,7 +7,7 @@
  * Mobile-first, DOM-based (no canvas).
  */
 
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState, useEffect, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -199,7 +199,25 @@ function RiverChannel() {
 }
 
 // ─── Main ───────────────────────────────────────────────────────
-export const MemoryRiver = memo(function MemoryRiver({ crystallizing = false }: { crystallizing?: boolean }) {
+export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCrystallizing, autoCrystallize = false }: { crystallizing?: boolean; autoCrystallize?: boolean }) {
+  const [autoPulse, setAutoPulse] = useState(false);
+  const crystallizing = externalCrystallizing || autoPulse;
+
+  useEffect(() => {
+    if (!autoCrystallize || externalCrystallizing) return;
+    // First pulse after 6–12s, then every 8–16s
+    const schedule = () => 6000 + Math.random() * 6000;
+    const repeat = () => 8000 + Math.random() * 8000;
+
+    let timeout: ReturnType<typeof setTimeout>;
+    const pulse = () => {
+      setAutoPulse(true);
+      setTimeout(() => setAutoPulse(false), 2200);
+      timeout = setTimeout(pulse, repeat());
+    };
+    timeout = setTimeout(pulse, schedule());
+    return () => clearTimeout(timeout);
+  }, [autoCrystallize, externalCrystallizing]);
   const particles = useMemo(() => {
     const w: { id: number; type: ParticleType; delay: number; row: number; duration: number }[] = [];
     let id = 0;
