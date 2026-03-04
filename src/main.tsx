@@ -3,8 +3,17 @@ import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 
 // Defer full Tailwind CSS — critical CSS is inlined in index.html for FCP
-// This makes the 42KB stylesheet non-render-blocking
-requestAnimationFrame(() => { import("./index.css"); });
+// Load as non-render-blocking stylesheet to avoid Lighthouse penalty
+requestAnimationFrame(() => {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = import.meta.env.PROD
+    ? '/assets/index.css'
+    : '/src/index.css';
+  link.media = 'print';
+  link.onload = () => { link.media = 'all'; };
+  document.head.appendChild(link);
+});
 
 // Pre-render cache safety: validate persisted Zustand stores before React mounts.
 // If any persisted store has corrupted/stale data, clear it so the app starts fresh.
