@@ -145,6 +145,27 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [checkModule]);
 
+  // Deferred init: when autoInit is false (landing page), still init after 8s idle
+  useEffect(() => {
+    if (autoInit) return; // handled by the main effect
+    if (initializedRef.current) return;
+
+    const deferredTimeout = setTimeout(() => {
+      if (!mountedRef.current || initializedRef.current) return;
+      initializedRef.current = true;
+
+      initializeNeuralSubstrate().catch(err =>
+        console.warn('[SubstrateProvider] Deferred neural substrate init:', err)
+      );
+
+      if (debugMode.allowModulePolling()) {
+        refresh();
+      }
+    }, 8000);
+
+    return () => clearTimeout(deferredTimeout);
+  }, [autoInit, refresh]);
+
   useEffect(() => {
     if (!autoInit) return;
     if (!debugMode.allowModulePolling()) return;

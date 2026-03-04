@@ -107,7 +107,10 @@ const App = () => {
   const mobilePreviewSafeMode =
     (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
 
-  const substrateAutoInit = true;
+  // Defer substrate initialization on landing page to reduce critical request chain
+  const isLandingPage = typeof window !== 'undefined' && 
+    (window.location.pathname === '/' || window.location.pathname === '');
+  const substrateAutoInit = !isLandingPage;
 
   // Global safety net for unhandled promise rejections
   useEffect(() => {
