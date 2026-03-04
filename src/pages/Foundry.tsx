@@ -5,7 +5,7 @@
  * - Anonymous: preview + CTA
  * - Authenticated: crystallize button, vault, stats
  */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
@@ -20,6 +20,7 @@ export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
   const foundry = useFoundryState();
   const [activeTab, setActiveTab] = useState<'mine' | 'inventory'>('mine');
+  const [crystallizing, setCrystallizing] = useState(false);
 
   if (authLoading || foundry.isLoading) {
     return (
@@ -60,7 +61,7 @@ export default function Foundry() {
 
             {/* Memory Stream visualization */}
             <div className="relative w-full h-24 mb-8 rounded-lg overflow-hidden border border-border/10 bg-card/20">
-              <MemoryRiver />
+              <MemoryRiver crystallizing={crystallizing} />
             </div>
 
             {/* Stats row */}
@@ -103,6 +104,7 @@ export default function Foundry() {
                   isMining={foundry.isMining}
                   lastResult={foundry.lastMineResult}
                   onMine={foundry.mine}
+                  onCrystallizing={setCrystallizing}
                 />
                 <FoundryTierLegend />
               </div>

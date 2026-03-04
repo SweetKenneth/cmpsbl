@@ -7,7 +7,8 @@
  * Mobile-first, DOM-based (no canvas).
  */
 
-import React, { memo, useMemo, useId } from "react";
+import React, { memo, useMemo } from "react";
+import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -198,7 +199,7 @@ function RiverChannel() {
 }
 
 // ─── Main ───────────────────────────────────────────────────────
-export const MemoryRiver = memo(function MemoryRiver() {
+export const MemoryRiver = memo(function MemoryRiver({ crystallizing = false }: { crystallizing?: boolean }) {
   const particles = useMemo(() => {
     const w: { id: number; type: ParticleType; delay: number; row: number; duration: number }[] = [];
     let id = 0;
@@ -245,12 +246,33 @@ export const MemoryRiver = memo(function MemoryRiver() {
       <motion.div
         className="relative w-full h-36 sm:h-40 md:h-48 lg:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-border/20 bg-background/30"
         initial={{ opacity: 0, scaleY: 0.7 }}
-        animate={{ opacity: 1, scaleY: 1 }}
-        transition={{ delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          boxShadow: "0 0 80px -30px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary) / 0.04)",
+        animate={{
+          opacity: 1,
+          scaleY: 1,
+          boxShadow: crystallizing
+            ? "0 0 120px -20px hsl(var(--primary) / 0.4), inset 0 1px 0 hsl(var(--primary) / 0.1)"
+            : "0 0 80px -30px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary) / 0.04)",
         }}
+        transition={crystallizing
+          ? { boxShadow: { duration: 0.6, ease: "easeOut" } }
+          : { delay: 0.6, duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+        }
       >
+        {/* Convergence pulse overlay */}
+        <AnimatePresence>
+          {crystallizing && (
+            <motion.div
+              initial={{ opacity: 0, scale: 1.5 }}
+              animate={{ opacity: 0.6, scale: 0.5 }}
+              exit={{ opacity: 0, scale: 0.2 }}
+              transition={{ duration: 1.8, ease: "easeInOut" }}
+              className="absolute inset-0 z-20 pointer-events-none"
+              style={{
+                background: "radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.35), transparent 70%)",
+              }}
+            />
+          )}
+        </AnimatePresence>
         <RiverChannel />
         {particles.map((p) => <Particle key={p.id} {...p} />)}
         {crystals.map((c) => <CrystallizedNode key={c.label} {...c} />)}
