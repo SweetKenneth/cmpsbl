@@ -90,24 +90,26 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* EVOLUTION CTA — right below the hero */}
-      <EvolutionCTA />
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        {/* EVOLUTION CTA — right below the hero */}
+        <EvolutionCTA />
 
-      {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
-      <EnginesCTA />
+        {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
+        <EnginesCTA />
 
-      {/* Choose Your Path */}
-      <BuiltForSection />
+        {/* Choose Your Path */}
+        <BuiltForSection />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
-      <DifferentiationSection />
+        {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
+        <DifferentiationSection />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      {/* Artifact Packs — How the activation model works */}
-      <ArtifactPacksSection />
+        {/* Artifact Packs — How the activation model works */}
+        <ArtifactPacksSection />
+      </Suspense>
 
 
       {/* Final CTA — Cinematic closing */}
