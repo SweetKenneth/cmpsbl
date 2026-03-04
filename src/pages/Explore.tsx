@@ -3,7 +3,7 @@
  * v12 homepage: Artifact pack focus, differentiation clarity, hero preserved
  */
 
-import { useRef } from "react";
+import { useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
@@ -14,18 +14,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 
-// Components
+// Above-fold: eager
 import { PublicNav } from "@/components/PublicNav";
-import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
-import { DifferentiationSection } from "@/components/home/DifferentiationSection";
-import { ArtifactPacksSection } from "@/components/home/ArtifactPacksSection";
-import { AgentsSection } from "@/components/home/AgentsSection";
-import { GovernanceSignal } from "@/components/home/GovernanceSignal";
-import { BuiltForSection } from "@/components/home/BuiltForSection";
-import { EvolutionCTA } from "@/components/home/EvolutionCTA";
-import { EnginesCTA } from "@/components/home/EnginesCTA";
+
+// Below-fold: lazy loaded to reduce initial JS and improve FCP
+const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
+const DifferentiationSection = lazy(() => import("@/components/home/DifferentiationSection").then(m => ({ default: m.DifferentiationSection })));
+const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
+const AgentsSection = lazy(() => import("@/components/home/AgentsSection").then(m => ({ default: m.AgentsSection })));
+const GovernanceSignal = lazy(() => import("@/components/home/GovernanceSignal").then(m => ({ default: m.GovernanceSignal })));
+const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").then(m => ({ default: m.BuiltForSection })));
+const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
+const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
 import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
@@ -88,24 +90,26 @@ export default function Explore() {
       {/* Live System Metrics Bar */}
       <LiveStatsBar />
 
-      {/* EVOLUTION CTA — right below the hero */}
-      <EvolutionCTA />
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        {/* EVOLUTION CTA — right below the hero */}
+        <EvolutionCTA />
 
-      {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
-      <EnginesCTA />
+        {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
+        <EnginesCTA />
 
-      {/* Choose Your Path */}
-      <BuiltForSection />
+        {/* Choose Your Path */}
+        <BuiltForSection />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
-      <DifferentiationSection />
+        {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
+        <DifferentiationSection />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      {/* Artifact Packs — How the activation model works */}
-      <ArtifactPacksSection />
+        {/* Artifact Packs — How the activation model works */}
+        <ArtifactPacksSection />
+      </Suspense>
 
 
       {/* Final CTA — Cinematic closing */}
@@ -203,7 +207,9 @@ export default function Explore() {
         </motion.div>
       </section>
 
-      <EnhancedFooter />
+      <Suspense fallback={<div className="min-h-[100px]" />}>
+        <EnhancedFooter />
+      </Suspense>
     </div>
   );
 }

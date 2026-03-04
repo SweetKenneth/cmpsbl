@@ -1,8 +1,8 @@
 import { lazy, Suspense } from "react";
 import { isFrontendDomain } from "@/config/domains";
-import Explore from "@/pages/Explore";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
+const Explore = lazy(() => import("@/pages/Explore"));
 
 /**
  * Shows PromptFluidHome when accessed via promptfluid.com,
@@ -16,5 +16,9 @@ export default function DomainAwareHome() {
       </Suspense>
     );
   }
-  return <Explore />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <Explore />
+    </Suspense>
+  );
 }
