@@ -40,6 +40,8 @@ const EvolutionTab = lazy(() => import('@/components/substrate-os/EvolutionTab')
 const ShadowTab = lazy(() => import('@/components/substrate-os/ShadowTab').then(m => ({ default: m.ShadowTab })));
 const OracleTab = lazy(() => import('@/components/substrate-os/OracleTab').then(m => ({ default: m.OracleTab })));
 const ForgeTab = lazy(() => import('@/components/substrate-os/ForgeTab').then(m => ({ default: m.ForgeTab })));
+const CCRTab = lazy(() => import('@/components/substrate-os/CCRTab').then(m => ({ default: m.CCRTab })));
+const OperationsTab = lazy(() => import('@/components/substrate-os/OperationsTab').then(m => ({ default: m.OperationsTab })));
 const SecurityPanel = lazy(() => import('@/components/substrate-os/panels/SecurityPanel'));
 const AnalyticsTab = lazy(() => import('@/components/substrate-os/AnalyticsTab').then(m => ({ default: m.AnalyticsTab })));
 const GovernorPanel = lazy(() => import('@/components/substrate-os/panels/GovernorPanel'));
@@ -84,6 +86,8 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane' },
+    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM' },
+    { id: 'operations', label: 'Operations', icon: Layers, group: 'Cognitive', description: 'DECODE · VISION · ECONOMY + 4' },
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers' },
     { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh' },
@@ -98,7 +102,7 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
   ];
 }
 
-const GROUP_ORDER = ['Command', 'Intelligence', 'Execution', 'Perception', 'Manufacturing', 'Extend', 'Govern'];
+const GROUP_ORDER = ['Command', 'Intelligence', 'Cognitive', 'Execution', 'Perception', 'Manufacturing', 'Extend', 'Govern'];
 
 // ── Sidebar ──
 interface SidebarProps {
