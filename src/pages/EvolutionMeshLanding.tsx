@@ -1056,7 +1056,7 @@ export default function EvolutionMeshLanding() {
           <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center space-y-4">
             <h3 className="text-lg font-semibold text-muted-foreground">Need unlimited calls or on-premise deployment?</h3>
             <p className="text-sm text-muted-foreground">
-              Contact <a href="mailto:promptfluid@gmail.com" className="text-primary underline">promptfluid@gmail.com</a> for Enterprise plans.
+              Contact <a href="mailto:hello@CMPSBL.com" className="text-primary underline">hello@CMPSBL.com</a> for Enterprise plans.
             </p>
           </div>
         </section>
