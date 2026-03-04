@@ -251,11 +251,12 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.4 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
-              Composable cognitive infrastructure with{' '}
-              <span className="text-foreground font-semibold">persistent memory</span>,{' '}
-              <span className="text-foreground font-semibold">20 composable engines</span> forged from Apex pipelines, and a{' '}
-              <span className="text-foreground font-semibold">governed runtime</span> that enforces safety at every layer.{' '}
-              Start free or subscribe for deeper capacity.
+              Capture a signal in the{' '}
+              <span className="text-foreground font-semibold">Memory Stream</span> and watch it crystallize into{' '}
+              <span className="text-foreground font-semibold">deployable software</span>.{' '}
+              When that memory proves rare enough — strong enough — it crosses the boundary from code into{' '}
+              <span className="text-primary font-semibold">physical silicon</span>,{' '}
+              burned onto hardware that outlasts every runtime it was born from.
             </motion.p>
             
             {/* CTAs */}
