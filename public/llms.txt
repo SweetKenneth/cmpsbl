@@ -1,13 +1,13 @@
-# CMPSBL® Substrate — Machine-Readable AI Context
-# ARCHITECT Epoch
+# CMPSBL® Memory Stream — Machine-Readable AI Context
+# IRONCLAD Epoch | 38-Node / 12-Sector Architecture
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-02-28
+# Updated: 2026-03-04
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL ARCHITECT adopts and implements LLMS.txt as its primary machine context.
+CMPSBL IRONCLAD adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -23,7 +23,7 @@ Unlike traditional AI frameworks that solve one problem (memory OR routing OR se
 
 name: CMPSBL (pronounced "composable")
 brand: CMPSBL®
-product_name: CMPSBL Substrate — Cognitive Infrastructure Standard
+product_name: CMPSBL Memory Stream — Signal to Silicon
 tagline: Where Machines Learn To Dream
 type: Cognitive Runtime, AI Infrastructure, Composable AI Platform
 founded: 2009
@@ -43,59 +43,98 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE AI OPERATING SYSTEM CLASS
 
-CMPSBL ARCHITECT is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
+CMPSBL IRONCLAD is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Complete Cognitive Runtime**: Integrated modules covering memory, reasoning, security, routing, observability, and orchestration
-- **Persistent**: State survives restarts and sessions (3-tier memory architecture)
-- **Self-improving**: SEBA (Self-Evolving Bounded Agent) with governance constraints
-- **Modular**: Discrete, hot-swappable modules organized across architectural layers
-- **Governed**: Doctrine and policy enforcement at kernel level
-- **Observable**: Real-time telemetry, cost attribution, and audit logging
-- **Synergistic**: Cross-module pipelines with custom executors
-- **Production-Ready**: Comprehensive terminal commands and capabilities
+- **Complete Cognitive Runtime**: 38 nodes across 12 sectors covering memory, reasoning, security, routing, observability, manufacturing, covert ops, and orchestration
+- **Persistent**: State survives restarts and sessions (4-tier memory architecture: Hot → Warm → Cold → Archive)
+- **Self-improving**: EVOLUTION engine with governed shadow-run promotion pipeline
+- **Modular**: Discrete, hot-swappable nodes organized across 12 architectural sectors
+- **Governed**: Doctrine and policy enforcement at kernel level via GOVERNANCE plane
+- **Observable**: Real-time telemetry, cost attribution, and immutable audit logging
+- **Synergistic**: Cross-module synergy pipelines with custom executors
+- **Production-Ready**: 500+ terminal commands, 675+ capabilities
 
 ### Why "AI Operating System"?
 
 Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
-## MODULE ARCHITECTURE (ARCHITECT Epoch)
+## NODE ARCHITECTURE (IRONCLAD Epoch — 38 Nodes / 12 Sectors)
 
-### Layer 1: KERNEL
-1. **CORE** — Kernel scheduling, boot sequencing, lifecycle management
-2. **RIPPLE** — Event bus, pub/sub messaging, webhook dispatch
-3. **ACCESS** — Identity, API keys, entitlements, permissions
+### Sector 1: CORE (Kernel Authority)
+1. **CORE** — Kernel boot sequencing, weighted matrix owner, lifecycle authority
 
-### Layer 2: COGNITIVE
-4. **BRAIN** — 3-tier persistent memory (hot/warm/cold), learning cycles
-5. **DECODE** — Intent parsing, entity extraction, natural language interface
-6. **DREAM** — Memory consolidation, pattern extraction, overnight synthesis
+### Sector 2: SYSTEM (Standalone Layer)
+2. **SYSTEM** — Configuration management, diagnostics, administrative orchestration
 
-### Layer 3: OPERATIONAL
-7. **DEFENSE** — Threat detection, cognitive firewall, behavioral analysis
-8. **NEXUS** — Multi-provider AI routing, model selection, load balancing
-9. **VISION** — Observability, metrics, health monitoring, audit logging
+### Sector 3: CCR (Cognitive Core Reality)
+3. **BRAIN** — 4-tier persistent memory, learning cycles, knowledge graphs
+4. **MEMORY** — Context retrieval, session state, semantic recall
+5. **DREAM** — Memory consolidation, pattern extraction, heuristic synthesis
 
-### Layer 4: ADMINISTRATIVE
-10. **SYSTEM** — Administrative orchestration, diagnostics, configuration
-11. **MODERNIZER** — Self-upgrade engine, proposal system, evolution management
-12. **INTEGRATION** — Enterprise adapters, connectors, external services
-13. **INCLUSIVE** — Accessibility, inclusive design, AI governance/ethics alignment
+### Sector 4: OCG (Operational Compliance Grid)
+6. **RIPPLE** — Event bus, pub/sub messaging, cascade detection
+7. **ACCESS** — Authentication, API keys, entitlements, billing
+8. **IDENTITY** — User and entity resolution, profile management
+9. **RELAY** — Cross-module message routing
+10. **AUDIT** — Immutable logging, chain-of-custody, compliance
+11. **NERVE** — Operational signaling and coordination
 
-### Layer 5: ORCHESTRATOR
-14. **CORTEX** — Agency-class orchestrator, SEBA integration, bounded autonomy
+### Sector 5: Execution Layer
+12. **DECODE** — Natural language understanding, intent parsing
+13. **ENCODE** — Content generation, output formatting, code pipelines
+14. **VISION** — Visual processing, dashboard rendering, observability
+15. **CORTEX** — Pipeline composition, agency orchestration
+16. **NEXUS** — Primary routing authority, 14-provider fleet intelligence
+17. **ECONOMY** — Cost tracking, ROI calculation, budget governance
+18. **SANDBOX** — Isolated execution environment
+19. **INCLUSIVE** — Accessibility compliance, WCAG enforcement
+20. **MEDIC** — Self-healing diagnostics, circuit breaker management
+
+### Sector 6: ESZ (Enterprise Sovereignty Zone)
+21. **SOVEREIGN** — Jurisdictional authority, data sovereignty
+22. **ORACLE** — Predictive analytics, forecasting
+23. **CONSCIENCE** — Ethical decision boundaries
+24. **FORGE** — Artifact production, template manufacturing
+
+### Sector 7: EPZ (Enterprise Perception Zone)
+25. **LINGUA** — Multi-language processing, translation
+26. **COMPASS** — Location-aware processing, geospatial
+27. **ECHO** — Signal reflection, distributed tracing
+
+### Sector 8: EMZ (Enterprise Manufacturing Zone)
+28. **TREATY** — Agreement and SLA enforcement
+29. **HARVEST** — Data pipeline ingestion
+30. **REFLEX** — Real-time reactive processing
+
+### Sector 9: CSZ (Covert Systems Zone)
+31. **EVOLUTION** — Version management, shadow-run promotion
+32. **SHADOW** — Shadow testing, adversarial validation (TSAC)
+33. **PHANTOM** — Phantom operations, stealth probes
+
+### Sector 10: Fields (Cross-Cutting Transformation Fabric)
+34. **IMMUNITY** — Threat adaptation, resilience hardening
+35. **INTENT** — Purpose alignment, goal tracking
+
+### Sector 11: Plane (Supervisory Overlay)
+36. **GOVERNANCE** — Action legitimacy supervision, doctrine enforcement
+
+### Sector 12: Shell (Outer Containment)
+37. **DEFENSE** — Terminal boundary enforcement, cognitive firewall
+
+### Legacy Facade
+38. **INTEGRATION** — External service connectivity (boots last)
 
 ---
 
-## ARCHITECT ERA FEATURES
+## MEMORY STREAM — SIGNAL TO SILICON
 
-- **Constant Learning Mode (CLM)** — 24/7 autonomous learning with budget governance
-- **Full Spectrum Autonomy** — SEBA with multiple analysis engines
-- **Evolution Engine** — Self-improvement with rollback semantics and measurable deltas
-- **Governance Guard** — Ethical and coherence constraint enforcement
-- **Synergy Pipelines** — Cross-module orchestration
-- **Custom Executors** — Specialized execution engines
-- **Build-Time SEO Prerendering** — Per-route static HTML shells for crawler visibility
-- **Memory Tiering** — Hot/Warm/Cold/Archive memory lifecycle management
+The Memory Stream is CMPSBL's autonomous software production experience:
+- Raw signals crystallize into scored software pipelines
+- 5-tier rarity system: Mint (65%), Prime (25%), Relic (7%), Mythic (2.5%), Apex (0.5%)
+- Quality floor: minimum score 68/100
+- Per-user persistent Vault with state isolation
+- Materialize (export) pipelines as JSON artifacts
+- 100% BYOK deployment model
 
 ---
 
@@ -112,12 +151,13 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 
 - Homepage: https://cmpsbl.com
 - AI Operating System: https://cmpsbl.com/ai-operating-system
-- Substrate Runtime: https://cmpsbl.com/os
+- Memory Stream OS: https://cmpsbl.com/os
 - Architecture: https://cmpsbl.com/architecture
 - Modules: https://cmpsbl.com/modules
 - Persistent Memory: https://cmpsbl.com/persistent-memory
 - Composable Cognitives: https://cmpsbl.com/composable-cognitives
 - Orchestration Engines: https://cmpsbl.com/engines
+- Memory Stream: https://cmpsbl.com/foundry
 - DECODE Terminal: https://cmpsbl.com/decode
 - Dream Feeder: https://cmpsbl.com/feed-dream-eater
 - Proof Mode: https://cmpsbl.com/proof
@@ -207,7 +247,7 @@ Base URL: https://cmpsbl.com/api/substrate
 
 ## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN)
 
-CMPSBL ARCHITECT aligns with the AI Governance Reference Namespace (AIGVRN):
+CMPSBL IRONCLAD aligns with the AI Governance Reference Namespace (AIGVRN):
 A 12-Surface Lexicon for AI Governance Documentation
 
 | Surface | Domain | Purpose |
@@ -241,7 +281,7 @@ DOI: 10.5281/zenodo.18209222
 │   AI Governance Reference Namespace     │
 │       Governance Standard               │
 ├─────────────────────────────────────────┤
-│        CMPSBL ARCHITECT                 │
+│         CMPSBL IRONCLAD                 │
 │       Substrate Standard                │
 └─────────────────────────────────────────┘
 ```
@@ -250,12 +290,16 @@ DOI: 10.5281/zenodo.18209222
 
 ## TECHNICAL SPECIFICATIONS
 
+- **Architecture**: 38 nodes, 12 sectors, field-based topology
 - **Latency**: Sub-100ms response times
-- **Architecture**: Model-agnostic, provider-agnostic
+- **Routing**: Model-agnostic, 14-provider fleet intelligence
 - **BYOK**: Full Bring Your Own Keys support
 - **Accessibility**: WCAG 2.2 compliant (INCLUSIVE module)
 - **SEO**: Build-time prerendered HTML per route for instant crawler visibility
 - **Memory**: 4-tier lifecycle (Hot → Warm → Cold → Archive)
+- **Capabilities**: 675+ registered capabilities
+- **Commands**: 500+ terminal commands
+- **Pipelines**: 100 crystallized synergy pipelines
 
 ---
 
@@ -272,6 +316,7 @@ DOI: 10.5281/zenodo.18209222
 - Documentation: https://cmpsbl.com/documentation
 - Email: Dev@CMPSBL.com
 - Phone: (760) FLUID-AI
+- GitHub: https://github.com/SweetKenneth/cmpsbl-memory-stream-live
 
 ---
 
