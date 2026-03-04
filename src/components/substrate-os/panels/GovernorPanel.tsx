@@ -45,6 +45,42 @@ export default function GovernorPanel() {
   const liveAuditFeed = useLiveAuditFeed(10);
   const [activeTab, setActiveTab] = useState('controls');
 
+  // Audit engine states
+  const [diligenceRunning, setDiligenceRunning] = useState(false);
+  const [diligenceReport, setDiligenceReport] = useState<DiligenceReport | null>(null);
+  const [auditRunning, setAuditRunning] = useState(false);
+  const [auditReport, setAuditReport] = useState<AuditReport | null>(null);
+
+  const runDiligenceHarness = useCallback(async () => {
+    setDiligenceRunning(true);
+    setDiligenceReport(null);
+    try {
+      const { runDiligence } = await import('@/lib/diligence/run-diligence');
+      const report = await runDiligence();
+      setDiligenceReport(report);
+      toast.success(`Diligence: ${report.summary.passed}/${report.summary.total} passed`);
+    } catch (e: any) {
+      toast.error(`Diligence failed: ${e?.message || 'Unknown error'}`);
+    } finally {
+      setDiligenceRunning(false);
+    }
+  }, []);
+
+  const runFullAuditEngine = useCallback(async () => {
+    setAuditRunning(true);
+    setAuditReport(null);
+    try {
+      const { runFullAudit } = await import('@/lib/audit/audit-runner');
+      const report = await runFullAudit();
+      setAuditReport(report);
+      toast.success(`Audit: ${report.summary.passed ? 'PASSED' : 'ISSUES FOUND'} (${report.summary.total} findings)`);
+    } catch (e: any) {
+      toast.error(`Audit failed: ${e?.message || 'Unknown error'}`);
+    } finally {
+      setAuditRunning(false);
+    }
+  }, []);
+
   // Kill switches
   const [killSwitches, setKillSwitches] = useState<Record<string, boolean>>({
     seba_enabled: false,
