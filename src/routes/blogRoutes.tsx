@@ -4,6 +4,13 @@
 import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 
+// Memory Stream series
+const MemoryStreamCrystallizationGuide = lazy(() => import("@/pages/blog/MemoryStreamCrystallizationGuide"));
+const SignalToSiliconNarrative = lazy(() => import("@/pages/blog/SignalToSiliconNarrative"));
+const MemoryStreamTierAnatomy = lazy(() => import("@/pages/blog/MemoryStreamTierAnatomy"));
+const MemoryStreamVaultMastery = lazy(() => import("@/pages/blog/MemoryStreamVaultMastery"));
+const AutonomousDiscoveryEngine = lazy(() => import("@/pages/blog/AutonomousDiscoveryEngine"));
+
 const WordPressBotDefense = lazy(() => import("@/pages/blog/WordPressBotDefense"));
 const TopSecurityPlugins2025 = lazy(() => import("@/pages/blog/TopSecurityPlugins2025"));
 const AICybersecurityEvolution2025 = lazy(() => import("@/pages/blog/AICybersecurityEvolution2025"));
@@ -48,6 +55,13 @@ const AutoBlogPost = lazy(() => import("@/pages/blog/AutoBlogPost"));
 
 export const blogRoutes = (
   <>
+    {/* Memory Stream Series */}
+    <Route path="/blog/memory-stream-crystallization-guide" element={<MemoryStreamCrystallizationGuide />} />
+    <Route path="/blog/signal-to-silicon-narrative" element={<SignalToSiliconNarrative />} />
+    <Route path="/blog/memory-stream-tier-anatomy-rarity" element={<MemoryStreamTierAnatomy />} />
+    <Route path="/blog/memory-stream-vault-mastery" element={<MemoryStreamVaultMastery />} />
+    <Route path="/blog/autonomous-discovery-engine-architecture" element={<AutonomousDiscoveryEngine />} />
+
     <Route path="/blog/wordpress-bot-defense" element={<WordPressBotDefense />} />
     <Route path="/blog/top-security-plugins-2025" element={<TopSecurityPlugins2025 />} />
     <Route path="/blog/ai-cybersecurity-evolution-2025" element={<AICybersecurityEvolution2025 />} />
