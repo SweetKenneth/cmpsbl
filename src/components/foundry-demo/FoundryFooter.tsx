@@ -1,70 +1,148 @@
 /**
- * Memory Stream Footer — Closing CTA with real metrics
+ * Memory Stream Footer — Full site navigation + closing CTA
  */
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
+const NAV_COLUMNS = [
+  {
+    title: 'Substrate',
+    links: [
+      { label: 'Overview', to: '/substrate' },
+      { label: 'Runtime', to: '/runtime' },
+      { label: 'Engine', to: '/engine' },
+      { label: 'Upgrade', to: '/upgrade' },
+    ],
+  },
+  {
+    title: 'Discover',
+    links: [
+      { label: 'Memory Stream', to: '/memory-stream' },
+      { label: 'Cognitive Showcase', to: '/showcase' },
+      { label: 'Engineering Proof', to: '/proof' },
+      { label: 'Whitepaper', to: '/docs/whitepaper/', external: true },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', to: '/about' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'Investors', to: '/investors' },
+      { label: 'Contact', to: '/contact' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Documentation', to: '/docs' },
+      { label: 'API Reference', to: '/docs/runtime-reference' },
+      { label: 'Privacy', to: '/privacy' },
+      { label: 'Terms', to: '/terms' },
+    ],
+  },
+];
 
 export function FoundryFooter() {
   const navigate = useNavigate();
 
   return (
-    <section className="py-32 px-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.06),transparent_60%)]" />
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="max-w-3xl mx-auto text-center relative"
-      >
-        <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-6">
-          The question isn't whether it works
-        </div>
-        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-8 leading-[0.95]">
-          1,143&nbsp;pipelines.
-          <br />
-          95&nbsp;perfect&nbsp;scores.
-          <br />
-          <span className="text-primary">Under 9 hours.</span>
-        </h2>
-        <p className="text-muted-foreground/60 max-w-lg mx-auto mb-12">
-          Every system you add changes the topology. Every discovery compounds the next.
-          The Memory Stream doesn't stop — it accelerates.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={() => navigate('/substrate')}
-            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-mono text-sm font-bold hover:bg-primary/90 transition-colors"
-          >
-            Explore the Substrate
-          </button>
-          <button
-            onClick={() => navigate('/proof')}
-            className="px-8 py-3 border border-border/30 text-foreground rounded-lg font-mono text-sm font-bold hover:bg-muted/20 transition-colors"
-          >
-            View Engineering Proof
-          </button>
-          <button
-            onClick={() => window.open('/docs/whitepaper/', '_blank')}
-            className="px-8 py-3 border border-border/30 text-foreground rounded-lg font-mono text-sm font-bold hover:bg-muted/20 transition-colors"
-          >
-            Read Whitepaper
-          </button>
-        </div>
-
-        {/* Technical footer */}
+    <footer className="relative overflow-hidden" id="footer">
+      {/* CTA Section */}
+      <section className="py-24 md:py-32 px-6 relative">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.06),transparent_60%)]" />
+        
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-20 pt-8 border-t border-border/10"
+          className="max-w-3xl mx-auto text-center relative"
         >
-          <div className="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-wider space-y-1">
-            <div>CMPSBL® Memory Stream</div>
-            <div>All data sourced from production database · RLS enforced · Independently verifiable</div>
+          <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-6">
+            The question isn't whether it works
+          </div>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-8 leading-[0.95]">
+            1,143&nbsp;pipelines.
+            <br />
+            95&nbsp;perfect&nbsp;scores.
+            <br />
+            <span className="text-primary">Under 9 hours.</span>
+          </h2>
+          <p className="text-muted-foreground/60 max-w-lg mx-auto mb-12 text-sm md:text-base">
+            Every system you add changes the topology. Every discovery compounds the next.
+            The Memory Stream doesn't stop — it accelerates.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => navigate('/substrate')}
+              className="w-full sm:w-auto px-8 py-3 bg-primary text-primary-foreground rounded-lg font-mono text-sm font-bold hover:bg-primary/90 transition-colors"
+            >
+              Explore the Substrate
+            </button>
+            <button
+              onClick={() => navigate('/proof')}
+              className="w-full sm:w-auto px-8 py-3 border border-border/30 text-foreground rounded-lg font-mono text-sm font-bold hover:bg-muted/20 transition-colors"
+            >
+              View Engineering Proof
+            </button>
           </div>
         </motion.div>
-      </motion.div>
-    </section>
+      </section>
+
+      {/* Navigation grid */}
+      <div className="border-t border-border/10 px-6 py-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {NAV_COLUMNS.map((col) => (
+              <div key={col.title}>
+                <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/50 mb-4">
+                  {col.title}
+                </div>
+                <ul className="space-y-2.5">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      {link.external ? (
+                        <a
+                          href={link.to}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.to}
+                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-border/10 px-6 py-6">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-lg font-black tracking-tighter text-foreground">CMPSBL</span>
+            <span className="text-[10px] font-mono text-muted-foreground/40">®</span>
+          </div>
+          <div className="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-wider text-center md:text-right space-y-1">
+            <div>All data sourced from production database · RLS enforced · Independently verifiable</div>
+            <div>© {new Date().getFullYear()} CMPSBL. All rights reserved.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Safe area padding for mobile nav */}
+      <div className="h-20 lg:h-0" />
+    </footer>
   );
 }
