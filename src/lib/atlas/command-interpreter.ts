@@ -728,7 +728,7 @@ export class AtlasCommandInterpreter {
   private async handleCycleRun(command: ParsedCommand): Promise<CommandResult> {
     // Check usage first
     const { data: todayUsage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
@@ -814,7 +814,7 @@ export class AtlasCommandInterpreter {
     
     // Check free tier usage
     const { data: usage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
