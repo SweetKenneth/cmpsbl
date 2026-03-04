@@ -197,11 +197,8 @@ export function HeroMetaSubstrate() {
             </motion.div>
             
             {/* CMPSBL — massive, clean */}
-            <motion.h1 
+            <h1 
               className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-4 sm:mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <span 
                 className="inline-block clockless-river-text"
@@ -214,15 +211,10 @@ export function HeroMetaSubstrate() {
               >
                 CMPSBL
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Tagline block — two lines, centered on mobile */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="mb-6 sm:mb-10"
-            >
+            <div className="mb-6 sm:mb-10">
               <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground tracking-tight leading-snug">
                 Where machines learn to
               </p>
@@ -239,7 +231,7 @@ export function HeroMetaSubstrate() {
                   ]}
                 />
               </div>
-            </motion.div>
+            </div>
             
             {/* Subtitle */}
             <p 
