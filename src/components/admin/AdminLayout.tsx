@@ -9,6 +9,7 @@ import { useKeyboardShortcuts } from "./ui/KeyboardShortcuts";
 import { useAdminAnalytics } from "@/hooks/admin/useAdminAnalytics";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SubstrateParticles } from "@/components/ui/SubstrateParticles";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -26,18 +27,43 @@ function AdminLayoutInner({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-background to-background/95">
-      {/* Neural ambient background — hidden on mobile for perf */}
-      <div className="fixed inset-0 pointer-events-none opacity-30 hidden md:block">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow" />
+      {/* Substrate particle field — hidden on mobile for perf */}
+      {!isMobile && (
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <SubstrateParticles
+            count={30}
+            color="var(--primary)"
+            accent="var(--neon-cyan)"
+            speed={0.6}
+            glow
+          />
+          {/* Substrate grid overlay */}
+          <div className="absolute inset-0 substrate-grid-bg opacity-50" />
+        </div>
+      )}
+
+      {/* Ambient glow orbs — hidden on mobile for perf */}
+      <div className="fixed inset-0 pointer-events-none opacity-20 hidden md:block z-0">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-memory-drift" />
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse-glow"
-          style={{ animationDelay: "1s" }}
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl animate-memory-drift"
+          style={{ 
+            background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.15), transparent)",
+            animationDelay: "2s" 
+          }}
+        />
+        <div
+          className="absolute top-1/3 right-1/3 w-64 h-64 rounded-full blur-3xl animate-memory-drift"
+          style={{ 
+            background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.1), transparent)",
+            animationDelay: "4s" 
+          }}
         />
       </div>
 
       <UnifiedAdminSidebar />
 
-      <div className="flex-1 flex flex-col relative min-w-0">
+      <div className="flex-1 flex flex-col relative min-w-0 z-10">
         <AdminHeader />
 
         <main className="flex-1 overflow-auto">
