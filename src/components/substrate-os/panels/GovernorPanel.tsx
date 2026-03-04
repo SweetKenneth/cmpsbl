@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   ShieldAlert, Power, Activity, AlertTriangle, Loader2, Zap,
   Eye, BarChart3, Brain, Shield, FileText, Settings,
-  ArrowRight, Lock, Cpu, Network,
+  ArrowRight, Lock, Cpu, Network, Crown, Scale, ScrollText,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -154,6 +154,9 @@ export default function GovernorPanel() {
             <TabsTrigger value="controls" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Power className="w-3.5 h-3.5 hidden sm:block" /> Switches
             </TabsTrigger>
+            <TabsTrigger value="sovereignty" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Crown className="w-3.5 h-3.5 hidden sm:block" /> ESZ
+            </TabsTrigger>
             <TabsTrigger value="audit-feed" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Activity className="w-3.5 h-3.5 hidden sm:block" /> Audit
             </TabsTrigger>
@@ -199,6 +202,66 @@ export default function GovernorPanel() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* ESZ — Sovereignty & Ethics */}
+        <TabsContent value="sovereignty" className="mt-4 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            {[
+              {
+                module: 'SOVEREIGN',
+                icon: Crown,
+                color: 'text-amber-500',
+                desc: 'Autonomous decision authority & operational independence',
+                metrics: [
+                  { label: 'Authority Level', value: 'Full' },
+                  { label: 'Override Events', value: '0' },
+                  { label: 'Delegation Active', value: 'Yes' },
+                ],
+              },
+              {
+                module: 'CONSCIENCE',
+                icon: Scale,
+                color: 'text-violet-500',
+                desc: 'Ethical decision boundaries & bias detection',
+                metrics: [
+                  { label: 'Ethics Checks', value: 'Active' },
+                  { label: 'Bias Alerts', value: '0' },
+                  { label: 'Boundary Status', value: 'Enforced' },
+                ],
+              },
+              {
+                module: 'TREATY',
+                icon: ScrollText,
+                color: 'text-cyan-500',
+                desc: 'SLA enforcement, contract compliance, agreement tracking',
+                metrics: [
+                  { label: 'Active Treaties', value: '3' },
+                  { label: 'Violations', value: '0' },
+                  { label: 'Compliance', value: '100%' },
+                ],
+              },
+            ].map((node) => (
+              <Card key={node.module} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+                <CardContent className="p-3 sm:p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <node.icon className={cn("w-4 h-4 shrink-0", node.color)} />
+                    <span className="text-xs sm:text-sm font-bold font-mono">{node.module}</span>
+                    <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20">active</Badge>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground/60">{node.desc}</p>
+                  <div className="space-y-1.5">
+                    {node.metrics.map(m => (
+                      <div key={m.label} className="flex items-center justify-between text-[10px]">
+                        <span className="text-muted-foreground/50 font-mono">{m.label}</span>
+                        <span className="font-medium font-mono">{m.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
 
         {/* Live Audit Feed */}
