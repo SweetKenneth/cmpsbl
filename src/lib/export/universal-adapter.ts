@@ -119,6 +119,20 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
   return Object.entries(LANG_LABELS).map(([v, l]) => ({ value: v as ExportLanguage, label: l }));
 }
 
+/**
+ * Get languages available for a given artifact score.
+ * Hardware targets require score >= 94. Score-tiered unlock system.
+ */
+export function getLanguagesForScore(score: number): { value: ExportLanguage; label: string; locked: boolean }[] {
+  const { getUnlockedLanguages } = require('./language-unlock-tiers');
+  const unlocked = new Set(getUnlockedLanguages(score));
+  return Object.entries(LANG_LABELS).map(([v, l]) => ({
+    value: v as ExportLanguage,
+    label: l,
+    locked: !unlocked.has(v as ExportLanguage),
+  }));
+}
+
 export function getAllAdapters(): { value: ExportAdapter; label: string }[] {
   return Object.entries(ADAPTER_LABELS).map(([v, l]) => ({ value: v as ExportAdapter, label: l }));
 }
