@@ -1,6 +1,6 @@
 # 10 — State Machine
 
-> **Module:** BRAIK | **Source:** `src/crownjewels/s-tier/013-state-machine.ts`
+> **Module:** BRAIN | **Source:** `src/crownjewels/s-tier/013-state-machine.ts`
 
 Finite state machine with guards, effects, entry/exit hooks, transition history, and snapshot/restore for persistence. Ideal for workflow orchestration, UI flows, and agent lifecycles.
 

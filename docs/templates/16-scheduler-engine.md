@@ -1,6 +1,6 @@
 # 16 — Scheduler Engine
 
-> **Module:** BRAIK | **Source:** `src/crownjewels/s-tier/019-scheduler-engine.ts`
+> **Module:** BRAIN | **Source:** `src/crownjewels/s-tier/019-scheduler-engine.ts`
 
 Deferred execution engine with interval scheduling, retry with exponential backoff, dead-letter queue, priority ordering, concurrency control, and execution telemetry.
 

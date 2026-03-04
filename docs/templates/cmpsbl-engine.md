@@ -147,7 +147,7 @@ console.log(engine.getInsights());
 │              Intelligent Router                  │  ← NEXUS + KNOWLEDGE
 │   Learned affinity → Health score → Cost score   │
 ├─────────────────────────────────────────────────┤
-│              Saga Executor + WAL                 │  ← MEMORY + BRAIK
+│              Saga Executor + WAL                 │  ← MEMORY + BRAIN
 │     Steps · Compensation · Crash recovery        │
 ├─────────────────────────────────────────────────┤
 │           Circuit Breaker (per provider)          │  ← IMMUNITY
