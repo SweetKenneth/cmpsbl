@@ -22,7 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { secureSet } from '@/lib/system/secureStorage';
 
-const SubstrateParticles = lazy(() => import('@/components/ui/SubstrateParticles'));
+const SubstrateParticles = lazy(() => import('@/components/ui/SubstrateParticles').then(m => ({ default: m.SubstrateParticles })));
 
 export default function Auth() {
   const { signInWithMagicLink, signUpWithMagicLink } = useAuth();
