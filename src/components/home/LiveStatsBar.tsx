@@ -19,10 +19,10 @@ interface LiveStat {
 
 function useLiveStats() {
   const [stats, setStats] = useState<LiveStat[]>([
-    { icon: Activity, value: "—", label: "Brain Events", color: "text-cyan-400" },
-    { icon: Shield, value: "99.9%", label: "Uptime", color: "text-emerald-400" },
-    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Entities", color: "text-amber-400" },
-    { icon: Brain, value: "—", label: "Memories Stored", color: "text-violet-400" },
+    { icon: Activity, value: "—", label: "Stream Events", color: "text-cyan-400" },
+    { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
+    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
+    { icon: Brain, value: "—", label: "Crystallized", color: "text-violet-400" },
     { icon: Users, value: "—", label: "API Calls Today", color: "text-cyan-400" },
     { icon: CheckCircle2, value: "—", label: "Probes Passed", color: "text-emerald-400" },
   ]);
@@ -47,10 +47,10 @@ function useLiveStats() {
         };
 
         setStats([
-          { icon: Activity, value: formatNum(stats.brain_events), label: "Brain Events", color: "text-cyan-400" },
-          { icon: Shield, value: "99.9%", label: "Uptime", color: "text-emerald-400" },
-          { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Entities", color: "text-amber-400" },
-          { icon: Brain, value: formatNum(stats.memories), label: "Memories Stored", color: "text-violet-400" },
+          { icon: Activity, value: formatNum(stats.brain_events), label: "Stream Events", color: "text-cyan-400" },
+          { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
+          { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
+          { icon: Brain, value: formatNum(stats.memories), label: "Crystallized", color: "text-violet-400" },
           { icon: Users, value: formatNum(stats.api_calls), label: "API Calls Today", color: "text-cyan-400" },
           { icon: CheckCircle2, value: formatNum(stats.total_probes), label: "Probes Run", color: "text-emerald-400" },
         ]);
@@ -78,7 +78,7 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Live System Metrics</span>
+          <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Memory Stream · Live Metrics</span>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 sm:gap-8 md:gap-12">

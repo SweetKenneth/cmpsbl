@@ -36,12 +36,12 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
   return (
     <div className="space-y-5 sm:space-y-6">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500/15 to-red-500/10 border border-amber-500/25 flex items-center justify-center shrink-0">
+         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500/15 to-red-500/10 border border-amber-500/25 flex items-center justify-center shrink-0">
           <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
         </div>
         <div className="min-w-0">
-          <h2 className="text-base sm:text-lg font-bold tracking-tight">Security Center</h2>
-          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DEFENSE · IMMUNITY · AUDIT · PATCHES · BACKUPS</p>
+          <h2 className="text-base sm:text-lg font-bold tracking-tight">Stream Security</h2>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DEFENSE · IMMUNITY · AUDIT · STREAM INTEGRITY</p>
         </div>
       </div>
 

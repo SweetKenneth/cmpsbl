@@ -69,7 +69,7 @@ export function BudgetGovernancePanel({ className }: { className?: string }) {
             <DollarSign className="w-3.5 h-3.5 text-amber-400" />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block">Budget Governance</span>
+            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block">Stream Budget Governance</span>
             {status?.is_throttled && (
               <Badge variant="destructive" className="text-[8px] h-4 px-1.5 gap-1">
                 <ShieldAlert className="w-2.5 h-2.5" /> THROTTLED

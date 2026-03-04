@@ -15,13 +15,13 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "CMPSBL's persistent memory changed how our agents operate. They finally remember context across sessions.",
+    quote: "The Memory Stream changed how our agents operate. Persistent crystallization means they finally remember context across sessions.",
     author: "Engineering Lead",
     role: "Fortune 500 AI Team",
     rating: 5,
   },
   {
-    quote: "The modular architecture means we only pay for what we use. DREAM cycles alone saved us 40 hours/month on retraining.",
+    quote: "The stream architecture means we only pay for what we crystallize. DREAM cycles alone saved us 40 hours/month on retraining.",
     author: "CTO",
     role: "Series B Startup",
     rating: 5,

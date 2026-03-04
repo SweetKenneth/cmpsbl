@@ -79,7 +79,7 @@ export function EnginesCTA() {
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-4"
                 >
                   <Lock className="w-3 h-3 text-primary" />
-                  <span className="text-[10px] font-mono tracking-widest text-primary uppercase">Crown Jewel Derived</span>
+                  <span className="text-[10px] font-mono tracking-widest text-primary uppercase">Crystallized from Memory Stream</span>
                 </motion.div>
 
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">

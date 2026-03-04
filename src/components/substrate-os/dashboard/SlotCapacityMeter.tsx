@@ -26,7 +26,7 @@ export function SlotCapacityMeter({ activeCount, capacity, className }: SlotCapa
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Package className={cn('w-4 h-4', colorClass)} />
-          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Artifact Slots</span>
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Pipeline Slots</span>
         </div>
         <div className="flex items-baseline gap-1">
           <span className={cn('text-lg font-bold font-mono', colorClass)}>{activeCount}</span>
@@ -62,7 +62,7 @@ export function SlotCapacityMeter({ activeCount, capacity, className }: SlotCapa
 
       {ratio >= 1 && (
         <p className="text-[10px] text-red-400/80 font-mono text-center">
-          ALL SLOTS USED — Upgrade for more capacity
+          ALL SLOTS CRYSTALLIZED — Upgrade for more capacity
         </p>
       )}
     </div>
