@@ -211,8 +211,8 @@ export function DashboardMetricsHero() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Matrix Node Constellation</span>
+                   <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                   <span className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-[0.2em]">Memory Stream Constellation</span>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -283,14 +283,14 @@ export function DashboardMetricsHero() {
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
-                <span className="text-[9px] text-muted-foreground/50 font-mono tracking-wider">LIVE</span>
+               <span className="text-[9px] text-muted-foreground/50 font-mono tracking-wider">STREAM ACTIVE</span>
               </div>
               <div className="h-3 w-px bg-border/30" />
               <span className="text-[9px] text-muted-foreground/40 font-mono">
                 {new Date().toLocaleTimeString('en-US', { hour12: false })}
               </span>
               <div className="h-3 w-px bg-border/30" />
-              <span className="text-[9px] text-muted-foreground/40 font-mono">CMPSBL</span>
+              <span className="text-[9px] text-muted-foreground/40 font-mono">Signal → Silicon</span>
             </div>
           </div>
         </div>
