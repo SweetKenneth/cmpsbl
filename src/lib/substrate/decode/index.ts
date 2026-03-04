@@ -46,6 +46,38 @@ export {
 } from './clockless-identity';
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// SOCIAL ENGINEERING GUARD v1.0.0 — Re-exports
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  detectSocialEngineering,
+  verifyAdminForDecode,
+  requiresAdminAccess,
+  generateSafeRefusal,
+  clearEscalationTracking,
+  getEscalationStats,
+  type AttackPattern,
+  type SocialEngineeringResult,
+  type AdminVerification,
+} from './social-engineering-guard';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ADMIN DIRECTIVE AUTHORITY v1.0.0 — Re-exports
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  issueDirective,
+  acknowledgeDirective,
+  getPendingDirectives,
+  getDirectiveHistory,
+  getSubstrateInsights,
+  getSubstrateSummary,
+  type AdminDirective,
+  type DirectivePriority,
+  type SubstrateInsight,
+} from './admin-directive';
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // HARDENING LAYER v2.0.0 ("Cipher") — Re-exports
 // ═══════════════════════════════════════════════════════════════════════════════
 
