@@ -233,7 +233,7 @@ export function AgentChat({
               <h3 className="text-sm font-black text-white tracking-tight">{agent.name}</h3>
               <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
             </div>
-            <p className="text-[9px] font-mono text-white/50 break-words">DECODE RELAY · SOVEREIGN CHANNEL</p>
+            <p className="text-[9px] font-mono text-white/50 break-words">DECODE RELAY · MEMORY STREAM · SOVEREIGN CHANNEL</p>
           </div>
           <Button
             variant="ghost"
