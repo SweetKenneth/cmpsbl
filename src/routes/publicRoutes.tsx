@@ -17,6 +17,7 @@ const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
 const FoundryDemo = lazy(() => import("@/pages/FoundryDemo"));
+const Foundry = lazy(() => import("@/pages/Foundry"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
 const STierDemos = lazy(() => import("@/pages/STierDemos"));
 const Publication = lazy(() => import("@/pages/Publication"));
@@ -101,7 +102,8 @@ export const publicRoutes = (
     <Route path="/substrate" element={<SubstrateDashboard />} />
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<SubstrateDemo />} />
-    <Route path="/foundry" element={<FoundryDemo />} />
+    <Route path="/foundry" element={<Foundry />} />
+    <Route path="/foundry/demo" element={<FoundryDemo />} />
     <Route path="/proof" element={<ProofMode />} />
     <Route path="/showcase" element={<STierDemos />} />
     <Route path="/publication" element={<Publication />} />
