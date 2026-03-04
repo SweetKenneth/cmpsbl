@@ -94,14 +94,27 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      {/* ── Hero Strip ── */}
+      {/* ── Hero Strip — Memory Stream themed ── */}
       <motion.div
-        className="rounded-xl sm:rounded-2xl border border-border/25 dark:border-border/15 overflow-hidden bg-card/80 dark:bg-card/40 backdrop-blur-xl"
+        className="rounded-xl sm:rounded-2xl border border-border/25 dark:border-border/15 overflow-hidden bg-card/80 dark:bg-card/40 backdrop-blur-xl relative"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
+        {/* Flowing stream lines */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent"
+              style={{ top: `${15 + i * 22}%`, width: '130%', left: '-15%' }}
+              animate={{ x: ['-15%', '15%', '-15%'] }}
+              transition={{ duration: 6 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.5 }}
+            />
+          ))}
+        </div>
+
+        <div className="relative p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-8">
           {/* Health Ring */}
           <div className="relative shrink-0">
             <svg className="w-24 h-24 sm:w-28 sm:h-28 -rotate-90" viewBox="0 0 100 100">
@@ -119,15 +132,21 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               <span className={cn("text-2xl sm:text-3xl font-black font-mono", statusColor)}>{healthScore.healthScore}</span>
               <span className="text-[8px] text-muted-foreground/50 font-mono uppercase tracking-[0.3em]">health</span>
             </div>
+            {/* Pulse ring */}
+            <motion.div
+              className="absolute inset-0 rounded-full border border-primary/10"
+              animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0, 0.3] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            />
           </div>
 
           {/* KPI cards */}
           <div className="flex-1 w-full grid grid-cols-2 gap-2.5 sm:gap-3">
             {[
-              { label: 'Status', value: statusLabel, sub: `v${version}`, color: statusColor },
+              { label: 'Status', value: statusLabel, sub: `Memory Stream Active`, color: statusColor },
               { label: 'Matrix Nodes', value: `${healthScore.activeCount}/${healthScore.totalModules}`, sub: `${integrity.operational}% integrity`, color: 'text-primary' },
               { label: 'Structural', value: `${integrity.structural}%`, sub: (integrity.status ?? '').replace('MATRIX ', ''), color: 'text-foreground' },
-              { label: 'Sectors', value: '12', sub: '38 nodes', color: 'text-foreground' },
+              { label: 'Sectors', value: '12', sub: '38 nodes · Signal → Silicon', color: 'text-foreground' },
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}
@@ -149,7 +168,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
         {/* Quick Actions */}
         <div className="lg:col-span-1 space-y-3">
-          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Quick Actions</h3>
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Stream Controls</h3>
           <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
             {[
               { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-emerald-500' },
@@ -252,7 +271,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
       {/* ── Live Event Stream + System Health ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
         <div>
-          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">Live Events</h3>
+          <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">Stream Events</h3>
           <EventStream />
         </div>
         <div>
