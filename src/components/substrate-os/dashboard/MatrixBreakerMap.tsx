@@ -59,8 +59,8 @@ export function MatrixBreakerMap({ nodes }: MatrixBreakerMapProps) {
           <Shield className="w-4 h-4 text-red-400" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Matrix Integrity Map</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">Read-only breaker state per node</p>
+          <h3 className="text-sm font-semibold text-foreground">Stream Integrity Map</h3>
+          <p className="text-[10px] text-muted-foreground font-mono">Memory Stream · Breaker state per node</p>
         </div>
       </div>
 

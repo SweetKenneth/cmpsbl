@@ -75,7 +75,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
       <div className={cn('rounded-2xl border border-border/20 bg-card/40 backdrop-blur-xl p-5', className)}>
         <div className="flex items-center gap-2 mb-4">
           <Activity className="w-4 h-4 text-muted-foreground animate-pulse" />
-          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">NEXUS Optimizer</span>
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Stream Optimizer</span>
         </div>
         <p className="text-xs text-muted-foreground/50">Awaiting first hourly snapshot…</p>
       </div>
@@ -100,7 +100,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
             <Zap className="w-3.5 h-3.5 text-primary" />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block">NEXUS Optimizer</span>
+            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block">Stream Optimizer</span>
             <div className="flex items-center gap-1.5">
               <StrategyIcon className={cn('w-3 h-3', strategy.color)} />
               <span className={cn('text-[10px] font-bold font-mono', strategy.color)}>{strategy.label}</span>
@@ -116,7 +116,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
       {/* Utilization Bar */}
       <div className="px-5 pb-3 space-y-1.5">
         <div className="flex items-center justify-between text-[9px] font-mono">
-          <span className="text-muted-foreground">Daily Utilization</span>
+          <span className="text-muted-foreground">Stream Utilization</span>
           <span className="text-foreground/80">{utilization.toFixed(1)}%</span>
         </div>
         <div className="relative h-2 rounded-full bg-muted/20 overflow-hidden">

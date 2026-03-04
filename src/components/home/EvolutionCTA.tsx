@@ -120,9 +120,9 @@ export function EvolutionCTA() {
               </h2>
 
               <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-lg mb-8 leading-relaxed">
-                EVOLUTION is a governed self-improvement loop. It scans for drift,
+                EVOLUTION is the Memory Stream's governed self-improvement loop. It scans for drift,
                 previews changes in dry-run, applies upgrades through policy gates,
-                and rolls back anything that breaks — automatically.
+                and rolls back anything that breaks — crystallizing improvements automatically.
               </p>
 
               {/* 4-pillar strip */}

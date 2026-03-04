@@ -142,7 +142,7 @@ export function UseCaseShowcase() {
             </span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Production-ready applications built on the CMPSBL Substrate today, and the transformative possibilities on the horizon.
+            Production-ready applications crystallized from the Memory Stream today, and the transformative possibilities on the horizon.
           </p>
         </motion.div>
         

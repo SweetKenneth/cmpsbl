@@ -23,7 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing modules only — no kernel, zones, overlays, or infrastructure
+// 9 public-facing systems only — no kernel, zones, overlays, or infrastructure
 const modules = [
   {
     icon: Brain,
@@ -316,7 +316,7 @@ export function WhySubstrate() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">9 Modules</span>
+            <span className="text-xs">9 Systems</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             The{" "}
@@ -338,7 +338,7 @@ export function WhySubstrate() {
              <span className="text-foreground font-medium"> signal capture</span> to 
              <span className="text-foreground font-medium"> crystallization</span>, 
              <span className="text-foreground font-medium"> persistent memory</span>, and 
-             <span className="text-foreground font-medium"> governed evolution</span>. All included in every plan.
+             <span className="text-foreground font-medium"> governed evolution</span>. Signal → Silicon. All included in every plan.
            </p>
         </motion.div>
         
