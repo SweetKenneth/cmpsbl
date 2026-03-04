@@ -3,12 +3,13 @@
  * Mobile-first with proper touch targets, scrollable tabs, and overflow handling.
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ShieldAlert, Power, Activity, AlertTriangle, Loader2, Zap,
   Eye, BarChart3, Brain, Shield, FileText, Settings,
   ArrowRight, Lock, Cpu, Network, Crown, Scale, ScrollText,
+  Play, CheckCircle2, XCircle, AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,6 +25,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useMeshToggle } from '@/lib/substrate/intent-mesh/toggle';
 import { useLiveAuditFeed } from '@/hooks/useSubstrateOS';
 import { formatDistanceToNow } from 'date-fns';
+import type { DiligenceReport } from '@/lib/diligence/run-diligence';
+import type { AuditReport } from '@/lib/audit/audit-types';
 
 const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
 const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
@@ -41,6 +44,42 @@ export default function GovernorPanel() {
   const meshToggle = useMeshToggle();
   const liveAuditFeed = useLiveAuditFeed(10);
   const [activeTab, setActiveTab] = useState('controls');
+
+  // Audit engine states
+  const [diligenceRunning, setDiligenceRunning] = useState(false);
+  const [diligenceReport, setDiligenceReport] = useState<DiligenceReport | null>(null);
+  const [auditRunning, setAuditRunning] = useState(false);
+  const [auditReport, setAuditReport] = useState<AuditReport | null>(null);
+
+  const runDiligenceHarness = useCallback(async () => {
+    setDiligenceRunning(true);
+    setDiligenceReport(null);
+    try {
+      const { runDiligence } = await import('@/lib/diligence/run-diligence');
+      const report = await runDiligence();
+      setDiligenceReport(report);
+      toast.success(`Diligence: ${report.summary.passed}/${report.summary.total} passed`);
+    } catch (e: any) {
+      toast.error(`Diligence failed: ${e?.message || 'Unknown error'}`);
+    } finally {
+      setDiligenceRunning(false);
+    }
+  }, []);
+
+  const runFullAuditEngine = useCallback(async () => {
+    setAuditRunning(true);
+    setAuditReport(null);
+    try {
+      const { runFullAudit } = await import('@/lib/audit/audit-runner');
+      const report = await runFullAudit();
+      setAuditReport(report);
+      toast.success(`Audit: ${report.summary.passed ? 'PASSED' : 'ISSUES FOUND'} (${report.summary.total} findings)`);
+    } catch (e: any) {
+      toast.error(`Audit failed: ${e?.message || 'Unknown error'}`);
+    } finally {
+      setAuditRunning(false);
+    }
+  }, []);
 
   // Kill switches
   const [killSwitches, setKillSwitches] = useState<Record<string, boolean>>({
@@ -264,8 +303,86 @@ export default function GovernorPanel() {
           </div>
         </TabsContent>
 
-        {/* Live Audit Feed */}
-        <TabsContent value="audit-feed" className="mt-4">
+        {/* Live Audit Feed + Engine Runners */}
+        <TabsContent value="audit-feed" className="mt-4 space-y-4">
+          {/* Engine Runner Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-amber-500" />
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold">Diligence Harness</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Terminal & governance probe battery</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={runDiligenceHarness} disabled={diligenceRunning} className="gap-1.5 text-xs">
+                    {diligenceRunning ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
+                    {diligenceRunning ? 'Running…' : 'Run'}
+                  </Button>
+                </div>
+                {diligenceReport && (
+                  <div className="space-y-2 pt-2 border-t border-border/10">
+                    <div className="flex items-center gap-2">
+                      {diligenceReport.summary.critical === 0 ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-red-500" />}
+                      <span className="text-xs font-mono">{diligenceReport.summary.passed}/{diligenceReport.summary.total} PASS · {diligenceReport.summary.minor} MINOR · {diligenceReport.summary.critical} CRITICAL</span>
+                    </div>
+                    {diligenceReport.failed_probes.length > 0 && (
+                      <ScrollArea className="h-[120px]">
+                        <div className="space-y-1">
+                          {diligenceReport.failed_probes.map(p => (
+                            <div key={p.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
+                              <span className={p.severity === 'CRITICAL' ? 'text-red-500' : 'text-amber-500'}>[{p.severity}]</span> {p.name} — <span className="text-muted-foreground/60">{p.command}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-cyan-500" />
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold">Full Audit Runner</p>
+                      <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Structural, contract, SEO & branding audit</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={runFullAuditEngine} disabled={auditRunning} className="gap-1.5 text-xs">
+                    {auditRunning ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
+                    {auditRunning ? 'Running…' : 'Run'}
+                  </Button>
+                </div>
+                {auditReport && (
+                  <div className="space-y-2 pt-2 border-t border-border/10">
+                    <div className="flex items-center gap-2">
+                      {auditReport.summary.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+                      <span className="text-xs font-mono">{auditReport.summary.passed ? 'PASSED' : 'ISSUES'} · {auditReport.summary.fatal}F {auditReport.summary.error}E {auditReport.summary.warn}W {auditReport.summary.info}I · {auditReport.duration_ms}ms</span>
+                    </div>
+                    {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').length > 0 && (
+                      <ScrollArea className="h-[120px]">
+                        <div className="space-y-1">
+                          {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').map(f => (
+                            <div key={f.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
+                              <span className={f.severity === 'fatal' ? 'text-red-500' : 'text-amber-500'}>[{f.severity.toUpperCase()}]</span> {f.title}
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Live Audit Feed */}
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
@@ -274,7 +391,7 @@ export default function GovernorPanel() {
               </CardTitle>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
-              <ScrollArea className="h-[350px] sm:h-[400px]">
+              <ScrollArea className="h-[250px] sm:h-[300px]">
                 <div className="space-y-2">
                   {(liveAuditFeed.data || []).map((entry: any, i: number) => (
                     <div key={entry.id || i} className="flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
