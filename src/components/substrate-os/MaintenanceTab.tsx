@@ -391,7 +391,7 @@ export function MaintenanceTab() {
                             ) : (
                               <AlertTriangle className="w-3 h-3 text-amber-500" />
                             )}
-                            <span className="font-medium">{eng.engineId}</span>
+                            <span className="font-medium">{eng.engine}</span>
                           </div>
                           <span className="text-muted-foreground">{eng.durationMs}ms</span>
                         </div>
