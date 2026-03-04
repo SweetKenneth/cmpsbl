@@ -201,11 +201,13 @@ function RiverChannel() {
 // ─── Main ───────────────────────────────────────────────────────
 export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCrystallizing, autoCrystallize = false }: { crystallizing?: boolean; autoCrystallize?: boolean }) {
   const [autoPulse, setAutoPulse] = useState(false);
+  const [ghostPipelines, setGhostPipelines] = useState<
+    { id: number; x: number; delay: number }[]
+  >([]);
   const crystallizing = externalCrystallizing || autoPulse;
 
   useEffect(() => {
     if (!autoCrystallize || externalCrystallizing) return;
-    // First pulse after 6–12s, then every 8–16s
     const schedule = () => 6000 + Math.random() * 6000;
     const repeat = () => 8000 + Math.random() * 8000;
 
@@ -213,6 +215,16 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
     const pulse = () => {
       setAutoPulse(true);
       setTimeout(() => setAutoPulse(false), 2200);
+
+      const id = Date.now();
+      setGhostPipelines(prev => [
+        ...prev,
+        { id, x: 20 + Math.random() * 60, delay: Math.random() * 0.4 },
+      ]);
+      setTimeout(() => {
+        setGhostPipelines(prev => prev.filter(p => p.id !== id));
+      }, 4000);
+
       timeout = setTimeout(pulse, repeat());
     };
     timeout = setTimeout(pulse, schedule());
@@ -293,6 +305,27 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
         </AnimatePresence>
         <RiverChannel />
         {particles.map((p) => <Particle key={p.id} {...p} />)}
+
+        {/* Ghost pipeline drift nodes */}
+        {ghostPipelines.map(p => (
+          <div
+            key={p.id}
+            className="absolute z-[15] pointer-events-none"
+            style={{
+              left: `${p.x}%`,
+              top: "20%",
+              animation: `ghostDrift 3.5s ease-in ${p.delay}s forwards`,
+            }}
+          >
+            <div
+              className="w-3 h-3 rounded-sm rotate-45 border border-primary/40"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.05))",
+                boxShadow: "0 0 12px 2px hsl(var(--primary) / 0.15)",
+              }}
+            />
+          </div>
+        ))}
         {crystals.map((c) => <CrystallizedNode key={c.label} {...c} />)}
 
         {/* Left origin glow */}

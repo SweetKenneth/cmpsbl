@@ -687,5 +687,22 @@ All colors MUST be HSL.
   }
 }
 
+@keyframes ghostDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  10% {
+    opacity: 0.6;
+  }
+  70% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(420px) scale(1);
+  }
+}
+
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */
