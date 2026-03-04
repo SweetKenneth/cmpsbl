@@ -54,7 +54,7 @@ export function checkModuleHealth(): AuditFinding[] {
     category: 'matrix',
     severity: 'info',
     title: `${nodeDefs.length} Matrix Nodes registered`,
-    detail: `CORE(1) + CCR(4) + CCL(5) + Execution(9) + Overlay(5) = ${nodeDefs.length} nodes. Field-based topology.`,
+    detail: `12 sectors × 38 nodes: CORE(1) + SYSTEM(1) + CCR(3) + OCG(6) + Execution(9) + ESZ(4) + EPZ(3) + EMZ(3) + CSZ(3) + Fields(2) + Plane(1) + Shell(1) = ${nodeDefs.length} nodes.`,
   });
 
   // Integrity snapshot
