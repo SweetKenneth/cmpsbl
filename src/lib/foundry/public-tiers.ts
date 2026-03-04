@@ -1,7 +1,7 @@
 /**
- * Public Foundry Tier Mapping
+ * Public Memory Stream Tier Mapping
  * Display-layer only. Internal scoring unchanged.
- * Quality floor: 68. No artifacts below this are ever shown or stored.
+ * Quality floor: 68. No pipelines below this are ever shown or stored.
  */
 
 export const QUALITY_FLOOR = 68;

@@ -1,5 +1,5 @@
 /**
- * Foundry Footer — Closing CTA with real metrics
+ * Memory Stream Footer — Closing CTA with real metrics
  */
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ export function FoundryFooter() {
           The question isn't whether it works
         </div>
         <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-foreground mb-8 leading-[0.95]">
-          1,143&nbsp;programs.
+          1,143&nbsp;pipelines.
           <br />
           95&nbsp;perfect&nbsp;scores.
           <br />
@@ -29,7 +29,7 @@ export function FoundryFooter() {
         </h2>
         <p className="text-muted-foreground/60 max-w-lg mx-auto mb-12">
           Every system you add changes the topology. Every discovery compounds the next.
-          The foundry doesn't stop — it accelerates.
+          The Memory Stream doesn't stop — it accelerates.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
@@ -60,7 +60,7 @@ export function FoundryFooter() {
           className="mt-20 pt-8 border-t border-border/10"
         >
           <div className="text-[10px] font-mono text-muted-foreground/30 uppercase tracking-wider space-y-1">
-            <div>CMPSBL® Autonomous Software Foundry</div>
+            <div>CMPSBL® Memory Stream</div>
             <div>All data sourced from production database · RLS enforced · Independently verifiable</div>
           </div>
         </motion.div>

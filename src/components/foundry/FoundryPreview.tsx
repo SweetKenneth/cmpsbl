@@ -25,18 +25,18 @@ export function FoundryPreview() {
         className="relative text-center max-w-3xl"
       >
         <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
-          Autonomous Software Foundry — CMPSBL®
+          Memory Stream — CMPSBL®
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-foreground leading-[0.9] mb-8">
-          Mine Real
+          Crystallize
           <br />
-          <span className="text-primary">Software</span>
+          <span className="text-primary">Pipelines</span>
         </h1>
 
         <p className="text-lg text-muted-foreground/70 max-w-xl mx-auto mb-12">
-          The Foundry discovers production-grade software pipelines autonomously.
-          Sign in to mine artifacts, build your inventory, and collect rare finds.
+          Discover crystallized pipelines drifting through the Memory Stream.
+          Sign in to crystallize, collect, and export what you pull.
         </p>
 
         {/* Tier preview */}
@@ -67,7 +67,7 @@ export function FoundryPreview() {
         <div className="flex items-center justify-center gap-8 font-mono mb-12">
           <div>
             <div className="text-2xl font-black text-foreground">1,143+</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Artifacts</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Pipelines</div>
           </div>
           <div className="w-px h-8 bg-border/30" />
           <div>
@@ -85,7 +85,7 @@ export function FoundryPreview() {
           onClick={() => navigate('/auth')}
           className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-mono text-sm font-bold hover:bg-primary/90 transition-colors"
         >
-          Sign in to Start Mining
+          Sign in to Start Crystallizing
         </button>
 
         <motion.div
@@ -94,7 +94,7 @@ export function FoundryPreview() {
           transition={{ delay: 1 }}
           className="mt-8 text-xs font-mono text-muted-foreground/40"
         >
-          Every artifact is real, scored, and independently verifiable
+          Every pipeline is real, scored, and independently verifiable
         </motion.div>
       </motion.div>
     </div>

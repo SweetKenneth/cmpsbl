@@ -89,17 +89,17 @@ const PRESETS: QueryPreset[] = [
     ).join('\n'),
   },
   {
-    id: 'modules',
-    label: 'Module Frequency',
-    description: "Analyze which substrate modules appear most frequently in discoveries",
+    id: 'systems',
+    label: 'System Frequency',
+    description: "Analyze which substrate systems appear most frequently in discoveries",
     run: async () => {
       const { data } = await supabase.rpc('get_discovery_stats');
       const freq = (data as any)?.module_freq ?? {};
       return Object.entries(freq)
         .sort((a: any, b: any) => b[1] - a[1])
-        .map(([mod, count]) => ({ module: mod, appearances: count }));
+        .map(([sys, count]) => ({ system: sys, appearances: count }));
     },
-    format: (d) => d.map((m: any) => `  ${m.module}: ${m.appearances} appearances`).join('\n'),
+    format: (d) => d.map((s: any) => `  ${s.system}: ${s.appearances} appearances`).join('\n'),
   },
 ];
 
@@ -150,7 +150,7 @@ export function VerifyPanel() {
           </div>
           <p className="text-muted-foreground/60 text-sm mb-8 max-w-2xl">
             Don't take our word for it. Every button below runs a live query against the production
-            discovery database. The same database the foundry writes to. No caching. No mocking.
+            discovery database. The same database the Memory Stream writes to. No caching. No mocking.
           </p>
         </motion.div>
 
@@ -210,7 +210,7 @@ export function VerifyPanel() {
                 Select a query above to run it against the live production database.
                 <br /><br />
                 Every result is fetched in real-time from the same database the autonomous
-                foundry writes to. No mocks. No cache. Pure receipts.
+                Memory Stream writes to. No mocks. No cache. Pure receipts.
               </div>
             )}
           </div>

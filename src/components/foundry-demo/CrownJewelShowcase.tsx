@@ -1,52 +1,52 @@
 /**
- * Crown Jewel Showcase — Highlight specific CJPI-100 discoveries
- * Shows what these programs actually DO and how they chain modules.
+ * Apex Discovery Showcase — Highlight specific CJPI-100 discoveries
+ * Shows what these pipelines actually DO and how they chain systems.
  */
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-interface CrownJewel {
+interface ApexDiscovery {
   name: string;
   category: string;
-  modules: string[];
+  systems: string[];
   capability: string;
 }
 
-const CROWN_JEWELS: CrownJewel[] = [
+const APEX_DISCOVERIES: ApexDiscovery[] = [
   {
     name: 'Fitness Landscape Navigator',
     category: 'EVOLUTION',
-    modules: ['BRAIN', 'CORTEX', 'EVOLUTION', 'VISION'],
+    systems: ['BRAIN', 'CORTEX', 'EVOLUTION', 'VISION'],
     capability: 'Maps the entire solution fitness landscape to identify optimal evolutionary paths, avoiding local maxima through topological analysis.',
   },
   {
     name: 'Causal Reasoning Engine',
     category: 'COGNITIVE',
-    modules: ['BRAIN', 'CORTEX', 'DREAM', 'VISION'],
-    capability: 'Performs counterfactual inference on system state, answering "what if" questions about module configurations before execution.',
+    systems: ['BRAIN', 'CORTEX', 'DREAM', 'VISION'],
+    capability: 'Performs counterfactual inference on system state, answering "what if" questions about system configurations before execution.',
   },
   {
     name: 'Constitutional AI Guardian',
     category: 'GOVERNANCE',
-    modules: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'],
+    systems: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'],
     capability: 'Enforces constitutional constraints on all AI operations, preventing policy violations through formal verification at runtime.',
   },
   {
     name: 'Meta-Learning Optimizer',
     category: 'LEARNING',
-    modules: ['BRAIN', 'CORTEX', 'DREAM', 'EVOLUTION'],
+    systems: ['BRAIN', 'CORTEX', 'DREAM', 'EVOLUTION'],
     capability: 'Learns how the system learns — optimizing the learning process itself by adjusting hyperparameters across all adaptive subsystems.',
   },
   {
     name: 'Spectral Arbitrator',
     category: 'ROUTING',
-    modules: ['GOVERNANCE', 'MEMORY', 'NEXUS', 'RIPPLE', 'SYSTEM'],
+    systems: ['GOVERNANCE', 'MEMORY', 'NEXUS', 'RIPPLE', 'SYSTEM'],
     capability: 'Routes signals across the substrate using spectral graph decomposition, ensuring optimal message paths with zero-conflict arbitration.',
   },
   {
     name: 'Co-Evolutionary Synchronizer',
     category: 'EVOLUTION',
-    modules: ['CORTEX', 'EVOLUTION', 'GOVERNANCE', 'SYSTEM'],
+    systems: ['CORTEX', 'EVOLUTION', 'GOVERNANCE', 'SYSTEM'],
     capability: 'Coordinates parallel evolutionary processes to prevent destructive interference, keeping multiple adaptation streams synchronized.',
   },
 ];
@@ -59,7 +59,7 @@ export function CrownJewelShowcase() {
     <section ref={ref} className="py-24 md:py-40 px-6">
       <div className="max-w-5xl mx-auto">
         <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
-          Apex Discoveries — What the Foundry Discovers
+          Apex Discoveries — What the Memory Stream Surfaces
         </h2>
         <p className="text-center text-muted-foreground/60 mb-16 max-w-2xl mx-auto text-sm">
           These aren't toy programs. Each is a production-grade software pipeline with a perfect score
@@ -67,9 +67,9 @@ export function CrownJewelShowcase() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {CROWN_JEWELS.map((jewel, i) => (
+          {APEX_DISCOVERIES.map((discovery, i) => (
             <motion.div
-              key={jewel.name}
+              key={discovery.name}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -82,27 +82,27 @@ export function CrownJewelShowcase() {
                       CJPI 100
                     </span>
                     <span className="text-[10px] text-muted-foreground/50 uppercase tracking-wider font-mono">
-                      {jewel.category}
+                      {discovery.category}
                     </span>
                   </div>
                   <div className="font-mono text-sm font-bold text-foreground">
-                    {jewel.name}
+                    {discovery.name}
                   </div>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
-                {jewel.capability}
+                {discovery.capability}
               </p>
               <div className="flex flex-wrap gap-1">
-                {jewel.modules.map((m, j) => (
+                {discovery.systems.map((s, j) => (
                   <motion.span
-                    key={m}
+                    key={s}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: i * 0.1 + j * 0.05 + 0.3 }}
                     className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground border border-border/10"
                   >
-                    {m}
+                    {s}
                   </motion.span>
                 ))}
                 <span className="text-[9px] font-mono text-muted-foreground/30 flex items-center ml-1">
@@ -116,7 +116,7 @@ export function CrownJewelShowcase() {
           ))}
         </div>
 
-        {/* Module composition insight */}
+        {/* System composition insight */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}

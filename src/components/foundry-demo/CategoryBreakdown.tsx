@@ -42,7 +42,7 @@ export function CategoryBreakdown() {
           9 Domains — Full Spectrum Coverage
         </h2>
         <p className="text-center text-muted-foreground/60 mb-16 max-w-xl mx-auto text-sm">
-          The foundry doesn't specialize. It discovers across every operational domain simultaneously.
+          The Memory Stream doesn't specialize. It discovers across every operational domain simultaneously.
           Every domain has CJPI-100 discoveries.
         </p>
 

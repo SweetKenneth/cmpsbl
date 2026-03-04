@@ -1,5 +1,5 @@
 /**
- * Foundry Hero — Opening cinematic for the discovery demo
+ * Memory Stream Hero — Opening cinematic for the discovery demo
  * All metrics are real production data from the substrate.
  */
 import { motion } from 'framer-motion';
@@ -26,19 +26,19 @@ export function FoundryHero() {
         className="relative text-center max-w-4xl"
       >
         <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-8">
-          Autonomous Software Foundry — CMPSBL®
+          Memory Stream — CMPSBL®
         </div>
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-8">
           Software that
           <br />
-          <span className="text-primary">prints software</span>
+          <span className="text-primary">crystallizes software</span>
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-12">
           A recursive discovery engine that surfaces high-quality software pipelines
           directly from silicon. 1,143 programs discovered in under 9 hours.
-          The loop never ends.
+          The stream never ends.
         </p>
 
         {/* Key stat trio */}
@@ -49,7 +49,7 @@ export function FoundryHero() {
             transition={{ delay: 0.6 }}
           >
             <div className="text-3xl md:text-4xl font-black text-foreground">1,143</div>
-            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Programs Discovered</div>
+            <div className="text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Pipelines Discovered</div>
           </motion.div>
           <div className="w-px h-10 bg-border/30" />
           <motion.div

@@ -1,9 +1,9 @@
 /**
- * Foundry — Public Mining Page
- * Per-user inventory. Quality floor >= 68. No bias exposed.
+ * Memory Stream — Public Crystallization Page
+ * Per-user vault. Quality floor >= 68. No bias exposed.
  * 
  * - Anonymous: preview + CTA
- * - Authenticated: mine button, inventory, stats
+ * - Authenticated: crystallize button, vault, stats
  */
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -24,7 +24,7 @@ export default function Foundry() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-muted-foreground font-mono text-sm animate-pulse">
-          Loading Foundry...
+          Loading Memory Stream...
         </div>
       </div>
     );
@@ -33,8 +33,8 @@ export default function Foundry() {
   return (
     <>
       <Helmet>
-        <title>Foundry — CMPSBL®</title>
-        <meta name="description" content="Mine real software artifacts from the Autonomous Software Foundry. Every discovery is a production-grade pipeline scored and tiered by quality." />
+        <title>Memory Stream — CMPSBL®</title>
+        <meta name="description" content="Discover crystallized pipelines from the Memory Stream. Every pull is a production-grade pipeline scored and tiered by quality." />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
@@ -45,14 +45,14 @@ export default function Foundry() {
             {/* Header */}
             <div className="text-center mb-12">
               <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
-                Autonomous Software Foundry
+                Memory Stream
               </div>
               <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground mb-4">
-                Mine Real Software
+                Crystallize Pipelines
               </h1>
               <p className="text-muted-foreground/70 max-w-lg mx-auto text-sm">
-                Every artifact is a production-grade pipeline discovered by the Foundry.
-                Quality floor: 68+. No filler. No fakes.
+                Discover crystallized pipelines from the Memory Stream — real, scored software you can export and use.
+                Quality floor: 68+. No filler.
               </p>
             </div>
 
@@ -75,7 +75,7 @@ export default function Foundry() {
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Mine
+                Crystallize
               </button>
               <button
                 onClick={() => setActiveTab('inventory')}
@@ -85,7 +85,7 @@ export default function Foundry() {
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Inventory ({foundry.inventoryCount})
+                Vault ({foundry.inventoryCount})
               </button>
             </div>
 

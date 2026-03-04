@@ -1,5 +1,5 @@
 /**
- * FoundryMiningPanel — The "MINE" button + last result display
+ * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
  * Simple mode: one big button, result reveal, no cringe.
  */
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +16,7 @@ interface Props {
 export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
   return (
     <div className="space-y-6">
-      {/* Mine button */}
+      {/* Crystallize button */}
       <div className="flex flex-col items-center">
         <motion.button
           onClick={onMine}
@@ -36,18 +36,18 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
             {isMining ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Mining...
+                Crystallizing...
               </>
             ) : (
               <>
                 <Pickaxe className="w-5 h-5" />
-                Mine
+                Crystallize
               </>
             )}
           </div>
         </motion.button>
         <div className="text-[10px] font-mono text-muted-foreground/50 mt-2">
-          Quality floor: 68+ · Every result is real software
+          Quality floor: 68+ · Every pull is real software
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
             className="space-y-3"
           >
             <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-2">
-              Last Mine — {lastResult.results.length} artifact{lastResult.results.length > 1 ? 's' : ''}
+              Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
             </div>
             {lastResult.results.map((result, i) => (
               <motion.div
@@ -124,12 +124,12 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
             className="text-center py-8"
           >
             <div className="text-muted-foreground/60 font-mono text-sm mb-2">
-              No viable artifacts this run
+              No viable pipelines this run
             </div>
             <div className="text-xs text-muted-foreground/40">
               {lastResult.rerollCredit
                 ? 'Reroll credit earned — try again'
-                : 'All current artifacts already in your inventory'}
+                : 'All current pipelines already in your vault'}
             </div>
           </motion.div>
         )}

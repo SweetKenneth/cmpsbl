@@ -7,10 +7,10 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
 const PHASES = [
-  { id: 'discover', label: 'DISCOVER', description: 'Auto-Mine surfaces novel module combinations', icon: '🔬', color: 'hsl(var(--primary))' },
+  { id: 'discover', label: 'DISCOVER', description: 'Auto-Stream surfaces novel system combinations', icon: '🔬', color: 'hsl(var(--primary))' },
   { id: 'crystallize', label: 'CRYSTALLIZE', description: 'Score via CJPI → tier into Apex/Enterprise/Architect', icon: '💎', color: 'hsl(280, 80%, 65%)' },
   { id: 'hotswap', label: 'HOT-SWAP', description: 'Zero-downtime engine replacement at runtime', icon: '⚡', color: 'hsl(45, 95%, 55%)' },
-  { id: 'expand', label: 'EXPAND', description: 'New modules shift the combinatorial topology', icon: '🌐', color: 'hsl(160, 70%, 50%)' },
+  { id: 'expand', label: 'EXPAND', description: 'New systems shift the combinatorial topology', icon: '🌐', color: 'hsl(160, 70%, 50%)' },
 ] as const;
 
 export function RecursiveLoop() {
