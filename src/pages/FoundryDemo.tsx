@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { FoundryHero } from '@/components/foundry-demo/FoundryHero';
+import { MemoryStreamExplainer } from '@/components/foundry-demo/MemoryStreamExplainer';
 import { ProofNumbers } from '@/components/foundry-demo/ProofNumbers';
 import { RecursiveLoop } from '@/components/foundry-demo/RecursiveLoop';
 import { CrownJewelShowcase } from '@/components/foundry-demo/CrownJewelShowcase';
@@ -15,6 +16,7 @@ import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
 import { TierDistribution } from '@/components/foundry-demo/TierDistribution';
 import { VerifyPanel } from '@/components/foundry-demo/VerifyPanel';
 import { FoundryFooter } from '@/components/foundry-demo/FoundryFooter';
+import { MemoryStreamMobileNav } from '@/components/foundry-demo/MemoryStreamMobileNav';
 
 interface Discovery {
   name: string;
@@ -30,7 +32,6 @@ export default function FoundryDemo() {
 
   useEffect(() => {
     async function load() {
-      // Paginate to get all discoveries beyond the 1000-row limit
       const all: Discovery[] = [];
       let from = 0;
       const pageSize = 1000;
@@ -58,16 +59,19 @@ export default function FoundryDemo() {
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
-        <FoundryHero />
-        <ProofNumbers />
-        <RecursiveLoop />
-        <CrownJewelShowcase />
-        <LiveDiscoveryStream discoveries={discoveries} />
+        <div id="hero"><FoundryHero /></div>
+        <MemoryStreamExplainer />
+        <div id="proof"><ProofNumbers /></div>
+        <div id="engine"><RecursiveLoop /></div>
+        <div id="apex"><CrownJewelShowcase /></div>
+        <div id="stream"><LiveDiscoveryStream discoveries={discoveries} /></div>
         <CategoryBreakdown />
         <TierDistribution />
-        <VerifyPanel />
+        <div id="verify"><VerifyPanel /></div>
         <FoundryFooter />
       </div>
+
+      <MemoryStreamMobileNav />
     </>
   );
 }
