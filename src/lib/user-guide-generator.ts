@@ -469,7 +469,7 @@ budget status       # View stream budget governance</code></pre>
 
 export function downloadUserGuide() {
   const html = generateUserGuideHTML();
-  const filename = \`CMPSBL-Memory-Stream-User-Guide-\${new Date().toISOString().split('T')[0]}.html\`;
+  const filename = `CMPSBL-Memory-Stream-User-Guide-${new Date().toISOString().split('T')[0]}.html`;
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
