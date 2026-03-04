@@ -245,10 +245,7 @@ export function HeroMetaSubstrate() {
             </motion.div>
             
             {/* Subtitle */}
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+            <p 
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
             >
               Capture a signal in the{' '}
@@ -257,7 +254,7 @@ export function HeroMetaSubstrate() {
               When that memory proves rare enough — strong enough — it crosses the boundary from code into{' '}
               <span className="text-primary font-semibold">physical silicon</span>,{' '}
               burned onto hardware that outlasts every runtime it was born from.
-            </motion.p>
+            </p>
             
             {/* CTAs */}
             <motion.div 
