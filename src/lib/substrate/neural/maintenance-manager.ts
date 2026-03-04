@@ -123,12 +123,16 @@ class MaintenanceManager {
     await confidenceClassifier.initialize();
     await driftDetector.initialize();
 
-    // Schedule each task
+    // Schedule each task with staggered initial delays to avoid
+    // flooding the network with 10+ simultaneous API calls on boot
+    let staggerDelay = 0;
     for (const [name, task] of this.tasks) {
       if (!task.enabled) continue;
 
-      // Run immediately on start, then on interval
-      this.runTask(name);
+      // Stagger initial runs by 5s each instead of running all immediately
+      setTimeout(() => this.runTask(name), staggerDelay);
+      staggerDelay += 5000;
+
       const timer = setInterval(() => this.runTask(name), task.intervalMs);
       this.timers.set(name, timer);
     }
