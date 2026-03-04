@@ -3,12 +3,13 @@
  * Mobile-first with proper touch targets, scrollable tabs, and overflow handling.
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ShieldAlert, Power, Activity, AlertTriangle, Loader2, Zap,
   Eye, BarChart3, Brain, Shield, FileText, Settings,
   ArrowRight, Lock, Cpu, Network, Crown, Scale, ScrollText,
+  Play, CheckCircle2, XCircle, AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,6 +25,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useMeshToggle } from '@/lib/substrate/intent-mesh/toggle';
 import { useLiveAuditFeed } from '@/hooks/useSubstrateOS';
 import { formatDistanceToNow } from 'date-fns';
+import type { DiligenceReport } from '@/lib/diligence/run-diligence';
+import type { AuditReport } from '@/lib/audit/audit-types';
 
 const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
 const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
