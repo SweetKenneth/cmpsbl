@@ -181,7 +181,7 @@ export default function Runtime() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Runtime — Always-On Substrate"
-        description="Every plan includes the full cognitive runtime. Persistent memory, intelligent routing, runtime defense, and autonomous evolution — no module gating."
+        description="Every plan includes the full cognitive runtime. Persistent memory, intelligent routing, runtime defense, and autonomous evolution — no capability gating."
       />
       <PublicNav />
 
@@ -201,7 +201,7 @@ export default function Runtime() {
               What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              The full substrate runs for every user. No module gating. No feature locks.
+              The full substrate runs for every user. No capability gating. No feature locks.
               Plans scale capacity — never capability.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">

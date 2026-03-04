@@ -58,7 +58,7 @@ console.log(scheduled.tasks);
     icon: Radio,
     layer: "Kernel",
     title: "RIPPLE Events",
-    description: "Message bus & cross-module communication",
+    description: "Message bus & cross-system communication",
     color: "text-cyan-500",
     gradient: "from-cyan-500 to-teal-600",
     code: `// Publish an event to the message bus
