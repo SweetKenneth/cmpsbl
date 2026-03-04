@@ -638,7 +638,7 @@ export function TechShowcase() {
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">10 Entities • 5 Meshes • 9 Zones</span>
+            <span className="text-xs">38 Nodes • 12 Sectors • 675+ Capabilities</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}

@@ -94,7 +94,7 @@ export default function Architecture() {
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 A layered orchestration architecture that boots deterministically, heals autonomously, 
-                and evolves without human intervention. 9 modules, 5 protective layers, 9 internal zones.
+                and evolves without human intervention. 38 nodes across 12 sectors, 675+ capabilities.
               </p>
             </motion.div>
           </div>

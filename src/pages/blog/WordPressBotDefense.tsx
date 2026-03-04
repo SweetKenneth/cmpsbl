@@ -83,7 +83,7 @@ const WordPressBotDefense = () => {
                   <Link to="/solutions">
                     <Button size="lg" className="gap-2">
                       <Shield className="h-5 w-5" />
-                      Explore PromptFluid Defense
+                      Explore DEFENSE
                     </Button>
                   </Link>
                   <Link to="/blog/top-wordpress-security-plugins-2025">
@@ -113,7 +113,7 @@ const WordPressBotDefense = () => {
                   <a href="#behavioral-analysis" className="text-primary hover:underline">4. Behavioral Analysis Explained</a>
                   <a href="#ai-defense" className="text-primary hover:underline">5. AI-Powered Defense Systems</a>
                   <a href="#competitors" className="text-primary hover:underline">6. Current Market Solutions</a>
-                  <a href="#promptfluid" className="text-primary hover:underline">7. PromptFluid Defense Approach</a>
+                  <a href="#promptfluid" className="text-primary hover:underline">7. CMPSBL DEFENSE Approach</a>
                   <a href="#implementation" className="text-primary hover:underline">8. Implementation Strategy</a>
                 </nav>
               </Card>

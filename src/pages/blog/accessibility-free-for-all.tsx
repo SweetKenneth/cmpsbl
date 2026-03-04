@@ -78,7 +78,7 @@ export default function AccessibilityFreeForAll() {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                When I started PromptFluid, I looked at the accessibility industry and saw something that bothered me deeply: 
+                When I started CMPSBL, I looked at the accessibility industry and saw something that bothered me deeply: 
                 companies charging hundreds or thousands of dollars just to tell people their websites weren't usable by everyone.
               </p>
 
@@ -146,7 +146,7 @@ export default function AccessibilityFreeForAll() {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                At PromptFluid, we've built the <strong className="text-foreground">INCLUSIVE Module</strong> — a completely free accessibility scanning and 
+                At CMPSBL, we've built the <strong className="text-foreground">INCLUSIVE</strong> — a completely free accessibility scanning and 
                 remediation pipeline integrated into the CMPSBL substrate.
               </p>
 
