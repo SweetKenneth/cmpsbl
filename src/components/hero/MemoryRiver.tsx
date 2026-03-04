@@ -201,11 +201,13 @@ function RiverChannel() {
 // ─── Main ───────────────────────────────────────────────────────
 export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCrystallizing, autoCrystallize = false }: { crystallizing?: boolean; autoCrystallize?: boolean }) {
   const [autoPulse, setAutoPulse] = useState(false);
+  const [ghostPipelines, setGhostPipelines] = useState<
+    { id: number; x: number; delay: number }[]
+  >([]);
   const crystallizing = externalCrystallizing || autoPulse;
 
   useEffect(() => {
     if (!autoCrystallize || externalCrystallizing) return;
-    // First pulse after 6–12s, then every 8–16s
     const schedule = () => 6000 + Math.random() * 6000;
     const repeat = () => 8000 + Math.random() * 8000;
 
@@ -213,6 +215,16 @@ export const MemoryRiver = memo(function MemoryRiver({ crystallizing: externalCr
     const pulse = () => {
       setAutoPulse(true);
       setTimeout(() => setAutoPulse(false), 2200);
+
+      const id = Date.now();
+      setGhostPipelines(prev => [
+        ...prev,
+        { id, x: 20 + Math.random() * 60, delay: Math.random() * 0.4 },
+      ]);
+      setTimeout(() => {
+        setGhostPipelines(prev => prev.filter(p => p.id !== id));
+      }, 4000);
+
       timeout = setTimeout(pulse, repeat());
     };
     timeout = setTimeout(pulse, schedule());
