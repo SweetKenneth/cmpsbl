@@ -1,5 +1,5 @@
 /**
- * Foundry Demo — Cinematic proof of the Autonomous Software Foundry
+ * Memory Stream Demo — Cinematic proof of the Autonomous Discovery Engine
  * Pure presentation layer. Zero substrate edits.
  * Engineer-testable. Investor-ready. Every number is real.
  */
@@ -53,8 +53,8 @@ export default function FoundryDemo() {
   return (
     <>
       <Helmet>
-        <title>Autonomous Software Foundry — CMPSBL®</title>
-        <meta name="description" content="A recursive discovery engine that prints high-quality software pipelines directly from silicon. 1,143 programs discovered in under 9 hours. Independently verifiable." />
+        <title>Memory Stream — CMPSBL®</title>
+        <meta name="description" content="A recursive discovery engine that crystallizes high-quality software pipelines directly from silicon. 1,143 programs discovered in under 9 hours. Independently verifiable." />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">

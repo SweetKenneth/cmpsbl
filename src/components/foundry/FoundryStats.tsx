@@ -1,5 +1,5 @@
 /**
- * FoundryStats — Quick stats bar for the mining page
+ * FoundryStats — Quick stats bar for the Memory Stream page
  */
 import { motion } from 'framer-motion';
 import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
@@ -15,14 +15,14 @@ interface Props {
 export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays, tierCounts }: Props) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <StatCard label="Inventory" value={String(inventoryCount)} />
+      <StatCard label="Vault" value={String(inventoryCount)} />
       <StatCard
         label="Best Pull"
         value={bestPull ? String(bestPull.score) : '—'}
         accent={bestPull ? (bestPull.score >= 95 ? 'text-primary' : bestPull.score >= 90 ? 'text-amber-400' : 'text-sky-400') : undefined}
         sub={bestPull?.publicTier}
       />
-      <StatCard label="Total Mines" value={String(totalMines)} />
+      <StatCard label="Total Crystallizations" value={String(totalMines)} />
       <StatCard label="Streak" value={streakDays > 0 ? `${streakDays}d` : '—'} sub={streakDays > 0 ? 'stability bonus' : undefined} />
     </div>
   );

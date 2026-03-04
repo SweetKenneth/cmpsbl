@@ -1,5 +1,5 @@
 /**
- * FoundryInventory — User's collected artifacts
+ * FoundryInventory — User's collected crystallized pipelines (Vault)
  */
 import { motion } from 'framer-motion';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
@@ -27,10 +27,10 @@ export function FoundryInventory({ inventory }: Props) {
       <div className="text-center py-20">
         <div className="text-4xl mb-4">⛏️</div>
         <div className="text-muted-foreground font-mono text-sm mb-2">
-          No artifacts yet
+          No crystallized pipelines yet
         </div>
         <div className="text-xs text-muted-foreground/50">
-          Hit the Mine tab to start discovering
+          Hit Crystallize to start pulling pipelines
         </div>
       </div>
     );
@@ -43,10 +43,10 @@ export function FoundryInventory({ inventory }: Props) {
       {/* Summary */}
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/10">
         <div className="text-xs font-mono text-muted-foreground">
-          {inventory.length} artifact{inventory.length !== 1 ? 's' : ''}
+          {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
         </div>
         <div className="text-xs font-mono text-muted-foreground">
-          Portfolio: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+          Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
         </div>
       </div>
 

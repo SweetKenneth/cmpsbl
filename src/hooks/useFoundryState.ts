@@ -1,6 +1,6 @@
 /**
- * useFoundryState — Per-user foundry workspace hook
- * Loads user state, inventory, handles mining, enforces quality floor.
+ * useFoundryState — Per-user Memory Stream workspace hook
+ * Loads user state, vault, handles crystallization, enforces quality floor.
  */
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -37,7 +37,7 @@ export function useFoundryState() {
   const [lastMineResult, setLastMineResult] = useState<MineResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user state + inventory
+  // Load user state + vault
   const loadState = useCallback(async () => {
     if (!user) {
       setIsLoading(false);
@@ -72,7 +72,7 @@ export function useFoundryState() {
         });
       }
 
-      // Load inventory
+      // Load vault
       const { data: inv } = await supabase
         .from('foundry_inventory')
         .select('*')
@@ -94,7 +94,7 @@ export function useFoundryState() {
         }))
       );
     } catch (err) {
-      console.error('Failed to load foundry state:', err);
+      console.error('Failed to load Memory Stream state:', err);
     } finally {
       setIsLoading(false);
     }
@@ -104,10 +104,10 @@ export function useFoundryState() {
     loadState();
   }, [loadState]);
 
-  // Execute mine
+  // Execute crystallization
   const mine = useCallback(async () => {
     if (!user) {
-      toast.error('Sign in to mine');
+      toast.error('Sign in to crystallize');
       return;
     }
     if (isMining) return;
@@ -120,7 +120,7 @@ export function useFoundryState() {
         if (result.retryAfterMs) {
           toast.error(`Rate limited. Try again in ${Math.ceil(result.retryAfterMs / 1000)}s`);
         } else {
-          toast.error(result.error || 'Mining failed');
+          toast.error(result.error || 'Crystallization failed');
         }
         setLastMineResult(result);
         return;
@@ -132,19 +132,19 @@ export function useFoundryState() {
       setLastMineResult(result);
 
       if (result.results.length === 0) {
-        toast.info('No viable artifacts found this run. Try again.');
+        toast.info('No viable pipelines found this run. Try again.');
         if (result.rerollCredit) {
           toast.success('Reroll credit earned!');
         }
       } else {
         const best = result.results[0];
-        toast.success(`Mined ${result.results.length} artifact${result.results.length > 1 ? 's' : ''} — best: ${best.publicTier} (${best.score})`);
+        toast.success(`Crystallized ${result.results.length} pipeline${result.results.length > 1 ? 's' : ''} — best: ${best.publicTier} (${best.score})`);
       }
 
       // Reload state
       await loadState();
     } catch (err: any) {
-      toast.error(err.message || 'Mining failed');
+      toast.error(err.message || 'Crystallization failed');
     } finally {
       setIsMining(false);
     }
