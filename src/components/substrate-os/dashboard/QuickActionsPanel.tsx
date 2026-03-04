@@ -24,6 +24,7 @@ interface QuickActionsPanelProps {
 }
 
 export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanelProps) {
+  const navigate = useNavigate();
   const healthScore = useSubstrateHealthScore();
   const healMutation = useSystemHeal();
   const backupMutation = useSystemBackup();
