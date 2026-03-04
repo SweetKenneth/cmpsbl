@@ -100,7 +100,7 @@ export function CmpsblNav() {
         { name: "All Modules", href: "/modules", description: "38 nodes across 12 sectors", icon: Layers },
         ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
         { name: "EVOLUTION", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
-        { name: "Foundry", href: "/foundry", description: "Autonomous discovery reactor — 1,143+ programs", icon: Sparkles, badge: "PUBLIC", highlight: true },
+        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines — 1,143+ programs", icon: Sparkles, badge: "PUBLIC", highlight: true },
         { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
         { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
