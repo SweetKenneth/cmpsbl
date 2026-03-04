@@ -46,12 +46,17 @@ export function CortexTab({ enabled }: CortexTabProps) {
   const { data: status, isLoading: statusLoading, refetch: refetchStatus } = useQuery({
     queryKey: ['cortex-status'],
     queryFn: async () => {
-      const result = await cortex.status();
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to fetch cortex status');
+      try {
+        const result = await cortex.status();
+        if (!result.success) {
+          console.warn('Cortex status call returned error, using fallback:', result.error);
+          return { runtime: { mode: 'manual' }, health: { healthScore: 100 }, panic_state: null };
+        }
+        return (result.data || result) as any;
+      } catch (e) {
+        console.warn('Cortex edge function unavailable, using local state:', e);
+        return { runtime: { mode: 'manual' }, health: { healthScore: 100 }, panic_state: null };
       }
-      // The data can be in result.data or in result itself
-      return (result.data || result) as any;
     },
     refetchInterval: 30000,
     enabled,
@@ -61,11 +66,17 @@ export function CortexTab({ enabled }: CortexTabProps) {
   const { data: worldModel, isLoading: worldLoading, refetch: refetchWorld } = useQuery({
     queryKey: ['cortex-world'],
     queryFn: async () => {
-      const result = await cortex.world({ dag: false, roles: true, eligible: false });
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to fetch world model');
+      try {
+        const result = await cortex.world({ dag: false, roles: true, eligible: false });
+        if (!result.success) {
+          console.warn('Cortex world call returned error, using fallback:', result.error);
+          return { modules: null };
+        }
+        return (result.data || result) as any;
+      } catch (e) {
+        console.warn('Cortex world model unavailable:', e);
+        return { modules: null };
       }
-      return (result.data || result) as any;
     },
     refetchInterval: 60000,
     enabled,

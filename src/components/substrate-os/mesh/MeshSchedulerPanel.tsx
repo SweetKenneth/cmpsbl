@@ -107,17 +107,17 @@ export function MeshSchedulerPanel() {
       {/* Scheduler Controls */}
       <Card className="border border-violet-500/20 bg-violet-500/5">
         <CardContent className="py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Timer className="w-5 h-5 text-violet-400" />
-              <div>
-                <p className="text-sm font-medium">Auto-Expansion Scheduler</p>
-                <p className="text-xs text-muted-foreground">
-                  Periodic self-improvement cycles — discovery, scoring, expansion
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <Timer className="w-5 h-5 text-violet-400 shrink-0" />
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">Auto-Expansion Scheduler</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  Periodic self-improvement cycles
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button
                 size="sm"
                 variant="outline"

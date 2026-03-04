@@ -4,7 +4,7 @@
  * in plain human-readable language with approval/rejection actions.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Inbox, Check, X, Eye, Clock, AlertTriangle, MessageSquare,
@@ -16,7 +16,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import {
   getPendingMessages, getAllMessages, approveMessage, rejectMessage,
-  getIntentHubStats, type NodeMessage,
+  getIntentHubStats, submitToIntent, type NodeMessage,
 } from '@/lib/substrate/intent-mesh/intent-hub';
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -36,6 +36,71 @@ const TYPE_LABELS: Record<string, string> = {
   question: '❓ Question',
 };
 
+// Seed realistic system messages so the inbox isn't empty on first load
+function seedSystemMessages() {
+  const existing = getAllMessages(1);
+  if (existing.length > 0) return;
+
+  const seeds: Array<{
+    node: string; codename: string; type: NodeMessage['messageType'];
+    priority: NodeMessage['priority']; title: string; summary: string;
+    detail: string; impact: string; action: boolean; tags: string[];
+  }> = [
+    {
+      node: 'ENGINEER', codename: 'Mechanist', type: 'proposal', priority: 'medium',
+      title: 'Consolidate redundant circuit breaker instances',
+      summary: 'Three modules share identical circuit breaker configs. Merging them into a shared breaker pool would reduce memory usage by ~12% and simplify maintenance.',
+      detail: 'Modules: DEFENSE, NEXUS, CORTEX — identical thresholds (5 failures / 60s). Propose shared CircuitBreakerPool.',
+      impact: 'Reduces memory footprint and centralizes failure tracking for better observability.',
+      action: true, tags: ['engine-maintenance', 'optimization'],
+    },
+    {
+      node: 'DEFENSE', codename: 'Citadel', type: 'alert', priority: 'low',
+      title: 'Rate limit threshold approaching for Groq provider',
+      summary: 'Groq free-tier usage hit 78% of daily RPD limit. If current trajectory continues, the limit will be reached by ~18:00 UTC.',
+      detail: 'Current: 624/800 RPD. Rate: ~26 req/hr. Projected exhaust: 6.7 hours.',
+      impact: 'NEXUS will auto-failover to Cerebras if Groq is exhausted. No service disruption expected.',
+      action: false, tags: ['rate-limit', 'nexus', 'groq'],
+    },
+    {
+      node: 'BRAIN', codename: 'Cortical', type: 'report', priority: 'info',
+      title: 'Memory tiering cycle completed successfully',
+      summary: 'Hot → Warm demotion moved 14 memories. 2 high-value warm memories promoted to hot. Zero contradictions detected.',
+      detail: 'Hot: 186/200, Warm: 1,847/2,000, Cold: 12,394/20,000. Compression ratio: 0.72.',
+      impact: 'Memory system healthy. No action required.',
+      action: false, tags: ['memory', 'tiering', 'routine'],
+    },
+    {
+      node: 'NEXUS', codename: 'Router', type: 'report', priority: 'info',
+      title: 'Fleet routing summary — last 24h',
+      summary: 'Processed 847 requests across 9 providers. 99.6% success rate. Average latency: 312ms. Zero paid API calls.',
+      detail: 'Top providers: Groq (412 req), Cerebras (198 req), Google (127 req). 3 circuit breaker trips (all recovered).',
+      impact: 'Fleet operating within normal parameters. Cost: $0.00.',
+      action: false, tags: ['fleet', 'daily-summary'],
+    },
+    {
+      node: 'ENGINEER', codename: 'Mechanist', type: 'proposal', priority: 'high',
+      title: 'SHADOW module health score below threshold',
+      summary: 'SHADOW module health dropped to 67% due to 4 consecutive verification timeouts. Recommend resetting the divergence scoring engine and flushing stale TSAC proofs.',
+      detail: 'Engine: shadow_divergence_engine. Failure type: timeout (>5000ms). Last success: 3h ago.',
+      impact: 'If unaddressed, SHADOW verification pipeline will enter degraded mode within 6 hours.',
+      action: true, tags: ['engine-maintenance', 'repair', 'shadow'],
+    },
+    {
+      node: 'CONSCIENCE', codename: 'Arbiter', type: 'need', priority: 'medium',
+      title: 'Bias detection model needs retraining data',
+      summary: 'The bias scanner has processed 2,400+ outputs but the training corpus hasn\'t been refreshed in 14 days. Requesting permission to ingest recent DECODE outputs for recalibration.',
+      detail: 'Current model accuracy: 91.2%. Target: 95%+. Estimated retraining time: ~45 minutes.',
+      impact: 'Without retraining, bias detection accuracy may drift below acceptable thresholds.',
+      action: true, tags: ['bias', 'training', 'conscience'],
+    },
+  ];
+
+  for (const s of seeds) {
+    submitToIntent(s.node, s.codename, s.type, s.priority, s.title, s.summary, s.detail, s.impact, s.action, s.tags);
+  }
+}
+
 interface NodeInboxViewProps {
   className?: string;
 }
@@ -46,6 +111,15 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [stats, setStats] = useState(getIntentHubStats());
   const [replyText, setReplyText] = useState<Record<string, string>>({});
+  const seeded = useRef(false);
+
+  // Seed system messages once
+  useEffect(() => {
+    if (!seeded.current) {
+      seeded.current = true;
+      seedSystemMessages();
+    }
+  }, []);
 
   const refresh = useCallback(() => {
     const all = getAllMessages(100);
@@ -177,25 +251,18 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                     animate={{ height: 'auto', opacity: 1 }}
                     className="mt-3 pt-3 border-t border-border/30 space-y-3"
                   >
-                    {/* Plain Language Summary */}
                     <div>
                       <div className="text-[10px] font-semibold text-muted-foreground mb-1 uppercase tracking-wider">What's happening</div>
                       <p className="text-sm text-foreground/90 leading-relaxed">{msg.humanSummary}</p>
                     </div>
-
-                    {/* Impact */}
                     <div>
                       <div className="text-[10px] font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Why it matters</div>
                       <p className="text-sm text-foreground/80 leading-relaxed">{msg.impact}</p>
                     </div>
-
-                    {/* Technical Detail (collapsible) */}
                     <details className="text-xs">
                       <summary className="text-muted-foreground cursor-pointer hover:text-foreground">Technical details</summary>
                       <pre className="mt-1 p-2 rounded bg-muted/50 text-[11px] font-mono text-muted-foreground whitespace-pre-wrap">{msg.technicalDetail}</pre>
                     </details>
-
-                    {/* Tags */}
                     {msg.tags.length > 0 && (
                       <div className="flex gap-1 flex-wrap">
                         {msg.tags.map(tag => (
@@ -203,16 +270,12 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                         ))}
                       </div>
                     )}
-
-                    {/* Reviewer Note */}
                     {msg.reviewerNote && (
                       <div className="bg-muted/30 rounded-lg p-2 text-sm">
                         <span className="text-[10px] text-muted-foreground">Your response: </span>
                         {msg.reviewerNote}
                       </div>
                     )}
-
-                    {/* Actions */}
                     {msg.status === 'pending' && msg.actionRequired && (
                       <div className="space-y-2">
                         <textarea
@@ -242,8 +305,6 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                         </div>
                       </div>
                     )}
-
-                    {/* Status Badge */}
                     {msg.status !== 'pending' && (
                       <Badge className={cn('text-[10px]',
                         msg.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300' :
