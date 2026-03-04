@@ -462,6 +462,7 @@ export default function SubstrateOS() {
               </PanelContainer>
             )}
 
+            {activeTab === 'cognitives' && (
               <PanelContainer id="cognitives">
                 <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
               </PanelContainer>
