@@ -2,11 +2,22 @@
  * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
  * Simple mode: one big button, result reveal, no cringe.
  */
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
+
+type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
+
+function scoreColor(score: number): string {
+  if (score === 100) return 'text-primary';
+  if (score >= 94) return 'text-purple-400';
+  if (score >= 90) return 'text-amber-400';
+  if (score >= 80) return 'text-sky-400';
+  return 'text-emerald-400';
+}
 
 interface Props {
   isMining: boolean;
@@ -15,12 +26,22 @@ interface Props {
 }
 
 export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
+  const [phase, setPhase] = useState<CrystallizationPhase>(null);
+
+  const handleCrystallize = () => {
+    setPhase('sampling');
+    setTimeout(() => setPhase('condensing'), 700);
+    setTimeout(() => setPhase('crystallizing'), 1400);
+    setTimeout(() => setPhase(null), 2100);
+    onMine();
+  };
+
   return (
     <div className="space-y-6">
       {/* Crystallize button */}
       <div className="flex flex-col items-center">
         <motion.button
-          onClick={onMine}
+          onClick={handleCrystallize}
           disabled={isMining}
           whileHover={!isMining ? { scale: 1.02 } : {}}
           whileTap={!isMining ? { scale: 0.98 } : {}}
@@ -50,6 +71,33 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
         <div className="text-[10px] font-mono text-muted-foreground/50 mt-2">
           Quality floor: 68+ · Every pull is real software
         </div>
+
+        {/* Crystallization phase animation */}
+        <AnimatePresence>
+          {phase && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              className="mt-3 flex items-center gap-2"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 0.6, repeat: Infinity }}
+                className={`w-2 h-2 rounded-full ${
+                  phase === 'sampling' ? 'bg-sky-400' :
+                  phase === 'condensing' ? 'bg-amber-400' :
+                  'bg-primary'
+                }`}
+              />
+              <span className="text-xs font-mono text-muted-foreground animate-fade-in">
+                {phase === 'sampling' && 'Sampling Memory Stream...'}
+                {phase === 'condensing' && 'Condensing topology...'}
+                {phase === 'crystallizing' && 'Crystallizing pipeline...'}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Last result */}
@@ -103,11 +151,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className={`text-2xl font-mono font-black ${
-                      result.score >= 95 ? 'text-primary' :
-                      result.score >= 90 ? 'text-amber-400' :
-                      result.score >= 80 ? 'text-sky-400' : 'text-emerald-400'
-                    }`}>
+                    <div className={`text-2xl font-mono font-black ${scoreColor(result.score)}`}>
                       {result.score}
                     </div>
                     <div className="text-[9px] text-muted-foreground uppercase tracking-wider">

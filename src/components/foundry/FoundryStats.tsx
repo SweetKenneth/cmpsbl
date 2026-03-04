@@ -19,7 +19,7 @@ export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays,
       <StatCard
         label="Best Pull"
         value={bestPull ? String(bestPull.score) : '—'}
-        accent={bestPull ? (bestPull.score >= 95 ? 'text-primary' : bestPull.score >= 90 ? 'text-amber-400' : 'text-sky-400') : undefined}
+        accent={bestPull ? (bestPull.score === 100 ? 'text-primary' : bestPull.score >= 94 ? 'text-purple-400' : bestPull.score >= 90 ? 'text-amber-400' : bestPull.score >= 80 ? 'text-sky-400' : 'text-emerald-400') : undefined}
         sub={bestPull?.publicTier}
       />
       <StatCard label="Total Crystallizations" value={String(totalMines)} />
