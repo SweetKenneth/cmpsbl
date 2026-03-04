@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { Sparkles, Home, BookOpen, Terminal, Search, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+const SubstrateParticles = lazy(() => import('@/components/ui/SubstrateParticles').then(m => ({ default: m.SubstrateParticles })));
 
 // Popular destinations for suggestions
 const SUGGESTIONS = [
@@ -22,6 +24,7 @@ const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
@@ -34,6 +37,9 @@ const NotFound = () => {
         metadata: { userAgent: navigator.userAgent?.slice(0, 200) },
       } as any).then(() => {});
     });
+    // Cinematic delay — dissolve effect before content appears
+    const timer = setTimeout(() => setShowContent(true), 600);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   const smartSuggestions = useMemo(() => {
@@ -61,109 +67,180 @@ const NotFound = () => {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 relative overflow-hidden">
       <SEO title="Signal Lost — CMPSBL" description="This path dissolved before crystallization." noindex />
       
-      {/* Memory Stream ambient background */}
+      {/* Cinematic particle background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-primary/5 blur-[80px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-sky-500/5 blur-[60px]" />
-        {/* Drifting stream lines */}
-        {[...Array(3)].map((_, i) => (
+        <Suspense fallback={null}>
+          <SubstrateParticles className="absolute inset-0 opacity-30" />
+        </Suspense>
+        
+        {/* Dissolving radial glow — fading signal */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 50%)' }}
+          initial={{ scale: 2, opacity: 0.6 }}
+          animate={{ scale: [2, 0.5, 0.8], opacity: [0.6, 0.1, 0.05] }}
+          transition={{ duration: 3, ease: 'easeOut' }}
+        />
+        
+        {/* Fading stream lines — signal dissolving */}
+        {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
-            style={{ top: `${30 + i * 20}%`, left: 0, right: 0 }}
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{ duration: 12 + i * 4, repeat: Infinity, ease: 'linear' }}
+            className="absolute h-px"
+            style={{
+              top: `${25 + i * 15}%`,
+              left: 0,
+              right: 0,
+              background: `linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), hsl(var(--destructive) / 0.1), transparent)`,
+            }}
+            initial={{ opacity: 0.5, scaleX: 1 }}
+            animate={{ opacity: [0.5, 0.1, 0.3], x: ['-50%', '50%'] }}
+            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'linear' }}
           />
         ))}
-      </div>
-
-      <div className="relative z-10 text-center max-w-lg w-full">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center gap-2 mb-8"
-        >
-          <Sparkles className="w-5 h-5 text-primary/60" />
-          <span className="text-sm text-muted-foreground font-mono">Signal dissolved before crystallization</span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-6xl font-light text-foreground mb-4"
-        >
-          404
-        </motion.h1>
         
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg text-muted-foreground mb-2"
-        >
-          This path never crystallized from the Memory Stream.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-xs font-mono text-muted-foreground/50 mb-6"
-        >
-          Quality floor: 68 · Only stable systems survive
-        </motion.p>
-
-        {/* Search box */}
-        <div className="relative mb-6 max-w-sm mx-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search the stream..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-muted/30 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-          />
-        </div>
-
-        {/* Smart suggestions */}
-        <div className="mb-8 space-y-2 max-w-sm mx-auto text-left">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider px-1 font-mono">
-            {query.trim() ? "Results" : "Crystallized paths"}
-          </p>
-          {filteredSuggestions.map((s) => (
-            <Link
-              key={s.href}
-              to={s.href}
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
-            >
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{s.name}</div>
-                <div className="text-xs text-muted-foreground">{s.description}</div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-primary transition-colors shrink-0" />
-            </Link>
-          ))}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button onClick={() => navigate('/')} variant="outline" className="gap-2">
-            <Home className="w-4 h-4" />
-            Home
-          </Button>
-          <Button asChild variant="outline" className="gap-2">
-            <Link to="/foundry">
-              <Sparkles className="w-4 h-4" />
-              Memory Stream
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="gap-2">
-            <Link to="/status">
-              <Terminal className="w-4 h-4" />
-              System Status
-            </Link>
-          </Button>
-        </div>
+        {/* Substrate grid fading */}
+        <motion.div 
+          className="absolute inset-0 substrate-grid-bg"
+          initial={{ opacity: 0.3 }}
+          animate={{ opacity: 0.08 }}
+          transition={{ duration: 2 }}
+        />
       </div>
+
+      <AnimatePresence>
+        {showContent && (
+          <motion.div 
+            className="relative z-10 text-center max-w-lg w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex items-center justify-center gap-2 mb-8"
+            >
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              >
+                <Sparkles className="w-5 h-5 text-primary/60" />
+              </motion.div>
+              <span className="text-sm text-muted-foreground font-mono">Signal dissolved before crystallization</span>
+            </motion.div>
+
+            {/* Cinematic 404 with crystallization shatter */}
+            <motion.h1
+              initial={{ opacity: 0, scale: 1.5, filter: 'blur(20px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, delay: 0.2, type: 'spring', stiffness: 100 }}
+              className="text-7xl font-light text-foreground mb-4 relative"
+            >
+              <span className="memory-stream-gradient-text">404</span>
+              {/* Ghost echo */}
+              <motion.span
+                className="absolute inset-0 text-7xl font-light text-primary/10 pointer-events-none"
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.3, 1.5], opacity: [0.3, 0.1, 0] }}
+                transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }}
+              >
+                404
+              </motion.span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-lg text-muted-foreground mb-2"
+            >
+              This path never crystallized from the Memory Stream.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="text-xs font-mono text-muted-foreground/50 mb-6"
+            >
+              Quality floor: 68 · Only stable systems survive
+            </motion.p>
+
+            {/* Search box with signal-border */}
+            <motion.div 
+              className="relative mb-6 max-w-sm mx-auto"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+            >
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search the stream..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-muted/20 backdrop-blur-sm border border-border/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/30 transition-all signal-border"
+              />
+            </motion.div>
+
+            {/* Smart suggestions with staggered crystallize-in */}
+            <motion.div 
+              className="mb-8 space-y-2 max-w-sm mx-auto text-left"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              <p className="text-xs text-muted-foreground uppercase tracking-wider px-1 font-mono">
+                {query.trim() ? "Results" : "Crystallized paths"}
+              </p>
+              {filteredSuggestions.map((s, i) => (
+                <motion.div
+                  key={s.href}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 + i * 0.08 }}
+                >
+                  <Link
+                    to={s.href}
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/30 backdrop-blur-sm transition-all group border border-transparent hover:border-border/30"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{s.name}</div>
+                      <div className="text-xs text-muted-foreground">{s.description}</div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-3 justify-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+            >
+              <Button onClick={() => navigate('/')} variant="outline" className="gap-2 backdrop-blur-sm">
+                <Home className="w-4 h-4" />
+                Home
+              </Button>
+              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm">
+                <Link to="/foundry">
+                  <Sparkles className="w-4 h-4" />
+                  Memory Stream
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm">
+                <Link to="/status">
+                  <Terminal className="w-4 h-4" />
+                  System Status
+                </Link>
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
