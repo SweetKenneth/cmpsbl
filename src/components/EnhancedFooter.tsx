@@ -59,9 +59,9 @@ export function EnhancedFooter() {
       links: [
         { name: "Academy", href: "/academy" },
         { name: "API Access", href: "/api-access" },
-        { name: "DevTools", href: "/devtools" },
+        { name: "Builder Workspace", href: "/workspace" },
         { name: "Documentation", href: "/documentation" },
-        { name: "Integrations", href: "/integrations" },
+        { name: "Developer Guide", href: "/developers/guide" },
         { name: "Start Here", href: "/start-here", highlight: true },
       ]
     },
@@ -69,7 +69,7 @@ export function EnhancedFooter() {
       title: "Discover",
       links: [
         { name: "Capability Map", href: "/capability-map" },
-        { name: "Community", href: "/community" },
+        { name: "System Overview", href: "/overview" },
         { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Fossil Record", href: "/changelog" },
         { name: "Showcase", href: "/showcase" },

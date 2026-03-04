@@ -10,17 +10,17 @@ const NAV_COLUMNS = [
     links: [
       { label: 'Overview', to: '/substrate' },
       { label: 'Runtime', to: '/runtime' },
-      { label: 'Engine', to: '/engine' },
+      { label: 'Engines', to: '/engines' },
       { label: 'Upgrade', to: '/upgrade' },
     ],
   },
   {
     title: 'Discover',
     links: [
-      { label: 'Memory Stream', to: '/memory-stream' },
+      { label: 'Memory Stream', to: '/foundry' },
       { label: 'Cognitive Showcase', to: '/showcase' },
       { label: 'Engineering Proof', to: '/proof' },
-      { label: 'Whitepaper', to: '/docs/whitepaper/', external: true },
+      { label: 'Documentation', to: '/documentation' },
     ],
   },
   {
@@ -35,8 +35,8 @@ const NAV_COLUMNS = [
   {
     title: 'Resources',
     links: [
-      { label: 'Documentation', to: '/docs' },
-      { label: 'API Reference', to: '/docs/runtime-reference' },
+      { label: 'Documentation', to: '/documentation' },
+      { label: 'API Reference', to: '/docs/runtime' },
       { label: 'Privacy', to: '/privacy' },
       { label: 'Terms', to: '/terms' },
     ],
@@ -101,23 +101,12 @@ export function FoundryFooter() {
                 <ul className="space-y-2.5">
                   {col.links.map((link) => (
                     <li key={link.label}>
-                      {link.external ? (
-                        <a
-                          href={link.to}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link
-                          to={link.to}
-                          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {link.label}
-                        </Link>
-                      )}
+                      <Link
+                        to={link.to}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {link.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>

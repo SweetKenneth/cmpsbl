@@ -143,7 +143,7 @@ const DeveloperAcademy = () => {
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link to="/docs">Read Documentation</Link>
+                    <Link to="/documentation">Read Documentation</Link>
                   </Button>
                 </div>
               </div>
