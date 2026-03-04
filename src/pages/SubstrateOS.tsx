@@ -470,6 +470,18 @@ export default function SubstrateOS() {
               </PanelContainer>
             )}
 
+            {activeTab === 'ccr' && (
+              <PanelContainer id="ccr">
+                <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
+              </PanelContainer>
+            )}
+
+            {activeTab === 'operations' && (
+              <PanelContainer id="operations">
+                <Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense>
+              </PanelContainer>
+            )}
+
             {activeTab === 'oracle' && (
               <PanelContainer id="oracle">
                 <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
