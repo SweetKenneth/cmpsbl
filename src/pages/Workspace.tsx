@@ -107,14 +107,14 @@ export default function Workspace() {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
-              Builder Workspace
+              Memory Stream · Builder Workspace
             </div>
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
-              Build on the Substrate
+              Signal → Silicon
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               Your personal space to create, test, and deploy with the full power of 38 cognitive nodes.
-              Free tier gets persistent memory, rare agents, and 12 terminal commands.
+              Free tier gets persistent memory, rare agents, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
               <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 font-mono text-xs">
@@ -225,12 +225,12 @@ export default function Workspace() {
                 {/* Terminal Header */}
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30 bg-muted/20">
                   <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-rose-500/70" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/70" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-destructive/70" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-accent-foreground/30" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-primary/50" />
                   </div>
                   <span className="font-mono text-[11px] text-muted-foreground ml-2">
-                    cmpsbl terminal — {TIER_LABELS[userTier].label} ({availableCommands.length} commands)
+                    memory stream terminal — {TIER_LABELS[userTier].label} ({availableCommands.length} commands)
                   </span>
                 </div>
 
