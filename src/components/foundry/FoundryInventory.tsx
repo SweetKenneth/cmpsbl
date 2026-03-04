@@ -1,8 +1,9 @@
 /**
- * FoundryInventory — User's collected crystallized pipelines (Vault)
+ * FoundryInventory — User's vault of crystallized pipelines
  */
 import { motion } from 'framer-motion';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
+import { MEMORY_STREAM_EVENT } from '@/lib/branding/memory-stream';
 
 interface InventoryItem {
   id: string;
@@ -27,7 +28,7 @@ export function FoundryInventory({ inventory }: Props) {
       <div className="text-center py-20">
         <div className="text-4xl mb-4">⛏️</div>
         <div className="text-muted-foreground font-mono text-sm mb-2">
-          No crystallized pipelines yet
+          No pipelines crystallized yet
         </div>
         <div className="text-xs text-muted-foreground/50">
           Hit Crystallize to start pulling pipelines
@@ -77,6 +78,9 @@ export function FoundryInventory({ inventory }: Props) {
                 </div>
                 <div className="font-mono text-sm font-bold text-foreground truncate">
                   {item.artifactName}
+                </div>
+                <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
+                  Crystallized Memory Stream Pipeline
                 </div>
                 {item.systemChain && item.systemChain.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">

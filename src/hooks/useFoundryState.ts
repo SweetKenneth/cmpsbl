@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { executeMine, filterByQualityFloor, type MineResult, type MineResponse } from '@/lib/foundry/public-mining-engine';
+import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import { toast } from 'sonner';
 
 interface FoundryUserState {
@@ -132,13 +133,13 @@ export function useFoundryState() {
       setLastMineResult(result);
 
       if (result.results.length === 0) {
-        toast.info('No viable pipelines found this run. Try again.');
+        toast.info(MEMORY_STREAM_EMPTY);
         if (result.rerollCredit) {
           toast.success('Reroll credit earned!');
         }
       } else {
         const best = result.results[0];
-        toast.success(`Crystallized ${result.results.length} pipeline${result.results.length > 1 ? 's' : ''} — best: ${best.publicTier} (${best.score})`);
+        toast.success(`${MEMORY_STREAM_EVENT} — ${best.publicTier} (${best.score})`);
       }
 
       // Reload state

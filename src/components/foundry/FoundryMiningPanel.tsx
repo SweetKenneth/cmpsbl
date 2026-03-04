@@ -5,6 +5,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
+import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 
 interface Props {
@@ -90,6 +91,9 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
                         {result.description}
                       </p>
                     )}
+                    <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
+                      {MEMORY_STREAM_EVENT}
+                    </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {result.systemChain.map(s => (
                         <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
@@ -124,7 +128,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine }: Props) {
             className="text-center py-8"
           >
             <div className="text-muted-foreground/60 font-mono text-sm mb-2">
-              No viable pipelines this run
+              {MEMORY_STREAM_EMPTY}
             </div>
             <div className="text-xs text-muted-foreground/40">
               {lastResult.rerollCredit
