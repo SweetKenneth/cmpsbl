@@ -40,10 +40,10 @@ export function SocialProof() {
       <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-            Trusted by builders who ship AI
+            Trusted by builders crystallizing from the stream
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-            Teams using the substrate to build AI that compounds.
+            Teams using the Memory Stream to build intelligence that compounds.
           </p>
         </div>
 
