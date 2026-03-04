@@ -166,9 +166,9 @@ export default function Auth() {
                 </div>
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
-                    Sign In
+                    Enter the Stream
                   </h1>
-                  <p className="text-sm text-muted-foreground">No passwords — ever</p>
+                  <p className="text-sm text-muted-foreground">Passwordless · Signal → Silicon</p>
                 </div>
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function Auth() {
               transition={{ delay: 0.7 }}
             >
               <Shield className="w-3.5 h-3.5" />
-              <span>Passwordless • Phishing-resistant • Device-bound identity</span>
+              <span>Passwordless • Phishing-resistant • Memory Stream identity</span>
             </motion.div>
           </motion.div>
         </div>
@@ -279,9 +279,9 @@ export default function Auth() {
                   ) : (
                     <form onSubmit={handleLogin}>
                       <CardHeader>
-                        <CardTitle>Welcome Back</CardTitle>
+                      <CardTitle>Re-enter the Stream</CardTitle>
                         <CardDescription>
-                          Use Face ID for instant access, or sign in with your email.
+                          Use Face ID for instant access, or sign in with your email to resume crystallization.
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
@@ -366,9 +366,9 @@ export default function Auth() {
                   ) : (
                     <form onSubmit={handleSignup}>
                       <CardHeader>
-                        <CardTitle>Create Account</CardTitle>
+                      <CardTitle>Join the Memory Stream</CardTitle>
                         <CardDescription>
-                          Enter your email to get started. After verifying, you'll set up Face ID for instant access.
+                          Enter your email to begin. After verifying, you'll set up Face ID — then start crystallizing pipelines immediately.
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">

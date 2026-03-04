@@ -87,12 +87,12 @@ export function DifferentiationSection() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Compounds
+              Crystallizes
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Most AI platforms process and forget. CMPSBL is built on four architectural principles
-            that make intelligence durable, governed, and cumulative.
+            Most AI platforms process and forget. The Memory Stream captures every signal and crystallizes
+            durable, governed intelligence that compounds over time.
           </p>
         </motion.div>
 

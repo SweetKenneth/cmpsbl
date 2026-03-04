@@ -210,7 +210,7 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
           <div className="flex items-center gap-3">
             <div>
               <h1 className="text-xl font-bold glow-text">CMPSBL</h1>
-              <p className="text-xs text-muted-foreground">Cognitive Infrastructure</p>
+              <p className="text-xs text-muted-foreground">Signal → Silicon</p>
             </div>
           </div>
         </div>
@@ -296,8 +296,8 @@ export function Sidebar({ isOpen, onToggle }: { isOpen?: boolean; onToggle?: () 
 
         {/* Footer */}
         <div className="p-4 border-t border-border/50">
-          <p className="text-xs text-muted-foreground text-center">
-            CMPSBL®
+          <p className="text-xs text-muted-foreground text-center font-mono">
+            CMPSBL® · Memory Stream
           </p>
         </div>
       </aside>

@@ -319,7 +319,7 @@ export function WhySubstrate() {
             <span className="text-xs">9 Modules</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            The Total{" "}
+            The{" "}
             <span 
               className="inline-block"
               style={{
@@ -330,15 +330,15 @@ export function WhySubstrate() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Package
+              Stream
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-             Nine production modules — your AI gets
-             <span className="text-foreground font-medium"> intelligent routing</span>, 
-             <span className="text-foreground font-medium"> permanent memory</span>, 
-             <span className="text-foreground font-medium"> autonomous learning</span>, and 
-             <span className="text-foreground font-medium"> adaptive security</span>. All included in every plan.
+             Nine production systems power the Memory Stream — from
+             <span className="text-foreground font-medium"> signal capture</span> to 
+             <span className="text-foreground font-medium"> crystallization</span>, 
+             <span className="text-foreground font-medium"> persistent memory</span>, and 
+             <span className="text-foreground font-medium"> governed evolution</span>. All included in every plan.
            </p>
         </motion.div>
         
