@@ -82,6 +82,7 @@ const HumansTxt = lazy(() => import("@/pages/HumansTxt"));
 const Foundations = lazy(() => import("@/pages/Foundations"));
 const Namespace = lazy(() => import("@/pages/Namespace"));
 const Insights = lazy(() => import("@/pages/Insights"));
+const SystemOverview = lazy(() => import("@/pages/SystemOverview"));
 
 const Support = lazy(() => import("@/pages/Support"));
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
