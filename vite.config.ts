@@ -70,10 +70,9 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Enable modulepreload polyfill for older browsers and proper preloading
-    modulePreload: {
-      polyfill: true,
-    },
+    // Disable automatic modulepreload to prevent eager loading of lazy chunks (charts, motion)
+    // This reduces unused JS on landing page by ~200KB
+    modulePreload: false,
     rollupOptions: {
       output: {
         manualChunks(id) {
