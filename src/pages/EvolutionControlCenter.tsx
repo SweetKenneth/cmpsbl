@@ -630,11 +630,13 @@ export default function EvolutionControlCenter() {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="connect"><AgentConnectGuide /></TabsContent>
-              <TabsContent value="dry-run"><DryRunPreview /></TabsContent>
-              <TabsContent value="rollback"><RollbackPanel /></TabsContent>
-              <TabsContent value="trends"><ScanTrendDashboard /></TabsContent>
-              <TabsContent value="feedback"><FalsePositiveFeedback /></TabsContent>
+              <Suspense fallback={<div className="min-h-[200px] flex items-center justify-center text-muted-foreground">Loading...</div>}>
+                <TabsContent value="connect"><AgentConnectGuide /></TabsContent>
+                <TabsContent value="dry-run"><DryRunPreview /></TabsContent>
+                <TabsContent value="rollback"><RollbackPanel /></TabsContent>
+                <TabsContent value="trends"><ScanTrendDashboard /></TabsContent>
+                <TabsContent value="feedback"><FalsePositiveFeedback /></TabsContent>
+              </Suspense>
             </Tabs>
           </div>
         </section>
