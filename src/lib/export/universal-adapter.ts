@@ -124,8 +124,17 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
  * Hardware targets require score >= 94. Score-tiered unlock system.
  */
 export function getLanguagesForScore(score: number): { value: ExportLanguage; label: string; locked: boolean }[] {
-  const { getUnlockedLanguages } = require('./language-unlock-tiers');
-  const unlocked = new Set(getUnlockedLanguages(score));
+  // Inline tier thresholds to avoid circular imports
+  const TIER_GATES: [number, ExportLanguage[]][] = [
+    [68, ['php', 'ruby', 'lua', 'dart', 'swift', 'kotlin']],
+    [78, ['typescript', 'python', 'go', 'java', 'csharp']],
+    [86, ['rust', 'c', 'cpp', 'zig', 'scala', 'haskell', 'elixir']],
+    [94, ['verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice', 'systemc']],
+  ];
+  const unlocked = new Set<ExportLanguage>();
+  for (const [minScore, langs] of TIER_GATES) {
+    if (score >= minScore) langs.forEach(l => unlocked.add(l));
+  }
   return Object.entries(LANG_LABELS).map(([v, l]) => ({
     value: v as ExportLanguage,
     label: l,
