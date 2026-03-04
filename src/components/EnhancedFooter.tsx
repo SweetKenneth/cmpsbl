@@ -36,6 +36,7 @@ export function EnhancedFooter() {
         { name: "AI Operating System", href: "/ai-operating-system", highlight: true },
         { name: "Architecture", href: "/architecture" },
         { name: "Foundations", href: "/foundations" },
+        { name: "Foundry", href: "/foundry", highlight: true },
         { name: "Proof Mode", href: "/proof" },
         { name: "Runtime", href: "/runtime" },
         { name: "Substrate", href: "/substrate" },

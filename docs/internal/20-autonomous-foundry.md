@@ -7,7 +7,7 @@
 
 ## 1. Purpose
 
-This document describes the Autonomous Software Foundry — the substrate's recursive capability discovery and manufacturing system. The Foundry is a Crown Jewel: it is never exposed in public documentation, external APIs, or marketing materials beyond high-level proof metrics.
+This document describes the Autonomous Software Foundry — the substrate's recursive capability discovery and manufacturing system. The Foundry is a Crown Jewel and a publicly documented innovation. The DOI is published and the `/foundry` page presents proof metrics, tier distributions, and live discovery streams. Internal details (reactor source, CJPI weights, scoring formula internals) remain trade secrets, but the Foundry's existence, output metrics, and high-level architecture are public knowledge for investors and evaluators.
 
 ## 2. What the Foundry Does
 
@@ -134,7 +134,9 @@ A fully portable version of the discovery reactor that operates without the full
 | CJPI scoring formula | Trade secret — weights and thresholds are internal |
 | S-Tier Vault | Admin-only — no public API |
 | Discovery Engine | Included in exports but obfuscated |
-| Discovery counts | Public (proof metrics) |
+| Foundry existence & output metrics | **Public** — DOI published, investor-visible |
+| `/foundry` page | **Public** — proof metrics, tier distributions, live stream |
+| Discovery counts & tier breakdowns | **Public** (proof metrics) |
 | Individual discovery details | Internal only |
 
 ## 8. Relationship to Public Pages
