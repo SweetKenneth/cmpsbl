@@ -131,6 +131,7 @@ interface SidebarProps {
   isGovernor: boolean;
   healthScore: number;
   collapsed?: boolean;
+  currentTier: SubstrateRole;
 }
 
 function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed }: SidebarProps) {
