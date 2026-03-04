@@ -298,7 +298,7 @@ export function HeroMetaSubstrate() {
               className="mt-6 sm:mt-8 text-center lg:text-left"
             >
               <a 
-                href="https://zenodo.org/records/18234910?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjkxZDYzZjFlLWM2NTctNDAzNi04ZWE4LTIzNWNiMDljMGQ2NyIsImRhdGEiOnt9LCJyYW5kb20iOiIzZTlkMjA5MzQ0ZGFkNDI2ZTZlMTkwMWYxMzFmOTczYSJ9.H3FugoEHTR2ilPEtZEr-kqRiTgW0FeUDXOrcEE92lek4FK0_h0dNUyJWvtxW-KCHuIEeiqbN5Zot8EqEvXq5gQ"
+                href="https://doi.org/10.5281/zenodo.18234909"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm hover:bg-card/70 hover:border-primary/30 transition-all duration-300 group"
@@ -308,7 +308,7 @@ export function HeroMetaSubstrate() {
                 </div>
                 <div className="text-left">
                   <span className="block text-xs font-semibold text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
-                  <span className="block text-[10px] text-muted-foreground">Zenodo • DOI: 10.5281/zenodo.18234910</span>
+                  <span className="block text-[10px] text-muted-foreground">Zenodo • DOI: 10.5281/zenodo.18234909</span>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
               </a>
