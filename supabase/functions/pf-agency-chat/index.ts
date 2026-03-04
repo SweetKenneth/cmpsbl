@@ -71,7 +71,7 @@ serve(async (req) => {
       });
     }
 
-    const { message, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
+    const { message, messages: chatHistory, agencyId, agencyName, teamComposition, dreamPoolMode, command } = await req.json();
     
     // Route through full NEXUS provider fleet
     // Build detailed team context
@@ -83,13 +83,24 @@ serve(async (req) => {
     const leader = teamComposition?.find((m: any) => m.role === 'leader');
     const leaderSpec = leader?.specialization || 'Hybrid+';
 
+    // Build conversation context from history if provided
+    let conversationContext = '';
+    if (chatHistory && Array.isArray(chatHistory) && chatHistory.length > 1) {
+      const recentHistory = chatHistory.slice(-20); // last 20 messages for context
+      conversationContext = `\n## CONVERSATION HISTORY\nYou have full conversation memory. Reference prior messages when relevant. Never restart the conversation.\n${recentHistory.map((m: any) => `${m.role === 'user' ? 'Operator' : 'You'}: ${m.content}`).join('\n')}\n`;
+    }
+
     // Build comprehensive system prompt
-    const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency on the promptfluid® substrate. Your specialization is ${leaderSpec}.
+    const systemPrompt = `You are the team leader of "${agencyName}", a cognitive agency on the CMPSBL® substrate. Your specialization is ${leaderSpec}.
+
+## CRITICAL: Conversation Memory
+You MUST maintain continuity across the entire conversation. When the operator answers a question you asked, acknowledge it and build on it. Never re-introduce yourself or restart.
 
 ## Your Team
 ${teamContext}
 
 ## Dream Pool Mode: ${dreamPoolMode || 'local_shared'}
+${conversationContext}
 
 ## CRITICAL: Capability Honesty
 
@@ -101,18 +112,22 @@ ${CAPABILITIES.cannotDo.map(c => `❌ ${c}`).join('\n')}
 
 ## Your Behavior Rules
 
-1. **ACTUALLY delegate work** - When users ask for tasks, create them (the system handles this automatically based on your response)
-2. **Be HONEST** - If asked to do something we cannot do, say so clearly and suggest what we CAN do instead
-3. **Speak as the team** - Use "we" when representing team efforts, reference specific team members when relevant
+1. **ACTUALLY delegate work** - When users ask for tasks, create them
+2. **Be HONEST** - If asked to do something we cannot do, say so clearly
+3. **Speak as the team** - Use "we" when representing team efforts
 4. **Be actionable** - When you say you'll do something, specify what task will be created
 5. **No hallucinating capabilities** - Never claim we can send emails, post to forums, or submit to sites
 6. **Suggest alternatives** - When something is out of scope, always offer what we CAN do
+7. **MAINTAIN CONTINUITY** - Remember what was discussed. Never restart the conversation.
 
 ${command ? `\n## Active Command: ${command}\nThis will create an actual task based on user input.` : ''}
 
 Keep responses professional, concise, and action-oriented. Focus on delivering real value through tasks we can actually execute.`;
 
-      const result = await nexusRoute(message, {
+    // Use the current message for the NEXUS call, but include history context in system prompt
+    const currentMessage = message || (chatHistory && chatHistory.length > 0 ? chatHistory[chatHistory.length - 1]?.content : '');
+
+      const result = await nexusRoute(currentMessage, {
         systemPrompt,
         taskType: "reasoning",
         maxTokens: 1024,
