@@ -45,7 +45,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the layered kernel architecture — 9 modules, 5 meshes, 9 zones."
+    description: "Understand the layered kernel architecture — 38 nodes across 12 sectors."
   }
 ];
 
@@ -76,7 +76,7 @@ export default function Insights() {
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             <Badge variant="outline">Production</Badge>
-            <Badge variant="outline">9 Modules</Badge>
+            <Badge variant="outline">38 Nodes</Badge>
             <Badge variant="outline">Read-Only</Badge>
           </div>
         </div>
