@@ -150,19 +150,32 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
     >
       <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
       
+      {/* Flowing stream lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent"
+            style={{ top: `${25 + i * 25}%`, width: '140%', left: '-20%' }}
+            animate={{ x: ['-20%', '20%', '-20%'] }}
+            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: i * 0.7 }}
+          />
+        ))}
+      </div>
+      
       <div className="relative p-6">
         <div className="flex items-center gap-3 mb-6">
-          <motion.div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/15 to-fuchsia-500/15 border border-cyan-500/25 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-cyan-400" />
+          <motion.div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/15 to-indigo-500/15 border border-sky-500/25 flex items-center justify-center">
+            <Zap className="w-5 h-5 text-sky-400" />
             <motion.div
-              className="absolute inset-0 rounded-xl border border-cyan-400/20"
+              className="absolute inset-0 rounded-xl border border-sky-400/20"
               animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0, 0.4] }}
               transition={{ duration: 3, repeat: Infinity }}
             />
           </motion.div>
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Quick Actions</h3>
-            <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">SYSTEM CONTROLS</p>
+            <h3 className="text-sm font-semibold text-foreground">Stream Controls</h3>
+            <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">MEMORY STREAM · SIGNAL → SILICON</p>
           </div>
           <Badge 
             variant="outline" 
