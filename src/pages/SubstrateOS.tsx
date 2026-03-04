@@ -134,7 +134,7 @@ interface SidebarProps {
   currentTier: SubstrateRole;
 }
 
-function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed }: SidebarProps) {
+function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed, currentTier }: SidebarProps) {
   const version = useMetric('version');
   const grouped = useMemo(() => {
     const map: Record<string, TabDef[]> = {};
@@ -204,7 +204,8 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
                     {!collapsed && (
                       <>
                         <span className="flex-1 text-left truncate">{tab.label}</span>
-                        {active && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
+                        {tab.minTier && <TierLockBadge requiredTier={tab.minTier} currentTier={currentTier} />}
+                        {active && !tab.minTier && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                       </>
                     )}
                   </button>
@@ -340,6 +341,7 @@ export default function SubstrateOS() {
             onLogout={handleLogout}
             isGovernor={isGovernor}
             healthScore={healthScore.healthScore}
+            currentTier={role}
           />
         </div>
 
@@ -394,6 +396,7 @@ export default function SubstrateOS() {
               onLogout={handleLogout}
               isGovernor={isGovernor}
               healthScore={healthScore.healthScore}
+              currentTier={role}
             />
           </SheetContent>
         </Sheet>
