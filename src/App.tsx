@@ -67,16 +67,30 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Route transition loader
-const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
-    <div className="flex flex-col items-center gap-3">
-      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center animate-pulse">
-        <div className="w-3 h-3 rounded-full bg-primary/60" />
+// Delay-based loader — only renders if chunk takes >400ms to load
+const PageLoader = () => {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 400);
+    return () => clearTimeout(t);
+  }, []);
+  if (!show) return null;
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center animate-fade-in">
+      <div className="flex flex-col items-center gap-4">
+        {/* Crystallization spinner */}
+        <div className="relative w-10 h-10">
+          <div className="absolute inset-0 rounded-lg border-2 border-primary/20 animate-spin" style={{ animationDuration: '3s' }} />
+          <div className="absolute inset-1 rounded-md border-2 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" style={{ animationDuration: '1s' }} />
+          <div className="absolute inset-2.5 rounded-sm bg-primary/30 animate-pulse" />
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/60">
+          Crystallizing
+        </span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
