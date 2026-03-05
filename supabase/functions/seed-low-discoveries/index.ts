@@ -60,7 +60,7 @@ function generateDiscovery(index: number) {
 
   return {
     id: `disc-low-${String(index).padStart(5, '0')}`,
-    run_id: '00000000-0000-0000-0000-000000000001',
+    run_id: '00d3301e-6890-4867-9007-6ee97e783dea',
     name: `${adj} ${noun}`,
     description: `${tier === 'raw' ? 'Unstable' : 'Experimental'} ${category} pipeline: ${chain.join(' → ')}. Score ${score}/100.`,
     category,
