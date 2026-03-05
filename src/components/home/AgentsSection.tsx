@@ -233,7 +233,7 @@ export function AgentsSection() {
               {STANDARD_CAPABILITIES.map((cap) => (
                 <div
                   key={cap.name}
-                  className="rounded-xl border border-border/30 bg-background/30 p-3 flex items-start gap-3 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-300"
+                  className="rounded-xl border border-border/30 bg-background/30 p-3 flex items-start gap-3 hover:border-primary/20 hover:bg-primary/[0.02] hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 shimmer-on-hover"
                 >
                   <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                     <cap.icon className="w-3.5 h-3.5 text-primary/70" />

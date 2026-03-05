@@ -118,7 +118,7 @@ export default function Solutions() {
             {solutions.map((solution, index) => (
               <div 
                 key={solution.name}
-                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
+                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 shimmer-on-hover"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
@@ -183,7 +183,7 @@ export default function Solutions() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 bg-muted/30">
+      <section className="py-16 px-4 bg-gradient-to-b from-muted/20 via-muted/30 to-muted/20">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-foreground">Start Building Today</h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8">

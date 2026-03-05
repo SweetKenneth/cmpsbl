@@ -218,7 +218,7 @@ export function CmpsblNav() {
           "absolute inset-x-0 -bottom-px h-px transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0"
         )}>
-          <div className="h-full w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          <div className="h-full w-full memory-stream-bar opacity-40" />
         </div>
 
         <div className="container mx-auto px-4 lg:px-6">
@@ -369,7 +369,7 @@ export function CmpsblNav() {
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">
                       <Link to="/auth">Sign in</Link>
                     </Button>
-                    <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold">
+                    <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/upgrade">
                         Get Started
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />

@@ -31,20 +31,25 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
 const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
 
-// Section divider with animated gradient
+// Section divider with animated gradient and memory-stream accent
 function SectionDivider() {
   return (
-    <div className="relative py-8 sm:py-12">
-      {/* Left fade line */}
-      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-      {/* Colored overlay */}
-      <div className="absolute left-1/4 right-1/4 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
-      {/* Center diamond */}
-      <motion.div 
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary/30 rotate-45"
-        animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <div className="relative py-10 sm:py-14">
+      {/* Outer fade line */}
+      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
+      {/* Colored memory-stream accent */}
+      <div className="absolute left-[15%] right-[15%] top-1/2 h-px">
+        <div className="h-full memory-stream-bar opacity-15" />
+      </div>
+      {/* Center diamond with glow */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <motion.div 
+          className="w-2 h-2 bg-primary/40 rotate-45"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 w-2 h-2 bg-primary/20 rotate-45 blur-sm" />
+      </div>
     </div>
   );
 }
@@ -70,17 +75,20 @@ export default function Explore() {
 
       <PublicNav />
 
-      {/* Ambient animated mesh background */}
-      {/* Gap #1: Replace framer-motion ambient orbs with CSS animations for perf */}
+      {/* Ambient animated mesh background — layered for depth */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
         <div
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full animate-hero-orb-1"
-          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%)" }}
+          className="absolute -top-40 -left-40 w-[800px] h-[800px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
         />
         <div
-          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full animate-hero-orb-3"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
+          className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full animate-hero-orb-2"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.04) 0%, transparent 55%)" }}
+        />
+        <div
+          className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 55%)" }}
         />
       </div>
 
@@ -135,7 +143,7 @@ export default function Explore() {
           transition={{ duration: 0.8 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10">
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group/cta">
             {/* Deep gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
             
@@ -179,10 +187,10 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </motion.div>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-[1.08] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
-                <span className="text-white/80">Substrate</span>
+                <span className="text-white/85 drop-shadow-lg">Substrate</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 The substrate and Memory Stream working together — systems that DREAM, ADAPT, and EVOLVE,

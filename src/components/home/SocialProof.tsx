@@ -73,7 +73,7 @@ export function SocialProof() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
-              key={i}
+              key={t.highlight}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}

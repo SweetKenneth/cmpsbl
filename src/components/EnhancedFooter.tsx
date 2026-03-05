@@ -135,7 +135,7 @@ export function EnhancedFooter() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary hover:scale-105 hover:-translate-y-0.5 flex items-center justify-center transition-all duration-200 touch-target"
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
                     title={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-4 sm:h-4" />
@@ -147,7 +147,7 @@ export function EnhancedFooter() {
             {/* Link Columns */}
             {footerSections.map((section) => (
               <div key={section.title} className="min-w-0">
-                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide">{section.title}</h3>
+                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide uppercase text-muted-foreground/80">{section.title}</h3>
                 <ul className="space-y-2.5">
                   {section.links.map((link) => (
                     <li key={link.href}>
