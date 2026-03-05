@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 const QUALITY_FLOOR = 68;
@@ -170,9 +170,15 @@ function emptyMineResponse(errorMessage: string, traceId?: string) {
 }
 
 async function mapDiscoveryToResult(disc: any) {
-  if (!disc || disc.cjpi < QUALITY_FLOOR) return null;
+  const rawScore = Number(disc?.cjpi);
+  if (!disc || Number.isNaN(rawScore)) return null;
 
-  const tier = scoreToPublicTier(disc.cjpi);
+  // Normalize score for integer-only persistence targets.
+  // Use floor to avoid accidental tier inflation (e.g., 99.9 -> 100).
+  const normalizedScore = Math.max(0, Math.min(100, Math.floor(rawScore)));
+  if (normalizedScore < QUALITY_FLOOR) return null;
+
+  const tier = scoreToPublicTier(normalizedScore);
   if (!tier) return null;
 
   const pipelineSteps: PipelineStep[] = Array.isArray(disc.pipeline_steps)
@@ -190,9 +196,9 @@ async function mapDiscoveryToResult(disc: any) {
     id: disc.id,
     name: disc.name,
     description: disc.description,
-    score: disc.cjpi,
+    score: normalizedScore,
     publicTier: tier,
-    valuationDisplay: computeDisplayValuation(disc.cjpi),
+    valuationDisplay: computeDisplayValuation(normalizedScore),
     category: disc.category,
     systemChain: derivedModuleChain,
     pipelineSteps,
@@ -637,7 +643,7 @@ serve(async (req) => {
         artifact_id: r.id,
         artifact_name: r.name,
         artifact_description: r.description,
-        score: r.score,
+        score: Number.isFinite(r.score) ? Math.max(0, Math.min(100, Math.floor(r.score))) : 0,
         public_tier: r.publicTier,
         valuation_display: r.valuationDisplay,
         source: 'mined',
@@ -669,7 +675,7 @@ serve(async (req) => {
     await supabase.from('foundry_user_state').upsert({
       user_id: user.id,
       last_mine_at: now.toISOString(),
-      total_mines: (dayCount ?? 0) + 1,
+      total_mines: priorMines + 1,
     }, { onConflict: 'user_id' });
 
     // Tier breakdown
