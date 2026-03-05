@@ -58,6 +58,8 @@ export default function Enterprise() {
       <SEO
         title="Enterprise — CMPSBL"
         description="Deploy the CMPSBL cognitive substrate on your own infrastructure. Private deployment, custom systems, priority support, and compliance-ready orchestration."
+        canonical="https://cmpsbl.com/enterprise"
+        keywords={['enterprise AI', 'private deployment', 'on-premises AI', 'CMPSBL enterprise']}
       />
       <PublicNav />
       <main className="min-h-screen bg-background pt-24 pb-16">

@@ -75,13 +75,11 @@ export default function Contact() {
       
       <PublicNav />
 
-      {/* Ambient glow */}
+      {/* Ambient glow — CSS only */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <motion.div
-          className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full"
+        <div
+          className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-2"
           style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }}
-          animate={{ x: [30, -30, 30], y: [15, -15, 15] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
       

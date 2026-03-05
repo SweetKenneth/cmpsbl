@@ -7,6 +7,7 @@
  */
 import { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
 import { FoundryPreview } from '@/components/foundry/FoundryPreview';
@@ -36,10 +37,13 @@ export default function Foundry() {
 
   return (
     <>
-      <Helmet>
-        <title>Memory Stream — CMPSBL®</title>
-        <meta name="description" content="Discover crystallized pipelines from the Memory Stream. Every pull is a production-grade pipeline scored and tiered by quality." />
-      </Helmet>
+      <SEO 
+        title="Memory Stream — CMPSBL®"
+        description="Discover crystallized pipelines from the Memory Stream. Every pull is a production-grade pipeline scored and tiered by quality."
+        canonical="https://cmpsbl.com/foundry"
+        image="https://cmpsbl.com/og-memory-stream.jpg"
+        keywords={['memory stream', 'crystallized pipelines', 'AI software discovery', 'CMPSBL foundry']}
+      />
 
       <PublicNav />
 

@@ -83,7 +83,7 @@ export function EnhancedFooter() {
     { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
     { name: "Investors", href: "/investors" },
-    { name: "Licensing", href: "mailto:hello@CMPSBL.com" },
+    { name: "Licensing", href: "/upgrade" },
     { name: "Solutions", href: "/solutions" },
     { name: "Support", href: "/support" },
     { name: "Changelog", href: "/changelog" },

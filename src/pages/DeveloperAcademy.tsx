@@ -42,13 +42,11 @@ const DeveloperAcademy = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <CmpsblNav />
 
-        {/* Ambient glow */}
+        {/* Ambient glow — CSS only */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <motion.div
-            className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full"
+          <div
+            className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1"
             style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }}
-            animate={{ x: [-40, 40, -40], y: [-20, 20, -20] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
         

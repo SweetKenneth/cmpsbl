@@ -48,6 +48,8 @@ export default function Careers() {
       <SEO
         title="Careers — CMPSBL"
         description="Join the team building the cognitive substrate. We're looking for engineers, researchers, and dreamers who want to shape the future of AI systems."
+        canonical="https://cmpsbl.com/careers"
+        keywords={['CMPSBL careers', 'AI jobs', 'cognitive infrastructure jobs', 'Dallas AI startup']}
       />
       <PublicNav />
       <main className="min-h-screen bg-background pt-24 pb-16">
