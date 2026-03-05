@@ -410,7 +410,7 @@ serve(async (req) => {
       .gte('requested_at', oneDayAgo)
       .is('blocked_reason', null);
 
-    if ((hourCount ?? 0) >= tierConfig.mines_per_hour) {
+    if ((hourCount ?? 0) >= effectiveTierConfig.mines_per_hour) {
       await supabase.from('foundry_mine_events').insert({
         user_id: user.id,
         result_count: 0,
@@ -428,7 +428,7 @@ serve(async (req) => {
       });
     }
 
-    if ((dayCount ?? 0) >= tierConfig.mines_per_day) {
+    if ((dayCount ?? 0) >= effectiveTierConfig.mines_per_day) {
       await supabase.from('foundry_mine_events').insert({
         user_id: user.id,
         result_count: 0,
@@ -446,7 +446,7 @@ serve(async (req) => {
     }
 
     // ─── Weighted Mining ─────────────────────────────────────────
-    const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
+    const maxResults = Math.max(1, effectiveTierConfig.max_results_per_mine ?? 1);
     healingMaxResults = maxResults;
 
     // Get prior mine count for first-mine dampener
