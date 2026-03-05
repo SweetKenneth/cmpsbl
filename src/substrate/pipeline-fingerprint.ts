@@ -3,15 +3,20 @@
  * Produces deterministic SHA-256 fingerprints from ordered pipeline steps.
  * Identity is derived ONLY from executable architecture (steps + epoch).
  * CJPI, name, and category are explicitly excluded from identity.
+ * 
+ * v13.3.1: Epoch from config, "unknown" capability placeholder, optional version field.
  */
 
 import { canonicalizeJson, sha256 } from '@/lib/control-plane/hash';
+import { PIPELINE_FINGERPRINT_EPOCH, LEGACY_CAPABILITY_PLACEHOLDER } from '@/config/substrate';
 
 /** A single step in a pipeline's executable architecture */
 export interface PipelineStep {
   module: string;
   capability: string;
   params?: Record<string, unknown>;
+  /** Optional capability version identifier (future-proofing) */
+  version?: string;
 }
 
 /** Legacy fingerprint input (backward compat) */
@@ -27,8 +32,6 @@ export interface StructuralFingerprintInput {
   steps: PipelineStep[];
 }
 
-const FINGERPRINT_EPOCH = 'SPARTA';
-
 /**
  * Generate a deterministic SHA-256 fingerprint from pipeline steps.
  * Identity = steps + epoch. Order is preserved. Duplicates are preserved.
@@ -40,7 +43,7 @@ export async function generateStructuralFingerprint(input: StructuralFingerprint
       capability: s.capability,
       ...(s.params && Object.keys(s.params).length > 0 ? { params: s.params } : {}),
     })),
-    epoch: FINGERPRINT_EPOCH,
+    epoch: PIPELINE_FINGERPRINT_EPOCH,
   };
   const canonical = canonicalizeJson(payload);
   return sha256(canonical);
@@ -48,10 +51,11 @@ export async function generateStructuralFingerprint(input: StructuralFingerprint
 
 /**
  * Convert a module chain to pipeline steps (backward compat).
- * Legacy discoveries without pipeline_steps use "default" capability.
+ * Legacy discoveries without pipeline_steps use "unknown" capability
+ * to clarify that capability was not recorded historically.
  */
 export function moduleChainToSteps(moduleChain: string[]): PipelineStep[] {
-  return moduleChain.map(m => ({ module: m.toUpperCase(), capability: 'default' }));
+  return moduleChain.map(m => ({ module: m.toUpperCase(), capability: LEGACY_CAPABILITY_PLACEHOLDER }));
 }
 
 /**
@@ -63,7 +67,7 @@ export function stepsToModuleChain(steps: PipelineStep[]): string[] {
 
 /**
  * Generate fingerprint — accepts either structural steps or legacy input.
- * For legacy input, converts moduleChain to steps with "default" capability.
+ * For legacy input, converts moduleChain to steps with "unknown" capability.
  * CJPI/name/category are IGNORED in the fingerprint.
  */
 export async function generatePipelineFingerprint(
@@ -95,7 +99,7 @@ export function buildFingerprintPayload(
       capability: s.capability,
       ...(s.params && Object.keys(s.params).length > 0 ? { params: s.params } : {}),
     })),
-    epoch: FINGERPRINT_EPOCH,
+    epoch: PIPELINE_FINGERPRINT_EPOCH,
   };
   return canonicalizeJson(payload);
 }
