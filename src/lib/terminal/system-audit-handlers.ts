@@ -68,6 +68,51 @@ export function registerSystemAuditHandlers(): void {
     };
   });
 
+  // ═══ system.fix — Audit + auto-repair in one command ═══
+  registerHandler('system.fix', async () => {
+    const { runSystemAudit } = await import('@/lib/substrate/system/auditRunner');
+    const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+
+    // Phase 1: Audit
+    const initial = await runSystemAudit();
+    const failures = initial.results.filter(r => !r.ok);
+
+    if (failures.length === 0) {
+      return {
+        success: true,
+        data: {
+          phase: 'audit_only',
+          status: 'healthy',
+          message: 'All subsystems passed — no repairs needed',
+          checks: initial.results.length,
+          duration_ms: initial.completedAt - initial.startedAt,
+        },
+      };
+    }
+
+    // Phase 2: Repair
+    const repair = await runSelfRepair(3);
+
+    const repairSummary = repair.repairs.map(r =>
+      `${r.repaired ? '✓' : '✗'} ${r.module}: ${r.message}`
+    );
+
+    const finalFailures = repair.finalAudit.results.filter(r => !r.ok);
+
+    return {
+      success: true,
+      data: {
+        phase: 'audit_and_repair',
+        status: repair.stable ? 'fixed' : 'partially_fixed',
+        initial_failures: failures.map(f => f.module),
+        remaining_failures: finalFailures.map(f => f.module),
+        attempts: repair.attempts,
+        repairs: repairSummary,
+        duration_ms: repair.finalAudit.completedAt - initial.startedAt,
+      },
+    };
+  });
+
   // ═══ system.help — Command reference ═══
   registerHandler('system.help', async () => {
     return {
@@ -76,6 +121,7 @@ export function registerSystemAuditHandlers(): void {
         commands: [
           { command: 'system.audit', description: 'Run full subsystem audit' },
           { command: 'system.repair', description: 'Run self-repair loop (max 3 attempts)' },
+          { command: 'system.fix', description: 'Audit + auto-repair in one command' },
           { command: 'system.health', description: 'Quick composite health check' },
           { command: 'system.help', description: 'Show this help' },
         ],
