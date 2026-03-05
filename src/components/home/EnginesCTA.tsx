@@ -50,18 +50,14 @@ export function EnginesCTA() {
             }}
           />
 
-          {/* Glow accents */}
-          <motion.div
-            className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[100px]"
+          {/* Glow accents — CSS-only for mobile perf */}
+          <div
+            className="absolute -top-32 -right-32 w-80 h-80 rounded-full blur-[100px] animate-hero-orb-1 hidden sm:block"
             style={{ background: "hsl(var(--primary) / 0.12)" }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.div
-            className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full blur-[80px]"
+          <div
+            className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full blur-[80px] animate-hero-orb-3 hidden sm:block"
             style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.5, 0.3, 0.5] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
 
           {/* Top accent bar */}
@@ -140,7 +136,7 @@ export function EnginesCTA() {
               <Button
                 asChild
                 size="lg"
-                className="gap-2 px-8 h-13 text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
               >
                 <Link to="/engines">
                   <Shield className="w-4 h-4" />
@@ -152,7 +148,7 @@ export function EnginesCTA() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="gap-2 px-8 h-13 text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all"
               >
                 <Link to="/engines/architect">
                   <Cpu className="w-4 h-4" />

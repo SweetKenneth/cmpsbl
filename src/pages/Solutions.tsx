@@ -114,15 +114,15 @@ export default function Solutions() {
             {solutions.map((solution, index) => (
               <div 
                 key={solution.name}
-                className="bg-card border border-border rounded-lg p-8 md:p-10 hover:border-primary/30 transition-all"
+                className="bg-card border border-border rounded-lg p-5 sm:p-8 md:p-10 hover:border-primary/30 transition-all"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                       <solution.icon className="w-7 h-7 text-primary" />
                     </div>
-                    <h2 className="text-2xl font-bold mb-2 text-foreground">{solution.name}</h2>
-                    <p className="text-lg text-primary font-medium mb-4">{solution.tagline}</p>
+                     <h2 className="text-xl sm:text-2xl font-bold mb-2 text-foreground">{solution.name}</h2>
+                    <p className="text-base sm:text-lg text-primary font-medium mb-4">{solution.tagline}</p>
                     <p className="text-muted-foreground leading-relaxed mb-6">
                       {solution.description}
                     </p>
@@ -134,7 +134,7 @@ export default function Solutions() {
                       ))}
                     </div>
                     <Link to={solution.link}>
-                      <Button className="bg-primary hover:bg-primary/90">
+                      <Button className="bg-primary hover:bg-primary/90 min-h-[44px]">
                         Learn More
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
@@ -159,7 +159,7 @@ export default function Solutions() {
       </section>
 
       {/* Earth Window */}
-      <section className="relative w-full h-[50vh] overflow-hidden">
+      <section className="relative w-full h-[35vh] sm:h-[50vh] overflow-hidden">
         <img 
           src={securityImage}
           alt="Security operations center with monitoring displays representing real-time threat detection"
@@ -181,13 +181,13 @@ export default function Solutions() {
       {/* CTA */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Start Building Today</h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-foreground">Start Building Today</h2>
+          <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8">
             Free tier. No credit card. Persistent memory in under an hour.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/start-here">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 min-h-[44px]">
                 Get Started Free
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>

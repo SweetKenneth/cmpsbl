@@ -280,17 +280,13 @@ function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
 export function WhySubstrate() {
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
-      {/* Enhanced background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <motion.div 
-          className="absolute top-1/4 -left-64 w-[600px] h-[600px] bg-primary/8 rounded-full blur-[150px]"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      {/* Enhanced background decoration — CSS-only for mobile perf */}
+      <div className="absolute inset-0 pointer-events-none hidden sm:block">
+        <div 
+          className="absolute top-1/4 -left-64 w-[600px] h-[600px] bg-primary/8 rounded-full blur-[150px] animate-hero-orb-1"
         />
-        <motion.div 
-          className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] bg-violet-500/8 rounded-full blur-[150px]"
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.8, 0.5, 0.8] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        <div 
+          className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] bg-violet-500/8 rounded-full blur-[150px] animate-hero-orb-3"
         />
         {/* Subtle grid pattern */}
         <div 

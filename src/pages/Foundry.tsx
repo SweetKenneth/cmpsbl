@@ -63,7 +63,7 @@ export default function Foundry() {
               <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
                 Memory Stream
               </div>
-              <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4">
                 <span className="memory-stream-gradient-text">Crystallize Pipelines</span>
               </h1>
               <p className="text-muted-foreground/70 max-w-lg mx-auto text-sm">
@@ -74,7 +74,7 @@ export default function Foundry() {
             </div>
 
             {/* Memory Stream visualization */}
-            <div className="relative w-full h-32 sm:h-24 mb-8 rounded-lg overflow-hidden signal-border bg-card/20">
+            <div className="relative w-full h-24 sm:h-28 md:h-32 mb-8 rounded-lg overflow-hidden signal-border bg-card/20">
               <MemoryRiver crystallizing={crystallizing} />
             </div>
 
@@ -89,9 +89,9 @@ export default function Foundry() {
 
             {/* Tab bar */}
             <div className="flex items-center gap-1 border-b border-border/20 mb-8 mt-8">
-              <button
+               <button
                 onClick={() => setActiveTab('mine')}
-                className={`px-4 py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px ${
+                className={`px-4 py-3 sm:py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px min-h-[44px] ${
                   activeTab === 'mine'
                     ? 'border-primary text-foreground font-bold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -99,9 +99,9 @@ export default function Foundry() {
               >
                 Crystallize
               </button>
-              <button
+               <button
                 onClick={() => setActiveTab('inventory')}
-                className={`px-4 py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px ${
+                className={`px-4 py-3 sm:py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px min-h-[44px] ${
                   activeTab === 'inventory'
                     ? 'border-primary text-foreground font-bold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'

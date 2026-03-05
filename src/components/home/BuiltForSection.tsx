@@ -256,18 +256,14 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
 export function BuiltForSection() {
   return (
     <section className="relative py-16 sm:py-32 px-4 overflow-hidden">
-      {/* Enhanced Background */}
+      {/* Enhanced Background — CSS-only for mobile perf */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-muted/30" />
-        <motion.div 
-          className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-purple-500/8 rounded-full blur-[180px]"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        <div 
+          className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-purple-500/8 rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
         />
-        <motion.div 
-          className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-cyan-500/8 rounded-full blur-[180px]"
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.8, 0.5, 0.8] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        <div 
+          className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-cyan-500/8 rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
         />
       </div>
       
