@@ -371,7 +371,8 @@ serve(async (req) => {
     }
 
     // ─── Weighted Mining ─────────────────────────────────────────
-    const maxResults = tierConfig.max_results_per_mine;
+    const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
+    healingMaxResults = maxResults;
 
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
@@ -390,20 +391,23 @@ serve(async (req) => {
 
     const uniqueRanges = [...new Map(attemptedRanges.map(r => [`${r.min}-${r.max}`, r])).values()];
     const rangedCandidates: Map<string, any[]> = new Map();
+    const fetchCount = Math.max(8, maxResults * 4);
 
     for (const range of uniqueRanges) {
       const key = `${range.min}-${range.max}`;
-      const fetchCount = maxResults * 4;
 
-      const { data: rpcResult } = await supabase.rpc('get_random_discoveries', {
+      const { data: rpcResult, error: rpcError } = await supabase.rpc('get_random_discoveries', {
         min_score: range.min,
         max_count: fetchCount,
         max_score: range.max,
       });
 
-      let candidates = rpcResult;
+      let candidates = Array.isArray(rpcResult) ? rpcResult : [];
+      if (rpcError) {
+        console.error('Range RPC failed:', rpcError.message, key);
+      }
 
-      if (!candidates || candidates.length === 0) {
+      if (candidates.length === 0) {
         const { count: totalEligible } = await supabase
           .from('discoveries')
           .select('id', { count: 'exact', head: true })
@@ -414,109 +418,58 @@ serve(async (req) => {
           const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
           const { data: fallbackDisc } = await supabase
             .from('discoveries')
-            .select('id, name, description, cjpi, category, module_chain, pipeline_fingerprint, pipeline_steps')
+            .select(DISCOVERY_SELECT)
             .gte('cjpi', range.min)
             .lte('cjpi', range.max)
             .range(randomOffset, randomOffset + fetchCount - 1);
 
           candidates = fallbackDisc || [];
-        } else {
-          candidates = [];
         }
       }
 
-      // Shuffle
-      for (let i = candidates.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
-      }
-
-      rangedCandidates.set(key, candidates);
+      rangedCandidates.set(key, shuffleInPlace(candidates));
     }
 
-    // Build results — each item gets its OWN tier + structural fingerprint
+    let globalFallbackPool: any[] = [];
+    const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
+    if (allRangePoolsEmpty) {
+      globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+    }
+
+    const selectedIds = new Set<string>();
+    const appendFromPool = async (pool: any[]) => {
+      for (const disc of pool) {
+        if (results.length >= maxResults) break;
+        if (!disc) continue;
+        if (ownedIds.has(disc.id)) continue;
+        if (selectedIds.has(disc.id)) continue;
+
+        const mapped = await mapDiscoveryToResult(disc);
+        if (!mapped) continue;
+
+        results.push(mapped);
+        selectedIds.add(mapped.id);
+        ownedIds.add(mapped.id);
+      }
+    };
+
     for (const range of attemptedRanges) {
       if (results.length >= maxResults) break;
       const key = `${range.min}-${range.max}`;
       const pool = rangedCandidates.get(key) || [];
 
-      for (const disc of pool) {
-        if (results.length >= maxResults) break;
-        if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
-        if (ownedIds.has(disc.id)) continue;
-        if (results.some(r => r.id === disc.id)) continue;
+      await appendFromPool(pool);
 
-        const tier = scoreToPublicTier(disc.cjpi);
-        if (tier) {
-          // Resolve pipeline_steps: use stored or derive from module_chain
-          const pipelineSteps: PipelineStep[] = disc.pipeline_steps
-            ? (disc.pipeline_steps as PipelineStep[])
-            : moduleChainToSteps(disc.module_chain || []);
-
-          // Derive module_chain from steps (preserves order + duplicates)
-          const derivedModuleChain = stepsToModuleChain(pipelineSteps);
-
-          // Use stored fingerprint if available; only compute if missing (immutability)
-          let fingerprint = disc.pipeline_fingerprint;
-          if (!fingerprint) {
-            fingerprint = await computeStructuralFingerprint(pipelineSteps);
-          }
-
-          results.push({
-            id: disc.id,
-            name: disc.name,
-            description: disc.description,
-            score: disc.cjpi,
-            publicTier: tier,
-            valuationDisplay: computeDisplayValuation(disc.cjpi),
-            category: disc.category,
-            systemChain: derivedModuleChain,
-            pipelineSteps,
-            fingerprint,
-          });
-          ownedIds.add(disc.id);
-        }
+      if (results.length < maxResults && pool.length === 0 && globalFallbackPool.length > 0) {
+        await appendFromPool(globalFallbackPool);
       }
+    }
 
-      // Fallback to Mint
-      if (results.length < maxResults && pool.length === 0 && range.min > 68) {
-        const mintPool = rangedCandidates.get('68-79') || [];
-        for (const disc of mintPool) {
-          if (results.length >= maxResults) break;
-          if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
-          if (ownedIds.has(disc.id)) continue;
-          if (results.some(r => r.id === disc.id)) continue;
-
-          const tier = scoreToPublicTier(disc.cjpi);
-          if (tier) {
-            const pipelineSteps: PipelineStep[] = disc.pipeline_steps
-              ? (disc.pipeline_steps as PipelineStep[])
-              : moduleChainToSteps(disc.module_chain || []);
-
-            const derivedModuleChain = stepsToModuleChain(pipelineSteps);
-
-            // Use stored fingerprint; only compute if missing
-            let fingerprint = disc.pipeline_fingerprint;
-            if (!fingerprint) {
-              fingerprint = await computeStructuralFingerprint(pipelineSteps);
-            }
-
-            results.push({
-              id: disc.id,
-              name: disc.name,
-              description: disc.description,
-              score: disc.cjpi,
-              publicTier: tier,
-              valuationDisplay: computeDisplayValuation(disc.cjpi),
-              category: disc.category,
-              systemChain: derivedModuleChain,
-              pipelineSteps,
-              fingerprint,
-            });
-            ownedIds.add(disc.id);
-          }
-        }
+    if (results.length === 0) {
+      if (globalFallbackPool.length === 0) {
+        globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
       }
+      await appendFromPool(globalFallbackPool);
     }
 
     // ─── Rediscovery tracking + fingerprint persistence ───────────
