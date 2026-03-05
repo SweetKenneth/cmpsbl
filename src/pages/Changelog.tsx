@@ -451,7 +451,7 @@ const STRATA: Stratum[] = [
   {
     epoch: "IRONCLAD",
     codename: "The substrate grew armor, then learned to govern its own rhythm",
-    range: "v13.0.0 → v13.1.0",
+    range: "Current epoch",
     color: "bg-amber-500/10 text-amber-400",
     borderColor: "border-amber-500/30",
     dotColor: "bg-amber-500",
@@ -460,7 +460,7 @@ const STRATA: Stratum[] = [
   {
     epoch: "SPARTA → CONTRACT",
     codename: "The substrate learned to learn, distribute, and govern itself",
-    range: "v10.x → v12.x",
+    range: "Prior epoch",
     color: "bg-blue-500/10 text-blue-400",
     borderColor: "border-blue-500/30",
     dotColor: "bg-blue-500",
@@ -469,7 +469,7 @@ const STRATA: Stratum[] = [
   {
     epoch: "INFRASTRUCTURE",
     codename: "The substrate grew organs",
-    range: "v10.x",
+    range: "Foundation epoch",
     color: "bg-emerald-500/10 text-emerald-400",
     borderColor: "border-emerald-500/30",
     dotColor: "bg-emerald-500",
