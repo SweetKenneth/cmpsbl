@@ -170,9 +170,15 @@ function emptyMineResponse(errorMessage: string, traceId?: string) {
 }
 
 async function mapDiscoveryToResult(disc: any) {
-  if (!disc || disc.cjpi < QUALITY_FLOOR) return null;
+  const rawScore = Number(disc?.cjpi);
+  if (!disc || Number.isNaN(rawScore)) return null;
 
-  const tier = scoreToPublicTier(disc.cjpi);
+  // Normalize score for integer-only persistence targets.
+  // Use floor to avoid accidental tier inflation (e.g., 99.9 -> 100).
+  const normalizedScore = Math.max(0, Math.min(100, Math.floor(rawScore)));
+  if (normalizedScore < QUALITY_FLOOR) return null;
+
+  const tier = scoreToPublicTier(normalizedScore);
   if (!tier) return null;
 
   const pipelineSteps: PipelineStep[] = Array.isArray(disc.pipeline_steps)
@@ -190,9 +196,9 @@ async function mapDiscoveryToResult(disc: any) {
     id: disc.id,
     name: disc.name,
     description: disc.description,
-    score: disc.cjpi,
+    score: normalizedScore,
     publicTier: tier,
-    valuationDisplay: computeDisplayValuation(disc.cjpi),
+    valuationDisplay: computeDisplayValuation(normalizedScore),
     category: disc.category,
     systemChain: derivedModuleChain,
     pipelineSteps,
