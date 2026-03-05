@@ -44,6 +44,12 @@ const STATIC_ROUTES = [
   { path: '/careers', priority: '0.5', changefreq: 'monthly' },
   { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
   { path: '/terms', priority: '0.3', changefreq: 'yearly' },
+  { path: '/products/defense', priority: '0.8', changefreq: 'weekly' },
+  { path: '/products/clarity', priority: '0.8', changefreq: 'weekly' },
+  { path: '/products/brain', priority: '0.8', changefreq: 'weekly' },
+  { path: '/products/modernizer', priority: '0.8', changefreq: 'weekly' },
+  { path: '/products/cascade', priority: '0.8', changefreq: 'weekly' },
+  { path: '/products/marketing', priority: '0.8', changefreq: 'weekly' },
 ];
 
 Deno.serve(async (req: Request) => {
