@@ -1,5 +1,5 @@
 /**
- * META HERO: CMPSBL® — Composable AI Infrastructure · featuring Clockless Cognitive Reality
+ * META HERO: CMPSBL® — Composable AI Infrastructure
  * Studio-grade hero with cinematic typography and fluid motion
  */
 
@@ -79,7 +79,7 @@ function TypedText({ texts, gradientColors, className }: {
       <motion.span 
         animate={{ opacity: [1, 0, 1] }}
         transition={{ duration: 0.8, repeat: Infinity, ease: "linear", times: [0, 0.5, 1] }}
-        className="inline-block w-[3px] h-[0.75em] ml-0.5 rounded-sm"
+        className="inline-block w-[2px] h-[0.7em] ml-0.5 rounded-full"
         style={{ background: "hsl(var(--primary))" }}
         aria-hidden="true"
       />
@@ -127,15 +127,15 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   return (
     <motion.div 
       ref={ref}
-      className="relative text-center py-5 sm:py-6 group"
-      initial={{ opacity: 0, y: 16 }}
+      className="relative text-center py-4 sm:py-5 group"
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1 + delay * 0.08, duration: 0.5 }}
+      transition={{ delay: 1.2 + delay * 0.06, duration: 0.4 }}
     >
-      <div className="text-2xl sm:text-3xl md:text-4xl font-black tabular-nums tracking-tight text-foreground">
+      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground">
         {count}{suffix}
       </div>
-      <div className="text-[10px] sm:text-xs text-muted-foreground font-semibold mt-1.5 tracking-widest uppercase">{label}</div>
+      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase">{label}</div>
     </motion.div>
   );
 }
@@ -144,38 +144,31 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
 function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Base */}
       <div className="absolute inset-0 bg-background" />
-      
-      {/* Substrate particle field */}
       <SubstrateParticlesLazy />
       
-      {/* Gradient orbs with Memory Stream drift animation */}
+      {/* Gradient orbs — slow ambient drift */}
       <motion.div
-        className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full animate-memory-drift"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.08) 0%, transparent 60%)" }}
-        animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute -bottom-40 -right-40 w-[700px] h-[700px] rounded-full"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.06) 0%, transparent 60%)" }}
-        animate={{ x: [0, -60, 0], y: [0, -30, 0] }}
+        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.06) 0%, transparent 55%)" }}
+        animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
-      {/* Third orb — purple accent for Memory Stream */}
       <motion.div
-        className="absolute top-1/3 left-1/2 w-[500px] h-[500px] rounded-full"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
-        animate={{ x: [0, -40, 20, 0], y: [0, 30, -20, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.05) 0%, transparent 55%)" }}
+        animate={{ x: [0, -50, 0], y: [0, -25, 0] }}
+        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/3 left-1/2 w-[400px] h-[400px] rounded-full"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        animate={{ x: [0, -30, 15, 0], y: [0, 25, -15, 0] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
       
-      {/* Substrate grid */}
-      <div className="absolute inset-0 substrate-grid-bg opacity-[0.3] dark:opacity-[0.5]" />
-      
-      {/* Vignette */}
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 100%)" }} />
+      <div className="absolute inset-0 substrate-grid-bg opacity-[0.25] dark:opacity-[0.4]" />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.6) 100%)" }} />
     </div>
   );
 }
@@ -183,35 +176,36 @@ function HeroBackground() {
 // ─── Main Hero ──────────────────────────────────────────────────
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-8 sm:pb-12 overflow-x-clip overflow-y-visible">
+    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible">
       <HeroBackground />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center mb-8 sm:mb-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center mb-10 sm:mb-16">
           
           {/* Left column — Copy */}
-          <div
-            className="text-center lg:text-left order-1"
-          >
-            {/* Engine badge */}
+          <div className="text-center lg:text-left order-1">
+            {/* Engine badge — refined pill */}
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/50 backdrop-blur-md mb-8 sm:mb-10"
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 backdrop-blur-md mb-6 sm:mb-8"
             >
-              <Sparkles className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-semibold text-muted-foreground tracking-wide">Cognitive Infrastructure for AI Applications</span>
-              <span className="flex items-center gap-1 pl-2 border-l border-border/50">
+              <Sparkles className="w-3 h-3 text-primary" />
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground tracking-wide">Cognitive Infrastructure</span>
+              <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
+                <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
               </span>
             </motion.div>
             
-            {/* CMPSBL — massive, clean */}
-            <h1 
-              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7rem] font-black tracking-[-0.05em] leading-[0.9] mb-4 sm:mb-8"
+            {/* CMPSBL — massive wordmark */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-5 sm:mb-7"
             >
               <span 
                 className="inline-block clockless-river-text"
@@ -219,19 +213,24 @@ export function HeroMetaSubstrate() {
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   color: "transparent",
-                  padding: "0 0.15em 0.05em 0",
+                  padding: "0 0.1em 0.05em 0",
                 }}
               >
                 CMPSBL
               </span>
-            </h1>
+            </motion.h1>
 
-            {/* Tagline block — two lines, centered on mobile */}
-            <div className="mb-6 sm:mb-10">
-              <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground tracking-tight leading-snug">
+            {/* Tagline — two-part rhythm */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.5 }}
+              className="mb-5 sm:mb-8"
+            >
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground/80 tracking-tight leading-snug">
                 Where machines learn to
               </p>
-              <div className="mt-1 sm:mt-2 text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none min-h-[1.15em]">
+              <div className="mt-1 text-3xl sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
                 <TypedText 
                   texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
@@ -244,31 +243,34 @@ export function HeroMetaSubstrate() {
                   ]}
                 />
               </div>
-            </div>
+            </motion.div>
             
-            {/* Subtitle */}
-            <p 
-              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 sm:mb-10 leading-relaxed"
+            {/* Subtitle — tighter, more scannable */}
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.5 }}
+              className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-relaxed"
             >
               Capture a signal in the{' '}
-              <span className="text-foreground font-semibold">Memory Stream</span> and watch it crystallize into{' '}
-              <span className="text-foreground font-semibold">deployable software</span>.{' '}
-              When that memory proves rare enough — strong enough — it crosses the boundary from code into{' '}
-              <span className="text-primary font-semibold">physical silicon</span>,{' '}
-              burned onto hardware that outlasts every runtime it was born from.
-            </p>
+              <span className="text-foreground/90 font-medium">Memory Stream</span>.{' '}
+              Watch it crystallize into{' '}
+              <span className="text-foreground/90 font-medium">deployable software</span>.{' '}
+              When it proves rare enough, it crosses the boundary into{' '}
+              <span className="text-primary font-medium">physical silicon</span>.
+            </motion.p>
             
-            {/* CTAs */}
+            {/* CTAs — primary + ghost for clean hierarchy */}
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-3"
             >
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Link to="/upgrade">
                   <Sparkles className="w-4 h-4" />
@@ -278,131 +280,95 @@ export function HeroMetaSubstrate() {
               </Button>
               <Button 
                 asChild 
-                variant="outline" 
+                variant="ghost" 
                 size="lg" 
-                className="gap-2 px-7 sm:px-10 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 active:scale-[0.98]"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl hover:bg-muted/40 transition-all duration-300 active:scale-[0.98]"
               >
                 <Link to="/about">
-                  <Brain className="w-4 h-4" />
+                  <Brain className="w-4 h-4 text-muted-foreground" />
                   About CMPSBL
                 </Link>
               </Button>
             </motion.div>
             
-            {/* Research link */}
+            {/* Research DOI — subtle, compact */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 sm:mt-8 text-center lg:text-left"
+              transition={{ delay: 0.55 }}
+              className="mt-5 sm:mt-7 text-center lg:text-left"
             >
               <a 
                 href="https://doi.org/10.5281/zenodo.18234909"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-4 py-2.5 rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm hover:bg-card/70 hover:border-primary/30 transition-all duration-300 group"
+                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg border border-border/30 bg-card/30 backdrop-blur-sm hover:bg-card/60 hover:border-primary/20 transition-all duration-300 group"
               >
-                <div className="p-1.5 rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors">
-                  <BookOpen className="w-4 h-4 text-primary" />
-                </div>
+                <BookOpen className="w-3.5 h-3.5 text-muted-foreground/60 group-hover:text-primary transition-colors" />
                 <div className="text-left">
-                  <span className="block text-xs font-semibold text-foreground group-hover:text-primary transition-colors">Research Documentation</span>
-                  <span className="block text-[10px] text-muted-foreground">Zenodo • DOI: 10.5281/zenodo.18234909</span>
+                  <span className="block text-[11px] font-medium text-foreground/70 group-hover:text-primary transition-colors leading-tight">Research Paper</span>
+                  <span className="block text-[9px] text-muted-foreground/50 leading-tight">DOI: 10.5281/zenodo.18234909</span>
                 </div>
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
+                <ArrowRight className="w-3 h-3 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
               </a>
             </motion.div>
           </div>
           
           {/* Right column — Memory River visualization + context */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="order-2 flex flex-col gap-6"
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="order-2 flex flex-col gap-4"
           >
-            {/* Above River — Architecture context */}
+            {/* Above River — Architecture blurb */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="hidden sm:block rounded-xl border border-border/20 bg-card/30 backdrop-blur-sm p-4 lg:p-5"
+              transition={{ delay: 0.35, duration: 0.5 }}
+              className="hidden sm:block rounded-xl border border-border/15 bg-card/25 backdrop-blur-sm p-4"
             >
-              <h3 className="text-[10px] lg:text-xs font-bold text-foreground/70 uppercase tracking-widest mb-1.5 lg:mb-2">How Intelligence Flows</h3>
-              <p className="text-xs lg:text-sm text-muted-foreground leading-relaxed">
-                Your AI stores <span className="text-foreground font-medium">persistent memories</span> that survive restarts and sessions.{' '}
-                <span className="text-primary font-medium">Self-improving pipelines</span> refine behavior autonomously.{' '}
-                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Governed orchestration</span> keeps everything safe and auditable.{' '}
-                Nothing resets. Everything compounds.
+              <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em] mb-1.5">How Intelligence Flows</h3>
+              <p className="text-xs text-muted-foreground/70 leading-relaxed">
+                <span className="text-foreground/80 font-medium">Persistent memories</span> survive restarts.{' '}
+                <span className="text-primary font-medium">Self-improving pipelines</span> refine autonomously.{' '}
+                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Governed orchestration</span> keeps it auditable.{' '}
+                Nothing resets.
               </p>
             </motion.div>
 
             <MemoryRiver autoCrystallize />
 
-            {/* Below River — Live system pulse */}
+            {/* Below River — pulse cards */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="grid grid-cols-3 gap-2 sm:gap-3"
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="grid grid-cols-3 gap-2"
             >
               {[
-                { label: "Memory Depth", value: "Persistent", desc: "Survives restarts", glow: "--neon-cyan" },
-                { label: "Dream Cycles", value: "Autonomous", desc: "Self-improving", glow: "--neon-purple" },
-                { label: "Defense Mesh", value: "Always-On", desc: "Drift-resistant", glow: "--neon-magenta" },
+                { label: "Memory Depth", value: "Persistent", glow: "--neon-cyan" },
+                { label: "Dream Cycles", value: "Autonomous", glow: "--neon-purple" },
+                { label: "Defense Mesh", value: "Always-On", glow: "--neon-magenta" },
               ].map((item) => (
                 <div 
                   key={item.label} 
-                  className="rounded-lg border border-border/20 bg-card/30 backdrop-blur-sm p-2.5 sm:p-3.5 text-center hover:border-border/40 transition-all duration-300 group"
-                  style={{ boxShadow: `0 0 20px -8px hsl(var(${item.glow}) / 0.1)` }}
+                  className="rounded-lg border border-border/15 bg-card/25 backdrop-blur-sm p-2.5 sm:p-3 text-center hover:border-border/30 transition-all duration-300 group"
                 >
-                  <div className="text-[8px] sm:text-[10px] text-muted-foreground/50 uppercase tracking-widest font-semibold mb-0.5 sm:mb-1">{item.label}</div>
-                  <div className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors">{item.value}</div>
-                  <div className="text-[8px] sm:text-[10px] text-muted-foreground mt-0.5 hidden sm:block">{item.desc}</div>
+                  <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
                 </div>
               ))}
             </motion.div>
           </motion.div>
         </div>
         
-        {/* Integration badges */}
+        {/* Feature pills — horizontal scroll on mobile, centered on desktop */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mb-4 sm:mb-6"
-        >
-          <p className="text-[10px] sm:text-xs text-muted-foreground/60 text-center mb-3 uppercase tracking-widest font-medium">Works with your stack</p>
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-            {[
-              { name: 'OpenAI', color: 'bg-emerald-500/8 text-emerald-600 dark:text-emerald-400 border-emerald-500/15' },
-              { name: 'Anthropic', color: 'bg-orange-500/8 text-orange-600 dark:text-orange-400 border-orange-500/15' },
-              { name: 'Google AI', color: 'bg-blue-500/8 text-blue-600 dark:text-blue-400 border-blue-500/15' },
-              { name: 'LangChain', color: 'bg-teal-500/8 text-teal-600 dark:text-teal-400 border-teal-500/15' },
-              { name: 'Vercel AI', color: 'bg-muted text-foreground/70 border-border/30' },
-            ].map((integration, index) => (
-              <motion.span
-                key={integration.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.75 + index * 0.04 }}
-                className={cn(
-                  "px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium border backdrop-blur-sm",
-                  integration.color
-                )}
-              >
-                {integration.name}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Feature pills */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="flex justify-start sm:justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
+          transition={{ delay: 0.75 }}
+          className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
             { icon: Sparkles, label: "Free to Start", href: "/auth" },
@@ -412,35 +378,31 @@ export function HeroMetaSubstrate() {
           ].map((item, index) => (
             <motion.div
               key={item.label}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85 + index * 0.06 }}
+              transition={{ delay: 0.8 + index * 0.05 }}
             >
               <Link
                 to={item.href}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-border/40 bg-card/40 backdrop-blur-sm shrink-0 hover:bg-card/80 hover:border-primary/30 hover:shadow-md transition-all duration-300 active:scale-[0.97]"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 backdrop-blur-sm shrink-0 hover:bg-card/60 hover:border-primary/25 transition-all duration-300 active:scale-[0.97]"
               >
-                <item.icon className="w-3.5 h-3.5 text-muted-foreground" />
-                <span className="text-xs font-medium text-foreground/80 whitespace-nowrap">{item.label}</span>
+                <item.icon className="w-3 h-3 text-muted-foreground/50" />
+                <span className="text-[11px] font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
               </Link>
             </motion.div>
           ))}
         </motion.div>
         
-        {/* Stats bar */}
+        {/* Stats bar — minimal, glassy */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.95 }}
-          className="relative"
+          transition={{ delay: 0.9 }}
         >
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/30 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-xl overflow-hidden"
-            style={{ boxShadow: "0 0 40px -15px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.05)" }}
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 backdrop-blur-xl overflow-hidden"
           >
-            {/* Top edge highlight */}
-            <div className="absolute top-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-            
+            <div className="absolute top-0 left-[20%] right-[20%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
             <AnimatedStat value={10} label="Entities" delay={0} />
             <AnimatedStat value={300} label="Synergies" delay={1} />
             <AnimatedStat value={175} suffix="k+" label="Lines of Code" delay={2} />
@@ -449,19 +411,19 @@ export function HeroMetaSubstrate() {
         </motion.div>
       </div>
       
-      {/* Scroll indicator */}
+      {/* Scroll indicator — ghost-subtle */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5"
+        transition={{ delay: 2.5 }}
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1"
       >
-        <span className="text-[10px] text-muted-foreground/40 font-medium tracking-widest uppercase">Scroll</span>
+        <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Scroll</span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-4 h-4 text-muted-foreground/30" />
+          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/20" />
         </motion.div>
       </motion.div>
     </section>
