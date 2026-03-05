@@ -1,12 +1,14 @@
 /**
  * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
  * Includes save-to-vault action for each result.
+ * Now with Pipeline Provenance on click.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2, Download, Check } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
+import { PipelineProvenance } from './PipelineProvenance';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 import { toast } from 'sonner';
 
@@ -54,6 +56,7 @@ interface Props {
 
 export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizing }: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
+  const [provenancePipeline, setProvenancePipeline] = useState<{ name: string; score: number; systemChain: string[] } | null>(null);
 
   const handleCrystallize = () => {
     onCrystallizing?.(true);
@@ -163,7 +166,8 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.15 }}
-                className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm"
+                onClick={() => setProvenancePipeline({ name: result.name, score: result.score, systemChain: result.systemChain })}
+                className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-colors"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
@@ -226,6 +230,12 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Provenance overlay */}
+      <PipelineProvenance
+        pipeline={provenancePipeline}
+        onClose={() => setProvenancePipeline(null)}
+      />
     </div>
   );
 }
