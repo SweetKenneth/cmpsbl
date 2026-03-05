@@ -434,6 +434,9 @@ serve(async (req) => {
     const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
     healingMaxResults = maxResults;
 
+    // Get prior mine count for first-mine dampener
+    const priorMines = dayCount ?? 0;
+
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
       .select('artifact_id')
@@ -445,7 +448,7 @@ serve(async (req) => {
     const attemptedRanges: { min: number; max: number }[] = [];
 
     for (let slot = 0; slot < maxResults; slot++) {
-      const range = pickWeightedTierRange();
+      const range = pickWeightedTierRange(priorMines);
       attemptedRanges.push(range);
     }
 
