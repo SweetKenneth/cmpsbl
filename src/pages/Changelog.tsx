@@ -59,7 +59,7 @@ interface Stratum {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STRATUM I — IRONCLAD (v13.0.0 → v13.1.0)
+// STRATUM I — IRONCLAD
 // The substrate grew armor, then learned to govern its own rhythm.
 // ═══════════════════════════════════════════════════════════════════════════════
 
