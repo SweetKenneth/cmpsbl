@@ -233,7 +233,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           <Button asChild className={cn(
             "w-full gap-2 h-11 sm:h-12 text-sm sm:text-base font-semibold",
             "bg-gradient-to-r text-white border-0 shadow-lg",
-            "transition-all duration-300 hover:shadow-xl hover:scale-[1.02]",
+            "transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
             audience.gradient,
             audience.glow
           )}>
@@ -258,7 +258,7 @@ export function BuiltForSection() {
     <section className="relative py-16 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced Background — CSS-only for mobile perf */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-muted/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent" />
         <div 
           className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-purple-500/8 rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
         />
