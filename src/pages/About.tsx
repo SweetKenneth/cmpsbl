@@ -34,7 +34,7 @@ export default function About() {
     { icon: Brain, name: "Persistent Memory", description: "Multi-tier memory that survives sessions — your AI never forgets a user, a preference, or a pattern." },
     { icon: Server, name: "NEXUS Router", description: "Intelligent multi-provider routing that picks the optimal AI model for every request automatically." },
     { icon: Shield, name: "DEFENSE Shell", description: "Adaptive threat detection, behavioral analysis, and rate limiting — security that learns." },
-    { icon: Eye, name: "VISION", description: "Full observability across every module — latency, cost, throughput, and real-time health dashboards." },
+    { icon: Eye, name: "VISION", description: "Full observability across every system — latency, cost, throughput, and real-time health dashboards." },
     { icon: Accessibility, name: "INCLUSIVE", description: "WCAG 2.2 scanning, AI-powered remediation, and accessibility compliance reporting." },
     { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 domains — choose 3, 6, or 12 depending on your tier." },
   ];
@@ -52,7 +52,7 @@ export default function About() {
         keywords={['about CMPSBL', 'CMPSBL team', 'cognitive infrastructure', 'AI startup Texas', 'Dallas AI company']}
         faq={[
           { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by a veteran software engineer in Dallas, Texas. The team has since grown to include AI researchers, security specialists, and systems engineers.' },
-          { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the modular, composable nature of the cognitive infrastructure substrate. Every module can be independently deployed, swapped, and evolved.' },
+          { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the composable nature of the cognitive infrastructure substrate. Every system can be independently deployed, swapped, and evolved.' },
           { question: 'Where is CMPSBL based?', answer: 'CMPSBL is headquartered in Dallas, Texas, USA, serving teams and enterprises worldwide with composable cognitive infrastructure.' },
         ]}
       />
@@ -229,7 +229,7 @@ export default function About() {
         <div className="container mx-auto max-w-6xl">
           <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">What We Ship</motion.h2>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            Production modules, 24 artifact packs, and 300+ orchestration pipelines. Everything your AI needs to remember, route, learn, and protect itself.
+            Production systems, 24 artifact packs, and 300+ orchestration pipelines. Everything your AI needs to remember, route, learn, and protect itself.
           </motion.p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -275,7 +275,7 @@ export default function About() {
                {
                  icon: Zap,
                  title: "Ship in Hours, Not Months",
-                 description: "Free templates, production-ready modules, and a runtime that handles orchestration so you can focus on what makes your product different."
+                 description: "Free templates, production-ready systems, and a runtime that handles orchestration so you can focus on what makes your product different."
                },
                {
                  icon: Users,

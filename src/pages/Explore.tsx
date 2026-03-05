@@ -51,7 +51,7 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
         title="Composable AI Infrastructure | CMPSBL"
-        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 artifact slots. Modular AI substrate for agentic systems that learn."
+        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 artifact slots. Composable AI substrate for agentic systems that learn."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home.jpg"
         keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'artifact packs']}

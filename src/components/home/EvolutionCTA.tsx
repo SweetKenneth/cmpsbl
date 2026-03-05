@@ -1,5 +1,5 @@
 /**
- * EvolutionCTA — Cinematic CTA for the EVOLUTION module
+ * EvolutionCTA — Cinematic CTA for the EVOLUTION system
  * Asymmetric layout with orbital animation and scan-line texture
  */
 

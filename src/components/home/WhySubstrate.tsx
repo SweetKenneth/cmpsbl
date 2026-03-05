@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — 9 Module Showcase
+ * Why CMPSBL — 9 Core Systems Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * Only the 9 public-facing modules
+ * Only the 9 public-facing systems
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -244,7 +244,7 @@ function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
           </div>
         </div>
         
-        {/* Module name pill */}
+        {/* System name pill */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <div className={cn(
             "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold",
@@ -342,7 +342,7 @@ export function WhySubstrate() {
            </p>
         </motion.div>
         
-        {/* Module Grid — 3 columns on desktop, 9 cards */}
+        {/* Systems Grid — 3 columns on desktop, 9 cards */}
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           layout
