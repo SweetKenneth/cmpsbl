@@ -193,7 +193,7 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
     try {
       await memoryCore.ingest(`CLM learning: ${topic.label}`, {
         source: `clm-${topic.category}`,
-        importance: learningGain,
+        confidence: learningGain,
       });
     } catch { /* memory storage optional */ }
   }
