@@ -217,7 +217,7 @@ export default function StartHere() {
 
           {/* CTAs */}
           <motion.div {...stagger(0.45)} className="flex flex-col sm:flex-row gap-3">
-            <Button asChild size="lg" className="rounded-xl font-bold gap-2 px-6 sm:px-8 h-12 sm:h-13 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all">
+            <Button asChild size="lg" className="rounded-xl font-bold gap-2 px-6 sm:px-8 h-12 sm:h-13 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
               <Link to="/persistent-memory">
                 <Brain className="w-4 h-4" />
                 Try Persistent Memory

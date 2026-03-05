@@ -377,7 +377,7 @@ export default function PromptFluidHome() {
                 <Button
                   asChild
                   size="lg"
-                  className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all"
+                  className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer">
                     <Terminal className="w-5 h-5 mr-2" />

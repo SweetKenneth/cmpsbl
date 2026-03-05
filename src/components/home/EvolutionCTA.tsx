@@ -145,7 +145,7 @@ export function EvolutionCTA() {
 
               {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-bold shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] transition-all duration-200">
+                <Button asChild size="lg" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-bold shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                   <Link to="/evolution">
                     <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Open EVOLUTION
