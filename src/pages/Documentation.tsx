@@ -101,7 +101,7 @@ export default function Documentation() {
                     { icon: Zap, title: "Brain", desc: "Adaptive AI learning core" },
                     { icon: Shield, title: "Defense", desc: "Bot protection system" },
                     { icon: Database, title: "Nexus", desc: "API orchestration mesh" },
-                    { icon: Package, title: "Extensions", desc: "Custom module hooks" },
+                    { icon: Package, title: "Extensions", desc: "Custom system hooks" },
                     { icon: Bot, title: "Agents", desc: "Multi-agent orchestration" },
                     { icon: Plug, title: "Integration", desc: "Enterprise adapters & LLM governance" },
                   ].map((item) => (
@@ -190,7 +190,7 @@ await substrate.keys.usage('openai', 30); // 30 day usage`}
                   <h2 className="text-2xl font-bold text-foreground">Extensions</h2>
                 </div>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Extend substrate functionality with custom hooks that run before or after module actions.
+                  Extend substrate functionality with custom hooks that run before or after system actions.
                 </p>
                 <div className="space-y-4">
                   <div className="p-4 bg-muted/30 rounded-lg">

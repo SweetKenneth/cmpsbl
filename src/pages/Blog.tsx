@@ -452,15 +452,15 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "There are dozens of AI platforms. Most sell model access. Clockless sells infrastructure that thinks. Here's why that matters.",
     href: "/blog/clockless-what-makes-it-different", category: "Platform",
     date: "2026-02-27", readTime: "8 min", image: clocklessDifferentImg,
-    imageAlt: "Composable cognitive infrastructure platform with interconnected modules",
+    imageAlt: "Composable cognitive infrastructure platform with interconnected systems",
     source: 'human', featured: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
   },
   {
-    id: 'clockless-modules', title: "Inside the Modules: What Makes Each One Special",
-    excerpt: "A deep dive into every substrate module — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement.",
+    id: 'clockless-modules', title: "Inside the Systems: What Makes Each One Special",
+    excerpt: "A deep dive into every substrate system — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement.",
     href: "/blog/clockless-modules-deep-dive", category: "Technology",
     date: "2026-02-27", readTime: "12 min", image: clocklessModulesImg,
-    imageAlt: "Grid of glowing AI substrate modules with unique identities",
+    imageAlt: "Grid of glowing AI substrate systems with unique identities",
     source: 'human', featured: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   // ═══ EXISTING POSTS ═══
@@ -474,7 +474,7 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the CMPSBL Substrate",
-    excerpt: "How the RELAY and IDENTITY modules establish a unified protocol layer for autonomous agent communication.",
+    excerpt: "How the RELAY and IDENTITY systems establish a unified protocol layer for autonomous agent communication.",
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
     imageAlt: "AI protocol standards visualization",
@@ -482,14 +482,14 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
-    excerpt: "The AUDIT and IDENTITY modules bring cryptographic compliance logging and universal actor attribution to autonomous systems.",
+    excerpt: "The AUDIT and IDENTITY systems bring cryptographic compliance logging and universal actor attribution to autonomous systems.",
     href: "/blog/autonomous-ai-governance-runtime-enforcement", category: "Governance",
     date: "2026-02-08", readTime: "14 min", image: governanceComplianceImg,
     imageAlt: "AI governance compliance framework",
     source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
-    id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE Module's Response",
+    id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE System's Response",
     excerpt: "Inside the prompt injection countermeasures, behavioral fingerprinting, and zero-trust mesh that protect the substrate.",
     href: "/blog/adversarial-ai-defense-module-response-2026", category: "Threat Intel",
     date: "2026-02-06", readTime: "18 min", image: threatIntelAdversarialImg,
@@ -561,7 +561,7 @@ const HUMAN_POSTS: BlogPost[] = [
     source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
   },
   {
-    id: 'inclusive', title: "INCLUSIVE Module Mission",
+    id: 'inclusive', title: "INCLUSIVE System Mission",
     excerpt: "Our commitment to making the web accessible through AI-powered automation.",
     href: "/blog/inclusive-module-accessibility-mission", category: "Accessibility",
     date: "2025-11-20", readTime: "8 min", image: cmptblMissionImg,
@@ -1164,7 +1164,7 @@ export default function Blog() {
                 <Button variant="outline" size="lg" className="gap-2" asChild>
                   <Link to="/modules">
                     <Layers className="w-4 h-4" />
-                    All Modules
+                    All Systems
                   </Link>
                 </Button>
               </div>
