@@ -70,10 +70,10 @@ export default function Foundations() {
                 <Layers className="w-4 h-4 text-primary" />
                 <span className="text-sm font-mono text-primary">38 Nodes · 12 Sectors · 3 Standards</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.95]">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.95]">
                 Foundations
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
                 The architectural bedrock of the CMPSBL Substrate — a layered, governed, self-improving
                 cognitive infrastructure designed for production autonomy.
               </p>

@@ -548,10 +548,10 @@ export default function Changelog() {
           <Badge variant="outline" className="px-4 py-1.5 border-primary/20 bg-primary/5 text-primary font-mono text-xs tracking-widest">
             GEOLOGICAL RECORD
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight">
             The Fossil Record
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Every mutation in this substrate was forced by pressure.
             This is the record of those pressures, the adaptations they produced,
             and the traits that emerged.

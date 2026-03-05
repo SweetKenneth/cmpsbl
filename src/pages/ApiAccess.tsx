@@ -66,10 +66,10 @@ export default function ApiAccess() {
             <Badge variant="outline" className="mb-4 text-xs tracking-widest uppercase">
               API Access
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Build on the Substrate
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Programmatic access to every cognitive module. Authenticate, call, and orchestrate — all through a unified API surface.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

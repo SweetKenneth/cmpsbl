@@ -177,7 +177,7 @@ function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; upt
           <span className={cn("relative inline-flex rounded-full h-3 w-3", config.dotColor)} />
         </span>
         <Icon className={cn("w-6 h-6", config.color)} />
-        <h2 className={cn("text-2xl sm:text-3xl font-black", config.color)}>
+        <h2 className={cn("text-xl sm:text-2xl md:text-3xl font-black", config.color)}>
           {status === "operational" ? "All Systems Operational" : 
            status === "degraded" ? "Partial System Degradation" :
            status === "outage" ? "System Outage Detected" : "Scheduled Maintenance"}
