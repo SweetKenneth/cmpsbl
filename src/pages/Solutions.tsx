@@ -66,7 +66,11 @@ export default function Solutions() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Ambient glow */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute bottom-40 left-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 60%)" }} />
+      </div>
       <SEO 
         title="Enterprise AI Solutions | CMPSBL"
         description="Governed cognitive infrastructure for healthcare, finance, legal, and manufacturing. SOC 2 compliant with on-premises deployment options."
@@ -114,7 +118,7 @@ export default function Solutions() {
             {solutions.map((solution, index) => (
               <div 
                 key={solution.name}
-                className="bg-card border border-border rounded-lg p-5 sm:p-8 md:p-10 hover:border-primary/30 transition-all"
+                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>

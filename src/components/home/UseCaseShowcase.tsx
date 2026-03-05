@@ -157,14 +157,14 @@ export function UseCaseShowcase() {
               transition={{ delay: idx * 0.05, duration: 0.4 }}
               className="h-full"
             >
-              <Link
-                to="/use-cases"
-                className={cn(
-                  "group relative block h-full p-5 sm:p-6 rounded-2xl border border-border/50",
-                  "bg-card/50 backdrop-blur-sm",
-                  "hover:bg-card/80 hover:shadow-xl hover:shadow-current/5",
-                  "transition-all duration-300",
-                  "overflow-hidden",
+               <Link
+                 to="/use-cases"
+                 className={cn(
+                   "group relative block h-full p-5 sm:p-6 rounded-2xl border border-border/50",
+                   "bg-card/50 backdrop-blur-sm",
+                   "hover:bg-card/80 hover:shadow-xl hover:shadow-current/5 hover:-translate-y-1",
+                   "transition-all duration-500",
+                   "overflow-hidden",
                   useCase.color,
                   useCase.borderColor
                 )}
