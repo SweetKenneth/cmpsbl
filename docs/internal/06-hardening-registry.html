@@ -14,9 +14,9 @@
   <h1>Hardening<br/><span class="g">Registry</span></h1>
   <p class="subtitle">
     Complete inventory of all 38 hardened nodes in the substrate, their hardening versions,
-    key features, and the unified health grading methodology.
+    key features, and the unified health grading methodology. All nodes explicitly listed.
   </p>
-  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 100% Coverage</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 100% Coverage · Updated 2026-03-05</p>
 </div>
 
 <div class="doc">
@@ -27,46 +27,65 @@
     <div class="metric"><div class="mv">500+</div><div class="ml">Terminal Commands</div></div>
   </div>
 
-  <h2>1. Hardened Module Inventory</h2>
-
-  <h3>Tier 1 — Core Infrastructure</h3>
+  <h2>1. Tier 1 — Kernel & Cognitive (4 nodes)</h2>
   <table>
     <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
     <tr><td><strong>CORE</strong></td><td>v2.0.0</td><td>Boot integrity seals (SHA), timing profiler, shutdown deadline, DLQ, bulkhead isolation, module quarantine, request dedup, priority queuing, adaptive timeouts, Core Watchdog</td></tr>
     <tr><td><strong>SYSTEM</strong></td><td>v2.0.0</td><td>Boot integrity seals (hash-chained), lifecycle state machine, dependency validation, shutdown coordinator, resource quota enforcement</td></tr>
-    <tr><td><strong>MEMORY</strong></td><td>v2.0.0</td><td>Content hash seals, WAL for crash recovery, P95 monitoring, SM-2 health, tier receipts</td></tr>
-    <tr><td><strong>DREAM</strong></td><td>v2.0.0</td><td>Hallucination guards, energy budgets, latent pattern caching, insight promotion</td></tr>
+    <tr><td><strong>MEMORY</strong></td><td>v2.0.0</td><td>Content hash seals, WAL for crash recovery, P95 monitoring, SM-2 health, tier receipts, RPS scoring</td></tr>
+    <tr><td><strong>DREAM</strong></td><td>v2.0.0</td><td>Hallucination guards (4-check), energy budgets, latent pattern caching, insight promotion to SEBA</td></tr>
   </table>
 
-  <h3>Tier 2 — Security & Governance</h3>
+  <h2>2. Tier 2 — Security & Governance (2 nodes)</h2>
   <table>
     <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
-    <tr><td><strong>DEFENSE</strong></td><td>v2.0.0</td><td>Geo-velocity, fingerprinting, honeypots (15), challenge escalation, replay guard, PII filtering, header cloaking, entropy analysis, threat feeds, posture scoring, attack surface mapping</td></tr>
-    <tr><td><strong>GOVERNANCE</strong></td><td>v2.0.0</td><td>Quorum consensus, decision audit chain, consent verification, policy version control, conflict resolver, emergency override, decision entropy monitor</td></tr>
+    <tr><td><strong>DEFENSE</strong></td><td>v2.0.0</td><td>Geo-velocity, CDP/WebRTC fingerprinting, honeypots (15), challenge escalation, replay guard, PII filtering, header cloaking, entropy analysis, threat feeds, posture scoring, attack surface mapping, Citadel v3.0.0</td></tr>
+    <tr><td><strong>GOVERNANCE</strong></td><td>v2.0.0</td><td>Quorum consensus, decision audit chain, consent verification, policy version control, conflict resolver, emergency override, decision entropy monitor, 4 modes (ACTIVE/OBSERVE/LOCKDOWN/EVOLVE)</td></tr>
   </table>
 
-  <h3>Tier 3 — All Remaining Nodes</h3>
+  <h2>3. Tier 3 — Full Node Registry (32 nodes)</h2>
   <table>
     <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
-    <tr><td><strong>BRAIN</strong></td><td>v2.0.0</td><td>Embedding integrity, classifier health, drift detection</td></tr>
-    <tr><td><strong>NEXUS</strong></td><td>v3.0.0</td><td>Fleet intelligence, consensus routing, cost ledger</td></tr>
+    <tr><td><strong>BRAIN</strong></td><td>v2.0.0</td><td>hash-embed-v1 (384-dim), classifier health, drift detection, dedup (cosine &gt; 0.92)</td></tr>
+    <tr><td><strong>NEXUS</strong></td><td>v3.0.0</td><td>Fleet intelligence (14 providers), consensus routing (2-of-3), cost ledger, SSE streaming, provider health tracking</td></tr>
     <tr><td><strong>CORTEX</strong></td><td>v2.0.0</td><td>Pipeline orchestration, capability composition</td></tr>
-    <tr><td><strong>ENCODE</strong></td><td>v2.0.0</td><td>Output format validation, encoding error recovery</td></tr>
-    <tr><td><strong>DECODE</strong></td><td>v2.0.0</td><td>Input sanitization, command parsing, terminology enforcement</td></tr>
-    <tr><td><strong>VISION</strong></td><td>v2.0.0</td><td>Z-score anomaly detection, cross-module correlation</td></tr>
-    <tr><td><strong>ECONOMY</strong></td><td>v2.0.0</td><td>Cost tracking, ROI computation, budget enforcement</td></tr>
-    <tr><td><strong>IMMUNITY</strong></td><td>v2.0.0</td><td>Self-healing, OCG capability gates, threat correlation</td></tr>
-    <tr><td><strong>EVOLUTION</strong></td><td>v2.0.0</td><td>Mutation pipeline, receipt chain, promotion gates</td></tr>
-    <tr><td><strong>INTENT</strong></td><td>v2.0.0</td><td>Intent classification, context routing, goal tracking</td></tr>
-    <tr><td><strong>ENGINEER</strong></td><td>v2.0.0</td><td>Autonomous maintenance proposals, signal aggregation</td></tr>
-    <tr><td><strong>ATLAS</strong></td><td>v2.0.0</td><td>Capability gating, feature flags, marketplace</td></tr>
-    <tr><td><strong>AUDIT</strong></td><td>v2.0.0</td><td>Immutable trail, tamper-evident hashing</td></tr>
-    <tr><td><strong>+ 17 more</strong></td><td>v2.0.0</td><td>All remaining nodes fully hardened under Ironclad v2.0.0</td></tr>
+    <tr><td><strong>ENCODE</strong></td><td>v2.0.0</td><td>Output format validation, encoding error recovery, surgical patch planning</td></tr>
+    <tr><td><strong>DECODE</strong></td><td>v2.0.0</td><td>Input sanitization, command parsing, terminology enforcement, intent classification</td></tr>
+    <tr><td><strong>VISION</strong></td><td>v2.0.0</td><td>Z-score anomaly detection, cross-module correlation, performance regression loops</td></tr>
+    <tr><td><strong>ECONOMY</strong></td><td>v2.0.0</td><td>Cost tracking, ROI computation, budget enforcement, cost ceiling gates</td></tr>
+    <tr><td><strong>IMMUNITY</strong></td><td>v2.0.0</td><td>Self-healing, OCG capability gates, threat correlation, proposal gate (5-guard pipeline)</td></tr>
+    <tr><td><strong>EVOLUTION</strong></td><td>v2.0.0</td><td>Mutation pipeline, receipt chain, promotion gates, risk budget (100/day, 25/proposal)</td></tr>
+    <tr><td><strong>INTENT</strong></td><td>v2.0.0</td><td>Intent classification, context routing, goal tracking, affinity-based module routing</td></tr>
+    <tr><td><strong>ENGINEER</strong></td><td>v2.0.0</td><td>Autonomous maintenance proposals, signal aggregation, technical debt management</td></tr>
+    <tr><td><strong>ATLAS</strong></td><td>v2.0.0</td><td>Capability gating (675+), feature flags, marketplace, 7 dashboard tabs</td></tr>
+    <tr><td><strong>AUDIT</strong></td><td>v2.0.0</td><td>Immutable trail, tamper-evident hashing, Merkle chain anchors (100-receipt intervals)</td></tr>
+    <tr><td><strong>RIPPLE</strong></td><td>v2.0.0</td><td>Event bus, pub/sub, dead-letter queue, cascade detection (30s/3-module trigger)</td></tr>
+    <tr><td><strong>ACCESS</strong></td><td>v2.0.0</td><td>API keys, quotas, rate limiting, developer subscriptions, tiered access</td></tr>
+    <tr><td><strong>IDENTITY</strong></td><td>v2.0.0</td><td>User/tenant identity resolution, session binding, passkey support</td></tr>
+    <tr><td><strong>RELAY</strong></td><td>v2.0.0</td><td>Webhook delivery, content-hash deduplication, HMAC-SHA256 signatures</td></tr>
+    <tr><td><strong>NERVE</strong></td><td>v2.0.0</td><td>Inter-node signaling, consensus repair, distributed heartbeat</td></tr>
+    <tr><td><strong>SANDBOX</strong></td><td>v2.0.0</td><td>Isolated execution environments, code evaluation, resource limits</td></tr>
+    <tr><td><strong>MEDIC</strong></td><td>v2.0.0</td><td>Autonomous diagnostics, self-repair coordination, health-gated interventions</td></tr>
+    <tr><td><strong>INCLUSIVE</strong></td><td>v2.0.0</td><td>Accessibility compliance, WCAG enforcement, scan scheduling</td></tr>
+    <tr><td><strong>INTEGRATION</strong></td><td>v2.0.0</td><td>External service connectors, webhook handlers, Stripe/Resend integration</td></tr>
+    <tr><td><strong>MODERNIZER</strong></td><td>v2.0.0</td><td>Legacy detection, upgrade routing to EVOLUTION field</td></tr>
+    <tr><td><strong>SOVEREIGN</strong></td><td>v2.0.0</td><td>Jurisdiction classification, compliance enforcement (ESZ)</td></tr>
+    <tr><td><strong>ORACLE</strong></td><td>v2.0.0</td><td>Bayesian prediction, forecasting, scenario modeling (ESZ)</td></tr>
+    <tr><td><strong>CONSCIENCE</strong></td><td>v2.0.0</td><td>Ethical bias detection, fairness auditing (ESZ)</td></tr>
+    <tr><td><strong>TREATY</strong></td><td>v2.0.0</td><td>Contract enforcement, SLA management (ESZ)</td></tr>
+    <tr><td><strong>COMPASS</strong></td><td>v2.0.0</td><td>Strategic navigation, trend analysis (EPZ)</td></tr>
+    <tr><td><strong>ECHO</strong></td><td>v2.0.0</td><td>Historical pattern replay, simulation (EPZ)</td></tr>
+    <tr><td><strong>REFLEX</strong></td><td>v2.0.0</td><td>Edge computing, real-time response (EPZ)</td></tr>
+    <tr><td><strong>FORGE</strong></td><td>v2.0.0</td><td>Content generation, artifact manufacturing (EMZ)</td></tr>
+    <tr><td><strong>LINGUA</strong></td><td>v2.0.0</td><td>Translation, multilingual processing (EMZ)</td></tr>
+    <tr><td><strong>HARVEST</strong></td><td>v2.0.0</td><td>Data collection, ETL pipelines (EMZ)</td></tr>
+    <tr><td><strong>PHANTOM</strong></td><td>v2.0.0</td><td>Synthetic data, differential privacy, anonymization (CSZ)</td></tr>
+    <tr><td><strong>SHADOW</strong></td><td>v2.0.0</td><td>Shadow runs, divergence testing, mesh isolation (CSZ)</td></tr>
   </table>
 
   <div class="sep"></div>
 
-  <h2>2. Health Grading System</h2>
+  <h2>4. Health Grading System</h2>
   <table>
     <tr><th>Grade</th><th>Score</th><th>Action</th></tr>
     <tr><td><strong style="color:var(--emerald);">A</strong></td><td>90–100</td><td>No action needed</td></tr>
@@ -90,6 +109,17 @@
 {module}.metrics     — Performance metrics
 {module}.diagnose    — Run diagnostic sweep
 {module}.reset       — Reset module state (admin only)</code></pre>
+
+  <div class="sep"></div>
+
+  <h2>5. Circuit Breaker Defaults (All Modules)</h2>
+  <pre><code>// Source: src/lib/substrate/circuit-breaker/index.ts
+failureThreshold:       5        // failures to open
+recoveryTimeout:        30,000ms // before half-open
+halfOpenMaxAttempts:    3        // successes to close
+windowSize:            60,000ms // sliding window
+autoRecoveryEnabled:   true
+autoRecoveryIntervalMs: 60,000ms</code></pre>
 
   <div class="footer">
     <div class="brand">CMPSBL®</div>
