@@ -83,7 +83,7 @@ function IndustryChipCard({ chip, delay }: { chip: IndustryChip; delay: number }
         className={cn(
           "group relative flex items-center gap-2.5 p-3 sm:p-3.5 rounded-xl border",
           "backdrop-blur-sm transition-all duration-300",
-          "hover:shadow-lg shimmer-on-hover",
+          "hover:shadow-lg shimmer-on-hover card-lift",
           chip.color,
           chip.hoverGlow
         )}
