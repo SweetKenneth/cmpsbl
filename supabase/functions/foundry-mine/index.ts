@@ -267,6 +267,7 @@ serve(async (req) => {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+    authedUserId = user.id;
 
     // Parse body — REJECT any bias parameter
     const body = await req.json().catch(() => ({}));
