@@ -1,18 +1,17 @@
 /**
  * Mutation Receipt Chain — Immutable Tamper-Evident Ledger
  * 
- * Persists immutable mutation receipts with chained hash structure.
- * Each receipt references the previous receipt's hash for tamper resistance.
+ * SHA-256 audit chain with canonicalized content hashing.
+ * Each receipt carries:
+ *   - contentHash: SHA-256 of the canonical receipt payload
+ *   - chainHash:   SHA-256(prevHash + contentHash) — links receipts
+ *   - prevHash:    chainHash of the previous receipt
  * 
- * Receipt stores:
- * - Proposal ID and outcome
- * - Metrics deltas (before/after)
- * - Approval decisions
- * - Execution logs
- * - Chained SHA-256 hash
+ * Anchor heads written every 100 receipts to redundant stores.
  */
 
 import type { MutationProposal } from './mutation-pipeline';
+import { anchorHead, verifyAnchors } from '@/lib/audit/anchors';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -30,7 +29,12 @@ export interface MutationReceipt {
   metricsDeltas: Record<string, number>;
   approvalDecision: { approved: boolean; reason: string } | null;
   executionLog: string[];
+  contentHash: string;
+  chainHash: string;
   prevHash: string;
+  algo: 'sha256';
+  canonicalizationVersion: 'v1';
+  /** @deprecated kept for backward compat — equals chainHash */
   hash: string;
 }
 
@@ -40,6 +44,7 @@ export interface ChainIntegrity {
   headHash: string;
   genesisHash: string;
   brokenAt?: number;
+  anchor_consistent?: boolean;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -49,33 +54,59 @@ export interface ChainIntegrity {
 const chain: MutationReceipt[] = [];
 const GENESIS_HASH = '0'.repeat(64);
 const MAX_CHAIN_LENGTH = 5000;
+const ANCHOR_INTERVAL = 100;
 
 // ═══════════════════════════════════════════════════════════════
-// HASHING
+// HASHING — WebCrypto SHA-256
 // ═══════════════════════════════════════════════════════════════
 
-function syncHash(input: string): string {
-  // FNV-1a for synchronous contexts
-  let h = 0x811c9dc5;
-  for (let i = 0; i < input.length; i++) {
-    h ^= input.charCodeAt(i);
-    h = (h * 0x01000193) | 0;
-  }
-  return (h >>> 0).toString(16).padStart(8, '0');
+/** Stable JSON with recursively sorted keys (canonicalization v1) */
+function canonicalize(obj: unknown): string {
+  return JSON.stringify(sortKeys(obj));
 }
 
-function computeReceiptHash(receipt: Omit<MutationReceipt, 'hash'>): string {
-  const payload = [
-    receipt.index,
-    receipt.prevHash,
-    receipt.mutationId,
-    receipt.outcome,
-    receipt.timestamp,
-    JSON.stringify(receipt.metricsDeltas),
-    JSON.stringify(receipt.approvalDecision),
-  ].join(':');
+function sortKeys(val: unknown): unknown {
+  if (val === null || val === undefined) return val;
+  if (Array.isArray(val)) return val.map(sortKeys);
+  if (typeof val === 'object') {
+    const sorted: Record<string, unknown> = {};
+    for (const key of Object.keys(val as Record<string, unknown>).sort()) {
+      sorted[key] = sortKeys((val as Record<string, unknown>)[key]);
+    }
+    return sorted;
+  }
+  return val;
+}
 
-  return syncHash(payload);
+async function sha256(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** Compute contentHash from receipt payload fields */
+async function computeContentHash(
+  receipt: Omit<MutationReceipt, 'contentHash' | 'chainHash' | 'hash' | 'algo' | 'canonicalizationVersion'>
+): Promise<string> {
+  const payload = {
+    index: receipt.index,
+    mutationId: receipt.mutationId,
+    title: receipt.title,
+    source: receipt.source,
+    outcome: receipt.outcome,
+    phase: receipt.phase,
+    riskLevel: receipt.riskLevel,
+    timestamp: receipt.timestamp,
+    metricsDeltas: receipt.metricsDeltas,
+    approvalDecision: receipt.approvalDecision,
+    executionLog: receipt.executionLog,
+  };
+  return sha256(canonicalize(payload));
+}
+
+/** Compute chainHash = SHA-256(prevHash + contentHash) */
+async function computeChainHash(prevHash: string, contentHash: string): Promise<string> {
+  return sha256(prevHash + contentHash);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -83,8 +114,8 @@ function computeReceiptHash(receipt: Omit<MutationReceipt, 'hash'>): string {
 // ═══════════════════════════════════════════════════════════════
 
 /** Append a receipt for a completed mutation */
-export function appendReceipt(proposal: MutationProposal): MutationReceipt {
-  const prevHash = chain.length > 0 ? chain[chain.length - 1].hash : GENESIS_HASH;
+export async function appendReceipt(proposal: MutationProposal): Promise<MutationReceipt> {
+  const prevHash = chain.length > 0 ? chain[chain.length - 1].chainHash : GENESIS_HASH;
 
   const executionLog: string[] = [];
   if (proposal.shadowResult) {
@@ -96,7 +127,7 @@ export function appendReceipt(proposal: MutationProposal): MutationReceipt {
     executionLog.push(`Dual Executor: ${proposal.dualExecution.agreement ? 'AGREE' : 'DISAGREE'}`);
   }
 
-  const partialReceipt: Omit<MutationReceipt, 'hash'> = {
+  const partial = {
     index: chain.length,
     mutationId: proposal.id,
     title: proposal.title,
@@ -113,67 +144,94 @@ export function appendReceipt(proposal: MutationProposal): MutationReceipt {
     prevHash,
   };
 
-  const hash = computeReceiptHash(partialReceipt);
-  const receipt: MutationReceipt = { ...partialReceipt, hash };
+  const contentHash = await computeContentHash(partial);
+  const chainHash = await computeChainHash(prevHash, contentHash);
+
+  const receipt: MutationReceipt = {
+    ...partial,
+    contentHash,
+    chainHash,
+    algo: 'sha256',
+    canonicalizationVersion: 'v1',
+    hash: chainHash, // backward compat
+  };
 
   chain.push(receipt);
+
+  // Anchor every N receipts
+  if (chain.length % ANCHOR_INTERVAL === 0) {
+    try {
+      await anchorHead(chainHash, chain.length);
+    } catch {
+      // Anchor failure is non-fatal — logged via audit system
+    }
+  }
+
   if (chain.length > MAX_CHAIN_LENGTH) chain.splice(0, 1000);
 
   return receipt;
 }
 
 /** Verify the entire chain's integrity */
-export function verifyChain(): ChainIntegrity {
-  if (chain.length === 0) {
-    return { valid: true, length: 0, headHash: GENESIS_HASH, genesisHash: GENESIS_HASH };
+export async function verifyChain(): Promise<ChainIntegrity> {
+  let anchorConsistent = true;
+  try {
+    const anchorCheck = await verifyAnchors();
+    anchorConsistent = anchorCheck.consistent;
+  } catch {
+    anchorConsistent = false;
   }
+
+  if (chain.length === 0) {
+    return { valid: true, length: 0, headHash: GENESIS_HASH, genesisHash: GENESIS_HASH, anchor_consistent: anchorConsistent };
+  }
+
+  let prevHash = GENESIS_HASH;
 
   for (let i = 0; i < chain.length; i++) {
     const receipt = chain[i];
-    const expectedPrev = i === 0 ? GENESIS_HASH : chain[i - 1].hash;
 
-    if (receipt.prevHash !== expectedPrev) {
+    // Check prev linkage
+    if (receipt.prevHash !== prevHash) {
       return {
-        valid: false,
-        length: chain.length,
-        headHash: chain[chain.length - 1].hash,
-        genesisHash: chain[0]?.prevHash || GENESIS_HASH,
-        brokenAt: i,
+        valid: false, length: chain.length,
+        headHash: chain[chain.length - 1].chainHash,
+        genesisHash: chain[0].prevHash,
+        brokenAt: i, anchor_consistent: anchorConsistent,
       };
     }
 
-    // Re-compute hash and compare
-    const recomputed = computeReceiptHash({
-      index: receipt.index,
-      mutationId: receipt.mutationId,
-      title: receipt.title,
-      source: receipt.source,
-      outcome: receipt.outcome,
-      phase: receipt.phase,
-      riskLevel: receipt.riskLevel,
-      timestamp: receipt.timestamp,
-      metricsDeltas: receipt.metricsDeltas,
-      approvalDecision: receipt.approvalDecision,
-      executionLog: receipt.executionLog,
-      prevHash: receipt.prevHash,
-    });
-
-    if (recomputed !== receipt.hash) {
+    // Recompute contentHash
+    const recomputedContent = await computeContentHash(receipt);
+    if (recomputedContent !== receipt.contentHash) {
       return {
-        valid: false,
-        length: chain.length,
-        headHash: chain[chain.length - 1].hash,
-        genesisHash: chain[0]?.prevHash || GENESIS_HASH,
-        brokenAt: i,
+        valid: false, length: chain.length,
+        headHash: chain[chain.length - 1].chainHash,
+        genesisHash: chain[0].prevHash,
+        brokenAt: i, anchor_consistent: anchorConsistent,
       };
     }
+
+    // Recompute chainHash
+    const recomputedChain = await computeChainHash(prevHash, recomputedContent);
+    if (recomputedChain !== receipt.chainHash) {
+      return {
+        valid: false, length: chain.length,
+        headHash: chain[chain.length - 1].chainHash,
+        genesisHash: chain[0].prevHash,
+        brokenAt: i, anchor_consistent: anchorConsistent,
+      };
+    }
+
+    prevHash = receipt.chainHash;
   }
 
   return {
     valid: true,
     length: chain.length,
-    headHash: chain[chain.length - 1].hash,
+    headHash: chain[chain.length - 1].chainHash,
     genesisHash: chain[0].prevHash,
+    anchor_consistent: anchorConsistent,
   };
 }
 
@@ -189,7 +247,7 @@ export function getReceiptByMutationId(mutationId: string): MutationReceipt | nu
 
 /** Get chain head hash */
 export function getHeadHash(): string {
-  return chain.length > 0 ? chain[chain.length - 1].hash : GENESIS_HASH;
+  return chain.length > 0 ? chain[chain.length - 1].chainHash : GENESIS_HASH;
 }
 
 /** Get chain length */

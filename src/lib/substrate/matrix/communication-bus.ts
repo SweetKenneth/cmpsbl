@@ -49,6 +49,7 @@ export const MATRIX_SIGNALS = {
   MUTATION_PROMOTED: 'matrix.mutation.promoted',
   MUTATION_REJECTED: 'matrix.mutation.rejected',
   MUTATION_ROLLED_BACK: 'matrix.mutation.rolled_back',
+  MUTATION_SHADOW_EXECUTE: 'matrix.mutation.shadow_execute',
 
   // Health
   HEALTH_CHECK_REQUEST: 'matrix.health.check',
