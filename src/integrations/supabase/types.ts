@@ -6074,12 +6074,15 @@ export type Database = {
           created_at: string
           description: string | null
           discovered_by: string | null
+          discovery_count: number | null
           engine_candidate: boolean | null
           error_strategy: string | null
           id: string
+          last_discovered_at: string | null
           max_execution_ms: number | null
           module_chain: string[]
           name: string
+          pipeline_fingerprint: string | null
           provenance: string | null
           rationale: string | null
           run_id: string
@@ -6095,12 +6098,15 @@ export type Database = {
           created_at?: string
           description?: string | null
           discovered_by?: string | null
+          discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
           id: string
+          last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
           name: string
+          pipeline_fingerprint?: string | null
           provenance?: string | null
           rationale?: string | null
           run_id: string
@@ -6116,12 +6122,15 @@ export type Database = {
           created_at?: string
           description?: string | null
           discovered_by?: string | null
+          discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
           id?: string
+          last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
           name?: string
+          pipeline_fingerprint?: string | null
           provenance?: string | null
           rationale?: string | null
           run_id?: string
@@ -7496,6 +7505,42 @@ export type Database = {
         }
         Relationships: []
       }
+      foundry_discovery_metrics: {
+        Row: {
+          dfi: number | null
+          first_discovered_at: string | null
+          id: string
+          last_discovered_at: string | null
+          pipeline_fingerprint: string
+          pipeline_name: string
+          total_discoveries: number | null
+          total_mine_events: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          dfi?: number | null
+          first_discovered_at?: string | null
+          id?: string
+          last_discovered_at?: string | null
+          pipeline_fingerprint: string
+          pipeline_name: string
+          total_discoveries?: number | null
+          total_mine_events?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          dfi?: number | null
+          first_discovered_at?: string | null
+          id?: string
+          last_discovered_at?: string | null
+          pipeline_fingerprint?: string
+          pipeline_name?: string
+          total_discoveries?: number | null
+          total_mine_events?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       foundry_inventory: {
         Row: {
           artifact_description: string | null
@@ -7505,6 +7550,7 @@ export type Database = {
           id: string
           metadata: Json | null
           obtained_at: string
+          pipeline_fingerprint: string | null
           public_tier: string
           score: number
           source: string
@@ -7520,6 +7566,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           obtained_at?: string
+          pipeline_fingerprint?: string | null
           public_tier: string
           score: number
           source?: string
@@ -7535,6 +7582,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           obtained_at?: string
+          pipeline_fingerprint?: string | null
           public_tier?: string
           score?: number
           source?: string

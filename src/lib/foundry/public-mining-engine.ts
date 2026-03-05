@@ -17,6 +17,7 @@ export interface MineResult {
   valuationDisplay: number;
   category: string;
   systemChain: string[];
+  fingerprint?: string;
 }
 
 export interface MineResponse {
