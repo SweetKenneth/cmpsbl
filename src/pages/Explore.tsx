@@ -176,13 +176,13 @@ export default function Explore() {
               </motion.div>
               
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
-                The Memory{" "}
+                Build on the{" "}
                 <br className="hidden sm:block" />
-                <span className="text-white/80">Stream Awaits</span>
+                <span className="text-white/80">Substrate</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                From raw signal capture to crystallized software — and when exceptional, into physical silicon.
-                Start free with 3 pipeline slots. Every pull is real software.
+                Systems that DREAM, ADAPT, and EVOLVE — governed by policy, powered by persistent memory.
+                Start free with 3 pipeline slots. Build something that improves itself.
               </p>
               
               {/* Mini stats row */}
@@ -202,9 +202,9 @@ export default function Explore() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all">
-                  <Link to="/foundry">
+                  <Link to="/start-here">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Enter the Memory Stream
+                    Start Building
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
