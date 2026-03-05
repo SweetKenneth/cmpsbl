@@ -1,9 +1,9 @@
 /**
- * NodeDreamingWidget — Dream observability for the dashboard
- * Shows dream tier activity, recent logs, and analytics summary.
+ * NodeDreamingWidget — Dream observability + Cognitive Capabilities
+ * Shows dream tier activity, recent logs, analytics, and cognitive health.
  */
 
-import { Moon, Sparkles, AlertTriangle, Activity, Zap, RefreshCw, Loader2 } from 'lucide-react';
+import { Moon, Sparkles, AlertTriangle, Activity, Zap, RefreshCw, Loader2, Brain, Shield, RotateCcw, Share2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useNodeDreaming } from '@/hooks/substrate/useNodeDreaming';
+import { useCognitiveCapabilities } from '@/hooks/substrate/useCognitiveCapabilities';
 import { pushToast } from '@/components/toast/SmartToastStore';
 import type { DreamCycleType } from '@/lib/substrate/node-dreaming';
 
