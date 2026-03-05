@@ -29,6 +29,171 @@ const quickActions = [
   { icon: "🚀", title: "Getting Started", prompt: "How do I start using the substrate? Walk me through the key features and modules." },
 ];
 
+// ─── Smart Position Hook ────────────────────────────────────────
+const ORB_SIZE = 56;
+const MARGIN = 16;
+const INTERACTIVE_SELECTOR = 'a, button, [role="button"], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, chatOpen: boolean) {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+  const dragStart = useRef({ x: 0, y: 0, orbX: 0, orbY: 0 });
+  const userPlaced = useRef(false);
+  const dodgeRaf = useRef<number>(0);
+  const initialized = useRef(false);
+
+  // Set default position
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+    const safeBottom = 80;
+    setPos({
+      x: window.innerWidth - ORB_SIZE - MARGIN,
+      y: window.innerHeight - ORB_SIZE - safeBottom,
+    });
+  }, []);
+
+  // Clamp helper
+  const clamp = useCallback((x: number, y: number) => ({
+    x: Math.max(MARGIN, Math.min(x, window.innerWidth - ORB_SIZE - MARGIN)),
+    y: Math.max(MARGIN, Math.min(y, window.innerHeight - ORB_SIZE - MARGIN)),
+  }), []);
+
+  // Dodge: check if orb overlaps interactive elements and nudge away
+  const dodge = useCallback(() => {
+    if (userPlaced.current || chatOpen) return;
+    cancelAnimationFrame(dodgeRaf.current);
+    dodgeRaf.current = requestAnimationFrame(() => {
+      const orbRect = orbRef.current?.getBoundingClientRect();
+      if (!orbRect) return;
+
+      const elements = document.querySelectorAll(INTERACTIVE_SELECTOR);
+      let needsDodge = false;
+
+      for (const el of elements) {
+        if (el === orbRef.current || orbRef.current?.contains(el) || el.closest('[data-decode-panel]')) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) continue;
+
+        // Inflate orb rect by 8px for comfort
+        const pad = 8;
+        const overlaps =
+          orbRect.left - pad < r.right &&
+          orbRect.right + pad > r.left &&
+          orbRect.top - pad < r.bottom &&
+          orbRect.bottom + pad > r.top;
+
+        if (overlaps) {
+          needsDodge = true;
+          break;
+        }
+      }
+
+      if (needsDodge) {
+        setPos(prev => {
+          // Try nudging up first, then left, then down
+          const candidates = [
+            clamp(prev.x, prev.y - 70),      // up
+            clamp(prev.x - 70, prev.y),       // left
+            clamp(prev.x, prev.y + 70),       // down
+            clamp(prev.x + 70, prev.y),       // right
+            clamp(prev.x - 70, prev.y - 70),  // up-left
+          ];
+
+          for (const candidate of candidates) {
+            // Quick check: would this candidate overlap anything?
+            const cRect = {
+              left: candidate.x,
+              right: candidate.x + ORB_SIZE,
+              top: candidate.y,
+              bottom: candidate.y + ORB_SIZE,
+            };
+            let clean = true;
+            for (const el of elements) {
+              if (el === orbRef.current || orbRef.current?.contains(el) || el.closest('[data-decode-panel]')) continue;
+              const r = el.getBoundingClientRect();
+              if (r.width === 0 || r.height === 0) continue;
+              if (cRect.left - 8 < r.right && cRect.right + 8 > r.left && cRect.top - 8 < r.bottom && cRect.bottom + 8 > r.top) {
+                clean = false;
+                break;
+              }
+            }
+            if (clean) return candidate;
+          }
+          return prev;
+        });
+      }
+    });
+  }, [chatOpen, clamp, orbRef]);
+
+  // Run dodge on scroll, resize, and periodically
+  useEffect(() => {
+    if (userPlaced.current) return;
+    const handleScroll = () => dodge();
+    const handleResize = () => {
+      setPos(prev => clamp(prev.x, prev.y));
+      dodge();
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+    const interval = setInterval(dodge, 2000);
+
+    // Initial dodge after layout
+    setTimeout(dodge, 500);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      clearInterval(interval);
+      cancelAnimationFrame(dodgeRaf.current);
+    };
+  }, [dodge, clamp]);
+
+  // Drag handlers
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    isDragging.current = false;
+    dragStart.current = { x: e.clientX, y: e.clientY, orbX: pos.x, orbY: pos.y };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [pos]);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    if (!isDragging.current && Math.abs(dx) + Math.abs(dy) < 5) return;
+    isDragging.current = true;
+    setPos(clamp(dragStart.current.orbX + dx, dragStart.current.orbY + dy));
+  }, [clamp]);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    if (isDragging.current) {
+      userPlaced.current = true;
+      isDragging.current = false;
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Snap to nearest edge (left or right)
+      setPos(prev => {
+        const midX = window.innerWidth / 2;
+        return {
+          x: prev.x + ORB_SIZE / 2 < midX ? MARGIN : window.innerWidth - ORB_SIZE - MARGIN,
+          y: prev.y,
+        };
+      });
+    }
+  }, []);
+
+  // Reset user placement after 30s of no interaction so dodge kicks back in
+  useEffect(() => {
+    if (!userPlaced.current) return;
+    const timeout = setTimeout(() => { userPlaced.current = false; }, 30000);
+    return () => clearTimeout(timeout);
+  }, [pos]);
+
+  return { pos, onPointerDown, onPointerMove, onPointerUp, isDragging };
+}
+
+// ─── Main Component ─────────────────────────────────────────────
 export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props) {
   const orbRef = useRef<HTMLButtonElement | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
@@ -42,6 +207,8 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [mounted, setMounted] = useState(false);
+
+  const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging } = useSmartPosition(orbRef, chatOpen);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -110,25 +277,32 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
   const portalContent = (
     <>
-      {/* ─── Floating Orb ─── */}
+      {/* ─── Floating Orb — draggable + auto-dodge ─── */}
       <button
         id={anchorId}
         ref={orbRef}
         type="button"
-        onClick={() => setChatOpen(prev => !prev)}
+        onClick={(e) => {
+          if (isDragging.current) { e.preventDefault(); return; }
+          setChatOpen(prev => !prev);
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
         aria-label="Decode — substrate voice"
         className={cn(
-          "group cursor-pointer touch-manipulation",
+          "group cursor-grab active:cursor-grabbing touch-manipulation select-none",
           "w-[56px] h-[56px] rounded-full grid place-items-center",
-          "active:scale-[0.95] transition-transform duration-150",
           chatOpen && "scale-90 opacity-70"
         )}
         style={{
           position: "fixed",
-          right: 16,
-          bottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
+          left: pos.x,
+          top: pos.y,
           zIndex: 10001,
           contain: "layout",
+          transition: isDragging.current ? "none" : "left 0.35s cubic-bezier(0.22,1,0.36,1), top 0.35s cubic-bezier(0.22,1,0.36,1)",
+          willChange: "left, top",
         }}
       >
         {/* Outer glow aura */}
@@ -180,6 +354,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
       {/* ─── Chat Panel ─── */}
       {chatOpen && (
         <div
+          data-decode-panel
           className="animate-scale-in"
           style={{
             position: "fixed",
