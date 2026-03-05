@@ -15,10 +15,10 @@ import accessibilityImage from "@/assets/hero/neon-dream-cosmos.jpg";
 import { DEPARTMENTS, COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 
 const fadeUp = {
-  initial: { opacity: 0, y: 30 },
+  initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { duration: 0.6 },
+  transition: { duration: 0.5 },
 };
 
 const stagger = (delay: number) => ({

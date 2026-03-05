@@ -274,7 +274,12 @@ export default function Upgrade() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Ambient glow */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-40 left-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
+        <div className="absolute bottom-40 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }} />
+      </div>
       <SEO
         title="Pricing — CMPSBL"
         description="One stream, your capacity. 24 pipeline packs — every pack = 1 slot. Choose Builder (free), Creator ($29/mo), Studio ($49/mo), or Architect ($79/mo)."
@@ -354,11 +359,12 @@ export default function Upgrade() {
                   className={cn(
                     "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0",
                     "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
+                    "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300",
                     isCurrent
-                      ? "border-primary ring-2 ring-primary/20"
+                      ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
                       : t.popular
                       ? "border-violet-500/40 ring-1 ring-violet-500/10"
-                      : "border-border/50 hover:border-border",
+                      : "border-border/50 hover:border-primary/20",
                   )}
                 >
                   <div className={cn("h-1.5 bg-gradient-to-r", t.accent)} />
@@ -448,7 +454,7 @@ export default function Upgrade() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5"
+                  className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5 hover:border-primary/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <Check className="w-4 h-4 text-primary" />
                   <h4 className="text-sm font-semibold">{item.label}</h4>
