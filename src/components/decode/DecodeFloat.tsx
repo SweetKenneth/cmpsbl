@@ -208,6 +208,17 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const inputRef = useRef<HTMLInputElement>(null);
   const [mounted, setMounted] = useState(false);
 
+  // Stable session ID per browser tab — prevents cross-user bleed for anonymous sessions
+  const sessionId = useRef<string>(() => {
+    const key = '_decode_sid';
+    let sid = sessionStorage.getItem(key);
+    if (!sid) {
+      sid = `anon_${crypto.randomUUID()}`;
+      sessionStorage.setItem(key, sid);
+    }
+    return sid;
+  });
+
   const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging } = useSmartPosition(orbRef, chatOpen);
 
   useEffect(() => { setMounted(true); }, []);
@@ -249,7 +260,21 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     setShowMenu(false);
 
     try {
-      const response = await decode.chat(userMessage, `session_${Date.now()}`);
+      // Build conversation history from local state for context (no server-side bleed)
+      const conversationHistory = messages
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .slice(-10)
+        .map(m => ({ role: m.role, content: m.content }));
+
+      const response = await substrate.invoke({
+        module: 'decode',
+        action: 'chat',
+        payload: {
+          message: userMessage,
+          sessionId: sessionId.current,
+          conversationHistory,
+        },
+      });
       if (!response.success) throw new Error(response.error || "Chat failed");
       const data = response.data as any;
       setConnection({ status: "connected", retryCount: 0 });
