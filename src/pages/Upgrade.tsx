@@ -306,7 +306,6 @@ export default function Upgrade() {
                 WebkitTextFillColor: "transparent",
               }}>Your Capacity.</span>
             </h1>
-            </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               24 pipeline packs. Every pack = 1 slot. Crystallize from the Memory Stream with 3, 6, 9, or 12 slots.
             </p>

@@ -254,7 +254,7 @@ export default function About() {
                 transition={{ delay: idx * 0.08, duration: 0.4 }}
                 className={cn(
                   "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7",
-                  "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300",
+                  "transition-all duration-300 card-lift gradient-border-reveal",
                   pillar.border,
                   "hover:border-opacity-60"
                 )}
