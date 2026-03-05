@@ -211,12 +211,12 @@ export async function cpPut<T>(
   if (mode === 'cp') {
     try {
       await supabase.from('control_plane_state').upsert(
-        {
+        [{
           key,
-          value: JSON.parse(serialize(value)),
-          meta: meta ?? {},
+          value: JSON.parse(serialize(value)) as Record<string, unknown>,
+          meta: (meta ?? {}) as Record<string, unknown>,
           updated_at: new Date().toISOString(),
-        },
+        }],
         { onConflict: 'key' }
       );
       return;
@@ -225,12 +225,12 @@ export async function cpPut<T>(
 
   if (mode === 'cp' || mode === 'legacy') {
     try {
-      await supabase.from('brain_events').insert({
-        module: 'control_plane',
+      await supabase.from('brain_events').insert([{
         event_type: `cp_state:${key}`,
+        module: 'control_plane',
         data: { key, value: serialize(value), meta } as Record<string, unknown>,
-        outcome: 'success' as const,
-      });
+        outcome: 'success',
+      }]);
     } catch { /* memory fallback active */ }
   }
 }
