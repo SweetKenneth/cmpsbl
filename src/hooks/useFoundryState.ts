@@ -94,6 +94,7 @@ export function useFoundryState() {
         source: i.source,
         category: i.category,
         systemChain: i.system_chain,
+        pipelineFingerprint: i.pipeline_fingerprint,
       }));
 
       setInventory(mappedInventory);
