@@ -110,12 +110,13 @@ export function DifferentiationSection() {
             >
               <div className={cn(
                 "relative h-full rounded-2xl border bg-card/50 backdrop-blur-sm p-6 sm:p-8",
-                "hover:shadow-xl hover:-translate-y-1 transition-all duration-500 shimmer-on-hover",
+                "hover:shadow-xl hover:shadow-primary/[0.04] hover:-translate-y-1 transition-all duration-500 shimmer-on-hover glass-edge",
                 pillar.borderColor,
                 "hover:border-opacity-80"
               )}>
-                {/* Top accent */}
-                <div className={cn("absolute top-0 left-6 right-6 h-px bg-gradient-to-r opacity-40", pillar.color)} />
+                {/* Top accent — memory-stream bar + gradient */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] memory-stream-bar opacity-20 rounded-t-2xl" />
+                <div className={cn("absolute top-[2px] left-6 right-6 h-px bg-gradient-to-r opacity-30", pillar.color)} />
 
                 {/* Icon + Module name */}
                 <div className="flex items-center gap-3 mb-4">

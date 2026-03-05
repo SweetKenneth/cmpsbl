@@ -164,7 +164,7 @@ export function UseCaseShowcase() {
                    "bg-card/50 backdrop-blur-sm",
                    "hover:bg-card/80 hover:shadow-xl hover:shadow-current/5 hover:-translate-y-1",
                    "transition-all duration-500",
-                   "overflow-hidden",
+                   "overflow-hidden shimmer-on-hover",
                   useCase.color,
                   useCase.borderColor
                 )}

@@ -42,10 +42,11 @@ export function GovernanceSignal() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-border/30 bg-gradient-to-br from-card/40 via-card/30 to-card/40 backdrop-blur-sm overflow-hidden shadow-lg shadow-primary/[0.02]"
+          className="rounded-2xl border border-border/30 bg-gradient-to-br from-card/40 via-card/30 to-card/40 backdrop-blur-sm overflow-hidden shadow-lg shadow-primary/[0.03] shimmer-on-hover glass-edge"
         >
-          {/* Top bar */}
-          <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          {/* Top bar — memory-stream accent */}
+          <div className="h-[2px] memory-stream-bar opacity-30" />
+          <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
           <div className="p-6 sm:p-10">
             <div className="text-center mb-8">
@@ -65,7 +66,7 @@ export function GovernanceSignal() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08 }}
-                  className="space-y-2.5 p-4 rounded-xl hover:bg-primary/[0.02] transition-colors duration-300"
+                  className="space-y-2.5 p-4 rounded-xl hover:bg-primary/[0.03] hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <div className="flex items-center gap-2.5">
                     <signal.icon className="w-4 h-4 text-primary/70" />
@@ -74,7 +75,7 @@ export function GovernanceSignal() {
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {signal.description}
                   </p>
-                  <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-2.5 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 transition-colors duration-300">
+                  <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-2.5 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 code-glow transition-all duration-300">
                     {signal.code}
                   </code>
                 </motion.div>

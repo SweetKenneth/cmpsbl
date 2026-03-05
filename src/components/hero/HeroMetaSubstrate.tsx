@@ -349,7 +349,7 @@ export function HeroMetaSubstrate() {
               ].map((item) => (
                 <div 
                   key={item.label} 
-                  className="rounded-lg border border-border/15 bg-card/25 backdrop-blur-sm p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group"
+                  className="rounded-lg border border-border/15 bg-card/25 backdrop-blur-sm p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover glass-edge"
                 >
                   <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
                   <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
@@ -380,7 +380,7 @@ export function HeroMetaSubstrate() {
             >
               <Link
                 to={item.href}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 backdrop-blur-sm shrink-0 hover:bg-card/60 hover:border-primary/25 transition-all duration-300 active:scale-[0.97]"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 backdrop-blur-sm shrink-0 hover:bg-card/60 hover:border-primary/25 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 active:scale-[0.97]"
               >
                 <item.icon className="w-3 h-3 text-muted-foreground/50" />
                 <span className="text-[11px] font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
@@ -396,9 +396,10 @@ export function HeroMetaSubstrate() {
           transition={{ delay: 0.9 }}
         >
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 backdrop-blur-xl overflow-hidden shadow-lg shadow-primary/[0.03]"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 backdrop-blur-xl overflow-hidden shadow-lg shadow-primary/[0.03] glass-edge"
           >
-            <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-25" />
+            <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
+            <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
             <AnimatedStat value={10} label="Entities" delay={0} />
             <AnimatedStat value={300} label="Synergies" delay={1} />
             <AnimatedStat value={175} suffix="k+" label="Lines of Code" delay={2} />

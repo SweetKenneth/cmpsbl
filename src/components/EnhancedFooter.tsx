@@ -183,7 +183,7 @@ export function EnhancedFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border/50 bg-muted/20">
+        <div className="border-t border-border/50 bg-gradient-to-b from-muted/20 to-muted/30">
           <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
               {/* Copyright */}

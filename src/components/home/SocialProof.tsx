@@ -78,7 +78,7 @@ export function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="relative p-5 sm:p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 group shimmer-on-hover"
+              className="relative p-5 sm:p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 group shimmer-on-hover glass-edge"
             >
               {/* Top accent line */}
               <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -92,7 +92,7 @@ export function SocialProof() {
               
               <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary" />
+                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary group-hover:drop-shadow-[0_0_3px_hsl(var(--primary)/0.4)] transition-all duration-500" style={{ transitionDelay: `${j * 50}ms` }} />
                 ))}
               </div>
               <p className="text-sm text-foreground mb-4 leading-relaxed">"{t.quote}"</p>

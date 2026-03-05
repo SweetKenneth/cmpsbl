@@ -144,8 +144,9 @@ export default function Explore() {
           className="max-w-5xl mx-auto"
         >
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group/cta">
-            {/* Deep gradient background */}
+            {/* Deep gradient background with richer depth */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
             
             {/* Animated grid overlay */}
             <div 
@@ -199,14 +200,14 @@ export default function Explore() {
               
               {/* Mini stats row */}
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
-                {[
+                 {[
                    { value: "1,143+", label: "Crystallized" },
                    { value: "24", label: "Pipeline Packs" },
                    { value: "68+", label: "Quality Floor" },
-                   { value: "99.9%", label: "Uptime" },
+                   { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <div className="text-2xl sm:text-3xl font-black text-white">{stat.value}</div>
+                  <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
+                    <div className="text-2xl sm:text-3xl font-black text-white group-hover/cta-stat:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">{stat.value}</div>
                     <div className="text-[10px] sm:text-xs font-semibold text-white/50 uppercase tracking-wider">{stat.label}</div>
                   </div>
                 ))}
