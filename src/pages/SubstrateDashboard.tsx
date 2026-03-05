@@ -620,49 +620,25 @@ export default function SubstrateDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Scrollable tabs for mobile - NO overlap */}
           <div className="relative">
-            <ScrollArea className="w-full">
-              <TabsList className="inline-flex h-auto p-1 bg-muted/50 rounded-lg w-max min-w-full md:w-full md:grid md:grid-cols-7 gap-1">
-                <TabsTrigger 
-                  value="overview" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Overview
+             <ScrollArea className="w-full">
+              <TabsList className="inline-flex h-auto p-1 bg-muted/50 rounded-lg w-max min-w-full md:w-full md:grid md:grid-cols-6 gap-1">
+                <TabsTrigger value="overview" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Overview ({allModules.length})
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="defense" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
+                <TabsTrigger value="defense" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
                   🛡️ Defense
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="kernel" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Kernel (3)
+                <TabsTrigger value="core" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Core Layers (21)
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="cognitive" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Cognitive (3)
+                <TabsTrigger value="zones" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Expansion Zones (14)
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="operational" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Operational (3)
+                <TabsTrigger value="mesh" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Mesh Overlays (4)
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="admin" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Admin (4)
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="orchestrator" 
-                  className="px-3 py-2 text-xs md:text-sm whitespace-nowrap"
-                >
-                  Orchestrator (1)
+                <TabsTrigger value="api" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  API Reference
                 </TabsTrigger>
               </TabsList>
               <ScrollBar orientation="horizontal" className="h-2" />
