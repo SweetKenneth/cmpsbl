@@ -723,5 +723,12 @@ All colors MUST be HSL.
 .animate-hero-orb-2 { animation: hero-orb-2 35s ease-in-out infinite; will-change: transform; }
 .animate-hero-orb-3 { animation: hero-orb-3 22s ease-in-out infinite; will-change: transform; }
 
+/* Auth page stream line animation */
+@keyframes auth-stream {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-auth-stream { animation: auth-stream 10s linear infinite; will-change: transform; }
+
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */
