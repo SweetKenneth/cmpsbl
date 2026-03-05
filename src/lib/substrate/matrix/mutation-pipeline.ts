@@ -15,7 +15,7 @@ import { appendReceipt, type MutationReceipt } from './receipt-chain';
 import { computeReadiness, type ReadinessReport } from './readiness-index';
 import { trackEntropy, type EntropySnapshot } from './entropy-tracker';
 import { verifyDual, type DualExecutorResult } from './dual-executor';
-import { matrixBroadcast, MATRIX_SIGNALS } from './communication-bus';
+import { matrixBroadcast, nodeSignal, MATRIX_SIGNALS } from './communication-bus';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
