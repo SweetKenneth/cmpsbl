@@ -9,7 +9,7 @@ import { installProductionLogGuard } from "@/lib/system/productionLogGuard";
 // Install production log guard before anything else logs
 installProductionLogGuard();
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense, useRef } from "react";
+import { useEffect, useState, lazy, Suspense, useRef } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
 
 // Lazy-load non-critical UI components to reduce initial JS
