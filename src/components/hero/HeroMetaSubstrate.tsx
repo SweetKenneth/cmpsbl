@@ -246,7 +246,9 @@ export function HeroMetaSubstrate() {
               Watch it crystallize into{' '}
               <span className="text-foreground/90 font-medium">deployable software</span>.{' '}
               When it proves rare enough, it crosses the boundary into{' '}
-              <span className="text-primary font-medium">physical silicon</span>.
+              <span className="text-primary font-medium">physical silicon</span>.{' '}
+              Build on the substrate — where persistent memory, governed evolution, and DREAM cycles
+              turn every system into infrastructure that improves itself.
             </motion.p>
             
             {/* CTAs — primary + ghost for clean hierarchy */}
