@@ -35,7 +35,7 @@ serve(async (req) => {
     const customerName =
       session.customer_details?.name || "Engine Owner";
     const engineName = (engine_slug || "UNKNOWN").toUpperCase();
-    const docsUrl = `https://cmpsbl.lovable.app/docs/engines/${engine_slug}`;
+    const docsUrl = `https://cmpsbl.com/docs/engines/${engine_slug}`;
     const editionId = `ENG-${engineName}-${Date.now().toString(36).toUpperCase()}`;
 
     // Send license email via Resend

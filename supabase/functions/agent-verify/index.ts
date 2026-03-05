@@ -39,7 +39,7 @@ serve(async (req) => {
     // Mint unique version ID
     const mintHash = crypto.randomUUID().slice(0, 8);
     const mintId = `AGT-${agentName}-v1.0.0-${mintHash}`;
-    const docsUrl = `https://cmpsbl.lovable.app/docs/agents/${(agent_id || agentName).toLowerCase()}`;
+    const docsUrl = `https://cmpsbl.com/docs/agents/${(agent_id || agentName).toLowerCase()}`;
 
     // Send license email via Resend
     const resendKey = Deno.env.get("RESEND_API_KEY");

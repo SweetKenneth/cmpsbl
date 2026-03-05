@@ -59,11 +59,11 @@ export default function Careers() {
             <Badge variant="outline" className="mb-4 text-xs tracking-widest uppercase">
               Careers
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Build What Matters
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              We're building the cognitive substrate — the foundation for AI systems that think, learn, and evolve. Join a team where your work shapes the future.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              We're building the cognitive substrate — systems that dream, adapt, evolve, and remember. Join a team where your work shapes the future of AI infrastructure.
             </p>
             <Button asChild size="lg" className="gap-2">
               <Link to="/contact">
@@ -102,8 +102,8 @@ export default function Careers() {
         <section className="container mx-auto max-w-3xl px-4 mb-20">
           <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-muted/30 text-center">
             <Users className="w-8 h-8 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-foreground mb-3">Open Positions</h2>
-            <p className="text-muted-foreground mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">Open Positions</h2>
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">
               We're always looking for exceptional people. Even if you don't see a listed role, reach out — we'd love to hear from you.
             </p>
             <Button asChild size="lg" className="gap-2">

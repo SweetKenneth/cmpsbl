@@ -68,8 +68,8 @@ serve(async (req) => {
           ...(metadata || {})
         }
       },
-      success_url: success_url || `https://www.promptfluid.com/products/defense/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancel_url || `https://www.promptfluid.com/products/defense/upgrade`,
+      success_url: success_url || `https://cmpsbl.com/products/defense/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancel_url || `https://cmpsbl.com/products/defense/upgrade`,
       metadata: {
         tier: tier,
         ...(metadata || {})

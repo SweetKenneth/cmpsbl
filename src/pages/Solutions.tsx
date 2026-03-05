@@ -98,11 +98,11 @@ export default function Solutions() {
             Product Suite
           </Badge>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
             Everything Your AI Needs
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl">
-            Memory, routing, security, orchestration, and deployment — production-ready modules that work together or independently.
+          <p className="text-base sm:text-xl text-muted-foreground max-w-3xl">
+            Build on the substrate — persistent memory, intelligent routing, DREAM cycles, governed evolution, and deployment tools. All production-ready.
           </p>
         </div>
       </section>
@@ -171,9 +171,9 @@ export default function Solutions() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
-               "The best infrastructure is the kind you never have to think about."
-             </p>
+             <p className="text-xl sm:text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
+                "Infrastructure that dreams, adapts, and compounds — the best kind is the kind that improves itself."
+              </p>
           </blockquote>
         </div>
       </section>

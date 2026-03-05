@@ -92,7 +92,7 @@ serve(async (req) => {
       }
     }
 
-    const origin = req.headers.get("origin") || "https://cmpsbl.lovable.app";
+    const origin = req.headers.get("origin") || "https://cmpsbl.com";
     const displayName = (agent_name || agent_id).toUpperCase();
     const tier = AGENT_TIERS[agent_id] || 'Standard';
 

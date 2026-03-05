@@ -61,7 +61,7 @@ serve(async (req) => {
       }
     }
 
-    const origin = req.headers.get("origin") || "https://cmpsbl.lovable.app";
+    const origin = req.headers.get("origin") || "https://cmpsbl.com";
     const priceConfig = PRICES[tier];
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {

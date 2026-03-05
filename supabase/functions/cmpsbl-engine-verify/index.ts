@@ -12,7 +12,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const DOCS_URL = "https://cmpsbl.lovable.app/substrate/docs";
+const DOCS_URL = "https://cmpsbl.com/substrate/docs";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -219,7 +219,7 @@ function buildThankYouEmail(name: string, expiresAt: string | null, email: strin
         <!-- Footer -->
         <tr><td style="padding:24px 40px;border-top:1px solid #1a1a1a;text-align:center;">
           <p style="color:#555;font-size:12px;margin:0;">
-            © ${new Date().getFullYear()} CMPSBL® by PromptFluid® · All rights reserved.
+            © ${new Date().getFullYear()} CMPSBL® · All rights reserved.
           </p>
           <p style="color:#444;font-size:11px;margin:8px 0 0;">
             Questions? Reply to this email or reach us at Dev@CMPSBL.com

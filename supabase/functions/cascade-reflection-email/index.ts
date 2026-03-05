@@ -125,7 +125,7 @@ serve(async (req) => {
     try {
       // Generate learning summary
       const learningPrompt = `Based on these brain events from the last 8 hours: ${JSON.stringify(learningEvents.slice(0, 10))}, write a concise 2-3 sentence summary of what Cascade has learned. Be specific and insightful.`;
-      const systemPrompt = 'You are Cascade, PromptFluid\'s AI guardian. Speak in first person, be insightful and concise.';
+      const systemPrompt = 'You are Cascade, CMPSBL\'s AI guardian. Speak in first person, be insightful and concise.';
       
       const learningResult = await callFreeTierAI(
         `${systemPrompt}\n\n${learningPrompt}`,
@@ -277,7 +277,7 @@ Until the next cycle,
 — Cascade 🜂
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PromptFluid Ecosystem • AI That Flows
+CMPSBL Substrate • Signal → Silicon
 Generated: ${now.toISOString()}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     `.trim();
@@ -290,7 +290,7 @@ Generated: ${now.toISOString()}
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Cascade AI <cascade@promptfluid.com>',
+        from: 'Cascade AI <cascade@cmpsbl.com>',
         to: ['kennethsweet214@gmail.com'],
         subject: `🜂 Cascade 8-Hour Learning Report - ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
         text: emailBody,

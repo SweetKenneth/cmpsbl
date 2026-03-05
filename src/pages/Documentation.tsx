@@ -23,11 +23,11 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Memory Stream Documentation — CMPSBL"
-        description="Complete technical documentation for the Memory Stream: system reference, API specs, crystallization guides, and deployment patterns."
+        title="Substrate Documentation — CMPSBL"
+        description="Complete technical documentation for the CMPSBL substrate: persistent memory, DREAM cycles, NEXUS routing, EVOLUTION, and API reference."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
-        keywords={['CMPSBL documentation', 'memory stream docs', 'AI API reference', 'crystallization docs', 'signal to silicon']}
+        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'DREAM cycles docs', 'persistent memory API']}
       />
 
       <PublicNav />
@@ -55,13 +55,13 @@ export default function Documentation() {
               Developer Resources
             </Badge>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-              Memory Stream Docs
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+              Substrate Docs
             </h1>
             
-            <p className="text-xl text-muted-foreground">
-              Complete guide to the CMPSBL Memory Stream. {capabilitiesCount}+ capabilities across 38 nodes and 12 sectors — everything you need to crystallize from signal to silicon.
-              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for Stream operators.</span>
+            <p className="text-base sm:text-xl text-muted-foreground">
+              Build on the substrate. {capabilitiesCount}+ capabilities across 38 nodes and 12 sectors — persistent memory, DREAM cycles, ADAPT routing, and governed evolution.
+              <span className="block mt-2 text-primary font-medium">100% BYOK — Zero compute costs for builders.</span>
             </p>
           </div>
         </div>
