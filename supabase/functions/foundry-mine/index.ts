@@ -105,7 +105,141 @@ function stepsToModuleChain(steps: PipelineStep[]): string[] {
   return steps.map(s => s.module.toUpperCase());
 }
 
+const DISCOVERY_SELECT = 'id, name, description, cjpi, category, module_chain, pipeline_fingerprint, pipeline_steps';
+
+function shuffleInPlace<T>(arr: T[]): T[] {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function makeTraceId(): string {
+  return `fm_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function toSafeCustomerMessage(error: unknown): string {
+  const raw = error instanceof Error
+    ? error.message
+    : typeof error === 'string'
+      ? error
+      : 'Unknown error';
+  const message = raw.toLowerCase();
+
+  if (message.includes('429') || message.includes('rate')) {
+    return 'Too many requests right now. Please try again shortly.';
+  }
+  if (message.includes('unauthorized') || message.includes('401') || message.includes('auth')) {
+    return 'Authentication expired. Please sign in again.';
+  }
+  if (message.includes('timeout') || message.includes('timed out')) {
+    return 'Request timed out. Please try again.';
+  }
+
+  return 'Crystallization is temporarily unavailable. Recovery has been triggered. Please try again.';
+}
+
+function emptyMineResponse(errorMessage: string, traceId?: string) {
+  return {
+    ok: false,
+    results: [],
+    bestScore: null,
+    tierBreakdown: {},
+    rerollCredit: false,
+    persistedCount: 0,
+    alreadyOwnedCount: 0,
+    error: errorMessage,
+    traceId,
+  };
+}
+
+async function mapDiscoveryToResult(disc: any) {
+  if (!disc || disc.cjpi < QUALITY_FLOOR) return null;
+
+  const tier = scoreToPublicTier(disc.cjpi);
+  if (!tier) return null;
+
+  const pipelineSteps: PipelineStep[] = Array.isArray(disc.pipeline_steps)
+    ? (disc.pipeline_steps as PipelineStep[])
+    : moduleChainToSteps(Array.isArray(disc.module_chain) ? disc.module_chain : []);
+
+  const derivedModuleChain = stepsToModuleChain(pipelineSteps);
+
+  let fingerprint = disc.pipeline_fingerprint;
+  if (!fingerprint) {
+    fingerprint = await computeStructuralFingerprint(pipelineSteps);
+  }
+
+  return {
+    id: disc.id,
+    name: disc.name,
+    description: disc.description,
+    score: disc.cjpi,
+    publicTier: tier,
+    valuationDisplay: computeDisplayValuation(disc.cjpi),
+    category: disc.category,
+    systemChain: derivedModuleChain,
+    pipelineSteps,
+    fingerprint,
+  };
+}
+
+async function fetchGlobalCandidates(
+  supabase: ReturnType<typeof createClient>,
+  fetchCount: number,
+): Promise<any[]> {
+  const { count: totalEligible } = await supabase
+    .from('discoveries')
+    .select('id', { count: 'exact', head: true })
+    .gte('cjpi', QUALITY_FLOOR);
+
+  if (!totalEligible || totalEligible <= 0) return [];
+
+  const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
+  const { data } = await supabase
+    .from('discoveries')
+    .select(DISCOVERY_SELECT)
+    .gte('cjpi', QUALITY_FLOOR)
+    .range(randomOffset, randomOffset + fetchCount - 1);
+
+  return shuffleInPlace(data || []);
+}
+
+async function attemptHealingRecovery(
+  supabase: ReturnType<typeof createClient>,
+  userId: string,
+  maxResults: number,
+) {
+  const fetchCount = Math.max(8, maxResults * 8);
+
+  const { data: existingItems } = await supabase
+    .from('foundry_inventory')
+    .select('artifact_id')
+    .eq('user_id', userId);
+
+  const ownedIds = new Set((existingItems || []).map((item: any) => item.artifact_id));
+  const globalCandidates = await fetchGlobalCandidates(supabase, fetchCount);
+
+  const healedResults: any[] = [];
+  for (const disc of globalCandidates) {
+    if (healedResults.length >= maxResults) break;
+    if (ownedIds.has(disc.id)) continue;
+
+    const mapped = await mapDiscoveryToResult(disc);
+    if (!mapped) continue;
+
+    healedResults.push(mapped);
+    ownedIds.add(mapped.id);
+  }
+
+  return healedResults;
+}
+
 serve(async (req) => {
+  let supabase: ReturnType<typeof createClient> | null = null;
+  let authedUserId: string | null = null;
+  let healingMaxResults = 1;
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -113,7 +247,7 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, serviceKey);
+    supabase = createClient(supabaseUrl, serviceKey);
 
     // Auth
     const authHeader = req.headers.get('authorization');
@@ -133,6 +267,7 @@ serve(async (req) => {
         status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+    authedUserId = user.id;
 
     // Parse body — REJECT any bias parameter
     const body = await req.json().catch(() => ({}));
@@ -236,7 +371,8 @@ serve(async (req) => {
     }
 
     // ─── Weighted Mining ─────────────────────────────────────────
-    const maxResults = tierConfig.max_results_per_mine;
+    const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
+    healingMaxResults = maxResults;
 
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
@@ -255,20 +391,23 @@ serve(async (req) => {
 
     const uniqueRanges = [...new Map(attemptedRanges.map(r => [`${r.min}-${r.max}`, r])).values()];
     const rangedCandidates: Map<string, any[]> = new Map();
+    const fetchCount = Math.max(8, maxResults * 4);
 
     for (const range of uniqueRanges) {
       const key = `${range.min}-${range.max}`;
-      const fetchCount = maxResults * 4;
 
-      const { data: rpcResult } = await supabase.rpc('get_random_discoveries', {
+      const { data: rpcResult, error: rpcError } = await supabase.rpc('get_random_discoveries', {
         min_score: range.min,
         max_count: fetchCount,
         max_score: range.max,
       });
 
-      let candidates = rpcResult;
+      let candidates = Array.isArray(rpcResult) ? rpcResult : [];
+      if (rpcError) {
+        console.error('Range RPC failed:', rpcError.message, key);
+      }
 
-      if (!candidates || candidates.length === 0) {
+      if (candidates.length === 0) {
         const { count: totalEligible } = await supabase
           .from('discoveries')
           .select('id', { count: 'exact', head: true })
@@ -279,109 +418,58 @@ serve(async (req) => {
           const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
           const { data: fallbackDisc } = await supabase
             .from('discoveries')
-            .select('id, name, description, cjpi, category, module_chain, pipeline_fingerprint, pipeline_steps')
+            .select(DISCOVERY_SELECT)
             .gte('cjpi', range.min)
             .lte('cjpi', range.max)
             .range(randomOffset, randomOffset + fetchCount - 1);
 
           candidates = fallbackDisc || [];
-        } else {
-          candidates = [];
         }
       }
 
-      // Shuffle
-      for (let i = candidates.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
-      }
-
-      rangedCandidates.set(key, candidates);
+      rangedCandidates.set(key, shuffleInPlace(candidates));
     }
 
-    // Build results — each item gets its OWN tier + structural fingerprint
+    let globalFallbackPool: any[] = [];
+    const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
+    if (allRangePoolsEmpty) {
+      globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+    }
+
+    const selectedIds = new Set<string>();
+    const appendFromPool = async (pool: any[]) => {
+      for (const disc of pool) {
+        if (results.length >= maxResults) break;
+        if (!disc) continue;
+        if (ownedIds.has(disc.id)) continue;
+        if (selectedIds.has(disc.id)) continue;
+
+        const mapped = await mapDiscoveryToResult(disc);
+        if (!mapped) continue;
+
+        results.push(mapped);
+        selectedIds.add(mapped.id);
+        ownedIds.add(mapped.id);
+      }
+    };
+
     for (const range of attemptedRanges) {
       if (results.length >= maxResults) break;
       const key = `${range.min}-${range.max}`;
       const pool = rangedCandidates.get(key) || [];
 
-      for (const disc of pool) {
-        if (results.length >= maxResults) break;
-        if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
-        if (ownedIds.has(disc.id)) continue;
-        if (results.some(r => r.id === disc.id)) continue;
+      await appendFromPool(pool);
 
-        const tier = scoreToPublicTier(disc.cjpi);
-        if (tier) {
-          // Resolve pipeline_steps: use stored or derive from module_chain
-          const pipelineSteps: PipelineStep[] = disc.pipeline_steps
-            ? (disc.pipeline_steps as PipelineStep[])
-            : moduleChainToSteps(disc.module_chain || []);
-
-          // Derive module_chain from steps (preserves order + duplicates)
-          const derivedModuleChain = stepsToModuleChain(pipelineSteps);
-
-          // Use stored fingerprint if available; only compute if missing (immutability)
-          let fingerprint = disc.pipeline_fingerprint;
-          if (!fingerprint) {
-            fingerprint = await computeStructuralFingerprint(pipelineSteps);
-          }
-
-          results.push({
-            id: disc.id,
-            name: disc.name,
-            description: disc.description,
-            score: disc.cjpi,
-            publicTier: tier,
-            valuationDisplay: computeDisplayValuation(disc.cjpi),
-            category: disc.category,
-            systemChain: derivedModuleChain,
-            pipelineSteps,
-            fingerprint,
-          });
-          ownedIds.add(disc.id);
-        }
+      if (results.length < maxResults && pool.length === 0 && globalFallbackPool.length > 0) {
+        await appendFromPool(globalFallbackPool);
       }
+    }
 
-      // Fallback to Mint
-      if (results.length < maxResults && pool.length === 0 && range.min > 68) {
-        const mintPool = rangedCandidates.get('68-79') || [];
-        for (const disc of mintPool) {
-          if (results.length >= maxResults) break;
-          if (!disc || disc.cjpi < QUALITY_FLOOR) continue;
-          if (ownedIds.has(disc.id)) continue;
-          if (results.some(r => r.id === disc.id)) continue;
-
-          const tier = scoreToPublicTier(disc.cjpi);
-          if (tier) {
-            const pipelineSteps: PipelineStep[] = disc.pipeline_steps
-              ? (disc.pipeline_steps as PipelineStep[])
-              : moduleChainToSteps(disc.module_chain || []);
-
-            const derivedModuleChain = stepsToModuleChain(pipelineSteps);
-
-            // Use stored fingerprint; only compute if missing
-            let fingerprint = disc.pipeline_fingerprint;
-            if (!fingerprint) {
-              fingerprint = await computeStructuralFingerprint(pipelineSteps);
-            }
-
-            results.push({
-              id: disc.id,
-              name: disc.name,
-              description: disc.description,
-              score: disc.cjpi,
-              publicTier: tier,
-              valuationDisplay: computeDisplayValuation(disc.cjpi),
-              category: disc.category,
-              systemChain: derivedModuleChain,
-              pipelineSteps,
-              fingerprint,
-            });
-            ownedIds.add(disc.id);
-          }
-        }
+    if (results.length === 0) {
+      if (globalFallbackPool.length === 0) {
+        globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
       }
+      await appendFromPool(globalFallbackPool);
     }
 
     // ─── Rediscovery tracking + fingerprint persistence ───────────
@@ -409,17 +497,19 @@ serve(async (req) => {
           .is('pipeline_steps', null);
 
         // Atomic increment of discovery_count (never reset)
-        await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(async () => {
-          // Fallback: safe atomic increment via COALESCE
+        const { error: incrementError } = await supabase.rpc('increment_discovery_count' as any, {
+          p_discovery_id: r.id,
+        });
+
+        if (incrementError) {
+          console.error('increment_discovery_count fallback:', incrementError.message);
           await supabase
             .from('discoveries')
             .update({
               last_discovered_at: now.toISOString(),
             })
             .eq('id', r.id);
-          // Use raw SQL-safe increment pattern via separate update
-          // discovery_count handled by setting COALESCE default
-        });
+        }
 
         // Atomic metrics accumulation — first try increment, then insert if missing
         const { data: existingMetric } = await supabase
@@ -480,18 +570,10 @@ serve(async (req) => {
         .select('id');
 
       if (insertError) {
-        console.error('Inventory insert failed:', insertError.message);
-        return new Response(JSON.stringify({
-          ok: false,
-          results: [],
-          bestScore: null,
-          tierBreakdown: {},
-          rerollCredit: false,
-          persistedCount: 0,
-          alreadyOwnedCount: 0,
-          error: 'Failed to save to vault. Please try again.',
-        }), {
-          status: 500,
+        const traceId = makeTraceId();
+        console.error(`[foundry-mine:${traceId}] Inventory insert failed:`, insertError.message);
+        return new Response(JSON.stringify(emptyMineResponse('Vault sync temporarily unavailable. Please try again.', traceId)), {
+          status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
@@ -536,9 +618,54 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
-    console.error('foundry-mine error:', err.message);
-    return new Response(JSON.stringify({ ok: false, error: err.message }), {
-      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    const traceId = makeTraceId();
+    console.error(`[foundry-mine:${traceId}]`, err?.message ?? err);
+
+    if (supabase && authedUserId) {
+      try {
+        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults);
+
+        if (healedResults.length > 0) {
+          const bestScore = Math.max(...healedResults.map((r: any) => r.score));
+          const tierBreakdown: Record<string, number> = {};
+          for (const r of healedResults) {
+            tierBreakdown[r.publicTier] = (tierBreakdown[r.publicTier] || 0) + 1;
+          }
+
+          await supabase.from('foundry_mine_events').insert({
+            user_id: authedUserId,
+            result_count: healedResults.length,
+            best_score: bestScore,
+            tier_breakdown: tierBreakdown,
+            blocked_reason: 'healing_recovery',
+            rate_limit_bucket: 'healed',
+          });
+
+          return new Response(JSON.stringify({
+            ok: true,
+            results: healedResults,
+            bestScore,
+            tierBreakdown,
+            rerollCredit: false,
+            persistedCount: 0,
+            alreadyOwnedCount: healedResults.length,
+            healed: true,
+            healingMode: 'fallback_pool',
+            traceId,
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (healErr: any) {
+        console.error(`[foundry-mine:${traceId}] healing failed:`, healErr?.message ?? healErr);
+      }
+    }
+
+    return new Response(JSON.stringify(
+      emptyMineResponse(toSafeCustomerMessage(err), traceId)
+    ), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });

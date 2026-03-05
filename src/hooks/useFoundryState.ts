@@ -10,6 +10,7 @@ import { executeMine, filterByQualityFloor, type MineResult, type MineResponse }
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import { recordPipelineLineage } from '@/substrate/memory-lineage';
 import { recordOperation } from '@/substrate/substrate-metrics';
+import { fromError } from '@/lib/system/errors';
 import { toast } from 'sonner';
 
 interface FoundryUserState {
@@ -167,8 +168,9 @@ export function useFoundryState() {
 
       // Always refresh vault from DB after crystallize
       await loadState();
-    } catch (err: any) {
-      toast.error(err.message || 'Crystallization failed');
+    } catch (err) {
+      const appError = fromError(err, 'MODULE_ERROR');
+      toast.error(appError.safe_message);
     } finally {
       setIsMining(false);
     }
