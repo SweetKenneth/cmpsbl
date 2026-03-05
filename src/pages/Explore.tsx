@@ -67,19 +67,16 @@ export default function Explore() {
       <PublicNav />
 
       {/* Ambient animated mesh background */}
+      {/* Gap #1: Replace framer-motion ambient orbs with CSS animations for perf */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
-        <motion.div
-          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full"
+        <div
+          className="absolute top-0 left-0 w-[800px] h-[800px] rounded-full animate-hero-orb-1"
           style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%)" }}
-          animate={{ x: [-100, 100, -100], y: [-50, 50, -50] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div
-          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
+        <div
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full animate-hero-orb-3"
           style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 60%)" }}
-          animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 

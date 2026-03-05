@@ -178,7 +178,7 @@ serve(async (req) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'Agency AI <notifications@promptfluid.com>',
+            from: 'Agency AI <notifications@cmpsbl.com>',
             to: [email.recipient_email],
             subject,
             html: html || email.body_text,

@@ -12,7 +12,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const DOCS_URL = "https://cmpsbl.lovable.app/substrate/docs";
+const DOCS_URL = "https://cmpsbl.com/substrate/docs";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
