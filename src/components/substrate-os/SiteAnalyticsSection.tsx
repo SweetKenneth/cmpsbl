@@ -53,283 +53,102 @@ interface SiteAnalyticsData {
   connectionTypes: { type: string; count: number }[];
 }
 
-// ─── Fetch Logic ────────────────────────────────────────────────────
-async function fetchSiteAnalytics(days: number): Promise<SiteAnalyticsData> {
-  const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+type DateRangeKey = 'today' | 'yesterday' | '7d' | '30d' | '90d';
 
-  // Fetch exclusions for owner filtering
-  const { data: exclusions } = await supabase
-    .from('site_analytics_exclusions')
-    .select('exclusion_type, value');
+function getDateRange(key: DateRangeKey): { start: Date; end: Date } {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  switch (key) {
+    case 'today':
+      return { start: todayStart, end: now };
+    case 'yesterday': {
+      const yStart = new Date(todayStart);
+      yStart.setDate(yStart.getDate() - 1);
+      return { start: yStart, end: todayStart };
+    }
+    case '7d':
+      return { start: new Date(Date.now() - 7 * 86400000), end: now };
+    case '30d':
+      return { start: new Date(Date.now() - 30 * 86400000), end: now };
+    case '90d':
+      return { start: new Date(Date.now() - 90 * 86400000), end: now };
+  }
+}
 
-  const excludedFingerprints = new Set(
-    (exclusions || []).filter(e => e.exclusion_type === 'fingerprint').map(e => e.value)
-  );
+// ─── Fetch Logic (Server-Side Aggregation) ──────────────────────────
+async function fetchSiteAnalytics(rangeKey: DateRangeKey): Promise<SiteAnalyticsData> {
+  const { start, end } = getDateRange(rangeKey);
 
-  const [pvRes, sessRes] = await Promise.all([
-    supabase
-      .from('site_page_views')
-      .select('*')
-      .gte('created_at', startDate)
-      .order('created_at', { ascending: false })
-      .limit(1000),
-    supabase
-      .from('site_sessions')
-      .select('*')
-      .gte('started_at', startDate)
-      .order('started_at', { ascending: false })
-      .limit(1000),
-  ]);
-
-  // Filter bots and owner
-  const rawViews = (pvRes.data || []).filter(v => {
-    if (isBotUA(v.user_agent || '')) return false;
-    if (excludedFingerprints.has(v.fingerprint_hash || '')) return false;
-    return true;
+  const { data, error } = await supabase.rpc('get_site_analytics_aggregated', {
+    p_start_date: start.toISOString(),
+    p_end_date: end.toISOString(),
   });
 
-  const rawSessions = (sessRes.data || []).filter(s => {
-    if (excludedFingerprints.has(s.fingerprint_hash || '')) return false;
-    return true;
-  });
+  if (error || !data) {
+    console.error('Site analytics RPC error:', error);
+    return emptyAnalytics(rangeKey);
+  }
 
-  // Build visitor identity from both tables (session-first fallback if page views are missing)
-  const fingerprintSetFromSessions = new Set<string>(
-    rawSessions.map(s => s.fingerprint_hash).filter(Boolean)
-  );
-  const fingerprintSetFromViews = new Set<string>(
-    rawViews.map(v => v.fingerprint_hash).filter(Boolean)
-  );
-  const allFingerprintSet = new Set<string>([
-    ...Array.from(fingerprintSetFromSessions),
-    ...Array.from(fingerprintSetFromViews),
-  ]);
+  const raw = data as any;
+  const core = raw.core || {};
+  const pageViewCount = raw.page_view_count || 0;
 
-  const fallbackVisitorIds = new Set<string>([
-    ...rawSessions.map(s => s.fingerprint_hash || `session:${s.id}`),
-    ...rawViews.map(v => v.fingerprint_hash || `session:${v.session_id}`),
-  ].filter(Boolean) as string[]);
-
-  const uniqueVisitors = allFingerprintSet.size > 0 ? allFingerprintSet.size : fallbackVisitorIds.size;
-
-  // Session metrics
-  const totalSessions = rawSessions.length;
-  const bounceSessions = rawSessions.filter(s => s.is_bounce).length;
-  const bounceRate = totalSessions > 0 ? Math.round((bounceSessions / totalSessions) * 1000) / 10 : 0;
-  const avgPagesPerSession = totalSessions > 0
-    ? Math.round((rawSessions.reduce((a, s) => a + (s.page_count || 1), 0) / totalSessions) * 10) / 10
-    : 0;
-  const sessionDurations = rawSessions
-    .map(s => s.total_duration_ms || 0)
-    .filter(d => d > 0);
-  const avgSessionDuration = sessionDurations.length > 0
-    ? Math.round(sessionDurations.reduce((a, b) => a + b, 0) / sessionDurations.length)
-    : 0;
-
-  // Page views: prefer page-view table, fallback to session page_count when page-view rows are missing
-  const totalPageViewsFromSessions = rawSessions.reduce((sum, s) => sum + Math.max(1, s.page_count || 1), 0);
-  const totalPageViews = rawViews.length > 0 ? rawViews.length : totalPageViewsFromSessions;
-
-  // Returning vs new
-  const sessionFingerprints = new Map<string, number>();
-  rawSessions.forEach(s => {
-    const fp = s.fingerprint_hash;
-    if (fp) sessionFingerprints.set(fp, (sessionFingerprints.get(fp) || 0) + 1);
-  });
-  const returningVisitors = Array.from(sessionFingerprints.values()).filter(c => c > 1).length;
+  const uniqueVisitors = core.unique_visitors || 0;
+  const totalSessions = core.total_sessions || 0;
+  const totalPageViews = pageViewCount > 0 ? pageViewCount : (core.total_page_views || 0);
+  const returningVisitors = core.returning_visitors || 0;
   const newVisitors = Math.max(0, uniqueVisitors - returningVisitors);
 
-  // Top pages
-  const pageCounts = new Map<string, { views: number; totalTime: number; totalScroll: number; timeCount: number; scrollCount: number }>();
-
-  if (rawViews.length > 0) {
-    rawViews.forEach(v => {
-      const path = v.page_path || '/';
-      const existing = pageCounts.get(path) || { views: 0, totalTime: 0, totalScroll: 0, timeCount: 0, scrollCount: 0 };
-      existing.views++;
-      if (v.time_on_page_ms && v.time_on_page_ms > 0) {
-        existing.totalTime += v.time_on_page_ms;
-        existing.timeCount++;
-      }
-      if (v.scroll_depth_pct != null) {
-        existing.totalScroll += v.scroll_depth_pct;
-        existing.scrollCount++;
-      }
-      pageCounts.set(path, existing);
-    });
-  } else {
-    // Fallback for historical rows created before page-view capture was fixed
-    rawSessions.forEach(s => {
-      const path = s.first_page || s.last_page || '/';
-      const existing = pageCounts.get(path) || { views: 0, totalTime: 0, totalScroll: 0, timeCount: 0, scrollCount: 0 };
-      existing.views += Math.max(1, s.page_count || 1);
-      if (s.total_duration_ms && s.total_duration_ms > 0) {
-        existing.totalTime += s.total_duration_ms;
-        existing.timeCount++;
-      }
-      pageCounts.set(path, existing);
-    });
-  }
-
-  const topPages = Array.from(pageCounts.entries())
-    .map(([path, d]) => ({
-      path,
-      views: d.views,
-      avgTime: d.timeCount > 0 ? Math.round(d.totalTime / d.timeCount) : 0,
-      avgScroll: d.scrollCount > 0 ? Math.round(d.totalScroll / d.scrollCount) : 0,
-    }))
-    .sort((a, b) => b.views - a.views)
-    .slice(0, 20);
-
-  // Referrers
-  const refCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    const domain = s.referrer_domain;
-    if (domain) refCounts.set(domain, (refCounts.get(domain) || 0) + 1);
-  });
-  const topReferrers = Array.from(refCounts.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([domain, count]) => ({ domain, count }));
-
-  // Device breakdown
-  const deviceCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    const t = s.device_type || 'unknown';
-    deviceCounts.set(t, (deviceCounts.get(t) || 0) + 1);
-  });
-  const deviceBreakdown = Array.from(deviceCounts.entries())
-    .map(([type, count]) => ({ type, count }))
-    .sort((a, b) => b.count - a.count);
-
-  // Browser breakdown
-  const browserCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.browser) browserCounts.set(s.browser, (browserCounts.get(s.browser) || 0) + 1);
-  });
-  const browserBreakdown = Array.from(browserCounts.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-
-  // OS breakdown
-  const osCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.os) osCounts.set(s.os, (osCounts.get(s.os) || 0) + 1);
-  });
-  const osBreakdown = Array.from(osCounts.entries())
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-
-  // Screen sizes
-  const screenCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.screen_width && s.screen_height) {
-      const size = `${s.screen_width}×${s.screen_height}`;
-      screenCounts.set(size, (screenCounts.get(size) || 0) + 1);
-    }
-  });
-  const screenSizes = Array.from(screenCounts.entries())
-    .map(([size, count]) => ({ size, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  // Timezones
-  const tzCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.timezone) tzCounts.set(s.timezone, (tzCounts.get(s.timezone) || 0) + 1);
-  });
-  const topTimezones = Array.from(tzCounts.entries())
-    .map(([tz, count]) => ({ tz, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  // Languages
-  const langCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.language) langCounts.set(s.language, (langCounts.get(s.language) || 0) + 1);
-  });
-  const topLanguages = Array.from(langCounts.entries())
-    .map(([lang, count]) => ({ lang, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  // Daily time series (page-view first, sessions fallback)
-  const dailyMap = new Map<string, { views: number; sessions: Set<string>; visitors: Set<string> }>();
-
-  if (rawViews.length > 0) {
-    rawViews.forEach(v => {
-      const day = (v.created_at || '').split('T')[0];
-      if (!day) return;
-      const existing = dailyMap.get(day) || { views: 0, sessions: new Set(), visitors: new Set() };
-      existing.views++;
-      existing.sessions.add(v.session_id);
-      if (v.fingerprint_hash) existing.visitors.add(v.fingerprint_hash);
-      dailyMap.set(day, existing);
-    });
-  } else {
-    rawSessions.forEach(s => {
-      const day = (s.started_at || '').split('T')[0];
-      if (!day) return;
-      const existing = dailyMap.get(day) || { views: 0, sessions: new Set(), visitors: new Set() };
-      existing.views += Math.max(1, s.page_count || 1);
-      existing.sessions.add(s.id);
-      if (s.fingerprint_hash) existing.visitors.add(s.fingerprint_hash);
-      dailyMap.set(day, existing);
-    });
-  }
-
+  // Build daily time series — fill gaps
+  const dailyRaw: { day: string; views: number; sessions: number; visitors: number }[] = raw.daily || [];
+  const dailyMap = new Map(dailyRaw.map(d => [d.day, d]));
+  const days = rangeKey === 'today' ? 1 : rangeKey === 'yesterday' ? 1 : rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : 90;
   const dailyViews: SiteAnalyticsData['dailyViews'] = [];
   for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const d = new Date(end.getTime() - i * 86400000).toISOString().split('T')[0];
     const dd = dailyMap.get(d);
     dailyViews.push({
       date: d,
       views: dd?.views || 0,
-      sessions: dd?.sessions.size || 0,
-      visitors: dd?.visitors.size || 0,
+      sessions: dd?.sessions || 0,
+      visitors: dd?.visitors || 0,
     });
   }
-
-  // UTM sources
-  const utmCounts = new Map<string, number>();
-  rawSessions.forEach(s => {
-    if (s.utm_source) utmCounts.set(s.utm_source, (utmCounts.get(s.utm_source) || 0) + 1);
-  });
-  const topUTMSources = Array.from(utmCounts.entries())
-    .map(([source, count]) => ({ source, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-
-  // Connection types
-  const connCounts = new Map<string, number>();
-  rawViews.forEach(v => {
-    if (v.connection_type) connCounts.set(v.connection_type, (connCounts.get(v.connection_type) || 0) + 1);
-  });
-  const connectionTypes = Array.from(connCounts.entries())
-    .map(([type, count]) => ({ type, count }))
-    .sort((a, b) => b.count - a.count);
 
   return {
     uniqueVisitors,
     totalPageViews,
     totalSessions,
-    avgPagesPerSession,
-    avgSessionDuration,
-    bounceRate,
-    uniqueFingerprints: allFingerprintSet.size,
+    avgPagesPerSession: core.avg_pages_per_session || 0,
+    avgSessionDuration: core.avg_session_duration_ms || 0,
+    bounceRate: core.bounce_rate || 0,
+    uniqueFingerprints: core.unique_fingerprints || 0,
     returningVisitors,
     newVisitors,
-    topPages,
-    topReferrers,
-    deviceBreakdown,
-    browserBreakdown,
-    osBreakdown,
-    screenSizes,
-    topTimezones,
-    topLanguages,
+    topPages: (raw.top_pages || []).map((p: any) => ({
+      path: p.path, views: p.views, avgTime: p.avg_time || 0, avgScroll: p.avg_scroll || 0,
+    })),
+    topReferrers: (raw.referrers || []).map((r: any) => ({ domain: r.domain, count: r.count })),
+    deviceBreakdown: (raw.devices || []).map((d: any) => ({ type: d.type, count: d.count })),
+    browserBreakdown: (raw.browsers || []).map((b: any) => ({ name: b.name, count: b.count })),
+    osBreakdown: (raw.os_breakdown || []).map((o: any) => ({ name: o.name, count: o.count })),
+    screenSizes: (raw.screens || []).map((s: any) => ({ size: s.size, count: s.count })),
+    topTimezones: (raw.timezones || []).map((t: any) => ({ tz: t.tz, count: t.count })),
+    topLanguages: (raw.languages || []).map((l: any) => ({ lang: l.lang, count: l.count })),
     dailyViews,
-    topUTMSources,
-    connectionTypes,
+    topUTMSources: (raw.utm_sources || []).map((u: any) => ({ source: u.source, count: u.count })),
+    connectionTypes: (raw.connection_types || []).map((c: any) => ({ type: c.type, count: c.count })),
+  };
+}
+
+function emptyAnalytics(rangeKey: DateRangeKey): SiteAnalyticsData {
+  return {
+    uniqueVisitors: 0, totalPageViews: 0, totalSessions: 0,
+    avgPagesPerSession: 0, avgSessionDuration: 0, bounceRate: 0,
+    uniqueFingerprints: 0, returningVisitors: 0, newVisitors: 0,
+    topPages: [], topReferrers: [], deviceBreakdown: [], browserBreakdown: [],
+    osBreakdown: [], screenSizes: [], topTimezones: [], topLanguages: [],
+    dailyViews: [], topUTMSources: [], connectionTypes: [],
   };
 }
 
