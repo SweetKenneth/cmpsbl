@@ -27,9 +27,11 @@ export function IntegrationBadges({ className }: { className?: string }) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 + index * 0.05, duration: 0.3 }}
+          whileHover={{ scale: 1.08, y: -2 }}
           className={cn(
             "px-3 py-1.5 rounded-full text-xs font-medium border",
-            "backdrop-blur-sm transition-all duration-200 hover:scale-105",
+            "backdrop-blur-sm cursor-default",
+            "transition-shadow duration-200 hover:shadow-md",
             integration.color
           )}
         >

@@ -62,7 +62,11 @@ export default function Enterprise() {
         keywords={['enterprise AI', 'private deployment', 'on-premises AI', 'CMPSBL enterprise']}
       />
       <PublicNav />
-      <main className="min-h-screen bg-background pt-24 pb-16">
+      <main className="min-h-screen bg-background pt-24 pb-16 relative">
+        {/* Ambient glow */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute top-40 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }} />
+        </div>
         {/* Hero */}
         <section className="container mx-auto max-w-5xl px-4 text-center mb-20">
           <motion.div {...fadeUp}>
@@ -98,7 +102,7 @@ export default function Enterprise() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors"
+                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <cap.icon className="w-5 h-5 text-primary" />
@@ -112,7 +116,7 @@ export default function Enterprise() {
 
         {/* CTA */}
         <section className="container mx-auto max-w-3xl px-4 text-center">
-          <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-muted/30">
+          <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Custom slot capacity, dedicated instances, SOC2 compliance, DREAM cycle configuration, and white-glove onboarding — tailored to your organization.

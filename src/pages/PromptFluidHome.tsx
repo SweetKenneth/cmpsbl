@@ -213,7 +213,7 @@ export default function PromptFluidHome() {
                 key={cap.title}
                 {...stagger}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-xl border border-border/50 bg-card/50 p-6 hover:border-primary/30 hover:bg-card/80 transition-all group"
+                className="rounded-xl border border-border/50 bg-card/50 p-6 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover"
               >
                 <cap.icon className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-lg font-bold text-foreground mb-2">{cap.title}</h3>
@@ -298,7 +298,7 @@ export default function PromptFluidHome() {
                 key={svc.title}
                 {...stagger}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-xl border border-border/50 bg-card/50 p-6 sm:p-8 hover:border-primary/30 hover:bg-card/80 transition-all"
+                className="rounded-xl border border-border/50 bg-card/50 p-6 sm:p-8 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300 shimmer-on-hover"
               >
                 <svc.icon className="w-10 h-10 text-primary mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">{svc.title}</h3>
@@ -347,13 +347,13 @@ export default function PromptFluidHome() {
                 <span className="text-sm font-semibold text-white/90">Our Flagship Project</span>
               </motion.div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-5 leading-[1.1]">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 leading-[1.1]">
                 Meet{" "}
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">
-                  CMPSBL®
-                </span>
+                 <span className="bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent">
+                   CMPSBL®
+                 </span>
               </h2>
-              <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 The world's first public cognitive operating system — 10 entities, 5 mesh overlays, 
                 persistent memory, self-evolving architecture, and 175k+ lines of production code. 
                 Free to start.
@@ -377,7 +377,7 @@ export default function PromptFluidHome() {
                 <Button
                   asChild
                   size="lg"
-                  className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all"
+                  className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer">
                     <Terminal className="w-5 h-5 mr-2" />
@@ -431,7 +431,7 @@ export default function PromptFluidHome() {
               >
                 <Link
                   to={pub.link}
-                  className="block rounded-xl border border-border/50 bg-card/50 p-6 hover:border-primary/30 hover:bg-card/80 transition-all h-full"
+                  className="block rounded-xl border border-border/50 bg-card/50 p-6 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 h-full shimmer-on-hover"
                 >
                   <pub.icon className="w-8 h-8 text-primary mb-3" />
                   <h3 className="text-lg font-bold text-foreground mb-2">{pub.title}</h3>

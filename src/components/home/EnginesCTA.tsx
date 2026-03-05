@@ -105,7 +105,7 @@ export function EnginesCTA() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 + i * 0.04 }}
-                  className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                  className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 hover:-translate-y-0.5 transition-all duration-300 shimmer-on-hover"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <div className={cn("w-1.5 h-1.5 rounded-full", TIER_DOT[engine.tier])} />
@@ -136,7 +136,7 @@ export function EnginesCTA() {
               <Button
                 asChild
                 size="lg"
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <Link to="/engines">
                   <Shield className="w-4 h-4" />
