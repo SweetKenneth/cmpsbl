@@ -700,7 +700,41 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENGINE SYSTEM v10.5.4 (76 Engines + 24 Meta = 100) ────────┐
+┌─ OBSERVABILITY (obs.*) ──────────────────────────────────────┐
+│                                                             │
+│  obs.summary           Full observability overview           │
+│  obs.bridges           Bridge activity & message flow        │
+│  obs.latency           Cross-node latency metrics            │
+│  obs.hotspots          Error hotspot detection               │
+│  obs.telemetry         Telemetry engine state                │
+│  obs.telemetry.errors  Recent error log                      │
+│  obs.telemetry.gov     Governance events log                 │
+│  obs.dlq               Dead letter queue status              │
+│  obs.health            Composite health score                │
+│  obs.help              Observability command reference       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ GOVERNANCE SHORTHAND (gov.*) ───────────────────────────────┐
+│                                                             │
+│  gov.mode              Current mode & subsystem states       │
+│  gov.vetoes            Active vetoes with scope              │
+│  gov.compliance        Run compliance audit                  │
+│  gov.drift             Governance drift analysis             │
+│  gov.transitions       Available mode transitions            │
+│  gov.help              Governance command reference          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ SYSTEM AUDIT & REPAIR ─────────────────────────────────────┐
+│                                                             │
+│  system.audit          Full subsystem audit                  │
+│  system.repair         Self-repair loop (3 attempts)         │
+│  system.fix            Audit + auto-repair in one shot       │
+│  system.health         Quick composite health check          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
 │                                                             │
 │  engine.list [cat]       List engines by category           │
 │  engine.get <id>         Engine details                     │
