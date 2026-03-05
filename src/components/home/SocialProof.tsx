@@ -36,18 +36,18 @@ const TESTIMONIALS: Testimonial[] = [
 
 export function SocialProof() {
   return (
-    <section className="py-16 sm:py-24">
-      <div className="container mx-auto max-w-6xl px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+    <section className="relative z-10 py-14 sm:py-24 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-10 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground mb-3 tracking-tight">
             Trusted by builders crystallizing from the stream
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
             Teams using the Memory Stream to build intelligence that compounds.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={i}
@@ -55,7 +55,7 @@ export function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+              className="relative p-5 sm:p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
             >
               <Quote className="w-8 h-8 text-primary/20 absolute top-4 right-4" />
               <div className="flex gap-0.5 mb-3">
