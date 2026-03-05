@@ -18,7 +18,7 @@ export const PIPELINE_FINGERPRINT_EPOCH =
  * Quality floor for public mining.
  * Discoveries below this CJPI are excluded from mine results.
  */
-export const QUALITY_FLOOR = 68;
+export const QUALITY_FLOOR = 1;
 
 /**
  * Legacy capability placeholder for discoveries without recorded capabilities.

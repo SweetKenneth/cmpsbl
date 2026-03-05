@@ -6,7 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-const QUALITY_FLOOR = 68;
+const QUALITY_FLOOR = 1;
 const FINGERPRINT_EPOCH = Deno.env.get('PIPELINE_FINGERPRINT_EPOCH') ?? 'SPARTA';
 const LEGACY_CAPABILITY = 'unknown';
 
@@ -19,11 +19,12 @@ type TierWeight = {
 };
 
 const TIER_WEIGHTS: TierWeight[] = [
-  { min: 68, max: 79, weight: 0.65, tier: 'Mint' },
-  { min: 80, max: 89, weight: 0.25, tier: 'Prime' },
+  { min: 1,  max: 67, weight: 0.45, tier: 'Raw' },
+  { min: 68, max: 79, weight: 0.25, tier: 'Mint' },
+  { min: 80, max: 89, weight: 0.18, tier: 'Prime' },
   { min: 90, max: 93, weight: 0.07, tier: 'Relic' },
-  { min: 94, max: 99, weight: 0.025, tier: 'Mythic' },
-  { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
+  { min: 94, max: 99, weight: 0.035, tier: 'Mythic' },
+  { min: 100, max: 100, weight: 0.015, tier: 'Apex' },
 ];
 
 function getMaxAllowedScore(priorMines: number): number {
@@ -115,7 +116,7 @@ function pickWeightedTierRange(
     .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
 
   if (eligible.length === 0) {
-    return { min: 68, max: Math.min(79, maxAllowedScore) };
+    return { min: 1, max: Math.min(67, maxAllowedScore) };
   }
 
   const normalized = normalizeTierWeights(eligible);
@@ -139,7 +140,8 @@ function scoreToPublicTier(score: number): string | null {
   if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
-  return 'Mint';
+  if (score >= 68) return 'Mint';
+  return 'Raw';
 }
 
 function computeDisplayValuation(score: number): number {

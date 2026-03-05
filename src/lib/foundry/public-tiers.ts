@@ -4,9 +4,9 @@
  * Quality floor: 68. No pipelines below this are ever shown or stored.
  */
 
-export const QUALITY_FLOOR = 68;
+export const QUALITY_FLOOR = 1;
 
-export type PublicTier = 'Mint' | 'Prime' | 'Relic' | 'Mythic' | 'Apex';
+export type PublicTier = 'Raw' | 'Mint' | 'Prime' | 'Relic' | 'Mythic' | 'Apex';
 
 export interface PublicTierConfig {
   id: PublicTier;
@@ -18,6 +18,7 @@ export interface PublicTierConfig {
 }
 
 export const PUBLIC_TIERS: PublicTierConfig[] = [
+  { id: 'Raw',    min: 1,  max: 67, color: 'hsl(0, 0%, 50%)',     accent: 'text-muted-foreground', description: 'Unrefined extraction — experimental grade' },
   { id: 'Mint',   min: 68, max: 79, color: 'hsl(160, 60%, 50%)',  accent: 'text-emerald-400', description: 'Solid discovery — production-viable' },
   { id: 'Prime',  min: 80, max: 89, color: 'hsl(200, 80%, 60%)',  accent: 'text-sky-400',     description: 'High-quality pipeline' },
   { id: 'Relic',  min: 90, max: 93, color: 'hsl(45, 95%, 55%)',   accent: 'text-amber-400',   description: 'Rare find — exceptional capability' },
@@ -34,7 +35,8 @@ export function scoreToPublicTier(score: number): PublicTier | null {
   if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
-  return 'Mint';
+  if (score >= 68) return 'Mint';
+  return 'Raw';
 }
 
 /**
@@ -68,6 +70,7 @@ export function formatValuation(amount: number): string {
  */
 export function getTierBadgeClass(tier: PublicTier): string {
   const map: Record<PublicTier, string> = {
+    Raw:    'bg-muted/30 text-muted-foreground border-muted-foreground/20',
     Mint:   'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
     Prime:  'bg-sky-500/10 text-sky-400 border-sky-500/30',
     Relic:  'bg-amber-500/10 text-amber-400 border-amber-500/30',
