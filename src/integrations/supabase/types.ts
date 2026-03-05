@@ -1745,6 +1745,30 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_chain_anchors: {
+        Row: {
+          anchored_at: string
+          head_hash: string
+          id: string
+          receipt_count: number
+          store: string
+        }
+        Insert: {
+          anchored_at?: string
+          head_hash: string
+          id?: string
+          receipt_count?: number
+          store?: string
+        }
+        Update: {
+          anchored_at?: string
+          head_hash?: string
+          id?: string
+          receipt_count?: number
+          store?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -4558,6 +4582,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cascade_events: {
+        Row: {
+          actions_taken: Json
+          affected_modules: string[]
+          created_at: string
+          id: string
+          origin_module: string
+          resolved: boolean
+          resolved_at: string | null
+          safe_mode_level: string | null
+          severity: string
+        }
+        Insert: {
+          actions_taken?: Json
+          affected_modules?: string[]
+          created_at?: string
+          id?: string
+          origin_module: string
+          resolved?: boolean
+          resolved_at?: string | null
+          safe_mode_level?: string | null
+          severity: string
+        }
+        Update: {
+          actions_taken?: Json
+          affected_modules?: string[]
+          created_at?: string
+          id?: string
+          origin_module?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          safe_mode_level?: string | null
+          severity?: string
+        }
+        Relationships: []
+      }
       causal_traces: {
         Row: {
           confidence: number | null
@@ -4669,6 +4729,51 @@ export type Database = {
           source?: string
           summary?: string
           timestamp?: string
+        }
+        Relationships: []
+      }
+      circuit_breaker_trips: {
+        Row: {
+          backoff_multiplier: number
+          consecutive_trips: number
+          created_at: string
+          downstream_service: string | null
+          estimated_blast_radius: number | null
+          id: string
+          last_error_signature: string | null
+          module: string
+          open_duration_ms: number
+          resolved_at: string | null
+          trip_cause: string
+          tripped_at: string
+        }
+        Insert: {
+          backoff_multiplier?: number
+          consecutive_trips?: number
+          created_at?: string
+          downstream_service?: string | null
+          estimated_blast_radius?: number | null
+          id?: string
+          last_error_signature?: string | null
+          module: string
+          open_duration_ms: number
+          resolved_at?: string | null
+          trip_cause: string
+          tripped_at?: string
+        }
+        Update: {
+          backoff_multiplier?: number
+          consecutive_trips?: number
+          created_at?: string
+          downstream_service?: string | null
+          estimated_blast_radius?: number | null
+          id?: string
+          last_error_signature?: string | null
+          module?: string
+          open_duration_ms?: number
+          resolved_at?: string | null
+          trip_cause?: string
+          tripped_at?: string
         }
         Relationships: []
       }
@@ -9459,6 +9564,48 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_tier_receipts: {
+        Row: {
+          actor: string
+          after_confidence: number | null
+          after_tier: string
+          before_confidence: number | null
+          before_tier: string
+          created_at: string
+          evidence: Json | null
+          id: string
+          memory_id: string
+          reason_code: string
+          rps_score: number | null
+        }
+        Insert: {
+          actor?: string
+          after_confidence?: number | null
+          after_tier: string
+          before_confidence?: number | null
+          before_tier: string
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          memory_id: string
+          reason_code: string
+          rps_score?: number | null
+        }
+        Update: {
+          actor?: string
+          after_confidence?: number | null
+          after_tier?: string
+          before_confidence?: number | null
+          before_tier?: string
+          created_at?: string
+          evidence?: Json | null
+          id?: string
+          memory_id?: string
+          reason_code?: string
+          rps_score?: number | null
+        }
+        Relationships: []
+      }
       mesh_capability_recommendations: {
         Row: {
           applied_at: string | null
@@ -10107,6 +10254,45 @@ export type Database = {
           status?: string
           updated_at?: string
           version?: string
+        }
+        Relationships: []
+      }
+      module_slo_status: {
+        Row: {
+          breaker_open: boolean
+          burn_rate_elevated: boolean
+          burn_rates: Json | null
+          computed_at: string
+          grade: string
+          id: string
+          module: string
+          mttr_ms: number | null
+          p99_latency_ms: number | null
+          slo_compliant: boolean
+        }
+        Insert: {
+          breaker_open?: boolean
+          burn_rate_elevated?: boolean
+          burn_rates?: Json | null
+          computed_at?: string
+          grade?: string
+          id?: string
+          module: string
+          mttr_ms?: number | null
+          p99_latency_ms?: number | null
+          slo_compliant?: boolean
+        }
+        Update: {
+          breaker_open?: boolean
+          burn_rate_elevated?: boolean
+          burn_rates?: Json | null
+          computed_at?: string
+          grade?: string
+          id?: string
+          module?: string
+          mttr_ms?: number | null
+          p99_latency_ms?: number | null
+          slo_compliant?: boolean
         }
         Relationships: []
       }
@@ -12979,6 +13165,45 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_routing_events: {
+        Row: {
+          candidates_count: number | null
+          created_at: string
+          failover_step: string | null
+          filtered_count: number | null
+          id: string
+          provider_id: string
+          reason: string
+          score: number | null
+          sticky_hit: boolean | null
+          task_type: string | null
+        }
+        Insert: {
+          candidates_count?: number | null
+          created_at?: string
+          failover_step?: string | null
+          filtered_count?: number | null
+          id?: string
+          provider_id: string
+          reason: string
+          score?: number | null
+          sticky_hit?: boolean | null
+          task_type?: string | null
+        }
+        Update: {
+          candidates_count?: number | null
+          created_at?: string
+          failover_step?: string | null
+          filtered_count?: number | null
+          id?: string
+          provider_id?: string
+          reason?: string
+          score?: number | null
+          sticky_hit?: boolean | null
+          task_type?: string | null
+        }
+        Relationships: []
+      }
       quarry_assets: {
         Row: {
           asset_key: string
@@ -13809,6 +14034,42 @@ export type Database = {
           utm_campaign?: string | null
           utm_medium?: string | null
           utm_source?: string | null
+        }
+        Relationships: []
+      }
+      slo_specs: {
+        Row: {
+          created_at: string
+          error_budget_window_hours: number
+          error_rate_target: number
+          id: string
+          module: string
+          p95_latency_target_ms: number
+          p99_latency_target_ms: number
+          updated_at: string
+          uptime_target: number
+        }
+        Insert: {
+          created_at?: string
+          error_budget_window_hours?: number
+          error_rate_target?: number
+          id?: string
+          module: string
+          p95_latency_target_ms?: number
+          p99_latency_target_ms?: number
+          updated_at?: string
+          uptime_target?: number
+        }
+        Update: {
+          created_at?: string
+          error_budget_window_hours?: number
+          error_rate_target?: number
+          id?: string
+          module?: string
+          p95_latency_target_ms?: number
+          p99_latency_target_ms?: number
+          updated_at?: string
+          uptime_target?: number
         }
         Relationships: []
       }
@@ -15099,6 +15360,36 @@ export type Database = {
           updated_at?: string | null
           webhook_secret_hash?: string | null
           webhook_url?: string | null
+        }
+        Relationships: []
+      }
+      substrate_integrity_reports: {
+        Row: {
+          computed_at: string
+          created_at: string
+          id: string
+          inputs: Json | null
+          integrity_lanes: Json
+          integrity_total: number
+          mode: string
+        }
+        Insert: {
+          computed_at?: string
+          created_at?: string
+          id?: string
+          inputs?: Json | null
+          integrity_lanes: Json
+          integrity_total: number
+          mode?: string
+        }
+        Update: {
+          computed_at?: string
+          created_at?: string
+          id?: string
+          inputs?: Json | null
+          integrity_lanes?: Json
+          integrity_total?: number
+          mode?: string
         }
         Relationships: []
       }
