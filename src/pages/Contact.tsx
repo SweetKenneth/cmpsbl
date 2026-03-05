@@ -107,10 +107,10 @@ export default function Contact() {
             </Badge>
           </motion.div>
           
-          <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+          <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
             Talk to Us
           </motion.h1>
-          <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
+          <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
             Enterprise partnerships, technical questions, or just want to learn more — our team responds to every message.
           </motion.p>
         </div>
@@ -119,9 +119,9 @@ export default function Contact() {
       {/* Departments Grid */}
       <section className="py-16 px-4 bg-muted/30 relative z-10">
         <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Reach the Right Team</h2>
-            <p className="text-muted-foreground text-lg">Connect directly with the department that can help you most.</p>
+          <motion.div {...fadeUp} className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3 sm:mb-4">Reach the Right Team</h2>
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Connect directly with the department that can help you most.</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {DEPARTMENTS.map((dept, index) => (
@@ -159,12 +159,12 @@ export default function Contact() {
       {/* Contact Form Section */}
       <section className="py-16 px-4 relative z-10">
         <div className="container mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             {/* Contact Info */}
             <div className="space-y-6">
               <motion.div {...stagger(0)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
                 <Mail className="w-10 h-10 text-primary mb-4" />
-                <h2 className="text-2xl font-bold mb-4 text-foreground">General Contact</h2>
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">General Contact</h2>
                 <div className="space-y-4">
                   <div>
                     <p className="text-muted-foreground mb-2">Main Line:</p>
@@ -183,7 +183,7 @@ export default function Contact() {
 
               <motion.div {...stagger(0.1)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
                 <MessageSquare className="w-10 h-10 text-primary mb-4" />
-                <h2 className="text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
@@ -218,7 +218,7 @@ export default function Contact() {
 
             {/* Contact Form */}
             <motion.div {...stagger(0.1)} id="contact-form" className="bg-card border border-border rounded-xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">Name *</label>
@@ -261,7 +261,7 @@ export default function Contact() {
       </section>
 
       {/* Earth Window */}
-      <section className="relative w-full h-[40vh] overflow-hidden">
+      <section className="relative w-full h-[30vh] sm:h-[40vh] overflow-hidden">
         <img src={accessibilityImage} alt="Accessibility technology interface" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background opacity-60" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent" />
@@ -271,7 +271,7 @@ export default function Contact() {
       {/* Applied Engagements */}
       <motion.section {...fadeUp} className="py-16 px-4 bg-primary/5 border-y border-primary/20 relative z-10">
         <div className="container mx-auto max-w-4xl">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
+          <div className="flex flex-col md:flex-row gap-5 sm:gap-8 items-start">
             <div className="flex-1">
               <Badge variant="outline" className="mb-4 border-primary/30 text-primary">Enterprise</Badge>
               <h2 className="text-2xl font-bold mb-4 text-foreground">Custom Deployments</h2>
@@ -302,8 +302,8 @@ export default function Contact() {
       {/* Enterprise CTA */}
       <section className="py-16 px-4 bg-muted/30 relative z-10">
         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">Enterprise & Self-Hosted</h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-foreground">Enterprise & Self-Hosted</h2>
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">
             Need dedicated infrastructure, compliance guarantees, or custom capacity? Let's talk.
           </p>
           <Link to="/enterprise">

@@ -224,13 +224,13 @@ export function EnhancedFooter() {
               </div>
 
               {/* Mobile legal links — keep existing stacked style */}
-              <div className="flex lg:hidden flex-wrap justify-center gap-x-4 gap-y-1.5">
+              <div className="flex lg:hidden flex-wrap justify-center gap-x-4 gap-y-2.5">
                 {legalLinks.map((link) => (
                   link.href === "#xctbl" ? (
                     <button
                       key={link.name}
                       onClick={() => setXctblOpen(true)}
-                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors min-h-[36px] py-1"
                     >
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
@@ -239,7 +239,7 @@ export function EnhancedFooter() {
                     <a
                       key={link.name}
                       href={link.href}
-                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors min-h-[36px] inline-flex items-center py-1"
                     >
                       {link.name}
                     </a>
@@ -247,7 +247,7 @@ export function EnhancedFooter() {
                     <Link
                       key={link.name}
                       to={link.href}
-                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors min-h-[36px] inline-flex items-center py-1"
                     >
                       {link.name}
                     </Link>

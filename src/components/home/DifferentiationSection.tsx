@@ -138,7 +138,7 @@ export function DifferentiationSection() {
                 <Link
                   to={pillar.link}
                   className={cn(
-                    "inline-flex items-center gap-1.5 text-xs font-semibold transition-colors",
+                    "inline-flex items-center gap-1.5 text-xs font-semibold transition-colors min-h-[36px] py-1.5",
                     pillar.iconColor,
                     "hover:underline"
                   )}

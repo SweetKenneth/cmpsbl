@@ -105,7 +105,7 @@ export default function StartHere() {
 
           {/* H1 */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6 leading-[1.1]"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1]"
             {...stagger(0.1)}
           >
             Build on the{" "}
@@ -217,20 +217,20 @@ export default function StartHere() {
 
           {/* CTAs */}
           <motion.div {...stagger(0.45)} className="flex flex-col sm:flex-row gap-3">
-            <Button asChild size="lg" className="rounded-xl font-bold gap-2 px-8 h-13 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all">
+            <Button asChild size="lg" className="rounded-xl font-bold gap-2 px-6 sm:px-8 h-12 sm:h-13 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] transition-all">
               <Link to="/persistent-memory">
                 <Brain className="w-4 h-4" />
                 Try Persistent Memory
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-8 h-13">
+             <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-6 sm:px-8 h-12 sm:h-13">
               <Link to="/evolution">
                 <RefreshCw className="w-4 h-4" />
                 Explore EVOLUTION
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-8 h-13">
+            <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-6 sm:px-8 h-12 sm:h-13">
               <Link to="/composable-cognitives">
                 <Zap className="w-4 h-4" />
                 Browse Minds
