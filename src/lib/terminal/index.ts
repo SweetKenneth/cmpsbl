@@ -105,3 +105,8 @@ export {
 export {
   registerExpansionHandlers,
 } from './expansion-handlers';
+
+// System audit & self-repair handlers
+export {
+  registerSystemAuditHandlers,
+} from './system-audit-handlers';
