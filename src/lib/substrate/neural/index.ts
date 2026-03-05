@@ -53,6 +53,7 @@ import { vectorIndex } from './vector-index';
 import { confidenceClassifier } from './confidence-classifier';
 import { driftDetector } from './drift-detector';
 import { maintenanceManager } from './maintenance-manager';
+import { startAutoTiering, stopAutoTiering } from '../brain-auto-tiering';
 
 /**
  * Initialize the entire Neural Substrate Layer
@@ -60,6 +61,8 @@ import { maintenanceManager } from './maintenance-manager';
  */
 export async function initializeNeuralSubstrate(): Promise<void> {
   await maintenanceManager.start();
+  // Start automatic memory tier enforcement (every 15 min)
+  startAutoTiering();
 }
 
 /**
@@ -67,6 +70,7 @@ export async function initializeNeuralSubstrate(): Promise<void> {
  */
 export function shutdownNeuralSubstrate(): void {
   maintenanceManager.stop();
+  stopAutoTiering();
 }
 
 /**

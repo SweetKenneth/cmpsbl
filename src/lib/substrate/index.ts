@@ -679,7 +679,7 @@ export {
   runLocalTiering,
   updateTieringConfig,
   getTieringConfig,
-  stopAutoTiering,
+  stopAutoTiering as stopMemoryModuleAutoTiering,
   type VectorEntry,
   type RAGPipeline,
   type MemoryModuleState,
@@ -797,13 +797,15 @@ export {
   type AutoChangelogEntry,
 } from './changelog-generator';
 
-// ═══ Brain Auto-Tiering (v10.9.2) ═══
+// ═══ Brain Auto-Tiering (v14.0.0) ═══
 export {
   enforceAutoTiering,
   emergencyBulkDemotion,
   getTieringHealth,
   configureAutoTiering,
   getEnforcementHistory,
+  startAutoTiering,
+  stopAutoTiering,
   type AutoTieringConfig,
   type TieringReport,
 } from './brain-auto-tiering';
