@@ -520,6 +520,30 @@ serve(async (req: Request) => {
     </div>`).join("")}
 </div>
 
+<!-- 👤 USER ACCOUNTS -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">👤 User Accounts</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;">
+    <div class="email-stat-card" style="flex:1;min-width:130px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;">Total Users</div>
+      <div style="font-size:28px;font-weight:800;color:#059669;">${totalUsersTotal}</div>
+    </div>
+    <div class="email-stat-card" style="flex:1;min-width:130px;background:${newUserCount3h > 0 ? '#eff6ff' : '#f9fafb'};border:1px solid ${newUserCount3h > 0 ? '#bfdbfe' : '#e5e7eb'};border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;">New (Last 3h)</div>
+      <div style="font-size:28px;font-weight:800;color:${newUserCount3h > 0 ? '#2563eb' : '#9ca3af'};">${newUserCount3h > 0 ? '+' : ''}${newUserCount3h}</div>
+    </div>
+  </div>
+</div>
+
+<!-- 📖 SUBJECTS BEING STUDIED (Deduplicated) -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 4px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">📖 Subjects Being Studied</h2>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">Unique topics DECODE and CLM explored this window · ${dedupedSubjects.length} subject${dedupedSubjects.length !== 1 ? 's' : ''}</p>
+  ${dedupedSubjects.length > 0
+    ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${dedupedSubjects.map(s => `<span class="email-topic-tag" style="display:inline-block;background:#ede9fe;color:#5b21b6;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:500;">${s}</span>`).join('')}</div>`
+    : '<p style="color:#9ca3af;font-size:13px;">No subjects studied this window.</p>'}
+</div>
+
 <!-- 🔴 SUBSTRATE AUDIT SCAN — ALWAYS FIRST -->
 ${auditIssues.length > 0 ? `
 <div class="email-card" style="background:#fff;border:2px solid #ef4444;border-radius:12px;padding:20px;margin-bottom:20px;">
