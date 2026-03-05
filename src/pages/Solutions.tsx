@@ -103,9 +103,14 @@ export default function Solutions() {
           </Badge>
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
-            Everything Your AI Needs
+            Everything Your AI{" "}
+            <span style={{
+              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>Needs</span>
           </h1>
-          <p className="text-base sm:text-xl text-muted-foreground max-w-3xl">
+          <p className="text-base sm:text-xl text-muted-foreground max-w-3xl leading-relaxed">
             Build on the substrate — persistent memory, intelligent routing, DREAM cycles, governed evolution, and deployment tools. All production-ready.
           </p>
         </div>
@@ -118,7 +123,7 @@ export default function Solutions() {
             {solutions.map((solution, index) => (
               <div 
                 key={solution.name}
-                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 shimmer-on-hover"
+                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
