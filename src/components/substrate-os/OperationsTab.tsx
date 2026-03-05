@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   FileSearch, Eye, DollarSign, Box, Accessibility,
   Radio, Zap, Activity, TrendingUp, BarChart3,
-  Clock, CheckCircle2, AlertTriangle, Layers,
+  Clock, CheckCircle2, AlertTriangle, Layers, HeartPulse,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
