@@ -139,9 +139,9 @@ export function NodeDreamingWidget() {
         {analyticsSummary && (
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Contradictions', value: analyticsSummary.totalContradictions ?? 0, icon: AlertTriangle, color: 'text-rose-500' },
-              { label: 'Merged', value: analyticsSummary.totalPatternsMerged ?? 0, icon: Activity, color: 'text-cyan-500' },
-              { label: 'Heuristics', value: analyticsSummary.totalHeuristics ?? 0, icon: Sparkles, color: 'text-amber-500' },
+              { label: 'Contradictions', value: analyticsSummary.avgContradictions ?? 0, icon: AlertTriangle, color: 'text-rose-500' },
+              { label: 'Merged', value: analyticsSummary.avgPatternsMerged ?? 0, icon: Activity, color: 'text-cyan-500' },
+              { label: 'Success', value: `${Math.round((analyticsSummary.successRate ?? 0) * 100)}%`, icon: Sparkles, color: 'text-amber-500' },
             ].map(stat => (
               <div key={stat.label} className="rounded-lg border border-border/10 p-2 bg-muted/5 text-center">
                 <stat.icon className={cn("w-3 h-3 mx-auto mb-1", stat.color)} />
