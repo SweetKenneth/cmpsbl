@@ -19,12 +19,27 @@ const TIER_WEIGHTS = [
   { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
 ];
 
-function pickWeightedTierRange(): { min: number; max: number } {
-  const roll = Math.random();
+/**
+ * Pick a weighted tier range for mining.
+ * @param priorMines - number of prior mines for this user (0 = first mine)
+ * First-mine dampener: users with 0 prior mines cannot roll above Relic.
+ * Users with < 5 mines cannot roll Apex.
+ */
+function pickWeightedTierRange(priorMines: number): { min: number; max: number } {
+  // First-mine dampener: cap at Relic (score 93) for brand new users
+  const maxAllowedScore = priorMines === 0 ? 93 : priorMines < 5 ? 99 : 100;
+
+  // Build filtered weights
+  const eligible = TIER_WEIGHTS.filter(t => t.min <= maxAllowedScore);
+  const totalWeight = eligible.reduce((sum, t) => sum + t.weight, 0);
+
+  const roll = Math.random() * totalWeight;
   let cumulative = 0;
-  for (const t of TIER_WEIGHTS) {
+  for (const t of eligible) {
     cumulative += t.weight;
-    if (roll <= cumulative) return { min: t.min, max: t.max };
+    if (roll <= cumulative) {
+      return { min: t.min, max: Math.min(t.max, maxAllowedScore) };
+    }
   }
   return { min: 68, max: 79 };
 }
