@@ -5681,9 +5681,10 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
         } catch (mlErr) {
           console.warn('Module learning context failed gracefully:', mlErr);
         }
-      } catch (memErr) {
-        console.warn('Memory recall failed gracefully:', memErr);
-      }
+        } catch (memErr) {
+          console.warn('Memory recall failed gracefully:', memErr);
+        }
+      } // END isAuthenticated gate for memory recall
       
       // Route through Nexus
       const result = await routeToProvider(message as string, systemPrompt, conversationHistory as Array<{role: string; content: string}>);
@@ -5695,17 +5696,19 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
         .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
         .trim();
 
-      // Log conversation
-      await supabase.from("cascade_conversations").insert({
-        message: message as string,
-        reply: result.content,
-        session_id: effectiveSessionId,
-        metadata: { provider: result.provider, model: result.model, personality: personality.id, memory_context_count: memoryContext.length, fact_count: factMemories.length },
-      });
+      // Log conversation — only for authenticated users to prevent cross-user bleed
+      if (isAuthenticated) {
+        await supabase.from("cascade_conversations").insert({
+          message: message as string,
+          reply: result.content,
+          session_id: effectiveSessionId,
+          metadata: { provider: result.provider, model: result.model, personality: personality.id, memory_context_count: memoryContext.length, fact_count: factMemories.length },
+        });
+      }
       
-      // ═══ AUTO FACT EXTRACTION (v8.5.0) ═══
-      // Use AI to extract discrete facts from the user's message and store them individually
-      try {
+      // ═══ AUTO FACT EXTRACTION (v8.5.0 — Auth-Gated) ═══
+      // Only store facts for authenticated users to prevent anonymous data bleeding across sessions
+      if (isAuthenticated) { try {
         const userMsg = String(message).trim();
         
         // Fast heuristic: detect fact-bearing patterns without AI call
@@ -5796,7 +5799,7 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
           confidence: 0.5,
           metadata: { session_id: effectiveSessionId, personality: personality.id, facts_extracted: extractedFacts.length },
         });
-      } catch { /* memory storage is enhancement, not requirement */ }
+      } catch { /* memory storage is enhancement, not requirement */ } } // END isAuthenticated gate for fact extraction
 
       return jsonResponse({
         success: true,
