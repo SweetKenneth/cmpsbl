@@ -555,12 +555,14 @@ function generateFullHelp(): string {
 │                                                             │
 │  system.status      Global status check                     │
 │  system.health      Full health report                      │
+│  system.fix         Audit + auto-repair in one shot         │
+│  system.repair      Self-repair loop (3 attempts)           │
 │  vision.pulse       Quick heartbeat                         │
 │  brain.reflect      Trigger reflection                      │
 │  dream.cycle        Dream-Eater cycle                       │
 │  system.heal        Self-healing                            │
-│  cortex.status      Orchestrator mode                       │
-│  clm.status         CLM status & budget                     │
+│  obs.summary        Observability overview                  │
+│  gov.mode           Governance mode & states                │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
