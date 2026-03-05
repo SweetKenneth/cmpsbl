@@ -10,6 +10,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { scoreToPublicTier, computeDisplayValuation, type PublicTier } from './public-tiers';
 import { QUALITY_FLOOR } from '@/config/substrate';
+import { fromError } from '@/lib/system/errors';
 import type { PipelineStep } from '@/substrate/pipeline-fingerprint';
 
 export type { PipelineStep };
