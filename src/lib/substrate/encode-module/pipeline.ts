@@ -1,9 +1,17 @@
 /**
- * ENCODE Pipeline — DECODE->ENCODE task routing + BRAIN recall/writeback
+ * ENCODE Pipeline — DECODE->PLAN->ENCODE task routing + BRAIN recall/writeback
+ * 
+ * Pipeline stages:
+ *   INPUT → ANALYZE → CLASSIFY → PLAN → EXECUTE → FORMAT → OUTPUT
+ * 
+ * The PLAN stage generates a PatchPlan that must be approved before
+ * ENCODE can generate code. This prevents direct execution after classification.
  */
 
 import { emit } from '../events';
 import { memoryCore } from '../memory-core';
+import { generatePatchPlan, storePlan, loadPlan, verifyPlan, type PatchPlan } from '../plans';
+import { publish } from '../module-bus';
 import type { EncodeTaskPacket, EncodeTaskResult, EncodeArtifact } from './index';
 import { enqueueTask, completeTask } from './index';
 
