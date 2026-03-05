@@ -137,13 +137,17 @@ export default function Explore() {
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
-      <section className="relative z-10 px-4 py-16 sm:py-36">
+      <section className="relative z-10 px-4 py-16 sm:py-36 overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute inset-0 pointer-events-none hidden sm:block">
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto"
+          className="max-w-5xl mx-auto relative"
         >
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
             {/* Layered gradient background */}

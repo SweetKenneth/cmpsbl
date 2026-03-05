@@ -732,7 +732,7 @@ export default function Changelog() {
                     )} />
 
                     {/* Specimen Card */}
-                    <div className="border border-border/40 rounded-lg bg-card/30 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 overflow-hidden">
+                    <div className="border border-border/40 rounded-lg bg-card/30 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 overflow-hidden stratum-glow gradient-border-reveal">
                       {/* Specimen header bar */}
                       <div className="flex flex-wrap items-center gap-3 px-5 py-3 border-b border-border/20 bg-muted/20">
                         <span className="font-mono text-xs text-primary font-bold tracking-wider">{specimen.id}</span>
