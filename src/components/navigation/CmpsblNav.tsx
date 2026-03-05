@@ -425,7 +425,8 @@ export function CmpsblNav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.05 }}
-              className="relative h-full pt-20 pb-8 px-5 overflow-y-auto safe-area-inset momentum-scroll"
+              className="relative h-full pt-20 pb-[env(safe-area-inset-bottom,2rem)] px-5 overflow-y-auto overscroll-contain momentum-scroll"
+              style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px) + 2rem, 6rem)' }}
             >
               {/* Mobile Header */}
               <div className="mb-6">
