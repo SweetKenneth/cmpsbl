@@ -19,14 +19,6 @@ import {
 import { cn } from "@/lib/utils";
 import { MemoryRiver } from "./MemoryRiver";
 
-const SubstrateParticlesComponent = lazy(() => import("@/components/ui/SubstrateParticles").then(m => ({ default: m.SubstrateParticles })));
-function SubstrateParticlesLazy() {
-  return (
-    <Suspense fallback={null}>
-      <SubstrateParticlesComponent count={25} speed={0.4} glow className="opacity-60" />
-    </Suspense>
-  );
-}
 
 // ─── Typing Animation ──────────────────────────────────────────
 function TypedText({ texts, gradientColors, className }: { 
@@ -145,7 +137,7 @@ function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
-      <SubstrateParticlesLazy />
+      
       
       {/* Gradient orbs — slow ambient drift */}
       <motion.div

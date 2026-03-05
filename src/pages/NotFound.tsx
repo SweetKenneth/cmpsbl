@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SubstrateParticles = lazy(() => import('@/components/ui/SubstrateParticles').then(m => ({ default: m.SubstrateParticles })));
+
 
 // Popular destinations for suggestions
 const SUGGESTIONS = [
@@ -69,9 +69,6 @@ const NotFound = () => {
       
       {/* Cinematic particle background */}
       <div className="fixed inset-0 pointer-events-none">
-        <Suspense fallback={null}>
-          <SubstrateParticles className="absolute inset-0 opacity-30" />
-        </Suspense>
         
         {/* Dissolving radial glow — fading signal */}
         <motion.div
