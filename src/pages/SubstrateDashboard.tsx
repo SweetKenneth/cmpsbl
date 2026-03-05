@@ -695,88 +695,151 @@ export default function SubstrateDashboard() {
             </div>
           </TabsContent>
 
-          {/* Layer-specific tabs */}
-          {Object.entries(modulesByLayer).map(([layer, modules]) => (
-            <TabsContent key={layer} value={layer} className="mt-6">
-              <div className="mb-6">
-                <Badge variant="outline" className={`mb-3 ${layerLabels[layer].color}`}>
-                  {layerLabels[layer].label} LAYER
-                </Badge>
-                <p className="text-sm text-muted-foreground">
-                  {layer === 'kernel' && 'Core infrastructure: scheduling, messaging, and access control.'}
-                  {layer === 'cognitive' && 'Intelligence layer: memory, understanding, and dream processing.'}
-                  {layer === 'operational' && 'Active defense, routing, and observability systems.'}
-                  {layer === 'admin' && 'Administrative controls, modernization, and compliance tools.'}
-                  {layer === 'orchestrator' && 'Agency-class orchestration with propose → evaluate → apply → audit → learn loop.'}
-                  {layer === 'infrastructure' && 'Foundation services: persistence, messaging, compliance, identity, and cost governance.'}
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {modules.map((module) => (
-                  <Card key={module.id} className="p-6 md:p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
-                        <module.icon className={`w-6 h-6 md:w-7 md:h-7 ${module.color}`} />
-                      </div>
-                      <div>
-                        <h2 className="text-xl md:text-2xl font-bold">{module.name} Module</h2>
-                        <p className="text-sm text-muted-foreground">{module.description}</p>
-                      </div>
+          {/* Core Layers tab — kernel, cognitive, operational, admin, orchestrator, infrastructure */}
+          <TabsContent value="core" className="mt-6">
+            <div className="space-y-8">
+              {(['kernel', 'cognitive', 'operational', 'admin', 'orchestrator', 'infrastructure'] as const).map(layer => {
+                const modules = modulesByLayer[layer];
+                return (
+                  <div key={layer}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Badge variant="outline" className={`text-[10px] md:text-xs ${layerLabels[layer].color}`}>
+                        {layerLabels[layer].label}
+                      </Badge>
+                      <span className="text-xs md:text-sm text-muted-foreground">{modules.length} modules</span>
                     </div>
-
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-sm md:text-base">Available Actions</h3>
-                      <div className="grid gap-3">
-                        {module.actions.map((action) => (
-                          <div key={action} className="p-3 md:p-4 bg-muted/30 rounded-lg border">
-                            <code className="text-xs md:text-sm font-mono text-primary">
-                              POST /pf-substrate
-                            </code>
-                            <pre className="mt-2 text-[10px] md:text-xs text-muted-foreground overflow-x-auto">
-{`{
-  "module": "${module.id}",
-  "action": "${action}",
-  "data": { ... }
-}`}
-                            </pre>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {modules.map((module) => (
+                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/50 transition-colors">
+                          <div className="flex items-start gap-3 mb-3">
+                            <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
+                              <module.icon className={`w-5 h-5 ${module.color}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold">{module.name}</h3>
+                              <p className="text-xs text-muted-foreground truncate">{module.description}</p>
+                            </div>
                           </div>
-                        ))}
-                      </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {module.actions.map((action) => (
+                              <Badge key={action} variant="outline" className="text-[10px]">{action}</Badge>
+                            ))}
+                          </div>
+                        </Card>
+                      ))}
                     </div>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
-
-        {/* API Reference */}
-        <Card className="p-6 md:p-8 mt-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-4">API Reference</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold mb-2 text-sm md:text-base">Base Endpoint</h3>
-              <code className="block bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
-                POST /functions/v1/pf-substrate
-              </code>
+                  </div>
+                );
+              })}
             </div>
-            <div>
-              <h3 className="font-semibold mb-2 text-sm md:text-base">Available Modules (14)</h3>
-              <pre className="bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
+          </TabsContent>
+
+          {/* Expansion Zones tab — ESZ, EPZ, EMZ, CSZ */}
+          <TabsContent value="zones" className="mt-6">
+            <div className="space-y-8">
+              {(['esz', 'epz', 'emz', 'csz'] as const).map(layer => {
+                const modules = modulesByLayer[layer];
+                return (
+                  <div key={layer}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Badge variant="outline" className={`text-[10px] md:text-xs ${layerLabels[layer].color}`}>
+                        {layerLabels[layer].label}
+                      </Badge>
+                      <span className="text-xs md:text-sm text-muted-foreground">{modules.length} modules</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {modules.map((module) => (
+                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/50 transition-colors">
+                          <div className="flex items-start gap-3 mb-3">
+                            <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
+                              <module.icon className={`w-5 h-5 ${module.color}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold">{module.name}</h3>
+                              <p className="text-xs text-muted-foreground truncate">{module.description}</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {module.actions.map((action) => (
+                              <Badge key={action} variant="outline" className="text-[10px]">{action}</Badge>
+                            ))}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </TabsContent>
+
+          {/* Mesh Overlays tab */}
+          <TabsContent value="mesh" className="mt-6">
+            <div className="mb-6">
+              <Badge variant="outline" className={layerLabels.mesh.color}>MESH OVERLAYS</Badge>
+              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 38 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {modulesByLayer.mesh.map((module) => (
+                <Card key={module.id} className="p-5 hover:border-primary/50 transition-colors">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
+                      <module.icon className={`w-5 h-5 ${module.color}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold">{module.name}</h3>
+                      <p className="text-xs text-muted-foreground">{module.description}</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {module.actions.map((action) => (
+                      <Badge key={action} variant="outline" className="text-[10px]">{action}</Badge>
+                    ))}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* API Reference tab */}
+          <TabsContent value="api" className="mt-6">
+            <Card className="p-6 md:p-8">
+              <h2 className="text-xl md:text-2xl font-bold mb-4">API Reference</h2>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold mb-2 text-sm md:text-base">Base Endpoint</h3>
+                  <code className="block bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
+                    POST /functions/v1/pf-substrate
+                  </code>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2 text-sm md:text-base">38-Node Architecture ({allModules.length} modules)</h3>
+                  <pre className="bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
 {`{
-  "module": "core" | "ripple" | "access" |    // Kernel Layer
-            "brain" | "decode" | "dream" |    // Cognitive Layer
-            "defense" | "nexus" | "vision" |  // Operational Layer
-            "system" | "modernizer" | "integration" | "inclusive" |  // Admin Layer
-            "cortex",                         // Orchestrator Layer
+  "module": "core" | "ripple" | "access" |       // Kernel
+            "brain" | "decode" | "dream" |       // Cognitive
+            "defense" | "nexus" | "vision" |     // Operational
+            "system" | "integration" |           // Admin
+            "inclusive" | "medic" |
+            "cortex" |                           // Orchestrator
+            "memory" | "relay" | "audit" |       // Infrastructure
+            "identity" | "economy" | "sandbox" |
+            "encode" |
+            "sovereign" | "oracle" |             // ESZ
+            "conscience" | "treaty" |
+            "compass" | "echo" | "reflex" |      // EPZ
+            "forge" | "lingua" | "harvest" |     // EMZ
+            "evolution" | "shadow" | "phantom" | // CSZ
+            "governance" | "intent" |            // Mesh
+            "immunity" | "defense_mesh",
   "action": "<module-specific-action>",
   "data": { <action-parameters> }
 }`}
-              </pre>
-            </div>
-          </div>
-        </Card>
+                  </pre>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
 
         {/* Contact */}
         <Card className="p-6 md:p-8 mt-8 border-primary/20 bg-primary/5">
