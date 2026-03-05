@@ -730,5 +730,28 @@ All colors MUST be HSL.
 }
 .animate-auth-stream { animation: auth-stream 10s linear infinite; will-change: transform; }
 
+/* Flowing gradient accent bar — available globally for footer + public pages */
+@keyframes flowingGradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.memory-stream-bar {
+  background: linear-gradient(90deg,
+    hsl(var(--neon-cyan)) 0%,
+    hsl(var(--primary)) 25%,
+    hsl(var(--neon-purple)) 50%,
+    hsl(var(--primary)) 75%,
+    hsl(var(--neon-cyan)) 100%);
+  background-size: 200% 100%;
+  animation: flowingGradient 4s linear infinite;
+}
+
+/* Signal to Silicon border glow — available globally */
+.signal-border {
+  position: relative;
+  border: 1px solid hsl(var(--border) / 0.3);
+}
+
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */

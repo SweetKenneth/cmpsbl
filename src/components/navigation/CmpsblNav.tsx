@@ -210,8 +210,8 @@ export function CmpsblNav() {
         className={cn(
           "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
           scrolled
-            ? "bg-background border-b border-border shadow-sm"
-            : "bg-background"
+            ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm"
+            : "bg-background/80 backdrop-blur-md"
         )}
       >
         <div className={cn(

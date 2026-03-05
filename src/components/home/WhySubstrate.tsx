@@ -196,7 +196,7 @@ function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
         className={cn(
           "relative h-full p-6 sm:p-7 rounded-2xl border border-border/50",
           "bg-card/50 backdrop-blur-sm",
-          "hover:border-border transition-all duration-500",
+          "hover:border-primary/30 hover:-translate-y-1 transition-all duration-500",
           "overflow-hidden cursor-default"
         )}
       >

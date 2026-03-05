@@ -95,7 +95,7 @@ export default function ApiAccess() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors"
+                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <feat.icon className="w-5 h-5 text-primary" />

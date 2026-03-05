@@ -107,12 +107,10 @@ function IndustryChipCard({ chip, delay }: { chip: IndustryChip; delay: number }
 export function IndustryShowcase() {
   return (
     <section className="relative py-16 sm:py-24 px-4 overflow-hidden bg-muted/20">
-      {/* Background effects */}
+      {/* Background effects — CSS-only for mobile perf */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/5 rounded-full blur-[150px]"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/5 rounded-full blur-[150px] animate-hero-orb-1"
         />
       </div>
       

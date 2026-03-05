@@ -607,12 +607,10 @@ export function TechShowcase() {
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
       {/* Enhanced Background */}
-      <div className="absolute inset-0 bg-muted/30" />
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-muted/20 to-muted/30" />
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/5 rounded-full blur-[180px]"
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 90, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/5 rounded-full blur-[180px] animate-hero-orb-2 hidden sm:block"
         />
         {/* Grid pattern */}
         <div 
