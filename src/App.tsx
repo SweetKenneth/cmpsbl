@@ -142,28 +142,43 @@ const App = () => {
   useEffect(() => {
     loadDeferredCSS();
 
+    // Tier 1: Critical safety (immediate)
     Promise.all([
-      import("@/lib/client/mobile-watchdog"),
-      import("@/lib/ui/lastInteraction"),
       import("@/lib/defense/site-guard"),
-      import("@/lib/analytics/site-tracker"),
-      import("@/lib/client/diag"),
       import("@/lib/telemetry/error-telemetry"),
-    ]).then(([watchdog, tracking, guard, analytics, diag, telemetry]) => {
-      const c1 = watchdog.installMobileWatchdog();
-      const c2 = tracking.installLastInteractionTracking();
-      const c3 = guard.installSiteGuard();
-      analytics.initSiteAnalytics();
+    ]).then(([guard, telemetry]) => {
+      const c = guard.installSiteGuard();
       telemetry.installGlobalErrorHandler();
-      cleanupRef.current = [c1, c2, c3].filter(Boolean) as (() => void)[];
-
-      if (diag.diagEnabled()) {
-        diag.diagLog("log", "App mounted", {
-          timestamp: new Date().toISOString(),
-          url: window.location.href.slice(0, 100),
-        });
-      }
+      if (c) cleanupRef.current.push(c);
     });
+
+    // Tier 2: UX essentials (after 100ms)
+    setTimeout(() => {
+      Promise.all([
+        import("@/lib/client/mobile-watchdog"),
+        import("@/lib/ui/lastInteraction"),
+      ]).then(([watchdog, tracking]) => {
+        const c1 = watchdog.installMobileWatchdog();
+        const c2 = tracking.installLastInteractionTracking();
+        cleanupRef.current.push(...[c1, c2].filter(Boolean) as (() => void)[]);
+      });
+    }, 100);
+
+    // Tier 3: Analytics & diagnostics (after 1s)
+    setTimeout(() => {
+      Promise.all([
+        import("@/lib/analytics/site-tracker"),
+        import("@/lib/client/diag"),
+      ]).then(([analytics, diag]) => {
+        analytics.initSiteAnalytics();
+        if (diag.diagEnabled()) {
+          diag.diagLog("log", "App mounted", {
+            timestamp: new Date().toISOString(),
+            url: window.location.href.slice(0, 100),
+          });
+        }
+      });
+    }, 1000);
 
     return () => {
       cleanupRef.current.forEach(fn => fn());

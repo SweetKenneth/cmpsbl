@@ -17,7 +17,8 @@ import {
   Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MemoryRiver } from "./MemoryRiver";
+
+const MemoryRiverLazy = lazy(() => import("./MemoryRiver").then(m => ({ default: m.MemoryRiver })));
 
 
 // ─── Typing Animation ──────────────────────────────────────────
@@ -132,31 +133,24 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   );
 }
 
-// ─── Background ─────────────────────────────────────────────────
+// ─── Background — pure CSS, no framer-motion ────────────────────
 function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
       
-      
-      {/* Gradient orbs — slow ambient drift */}
-      <motion.div
-        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"
+      {/* Gradient orbs — CSS-only ambient drift */}
+      <div
+        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.06) 0%, transparent 55%)" }}
-        animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full"
+      <div
+        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full animate-hero-orb-2"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.05) 0%, transparent 55%)" }}
-        animate={{ x: [0, -50, 0], y: [0, -25, 0] }}
-        transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute top-1/3 left-1/2 w-[400px] h-[400px] rounded-full"
+      <div
+        className="absolute top-1/3 left-1/2 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
-        animate={{ x: [0, -30, 15, 0], y: [0, 25, -15, 0] }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
       
       <div className="absolute inset-0 substrate-grid-bg opacity-[0.25] dark:opacity-[0.4]" />
@@ -329,7 +323,9 @@ export function HeroMetaSubstrate() {
               </p>
             </motion.div>
 
-            <MemoryRiver autoCrystallize />
+            <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
+              <MemoryRiverLazy autoCrystallize />
+            </Suspense>
 
             {/* Below River — pulse cards */}
             <motion.div
