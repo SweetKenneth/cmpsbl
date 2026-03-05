@@ -1,4 +1,4 @@
-// PromptFluid Defense System Initialization
+// CMPSBL Defense System Initialization
 // Performance: Lazy-loads defenseTracking module
 // Uses secure storage for all state
 

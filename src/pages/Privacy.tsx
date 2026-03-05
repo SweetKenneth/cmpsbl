@@ -13,6 +13,9 @@ export default function Privacy() {
       <PublicNav />
       
       <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
+        <nav className="mb-8">
+          <a href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">← Back to Home</a>
+        </nav>
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">Privacy Policy</h1>
         <p className="text-muted-foreground mb-8">Last updated: February 14, 2026</p>
         
@@ -116,7 +119,7 @@ export default function Privacy() {
             </p>
             <p className="text-muted-foreground mt-4">
               <strong>Email:</strong> Dev@CMPSBL.com<br />
-               <strong>Phone:</strong> (760) FLUID-AI
+               <strong>Phone:</strong> (760) 358-4324
             </p>
           </section>
         </div>

@@ -1,5 +1,5 @@
 /**
- * Humans.txt — The people behind promptfluid®
+ * Humans.txt — The people behind CMPSBL®
  * humanstxt.org specification
  */
 
@@ -22,7 +22,7 @@ ORCID: https://orcid.org/0009-0001-4237-1243
 Role: Founder, Architect, Chief Cognitive Engineer
 Location: Abilene, Texas, USA
 Contact: Dev@CMPSBL.com
-Phone: (760) FLUID-AI
+Phone: (760) 358-4324
 Twitter: @cmpsbl
 
 /* THANKS */
@@ -72,7 +72,7 @@ CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
 38 Nodes • 12 Sectors • 500+ Terminal Commands
 675+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
 
-promptfluid® — AI That Flows.
+CMPSBL® — Where Machines Learn To Think.
 
 /* STANDARD */
 This file follows the humans.txt standard from humanstxt.org
@@ -152,7 +152,7 @@ export default function HumansTxt() {
             Humans.txt
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            The people, philosophy, and technology behind promptfluid®. 
+            The people, philosophy, and technology behind CMPSBL®. 
             Every system has its architects. This is ours.
           </p>
         </div>
@@ -217,7 +217,7 @@ export default function HumansTxt() {
             Humans.txt is a protocol designed by{" "}
             <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">humanstxt.org</a>
             {" "}to credit the humans behind digital projects.
-            PromptFluid® follows this standard and recommends it for all web designers and system architects.
+            CMPSBL® follows this standard and recommends it for all web designers and system architects.
           </p>
         </div>
       </main>

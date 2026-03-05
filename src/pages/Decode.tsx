@@ -217,8 +217,8 @@ export default function Decode() {
 
       {/* Ambient Background - Lighter for mobile performance */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-violet-950/5" />
-        <div className="absolute top-1/3 left-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full bg-primary/3 blur-[60px] md:blur-[100px] animate-float" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
+        <div className="absolute top-1/3 left-1/4 w-48 md:w-96 h-48 md:h-96 rounded-full bg-primary/[0.03] blur-[60px] md:blur-[100px] animate-hero-orb-1" />
       </div>
 
       {/* Connection Status Bar */}
@@ -227,8 +227,8 @@ export default function Decode() {
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">Decode Interpreter</span>
             <div className={`w-1.5 h-1.5 rounded-full ${
-              connection.status === 'connected' ? 'bg-emerald-500' :
-              connection.status === 'degraded' ? 'bg-amber-500 animate-pulse' :
+              connection.status === 'connected' ? 'bg-[hsl(var(--system-green))]' :
+              connection.status === 'degraded' ? 'bg-[hsl(var(--system-amber))] animate-pulse' :
               'bg-destructive'
             }`} />
             <span className="text-xs text-muted-foreground">

@@ -44,36 +44,24 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* SEO moved below to avoid duplicate */}
+      
       <SEO 
         title="About CMPSBL — Team & Mission"
         description="CMPSBL is a cognitive infrastructure lab based in Dallas, TX. Meet the team building governed AI operating systems with persistent memory and adaptive intelligence."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
         keywords={['about CMPSBL', 'CMPSBL team', 'cognitive infrastructure', 'AI startup Texas', 'Dallas AI company']}
+        breadcrumbs={[
+          { name: 'Home', url: 'https://cmpsbl.com' },
+          { name: 'About', url: 'https://cmpsbl.com/about' },
+        ]}
         faq={[
           { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by a veteran software engineer in Dallas, Texas. The team has since grown to include AI researchers, security specialists, and systems engineers.' },
           { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the composable nature of the cognitive infrastructure substrate. Every system can be independently deployed, swapped, and evolved.' },
           { question: 'Where is CMPSBL based?', answer: 'CMPSBL is headquartered in Dallas, Texas, USA, serving teams and enterprises worldwide with composable cognitive infrastructure.' },
         ]}
       />
-      
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          "name": "About CMPSBL",
-          "description": "CMPSBL is building cognitive infrastructure for AI applications — memory, learning, security, and multi-provider routing.",
-          "url": "https://cmpsbl.com/about",
-          "mainEntity": {
-            "@type": "Organization",
-            "name": "CMPSBL",
-            "alternateName": "Composable",
-            "foundingDate": "2009",
-            "numberOfEmployees": { "@type": "QuantitativeValue", "minValue": 6 },
-            "founder": { "@type": "Person", "name": founder.name, "jobTitle": "Founder & Chief Architect" }
-          }
-        })}
-      </script>
       
       <PublicNav />
       
