@@ -686,7 +686,7 @@ serve(async (req) => {
 
     if (supabase && authedUserId) {
       try {
-        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults);
+        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults, 0);
 
         if (healedResults.length > 0) {
           const bestScore = Math.max(...healedResults.map((r: any) => r.score));
