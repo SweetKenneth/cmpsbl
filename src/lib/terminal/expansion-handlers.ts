@@ -21,6 +21,10 @@ const EXPANSION_MODULES = [
   { id: 'treaty',     name: 'TREATY',     codename: 'Accord',     desc: 'Inter-system agreements & SLA management' },
   { id: 'harvest',    name: 'HARVEST',    codename: 'Reaper',     desc: 'Data collection & ETL pipelines' },
   { id: 'reflex',     name: 'REFLEX',     codename: 'Impulse',    desc: 'Edge computing & real-time response' },
+  { id: 'medic',      name: 'MEDIC',      codename: 'Triage',     desc: 'Autonomous diagnostics & node recovery' },
+  { id: 'nerve',      name: 'NERVE',      codename: 'Synapse',    desc: 'Inter-node signaling & event propagation' },
+  { id: 'evolution',  name: 'EVOLUTION',  codename: 'Darwin',     desc: 'Mutation pipeline & governed upgrades' },
+  { id: 'immunity',   name: 'IMMUNITY',   codename: 'Sentinel',   desc: 'Self-healing mesh & threat correlation' },
 ] as const;
 
 export function registerExpansionHandlers(): void {
