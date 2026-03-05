@@ -50,7 +50,7 @@ async function isCPReachable(): Promise<boolean> {
     emit({
       module: 'system',
       event_type: 'cp_degraded_mode',
-      outcome: 'warning',
+      outcome: 'failed',
       data: { reason: 'Database unreachable — falling back to in-memory storage' },
     });
   } else if (lastHealthResult && degradedMode) {
