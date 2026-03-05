@@ -152,7 +152,7 @@ export async function routeFromDecode(
     );
   }
 
-  const plan = loadPlan(context.plan_id);
+  const plan = await loadPlan(context.plan_id);
   if (!plan) {
     throw new Error(`[ENCODE] Plan ${context.plan_id} not found`);
   }
@@ -165,6 +165,9 @@ export async function routeFromDecode(
 
   // Verify the plan is structurally sound
   const verification = verifyPlan(plan);
+  if (!verification.valid) {
+    throw new Error(`[ENCODE] Plan verification failed: ${verification.errors.join('; ')}`);
+  }
   if (!verification.valid) {
     throw new Error(`[ENCODE] Plan verification failed: ${verification.errors.join('; ')}`);
   }

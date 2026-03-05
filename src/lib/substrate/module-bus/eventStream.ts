@@ -1,15 +1,21 @@
 /**
  * Substrate Event Stream — Observable stream of system activity
  * Aggregates module-bus signals for debugging and governance observability.
+ * 
+ * Features:
+ * - In-memory 500-entry ring buffer (fast + cheap)
+ * - Optional CP-backed persistence (off by default)
  */
 
 import { subscribe, type ModuleSignal } from './index';
+import { cpPut, cpDelete, cpList } from '../control-plane/adapters/queueStateAdapter';
 
 // ═══════════════════════════════════════════════════════════════
 // STREAM BUFFER
 // ═══════════════════════════════════════════════════════════════
 
 const MAX_STREAM_SIZE = 500;
+const MAX_PERSISTED = 100;
 
 export interface StreamEntry {
   index: number;
@@ -20,6 +26,7 @@ export interface StreamEntry {
 const stream: StreamEntry[] = [];
 let counter = 0;
 let initialized = false;
+let persistenceEnabled = false;
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -32,20 +39,57 @@ let initialized = false;
 export function initEventStream(): void {
   if (initialized) return;
 
-  subscribe('system', '*', (signal: ModuleSignal) => {
-    stream.push({
+  subscribe('system', '*', async (signal: ModuleSignal) => {
+    const entry: StreamEntry = {
       index: counter++,
       signal,
       captured_at: new Date().toISOString(),
-    });
+    };
+
+    stream.push(entry);
 
     // Ring buffer — drop oldest when full
     if (stream.length > MAX_STREAM_SIZE) {
       stream.shift();
     }
+
+    // Optional persistence
+    if (persistenceEnabled) {
+      try {
+        await cpPut(`bus:event:${entry.index}`, entry);
+        // Evict old persisted entries beyond cap
+        if (entry.index % 50 === 0) {
+          const persisted = await cpList('bus:event:');
+          if (persisted.length > MAX_PERSISTED) {
+            const toRemove = persisted
+              .sort((a, b) => a.key.localeCompare(b.key))
+              .slice(0, persisted.length - MAX_PERSISTED);
+            for (const item of toRemove) {
+              await cpDelete(item.key);
+            }
+          }
+        }
+      } catch {
+        // Silently skip persistence failure — ring buffer still active
+      }
+    }
   });
 
   initialized = true;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PERSISTENCE TOGGLE
+// ═══════════════════════════════════════════════════════════════
+
+/** Enable or disable CP-backed persistence for the event stream */
+export function setStreamPersistence(enabled: boolean): void {
+  persistenceEnabled = enabled;
+}
+
+/** Check if persistence is enabled */
+export function isStreamPersistent(): boolean {
+  return persistenceEnabled;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -79,6 +123,7 @@ export function getStreamStats(): {
   oldest_entry: string | null;
   newest_entry: string | null;
   initialized: boolean;
+  persistence_enabled: boolean;
 } {
   return {
     total_captured: counter,
@@ -87,6 +132,7 @@ export function getStreamStats(): {
     oldest_entry: stream.length > 0 ? stream[0].captured_at : null,
     newest_entry: stream.length > 0 ? stream[stream.length - 1].captured_at : null,
     initialized,
+    persistence_enabled: persistenceEnabled,
   };
 }
 

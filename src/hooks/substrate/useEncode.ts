@@ -65,9 +65,9 @@ export interface UseEncodeReturn {
     clarify: ReturnType<typeof useMutation>;
     respond: ReturnType<typeof useMutation>;
     ready: ReturnType<typeof useMutation>;
-    getThread: (planId: string) => DiscussionMessage[];
-    allResolved: (planId: string) => boolean;
-    unresolvedCount: (planId: string) => number;
+    getThread: (planId: string) => Promise<DiscussionMessage[]>;
+    allResolved: (planId: string) => Promise<boolean>;
+    unresolvedCount: (planId: string) => Promise<number>;
   };
 
   // Existing mutations
@@ -92,6 +92,12 @@ export function useEncode(): UseEncodeReturn {
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
     enabled: pollingEnabled,
+  });
+
+  const plansQuery = useQuery({
+    queryKey: ['substrate', 'encode', 'plans'],
+    queryFn: () => listPlans(),
+    staleTime: 10000,
   });
 
   const encodeState = state.data;
@@ -191,7 +197,7 @@ export function useEncode(): UseEncodeReturn {
     queue,
     receipts,
     escalationTelemetry,
-    plans: listPlans(),
+    plans: plansQuery.data || [],
     generatePlan,
     approvePlanMutation,
     rejectPlanMutation,

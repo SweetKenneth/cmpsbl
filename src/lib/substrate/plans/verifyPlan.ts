@@ -1,6 +1,7 @@
 /**
  * Plan Verification Layer
  * Validates that plans target known modules and safe paths before execution.
+ * Hardened path safety: rejects .., //, leading /, and blocked path prefixes.
  */
 
 import type { PatchPlan } from './types';
@@ -11,6 +12,10 @@ const VALID_MODULES = [
   'VISION', 'RIPPLE', 'DEFENSE', 'INCLUSIVE', 'EVOLUTION',
   'MEMORY', 'RELAY', 'AUDIT', 'IDENTITY', 'ECONOMY', 'SANDBOX',
   'ATLAS', 'DREAM', 'ACCESS', 'MODERNIZER', 'INTEGRATION',
+  'NERVE', 'MEDIC', 'GOVERNANCE', 'IMMUNITY', 'INTENT',
+  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY',
+  'COMPASS', 'ECHO', 'REFLEX', 'FORGE', 'LINGUA', 'HARVEST',
+  'SHADOW', 'PHANTOM',
 ] as const;
 
 /** Paths that patches are allowed to target */
@@ -18,14 +23,24 @@ const SAFE_PATH_PREFIXES = [
   'src/',
   'supabase/functions/',
   'docs/',
+  'public/',
 ] as const;
 
-/** Paths explicitly blocked from patching */
+/** Paths explicitly blocked from patching (prefix match) */
 const BLOCKED_PATHS = [
   'src/integrations/supabase/client.ts',
   'src/integrations/supabase/types.ts',
   '.env',
   'supabase/config.toml',
+  'node_modules/',
+  'bun.lock',
+  'package-lock.json',
+] as const;
+
+/** Dangerous path patterns */
+const DANGEROUS_PATTERNS = [
+  '..', // directory traversal
+  '//', // double-slash injection
 ] as const;
 
 export interface VerificationResult {
@@ -56,20 +71,36 @@ export function verifyPlan(plan: PatchPlan): VerificationResult {
 
   // 3. Validate change paths
   for (const change of plan.changes) {
-    // Must start with a safe prefix
-    const isSafe = SAFE_PATH_PREFIXES.some(prefix => change.path.startsWith(prefix));
-    if (!isSafe) {
-      errors.push(`Unsafe patch path: "${change.path}" — must start with one of: ${SAFE_PATH_PREFIXES.join(', ')}`);
+    const p = change.path;
+
+    // 3a. Reject absolute paths
+    if (p.startsWith('/')) {
+      errors.push(`Absolute path rejected: "${p}" — paths must be relative`);
+      continue;
     }
 
-    // Must not target blocked paths
-    if (BLOCKED_PATHS.includes(change.path as any)) {
-      errors.push(`Blocked patch path: "${change.path}" — this file is read-only`);
+    // 3b. Reject dangerous patterns
+    for (const pattern of DANGEROUS_PATTERNS) {
+      if (p.includes(pattern)) {
+        errors.push(`Dangerous pattern "${pattern}" in path: "${p}"`);
+      }
+    }
+
+    // 3c. Must start with a safe prefix
+    const isSafe = SAFE_PATH_PREFIXES.some(prefix => p.startsWith(prefix));
+    if (!isSafe) {
+      errors.push(`Unsafe patch path: "${p}" — must start with one of: ${SAFE_PATH_PREFIXES.join(', ')}`);
+    }
+
+    // 3d. Must not match any blocked path prefix
+    const isBlocked = BLOCKED_PATHS.some(blocked => p.startsWith(blocked));
+    if (isBlocked) {
+      errors.push(`Blocked patch path: "${p}" — this path is read-only`);
     }
 
     // Warn on delete operations
     if (change.type === 'delete') {
-      warnings.push(`Destructive change: DELETE on "${change.path}" — requires explicit approval`);
+      warnings.push(`Destructive change: DELETE on "${p}" — requires explicit approval`);
     }
   }
 
