@@ -147,7 +147,7 @@ export default function Roadmap() {
               Building the Future
             </Badge>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground tracking-tight [text-shadow:_0_2px_20px_hsl(var(--background))]">
               2026-2027 Roadmap
             </h1>
 
@@ -194,7 +194,7 @@ export default function Roadmap() {
                 {quarter.items.map((item) => (
                   <article
                     key={item.title}
-                    className="group p-5 sm:p-8 rounded-lg bg-card border border-border hover:border-primary/40 transition-all"
+                    className="group p-5 sm:p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300 shimmer-on-hover card-lift"
                   >
                     {/* Icon & Status */}
                     <div className="flex items-start justify-between mb-6">
@@ -256,23 +256,23 @@ export default function Roadmap() {
       {/* Philosophy Section */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 text-foreground tracking-tight">
             Our Development Philosophy
           </h2>
           <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-card border border-border p-6 rounded-lg">
+            <div className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-2xl card-lift">
               <h3 className="font-semibold mb-2 text-primary">AI-First</h3>
               <p className="text-sm text-muted-foreground">
                 Every tool leverages cutting-edge AI to automate, optimize, and adapt to user needs.
               </p>
             </div>
-            <div className="bg-card border border-border p-6 rounded-lg">
+            <div className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-2xl card-lift">
               <h3 className="font-semibold mb-2 text-primary">Accessible</h3>
               <p className="text-sm text-muted-foreground">
                 Enterprise power with startup simplicity. Technology that works for everyone.
               </p>
             </div>
-            <div className="bg-card border border-border p-6 rounded-lg">
+            <div className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 rounded-2xl card-lift">
               <h3 className="font-semibold mb-2 text-primary">Integrated</h3>
               <p className="text-sm text-muted-foreground">
                 All our tools communicate seamlessly, creating a unified development experience.
@@ -285,7 +285,7 @@ export default function Roadmap() {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 text-foreground tracking-tight">
             Be Part of the Journey
           </h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
