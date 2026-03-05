@@ -116,6 +116,7 @@ export function useFoundryState() {
     if (isMining) return;
 
     setIsMining(true);
+    const startTime = Date.now();
     try {
       const result = await executeMine();
       
