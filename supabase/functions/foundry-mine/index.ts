@@ -643,7 +643,7 @@ serve(async (req) => {
         artifact_id: r.id,
         artifact_name: r.name,
         artifact_description: r.description,
-        score: r.score,
+        score: Number.isFinite(r.score) ? Math.max(0, Math.min(100, Math.floor(r.score))) : 0,
         public_tier: r.publicTier,
         valuation_display: r.valuationDisplay,
         source: 'mined',
