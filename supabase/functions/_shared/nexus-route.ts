@@ -376,7 +376,7 @@ const PROVIDERS: ProviderDef[] = [
     rpm: 10, rpd: 190, priority: 9, contextWindow: 128000,
     costPer1kTokens: 0, supportsTools: true, supportsStreaming: true,
     affinities: ["reasoning", "generation", "research"],
-    extraHeaders: { "HTTP-Referer": "https://cmpsbl.lovable.app", "X-Title": "CMPSBL Substrate" },
+    extraHeaders: { "HTTP-Referer": "https://cmpsbl.com", "X-Title": "CMPSBL Substrate" },
     region: "us",
   },
   {
@@ -387,7 +387,7 @@ const PROVIDERS: ProviderDef[] = [
     rpm: 10, rpd: 190, priority: 10, contextWindow: 128000,
     costPer1kTokens: 0, supportsTools: true, supportsStreaming: true,
     affinities: ["reasoning", "code", "analysis"],
-    extraHeaders: { "HTTP-Referer": "https://cmpsbl.lovable.app", "X-Title": "CMPSBL Substrate" },
+    extraHeaders: { "HTTP-Referer": "https://cmpsbl.com", "X-Title": "CMPSBL Substrate" },
     region: "us",
   },
   {
@@ -398,7 +398,7 @@ const PROVIDERS: ProviderDef[] = [
     rpm: 10, rpd: 190, priority: 11, contextWindow: 64000,
     costPer1kTokens: 0, supportsTools: false, supportsStreaming: true,
     affinities: ["reasoning", "research", "code"],
-    extraHeaders: { "HTTP-Referer": "https://cmpsbl.lovable.app", "X-Title": "CMPSBL Substrate" },
+    extraHeaders: { "HTTP-Referer": "https://cmpsbl.com", "X-Title": "CMPSBL Substrate" },
     region: "us",
   },
   {
@@ -409,7 +409,7 @@ const PROVIDERS: ProviderDef[] = [
     rpm: 10, rpd: 190, priority: 12, contextWindow: 128000,
     costPer1kTokens: 0, supportsTools: true, supportsStreaming: true,
     affinities: ["reasoning", "generation", "research"],
-    extraHeaders: { "HTTP-Referer": "https://cmpsbl.lovable.app", "X-Title": "CMPSBL Substrate" },
+    extraHeaders: { "HTTP-Referer": "https://cmpsbl.com", "X-Title": "CMPSBL Substrate" },
     region: "us",
   },
   // ── TIER 4: Extended fleet ──

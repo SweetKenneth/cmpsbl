@@ -365,7 +365,7 @@ async function callProvider(
 
   // OpenRouter needs extra headers
   if (provider.id.startsWith("openrouter")) {
-    headers["HTTP-Referer"] = "https://cmpsbl.lovable.app";
+    headers["HTTP-Referer"] = "https://cmpsbl.com";
     headers["X-Title"] = "CMPSBL Substrate";
   }
 
