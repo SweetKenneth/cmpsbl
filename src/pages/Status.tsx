@@ -1,6 +1,6 @@
 /**
  * Public System Status Page
- * Live module health, uptime tracking, and incident history
+ * Live system health, uptime tracking, and incident history
  */
 
 import { useState, useEffect, useMemo } from "react";

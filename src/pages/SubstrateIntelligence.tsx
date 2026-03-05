@@ -48,7 +48,7 @@ const jsonLd = {
   ]
 };
 
-const modules = [
+const systems = [
   { name: "CORE", desc: "Kernel orchestration, scheduling, lifecycle", icon: Cpu, layer: "Kernel" },
   { name: "RIPPLE", desc: "Event-driven message bus, pub/sub", icon: Activity, layer: "Kernel" },
   { name: "ACCESS", desc: "Identity, API keys, entitlements", icon: Lock, layer: "Kernel" },
@@ -86,7 +86,7 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 360+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 360+ terminal commands. The system boots in ~109ms and maintains 100% system health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",
