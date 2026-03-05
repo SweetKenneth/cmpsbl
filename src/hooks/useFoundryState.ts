@@ -10,6 +10,7 @@ import { executeMine, filterByQualityFloor, type MineResult, type MineResponse }
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import { recordPipelineLineage } from '@/substrate/memory-lineage';
 import { recordOperation } from '@/substrate/substrate-metrics';
+import { fromError } from '@/lib/system/errors';
 import { toast } from 'sonner';
 
 interface FoundryUserState {
