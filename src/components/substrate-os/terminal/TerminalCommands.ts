@@ -1354,6 +1354,9 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...EVOLUTION_COMMANDS,
   ...IMMUNITY_COMMANDS,
   ...GOVERNANCE_COMMANDS,
+  // Shorthand command sets
+  ...GOV_COMMANDS,
+  ...OBS_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -1412,7 +1415,8 @@ export const COMMAND_CATEGORIES = {
   // Mesh Overlays
   evolution: { label: 'EVOLUTION', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: EVOLUTION_COMMANDS },
   immunity: { label: 'IMMUNITY', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: IMMUNITY_COMMANDS },
-  governance: { label: 'GOVERNANCE', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: GOVERNANCE_COMMANDS },
+  governance: { label: 'GOVERNANCE', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: [...GOVERNANCE_COMMANDS, ...GOV_COMMANDS] },
+  observability: { label: 'OBSERVABILITY', color: 'text-yellow-400', borderColor: 'border-yellow-500/30', commands: OBS_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
