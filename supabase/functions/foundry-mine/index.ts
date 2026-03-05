@@ -497,17 +497,19 @@ serve(async (req) => {
           .is('pipeline_steps', null);
 
         // Atomic increment of discovery_count (never reset)
-        await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(async () => {
-          // Fallback: safe atomic increment via COALESCE
+        const { error: incrementError } = await supabase.rpc('increment_discovery_count' as any, {
+          p_discovery_id: r.id,
+        });
+
+        if (incrementError) {
+          console.error('increment_discovery_count fallback:', incrementError.message);
           await supabase
             .from('discoveries')
             .update({
               last_discovered_at: now.toISOString(),
             })
             .eq('id', r.id);
-          // Use raw SQL-safe increment pattern via separate update
-          // discovery_count handled by setting COALESCE default
-        });
+        }
 
         // Atomic metrics accumulation — first try increment, then insert if missing
         const { data: existingMetric } = await supabase
