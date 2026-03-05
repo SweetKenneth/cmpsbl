@@ -840,6 +840,7 @@ export default function SubstrateDashboard() {
               </div>
             </Card>
           </TabsContent>
+        </Tabs>
 
         {/* Contact */}
         <Card className="p-6 md:p-8 mt-8 border-primary/20 bg-primary/5">
