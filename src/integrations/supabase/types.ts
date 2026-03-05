@@ -16640,6 +16640,10 @@ export type Database = {
           name: string
         }[]
       }
+      get_site_analytics_aggregated: {
+        Args: { p_end_date?: string; p_start_date: string }
+        Returns: Json
+      }
       governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
         | {
