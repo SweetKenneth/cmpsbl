@@ -250,13 +250,12 @@ function RankList({ title, icon: Icon, iconColor, items, valueLabel }: {
 export function SiteAnalyticsSection() {
   const [data, setData] = useState<SiteAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('7d');
+  const [dateRange, setDateRange] = useState<DateRangeKey>('7d');
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
-      const result = await fetchSiteAnalytics(days);
+      const result = await fetchSiteAnalytics(dateRange);
       setData(result);
     } catch (e) {
       console.error('Site analytics fetch error:', e);
