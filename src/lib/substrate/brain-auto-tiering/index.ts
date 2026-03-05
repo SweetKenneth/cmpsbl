@@ -1,12 +1,10 @@
 /**
  * BRAIN Auto-Tiering Enforcement Engine
- * Crown Jewel Capability
  * 
- * CLM Request: BRAIN module flagged Hot Memory Tier overflow (1,671 entries vs 500 limit)
- * Resolution: Aggressive auto-tiering with scheduled enforcement, demotion cascades,
- * and archival watermarks to prevent future overflow.
+ * Enforces tier capacity limits via DB-level bulk RPCs.
+ * Hot(500) → Warm(10K) → Cold(10K) → Pruned → Expired
  * 
- * Tier: Enterprise+ (Auto-tiering enforcement is Enterprise; meta-tuning is CMPSBL)
+ * Runs automatically on a 15-minute interval when started.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -14,28 +12,22 @@ import { emit } from '../events';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
-// ─── Configuration ───────────────────────────────────────────────────────────
-
 export interface AutoTieringConfig {
   hotLimit: number;
   warmLimit: number;
-  coldArchiveAfterDays: number;
-  hotDemotionThreshold: number;     // access_count below this → demote to warm
-  warmDemotionThreshold: number;    // access_count below this → demote to cold
-  hotIdleHours: number;             // hours idle before hot → warm
-  warmIdleDays: number;             // days idle before warm → cold
+  coldLimit: number;
+  batchSize: number;
+  intervalMs: number;
   enforceOnCycle: boolean;
-  watermarkPercent: number;         // trigger enforcement at this % of limit
+  watermarkPercent: number;
 }
 
 const DEFAULT_CONFIG: AutoTieringConfig = {
   hotLimit: 500,
   warmLimit: 10_000,
-  coldArchiveAfterDays: 90,
-  hotDemotionThreshold: 2,
-  warmDemotionThreshold: 1,
-  hotIdleHours: 24,
-  warmIdleDays: 30,
+  coldLimit: 10_000,
+  batchSize: 2000,
+  intervalMs: 15 * 60 * 1000, // 15 minutes
   enforceOnCycle: true,
   watermarkPercent: 80,
 };
@@ -50,286 +42,335 @@ export interface TieringReport {
   hotAfter: number;
   warmBefore: number;
   warmAfter: number;
+  coldBefore: number;
+  coldAfter: number;
   demotedHotToWarm: number;
   demotedWarmToCold: number;
-  archivedCold: number;
-  enforcement: 'none' | 'soft' | 'hard';
-  healthDelta: number;
+  prunedCold: number;
+  expiredPruned: number;
+  enforcement: 'none' | 'soft' | 'hard' | 'emergency';
+  durationMs: number;
 }
 
 const history: TieringReport[] = [];
+let schedulerInterval: ReturnType<typeof setInterval> | null = null;
+let isRunning = false;
+
+// ─── Tier Counts (uses DB RPC) ──────────────────────────────────────────────
+
+interface TierCounts {
+  hot: number;
+  warm: number;
+  cold: number;
+  flat: number;
+  pruned: number;
+}
+
+async function getTierCounts(): Promise<TierCounts> {
+  const { data, error } = await supabase.rpc('brain_get_tier_counts');
+  if (error || !data) {
+    console.warn('[AutoTiering] Failed to get tier counts, falling back to queries');
+    const [h, w, c] = await Promise.all([
+      supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+      supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+      supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    ]);
+    return { hot: h.count ?? 0, warm: w.count ?? 0, cold: c.count ?? 0, flat: 0, pruned: 0 };
+  }
+  const counts: TierCounts = { hot: 0, warm: 0, cold: 0, flat: 0, pruned: 0 };
+  for (const row of data as any[]) {
+    counts[row.tier as keyof TierCounts] = Number(row.cnt);
+  }
+  return counts;
+}
+
+// ─── Bulk Operations (DB RPCs) ──────────────────────────────────────────────
+
+async function bulkDemoteHotToWarm(batchSize: number): Promise<number> {
+  let totalMoved = 0;
+  let remaining = batchSize;
+  
+  while (remaining > 0) {
+    const batch = Math.min(remaining, 2000);
+    const { data, error } = await supabase.rpc('brain_bulk_demote_hot_to_warm', { batch_size: batch });
+    const moved = error ? 0 : (data as number) || 0;
+    totalMoved += moved;
+    remaining -= batch;
+    if (moved === 0) break; // nothing left to demote
+  }
+  return totalMoved;
+}
+
+async function bulkDemoteWarmToCold(batchSize: number): Promise<number> {
+  let totalMoved = 0;
+  let remaining = batchSize;
+
+  while (remaining > 0) {
+    const batch = Math.min(remaining, 2000);
+    const { data, error } = await supabase.rpc('brain_bulk_demote_warm_to_cold', { batch_size: batch });
+    const moved = error ? 0 : (data as number) || 0;
+    totalMoved += moved;
+    remaining -= batch;
+    if (moved === 0) break;
+  }
+  return totalMoved;
+}
+
+async function bulkPruneCold(batchSize: number, keepCount: number): Promise<number> {
+  const { data, error } = await supabase.rpc('brain_bulk_prune_cold', { 
+    batch_size: batchSize, 
+    keep_count: keepCount 
+  });
+  return error ? 0 : (data as number) || 0;
+}
+
+async function cleanupExpiredPruned(): Promise<number> {
+  const { data, error } = await supabase.rpc('brain_cleanup_expired_pruned');
+  return error ? 0 : (data as number) || 0;
+}
 
 // ─── Core Engine ─────────────────────────────────────────────────────────────
 
 /**
- * Count entries in each tier
- */
-async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number }> {
-  const [hotRes, warmRes, coldRes] = await Promise.all([
-    supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
-    supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
-    supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
-  ]);
-
-  return {
-    hot: hotRes.count ?? 0,
-    warm: warmRes.count ?? 0,
-    cold: coldRes.count ?? 0,
-  };
-}
-
-/**
- * Demote lowest-value hot entries to warm tier
- */
-async function demoteHotToWarm(count: number): Promise<number> {
-  if (count <= 0) return 0;
-
-  // Get lowest priority hot entries
-  const { data: entries, error } = await supabase
-    .from('brain_memory_hot')
-    .select('*')
-    .order('access_count', { ascending: true })
-    .order('created_at', { ascending: true })
-    .limit(count);
-
-  if (error || !entries?.length) return 0;
-
-  let demoted = 0;
-  for (const entry of entries) {
-    try {
-      await supabase.from('brain_memory_warm').insert({
-        content: entry.content,
-        context: entry.context,
-        priority: Math.max(1, (entry.priority || 5) - 2),
-        access_count: entry.access_count || 0,
-        memory_type: entry.memory_type || 'general',
-        value_score: entry.value_score ?? 0.3,
-        tags: entry.tags || [],
-        metadata: { ...(entry.metadata as Record<string, unknown> || {}), demoted_from: 'hot', demoted_at: new Date().toISOString() },
-        demoted_at: new Date().toISOString(),
-      });
-
-      await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
-      demoted++;
-    } catch (err) {
-      console.warn('[AutoTiering] Hot→Warm demotion failed for', entry.id, err);
-    }
-  }
-
-  return demoted;
-}
-
-/**
- * Demote lowest-value warm entries to cold tier
- */
-async function demoteWarmToCold(count: number): Promise<number> {
-  if (count <= 0) return 0;
-
-  const { data: entries, error } = await supabase
-    .from('brain_memory_warm')
-    .select('*')
-    .order('access_count', { ascending: true })
-    .order('created_at', { ascending: true })
-    .limit(count);
-
-  if (error || !entries?.length) return 0;
-
-  let demoted = 0;
-  for (const entry of entries) {
-    try {
-      await supabase.from('brain_memory_cold').insert({
-        summary: entry.content,
-        core_summary: entry.core_summary || entry.content.slice(0, 200),
-        access_count: entry.access_count || 0,
-        memory_type: entry.memory_type || 'general',
-        value_score: entry.value_score ?? 0.1,
-        tags: entry.tags || [],
-      });
-
-      await supabase.from('brain_memory_warm').delete().eq('id', entry.id);
-      demoted++;
-    } catch (err) {
-      console.warn('[AutoTiering] Warm→Cold demotion failed for', entry.id, err);
-    }
-  }
-
-  return demoted;
-}
-
-/**
- * Run the full auto-tiering enforcement cycle
+ * Run the full auto-tiering enforcement cycle using DB-level bulk operations.
  */
 export async function enforceAutoTiering(overrideConfig?: Partial<AutoTieringConfig>): Promise<TieringReport> {
+  if (isRunning) {
+    console.warn('[AutoTiering] Enforcement already in progress, skipping');
+    return history[history.length - 1] || createEmptyReport('none');
+  }
+
+  isRunning = true;
+  const start = performance.now();
   const cfg = { ...config, ...overrideConfig };
-  const counts = await getTierCounts();
 
-  const report: TieringReport = {
-    timestamp: new Date().toISOString(),
-    hotBefore: counts.hot,
-    hotAfter: counts.hot,
-    warmBefore: counts.warm,
-    warmAfter: counts.warm,
-    demotedHotToWarm: 0,
-    demotedWarmToCold: 0,
-    archivedCold: 0,
-    enforcement: 'none',
-    healthDelta: 0,
-  };
+  try {
+    const counts = await getTierCounts();
+    const report: TieringReport = {
+      timestamp: new Date().toISOString(),
+      hotBefore: counts.hot,
+      hotAfter: counts.hot,
+      warmBefore: counts.warm,
+      warmAfter: counts.warm,
+      coldBefore: counts.cold,
+      coldAfter: counts.cold,
+      demotedHotToWarm: 0,
+      demotedWarmToCold: 0,
+      prunedCold: 0,
+      expiredPruned: 0,
+      enforcement: 'none',
+      durationMs: 0,
+    };
 
-  // Determine enforcement level
-  const hotUtilization = counts.hot / cfg.hotLimit;
+    const hotUtil = counts.hot / cfg.hotLimit;
 
-  if (hotUtilization >= 1.0) {
-    // HARD enforcement — over limit, must demote aggressively
-    report.enforcement = 'hard';
-    const excess = counts.hot - Math.floor(cfg.hotLimit * (cfg.watermarkPercent / 100));
-    // Process in batches of 500 to avoid timeout
-    let remaining = excess;
-    while (remaining > 0) {
-      const batch = Math.min(remaining, 500);
-      const demoted = await demoteHotToWarm(batch);
-      report.demotedHotToWarm += demoted;
-      remaining -= batch;
-      if (demoted === 0) break; // No more to demote
+    // ── Hot tier enforcement ──
+    if (hotUtil >= 2.0) {
+      // EMERGENCY — more than 2x over limit
+      report.enforcement = 'emergency';
+      const excess = counts.hot - Math.floor(cfg.hotLimit * 0.7);
+      report.demotedHotToWarm = await bulkDemoteHotToWarm(excess);
+      console.log(`[AutoTiering] 🚨 EMERGENCY: Demoted ${report.demotedHotToWarm} hot→warm`);
+    } else if (hotUtil >= 1.0) {
+      // HARD enforcement
+      report.enforcement = 'hard';
+      const excess = counts.hot - Math.floor(cfg.hotLimit * (cfg.watermarkPercent / 100));
+      report.demotedHotToWarm = await bulkDemoteHotToWarm(excess);
+      console.log(`[AutoTiering] ⚠️ HARD: Demoted ${report.demotedHotToWarm} hot→warm`);
+    } else if (hotUtil >= cfg.watermarkPercent / 100) {
+      // SOFT enforcement
+      report.enforcement = 'soft';
+      const target = counts.hot - Math.floor(cfg.hotLimit * 0.7);
+      report.demotedHotToWarm = await bulkDemoteHotToWarm(Math.max(0, target));
     }
-  } else if (hotUtilization >= cfg.watermarkPercent / 100) {
-    // SOFT enforcement — approaching limit, demote lowest value
-    report.enforcement = 'soft';
-    const target = counts.hot - Math.floor(cfg.hotLimit * 0.7);
-    report.demotedHotToWarm = await demoteHotToWarm(Math.max(0, target));
-  }
 
-  // Warm tier enforcement
-  const warmUtilization = (counts.warm + report.demotedHotToWarm) / cfg.warmLimit;
-  if (warmUtilization >= 0.9) {
-    const warmExcess = (counts.warm + report.demotedHotToWarm) - Math.floor(cfg.warmLimit * 0.7);
-    let remaining = Math.max(0, warmExcess);
-    while (remaining > 0) {
-      const batch = Math.min(remaining, 500);
-      const demoted = await demoteWarmToCold(batch);
-      report.demotedWarmToCold += demoted;
-      remaining -= batch;
-      if (demoted === 0) break;
+    // ── Warm tier enforcement ──
+    const warmAfterDemotion = counts.warm + report.demotedHotToWarm;
+    if (warmAfterDemotion > cfg.warmLimit * 0.9) {
+      const excess = warmAfterDemotion - Math.floor(cfg.warmLimit * 0.7);
+      report.demotedWarmToCold = await bulkDemoteWarmToCold(Math.max(0, excess));
+      console.log(`[AutoTiering] Demoted ${report.demotedWarmToCold} warm→cold`);
     }
+
+    // ── Cold tier pruning ──
+    const coldAfterDemotion = counts.cold + report.demotedWarmToCold;
+    if (coldAfterDemotion > cfg.coldLimit) {
+      report.prunedCold = await bulkPruneCold(cfg.batchSize, cfg.coldLimit);
+      console.log(`[AutoTiering] Pruned ${report.prunedCold} cold entries`);
+    }
+
+    // ── Cleanup expired pruned records ──
+    report.expiredPruned = await cleanupExpiredPruned();
+
+    // ── Recalculate ──
+    const final = await getTierCounts();
+    report.hotAfter = final.hot;
+    report.warmAfter = final.warm;
+    report.coldAfter = final.cold;
+    report.durationMs = Math.round(performance.now() - start);
+
+    // History
+    history.push(report);
+    if (history.length > 50) history.shift();
+
+    // Emit
+    emit({
+      module: 'brain',
+      event_type: 'auto_tiering_enforced',
+      outcome: 'succeeded',
+      data: {
+        enforcement: report.enforcement,
+        demotedHotToWarm: report.demotedHotToWarm,
+        demotedWarmToCold: report.demotedWarmToCold,
+        prunedCold: report.prunedCold,
+        hotAfter: report.hotAfter,
+        warmAfter: report.warmAfter,
+        coldAfter: report.coldAfter,
+        durationMs: report.durationMs,
+      },
+    });
+
+    if (report.enforcement !== 'none') {
+      console.log(`[AutoTiering] ✅ Complete in ${report.durationMs}ms — Hot: ${report.hotBefore}→${report.hotAfter}, Warm: ${report.warmBefore}→${report.warmAfter}, Cold: ${report.coldBefore}→${report.coldAfter}`);
+    }
+
+    return report;
+  } finally {
+    isRunning = false;
   }
-
-  // Recalculate
-  const finalCounts = await getTierCounts();
-  report.hotAfter = finalCounts.hot;
-  report.warmAfter = finalCounts.warm;
-  report.healthDelta = ((counts.hot - finalCounts.hot) / Math.max(1, counts.hot)) * 100;
-
-  // Log to history
-  history.push(report);
-  if (history.length > 50) history.shift();
-
-  // Emit event
-  emit({
-    module: 'brain',
-    event_type: 'auto_tiering_enforced',
-    outcome: 'succeeded',
-    data: {
-      enforcement: report.enforcement,
-      demotedHotToWarm: report.demotedHotToWarm,
-      demotedWarmToCold: report.demotedWarmToCold,
-      hotUtilization: `${Math.round((finalCounts.hot / cfg.hotLimit) * 100)}%`,
-    },
-  });
-
-  return report;
 }
 
 /**
  * Emergency bulk demotion — fast-path for critically overloaded tiers
- * Uses direct SQL batch operations instead of row-by-row
  */
 export async function emergencyBulkDemotion(targetHotCount: number = 400): Promise<{
   hotDemoted: number;
   warmDemoted: number;
+  coldPruned: number;
   duration: number;
 }> {
   const start = performance.now();
   const counts = await getTierCounts();
   let hotDemoted = 0;
   let warmDemoted = 0;
+  let coldPruned = 0;
 
-  // Bulk demote hot → warm using RPC if available, else batched
   if (counts.hot > targetHotCount) {
-    const excess = counts.hot - targetHotCount;
-    let remaining = excess;
-    while (remaining > 0) {
-      const batch = Math.min(remaining, 1000);
-      const demoted = await demoteHotToWarm(batch);
-      hotDemoted += demoted;
-      remaining -= batch;
-      if (demoted === 0) break;
-    }
+    hotDemoted = await bulkDemoteHotToWarm(counts.hot - targetHotCount);
   }
 
-  // Bulk demote warm → cold if warm is over limit after hot demotion
   const warmAfter = counts.warm + hotDemoted;
   if (warmAfter > config.warmLimit) {
-    const excess = warmAfter - Math.floor(config.warmLimit * 0.7);
-    let remaining = Math.max(0, excess);
-    while (remaining > 0) {
-      const batch = Math.min(remaining, 1000);
-      const demoted = await demoteWarmToCold(batch);
-      warmDemoted += demoted;
-      remaining -= batch;
-      if (demoted === 0) break;
-    }
+    warmDemoted = await bulkDemoteWarmToCold(warmAfter - Math.floor(config.warmLimit * 0.7));
   }
 
-  const duration = performance.now() - start;
-  
+  const coldAfter = counts.cold + warmDemoted;
+  if (coldAfter > config.coldLimit) {
+    coldPruned = await bulkPruneCold(coldAfter - config.coldLimit, config.coldLimit);
+  }
+
+  const duration = Math.round(performance.now() - start);
+
   emit({
     module: 'brain',
     event_type: 'emergency_bulk_demotion',
     outcome: 'succeeded',
-    data: { hotDemoted, warmDemoted, durationMs: Math.round(duration) },
+    data: { hotDemoted, warmDemoted, coldPruned, durationMs: duration },
   });
 
-  return { hotDemoted, warmDemoted, duration };
+  console.log(`[AutoTiering] 🚨 Emergency complete in ${duration}ms — Hot demoted: ${hotDemoted}, Warm demoted: ${warmDemoted}, Cold pruned: ${coldPruned}`);
+
+  return { hotDemoted, warmDemoted, coldPruned, duration };
+}
+
+// ─── Scheduler ───────────────────────────────────────────────────────────────
+
+/**
+ * Start automatic tiering enforcement on an interval.
+ * Runs immediately on start, then every intervalMs.
+ */
+export function startAutoTiering(overrideConfig?: Partial<AutoTieringConfig>): void {
+  if (schedulerInterval) {
+    console.warn('[AutoTiering] Scheduler already running');
+    return;
+  }
+
+  if (overrideConfig) {
+    config = { ...config, ...overrideConfig };
+  }
+
+  console.log(`[AutoTiering] 🔄 Scheduler started (interval: ${config.intervalMs / 1000}s)`);
+
+  // Run immediately
+  enforceAutoTiering().catch(err => console.error('[AutoTiering] Initial enforcement failed:', err));
+
+  // Schedule recurring
+  schedulerInterval = setInterval(() => {
+    enforceAutoTiering().catch(err => console.error('[AutoTiering] Scheduled enforcement failed:', err));
+  }, config.intervalMs);
 }
 
 /**
- * Get current tiering health
+ * Stop the auto-tiering scheduler
  */
+export function stopAutoTiering(): void {
+  if (schedulerInterval) {
+    clearInterval(schedulerInterval);
+    schedulerInterval = null;
+    console.log('[AutoTiering] Scheduler stopped');
+  }
+}
+
+// ─── Health & Config ─────────────────────────────────────────────────────────
+
 export async function getTieringHealth(): Promise<{
   healthy: boolean;
   hotUtilization: number;
   warmUtilization: number;
+  coldUtilization: number;
   recommendation: string;
+  schedulerActive: boolean;
   lastEnforcement: TieringReport | null;
 }> {
   const counts = await getTierCounts();
-  const hotUtil = counts.hot / config.hotLimit;
-  const warmUtil = counts.warm / config.warmLimit;
+  const hotUtil = Math.round((counts.hot / config.hotLimit) * 100);
+  const warmUtil = Math.round((counts.warm / config.warmLimit) * 100);
+  const coldUtil = Math.round((counts.cold / config.coldLimit) * 100);
 
   return {
-    healthy: hotUtil < 0.8 && warmUtil < 0.9,
-    hotUtilization: Math.round(hotUtil * 100),
-    warmUtilization: Math.round(warmUtil * 100),
-    recommendation: hotUtil >= 1.0
-      ? 'CRITICAL: Hot tier over limit. Run enforceAutoTiering() immediately.'
-      : hotUtil >= 0.8
-        ? 'WARNING: Hot tier approaching limit. Enforcement recommended.'
-        : 'Healthy: Tier utilization within normal bounds.',
+    healthy: hotUtil < 80 && warmUtil < 90,
+    hotUtilization: hotUtil,
+    warmUtilization: warmUtil,
+    coldUtilization: coldUtil,
+    recommendation: hotUtil >= 200
+      ? 'CRITICAL: Hot tier severely overloaded. Emergency demotion required.'
+      : hotUtil >= 100
+        ? 'CRITICAL: Hot tier over limit. Run enforceAutoTiering() immediately.'
+        : hotUtil >= 80
+          ? 'WARNING: Hot tier approaching limit. Enforcement recommended.'
+          : 'Healthy: Tier utilization within normal bounds.',
+    schedulerActive: schedulerInterval !== null,
     lastEnforcement: history.length > 0 ? history[history.length - 1] : null,
   };
 }
 
-/**
- * Update configuration
- */
 export function configureAutoTiering(updates: Partial<AutoTieringConfig>): AutoTieringConfig {
   config = { ...config, ...updates };
   return { ...config };
 }
 
-/**
- * Get enforcement history
- */
 export function getEnforcementHistory(): TieringReport[] {
   return [...history];
+}
+
+function createEmptyReport(enforcement: TieringReport['enforcement']): TieringReport {
+  return {
+    timestamp: new Date().toISOString(),
+    hotBefore: 0, hotAfter: 0,
+    warmBefore: 0, warmAfter: 0,
+    coldBefore: 0, coldAfter: 0,
+    demotedHotToWarm: 0, demotedWarmToCold: 0,
+    prunedCold: 0, expiredPruned: 0,
+    enforcement, durationMs: 0,
+  };
 }
