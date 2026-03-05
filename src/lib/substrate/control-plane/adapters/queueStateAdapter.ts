@@ -1,51 +1,158 @@
 /**
- * Control Plane Queue State Adapter — Durable or Degraded Storage
- * 
- * Provides namespaced key-value storage backed by the cp_queue_state concept.
- * Falls back to in-memory Map if database is unreachable (degraded mode).
- * 
+ * Control Plane Queue State Adapter — Typed, Bounded, Durable
+ *
+ * Provides namespaced key-value storage backed by `control_plane_state` table.
+ * Falls back to legacy `brain_events` append-only storage if the new table
+ * is unreachable (missing, RLS error, outage). Further degrades to in-memory
+ * LRU cache if all DB access fails.
+ *
  * Key namespaces:
  *   "encode:plan:<plan_id>"
  *   "encode:discussion:<plan_id>:<msg_id>"
  *   "bus:event:<seq>"
+ *
+ * Toggle: set CP_TABLE_ENABLED = false to force legacy path without code removal.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { emit } from '../../events/emit';
 
 // ═══════════════════════════════════════════════════════════════
-// STATE
+// FEATURE FLAG
 // ═══════════════════════════════════════════════════════════════
 
-let degradedMode = false;
-const memoryFallback = new Map<string, { value: unknown; meta?: Record<string, unknown>; updated_at: number }>();
+const CP_TABLE_ENABLED = true;
+
+// ═══════════════════════════════════════════════════════════════
+// LRU CACHE
+// ═══════════════════════════════════════════════════════════════
+
+const MAX_MEMORY_KEYS = 1000;
+const MEMORY_TTL_MS: number | null = 10 * 60 * 1000; // 10 min; set null to disable
+
+interface CacheEntry {
+  value: unknown;
+  meta?: Record<string, unknown>;
+  updated_at: number;
+}
+
+/** Bounded LRU map — insertion order tracks recency via delete+set */
+const lru = new Map<string, CacheEntry>();
+
+function lruGet<T>(key: string): T | null {
+  const entry = lru.get(key);
+  if (!entry) return null;
+
+  // TTL check
+  if (MEMORY_TTL_MS !== null && Date.now() - entry.updated_at > MEMORY_TTL_MS) {
+    lru.delete(key);
+    return null;
+  }
+
+  // Refresh recency
+  lru.delete(key);
+  lru.set(key, entry);
+  return entry.value as T;
+}
+
+function lruSet(key: string, value: unknown, meta?: Record<string, unknown>): void {
+  // Delete first so re-insert moves to end (most recent)
+  lru.delete(key);
+  lru.set(key, { value, meta, updated_at: Date.now() });
+
+  // Evict oldest entries (beginning of Map iteration) until within cap
+  while (lru.size > MAX_MEMORY_KEYS) {
+    const oldest = lru.keys().next().value;
+    if (oldest !== undefined) lru.delete(oldest);
+    else break;
+  }
+}
+
+function lruDelete(key: string): void {
+  lru.delete(key);
+}
+
+function lruScan<T>(prefix: string): Array<{ key: string; value: T }> {
+  const results: Array<{ key: string; value: T }> = [];
+  const now = Date.now();
+  for (const [key, entry] of lru) {
+    if (!key.startsWith(prefix)) continue;
+    if (MEMORY_TTL_MS !== null && now - entry.updated_at > MEMORY_TTL_MS) {
+      lru.delete(key);
+      continue;
+    }
+    results.push({ key, value: entry.value as T });
+  }
+  return results;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // REACHABILITY
 // ═══════════════════════════════════════════════════════════════
 
+let degradedMode = false;
+let usingLegacy = false;
 let lastHealthCheck = 0;
-let lastHealthResult = true;
+let lastHealthResult: 'cp' | 'legacy' | 'memory' = 'cp';
 const HEALTH_CHECK_TTL_MS = 30_000;
 
-async function isCPReachable(): Promise<boolean> {
+type StorageMode = 'cp' | 'legacy' | 'memory';
+
+async function resolveStorageMode(): Promise<StorageMode> {
   const now = Date.now();
   if (now - lastHealthCheck < HEALTH_CHECK_TTL_MS) return lastHealthResult;
+  lastHealthCheck = now;
 
+  // Try new CP table first
+  if (CP_TABLE_ENABLED) {
+    try {
+      const { error } = await supabase
+        .from('control_plane_state')
+        .select('key')
+        .limit(1)
+        .maybeSingle();
+      if (!error) {
+        if (degradedMode || usingLegacy) {
+          degradedMode = false;
+          usingLegacy = false;
+          emit({
+            module: 'system',
+            event_type: 'cp_recovered',
+            outcome: 'succeeded',
+            data: { reason: 'CP table reachable — resuming durable storage' },
+          });
+        }
+        lastHealthResult = 'cp';
+        return 'cp';
+      }
+    } catch { /* fall through */ }
+  }
+
+  // Try legacy brain_events
   try {
     const { error } = await supabase
-      .from('analytics_snapshots')
+      .from('brain_events')
       .select('id')
       .limit(1)
       .maybeSingle();
-    lastHealthResult = !error;
-  } catch {
-    lastHealthResult = false;
-  }
+    if (!error) {
+      if (!usingLegacy) {
+        usingLegacy = true;
+        emit({
+          module: 'system',
+          event_type: 'cp_degraded_mode',
+          outcome: 'failed',
+          data: { reason: 'CP table unreachable — falling back to legacy event storage' },
+        });
+      }
+      lastHealthResult = 'legacy';
+      return 'legacy';
+    }
+  } catch { /* fall through */ }
 
-  lastHealthCheck = now;
-
-  if (!lastHealthResult && !degradedMode) {
+  // Full degraded — memory only
+  if (!degradedMode) {
     degradedMode = true;
     emit({
       module: 'system',
@@ -53,24 +160,28 @@ async function isCPReachable(): Promise<boolean> {
       outcome: 'failed',
       data: { reason: 'Database unreachable — falling back to in-memory storage' },
     });
-  } else if (lastHealthResult && degradedMode) {
-    degradedMode = false;
-    emit({
-      module: 'system',
-      event_type: 'cp_recovered',
-      outcome: 'succeeded',
-      data: { reason: 'Database reachable — resuming durable storage' },
-    });
   }
+  lastHealthResult = 'memory';
+  return 'memory';
+}
 
-  return lastHealthResult;
+// ═══════════════════════════════════════════════════════════════
+// KEY VALIDATION
+// ═══════════════════════════════════════════════════════════════
+
+const MAX_KEY_LENGTH = 512;
+
+function validateKey(key: string): void {
+  if (!key || key.trim().length === 0) throw new Error('CP key must not be empty or whitespace-only');
+  if (key.length > MAX_KEY_LENGTH) throw new Error(`CP key exceeds max length (${MAX_KEY_LENGTH})`);
+  if (key.includes('\0')) throw new Error('CP key must not contain null bytes');
 }
 
 // ═══════════════════════════════════════════════════════════════
 // SERIALIZATION
 // ═══════════════════════════════════════════════════════════════
 
-function serialize(value: unknown): string {
+function serialize<T>(value: T): string {
   return JSON.stringify(value);
 }
 
@@ -84,45 +195,79 @@ function deserialize<T>(raw: string): T {
 
 /**
  * Store a value with optional metadata.
- * Persists to brain_events (as structured storage) or memory fallback.
+ * Writes to CP table, legacy brain_events, or memory depending on availability.
  */
-export async function cpPut(
+export async function cpPut<T>(
   key: string,
-  value: unknown,
+  value: T,
   meta?: Record<string, unknown>
 ): Promise<void> {
-  const now = Date.now();
+  validateKey(key);
 
-  // Always store in memory (fast path + fallback)
-  memoryFallback.set(key, { value, meta, updated_at: now });
+  // Always write to LRU (fast path + fallback)
+  lruSet(key, value, meta);
 
-  // Attempt durable storage
-  if (await isCPReachable()) {
+  const mode = await resolveStorageMode();
+
+  if (mode === 'cp') {
     try {
-      const payload = {
-        module: 'control_plane',
+      await supabase.from('control_plane_state').upsert(
+        [{
+          key,
+          value: JSON.parse(serialize(value)) as Json,
+          meta: (meta ?? {}) as Json,
+          updated_at: new Date().toISOString(),
+        }],
+        { onConflict: 'key' }
+      );
+      return;
+    } catch { /* fall through to legacy */ }
+  }
+
+  if (mode === 'cp' || mode === 'legacy') {
+    try {
+      await supabase.from('brain_events').insert([{
         event_type: `cp_state:${key}`,
-        data: { key, value: serialize(value), meta } as any,
-        outcome: 'success' as const,
-      };
-      await supabase.from('brain_events').insert(payload);
-    } catch {
-      // Silently degrade — memory fallback active
-    }
+        module: 'control_plane',
+        data: { key, value: serialize(value), meta } as Json,
+        outcome: 'success',
+      }]);
+    } catch { /* memory fallback active */ }
   }
 }
 
 /**
  * Retrieve a value by key.
- * Tries memory first (fast), falls back to DB query.
+ * Tries LRU first, then CP table, then legacy brain_events.
  */
-export async function cpGet<T = unknown>(key: string): Promise<T | null> {
-  // Fast path: memory
-  const mem = memoryFallback.get(key);
-  if (mem) return mem.value as T;
+export async function cpGet<T>(key: string): Promise<T | null> {
+  validateKey(key);
 
-  // Slow path: DB
-  if (await isCPReachable()) {
+  // Fast path: LRU
+  const cached = lruGet<T>(key);
+  if (cached !== null) return cached;
+
+  const mode = await resolveStorageMode();
+
+  // CP table path
+  if (mode === 'cp') {
+    try {
+      const { data, error } = await supabase
+        .from('control_plane_state')
+        .select('value, meta')
+        .eq('key', key)
+        .maybeSingle();
+
+      if (!error && data) {
+        const parsed = data.value as T;
+        lruSet(key, parsed, (data.meta as Record<string, unknown>) ?? undefined);
+        return parsed;
+      }
+    } catch { /* fall through */ }
+  }
+
+  // Legacy path
+  if (mode === 'cp' || mode === 'legacy') {
     try {
       const { data } = await supabase
         .from('brain_events')
@@ -133,14 +278,12 @@ export async function cpGet<T = unknown>(key: string): Promise<T | null> {
         .maybeSingle();
 
       if (data?.data) {
-        const record = data.data as any;
-        const parsed = deserialize<T>(record.value);
-        memoryFallback.set(key, { value: parsed, meta: record.meta, updated_at: Date.now() });
+        const record = data.data as Record<string, unknown>;
+        const parsed = deserialize<T>(record.value as string);
+        lruSet(key, parsed, (record.meta as Record<string, unknown>) ?? undefined);
         return parsed;
       }
-    } catch {
-      // Fall through
-    }
+    } catch { /* fall through */ }
   }
 
   return null;
@@ -148,19 +291,35 @@ export async function cpGet<T = unknown>(key: string): Promise<T | null> {
 
 /**
  * List values by key prefix.
+ * Returns up to 200 results ordered by most recent.
  */
-export async function cpList<T = unknown>(prefix: string): Promise<{ key: string; value: T }[]> {
-  // Fast path: memory scan
-  const results: { key: string; value: T }[] = [];
+export async function cpList<T>(prefix: string): Promise<Array<{ key: string; value: T }>> {
+  const mode = await resolveStorageMode();
 
-  for (const [key, entry] of memoryFallback) {
-    if (key.startsWith(prefix)) {
-      results.push({ key, value: entry.value as T });
-    }
+  // CP table path — authoritative when available
+  if (mode === 'cp') {
+    try {
+      const { data, error } = await supabase
+        .from('control_plane_state')
+        .select('key, value, meta')
+        .like('key', `${prefix}%`)
+        .order('updated_at', { ascending: false })
+        .limit(200);
+
+      if (!error && data && data.length > 0) {
+        const results: Array<{ key: string; value: T }> = [];
+        for (const row of data) {
+          const parsed = row.value as T;
+          lruSet(row.key, parsed, (row.meta as Record<string, unknown>) ?? undefined);
+          results.push({ key: row.key, value: parsed });
+        }
+        return results;
+      }
+    } catch { /* fall through */ }
   }
 
-  // If no memory results and DB is reachable, try DB
-  if (results.length === 0 && await isCPReachable()) {
+  // Legacy path
+  if (mode === 'cp' || mode === 'legacy') {
     try {
       const { data } = await supabase
         .from('brain_events')
@@ -169,30 +328,42 @@ export async function cpList<T = unknown>(prefix: string): Promise<{ key: string
         .order('created_at', { ascending: false })
         .limit(200);
 
-      if (data) {
+      if (data && data.length > 0) {
+        const results: Array<{ key: string; value: T }> = [];
+        const seen = new Set<string>();
         for (const row of data) {
-          const record = row.data as any;
-          if (record?.key && record?.value) {
-            const parsed = deserialize<T>(record.value);
-            results.push({ key: record.key, value: parsed });
-            memoryFallback.set(record.key, { value: parsed, meta: record.meta, updated_at: Date.now() });
+          const record = row.data as Record<string, unknown>;
+          if (record?.key && record?.value && !seen.has(record.key as string)) {
+            seen.add(record.key as string);
+            const parsed = deserialize<T>(record.value as string);
+            lruSet(record.key as string, parsed, (record.meta as Record<string, unknown>) ?? undefined);
+            results.push({ key: record.key as string, value: parsed });
           }
         }
+        return results;
       }
-    } catch {
-      // Fall through
-    }
+    } catch { /* fall through */ }
   }
 
-  return results;
+  // Memory-only scan
+  return lruScan<T>(prefix);
 }
 
 /**
- * Delete a key.
+ * Delete a key from all stores.
  */
 export async function cpDelete(key: string): Promise<void> {
-  memoryFallback.delete(key);
-  // DB entries are append-only; deletion is logical (no new entries for this key)
+  validateKey(key);
+  lruDelete(key);
+
+  const mode = await resolveStorageMode();
+
+  if (mode === 'cp') {
+    try {
+      await supabase.from('control_plane_state').delete().eq('key', key);
+    } catch { /* best effort */ }
+  }
+  // Legacy entries are append-only — logical deletion via LRU eviction
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -201,11 +372,22 @@ export async function cpDelete(key: string): Promise<void> {
 
 /** Check if CP storage is in degraded mode */
 export function isDegraded(): boolean {
-  return degradedMode;
+  return degradedMode || usingLegacy;
 }
 
 /** Force a health recheck */
 export async function recheckHealth(): Promise<boolean> {
-  lastHealthCheck = 0; // Reset TTL
-  return isCPReachable();
+  lastHealthCheck = 0;
+  const mode = await resolveStorageMode();
+  return mode === 'cp';
+}
+
+/** Get current storage mode for diagnostics */
+export function getStorageMode(): string {
+  return lastHealthResult;
+}
+
+/** Get LRU cache stats */
+export function getCacheStats(): { size: number; maxSize: number; ttlMs: number | null } {
+  return { size: lru.size, maxSize: MAX_MEMORY_KEYS, ttlMs: MEMORY_TTL_MS };
 }
