@@ -17168,6 +17168,26 @@ export type Database = {
         Args: { p_agent_id: string; p_user_id: string }
         Returns: Json
       }
+      brain_bulk_demote_hot_to_warm: {
+        Args: { batch_size?: number }
+        Returns: number
+      }
+      brain_bulk_demote_warm_to_cold: {
+        Args: { batch_size?: number }
+        Returns: number
+      }
+      brain_bulk_prune_cold: {
+        Args: { batch_size?: number; keep_count?: number }
+        Returns: number
+      }
+      brain_cleanup_expired_pruned: { Args: never; Returns: number }
+      brain_get_tier_counts: {
+        Args: never
+        Returns: {
+          cnt: number
+          tier: string
+        }[]
+      }
       calculate_memory_salience: {
         Args: {
           p_agent_id: string
