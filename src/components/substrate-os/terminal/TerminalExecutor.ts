@@ -542,6 +542,10 @@ function generateFullHelp(): string {
 │  ⚡ ENGINE LAYER                                             │
 │    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  76 engines + 24 meta-engines       │
 │                                                             │
+│  👁 OBSERVABILITY                                             │
+│    obs          (${COMMAND_CATEGORIES.observability.commands.length.toString().padStart(2)} cmds)  Telemetry, bridges, latency, DLQ   │
+│    gov          (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Governance modes, vetoes, drift     │
+│                                                             │
 │  ⚙ INFRASTRUCTURE                                            │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │    patch        ( 4 cmds)  Distribution patch dispatch        │
@@ -555,12 +559,14 @@ function generateFullHelp(): string {
 │                                                             │
 │  system.status      Global status check                     │
 │  system.health      Full health report                      │
+│  system.fix         Audit + auto-repair in one shot         │
+│  system.repair      Self-repair loop (3 attempts)           │
 │  vision.pulse       Quick heartbeat                         │
 │  brain.reflect      Trigger reflection                      │
 │  dream.cycle        Dream-Eater cycle                       │
 │  system.heal        Self-healing                            │
-│  cortex.status      Orchestrator mode                       │
-│  clm.status         CLM status & budget                     │
+│  obs.summary        Observability overview                  │
+│  gov.mode           Governance mode & states                │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -698,7 +704,41 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENGINE SYSTEM v10.5.4 (76 Engines + 24 Meta = 100) ────────┐
+┌─ OBSERVABILITY (obs.*) ──────────────────────────────────────┐
+│                                                             │
+│  obs.summary           Full observability overview           │
+│  obs.bridges           Bridge activity & message flow        │
+│  obs.latency           Cross-node latency metrics            │
+│  obs.hotspots          Error hotspot detection               │
+│  obs.telemetry         Telemetry engine state                │
+│  obs.telemetry.errors  Recent error log                      │
+│  obs.telemetry.gov     Governance events log                 │
+│  obs.dlq               Dead letter queue status              │
+│  obs.health            Composite health score                │
+│  obs.help              Observability command reference       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ GOVERNANCE SHORTHAND (gov.*) ───────────────────────────────┐
+│                                                             │
+│  gov.mode              Current mode & subsystem states       │
+│  gov.vetoes            Active vetoes with scope              │
+│  gov.compliance        Run compliance audit                  │
+│  gov.drift             Governance drift analysis             │
+│  gov.transitions       Available mode transitions            │
+│  gov.help              Governance command reference          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
+┌─ SYSTEM AUDIT & REPAIR ─────────────────────────────────────┐
+│                                                             │
+│  system.audit          Full subsystem audit                  │
+│  system.repair         Self-repair loop (3 attempts)         │
+│  system.fix            Audit + auto-repair in one shot       │
+│  system.health         Quick composite health check          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+
 │                                                             │
 │  engine.list [cat]       List engines by category           │
 │  engine.get <id>         Engine details                     │
@@ -778,6 +818,13 @@ export async function executeCommand(
       }
       output += `│\n│ ○ = Free  ◆ = Creator  ★ = Architect  ◉ = Governor\n└──────────────────────────────────────────────────────────`;
       return { success: true, output };
+    }
+    // Shorthand aliases
+    if (module === 'obs' || module === 'observability') {
+      return { success: true, output: generateModuleHelp('observability' as keyof typeof COMMAND_CATEGORIES) };
+    }
+    if (module === 'gov') {
+      return { success: true, output: generateModuleHelp('governance' as keyof typeof COMMAND_CATEGORIES) };
     }
     // Infrastructure module help aliases
     const infraModuleAliases: Record<string, string> = {

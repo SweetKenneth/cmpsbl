@@ -19,7 +19,7 @@ export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | '
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity' | 'observability';
   icon: LucideIcon;
   /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
@@ -1266,6 +1266,36 @@ export const GOVERNANCE_COMMANDS: CommandDefinition[] = [
   { command: 'governance.self_audit', description: 'Self-referential audit', category: 'governance', icon: Eye, requiresOperator: false, requiredTier: 'free' },
 ];
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// GOV — Governance shorthand commands (gov.* handlers)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const GOV_COMMANDS: CommandDefinition[] = [
+  { command: 'gov.mode', description: 'Current governance mode & subsystem states', category: 'governance', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'gov.vetoes', description: 'Active vetoes with authority & scope', category: 'governance', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'gov.compliance', description: 'Run compliance audit', category: 'governance', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'gov.drift', description: 'Governance drift analysis', category: 'governance', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'gov.transitions', description: 'Available mode transitions & quorum', category: 'governance', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
+  { command: 'gov.help', description: 'Governance command reference', category: 'governance', icon: BookOpen, requiresOperator: false, requiredTier: 'free' },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// OBS — Observability commands (obs.* handlers)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const OBS_COMMANDS: CommandDefinition[] = [
+  { command: 'obs.summary', description: 'Full observability overview', category: 'observability', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.bridges', description: 'Bridge activity & message flow', category: 'observability', icon: Network, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.latency', description: 'Cross-node latency metrics', category: 'observability', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.hotspots', description: 'Error hotspot detection', category: 'observability', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.telemetry', description: 'Telemetry engine state', category: 'observability', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.telemetry.errors', description: 'Recent error log', category: 'observability', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.telemetry.gov', description: 'Governance events log', category: 'observability', icon: Globe, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.dlq', description: 'Dead letter queue status', category: 'observability', icon: Inbox, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.health', description: 'Composite health score', category: 'observability', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'obs.help', description: 'Observability command reference', category: 'observability', icon: BookOpen, requiresOperator: false, requiredTier: 'free' },
+];
+
 export const ALL_COMMANDS: CommandDefinition[] = [
   ...BRAIN_COMMANDS,
   ...DECODE_COMMANDS,
@@ -1324,6 +1354,9 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...EVOLUTION_COMMANDS,
   ...IMMUNITY_COMMANDS,
   ...GOVERNANCE_COMMANDS,
+  // Shorthand command sets
+  ...GOV_COMMANDS,
+  ...OBS_COMMANDS,
 ];
 
 export const COMMAND_CATEGORIES = {
@@ -1382,7 +1415,8 @@ export const COMMAND_CATEGORIES = {
   // Mesh Overlays
   evolution: { label: 'EVOLUTION', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: EVOLUTION_COMMANDS },
   immunity: { label: 'IMMUNITY', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: IMMUNITY_COMMANDS },
-  governance: { label: 'GOVERNANCE', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: GOVERNANCE_COMMANDS },
+  governance: { label: 'GOVERNANCE', color: 'text-sky-400', borderColor: 'border-sky-500/30', commands: [...GOVERNANCE_COMMANDS, ...GOV_COMMANDS] },
+  observability: { label: 'OBSERVABILITY', color: 'text-yellow-400', borderColor: 'border-yellow-500/30', commands: OBS_COMMANDS },
 } as const;
 
 export function findCommand(input: string): CommandDefinition | undefined {
