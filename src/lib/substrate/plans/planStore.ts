@@ -1,49 +1,63 @@
 /**
- * Plan Store — In-memory store for PatchPlan lifecycle management.
+ * Plan Store — CP-backed durable store for PatchPlan lifecycle.
+ * Falls back to in-memory if DB unreachable (degraded mode).
  * Provides CRUD + approval/rejection + history queries.
  */
 
 import type { PatchPlan, PlanStatus } from './types';
 import { verifyPlan } from './verifyPlan';
 import { emit } from '../events';
+import { cpPut, cpGet, cpList, cpDelete } from '../control-plane/adapters/queueStateAdapter';
 
-const plans: Map<string, PatchPlan> = new Map();
 const MAX_PLANS = 200;
+
+function planKey(planId: string): string {
+  return `encode:plan:${planId}`;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // CRUD
 // ═══════════════════════════════════════════════════════════════
 
-export function storePlan(plan: PatchPlan): PatchPlan {
-  // Enforce capacity
-  if (plans.size >= MAX_PLANS) {
-    const oldest = [...plans.values()]
-      .filter(p => p.status === 'executed' || p.status === 'rejected')
-      .sort((a, b) => a.created_at.localeCompare(b.created_at));
-    if (oldest.length > 0) {
-      plans.delete(oldest[0].plan_id);
+export async function storePlan(plan: PatchPlan): Promise<PatchPlan> {
+  // Enforce capacity via eviction
+  const existing = await cpList<PatchPlan>('encode:plan:');
+  if (existing.length >= MAX_PLANS) {
+    const evictable = existing
+      .filter(e => e.value.status === 'executed' || e.value.status === 'rejected')
+      .sort((a, b) => a.value.created_at.localeCompare(b.value.created_at));
+    if (evictable.length > 0) {
+      await cpDelete(evictable[0].key);
     }
   }
 
-  plans.set(plan.plan_id, plan);
+  await cpPut(planKey(plan.plan_id), plan, {
+    status: plan.status,
+    created_at: plan.created_at,
+  });
+
   emit({
     module: 'encode',
     event_type: 'plan_stored',
     outcome: 'succeeded',
     data: { plan_id: plan.plan_id, status: plan.status },
   });
+
   return plan;
 }
 
-export function loadPlan(planId: string): PatchPlan | null {
-  return plans.get(planId) ?? null;
+export async function loadPlan(planId: string): Promise<PatchPlan | null> {
+  return cpGet<PatchPlan>(planKey(planId));
 }
 
-export function listPlans(filter?: { status?: PlanStatus }): PatchPlan[] {
-  let result = [...plans.values()];
+export async function listPlans(filter?: { status?: PlanStatus }): Promise<PatchPlan[]> {
+  const all = await cpList<PatchPlan>('encode:plan:');
+  let result = all.map(e => e.value);
+
   if (filter?.status) {
     result = result.filter(p => p.status === filter.status);
   }
+
   return result.sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
@@ -51,14 +65,13 @@ export function listPlans(filter?: { status?: PlanStatus }): PatchPlan[] {
 // LIFECYCLE
 // ═══════════════════════════════════════════════════════════════
 
-export function approvePlan(planId: string, approver?: string): { success: boolean; error?: string } {
-  const plan = plans.get(planId);
+export async function approvePlan(planId: string, approver?: string): Promise<{ success: boolean; error?: string }> {
+  const plan = await loadPlan(planId);
   if (!plan) return { success: false, error: `Plan ${planId} not found` };
   if (plan.status !== 'review' && plan.status !== 'draft') {
     return { success: false, error: `Plan ${planId} is in status "${plan.status}" — only draft/review plans can be approved` };
   }
 
-  // Verify before approving
   const verification = verifyPlan(plan);
   if (!verification.valid) {
     return { success: false, error: `Verification failed: ${verification.errors.join('; ')}` };
@@ -67,6 +80,8 @@ export function approvePlan(planId: string, approver?: string): { success: boole
   plan.status = 'approved';
   plan.approved_at = new Date().toISOString();
   plan.approved_by = approver ?? 'user';
+
+  await cpPut(planKey(planId), plan, { status: 'approved' });
 
   emit({
     module: 'encode',
@@ -78,12 +93,14 @@ export function approvePlan(planId: string, approver?: string): { success: boole
   return { success: true };
 }
 
-export function rejectPlan(planId: string, reason: string): { success: boolean; error?: string } {
-  const plan = plans.get(planId);
+export async function rejectPlan(planId: string, reason: string): Promise<{ success: boolean; error?: string }> {
+  const plan = await loadPlan(planId);
   if (!plan) return { success: false, error: `Plan ${planId} not found` };
 
   plan.status = 'rejected';
   plan.rejected_reason = reason;
+
+  await cpPut(planKey(planId), plan, { status: 'rejected' });
 
   emit({
     module: 'encode',
@@ -95,8 +112,8 @@ export function rejectPlan(planId: string, reason: string): { success: boolean; 
   return { success: true };
 }
 
-export function markPlanExecuted(planId: string): { success: boolean; error?: string } {
-  const plan = plans.get(planId);
+export async function markPlanExecuted(planId: string): Promise<{ success: boolean; error?: string }> {
+  const plan = await loadPlan(planId);
   if (!plan) return { success: false, error: `Plan ${planId} not found` };
   if (plan.status !== 'approved') {
     return { success: false, error: `Plan ${planId} must be approved before execution (current: ${plan.status})` };
@@ -104,6 +121,8 @@ export function markPlanExecuted(planId: string): { success: boolean; error?: st
 
   plan.status = 'executed';
   plan.executed_at = new Date().toISOString();
+
+  await cpPut(planKey(planId), plan, { status: 'executed' });
 
   emit({
     module: 'encode',
@@ -113,4 +132,35 @@ export function markPlanExecuted(planId: string): { success: boolean; error?: st
   });
 
   return { success: true };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HEALTH CHECK (on-demand, no timers)
+// ═══════════════════════════════════════════════════════════════
+
+export async function planStoreHealth(): Promise<{ ok: boolean; detail: string }> {
+  try {
+    const testId = `health-check-${Date.now()}`;
+    const testPlan: PatchPlan = {
+      plan_id: testId,
+      created_at: new Date().toISOString(),
+      title: 'Health check',
+      intent: 'Validate plan store CRUD',
+      modules: [],
+      changes: [],
+      risks: [],
+      questions: [],
+      status: 'draft',
+    };
+    await storePlan(testPlan);
+    const loaded = await loadPlan(testId);
+    await cpDelete(`encode:plan:${testId}`);
+
+    if (loaded && loaded.plan_id === testId) {
+      return { ok: true, detail: 'Plan store CRUD operational' };
+    }
+    return { ok: false, detail: 'Load returned null after store' };
+  } catch (err: any) {
+    return { ok: false, detail: err?.message || 'Unknown error' };
+  }
 }
