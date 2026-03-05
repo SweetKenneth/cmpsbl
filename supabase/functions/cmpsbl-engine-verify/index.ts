@@ -219,7 +219,7 @@ function buildThankYouEmail(name: string, expiresAt: string | null, email: strin
         <!-- Footer -->
         <tr><td style="padding:24px 40px;border-top:1px solid #1a1a1a;text-align:center;">
           <p style="color:#555;font-size:12px;margin:0;">
-            © ${new Date().getFullYear()} CMPSBL® by PromptFluid® · All rights reserved.
+            © ${new Date().getFullYear()} CMPSBL® · All rights reserved.
           </p>
           <p style="color:#444;font-size:11px;margin:8px 0 0;">
             Questions? Reply to this email or reach us at Dev@CMPSBL.com

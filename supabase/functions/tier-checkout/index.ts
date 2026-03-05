@@ -73,7 +73,7 @@ serve(async (req) => {
     }
 
     const priceConfig = TIER_PRICES[tier];
-    const origin = req.headers.get("origin") || "https://cmpsbl.lovable.app";
+    const origin = req.headers.get("origin") || "https://cmpsbl.com";
 
     let customerId: string | undefined;
     if (userEmail) {

@@ -96,7 +96,7 @@ serve(async (req) => {
     }
 
     // Create checkout session
-    const origin = req.headers.get('origin') || 'https://cmpsbl.lovable.app';
+    const origin = req.headers.get('origin') || 'https://cmpsbl.com';
     
     // Resolve the display tier name for success page
     const displayTier = tier === 'enterprise' || tier === 'pro' ? 'architect' : 

@@ -50,7 +50,7 @@ serve(async (req) => {
     const customerName =
       session.customer_details?.name || "Operative Owner";
     const operativeName = OPERATIVE_NAMES[operative_slug] || operative_slug?.toUpperCase() || "UNKNOWN";
-    const docsUrl = `https://cmpsbl.lovable.app/docs/operatives/${operative_slug}`;
+    const docsUrl = `https://cmpsbl.com/docs/operatives/${operative_slug}`;
     const editionId = `OP-${operative_slug?.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
 
     // Send license email via Resend

@@ -52,8 +52,8 @@ serve(async (req) => {
       customer_email: customerId ? undefined : userEmail,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "payment",
-      success_url: `${req.headers.get("origin") || "https://cmpsbl.lovable.app"}/gaming?purchase=success`,
-      cancel_url: `${req.headers.get("origin") || "https://cmpsbl.lovable.app"}/gaming?purchase=canceled`,
+      success_url: `${req.headers.get("origin") || "https://cmpsbl.com"}/gaming?purchase=success`,
+      cancel_url: `${req.headers.get("origin") || "https://cmpsbl.com"}/gaming?purchase=canceled`,
       metadata: {
         product: "world-engine",
       },
