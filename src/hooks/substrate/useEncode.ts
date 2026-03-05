@@ -65,9 +65,9 @@ export interface UseEncodeReturn {
     clarify: ReturnType<typeof useMutation>;
     respond: ReturnType<typeof useMutation>;
     ready: ReturnType<typeof useMutation>;
-    getThread: (planId: string) => DiscussionMessage[];
-    allResolved: (planId: string) => boolean;
-    unresolvedCount: (planId: string) => number;
+    getThread: (planId: string) => Promise<DiscussionMessage[]>;
+    allResolved: (planId: string) => Promise<boolean>;
+    unresolvedCount: (planId: string) => Promise<number>;
   };
 
   // Existing mutations
