@@ -1,6 +1,7 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
  * Premium audience cards with 3D effects and gradient borders
+ * Rebalanced: emphasizes building on the substrate, not just the stream
  */
 
 import { Link } from "react-router-dom";
@@ -17,7 +18,7 @@ import {
   Shield,
   MessageSquare,
   Eye,
-  Sparkles,
+  Hammer,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,10 +30,10 @@ const audiences = [
     badge: "For Game Devs",
     title: "NPCs That Dream",
     tagline: "Give your characters a soul",
-    description: "Persistent memory, emotional evolution, and the ability to learn from every player interaction. NPCs that remember, grow, and surprise.",
+    description: "Build NPCs on the substrate with persistent memory, DREAM cycle processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
     features: [
       { icon: Brain, text: "3-tier NPC memory" },
-      { icon: Moon, text: "Dream cycle processing" },
+      { icon: Moon, text: "DREAM cycle processing" },
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
@@ -46,16 +47,16 @@ const audiences = [
   {
     icon: Code,
     badge: "For Developers",
-    title: "Apps That Think",
-    tagline: "Intelligence as infrastructure",
-    description: "Add persistent memory, intelligent routing, and self-improvement to any application. Full SDK. Production-ready from day one.",
+    title: "Apps That Evolve",
+    tagline: "Infrastructure that improves itself",
+    description: "Build on the substrate with persistent memory, ADAPT-governed routing, and EVOLUTION for self-improvement. Your apps dream, adapt, and get smarter the more they run.",
     features: [
-      { icon: Zap, text: "Multi-provider routing" },
+      { icon: Zap, text: "ADAPT-governed routing" },
       { icon: Brain, text: "Memory persistence" },
       { icon: Eye, text: "Full observability" },
     ],
     stats: { value: "200+", label: "Templates" },
-    cta: "Start Coding",
+    cta: "Start Building",
     href: "/developers",
     gradient: "from-cyan-600 via-blue-600 to-indigo-600",
     glow: "shadow-cyan-500/25",
@@ -66,10 +67,10 @@ const audiences = [
     icon: Building2,
     badge: "For Enterprise",
     title: "Operations That Learn",
-    tagline: "Institutional memory, automated",
-    description: "Workflow memory, decision support, audit trails, and governance built-in. Deploy on your infrastructure with complete control.",
+    tagline: "Governed evolution at scale",
+    description: "Deploy the substrate on your infrastructure with DREAM cycles for pattern discovery, governed ADAPT for compliance, and EVOLUTION for continuous improvement — all auditable.",
     features: [
-      { icon: Shield, text: "Security & compliance" },
+      { icon: Shield, text: "Governed adaptation" },
       { icon: Brain, text: "Institutional memory" },
       { icon: Eye, text: "Audit everything" },
     ],
@@ -151,7 +152,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
         <div className="p-5 sm:p-8 flex flex-col h-full relative">
           {/* Header */}
           <div className="flex items-start justify-between mb-5">
-            {/* Icon with gradient background */}
             <motion.div 
               className={cn(
                 "w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center",
@@ -167,7 +167,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
             </motion.div>
             
-            {/* Stat with animation */}
             <motion.div 
               className="text-right"
               animate={{ scale: isHovered ? 1.05 : 1 }}
@@ -185,7 +184,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             </motion.div>
           </div>
           
-          {/* Badge */}
           <Badge 
             variant="outline" 
             className={cn(
@@ -196,7 +194,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.badge}
           </Badge>
           
-          {/* Title & Tagline */}
           <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
             {audience.title}
           </h3>
@@ -207,12 +204,10 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.tagline}
           </p>
           
-          {/* Description */}
           <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
             {audience.description}
           </p>
           
-          {/* Features with enhanced styling */}
           <div className="space-y-2.5 mb-6">
             {audience.features.map((feature, idx) => (
               <motion.div 
@@ -235,9 +230,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             ))}
           </div>
           
-          
-          
-          {/* CTA */}
           <Button asChild className={cn(
             "w-full gap-2 h-11 sm:h-12 text-sm sm:text-base font-semibold",
             "bg-gradient-to-r text-white border-0 shadow-lg",
@@ -280,7 +272,6 @@ export function BuiltForSection() {
       </div>
       
       <div className="relative max-w-7xl mx-auto">
-        {/* Header with enhanced animation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -289,11 +280,11 @@ export function BuiltForSection() {
           className="text-center mb-8 sm:mb-20"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-xs">Built For You</span>
+            <Hammer className="w-3 h-3 text-primary" />
+            <span className="text-xs">Built For Builders</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            Crystallize Your{" "}
+            Build What{" "}
             <span 
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-amber)))",
@@ -303,19 +294,18 @@ export function BuiltForSection() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Signal
+              Evolves
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The Memory Stream adapts to your use case. 
-            Pre-configured pipeline packs ready for 
-            <span className="text-foreground font-medium"> gaming</span>, 
-            <span className="text-foreground font-medium"> development</span>, and 
-            <span className="text-foreground font-medium"> enterprise</span>.
+            The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
+            Build for{" "}
+            <span className="text-foreground font-medium">gaming</span>,{" "}
+            <span className="text-foreground font-medium">development</span>, or{" "}
+            <span className="text-foreground font-medium">enterprise</span> — and watch them improve themselves.
           </p>
         </motion.div>
         
-        {/* Audience Cards with better spacing */}
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
           {audiences.map((audience, idx) => (
             <AudienceCard key={audience.title} audience={audience} index={idx} />
