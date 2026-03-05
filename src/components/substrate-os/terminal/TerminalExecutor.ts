@@ -815,6 +815,13 @@ export async function executeCommand(
       output += `│\n│ ○ = Free  ◆ = Creator  ★ = Architect  ◉ = Governor\n└──────────────────────────────────────────────────────────`;
       return { success: true, output };
     }
+    // Shorthand aliases
+    if (module === 'obs' || module === 'observability') {
+      return { success: true, output: generateModuleHelp('observability' as keyof typeof COMMAND_CATEGORIES) };
+    }
+    if (module === 'gov') {
+      return { success: true, output: generateModuleHelp('governance' as keyof typeof COMMAND_CATEGORIES) };
+    }
     // Infrastructure module help aliases
     const infraModuleAliases: Record<string, string> = {
       'memory': 'memory_mod', 'relay': 'relay_mod', 'audit': 'audit_mod',
