@@ -39,7 +39,7 @@ export async function fetchAutoChangelog(limit = 20): Promise<AutoChangelogEntry
       return {
         id: run.run_id,
         date: run.completed_at || run.created_at,
-        version: `v${summary.version || '10.5.4'}`,
+        version: summary.version ? `Evolution cycle` : 'Substrate adaptation',
         pressures: summary.pressures || ['Evolution cycle triggered by SEBA analysis'],
         responses: summary.responses || [
           diff.files_changed ? `Modified ${diff.files_changed} files` : 'Applied substrate patch',
