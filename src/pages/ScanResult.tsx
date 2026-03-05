@@ -58,7 +58,7 @@ export default function ScanResult() {
         <meta property="og:title" content={scan ? `${scan.domain} — Score: ${scan.score ?? 'N/A'}` : 'Scan Result'} />
         <meta property="og:description" content={scan ? `${scan.findings_count} findings detected in ${scan.scan_mode} scan.` : ''} />
         <meta property="og:type" content="article" />
-        <link rel="canonical" href={`https://cmpsbl.lovable.app/scan/results/${id}`} />
+        <link rel="canonical" href={`https://cmpsbl.com/scan/results/${id}`} />
       </Helmet>
 
       <div className="min-h-screen bg-background">
