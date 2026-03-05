@@ -95,7 +95,7 @@ export function LiveStatsBar() {
                 transition={{ delay: i * 0.08 }}
                 className="flex items-center gap-2.5 min-w-[110px] px-3.5 py-2 rounded-xl border border-transparent hover:border-border/30 hover:bg-primary/[0.03] transition-all duration-300 group/stat stat-card-glow"
               >
-                <div className="w-7 h-7 rounded-lg bg-current/10 flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
                   <Icon className={cn("w-3.5 h-3.5 flex-shrink-0 transition-transform duration-300 group-hover/stat:scale-110", stat.color)} />
                 </div>
                 <div className="text-center sm:text-left">

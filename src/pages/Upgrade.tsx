@@ -299,7 +299,12 @@ export default function Upgrade() {
               Memory Stream Capacity
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              One Stream. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Your Capacity.</span>
+              One Stream.{" "}
+              <span style={{
+                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>Your Capacity.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               24 pipeline packs. Every pack = 1 slot. Crystallize from the Memory Stream with 3, 6, 9, or 12 slots.
@@ -359,7 +364,7 @@ export default function Upgrade() {
                   className={cn(
                     "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0",
                     "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
-                    "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300",
+                    "hover:shadow-lg transition-all duration-300 card-lift",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
                       : t.popular

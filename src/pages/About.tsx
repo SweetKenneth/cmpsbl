@@ -254,7 +254,7 @@ export default function About() {
                 transition={{ delay: idx * 0.08, duration: 0.4 }}
                 className={cn(
                   "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7",
-                  "hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300",
+                  "transition-all duration-300 card-lift gradient-border-reveal",
                   pillar.border,
                   "hover:border-opacity-60"
                 )}
@@ -300,7 +300,7 @@ export default function About() {
             {/* The Substrate */}
             <motion.div
               {...stagger(0.1)}
-              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden"
+              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden card-lift gradient-border-reveal"
             >
               <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-emerald-500 to-amber-500" />
               <div className="p-5 sm:p-8">
@@ -372,7 +372,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05, duration: 0.35 }}
-                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shimmer-on-hover"
+                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal"
               >
                 <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
                   <sys.icon className="w-4 h-4 text-primary" />
