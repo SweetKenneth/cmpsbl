@@ -17,7 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { isBotUA } from '@/lib/analytics/bot-patterns';
+
 
 // ─── Types ──────────────────────────────────────────────────────────
 interface SiteAnalyticsData {
