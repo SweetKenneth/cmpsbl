@@ -80,12 +80,12 @@ export default function Enterprise() {
               The complete CMPSBL substrate — deployed on your servers. DREAM cycles, governed ADAPT, persistent memory, and EVOLUTION — configured for your compliance requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/contact">
                   Talk to Us <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
                 <Link to="/solutions">View Solutions</Link>
               </Button>
             </div>
@@ -102,7 +102,7 @@ export default function Enterprise() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300"
+                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 shimmer-on-hover"
               >
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <cap.icon className="w-5 h-5 text-primary" />
@@ -116,7 +116,7 @@ export default function Enterprise() {
 
         {/* CTA */}
         <section className="container mx-auto max-w-3xl px-4 text-center">
-          <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm">
+          <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm shimmer-on-hover shadow-lg shadow-primary/[0.03]">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Custom slot capacity, dedicated instances, SOC2 compliance, DREAM cycle configuration, and white-glove onboarding — tailored to your organization.
