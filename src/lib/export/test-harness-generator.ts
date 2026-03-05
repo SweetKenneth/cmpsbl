@@ -447,17 +447,52 @@ export function generateExportScaffolding(ctx: SynthesisContext): { filename: st
   return [
     {
       filename: 'LICENSE',
-      content: `CMPSBL® Proprietary License
+      content: `CMPSBL® Commercial Distribution License
 
 Copyright (c) ${new Date().getFullYear()} CMPSBL®. All rights reserved.
 
-This software and associated documentation files (the "Software") are the
-proprietary intellectual property of CMPSBL®. Unauthorized copying, modification,
-distribution, or use of this Software, via any medium, is strictly prohibited.
+ORIGIN NOTICE — This software was crystallized and exported from the CMPSBL®
+Substrate, a cognitive orchestration platform by promptfluid®. This software
+requires the included CMPSBL® Micro-Substrate Runtime to function. The runtime
+is proprietary to CMPSBL® and may not be separated, reverse-engineered, or
+redistributed independently of this package.
 
-The Software is provided "AS IS", without warranty of any kind, express or implied.
+GRANT OF RIGHTS — Subject to the terms below, the licensee is granted a
+non-exclusive, worldwide right to:
+  (a) Use, modify, and integrate this software into derivative works.
+  (b) Sell, sublicense, or commercially distribute this software and
+      derivative works, provided that ALL of the following conditions are met.
 
-For licensing inquiries, contact: legal@cmpsbl.com
+CONDITIONS:
+  1. ATTRIBUTION — Every distribution of this software, whether in original
+     or modified form, MUST include the following notice in a prominent
+     location (e.g. README, About screen, license file, or documentation):
+
+       "Built with the CMPSBL® Substrate — https://cmpsbl.com
+        Powered by the CMPSBL® Micro-Substrate Runtime."
+
+  2. RUNTIME DEPENDENCY — This software depends on the CMPSBL® Micro-Substrate
+     Runtime included in this package. The runtime MUST be included in all
+     distributions. It may NOT be replaced, stubbed out, or removed.
+
+  3. LICENSE PRESERVATION — This license file MUST be included, unmodified,
+     in every copy or distribution of this software.
+
+  4. NO MISREPRESENTATION — You may not claim that this software was created
+     entirely by you or any party other than CMPSBL®. The substrate origin
+     must be acknowledged.
+
+RUNTIME LICENSE — The CMPSBL® Micro-Substrate Runtime (standalone-runtime.ts
+and standalone-discovery-engine.ts) is licensed solely for use with software
+exported from the CMPSBL® Substrate. It may not be used, copied, or
+distributed for any other purpose.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+CMPSBL® BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.
+
+For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
 `,
     },
     {
