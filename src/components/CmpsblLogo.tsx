@@ -29,8 +29,9 @@ export function CmpsblLogo({ className, iconOnly = false, size = "md", priority 
       alt="CMPSBL"
       width={width}
       height={height}
-      loading="lazy"
-      decoding="async"
+      loading={priority ? "eager" : "lazy"}
+      decoding={priority ? "sync" : "async"}
+      fetchPriority={priority ? "high" : undefined}
       className={cn(
         sizeClass,
         "w-auto object-contain",

@@ -67,42 +67,16 @@ const NotFound = () => {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 relative overflow-hidden">
       <SEO title="Signal Lost — CMPSBL" description="This path dissolved before crystallization." noindex />
       
-      {/* Cinematic particle background */}
+      {/* Background — CSS-only for performance */}
       <div className="fixed inset-0 pointer-events-none">
-        
-        {/* Dissolving radial glow — fading signal */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
-          style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.1) 0%, transparent 50%)' }}
-          initial={{ scale: 2, opacity: 0.6 }}
-          animate={{ scale: [2, 0.5, 0.8], opacity: [0.6, 0.1, 0.05] }}
-          transition={{ duration: 3, ease: 'easeOut' }}
+        {/* Fading radial glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.05]"
+          style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }}
         />
         
-        {/* Fading stream lines — signal dissolving */}
-        {[...Array(4)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-px"
-            style={{
-              top: `${25 + i * 15}%`,
-              left: 0,
-              right: 0,
-              background: `linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), hsl(var(--destructive) / 0.1), transparent)`,
-            }}
-            initial={{ opacity: 0.5, scaleX: 1 }}
-            animate={{ opacity: [0.5, 0.1, 0.3], x: ['-50%', '50%'] }}
-            transition={{ duration: 8 + i * 2, repeat: Infinity, ease: 'linear' }}
-          />
-        ))}
-        
-        {/* Substrate grid fading */}
-        <motion.div 
-          className="absolute inset-0 substrate-grid-bg"
-          initial={{ opacity: 0.3 }}
-          animate={{ opacity: 0.08 }}
-          transition={{ duration: 2 }}
-        />
+        {/* Subtle grid */}
+        <div className="absolute inset-0 substrate-grid-bg opacity-[0.08]" />
       </div>
 
       <AnimatePresence>
