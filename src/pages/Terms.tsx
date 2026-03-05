@@ -20,7 +20,7 @@ export default function Terms() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground leading-relaxed">
-              By accessing or using CMPSBL's services (a PromptFluid product), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+              By accessing or using CMPSBL's services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
             </p>
           </section>
 
@@ -36,8 +36,8 @@ export default function Terms() {
               <li>NEXUS — Multi-provider AI routing with BYOK architecture</li>
               <li>DEFENSE — Enterprise-grade threat detection and bot protection overlay</li>
               <li>DECODE — Conversational AI interface with memory-backed context</li>
-              <li>VISION — Full observability and system introspection module</li>
-              <li>INCLUSIVE — Human compatibility module with WCAG scanning and AI remediation</li>
+              <li>VISION — Full observability and system introspection</li>
+              <li>INCLUSIVE — Human compatibility system with WCAG scanning and AI remediation</li>
               <li>Persistent Memory — Drop-in memory layer for any AI agent</li>
               <li>Evolution Mesh — Self-learning immune system for software</li>
               <li>Composable Cognitive Infrastructure — Templates, capabilities, and orchestration pipelines</li>
@@ -77,7 +77,7 @@ export default function Terms() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">5. Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed">
-              All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration pipelines, artifact packs, and composable Minds — are owned by PromptFluid and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.
+              All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration pipelines, artifact packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.
             </p>
           </section>
 
@@ -90,7 +90,7 @@ export default function Terms() {
               <li>You receive a perpetual, non-transferable license for personal or organizational use</li>
               <li>You may not redistribute, sublicense, or resell purchased artifacts</li>
               <li>Refunds are handled according to our refund policy</li>
-              <li>PromptFluid retains all intellectual property rights in the underlying technology</li>
+              <li>CMPSBL retains all intellectual property rights in the underlying technology</li>
             </ul>
           </section>
 

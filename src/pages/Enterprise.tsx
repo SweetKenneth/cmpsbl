@@ -27,7 +27,7 @@ const capabilities = [
   },
   {
     icon: Layers,
-    title: "Custom Module Configuration",
+    title: "Custom System Configuration",
     description: "Compose the exact stack your organization needs. Activate the packs that matter, disable what doesn't — zero bloat.",
   },
   {
@@ -57,7 +57,7 @@ export default function Enterprise() {
     <>
       <SEO
         title="Enterprise — CMPSBL"
-        description="Deploy the CMPSBL cognitive substrate on your own infrastructure. Private deployment, custom modules, priority support, and compliance-ready orchestration."
+        description="Deploy the CMPSBL cognitive substrate on your own infrastructure. Private deployment, custom systems, priority support, and compliance-ready orchestration."
       />
       <PublicNav />
       <main className="min-h-screen bg-background pt-24 pb-16">

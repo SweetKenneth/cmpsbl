@@ -449,7 +449,7 @@ export default function LlmsTxt() {
             LLMS.txt is a protocol designed by{" "}
             <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>
             {" "}to make pages machine-readable for AI systems.
-            PromptFluid® follows this standard and recommends it for all web designers and system architects.
+            CMPSBL® follows this standard and recommends it for all web designers and system architects.
           </p>
         </div>
 
@@ -465,7 +465,7 @@ export default function LlmsTxt() {
             >
               llmstxt.org
             </a>
-            {" "}• CMPSBL implementation by PromptFluid®
+            {" "}• CMPSBL implementation
           </p>
         </div>
       </main>

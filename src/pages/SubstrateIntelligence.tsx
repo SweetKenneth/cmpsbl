@@ -386,7 +386,7 @@ Boot complete in 109ms`}
               </div>
               
               <p className="text-sm text-muted-foreground">
-                Built by the <strong>CMPSBL Team</strong> • PromptFluid® • © 2025-2026
+                Built by the <strong>CMPSBL Team</strong> • © 2025-2026
               </p>
             </div>
           </div>

@@ -165,7 +165,7 @@ export default function AgencyMint() {
       <footer className="border-t border-border/40 py-4 text-center text-xs text-muted-foreground font-mono">
         <div className="flex items-center justify-center gap-2">
           <span className="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse" />
-          <span>promptfluid® agency mint</span>
+          <span>CMPSBL® agency mint</span>
         </div>
       </footer>
     </div>
