@@ -130,13 +130,13 @@ export default function Roadmap() {
         <img 
           src={heroImage}
           alt="Product roadmap visualization with timeline and milestones representing CMPSBL's strategic direction"
-          className="absolute inset-0 w-full h-[60vh] object-cover"
+          className="absolute inset-0 w-full h-[40vh] sm:h-[60vh] object-cover"
         />
-        <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
+        <div className="absolute inset-0 h-[40vh] sm:h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
         
         <div className="relative container mx-auto px-4 pt-32 pb-20">
           <nav className="mb-12">
-            <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors min-h-[44px] py-2">
               ← Back to Home
             </Link>
           </nav>
@@ -147,11 +147,11 @@ export default function Roadmap() {
               Building the Future
             </Badge>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
               2026-2027 Roadmap
             </h1>
 
-            <p className="text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
+            <p className="text-base sm:text-lg md:text-xl text-foreground/90 mb-8 leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
               Persistent memory, intelligent routing, and governed orchestration — here's where we're building next.
             </p>
 
@@ -194,7 +194,7 @@ export default function Roadmap() {
                 {quarter.items.map((item) => (
                   <article
                     key={item.title}
-                    className="group p-8 rounded-lg bg-card border border-border hover:border-primary/40 transition-all"
+                    className="group p-5 sm:p-8 rounded-lg bg-card border border-border hover:border-primary/40 transition-all"
                   >
                     {/* Icon & Status */}
                     <div className="flex items-start justify-between mb-6">
@@ -234,7 +234,7 @@ export default function Roadmap() {
       </section>
 
       {/* Earth Window */}
-      <section className="relative w-full h-[50vh] overflow-hidden">
+      <section className="relative w-full h-[30vh] sm:h-[50vh] overflow-hidden">
         <img 
           src={neuralImage}
           alt="Abstract neural network visualization representing future AI capabilities"
@@ -246,7 +246,7 @@ export default function Roadmap() {
         
         <div className="absolute inset-0 flex items-center justify-center">
           <blockquote className="text-center max-w-3xl px-8">
-            <p className="text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
+            <p className="text-xl sm:text-2xl md:text-4xl font-light text-foreground drop-shadow-lg">
               "Ship today. Compound tomorrow."
             </p>
           </blockquote>
@@ -256,7 +256,7 @@ export default function Roadmap() {
       {/* Philosophy Section */}
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">
             Our Development Philosophy
           </h2>
           <div className="grid md:grid-cols-3 gap-6 mt-12">
@@ -285,21 +285,21 @@ export default function Roadmap() {
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-foreground">
             Be Part of the Journey
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
             Join early adopters shaping the future of intelligent software. Get exclusive access to new tools as we build them.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 min-h-[44px]">
                 Get Early Access
                 <Rocket className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/about">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="min-h-[44px]">
                 Learn More
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>

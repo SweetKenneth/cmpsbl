@@ -60,14 +60,14 @@ export default function Insights() {
 
       <PublicNav />
 
-      <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
+      <main className="flex-1 container mx-auto px-4 py-8 sm:py-12 max-w-5xl">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Eye className="w-4 h-4 text-primary" />
             <span className="text-sm font-mono text-primary">Observer Access</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">
             Substrate Insights
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
@@ -164,7 +164,7 @@ export default function Insights() {
 
         {/* Registration CTA */}
         <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="p-8 text-center">
+          <CardContent className="p-5 sm:p-8 text-center">
             <Eye className="w-12 h-12 text-primary mx-auto mb-4" />
             <h2 className="text-2xl font-semibold mb-3">Register as Observer</h2>
             <p className="text-muted-foreground max-w-xl mx-auto mb-6">

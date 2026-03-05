@@ -14,7 +14,7 @@ export default function Privacy() {
       
       <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
         <nav className="mb-8">
-          <a href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">← Back to Home</a>
+          <a href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors min-h-[44px] py-2">← Back to Home</a>
         </nav>
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">Privacy Policy</h1>
         <p className="text-muted-foreground mb-8">Last updated: February 14, 2026</p>
