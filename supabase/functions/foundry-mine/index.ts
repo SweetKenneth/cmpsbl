@@ -449,8 +449,13 @@ serve(async (req) => {
     const maxResults = Math.max(1, effectiveTierConfig.max_results_per_mine ?? 1);
     healingMaxResults = maxResults;
 
-    // Get prior mine count for first-mine dampener
-    const priorMines = dayCount ?? 0;
+    // Get lifetime mine count for first-mine dampener (not just daily)
+    const { data: userStateData } = await supabase
+      .from('foundry_user_state')
+      .select('total_mines')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const priorMines = userStateData?.total_mines ?? 0;
 
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
