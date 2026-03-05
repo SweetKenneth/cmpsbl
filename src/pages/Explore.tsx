@@ -1,6 +1,7 @@
 /**
  * Explore — The CMPSBL Gateway
- * v12 homepage: Artifact pack focus, differentiation clarity, hero preserved
+ * Narrative flow: Hero → Stats → What It Is → How It's Different → Who It's For →
+ * Activation Model → Governance → Social Proof → Evolution → Engines → Final CTA
  */
 
 import { useRef, lazy, Suspense } from "react";
@@ -21,19 +22,19 @@ import { LiveStatsBar } from "@/components/home/LiveStatsBar";
 
 // Below-fold: lazy loaded to reduce initial JS and improve FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
+const WhySubstrate = lazy(() => import("@/components/home/WhySubstrate").then(m => ({ default: m.WhySubstrate })));
 const DifferentiationSection = lazy(() => import("@/components/home/DifferentiationSection").then(m => ({ default: m.DifferentiationSection })));
-const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
-const AgentsSection = lazy(() => import("@/components/home/AgentsSection").then(m => ({ default: m.AgentsSection })));
-const GovernanceSignal = lazy(() => import("@/components/home/GovernanceSignal").then(m => ({ default: m.GovernanceSignal })));
 const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").then(m => ({ default: m.BuiltForSection })));
+const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
+const GovernanceSignal = lazy(() => import("@/components/home/GovernanceSignal").then(m => ({ default: m.GovernanceSignal })));
+const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
 const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
-import { useMetric } from "@/stores/publicMetricsStore";
 
 // Section divider with animated gradient
 function SectionDivider() {
   return (
-    <div className="relative py-6 sm:py-14">
+    <div className="relative py-6 sm:py-10">
       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       <motion.div 
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40"
@@ -46,8 +47,6 @@ function SectionDivider() {
 
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const providersCount = useMetric('providersCount');
-  const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
@@ -84,35 +83,49 @@ export default function Explore() {
         />
       </div>
 
-      {/* Hero Section — H1 rotation and diagram UNTOUCHED */}
+      {/* ═══ HERO ═══ */}
       <HeroMetaSubstrate />
 
-      {/* Live System Metrics Bar */}
+      {/* ═══ LIVE METRICS ═══ */}
       <LiveStatsBar />
 
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        {/* EVOLUTION CTA — right below the hero */}
-        <EvolutionCTA />
-
-        {/* ENGINES CTA — cinematic sell of 20 sealed runtimes */}
-        <EnginesCTA />
-
-        {/* Choose Your Path */}
-        <BuiltForSection />
+        {/* ═══ WHAT IT IS — 9 core systems ═══ */}
+        <WhySubstrate />
 
         <SectionDivider />
 
-        {/* Differentiation: Dream · Remember · Adapt · Self-Improve */}
+        {/* ═══ HOW IT'S DIFFERENT — Dream · Remember · Adapt · Self-Improve ═══ */}
         <DifferentiationSection />
 
         <SectionDivider />
 
-        {/* Artifact Packs — How the activation model works */}
+        {/* ═══ WHO IT'S FOR — Game Devs, Developers, Enterprise ═══ */}
+        <BuiltForSection />
+
+        <SectionDivider />
+
+        {/* ═══ ACTIVATION MODEL — Packs & Slots ═══ */}
         <ArtifactPacksSection />
+
+        <SectionDivider />
+
+        {/* ═══ TECHNICAL CREDIBILITY — Governance & Observability ═══ */}
+        <GovernanceSignal />
+
+        {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
+        <SocialProof />
+
+        <SectionDivider />
+
+        {/* ═══ SELF-IMPROVEMENT — Evolution CTA ═══ */}
+        <EvolutionCTA />
+
+        {/* ═══ SEALED ENGINES — 20 Engines CTA ═══ */}
+        <EnginesCTA />
       </Suspense>
 
-
-      {/* Final CTA — Cinematic closing */}
+      {/* ═══ FINAL CTA — Cinematic closing ═══ */}
       <section className="relative z-10 px-4 py-14 sm:py-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -162,12 +175,12 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </motion.div>
               
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground mb-5 leading-[1.1] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.1] tracking-tight">
                 The Memory{" "}
                 <br className="hidden sm:block" />
-                <span className="bg-gradient-to-r from-foreground via-foreground/90 to-primary bg-clip-text text-transparent">Stream Awaits</span>
+                <span className="text-white/80">Stream Awaits</span>
               </h2>
-              <p className="text-foreground/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
                 From raw signal capture to crystallized software — and when exceptional, into physical silicon.
                 Start free with 3 pipeline slots. Every pull is real software.
               </p>
