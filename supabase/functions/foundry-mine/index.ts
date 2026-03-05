@@ -378,10 +378,17 @@ serve(async (req) => {
       .eq('id', foundryTier)
       .single();
 
+    // Fallback defaults if tier config is missing from DB
+    const defaultTierConfig = {
+      id: foundryTier,
+      mines_per_hour: 5,
+      mines_per_day: 20,
+      max_results_per_mine: 1,
+    };
+
+    const effectiveTierConfig = tierConfig || defaultTierConfig;
     if (!tierConfig) {
-      return new Response(JSON.stringify({ ok: false, error: 'Tier configuration error' }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      console.warn(`[foundry-mine] No tier config for '${foundryTier}', using defaults`);
     }
 
     // Rate limiting
