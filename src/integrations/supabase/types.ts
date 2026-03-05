@@ -3405,12 +3405,16 @@ export type Database = {
           core_summary: string | null
           created_at: string | null
           decay_curve: string | null
+          derived_from: Json | null
           embedding: string | null
+          generation: number | null
           id: string
           last_accessed: string | null
+          lineage_confidence: number | null
           memory_type: string | null
           provenance: Json | null
           salience_score: number | null
+          source_events: Json | null
           source_refs: string[] | null
           summary: string
           tags: Json | null
@@ -3426,12 +3430,16 @@ export type Database = {
           core_summary?: string | null
           created_at?: string | null
           decay_curve?: string | null
+          derived_from?: Json | null
           embedding?: string | null
+          generation?: number | null
           id?: string
           last_accessed?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           provenance?: Json | null
           salience_score?: number | null
+          source_events?: Json | null
           source_refs?: string[] | null
           summary: string
           tags?: Json | null
@@ -3447,12 +3455,16 @@ export type Database = {
           core_summary?: string | null
           created_at?: string | null
           decay_curve?: string | null
+          derived_from?: Json | null
           embedding?: string | null
+          generation?: number | null
           id?: string
           last_accessed?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           provenance?: Json | null
           salience_score?: number | null
+          source_events?: Json | null
           source_refs?: string[] | null
           summary?: string
           tags?: Json | null
@@ -3521,12 +3533,15 @@ export type Database = {
           created_at: string | null
           decay_curve: string | null
           decay_rate: number | null
+          derived_from: Json | null
           ease_factor: number | null
           embedding: string | null
+          generation: number | null
           goal_ref: string | null
           id: string
           importance_score: number | null
           last_used: string | null
+          lineage_confidence: number | null
           memory_type: string | null
           metadata: Json | null
           next_review_at: string | null
@@ -3535,6 +3550,7 @@ export type Database = {
           repetition_interval_days: number | null
           review_count: number | null
           salience_score: number | null
+          source_events: Json | null
           tags: Json | null
           updated_at: string | null
           user_id: string | null
@@ -3548,12 +3564,15 @@ export type Database = {
           created_at?: string | null
           decay_curve?: string | null
           decay_rate?: number | null
+          derived_from?: Json | null
           ease_factor?: number | null
           embedding?: string | null
+          generation?: number | null
           goal_ref?: string | null
           id?: string
           importance_score?: number | null
           last_used?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           metadata?: Json | null
           next_review_at?: string | null
@@ -3562,6 +3581,7 @@ export type Database = {
           repetition_interval_days?: number | null
           review_count?: number | null
           salience_score?: number | null
+          source_events?: Json | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
@@ -3575,12 +3595,15 @@ export type Database = {
           created_at?: string | null
           decay_curve?: string | null
           decay_rate?: number | null
+          derived_from?: Json | null
           ease_factor?: number | null
           embedding?: string | null
+          generation?: number | null
           goal_ref?: string | null
           id?: string
           importance_score?: number | null
           last_used?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           metadata?: Json | null
           next_review_at?: string | null
@@ -3589,6 +3612,7 @@ export type Database = {
           repetition_interval_days?: number | null
           review_count?: number | null
           salience_score?: number | null
+          source_events?: Json | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
@@ -3738,11 +3762,14 @@ export type Database = {
           decay_curve: string | null
           decay_rate: number | null
           demoted_at: string | null
+          derived_from: Json | null
           ease_factor: number | null
           embedding: string | null
+          generation: number | null
           goal_ref: string | null
           id: string
           last_accessed: string | null
+          lineage_confidence: number | null
           memory_type: string | null
           metadata: Json | null
           next_review_at: string | null
@@ -3752,6 +3779,7 @@ export type Database = {
           repetition_interval_days: number | null
           review_count: number | null
           salience_score: number | null
+          source_events: Json | null
           source_memory_id: string | null
           tags: Json | null
           updated_at: string | null
@@ -3770,11 +3798,14 @@ export type Database = {
           decay_curve?: string | null
           decay_rate?: number | null
           demoted_at?: string | null
+          derived_from?: Json | null
           ease_factor?: number | null
           embedding?: string | null
+          generation?: number | null
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           metadata?: Json | null
           next_review_at?: string | null
@@ -3784,6 +3815,7 @@ export type Database = {
           repetition_interval_days?: number | null
           review_count?: number | null
           salience_score?: number | null
+          source_events?: Json | null
           source_memory_id?: string | null
           tags?: Json | null
           updated_at?: string | null
@@ -3802,11 +3834,14 @@ export type Database = {
           decay_curve?: string | null
           decay_rate?: number | null
           demoted_at?: string | null
+          derived_from?: Json | null
           ease_factor?: number | null
           embedding?: string | null
+          generation?: number | null
           goal_ref?: string | null
           id?: string
           last_accessed?: string | null
+          lineage_confidence?: number | null
           memory_type?: string | null
           metadata?: Json | null
           next_review_at?: string | null
@@ -3816,6 +3851,7 @@ export type Database = {
           repetition_interval_days?: number | null
           review_count?: number | null
           salience_score?: number | null
+          source_events?: Json | null
           source_memory_id?: string | null
           tags?: Json | null
           updated_at?: string | null
