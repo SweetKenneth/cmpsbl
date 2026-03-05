@@ -1,6 +1,7 @@
 /**
  * Documentation Hub — CMPSBL Substrate
  * Mobile-first, sidebar navigation, polished cards
+ * Full technical documentation with real content
  */
 
 import { useState } from "react";
@@ -9,6 +10,9 @@ import {
   BookOpen, Code, Zap, Shield, Database, ArrowRight,
   Key, Package, Globe, Bot, Brain, Moon, Eye, Scroll,
   ChevronRight, Menu, X, Copy, Check, Terminal,
+  AlertTriangle, Settings, Lock, Cpu, Layers, RefreshCw,
+  Activity, FileText, GitBranch, Server, Clock, Hash,
+  Network, BarChart3, Search, Filter, Webhook,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,16 +33,18 @@ interface DocSection {
 }
 
 const sections: DocSection[] = [
-  { id: "overview",     label: "Overview",      icon: BookOpen, color: "text-primary" },
-  { id: "byok",         label: "BYOK",          icon: Key,      color: "text-amber-500" },
-  { id: "brain",        label: "BRAIN",         icon: Brain,    color: "text-violet-500" },
-  { id: "nexus",        label: "NEXUS",         icon: Zap,      color: "text-cyan-500" },
-  { id: "dream",        label: "DREAM",         icon: Moon,     color: "text-indigo-500" },
-  { id: "defense",      label: "DEFENSE",       icon: Shield,   color: "text-emerald-500" },
-  { id: "extensions",   label: "Extensions",    icon: Package,  color: "text-orange-500" },
-  { id: "agents",       label: "Agents",        icon: Bot,      color: "text-pink-500" },
-  { id: "integrations", label: "Integrations",  icon: Globe,    color: "text-sky-500" },
-  { id: "api",          label: "API Reference",  icon: Terminal, color: "text-primary" },
+  { id: "overview",       label: "Overview",        icon: BookOpen,   color: "text-primary" },
+  { id: "architecture",   label: "Architecture",    icon: Layers,     color: "text-sky-500" },
+  { id: "byok",           label: "BYOK",            icon: Key,        color: "text-amber-500" },
+  { id: "brain",          label: "BRAIN",           icon: Brain,      color: "text-violet-500" },
+  { id: "nexus",          label: "NEXUS",           icon: Zap,        color: "text-cyan-500" },
+  { id: "dream",          label: "DREAM",           icon: Moon,       color: "text-indigo-500" },
+  { id: "defense",        label: "DEFENSE",         icon: Shield,     color: "text-emerald-500" },
+  { id: "evolution",      label: "EVOLUTION",       icon: GitBranch,  color: "text-rose-500" },
+  { id: "extensions",     label: "Extensions",      icon: Package,    color: "text-orange-500" },
+  { id: "agents",         label: "Agents",          icon: Bot,        color: "text-pink-500" },
+  { id: "integrations",   label: "Integrations",    icon: Globe,      color: "text-sky-500" },
+  { id: "api",            label: "API Reference",   icon: Terminal,   color: "text-primary" },
 ];
 
 /* ─── Code block with copy ─── */
@@ -95,45 +101,132 @@ function InfoCard({ icon: Icon, title, children, accent = "border-primary" }: {
   );
 }
 
+/* ─── Callout box ─── */
+
+function Callout({ type = "info", children }: { type?: "info" | "warning" | "tip"; children: React.ReactNode }) {
+  const styles = {
+    info: "bg-sky-500/5 border-sky-500/20 text-sky-600 dark:text-sky-400",
+    warning: "bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400",
+    tip: "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
+  };
+  const icons = { info: AlertTriangle, warning: AlertTriangle, tip: Zap };
+  const Icon = icons[type];
+  return (
+    <div className={cn("rounded-xl border p-4 flex gap-3", styles[type])}>
+      <Icon className="w-4 h-4 shrink-0 mt-0.5" />
+      <div className="text-sm leading-relaxed text-muted-foreground">{children}</div>
+    </div>
+  );
+}
+
+/* ─── Table component ─── */
+
+function DocTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
+  return (
+    <div className="rounded-xl border border-border/50 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-muted/30 border-b border-border/40">
+              {headers.map(h => (
+                <th key={h} className="px-4 py-3 text-left font-semibold text-foreground text-xs">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} className="border-b border-border/20 last:border-0 hover:bg-muted/10 transition-colors">
+                {row.map((cell, j) => (
+                  <td key={j} className="px-4 py-3 text-muted-foreground text-xs">
+                    {j === 0 ? <code className="text-foreground font-medium font-mono">{cell}</code> : cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Section content components ─── */
 
 function OverviewSection() {
   const capabilitiesCount = useMetric('capabilitiesCount');
-  const systems = [
-    { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs", color: "text-amber-500" },
-    { icon: Brain,   name: "BRAIN",      desc: "Persistent multi-tier memory with auto-tiering", color: "text-violet-500" },
-    { icon: Zap,     name: "NEXUS",      desc: "Intelligent multi-provider AI routing", color: "text-cyan-500" },
-    { icon: Moon,    name: "DREAM",      desc: "Offline synthesis and pattern consolidation", color: "text-indigo-500" },
-    { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input sanitization", color: "text-emerald-500" },
-    { icon: Eye,     name: "VISION",     desc: "System observability and health metrics", color: "text-sky-500" },
-    { icon: Scroll,  name: "AUDIT",      desc: "Immutable append-only ledger for all operations", color: "text-orange-500" },
-    { icon: Package, name: "DECODE",     desc: "Extension registry and custom hooks", color: "text-pink-500" },
-    { icon: Bot,     name: "AGENCY",     desc: "Multi-agent orchestration patterns", color: "text-rose-500" },
-  ];
   return (
     <div className="space-y-8">
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Memory Stream Substrate</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          A continuous cognitive substrate providing routing, memory, learning cycles, 
+          A continuous cognitive substrate providing routing, memory, learning cycles,
           observability, defense, and execution coordination for AI systems.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 38 nodes and 12 sectors.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {systems.map((s, i) => (
-          <motion.div
-            key={s.name}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05, duration: 0.4 }}
-          >
-            <InfoCard icon={s.icon} title={s.name} accent={`border-${s.color.split("-").slice(1).join("-")}`}>
-              {s.desc}
-            </InfoCard>
-          </motion.div>
-        ))}
+
+      <Callout type="tip">
+        <strong>New to CMPSBL?</strong> Start with the <Link to="/start-here" className="text-primary underline">Quick Start Guide</Link> to
+        get persistent memory running in under an hour — no framework changes needed.
+      </Callout>
+
+      {/* Architecture at a glance */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          The substrate is organized into layers, each with a distinct responsibility. The <strong className="text-foreground">Spine</strong> (CORE → SYSTEM → CCR) provides the vertical core,
+          the <strong className="text-foreground">OCG</strong> (Operational Compliance Grid) handles boundary enforcement, and the <strong className="text-foreground">Execution tier</strong> runs
+          all user-facing capabilities. Cross-cutting <strong className="text-foreground">Fields</strong> (EVOLUTION, IMMUNITY, INTENT) permeate every layer.
+        </p>
+        <CodeBlock title="Substrate layers">{`┌─────────────────────────────────────────────────────────┐
+│  GOVERNANCE (Plane)        Legitimacy supervision       │
+├─────────────────────────────────────────────────────────┤
+│  DEFENSE (Shell)           Terminal boundary enforcement │
+├─────────────────────────────────────────────────────────┤
+│  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
+│                            VISION · CORTEX · ECONOMY    │
+│                            SANDBOX · INCLUSIVE · MEDIC   │
+├─────────────────────────────────────────────────────────┤
+│  OCG                       RIPPLE · ACCESS · IDENTITY   │
+│                            RELAY · AUDIT · NERVE        │
+├─────────────────────────────────────────────────────────┤
+│  CCR (Cognitive Core)      BRAIN · MEMORY · DREAM       │
+├─────────────────────────────────────────────────────────┤
+│  SPINE                     CORE → SYSTEM                │
+└─────────────────────────────────────────────────────────┘
+Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)`}</CodeBlock>
       </div>
+
+      {/* Core systems grid */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Core Systems</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          {[
+            { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
+            { icon: Brain,   name: "BRAIN",      desc: "Persistent multi-tier memory with automatic tiering and DREAM consolidation" },
+            { icon: Zap,     name: "NEXUS",      desc: "Intelligent multi-provider AI routing with failover and cost optimization" },
+            { icon: Moon,    name: "DREAM",      desc: "Offline synthesis, pattern consolidation, and heuristic generation" },
+            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input sanitization, and WebAuthn" },
+            { icon: Eye,     name: "VISION",     desc: "System observability, health metrics, and performance dashboards" },
+            { icon: Scroll,  name: "AUDIT",      desc: "Immutable append-only ledger with Merkle receipt chains" },
+            { icon: Code,    name: "DECODE",     desc: "Natural language understanding and contract interpretation" },
+            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent orchestration with 5 coordination patterns" },
+          ].map((s, i) => (
+            <motion.div
+              key={s.name}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+            >
+              <InfoCard icon={s.icon} title={s.name}>
+                {s.desc}
+              </InfoCard>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick links */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Button asChild size="sm" variant="outline">
           <Link to="/start-here">Quick Start <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
@@ -146,42 +239,175 @@ function OverviewSection() {
   );
 }
 
+function ArchitectureSection() {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
+        <p className="text-muted-foreground leading-relaxed max-w-3xl">
+          The substrate is a 38-node topology organized across 12 sectors (layers and zones). Every module participates in
+          a weighted matrix managed by CORE, which acts as the kernel boot authority.
+        </p>
+      </div>
+
+      {/* Layer breakdown */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Layer Hierarchy</h3>
+        <DocTable
+          headers={["Layer", "Role", "Modules"]}
+          rows={[
+            ["Spine", "Kernel boot authority and lifecycle management", "CORE, SYSTEM"],
+            ["CCR", "Cognitive Core Reality — reasoning and synthesis", "BRAIN, MEMORY, DREAM"],
+            ["OCG", "Operational Compliance Grid — boundary enforcement", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
+            ["Execution", "User-facing capabilities and orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
+            ["ESZ", "Enterprise Safety Zone", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
+            ["EPZ", "Enterprise Performance Zone", "SIMULATE, GEOSPATIAL, EDGE"],
+            ["EMZ", "Enterprise Manufacturing Zone", "FORGE, TRANSLATE, INGEST"],
+            ["CSZ", "Continuous Safety Zone", "EVOLUTION, SHADOW, PHANTOM"],
+            ["Field", "Cross-cutting transformation fabric", "EVOLUTION, IMMUNITY, INTENT"],
+            ["Plane", "Supervisory overlay", "GOVERNANCE"],
+            ["Shell", "Outer containment boundary", "DEFENSE"],
+          ]}
+        />
+      </div>
+
+      {/* Matrix weighting */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Weighted Matrix</h3>
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          Every module in the substrate holds a weight in the system matrix. These weights determine health contribution,
+          failure impact radius, and circuit-breaker sensitivity. CORE manages the matrix and recalculates weights during
+          boot, evolution promotions, and manual rebalance events.
+        </p>
+        <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
+CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
+HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
+STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
+AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
+
+// Health score = Σ(module_health × weight) / Σ(weights)
+// Circuit breaker trips when module health < 0.3`}</CodeBlock>
+      </div>
+
+      {/* Circuit breakers */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          Circuit breakers prevent cascading failures across modules. When a module's health drops below threshold,
+          the breaker isolates it from the rest of the system. MEDIC then initiates self-healing diagnostics.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
+            { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-amber-500/30 bg-amber-500/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-emerald-500/30 bg-emerald-500/5" },
+          ].map(s => (
+            <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
+              <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
+              <p className="text-xs text-muted-foreground">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Governance modes */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          The substrate operates in one of four governance modes, managed by the GOVERNANCE plane.
+          Mode transitions require authorization and are recorded in the audit chain.
+        </p>
+        <DocTable
+          headers={["Mode", "Description", "Evolution", "Mutations"]}
+          rows={[
+            ["ACTIVE", "Normal operation — all systems running", "Enabled", "Governed"],
+            ["OBSERVE", "Read-only monitoring — no state changes", "Disabled", "Blocked"],
+            ["LOCKDOWN", "Emergency containment — critical ops only", "Frozen", "Blocked"],
+            ["EVOLVE", "Accelerated evolution with reduced friction", "Accelerated", "Expedited"],
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+
 function BYOKSection() {
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">BYOK Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          <strong className="text-foreground">Bring Your Own Keys</strong> — developers register their own AI provider API keys 
+          <strong className="text-foreground">Bring Your Own Keys</strong> — developers register their own AI provider API keys
           and pay compute costs directly to providers. Zero LLM costs for substrate operators.
         </p>
       </div>
+
+      <Callout type="info">
+        All API keys are encrypted at rest with AES-256 and never logged or exposed in responses.
+        Keys can be rotated, scoped, and rate-limited independently.
+      </Callout>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <InfoCard icon={Key} title="Key Management">
-          Register, rotate, and monitor API keys for any supported provider. Keys are encrypted at rest with AES-256.
+          Register, rotate, and monitor API keys for any supported provider. Set per-key rate limits, usage budgets, and expiration dates. Keys are encrypted at rest with AES-256.
         </InfoCard>
         <InfoCard icon={Zap} title="Auto-Routing">
-          When no provider is specified, NEXUS selects the optimal provider based on latency, cost, and task type.
+          When no provider is specified, NEXUS selects the optimal provider based on latency, cost, task type, and current provider health scores.
+        </InfoCard>
+        <InfoCard icon={Lock} title="Scope Control">
+          Restrict keys to specific actions (e.g., read-only memory access, chat-only routing) using the scopes system. Minimize blast radius of compromised keys.
+        </InfoCard>
+        <InfoCard icon={BarChart3} title="Usage Tracking">
+          Track token consumption, cost estimates, and request counts per key with 30-day rolling windows. Set budget alerts to prevent overspend.
         </InfoCard>
       </div>
+
       <CodeBlock title="Register & use your keys">{`// Register a provider key
-await substrate.keys.register('openai', 'sk-...');
+await substrate.keys.register('openai', 'sk-...', {
+  name: 'Production GPT-4o Key',
+  scopes: ['nexus.route', 'brain.query'],
+  rate_limit: { per_minute: 60, per_day: 5000 },
+  budget_cents: 10000  // $100 monthly budget
+});
 
 // Make an AI call — billed to YOUR account
-await substrate.ai.chat(
+const response = await substrate.ai.chat(
   [{ role: 'user', content: 'Hello!' }],
   { provider: 'openai', model: 'gpt-4o' }
 );
 
 // Check usage
-await substrate.keys.usage('openai', 30); // 30 day window`}</CodeBlock>
-      <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
-        <h4 className="font-semibold text-sm mb-2 text-foreground">Supported Providers</h4>
-        <p className="text-sm text-muted-foreground">
-          Groq · Cerebras · SambaNova · Google AI Studio · DeepSeek · Together · OpenRouter
-          <span className="block mt-1 text-xs opacity-70">BYOK: OpenAI · Anthropic · Mistral · Cohere · Fireworks</span>
-        </p>
+const usage = await substrate.keys.usage('openai', 30);
+// → { tokens: 142850, cost_cents: 428, requests: 1203 }
+
+// Rotate a key
+await substrate.keys.rotate('openai', 'sk-new-key-...');`}</CodeBlock>
+
+      <div>
+        <h3 className="font-semibold text-foreground mb-3">Supported Providers</h3>
+        <DocTable
+          headers={["Provider", "Type", "Models"]}
+          rows={[
+            ["Groq", "Managed (free tier)", "Llama 3.1, Mixtral, Gemma 2"],
+            ["Cerebras", "Managed (free tier)", "Llama 3.1 70B"],
+            ["SambaNova", "Managed (free tier)", "Llama 3.1, DeepSeek-R1"],
+            ["Google AI Studio", "Managed (free tier)", "Gemini 2.5 Flash/Pro"],
+            ["DeepSeek", "Managed (free tier)", "DeepSeek-R1, DeepSeek-V3"],
+            ["Together", "Managed (free tier)", "Various open-source models"],
+            ["OpenRouter", "Managed (free tier)", "Multi-model access"],
+            ["OpenAI", "BYOK", "GPT-4o, GPT-4o-mini, o1, o3"],
+            ["Anthropic", "BYOK", "Claude Sonnet 4, Claude Haiku"],
+            ["Mistral", "BYOK", "Mistral Large, Codestral"],
+            ["Cohere", "BYOK", "Command R+"],
+            ["Fireworks", "BYOK", "Fine-tuned models"],
+          ]}
+        />
       </div>
+
+      <Callout type="tip">
+        <strong>Cost optimization:</strong> The NEXUS router always tries managed (free) providers first when they
+        can handle the task. BYOK providers are used when managed providers can't meet quality or latency constraints.
+      </Callout>
     </div>
   );
 }
@@ -190,34 +416,102 @@ function BrainSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Substrate</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Module</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          The cognitive core — a four-tier memory system with automatic demotion, compression, 
+          The cognitive core — a four-tier memory system with automatic demotion, compression,
           and DREAM-cycle consolidation. Protected memory types are locked at 1.0 value with zero decay.
         </p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <InfoCard icon={Database} title="Four-Tier Memory">
-          <span className="font-mono text-xs">Hot (500) → Warm (10K) → Cold (10K) → Legacy (∞)</span>
-          <br />Automatic FIFO/LRU eviction with bulk demotion RPCs.
-        </InfoCard>
-        <InfoCard icon={Moon} title="DREAM Consolidation">
-          Off-cycle pattern synthesis compresses and scores memories. Protected types bypass decay entirely.
-        </InfoCard>
+
+      {/* Memory tiers */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Four-Tier Memory Architecture</h3>
+        <DocTable
+          headers={["Tier", "Capacity", "Latency", "Retention", "Use Case"]}
+          rows={[
+            ["Hot", "500 entries", "<10ms", "Active session", "Current conversation context, recent actions"],
+            ["Warm", "10,000 entries", "<50ms", "30 days", "User preferences, learned patterns, frequent context"],
+            ["Cold", "10,000 entries", "<200ms", "1 year", "Historical interactions, archived knowledge"],
+            ["Legacy", "Unlimited", "<500ms", "Permanent", "Compressed summaries, institutional knowledge"],
+          ]}
+        />
       </div>
-      <CodeBlock title="Store and query memories">{`// Store a memory
+
+      <Callout type="info">
+        Memory demotion is automatic via FIFO/LRU eviction. When the Hot tier reaches capacity, the least-recently-used
+        entries are bulk-demoted to Warm. DREAM cycles compress Warm → Cold transitions during idle periods.
+      </Callout>
+
+      {/* Protected types */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Protected Memory Types</h3>
+        <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+          Certain memory categories are classified as <strong className="text-foreground">protected</strong> — they bypass
+          all decay, scoring, and eviction mechanisms. Protected memories always retain a value of 1.0.
+        </p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {["identity", "system_prompt", "safety_rule", "compliance_constraint", "user_boundary", "governance_directive"].map(t => (
+            <div key={t} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border/40 bg-card/30">
+              <Lock className="w-3 h-3 text-primary shrink-0" />
+              <code className="text-xs font-mono text-foreground">{t}</code>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <CodeBlock title="Store, query, and manage memories">{`// Store a memory with metadata
 await substrate.brain.store({
-  content: "User prefers dark mode",
-  tags: ["preference", "ui"],
-  tier: "hot"
+  content: "User prefers dark mode and minimal notifications",
+  tags: ["preference", "ui", "notifications"],
+  tier: "hot",
+  category: "preference",
+  confidence: 0.95
 });
 
-// Semantic search
+// Semantic search across all tiers
 const results = await substrate.brain.query({
   query: "user interface preferences",
   limit: 10,
-  tier: "all"
-});`}</CodeBlock>
+  tier: "all",              // "hot" | "warm" | "cold" | "legacy" | "all"
+  min_confidence: 0.5,
+  tags: ["preference"]      // optional tag filter
+});
+// → { memories: [...], total: 3, search_time_ms: 12 }
+
+// Store a protected memory (never decays)
+await substrate.brain.store({
+  content: "Never share PII with third-party APIs",
+  category: "safety_rule",  // protected type
+  tier: "hot"
+});
+
+// Compress memories manually
+await substrate.brain.compress({
+  source_tier: "warm",
+  target_tier: "cold",
+  strategy: "semantic"      // "semantic" | "temporal" | "frequency"
+});
+
+// Get memory statistics
+const stats = await substrate.brain.stats();
+// → { hot: 342, warm: 8120, cold: 6543, legacy: 24100, protected: 18 }`}</CodeBlock>
+
+      {/* Memory scoring */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Memory Scoring (RPS)</h3>
+        <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+          Every memory is scored using the RPS (Relevance, Proximity, Specificity) model. Scores decay over time
+          unless the memory is accessed, which resets the decay timer. DREAM cycles recalculate scores in bulk.
+        </p>
+        <CodeBlock title="RPS scoring model">{`// Score = (Relevance × 0.4) + (Proximity × 0.3) + (Specificity × 0.3)
+//
+// Relevance:   Semantic similarity to current query context
+// Proximity:   Temporal distance from last access (decays)
+// Specificity: How unique this memory is within its category
+//
+// Protected memories: score = 1.0 (constant, no decay)
+// Decay rate: 0.02/day for hot, 0.005/day for warm, 0.001/day for cold`}</CodeBlock>
+      </div>
     </div>
   );
 }
@@ -228,30 +522,88 @@ function NexusSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">NEXUS Router</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Intelligent multi-provider AI routing. NEXUS selects the optimal model based on task type, 
-          latency constraints, cost budget, and provider health — with automatic failover.
+          Intelligent multi-provider AI routing. NEXUS selects the optimal model based on task type,
+          latency constraints, cost budget, and provider health — with automatic failover across 14+ providers.
         </p>
       </div>
-      <CodeBlock title="Route with constraints">{`await substrate.nexus.route({
+
+      {/* Routing algorithm */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Routing Algorithm</h3>
+        <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+          NEXUS uses a multi-factor scoring algorithm to select the best provider for each request. The algorithm
+          considers task type affinity, current latency, cost-per-token, provider health, and rate limit headroom.
+        </p>
+        <CodeBlock title="Routing decision flow">{`1. Parse request → extract task_type, constraints, preferences
+2. Filter providers → remove unhealthy, rate-limited, incompatible
+3. Score remaining providers:
+   score = (quality_fit × 0.35)       // task-type match
+         + (latency_fit × 0.25)       // within latency constraint
+         + (cost_fit × 0.20)          // cost efficiency
+         + (health_score × 0.15)      // current provider health
+         + (headroom × 0.05)          // rate limit headroom
+4. Select highest-scoring provider
+5. On failure → auto-failover to next-best provider`}</CodeBlock>
+      </div>
+
+      <CodeBlock title="Route with constraints">{`// Basic routing (NEXUS picks the best provider)
+const response = await substrate.nexus.route({
   messages: [{ role: "user", content: "Analyze this dataset" }],
-  task_type: "analysis",
+  task_type: "analysis"
+});
+
+// Route with specific constraints
+const response = await substrate.nexus.route({
+  messages: [{ role: "user", content: "Generate a haiku" }],
+  task_type: "creative",
   constraints: {
     max_latency_ms: 3000,
+    max_cost_cents: 5,
     preferred_providers: ["anthropic", "openai"],
-    fallback: true
+    fallback: true,                // auto-failover on error
+    exclude_providers: ["cohere"]  // skip specific providers
   }
+});
+
+// Stream a response
+const stream = await substrate.nexus.stream({
+  messages: messages,
+  task_type: "chat",
+  on_token: (token) => process.stdout.write(token)
 });`}</CodeBlock>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {[
-          { label: "Task-Aware", desc: "Routes based on task type — chat, code, analysis, creative" },
-          { label: "Auto-Failover", desc: "Seamless provider switching on timeout or error" },
-          { label: "Cost-Optimized", desc: "Selects cheapest provider meeting quality threshold" },
-        ].map(f => (
-          <div key={f.label} className="p-4 rounded-xl border border-border/50 bg-card/30">
-            <h4 className="font-semibold text-sm mb-1">{f.label}</h4>
-            <p className="text-xs text-muted-foreground">{f.desc}</p>
-          </div>
-        ))}
+
+      {/* Task types */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Task Types</h3>
+        <DocTable
+          headers={["Task Type", "Optimized For", "Preferred Providers"]}
+          rows={[
+            ["chat", "Conversational responses, Q&A", "Managed fleet → GPT-4o → Claude Sonnet"],
+            ["analysis", "Data analysis, reasoning, math", "DeepSeek-R1 → Claude Sonnet → GPT-4o"],
+            ["creative", "Writing, brainstorming, ideation", "Claude Sonnet → GPT-4o"],
+            ["code", "Code generation, debugging, review", "DeepSeek-V3 → Codestral → GPT-4o"],
+            ["summarization", "Document summarization, extraction", "Gemini Flash → Llama 3.1 → GPT-4o-mini"],
+            ["classification", "Categorization, sentiment, labeling", "GPT-4o-mini → Gemini Flash → Llama 3.1"],
+            ["extraction", "Structured data extraction from text", "GPT-4o → Claude Sonnet → Gemini Pro"],
+          ]}
+        />
+      </div>
+
+      {/* Provider health */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Provider Health Monitoring</h3>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            { label: "Latency Tracking", desc: "Rolling P50/P95/P99 latency per provider with 5-minute windows" },
+            { label: "Error Rate", desc: "5xx error rate tracking with automatic demotion above 5% threshold" },
+            { label: "Rate Limit Awareness", desc: "Proactive headroom tracking — avoids providers near their limits" },
+          ].map(f => (
+            <div key={f.label} className="p-4 rounded-xl border border-border/50 bg-card/30">
+              <h4 className="font-semibold text-sm mb-1">{f.label}</h4>
+              <p className="text-xs text-muted-foreground">{f.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -263,27 +615,78 @@ function DreamSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">DREAM Cycles</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Autonomous offline synthesis. During idle periods, the substrate consolidates patterns, 
-          compresses redundant memories, scores relevance, and surfaces lateral insights.
+          Autonomous offline synthesis. During idle periods, the substrate consolidates patterns,
+          compresses redundant memories, scores relevance, and surfaces lateral insights that wouldn't
+          emerge from direct queries alone.
         </p>
       </div>
-      <CodeBlock title="Trigger a dream cycle">{`// Trigger manual dream consolidation
-await substrate.dream.trigger({ mode: "simnap" });
 
-// Full deep dream cycle
-await substrate.dream.trigger({ mode: "deep" });
-
-// Check dream status
-const status = await substrate.dream.status();
-// → { last_cycle: "2026-03-05T...", memories_consolidated: 847 }`}</CodeBlock>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <InfoCard icon={Moon} title="Simnap Mode">
-          Quick 30-second consolidation. Compresses recent hot memories and scores relevance.
-        </InfoCard>
-        <InfoCard icon={Brain} title="Deep Dream Mode">
-          Full cycle — cross-references all tiers, surfaces lateral insights, prunes stale patterns.
-        </InfoCard>
+      {/* Dream modes */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Dream Modes</h3>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <InfoCard icon={Clock} title="Simnap Mode">
+            Quick 30-second consolidation cycle. Compresses recent Hot-tier memories, rescores Warm-tier
+            entries, and prunes duplicates. Runs automatically every 15 minutes during low-traffic periods.
+            Minimal compute cost — designed for always-on operation.
+          </InfoCard>
+          <InfoCard icon={Brain} title="Deep Dream Mode">
+            Full synthesis cycle (2-5 minutes). Cross-references all memory tiers, identifies latent patterns
+            across categories, generates heuristics, and prunes stale entries. Runs daily during lowest-traffic
+            window or can be triggered manually.
+          </InfoCard>
+        </div>
       </div>
+
+      <CodeBlock title="Dream cycle API">{`// Trigger a simnap (quick consolidation)
+const result = await substrate.dream.trigger({ mode: "simnap" });
+// → { memories_compressed: 42, duplicates_pruned: 7, duration_ms: 28400 }
+
+// Trigger a deep dream cycle
+const result = await substrate.dream.trigger({
+  mode: "deep",
+  options: {
+    cross_reference: true,     // find patterns across categories
+    generate_heuristics: true, // create new heuristic rules
+    prune_threshold: 0.1       // remove memories below this score
+  }
+});
+// → { memories_consolidated: 847, heuristics_generated: 3,
+//    patterns_discovered: 12, pruned: 156, duration_ms: 187000 }
+
+// Check dream status and history
+const status = await substrate.dream.status();
+// → { last_simnap: "2026-03-05T02:30:00Z",
+//    last_deep: "2026-03-05T04:00:00Z",
+//    total_cycles: 1847,
+//    memories_consolidated_lifetime: 284000 }
+
+// Schedule dream cycles
+await substrate.dream.schedule({
+  simnap_interval_minutes: 15,
+  deep_dream_time: "04:00",       // UTC
+  deep_dream_timezone: "America/Los_Angeles"
+});`}</CodeBlock>
+
+      {/* What dreams produce */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Dream Outputs</h3>
+        <DocTable
+          headers={["Output Type", "Description", "Example"]}
+          rows={[
+            ["Compression", "Merges redundant memories into summaries", "5 dark-mode preferences → 1 consolidated entry"],
+            ["Heuristic", "Generates reusable decision rules", "\"User prefers concise responses under 200 words\""],
+            ["Pattern", "Identifies recurring themes across categories", "\"Support queries spike on Mondays at 9am\""],
+            ["Prune", "Removes stale, low-confidence entries", "Memories with score < 0.1 and no access in 90 days"],
+            ["Lateral Insight", "Surfaces non-obvious connections", "\"Users who prefer dark mode also prefer compact layouts\""],
+          ]}
+        />
+      </div>
+
+      <Callout type="tip">
+        <strong>Dream consent:</strong> For multi-tenant deployments, dream pooling can be configured per-tenant.
+        Tenants can opt in/out of global pattern pooling, heuristic sharing, and template sharing independently.
+      </Callout>
     </div>
   );
 }
@@ -294,24 +697,157 @@ function DefenseSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Module</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Enterprise-grade security built into the substrate core. Bot detection, rate limiting, 
-          input sanitization, and compliance-ready audit logging.
+          Enterprise-grade security built into the substrate core. DEFENSE is the terminal boundary —
+          the outermost shell that every request must pass through before reaching any other module.
         </p>
       </div>
-      <CodeBlock title="Run a security scan">{`await substrate.defense.scan({
+
+      {/* Defense layers */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Security Layers</h3>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { icon: Shield, label: "Bot Detection", desc: "Behavioral fingerprinting and challenge-response to identify automated traffic" },
+            { icon: Activity, label: "Rate Limiting", desc: "Per-key, per-IP, and per-endpoint rate limiting with sliding window counters" },
+            { icon: Filter, label: "Input Sanitization", desc: "Prompt injection detection, SQL injection prevention, and content filtering" },
+            { icon: Lock, label: "WebAuthn / FIDO2", desc: "Passwordless authentication with hardware security keys and biometrics" },
+            { icon: Scroll, label: "Audit Logging", desc: "Every security event logged to the immutable AUDIT chain with Merkle receipts" },
+            { icon: Network, label: "DDoS Protection", desc: "Automatic traffic shaping and IP reputation scoring under volumetric attacks" },
+          ].map(f => (
+            <div key={f.label} className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
+              <f.icon className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-sm mb-1">{f.label}</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <CodeBlock title="Defense configuration">{`// Run a security scan
+const scan = await substrate.defense.scan({
   target: "example.com",
-  scan_type: "full"
+  scan_type: "full",         // "quick" | "full" | "compliance"
+  wcag_level: "AA"           // accessibility compliance level
+});
+// → { score: 87, issues: [...], recommendations: [...] }
+
+// Configure rate limits
+await substrate.defense.configure({
+  rate_limits: {
+    global: { per_minute: 1000, per_day: 50000 },
+    per_key: { per_minute: 60, per_day: 5000 },
+    per_ip: { per_minute: 30, per_day: 1000 }
+  },
+  bot_detection: {
+    enabled: true,
+    challenge_threshold: 0.7,   // confidence threshold
+    block_threshold: 0.95
+  },
+  input_sanitization: {
+    prompt_injection: true,
+    sql_injection: true,
+    xss_prevention: true
+  }
 });`}</CodeBlock>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {[
-          "Bot Detection", "Rate Limiting", "Input Sanitization",
-          "WebAuthn Auth", "Audit Logging", "SOC 2 Ready",
-        ].map(f => (
-          <div key={f} className="flex items-center gap-2 p-3 rounded-lg border border-border/50 bg-card/30 text-sm">
-            <Shield className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span>{f}</span>
-          </div>
-        ))}
+
+      {/* Compliance */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Compliance & Certifications</h3>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {["SOC 2 Type II", "GDPR Ready", "HIPAA Eligible", "WCAG 2.2 AA", "CCPA Compliant", "ISO 27001"].map(c => (
+            <div key={c} className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/40 bg-card/30 text-sm">
+              <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <span>{c}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EvolutionSection() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION System</h2>
+        <p className="text-muted-foreground leading-relaxed max-w-3xl">
+          Governed self-improvement. EVOLUTION manages version control, shadow testing, and promotion of
+          system changes — ensuring the substrate improves over time while maintaining integrity guarantees.
+        </p>
+      </div>
+
+      {/* Evolution lifecycle */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Evolution Lifecycle</h3>
+        <CodeBlock title="Four-phase evolution cycle">{`SCAN → DRY-RUN → APPLY → ROLLBACK (if needed)
+
+1. SCAN:     Analyze current system state, identify improvement opportunities
+2. DRY-RUN:  Simulate proposed changes without touching production
+3. APPLY:    Promote validated changes with pre/post metrics
+4. ROLLBACK: Restore immutable snapshot if post-apply health degrades
+
+Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <InfoCard icon={Search} title="Dry-Run Impact Preview">
+          Simulates evolution changes before application. Shows projected delta on all health metrics,
+          estimates blast radius (which modules affected), and projects confidence level. No production state is modified.
+        </InfoCard>
+        <InfoCard icon={RefreshCw} title="One-Click Rollback">
+          Manages restoration of immutable snapshots. Lists available snapshots with timestamps and health scores.
+          Automatic post-restore health verification. All rollback events are audited.
+        </InfoCard>
+        <InfoCard icon={Activity} title="Scan Trend Dashboard">
+          Visualizes health over time with trend lines, technical debt reduction curves, module-by-module breakdown,
+          and alert threshold markers. Identifies patterns in evolution success rates.
+        </InfoCard>
+        <InfoCard icon={GitBranch} title="Shadow Testing">
+          Run proposed changes in parallel with production using shadow traffic. Compare outcomes without
+          risk. Validate behavior before promotion.
+        </InfoCard>
+      </div>
+
+      <CodeBlock title="Evolution API">{`// Scan current system state
+const scan = await substrate.evolution.scan();
+// → { health_score: 94.2, improvements: [...], debt_items: 3 }
+
+// Run a dry-run of proposed changes
+const preview = await substrate.evolution.dryRun({
+  changes: scan.improvements,
+  target_modules: ["brain", "nexus"]
+});
+// → { projected_health: 96.1, delta: +1.9, blast_radius: ["brain", "nexus", "dream"] }
+
+// Apply changes (requires governor approval)
+const receipt = await substrate.evolution.apply({
+  changes: preview.changes,
+  approval_token: "gov_tok_...",
+  rollback_on_decline: true    // auto-rollback if health drops
+});
+
+// List available rollback snapshots
+const snapshots = await substrate.evolution.snapshots();
+// → [{ id: "snap_...", timestamp: "...", health: 94.2 }, ...]
+
+// Restore a snapshot
+await substrate.evolution.rollback("snap_...");`}</CodeBlock>
+
+      {/* Integrity enforcement */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Integrity Enforcement</h3>
+        <DocTable
+          headers={["Mechanism", "Description"]}
+          rows={[
+            ["Merkle receipt chain", "SHA-256 hash chain linking every evolution event — tamper-evident"],
+            ["Linear regression detection", "Blocks promotions when health trends are declining"],
+            ["Dry-run projections", "Impact simulation required before any production change"],
+            ["Verified delta requirement", "Finalization rejected if post-apply metrics or scans fail"],
+          ]}
+        />
       </div>
     </div>
   );
@@ -324,27 +860,61 @@ function ExtensionsSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Extensions</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Extend substrate functionality with custom hooks that run before or after system actions.
+          Extensions are sandboxed and rate-limited to prevent interference with core operations.
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
-        {[
-          { hook: "brain_hook",   desc: "Memory and learning extensions" },
-          { hook: "nexus_hook",   desc: "AI routing extensions" },
-          { hook: "defense_hook", desc: "Security extensions" },
-          { hook: "dream_hook",   desc: "Dream processing extensions" },
-        ].map(h => (
-          <div key={h.hook} className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
-            <code className="text-xs font-mono text-primary bg-primary/10 px-2 py-0.5 rounded shrink-0">{h.hook}</code>
-            <span className="text-sm text-muted-foreground">{h.desc}</span>
-          </div>
-        ))}
+
+      {/* Hook types */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Available Hook Points</h3>
+        <DocTable
+          headers={["Hook Type", "Points", "Use Cases"]}
+          rows={[
+            ["brain_hook", "pre_store, post_store, pre_query, post_query", "Content filtering, enrichment, custom scoring"],
+            ["nexus_hook", "pre_route, post_route, on_failover", "Request modification, response transformation, logging"],
+            ["defense_hook", "pre_scan, post_scan, on_threat", "Custom threat rules, external WAF integration"],
+            ["dream_hook", "pre_cycle, post_cycle, on_heuristic", "Custom consolidation logic, notification triggers"],
+            ["audit_hook", "on_event", "External SIEM integration, compliance reporting"],
+          ]}
+        />
       </div>
-      <CodeBlock title="Register an extension">{`await substrate.extensions.register({
-  name: 'my-hook',
+
+      <CodeBlock title="Register and manage extensions">{`// Register a pre-query brain hook
+await substrate.extensions.register({
+  name: 'pii-filter',
   extension_type: 'brain_hook',
   hook_point: 'pre_query',
-  endpoint_url: 'https://your-api.com/hook'
-});`}</CodeBlock>
+  endpoint_url: 'https://your-api.com/hooks/pii-filter',
+  timeout_ms: 5000,           // max execution time
+  retry_count: 1,             // retries on failure
+  fail_open: true             // continue if hook fails
+});
+
+// Register a post-route nexus hook
+await substrate.extensions.register({
+  name: 'response-logger',
+  extension_type: 'nexus_hook',
+  hook_point: 'post_route',
+  endpoint_url: 'https://your-api.com/hooks/log-response',
+  headers: {
+    'Authorization': 'Bearer hook-secret'
+  }
+});
+
+// List registered extensions
+const hooks = await substrate.extensions.list();
+
+// Disable an extension without removing it
+await substrate.extensions.disable('pii-filter');
+
+// Remove an extension
+await substrate.extensions.remove('pii-filter');`}</CodeBlock>
+
+      <Callout type="warning">
+        Extensions are sandboxed with a 5-second default timeout. If a hook exceeds its timeout,
+        the <code className="font-mono text-xs">fail_open</code> setting determines whether the request continues
+        or is rejected. Use <code className="font-mono text-xs">fail_open: false</code> for security-critical hooks.
+      </Callout>
     </div>
   );
 }
@@ -355,35 +925,81 @@ function AgentsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Multi-Agent Orchestration</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Create and coordinate AI agents using different orchestration patterns.
+          Create and coordinate AI agents using five built-in orchestration patterns. Each agent has its own
+          persistent memory, CLM (Continuous Learning Mode) training, and sealed runtime environment.
         </p>
       </div>
-      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-        {[
-          { pattern: "Chain",      desc: "Sequential" },
-          { pattern: "Parallel",   desc: "Concurrent" },
-          { pattern: "Supervisor", desc: "Managed" },
-          { pattern: "Debate",     desc: "Consensus" },
-          { pattern: "Swarm",      desc: "Collaborative" },
-        ].map(p => (
-          <div key={p.pattern} className="p-3 rounded-xl border border-border/50 bg-card/30 text-center">
-            <div className="font-semibold text-sm mb-0.5">{p.pattern}</div>
-            <div className="text-xs text-muted-foreground">{p.desc}</div>
-          </div>
-        ))}
+
+      {/* Orchestration patterns */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Orchestration Patterns</h3>
+        <DocTable
+          headers={["Pattern", "Behavior", "Best For"]}
+          rows={[
+            ["Chain", "Sequential execution — output of one feeds into the next", "Multi-step workflows, data pipelines"],
+            ["Parallel", "Concurrent execution — all agents run simultaneously", "Independent subtasks, speed-critical operations"],
+            ["Supervisor", "Manager agent delegates to and reviews workers", "Quality-sensitive tasks, oversight required"],
+            ["Debate", "Agents argue positions, consensus emerges", "Complex decisions, risk assessment"],
+            ["Swarm", "Collaborative free-form interaction between agents", "Creative exploration, brainstorming"],
+          ]}
+        />
       </div>
-      <CodeBlock title="Create & run agents">{`const agent = await substrate.agents.create({
+
+      <CodeBlock title="Create & orchestrate agents">{`// Create specialized agents
+const researcher = await substrate.agents.create({
   name: 'ResearchAgent',
-  system_prompt: 'You are a research specialist...',
+  system_prompt: 'You are a research specialist. Find and synthesize information.',
   provider: 'anthropic',
-  model: 'claude-sonnet'
+  model: 'claude-sonnet',
+  memory_scope: 'agent'    // agent-private memory
 });
 
-await substrate.agents.run(
-  [agent1.id, agent2.id],
-  'Research quantum computing',
-  { pattern: 'debate' }
+const analyst = await substrate.agents.create({
+  name: 'AnalystAgent',
+  system_prompt: 'You analyze data and provide structured insights.',
+  provider: 'openai',
+  model: 'gpt-4o',
+  memory_scope: 'shared'   // shared memory pool
+});
+
+// Run with debate pattern
+const result = await substrate.agents.run(
+  [researcher.id, analyst.id],
+  'Evaluate the ROI of implementing persistent memory',
+  {
+    pattern: 'debate',
+    max_rounds: 3,
+    consensus_threshold: 0.8
+  }
+);
+// → { consensus: true, conclusion: "...", rounds: 2, agent_positions: [...] }
+
+// Run with chain pattern
+const pipeline = await substrate.agents.run(
+  [researcher.id, analyst.id],
+  'Research quantum computing trends, then analyze market impact',
+  { pattern: 'chain' }
 );`}</CodeBlock>
+
+      {/* Agent capabilities */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Built-in Agent Capabilities</h3>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { label: "Auto-Tiering Memory", desc: "Each agent has its own 4-tier memory that auto-manages itself" },
+            { label: "CLM Training", desc: "Continuous Learning Mode — agents improve 24/7 from every interaction" },
+            { label: "RIPPLE Orchestrator", desc: "Internal event bus for coordination between agents" },
+            { label: "Version Minting", desc: "Purchase an agent and receive a unique snapshot of its learned state" },
+            { label: "DECODE Channel", desc: "Natural language interface for direct agent interaction" },
+            { label: "Sealed Runtime", desc: "Black-box execution — agent internals are tamper-proof" },
+          ].map(f => (
+            <div key={f.label} className="p-3 rounded-xl border border-border/50 bg-card/30">
+              <h4 className="font-semibold text-xs mb-1">{f.label}</h4>
+              <p className="text-[11px] text-muted-foreground">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -394,51 +1010,82 @@ function IntegrationsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Integrations</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Connect external services through the integration bus for payments, messaging, automation, and custom webhooks.
+          Connect external services through the INTEGRATION module. Manage credentials, invoke APIs,
+          and receive webhooks — all within the substrate's governance and audit boundaries.
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {[
-          { name: "Stripe",   desc: "Payments & subscriptions" },
-          { name: "Twilio",   desc: "SMS, voice, messaging" },
-          { name: "Shopify",  desc: "E-commerce & inventory" },
-          { name: "n8n",      desc: "Workflow automation" },
-          { name: "Webhooks", desc: "Custom HTTP integrations" },
-          { name: "Email",    desc: "Transactional email" },
-        ].map(i => (
-          <div key={i.name} className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
-            <Globe className="w-4 h-4 text-sky-500 shrink-0" />
-            <div>
-              <div className="font-semibold text-sm">{i.name}</div>
-              <div className="text-xs text-muted-foreground">{i.desc}</div>
-            </div>
-          </div>
-        ))}
+
+      {/* Available integrations */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Available Integrations</h3>
+        <DocTable
+          headers={["Integration", "Category", "Capabilities"]}
+          rows={[
+            ["Stripe", "Payments", "Create customers, manage subscriptions, process payments, handle webhooks"],
+            ["Twilio", "Communications", "Send SMS, make voice calls, WhatsApp messaging, verify phone numbers"],
+            ["Shopify", "E-Commerce", "Manage products, process orders, sync inventory, handle fulfillment"],
+            ["n8n", "Automation", "Trigger workflows, receive webhook data, chain automations"],
+            ["SendGrid", "Email", "Transactional email, templates, delivery tracking, bounce handling"],
+            ["Slack", "Messaging", "Post messages, create channels, manage notifications"],
+            ["Custom Webhook", "Custom", "Send/receive HTTP webhooks with HMAC signature verification"],
+          ]}
+        />
       </div>
-      <CodeBlock title="Connect an integration">{`await substrate.integrations.connect({
+
+      <CodeBlock title="Connect and use integrations">{`// Connect Stripe
+await substrate.integrations.connect({
   name: 'My Stripe',
   integration_type: 'stripe',
-  credentials: { api_key: 'sk_live_...' }
+  credentials: { api_key: 'sk_live_...' },
+  webhook_secret: 'whsec_...'
 });
 
-await substrate.integrations.call(
-  'integration-id', 
-  'customers.create', 
-  { email: 'user@example.com' }
-);`}</CodeBlock>
+// Invoke an integration action
+const customer = await substrate.integrations.call(
+  'integration-id',
+  'customers.create',
+  { email: 'user@example.com', name: 'Jane Doe' }
+);
+
+// Register a webhook listener
+await substrate.integrations.webhook({
+  integration_id: 'integration-id',
+  events: ['invoice.paid', 'subscription.canceled'],
+  endpoint_url: 'https://your-api.com/webhooks/stripe',
+  hmac_secret: 'your-verification-secret'
+});
+
+// List all connected integrations
+const connections = await substrate.integrations.list();
+// → [{ id: "...", type: "stripe", status: "active", last_used: "..." }]`}</CodeBlock>
+
+      <Callout type="info">
+        All integration credentials are encrypted at rest. API calls through integrations are logged to the
+        AUDIT chain and subject to the same rate limiting and governance policies as direct substrate calls.
+      </Callout>
     </div>
   );
 }
 
 function APISection() {
   const endpoints = [
-    { action: "brain.store",    method: "POST", desc: "Store a memory with tags and tier", body: '{ "action": "brain.store", "content": "...", "tags": ["tag1"], "tier": "hot" }' },
-    { action: "brain.query",    method: "POST", desc: "Semantic search across memories", body: '{ "action": "brain.query", "query": "search terms", "limit": 10 }' },
-    { action: "nexus.route",    method: "POST", desc: "Route AI request to optimal provider", body: '{ "action": "nexus.route", "messages": [...], "task_type": "chat" }' },
-    { action: "defense.scan",   method: "POST", desc: "Run a security scan", body: '{ "action": "defense.scan", "target": "example.com" }' },
-    { action: "dream.trigger",  method: "POST", desc: "Trigger dream consolidation", body: '{ "action": "dream.trigger", "mode": "simnap" }' },
-    { action: "vision.metrics", method: "POST", desc: "Retrieve system health metrics", body: '{ "action": "vision.metrics", "module": "brain" }' },
-    { action: "audit.query",    method: "POST", desc: "Search the audit ledger", body: '{ "action": "audit.query", "entity_type": "brain" }' },
+    { action: "brain.store",       method: "POST", desc: "Store a memory with tags, tier, and metadata", body: '{ "action": "brain.store", "content": "...", "tags": ["tag1"], "tier": "hot", "category": "preference" }' },
+    { action: "brain.query",       method: "POST", desc: "Semantic search across memory tiers", body: '{ "action": "brain.query", "query": "search terms", "limit": 10, "tier": "all", "min_confidence": 0.5 }' },
+    { action: "brain.compress",    method: "POST", desc: "Trigger memory compression between tiers", body: '{ "action": "brain.compress", "source_tier": "warm", "target_tier": "cold", "strategy": "semantic" }' },
+    { action: "brain.stats",       method: "POST", desc: "Get memory tier statistics", body: '{ "action": "brain.stats" }' },
+    { action: "nexus.route",       method: "POST", desc: "Route AI request to optimal provider", body: '{ "action": "nexus.route", "messages": [...], "task_type": "chat", "constraints": {} }' },
+    { action: "nexus.stream",      method: "POST", desc: "Stream AI response token-by-token", body: '{ "action": "nexus.stream", "messages": [...], "task_type": "chat" }' },
+    { action: "nexus.providers",   method: "POST", desc: "List configured providers and health", body: '{ "action": "nexus.providers" }' },
+    { action: "dream.trigger",     method: "POST", desc: "Trigger dream consolidation cycle", body: '{ "action": "dream.trigger", "mode": "simnap" }' },
+    { action: "dream.status",      method: "POST", desc: "Check dream cycle status and history", body: '{ "action": "dream.status" }' },
+    { action: "defense.scan",      method: "POST", desc: "Run a security/accessibility scan", body: '{ "action": "defense.scan", "target": "example.com", "scan_type": "full" }' },
+    { action: "evolution.scan",    method: "POST", desc: "Scan system for evolution opportunities", body: '{ "action": "evolution.scan" }' },
+    { action: "evolution.dryRun",  method: "POST", desc: "Simulate proposed changes", body: '{ "action": "evolution.dryRun", "changes": [...] }' },
+    { action: "vision.metrics",    method: "POST", desc: "Retrieve system health metrics", body: '{ "action": "vision.metrics", "module": "brain" }' },
+    { action: "vision.health",     method: "POST", desc: "Get overall system health score", body: '{ "action": "vision.health" }' },
+    { action: "audit.query",       method: "POST", desc: "Search the immutable audit ledger", body: '{ "action": "audit.query", "entity_type": "brain", "limit": 50 }' },
+    { action: "keys.register",     method: "POST", desc: "Register a new provider API key", body: '{ "action": "keys.register", "provider": "openai", "key": "sk-..." }' },
+    { action: "keys.usage",        method: "POST", desc: "Get usage statistics for a provider key", body: '{ "action": "keys.usage", "provider": "openai", "days": 30 }' },
   ];
 
   return (
@@ -446,8 +1093,16 @@ function APISection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">API Reference</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          All actions are sent via POST with an <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded">action</code> field in the JSON body.
+          All substrate actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
+          single unified gateway endpoint. The <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">action</code> field
+          in the JSON body determines which module handles the request.
         </p>
+      </div>
+
+      {/* Base URL */}
+      <div>
+        <h3 className="font-semibold mb-3 text-foreground">Base URL</h3>
+        <CodeBlock>{`POST https://api.cmpsbl.com/v1/substrate`}</CodeBlock>
       </div>
 
       {/* Auth */}
@@ -455,12 +1110,17 @@ function APISection() {
         <h3 className="font-semibold mb-3 text-foreground">Authentication</h3>
         <CodeBlock title="Required headers">{`X-Developer-ID: your-developer-uuid
 X-App-ID: your-app-uuid
-Authorization: Bearer <jwt>`}</CodeBlock>
+Authorization: Bearer <jwt>
+Content-Type: application/json`}</CodeBlock>
+        <p className="text-xs text-muted-foreground mt-2">
+          All three auth headers are required. JWTs expire after 1 hour and can be refreshed
+          using the <code className="font-mono">auth.refresh</code> action.
+        </p>
       </div>
 
       {/* Endpoints */}
       <div>
-        <h3 className="font-semibold mb-4 text-foreground">Core Actions</h3>
+        <h3 className="font-semibold mb-4 text-foreground">All Actions ({endpoints.length})</h3>
         <div className="space-y-3">
           {endpoints.map(ep => (
             <div key={ep.action} className="rounded-xl border border-border/50 bg-card/30 overflow-hidden">
@@ -483,10 +1143,43 @@ Authorization: Bearer <jwt>`}</CodeBlock>
       <div>
         <h3 className="font-semibold mb-3">Response Format</h3>
         <CodeBlock>{`// Success
-{ "success": true, "data": { ... }, "meta": { "latency_ms": 42 } }
+{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "latency_ms": 42,
+    "provider": "groq",          // for nexus.route
+    "model": "llama-3.1-70b",   // for nexus.route
+    "tokens_used": 1250,
+    "request_id": "req_..."
+  }
+}
 
 // Error
-{ "success": false, "error": "Descriptive message", "code": "RATE_LIMITED" }`}</CodeBlock>
+{
+  "success": false,
+  "error": "Descriptive error message",
+  "code": "RATE_LIMITED",        // machine-readable error code
+  "meta": { "retry_after_ms": 5000 }
+}`}</CodeBlock>
+      </div>
+
+      {/* Error codes */}
+      <div>
+        <h3 className="font-semibold mb-3">Error Codes</h3>
+        <DocTable
+          headers={["Code", "HTTP Status", "Description"]}
+          rows={[
+            ["RATE_LIMITED", "429", "Too many requests — check meta.retry_after_ms"],
+            ["AUTH_INVALID", "401", "Invalid or expired JWT token"],
+            ["FORBIDDEN", "403", "Valid auth but insufficient permissions or scope"],
+            ["PROVIDER_ERROR", "502", "Upstream AI provider returned an error"],
+            ["PROVIDER_TIMEOUT", "504", "AI provider did not respond within latency constraint"],
+            ["QUOTA_EXCEEDED", "429", "Daily or monthly quota exhausted for this key"],
+            ["INVALID_ACTION", "400", "Unrecognized action field in request body"],
+            ["VALIDATION_ERROR", "400", "Request body failed schema validation"],
+          ]}
+        />
       </div>
 
       {/* Rate limits */}
@@ -506,6 +1199,25 @@ Authorization: Bearer <jwt>`}</CodeBlock>
           ))}
         </div>
       </div>
+
+      {/* SDKs */}
+      <div>
+        <h3 className="font-semibold mb-3">SDK & Client Libraries</h3>
+        <CodeBlock title="JavaScript / TypeScript">{`npm install @cmpsbl/sdk
+
+import { Substrate } from '@cmpsbl/sdk';
+const substrate = new Substrate({
+  apiKey: process.env.CMPSBL_API_KEY,
+  developerId: process.env.CMPSBL_DEVELOPER_ID,
+  appId: process.env.CMPSBL_APP_ID
+});`}</CodeBlock>
+        <CodeBlock title="cURL">{`curl -X POST https://api.cmpsbl.com/v1/substrate \\
+  -H "Authorization: Bearer YOUR_JWT" \\
+  -H "X-Developer-ID: YOUR_DEV_ID" \\
+  -H "X-App-ID: YOUR_APP_ID" \\
+  -H "Content-Type: application/json" \\
+  -d '{"action": "brain.query", "query": "user preferences"}'`}</CodeBlock>
+      </div>
     </div>
   );
 }
@@ -514,11 +1226,13 @@ Authorization: Bearer <jwt>`}</CodeBlock>
 
 const sectionComponents: Record<string, React.FC> = {
   overview: OverviewSection,
+  architecture: ArchitectureSection,
   byok: BYOKSection,
   brain: BrainSection,
   nexus: NexusSection,
   dream: DreamSection,
   defense: DefenseSection,
+  evolution: EvolutionSection,
   extensions: ExtensionsSection,
   agents: AgentsSection,
   integrations: IntegrationsSection,
@@ -574,8 +1288,8 @@ export default function Documentation() {
               }}>Documentation</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Everything you need to build on the substrate — persistent memory, DREAM cycles, 
-              NEXUS routing, and governed evolution.{" "}
+              Everything you need to build on the substrate — persistent memory, DREAM cycles,
+              NEXUS routing, governed evolution, and complete API reference.{" "}
               <span className="text-primary font-medium">100% BYOK.</span>
             </p>
           </div>
@@ -585,7 +1299,7 @@ export default function Documentation() {
       {/* Content area — sidebar + main */}
       <div className="container mx-auto px-4 py-8 sm:py-12">
         <div className="flex gap-8 max-w-7xl mx-auto">
-          
+
           {/* Desktop sidebar */}
           <nav className="hidden lg:block w-56 shrink-0 sticky top-24 self-start">
             <div className="space-y-1">
