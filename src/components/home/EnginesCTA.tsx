@@ -60,8 +60,9 @@ export function EnginesCTA() {
             style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
           />
 
-          {/* Top accent bar */}
-          <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          {/* Top accent bar — memory-stream */}
+          <div className="h-[2px] memory-stream-bar opacity-40" />
+          <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
           <div className="relative p-6 sm:p-10 md:p-14">
             {/* Header */}
@@ -123,8 +124,8 @@ export function EnginesCTA() {
                 { icon: Cpu, value: "3", label: "Clearance Tiers" },
                 { icon: Zap, value: "120+", label: "Capabilities" },
               ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <stat.icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
+                <div key={stat.label} className="text-center group/stat hover:-translate-y-0.5 transition-transform duration-300">
+                  <stat.icon className="w-5 h-5 text-primary mx-auto mb-1.5 group-hover/stat:scale-110 transition-transform duration-300" />
                   <div className="text-xl sm:text-2xl font-black text-foreground">{stat.value}</div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">{stat.label}</div>
                 </div>

@@ -68,7 +68,7 @@ export function EvolutionCTA() {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="max-w-6xl mx-auto"
       >
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-primary/[0.03]">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-primary/[0.05] glass-edge">
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-background via-card to-background" />
           <div
@@ -183,7 +183,7 @@ export function EvolutionCTA() {
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
-                  className="absolute px-3 py-2 rounded-lg bg-card/90 border border-border/40 backdrop-blur-sm shadow-md"
+                  className="absolute px-3 py-2 rounded-lg bg-card/90 border border-border/40 backdrop-blur-sm shadow-md shimmer-on-hover"
                   style={{ top: `calc(50% + ${stat.y}px)`, left: `calc(50% + ${stat.x}px)` }}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}

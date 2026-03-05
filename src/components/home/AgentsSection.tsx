@@ -38,8 +38,8 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
       className={cn(
         "relative rounded-2xl border bg-card/60 backdrop-blur-sm overflow-hidden",
         "transition-all duration-500",
-        expanded ? "shadow-xl" : "hover:shadow-lg",
-        "border-border/40"
+        expanded ? "shadow-xl" : "hover:shadow-lg hover:-translate-y-0.5",
+        "border-border/40 shimmer-on-hover"
       )}
       style={expanded ? { boxShadow: `0 0 50px -12px ${agent.glowColor}` } : undefined}
     >
