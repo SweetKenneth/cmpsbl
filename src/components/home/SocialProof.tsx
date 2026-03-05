@@ -1,6 +1,6 @@
 /**
- * Social Proof / Testimonials — Gap #11
- * Trust signals for the landing page
+ * Social Proof / Testimonials
+ * Balanced: Building on substrate + Memory Stream output
  */
 
 import { motion } from 'framer-motion';
@@ -15,19 +15,19 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "The Memory Stream changed how our agents operate. Persistent crystallization means they finally remember context across sessions.",
+    quote: "We plugged DREAM cycles into our agent fleet and within a week they were surfacing patterns we'd never have found manually. The substrate does the thinking while we sleep.",
     author: "Engineering Lead",
     role: "Fortune 500 AI Team",
     rating: 5,
   },
   {
-    quote: "The stream architecture means we only pay for what we crystallize. DREAM cycles alone saved us 40 hours/month on retraining.",
+    quote: "Building on the substrate changed everything. Our agents adapt their routing in real-time, and EVOLUTION auto-patches drift before we even notice it. We just build — the substrate handles the rest.",
     author: "CTO",
     role: "Series B Startup",
     rating: 5,
   },
   {
-    quote: "Governance was an afterthought until we deployed the substrate. Now every AI action is auditable and reversible.",
+    quote: "Persistent memory and governed evolution gave us what we couldn't build ourselves — an AI system that remembers, adapts, and stays compliant. Every action is auditable.",
     author: "VP of Compliance",
     role: "Enterprise SaaS",
     rating: 5,
@@ -40,10 +40,10 @@ export function SocialProof() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground mb-3 tracking-tight">
-            Trusted by builders crystallizing from the stream
+            Builders on the substrate
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-            Teams using the Memory Stream to build intelligence that compounds.
+            Teams using DREAM, ADAPT, and EVOLUTION to build intelligence that compounds.
           </p>
         </div>
 

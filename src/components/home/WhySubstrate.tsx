@@ -18,7 +18,7 @@ import {
   Plug,
   Code2,
   Accessibility,
-  Layers,
+  Hammer,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -315,11 +315,11 @@ export function WhySubstrate() {
           className="text-center mb-10 sm:mb-14"
         >
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">9 Systems</span>
+            <Hammer className="w-3 h-3 text-primary" />
+            <span className="text-xs">Build on the Substrate</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            The{" "}
+            Nine Systems.{" "}
             <span 
               className="inline-block"
               style={{
@@ -330,15 +330,16 @@ export function WhySubstrate() {
                 animation: "gradientShift 4s ease-in-out infinite",
               }}
             >
-              Stream
+              One Substrate.
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-             Nine production systems power the Memory Stream — from
-             <span className="text-foreground font-medium"> signal capture</span> to 
-             <span className="text-foreground font-medium"> crystallization</span>, 
-             <span className="text-foreground font-medium"> persistent memory</span>, and 
-             <span className="text-foreground font-medium"> governed evolution</span>. Signal → Silicon. All included in every plan.
+             Build with persistent memory, DREAM cycles, governed evolution, and intelligent routing.
+             Your systems don't just run — they
+             <span className="text-foreground font-medium"> dream</span>,{" "}
+             <span className="text-foreground font-medium">adapt</span>, and{" "}
+             <span className="text-foreground font-medium">improve themselves</span> over time.
+             All included in every plan.
            </p>
         </motion.div>
         
