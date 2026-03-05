@@ -75,6 +75,9 @@ export function DifferentiationSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">02</span>
+          </div>
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary px-4 py-1.5 gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
             <span className="text-xs font-semibold">Why Build Here</span>
@@ -110,7 +113,7 @@ export function DifferentiationSection() {
             >
               <div className={cn(
                 "relative h-full rounded-2xl border bg-card/50 backdrop-blur-sm p-6 sm:p-8",
-                "hover:shadow-xl hover:shadow-primary/[0.04] hover:-translate-y-1 transition-all duration-500 shimmer-on-hover glass-edge",
+                "hover:shadow-xl hover:shadow-primary/[0.04] transition-all duration-500 shimmer-on-hover glass-edge card-lift gradient-border-reveal",
                 pillar.borderColor,
                 "hover:border-opacity-80"
               )}>

@@ -276,6 +276,9 @@ export function BuiltForSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 sm:mb-20"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">03</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Hammer className="w-3 h-3 text-primary" />
             <span className="text-xs">Built For Builders</span>

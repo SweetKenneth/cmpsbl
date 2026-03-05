@@ -302,7 +302,7 @@ export function WhySubstrate() {
       </div>
       
       <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header with section ordinal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -310,6 +310,10 @@ export function WhySubstrate() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-14"
         >
+          {/* Faded ordinal behind heading */}
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">01</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Hammer className="w-3 h-3 text-primary" />
             <span className="text-xs">Build on the Substrate</span>

@@ -133,7 +133,7 @@ export default function StartHere() {
             {/* LEFT — Build on the Substrate */}
             <motion.div
               {...stagger(0.25)}
-              className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-shadow duration-500 shimmer-on-hover"
+              className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
             >
               <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-emerald-500 to-amber-500" />
               <div className="p-6 sm:p-8">
@@ -170,7 +170,7 @@ export default function StartHere() {
             {/* RIGHT — The Memory Stream */}
             <motion.div
               {...stagger(0.3)}
-              className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-shadow duration-500 shimmer-on-hover"
+              className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
             >
               <div className="h-1 w-full bg-gradient-to-r from-primary via-cyan-500 to-primary" />
               <div className="p-6 sm:p-8">

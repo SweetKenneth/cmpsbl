@@ -666,7 +666,12 @@ export default function Changelog() {
             GEOLOGICAL RECORD
           </Badge>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight">
-            The Fossil Record
+            The{" "}
+            <span style={{
+              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>Fossil Record</span>
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Every mutation in this substrate was forced by pressure.
@@ -732,7 +737,7 @@ export default function Changelog() {
                     )} />
 
                     {/* Specimen Card */}
-                    <div className="border border-border/40 rounded-lg bg-card/30 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 overflow-hidden">
+                    <div className="border border-border/40 rounded-lg bg-card/30 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 overflow-hidden stratum-glow gradient-border-reveal">
                       {/* Specimen header bar */}
                       <div className="flex flex-wrap items-center gap-3 px-5 py-3 border-b border-border/20 bg-muted/20">
                         <span className="font-mono text-xs text-primary font-bold tracking-wider">{specimen.id}</span>
