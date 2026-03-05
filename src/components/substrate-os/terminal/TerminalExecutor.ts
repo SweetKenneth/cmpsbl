@@ -834,6 +834,44 @@ export async function executeCommand(
     if (module && module in infraModuleAliases) {
       return { success: true, output: generateModuleHelp(infraModuleAliases[module] as keyof typeof COMMAND_CATEGORIES) };
     }
+    // Expansion zone overviews
+    if (module === 'expansion' || module === 'esz' || module === 'epz' || module === 'emz' || module === 'csz') {
+      const zones: Record<string, string[]> = {
+        expansion: ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest'],
+        esz: ['sovereign', 'oracle', 'conscience', 'treaty'],
+        epz: ['compass', 'echo', 'reflex'],
+        emz: ['forge', 'lingua', 'harvest'],
+        csz: ['evolution', 'shadow', 'phantom'],
+      };
+      const mods = zones[module] || zones.expansion;
+      let output = `\n┌─ ${module.toUpperCase()} — Expansion Modules ────────────────────────────\n│\n`;
+      for (const m of mods) {
+        output += `│  ${m.padEnd(14)} → help ${m}\n`;
+      }
+      output += `│\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
+    }
+    // Matrix resilience help
+    if (module === 'matrix') {
+      return { success: true, output: `
+┌─ MATRIX RESILIENCE COMMANDS ─────────────────────────────────┐
+│                                                               │
+│  matrix.canary          Node canary deployments               │
+│  matrix.killswitch      Sector kill switch states             │
+│  matrix.killswitch.kill Kill a sector                         │
+│  matrix.killswitch.revive  Revive a sector                    │
+│  matrix.redundant       Redundant node pairs                  │
+│  matrix.chaos           Chaos testing stats                   │
+│  matrix.chaos.inject    Inject chaos (fault injection)        │
+│  matrix.correlation     Cross-sector correlation              │
+│  matrix.heatmap         Health heatmap                        │
+│  matrix.forecast        Anomaly forecasting                   │
+│  matrix.quorum          Quorum healing                        │
+│  matrix.incidents       Immutable incident registry           │
+│  matrix.queue           Priority queue state                  │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘` };
+    }
     // ENCODE module help
     if (module === 'encode') {
       const { registerEncodeModuleHandlers } = await import('@/lib/terminal/encode-handlers');
