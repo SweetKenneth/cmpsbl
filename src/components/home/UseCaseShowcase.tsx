@@ -127,17 +127,28 @@ export function UseCaseShowcase() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-14"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">07</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-xs">What You Can Build</span>
+            <span className="text-xs font-semibold">What You Can Build</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tight">
             From{" "}
-            <span className="bg-gradient-to-r from-primary via-violet-500 to-purple-600 bg-clip-text text-transparent">
+            <span style={{
+              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
               Today
             </span>
-            {" "}To{" "}
-            <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+            {" "}to{" "}
+            <span style={{
+              background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
               Tomorrow
             </span>
           </h2>
@@ -160,13 +171,12 @@ export function UseCaseShowcase() {
                <Link
                  to="/use-cases"
                  className={cn(
-                   "group relative block h-full p-5 sm:p-6 rounded-2xl border border-border/50",
-                   "bg-card/50 backdrop-blur-sm",
-                   "hover:bg-card/80 hover:shadow-xl hover:shadow-current/5 hover:-translate-y-1",
-                   "transition-all duration-500",
-                   "overflow-hidden shimmer-on-hover",
-                  useCase.color,
-                  useCase.borderColor
+                    "group relative block h-full p-5 sm:p-6 rounded-2xl border border-border/50",
+                    "bg-card/50 backdrop-blur-sm",
+                    "transition-all duration-500",
+                    "overflow-hidden shimmer-on-hover card-lift",
+                   useCase.color,
+                   useCase.borderColor
                 )}
               >
                 {/* Hover gradient overlay */}

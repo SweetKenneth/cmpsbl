@@ -30,6 +30,7 @@ const GovernanceSignal = lazy(() => import("@/components/home/GovernanceSignal")
 const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
 const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
+const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 
 // Section divider with animated gradient, memory-stream accent, and side flair
 function SectionDivider() {
@@ -126,6 +127,11 @@ export default function Explore() {
 
         {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
         <SocialProof />
+
+        <SectionDivider />
+
+        {/* ═══ USE CASES — What you can build ═══ */}
+        <UseCaseShowcase />
 
         <SectionDivider />
 

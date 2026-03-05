@@ -4,7 +4,8 @@
  */
 
 import { motion } from "framer-motion";
-import { Terminal, Shield, AlertTriangle, Eye } from "lucide-react";
+import { Terminal, Shield, AlertTriangle, Eye, Hammer } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const signals = [
@@ -50,11 +51,22 @@ export function GovernanceSignal() {
 
           <div className="p-6 sm:p-10">
             <div className="text-center mb-8">
-              <p className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-[0.2em] mb-2">
-                Substrate Governance · Signal → Silicon
-              </p>
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground">
-                Every operation is governed, observable, and failure-aware
+              <div className="relative inline-block">
+                <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">06</span>
+              </div>
+              <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
+                <Hammer className="w-3 h-3 text-primary" />
+                <span className="text-xs font-semibold">Governance Layer</span>
+              </Badge>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-foreground tracking-tight">
+                Every Operation Is{" "}
+                <span style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  Governed
+                </span>
               </h3>
             </div>
 
@@ -66,7 +78,7 @@ export function GovernanceSignal() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08 }}
-                  className="space-y-3 p-4 sm:p-5 rounded-xl border border-transparent hover:border-border/20 hover:bg-primary/[0.03] hover:-translate-y-0.5 transition-all duration-300 group/signal"
+                  className="space-y-3 p-4 sm:p-5 rounded-xl border border-border/20 bg-card/30 hover:border-primary/20 hover:bg-primary/[0.03] transition-all duration-300 group/signal card-lift"
                 >
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center group-hover/signal:bg-primary/15 transition-colors duration-300">

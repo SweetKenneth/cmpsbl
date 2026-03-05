@@ -107,7 +107,7 @@ export default function Contact() {
             </Badge>
           </motion.div>
           
-          <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+          <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground tracking-tight [text-shadow:_0_2px_20px_hsl(var(--background))]">
             Talk to Us
           </motion.h1>
           <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-3xl [text-shadow:_0_2px_10px_hsl(var(--background))]">
@@ -128,7 +128,7 @@ export default function Contact() {
               <motion.div
                 key={dept.name}
                 {...stagger(index * 0.06)}
-                className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5 transition-all duration-300 shimmer-on-hover"
+                className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -162,7 +162,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
             {/* Contact Info */}
             <div className="space-y-6">
-              <motion.div {...stagger(0)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+              <motion.div {...stagger(0)} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 transition-all duration-300 card-lift">
                 <Mail className="w-10 h-10 text-primary mb-4" />
                 <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">General Contact</h2>
                 <div className="space-y-4">
@@ -181,7 +181,7 @@ export default function Contact() {
                 </div>
               </motion.div>
 
-              <motion.div {...stagger(0.1)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+              <motion.div {...stagger(0.1)} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 transition-all duration-300 card-lift">
                 <MessageSquare className="w-10 h-10 text-primary mb-4" />
                 <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
                 <ul className="space-y-3">
@@ -200,7 +200,7 @@ export default function Contact() {
                 </ul>
               </motion.div>
 
-              <motion.div {...stagger(0.2)} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+              <motion.div {...stagger(0.2)} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 transition-all duration-300 card-lift">
                 <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
                 <div className="space-y-2">
                   <a href="https://x.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
@@ -217,7 +217,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <motion.div {...stagger(0.1)} id="contact-form" className="bg-card border border-border rounded-xl p-8 shadow-lg">
+            <motion.div {...stagger(0.1)} id="contact-form" className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-xl shadow-primary/[0.03]">
               <h2 className="text-xl sm:text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
