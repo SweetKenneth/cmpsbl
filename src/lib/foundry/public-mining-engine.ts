@@ -25,6 +25,8 @@ export interface MineResponse {
   bestScore: number | null;
   tierBreakdown: Record<string, number>;
   rerollCredit: boolean;
+  persistedCount: number;
+  alreadyOwnedCount: number;
   error?: string;
   retryAfterMs?: number;
 }
@@ -37,13 +39,11 @@ export interface MineResponse {
 export async function executeMine(): Promise<MineResponse> {
   const { data, error } = await supabase.functions.invoke('foundry-mine', {
     body: {
-      // No bias parameter. Server rejects any attempt.
       variant: 'public',
     },
   });
 
   if (error) {
-    // Check for rate limit
     if (error.message?.includes('429') || error.message?.includes('rate')) {
       return {
         ok: false,
@@ -51,6 +51,8 @@ export async function executeMine(): Promise<MineResponse> {
         bestScore: null,
         tierBreakdown: {},
         rerollCredit: false,
+        persistedCount: 0,
+        alreadyOwnedCount: 0,
         error: 'Rate limited. Try again later.',
         retryAfterMs: 60000,
       };
@@ -61,6 +63,8 @@ export async function executeMine(): Promise<MineResponse> {
       bestScore: null,
       tierBreakdown: {},
       rerollCredit: false,
+      persistedCount: 0,
+      alreadyOwnedCount: 0,
       error: error.message || 'Mining failed',
     };
   }

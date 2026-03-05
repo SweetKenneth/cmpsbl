@@ -39,6 +39,7 @@ export function useFoundryState() {
   const [isMining, setIsMining] = useState(false);
   const [lastMineResult, setLastMineResult] = useState<MineResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastSyncedAt, setLastSyncedAt] = useState<number>(Date.now());
 
   // Load user state + vault
   const loadState = useCallback(async () => {
@@ -82,20 +83,21 @@ export function useFoundryState() {
         .eq('user_id', user.id)
         .order('obtained_at', { ascending: false });
 
-      setInventory(
-        (inv ?? []).map((i: any) => ({
-          id: i.id,
-          artifactId: i.artifact_id,
-          artifactName: i.artifact_name,
-          score: i.score,
-          publicTier: i.public_tier,
-          valuationDisplay: i.valuation_display,
-          obtainedAt: i.obtained_at,
-          source: i.source,
-          category: i.category,
-          systemChain: i.system_chain,
-        }))
-      );
+      const mappedInventory = (inv ?? []).map((i: any) => ({
+        id: i.id,
+        artifactId: i.artifact_id,
+        artifactName: i.artifact_name,
+        score: i.score,
+        publicTier: i.public_tier,
+        valuationDisplay: i.valuation_display,
+        obtainedAt: i.obtained_at,
+        source: i.source,
+        category: i.category,
+        systemChain: i.system_chain,
+      }));
+
+      setInventory(mappedInventory);
+      setLastSyncedAt(Date.now());
     } catch (err) {
       console.error('Failed to load Memory Stream state:', err);
     } finally {
@@ -144,17 +146,23 @@ export function useFoundryState() {
         recordOperation('FORGE', Date.now() - startTime);
       }
 
+      // Truthful messaging based on server-confirmed persistence
       if (result.results.length === 0) {
         toast.info(MEMORY_STREAM_EMPTY);
         if (result.rerollCredit) {
           toast.success('Reroll credit earned!');
         }
+      } else if (result.persistedCount > 0) {
+        const best = result.results[0];
+        toast.success(`${MEMORY_STREAM_EVENT} — saved ${result.persistedCount} to Vault`);
+      } else if (result.alreadyOwnedCount === result.results.length) {
+        toast.info('Already in your vault');
       } else {
         const best = result.results[0];
         toast.success(`${MEMORY_STREAM_EVENT} — ${best.publicTier} (${best.score})`);
       }
 
-      // Reload state
+      // Always refresh vault from DB after crystallize
       await loadState();
     } catch (err: any) {
       toast.error(err.message || 'Crystallization failed');
@@ -185,5 +193,6 @@ export function useFoundryState() {
     tierCounts,
     inventoryCount: inventory.length,
     reload: loadState,
+    lastSyncedAt,
   };
 }
