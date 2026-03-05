@@ -704,5 +704,24 @@ All colors MUST be HSL.
   }
 }
 
+/* Hero background orb animations — pure CSS, GPU-accelerated */
+@keyframes hero-orb-1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(60px, 30px); }
+}
+@keyframes hero-orb-2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-50px, -25px); }
+}
+@keyframes hero-orb-3 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-30px, 25px); }
+  66% { transform: translate(15px, -15px); }
+}
+
+.animate-hero-orb-1 { animation: hero-orb-1 30s ease-in-out infinite; will-change: transform; }
+.animate-hero-orb-2 { animation: hero-orb-2 35s ease-in-out infinite; will-change: transform; }
+.animate-hero-orb-3 { animation: hero-orb-3 22s ease-in-out infinite; will-change: transform; }
+
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */
