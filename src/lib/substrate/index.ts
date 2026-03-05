@@ -679,7 +679,7 @@ export {
   runLocalTiering,
   updateTieringConfig,
   getTieringConfig,
-  stopAutoTiering,
+  stopAutoTiering as stopMemoryModuleAutoTiering,
   type VectorEntry,
   type RAGPipeline,
   type MemoryModuleState,
