@@ -200,6 +200,48 @@ async function mapDiscoveryToResult(disc: any) {
   };
 }
 
+/**
+ * Fetch candidates from global pool WITH weighted tier respect.
+ * Used by healing recovery and fallback paths to prevent bypassing rarity curve.
+ */
+async function fetchWeightedGlobalCandidates(
+  supabase: ReturnType<typeof createClient>,
+  fetchCount: number,
+  priorMines: number,
+): Promise<any[]> {
+  const range = pickWeightedTierRange(priorMines);
+  
+  const { data } = await supabase.rpc('get_random_discoveries', {
+    min_score: range.min,
+    max_count: fetchCount,
+    max_score: range.max,
+  });
+
+  if (Array.isArray(data) && data.length > 0) {
+    return shuffleInPlace(data);
+  }
+
+  // Fallback: direct query within weighted range
+  const { count: totalEligible } = await supabase
+    .from('discoveries')
+    .select('id', { count: 'exact', head: true })
+    .gte('cjpi', range.min)
+    .lte('cjpi', range.max);
+
+  if (!totalEligible || totalEligible <= 0) return [];
+
+  const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
+  const { data: fallback } = await supabase
+    .from('discoveries')
+    .select(DISCOVERY_SELECT)
+    .gte('cjpi', range.min)
+    .lte('cjpi', range.max)
+    .range(randomOffset, randomOffset + fetchCount - 1);
+
+  return shuffleInPlace(fallback || []);
+}
+
+/** @deprecated — use fetchWeightedGlobalCandidates instead */
 async function fetchGlobalCandidates(
   supabase: ReturnType<typeof createClient>,
   fetchCount: number,
