@@ -168,8 +168,9 @@ export function useFoundryState() {
 
       // Always refresh vault from DB after crystallize
       await loadState();
-    } catch (err: any) {
-      toast.error(err.message || 'Crystallization failed');
+    } catch (err) {
+      const appError = fromError(err, 'MODULE_ERROR');
+      toast.error(appError.safe_message);
     } finally {
       setIsMining(false);
     }
