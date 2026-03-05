@@ -150,55 +150,37 @@ export default function Auth() {
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
       <PublicNav />
       
-      {/* Cinematic Background */}
+      {/* Cinematic Background — CSS-only for performance */}
       <div className="fixed inset-0 pointer-events-none z-0">
         
-        {/* Radial glow orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full"
+        {/* Radial glow orbs — CSS animations */}
+        <div
+          className="absolute top-1/4 left-[16%] w-[500px] h-[500px] rounded-full animate-hero-orb-1"
           style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.08) 0%, transparent 70%)' }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <motion.div
-          className="absolute bottom-1/4 right-1/6 w-[400px] h-[400px] rounded-full"
+        <div
+          className="absolute bottom-1/4 right-[16%] w-[400px] h-[400px] rounded-full animate-hero-orb-2"
           style={{ background: 'radial-gradient(circle, hsl(var(--neon-cyan) / 0.06) 0%, transparent 70%)' }}
-          animate={{ scale: [1.1, 0.9, 1.1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
         
-        {/* Flowing stream lines */}
+        {/* Flowing stream lines — CSS only */}
         {[...Array(5)].map((_, i) => (
-          <motion.div
+          <div
             key={i}
-            className="absolute h-px"
+            className="absolute h-px animate-auth-stream"
             style={{
               top: `${15 + i * 18}%`,
               left: 0,
               right: 0,
               background: `linear-gradient(90deg, transparent 0%, hsl(var(--primary) / ${0.1 + i * 0.05}) 30%, hsl(var(--neon-cyan) / ${0.15 + i * 0.03}) 50%, hsl(var(--primary) / ${0.1 + i * 0.05}) 70%, transparent 100%)`,
+              animationDuration: `${10 + i * 3}s`,
+              animationDelay: `${i * 1.5}s`,
             }}
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{ duration: 10 + i * 3, repeat: Infinity, ease: 'linear', delay: i * 1.5 }}
           />
         ))}
         
         {/* Substrate grid */}
         <div className="absolute inset-0 substrate-grid-bg opacity-30" />
-        
-        {/* Crystallization burst on action */}
-        <AnimatePresence>
-          {crystallizing && (
-            <motion.div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-              style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.3) 0%, hsl(var(--neon-cyan) / 0.1) 30%, transparent 60%)' }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [0, 2.5], opacity: [0.8, 0] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: 'easeOut' }}
-            />
-          )}
-        </AnimatePresence>
       </div>
       
       {/* Memory Stream top accent bar */}

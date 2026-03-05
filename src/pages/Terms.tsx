@@ -12,7 +12,10 @@ export default function Terms() {
       />
       <PublicNav />
       
-      <main className="container mx-auto px-4 py-16 max-w-4xl">
+      <main className="container mx-auto px-4 pt-24 pb-16 max-w-4xl">
+        <nav className="mb-8">
+          <a href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">← Back to Home</a>
+        </nav>
         <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
         <p className="text-muted-foreground mb-8">Last updated: February 24, 2026</p>
         
@@ -109,16 +112,16 @@ export default function Terms() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold mb-4">9. Limitation of Liability</h2>
+           <h2 className="text-2xl font-semibold mb-4">9. Limitation of Liability</h2>
             <p className="text-muted-foreground leading-relaxed">
-              To the maximum extent permitted by law, PromptFluid shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.
+              To the maximum extent permitted by law, CMPSBL shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold mb-4">10. Indemnification</h2>
             <p className="text-muted-foreground leading-relaxed">
-              You agree to indemnify and hold harmless PromptFluid and its affiliates from any claims, losses, or damages arising from your use of our services or violation of these terms.
+              You agree to indemnify and hold harmless CMPSBL and its affiliates from any claims, losses, or damages arising from your use of our services or violation of these terms.
             </p>
           </section>
 
@@ -150,7 +153,7 @@ export default function Terms() {
             </p>
             <p className="text-muted-foreground mt-4">
               <strong>Email:</strong> Dev@CMPSBL.com<br />
-              <strong>Phone:</strong> (760) FLUID-AI
+              <strong>Phone:</strong> (760) 358-4324
             </p>
           </section>
         </div>

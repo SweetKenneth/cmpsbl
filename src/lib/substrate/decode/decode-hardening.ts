@@ -3,7 +3,7 @@
  * 25 enterprise-grade intent parsing, identity, and routing safety features.
  * Non-breaking additive layer — all existing DECODE internals remain frozen.
  *
- * © 2025–2026 PromptFluid®. All rights reserved.
+ * © 2025–2026 CMPSBL®. All rights reserved.
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
