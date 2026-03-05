@@ -94,6 +94,12 @@ export function useEncode(): UseEncodeReturn {
     enabled: pollingEnabled,
   });
 
+  const plansQuery = useQuery({
+    queryKey: ['substrate', 'encode', 'plans'],
+    queryFn: () => listPlans(),
+    staleTime: 10000,
+  });
+
   const encodeState = state.data;
   const health = encodeState ? getEncodeHealth() : 0;
   const queue = encodeState?.taskQueue || [];
