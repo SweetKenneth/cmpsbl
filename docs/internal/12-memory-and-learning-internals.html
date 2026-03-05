@@ -8,20 +8,24 @@
 </head>
 <body>
 <div class="doc cover">
-  <div class="classification">🔒 Internal</div>
+  <div class="classification">🔒 Internal — Trade Secret</div>
   <div class="badge"><div class="dot"></div> Document 12 · Persistent Intelligence</div>
   <h1>Memory &<br/><span class="g">Learning Internals</span></h1>
-  <p class="subtitle">Memory architecture, SM-2 engine, DREAM cycles, knowledge compounding, and the no-reset guarantee.</p>
-  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+  <p class="subtitle">Memory architecture, SM-2 engine, BRAIN neural substrate, DREAM cycles, knowledge compounding, CLM training engine, and the no-reset guarantee. Full weights and thresholds.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · Updated 2026-03-05</p>
 </div>
 <div class="doc">
   <h2>1. Module Ownership</h2>
   <div class="grid2">
-    <div class="card"><h4 style="margin-top:0;color:var(--cyan);">BRAIN</h4><p>Knowledge graph, embeddings, classifiers, drift detection</p></div>
-    <div class="card"><h4 style="margin-top:0;color:var(--violet);">MEMORY</h4><p>Persistent store, SM-2 tiering, WAL, content hash seals</p></div>
+    <div class="card"><h4 style="margin-top:0;color:var(--cyan);">BRAIN</h4><p>Knowledge graph, hash-embed-v1 embeddings (384-dim), confidence classifier, drift detector. Zero external API dependency.</p></div>
+    <div class="card"><h4 style="margin-top:0;color:var(--violet);">MEMORY</h4><p>Persistent store, SM-2 tiering, WAL for crash recovery, content hash seals, tier receipts.</p></div>
   </div>
-  <div class="card" style="max-width:calc(50% - 8px);"><h4 style="margin-top:0;color:var(--magenta);">DREAM</h4><p>Offline optimization, pattern discovery, insight promotion</p></div>
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0;color:var(--magenta);">DREAM</h4><p>Nocturne v2.0.0 — offline optimization, hallucination guards, latent pattern caching, insight promotion.</p></div>
+    <div class="card"><h4 style="margin-top:0;color:var(--amber);">CLM</h4><p>Constant Learning Mode — 14,400 AI calls/day, 70/30 global/solo topics, mastery thresholds, deduplication.</p></div>
+  </div>
   <div class="sep"></div>
+
   <h2>2. Memory Tiers</h2>
   <table>
     <tr><th>Tier</th><th>Label</th><th>Latency</th><th>Retention</th></tr>
@@ -31,45 +35,164 @@
     <tr><td>3</td><td>Frozen</td><td>On-demand</td><td>Indefinite</td></tr>
   </table>
   <p>Tier transitions are persisted as receipts in <code>memory_tier_receipts</code> with before/after tier, reason code, RPS score, and actor.</p>
+
+  <h3>Decay Model</h3>
+  <pre><code>confidence(t) = initial_confidence × e^(-λt)
+
+// Memories below 0.30 confidence are hidden from query results
+// DREAM cycles can promote decayed memories back to warm tier</code></pre>
+
   <div class="sep"></div>
+
   <h2>3. SM-2 Algorithm</h2>
-  <pre><code>if q >= 3:
-  interval = repetitions == 0 ? 1 : repetitions == 1 ? 6 : interval × easeFactor
+  <pre><code>// Core SM-2 implementation
+if q >= 3 (successful recall):
+  if repetitions == 0: interval = 1
+  if repetitions == 1: interval = 6
+  else: interval = interval × easeFactor
   repetitions += 1
 else:
   repetitions = 0; interval = 1
 
-easeFactor = max(1.3, easeFactor + (0.1 - (5-q) × (0.08 + (5-q) × 0.02)))</code></pre>
+easeFactor = max(1.3, easeFactor + (0.1 - (5-q) × (0.08 + (5-q) × 0.02)))
+
+// Defaults: easeFactor = 2.5, interval = 1, repetitions = 0</code></pre>
+
+  <h3>Health Monitoring</h3>
+  <table>
+    <tr><th>Metric</th><th>Healthy</th><th>Warning</th><th>Critical</th></tr>
+    <tr><td>Retention rate</td><td>&gt; 0.85</td><td>0.70–0.85</td><td>&lt; 0.70</td></tr>
+    <tr><td>Overdue ratio</td><td>&lt; 0.15</td><td>0.15–0.30</td><td>&gt; 0.30</td></tr>
+    <tr><td>Avg ease factor</td><td>&gt; 2.0</td><td>1.5–2.0</td><td>&lt; 1.5</td></tr>
+  </table>
+
   <div class="sep"></div>
-  <h2>4. DREAM Cycle (Nocturne v2.0.0)</h2>
-  <pre><code>1. Trigger (scheduled or low-activity)
+
+  <h2>4. Memory RPS (Recall Priority Score)</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Scoring Model</div>
+  </div>
+  <pre><code>RPS = recall_frequency × recency_weight
+    - (contradiction_count × 0.15)     // Per flagged inconsistency
+    × credibility_multiplier           // Source-tier: 0.5–1.0
+
+// Contradiction penalties: -0.15 per flagged inconsistency
+// Credibility multiplier: 0.5 (low-trust) to 1.0 (verified)
+// Memories below RPS threshold are deprioritized in retrieval</code></pre>
+
+  <div class="sep"></div>
+
+  <h2>5. BRAIN Neural Substrate (hash-embed-v1)</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Zero-Cost Embedding Engine</div>
+  </div>
+
+  <p>Deterministic character-level hashing generates <strong>384-dimensional vectors</strong> for knowledge crystals and heuristics. Zero external dependencies, zero API costs.</p>
+
+  <h3>Self-Activating Components</h3>
+  <table>
+    <tr><th>Component</th><th>Function</th><th>Activation Threshold</th></tr>
+    <tr><td>Vector Similarity Index</td><td>Nearest-neighbor recall via cosine similarity</td><td>50 crystals stored</td></tr>
+    <tr><td>Confidence Classifier</td><td>Predicts success probability for tasks</td><td>200 traces collected</td></tr>
+    <tr><td>Drift Detector</td><td>Flags data distribution shifts</td><td>200 traces collected</td></tr>
+  </table>
+
+  <h3>Semantic Deduplication</h3>
+  <table>
+    <tr><th>Cosine Similarity</th><th>Classification</th><th>Action</th></tr>
+    <tr><td>&gt; 0.92</td><td style="color:var(--rose);">Duplicate</td><td>Skip</td></tr>
+    <tr><td>0.80–0.92</td><td style="color:var(--amber);">Variant</td><td>Persist with <code>variant_of</code></td></tr>
+    <tr><td>&lt; 0.80</td><td style="color:var(--emerald);">Novel</td><td>Persist as new</td></tr>
+  </table>
+
+  <h3>Structural Fingerprinting</h3>
+  <pre><code>Fingerprint = SHA-256(canonical({steps, epoch}))
+// Steps: ordered, capability-aware
+// EXCLUDED from hash: CJPI score, name, category
+// Once set: NEVER overwritten
+// Epoch default: SPARTA
+// Implementation: WebCrypto SHA-256 only — no fallback hashing</code></pre>
+
+  <h3>Neural Tables (RLS-Hardened)</h3>
+  <table>
+    <tr><th>Table</th><th>Read</th><th>Write</th></tr>
+    <tr><td><code>brain_embeddings</code></td><td>authenticated</td><td>service_role only</td></tr>
+    <tr><td><code>brain_classifier_models</code></td><td>authenticated</td><td>service_role only</td></tr>
+    <tr><td><code>brain_drift_log</code></td><td>authenticated</td><td>service_role only</td></tr>
+    <tr><td><code>brain_maintenance_log</code></td><td>authenticated</td><td>service_role only</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2>6. DREAM Cycle (Nocturne v2.0.0)</h2>
+  <pre><code>1. Trigger (scheduled or low-activity detection)
 2. Gather recent events and learning data
 3. Pattern recognition analysis
 4. Generate insight proposals
 5. Hallucination guards validate
 6. Energy budget check
 7. Cache validated patterns
-8. Submit insights to promotion pipeline</code></pre>
+8. Submit insights to SEBA promotion pipeline</code></pre>
+
   <h3>Hallucination Guards</h3>
   <table>
     <tr><th>Guard</th><th>Check</th></tr>
     <tr><td>Consistency</td><td>Contradicts known facts?</td></tr>
     <tr><td>Evidence</td><td>Sufficient supporting data?</td></tr>
-    <tr><td>Novelty</td><td>Genuinely new?</td></tr>
+    <tr><td>Novelty</td><td>Genuinely new (cosine &lt; 0.80)?</td></tr>
     <tr><td>Safety</td><td>Could promotion cause harm?</td></tr>
   </table>
+
   <div class="sep"></div>
-  <h2>5. Knowledge Compounding</h2>
+
+  <h2>7. CLM Constant Learning Mode</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Internal — Training Engine Parameters</div>
+  </div>
+
+  <pre><code>// High-Velocity Training Engine (pf-clm-engine)
+Capacity:          14,400 AI calls/day
+Topic Weighting:   70% Global Topics (stability/governance)
+                   30% Node Solo Topics
+Mastery System:    Requires novelty once topic mastered
+Deduplication:     Prevents redundant writes
+
+// Knowledge Distillation
+Schedule:          4-hour staggered autonomous refinement
+Distribution:      Downstream patches every 30 minutes
+Spacing:           Tier-dependent (free: 2.0×, standard: 1.0×, pro: 0.75×)</code></pre>
+
+  <div class="sep"></div>
+
+  <h2>8. Knowledge Compounding</h2>
   <pre><code>Knowledge_value(t) = K₀ × (1 + learning_rate)^t - decay_losses(t)</code></pre>
   <div class="hl">
     <p style="font-size:15px;line-height:1.8;margin:0;">
-      <strong style="color:var(--cyan);">No-Reset Guarantee:</strong> No conversation window resets, no context lost between sessions. All learning persists in BRAIN/MEMORY. DREAM consolidates. EVOLUTION applies permanent structural improvements.
+      <strong style="color:var(--cyan);">No-Reset Guarantee:</strong> No conversation window resets, no context lost between sessions. All learning persists in BRAIN/MEMORY. DREAM consolidates. EVOLUTION applies permanent structural improvements via SEBA governance pipeline.
     </p>
   </div>
+
+  <div class="sep"></div>
+
+  <h2>9. Emotional Weights (CLM Routing)</h2>
+  <pre><code>// Source: public/emotional_weights.json
+sentiment_targets:
+  hope: 0.75 | innovation: 0.85 | transparency: 0.90
+  community: 0.70 | profit: 0.65
+
+emotion_multipliers:
+  positive_innovation: 1.30 | growth_mindset: 1.25
+  empathy_driven: 1.20 | profit_focused: 1.00
+  neutral_technical: 1.00 | negative_risk: 0.80
+  low_human_value: 0.60
+
+priority_adjustments:
+  high_alignment: +0.30 | medium: +0.15 | low: -0.10</code></pre>
+
   <div class="footer">
     <div class="brand">CMPSBL®</div>
     <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
-    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential — Trade Secret.</p>
   </div>
 </div>
 </body>
