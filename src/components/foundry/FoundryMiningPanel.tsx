@@ -155,10 +155,18 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
               </button>
             </div>
 
-            <div className="text-[10px] font-mono text-emerald-400/70 flex items-center gap-1.5 mb-3">
-              <Check className="w-3 h-3" />
-              Auto-saved to your Vault
-            </div>
+            {lastResult.persistedCount > 0 && (
+              <div className="text-[10px] font-mono text-emerald-400/70 flex items-center gap-1.5 mb-3">
+                <Check className="w-3 h-3" />
+                Saved {lastResult.persistedCount} pipeline{lastResult.persistedCount > 1 ? 's' : ''} to Vault
+              </div>
+            )}
+            {lastResult.persistedCount === 0 && lastResult.alreadyOwnedCount > 0 && (
+              <div className="text-[10px] font-mono text-muted-foreground/70 flex items-center gap-1.5 mb-3">
+                <Check className="w-3 h-3" />
+                Already in your Vault
+              </div>
+            )}
 
             {lastResult.results.map((result, i) => (
               <motion.div

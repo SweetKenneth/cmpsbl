@@ -26,11 +26,10 @@ function pickWeightedTierRange(): { min: number; max: number } {
     cumulative += t.weight;
     if (roll <= cumulative) return { min: t.min, max: t.max };
   }
-  // Fallback: Mint
   return { min: 68, max: 79 };
 }
 
-// Public tier mapping — aligned with 94+ hardware gate
+// Public tier mapping — per-item, based on actual score
 function scoreToPublicTier(score: number): string | null {
   if (score < QUALITY_FLOOR) return null;
   if (score === 100) return 'Apex';
@@ -87,12 +86,11 @@ serve(async (req) => {
       });
     }
 
-    // Determine user tier (from engine subscription + admin role)
+    // Determine user tier
     const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
       headers: { authorization: authHeader },
     });
 
-    // Check admin role for Admin-tier (200/day)
     const { data: isAdmin } = await supabase.rpc('has_role_text', {
       _user_id: user.id,
       _role: 'admin',
@@ -100,14 +98,12 @@ serve(async (req) => {
 
     let foundryTier = 'free';
     if (isAdmin) {
-      foundryTier = 'mythic_miner'; // Admin: 200/day
+      foundryTier = 'mythic_miner';
     } else {
       const engineTier = subData?.tier || 'free';
-      // Clean plan ladder: Free → Creator → Pro → Architect → Admin
-      if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';     // Architect: 25/day
-      else if (engineTier === 'studio') foundryTier = 'prospector';                                 // Pro: 15/day
-      else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';               // Creator: 10/day
-      // else free: 5/day
+      if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';
+      else if (engineTier === 'studio') foundryTier = 'prospector';
+      else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';
     }
 
     // Get tier config
@@ -123,7 +119,7 @@ serve(async (req) => {
       });
     }
 
-    // Rate limiting: check mines in last hour and last day
+    // Rate limiting
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 3600000).toISOString();
     const oneDayAgo = new Date(now.getTime() - 86400000).toISOString();
@@ -178,7 +174,6 @@ serve(async (req) => {
     }
 
     // ─── Weighted Mining ─────────────────────────────────────────
-    // For each result slot, roll a weighted tier range, then pull from that range
     const maxResults = tierConfig.max_results_per_mine;
 
     // Get user's existing artifact IDs to avoid duplicates
@@ -192,7 +187,7 @@ serve(async (req) => {
     const results: any[] = [];
     const attemptedRanges: { min: number; max: number }[] = [];
 
-    // Roll weighted tiers for each result slot
+    // Roll weighted tiers for each result slot independently
     for (let slot = 0; slot < maxResults; slot++) {
       const range = pickWeightedTierRange();
       attemptedRanges.push(range);
@@ -204,17 +199,18 @@ serve(async (req) => {
 
     for (const range of uniqueRanges) {
       const key = `${range.min}-${range.max}`;
-      // Fetch more than needed to allow for deduplication
       const fetchCount = maxResults * 4;
 
+      // Use updated RPC with max_score parameter
       const { data: rpcResult } = await supabase.rpc('get_random_discoveries', {
         min_score: range.min,
         max_count: fetchCount,
+        max_score: range.max,
       });
 
       let candidates = rpcResult;
 
-      // Fallback if RPC not available
+      // Fallback if RPC returns nothing
       if (!candidates || candidates.length === 0) {
         const { count: totalEligible } = await supabase
           .from('discoveries')
@@ -235,9 +231,6 @@ serve(async (req) => {
         } else {
           candidates = [];
         }
-      } else {
-        // Filter RPC results to the target range
-        candidates = candidates.filter((c: any) => c.cjpi >= range.min && c.cjpi <= range.max);
       }
 
       // Shuffle
@@ -249,7 +242,7 @@ serve(async (req) => {
       rangedCandidates.set(key, candidates);
     }
 
-    // Build results from weighted rolls
+    // Build results — each item gets its OWN tier based on its actual score
     for (const range of attemptedRanges) {
       if (results.length >= maxResults) break;
       const key = `${range.min}-${range.max}`;
@@ -261,6 +254,7 @@ serve(async (req) => {
         if (ownedIds.has(disc.id)) continue;
         if (results.some(r => r.id === disc.id)) continue;
 
+        // Per-item tier from its actual score (NOT the roll range)
         const tier = scoreToPublicTier(disc.cjpi);
         if (tier) {
           results.push({
@@ -273,11 +267,11 @@ serve(async (req) => {
             category: disc.category,
             systemChain: disc.module_chain || [],
           });
-          ownedIds.add(disc.id); // prevent dupes within same mine
+          ownedIds.add(disc.id);
         }
       }
 
-      // If the weighted range had no results, try falling back to Mint
+      // Fallback to Mint if weighted range had no results
       if (results.length < maxResults && pool.length === 0 && range.min > 68) {
         const mintPool = rangedCandidates.get('68-79') || [];
         for (const disc of mintPool) {
@@ -304,7 +298,10 @@ serve(async (req) => {
       }
     }
 
-    // Persist to inventory
+    // ─── Persist to inventory (atomic, with error handling + dedup) ───
+    let persistedCount = 0;
+    let alreadyOwnedCount = 0;
+
     if (results.length > 0) {
       const inventoryRows = results.map((r: any) => ({
         user_id: user.id,
@@ -319,7 +316,32 @@ serve(async (req) => {
         system_chain: r.systemChain,
       }));
 
-      await supabase.from('foundry_inventory').insert(inventoryRows);
+      // Use upsert with onConflict to handle duplicates gracefully
+      const { data: insertedData, error: insertError } = await supabase
+        .from('foundry_inventory')
+        .upsert(inventoryRows, { onConflict: 'user_id,artifact_id', ignoreDuplicates: true })
+        .select('id');
+
+      if (insertError) {
+        console.error('Inventory insert failed:', insertError.message);
+        // Return error — do NOT claim success
+        return new Response(JSON.stringify({
+          ok: false,
+          results: [],
+          bestScore: null,
+          tierBreakdown: {},
+          rerollCredit: false,
+          persistedCount: 0,
+          alreadyOwnedCount: 0,
+          error: 'Failed to save to vault. Please try again.',
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      persistedCount = insertedData?.length ?? results.length;
+      alreadyOwnedCount = results.length - persistedCount;
     }
 
     // Update user state
@@ -352,10 +374,13 @@ serve(async (req) => {
       bestScore,
       tierBreakdown,
       rerollCredit: results.length === 0,
+      persistedCount,
+      alreadyOwnedCount,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
+    console.error('foundry-mine error:', err.message);
     return new Response(JSON.stringify({ ok: false, error: err.message }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
