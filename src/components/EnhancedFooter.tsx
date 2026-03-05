@@ -103,7 +103,9 @@ export function EnhancedFooter() {
       <footer className="relative z-20 border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20" role="contentinfo">
         {/* Memory Stream flowing accent bar at top of footer */}
         <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-70" />
-        <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
+        <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+        {/* Subtle background texture */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--primary)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
           {/* Main grid: brand + 4 link columns */}

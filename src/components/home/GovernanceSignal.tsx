@@ -58,7 +58,7 @@ export function GovernanceSignal() {
               </h3>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
               {signals.map((signal, idx) => (
                 <motion.div
                   key={signal.label}
@@ -66,18 +66,23 @@ export function GovernanceSignal() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08 }}
-                  className="space-y-2.5 p-4 rounded-xl hover:bg-primary/[0.03] hover:-translate-y-0.5 transition-all duration-300"
+                  className="space-y-3 p-4 sm:p-5 rounded-xl border border-transparent hover:border-border/20 hover:bg-primary/[0.03] hover:-translate-y-0.5 transition-all duration-300 group/signal"
                 >
                   <div className="flex items-center gap-2.5">
-                    <signal.icon className="w-4 h-4 text-primary/70" />
-                    <span className="text-sm font-semibold text-foreground">{signal.label}</span>
+                    <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center group-hover/signal:bg-primary/15 transition-colors duration-300">
+                      <signal.icon className="w-4 h-4 text-primary/70 group-hover/signal:text-primary transition-colors duration-300" />
+                    </div>
+                    <span className="text-sm font-bold text-foreground">{signal.label}</span>
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {signal.description}
                   </p>
-                  <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-2.5 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 code-glow transition-all duration-300">
-                    {signal.code}
-                  </code>
+                  <div className="relative rounded-lg overflow-hidden">
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+                    <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-3 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 code-glow transition-all duration-300">
+                      <span className="text-primary/40 text-[9px] mr-1">›</span>{signal.code}
+                    </code>
+                  </div>
                 </motion.div>
               ))}
             </div>
