@@ -5,7 +5,7 @@ import { Eye, BarChart3, Activity, Shield, ArrowLeft } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 
-const VisionModuleGuide = () => {
+const VisionSystemGuide = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
@@ -13,7 +13,7 @@ const VisionModuleGuide = () => {
         description="Centralized monitoring for all substrate execution surfaces — real-time AI performance analytics, system health, and operations."
         type="article"
         publishedTime="2025-09-20"
-        keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'VISION module', 'cognitive substrate monitoring']}
+        keywords={['AI dashboard', 'system monitoring', 'AI analytics', 'VISION system', 'cognitive substrate monitoring']}
       />
       
       <PublicNav />
@@ -26,7 +26,7 @@ const VisionModuleGuide = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            VISION Module: Your AI Operations Command Center
+            VISION: Your AI Operations Command Center
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
@@ -52,7 +52,7 @@ const VisionModuleGuide = () => {
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-foreground">
               <Eye className="h-8 w-8 text-primary" />
-              What is the VISION Module?
+              What is VISION?
             </h2>
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
@@ -74,7 +74,7 @@ const VisionModuleGuide = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-2 text-foreground">Real-Time System Health</h3>
                     <p className="text-muted-foreground">
-                      Monitor the operational status of every module at a glance. VISION displays uptime metrics, API response times, error rates, and queue depths with color-coded status indicators.
+                      Monitor the operational status of every system at a glance. VISION displays uptime metrics, API response times, error rates, and queue depths with color-coded status indicators.
                     </p>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ const VisionModuleGuide = () => {
             <h3 className="text-xl font-bold mb-4 text-foreground">Experience Unified Operations</h3>
             <p className="text-muted-foreground mb-6">See how VISION brings complete visibility and control to your AI infrastructure through one powerful dashboard.</p>
             <Link to="/modules" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-              Explore All Modules →
+              Explore All Systems →
             </Link>
           </section>
 
@@ -160,4 +160,4 @@ const VisionModuleGuide = () => {
   );
 };
 
-export default VisionModuleGuide;
+export default VisionSystemGuide;

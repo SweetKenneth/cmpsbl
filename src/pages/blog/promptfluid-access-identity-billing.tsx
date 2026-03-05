@@ -8,10 +8,10 @@ const PromptFluidAccess = () => {
   return (
     <>
       <Helmet>
-        <title>ACCESS Module: Identity, Licensing & Billing | CMPSBL®</title>
+        <title>ACCESS: Identity, Licensing & Billing | CMPSBL®</title>
         <meta 
           name="description" 
-          content="CMPSBL's ACCESS module manages authentication, permissions, licensing, and billing with zero-password cryptographic identity and trust-based retention." 
+          content="CMPSBL's ACCESS system manages authentication, permissions, licensing, and billing with zero-password cryptographic identity and trust-based retention." 
         />
         <meta name="keywords" content="identity management, AI billing, authentication, licensing system, CMPSBL Access, zero-password auth" />
         <link rel="canonical" href="https://cmpsbl.com/blog/promptfluid-access-identity-billing" />
@@ -19,8 +19,8 @@ const PromptFluidAccess = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TechArticle",
-            "headline": "ACCESS Module: Identity, Licensing & Billing",
-            "description": "CMPSBL's ACCESS module manages authentication, permissions, licensing, and billing with zero-password cryptographic identity.",
+            "headline": "ACCESS: Identity, Licensing & Billing",
+            "description": "CMPSBL's ACCESS system manages authentication, permissions, licensing, and billing with zero-password cryptographic identity.",
             "author": {
               "@type": "Organization",
               "name": "CMPSBL Research Team"
@@ -64,7 +64,7 @@ const PromptFluidAccess = () => {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1] tracking-tight">
-                ACCESS Module: Trust-Based Identity & Billing
+                ACCESS: Trust-Based Identity & Billing
               </h1>
 
               <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
@@ -80,7 +80,7 @@ const PromptFluidAccess = () => {
                 
                 <h2 className="text-3xl mt-20 mb-8 flex items-center gap-4">
                   <Key className="w-8 h-8 text-primary" />
-                  What is the ACCESS Module?
+                  What is ACCESS?
                 </h2>
 
                 <p className="text-xl leading-relaxed text-foreground font-light mb-12">
@@ -92,7 +92,7 @@ const PromptFluidAccess = () => {
                 </p>
 
                 <p>
-                  Every user interaction with <Link to="/blog/cmpsbl-studio-build-apps-that-think" className="text-primary hover:underline">STUDIO</Link>, <Link to="/blog/cmpsbl-vision-unified-dashboard" className="text-primary hover:underline">VISION</Link>, or any substrate module passes through ACCESS for authentication and authorization.
+                  Every user interaction with <Link to="/blog/cmpsbl-studio-build-apps-that-think" className="text-primary hover:underline">STUDIO</Link>, <Link to="/blog/cmpsbl-vision-unified-dashboard" className="text-primary hover:underline">VISION</Link>, or any substrate system passes through ACCESS for authentication and authorization.
                 </p>
 
                 <h2 className="text-3xl mt-20 mb-8">Core Capabilities</h2>

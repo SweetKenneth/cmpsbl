@@ -18,7 +18,7 @@ export default function AccessibilityFreeForAll() {
           "free WCAG compliance",
           "accessibility for all",
           "free website accessibility",
-          "INCLUSIVE module"
+          "INCLUSIVE system"
         ]}
       />
 
@@ -160,7 +160,7 @@ export default function AccessibilityFreeForAll() {
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-foreground">AI-Powered Auto-Fix</strong> — Our Brain module automatically generates fixes for common issues
+                    <strong className="text-foreground">AI-Powered Auto-Fix</strong> — Our BRAIN engine automatically generates fixes for common issues
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
