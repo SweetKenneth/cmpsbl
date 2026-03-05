@@ -1,18 +1,24 @@
 /**
  * PipelineProvenance — Visual lineage surface for crystallized pipelines.
- * Shows module ancestry, CJPI score, discovery timestamp, and export capability.
+ * Shows module ancestry, CJPI score, fingerprint, discovery frequency, and export capability.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Diamond, ArrowRight, Download, Clock } from 'lucide-react';
+import { X, Diamond, ArrowRight, Download, Clock, Fingerprint, CheckCircle, Copy } from 'lucide-react';
 import { getPipelineLineage, type PipelineLineageRecord } from '@/substrate/memory-lineage';
+import { generatePipelineFingerprint, truncateFingerprint } from '@/substrate/pipeline-fingerprint';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
+import { toast } from 'sonner';
 
 interface Props {
-  /** The pipeline to show provenance for — or null to close */
   pipeline: {
     name: string;
     score: number;
     systemChain: string[];
+    fingerprint?: string;
+    discoveryCount?: number;
+    firstDiscoveredAt?: string;
+    lastDiscoveredAt?: string;
   } | null;
   onClose: () => void;
 }
@@ -33,23 +39,64 @@ function tierGlow(score: number): string {
 }
 
 export function PipelineProvenance({ pipeline, onClose }: Props) {
+  const [verifying, setVerifying] = useState(false);
+  const [verified, setVerified] = useState<boolean | null>(null);
+  const { copy, copied } = useCopyToClipboard();
+
   if (!pipeline) return null;
 
-  // Look up lineage from registry
   const lineageRecords = getPipelineLineage(100);
   const lineage = lineageRecords.find(r => r.pipelineName === pipeline.name);
 
   const modules = lineage?.modules ?? pipeline.systemChain ?? [];
   const cjpi = lineage?.cjpi ?? pipeline.score;
-  const timestamp = lineage?.crystallizedAt ?? new Date().toISOString();
+  const timestamp = lineage?.crystallizedAt ?? pipeline.firstDiscoveredAt ?? new Date().toISOString();
+  const fingerprint = pipeline.fingerprint;
+  const discoveryCount = pipeline.discoveryCount ?? 1;
+
+  const handleVerify = async () => {
+    if (!fingerprint) return;
+    setVerifying(true);
+    try {
+      const recomputed = await generatePipelineFingerprint({
+        name: pipeline.name,
+        moduleChain: modules,
+        cjpi,
+        category: '',
+      });
+      setVerified(recomputed === fingerprint);
+      if (recomputed === fingerprint) {
+        toast.success('Artifact verified — fingerprint matches');
+      } else {
+        toast.error('Fingerprint mismatch — artifact may have been modified');
+      }
+    } catch {
+      setVerified(false);
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleCopyFingerprint = () => {
+    if (fingerprint) {
+      copy(fingerprint);
+      toast.success('Fingerprint copied');
+    }
+  };
 
   const exportProvenance = () => {
     const data = {
       pipeline: pipeline.name,
       cjpi,
       modules,
+      fingerprint: fingerprint || 'untracked',
       crystallizedAt: timestamp,
+      discoveryCount,
+      firstDiscoveredAt: pipeline.firstDiscoveredAt || timestamp,
+      lastDiscoveredAt: pipeline.lastDiscoveredAt || timestamp,
       lineageId: lineage?.id ?? 'untracked',
+      substrate_version: 'SPARTA',
+      epoch: 'SPARTA',
       source: 'CMPSBL Memory Stream',
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -105,8 +152,40 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
               <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
                 CJPI
               </span>
+              {discoveryCount > 1 && (
+                <span className="text-[10px] font-mono text-muted-foreground/60 ml-auto">
+                  Discovered {discoveryCount}× globally
+                </span>
+              )}
             </div>
           </div>
+
+          {/* Fingerprint */}
+          {fingerprint && (
+            <div className="px-5 pb-4">
+              <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground mb-2">
+                Fingerprint
+              </div>
+              <div className="flex items-center gap-2">
+                <Fingerprint className="w-3.5 h-3.5 text-primary/60 shrink-0" />
+                <code className="text-xs font-mono text-foreground/80 truncate">
+                  {truncateFingerprint(fingerprint)}
+                </code>
+                <button
+                  onClick={handleCopyFingerprint}
+                  className="p-1 rounded hover:bg-muted/30 transition-colors text-muted-foreground hover:text-foreground shrink-0"
+                  title="Copy full fingerprint"
+                >
+                  {copied ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                </button>
+              </div>
+              {verified !== null && (
+                <div className={`text-[9px] font-mono mt-1 ${verified ? 'text-emerald-400' : 'text-destructive'}`}>
+                  {verified ? '✓ Verified — fingerprint matches' : '✗ Mismatch detected'}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Module lineage chain */}
           <div className="px-5 pb-4">
@@ -138,10 +217,25 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
               <Clock className="w-3 h-3" />
               Crystallized {new Date(timestamp).toLocaleString()}
             </div>
+            {pipeline.lastDiscoveredAt && pipeline.lastDiscoveredAt !== timestamp && (
+              <div className="text-[9px] text-muted-foreground/40 font-mono mt-1 ml-5">
+                Last seen {new Date(pipeline.lastDiscoveredAt).toLocaleString()}
+              </div>
+            )}
           </div>
 
           {/* Actions */}
           <div className="border-t border-border/20 px-5 py-3 flex items-center justify-end gap-2">
+            {fingerprint && (
+              <button
+                onClick={handleVerify}
+                disabled={verifying}
+                className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+              >
+                <CheckCircle className="w-3 h-3" />
+                {verifying ? 'Verifying…' : 'Verify Artifact'}
+              </button>
+            )}
             <button
               onClick={exportProvenance}
               className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40"

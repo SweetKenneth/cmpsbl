@@ -1,13 +1,14 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export
- * Now with Pipeline Provenance on click.
+ * Now with Pipeline Provenance on click + fingerprint display.
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Download, Fingerprint } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
+import { truncateFingerprint } from '@/substrate/pipeline-fingerprint';
 import { toast } from 'sonner';
 
 interface InventoryItem {
@@ -21,6 +22,7 @@ interface InventoryItem {
   source: string;
   category: string | null;
   systemChain: string[] | null;
+  pipelineFingerprint?: string | null;
 }
 
 interface Props {
@@ -40,8 +42,11 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
       valuation: item.valuationDisplay,
       category: item.category,
       systemChain: item.systemChain,
+      fingerprint: item.pipelineFingerprint || null,
       obtainedAt: item.obtainedAt,
       source: item.source,
+      substrate_version: 'SPARTA',
+      epoch: 'SPARTA',
     })),
   };
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
@@ -55,7 +60,10 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
 }
 
 export function FoundryInventory({ inventory }: Props) {
-  const [provenancePipeline, setProvenancePipeline] = useState<{ name: string; score: number; systemChain: string[] } | null>(null);
+  const [provenancePipeline, setProvenancePipeline] = useState<{
+    name: string; score: number; systemChain: string[];
+    fingerprint?: string;
+  } | null>(null);
 
   if (inventory.length === 0) {
     return (
@@ -102,7 +110,12 @@ export function FoundryInventory({ inventory }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.03 }}
-            onClick={() => setProvenancePipeline({ name: item.artifactName, score: item.score, systemChain: item.systemChain ?? [] })}
+            onClick={() => setProvenancePipeline({
+              name: item.artifactName,
+              score: item.score,
+              systemChain: item.systemChain ?? [],
+              fingerprint: item.pipelineFingerprint ?? undefined,
+            })}
             className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 transition-colors cursor-pointer"
           >
             <div className="flex items-start justify-between gap-3">
@@ -126,6 +139,14 @@ export function FoundryInventory({ inventory }: Props) {
                 <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
                   {MEMORY_STREAM_PROVENANCE}
                 </div>
+                {item.pipelineFingerprint && (
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
+                    <span className="text-[8px] font-mono text-muted-foreground/40">
+                      {truncateFingerprint(item.pipelineFingerprint)}
+                    </span>
+                  </div>
+                )}
                 {item.systemChain && item.systemChain.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {item.systemChain.map(s => (

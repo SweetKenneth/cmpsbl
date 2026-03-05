@@ -8,9 +8,9 @@ const corsHeaders = {
 
 // Quality floor: absolute minimum score
 const QUALITY_FLOOR = 68;
+const FINGERPRINT_EPOCH = 'SPARTA';
 
 // ─── Weighted Tier Distribution ─────────────────────────────────
-// Mint (68-79): 65%, Prime (80-89): 25%, Relic (90-93): 7%, Mythic (94-99): 2.5%, Apex (100): 0.5%
 const TIER_WEIGHTS = [
   { min: 68, max: 79, weight: 0.65, tier: 'Mint' },
   { min: 80, max: 89, weight: 0.25, tier: 'Prime' },
@@ -29,7 +29,6 @@ function pickWeightedTierRange(): { min: number; max: number } {
   return { min: 68, max: 79 };
 }
 
-// Public tier mapping — per-item, based on actual score
 function scoreToPublicTier(score: number): string | null {
   if (score < QUALITY_FLOOR) return null;
   if (score === 100) return 'Apex';
@@ -41,6 +40,40 @@ function scoreToPublicTier(score: number): string | null {
 
 function computeDisplayValuation(score: number): number {
   return Math.round((score / 100) * 2_000_000 * 0.5);
+}
+
+// ─── Pipeline Fingerprint (SHA-256) ─────────────────────────────
+function canonicalizeJson(obj: unknown): string {
+  return JSON.stringify(sortKeys(obj));
+}
+
+function sortKeys(val: unknown): unknown {
+  if (val === null || val === undefined) return val;
+  if (Array.isArray(val)) return val.map(sortKeys);
+  if (typeof val === 'object') {
+    const sorted: Record<string, unknown> = {};
+    for (const key of Object.keys(val as Record<string, unknown>).sort()) {
+      sorted[key] = sortKeys((val as Record<string, unknown>)[key]);
+    }
+    return sorted;
+  }
+  return val;
+}
+
+async function computeFingerprint(name: string, moduleChain: string[], cjpi: number, category: string): Promise<string> {
+  const payload = {
+    name,
+    moduleChain: [...moduleChain].sort(),
+    cjpi,
+    category,
+    epoch: FINGERPRINT_EPOCH,
+  };
+  const canonical = canonicalizeJson(payload);
+  const encoder = new TextEncoder();
+  const data = encoder.encode(canonical);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 serve(async (req) => {
@@ -176,7 +209,6 @@ serve(async (req) => {
     // ─── Weighted Mining ─────────────────────────────────────────
     const maxResults = tierConfig.max_results_per_mine;
 
-    // Get user's existing artifact IDs to avoid duplicates
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
       .select('artifact_id')
@@ -187,13 +219,11 @@ serve(async (req) => {
     const results: any[] = [];
     const attemptedRanges: { min: number; max: number }[] = [];
 
-    // Roll weighted tiers for each result slot independently
     for (let slot = 0; slot < maxResults; slot++) {
       const range = pickWeightedTierRange();
       attemptedRanges.push(range);
     }
 
-    // Batch query: fetch candidates for each unique range
     const uniqueRanges = [...new Map(attemptedRanges.map(r => [`${r.min}-${r.max}`, r])).values()];
     const rangedCandidates: Map<string, any[]> = new Map();
 
@@ -201,7 +231,6 @@ serve(async (req) => {
       const key = `${range.min}-${range.max}`;
       const fetchCount = maxResults * 4;
 
-      // Use updated RPC with max_score parameter
       const { data: rpcResult } = await supabase.rpc('get_random_discoveries', {
         min_score: range.min,
         max_count: fetchCount,
@@ -210,7 +239,6 @@ serve(async (req) => {
 
       let candidates = rpcResult;
 
-      // Fallback if RPC returns nothing
       if (!candidates || candidates.length === 0) {
         const { count: totalEligible } = await supabase
           .from('discoveries')
@@ -222,7 +250,7 @@ serve(async (req) => {
           const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
           const { data: fallbackDisc } = await supabase
             .from('discoveries')
-            .select('id, name, description, cjpi, category, module_chain')
+            .select('id, name, description, cjpi, category, module_chain, pipeline_fingerprint')
             .gte('cjpi', range.min)
             .lte('cjpi', range.max)
             .range(randomOffset, randomOffset + fetchCount - 1);
@@ -242,7 +270,7 @@ serve(async (req) => {
       rangedCandidates.set(key, candidates);
     }
 
-    // Build results — each item gets its OWN tier based on its actual score
+    // Build results — each item gets its OWN tier + fingerprint
     for (const range of attemptedRanges) {
       if (results.length >= maxResults) break;
       const key = `${range.min}-${range.max}`;
@@ -254,9 +282,12 @@ serve(async (req) => {
         if (ownedIds.has(disc.id)) continue;
         if (results.some(r => r.id === disc.id)) continue;
 
-        // Per-item tier from its actual score (NOT the roll range)
         const tier = scoreToPublicTier(disc.cjpi);
         if (tier) {
+          // Compute fingerprint if not already stored
+          const fingerprint = disc.pipeline_fingerprint || 
+            await computeFingerprint(disc.name, disc.module_chain || [], disc.cjpi, disc.category || '');
+
           results.push({
             id: disc.id,
             name: disc.name,
@@ -266,12 +297,13 @@ serve(async (req) => {
             valuationDisplay: computeDisplayValuation(disc.cjpi),
             category: disc.category,
             systemChain: disc.module_chain || [],
+            fingerprint,
           });
           ownedIds.add(disc.id);
         }
       }
 
-      // Fallback to Mint if weighted range had no results
+      // Fallback to Mint
       if (results.length < maxResults && pool.length === 0 && range.min > 68) {
         const mintPool = rangedCandidates.get('68-79') || [];
         for (const disc of mintPool) {
@@ -282,6 +314,9 @@ serve(async (req) => {
 
           const tier = scoreToPublicTier(disc.cjpi);
           if (tier) {
+            const fingerprint = disc.pipeline_fingerprint ||
+              await computeFingerprint(disc.name, disc.module_chain || [], disc.cjpi, disc.category || '');
+
             results.push({
               id: disc.id,
               name: disc.name,
@@ -291,6 +326,7 @@ serve(async (req) => {
               valuationDisplay: computeDisplayValuation(disc.cjpi),
               category: disc.category,
               systemChain: disc.module_chain || [],
+              fingerprint,
             });
             ownedIds.add(disc.id);
           }
@@ -298,7 +334,53 @@ serve(async (req) => {
       }
     }
 
-    // ─── Persist to inventory (atomic, with error handling + dedup) ───
+    // ─── Rediscovery tracking + fingerprint persistence ───────────
+    for (const r of results) {
+      if (r.fingerprint) {
+        // Update discovery fingerprint if missing
+        await supabase
+          .from('discoveries')
+          .update({ pipeline_fingerprint: r.fingerprint, last_discovered_at: now.toISOString() })
+          .eq('id', r.id)
+          .is('pipeline_fingerprint', null);
+
+        // Increment discovery_count for rediscoveries
+        await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(() => {
+          // Fallback: direct update
+          supabase
+            .from('discoveries')
+            .update({ 
+              discovery_count: 1, // Will be incremented by trigger or next pass
+              last_discovered_at: now.toISOString() 
+            })
+            .eq('id', r.id);
+        });
+
+        // Upsert discovery metrics
+        await supabase
+          .from('foundry_discovery_metrics')
+          .upsert({
+            pipeline_fingerprint: r.fingerprint,
+            pipeline_name: r.name,
+            total_discoveries: 1,
+            total_mine_events: 1,
+            dfi: 0,
+            last_discovered_at: now.toISOString(),
+          }, { onConflict: 'pipeline_fingerprint' })
+          .then(() => {
+            // Increment counters for existing
+            supabase
+              .from('foundry_discovery_metrics')
+              .update({ 
+                total_discoveries: 1, // Upserted above handles new entries
+                last_discovered_at: now.toISOString(),
+              })
+              .eq('pipeline_fingerprint', r.fingerprint);
+          });
+      }
+    }
+
+    // ─── Persist to inventory ─────────────────────────────────────
     let persistedCount = 0;
     let alreadyOwnedCount = 0;
 
@@ -314,9 +396,9 @@ serve(async (req) => {
         source: 'mined',
         category: r.category,
         system_chain: r.systemChain,
+        pipeline_fingerprint: r.fingerprint || null,
       }));
 
-      // Use upsert with onConflict to handle duplicates gracefully
       const { data: insertedData, error: insertError } = await supabase
         .from('foundry_inventory')
         .upsert(inventoryRows, { onConflict: 'user_id,artifact_id', ignoreDuplicates: true })
@@ -324,7 +406,6 @@ serve(async (req) => {
 
       if (insertError) {
         console.error('Inventory insert failed:', insertError.message);
-        // Return error — do NOT claim success
         return new Response(JSON.stringify({
           ok: false,
           results: [],

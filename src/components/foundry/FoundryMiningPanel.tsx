@@ -1,14 +1,15 @@
 /**
  * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
  * Includes save-to-vault action for each result.
- * Now with Pipeline Provenance on click.
+ * Now with Pipeline Provenance on click + fingerprint display.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pickaxe, Loader2, Download, Check } from 'lucide-react';
+import { Pickaxe, Loader2, Download, Check, Fingerprint } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
+import { truncateFingerprint } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 import { toast } from 'sonner';
 
@@ -35,6 +36,9 @@ function exportResultsAsJSON(results: any[]) {
       valuation: r.valuationDisplay,
       category: r.category,
       systemChain: r.systemChain,
+      fingerprint: r.fingerprint || null,
+      substrate_version: 'SPARTA',
+      epoch: 'SPARTA',
     })),
   };
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
@@ -56,7 +60,10 @@ interface Props {
 
 export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizing }: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
-  const [provenancePipeline, setProvenancePipeline] = useState<{ name: string; score: number; systemChain: string[] } | null>(null);
+  const [provenancePipeline, setProvenancePipeline] = useState<{
+    name: string; score: number; systemChain: string[];
+    fingerprint?: string; discoveryCount?: number;
+  } | null>(null);
 
   const handleCrystallize = () => {
     onCrystallizing?.(true);
@@ -174,7 +181,12 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.15 }}
-                onClick={() => setProvenancePipeline({ name: result.name, score: result.score, systemChain: result.systemChain })}
+                onClick={() => setProvenancePipeline({
+                  name: result.name,
+                  score: result.score,
+                  systemChain: result.systemChain,
+                  fingerprint: (result as any).fingerprint,
+                })}
                 className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-colors"
               >
                 <div className="flex items-start justify-between gap-3">
@@ -198,6 +210,14 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                     <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
                       {MEMORY_STREAM_PROVENANCE}
                     </div>
+                    {(result as any).fingerprint && (
+                      <div className="flex items-center gap-1 mt-1">
+                        <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
+                        <span className="text-[8px] font-mono text-muted-foreground/40">
+                          {truncateFingerprint((result as any).fingerprint)}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex flex-wrap gap-1 mt-2">
                       {result.systemChain.map(s => (
                         <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
