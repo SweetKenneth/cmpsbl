@@ -16629,17 +16629,29 @@ export type Database = {
       }
       get_discovery_stats: { Args: never; Returns: Json }
       get_public_live_stats: { Args: never; Returns: Json }
-      get_random_discoveries: {
-        Args: { max_count: number; min_score: number }
-        Returns: {
-          category: string
-          cjpi: number
-          description: string
-          id: string
-          module_chain: string[]
-          name: string
-        }[]
-      }
+      get_random_discoveries:
+        | {
+            Args: { max_count: number; min_score: number }
+            Returns: {
+              category: string
+              cjpi: number
+              description: string
+              id: string
+              module_chain: string[]
+              name: string
+            }[]
+          }
+        | {
+            Args: { max_count: number; max_score?: number; min_score: number }
+            Returns: {
+              category: string
+              cjpi: number
+              description: string
+              id: string
+              module_chain: string[]
+              name: string
+            }[]
+          }
       get_site_analytics_aggregated: {
         Args: { p_end_date?: string; p_start_date: string }
         Returns: Json
