@@ -102,7 +102,7 @@ export default function Solutions() {
             Product Suite
           </Badge>
           
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground">
             Everything Your AI{" "}
             <span style={{
               background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
@@ -127,10 +127,10 @@ export default function Solutions() {
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                       <solution.icon className="w-7 h-7 text-primary" />
                     </div>
-                     <h2 className="text-xl sm:text-2xl font-bold mb-2 text-foreground">{solution.name}</h2>
+                     <h2 className="text-xl sm:text-2xl font-black mb-2 text-foreground">{solution.name}</h2>
                     <p className="text-base sm:text-lg text-primary font-medium mb-4">{solution.tagline}</p>
                     <p className="text-muted-foreground leading-relaxed mb-6">
                       {solution.description}
@@ -150,7 +150,7 @@ export default function Solutions() {
                     </Link>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-4 text-foreground">Key Features</h3>
+                    <h3 className="text-lg font-bold mb-4 text-foreground">Key Features</h3>
                     <ul className="space-y-3">
                       {solution.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2">
@@ -190,7 +190,7 @@ export default function Solutions() {
       {/* CTA */}
       <section className="py-16 px-4 bg-gradient-to-b from-muted/20 via-muted/30 to-muted/20">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-foreground">Start Building Today</h2>
+          <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Start Building Today</h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8">
             Free tier. No credit card. Persistent memory in under an hour.
           </p>

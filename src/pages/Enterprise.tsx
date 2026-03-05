@@ -73,7 +73,7 @@ export default function Enterprise() {
             <Badge variant="outline" className="mb-4 text-xs tracking-widest uppercase">
               Enterprise
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
@@ -102,12 +102,12 @@ export default function Enterprise() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="group p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 shimmer-on-hover"
+                className="group p-6 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
               >
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <cap.icon className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{cap.title}</h3>
+                <h3 className="font-bold text-foreground mb-2">{cap.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{cap.description}</p>
               </motion.div>
             ))}
@@ -117,7 +117,7 @@ export default function Enterprise() {
         {/* CTA */}
         <section className="container mx-auto max-w-3xl px-4 text-center">
           <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm shimmer-on-hover shadow-lg shadow-primary/[0.03]">
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's architect your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Custom slot capacity, dedicated instances, SOC2 compliance, DREAM cycle configuration, and white-glove onboarding — tailored to your organization.
             </p>

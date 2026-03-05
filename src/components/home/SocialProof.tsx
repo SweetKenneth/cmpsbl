@@ -53,7 +53,7 @@ export function SocialProof() {
             <Users className="w-3 h-3 text-primary" />
             <span className="text-xs font-semibold">Builders on the Substrate</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground mb-3 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-3 tracking-tight">
             What Teams Are{" "}
             <span
               style={{
