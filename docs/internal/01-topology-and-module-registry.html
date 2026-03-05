@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 — Topology & Module Registry</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 01 · System Architecture</div>
+  <h1>Topology &<br/><span class="g">Module Registry</span></h1>
+  <p class="subtitle">
+    The complete 38-node / 12-sector architecture of the CMPSBL Substrate.
+    Every module's layer assignment, boot order, dependencies, and responsibility boundary.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 38 Nodes · 12 Sectors</p>
+</div>
+
+<div class="doc">
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#spine">Spine — Vertical Deterministic Flow</a></li>
+      <li><a href="#ocg">Operational Compliance Grid (OCG)</a></li>
+      <li><a href="#exec">Execution Layer</a></li>
+      <li><a href="#orch">Orchestration</a></li>
+      <li><a href="#esz">ESZ — Expansion Sovereignty Zone</a></li>
+      <li><a href="#epz">EPZ — Expansion Perception Zone</a></li>
+      <li><a href="#emz">EMZ — Expansion Manufacturing Zone</a></li>
+      <li><a href="#csz">CSZ — Covert Systems Zone</a></li>
+      <li><a href="#fields">Fields, Plane & Shell</a></li>
+      <li><a href="#boot">Boot Order</a></li>
+      <li><a href="#summary">Layer Summary</a></li>
+      <li><a href="#invariants">Architecture Invariants</a></li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="mv">38</div><div class="ml">Total Nodes</div></div>
+    <div class="metric"><div class="mv">12</div><div class="ml">Sectors</div></div>
+    <div class="metric"><div class="mv">12</div><div class="ml">Boot Phases</div></div>
+    <div class="metric"><div class="mv">500+</div><div class="ml">Terminal Commands</div></div>
+  </div>
+
+  <h2 id="spine">1. Spine — Vertical Deterministic Flow</h2>
+  <p>The spine is the backbone execution path. Modules boot in strict dependency order.</p>
+
+  <div class="sf">
+    <span class="sn s-closed">CORE</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">SYSTEM</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">CCR</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">Execution</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">INTEGRATION</span>
+  </div>
+
+  <table>
+    <tr><th>Module</th><th>Role</th></tr>
+    <tr><td><strong>CORE</strong></td><td>Kernel. Boots first. Substrate constants, registry, error boundaries.</td></tr>
+    <tr><td><strong>SYSTEM</strong></td><td>Lifecycle management, heartbeats, shutdown coordination.</td></tr>
+    <tr><td><strong>BRAIN</strong></td><td>Cognitive knowledge graph, embeddings, classifier models.</td></tr>
+    <tr><td><strong>MEMORY</strong></td><td>Persistent knowledge store with SM-2 tiering and WAL.</td></tr>
+    <tr><td><strong>DREAM</strong></td><td>Offline optimization cycles, hallucination guards, pattern caching.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="ocg">2. Operational Compliance Grid (OCG)</h2>
+  <p>Six infrastructure modules that enforce operational boundaries:</p>
+
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Role</th></tr>
+    <tr><td><strong>RIPPLE</strong></td><td>4</td><td>Event bus, pub/sub, dead-letter queue.</td></tr>
+    <tr><td><strong>ACCESS</strong></td><td>5</td><td>API keys, quotas, rate limiting, developer subscriptions.</td></tr>
+    <tr><td><strong>IDENTITY</strong></td><td>6</td><td>User/tenant identity resolution, session binding.</td></tr>
+    <tr><td><strong>RELAY</strong></td><td>7</td><td>Webhook delivery, content-hash deduplication.</td></tr>
+    <tr><td><strong>AUDIT</strong></td><td>8</td><td>Immutable compliance trail, tamper-evident logging.</td></tr>
+    <tr><td><strong>NERVE</strong></td><td>9</td><td>Inter-node signaling, consensus repair, distributed heartbeat.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="exec">3. Execution Layer</h2>
+  <p>Specialized processing modules:</p>
+
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>NEXUS</strong></td><td>10</td><td>CORE</td><td>AI provider routing, fleet intelligence, cost tracking.</td></tr>
+    <tr><td><strong>DECODE</strong></td><td>11</td><td>CORE, NEXUS</td><td>Conversational interpreter, terminal command parsing.</td></tr>
+    <tr><td><strong>DREAM</strong></td><td>12</td><td>CORE, NEXUS</td><td>Nocturne offline optimization.</td></tr>
+    <tr><td><strong>ENCODE</strong></td><td>13</td><td>CORE, NEXUS</td><td>Output formatting, response shaping.</td></tr>
+    <tr><td><strong>DEFENSE</strong></td><td>14</td><td>CORE, RIPPLE</td><td>Security shell, threat detection, honeypots.</td></tr>
+    <tr><td><strong>VISION</strong></td><td>15</td><td>CORE, RIPPLE</td><td>Anomaly detection, performance correlation, alerting.</td></tr>
+    <tr><td><strong>ECONOMY</strong></td><td>16</td><td>CORE, ACCESS</td><td>Cost tracking, ROI computation, billing integration.</td></tr>
+    <tr><td><strong>SANDBOX</strong></td><td>17</td><td>CORE</td><td>Isolated execution environments, code evaluation.</td></tr>
+    <tr><td><strong>INTEGRATION</strong></td><td>18</td><td>CORE, RIPPLE, ACCESS</td><td>External service connectors, webhook handlers.</td></tr>
+    <tr><td><strong>MEDIC</strong></td><td>19</td><td>CORE, VISION</td><td>Autonomous diagnostics, self-repair coordination.</td></tr>
+    <tr><td><strong>INCLUSIVE</strong></td><td>22</td><td>CORE, SYSTEM</td><td>Accessibility compliance, WCAG enforcement.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="orch">4. Orchestration</h2>
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>SYSTEM</strong></td><td>20</td><td>CORE, VISION</td><td>System-wide lifecycle, health aggregation.</td></tr>
+    <tr><td><strong>MODERNIZER</strong></td><td>21</td><td>CORE, SYSTEM, VISION</td><td>Legacy → routes to EVOLUTION field.</td></tr>
+    <tr><td><strong>CORTEX</strong></td><td>23</td><td>CORE, NEXUS, SYSTEM, VISION</td><td>Pipeline orchestration, capability composition.</td></tr>
+    <tr><td><strong>ATLAS</strong></td><td>24</td><td>CORE, SYSTEM</td><td>Capability gating, feature flag management.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="esz">5. ESZ — Expansion Sovereignty Zone</h2>
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>SOVEREIGN</strong></td><td>25</td><td>CORE, DEFENSE, ACCESS</td><td>Jurisdiction classification, compliance enforcement.</td></tr>
+    <tr><td><strong>ORACLE</strong></td><td>26</td><td>CORE, BRAIN, VISION</td><td>Bayesian prediction, forecasting, scenario modeling.</td></tr>
+    <tr><td><strong>CONSCIENCE</strong></td><td>27</td><td>CORE, DEFENSE</td><td>Ethical bias detection, fairness auditing.</td></tr>
+    <tr><td><strong>TREATY</strong></td><td>28</td><td>CORE, SOVEREIGN, ACCESS</td><td>Contract enforcement, SLA management.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="epz">6. EPZ — Expansion Perception Zone</h2>
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>COMPASS</strong></td><td>29</td><td>CORE, VISION, BRAIN</td><td>Strategic navigation, trend analysis.</td></tr>
+    <tr><td><strong>ECHO</strong></td><td>30</td><td>CORE, MEMORY</td><td>Historical pattern replay, simulation.</td></tr>
+    <tr><td><strong>REFLEX</strong></td><td>31</td><td>CORE, NEXUS, VISION</td><td>Edge computing, real-time response.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="emz">7. EMZ — Expansion Manufacturing Zone</h2>
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>FORGE</strong></td><td>32</td><td>CORE, ENCODE</td><td>Content generation, artifact manufacturing.</td></tr>
+    <tr><td><strong>LINGUA</strong></td><td>33</td><td>CORE, DECODE, NEXUS</td><td>Translation, multilingual processing.</td></tr>
+    <tr><td><strong>HARVEST</strong></td><td>34</td><td>CORE, MEMORY, ECONOMY</td><td>Data collection, ETL pipelines.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="csz">8. CSZ — Covert Systems Zone</h2>
+  <table>
+    <tr><th>Module</th><th>Boot</th><th>Dependencies</th><th>Role</th></tr>
+    <tr><td><strong>PHANTOM</strong></td><td>35</td><td>CORE, DEFENSE, IDENTITY</td><td>Synthetic data, differential privacy, anonymization.</td></tr>
+    <tr><td><strong>SHADOW</strong></td><td>36</td><td>CORE, DEFENSE</td><td>Shadow runs, divergence testing, mesh isolation.</td></tr>
+    <tr><td><strong>EVOLUTION</strong></td><td>—</td><td>CORE</td><td>Mutation proposals, shadow validation, promotion pipeline.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="fields">9. Fields, Plane & Shell</h2>
+  <p>Fields are not stacked layers — they <strong>permeate</strong> the entire spine:</p>
+
+  <div class="grid2">
+    <div class="card" style="border-left: 3px solid var(--emerald);">
+      <h4 style="margin-top:0;color:var(--emerald);">IMMUNITY (Field)</h4>
+      <p>Self-healing, OCG capability gates, threat correlation.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--cyan);">
+      <h4 style="margin-top:0;color:var(--cyan);">INTENT (Field)</h4>
+      <p>User intent classification, context routing, goal tracking.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--violet);">
+      <h4 style="margin-top:0;color:var(--violet);">GOVERNANCE (Plane)</h4>
+      <p>Policy enforcement, veto authority, compliance audit, drift detection. Self-referential.</p>
+    </div>
+    <div class="card" style="border-left: 3px solid var(--rose);">
+      <h4 style="margin-top:0;color:var(--rose);">DEFENSE (Shell)</h4>
+      <p>Terminal boundary enforcement. Outermost containment.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <h2 id="boot">10. Boot Order — 38 Nodes</h2>
+  <pre><code>Phase 1  — Kernel:        CORE (1)
+Phase 2  — System:        SYSTEM (2)
+Phase 3  — CCR:           MEMORY (3), BRAIN (4), DREAM (5)
+Phase 4  — OCG:           RIPPLE (6), ACCESS (7), IDENTITY (8), RELAY (9), AUDIT (10), NERVE (11)
+Phase 5  — Execution:     NEXUS (12), DECODE (13), ENCODE (14),
+                           VISION (15), CORTEX (16), ECONOMY (17), SANDBOX (18),
+                           INCLUSIVE (19), MEDIC (20), INTEGRATION (21)
+Phase 6  — ESZ:           SOVEREIGN (22), ORACLE (23), CONSCIENCE (24), TREATY (25)
+Phase 7  — EPZ:           COMPASS (26), ECHO (27), REFLEX (28)
+Phase 8  — EMZ:           FORGE (29), LINGUA (30), HARVEST (31)
+Phase 9  — CSZ:           PHANTOM (32), SHADOW (33), EVOLUTION (34)
+Phase 10 — Fields:        IMMUNITY (35), INTENT (36)
+Phase 11 — Plane:         GOVERNANCE (37)
+Phase 12 — Shell:         DEFENSE (38)</code></pre>
+
+  <p>Boot is dependency-ordered. A module cannot boot until all its dependencies report healthy.</p>
+
+  <h3>Boot Gate Verdicts</h3>
+  <table>
+    <tr><th>Verdict</th><th>Meaning</th></tr>
+    <tr><td><code>pass</code></td><td>All checks passed, module may boot.</td></tr>
+    <tr><td><code>warn</code></td><td>Non-critical issues detected, boot proceeds with monitoring.</td></tr>
+    <tr><td><code>block</code></td><td>Critical dependency failure, module blocked from booting.</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="summary">11. Layer Classification Summary</h2>
+  <table>
+    <tr><th>Layer</th><th>Modules</th><th>Count</th></tr>
+    <tr><td>Kernel</td><td>CORE</td><td>1</td></tr>
+    <tr><td>System</td><td>SYSTEM</td><td>1</td></tr>
+    <tr><td>Cognitive (CCR)</td><td>BRAIN, MEMORY, DREAM</td><td>3</td></tr>
+    <tr><td>Infrastructure (OCG)</td><td>RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE</td><td>6</td></tr>
+    <tr><td>Execution</td><td>NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION</td><td>10</td></tr>
+    <tr><td>ESZ (Sovereignty)</td><td>SOVEREIGN, ORACLE, CONSCIENCE, TREATY</td><td>4</td></tr>
+    <tr><td>EPZ (Perception)</td><td>COMPASS, ECHO, REFLEX</td><td>3</td></tr>
+    <tr><td>EMZ (Manufacturing)</td><td>FORGE, LINGUA, HARVEST</td><td>3</td></tr>
+    <tr><td>CSZ (Covert)</td><td>EVOLUTION, SHADOW, PHANTOM</td><td>3</td></tr>
+    <tr><td>Fields</td><td>IMMUNITY, INTENT</td><td>2</td></tr>
+    <tr><td>Plane</td><td>GOVERNANCE</td><td>1</td></tr>
+    <tr><td>Shell</td><td>DEFENSE</td><td>1</td></tr>
+    <tr><td><strong>Total</strong></td><td></td><td><strong>38</strong></td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="invariants">12. Architecture Invariants</h2>
+  <ul class="cl">
+    <li>Weighted matrix must sum to <code>1.000</code>.</li>
+    <li>CORE failure is system-critical — cascades to all dependents.</li>
+    <li>Execution remains isolated by circuit-breaker boundaries.</li>
+    <li>Field modules permeate all sectors rather than acting as stacked layers.</li>
+    <li>GOVERNANCE supervises action legitimacy, including its own operations.</li>
+    <li>DEFENSE is terminal boundary enforcement — the outermost shell.</li>
+    <li>NEXUS is the primary routing authority for all AI provider interactions.</li>
+    <li>NERVE belongs to OCG — it IS the grid's signaling backbone.</li>
+    <li>CSZ provides covert operations isolation — EVOLUTION, SHADOW, and PHANTOM degrade independently.</li>
+  </ul>
+
+  <h3>Zone Shielding Model</h3>
+  <table>
+    <tr><th>Zone</th><th>Purpose</th><th>Degradation Impact</th></tr>
+    <tr><td>CCR</td><td>Cognitive reality</td><td>Loss of cognitive depth</td></tr>
+    <tr><td>OCG</td><td>Operational compliance</td><td>Loss of boundary enforcement</td></tr>
+    <tr><td>ESZ</td><td>Sovereignty, prediction, ethics</td><td>Reduced governance reach</td></tr>
+    <tr><td>EPZ</td><td>Perception, simulation, edge</td><td>Reduced foresight</td></tr>
+    <tr><td>EMZ</td><td>Manufacturing, translation, data</td><td>Reduced production capacity</td></tr>
+    <tr><td>CSZ</td><td>Evolution, shadow, privacy</td><td>Reduced mutation and covert ops</td></tr>
+  </table>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+
+</body>
+</html>

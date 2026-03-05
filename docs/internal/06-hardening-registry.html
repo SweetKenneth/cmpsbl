@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 — Hardening Registry</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 06 · Observability & Resilience</div>
+  <h1>Hardening<br/><span class="g">Registry</span></h1>
+  <p class="subtitle">
+    Complete inventory of all 38 hardened nodes in the substrate, their hardening versions,
+    key features, and the unified health grading methodology.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 100% Coverage</p>
+</div>
+
+<div class="doc">
+  <div class="metrics">
+    <div class="metric"><div class="mv">38</div><div class="ml">Hardened Nodes</div></div>
+    <div class="metric"><div class="mv">v2.0.0</div><div class="ml">Ironclad Version</div></div>
+    <div class="metric"><div class="mv">100%</div><div class="ml">Coverage</div></div>
+    <div class="metric"><div class="mv">500+</div><div class="ml">Terminal Commands</div></div>
+  </div>
+
+  <h2>1. Hardened Module Inventory</h2>
+
+  <h3>Tier 1 — Core Infrastructure</h3>
+  <table>
+    <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
+    <tr><td><strong>CORE</strong></td><td>v2.0.0</td><td>Boot integrity seals (SHA), timing profiler, shutdown deadline, DLQ, bulkhead isolation, module quarantine, request dedup, priority queuing, adaptive timeouts, Core Watchdog</td></tr>
+    <tr><td><strong>SYSTEM</strong></td><td>v2.0.0</td><td>Boot integrity seals (hash-chained), lifecycle state machine, dependency validation, shutdown coordinator, resource quota enforcement</td></tr>
+    <tr><td><strong>MEMORY</strong></td><td>v2.0.0</td><td>Content hash seals, WAL for crash recovery, P95 monitoring, SM-2 health, tier receipts</td></tr>
+    <tr><td><strong>DREAM</strong></td><td>v2.0.0</td><td>Hallucination guards, energy budgets, latent pattern caching, insight promotion</td></tr>
+  </table>
+
+  <h3>Tier 2 — Security & Governance</h3>
+  <table>
+    <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
+    <tr><td><strong>DEFENSE</strong></td><td>v2.0.0</td><td>Geo-velocity, fingerprinting, honeypots (15), challenge escalation, replay guard, PII filtering, header cloaking, entropy analysis, threat feeds, posture scoring, attack surface mapping</td></tr>
+    <tr><td><strong>GOVERNANCE</strong></td><td>v2.0.0</td><td>Quorum consensus, decision audit chain, consent verification, policy version control, conflict resolver, emergency override, decision entropy monitor</td></tr>
+  </table>
+
+  <h3>Tier 3 — All Remaining Nodes</h3>
+  <table>
+    <tr><th>Module</th><th>Version</th><th>Key Features</th></tr>
+    <tr><td><strong>BRAIN</strong></td><td>v2.0.0</td><td>Embedding integrity, classifier health, drift detection</td></tr>
+    <tr><td><strong>NEXUS</strong></td><td>v3.0.0</td><td>Fleet intelligence, consensus routing, cost ledger</td></tr>
+    <tr><td><strong>CORTEX</strong></td><td>v2.0.0</td><td>Pipeline orchestration, capability composition</td></tr>
+    <tr><td><strong>ENCODE</strong></td><td>v2.0.0</td><td>Output format validation, encoding error recovery</td></tr>
+    <tr><td><strong>DECODE</strong></td><td>v2.0.0</td><td>Input sanitization, command parsing, terminology enforcement</td></tr>
+    <tr><td><strong>VISION</strong></td><td>v2.0.0</td><td>Z-score anomaly detection, cross-module correlation</td></tr>
+    <tr><td><strong>ECONOMY</strong></td><td>v2.0.0</td><td>Cost tracking, ROI computation, budget enforcement</td></tr>
+    <tr><td><strong>IMMUNITY</strong></td><td>v2.0.0</td><td>Self-healing, OCG capability gates, threat correlation</td></tr>
+    <tr><td><strong>EVOLUTION</strong></td><td>v2.0.0</td><td>Mutation pipeline, receipt chain, promotion gates</td></tr>
+    <tr><td><strong>INTENT</strong></td><td>v2.0.0</td><td>Intent classification, context routing, goal tracking</td></tr>
+    <tr><td><strong>ENGINEER</strong></td><td>v2.0.0</td><td>Autonomous maintenance proposals, signal aggregation</td></tr>
+    <tr><td><strong>ATLAS</strong></td><td>v2.0.0</td><td>Capability gating, feature flags, marketplace</td></tr>
+    <tr><td><strong>AUDIT</strong></td><td>v2.0.0</td><td>Immutable trail, tamper-evident hashing</td></tr>
+    <tr><td><strong>+ 17 more</strong></td><td>v2.0.0</td><td>All remaining nodes fully hardened under Ironclad v2.0.0</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2>2. Health Grading System</h2>
+  <table>
+    <tr><th>Grade</th><th>Score</th><th>Action</th></tr>
+    <tr><td><strong style="color:var(--emerald);">A</strong></td><td>90–100</td><td>No action needed</td></tr>
+    <tr><td><strong style="color:var(--sky);">B</strong></td><td>75–89</td><td>Minor items, monitor</td></tr>
+    <tr><td><strong style="color:var(--amber);">C</strong></td><td>60–74</td><td>Monitor closely</td></tr>
+    <tr><td><strong style="color:var(--amber);">D</strong></td><td>40–59</td><td>Active investigation</td></tr>
+    <tr><td><strong style="color:var(--rose);">F</strong></td><td>0–39</td><td>Auto-heal triggers</td></tr>
+  </table>
+
+  <h3>Composite Score Formula</h3>
+  <pre><code>score = 0.25 × uptime_24h
+      + 0.25 × error_rate_1h (inverted)
+      + 0.20 × circuit_state (closed=1.0, half=0.5, open=0.0)
+      + 0.15 × p95_latency (normalized against baseline)
+      + 0.15 × quarantine_state (1.0 if not quarantined)</code></pre>
+
+  <h3>Terminal Commands (per module)</h3>
+  <pre><code>{module}.status      — Current health and state
+{module}.health      — Detailed health breakdown
+{module}.config      — Runtime configuration
+{module}.metrics     — Performance metrics
+{module}.diagnose    — Run diagnostic sweep
+{module}.reset       — Reset module state (admin only)</code></pre>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+
+</body>
+</html>
