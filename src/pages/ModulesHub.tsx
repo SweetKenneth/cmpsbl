@@ -65,7 +65,7 @@ export default function ModulesHub() {
         {/* Sections */}
         {DISPLAY_SECTIONS.map((section, sectionIdx) => {
           const items = section.getter();
-          const colorKey = section.key === 'public' ? 'Module' : 'Mesh';
+          const colorKey = section.key === 'public' ? 'Module' : 'Mesh'; // internal key, not displayed
           return (
             <section key={section.key} className="py-8 sm:py-12">
               <div className="container mx-auto max-w-6xl px-4">
@@ -106,7 +106,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'module'} <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'system'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}
