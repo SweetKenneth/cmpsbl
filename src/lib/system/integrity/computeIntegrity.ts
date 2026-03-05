@@ -86,7 +86,7 @@ export function computeIntegrityReport(
   inputs: IntegrityInputs,
   opts?: { mode?: IntegrityMode; weights?: IntegrityWeights }
 ): IntegrityReport {
-  const mode = opts?.mode ?? 'min';
+  const mode = opts?.mode ?? 'weighted';
   const weights = opts?.weights ?? DEFAULT_INTEGRITY_WEIGHTS;
 
   const lanes: IntegrityLane = {

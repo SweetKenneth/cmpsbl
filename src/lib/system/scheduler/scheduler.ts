@@ -1,16 +1,14 @@
 /**
  * Clockless Scheduler — Deterministic dispatch with backpressure + budgets
- * No cron dependency. Maintenance pulses are optional.
+ * DB-backed queues + receipts. No cron dependency.
  */
 
 import type { PriorityClass, SchedulerTask, SchedulerReceipt, TaskBudgetCost, BackpressureSignal } from './types';
 import * as queues from './queues';
 import * as budgets from './budgets';
+import { supabase } from '@/integrations/supabase/client';
 
 export type TaskExecutor = (task: SchedulerTask) => Promise<void>;
-
-const receipts: SchedulerReceipt[] = [];
-const MAX_RECEIPTS = 500;
 
 /** Classify a module+action into a priority class */
 export function classifyPriority(module: string, action: string): PriorityClass {
@@ -45,28 +43,61 @@ export function createTask(
   };
 }
 
-/** Submit a task to the scheduler */
-export function submit(task: SchedulerTask): { accepted: boolean; backpressure: BackpressureSignal[] } {
-  const bp = [...queues.checkBackpressure(), ...budgets.checkBudgetExhaustion()];
-  queues.enqueue(task);
-  return { accepted: true, backpressure: bp };
+export interface SubmitResult {
+  accepted: boolean;
+  degraded?: boolean;
+  reason?: string;
+  retry_after_ms?: number;
+  backpressure: BackpressureSignal[];
+}
+
+/** Submit a task to the scheduler with proper acceptance semantics */
+export async function submit(task: SchedulerTask): Promise<SubmitResult> {
+  const queueBp = await queues.checkBackpressure();
+  const budgetBp = budgets.checkBudgetExhaustion();
+  const bp = [...queueBp, ...budgetBp];
+
+  // Check for critical backpressure — reject submission
+  const hasCritical = bp.some(
+    s => s.type === 'queue_depth' && s.value >= 200
+  );
+
+  if (hasCritical) {
+    return {
+      accepted: false,
+      reason: 'backpressure_critical',
+      retry_after_ms: 500,
+      backpressure: bp,
+    };
+  }
+
+  await queues.enqueue(task);
+
+  // Check for warning-level backpressure — accept but flag degraded
+  const hasWarning = bp.length > 0;
+
+  return {
+    accepted: true,
+    degraded: hasWarning || undefined,
+    backpressure: bp,
+  };
 }
 
 /** Dispatch next task if budget allows. Returns receipt or null. */
 export async function dispatchNext(executor: TaskExecutor): Promise<SchedulerReceipt | null> {
-  queues.ageAll();
+  await queues.ageAll();
 
-  const task = queues.dequeue();
+  const task = await queues.dequeue();
   if (!task) return null;
 
   // Maintenance only runs when idle AND budget permits
-  if (task.priority === 'maintenance' && !queues.isIdle()) {
-    queues.enqueue(task); // re-enqueue
+  if (task.priority === 'maintenance' && !(await queues.isIdle())) {
+    await queues.enqueue(task); // re-enqueue
     return null;
   }
 
   if (!budgets.canAfford(task.priority, task.budget_cost)) {
-    queues.enqueue(task); // re-enqueue, wait for budget reset
+    await queues.enqueue(task); // re-enqueue, wait for budget reset
     return null;
   }
 
@@ -86,34 +117,62 @@ export async function dispatchNext(executor: TaskExecutor): Promise<SchedulerRec
     dispatched_at,
     wait_ms: dispatched_at - task.created_at,
     budget_consumed: task.budget_cost,
-    backpressure_active: queues.checkBackpressure().length > 0,
+    backpressure_active: (await queues.checkBackpressure()).length > 0,
   };
 
-  receipts.push(receipt);
-  if (receipts.length > MAX_RECEIPTS) receipts.splice(0, receipts.length - MAX_RECEIPTS);
+  // Persist receipt to DB
+  await supabase.from('substrate_scheduler_receipts').insert({
+    task_id: receipt.task_id,
+    priority: receipt.priority,
+    queued_at: new Date(receipt.queued_at).toISOString(),
+    dispatched_at: new Date(receipt.dispatched_at).toISOString(),
+    wait_ms: receipt.wait_ms,
+    budget_tokens: receipt.budget_consumed.estimated_tokens,
+    budget_ms: receipt.budget_consumed.estimated_ms,
+    budget_cost_cents: receipt.budget_consumed.estimated_cost_cents,
+    backpressure_active: receipt.backpressure_active,
+  });
 
   return receipt;
 }
 
-/** Get recent scheduling receipts */
-export function getReceipts(limit = 50): SchedulerReceipt[] {
-  return receipts.slice(-limit);
+/** Get recent scheduling receipts from DB */
+export async function getReceipts(limit = 50): Promise<SchedulerReceipt[]> {
+  const { data } = await supabase
+    .from('substrate_scheduler_receipts')
+    .select('*')
+    .order('dispatched_at', { ascending: false })
+    .limit(limit);
+
+  if (!data) return [];
+
+  return data.map((r: any) => ({
+    task_id: r.task_id,
+    priority: r.priority as PriorityClass,
+    queued_at: new Date(r.queued_at).getTime(),
+    dispatched_at: new Date(r.dispatched_at).getTime(),
+    wait_ms: r.wait_ms,
+    budget_consumed: {
+      estimated_tokens: r.budget_tokens,
+      estimated_ms: r.budget_ms,
+      estimated_cost_cents: r.budget_cost_cents,
+    },
+    backpressure_active: r.backpressure_active,
+  }));
 }
 
 /** Get scheduler status snapshot */
-export function getStatus() {
+export async function getStatus() {
   return {
-    queue_depths: queues.getDepths(),
+    queue_depths: await queues.getDepths(),
     budget_utilization: budgets.getUtilization(),
-    backpressure: queues.checkBackpressure(),
-    pending_total: queues.totalPending(),
-    receipts_count: receipts.length,
+    backpressure: await queues.checkBackpressure(),
+    pending_total: await queues.totalPending(),
   };
 }
 
 /** Flush scheduler state (for tests/reset) */
-export function reset(): void {
-  queues.flushAll();
+export async function reset(): Promise<void> {
+  await queues.flushAll();
   budgets.resetAll();
-  receipts.length = 0;
 }
