@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Diamond, ArrowRight, Download, Clock, Fingerprint, CheckCircle, Copy } from 'lucide-react';
+import { ArtifactExportPanel } from './ArtifactExportPanel';
 import { getPipelineLineage, type PipelineLineageRecord } from '@/substrate/memory-lineage';
 import {
   generatePipelineFingerprint,
@@ -236,6 +237,17 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
               </div>
             )}
           </div>
+
+          {/* Tiered Language Export */}
+          <ArtifactExportPanel
+            artifact={{
+              name: pipeline.name,
+              score: cjpi,
+              systemChain: modules,
+              category: null,
+              fingerprint,
+            }}
+          />
 
           {/* Actions */}
           <div className="border-t border-border/20 px-5 py-3 flex items-center justify-end gap-2">
