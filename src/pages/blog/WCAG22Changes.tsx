@@ -232,11 +232,11 @@ export default function WCAG22WordPressChanges() {
             <div className="container mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold mb-6">Ready to Achieve WCAG 2.2 Compliance?</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                The INCLUSIVE Module helps WordPress site owners automatically detect and fix WCAG 2.2 violations.
+                The INCLUSIVE system helps WordPress site owners automatically detect and fix WCAG 2.2 violations.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link to="/cluster/inclusive-module-accessibility" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
-                  Explore the INCLUSIVE Module
+                  Explore INCLUSIVE
                   <ExternalLink className="w-4 h-4" />
                 </Link>
                 <Link to="/blog/wordpress-accessibility-guide" className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg hover:bg-muted transition-colors font-medium">

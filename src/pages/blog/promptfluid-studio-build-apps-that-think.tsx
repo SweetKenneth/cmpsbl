@@ -14,7 +14,7 @@ const PromptFluidStudioGuide = () => {
         description="AI-assisted development generating production-ready code with cognitive pipelines, design intelligence, and real-time deployment."
         type="article"
         publishedTime="2025-10-10"
-        keywords={['STUDIO module', 'AI app development', 'cognitive code generation', 'composable AI', 'agentic development']}
+        keywords={['STUDIO system', 'AI app development', 'cognitive code generation', 'composable AI', 'agentic development']}
       />
       
       <PublicNav />
@@ -28,7 +28,7 @@ const PromptFluidStudioGuide = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            STUDIO Module: Build Apps That Think
+            STUDIO: Build Apps That Think
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">

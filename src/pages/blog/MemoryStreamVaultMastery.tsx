@@ -113,7 +113,7 @@ export default function MemoryStreamVaultMastery() {
                 { icon: Layers, label: "Category", desc: "Domain classification (data, utility, framework, etc.)" },
                 { icon: Sparkles, label: "CJPI Score", desc: "Composite quality score from 68–100" },
                 { icon: Archive, label: "Quality Tier", desc: "Mint, Prime, Relic, Mythic, or Apex" },
-                { icon: Eye, label: "Module Chain", desc: "Which substrate nodes contributed to discovery" },
+                { icon: Eye, label: "System Chain", desc: "Which substrate nodes contributed to discovery" },
                 { icon: Shield, label: "Provenance Hash", desc: "Cryptographic fingerprint of the discovery event" },
               ].map((item) => (
                 <div key={item.label} className="flex gap-3 items-start p-3 rounded-lg border border-border bg-card">
@@ -195,7 +195,7 @@ export default function MemoryStreamVaultMastery() {
             </div>
 
             <p>
-              Materialized JSON includes everything: the pipeline specification, module chain, quality dimensions, 
+              Materialized JSON includes everything: the pipeline specification, system chain, quality dimensions, 
               and a timestamp-linked provenance record. It's the full artifact, not a summary.
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function MemoryStreamVaultMastery() {
                 engine is working as designed.
               </li>
               <li>
-                <strong className="text-foreground">Use the module chain data.</strong> Every pipeline records which substrate 
+                <strong className="text-foreground">Use the system chain data.</strong> Every pipeline records which substrate 
                 nodes contributed. This gives you insight into which parts of the{" "}
                 <Link to="/architecture" className="text-primary hover:underline">38-node architecture</Link> are most active in 
                 producing high-quality software.

@@ -221,7 +221,7 @@ export default function AIGovernanceNamespaceUnifiedTerminology() {
               <h2 className="text-2xl font-bold text-foreground !mt-16 !mb-8">Integration with the CMPSBL World Engine</h2>
               
               <p className="text-muted-foreground leading-relaxed">
-                CMPSBL FNDTN v6 references this namespace as its governance semantics layer. The INCLUSIVE module 
+                CMPSBL FNDTN v6 references this namespace as its governance semantics layer. The INCLUSIVE system 
                 implements accessibility and alignment hooks that reference namespace surfaces for policy routing 
                 and compliance checks. This creates a consistent vocabulary across the entire substrate architecture.
               </p>

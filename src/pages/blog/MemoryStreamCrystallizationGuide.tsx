@@ -199,7 +199,7 @@ export default function MemoryStreamCrystallizationGuide() {
               {[
                 "Pipeline name and category",
                 "CJPI score and quality tier",
-                "Module chain (which substrate nodes contributed)",
+                "System chain (which substrate nodes contributed)",
                 "Discovery timestamp with full provenance",
                 "Estimated value based on tier",
                 "Export history and materialization count",
@@ -229,7 +229,7 @@ export default function MemoryStreamCrystallizationGuide() {
               {[
                 "Full pipeline specification in machine-readable JSON",
                 "CJPI scoring breakdown by quality dimension",
-                "Complete module chain showing which substrate nodes contributed",
+                "Complete system chain showing which substrate nodes contributed",
                 "Provenance timestamp and discovery fingerprint",
                 "Estimated complexity and integration difficulty rating",
               ].map((item, i) => (
