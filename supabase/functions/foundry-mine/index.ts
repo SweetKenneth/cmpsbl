@@ -675,7 +675,7 @@ serve(async (req) => {
     await supabase.from('foundry_user_state').upsert({
       user_id: user.id,
       last_mine_at: now.toISOString(),
-      total_mines: (dayCount ?? 0) + 1,
+      total_mines: priorMines + 1,
     }, { onConflict: 'user_id' });
 
     // Tier breakdown
