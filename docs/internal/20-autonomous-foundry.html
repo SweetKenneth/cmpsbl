@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20 — Autonomous Software Foundry</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal — Trade Secret</div>
+  <div class="badge"><div class="dot"></div> Document 20 · Crystallization Engine</div>
+  <h1>Autonomous Software<br/><span class="g">Foundry</span></h1>
+  <p class="subtitle">The substrate's recursive capability discovery and manufacturing system. A closed-loop reactor that crystallizes latent capabilities from the 38-node topology into scored, tiered, deduplicated Apex Discoveries.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · DOI Published</p>
+</div>
+<div class="doc">
+  <div class="metrics">
+    <div class="metric"><div class="mv">1,143+</div><div class="ml">Total Discoveries</div></div>
+    <div class="metric"><div class="mv">~120</div><div class="ml">Apex-Tier</div></div>
+    <div class="metric"><div class="mv">130/hr</div><div class="ml">Discovery Rate</div></div>
+    <div class="metric"><div class="mv">89.2</div><div class="ml">Avg CJPI (Apex)</div></div>
+  </div>
+  <h2>1. What the Foundry Does</h2>
+  <ul class="cl">
+    <li><strong>Discovers</strong> latent capabilities by combinatorially exploring the 38-node topology</li>
+    <li><strong>Scores</strong> each via CJPI (Crown Jewel Pipeline Index)</li>
+    <li><strong>Tiers</strong> into Apex / Mythic / Relic / Prime / Mint quality bands</li>
+    <li><strong>Deduplicates</strong> semantically (cosine &gt; 0.92)</li>
+    <li><strong>Fingerprints</strong> structurally (SHA-256, epoch-scoped, immutable)</li>
+    <li><strong>Persists</strong> to the S-Tier Vault (governor-only)</li>
+  </ul>
+  <div class="sep"></div>
+  <h2>2. Reactor Core Loop</h2>
+  <pre><code>while (budget_remaining && candidates_exist) {
+  candidate = generate_candidate(topology, module_combinations)
+  fingerprint = SHA-256(canonical({steps, epoch}))
+  score = cjpi_score(candidate)
+  tier = auto_tier(score)
+  if (!is_duplicate(candidate, existing)) persist(candidate, score, tier, fingerprint)
+}</code></pre>
+  <div class="sep"></div>
+  <h2>3. CJPI Scoring</h2>
+  <table>
+    <tr><th>Factor</th><th>Weight</th><th>Description</th></tr>
+    <tr><td>Novelty</td><td>0.25</td><td>Distance from existing in semantic space</td></tr>
+    <tr><td>Utility</td><td>0.30</td><td>Practical value heuristic</td></tr>
+    <tr><td>Complexity</td><td>0.20</td><td>Chain depth × diversity</td></tr>
+    <tr><td>Composability</td><td>0.25</td><td>Chain extension potential</td></tr>
+  </table>
+  <div class="tiers">
+    <div class="tier t-s"><div class="tn">Apex</div><div class="tr">≥ 85</div></div>
+    <div class="tier t-a"><div class="tn">Mythic</div><div class="tr">≥ 70</div></div>
+    <div class="tier t-b"><div class="tn">Relic</div><div class="tr">≥ 55</div></div>
+    <div class="tier t-c"><div class="tn">Prime</div><div class="tr">≥ 40</div></div>
+    <div class="tier t-d"><div class="tn">Mint</div><div class="tr">&lt; 40</div></div>
+  </div>
+  <div class="sep"></div>
+  <h2>4. Security Classification</h2>
+  <table>
+    <tr><th>Component</th><th>Classification</th></tr>
+    <tr><td>Reactor source code</td><td><strong style="color:var(--rose);">Trade Secret</strong></td></tr>
+    <tr><td>CJPI scoring formula</td><td><strong style="color:var(--rose);">Trade Secret</strong></td></tr>
+    <tr><td>S-Tier Vault</td><td><strong style="color:var(--amber);">Governor-only</strong></td></tr>
+    <tr><td>Foundry existence & metrics</td><td><strong style="color:var(--emerald);">Public</strong> — DOI published</td></tr>
+  </table>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential — Trade Secret.</p>
+  </div>
+</div>
+</body>
+</html>

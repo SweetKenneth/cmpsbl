@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21 — Discovery Engine Internals</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal — Trade Secret</div>
+  <div class="badge"><div class="dot"></div> Document 21 · Reactor Architecture</div>
+  <h1>Discovery<br/><span class="g">Engine</span></h1>
+  <p class="subtitle">The recursive reactor at the heart of the Autonomous Software Foundry. The substrate's most commercially sensitive algorithm after the SEBA promotion pipeline.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+<div class="doc">
+  <h2>1. Reactor Core Loop</h2>
+  <pre><code>1. Generate candidate pool (depth 2–5)
+2. For each candidate:
+   a. Compute semantic signature (embedding hash)
+   b. Compute structural fingerprint (SHA-256, epoch-scoped)
+   c. Check dedup index (cosine > 0.92 = skip)
+   d. Score via CJPI (4-factor weighted composite)
+   e. Auto-tier based on thresholds
+   f. Persist with immutable fingerprint
+3. Rank within each tier
+4. Emit discovery event to RIPPLE</code></pre>
+  <h2>2. Candidate Generation</h2>
+  <table>
+    <tr><th>Depth</th><th>Strategy</th><th>Volume</th></tr>
+    <tr><td>2</td><td>All pairwise combinations</td><td>~1,406</td></tr>
+    <tr><td>3</td><td>High-affinity pairs + one hop</td><td>~8,000</td></tr>
+    <tr><td>4–5</td><td>Top-scoring depth-3 extensions</td><td>~40,000</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>3. Semantic Deduplication</h2>
+  <table>
+    <tr><th>Cosine</th><th>Class</th><th>Action</th></tr>
+    <tr><td>&gt; 0.92</td><td style="color:var(--rose);">Duplicate</td><td>Skip</td></tr>
+    <tr><td>0.80–0.92</td><td style="color:var(--amber);">Variant</td><td>Persist with variant_of</td></tr>
+    <tr><td>&lt; 0.80</td><td style="color:var(--emerald);">Novel</td><td>Persist as new</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>4. Structural Fingerprinting</h2>
+  <div class="hl">
+    <p style="font-size:15px;line-height:1.8;margin:0;">
+      <strong style="color:var(--cyan);">Identity Rule:</strong> Fingerprint = SHA-256(canonical({steps, epoch})).
+      Steps are ordered, capability-aware. CJPI, name, category <strong>excluded</strong>.
+      Once set, <strong>never overwritten</strong>. Epoch defaults to <code>SPARTA</code>.
+      WebCrypto SHA-256 only — no fallback hashing.
+    </p>
+  </div>
+  <div class="sep"></div>
+  <h2>5. Performance</h2>
+  <div class="metrics">
+    <div class="metric"><div class="mv">500/s</div><div class="ml">Candidate Gen</div></div>
+    <div class="metric"><div class="mv">~2ms</div><div class="ml">CJPI Latency</div></div>
+    <div class="metric"><div class="mv">~5ms</div><div class="ml">Dedup Check</div></div>
+    <div class="metric"><div class="mv">8–12h</div><div class="ml">Full Sweep</div></div>
+  </div>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential — Trade Secret.</p>
+  </div>
+</div>
+</body>
+</html>
