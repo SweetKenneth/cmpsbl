@@ -120,15 +120,15 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   return (
     <motion.div 
       ref={ref}
-      className="relative text-center py-4 sm:py-5 group"
+      className="relative text-center py-4 sm:py-5 group stat-card-glow"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.2 + delay * 0.06, duration: 0.4 }}
     >
-      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground">
+      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase">{label}</div>
+      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
     </motion.div>
   );
 }
@@ -408,19 +408,20 @@ export function HeroMetaSubstrate() {
         </motion.div>
       </div>
       
-      {/* Scroll indicator — ghost-subtle */}
+      {/* Scroll indicator — ghost-subtle with gradient line */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.5 }}
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5"
       >
-        <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Scroll</span>
+        <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Explore</span>
+        <div className="w-px h-6 bg-gradient-to-b from-primary/20 to-transparent" />
         <motion.div
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/20" />
+          <ChevronDown className="w-4 h-4 text-primary/25" />
         </motion.div>
       </motion.div>
     </section>

@@ -78,26 +78,33 @@ export function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="relative p-5 sm:p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500 group shimmer-on-hover glass-edge"
+              className="relative p-5 sm:p-7 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1.5 transition-all duration-500 group shimmer-on-hover glass-edge"
             >
               {/* Top accent line */}
-              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl overflow-hidden">
+                <div className="h-full memory-stream-bar opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
+              </div>
               
-              <Quote className="w-8 h-8 text-primary/15 absolute top-4 right-4 group-hover:text-primary/25 transition-colors duration-500" />
+              <Quote className="w-8 h-8 text-primary/10 absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-primary/20" />
               
               {/* Feature pill */}
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/5 border border-primary/15 mb-3 text-[10px] font-semibold text-primary uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/5 border border-primary/15 mb-4 text-[10px] font-semibold text-primary uppercase tracking-wider group-hover:bg-primary/10 group-hover:border-primary/25 transition-all duration-300">
+                <span className="w-1 h-1 rounded-full bg-primary/50" />
                 {t.highlight}
               </div>
               
               <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary group-hover:drop-shadow-[0_0_3px_hsl(var(--primary)/0.4)] transition-all duration-500" style={{ transitionDelay: `${j * 50}ms` }} />
+                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary group-hover:drop-shadow-[0_0_4px_hsl(var(--primary)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
                 ))}
               </div>
-              <p className="text-sm text-foreground mb-4 leading-relaxed">"{t.quote}"</p>
-              <div className="text-xs text-muted-foreground">
-                <span className="font-medium text-foreground">{t.author}</span> · {t.role}
+              <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground pt-3 border-t border-border/30">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[10px] font-bold text-primary">{t.author.charAt(0)}</div>
+                <div>
+                  <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
+                  <span className="text-[11px] text-muted-foreground/60">{t.role}</span>
+                </div>
               </div>
             </motion.div>
           ))}

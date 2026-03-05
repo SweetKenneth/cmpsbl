@@ -863,6 +863,97 @@ All colors MUST be HSL.
   .glass-edge:hover::before {
     opacity: 1;
   }
+  /* Floating card with gentle bob animation */
+  @keyframes gentle-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .animate-gentle-bob {
+    animation: gentle-bob 3s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Text shadow glow for hero elements */
+  .text-glow-primary {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 20px hsl(var(--neon-cyan) / 0.3), 0 0 40px hsl(var(--neon-cyan) / 0.1);
+  }
+
+  /* Stat card with inner glow border */
+  .stat-card-glow {
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08), transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .stat-card-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Testimonial quote mark glow */
+  .quote-glow {
+    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.15));
+    transition: filter 0.5s;
+  }
+  .group:hover .quote-glow {
+    filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.3));
+  }
+
+  /* Governance code terminal line numbers */
+  .code-line-number {
+    counter-increment: line;
+  }
+  .code-line-number::before {
+    content: counter(line);
+    display: inline-block;
+    width: 2ch;
+    margin-right: 1em;
+    text-align: right;
+    color: hsl(var(--muted-foreground) / 0.25);
+    font-size: 9px;
+  }
+
+  /* Gradient divider with animated flow */
+  @keyframes divider-flow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  .divider-flow {
+    background: linear-gradient(90deg,
+      transparent 0%,
+      hsl(var(--primary) / 0.15) 20%,
+      hsl(var(--neon-cyan) / 0.2) 50%,
+      hsl(var(--primary) / 0.15) 80%,
+      transparent 100%);
+    background-size: 200% 100%;
+    animation: divider-flow 6s linear infinite;
+  }
+
+  /* CTA pulse ring */
+  @keyframes cta-ring {
+    0% { transform: scale(1); opacity: 0.4; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .cta-ring::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid hsl(var(--primary) / 0.3);
+    animation: cta-ring 2s ease-out infinite;
+    pointer-events: none;
+  }
 }
 
 @keyframes ghostDrift {

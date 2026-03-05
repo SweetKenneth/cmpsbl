@@ -31,24 +31,26 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
 const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
 
-// Section divider with animated gradient and memory-stream accent
+// Section divider with animated gradient, memory-stream accent, and side flair
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
+    <div className="relative py-12 sm:py-16">
       {/* Outer fade line */}
       <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
       {/* Colored memory-stream accent */}
-      <div className="absolute left-[15%] right-[15%] top-1/2 h-px">
-        <div className="h-full memory-stream-bar opacity-15" />
+      <div className="absolute left-[10%] right-[10%] top-1/2 h-px">
+        <div className="h-full divider-flow" />
       </div>
-      {/* Center diamond with glow */}
+      {/* Center diamond with concentric rings */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div 
-          className="w-2 h-2 bg-primary/40 rotate-45"
-          animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.8, 0.3] }}
+          className="w-2.5 h-2.5 bg-primary/50 rotate-45 rounded-[1px]"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.9, 0.4] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
-        <div className="absolute inset-0 w-2 h-2 bg-primary/20 rotate-45 blur-sm" />
+        <div className="absolute -inset-2 border border-primary/10 rotate-45 rounded-[2px]" />
+        <div className="absolute -inset-4 border border-primary/5 rotate-45 rounded-[3px]" />
+        <div className="absolute inset-0 w-2.5 h-2.5 bg-primary/20 rotate-45 blur-md" />
       </div>
     </div>
   );
@@ -135,7 +137,7 @@ export default function Explore() {
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
-      <section className="relative z-10 px-4 py-14 sm:py-32">
+      <section className="relative z-10 px-4 py-16 sm:py-36">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,63 +145,69 @@ export default function Explore() {
           transition={{ duration: 0.8 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10 group/cta">
-            {/* Deep gradient background with richer depth */}
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
+            {/* Layered gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
             
             {/* Animated grid overlay */}
             <div 
-              className="absolute inset-0 opacity-10"
+              className="absolute inset-0 opacity-[0.07]"
               style={{
                 backgroundImage: `
-                  linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), 
-                  linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)
+                  linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), 
+                  linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)
                 `,
-                backgroundSize: "60px 60px",
+                backgroundSize: "50px 50px",
               }}
             />
             
-            {/* Glow orbs */}
+            {/* Glow orbs — staggered */}
             <motion.div 
-              className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-[80px]"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[100px]"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.5, 0.25] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div 
-              className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-white/10 blur-[60px]"
-              animate={{ scale: [1.3, 1, 1.3], opacity: [0.6, 0.3, 0.6] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-white/10 blur-[80px]"
+              animate={{ scale: [1.3, 1, 1.3], opacity: [0.5, 0.2, 0.5] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            />
+            <motion.div 
+              className="absolute top-1/3 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-white/5 blur-[60px]"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.1, 0.3, 0.1] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             />
             
             {/* Flowing accent at top */}
-            <div className="h-[2px] memory-stream-bar opacity-60" />
+            <div className="h-[2px] memory-stream-bar opacity-70" />
 
-            <div className="relative p-6 sm:p-14 md:p-20 text-center">
+            <div className="relative p-7 sm:p-16 md:p-24 text-center">
               {/* Floating badge */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 sm:mb-10"
               >
                 <Sparkles className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </motion.div>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-[1.08] tracking-tight">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 sm:mb-8 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
-                <span className="text-white/85 drop-shadow-lg">Substrate</span>
+                <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              <p className="text-white/65 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
                 The substrate and Memory Stream working together — systems that DREAM, ADAPT, and EVOLVE,
                 governed by policy, powered by persistent memory. Start free with 3 pipeline slots.
               </p>
               
               {/* Mini stats row */}
-              <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10 sm:mb-14">
                  {[
                    { value: "1,143+", label: "Crystallized" },
                    { value: "24", label: "Pipeline Packs" },
@@ -207,21 +215,21 @@ export default function Explore() {
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                    <div className="text-2xl sm:text-3xl font-black text-white group-hover/cta-stat:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-300">{stat.value}</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-white/50 uppercase tracking-wider">{stat.label}</div>
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-white/45 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Button asChild size="lg" className="relative px-10 h-14 sm:h-16 text-base sm:text-lg bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
                   <Link to="/start-here">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Start Building
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-8 h-14 text-base border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm">
+                <Button asChild size="lg" variant="outline" className="px-8 h-14 sm:h-16 text-base sm:text-lg border-white/25 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/upgrade">
                     <Terminal className="w-5 h-5 mr-2" />
                     View Plans
@@ -229,6 +237,9 @@ export default function Explore() {
                 </Button>
               </div>
             </div>
+            
+            {/* Bottom accent */}
+            <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           </div>
         </motion.div>
       </section>
