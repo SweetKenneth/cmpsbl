@@ -382,7 +382,7 @@ export function SiteAnalyticsSection() {
               </div>
             </div>
             <div className="flex items-end gap-1 h-32">
-              {data.dailyViews.slice(-(dateRange === '7d' ? 7 : 30)).map((day, idx, arr) => {
+              {data.dailyViews.map((day, idx, arr) => {
                 const maxVal = Math.max(...arr.map(d => d.views), 1);
                 const height = (day.views / maxVal) * 100;
                 return (
@@ -404,7 +404,7 @@ export function SiteAnalyticsSection() {
               })}
             </div>
             <div className="flex justify-between mt-2 text-[9px] text-muted-foreground font-mono">
-              <span>{data.dailyViews.slice(-(dateRange === '7d' ? 7 : 30))[0]?.date.slice(5)}</span>
+              <span>{data.dailyViews[0]?.date.slice(5)}</span>
               <span>{data.dailyViews[data.dailyViews.length - 1]?.date.slice(5)}</span>
             </div>
           </motion.div>
