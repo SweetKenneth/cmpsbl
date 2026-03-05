@@ -570,18 +570,10 @@ serve(async (req) => {
         .select('id');
 
       if (insertError) {
-        console.error('Inventory insert failed:', insertError.message);
-        return new Response(JSON.stringify({
-          ok: false,
-          results: [],
-          bestScore: null,
-          tierBreakdown: {},
-          rerollCredit: false,
-          persistedCount: 0,
-          alreadyOwnedCount: 0,
-          error: 'Failed to save to vault. Please try again.',
-        }), {
-          status: 500,
+        const traceId = makeTraceId();
+        console.error(`[foundry-mine:${traceId}] Inventory insert failed:`, insertError.message);
+        return new Response(JSON.stringify(emptyMineResponse('Vault sync temporarily unavailable. Please try again.', traceId)), {
+          status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
