@@ -1,6 +1,6 @@
-// PromptFluid Dual-Domain Architecture Configuration
+// CMPSBL Dual-Domain Architecture Configuration
 // evolv.onl: Backend/API/Railway infrastructure
-// promptfluid.com: Public-facing website and customer portal
+// cmpsbl.com: Public-facing website and customer portal
 
 export const DOMAIN_CONFIG = {
   backend: {
@@ -18,13 +18,13 @@ export const DOMAIN_CONFIG = {
     requiresAuth: true,
   },
   frontend: {
-    primary: 'promptfluid.com',
+    primary: 'cmpsbl.com',
     subdomains: {
-      www: 'www.promptfluid.com',
-      app: 'app.promptfluid.com',
-      docs: 'docs.promptfluid.com',
-      studio: 'studio.promptfluid.com',
-      vision: 'vision.promptfluid.com',
+      www: 'www.cmpsbl.com',
+      app: 'app.cmpsbl.com',
+      docs: 'docs.cmpsbl.com',
+      studio: 'studio.cmpsbl.com',
+      vision: 'vision.cmpsbl.com',
     },
     purpose: 'Public website, customer portal, employee interaction',
     restricted: false,
@@ -37,18 +37,17 @@ export const COPYRIGHT_NOTICE = {
   copyright: '©',
   year: new Date().getFullYear(),
   entities: [
-    'PromptFluid™',
-    'PromptFluid.com',
+    'CMPSBL™',
+    'CMPSBL.com',
     'Evolv.onl',
-    'PromptFluid Brain™',
-    'PromptFluid Vision™',
-    'PromptFluid Defense™',
-    'PromptFluid Studio™',
-    'PromptFluid Nexus™',
-    'PromptFluid Ripple™',
+    'CMPSBL BRAIN™',
+    'CMPSBL VISION™',
+    'CMPSBL DEFENSE™',
+    'CMPSBL NEXUS™',
+    'CMPSBL RIPPLE™',
   ],
   legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
-  enforcementNotice: `This system is protected by CMPSBL DEFENSE™ (a PromptFluid product). All access attempts are monitored, logged, and analyzed for security threats.`,
+  enforcementNotice: `This system is protected by CMPSBL DEFENSE™. All access attempts are monitored, logged, and analyzed for security threats.`,
 };
 
 export function isDomain(hostname: string, type: 'backend' | 'frontend'): boolean {

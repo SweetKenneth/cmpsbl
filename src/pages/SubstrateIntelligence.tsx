@@ -268,7 +268,7 @@ Boot complete in 109ms`}
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {modules.map((mod) => (
+                {systems.map((mod) => (
                   <Card key={mod.name} className="hover:border-primary/50 transition-colors">
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-3">
