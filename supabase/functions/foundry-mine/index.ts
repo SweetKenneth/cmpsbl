@@ -19,12 +19,12 @@ type TierWeight = {
 };
 
 const TIER_WEIGHTS: TierWeight[] = [
-  { min: 1,  max: 67, weight: 0.45, tier: 'Raw' },
-  { min: 68, max: 79, weight: 0.25, tier: 'Mint' },
-  { min: 80, max: 89, weight: 0.18, tier: 'Prime' },
-  { min: 90, max: 93, weight: 0.07, tier: 'Relic' },
-  { min: 94, max: 99, weight: 0.035, tier: 'Mythic' },
-  { min: 100, max: 100, weight: 0.015, tier: 'Apex' },
+  { min: 1,  max: 67, weight: 0.50, tier: 'Raw' },
+  { min: 68, max: 79, weight: 0.30, tier: 'Mint' },
+  { min: 80, max: 89, weight: 0.14, tier: 'Prime' },
+  { min: 90, max: 93, weight: 0.035, tier: 'Relic' },
+  { min: 94, max: 99, weight: 0.02, tier: 'Mythic' },
+  { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
 ];
 
 function getMaxAllowedScore(priorMines: number): number {
