@@ -343,24 +343,32 @@ serve(async (req) => {
       });
     }
 
-    // Determine user tier
-    const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
-      headers: { authorization: authHeader },
-    });
-
-    const { data: isAdmin } = await supabase.rpc('has_role_text', {
-      _user_id: user.id,
-      _role: 'admin',
-    });
-
+    // Determine user tier — resilient to check-engine-subscription failures
     let foundryTier = 'free';
-    if (isAdmin) {
-      foundryTier = 'mythic_miner';
-    } else {
-      const engineTier = subData?.tier || 'free';
-      if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';
-      else if (engineTier === 'studio') foundryTier = 'prospector';
-      else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';
+    try {
+      const { data: isAdmin } = await supabase.rpc('has_role_text', {
+        _user_id: user.id,
+        _role: 'admin',
+      });
+
+      if (isAdmin) {
+        foundryTier = 'mythic_miner';
+      } else {
+        try {
+          const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
+            headers: { authorization: authHeader },
+          });
+          const engineTier = subData?.tier || 'free';
+          if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';
+          else if (engineTier === 'studio') foundryTier = 'prospector';
+          else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';
+        } catch (subError) {
+          console.error('[foundry-mine] check-engine-subscription failed, defaulting to free tier:', subError);
+          // Graceful degradation: use free tier if subscription check fails
+        }
+      }
+    } catch (roleErr) {
+      console.error('[foundry-mine] Role check failed, defaulting to free tier:', roleErr);
     }
 
     // Get tier config
@@ -370,10 +378,17 @@ serve(async (req) => {
       .eq('id', foundryTier)
       .single();
 
+    // Fallback defaults if tier config is missing from DB
+    const defaultTierConfig = {
+      id: foundryTier,
+      mines_per_hour: 5,
+      mines_per_day: 20,
+      max_results_per_mine: 1,
+    };
+
+    const effectiveTierConfig = tierConfig || defaultTierConfig;
     if (!tierConfig) {
-      return new Response(JSON.stringify({ ok: false, error: 'Tier configuration error' }), {
-        status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      console.warn(`[foundry-mine] No tier config for '${foundryTier}', using defaults`);
     }
 
     // Rate limiting
@@ -395,7 +410,7 @@ serve(async (req) => {
       .gte('requested_at', oneDayAgo)
       .is('blocked_reason', null);
 
-    if ((hourCount ?? 0) >= tierConfig.mines_per_hour) {
+    if ((hourCount ?? 0) >= effectiveTierConfig.mines_per_hour) {
       await supabase.from('foundry_mine_events').insert({
         user_id: user.id,
         result_count: 0,
@@ -413,7 +428,7 @@ serve(async (req) => {
       });
     }
 
-    if ((dayCount ?? 0) >= tierConfig.mines_per_day) {
+    if ((dayCount ?? 0) >= effectiveTierConfig.mines_per_day) {
       await supabase.from('foundry_mine_events').insert({
         user_id: user.id,
         result_count: 0,
@@ -431,11 +446,16 @@ serve(async (req) => {
     }
 
     // ─── Weighted Mining ─────────────────────────────────────────
-    const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
+    const maxResults = Math.max(1, effectiveTierConfig.max_results_per_mine ?? 1);
     healingMaxResults = maxResults;
 
-    // Get prior mine count for first-mine dampener
-    const priorMines = dayCount ?? 0;
+    // Get lifetime mine count for first-mine dampener (not just daily)
+    const { data: userStateData } = await supabase
+      .from('foundry_user_state')
+      .select('total_mines')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const priorMines = userStateData?.total_mines ?? 0;
 
     const { data: existingItems } = await supabase
       .from('foundry_inventory')

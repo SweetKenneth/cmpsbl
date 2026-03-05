@@ -1,9 +1,9 @@
 /**
- * NodeDreamingWidget — Dream observability for the dashboard
- * Shows dream tier activity, recent logs, and analytics summary.
+ * NodeDreamingWidget — Dream observability + Cognitive Capabilities
+ * Shows dream tier activity, recent logs, analytics, and cognitive health.
  */
 
-import { Moon, Sparkles, AlertTriangle, Activity, Zap, RefreshCw, Loader2 } from 'lucide-react';
+import { Moon, Sparkles, AlertTriangle, Activity, Zap, RefreshCw, Loader2, Brain, Shield, RotateCcw, Share2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useNodeDreaming } from '@/hooks/substrate/useNodeDreaming';
+import { useCognitiveCapabilities } from '@/hooks/substrate/useCognitiveCapabilities';
 import { pushToast } from '@/components/toast/SmartToastStore';
 import type { DreamCycleType } from '@/lib/substrate/node-dreaming';
 
@@ -30,6 +31,7 @@ const CYCLE_LABELS: Record<DreamCycleType, string> = {
 
 export function NodeDreamingWidget() {
   const { configs, logs, analytics, triggerDream } = useNodeDreaming();
+  const cognitive = useCognitiveCapabilities();
 
   const configData = configs.data ?? [];
   const logData = logs.data ?? [];
@@ -53,6 +55,28 @@ export function NodeDreamingWidget() {
       onSuccess: () => pushToast({ message: `Dream triggered for ${nodeId}`, variant: 'success' }),
       onError: () => pushToast({ message: `Dream failed for ${nodeId}`, variant: 'error' }),
     });
+  };
+
+  const handleAssess = (nodeId: string) => {
+    const result = cognitive.assess(nodeId);
+    if (result) {
+      pushToast({
+        message: `${nodeId} assessed — recall: ${Math.round(result.recallAccuracy * 100)}%, drift: ${Math.round(result.driftScore * 100)}%`,
+        variant: result.driftScore > 0.4 ? 'warning' : 'success',
+      });
+    }
+  };
+
+  const handleReplay = (nodeId: string) => {
+    const result = cognitive.replay(nodeId);
+    if (result && result.memoriesScanned > 0) {
+      pushToast({
+        message: `${nodeId} replay — ${result.memoriesPromoted} promoted, ${result.memoriesReinforced} reinforced`,
+        variant: 'success',
+      });
+    } else {
+      pushToast({ message: `${nodeId} replay cooldown active`, variant: 'info' });
+    }
   };
 
   const isLoading = configs.isLoading || logs.isLoading;
@@ -215,6 +239,63 @@ export function NodeDreamingWidget() {
             </div>
           </div>
         )}
+
+        {/* Cognitive Capabilities (Synapse Engine) */}
+        <div className="space-y-1.5 border-t border-border/10 pt-3">
+          <div className="flex items-center gap-1.5 px-0.5">
+            <Brain className="w-3 h-3 text-emerald-500" />
+            <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-wider">Cognitive Capabilities</span>
+            <Badge variant="outline" className="text-[8px] ml-auto font-mono border-border/20">Synapse</Badge>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            {[
+              { label: 'Self-Assess', icon: Brain, action: handleAssess, color: 'text-emerald-500' },
+              { label: 'Replay', icon: RotateCcw, action: handleReplay, color: 'text-sky-500' },
+            ].map(cap => (
+              <Button
+                key={cap.label}
+                variant="outline"
+                size="sm"
+                className="h-8 text-[10px] font-mono border-border/15 hover:bg-muted/10"
+                onClick={() => {
+                  const tierANodes = configData.filter(c => c.dreamTier === 'A' && c.enabled);
+                  if (tierANodes.length > 0) cap.action(tierANodes[0].nodeId);
+                  else pushToast({ message: 'No active Tier A nodes', variant: 'warning' });
+                }}
+              >
+                <cap.icon className={cn("w-3 h-3 mr-1.5", cap.color)} />
+                {cap.label}
+              </Button>
+            ))}
+          </div>
+
+          {/* Last assessment result */}
+          {cognitive.lastAssessment && (
+            <div className="rounded-lg border border-border/10 p-2 bg-muted/5 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-mono font-medium text-foreground">{cognitive.lastAssessment.nodeId}</span>
+                <span className="text-[8px] text-muted-foreground/40 font-mono">
+                  Health: {cognitive.lastAssessment.healthAtAssessment}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[9px] font-mono">
+                <span className="text-muted-foreground/50">Recall</span>
+                <span className="text-foreground">{Math.round(cognitive.lastAssessment.recallAccuracy * 100)}%</span>
+                <span className="text-muted-foreground/50">Calibration</span>
+                <span className="text-foreground">{Math.round(cognitive.lastAssessment.confidenceCalibration * 100)}%</span>
+                <span className="text-muted-foreground/50">Drift</span>
+                <span className={cn("text-foreground", cognitive.lastAssessment.driftScore > 0.4 && "text-amber-500")}>
+                  {Math.round(cognitive.lastAssessment.driftScore * 100)}%
+                </span>
+              </div>
+              {cognitive.lastAssessment.recommendations.length > 0 && (
+                <p className="text-[8px] text-muted-foreground/40 mt-0.5">
+                  {cognitive.lastAssessment.recommendations[0]}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </motion.div>
   );
