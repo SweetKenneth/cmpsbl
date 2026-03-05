@@ -56,10 +56,14 @@ export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
         sourceCode: '',
         synthesisContext: {
           name: artifact.name,
-          modules: artifact.systemChain,
-          cjpiScore: artifact.score,
+          moduleChain: artifact.systemChain,
+          cjpi: artifact.score,
           description: `${artifact.name} — ${artifact.category || 'general'} pipeline`,
           category: artifact.category || 'general',
+          entryCapability: 'process',
+          exitCapability: 'emit',
+          errorStrategy: 'propagate',
+          maxExecutionMs: 30000,
         },
       };
 
