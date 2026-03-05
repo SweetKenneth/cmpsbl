@@ -561,25 +561,58 @@ serve(async (req) => {
     const ownedIds = new Set((existingItems || []).map((e: any) => e.artifact_id));
 
     const results: any[] = [];
-    const activeTierWeights = await resolveAvailableTierWeights(supabase, priorMines);
-    const attemptedRanges: { min: number; max: number }[] = [];
 
+    // Discover which tiers actually have items in the pool
+    const populatedTiers = await getPopulatedTiers(supabase, priorMines);
+    console.log('[foundry-mine] populated tiers:', [...populatedTiers]);
+
+    // Always roll against the FULL weight table — never remove empty tiers
+    const maxAllowedScore = getMaxAllowedScore(priorMines);
+    const eligibleWeights = TIER_WEIGHTS
+      .filter(t => t.min <= maxAllowedScore)
+      .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
+    const normalizedWeights = normalizeTierWeights(eligibleWeights);
+
+    // Roll each slot independently
+    type SlotRoll = {
+      targetTier: TierWeight;
+      sourceTier: TierWeight;
+      needsRemap: boolean;
+    };
+
+    const slotRolls: SlotRoll[] = [];
     for (let slot = 0; slot < maxResults; slot++) {
-      const range = pickWeightedTierRange(priorMines, activeTierWeights);
-      attemptedRanges.push(range);
+      const range = pickWeightedTierRange(priorMines, normalizedWeights);
+      const targetTier = eligibleWeights.find(t => t.min === range.min && t.max === range.max) || eligibleWeights[0];
+
+      if (populatedTiers.has(targetTier.tier)) {
+        slotRolls.push({ targetTier, sourceTier: targetTier, needsRemap: false });
+      } else {
+        const sub = findSubstituteTier(targetTier.tier, populatedTiers);
+        if (sub) {
+          slotRolls.push({ targetTier, sourceTier: sub, needsRemap: true });
+          console.log(`[foundry-mine] slot ${slot}: rolled ${targetTier.tier} (empty), substituting from ${sub.tier}`);
+        } else {
+          const anyTier = eligibleWeights.find(t => populatedTiers.has(t.tier)) || eligibleWeights[0];
+          slotRolls.push({ targetTier, sourceTier: anyTier, needsRemap: true });
+        }
+      }
     }
 
-    const uniqueRanges = [...new Map(attemptedRanges.map(r => [`${r.min}-${r.max}`, r])).values()];
+    // Batch-fetch candidates for unique source tiers
+    const uniqueSourceKeys = [...new Set(slotRolls.map(s => `${s.sourceTier.min}-${s.sourceTier.max}`))];
     const rangedCandidates: Map<string, any[]> = new Map();
     const fetchCount = Math.max(8, maxResults * 4);
 
-    for (const range of uniqueRanges) {
-      const key = `${range.min}-${range.max}`;
+    for (const key of uniqueSourceKeys) {
+      const [minStr, maxStr] = key.split('-');
+      const rangeMin = parseInt(minStr);
+      const rangeMax = parseInt(maxStr);
 
       const { data: rpcResult, error: rpcError } = await supabase.rpc('get_random_discoveries', {
-        min_score: range.min,
+        min_score: rangeMin,
         max_count: fetchCount,
-        max_score: range.max,
+        max_score: rangeMax,
       });
 
       let candidates = Array.isArray(rpcResult) ? rpcResult : [];
@@ -591,16 +624,16 @@ serve(async (req) => {
         const { count: totalEligible } = await supabase
           .from('discoveries')
           .select('id', { count: 'exact', head: true })
-          .gte('cjpi', range.min)
-          .lte('cjpi', range.max);
+          .gte('cjpi', rangeMin)
+          .lte('cjpi', rangeMax);
 
         if (totalEligible && totalEligible > 0) {
           const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
           const { data: fallbackDisc } = await supabase
             .from('discoveries')
             .select(DISCOVERY_SELECT)
-            .gte('cjpi', range.min)
-            .lte('cjpi', range.max)
+            .gte('cjpi', rangeMin)
+            .lte('cjpi', rangeMax)
             .range(randomOffset, randomOffset + fetchCount - 1);
 
           candidates = fallbackDisc || [];
@@ -610,15 +643,17 @@ serve(async (req) => {
       rangedCandidates.set(key, shuffleInPlace(candidates));
     }
 
-    let globalFallbackPool: any[] = [];
-    const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
-    if (allRangePoolsEmpty) {
-      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
-    }
-
     const selectedIds = new Set<string>();
-    const appendOneFromPool = async (pool: any[]): Promise<boolean> => {
-      while (pool.length > 0) {
+
+    // Fill each slot, remapping score if pulling from a substitute tier
+    for (const roll of slotRolls) {
+      if (results.length >= maxResults) break;
+
+      const sourceKey = `${roll.sourceTier.min}-${roll.sourceTier.max}`;
+      const pool = rangedCandidates.get(sourceKey) || [];
+
+      let filled = false;
+      while (pool.length > 0 && !filled) {
         const disc = pool.pop();
         if (!disc) continue;
         if (ownedIds.has(disc.id)) continue;
@@ -627,39 +662,40 @@ serve(async (req) => {
         const mapped = await mapDiscoveryToResult(disc);
         if (!mapped) continue;
 
+        // Crystallization variance: remap score to the rolled tier
+        if (roll.needsRemap) {
+          mapped.score = remapScoreToTier(mapped.score, roll.sourceTier, roll.targetTier);
+          mapped.publicTier = scoreToPublicTier(mapped.score) || 'Mint';
+          mapped.valuationDisplay = computeDisplayValuation(mapped.score);
+        }
+
         results.push(mapped);
         selectedIds.add(mapped.id);
         ownedIds.add(mapped.id);
-        return true;
+        filled = true;
       }
-      return false;
-    };
 
-    for (const range of attemptedRanges) {
-      if (results.length >= maxResults) break;
-      const key = `${range.min}-${range.max}`;
-      const pool = rangedCandidates.get(key) || [];
-
-      let filled = await appendOneFromPool(pool);
-
+      // Last resort fallback
       if (!filled) {
-        if (globalFallbackPool.length === 0) {
-          globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
+        const rescuePool = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines);
+        while (rescuePool.length > 0) {
+          const disc = rescuePool.pop();
+          if (!disc || ownedIds.has(disc.id) || selectedIds.has(disc.id)) continue;
+          const mapped = await mapDiscoveryToResult(disc);
+          if (!mapped) continue;
+
+          if (roll.needsRemap) {
+            mapped.score = remapScoreToTier(mapped.score, roll.sourceTier, roll.targetTier);
+            mapped.publicTier = scoreToPublicTier(mapped.score) || 'Mint';
+            mapped.valuationDisplay = computeDisplayValuation(mapped.score);
+          }
+
+          results.push(mapped);
+          selectedIds.add(mapped.id);
+          ownedIds.add(mapped.id);
+          break;
         }
-        filled = await appendOneFromPool(globalFallbackPool);
       }
-
-      if (!filled) {
-        const rescuePool = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines, activeTierWeights);
-        await appendOneFromPool(rescuePool);
-      }
-    }
-
-    if (results.length === 0) {
-      if (globalFallbackPool.length === 0) {
-        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
-      }
-      await appendOneFromPool(globalFallbackPool);
     }
 
     // ─── Rediscovery tracking + fingerprint persistence ───────────
