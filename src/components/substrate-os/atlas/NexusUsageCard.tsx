@@ -22,10 +22,10 @@ interface UsageStats {
 }
 
 // Nexus fleet daily capacity (sum of all free-tier RPDs at 80% safety margin)
-// 13 providers: Groq(640) + Cerebras(9216) + SambaNova(26) + Google(1200) +
-// DeepSeek(79999) + Together(79999) + OR×4(640) + Mistral(424) + Cohere(21) + Hyperbolic(63999)
+// 14 providers: Groq(640) + Cerebras(9216) + SambaNova(26) + Google(1200) +
+// DeepSeek(79999) + Together(79999) + OR×4(640) + Mistral(424) + Cohere(21) + Hyperbolic(63999) + FAL(500)
 const FLEET_LIMITS = {
-  daily: 236164,     // Total governed RPD across 13 providers
+  daily: 236664,     // Total governed RPD across 14 providers
   weekly: 1653148,
   monthly: 7084920,
 };
