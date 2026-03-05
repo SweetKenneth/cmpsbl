@@ -134,7 +134,7 @@ export function EvolutionCTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.25 + i * 0.07 }}
-                    className="flex flex-col items-center text-center p-3 rounded-xl bg-muted/30 border border-border/40 hover:border-primary/25 hover:bg-primary/[0.03] hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 shimmer-on-hover"
+                    className="flex flex-col items-center text-center p-3 rounded-xl bg-muted/30 border border-border/40 hover:border-primary/25 hover:bg-primary/[0.03] transition-all duration-300 shimmer-on-hover card-lift"
                   >
                     <p.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary mb-1.5" />
                     <span className="text-[11px] sm:text-xs font-bold text-foreground">{p.label}</span>

@@ -636,6 +636,9 @@ export function TechShowcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-14"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">05</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
             <span className="text-xs">38 Nodes • 12 Sectors • 675+ Capabilities</span>
@@ -665,7 +668,7 @@ export function TechShowcase() {
         </motion.div>
         
         {/* Layer Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6">
+        <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6">
           <Button
             variant={activeLayer === null ? "default" : "outline"}
             size="sm"
