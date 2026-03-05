@@ -83,7 +83,7 @@ function IndustryChipCard({ chip, delay }: { chip: IndustryChip; delay: number }
         className={cn(
           "group relative flex items-center gap-2.5 p-3 sm:p-3.5 rounded-xl border",
           "backdrop-blur-sm transition-all duration-300",
-          "hover:shadow-lg shimmer-on-hover",
+          "hover:shadow-lg shimmer-on-hover card-lift",
           chip.color,
           chip.hoverGlow
         )}
@@ -122,11 +122,14 @@ export function IndustryShowcase() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">08</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary animate-pulse" />
-            <span className="text-xs font-medium">Universal Infrastructure</span>
+            <span className="text-xs font-semibold">Universal Infrastructure</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             One Substrate,{" "}
             <span 
               className="inline-block"
