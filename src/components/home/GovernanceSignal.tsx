@@ -42,7 +42,7 @@ export function GovernanceSignal() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden"
+          className="rounded-2xl border border-border/30 bg-gradient-to-br from-card/40 via-card/30 to-card/40 backdrop-blur-sm overflow-hidden shadow-lg shadow-primary/[0.02]"
         >
           {/* Top bar */}
           <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -65,7 +65,7 @@ export function GovernanceSignal() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08 }}
-                  className="space-y-2.5"
+                  className="space-y-2.5 p-4 rounded-xl hover:bg-primary/[0.02] transition-colors duration-300"
                 >
                   <div className="flex items-center gap-2.5">
                     <signal.icon className="w-4 h-4 text-primary/70" />

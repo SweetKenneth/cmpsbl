@@ -317,9 +317,12 @@ export function HeroMetaSubstrate() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.5 }}
-              className="hidden sm:block rounded-xl border border-border/15 bg-card/25 backdrop-blur-sm p-4"
+              className="hidden sm:block rounded-xl border border-border/15 bg-card/25 backdrop-blur-sm p-4 gradient-border-glow"
             >
-              <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em] mb-1.5">How Intelligence Flows</h3>
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
+                <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How Intelligence Flows</h3>
+              </div>
               <p className="text-xs text-muted-foreground/70 leading-relaxed">
                 <span className="text-foreground/80 font-medium">Persistent memories</span> survive restarts.{' '}
                 <span className="text-primary font-medium">Self-improving pipelines</span> refine autonomously.{' '}
@@ -346,7 +349,7 @@ export function HeroMetaSubstrate() {
               ].map((item) => (
                 <div 
                   key={item.label} 
-                  className="rounded-lg border border-border/15 bg-card/25 backdrop-blur-sm p-2.5 sm:p-3 text-center hover:border-border/30 transition-all duration-300 group"
+                  className="rounded-lg border border-border/15 bg-card/25 backdrop-blur-sm p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group"
                 >
                   <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
                   <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
@@ -393,9 +396,9 @@ export function HeroMetaSubstrate() {
           transition={{ delay: 0.9 }}
         >
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 backdrop-blur-xl overflow-hidden"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 backdrop-blur-xl overflow-hidden shadow-lg shadow-primary/[0.03]"
           >
-            <div className="absolute top-0 left-[20%] right-[20%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-25" />
             <AnimatedStat value={10} label="Entities" delay={0} />
             <AnimatedStat value={300} label="Synergies" delay={1} />
             <AnimatedStat value={175} suffix="k+" label="Lines of Code" delay={2} />

@@ -126,6 +126,17 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Text selection — branded */
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
+
+  ::-moz-selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
+
   html, body {
     @apply overflow-x-hidden;
     max-width: 100vw;

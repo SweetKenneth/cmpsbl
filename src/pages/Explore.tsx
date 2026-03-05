@@ -34,12 +34,16 @@ const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => (
 // Section divider with animated gradient
 function SectionDivider() {
   return (
-    <div className="relative py-6 sm:py-10">
-      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+    <div className="relative py-8 sm:py-12">
+      {/* Left fade line */}
+      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+      {/* Colored overlay */}
+      <div className="absolute left-1/4 right-1/4 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+      {/* Center diamond */}
       <motion.div 
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/40"
-        animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0.8, 0.4] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary/30 rotate-45"
+        animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>
   );
@@ -131,7 +135,7 @@ export default function Explore() {
           transition={{ duration: 0.8 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden">
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/10">
             {/* Deep gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
             
@@ -159,6 +163,9 @@ export default function Explore() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
             
+            {/* Flowing accent at top */}
+            <div className="h-[2px] memory-stream-bar opacity-60" />
+
             <div className="relative p-6 sm:p-14 md:p-20 text-center">
               {/* Floating badge */}
               <motion.div
