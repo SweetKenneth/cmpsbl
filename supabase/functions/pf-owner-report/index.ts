@@ -786,6 +786,13 @@ Quota Used: ${quotaUtilization}% (${totalUsed}/${totalBudget})
 Learning Events (3h): ${totalLearningEvents}
 Dream Cycles (3h): ${dreamCount}
 
+USER ACCOUNTS
+Total Users: ${totalUsersTotal}
+New Users (3h): ${newUserCount3h > 0 ? '+' : ''}${newUserCount3h}
+
+SUBJECTS BEING STUDIED (${dedupedSubjects.length} unique)
+${dedupedSubjects.length > 0 ? dedupedSubjects.map(s => `  • ${s}`).join("\n") : "No subjects studied this window."}
+
 NEXUS DYNAMIC ALLOCATION
 Daily Capacity: ${totalBudget.toLocaleString()} calls
 Used Today: ${totalUsed.toLocaleString()} (${quotaUtilization}%)
