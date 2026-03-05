@@ -1,70 +1,149 @@
 import { Link } from "react-router-dom";
 import { useMetric } from "@/stores/publicMetricsStore";
-import { Shield, Brain, Zap, Users, ArrowRight, CheckCircle, Accessibility, Eye, Wrench, Server } from "lucide-react";
+import {
+  Shield, Brain, Zap, ArrowRight, Mail, Phone,
+  Sparkles, Moon, Layers, Activity, Wrench, Eye,
+  Users, Server, Accessibility, GitBranch
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
-import { motion } from "framer-motion";
 import heroImage from "@/assets/hero/neon-data-center.jpg";
 import earthWindowImage from "@/assets/hero/neon-dream-cosmos.jpg";
-import { TEAM_MEMBERS, DEPARTMENTS } from "@/data/team";
+import founderPhoto from "@/assets/founder-kenneth-sweet.png";
+import { COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6 },
-};
+const DEPARTMENTS = [
+  {
+    name: "General Inquiries",
+    email: "hello@CMPSBL.com",
+    description: "Partnership opportunities, general questions, and getting started.",
+  },
+  {
+    name: "Sales & Enterprise",
+    email: "sales@CMPSBL.com",
+    description: "Custom deployments, enterprise licensing, and volume pricing.",
+  },
+  {
+    name: "Engineering & Support",
+    email: "engineering@CMPSBL.com",
+    description: "Technical support, API access, integration guidance, and developer relations.",
+  },
+  {
+    name: "AI Research",
+    email: "research@CMPSBL.com",
+    description: "Research collaborations, academic partnerships, and publication inquiries.",
+  },
+  {
+    name: "Security",
+    email: "security@CMPSBL.com",
+    description: "Vulnerability reports, security audits, and compliance certifications.",
+  },
+  {
+    name: "Press & Communications",
+    email: "press@CMPSBL.com",
+    description: "Media inquiries, press kits, speaking engagements, and interview requests.",
+  },
+  {
+    name: "Careers",
+    email: "hr@CMPSBL.com",
+    description: "Open positions, internships, and workplace culture inquiries.",
+  },
+];
 
-const stagger = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5, delay },
-});
+const SUBSTRATE_CAPABILITIES = [
+  {
+    icon: Brain,
+    name: "MEMORY",
+    description: "Multi-tier persistent memory that survives sessions. Your AI never forgets a user, a preference, or a pattern — context compounds over time.",
+  },
+  {
+    icon: Moon,
+    name: "DREAM",
+    description: "Nocturnal processing cycles that consolidate knowledge, fuse cross-domain patterns, and synthesize new insights while the system rests.",
+  },
+  {
+    icon: GitBranch,
+    name: "Evolution & Mutation",
+    description: "Patterns don't stay static. The substrate mutates, tests, and evolves its own heuristics — producing better strategies with every cycle.",
+  },
+  {
+    icon: Sparkles,
+    name: "Memory Stream",
+    description: "A continuous substrate of evolving software systems. Crystallize scored pipelines from the stream — real, production-ready software you can export and use.",
+  },
+  {
+    icon: Server,
+    name: "NEXUS Router",
+    description: "Intelligent multi-provider routing that picks the optimal AI model for every request. Cost, latency, and capability — balanced automatically.",
+  },
+  {
+    icon: Shield,
+    name: "DEFENSE",
+    description: "Adaptive threat detection, behavioral fingerprinting, and governance rules baked into every layer. Security that learns and responds.",
+  },
+  {
+    icon: Eye,
+    name: "VISION",
+    description: "Full observability across every system — latency, cost, throughput, health dashboards, and real-time telemetry.",
+  },
+  {
+    icon: Accessibility,
+    name: "INCLUSIVE",
+    description: "WCAG 2.2 scanning, AI-powered remediation, and accessibility compliance — built in, not bolted on.",
+  },
+];
+
+const BUILD_ON_SUBSTRATE = [
+  {
+    icon: Layers,
+    title: "Activate Pipeline Packs",
+    description: "24 pipeline packs across 6 strategic domains. Each pack unlocks a specific set of capabilities — governed by slots, swappable anytime.",
+  },
+  {
+    icon: Activity,
+    title: "Let It Dream",
+    description: "DREAM cycles consolidate your system's memory, detect cross-pattern insights, and mutate strategies autonomously. The longer it runs, the smarter it gets.",
+  },
+  {
+    icon: Sparkles,
+    title: "Crystallize from the Stream",
+    description: "The Memory Stream is a living substrate of scored software. Pull crystallized pipelines — real code with provenance, quality floors, and production readiness.",
+  },
+  {
+    icon: Wrench,
+    title: "Self-Evolving Infrastructure",
+    description: "The MODERNIZER module applies self-upgrade pipelines. Your substrate doesn't just run — it improves itself, governed and auditable.",
+  },
+];
 
 export default function About() {
-  const version = useMetric('version');
   const codename = useMetric('codename');
   const linesOfCodeDisplay = useMetric('linesOfCodeDisplay');
-  const products = [
-    { icon: Brain, name: "Persistent Memory", description: "Multi-tier memory that survives sessions — your AI never forgets a user, a preference, or a pattern." },
-    { icon: Server, name: "NEXUS Router", description: "Intelligent multi-provider routing that picks the optimal AI model for every request automatically." },
-    { icon: Shield, name: "DEFENSE Shell", description: "Adaptive threat detection, behavioral analysis, and rate limiting — security that learns." },
-    { icon: Eye, name: "VISION", description: "Full observability across every system — latency, cost, throughput, and real-time health dashboards." },
-    { icon: Accessibility, name: "INCLUSIVE", description: "WCAG 2.2 scanning, AI-powered remediation, and accessibility compliance reporting." },
-    { icon: Zap, name: "Artifact Packs", description: "24 activatable capability packs across 6 domains — choose 3, 6, or 12 depending on your tier." },
-  ];
-
-  const founder = TEAM_MEMBERS[0];
-  const teamMembers = TEAM_MEMBERS.slice(1);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* SEO moved below to avoid duplicate */}
-      
-      <SEO 
-        title="About CMPSBL — Team & Mission"
-        description="CMPSBL is a cognitive infrastructure lab based in Dallas, TX. Meet the team building governed AI operating systems with persistent memory and adaptive intelligence."
+      <SEO
+        title="About CMPSBL — Cognitive Infrastructure for AI"
+        description="CMPSBL builds composable cognitive infrastructure: persistent memory, dream cycles, evolution, and the Memory Stream. Build on the substrate — ship AI that compounds."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'CMPSBL team', 'cognitive infrastructure', 'AI startup Texas', 'Dallas AI company']}
+        keywords={['about CMPSBL', 'cognitive infrastructure', 'AI substrate', 'memory stream', 'dream cycles', 'Dallas AI company']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'Who founded CMPSBL?', answer: 'CMPSBL was founded in 2009 by a veteran software engineer in Dallas, Texas. The team has since grown to include AI researchers, security specialists, and systems engineers.' },
-          { question: 'What does CMPSBL stand for?', answer: 'CMPSBL stands for Composable — reflecting the composable nature of the cognitive infrastructure substrate. Every system can be independently deployed, swapped, and evolved.' },
-          { question: 'Where is CMPSBL based?', answer: 'CMPSBL is headquartered in Dallas, Texas, USA, serving teams and enterprises worldwide with composable cognitive infrastructure.' },
+          { question: 'What is the CMPSBL substrate?', answer: 'A composable cognitive operating system with persistent memory, dream cycles, intelligent routing, and governed orchestration — the infrastructure layer for AI applications.' },
+          { question: 'What is the Memory Stream?', answer: 'A continuous substrate of evolving software systems. Developers crystallize scored, production-ready pipelines from the stream and export them for use.' },
+          { question: 'Can I build on the substrate?', answer: 'Yes. Activate pipeline packs, let the system dream and evolve, and crystallize real software from the Memory Stream. Start free with 3 pipeline slots.' },
         ]}
       />
-      
+
       <PublicNav />
-      
+
       {/* Ambient glow — CSS only */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
@@ -72,276 +151,263 @@ export default function About() {
           style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 60%)" }}
         />
       </div>
-      
-      {/* Hero with Earth Window */}
+
+      {/* ── Hero ── */}
       <section className="relative w-full">
-        <img 
+        <img
           src={heroImage}
-          alt="Modern sustainable architecture with natural light, representing CMPSBL's grounded approach to building AI systems"
+          alt="CMPSBL cognitive infrastructure — composable AI substrate"
           className="absolute inset-0 w-full h-[60vh] object-cover"
           loading="eager"
         />
         <div className="absolute inset-0 h-[60vh] bg-gradient-to-b from-background/80 via-background/40 to-background" />
-        
+
         <div className="relative container mx-auto px-4 pt-32 pb-20 max-w-4xl">
           <nav className="mb-12">
             <Link to="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors">
               ← Back to Home
             </Link>
           </nav>
-          
-          <motion.h1 {...fadeUp} className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground [text-shadow:_0_2px_20px_hsl(var(--background))]">
             CMPSBL<sup className="text-lg">®</sup>
-          </motion.h1>
-          <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.15 }} className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
-            The operating system for AI applications. Persistent memory, intelligent routing, governed orchestration, and enterprise security — in one composable substrate.
-          </motion.p>
+          </h1>
+          <p className="text-xl text-foreground/90 max-w-3xl leading-relaxed [text-shadow:_0_2px_10px_hsl(var(--background))]">
+            Cognitive infrastructure for AI. Persistent memory, dream cycles, governed evolution, and the Memory Stream — a composable substrate where software learns, adapts, and compounds.
+          </p>
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="py-16 px-4 bg-muted/30 relative z-10">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div {...fadeUp} className="bg-card border border-border rounded-xl p-8 md:p-12 shadow-lg hover:shadow-xl transition-shadow duration-500">
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <motion.img 
-                src={founder.photo}
-                alt={`${founder.name} - Founder of CMPSBL`}
-                className="w-32 h-32 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              />
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold mb-4 text-foreground">About the Founder</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                   I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same infrastructure from scratch?
-                 </p>
-                 <p className="text-muted-foreground leading-relaxed mb-6">
-                   So I built the layer that should already exist — persistent memory, intelligent routing, adaptive security, and governed orchestration. One substrate. Every AI application.
-                 </p>
-                 <p className="text-muted-foreground leading-relaxed mb-6">
-                   The result is infrastructure that compounds — it gets smarter the longer it runs. That's not marketing. That's the architecture.
-                 </p>
-                <motion.blockquote
-                  {...fadeUp}
-                  className="border-l-4 border-primary pl-6 my-6 italic text-foreground/90"
-                >
-                  "AI should amplify human capability, not replace human judgment. We build systems that think alongside you, not instead of you."
-                </motion.blockquote>
-                <div className="pt-6 border-t border-border">
-                  <p className="text-foreground font-semibold">{founder.name}</p>
-                  <p className="text-sm text-muted-foreground">{founder.role}</p>
+      {/* ── Two Sides: Substrate + Memory Stream ── */}
+      <section className="py-20 px-4 relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Two Sides of the Same System</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              The substrate is the engine. The Memory Stream is the output. Together they form a continuous loop — your AI remembers, dreams, evolves, and crystallizes real software.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Left: The Substrate */}
+            <div className="bg-card border border-border rounded-2xl p-8 md:p-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-primary" />
                 </div>
+                <h3 className="text-2xl font-bold text-foreground">The Substrate</h3>
+              </div>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                A 38-node cognitive operating system organized across 12 sectors. MEMORY persists context across sessions. DREAM consolidates knowledge during low-activity periods. DEFENSE adapts to threats in real time. NEXUS routes every AI call to the optimal provider.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade pipelines mean every cycle makes the system smarter. Governed, auditable, and autonomous.
+              </p>
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <Sparkles className="w-4 h-4" />
+                <span className="font-medium">{codename} Epoch · {linesOfCodeDisplay} lines of production code</span>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Team Section */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div {...fadeUp} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Team</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Researchers, engineers, and specialists building the cognitive infrastructure layer for autonomous AI systems.
-            </p>
-          </motion.div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                {...stagger(index * 0.08)}
-                className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <img 
-                    src={member.photo} 
-                    alt={`${member.name} - ${member.role}`}
-                    className="w-16 h-16 rounded-full object-cover ring-2 ring-primary/10"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-foreground">{member.name}</h3>
-                    <p className="text-sm text-primary">{member.role}</p>
-                  </div>
+            {/* Right: The Memory Stream */}
+            <div className="bg-card border border-border rounded-2xl p-8 md:p-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-primary" />
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {member.bio.split('.').slice(0, 2).join('.') + '.'}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {member.expertise.slice(0, 3).map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                <h3 className="text-2xl font-bold text-foreground">The Memory Stream</h3>
+              </div>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                A continuous substrate of evolving software systems. The Memory Stream isn't a marketplace or a library — it's a living river of scored, crystallized pipelines produced by the substrate's own dream and evolution cycles.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Every pipeline has a quality floor of 68+. Every pull is real software with provenance. You can materialize pipelines, export them, and build on top of them — or let the stream feed back into your own substrate's memory.
+              </p>
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <Moon className="w-4 h-4" />
+                <span className="font-medium">Quality floor: 68+ · Every pull is real software</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Earth Window */}
-      <section className="relative w-full h-[50vh] overflow-hidden">
-        <img 
+      {/* ── Earth Window Quote ── */}
+      <section className="relative w-full h-[45vh] overflow-hidden">
+        <img
           src={earthWindowImage}
-          alt="Space station control room with panoramic view of Earth from orbit"
+          alt="Cosmos representing the dream cycle — autonomous learning synthesis"
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
-        
+
         <div className="absolute inset-0 flex items-center justify-center">
-          <motion.blockquote
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-3xl px-8"
-          >
+          <blockquote className="text-center max-w-3xl px-8">
             <p className="text-2xl md:text-5xl font-bold text-white [text-shadow:_0_4px_24px_rgba(0,0,0,0.8)]">
-               "Infrastructure that compounds — every day it runs, it gets better."
-             </p>
-          </motion.blockquote>
-        </div>
-      </section>
-
-      {/* Shipped Products */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2 {...fadeUp} className="text-3xl font-bold mb-4 text-foreground">What We Ship</motion.h2>
-          <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-muted-foreground mb-10 text-lg">
-            Production systems, 24 artifact packs, and 300+ orchestration pipelines. Everything your AI needs to remember, route, learn, and protect itself.
-          </motion.p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product, index) => (
-              <motion.div
-                key={index}
-                {...stagger(index * 0.08)}
-                className="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
-              >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <product.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2 text-foreground">{product.name}</h3>
-                <p className="text-sm text-muted-foreground">{product.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div {...fadeUp} className="mt-12 bg-card border border-border rounded-xl p-6 md:p-8 shadow-sm">
-            <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">{codename} Epoch</span> — {linesOfCodeDisplay} lines of production code powering persistent memory, intelligent routing, governed orchestration, and adaptive security. <span className="text-muted-foreground">Ship AI that compounds from day one.</span>
+              "Infrastructure that dreams, evolves, and compounds — every day it runs, it gets better."
             </p>
-          </motion.div>
+          </blockquote>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="py-16 px-4 bg-muted/30 relative z-10">
+      {/* ── What You Can Build ── */}
+      <section className="py-20 px-4 relative z-10">
         <div className="container mx-auto max-w-6xl">
-          <motion.h2 {...fadeUp} className="text-3xl font-bold mb-12 text-center text-foreground">What Drives Us</motion.h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                 icon: Brain,
-                 title: "Memory is the Moat",
-                 description: "AI without memory is a parlor trick. We give your agents permanent recall — context that compounds across every session."
-               },
-               {
-                 icon: Shield,
-                 title: "Security is Non-Negotiable",
-                 description: "Adaptive threat detection, behavioral analysis, and governance rules baked into every layer. Not bolted on after the fact."
-               },
-               {
-                 icon: Zap,
-                 title: "Ship in Hours, Not Months",
-                 description: "Free templates, production-ready systems, and a runtime that handles orchestration so you can focus on what makes your product different."
-               },
-               {
-                 icon: Users,
-                 title: "Built for Builders",
-                 description: "Whether you're a solo developer or a 50-person team, the same substrate scales with you. Start free, upgrade when capacity demands it."
-               }
-            ].map((value, index) => (
-              <motion.div
-                key={index}
-                {...stagger(index * 0.1)}
-                className="bg-card border border-border rounded-xl p-8 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
-              >
-                <value.icon className="w-12 h-12 text-primary mb-4 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="text-2xl font-semibold mb-3 text-foreground">{value.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-              </motion.div>
-            ))}
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Build on the Substrate</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              The substrate isn't a black box — it's a platform. Activate packs, trigger dream cycles, crystallize pipelines, and let your AI evolve on its own.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* Journey Timeline */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-4xl">
-          <motion.h2 {...fadeUp} className="text-3xl font-bold mb-12 text-center text-foreground">Our Journey</motion.h2>
-          <div className="space-y-6">
-            {[
-              { year: "2009", event: "CMPSBL's founding team starts shipping software — hundreds of projects across industries" },
-               { year: "2024", event: "CMPSBL® formally established — the substrate architecture crystallizes around persistent memory and governed orchestration" },
-               { year: "2025", event: "Production launch — artifact packs, NEXUS routing, DEFENSE shell, and the full Builder/Creator/Architect tier model" },
-               { year: "Now", event: "Live cognitive infrastructure powering AI applications — free tier, no lock-in, shipping daily" }
-            ].map((milestone, index) => (
-              <motion.div
-                key={index}
-                {...stagger(index * 0.1)}
-                className="flex items-start gap-4"
+          <div className="grid md:grid-cols-2 gap-6">
+            {BUILD_ON_SUBSTRATE.map((item, i) => (
+              <div
+                key={i}
+                className="bg-card border border-border rounded-xl p-8 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
               >
-                <div className="flex-shrink-0 w-20 text-primary font-bold text-lg">{milestone.year}</div>
-                <div className="flex-grow bg-card border border-border p-6 rounded-xl hover:border-primary/20 transition-colors">
-                  <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] inline mr-2" />
-                  <span className="text-foreground">{milestone.event}</span>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
+                  <item.icon className="w-6 h-6 text-primary" />
                 </div>
-              </motion.div>
+                <h3 className="text-xl font-semibold mb-3 text-foreground">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Licensing CTA Section */}
+      {/* ── Substrate Capabilities Grid ── */}
       <section className="py-20 px-4 bg-muted/30 relative z-10">
-        <div className="container mx-auto max-w-4xl text-center">
-          <motion.div {...fadeUp}>
-            <Badge className="mb-6 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/30">
-              Composable AI Infrastructure
-            </Badge>
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Build?</h2>
-             <p className="text-xl text-muted-foreground mb-4">
-               Start free with 3 artifact slots, or subscribe for expanded capacity and deeper cognitive infrastructure.
-             </p>
-             <p className="text-lg text-muted-foreground mb-8">
-               Builder (free) · Creator ($29/mo) · Architect ($79/mo)
-             </p>
-             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-               <Link to="/upgrade">
-                 <Button size="lg" className="bg-primary hover:bg-primary/90">
-                   View Plans
-                   <ArrowRight className="w-4 h-4 ml-2" />
-                 </Button>
-               </Link>
-               <Link to="/publication">
-                 <Button size="lg" variant="outline">
-                   Read Our Publication
-                 </Button>
-               </Link>
-             </div>
-          </motion.div>
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">The Systems Inside</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Every capability is independently deployable, governed, and evolving.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {SUBSTRATE_CAPABILITIES.map((cap, i) => (
+              <div
+                key={i}
+                className="bg-card border border-border rounded-xl p-6 hover:border-primary/20 transition-all duration-300"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <cap.icon className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-semibold mb-2 text-foreground">{cap.name}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{cap.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <AuthorityLinkBlock currentPath="/about" />
+      {/* ── Founder ── */}
+      <section className="py-20 px-4 relative z-10">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-lg">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <img
+                src={founderPhoto}
+                alt="Kenneth E Sweet Jr — Founder of CMPSBL"
+                className="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20 flex-shrink-0"
+                loading="lazy"
+              />
+              <div className="flex-1">
+                <h2 className="text-3xl font-bold mb-4 text-foreground">About the Founder</h2>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                  I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same infrastructure from scratch?
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  So I built the layer that should already exist — persistent memory, intelligent routing, adaptive security, dream cycles, and governed orchestration. One substrate. Every AI application. Infrastructure that compounds.
+                </p>
+                <blockquote className="border-l-4 border-primary pl-6 my-6 italic text-foreground/90">
+                  "AI should amplify human capability, not replace human judgment. We build systems that think alongside you, not instead of you."
+                </blockquote>
+                <div className="pt-4 border-t border-border">
+                  <p className="text-foreground font-semibold">Kenneth E Sweet Jr</p>
+                  <p className="text-sm text-muted-foreground">Founder & Chief Architect</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Departments ── */}
+      <section className="py-20 px-4 bg-muted/30 relative z-10">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Get in Touch</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Reach the right department directly. Every team is available by email and phone.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {DEPARTMENTS.map((dept, i) => (
+              <div
+                key={i}
+                className="bg-card border border-border rounded-xl p-6 hover:border-primary/20 transition-all duration-300"
+              >
+                <h3 className="font-semibold text-foreground mb-2">{dept.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{dept.description}</p>
+                <div className="space-y-2 pt-3 border-t border-border">
+                  <a
+                    href={`mailto:${dept.email}`}
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    {dept.email}
+                  </a>
+                  <a
+                    href={COMPANY_PHONE_TEL}
+                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    {COMPANY_PHONE}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-20 px-4 relative z-10">
+        <div className="container mx-auto max-w-4xl text-center">
+          <Badge className="mb-6 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/30">
+            Composable Cognitive Infrastructure
+          </Badge>
+          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Build?</h2>
+          <p className="text-xl text-muted-foreground mb-4">
+            Start free with 3 pipeline slots. Activate packs, trigger dream cycles, and let the substrate evolve.
+          </p>
+          <p className="text-lg text-muted-foreground mb-8">
+            Builder (free) · Creator ($29/mo) · Architect ($79/mo)
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/upgrade">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                View Plans
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+            <Link to="/start">
+              <Button size="lg" variant="outline">
+                Start Here
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <EnhancedFooter />
     </div>
   );
