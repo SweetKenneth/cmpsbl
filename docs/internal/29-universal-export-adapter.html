@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>29 — Universal Export Adapter</title><link rel="stylesheet" href="theme.css"></head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 29 · Export System</div>
+  <h1>Universal Export<br/><span class="g">Adapter</span></h1>
+  <p class="subtitle">Export any Crown Jewel discovery to 25 target languages as complete, plug-and-play ZIP packages with build tooling, test harnesses, and the standalone Micro-Substrate runtime.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 25 Targets</p>
+</div>
+<div class="doc">
+  <div class="metrics">
+    <div class="metric"><div class="mv">18</div><div class="ml">Software Languages</div></div>
+    <div class="metric"><div class="mv">7</div><div class="ml">HDL Targets</div></div>
+    <div class="metric"><div class="mv">25</div><div class="ml">Total Targets</div></div>
+  </div>
+  <h2>1. Software Language Targets (18)</h2>
+  <table>
+    <tr><th>Language</th><th>Build Tool</th><th>Test Framework</th></tr>
+    <tr><td>TypeScript</td><td>tsc + esbuild</td><td>Vitest</td></tr>
+    <tr><td>JavaScript</td><td>esbuild</td><td>Jest</td></tr>
+    <tr><td>Python</td><td>pip + setuptools</td><td>pytest</td></tr>
+    <tr><td>Rust</td><td>Cargo</td><td>built-in</td></tr>
+    <tr><td>Go</td><td>go build</td><td>go test</td></tr>
+    <tr><td>Java</td><td>Maven</td><td>JUnit</td></tr>
+    <tr><td>Kotlin</td><td>Gradle</td><td>JUnit</td></tr>
+    <tr><td>Swift</td><td>Swift Package Manager</td><td>XCTest</td></tr>
+    <tr><td>C#</td><td>dotnet</td><td>xUnit</td></tr>
+    <tr><td>C++</td><td>CMake</td><td>Google Test</td></tr>
+    <tr><td>Ruby</td><td>Bundler</td><td>RSpec</td></tr>
+    <tr><td>PHP</td><td>Composer</td><td>PHPUnit</td></tr>
+    <tr><td>Dart</td><td>pub</td><td>dart test</td></tr>
+    <tr><td>Scala</td><td>sbt</td><td>ScalaTest</td></tr>
+    <tr><td>Elixir</td><td>mix</td><td>ExUnit</td></tr>
+    <tr><td>Haskell</td><td>Stack</td><td>HSpec</td></tr>
+    <tr><td>Lua</td><td>LuaRocks</td><td>busted</td></tr>
+    <tr><td>R</td><td>devtools</td><td>testthat</td></tr>
+  </table>
+  <h2>2. HDL Targets (7)</h2>
+  <table>
+    <tr><th>Target</th><th>Toolchain</th><th>Simulation</th></tr>
+    <tr><td>VHDL</td><td>GHDL</td><td>GHDL sim</td></tr>
+    <tr><td>Verilog</td><td>Icarus Verilog</td><td>iverilog</td></tr>
+    <tr><td>SystemVerilog</td><td>Verilator</td><td>Verilator sim</td></tr>
+    <tr><td>Chisel</td><td>sbt + Chisel3</td><td>ChiselTest</td></tr>
+    <tr><td>Amaranth</td><td>Python + Amaranth</td><td>built-in sim</td></tr>
+    <tr><td>SPICE</td><td>ngspice</td><td>ngspice sim</td></tr>
+    <tr><td>SystemC</td><td>CMake + SystemC</td><td>built-in sim</td></tr>
+  </table>
+  <h2>3. Bundle Structure</h2>
+  <pre><code>cmpsbl-export-{language}-{timestamp}/
+├── src/{discovery}.{ext}
+├── test/{discovery}_test.{ext}
+├── _runtime/standalone-runtime.ts
+├── Makefile
+├── {package-manifest}
+├── LICENSE
+└── README.md</code></pre>
+  <h2>4. Export Process</h2>
+  <ol>
+    <li>Read discovery manifest from S-Tier Vault</li>
+    <li>Map module chain to target language primitives</li>
+    <li>Generate language-specific scaffold with CJPI metadata</li>
+    <li>Generate test harness for target language</li>
+    <li>Include standalone runtime</li>
+    <li>Package with build configuration and license</li>
+    <li>Deliver as ZIP download</li>
+    <li>Log export to AUDIT trail</li>
+  </ol>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>

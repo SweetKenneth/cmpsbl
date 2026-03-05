@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 — Ironclad Hardening Fabric</title><link rel="stylesheet" href="theme.css"></head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 30 · Resilience Layer</div>
+  <h1>Ironclad v2.0.0<br/><span class="g">Hardening Fabric</span></h1>
+  <p class="subtitle">Unified resilience layer protecting all 38 matrix nodes. Shadow mode validation, state snapshots, auto-restore health polling, rate limiting, and bulkhead isolation.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 100% Node Coverage</p>
+</div>
+<div class="doc">
+  <div class="metrics">
+    <div class="metric"><div class="mv">38</div><div class="ml">Nodes Protected</div></div>
+    <div class="metric"><div class="mv">12</div><div class="ml">Sectors</div></div>
+    <div class="metric"><div class="mv">30s</div><div class="ml">Health Poll Interval</div></div>
+    <div class="metric"><div class="mv">100%</div><div class="ml">Coverage</div></div>
+  </div>
+  <h2>1. Core Abstraction</h2>
+  <pre><code>createModuleHardening(module: string, config: HardeningConfig): HardenedModule</code></pre>
+  <p>Every module is wrapped with additive hardening that preserves core engine logic:</p>
+  <div class="sf">
+    <span class="sn s-closed">Request</span><span class="sa">→</span>
+    <span class="sn s-half">Rate Limiter</span><span class="sa">→</span>
+    <span class="sn s-closed">Bulkhead</span><span class="sa">→</span>
+    <span class="sn s-half">Module Logic</span><span class="sa">→</span>
+    <span class="sn s-closed">Validator</span><span class="sa">→</span>
+    <span class="sn s-closed">Response</span>
+  </div>
+  <h2>2. Module Rate Limits</h2>
+  <table>
+    <tr><th>Module</th><th>Rate Limit</th><th>Rationale</th></tr>
+    <tr><td>REFLEX</td><td>500 req/s</td><td>Edge computing — latency-critical</td></tr>
+    <tr><td>NEXUS</td><td>200 req/s</td><td>AI provider routing</td></tr>
+    <tr><td>DECODE</td><td>150 req/s</td><td>Conversational — user-facing</td></tr>
+    <tr><td>ENCODE</td><td>100 req/s</td><td>Content generation</td></tr>
+    <tr><td>FORGE</td><td>30 req/s</td><td>Artifact manufacturing</td></tr>
+    <tr><td>DREAM</td><td>10 req/s</td><td>Offline optimization</td></tr>
+    <tr><td>EVOLUTION</td><td>5 req/s</td><td>Governance-gated mutations</td></tr>
+  </table>
+  <h2>3. Auto-Restore Health Loop</h2>
+  <table>
+    <tr><th>Failures</th><th>Action</th></tr>
+    <tr><td>1</td><td>Log warning, continue monitoring</td></tr>
+    <tr><td>2</td><td>Alert INTEL, prepare restoration</td></tr>
+    <tr><td>3</td><td>Auto-restore: reset breaker + restore snapshot</td></tr>
+    <tr><td>5+</td><td>Escalate to GOVERNANCE for manual intervention</td></tr>
+  </table>
+  <h2>4. Coverage</h2>
+  <table>
+    <tr><th>Sector</th><th>Nodes</th><th>Status</th></tr>
+    <tr><td>CORE + SYSTEM</td><td>2</td><td>Ironclad v2.0.0</td></tr>
+    <tr><td>CCR</td><td>3</td><td>Ironclad v2.0.0</td></tr>
+    <tr><td>OCG</td><td>6</td><td>Ironclad v2.0.0</td></tr>
+    <tr><td>Execution</td><td>10</td><td>Ironclad v2.0.0</td></tr>
+    <tr><td>ESZ / EPZ / EMZ</td><td>10</td><td>Ironclad v2.0.0</td></tr>
+    <tr><td>CSZ / Fields / Plane / Shell</td><td>7</td><td>Ironclad v2.0.0</td></tr>
+  </table>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>

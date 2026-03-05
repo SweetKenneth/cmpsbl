@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>23 — ENGINEER Node (Mechanist)</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 23 · Control Plane</div>
+  <h1>ENGINEER Node<br/><span class="g">Mechanist</span></h1>
+  <p class="subtitle">
+    The substrate's internal maintenance node. No user-facing UI — operates entirely behind the scenes,
+    polling system health, generating findings and proposals, and dispatching to INTEL.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · Control Plane First-Class Citizen</p>
+</div>
+
+<div class="doc">
+
+  <h2>1. Position in Control Plane</h2>
+  <div class="sf">
+    <span class="sn s-closed">ENGINEER</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">INTEL</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">ATLAS (Node Inbox)</span>
+  </div>
+  <p>ENGINEER is a Control Plane first-class citizen alongside INTEL, DECODE, AUDIT, and the NEXUS-CLM Bridge.</p>
+
+  <h2>2. Health Monitoring</h2>
+  <table>
+    <tr><th>Target</th><th>Count</th><th>Method</th></tr>
+    <tr><td>Engines</td><td>76</td><td>Health score polling, breaker state checks</td></tr>
+    <tr><td>Meta-Engines</td><td>24</td><td>Aggregate health computation</td></tr>
+    <tr><td>Circuit breakers</td><td>All modules</td><td>State checks (closed/open/half-open)</td></tr>
+    <tr><td>Fallback coverage</td><td>All modules</td><td>Verifies fallback paths exist and are functional</td></tr>
+  </table>
+
+  <h2>3. Finding Model</h2>
+  <table>
+    <tr><th>Field</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>Auto-generated unique ID</td></tr>
+    <tr><td><code>source_node</code></td><td>Which module/engine triggered the finding</td></tr>
+    <tr><td><code>category</code></td><td>health, performance, debt, regression, security</td></tr>
+    <tr><td><code>severity</code></td><td>info, warning, error, critical</td></tr>
+    <tr><td><code>title</code></td><td>Human-readable headline</td></tr>
+    <tr><td><code>description</code></td><td>Detailed explanation</td></tr>
+    <tr><td><code>evidence</code></td><td>Supporting data (metrics, logs, comparisons)</td></tr>
+  </table>
+
+  <h2>4. Proposal Generation</h2>
+  <p>When a finding warrants action, ENGINEER generates proposals dispatched to ATLAS for governor approval:</p>
+  <div class="sf">
+    <span class="sn s-closed">pending</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">approved / rejected</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">executed</span>
+  </div>
+
+  <h2>5. INTEL Dispatch</h2>
+  <p>Every finding is immediately dispatched to INTEL via <code>intelAggregator.ingest()</code>. Fingerprinting enables deduplication — repeated findings for the same issue are coalesced.</p>
+
+  <h2>6. Safety Constraints</h2>
+  <div class="warn">
+    <div class="warn-label">Safety</div>
+    <ul class="cl">
+      <li>ENGINEER <strong>never</strong> directly modifies production behavior</li>
+      <li>All proposals require human approval through ATLAS</li>
+      <li>Findings are read-only observations</li>
+      <li>The <code>auto_training_enabled</code> flag gates automated proposal execution</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>

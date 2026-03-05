@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>28 — AutoBlog Quality Pipeline</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 28 · Content Generation</div>
+  <h1>AutoBlog<br/><span class="g">Quality Pipeline</span></h1>
+  <p class="subtitle">
+    Autonomous content generation and publishing pipeline with confidence scoring,
+    contradiction checking, split brain review, and adaptive governance.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · Pipeline v5.0.0</p>
+</div>
+
+<div class="doc">
+
+  <h2>1. Pipeline Flow</h2>
+  <div class="sf">
+    <span class="sn s-closed">Topic Seed</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">Generate</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">Confidence</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">Contradiction</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">Split Brain</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">Review</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">Publish</span>
+  </div>
+
+  <h2>2. Quality Engines</h2>
+
+  <div class="card">
+    <h3>Confidence Engine</h3>
+    <table>
+      <tr><th>Factor</th><th>Weight</th><th>Description</th></tr>
+      <tr><td>Factual accuracy</td><td>0.30</td><td>Cross-reference against knowledge base</td></tr>
+      <tr><td>Writing quality</td><td>0.25</td><td>Grammar, structure, readability</td></tr>
+      <tr><td>Topic relevance</td><td>0.20</td><td>Alignment with seed topic and brand voice</td></tr>
+      <tr><td>Novelty</td><td>0.15</td><td>Original perspective vs. existing content</td></tr>
+      <tr><td>SEO alignment</td><td>0.10</td><td>Keyword density, meta quality, structure</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Contradiction Engine</h3>
+    <p>Scans for internal contradictions and cross-references existing published posts. Produces a contradiction score (0–100, lower is better) with pass/warn/fail outcome.</p>
+  </div>
+
+  <div class="card">
+    <h3>Split Brain Evaluation</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>Reader Perspective</h4>
+        <p>Evaluates from consumer perspective. Score field: <code>split_brain_reader_score</code></p>
+      </div>
+      <div class="card">
+        <h4>Skeptic Perspective</h4>
+        <p>Challenges claims, finds weaknesses. Score field: <code>split_brain_skeptic_score</code></p>
+      </div>
+    </div>
+    <pre><code>if reader ≥ 70 AND skeptic ≥ 60 → publish
+if reader ≥ 60 AND skeptic ≥ 50 → review (human)
+else → reject</code></pre>
+  </div>
+
+  <div class="card">
+    <h3>Semantic Drift Detection</h3>
+    <p>Monitors content evolution away from core brand messaging. Tracks drift score, drift direction, and epistemic status of each post's knowledge claims.</p>
+  </div>
+
+  <h2>3. Publish Governance</h2>
+  <div class="sf">
+    <span class="sn s-closed">draft</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">review</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">published / rejected</span>
+  </div>
+  <p>Global rate limits, category-specific quotas, quality floor enforcement, and manual review queue for borderline content.</p>
+
+  <h2>4. Monthly Memory Compression</h2>
+  <p>Every 30 days: aggregate lessons learned, distill patterns, update confidence weights autonomously, archive scoring data older than 90 days.</p>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>
