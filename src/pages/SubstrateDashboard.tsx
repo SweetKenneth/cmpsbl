@@ -34,7 +34,9 @@ import {
   Brain, Shield, MessageSquare, Zap, Eye, Activity, RefreshCw, 
   CheckCircle2, AlertTriangle, Layers, ArrowRight, Cpu, Radio, 
   Key, Settings, Sparkles, Plug, Wand2, Accessibility, Moon,
-  Database, Network, ClipboardCheck, Fingerprint, Coins, Box, FileCode
+  Database, Network, ClipboardCheck, Fingerprint, Coins, Box, FileCode,
+  Compass, AudioLines, Dna, Ghost, Scale, Globe, Hammer, Languages, Wheat,
+  Gauge, Orbit, HeartPulse, Siren,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
