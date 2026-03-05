@@ -37,20 +37,16 @@ function normalizeTierWeights(weights: TierWeight[]): TierWeight[] {
 }
 
 /**
- * Resolve available weighted tiers for the current pool.
- * Empty score bands are removed so per-slot rolls stay independent + realistic.
+ * Check which tier ranges actually have discoveries in the pool.
+ * Returns a Set of tier names that have at least 1 discovery.
  */
-async function resolveAvailableTierWeights(
+async function getPopulatedTiers(
   supabase: ReturnType<typeof createClient>,
   priorMines: number,
-): Promise<TierWeight[]> {
+): Promise<Set<string>> {
   const maxAllowedScore = getMaxAllowedScore(priorMines);
   const eligible = TIER_WEIGHTS.filter(t => t.min <= maxAllowedScore)
     .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
-
-  if (eligible.length === 0) {
-    return [{ min: 68, max: Math.min(79, maxAllowedScore), weight: 1, tier: 'Mint' }];
-  }
 
   const counts = await Promise.all(
     eligible.map(async (range) => {
@@ -59,15 +55,48 @@ async function resolveAvailableTierWeights(
         .select('id', { count: 'exact', head: true })
         .gte('cjpi', range.min)
         .lte('cjpi', range.max);
-      return { range, count: count ?? 0 };
+      return { tier: range.tier, count: count ?? 0 };
     }),
   );
 
-  const nonEmpty = counts
-    .filter(c => c.count > 0)
-    .map(c => c.range);
+  return new Set(counts.filter(c => c.count > 0).map(c => c.tier));
+}
 
-  return normalizeTierWeights(nonEmpty.length > 0 ? nonEmpty : eligible);
+/**
+ * Find the nearest populated tier to use as a substitute source.
+ * Prefers the next-higher tier, then checks lower tiers.
+ */
+function findSubstituteTier(targetTier: string, populatedTiers: Set<string>): TierWeight | null {
+  const idx = TIER_WEIGHTS.findIndex(t => t.tier === targetTier);
+  if (idx < 0) return null;
+
+  // Search upward first (nearest higher tier)
+  for (let i = idx + 1; i < TIER_WEIGHTS.length; i++) {
+    if (populatedTiers.has(TIER_WEIGHTS[i].tier)) return TIER_WEIGHTS[i];
+  }
+  // Then search downward
+  for (let i = idx - 1; i >= 0; i--) {
+    if (populatedTiers.has(TIER_WEIGHTS[i].tier)) return TIER_WEIGHTS[i];
+  }
+  return null;
+}
+
+/**
+ * Remap a score from a source tier range into a target tier range.
+ * Preserves relative position within the band.
+ * e.g., score 82 in Prime (80-89) → remapped to ~70 in Mint (68-79)
+ */
+function remapScoreToTier(score: number, sourceTier: TierWeight, targetTier: TierWeight): number {
+  const sourceSpan = sourceTier.max - sourceTier.min;
+  const targetSpan = targetTier.max - targetTier.min;
+
+  if (sourceSpan === 0) {
+    // Source is a single value (like Apex=100), pick random in target
+    return targetTier.min + Math.floor(Math.random() * (targetSpan + 1));
+  }
+
+  const ratio = (score - sourceTier.min) / sourceSpan;
+  return targetTier.min + Math.floor(ratio * targetSpan);
 }
 
 /**
