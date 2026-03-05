@@ -478,7 +478,7 @@ const STRATA: Stratum[] = [
   {
     epoch: "FORMATION",
     codename: "The substrate took shape",
-    range: "v9.x",
+    range: "Genesis epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
     dotColor: "bg-violet-500",
