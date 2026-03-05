@@ -10929,6 +10929,108 @@ export type Database = {
         }
         Relationships: []
       }
+      node_dream_config: {
+        Row: {
+          budget_per_cycle: number
+          created_at: string
+          dream_threshold: number
+          dream_tier: string
+          enabled: boolean
+          interval_hours: number
+          last_dream_at: string | null
+          node_id: string
+          total_dreams: number
+          total_insights: number
+          updated_at: string
+        }
+        Insert: {
+          budget_per_cycle?: number
+          created_at?: string
+          dream_threshold?: number
+          dream_tier?: string
+          enabled?: boolean
+          interval_hours?: number
+          last_dream_at?: string | null
+          node_id: string
+          total_dreams?: number
+          total_insights?: number
+          updated_at?: string
+        }
+        Update: {
+          budget_per_cycle?: number
+          created_at?: string
+          dream_threshold?: number
+          dream_tier?: string
+          enabled?: boolean
+          interval_hours?: number
+          last_dream_at?: string | null
+          node_id?: string
+          total_dreams?: number
+          total_insights?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      node_dream_log: {
+        Row: {
+          contradictions_found: number
+          created_at: string
+          cross_insights: Json | null
+          cycle_type: string
+          dream_budget_max: number
+          dream_budget_used: number
+          dream_tier: string
+          dreamt_at: string
+          duration_ms: number | null
+          error_message: string | null
+          heuristics_proposed: number
+          id: string
+          memories_decayed: number
+          metadata: Json | null
+          node_id: string
+          patterns_merged: number
+          success: boolean
+        }
+        Insert: {
+          contradictions_found?: number
+          created_at?: string
+          cross_insights?: Json | null
+          cycle_type?: string
+          dream_budget_max?: number
+          dream_budget_used?: number
+          dream_tier?: string
+          dreamt_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          heuristics_proposed?: number
+          id?: string
+          memories_decayed?: number
+          metadata?: Json | null
+          node_id: string
+          patterns_merged?: number
+          success?: boolean
+        }
+        Update: {
+          contradictions_found?: number
+          created_at?: string
+          cross_insights?: Json | null
+          cycle_type?: string
+          dream_budget_max?: number
+          dream_budget_used?: number
+          dream_tier?: string
+          dreamt_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          heuristics_proposed?: number
+          id?: string
+          memories_decayed?: number
+          metadata?: Json | null
+          node_id?: string
+          patterns_merged?: number
+          success?: boolean
+        }
+        Relationships: []
+      }
       owner_reports: {
         Row: {
           created_at: string
