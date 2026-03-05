@@ -274,8 +274,9 @@ async function fetchWeightedGlobalCandidates(
   supabase: ReturnType<typeof createClient>,
   fetchCount: number,
   priorMines: number,
+  tierWeights: TierWeight[] = TIER_WEIGHTS,
 ): Promise<any[]> {
-  const range = pickWeightedTierRange(priorMines);
+  const range = pickWeightedTierRange(priorMines, tierWeights);
   
   const { data } = await supabase.rpc('get_random_discoveries', {
     min_score: range.min,
