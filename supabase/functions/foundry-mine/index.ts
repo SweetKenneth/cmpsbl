@@ -11,7 +11,14 @@ const FINGERPRINT_EPOCH = Deno.env.get('PIPELINE_FINGERPRINT_EPOCH') ?? 'SPARTA'
 const LEGACY_CAPABILITY = 'unknown';
 
 // ─── Weighted Tier Distribution ─────────────────────────────────
-const TIER_WEIGHTS = [
+type TierWeight = {
+  min: number;
+  max: number;
+  weight: number;
+  tier: string;
+};
+
+const TIER_WEIGHTS: TierWeight[] = [
   { min: 68, max: 79, weight: 0.65, tier: 'Mint' },
   { min: 80, max: 89, weight: 0.25, tier: 'Prime' },
   { min: 90, max: 93, weight: 0.07, tier: 'Relic' },
@@ -19,29 +26,82 @@ const TIER_WEIGHTS = [
   { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
 ];
 
+function getMaxAllowedScore(priorMines: number): number {
+  return priorMines === 0 ? 93 : priorMines < 5 ? 99 : 100;
+}
+
+function normalizeTierWeights(weights: TierWeight[]): TierWeight[] {
+  const total = weights.reduce((sum, w) => sum + w.weight, 0);
+  if (total <= 0) return [...weights];
+  return weights.map(w => ({ ...w, weight: w.weight / total }));
+}
+
+/**
+ * Resolve available weighted tiers for the current pool.
+ * Empty score bands are removed so per-slot rolls stay independent + realistic.
+ */
+async function resolveAvailableTierWeights(
+  supabase: ReturnType<typeof createClient>,
+  priorMines: number,
+): Promise<TierWeight[]> {
+  const maxAllowedScore = getMaxAllowedScore(priorMines);
+  const eligible = TIER_WEIGHTS.filter(t => t.min <= maxAllowedScore)
+    .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
+
+  if (eligible.length === 0) {
+    return [{ min: 68, max: Math.min(79, maxAllowedScore), weight: 1, tier: 'Mint' }];
+  }
+
+  const counts = await Promise.all(
+    eligible.map(async (range) => {
+      const { count } = await supabase
+        .from('discoveries')
+        .select('id', { count: 'exact', head: true })
+        .gte('cjpi', range.min)
+        .lte('cjpi', range.max);
+      return { range, count: count ?? 0 };
+    }),
+  );
+
+  const nonEmpty = counts
+    .filter(c => c.count > 0)
+    .map(c => c.range);
+
+  return normalizeTierWeights(nonEmpty.length > 0 ? nonEmpty : eligible);
+}
+
 /**
  * Pick a weighted tier range for mining.
  * @param priorMines - number of prior mines for this user (0 = first mine)
  * First-mine dampener: users with 0 prior mines cannot roll above Relic.
  * Users with < 5 mines cannot roll Apex.
  */
-function pickWeightedTierRange(priorMines: number): { min: number; max: number } {
-  // First-mine dampener: cap at Relic (score 93) for brand new users
-  const maxAllowedScore = priorMines === 0 ? 93 : priorMines < 5 ? 99 : 100;
+function pickWeightedTierRange(
+  priorMines: number,
+  tierWeights: TierWeight[] = TIER_WEIGHTS,
+): { min: number; max: number } {
+  const maxAllowedScore = getMaxAllowedScore(priorMines);
+  const eligible = tierWeights
+    .filter(t => t.min <= maxAllowedScore)
+    .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
 
-  // Build filtered weights
-  const eligible = TIER_WEIGHTS.filter(t => t.min <= maxAllowedScore);
-  const totalWeight = eligible.reduce((sum, t) => sum + t.weight, 0);
+  if (eligible.length === 0) {
+    return { min: 68, max: Math.min(79, maxAllowedScore) };
+  }
 
-  const roll = Math.random() * totalWeight;
+  const normalized = normalizeTierWeights(eligible);
+  const roll = Math.random();
   let cumulative = 0;
-  for (const t of eligible) {
+
+  for (const t of normalized) {
     cumulative += t.weight;
     if (roll <= cumulative) {
-      return { min: t.min, max: Math.min(t.max, maxAllowedScore) };
+      return { min: t.min, max: t.max };
     }
   }
-  return { min: 68, max: 79 };
+
+  const fallback = normalized[normalized.length - 1];
+  return { min: fallback.min, max: fallback.max };
 }
 
 function scoreToPublicTier(score: number): string | null {
@@ -214,8 +274,9 @@ async function fetchWeightedGlobalCandidates(
   supabase: ReturnType<typeof createClient>,
   fetchCount: number,
   priorMines: number,
+  tierWeights: TierWeight[] = TIER_WEIGHTS,
 ): Promise<any[]> {
-  const range = pickWeightedTierRange(priorMines);
+  const range = pickWeightedTierRange(priorMines, tierWeights);
   
   const { data } = await supabase.rpc('get_random_discoveries', {
     min_score: range.min,
@@ -471,10 +532,11 @@ serve(async (req) => {
     const ownedIds = new Set((existingItems || []).map((e: any) => e.artifact_id));
 
     const results: any[] = [];
+    const activeTierWeights = await resolveAvailableTierWeights(supabase, priorMines);
     const attemptedRanges: { min: number; max: number }[] = [];
 
     for (let slot = 0; slot < maxResults; slot++) {
-      const range = pickWeightedTierRange(priorMines);
+      const range = pickWeightedTierRange(priorMines, activeTierWeights);
       attemptedRanges.push(range);
     }
 
@@ -522,13 +584,13 @@ serve(async (req) => {
     let globalFallbackPool: any[] = [];
     const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
     if (allRangePoolsEmpty) {
-      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
+      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
     }
 
     const selectedIds = new Set<string>();
-    const appendFromPool = async (pool: any[]) => {
-      for (const disc of pool) {
-        if (results.length >= maxResults) break;
+    const appendOneFromPool = async (pool: any[]): Promise<boolean> => {
+      while (pool.length > 0) {
+        const disc = pool.pop();
         if (!disc) continue;
         if (ownedIds.has(disc.id)) continue;
         if (selectedIds.has(disc.id)) continue;
@@ -539,7 +601,9 @@ serve(async (req) => {
         results.push(mapped);
         selectedIds.add(mapped.id);
         ownedIds.add(mapped.id);
+        return true;
       }
+      return false;
     };
 
     for (const range of attemptedRanges) {
@@ -547,18 +611,26 @@ serve(async (req) => {
       const key = `${range.min}-${range.max}`;
       const pool = rangedCandidates.get(key) || [];
 
-      await appendFromPool(pool);
+      let filled = await appendOneFromPool(pool);
 
-      if (results.length < maxResults && pool.length === 0 && globalFallbackPool.length > 0) {
-        await appendFromPool(globalFallbackPool);
+      if (!filled) {
+        if (globalFallbackPool.length === 0) {
+          globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
+        }
+        filled = await appendOneFromPool(globalFallbackPool);
+      }
+
+      if (!filled) {
+        const rescuePool = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines, activeTierWeights);
+        await appendOneFromPool(rescuePool);
       }
     }
 
     if (results.length === 0) {
       if (globalFallbackPool.length === 0) {
-        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
+        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
       }
-      await appendFromPool(globalFallbackPool);
+      await appendOneFromPool(globalFallbackPool);
     }
 
     // ─── Rediscovery tracking + fingerprint persistence ───────────
