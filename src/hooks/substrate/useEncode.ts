@@ -197,7 +197,7 @@ export function useEncode(): UseEncodeReturn {
     queue,
     receipts,
     escalationTelemetry,
-    plans: listPlans(),
+    plans: plansQuery.data || [],
     generatePlan,
     approvePlanMutation,
     rejectPlanMutation,
