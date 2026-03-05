@@ -147,6 +147,14 @@ export function OperationsTab() {
         { label: 'Edge Nodes', value: ops.reflex.edgeNodes },
       ],
     },
+    {
+      id: 'medic', label: 'MEDIC', icon: HeartPulse, color: 'text-red-400',
+      desc: 'Self-healing diagnostics, triage, and recovery orchestration',
+      stats: [
+        { label: 'Health Checks', value: ops.nerve.signals > 0 ? Math.round(ops.nerve.signals / 3) : 0 },
+        { label: 'Recovery Cycles', value: 0 },
+      ],
+    },
   ];
 
   return (
@@ -158,9 +166,9 @@ export function OperationsTab() {
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Operations</h2>
-          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DECODE · VISION · ECONOMY · SANDBOX · INCLUSIVE · NERVE · REFLEX</p>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DECODE · VISION · ECONOMY · SANDBOX · INCLUSIVE · NERVE · REFLEX · MEDIC</p>
         </div>
-        <Badge className="text-[9px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 shrink-0">7 NODES</Badge>
+        <Badge className="text-[9px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 shrink-0">8 NODES</Badge>
       </div>
 
       {/* Module Grid */}
