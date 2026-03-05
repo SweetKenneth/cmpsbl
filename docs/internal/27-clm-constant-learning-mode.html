@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>27 — CLM (Constant Learning Mode)</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 27 · Continuous Learning</div>
+  <h1>CLM<br/><span class="g">Constant Learning Mode</span></h1>
+  <p class="subtitle">
+    High-velocity continuous external learning system. Topic-driven AI calls expanding the knowledge base,
+    governed by mastery thresholds and deduplication.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · 14,400 AI Calls/Day</p>
+</div>
+
+<div class="doc">
+
+  <div class="metrics">
+    <div class="metric"><div class="mv">14,400</div><div class="ml">AI Calls/Day</div></div>
+    <div class="metric"><div class="mv">~10</div><div class="ml">Calls/Minute</div></div>
+    <div class="metric"><div class="mv">70/30</div><div class="ml">Global/Solo Split</div></div>
+    <div class="metric"><div class="mv">0.85</div><div class="ml">Mastery Threshold</div></div>
+  </div>
+
+  <h2>1. Pipeline Flow</h2>
+  <div class="sf">
+    <span class="sn s-closed">Topic Selection</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">NEXUS-CLM Bridge</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">AI Provider</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">Knowledge Extract</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">MEMORY</span>
+  </div>
+
+  <h2>2. Topic Weighting</h2>
+  <table>
+    <tr><th>Pool</th><th>Weight</th><th>Description</th></tr>
+    <tr><td>Global Topics</td><td>70%</td><td>System stability, governance, architecture health</td></tr>
+    <tr><td>Node Solo Topics</td><td>30%</td><td>Per-module specialized learning</td></tr>
+  </table>
+  <p>Selection weighted by current health score, mastery level, and ENGINEER findings severity.</p>
+
+  <h2>3. Topic Mastery</h2>
+  <pre><code>mastery = successful_extractions / total_attempts × recency_weight × novelty_factor</code></pre>
+  <p>Once mastery ≥ 0.85: topic flagged as "mastered," future calls require novelty (new sub-topics or deeper analysis).</p>
+
+  <h2>4. Deduplication</h2>
+  <table>
+    <tr><th>Level</th><th>Method</th><th>Purpose</th></tr>
+    <tr><td>Input dedup</td><td>Topic + prompt fingerprint</td><td>Prevents identical calls</td></tr>
+    <tr><td>Output dedup</td><td>Content-hash of extracted knowledge</td><td>Prevents redundant MEMORY writes</td></tr>
+  </table>
+
+  <h2>5. Knowledge Distillation</h2>
+  <p>4-hour staggered cycle: aggregate → distill → merge → prune → update mastery scores. Downstream distributions synchronized every 30 minutes with RLS-enforced tenant isolation.</p>
+
+  <h2>6. Dependencies</h2>
+  <table>
+    <tr><th>Dependency</th><th>Role</th></tr>
+    <tr><td>NEXUS</td><td>Provider routing for AI calls</td></tr>
+    <tr><td>MEMORY</td><td>Knowledge persistence</td></tr>
+    <tr><td>ECONOMY</td><td>Cost tracking and budget enforcement</td></tr>
+    <tr><td>INTEL</td><td>Mastery reporting and CLM health visibility</td></tr>
+    <tr><td>ENGINEER</td><td>Finding-driven topic prioritization</td></tr>
+  </table>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>
