@@ -11,7 +11,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { emit } from '../events';
+import { emit } from '../../events/emit';
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
