@@ -1,13 +1,16 @@
 /**
- * Merkle Audit Chain — Typed receipts with multi-anchor verification
+ * Merkle Audit Chain — Typed receipts with correct verification algorithm
+ * Chain verification recomputes hashes from genesis to detect tampering.
  */
 
 import type { AuditReceipt } from './receipts';
 import { hashReceipt, createReceipt, type ReceiptType } from './receipts';
-import { anchorHead, verifyAnchors, getHeadHash } from './anchors';
+import { anchorHead, verifyAnchors } from './anchors';
+
+const GENESIS_HASH = 'genesis';
 
 const chain: AuditReceipt[] = [];
-let currentHead = 'genesis';
+let currentHead = GENESIS_HASH;
 const MAX_CHAIN_LENGTH = 5000;
 
 /** Append a receipt to the chain */
@@ -26,7 +29,7 @@ export async function appendReceipt(
 
   // Anchor every 100 receipts
   if (chain.length % 100 === 0) {
-    anchorHead(currentHead, chain.length);
+    await anchorHead(currentHead, chain.length);
   }
 
   // Trim old entries if needed
@@ -37,7 +40,10 @@ export async function appendReceipt(
   return receipt;
 }
 
-/** Verify chain integrity from genesis (or nearest anchor) */
+/**
+ * Verify chain integrity from genesis.
+ * Correct algorithm: recompute each receipt's hash and verify prev_hash linkage.
+ */
 export async function verifyChain(): Promise<{
   valid: boolean;
   length: number;
@@ -45,19 +51,31 @@ export async function verifyChain(): Promise<{
   anchor_consistent: boolean;
   broken_at?: number;
 }> {
-  const anchorCheck = verifyAnchors();
+  const anchorCheck = await verifyAnchors();
 
   if (chain.length === 0) {
-    return { valid: true, length: 0, head: 'genesis', anchor_consistent: anchorCheck.consistent };
+    return { valid: true, length: 0, head: GENESIS_HASH, anchor_consistent: anchorCheck.consistent };
   }
 
-  let prevHash = chain[0].prev_hash; // should be 'genesis' or a known anchor
+  // First receipt must link to genesis
+  if (chain[0].prev_hash !== GENESIS_HASH) {
+    return { valid: false, length: chain.length, head: currentHead, anchor_consistent: anchorCheck.consistent, broken_at: 0 };
+  }
+
+  let prevHash = GENESIS_HASH;
 
   for (let i = 0; i < chain.length; i++) {
+    // Verify the receipt's prev_hash matches the computed hash of the previous receipt
     if (chain[i].prev_hash !== prevHash) {
       return { valid: false, length: chain.length, head: currentHead, anchor_consistent: anchorCheck.consistent, broken_at: i };
     }
-    prevHash = await hashReceipt(chain[i]);
+
+    // Recompute the hash of this receipt for the next iteration
+    const computedHash = await hashReceipt(chain[i]);
+
+    // If we have a next receipt, its prev_hash must match this computed hash
+    // We set prevHash to the recomputed hash for the next round
+    prevHash = computedHash;
   }
 
   return { valid: true, length: chain.length, head: currentHead, anchor_consistent: anchorCheck.consistent };

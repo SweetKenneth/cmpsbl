@@ -1,52 +1,99 @@
 /**
- * Memory Tier Move Receipt Logger
- * Persists tier transition receipts for auditability
+ * Memory Tier Move Receipt Logger — DB-backed
+ * Persists tier transition receipts to memory_tier_receipts table
  */
 
 import type { TierMoveReceipt } from './tiering';
+import { supabase } from '@/integrations/supabase/client';
 
-const receiptLog: TierMoveReceipt[] = [];
-const MAX_LOG_SIZE = 1000;
-
-/** Record a tier move receipt */
-export function recordReceipt(receipt: TierMoveReceipt): void {
-  receiptLog.push(receipt);
-  if (receiptLog.length > MAX_LOG_SIZE) {
-    receiptLog.splice(0, receiptLog.length - MAX_LOG_SIZE);
-  }
+/** Record a tier move receipt to DB */
+export async function recordReceipt(receipt: TierMoveReceipt): Promise<void> {
+  await supabase.from('memory_tier_receipts').insert({
+    memory_id: receipt.memory_id,
+    before_tier: receipt.before_tier,
+    after_tier: receipt.after_tier,
+    reason_code: receipt.reason_code,
+    rps_score: receipt.rps_score,
+    actor: receipt.actor,
+    evidence: receipt.evidence as any,
+  });
 }
 
-/** Get recent receipts */
-export function getReceipts(limit = 50): TierMoveReceipt[] {
-  return receiptLog.slice(-limit);
+/** Get recent receipts from DB */
+export async function getReceipts(limit = 50): Promise<TierMoveReceipt[]> {
+  const { data } = await supabase
+    .from('memory_tier_receipts')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (!data) return [];
+
+  return data.map((r: any) => ({
+    memory_id: r.memory_id,
+    reason_code: r.reason_code,
+    before_tier: r.before_tier,
+    after_tier: r.after_tier,
+    before_confidence: 0, // not stored in DB — informational only
+    after_confidence: 0,
+    rps_score: r.rps_score ?? 0,
+    actor: r.actor,
+    evidence: r.evidence ?? {},
+    timestamp: r.created_at,
+  }));
 }
 
-/** Get receipts for a specific memory */
-export function getReceiptsForMemory(memoryId: string): TierMoveReceipt[] {
-  return receiptLog.filter(r => r.memory_id === memoryId);
+/** Get receipts for a specific memory from DB */
+export async function getReceiptsForMemory(memoryId: string): Promise<TierMoveReceipt[]> {
+  const { data } = await supabase
+    .from('memory_tier_receipts')
+    .select('*')
+    .eq('memory_id', memoryId)
+    .order('created_at', { ascending: false });
+
+  if (!data) return [];
+
+  return data.map((r: any) => ({
+    memory_id: r.memory_id,
+    reason_code: r.reason_code,
+    before_tier: r.before_tier,
+    after_tier: r.after_tier,
+    before_confidence: 0,
+    after_confidence: 0,
+    rps_score: r.rps_score ?? 0,
+    actor: r.actor,
+    evidence: r.evidence ?? {},
+    timestamp: r.created_at,
+  }));
 }
 
-/** Get receipt statistics */
-export function getReceiptStats(): {
+/** Get receipt statistics from DB */
+export async function getReceiptStats(): Promise<{
   total: number;
   by_reason: Record<string, number>;
   by_direction: { promotions: number; demotions: number };
-} {
+}> {
+  const { data } = await supabase
+    .from('memory_tier_receipts')
+    .select('reason_code, before_tier, after_tier');
+
+  if (!data) return { total: 0, by_reason: {}, by_direction: { promotions: 0, demotions: 0 } };
+
   const tierRank = { hot: 3, warm: 2, cold: 1, glacier: 0 } as Record<string, number>;
   const by_reason: Record<string, number> = {};
   let promotions = 0;
   let demotions = 0;
 
-  for (const r of receiptLog) {
+  for (const r of data) {
     by_reason[r.reason_code] = (by_reason[r.reason_code] ?? 0) + 1;
-    if (tierRank[r.after_tier] > tierRank[r.before_tier]) promotions++;
+    if ((tierRank[r.after_tier] ?? 0) > (tierRank[r.before_tier] ?? 0)) promotions++;
     else demotions++;
   }
 
-  return { total: receiptLog.length, by_reason, by_direction: { promotions, demotions } };
+  return { total: data.length, by_reason, by_direction: { promotions, demotions } };
 }
 
 /** Clear all receipts (for testing) */
-export function clearReceipts(): void {
-  receiptLog.length = 0;
+export async function clearReceipts(): Promise<void> {
+  await supabase.from('memory_tier_receipts').delete().neq('id', '00000000-0000-0000-0000-000000000000');
 }

@@ -4732,6 +4732,60 @@ export type Database = {
         }
         Relationships: []
       }
+      circuit_breaker_failures: {
+        Row: {
+          classified_type: string
+          created_at: string
+          id: string
+          message: string | null
+          module: string
+        }
+        Insert: {
+          classified_type: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          module: string
+        }
+        Update: {
+          classified_type?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          module?: string
+        }
+        Relationships: []
+      }
+      circuit_breaker_state: {
+        Row: {
+          countable_failures: number
+          half_open_attempts: number
+          last_trip_at: string | null
+          module: string
+          open_until: string | null
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          countable_failures?: number
+          half_open_attempts?: number
+          last_trip_at?: string | null
+          module: string
+          open_until?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Update: {
+          countable_failures?: number
+          half_open_attempts?: number
+          last_trip_at?: string | null
+          module?: string
+          open_until?: string | null
+          state?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       circuit_breaker_trips: {
         Row: {
           backoff_multiplier: number
@@ -15567,6 +15621,108 @@ export type Database = {
           tenant_id?: string | null
           tokens?: number
           updated_at?: string
+        }
+        Relationships: []
+      }
+      substrate_safe_mode: {
+        Row: {
+          activated_at: string | null
+          activated_by: string | null
+          cascade_event_id: string | null
+          id: number
+          level: string
+          reason: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_by?: string | null
+          cascade_event_id?: string | null
+          id?: number
+          level?: string
+          reason?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          activated_by?: string | null
+          cascade_event_id?: string | null
+          id?: number
+          level?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      substrate_scheduler_queue: {
+        Row: {
+          action: string
+          age_boost: number
+          created_at: string
+          estimated_cost_cents: number
+          estimated_ms: number
+          estimated_tokens: number
+          id: string
+          module: string
+          payload: Json | null
+          priority: string
+        }
+        Insert: {
+          action: string
+          age_boost?: number
+          created_at?: string
+          estimated_cost_cents?: number
+          estimated_ms?: number
+          estimated_tokens?: number
+          id?: string
+          module: string
+          payload?: Json | null
+          priority: string
+        }
+        Update: {
+          action?: string
+          age_boost?: number
+          created_at?: string
+          estimated_cost_cents?: number
+          estimated_ms?: number
+          estimated_tokens?: number
+          id?: string
+          module?: string
+          payload?: Json | null
+          priority?: string
+        }
+        Relationships: []
+      }
+      substrate_scheduler_receipts: {
+        Row: {
+          backpressure_active: boolean
+          budget_cost_cents: number
+          budget_ms: number
+          budget_tokens: number
+          dispatched_at: string
+          priority: string
+          queued_at: string
+          task_id: string
+          wait_ms: number
+        }
+        Insert: {
+          backpressure_active?: boolean
+          budget_cost_cents?: number
+          budget_ms?: number
+          budget_tokens?: number
+          dispatched_at?: string
+          priority: string
+          queued_at: string
+          task_id: string
+          wait_ms?: number
+        }
+        Update: {
+          backpressure_active?: boolean
+          budget_cost_cents?: number
+          budget_ms?: number
+          budget_tokens?: number
+          dispatched_at?: string
+          priority?: string
+          queued_at?: string
+          task_id?: string
+          wait_ms?: number
         }
         Relationships: []
       }
