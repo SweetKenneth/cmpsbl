@@ -44,8 +44,8 @@ export function getSectionOgImage(section: string): string {
     documentation: '/og/documentation.jpg',
     modules: '/og/modules.jpg',
     solutions: '/og/solutions.jpg',
-    investors: '/og/investors.jpg',
-    academy: '/og/academy.jpg',
+    investors: '/og/home.jpg',
+    academy: '/og/documentation.jpg',
     cognitives: '/og/cognitives.jpg',
     memory: '/og/persistent-memory.jpg',
     decode: '/og/decode.jpg',
@@ -54,6 +54,14 @@ export function getSectionOgImage(section: string): string {
     gaming: '/og/gaming.jpg',
     architecture: '/og/architecture.jpg',
     evolution: '/og/evolution.jpg',
+    explore: '/og/substrate-os.jpg',
+    enterprise: '/og/solutions.jpg',
+    runtime: '/og/architecture.jpg',
+    foundations: '/og/substrate-os.jpg',
+    status: '/og/modules.jpg',
+    careers: '/og/about.jpg',
+    packs: '/og/store.jpg',
+    upgrade: '/og/pricing.jpg',
   };
 
   const path = SECTION_MAP[section];
