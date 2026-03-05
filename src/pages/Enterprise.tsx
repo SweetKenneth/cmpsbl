@@ -69,11 +69,11 @@ export default function Enterprise() {
             <Badge variant="outline" className="mb-4 text-xs tracking-widest uppercase">
               Enterprise
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              The complete CMPSBL substrate — deployed on your servers, configured for your compliance requirements, and supported by the team that built it.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              The complete CMPSBL substrate — deployed on your servers. DREAM cycles, governed ADAPT, persistent memory, and EVOLUTION — configured for your compliance requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">
@@ -113,9 +113,9 @@ export default function Enterprise() {
         {/* CTA */}
         <section className="container mx-auto max-w-3xl px-4 text-center">
           <motion.div {...fadeUp} className="p-8 rounded-2xl border border-border bg-muted/30">
-            <h2 className="text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
-            <p className="text-muted-foreground mb-6">
-              Custom slot capacity, dedicated instances, SOC2 compliance, and white-glove onboarding — tailored to your organization's scale and security posture.
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3">Let's architect your deployment.</h2>
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">
+              Custom slot capacity, dedicated instances, SOC2 compliance, DREAM cycle configuration, and white-glove onboarding — tailored to your organization.
             </p>
             <Button asChild size="lg" className="gap-2">
               <Link to="/contact">
