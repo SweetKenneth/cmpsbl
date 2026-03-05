@@ -71,7 +71,9 @@ export function LiveStatsBar() {
   const stats = useLiveStats();
 
   return (
-    <section className="relative z-10 py-4 sm:py-6 border-b border-border/30 bg-card/30 backdrop-blur-sm">
+    <section className="relative z-10 py-4 sm:py-6 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 backdrop-blur-sm overflow-hidden">
+      {/* Subtle flowing accent at top */}
+      <div className="absolute inset-x-0 top-0 h-[1px] memory-stream-bar opacity-40" />
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center gap-2 mb-3">
           <span className="relative flex h-2 w-2">

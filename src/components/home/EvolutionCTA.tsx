@@ -79,9 +79,9 @@ export function EvolutionCTA() {
             }}
           />
 
-          {/* Animated scan line */}
+          {/* Animated scan line — hidden on mobile for perf */}
           <motion.div
-            className="absolute top-0 w-px h-full bg-gradient-to-b from-transparent via-primary/30 to-transparent"
+            className="absolute top-0 w-px h-full bg-gradient-to-b from-transparent via-primary/30 to-transparent hidden sm:block"
             animate={{ left: ["0%", "100%"] }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
           />
