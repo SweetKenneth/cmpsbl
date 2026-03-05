@@ -116,7 +116,7 @@ function pickWeightedTierRange(
     .map(t => ({ ...t, max: Math.min(t.max, maxAllowedScore) }));
 
   if (eligible.length === 0) {
-    return { min: 68, max: Math.min(79, maxAllowedScore) };
+    return { min: 1, max: Math.min(67, maxAllowedScore) };
   }
 
   const normalized = normalizeTierWeights(eligible);
@@ -140,7 +140,8 @@ function scoreToPublicTier(score: number): string | null {
   if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
-  return 'Mint';
+  if (score >= 68) return 'Mint';
+  return 'Raw';
 }
 
 function computeDisplayValuation(score: number): number {
