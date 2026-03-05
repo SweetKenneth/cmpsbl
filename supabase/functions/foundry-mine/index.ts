@@ -618,9 +618,54 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
-    console.error('foundry-mine error:', err.message);
-    return new Response(JSON.stringify({ ok: false, error: err.message }), {
-      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    const traceId = makeTraceId();
+    console.error(`[foundry-mine:${traceId}]`, err?.message ?? err);
+
+    if (supabase && authedUserId) {
+      try {
+        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults);
+
+        if (healedResults.length > 0) {
+          const bestScore = Math.max(...healedResults.map((r: any) => r.score));
+          const tierBreakdown: Record<string, number> = {};
+          for (const r of healedResults) {
+            tierBreakdown[r.publicTier] = (tierBreakdown[r.publicTier] || 0) + 1;
+          }
+
+          await supabase.from('foundry_mine_events').insert({
+            user_id: authedUserId,
+            result_count: healedResults.length,
+            best_score: bestScore,
+            tier_breakdown: tierBreakdown,
+            blocked_reason: 'healing_recovery',
+            rate_limit_bucket: 'healed',
+          });
+
+          return new Response(JSON.stringify({
+            ok: true,
+            results: healedResults,
+            bestScore,
+            tierBreakdown,
+            rerollCredit: false,
+            persistedCount: 0,
+            alreadyOwnedCount: healedResults.length,
+            healed: true,
+            healingMode: 'fallback_pool',
+            traceId,
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (healErr: any) {
+        console.error(`[foundry-mine:${traceId}] healing failed:`, healErr?.message ?? healErr);
+      }
+    }
+
+    return new Response(JSON.stringify(
+      emptyMineResponse(toSafeCustomerMessage(err), traceId)
+    ), {
+      status: 200,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });
