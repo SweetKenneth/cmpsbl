@@ -162,7 +162,10 @@ function HeroBackground() {
 // ─── Main Hero ──────────────────────────────────────────────────
 export function HeroMetaSubstrate() {
   return (
-    <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible">
+    <section 
+      aria-label="CMPSBL hero"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
+    >
       <HeroBackground />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">

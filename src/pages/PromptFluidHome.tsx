@@ -79,14 +79,12 @@ export default function PromptFluidHome() {
 
       <PublicNav />
 
-      {/* Ambient Background */}
+      {/* Ambient Background — CSS only */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-60" />
-        <motion.div
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full"
+        <div
+          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
           style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.08) 0%, transparent 60%)" }}
-          animate={{ x: [50, -50, 50], y: [-30, 30, -30] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
 

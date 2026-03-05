@@ -27,7 +27,7 @@ const NotFound = () => {
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    // Track 404 silently via analytics — no console noise
     import('@/integrations/supabase/client').then(({ supabase }) => {
       supabase.from('analytics_events').insert({
         event_type: '404',
