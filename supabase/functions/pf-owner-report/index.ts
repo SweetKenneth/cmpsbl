@@ -111,6 +111,24 @@ serve(async (req: Request) => {
     const enhancementEvents = extract(enhancementEventsRes);
     const moduleHealthEvents = extract(moduleHealthEventsRes);
 
+    // User accounts
+    const totalUsersResult = totalUsersRes.status === "fulfilled" ? totalUsersRes.value : null;
+    const totalUsersTotal = (totalUsersResult?.data as any)?.total || totalUsersResult?.data?.users?.length || 0;
+    const newUsers3h = extract(newUsersRes);
+    const newUserCount3h = newUsers3h.count || newUsers3h.data?.length || 0;
+
+    // DECODE subjects studied — deduplicated
+    const decodeSubjectsRaw = extract(decodeSubjectsRes);
+    const allStudiedSubjects = new Set<string>();
+    for (const evt of (decodeSubjectsRaw.data || [])) {
+      const d = evt.data as any;
+      if (d?.domain) allStudiedSubjects.add(d.domain);
+      if (d?.topic) allStudiedSubjects.add(d.topic);
+      if (d?.subject) allStudiedSubjects.add(d.subject);
+      if (d?.title && typeof d.title === 'string' && d.title.length < 80) allStudiedSubjects.add(d.title);
+    }
+    const dedupedSubjects = Array.from(allStudiedSubjects).sort();
+
     // ═══ SUBSTRATE AUDIT SCAN ═══
     // Analyze errors, failures, and anomalies across all modules
     interface AuditIssue {
