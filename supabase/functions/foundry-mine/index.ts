@@ -496,7 +496,7 @@ serve(async (req) => {
     let globalFallbackPool: any[] = [];
     const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
     if (allRangePoolsEmpty) {
-      globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
     }
 
     const selectedIds = new Set<string>();
@@ -530,7 +530,7 @@ serve(async (req) => {
 
     if (results.length === 0) {
       if (globalFallbackPool.length === 0) {
-        globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
       }
       await appendFromPool(globalFallbackPool);
     }
