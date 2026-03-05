@@ -542,6 +542,10 @@ function generateFullHelp(): string {
 │  ⚡ ENGINE LAYER                                             │
 │    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  76 engines + 24 meta-engines       │
 │                                                             │
+│  👁 OBSERVABILITY                                             │
+│    obs          (${COMMAND_CATEGORIES.observability.commands.length.toString().padStart(2)} cmds)  Telemetry, bridges, latency, DLQ   │
+│    gov          (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Governance modes, vetoes, drift     │
+│                                                             │
 │  ⚙ INFRASTRUCTURE                                            │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │    patch        ( 4 cmds)  Distribution patch dispatch        │
