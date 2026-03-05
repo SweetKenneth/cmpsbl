@@ -2,7 +2,7 @@
  * PFV Port → Context Classifier (Multi-Label)
  * Content-type-aware routing with primary + secondary classification
  * Benefits: DECODE, MEMORY, BRAIN
- * Source: PromptFluid-Vision brain/contextClassifier.ts
+ * Source: CMPSBL Vision brain/contextClassifier.ts
  *
  * FIX: Now supports multi-label output instead of single-winner.
  * Mixed content (e.g. "code + plan") returns primary + secondaries.

@@ -102,7 +102,7 @@ export const PHASE_1_LIVE_ROUTES = [
   '/pricing',
   '/privacy',
   '/projects',
-  '/promptfluid',
+  '/proof',
   '/proof',
   '/publication',
   '/register',
