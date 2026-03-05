@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { EvolutionModal } from "@/components/EvolutionModal";
 import { XctblModal } from "@/components/XctblModal";
@@ -131,18 +131,16 @@ export function EnhancedFooter() {
               {/* Social Links */}
               <div className="flex items-center gap-2">
                 {socialLinks.map((social) => (
-                  <motion.a
+                  <a
                     key={social.name}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-all duration-200 touch-target"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary hover:scale-105 hover:-translate-y-0.5 flex items-center justify-center transition-all duration-200 touch-target"
                     title={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-4 sm:h-4" />
-                  </motion.a>
+                  </a>
                 ))}
               </div>
             </div>
