@@ -50,7 +50,7 @@ export function GovernanceSignal() {
           <div className="p-6 sm:p-10">
             <div className="text-center mb-8">
               <p className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-[0.2em] mb-2">
-                Stream Governance · Signal → Silicon
+                Substrate Governance · Signal → Silicon
               </p>
               <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                 Every operation is governed, observable, and failure-aware

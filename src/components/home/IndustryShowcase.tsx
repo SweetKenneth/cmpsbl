@@ -142,8 +142,8 @@ export function IndustryShowcase() {
             </span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The Memory Stream's persistent memory, autonomous learning, and self-optimization crystallize
-            intelligence for any vertical — from immersive games to mission-critical enterprise systems.
+            Build on the substrate with persistent memory, DREAM cycles, and the Memory Stream's self-optimization —
+            crystallizing intelligence for any vertical, from immersive games to mission-critical enterprise systems.
           </p>
         </motion.div>
         

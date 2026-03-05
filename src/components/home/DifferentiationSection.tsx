@@ -91,7 +91,7 @@ export function DifferentiationSection() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Most AI platforms process and forget. When you build on the substrate, your systems
+            Most AI platforms process and forget. The substrate and Memory Stream work together — your systems
             dream during downtime, adapt under governance, and compound intelligence over every interaction.
           </p>
         </motion.div>

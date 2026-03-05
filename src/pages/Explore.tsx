@@ -178,8 +178,8 @@ export default function Explore() {
                 <span className="text-white/80">Substrate</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                Systems that DREAM, ADAPT, and EVOLVE — governed by policy, powered by persistent memory.
-                Start free with 3 pipeline slots. Build something that improves itself.
+                The substrate and Memory Stream working together — systems that DREAM, ADAPT, and EVOLVE,
+                governed by policy, powered by persistent memory. Start free with 3 pipeline slots.
               </p>
               
               {/* Mini stats row */}
