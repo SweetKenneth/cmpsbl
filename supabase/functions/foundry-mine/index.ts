@@ -6,7 +6,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Quality floor: absolute minimum score
 const QUALITY_FLOOR = 68;
 const FINGERPRINT_EPOCH = 'SPARTA';
 
@@ -42,7 +41,14 @@ function computeDisplayValuation(score: number): number {
   return Math.round((score / 100) * 2_000_000 * 0.5);
 }
 
-// ─── Pipeline Fingerprint (SHA-256) ─────────────────────────────
+// ─── Pipeline Step Types ────────────────────────────────────────
+interface PipelineStep {
+  module: string;
+  capability: string;
+  params?: Record<string, unknown>;
+}
+
+// ─── Structural Fingerprint (SHA-256) ───────────────────────────
 function canonicalizeJson(obj: unknown): string {
   return JSON.stringify(sortKeys(obj));
 }
@@ -60,12 +66,18 @@ function sortKeys(val: unknown): unknown {
   return val;
 }
 
-async function computeFingerprint(name: string, moduleChain: string[], cjpi: number, category: string): Promise<string> {
+/**
+ * Compute structural fingerprint from pipeline steps.
+ * Identity = steps + epoch. Order preserved. Duplicates preserved.
+ * CJPI, name, category are NOT included.
+ */
+async function computeStructuralFingerprint(steps: PipelineStep[]): Promise<string> {
   const payload = {
-    name,
-    moduleChain: [...moduleChain].sort(),
-    cjpi,
-    category,
+    steps: steps.map(s => ({
+      module: s.module.toUpperCase(),
+      capability: s.capability,
+      ...(s.params && Object.keys(s.params).length > 0 ? { params: s.params } : {}),
+    })),
     epoch: FINGERPRINT_EPOCH,
   };
   const canonical = canonicalizeJson(payload);
@@ -74,6 +86,20 @@ async function computeFingerprint(name: string, moduleChain: string[], cjpi: num
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Convert module_chain to pipeline steps (backward compat for legacy discoveries)
+ */
+function moduleChainToSteps(moduleChain: string[]): PipelineStep[] {
+  return moduleChain.map(m => ({ module: m.toUpperCase(), capability: 'default' }));
+}
+
+/**
+ * Derive module_chain from pipeline_steps (preserves order + duplicates)
+ */
+function stepsToModuleChain(steps: PipelineStep[]): string[] {
+  return steps.map(s => s.module.toUpperCase());
 }
 
 serve(async (req) => {
@@ -250,7 +276,7 @@ serve(async (req) => {
           const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
           const { data: fallbackDisc } = await supabase
             .from('discoveries')
-            .select('id, name, description, cjpi, category, module_chain, pipeline_fingerprint')
+            .select('id, name, description, cjpi, category, module_chain, pipeline_fingerprint, pipeline_steps')
             .gte('cjpi', range.min)
             .lte('cjpi', range.max)
             .range(randomOffset, randomOffset + fetchCount - 1);
@@ -270,7 +296,7 @@ serve(async (req) => {
       rangedCandidates.set(key, candidates);
     }
 
-    // Build results — each item gets its OWN tier + fingerprint
+    // Build results — each item gets its OWN tier + structural fingerprint
     for (const range of attemptedRanges) {
       if (results.length >= maxResults) break;
       const key = `${range.min}-${range.max}`;
@@ -284,9 +310,16 @@ serve(async (req) => {
 
         const tier = scoreToPublicTier(disc.cjpi);
         if (tier) {
-          // Compute fingerprint if not already stored
-          const fingerprint = disc.pipeline_fingerprint || 
-            await computeFingerprint(disc.name, disc.module_chain || [], disc.cjpi, disc.category || '');
+          // Resolve pipeline_steps: use stored or derive from module_chain
+          const pipelineSteps: PipelineStep[] = disc.pipeline_steps
+            ? (disc.pipeline_steps as PipelineStep[])
+            : moduleChainToSteps(disc.module_chain || []);
+
+          // Derive module_chain from steps (preserves order + duplicates)
+          const derivedModuleChain = stepsToModuleChain(pipelineSteps);
+
+          // Compute structural fingerprint from steps (not from name/cjpi/category)
+          const fingerprint = await computeStructuralFingerprint(pipelineSteps);
 
           results.push({
             id: disc.id,
@@ -296,7 +329,8 @@ serve(async (req) => {
             publicTier: tier,
             valuationDisplay: computeDisplayValuation(disc.cjpi),
             category: disc.category,
-            systemChain: disc.module_chain || [],
+            systemChain: derivedModuleChain,
+            pipelineSteps,
             fingerprint,
           });
           ownedIds.add(disc.id);
@@ -314,8 +348,12 @@ serve(async (req) => {
 
           const tier = scoreToPublicTier(disc.cjpi);
           if (tier) {
-            const fingerprint = disc.pipeline_fingerprint ||
-              await computeFingerprint(disc.name, disc.module_chain || [], disc.cjpi, disc.category || '');
+            const pipelineSteps: PipelineStep[] = disc.pipeline_steps
+              ? (disc.pipeline_steps as PipelineStep[])
+              : moduleChainToSteps(disc.module_chain || []);
+
+            const derivedModuleChain = stepsToModuleChain(pipelineSteps);
+            const fingerprint = await computeStructuralFingerprint(pipelineSteps);
 
             results.push({
               id: disc.id,
@@ -325,7 +363,8 @@ serve(async (req) => {
               publicTier: tier,
               valuationDisplay: computeDisplayValuation(disc.cjpi),
               category: disc.category,
-              systemChain: disc.module_chain || [],
+              systemChain: derivedModuleChain,
+              pipelineSteps,
               fingerprint,
             });
             ownedIds.add(disc.id);
@@ -337,21 +376,34 @@ serve(async (req) => {
     // ─── Rediscovery tracking + fingerprint persistence ───────────
     for (const r of results) {
       if (r.fingerprint) {
-        // Update discovery fingerprint if missing
+        // Update discovery with structural fingerprint + pipeline_steps if missing
         await supabase
           .from('discoveries')
-          .update({ pipeline_fingerprint: r.fingerprint, last_discovered_at: now.toISOString() })
+          .update({
+            pipeline_fingerprint: r.fingerprint,
+            pipeline_steps: r.pipelineSteps,
+            last_discovered_at: now.toISOString(),
+          })
           .eq('id', r.id)
           .is('pipeline_fingerprint', null);
 
+        // Also update fingerprint for existing discoveries that had old-format fingerprints
+        await supabase
+          .from('discoveries')
+          .update({
+            pipeline_steps: r.pipelineSteps,
+            last_discovered_at: now.toISOString(),
+          })
+          .eq('id', r.id)
+          .is('pipeline_steps', null);
+
         // Increment discovery_count for rediscoveries
         await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(() => {
-          // Fallback: direct update
           supabase
             .from('discoveries')
-            .update({ 
-              discovery_count: 1, // Will be incremented by trigger or next pass
-              last_discovered_at: now.toISOString() 
+            .update({
+              discovery_count: 1,
+              last_discovered_at: now.toISOString(),
             })
             .eq('id', r.id);
         });
@@ -368,11 +420,10 @@ serve(async (req) => {
             last_discovered_at: now.toISOString(),
           }, { onConflict: 'pipeline_fingerprint' })
           .then(() => {
-            // Increment counters for existing
             supabase
               .from('foundry_discovery_metrics')
-              .update({ 
-                total_discoveries: 1, // Upserted above handles new entries
+              .update({
+                total_discoveries: 1,
                 last_discovered_at: now.toISOString(),
               })
               .eq('pipeline_fingerprint', r.fingerprint);
@@ -397,6 +448,7 @@ serve(async (req) => {
         category: r.category,
         system_chain: r.systemChain,
         pipeline_fingerprint: r.fingerprint || null,
+        pipeline_steps: r.pipelineSteps || null,
       }));
 
       const { data: insertedData, error: insertError } = await supabase

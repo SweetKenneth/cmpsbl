@@ -1,12 +1,19 @@
 /**
  * PipelineProvenance — Visual lineage surface for crystallized pipelines.
- * Shows module ancestry, CJPI score, fingerprint, discovery frequency, and export capability.
+ * Shows capability-level pipeline steps, fingerprint, discovery frequency, and export.
+ * v13.3: structural identity — displays MODULE.capability per step.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Diamond, ArrowRight, Download, Clock, Fingerprint, CheckCircle, Copy } from 'lucide-react';
 import { getPipelineLineage, type PipelineLineageRecord } from '@/substrate/memory-lineage';
-import { generatePipelineFingerprint, truncateFingerprint } from '@/substrate/pipeline-fingerprint';
+import {
+  generatePipelineFingerprint,
+  truncateFingerprint,
+  formatPipelineSteps,
+  moduleChainToSteps,
+  type PipelineStep,
+} from '@/substrate/pipeline-fingerprint';
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 import { toast } from 'sonner';
 
@@ -15,6 +22,7 @@ interface Props {
     name: string;
     score: number;
     systemChain: string[];
+    pipelineSteps?: PipelineStep[];
     fingerprint?: string;
     discoveryCount?: number;
     firstDiscoveredAt?: string;
@@ -48,6 +56,10 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
   const lineageRecords = getPipelineLineage(100);
   const lineage = lineageRecords.find(r => r.pipelineName === pipeline.name);
 
+  // Resolve pipeline steps: prefer explicit steps, fallback to module chain
+  const steps: PipelineStep[] = pipeline.pipelineSteps
+    ?? moduleChainToSteps(lineage?.modules ?? pipeline.systemChain ?? []);
+
   const modules = lineage?.modules ?? pipeline.systemChain ?? [];
   const cjpi = lineage?.cjpi ?? pipeline.score;
   const timestamp = lineage?.crystallizedAt ?? pipeline.firstDiscoveredAt ?? new Date().toISOString();
@@ -58,15 +70,11 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
     if (!fingerprint) return;
     setVerifying(true);
     try {
-      const recomputed = await generatePipelineFingerprint({
-        name: pipeline.name,
-        moduleChain: modules,
-        cjpi,
-        category: '',
-      });
+      // Structural verification: recompute from steps only
+      const recomputed = await generatePipelineFingerprint({ steps });
       setVerified(recomputed === fingerprint);
       if (recomputed === fingerprint) {
-        toast.success('Artifact verified — fingerprint matches');
+        toast.success('Artifact verified — structural fingerprint matches');
       } else {
         toast.error('Fingerprint mismatch — artifact may have been modified');
       }
@@ -88,6 +96,7 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
     const data = {
       pipeline: pipeline.name,
       cjpi,
+      pipelineSteps: steps,
       modules,
       fingerprint: fingerprint || 'untracked',
       crystallizedAt: timestamp,
@@ -164,7 +173,7 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
           {fingerprint && (
             <div className="px-5 pb-4">
               <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground mb-2">
-                Fingerprint
+                Structural Fingerprint
               </div>
               <div className="flex items-center gap-2">
                 <Fingerprint className="w-3.5 h-3.5 text-primary/60 shrink-0" />
@@ -179,31 +188,35 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
                   {copied ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                 </button>
               </div>
+              <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
+                Identity derived from architecture only (steps + epoch)
+              </div>
               {verified !== null && (
                 <div className={`text-[9px] font-mono mt-1 ${verified ? 'text-emerald-400' : 'text-destructive'}`}>
-                  {verified ? '✓ Verified — fingerprint matches' : '✗ Mismatch detected'}
+                  {verified ? '✓ Verified — structural fingerprint matches' : '✗ Mismatch detected'}
                 </div>
               )}
             </div>
           )}
 
-          {/* Module lineage chain */}
+          {/* Pipeline steps (capability-level) */}
           <div className="px-5 pb-4">
             <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground mb-3">
-              Module Lineage
+              Pipeline Architecture
             </div>
             <div className="flex flex-wrap items-center gap-1.5">
-              {modules.map((mod, i) => (
-                <span key={mod} className="flex items-center gap-1.5">
+              {steps.map((step, i) => (
+                <span key={`${step.module}-${step.capability}-${i}`} className="flex items-center gap-1.5">
                   <motion.span
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
                     className="text-xs font-mono font-bold px-2.5 py-1 rounded border border-primary/20 bg-primary/5 text-foreground"
                   >
-                    {mod}
+                    <span className="text-primary/80">{step.module.toUpperCase()}</span>
+                    <span className="text-muted-foreground/60">.{step.capability}</span>
                   </motion.span>
-                  {i < modules.length - 1 && (
+                  {i < steps.length - 1 && (
                     <ArrowRight className="w-3 h-3 text-muted-foreground/40" />
                   )}
                 </span>
