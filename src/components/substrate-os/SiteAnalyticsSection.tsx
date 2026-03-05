@@ -286,19 +286,25 @@ export function SiteAnalyticsSection() {
           </div>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex gap-1 p-1 rounded-lg bg-muted/30 border border-border/30">
-            {(['7d', '30d', '90d'] as const).map(range => (
+          <div className="flex gap-1 p-1 rounded-lg bg-muted/30 border border-border/30 flex-wrap">
+            {([
+              { key: 'today' as const, label: 'Today' },
+              { key: 'yesterday' as const, label: 'Yesterday' },
+              { key: '7d' as const, label: '7d' },
+              { key: '30d' as const, label: '30d' },
+              { key: '90d' as const, label: '90d' },
+            ]).map(({ key, label }) => (
               <button
-                key={range}
-                onClick={() => setDateRange(range)}
+                key={key}
+                onClick={() => setDateRange(key)}
                 className={cn(
                   "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
-                  dateRange === range
+                  dateRange === key
                     ? "bg-green-500/20 text-green-400 border border-green-500/40"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                {range}
+                {label}
               </button>
             ))}
           </div>
