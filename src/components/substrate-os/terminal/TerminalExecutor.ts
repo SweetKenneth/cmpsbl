@@ -5128,6 +5128,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           const handlerResult = await handler();
           const data = handlerResult as Record<string, unknown>;
           
+          // If handler returned a formatted output, use it directly
+          if (data?.formatted && Array.isArray(data.formatted)) {
+            return { success: true, output: (data.formatted as string[]).join('\n') };
+          }
+          
           if (data?.success === false) {
             return { success: false, output: `▓ ${data.error || 'Command failed'}` };
           }
@@ -5193,7 +5198,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ REGISTRY-BACKED MODULE HANDLERS (All 38 Nodes + Cross-Cutting) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.')) {
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.') || base.startsWith('sovereign.') || base.startsWith('oracle.') || base.startsWith('conscience.') || base.startsWith('phantom.') || base.startsWith('forge.') || base.startsWith('lingua.') || base.startsWith('compass.') || base.startsWith('echo.') || base.startsWith('treaty.') || base.startsWith('harvest.') || base.startsWith('reflex.') || base.startsWith('evolution.') || base.startsWith('immunity.') || base.startsWith('governance.') || base.startsWith('medic.') || base.startsWith('nerve.') || base.startsWith('expansion.') || base.startsWith('hardening.') || base.startsWith('engineer.') || base.startsWith('intent.') || base.startsWith('atlas.') || base.startsWith('diligence.')) {
       try {
         // Lazy-register all registry-backed handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
