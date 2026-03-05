@@ -4,7 +4,7 @@
  * before writing code — routed through the module bus with scoped recipients.
  */
 
-import { publish, subscribe, type ModuleSignal } from '../module-bus';
+import { publish, type ModuleSignal } from '../module-bus';
 import { emit } from '../events';
 import { cpPut, cpGet, cpList } from '../control-plane/adapters/queueStateAdapter';
 
@@ -63,7 +63,7 @@ function discussionPrefix(planId: string): string {
 async function scopedPublish(
   from: 'encode' | 'decode' | 'system',
   signalType: string,
-  payload: Record<string, any>,
+  payload: Record<string, unknown>,
   priority: 'normal' | 'high' = 'normal'
 ): Promise<void> {
   const recipients = SIGNAL_RECIPIENTS[signalType] || ['decode', 'encode'];
@@ -75,10 +75,10 @@ async function scopedPublish(
   delete safePayload.diff;
 
   for (const to of recipients) {
-    await publish(from, signalType, safePayload, {
-      to: to as any,
+    await publish(from, signalType, safePayload as Record<string, unknown>, {
+      to: to as Parameters<typeof publish>[3] extends { to?: infer U } ? U : string,
       priority,
-    });
+    } as Parameters<typeof publish>[3]);
   }
 }
 
@@ -145,12 +145,11 @@ export async function respondToDiscussion(
   response: string,
   from: 'DECODE' | 'USER' = 'USER'
 ): Promise<DiscussionMessage> {
-  // Mark original as resolved
+  // Mark original as resolved — clone before write-back
   const original = await cpGet<DiscussionMessage>(discussionKey(planId, discussionId));
   if (original) {
-    original.resolved = true;
-    original.response = response;
-    await cpPut(discussionKey(planId, discussionId), original);
+    const updated: DiscussionMessage = { ...original, resolved: true, response };
+    await cpPut<DiscussionMessage>(discussionKey(planId, discussionId), updated);
   }
 
   const msg = createMessage(planId, from, 'answer', response);
@@ -183,7 +182,7 @@ export async function signalReady(planId: string): Promise<DiscussionMessage> {
 export async function getDiscussion(planId: string): Promise<DiscussionMessage[]> {
   const entries = await cpList<DiscussionMessage>(discussionPrefix(planId));
   return entries
-    .map(e => e.value)
+    .map(e => ({ ...e.value })) // clone to avoid mutating cache
     .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
 }
 
@@ -216,8 +215,8 @@ export async function discussionHealth(): Promise<{ ok: boolean; detail: string 
       return { ok: true, detail: 'Discussion storage operational, ordering stable' };
     }
     return { ok: false, detail: 'Thread retrieval mismatch' };
-  } catch (err: any) {
-    return { ok: false, detail: err?.message || 'Unknown error' };
+  } catch (err: unknown) {
+    return { ok: false, detail: err instanceof Error ? err.message : 'Unknown error' };
   }
 }
 
@@ -243,5 +242,5 @@ function createMessage(
 }
 
 async function persistMessage(msg: DiscussionMessage): Promise<void> {
-  await cpPut(discussionKey(msg.plan_id, msg.id), msg);
+  await cpPut<DiscussionMessage>(discussionKey(msg.plan_id, msg.id), msg);
 }

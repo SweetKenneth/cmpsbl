@@ -25,13 +25,17 @@ export async function storePlan(plan: PatchPlan): Promise<PatchPlan> {
   if (existing.length >= MAX_PLANS) {
     const evictable = existing
       .filter(e => e.value.status === 'executed' || e.value.status === 'rejected')
-      .sort((a, b) => a.value.created_at.localeCompare(b.value.created_at));
+      .sort((a, b) => {
+        const dateA = new Date(a.value.created_at).getTime();
+        const dateB = new Date(b.value.created_at).getTime();
+        return dateA - dateB; // oldest first
+      });
     if (evictable.length > 0) {
       await cpDelete(evictable[0].key);
     }
   }
 
-  await cpPut(planKey(plan.plan_id), plan, {
+  await cpPut<PatchPlan>(planKey(plan.plan_id), plan, {
     status: plan.status,
     created_at: plan.created_at,
   });
@@ -52,13 +56,17 @@ export async function loadPlan(planId: string): Promise<PatchPlan | null> {
 
 export async function listPlans(filter?: { status?: PlanStatus }): Promise<PatchPlan[]> {
   const all = await cpList<PatchPlan>('encode:plan:');
-  let result = all.map(e => e.value);
+  let result = all.map(e => ({ ...e.value })); // clone to avoid mutating cache
 
   if (filter?.status) {
     result = result.filter(p => p.status === filter.status);
   }
 
-  return result.sort((a, b) => b.created_at.localeCompare(a.created_at));
+  return result.sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+    return dateB - dateA; // newest first
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -77,17 +85,20 @@ export async function approvePlan(planId: string, approver?: string): Promise<{ 
     return { success: false, error: `Verification failed: ${verification.errors.join('; ')}` };
   }
 
-  plan.status = 'approved';
-  plan.approved_at = new Date().toISOString();
-  plan.approved_by = approver ?? 'user';
+  const updated: PatchPlan = {
+    ...plan,
+    status: 'approved',
+    approved_at: new Date().toISOString(),
+    approved_by: approver ?? 'user',
+  };
 
-  await cpPut(planKey(planId), plan, { status: 'approved' });
+  await cpPut<PatchPlan>(planKey(planId), updated, { status: 'approved' });
 
   emit({
     module: 'encode',
     event_type: 'plan_approved',
     outcome: 'succeeded',
-    data: { plan_id: planId, approver: plan.approved_by },
+    data: { plan_id: planId, approver: updated.approved_by },
   });
 
   return { success: true };
@@ -97,10 +108,13 @@ export async function rejectPlan(planId: string, reason: string): Promise<{ succ
   const plan = await loadPlan(planId);
   if (!plan) return { success: false, error: `Plan ${planId} not found` };
 
-  plan.status = 'rejected';
-  plan.rejected_reason = reason;
+  const updated: PatchPlan = {
+    ...plan,
+    status: 'rejected',
+    rejected_reason: reason,
+  };
 
-  await cpPut(planKey(planId), plan, { status: 'rejected' });
+  await cpPut<PatchPlan>(planKey(planId), updated, { status: 'rejected' });
 
   emit({
     module: 'encode',
@@ -119,10 +133,13 @@ export async function markPlanExecuted(planId: string): Promise<{ success: boole
     return { success: false, error: `Plan ${planId} must be approved before execution (current: ${plan.status})` };
   }
 
-  plan.status = 'executed';
-  plan.executed_at = new Date().toISOString();
+  const updated: PatchPlan = {
+    ...plan,
+    status: 'executed',
+    executed_at: new Date().toISOString(),
+  };
 
-  await cpPut(planKey(planId), plan, { status: 'executed' });
+  await cpPut<PatchPlan>(planKey(planId), updated, { status: 'executed' });
 
   emit({
     module: 'encode',
@@ -160,7 +177,7 @@ export async function planStoreHealth(): Promise<{ ok: boolean; detail: string }
       return { ok: true, detail: 'Plan store CRUD operational' };
     }
     return { ok: false, detail: 'Load returned null after store' };
-  } catch (err: any) {
-    return { ok: false, detail: err?.message || 'Unknown error' };
+  } catch (err: unknown) {
+    return { ok: false, detail: err instanceof Error ? err.message : 'Unknown error' };
   }
 }

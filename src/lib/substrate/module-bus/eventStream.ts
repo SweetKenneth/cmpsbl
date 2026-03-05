@@ -1,14 +1,15 @@
 /**
  * Substrate Event Stream — Observable stream of system activity
  * Aggregates module-bus signals for debugging and governance observability.
- * 
+ *
  * Features:
  * - In-memory 500-entry ring buffer (fast + cheap)
  * - Optional CP-backed persistence (off by default)
+ * - Deterministic index-range eviction for persisted entries
  */
 
 import { subscribe, type ModuleSignal } from './index';
-import { cpPut, cpDelete, cpList } from '../control-plane/adapters/queueStateAdapter';
+import { cpPut, cpDelete } from '../control-plane/adapters/queueStateAdapter';
 
 // ═══════════════════════════════════════════════════════════════
 // STREAM BUFFER
@@ -27,6 +28,10 @@ const stream: StreamEntry[] = [];
 let counter = 0;
 let initialized = false;
 let persistenceEnabled = false;
+
+// Track min/max persisted index for deterministic eviction
+let minPersistedIndex = -1;
+let maxPersistedIndex = -1;
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -56,18 +61,22 @@ export function initEventStream(): void {
     // Optional persistence
     if (persistenceEnabled) {
       try {
-        await cpPut(`bus:event:${entry.index}`, entry);
-        // Evict old persisted entries beyond cap
-        if (entry.index % 50 === 0) {
-          const persisted = await cpList('bus:event:');
-          if (persisted.length > MAX_PERSISTED) {
-            const toRemove = persisted
-              .sort((a, b) => a.key.localeCompare(b.key))
-              .slice(0, persisted.length - MAX_PERSISTED);
-            for (const item of toRemove) {
-              await cpDelete(item.key);
-            }
+        await cpPut<StreamEntry>(`bus:event:${entry.index}`, entry);
+
+        // Track persisted range
+        if (minPersistedIndex === -1) minPersistedIndex = entry.index;
+        maxPersistedIndex = entry.index;
+
+        // Evict old persisted entries beyond cap using deterministic index range
+        const persistedCount = maxPersistedIndex - minPersistedIndex + 1;
+        if (persistedCount > MAX_PERSISTED && entry.index % 50 === 0) {
+          const toEvict = persistedCount - MAX_PERSISTED;
+          for (let i = 0; i < toEvict; i++) {
+            try {
+              await cpDelete(`bus:event:${minPersistedIndex + i}`);
+            } catch { /* best effort */ }
           }
+          minPersistedIndex += toEvict;
         }
       } catch {
         // Silently skip persistence failure — ring buffer still active
@@ -124,6 +133,7 @@ export function getStreamStats(): {
   newest_entry: string | null;
   initialized: boolean;
   persistence_enabled: boolean;
+  persisted_range: { min: number; max: number } | null;
 } {
   return {
     total_captured: counter,
@@ -133,6 +143,9 @@ export function getStreamStats(): {
     newest_entry: stream.length > 0 ? stream[stream.length - 1].captured_at : null,
     initialized,
     persistence_enabled: persistenceEnabled,
+    persisted_range: minPersistedIndex >= 0
+      ? { min: minPersistedIndex, max: maxPersistedIndex }
+      : null,
   };
 }
 
