@@ -105,7 +105,7 @@ export function EnginesCTA() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 + i * 0.04 }}
-                  className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                  className="group rounded-xl border border-border/30 bg-card/50 p-3 sm:p-4 hover:border-primary/30 hover:bg-primary/5 hover:-translate-y-0.5 transition-all duration-300 shimmer-on-hover"
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <div className={cn("w-1.5 h-1.5 rounded-full", TIER_DOT[engine.tier])} />
