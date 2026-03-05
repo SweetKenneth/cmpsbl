@@ -89,11 +89,54 @@ export async function writebackFromEncode(data: {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Route an intent from DECODE to ENCODE as a structured task packet
+ * PLAN STAGE: Generate a PatchPlan from intent before routing to ENCODE.
+ * This is the new intermediate step between CLASSIFY and EXECUTE.
+ */
+export async function planFromIntent(
+  intentText: string,
+  context: {
+    modules?: string[];
+    targetSurface?: EncodeTaskPacket['targetSurface'];
+    brainKeys?: string[];
+    destructiveAllowed?: boolean;
+  } = {}
+): Promise<PatchPlan> {
+  const plan = generatePatchPlan({
+    summary: intentText,
+    modules: context.modules,
+    targetSurface: context.targetSurface,
+    destructiveAllowed: context.destructiveAllowed,
+  });
+
+  // Store the plan
+  storePlan(plan);
+
+  // Publish plan creation to bus
+  await publish('decode', 'plan.created', {
+    plan_id: plan.plan_id,
+    title: plan.title,
+    modules: plan.modules,
+    risks: plan.risks,
+  }, { to: '*', priority: 'normal' });
+
+  emit({
+    module: 'decode',
+    event_type: 'plan_generated',
+    outcome: 'succeeded',
+    data: { plan_id: plan.plan_id, modules: plan.modules.length },
+  });
+
+  return plan;
+}
+
+/**
+ * Route an intent from DECODE to ENCODE as a structured task packet.
+ * NOW REQUIRES an approved plan_id — execution never occurs directly after classification.
  */
 export async function routeFromDecode(
   intentText: string,
   context: {
+    plan_id?: string;
     targetSurface?: EncodeTaskPacket['targetSurface'];
     brainKeys?: string[];
     destructiveAllowed?: boolean;
@@ -101,6 +144,31 @@ export async function routeFromDecode(
     acceptance?: string[];
   } = {}
 ): Promise<EncodeTaskPacket> {
+  // ── PLAN GATE: Require approved plan_id ──
+  if (!context.plan_id) {
+    throw new Error(
+      '[ENCODE] plan_id required. Use planFromIntent() to generate a plan, ' +
+      'then approvePlan() before routing to ENCODE.'
+    );
+  }
+
+  const plan = loadPlan(context.plan_id);
+  if (!plan) {
+    throw new Error(`[ENCODE] Plan ${context.plan_id} not found`);
+  }
+  if (plan.status !== 'approved') {
+    throw new Error(
+      `[ENCODE] Plan ${context.plan_id} is "${plan.status}" — must be "approved" before ENCODE can execute. ` +
+      `Use approvePlan("${context.plan_id}") first.`
+    );
+  }
+
+  // Verify the plan is structurally sound
+  const verification = verifyPlan(plan);
+  if (!verification.valid) {
+    throw new Error(`[ENCODE] Plan verification failed: ${verification.errors.join('; ')}`);
+  }
+
   const brainKeys = context.brainKeys || [];
   const brainContext = await recallForEncode(brainKeys, intentText);
 
@@ -117,7 +185,12 @@ export async function routeFromDecode(
     acceptance: context.acceptance || ['builds_without_errors', 'tests_pass'],
   });
 
-  emit({ module: 'encode', event_type: 'decode_routed', outcome: 'succeeded', data: { taskId: task.id, brainContextSize: brainContext.memories.length } });
+  emit({
+    module: 'encode',
+    event_type: 'decode_routed',
+    outcome: 'succeeded',
+    data: { taskId: task.id, plan_id: context.plan_id, brainContextSize: brainContext.memories.length },
+  });
 
   return task;
 }
