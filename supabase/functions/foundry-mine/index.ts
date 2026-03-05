@@ -343,24 +343,32 @@ serve(async (req) => {
       });
     }
 
-    // Determine user tier
-    const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
-      headers: { authorization: authHeader },
-    });
-
-    const { data: isAdmin } = await supabase.rpc('has_role_text', {
-      _user_id: user.id,
-      _role: 'admin',
-    });
-
+    // Determine user tier — resilient to check-engine-subscription failures
     let foundryTier = 'free';
-    if (isAdmin) {
-      foundryTier = 'mythic_miner';
-    } else {
-      const engineTier = subData?.tier || 'free';
-      if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';
-      else if (engineTier === 'studio') foundryTier = 'prospector';
-      else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';
+    try {
+      const { data: isAdmin } = await supabase.rpc('has_role_text', {
+        _user_id: user.id,
+        _role: 'admin',
+      });
+
+      if (isAdmin) {
+        foundryTier = 'mythic_miner';
+      } else {
+        try {
+          const { data: subData } = await supabase.functions.invoke('check-engine-subscription', {
+            headers: { authorization: authHeader },
+          });
+          const engineTier = subData?.tier || 'free';
+          if (['architect', 'pro', 'enterprise'].includes(engineTier)) foundryTier = 'excavator';
+          else if (engineTier === 'studio') foundryTier = 'prospector';
+          else if (['creator', 'builder'].includes(engineTier)) foundryTier = 'explorer';
+        } catch (subError) {
+          console.error('[foundry-mine] check-engine-subscription failed, defaulting to free tier:', subError);
+          // Graceful degradation: use free tier if subscription check fails
+        }
+      }
+    } catch (roleErr) {
+      console.error('[foundry-mine] Role check failed, defaulting to free tier:', roleErr);
     }
 
     // Get tier config
