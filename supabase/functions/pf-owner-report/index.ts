@@ -167,6 +167,21 @@ serve(async (req: Request) => {
       identity: { title: 'add session anomaly detection', category: 'security' },
       ripple: { title: 'add event replay filtering', category: 'capability' },
       intent: { title: 'add intent confidence scoring', category: 'capability' },
+      atlas: { title: 'add governance proposal auto-scoring', category: 'capability' },
+      shadow: { title: 'add probe drift detection', category: 'resilience' },
+      oracle: { title: 'add predictive signal weighting', category: 'capability' },
+      compass: { title: 'add directional trend mapping', category: 'capability' },
+      echo: { title: 'add feedback loop amplification', category: 'performance' },
+      harvest: { title: 'add data ingestion quality scoring', category: 'performance' },
+      lingua: { title: 'add translation confidence tracking', category: 'capability' },
+      forge: { title: 'add artifact integrity verification', category: 'security' },
+      nerve: { title: 'add real-time signal prioritization', category: 'resilience' },
+      reflex: { title: 'add automatic response calibration', category: 'resilience' },
+      engineer: { title: 'add maintenance fleet scheduling', category: 'resilience' },
+      mesh: { title: 'add cross-node consensus optimization', category: 'performance' },
+      sovereign: { title: 'add sovereignty boundary enforcement', category: 'security' },
+      conscience: { title: 'add ethical decision audit trail', category: 'security' },
+      treaty: { title: 'add inter-system agreement validation', category: 'security' },
     };
 
     // Track which enhancements were already granted
