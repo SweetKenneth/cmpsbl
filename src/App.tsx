@@ -28,9 +28,10 @@ import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";
 const MobilePreviewSafeMode = lazy(() => import("@/components/system/MobilePreviewSafeMode").then(m => ({ default: m.MobilePreviewSafeMode })));
 const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m => ({ default: m.DiagPanel })));
 
-const SubstrateProvider = lazy(() => import("./components/substrate/SubstrateProvider").then(m => ({ default: m.SubstrateProvider })));
-const AuthProvider = lazy(() => import("@/contexts/AuthContext").then(m => ({ default: m.AuthProvider })));
-const TooltipProvider = lazy(() => import("@/components/ui/tooltip").then(m => ({ default: m.TooltipProvider })));
+// Critical providers — eagerly loaded to prevent app-crashing dynamic import failures
+import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
 // Route modules — extracted from monolith (P2 gap analysis)
