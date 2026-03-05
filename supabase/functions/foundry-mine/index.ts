@@ -267,6 +267,7 @@ async function attemptHealingRecovery(
   supabase: ReturnType<typeof createClient>,
   userId: string,
   maxResults: number,
+  priorMines: number = 0,
 ) {
   const fetchCount = Math.max(8, maxResults * 8);
 
@@ -276,10 +277,12 @@ async function attemptHealingRecovery(
     .eq('user_id', userId);
 
   const ownedIds = new Set((existingItems || []).map((item: any) => item.artifact_id));
-  const globalCandidates = await fetchGlobalCandidates(supabase, fetchCount);
+  
+  // Use weighted candidates instead of unfiltered global pool
+  const candidates = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines);
 
   const healedResults: any[] = [];
-  for (const disc of globalCandidates) {
+  for (const disc of candidates) {
     if (healedResults.length >= maxResults) break;
     if (ownedIds.has(disc.id)) continue;
 
