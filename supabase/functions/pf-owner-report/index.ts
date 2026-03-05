@@ -48,6 +48,11 @@ serve(async (req: Request) => {
       auditScanErrorsRes,
       enhancementEventsRes,
       moduleHealthEventsRes,
+      // User accounts
+      totalUsersRes,
+      newUsersRes,
+      // DECODE subjects studied (deduplicated)
+      decodeSubjectsRes,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -73,6 +78,12 @@ serve(async (req: Request) => {
       supabase.from("brain_events").select("module, data, created_at").eq("event_type", "enhancement_granted").gte("created_at", iso24h).order("created_at", { ascending: false }).limit(50),
       // Module health: all module events for health scoring
       supabase.from("brain_events").select("module, outcome", { count: "exact" }).gte("created_at", iso24h),
+      // Total user accounts
+      supabase.auth.admin.listUsers({ page: 1, perPage: 1 }),
+      // New users in last 3 hours (profiles table as proxy)
+      supabase.from("profiles").select("id, created_at", { count: "exact" }).gte("created_at", iso3h),
+      // DECODE: all subjects/topics being studied (for dedup display)
+      supabase.from("brain_events").select("data, module").in("event_type", ["technical_learning_cycle", "clm_server_cycle", "module_learning_insight", "learning"]).gte("created_at", iso3h).limit(200),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
