@@ -98,8 +98,8 @@ export async function runEvolutionCycle(
       riskLevel: analyzed.riskLevel,
     };
 
-    // 3. Shadow run
-    const shadowed = shadowRun(proposal.id);
+    // 3. Shadow run (async — delegates to SHADOW module)
+    const shadowed = await shadowRun(proposal.id);
     if (!shadowed || shadowed.phase === 'rejected') {
       cycle.phase = 'failed';
       cycle.dryRunPassed = false;
@@ -122,7 +122,7 @@ export async function runEvolutionCycle(
 
     // 5. Promote (auto-approve for evolution cycles that passed all gates)
     cycle.phase = 'applying';
-    const promoted = promoteMutation(proposal.id, {
+    const promoted = await promoteMutation(proposal.id, {
       approved: true,
       reason: `Evolution cycle ${cycle.id} passed all gates`,
     });
@@ -133,7 +133,7 @@ export async function runEvolutionCycle(
       await appendAudit('evolution', 'cycle.applied', {
         cycle_id: cycle.id,
         mutation_id: proposal.id,
-        receipt_hash: promoted.receipt?.hash,
+        receipt_hash: promoted.receipt?.chainHash,
       });
     } else {
       cycle.phase = 'failed';

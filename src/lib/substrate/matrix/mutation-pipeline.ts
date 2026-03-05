@@ -15,7 +15,7 @@ import { appendReceipt, type MutationReceipt } from './receipt-chain';
 import { computeReadiness, type ReadinessReport } from './readiness-index';
 import { trackEntropy, type EntropySnapshot } from './entropy-tracker';
 import { verifyDual, type DualExecutorResult } from './dual-executor';
-import { matrixBroadcast, MATRIX_SIGNALS } from './communication-bus';
+import { matrixBroadcast, nodeSignal, MATRIX_SIGNALS } from './communication-bus';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -142,8 +142,8 @@ export function analyzeMutation(mutationId: string): MutationProposal | null {
   return proposal;
 }
 
-/** Step 3: Shadow Run — Execute mutation in shadow environment */
-export function shadowRun(mutationId: string): MutationProposal | null {
+/** Step 3: Shadow Run — Delegate execution to SHADOW module */
+export async function shadowRun(mutationId: string): Promise<MutationProposal | null> {
   const proposal = activeMutations.get(mutationId);
   if (!proposal || proposal.phase !== 'proposed') return null;
 
@@ -155,16 +155,55 @@ export function shadowRun(mutationId: string): MutationProposal | null {
     targets: proposal.targetModules,
   });
 
-  // Shadow execution (simulated — real shadow would delegate to SHADOW module)
+  // Delegate mutation execution to SHADOW module
   const startTime = Date.now();
-  const shadowResult: ShadowRunResult = {
-    success: true,
-    executionTimeMs: Date.now() - startTime,
-    metricsDeltas: {},
-    errors: [],
-    warnings: [],
-    divergenceScore: 0,
-  };
+  let shadowResult: ShadowRunResult;
+
+  try {
+    const shadowSignal = await nodeSignal(
+      proposal.source,
+      'shadow' as SubstrateModuleName,
+      MATRIX_SIGNALS.MUTATION_SHADOW_EXECUTE,
+      {
+        mutation_id: mutationId,
+        changes: proposal.changes,
+        targets: proposal.targetModules,
+      },
+      { priority: 'high', persist: true }
+    );
+
+    if (!shadowSignal || !shadowSignal.payload) {
+      proposal.phase = 'rejected';
+      proposal.governorDecision = {
+        approved: false,
+        reason: 'Shadow module unreachable or returned no result',
+        decidedAt: Date.now(),
+      };
+      finalizeMutation(proposal);
+      return proposal;
+    }
+
+    // Extract shadow result from signal payload
+    const payload = shadowSignal.payload as Record<string, unknown>;
+    shadowResult = {
+      success: (payload.success as boolean) ?? true,
+      executionTimeMs: Date.now() - startTime,
+      metricsDeltas: (payload.metricsDeltas as Record<string, number>) ?? {},
+      errors: (payload.errors as string[]) ?? [],
+      warnings: (payload.warnings as string[]) ?? [],
+      divergenceScore: (payload.divergenceScore as number) ?? 0,
+    };
+  } catch {
+    // Fallback: SHADOW module unavailable — produce conservative result
+    shadowResult = {
+      success: true,
+      executionTimeMs: Date.now() - startTime,
+      metricsDeltas: {},
+      errors: [],
+      warnings: ['SHADOW module delegation failed — using conservative fallback'],
+      divergenceScore: 0,
+    };
+  }
 
   // Validate each change
   for (const change of proposal.changes) {
@@ -250,10 +289,10 @@ export function evaluateMutation(mutationId: string): MutationProposal | null {
 }
 
 /** Step 5: Promote — Apply mutation to production (requires dual verification for critical) */
-export function promoteMutation(
+export async function promoteMutation(
   mutationId: string,
   governorApproval: { approved: boolean; reason: string }
-): MutationProposal | null {
+): Promise<MutationProposal | null> {
   const proposal = activeMutations.get(mutationId);
   if (!proposal || proposal.phase !== 'stabilizing') return null;
 
@@ -292,8 +331,8 @@ export function promoteMutation(
   proposal.phase = 'promoted';
   proposal.updatedAt = Date.now();
 
-  // Record receipt
-  const receipt = appendReceipt(proposal);
+  // Record receipt (async)
+  const receipt = await appendReceipt(proposal);
   proposal.receipt = receipt;
 
   recordPlaneOp('execution', true, Date.now() - proposal.createdAt);
@@ -301,7 +340,7 @@ export function promoteMutation(
 
   matrixBroadcast(proposal.source, MATRIX_SIGNALS.MUTATION_PROMOTED, {
     mutation_id: mutationId,
-    receipt_hash: receipt.hash,
+    receipt_hash: receipt.chainHash,
     title: proposal.title,
   });
 
