@@ -195,44 +195,38 @@ function sendFinalPing() {
   const sessionDuration = Date.now() - sessionStartTime;
   const { sessionId } = getOrCreateSession();
 
-  // Use the Supabase REST endpoint directly via sendBeacon for reliability
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !supabaseKey) return;
 
-  const headers = {
+  const hdrs: HeadersInit = {
     'Content-Type': 'application/json',
     'apikey': supabaseKey,
     'Authorization': `Bearer ${supabaseKey}`,
     'Prefer': 'return=minimal',
   };
 
-  // Update page view
   try {
-    const pvUrl = `${supabaseUrl}/rest/v1/site_page_views?id=eq.${currentPageViewId}`;
-    const pvBody = JSON.stringify({
-      time_on_page_ms: pageDuration,
-      scroll_depth_pct: maxScrollDepth,
-      is_bounce: pageDuration < ENGAGEMENT_THRESHOLD,
-    });
+    // Use fetch with keepalive — survives page unload unlike regular fetch
+    fetch(`${supabaseUrl}/rest/v1/site_page_views?id=eq.${currentPageViewId}`, {
+      method: 'PATCH', headers: hdrs, keepalive: true,
+      body: JSON.stringify({
+        time_on_page_ms: pageDuration,
+        scroll_depth_pct: maxScrollDepth,
+        is_bounce: pageDuration < ENGAGEMENT_THRESHOLD,
+      }),
+    }).catch(() => {});
 
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(pvUrl, new Blob([pvBody], { type: 'application/json' }));
-    }
-
-    // Update session
-    const sessUrl = `${supabaseUrl}/rest/v1/site_sessions?id=eq.${sessionId}`;
-    const sessBody = JSON.stringify({
-      total_duration_ms: sessionDuration,
-      last_page: window.location.pathname,
-      ended_at: new Date().toISOString(),
-      is_bounce: pageDuration < ENGAGEMENT_THRESHOLD && !engagementSent,
-    });
-
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(sessUrl, new Blob([sessBody], { type: 'application/json' }));
-    }
-  } catch { /* last resort — acceptable to lose */ }
+    fetch(`${supabaseUrl}/rest/v1/site_sessions?id=eq.${sessionId}`, {
+      method: 'PATCH', headers: hdrs, keepalive: true,
+      body: JSON.stringify({
+        total_duration_ms: sessionDuration,
+        last_page: window.location.pathname,
+        ended_at: new Date().toISOString(),
+        is_bounce: pageDuration < ENGAGEMENT_THRESHOLD && !engagementSent,
+      }),
+    }).catch(() => {});
+  } catch { /* acceptable to lose on unload */ }
 }
 
 // ─── Main Track Function ────────────────────────────────────────────
