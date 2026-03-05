@@ -9,7 +9,7 @@ import { useKeyboardShortcuts } from "./ui/KeyboardShortcuts";
 import { useAdminAnalytics } from "@/hooks/admin/useAdminAnalytics";
 import { useSwipeGesture } from "@/hooks/useSwipeGesture";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { SubstrateParticles } from "@/components/ui/SubstrateParticles";
+
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -27,17 +27,9 @@ function AdminLayoutInner({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen flex w-full bg-gradient-to-br from-background via-background to-background/95">
-      {/* Substrate particle field — hidden on mobile for perf */}
+      {/* Substrate grid overlay — hidden on mobile for perf */}
       {!isMobile && (
         <div className="fixed inset-0 pointer-events-none z-0">
-          <SubstrateParticles
-            count={30}
-            color="var(--primary)"
-            accent="var(--neon-cyan)"
-            speed={0.6}
-            glow
-          />
-          {/* Substrate grid overlay */}
           <div className="absolute inset-0 substrate-grid-bg opacity-50" />
         </div>
       )}
