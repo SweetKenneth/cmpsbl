@@ -16,32 +16,32 @@ export interface LanguageUnlockTier {
 
 export const LANGUAGE_UNLOCK_TIERS: LanguageUnlockTier[] = [
   {
-    id: 'tier1',
-    label: 'Tier 1',
+    id: 'mint',
+    label: 'Mint',
     minScore: 68,
     languages: ['php', 'ruby', 'lua', 'dart', 'swift', 'kotlin'],
-    description: 'Foundation languages — available for all viable artifacts',
+    description: 'Foundation languages — unlocked at Mint tier (68+)',
   },
   {
-    id: 'tier2',
-    label: 'Tier 2',
-    minScore: 78,
+    id: 'prime',
+    label: 'Prime',
+    minScore: 80,
     languages: ['typescript', 'python', 'go', 'java', 'csharp'],
-    description: 'Core production languages — unlocked at Prime+',
+    description: 'Production languages — unlocked at Prime tier (80+)',
   },
   {
-    id: 'tier3',
-    label: 'Tier 3',
-    minScore: 86,
+    id: 'relic',
+    label: 'Relic',
+    minScore: 90,
     languages: ['rust', 'c', 'cpp', 'zig', 'scala', 'haskell', 'elixir'],
-    description: 'Systems & advanced languages — unlocked at high Relic+',
+    description: 'Systems & advanced languages — unlocked at Relic tier (90+)',
   },
   {
-    id: 'tier4_hardware',
+    id: 'silicon',
     label: 'Silicon',
     minScore: 94,
     languages: ['verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice', 'systemc'],
-    description: 'Hardware / HDL targets — Mythic+ only',
+    description: 'Hardware / HDL targets — Mythic+ only (94+)',
   },
 ];
 
