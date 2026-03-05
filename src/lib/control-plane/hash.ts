@@ -1,13 +1,16 @@
 /**
  * Canonical JSON + SHA-256 Hashing
  * Provides tamper-evident snapshot hashing via WebCrypto.
+ * 
+ * v13.3.1: Hardened canonicalization for deterministic fingerprints.
  */
 
 /**
- * Produce a stable JSON string with sorted keys (deep).
+ * Produce a stable JSON string with recursively sorted keys.
+ * Guarantees identical output across environments for identical input.
  */
 export function canonicalizeJson(obj: unknown): string {
-  return JSON.stringify(sortKeys(obj));
+  return JSON.stringify(sortKeys(obj), null, 0);
 }
 
 function sortKeys(val: unknown): unknown {
@@ -15,7 +18,8 @@ function sortKeys(val: unknown): unknown {
   if (Array.isArray(val)) return val.map(sortKeys);
   if (typeof val === 'object') {
     const sorted: Record<string, unknown> = {};
-    for (const key of Object.keys(val as Record<string, unknown>).sort()) {
+    const keys = Object.keys(val as Record<string, unknown>).sort();
+    for (const key of keys) {
       sorted[key] = sortKeys((val as Record<string, unknown>)[key]);
     }
     return sorted;

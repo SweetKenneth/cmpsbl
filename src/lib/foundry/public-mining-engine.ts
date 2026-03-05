@@ -3,10 +3,13 @@
  * Client-side mining request handler.
  * High-Value Bias: FORCED OFF. No client parameter accepted.
  * Quality floor: >= 68. Enforced server-side.
+ * 
+ * v13.3.1: Import quality floor from config.
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { scoreToPublicTier, computeDisplayValuation, QUALITY_FLOOR, type PublicTier } from './public-tiers';
+import { scoreToPublicTier, computeDisplayValuation, type PublicTier } from './public-tiers';
+import { QUALITY_FLOOR } from '@/config/substrate';
 import type { PipelineStep } from '@/substrate/pipeline-fingerprint';
 
 export type { PipelineStep };
