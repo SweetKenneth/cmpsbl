@@ -5135,6 +5135,30 @@ export type Database = {
         }
         Relationships: []
       }
+      control_plane_state: {
+        Row: {
+          created_at: string
+          key: string
+          meta: Json
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          meta?: Json
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          meta?: Json
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
       core_config: {
         Row: {
           category: string | null
