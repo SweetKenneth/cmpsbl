@@ -7,6 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { executeMine, filterByQualityFloor, type MineResult, type MineResponse } from '@/lib/foundry/public-mining-engine';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
+import { recordPipelineLineage } from '@/substrate/memory-lineage';
+import { recordOperation } from '@/substrate/substrate-metrics';
 import { toast } from 'sonner';
 
 interface FoundryUserState {
@@ -131,6 +133,15 @@ export function useFoundryState() {
       result.results = filterByQualityFloor(result.results);
 
       setLastMineResult(result);
+
+      // Record lineage + substrate metrics for each crystallized pipeline
+      for (const r of result.results) {
+        recordPipelineLineage(r.name, r.systemChain ?? [], r.score);
+        recordOperation('MEMORY', Date.now() - startTime);
+      }
+      if (result.results.length > 0) {
+        recordOperation('FORGE', Date.now() - startTime);
+      }
 
       if (result.results.length === 0) {
         toast.info(MEMORY_STREAM_EMPTY);
