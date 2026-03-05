@@ -209,15 +209,17 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const [mounted, setMounted] = useState(false);
 
   // Stable session ID per browser tab — prevents cross-user bleed for anonymous sessions
-  const sessionId = useRef<string>(() => {
+  const sessionId = useRef<string>('');
+
+  useEffect(() => {
     const key = '_decode_sid';
     let sid = sessionStorage.getItem(key);
     if (!sid) {
       sid = `anon_${crypto.randomUUID()}`;
       sessionStorage.setItem(key, sid);
     }
-    return sid;
-  });
+    sessionId.current = sid;
+  }, []);
 
   const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging } = useSmartPosition(orbRef, chatOpen);
 
