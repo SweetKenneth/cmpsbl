@@ -289,10 +289,10 @@ export function evaluateMutation(mutationId: string): MutationProposal | null {
 }
 
 /** Step 5: Promote — Apply mutation to production (requires dual verification for critical) */
-export function promoteMutation(
+export async function promoteMutation(
   mutationId: string,
   governorApproval: { approved: boolean; reason: string }
-): MutationProposal | null {
+): Promise<MutationProposal | null> {
   const proposal = activeMutations.get(mutationId);
   if (!proposal || proposal.phase !== 'stabilizing') return null;
 
@@ -331,8 +331,8 @@ export function promoteMutation(
   proposal.phase = 'promoted';
   proposal.updatedAt = Date.now();
 
-  // Record receipt
-  const receipt = appendReceipt(proposal);
+  // Record receipt (async)
+  const receipt = await appendReceipt(proposal);
   proposal.receipt = receipt;
 
   recordPlaneOp('execution', true, Date.now() - proposal.createdAt);
@@ -340,7 +340,7 @@ export function promoteMutation(
 
   matrixBroadcast(proposal.source, MATRIX_SIGNALS.MUTATION_PROMOTED, {
     mutation_id: mutationId,
-    receipt_hash: receipt.hash,
+    receipt_hash: receipt.chainHash,
     title: proposal.title,
   });
 
