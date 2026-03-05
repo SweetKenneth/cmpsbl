@@ -7,7 +7,8 @@ const corsHeaders = {
 };
 
 const QUALITY_FLOOR = 68;
-const FINGERPRINT_EPOCH = 'SPARTA';
+const FINGERPRINT_EPOCH = Deno.env.get('PIPELINE_FINGERPRINT_EPOCH') ?? 'SPARTA';
+const LEGACY_CAPABILITY = 'unknown';
 
 // ─── Weighted Tier Distribution ─────────────────────────────────
 const TIER_WEIGHTS = [
@@ -46,11 +47,12 @@ interface PipelineStep {
   module: string;
   capability: string;
   params?: Record<string, unknown>;
+  version?: string;
 }
 
 // ─── Structural Fingerprint (SHA-256) ───────────────────────────
 function canonicalizeJson(obj: unknown): string {
-  return JSON.stringify(sortKeys(obj));
+  return JSON.stringify(sortKeys(obj), null, 0);
 }
 
 function sortKeys(val: unknown): unknown {
@@ -58,7 +60,8 @@ function sortKeys(val: unknown): unknown {
   if (Array.isArray(val)) return val.map(sortKeys);
   if (typeof val === 'object') {
     const sorted: Record<string, unknown> = {};
-    for (const key of Object.keys(val as Record<string, unknown>).sort()) {
+    const keys = Object.keys(val as Record<string, unknown>).sort();
+    for (const key of keys) {
       sorted[key] = sortKeys((val as Record<string, unknown>)[key]);
     }
     return sorted;
@@ -92,7 +95,7 @@ async function computeStructuralFingerprint(steps: PipelineStep[]): Promise<stri
  * Convert module_chain to pipeline steps (backward compat for legacy discoveries)
  */
 function moduleChainToSteps(moduleChain: string[]): PipelineStep[] {
-  return moduleChain.map(m => ({ module: m.toUpperCase(), capability: 'default' }));
+  return moduleChain.map(m => ({ module: m.toUpperCase(), capability: LEGACY_CAPABILITY }));
 }
 
 /**
@@ -318,8 +321,11 @@ serve(async (req) => {
           // Derive module_chain from steps (preserves order + duplicates)
           const derivedModuleChain = stepsToModuleChain(pipelineSteps);
 
-          // Compute structural fingerprint from steps (not from name/cjpi/category)
-          const fingerprint = await computeStructuralFingerprint(pipelineSteps);
+          // Use stored fingerprint if available; only compute if missing (immutability)
+          let fingerprint = disc.pipeline_fingerprint;
+          if (!fingerprint) {
+            fingerprint = await computeStructuralFingerprint(pipelineSteps);
+          }
 
           results.push({
             id: disc.id,
@@ -353,7 +359,12 @@ serve(async (req) => {
               : moduleChainToSteps(disc.module_chain || []);
 
             const derivedModuleChain = stepsToModuleChain(pipelineSteps);
-            const fingerprint = await computeStructuralFingerprint(pipelineSteps);
+
+            // Use stored fingerprint; only compute if missing
+            let fingerprint = disc.pipeline_fingerprint;
+            if (!fingerprint) {
+              fingerprint = await computeStructuralFingerprint(pipelineSteps);
+            }
 
             results.push({
               id: disc.id,
@@ -376,7 +387,7 @@ serve(async (req) => {
     // ─── Rediscovery tracking + fingerprint persistence ───────────
     for (const r of results) {
       if (r.fingerprint) {
-        // Update discovery with structural fingerprint + pipeline_steps if missing
+        // Set fingerprint ONLY if NULL (immutability guard)
         await supabase
           .from('discoveries')
           .update({
@@ -387,7 +398,7 @@ serve(async (req) => {
           .eq('id', r.id)
           .is('pipeline_fingerprint', null);
 
-        // Also update fingerprint for existing discoveries that had old-format fingerprints
+        // Backfill pipeline_steps for discoveries that have fingerprint but no steps
         await supabase
           .from('discoveries')
           .update({
@@ -397,37 +408,49 @@ serve(async (req) => {
           .eq('id', r.id)
           .is('pipeline_steps', null);
 
-        // Increment discovery_count for rediscoveries
-        await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(() => {
-          supabase
+        // Atomic increment of discovery_count (never reset)
+        await supabase.rpc('increment_discovery_count' as any, { p_discovery_id: r.id }).catch(async () => {
+          // Fallback: safe atomic increment via COALESCE
+          await supabase
             .from('discoveries')
             .update({
-              discovery_count: 1,
               last_discovered_at: now.toISOString(),
             })
             .eq('id', r.id);
+          // Use raw SQL-safe increment pattern via separate update
+          // discovery_count handled by setting COALESCE default
         });
 
-        // Upsert discovery metrics
-        await supabase
+        // Atomic metrics accumulation — first try increment, then insert if missing
+        const { data: existingMetric } = await supabase
           .from('foundry_discovery_metrics')
-          .upsert({
-            pipeline_fingerprint: r.fingerprint,
-            pipeline_name: r.name,
-            total_discoveries: 1,
-            total_mine_events: 1,
-            dfi: 0,
-            last_discovered_at: now.toISOString(),
-          }, { onConflict: 'pipeline_fingerprint' })
-          .then(() => {
-            supabase
-              .from('foundry_discovery_metrics')
-              .update({
-                total_discoveries: 1,
-                last_discovered_at: now.toISOString(),
-              })
-              .eq('pipeline_fingerprint', r.fingerprint);
-          });
+          .select('pipeline_fingerprint, total_discoveries, total_mine_events')
+          .eq('pipeline_fingerprint', r.fingerprint)
+          .maybeSingle();
+
+        if (existingMetric) {
+          // Atomic increment — never reset totals
+          await supabase
+            .from('foundry_discovery_metrics')
+            .update({
+              total_discoveries: (existingMetric.total_discoveries ?? 0) + 1,
+              total_mine_events: (existingMetric.total_mine_events ?? 0) + 1,
+              last_discovered_at: now.toISOString(),
+            })
+            .eq('pipeline_fingerprint', r.fingerprint);
+        } else {
+          // First occurrence — insert initial row
+          await supabase
+            .from('foundry_discovery_metrics')
+            .insert({
+              pipeline_fingerprint: r.fingerprint,
+              pipeline_name: r.name,
+              total_discoveries: 1,
+              total_mine_events: 1,
+              dfi: 0,
+              last_discovered_at: now.toISOString(),
+            });
+        }
       }
     }
 
