@@ -61,7 +61,7 @@ function generateEngineDoc(engine: Engine): string {
     ``,
     `── SUPPORT ──────────────────────────────────────────`,
     `  Email: Dev@CMPSBL.com`,
-    `  Docs:  https://cmpsbl.lovable.app/docs/engines/${engine.slug}`,
+    `  Docs:  https://cmpsbl.com/docs/engines/${engine.slug}`,
     ``,
     `© CMPSBL — Sealed Agent Program. All rights reserved.`,
   ];

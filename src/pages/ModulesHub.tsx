@@ -1,6 +1,6 @@
 /**
- * Modules Hub — Central index of all substrate execution surfaces
- * 1 Kernel + 9 Modules + 5 Mesh Overlays + 9 Hidden Zones
+ * Systems Hub — Central index of all substrate execution surfaces
+ * 1 Kernel + 9 Systems + 5 Mesh Overlays + 9 Hidden Zones
  */
 
 import { Link } from "react-router-dom";
@@ -14,18 +14,18 @@ import { MODULE_REGISTRY, LAYER_COLORS, LAYER_LABELS, getPublicModules, getMeshO
 import { cn } from "@/lib/utils";
 
 const DISPLAY_SECTIONS = [
-  { key: 'public', label: 'Kernel & Modules', desc: 'The public execution surfaces — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
-  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all modules: DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE', getter: getMeshOverlays },
+  { key: 'public', label: 'Kernel & Systems', desc: 'The public execution surfaces — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
+  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all systems: DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE', getter: getMeshOverlays },
 ] as const;
 
 export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="Substrate Modules — AI Architecture | CMPSBL"
-        description="Browse all substrate execution surfaces — modules, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
-        image="https://cmpsbl.com/og/modules.jpg"
-        keywords={['substrate modules', 'modular AI architecture', 'AI architecture layers', 'cognitive modules', 'composable AI']}
+        title="Substrate Systems — AI Architecture | CMPSBL"
+        description="Browse all substrate execution surfaces — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
+        image="https://cmpsbl.com/og/systems.jpg"
+        keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Modules', url: 'https://cmpsbl.com/modules' },
@@ -65,7 +65,7 @@ export default function ModulesHub() {
         {/* Sections */}
         {DISPLAY_SECTIONS.map((section, sectionIdx) => {
           const items = section.getter();
-          const colorKey = section.key === 'public' ? 'Module' : 'Mesh';
+          const colorKey = section.key === 'public' ? 'Module' : 'Mesh'; // internal key, not displayed
           return (
             <section key={section.key} className="py-8 sm:py-12">
               <div className="container mx-auto max-w-6xl px-4">
@@ -106,7 +106,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'module'} <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'system'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}

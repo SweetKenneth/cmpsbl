@@ -48,7 +48,7 @@ const jsonLd = {
   ]
 };
 
-const modules = [
+const systems = [
   { name: "CORE", desc: "Kernel orchestration, scheduling, lifecycle", icon: Cpu, layer: "Kernel" },
   { name: "RIPPLE", desc: "Event-driven message bus, pub/sub", icon: Activity, layer: "Kernel" },
   { name: "ACCESS", desc: "Identity, API keys, entitlements", icon: Lock, layer: "Kernel" },
@@ -86,7 +86,7 @@ const faqItems = [
   },
   {
     question: "Is this production-ready?",
-    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 360+ terminal commands. The system boots in ~109ms and maintains 100% module health with circuit breakers for fault isolation."
+    answer: "Yes. CMPSBL is a live, operational system with 175,000+ lines of production code, 50+ database tables, and 360+ terminal commands. The system boots in ~109ms and maintains 100% system health with circuit breakers for fault isolation."
   },
   {
     question: "What's included in a license?",
@@ -268,7 +268,7 @@ Boot complete in 109ms`}
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {modules.map((mod) => (
+                {systems.map((mod) => (
                   <Card key={mod.name} className="hover:border-primary/50 transition-colors">
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-3">
