@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 — Security Internals</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 08 · DEFENSE Shell Architecture</div>
+  <h1>Security<br/><span class="g">Internals</span></h1>
+  <p class="subtitle">
+    The DEFENSE shell, Citadel v3.0.0 perimeter, threat detection, attack prevention,
+    data protection, and intelligence gathering capabilities.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+
+<div class="doc">
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#shell">DEFENSE Shell Architecture</a></li>
+      <li><a href="#citadel">Citadel v3.0.0 Perimeter</a></li>
+      <li><a href="#edge">Edge Function Security</a></li>
+      <li><a href="#rls">RLS Policies</a></li>
+      <li><a href="#honeypot">Honeypot Paths</a></li>
+      <li><a href="#reputation">IP Reputation Scoring</a></li>
+      <li><a href="#blackbox">Black-Box Enforcement</a></li>
+    </ol>
+  </div>
+
+  <h2 id="shell">1. DEFENSE Shell Architecture (Fortress v2.0.0)</h2>
+  <p>The DEFENSE shell is the outermost containment boundary, implementing 25+ hardening features across five domains:</p>
+
+  <h3>Identity & Fraud Detection</h3>
+  <table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td>Geo-velocity detection</td><td>Flags logins from geographically impossible locations</td></tr>
+    <tr><td>Impossible travel detection</td><td>Calculates physical travel feasibility between request origins</td></tr>
+    <tr><td>Request fingerprinting</td><td>Unique client fingerprint via CDP, WebRTC, timing signals</td></tr>
+    <tr><td>Session binding</td><td>Session tokens bound to originating client fingerprint</td></tr>
+  </table>
+
+  <h3>Attack Prevention</h3>
+  <table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td>Honeypot Registry</td><td>15 decoy paths that log and analyze access attempts</td></tr>
+    <tr><td>Progressive challenge escalation</td><td>Passive → PoW → CAPTCHA as suspicion increases</td></tr>
+    <tr><td>Replay Attack Guard</td><td>Nonce + TTL validation prevents request replay</td></tr>
+    <tr><td>Rate limiting</td><td>Per-IP, per-endpoint, per-API-key limits</td></tr>
+    <tr><td>IP Reputation System</td><td>Behavioral scoring of IP addresses</td></tr>
+  </table>
+
+  <h3>Data Protection</h3>
+  <table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td>PII egress filtering</td><td>Scans outbound for SSN, credit card, password patterns</td></tr>
+    <tr><td>Server header cloaking</td><td>Removes server/version headers to prevent fingerprinting</td></tr>
+    <tr><td>Secret hash enforcement</td><td>Webhooks use <code>secret_hash</code> instead of cleartext</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="citadel">2. Citadel v3.0.0 Perimeter</h2>
+  <div class="hl">
+    <p style="font-size:15px;line-height:1.8;margin:0;">
+      <strong style="color:var(--cyan);">Multi-Layered Defense:</strong>
+      Enterprise device fingerprinting (CDP, WebRTC, timing leaks), 5-tier reputation engine,
+      adaptive guardrail thresholds with spike protection and shadow mode validation,
+      drift tolerance for trusted devices (0.35 allowance, 0.6 block),
+      and Citadel Sentinels including repository access shields and error rate circuit breakers.
+      All raw fingerprint signals are hashed client-side for GDPR/CCPA compliance.
+    </p>
+  </div>
+
+  <div class="sep"></div>
+
+  <h2 id="edge">3. Edge Function Security</h2>
+  <h3>HMAC Verification</h3>
+  <pre><code>signature = HMAC-SHA256(secret, timestamp + "." + body)</code></pre>
+  <p>All inter-service communication uses HMAC-SHA256 signature verification.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="rls">4. RLS Policies (Critical Tables)</h2>
+  <table>
+    <tr><th>Table</th><th>Policy</th></tr>
+    <tr><td><code>cognitive_orders</code></td><td>User-scoped: <code>auth.uid() = user_id</code></td></tr>
+    <tr><td><code>brain_events</code></td><td>User-scoped: <code>auth.uid() = user_id</code></td></tr>
+    <tr><td><code>brain_embeddings</code></td><td>Authenticated read, service_role write</td></tr>
+    <tr><td><code>brain_classifier_models</code></td><td>Authenticated read, service_role write</td></tr>
+    <tr><td><code>profiles</code></td><td>Authenticated SELECT only (no anonymous access)</td></tr>
+    <tr><td><code>captcha_challenges</code></td><td>service_role only</td></tr>
+    <tr><td><code>device_fingerprint_snapshots</code></td><td>service_role only</td></tr>
+    <tr><td>Control plane tables (10)</td><td>RLS-protected, tenant-scoped</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="honeypot">5. Honeypot Paths</h2>
+  <pre><code>/admin              /wp-admin           /wp-login.php
+/.env               /config.php         /phpinfo.php
+/api/v1/debug       /api/v1/internal    /.git/config
+/server-status      /.htaccess          /backup.sql
+/database.sql       /api/v1/admin/users /api/v1/admin/config</code></pre>
+
+  <div class="sep"></div>
+
+  <h2 id="reputation">6. IP Reputation Scoring</h2>
+  <pre><code>reputation_score = base_score
+  - (honeypot_hits × 20)
+  - (rate_limit_violations × 5)
+  - (replay_attempts × 15)
+  - (impossible_travel × 25)
+  + (successful_requests × 0.1)</code></pre>
+
+  <table>
+    <tr><th>Score</th><th>Classification</th><th>Action</th></tr>
+    <tr><td>80–100</td><td>Trusted</td><td>Normal access</td></tr>
+    <tr><td>50–79</td><td>Neutral</td><td>Standard monitoring</td></tr>
+    <tr><td>20–49</td><td>Suspicious</td><td>Enhanced monitoring, rate limits tightened</td></tr>
+    <tr><td>0–19</td><td>Hostile</td><td>Block or CAPTCHA challenge</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="blackbox">7. Black-Box Enforcement</h2>
+  <p>High-value artifacts are protected by the 10-point enforcement interface. No source code visibility for sealed items, no prompt/memory leakage, no cross-project data bleed, and environment signature lock prevents unauthorized deployment.</p>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+
+</body>
+</html>

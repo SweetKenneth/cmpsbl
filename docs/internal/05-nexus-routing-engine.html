@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 — NEXUS Routing Engine</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 05 · Fleet Intelligence Engine</div>
+  <h1>NEXUS<br/><span class="g">Routing Engine</span></h1>
+  <p class="subtitle">
+    Fleet Intelligence Engine v3.0.0 — a persistent, database-backed orchestration layer
+    for a 14-provider AI fleet with real-time health tracking, cost optimization, and distributed tracing.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+
+<div class="doc">
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#tables">System Tables</a></li>
+      <li><a href="#modes">Routing Modes</a></li>
+      <li><a href="#intel">Intelligence Features</a></li>
+      <li><a href="#resilience">Resilience Features</a></li>
+      <li><a href="#cache">Caching</a></li>
+      <li><a href="#cost">Cost Tracking</a></li>
+      <li><a href="#health">Provider Health</a></li>
+    </ol>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="mv">14</div><div class="ml">Providers</div></div>
+    <div class="metric"><div class="mv">5</div><div class="ml">System Tables</div></div>
+    <div class="metric"><div class="mv">4</div><div class="ml">Routing Modes</div></div>
+    <div class="metric"><div class="mv">v3.0.0</div><div class="ml">Fleet Intel Version</div></div>
+  </div>
+
+  <h2 id="tables">1. System Tables</h2>
+  <table>
+    <tr><th>Table</th><th>Purpose</th></tr>
+    <tr><td><code>nexus_provider_health</code></td><td>Real-time health scores, latency, uptime per provider</td></tr>
+    <tr><td><code>nexus_cost_ledger</code></td><td>Token usage, cost tracking per provider per period</td></tr>
+    <tr><td><code>nexus_traces</code></td><td>Distributed request tracing across routing decisions</td></tr>
+    <tr><td><code>nexus_provider_affinity</code></td><td>Learned per-task-type provider performance scores</td></tr>
+    <tr><td><code>nexus_anomalies</code></td><td>Detected anomalies in provider behavior</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="modes">2. Routing Modes</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0;color:var(--cyan);">Standard Route</h4>
+      <p>Default mode. Selects optimal provider by task classification, health, cost, context window, and affinity.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;color:var(--violet);">Stream Route</h4>
+      <p>Native SSE support for streaming responses. Maintains open connection, streams tokens as generated.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;color:var(--emerald);">Consensus Route</h4>
+      <p>Sends request to multiple providers, requires agreement (e.g., 2-of-3). For critical governance decisions.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;color:var(--amber);">Image Route v2</h4>
+      <p>Pro-tier cascade: Google AI Studio → FAL.ai → Stability AI. Automatic fallback on failure.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <h2 id="intel">3. Intelligence Features</h2>
+  <h3>Semantic Task Classification</h3>
+  <table>
+    <tr><th>Category</th><th>Examples</th><th>Preferred Providers</th></tr>
+    <tr><td>Chat</td><td>Conversational responses</td><td>Fast, low-cost</td></tr>
+    <tr><td>Analysis</td><td>Data interpretation, reasoning</td><td>High-capability</td></tr>
+    <tr><td>Generation</td><td>Content creation, code</td><td>Creative-optimized</td></tr>
+    <tr><td>Code</td><td>Programming tasks</td><td>Code-specialized</td></tr>
+    <tr><td>Classification</td><td>Categorization, labeling</td><td>Fast, deterministic</td></tr>
+  </table>
+
+  <h3>Token-Aware Routing</h3>
+  <pre><code>if input_tokens > provider.max_context_window × 0.9:
+  skip provider (too close to limit)</code></pre>
+
+  <h3>Automatic Prompt Compression</h3>
+  <p>When input exceeds all providers' windows: remove redundant whitespace, summarize conversation history, truncate with semantic boundary awareness.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="resilience">4. Resilience Features</h2>
+
+  <h3>Request Coalescing</h3>
+  <p>Auth-aware deduplication of identical in-flight requests. Same hash = same promise returned to all callers.</p>
+
+  <h3>Exponential Backoff with Jitter</h3>
+  <pre><code>delay = min(baseDelay × 2^attempt + random(0, jitter), maxDelay)</code></pre>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Base delay</td><td>1,000ms</td></tr>
+    <tr><td>Max delay</td><td>30,000ms</td></tr>
+    <tr><td>Jitter range</td><td>0–500ms</td></tr>
+    <tr><td>Max attempts</td><td>3</td></tr>
+  </table>
+
+  <h3>Half-Open Circuit Probes</h3>
+  <p>When a provider's breaker opens → after <code>openDurationMs</code> → half-open → 1 probe request → success closes, failure reopens.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="cache">5. Caching</h2>
+  <table>
+    <tr><th>Category</th><th>TTL</th><th>Eviction</th></tr>
+    <tr><td>Chat responses</td><td>5 minutes</td><td>LRU</td></tr>
+    <tr><td>System queries</td><td>2 hours</td><td>LRU</td></tr>
+    <tr><td>Static lookups</td><td>24 hours</td><td>LRU</td></tr>
+  </table>
+  <p>Max 1000 entries. Cost-aware hit tracking records savings from cache hits.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="cost">6. Cost Tracking</h2>
+  <p>Every NEXUS call logs: provider, model, input/output tokens, estimated cost (millicents), response time, success/failure. Daily quota tracking per provider prevents runaway costs.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="health">7. Provider Health Monitoring</h2>
+  <ul class="cl">
+    <li><strong>Uptime</strong> — rolling 24h</li>
+    <li><strong>Average response time</strong> — P95</li>
+    <li><strong>Error rate</strong> — rolling 1h</li>
+    <li><strong>Rate limit hits</strong> — rolling 1h</li>
+  </ul>
+  <p>Health scores feed directly into routing weight calculations.</p>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+
+</body>
+</html>

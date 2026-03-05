@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 — Proprietary Algorithms</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+<div class="doc cover">
+  <div class="classification">🔒 Internal — Trade Secret</div>
+  <div class="badge"><div class="dot"></div> Document 02 · Algorithmic Foundations</div>
+  <h1>Proprietary<br/><span class="g">Algorithms</span></h1>
+  <p class="subtitle">
+    The mathematical and logical foundations that drive substrate behavior.
+    Every scoring model, computation contract, and state machine documented
+    in a single authoritative reference.
+  </p>
+  <p class="meta">CMPSBL® Memory Stream · Signal → Silicon</p>
+</div>
+
+<div class="doc">
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#integrity">3-Lane Integrity Scoring</a></li>
+      <li><a href="#clockless">Clockless Execution Model</a></li>
+      <li><a href="#sm2">SM-2 Spaced Repetition + RPS</a></li>
+      <li><a href="#tiers">Memory Tier Architecture</a></li>
+      <li><a href="#breaker">Circuit Breaker State Machine</a></li>
+      <li><a href="#cascade">Cascade Containment</a></li>
+      <li><a href="#merkle">Merkle Audit Chain</a></li>
+      <li><a href="#routing">Cognitive Load Balancing</a></li>
+      <li><a href="#evolution">Evolution Confidence Scoring</a></li>
+      <li><a href="#coalesce">Request Deduplication</a></li>
+      <li><a href="#health">SLO-Based Health Grading</a></li>
+    </ol>
+  </div>
+
+  <h2 id="integrity">1. 3-Lane Integrity Scoring</h2>
+  <p>The substrate uses a 3-lane integrity model replacing the legacy single-scalar WMI:</p>
+
+  <div class="grid2">
+    <div class="card" style="border-left:3px solid var(--emerald);">
+      <h4 style="margin-top:0;color:var(--emerald);">Availability</h4>
+      <p>Uptime + breaker penalties + quarantine status</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--cyan);">
+      <h4 style="margin-top:0;color:var(--cyan);">Correctness</h4>
+      <p>Error rate + validation failures + contradiction signals</p>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--violet);max-width:calc(50% - 8px);">
+    <h4 style="margin-top:0;color:var(--violet);">Performance</h4>
+    <p>P95 + P99 latency + regression against baseline</p>
+  </div>
+
+  <pre><code>// Default mode: weighted (prevents transient single-lane false degradation)
+total = 0.40 × correctness + 0.35 × availability + 0.25 × performance
+
+// Safe Mode escalation forces pessimistic:
+total = min(availability, correctness, performance)</code></pre>
+
+  <h3>Weight Invariants</h3>
+  <ul class="cl">
+    <li>Weight sum must equal exactly <code>1.000</code> — build fails if violated</li>
+    <li>Integrity score &lt; 40 triggers auto-heal consideration</li>
+    <li>Integrity score &lt; 60 blocks evolution promotion</li>
+    <li>Weights are immutable during a release epoch</li>
+  </ul>
+
+  <div class="sep"></div>
+
+  <h2 id="clockless">2. Clockless Execution Model</h2>
+  <p>The system operates on a demand-pulled, event-driven execution model. No timers, no cron jobs, no fixed polling intervals.</p>
+
+  <div class="hl">
+    <p style="font-size:17px;font-weight:300;line-height:1.8;margin:0;">
+      <strong style="color:var(--cyan);">Strategic Value:</strong> Reduces infrastructure cost while maintaining responsiveness.
+      Prevents false-positive health degradation caused by timer-based polling during low-activity periods.
+    </p>
+  </div>
+
+  <h3>Key Properties</h3>
+  <ul class="cl">
+    <li><strong>No idle compute cost</strong> — modules only activate when work exists</li>
+    <li><strong>Deterministic health accounting</strong> — computed from actual events, not timer ticks</li>
+    <li><strong>Triple-deferred boot</strong> — Defer 1: Registry population → Defer 2: Dependency graph validation → Defer 3: Health gate verification</li>
+  </ul>
+
+  <div class="sep"></div>
+
+  <h2 id="sm2">3. SM-2 Spaced Repetition + RPS</h2>
+  <p>Governs memory tiering and knowledge retention across the MEMORY module.</p>
+
+  <h3>Core Variables</h3>
+  <table>
+    <tr><th>Variable</th><th>Description</th><th>Default</th></tr>
+    <tr><td><code>easeFactor</code></td><td>Multiplier for interval growth</td><td>2.5</td></tr>
+    <tr><td><code>interval</code></td><td>Days until next review</td><td>1</td></tr>
+    <tr><td><code>repetitions</code></td><td>Successful recall count</td><td>0</td></tr>
+    <tr><td><code>retentionRate</code></td><td>Percentage of memories retained</td><td>0.85 target</td></tr>
+  </table>
+
+  <h3>Algorithm</h3>
+  <pre><code>After each recall attempt with quality q (0-5):
+
+if q >= 3 (successful recall):
+  if repetitions == 0: interval = 1
+  if repetitions == 1: interval = 6
+  else: interval = interval × easeFactor
+  repetitions += 1
+else:
+  repetitions = 0
+  interval = 1
+
+easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))</code></pre>
+
+  <h3>Memory RPS (Recall Priority Score)</h3>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Scoring Model</div>
+    <p style="margin:0;color:var(--text-muted);">
+      RPS combines recall frequency, contradiction penalties, credibility weighting, and recency
+      to produce a single priority score for memory retrieval ordering. Contradiction penalties
+      reduce score by 0.15 per flagged inconsistency. Credibility weighting uses source-tier
+      multipliers (0.5–1.0).
+    </p>
+  </div>
+
+  <h3>Health Monitoring</h3>
+  <table>
+    <tr><th>Metric</th><th>Healthy</th><th>Warning</th><th>Critical</th></tr>
+    <tr><td>Retention rate</td><td>&gt; 0.85</td><td>0.70–0.85</td><td>&lt; 0.70</td></tr>
+    <tr><td>Overdue ratio</td><td>&lt; 0.15</td><td>0.15–0.30</td><td>&gt; 0.30</td></tr>
+    <tr><td>Avg ease factor</td><td>&gt; 2.0</td><td>1.5–2.0</td><td>&lt; 1.5</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="tiers">4. Memory Tier Architecture</h2>
+  <table>
+    <tr><th>Tier</th><th>Label</th><th>Access Latency</th><th>Retention</th></tr>
+    <tr><td>0</td><td>Hot</td><td>&lt; 10ms, in-memory</td><td>Active session</td></tr>
+    <tr><td>1</td><td>Warm</td><td>&lt; 100ms, indexed DB</td><td>30–90 days</td></tr>
+    <tr><td>2</td><td>Cold</td><td>&lt; 1s, archived</td><td>1 year</td></tr>
+    <tr><td>3</td><td>Frozen</td><td>On-demand</td><td>Indefinite, decay-weighted</td></tr>
+  </table>
+
+  <h3>Decay Rules</h3>
+  <pre><code>confidence(t) = initial_confidence × e^(-λt)
+
+// Memories below 0.30 confidence are hidden from query results
+// DREAM cycles can promote decayed memories back to warm tier</code></pre>
+
+  <div class="sep"></div>
+
+  <h2 id="breaker">5. Circuit Breaker State Machine</h2>
+
+  <div class="sf">
+    <span class="sn s-closed">CLOSED</span>
+    <span class="sa">→</span>
+    <span class="sn s-open">OPEN</span>
+    <span class="sa">→</span>
+    <span class="sn s-half">HALF-OPEN</span>
+    <span class="sa">→</span>
+    <span class="sn s-closed">CLOSED</span>
+  </div>
+
+  <table>
+    <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>failureThreshold</code></td><td>3</td><td>Sliding-window failures to open</td></tr>
+    <tr><td><code>successThreshold</code></td><td>2</td><td>Successes in half-open to close</td></tr>
+    <tr><td><code>openDurationMs</code></td><td>60,000</td><td>Time before transitioning to half-open</td></tr>
+    <tr><td><code>halfOpenMaxConcurrent</code></td><td>1</td><td>Max concurrent requests in half-open</td></tr>
+  </table>
+
+  <p>Circuit breaker state is <strong>DB-persisted</strong> (table: <code>circuit_breaker_state</code>) and survives restarts. Failure counting uses sliding-window queries against <code>circuit_breaker_failures</code>. Exponential backoff with jitter governs retry timing.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="cascade">6. Cascade Containment</h2>
+  <p>3-tier cascade containment model with governor-controlled Safe Mode:</p>
+
+  <table>
+    <tr><th>Severity</th><th>Trigger</th><th>Response</th></tr>
+    <tr><td><strong>S1</strong></td><td>≥ 3 modules fail within 30s</td><td>Open breakers on affected downstream</td></tr>
+    <tr><td><strong>S2</strong></td><td>Fan-out or cyclic cascade</td><td>Isolate origin, quarantine zone</td></tr>
+    <tr><td><strong>S3</strong></td><td>Persistent S2 for &gt; 2 minutes</td><td>Activate Safe Mode (pessimistic integrity)</td></tr>
+  </table>
+
+  <p>Cascade events are persisted to <code>cascade_events</code> table with severity, origin module, affected modules, and actions taken. Safe Mode state is durable in <code>substrate_safe_mode</code>.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="merkle">7. Merkle Audit Chain</h2>
+  <p>Tamper-evident, cryptographic logging of all evolution receipts and governance decisions.</p>
+
+  <pre><code>Receipt[n].chainHash = SHA-256(Receipt[n-1].chainHash + Receipt[n].contentHash)
+Receipt[0].previousHash = '0'.repeat(64)  // Genesis block
+
+// Verification: recompute from genesis, compare each stored chainHash
+// Any mismatch = tampering detected</code></pre>
+
+  <p>Chain heads are anchored to <code>audit_chain_anchors</code> every 100 receipts across two redundant stores (primary + redundant) for tamper detection.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="routing">8. Cognitive Load Balancing</h2>
+  <pre><code>routeScore(provider, task) = 
+  healthWeight    × provider.healthScore
+  + costWeight    × (1 - provider.normalizedCost)
+  + affinityWeight × provider.taskAffinity[task.type]
+  + latencyWeight  × (1 - provider.normalizedLatency)</code></pre>
+
+  <h3>Routing Factors</h3>
+  <ol>
+    <li><strong>Task classification</strong> — semantic analysis determines category</li>
+    <li><strong>Context window matching</strong> — route to provider whose context window fits</li>
+    <li><strong>Cost-aware scoring</strong> — factor in per-token cost against budget</li>
+    <li><strong>Health weighting</strong> — prefer providers with higher uptime</li>
+    <li><strong>Affinity scoring</strong> — learned per-task-type performance preferences</li>
+    <li><strong>Sticky routing</strong> — constraints-first with session affinity</li>
+  </ol>
+
+  <div class="sep"></div>
+
+  <h2 id="evolution">9. Evolution Confidence Scoring</h2>
+  <table>
+    <tr><th>Factor</th><th>Weight</th><th>Source</th></tr>
+    <tr><td>Pre/post integrity delta</td><td>0.30</td><td>Matrix integrity scan</td></tr>
+    <tr><td>Governance compliance</td><td>0.25</td><td>GOVERNANCE evaluation</td></tr>
+    <tr><td>Error rate change</td><td>0.20</td><td>VISION telemetry</td></tr>
+    <tr><td>Performance regression</td><td>0.15</td><td>Latency metrics</td></tr>
+    <tr><td>Security impact</td><td>0.10</td><td>DEFENSE assessment</td></tr>
+  </table>
+
+  <div class="card">
+    <h4 style="margin-top:0;">Promotion Thresholds</h4>
+    <ul class="cl">
+      <li><strong>≥ 0.80:</strong> Auto-promote eligible</li>
+      <li><strong>0.60–0.79:</strong> Requires governor review</li>
+      <li><strong>&lt; 0.60:</strong> Rejected, logged for analysis</li>
+    </ul>
+    <p>Evidence bundles and a two-man rule apply for critical system classes.</p>
+  </div>
+
+  <div class="sep"></div>
+
+  <h2 id="coalesce">10. Request Deduplication (Coalescing)</h2>
+  <pre><code>hash = hash(model + messages + parameters)
+if inFlightCache.has(hash):
+  return inFlightCache.get(hash)  // Same promise — auth-aware
+// else execute and cache with TTL</code></pre>
+
+  <table>
+    <tr><th>Category</th><th>TTL</th></tr>
+    <tr><td>Chat responses</td><td>5 minutes</td></tr>
+    <tr><td>System queries</td><td>2 hours</td></tr>
+    <tr><td>Static lookups</td><td>24 hours</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="health">11. SLO-Based Health Grading</h2>
+  <table>
+    <tr><th>Grade</th><th>Score Range</th><th>Meaning</th></tr>
+    <tr><td><strong style="color:var(--emerald);">A</strong></td><td>90–100</td><td>Optimal — no action needed</td></tr>
+    <tr><td><strong style="color:var(--sky);">B</strong></td><td>75–89</td><td>Healthy — minor items</td></tr>
+    <tr><td><strong style="color:var(--amber);">C</strong></td><td>60–74</td><td>Acceptable — monitor closely</td></tr>
+    <tr><td><strong style="color:var(--amber);">D</strong></td><td>40–59</td><td>Degraded — active investigation</td></tr>
+    <tr><td><strong style="color:var(--rose);">F</strong></td><td>0–39</td><td>Critical — auto-heal triggered</td></tr>
+  </table>
+
+  <p>SLO-based grading tracks uptime targets, error rate ceilings, P99 latency budgets, and MTTR per module.</p>
+
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential — Trade Secret.</p>
+  </div>
+</div>
+
+</body>
+</html>
