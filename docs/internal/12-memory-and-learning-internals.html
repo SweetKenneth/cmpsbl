@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 — Memory & Learning Internals</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 12 · Persistent Intelligence</div>
+  <h1>Memory &<br/><span class="g">Learning Internals</span></h1>
+  <p class="subtitle">Memory architecture, SM-2 engine, DREAM cycles, knowledge compounding, and the no-reset guarantee.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+<div class="doc">
+  <h2>1. Module Ownership</h2>
+  <div class="grid2">
+    <div class="card"><h4 style="margin-top:0;color:var(--cyan);">BRAIN</h4><p>Knowledge graph, embeddings, classifiers, drift detection</p></div>
+    <div class="card"><h4 style="margin-top:0;color:var(--violet);">MEMORY</h4><p>Persistent store, SM-2 tiering, WAL, content hash seals</p></div>
+  </div>
+  <div class="card" style="max-width:calc(50% - 8px);"><h4 style="margin-top:0;color:var(--magenta);">DREAM</h4><p>Offline optimization, pattern discovery, insight promotion</p></div>
+  <div class="sep"></div>
+  <h2>2. Memory Tiers</h2>
+  <table>
+    <tr><th>Tier</th><th>Label</th><th>Latency</th><th>Retention</th></tr>
+    <tr><td>0</td><td>Hot</td><td>&lt; 10ms</td><td>Active session</td></tr>
+    <tr><td>1</td><td>Warm</td><td>&lt; 100ms</td><td>30–90 days</td></tr>
+    <tr><td>2</td><td>Cold</td><td>&lt; 1s</td><td>1 year</td></tr>
+    <tr><td>3</td><td>Frozen</td><td>On-demand</td><td>Indefinite</td></tr>
+  </table>
+  <p>Tier transitions are persisted as receipts in <code>memory_tier_receipts</code> with before/after tier, reason code, RPS score, and actor.</p>
+  <div class="sep"></div>
+  <h2>3. SM-2 Algorithm</h2>
+  <pre><code>if q >= 3:
+  interval = repetitions == 0 ? 1 : repetitions == 1 ? 6 : interval × easeFactor
+  repetitions += 1
+else:
+  repetitions = 0; interval = 1
+
+easeFactor = max(1.3, easeFactor + (0.1 - (5-q) × (0.08 + (5-q) × 0.02)))</code></pre>
+  <div class="sep"></div>
+  <h2>4. DREAM Cycle (Nocturne v2.0.0)</h2>
+  <pre><code>1. Trigger (scheduled or low-activity)
+2. Gather recent events and learning data
+3. Pattern recognition analysis
+4. Generate insight proposals
+5. Hallucination guards validate
+6. Energy budget check
+7. Cache validated patterns
+8. Submit insights to promotion pipeline</code></pre>
+  <h3>Hallucination Guards</h3>
+  <table>
+    <tr><th>Guard</th><th>Check</th></tr>
+    <tr><td>Consistency</td><td>Contradicts known facts?</td></tr>
+    <tr><td>Evidence</td><td>Sufficient supporting data?</td></tr>
+    <tr><td>Novelty</td><td>Genuinely new?</td></tr>
+    <tr><td>Safety</td><td>Could promotion cause harm?</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>5. Knowledge Compounding</h2>
+  <pre><code>Knowledge_value(t) = K₀ × (1 + learning_rate)^t - decay_losses(t)</code></pre>
+  <div class="hl">
+    <p style="font-size:15px;line-height:1.8;margin:0;">
+      <strong style="color:var(--cyan);">No-Reset Guarantee:</strong> No conversation window resets, no context lost between sessions. All learning persists in BRAIN/MEMORY. DREAM consolidates. EVOLUTION applies permanent structural improvements.
+    </p>
+  </div>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>

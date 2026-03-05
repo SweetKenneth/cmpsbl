@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 — Circuit Breaker & Resilience</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal</div>
+  <div class="badge"><div class="dot"></div> Document 11 · Resilience Patterns</div>
+  <h1>Circuit Breaker &<br/><span class="g">Resilience</span></h1>
+  <p class="subtitle">Circuit breakers, dead letter queues, retry budgets, saga orchestration, chaos testing, and self-healing.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+<div class="doc">
+  <h2>1. Circuit Breaker System</h2>
+  <div class="sf">
+    <span class="sn s-closed">CLOSED</span><span class="sa">→ failures ≥ 3 →</span>
+    <span class="sn s-open">OPEN</span><span class="sa">→ 60s →</span>
+    <span class="sn s-half">HALF-OPEN</span><span class="sa">→ 2 successes →</span>
+    <span class="sn s-closed">CLOSED</span>
+  </div>
+  <p>State is <strong>DB-persisted</strong> (<code>circuit_breaker_state</code>). Failure counting uses sliding-window queries against <code>circuit_breaker_failures</code>. Exponential backoff with jitter governs retry. Each module has its own independent breaker instance.</p>
+  <div class="sep"></div>
+  <h2>2. Dead Letter Queue</h2>
+  <table>
+    <tr><th>Command</th><th>Action</th></tr>
+    <tr><td><code>ripple.dlq</code></td><td>List all DLQ items</td></tr>
+    <tr><td><code>ripple.dlq.retry { id }</code></td><td>Re-attempt delivery</td></tr>
+    <tr><td><code>ripple.dlq.discard { id }</code></td><td>Remove from DLQ</td></tr>
+    <tr><td><code>ripple.dlq.purge</code></td><td>Remove all expired</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>3. Retry Budgets (Token Bucket)</h2>
+  <p>10 tokens per 60-second period per module. When tokens = 0, retries blocked until refill.</p>
+  <div class="sep"></div>
+  <h2>4. Saga Orchestration</h2>
+  <pre><code>Step 1: Execute → Success → Continue
+Step 2: Execute → Success → Continue
+Step 3: Execute → FAIL
+  → Compensate Step 2
+  → Compensate Step 1
+  → Report failure</code></pre>
+  <div class="sep"></div>
+  <h2>5. Tenant-Scoped Isolation</h2>
+  <table>
+    <tr><th>Type</th><th>Mechanism</th></tr>
+    <tr><td>Circuit breakers</td><td>Per-tenant per-module</td></tr>
+    <tr><td>Rate limits</td><td>Per-tenant per-endpoint</td></tr>
+    <tr><td>Concurrency</td><td>Per-tenant caps</td></tr>
+    <tr><td>Failure isolation</td><td>Tenant A doesn't affect Tenant B</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>6. Chaos Testing</h2>
+  <table>
+    <tr><th>Rule</th><th>Description</th></tr>
+    <tr><td><code>fail_random</code></td><td>Random module returns error</td></tr>
+    <tr><td><code>delay_response</code></td><td>Inject latency</td></tr>
+    <tr><td><code>drop_event</code></td><td>RIPPLE drops events</td></tr>
+    <tr><td><code>kill_leader</code></td><td>Force leader lease expiry</td></tr>
+  </table>
+  <p>Disabled by default. Requires explicit governor activation. Never runs without consent.</p>
+  <div class="sep"></div>
+  <h2>7. Self-Healing Recovery</h2>
+  <pre><code>1. Detect degraded health
+2. Identify recovery strategy
+3. Execute recovery (circuit reset, state flush, restart)
+4. Wait for health re-check
+5. If improved: log, resume
+6. If not: escalate to governor</code></pre>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 — Maintenance Runbook</title>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<div class="doc cover">
+  <div class="classification">🔒 Internal — Governor & Operator</div>
+  <div class="badge"><div class="dot"></div> Document 10 · Operational Procedures</div>
+  <h1>Maintenance<br/><span class="g">Runbook</span></h1>
+  <p class="subtitle">Daily, weekly, and monthly maintenance checklists with terminal commands and expected outcomes.</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch</p>
+</div>
+<div class="doc">
+  <h2>1. Daily Maintenance (15–20 min)</h2>
+  <table>
+    <tr><th>#</th><th>Task</th><th>Command</th><th>Expected</th></tr>
+    <tr><td>1</td><td>Full system diagnostic</td><td><code>system.health_check</code></td><td>Score ≥ 80</td></tr>
+    <tr><td>2</td><td>Review DREAM insights</td><td><code>dream.insights</code></td><td>No hallucination flags</td></tr>
+    <tr><td>3</td><td>Pending evolution proposals</td><td><code>evolution.proposals</code></td><td>Review 0.60–0.79 items</td></tr>
+    <tr><td>4</td><td>Security incidents</td><td><code>defense.report</code></td><td>No P0/P1</td></tr>
+    <tr><td>5</td><td>NEXUS provider health</td><td><code>nexus.providers</code></td><td>≥ 10 healthy</td></tr>
+    <tr><td>6</td><td>Cost report</td><td><code>nexus.costs</code></td><td>Within budget</td></tr>
+    <tr><td>7</td><td>Control plane status</td><td><code>cp.status</code></td><td>Not degraded</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>2. Weekly Maintenance (30–45 min)</h2>
+  <table>
+    <tr><th>#</th><th>Task</th><th>Command</th></tr>
+    <tr><td>1</td><td>Evolution history</td><td><code>evolution.history { limit: 10 }</code></td></tr>
+    <tr><td>2</td><td>Merkle chain integrity</td><td><code>audit.verify</code></td></tr>
+    <tr><td>3</td><td>Governance drift</td><td><code>governance.drift</code></td></tr>
+    <tr><td>4</td><td>SM-2 memory health</td><td><code>brain.status</code></td></tr>
+    <tr><td>5</td><td>Compliance audit</td><td><code>governance.audit</code></td></tr>
+    <tr><td>6</td><td>DLQ items</td><td><code>ripple.dlq</code></td></tr>
+    <tr><td>7</td><td>Snapshot health</td><td><code>cp.health</code></td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>3. Monthly Maintenance (1–2 hours)</h2>
+  <table>
+    <tr><th>#</th><th>Task</th><th>Action</th></tr>
+    <tr><td>1</td><td>Full hardening assessment</td><td>All 38 nodes graded A or B</td></tr>
+    <tr><td>2</td><td>Evolution skill tier review</td><td>Track progression</td></tr>
+    <tr><td>3</td><td>Secret rotation review</td><td>Rotate keys &gt; 90 days</td></tr>
+    <tr><td>4</td><td>Memory tier distribution</td><td>Balanced, no overflow</td></tr>
+    <tr><td>5</td><td>Capacity planning</td><td>DB size, provider costs, storage</td></tr>
+    <tr><td>6</td><td>Diligence harness</td><td>All 26 probes pass</td></tr>
+  </table>
+  <div class="sep"></div>
+  <h2>4. Incident Response</h2>
+  <table>
+    <tr><th>Level</th><th>Definition</th><th>Response Time</th></tr>
+    <tr><td><strong style="color:var(--rose);">P0</strong></td><td>System down</td><td>Immediate</td></tr>
+    <tr><td><strong style="color:var(--amber);">P1</strong></td><td>Major feature broken</td><td>&lt; 1 hour</td></tr>
+    <tr><td><strong>P2</strong></td><td>Feature degraded</td><td>&lt; 4 hours</td></tr>
+    <tr><td><strong>P3</strong></td><td>Minor issue</td><td>Next business day</td></tr>
+  </table>
+  <div class="footer">
+    <div class="brand">CMPSBL®</div>
+    <p style="margin-top:8px;">Signal → Silicon · Memory Stream Internal Documentation</p>
+    <p style="margin-top:4px;">IRONCLAD Epoch · © 2025–2026 CMPSBL®. Confidential.</p>
+  </div>
+</div>
+</body>
+</html>
