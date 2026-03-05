@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Diamond, ArrowRight, Download, Clock, Fingerprint, CheckCircle, Copy } from 'lucide-react';
+import { ArtifactExportPanel } from './ArtifactExportPanel';
 import { getPipelineLineage, type PipelineLineageRecord } from '@/substrate/memory-lineage';
 import {
   generatePipelineFingerprint,
