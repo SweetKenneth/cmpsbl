@@ -82,6 +82,16 @@ export const SIGNAL_TYPES = {
   // Dream
   DREAM_INSIGHT: 'dream.insight',
   DREAM_WARNING: 'dream.warning',
+
+  // Planning & Orchestration
+  PLAN_CREATED: 'plan.created',
+  PLAN_APPROVED: 'plan.approved',
+  PLAN_REJECTED: 'plan.rejected',
+  PLAN_EXECUTED: 'plan.executed',
+  PLAN_QUESTION: 'encode.plan.question',
+  PLAN_RISK: 'encode.plan.risk',
+  PLAN_ANSWER: 'encode.plan.answer',
+  PLAN_READY: 'encode.plan.ready',
 } as const;
 
 // ═══════════════════════════════════════════════════════════════
