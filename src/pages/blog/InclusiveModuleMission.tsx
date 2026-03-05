@@ -15,12 +15,12 @@ const InclusiveModuleMission = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="INCLUSIVE Module: Accessibility at Scale"
-        description="Our commitment to web accessibility through AI-powered WCAG automation — the INCLUSIVE module architecture and mission."
+        title="INCLUSIVE: Accessibility at Scale"
+        description="Our commitment to web accessibility through AI-powered WCAG automation — the INCLUSIVE system architecture and mission."
         type="article"
         publishedTime="2025-11-20"
         keywords={[
-          "INCLUSIVE module",
+          "INCLUSIVE system",
           "AI accessibility mission",
           "WCAG automation",
           "web accessibility AI",

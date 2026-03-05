@@ -28,11 +28,11 @@ const CascadeAIDeepDive = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            BRAIN Module: The Heart of Adaptive Intelligence
+            BRAIN: The Heart of Adaptive Intelligence
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Explore the learning mechanisms, memory systems, and autonomous capabilities that make the Brain module the most advanced orchestration intelligence in the CMPSBL World Engine.
+            Explore the learning mechanisms, memory systems, and autonomous capabilities that make BRAIN the most advanced orchestration intelligence in the CMPSBL World Engine.
           </p>
 
           <AuthorBio publishDate="2025-08-01" readTime="12 min read" />

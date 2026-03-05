@@ -13,7 +13,7 @@ const PromptFluidNexus = () => {
         description="Intelligently route AI tasks to optimal model providers with caching, fallback logic, and cost optimization across the substrate."
         type="article"
         publishedTime="2025-09-25"
-        keywords={['AI gateway', 'multi-model routing', 'NEXUS module', 'AI orchestration mesh', 'provider management']}
+        keywords={['AI gateway', 'multi-model routing', 'NEXUS system', 'AI orchestration mesh', 'provider management']}
       />
       
       <PublicNav />
@@ -27,7 +27,7 @@ const PromptFluidNexus = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            NEXUS Module: The AI Orchestration Gateway
+            NEXUS: The AI Orchestration Gateway
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
