@@ -35,7 +35,8 @@ export function scoreToPublicTier(score: number): PublicTier | null {
   if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
-  return 'Mint';
+  if (score >= 68) return 'Mint';
+  return 'Raw';
 }
 
 /**
