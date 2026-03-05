@@ -542,13 +542,41 @@ function generateFullHelp(): string {
 │  ⚡ ENGINE LAYER                                             │
 │    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  76 engines + 24 meta-engines       │
 │                                                             │
+│  🔱 EXPANSION — ESZ (help esz)                                │
+│    sovereign    (${COMMAND_CATEGORIES.sovereign.commands.length.toString().padStart(2)} cmds)  Jurisdictional compliance          │
+│    oracle       (${COMMAND_CATEGORIES.oracle.commands.length.toString().padStart(2)} cmds)  Predictive analytics               │
+│    conscience   (${COMMAND_CATEGORIES.conscience.commands.length.toString().padStart(2)} cmds)  Ethical governance & bias           │
+│    treaty       (${COMMAND_CATEGORIES.treaty.commands.length.toString().padStart(2)} cmds)  Inter-system agreements            │
+│                                                             │
+│  🔱 EXPANSION — EPZ (help epz)                                │
+│    compass      (${COMMAND_CATEGORIES.compass.commands.length.toString().padStart(2)} cmds)  Strategic navigation               │
+│    echo         (${COMMAND_CATEGORIES.echo.commands.length.toString().padStart(2)} cmds)  Event replay & simulation          │
+│    reflex       (${COMMAND_CATEGORIES.reflex.commands.length.toString().padStart(2)} cmds)  Edge computing & response          │
+│                                                             │
+│  🔱 EXPANSION — EMZ (help emz)                                │
+│    forge        (${COMMAND_CATEGORIES.forge.commands.length.toString().padStart(2)} cmds)  Artifact manufacturing             │
+│    lingua       (${COMMAND_CATEGORIES.lingua.commands.length.toString().padStart(2)} cmds)  Translation & i18n                 │
+│    harvest      (${COMMAND_CATEGORIES.harvest.commands.length.toString().padStart(2)} cmds)  Data collection & ETL              │
+│                                                             │
+│  🔱 EXPANSION — CSZ (help csz)                                │
+│    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Mutation pipeline & upgrades       │
+│    shadow       Covert testing channel                       │
+│    phantom      (${COMMAND_CATEGORIES.phantom.commands.length.toString().padStart(2)} cmds)  Privacy engineering                │
+│                                                             │
+│  🛡 MESH OVERLAYS                                              │
+│    immunity     (${COMMAND_CATEGORIES.immunity.commands.length.toString().padStart(2)} cmds)  Self-healing & threat correlation   │
+│    governance   (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Policy enforcement                 │
+│    medic        (${COMMAND_CATEGORIES.medic.commands.length.toString().padStart(2)} cmds)  Autonomous diagnostics             │
+│    nerve        (${COMMAND_CATEGORIES.nerve.commands.length.toString().padStart(2)} cmds)  Inter-node signaling               │
+│                                                             │
 │  👁 OBSERVABILITY                                             │
 │    obs          (${COMMAND_CATEGORIES.observability.commands.length.toString().padStart(2)} cmds)  Telemetry, bridges, latency, DLQ   │
-│    gov          (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Governance modes, vetoes, drift     │
+│    gov          Governance modes, vetoes, drift              │
 │                                                             │
 │  ⚙ INFRASTRUCTURE                                            │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │    patch        ( 4 cmds)  Distribution patch dispatch        │
+│    matrix       (13 cmds)  Canary, chaos, heatmap, quorum    │
 │                                                             │
 │  ⚙ META COMMANDS                                            │
 │    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │
@@ -833,6 +861,44 @@ export async function executeCommand(
     };
     if (module && module in infraModuleAliases) {
       return { success: true, output: generateModuleHelp(infraModuleAliases[module] as keyof typeof COMMAND_CATEGORIES) };
+    }
+    // Expansion zone overviews
+    if (module === 'expansion' || module === 'esz' || module === 'epz' || module === 'emz' || module === 'csz') {
+      const zones: Record<string, string[]> = {
+        expansion: ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest'],
+        esz: ['sovereign', 'oracle', 'conscience', 'treaty'],
+        epz: ['compass', 'echo', 'reflex'],
+        emz: ['forge', 'lingua', 'harvest'],
+        csz: ['evolution', 'shadow', 'phantom'],
+      };
+      const mods = zones[module] || zones.expansion;
+      let output = `\n┌─ ${module.toUpperCase()} — Expansion Modules ────────────────────────────\n│\n`;
+      for (const m of mods) {
+        output += `│  ${m.padEnd(14)} → help ${m}\n`;
+      }
+      output += `│\n└──────────────────────────────────────────────────────────`;
+      return { success: true, output };
+    }
+    // Matrix resilience help
+    if (module === 'matrix') {
+      return { success: true, output: `
+┌─ MATRIX RESILIENCE COMMANDS ─────────────────────────────────┐
+│                                                               │
+│  matrix.canary          Node canary deployments               │
+│  matrix.killswitch      Sector kill switch states             │
+│  matrix.killswitch.kill Kill a sector                         │
+│  matrix.killswitch.revive  Revive a sector                    │
+│  matrix.redundant       Redundant node pairs                  │
+│  matrix.chaos           Chaos testing stats                   │
+│  matrix.chaos.inject    Inject chaos (fault injection)        │
+│  matrix.correlation     Cross-sector correlation              │
+│  matrix.heatmap         Health heatmap                        │
+│  matrix.forecast        Anomaly forecasting                   │
+│  matrix.quorum          Quorum healing                        │
+│  matrix.incidents       Immutable incident registry           │
+│  matrix.queue           Priority queue state                  │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘` };
     }
     // ENCODE module help
     if (module === 'encode') {
@@ -5128,6 +5194,11 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           const handlerResult = await handler();
           const data = handlerResult as Record<string, unknown>;
           
+          // If handler returned a formatted output, use it directly
+          if (data?.formatted && Array.isArray(data.formatted)) {
+            return { success: true, output: (data.formatted as string[]).join('\n') };
+          }
+          
           if (data?.success === false) {
             return { success: false, output: `▓ ${data.error || 'Command failed'}` };
           }
@@ -5193,7 +5264,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══ REGISTRY-BACKED MODULE HANDLERS (All 38 Nodes + Cross-Cutting) ═══
-    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.')) {
+    else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.') || base.startsWith('sovereign.') || base.startsWith('oracle.') || base.startsWith('conscience.') || base.startsWith('phantom.') || base.startsWith('forge.') || base.startsWith('lingua.') || base.startsWith('compass.') || base.startsWith('echo.') || base.startsWith('treaty.') || base.startsWith('harvest.') || base.startsWith('reflex.') || base.startsWith('evolution.') || base.startsWith('immunity.') || base.startsWith('governance.') || base.startsWith('medic.') || base.startsWith('nerve.') || base.startsWith('expansion.') || base.startsWith('hardening.') || base.startsWith('engineer.') || base.startsWith('intent.') || base.startsWith('atlas.') || base.startsWith('diligence.')) {
       try {
         // Lazy-register all registry-backed handlers on first use
         const { registerInfraModuleHandlers } = await import('@/lib/terminal/infra-module-handlers');
