@@ -107,12 +107,12 @@ const NotFound = () => {
               initial={{ opacity: 0, scale: 1.5, filter: 'blur(20px)' }}
               animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8, delay: 0.2, type: 'spring', stiffness: 100 }}
-              className="text-7xl font-light text-foreground mb-4 relative"
+              className="text-8xl sm:text-9xl font-light text-foreground mb-4 relative"
             >
               <span className="memory-stream-gradient-text">404</span>
               {/* Ghost echo */}
               <motion.span
-                className="absolute inset-0 text-7xl font-light text-primary/10 pointer-events-none"
+                className="absolute inset-0 text-8xl sm:text-9xl font-light text-primary/10 pointer-events-none"
                 initial={{ scale: 1 }}
                 animate={{ scale: [1, 1.3, 1.5], opacity: [0.3, 0.1, 0] }}
                 transition={{ duration: 2, delay: 0.5, ease: 'easeOut' }}
@@ -174,7 +174,7 @@ const NotFound = () => {
                 >
                   <Link
                     to={s.href}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/30 backdrop-blur-sm transition-all group border border-transparent hover:border-border/30"
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted/30 backdrop-blur-sm transition-all group border border-transparent hover:border-primary/20 hover:shadow-md"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{s.name}</div>

@@ -296,7 +296,7 @@ export default function Auth() {
               
               {/* SIGN IN TAB */}
               <TabsContent value="signin">
-                <Card className="border-border/30 bg-card/60 backdrop-blur-xl signal-border overflow-hidden">
+                <Card className="border-border/30 bg-card/60 backdrop-blur-xl signal-border overflow-hidden shadow-xl shadow-primary/[0.03] hover:shadow-2xl hover:shadow-primary/[0.05] transition-shadow duration-500">
                   {/* Card top accent */}
                   <div className="memory-stream-bar h-[1px] w-full" />
                   
@@ -415,7 +415,7 @@ export default function Auth() {
               
               {/* SIGN UP TAB */}
               <TabsContent value="signup">
-                <Card className="border-border/30 bg-card/60 backdrop-blur-xl signal-border overflow-hidden">
+                <Card className="border-border/30 bg-card/60 backdrop-blur-xl signal-border overflow-hidden shadow-xl shadow-primary/[0.03] hover:shadow-2xl hover:shadow-primary/[0.05] transition-shadow duration-500">
                   <div className="memory-stream-bar h-[1px] w-full" />
                   
                   <AnimatePresence mode="wait">
