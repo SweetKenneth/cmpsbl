@@ -132,9 +132,10 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           audience.borderGlow
         )}
       >
-        {/* Gradient top bar */}
+        {/* Gradient top bar — flowing accent */}
+        <div className="h-[2px] memory-stream-bar opacity-60" />
         <div className={cn(
-          "h-1.5 w-full bg-gradient-to-r",
+          "h-1 w-full bg-gradient-to-r",
           audience.gradient
         )} />
         

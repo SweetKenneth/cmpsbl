@@ -92,9 +92,9 @@ export function LiveStatsBar() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-2 min-w-[100px]"
+                className="flex items-center gap-2 min-w-[100px] px-3 py-1.5 rounded-lg hover:bg-primary/[0.03] transition-colors duration-300 group/stat"
               >
-                <Icon className={cn("w-3.5 h-3.5 flex-shrink-0", stat.color)} />
+                <Icon className={cn("w-3.5 h-3.5 flex-shrink-0 transition-transform duration-300 group-hover/stat:scale-110", stat.color)} />
                 <div className="text-center sm:text-left">
                   <div className="text-sm sm:text-base font-black tabular-nums">{stat.value}</div>
                   <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold leading-none">{stat.label}</div>

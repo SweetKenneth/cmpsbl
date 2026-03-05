@@ -712,14 +712,14 @@ All colors MUST be HSL.
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.04) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.05) 45%, hsl(var(--neon-cyan) / 0.03) 55%, transparent 100%);
     transform: translateX(-100%);
     pointer-events: none;
     transition: none;
   }
 
   .shimmer-on-hover:hover::after {
-    animation: shimmer-sweep 0.8s ease-out;
+    animation: shimmer-sweep 0.9s ease-out;
   }
 
   /* Gradient border glow — reusable for premium cards */
@@ -757,6 +757,51 @@ All colors MUST be HSL.
 
   .animate-fade-in-up {
     animation: fade-in-up 0.5s ease-out both;
+  }
+
+  /* Premium card base — consistent elevated surface */
+  .card-premium {
+    @apply bg-card/50 backdrop-blur-sm border border-border/40 rounded-2xl;
+    @apply hover:shadow-xl hover:shadow-primary/[0.04] hover:-translate-y-0.5;
+    @apply transition-all duration-500;
+  }
+
+  /* Subtle noise texture overlay for depth */
+  .texture-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.015;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Scrollbar styling — thin, branded */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.2);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.35);
+  }
+
+  /* Section header gradient text — reusable */
+  .section-gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 

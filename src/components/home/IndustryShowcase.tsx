@@ -106,7 +106,7 @@ function IndustryChipCard({ chip, delay }: { chip: IndustryChip; delay: number }
 
 export function IndustryShowcase() {
   return (
-    <section className="relative py-16 sm:py-24 px-4 overflow-hidden bg-muted/20">
+    <section className="relative py-16 sm:py-24 px-4 overflow-hidden bg-gradient-to-b from-muted/10 via-muted/20 to-muted/10">
       {/* Background effects — CSS-only for mobile perf */}
       <div className="absolute inset-0 pointer-events-none">
         <div 

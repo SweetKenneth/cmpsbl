@@ -31,7 +31,7 @@ export function IntegrationBadges({ className }: { className?: string }) {
           className={cn(
             "px-3 py-1.5 rounded-full text-xs font-medium border",
             "backdrop-blur-sm cursor-default",
-            "transition-shadow duration-200 hover:shadow-md",
+            "transition-all duration-200 hover:shadow-md hover:-translate-y-0.5",
             integration.color
           )}
         >

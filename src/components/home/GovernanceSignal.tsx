@@ -74,7 +74,7 @@ export function GovernanceSignal() {
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {signal.description}
                   </p>
-                  <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-2.5 border border-white/5 shadow-inner">
+                  <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-2.5 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 transition-colors duration-300">
                     {signal.code}
                   </code>
                 </motion.div>

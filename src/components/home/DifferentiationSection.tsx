@@ -75,7 +75,8 @@ export function DifferentiationSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4 border-primary/30 text-primary px-4 py-1.5">
+          <Badge variant="outline" className="mb-4 border-primary/30 text-primary px-4 py-1.5 gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
             <span className="text-xs font-semibold">Why Build Here</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
