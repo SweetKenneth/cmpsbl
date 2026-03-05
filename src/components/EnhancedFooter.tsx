@@ -6,7 +6,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
-import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { EvolutionModal } from "@/components/EvolutionModal";
 import { XctblModal } from "@/components/XctblModal";
 import { Sparkles, Gamepad2, Heart, Github, Twitter, Linkedin } from "lucide-react";
