@@ -24,6 +24,7 @@ import { system } from '@/lib/substrate';
 import { cn } from '@/lib/utils';
 import { EventStream } from '@/components/substrate-os/EventStream';
 import { pushToast } from '@/components/toast/SmartToastStore';
+import { NodeDreamingWidget } from '@/components/substrate-os/widgets/NodeDreamingWidget';
 
 const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHealthPanel').then(m => ({ default: m.SystemHealthPanel })));
 const BackupRestorePanel = lazy(() => import('@/components/substrate-os/BackupRestorePanel').then(m => ({ default: m.BackupRestorePanel })));
@@ -266,6 +267,12 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
             </div>
           </TooltipProvider>
         </div>
+      </div>
+
+      {/* ── Node Dreaming Observability ── */}
+      <div>
+        <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1 mb-3">Dream Synthesis</h3>
+        <NodeDreamingWidget />
       </div>
 
       {/* ── Live Event Stream + System Health ── */}
