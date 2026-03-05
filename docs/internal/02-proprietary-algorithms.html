@@ -14,10 +14,10 @@
   <h1>Proprietary<br/><span class="g">Algorithms</span></h1>
   <p class="subtitle">
     The mathematical and logical foundations that drive substrate behavior.
-    Every scoring model, computation contract, and state machine documented
-    in a single authoritative reference.
+    Every scoring model, computation contract, weight, threshold, and state machine documented
+    in a single authoritative reference. All values sourced directly from production code.
   </p>
-  <p class="meta">CMPSBL® Memory Stream · Signal → Silicon</p>
+  <p class="meta">CMPSBL® Memory Stream · IRONCLAD Epoch · Updated 2026-03-05</p>
 </div>
 
 <div class="doc">
@@ -25,15 +25,21 @@
     <h3>Contents</h3>
     <ol>
       <li><a href="#integrity">3-Lane Integrity Scoring</a></li>
+      <li><a href="#cjpi">CJPI Scoring Model</a></li>
       <li><a href="#clockless">Clockless Execution Model</a></li>
       <li><a href="#sm2">SM-2 Spaced Repetition + RPS</a></li>
       <li><a href="#tiers">Memory Tier Architecture</a></li>
+      <li><a href="#neural">BRAIN Neural Substrate (hash-embed-v1)</a></li>
       <li><a href="#breaker">Circuit Breaker State Machine</a></li>
       <li><a href="#cascade">Cascade Containment</a></li>
       <li><a href="#merkle">Merkle Audit Chain</a></li>
       <li><a href="#routing">Cognitive Load Balancing</a></li>
       <li><a href="#evolution">Evolution Confidence Scoring</a></li>
+      <li><a href="#seba">SEBA Safety Controls & Risk Budget</a></li>
       <li><a href="#coalesce">Request Deduplication</a></li>
+      <li><a href="#ratelimit">Adaptive Rate Limiting</a></li>
+      <li><a href="#cost">Cost Estimation & Provider Pricing</a></li>
+      <li><a href="#emotional">Emotional Weights (CLM)</a></li>
       <li><a href="#health">SLO-Based Health Grading</a></li>
     </ol>
   </div>
@@ -43,36 +49,97 @@
 
   <div class="grid2">
     <div class="card" style="border-left:3px solid var(--emerald);">
-      <h4 style="margin-top:0;color:var(--emerald);">Availability</h4>
+      <h4 style="margin-top:0;color:var(--emerald);">Availability (0.35)</h4>
       <p>Uptime + breaker penalties + quarantine status</p>
     </div>
     <div class="card" style="border-left:3px solid var(--cyan);">
-      <h4 style="margin-top:0;color:var(--cyan);">Correctness</h4>
+      <h4 style="margin-top:0;color:var(--cyan);">Correctness (0.40)</h4>
       <p>Error rate + validation failures + contradiction signals</p>
     </div>
   </div>
   <div class="card" style="border-left:3px solid var(--violet);max-width:calc(50% - 8px);">
-    <h4 style="margin-top:0;color:var(--violet);">Performance</h4>
+    <h4 style="margin-top:0;color:var(--violet);">Performance (0.25)</h4>
     <p>P95 + P99 latency + regression against baseline</p>
   </div>
 
-  <pre><code>// Default mode: weighted (prevents transient single-lane false degradation)
+  <pre><code>// Source: src/lib/system/integrity/types.ts
+DEFAULT_INTEGRITY_WEIGHTS = {
+  availability: 0.35,
+  correctness:  0.40,
+  performance:  0.25,
+}
+
+// Default mode: weighted (prevents transient single-lane false degradation)
 total = 0.40 × correctness + 0.35 × availability + 0.25 × performance
 
 // Safe Mode escalation forces pessimistic:
-total = min(availability, correctness, performance)</code></pre>
+total = min(availability, correctness, performance)
+
+// Module weight constants:
+MAX_MODULE_WEIGHT    = 0.25
+BLAST_RADIUS_K       = 0.15
+WEIGHT_SUM_TOLERANCE = 0.001</code></pre>
 
   <h3>Weight Invariants</h3>
   <ul class="cl">
-    <li>Weight sum must equal exactly <code>1.000</code> — build fails if violated</li>
+    <li>Weight sum must equal exactly <code>1.000</code> (tolerance: ±0.001) — build fails if violated</li>
+    <li>No single module weight may exceed <code>0.25</code></li>
     <li>Integrity score &lt; 40 triggers auto-heal consideration</li>
     <li>Integrity score &lt; 60 blocks evolution promotion</li>
     <li>Weights are immutable during a release epoch</li>
   </ul>
 
+  <h3>Integrity Inputs</h3>
+  <table>
+    <tr><th>Input</th><th>Lane</th><th>Source</th></tr>
+    <tr><td><code>module_count</code></td><td>All</td><td>Registry</td></tr>
+    <tr><td><code>breaker_open_count</code></td><td>Availability</td><td>Circuit breaker</td></tr>
+    <tr><td><code>quarantine_count</code></td><td>Availability</td><td>Module quarantine</td></tr>
+    <tr><td><code>error_rate</code></td><td>Correctness</td><td>VISION telemetry</td></tr>
+    <tr><td><code>validation_failure_count</code></td><td>Correctness</td><td>Input validators</td></tr>
+    <tr><td><code>contradiction_count</code></td><td>Correctness</td><td>BRAIN</td></tr>
+    <tr><td><code>p95_latency_ms</code></td><td>Performance</td><td>Request tracing</td></tr>
+    <tr><td><code>p99_latency_ms</code></td><td>Performance</td><td>Request tracing</td></tr>
+    <tr><td><code>baseline_p95_ms</code></td><td>Performance</td><td>Historical baseline</td></tr>
+    <tr><td><code>baseline_p99_ms</code></td><td>Performance</td><td>Historical baseline</td></tr>
+  </table>
+
   <div class="sep"></div>
 
-  <h2 id="clockless">2. Clockless Execution Model</h2>
+  <h2 id="cjpi">2. CJPI Scoring Model (Crown Jewel Pipeline Index)</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Primary Scoring Algorithm</div>
+  </div>
+
+  <h3>Score Computation</h3>
+  <pre><code>// Source: src/lib/capabilities/synergies/discovery-epoch.ts
+CJPI_WEIGHTS = {
+  strategicLeverage:    0.30,   // Market differentiation potential
+  recursionPotential:   0.20,   // Self-improvement capability
+  crossNodeImpact:      0.15,   // Multi-module synergy breadth
+  composability:        0.15,   // Reuse in other pipelines
+  governanceInfluence:  0.10,   // Policy shaping potential
+  moatSensitivity:      0.10,   // Competitive barrier contribution
+}
+
+score = Σ(factor × weight)  // Clamped to [0, 100], rounded to 1 decimal</code></pre>
+
+  <h3>Auto-Tiering Thresholds</h3>
+  <table>
+    <tr><th>Tier</th><th>Score Range</th><th>Access Level</th></tr>
+    <tr><td><strong>Creator</strong></td><td>55–69</td><td>Standard user access</td></tr>
+    <tr><td><strong>Architect</strong></td><td>70–84</td><td>Advanced capabilities</td></tr>
+    <tr><td><strong>Enterprise</strong></td><td>85–94</td><td>Enterprise-only</td></tr>
+    <tr><td><strong>CMPSBL-Only</strong></td><td>95–100</td><td>Internal only — never distributed</td></tr>
+    <tr><td><em>Below threshold</em></td><td>&lt; 55</td><td>Not eligible for crystallization</td></tr>
+  </table>
+
+  <h3>Quality Floor</h3>
+  <p>Every crystallized pipeline must score <strong>≥ 68</strong> on the CJPI. Signals below this threshold are discarded before they reach users.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="clockless">3. Clockless Execution Model</h2>
   <p>The system operates on a demand-pulled, event-driven execution model. No timers, no cron jobs, no fixed polling intervals.</p>
 
   <div class="hl">
@@ -91,7 +158,7 @@ total = min(availability, correctness, performance)</code></pre>
 
   <div class="sep"></div>
 
-  <h2 id="sm2">3. SM-2 Spaced Repetition + RPS</h2>
+  <h2 id="sm2">4. SM-2 Spaced Repetition + RPS</h2>
   <p>Governs memory tiering and knowledge retention across the MEMORY module.</p>
 
   <h3>Core Variables</h3>
@@ -123,8 +190,8 @@ easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))<
     <p style="margin:0;color:var(--text-muted);">
       RPS combines recall frequency, contradiction penalties, credibility weighting, and recency
       to produce a single priority score for memory retrieval ordering. Contradiction penalties
-      reduce score by 0.15 per flagged inconsistency. Credibility weighting uses source-tier
-      multipliers (0.5–1.0).
+      reduce score by <strong>0.15</strong> per flagged inconsistency. Credibility weighting uses source-tier
+      multipliers (<strong>0.5–1.0</strong>).
     </p>
   </div>
 
@@ -138,7 +205,7 @@ easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))<
 
   <div class="sep"></div>
 
-  <h2 id="tiers">4. Memory Tier Architecture</h2>
+  <h2 id="tiers">5. Memory Tier Architecture</h2>
   <table>
     <tr><th>Tier</th><th>Label</th><th>Access Latency</th><th>Retention</th></tr>
     <tr><td>0</td><td>Hot</td><td>&lt; 10ms, in-memory</td><td>Active session</td></tr>
@@ -155,7 +222,33 @@ easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))<
 
   <div class="sep"></div>
 
-  <h2 id="breaker">5. Circuit Breaker State Machine</h2>
+  <h2 id="neural">6. BRAIN Neural Substrate (hash-embed-v1)</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Zero-Dependency Embedding Engine</div>
+  </div>
+
+  <h3>Implementation: hash-embed-v1</h3>
+  <p>Deterministic character-level hashing generates <strong>384-dimensional vectors</strong> for knowledge crystals and heuristics. Zero external dependencies, zero API costs for embeddings.</p>
+
+  <h3>Components</h3>
+  <table>
+    <tr><th>Component</th><th>Function</th><th>Activation Threshold</th></tr>
+    <tr><td><strong>Vector Similarity Index</strong></td><td>Nearest-neighbor recall via cosine similarity</td><td>50 crystals stored</td></tr>
+    <tr><td><strong>Confidence Classifier</strong></td><td>Predicts success probability for tasks</td><td>200 traces collected</td></tr>
+    <tr><td><strong>Drift Detector</strong></td><td>Flags data distribution shifts</td><td>200 traces collected</td></tr>
+  </table>
+
+  <h3>Deduplication Thresholds</h3>
+  <table>
+    <tr><th>Cosine Similarity</th><th>Classification</th><th>Action</th></tr>
+    <tr><td>&gt; 0.92</td><td style="color:var(--rose);">Duplicate</td><td>Skip</td></tr>
+    <tr><td>0.80–0.92</td><td style="color:var(--amber);">Variant</td><td>Persist with <code>variant_of</code></td></tr>
+    <tr><td>&lt; 0.80</td><td style="color:var(--emerald);">Novel</td><td>Persist as new</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="breaker">7. Circuit Breaker State Machine</h2>
 
   <div class="sf">
     <span class="sn s-closed">CLOSED</span>
@@ -167,19 +260,30 @@ easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))<
     <span class="sn s-closed">CLOSED</span>
   </div>
 
+  <pre><code>// Source: src/lib/substrate/circuit-breaker/index.ts
+DEFAULT_CONFIG = {
+  failureThreshold:       5,       // failures before opening
+  recoveryTimeout:        30,000,  // ms before half-open
+  halfOpenMaxAttempts:    3,       // successes needed to close
+  windowSize:            60,000,  // sliding window in ms
+  autoRecoveryEnabled:   true,
+  autoRecoveryIntervalMs: 60,000, // check every 60s
+}</code></pre>
+
   <table>
     <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-    <tr><td><code>failureThreshold</code></td><td>3</td><td>Sliding-window failures to open</td></tr>
-    <tr><td><code>successThreshold</code></td><td>2</td><td>Successes in half-open to close</td></tr>
-    <tr><td><code>openDurationMs</code></td><td>60,000</td><td>Time before transitioning to half-open</td></tr>
-    <tr><td><code>halfOpenMaxConcurrent</code></td><td>1</td><td>Max concurrent requests in half-open</td></tr>
+    <tr><td><code>failureThreshold</code></td><td>5</td><td>Sliding-window failures to open</td></tr>
+    <tr><td><code>recoveryTimeout</code></td><td>30,000ms</td><td>Time before transitioning to half-open</td></tr>
+    <tr><td><code>halfOpenMaxAttempts</code></td><td>3</td><td>Successes in half-open to close</td></tr>
+    <tr><td><code>windowSize</code></td><td>60,000ms</td><td>Sliding failure window</td></tr>
+    <tr><td><code>autoRecoveryIntervalMs</code></td><td>60,000ms</td><td>Auto-recovery check interval</td></tr>
   </table>
 
-  <p>Circuit breaker state is <strong>DB-persisted</strong> (table: <code>circuit_breaker_state</code>) and survives restarts. Failure counting uses sliding-window queries against <code>circuit_breaker_failures</code>. Exponential backoff with jitter governs retry timing.</p>
+  <p>Circuit breaker state is <strong>DB-persisted</strong> (table: <code>circuit_breaker_state</code>) and survives restarts. Failure counting uses sliding-window queries against <code>circuit_breaker_failures</code>. Each module has its own independent breaker instance with trip counter.</p>
 
   <div class="sep"></div>
 
-  <h2 id="cascade">6. Cascade Containment</h2>
+  <h2 id="cascade">8. Cascade Containment</h2>
   <p>3-tier cascade containment model with governor-controlled Safe Mode:</p>
 
   <table>
@@ -193,7 +297,7 @@ easeFactor = max(1.3, easeFactor + (0.1 - (5 - q) × (0.08 + (5 - q) × 0.02)))<
 
   <div class="sep"></div>
 
-  <h2 id="merkle">7. Merkle Audit Chain</h2>
+  <h2 id="merkle">9. Merkle Audit Chain</h2>
   <p>Tamper-evident, cryptographic logging of all evolution receipts and governance decisions.</p>
 
   <pre><code>Receipt[n].chainHash = SHA-256(Receipt[n-1].chainHash + Receipt[n].contentHash)
@@ -206,7 +310,7 @@ Receipt[0].previousHash = '0'.repeat(64)  // Genesis block
 
   <div class="sep"></div>
 
-  <h2 id="routing">8. Cognitive Load Balancing</h2>
+  <h2 id="routing">10. Cognitive Load Balancing</h2>
   <pre><code>routeScore(provider, task) = 
   healthWeight    × provider.healthScore
   + costWeight    × (1 - provider.normalizedCost)
@@ -215,17 +319,17 @@ Receipt[0].previousHash = '0'.repeat(64)  // Genesis block
 
   <h3>Routing Factors</h3>
   <ol>
-    <li><strong>Task classification</strong> — semantic analysis determines category</li>
-    <li><strong>Context window matching</strong> — route to provider whose context window fits</li>
+    <li><strong>Task classification</strong> — semantic analysis determines category (chat, analysis, generation, code, classification)</li>
+    <li><strong>Context window matching</strong> — skip provider if <code>input_tokens &gt; max_context × 0.9</code></li>
     <li><strong>Cost-aware scoring</strong> — factor in per-token cost against budget</li>
     <li><strong>Health weighting</strong> — prefer providers with higher uptime</li>
-    <li><strong>Affinity scoring</strong> — learned per-task-type performance preferences</li>
+    <li><strong>Affinity scoring</strong> — learned per-task-type performance preferences (persisted in <code>nexus_provider_affinity</code>)</li>
     <li><strong>Sticky routing</strong> — constraints-first with session affinity</li>
   </ol>
 
   <div class="sep"></div>
 
-  <h2 id="evolution">9. Evolution Confidence Scoring</h2>
+  <h2 id="evolution">11. Evolution Confidence Scoring</h2>
   <table>
     <tr><th>Factor</th><th>Weight</th><th>Source</th></tr>
     <tr><td>Pre/post integrity delta</td><td>0.30</td><td>Matrix integrity scan</td></tr>
@@ -247,7 +351,90 @@ Receipt[0].previousHash = '0'.repeat(64)  // Genesis block
 
   <div class="sep"></div>
 
-  <h2 id="coalesce">10. Request Deduplication (Coalescing)</h2>
+  <h2 id="seba">12. SEBA Safety Controls & Risk Budget</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — SEBA v2.1.0 "Full Spectrum Autonomy"</div>
+  </div>
+
+  <h3>Operating Modes</h3>
+  <table>
+    <tr><th>Mode</th><th>Behavior</th></tr>
+    <tr><td><code>off</code></td><td>SEBA is disabled</td></tr>
+    <tr><td><code>observe</code></td><td>Only observes and logs proposals (no execution)</td></tr>
+    <tr><td><code>advisory</code></td><td>Proposes improvements, requires human approval <strong>(DEFAULT)</strong></td></tr>
+    <tr><td><code>governed</code></td><td>Auto-executes if governance approves AND confidence ≥ threshold</td></tr>
+    <tr><td><code>autonomous</code></td><td>Full autonomy within governance bounds (requires explicit unlock)</td></tr>
+  </table>
+
+  <h3>Safety Controls (Production Constants)</h3>
+  <pre><code>// Source: src/lib/substrate/seba/types.ts
+SEBA_SAFETY_CONTROLS = {
+  AUTO_APPROVE_ENABLED:       false,    // All proposals go to pending
+  MAX_CYCLES_PER_DAY:         12,
+  MAX_PROPOSALS_PER_DAY:      60,       // Up to 15 per run × 4 runs
+  COOLDOWN_HOURS:             2,        // Enforced gap between cycles
+  NEXUS_BUDGET_THRESHOLD:     0.5,      // Halts if AI budget &gt; 50%
+  FREE_TIER_DAILY_CALLS:      50,
+  FREE_TIER_MONTHLY_CALLS:    1000,
+  CALLS_PER_CYCLE:            2.5,      // ~2-3 LLM calls per cycle
+}</code></pre>
+
+  <h3>Default Configuration</h3>
+  <pre><code>DEFAULT_SEBA_CONFIG = {
+  mode:                       'advisory',
+  enabled:                    true,
+  auto_approve_threshold:     1.0,      // Effectively disables auto-approve
+  risk_tolerance:             'low',
+  min_confidence_for_proposal: 0.6,
+  max_proposals_per_cycle:    15,
+  max_executions_per_day:     8,
+  cooldown_after_failure_ms:  300,000,  // 5 minutes
+  cycle_interval_ms:          7,200,000, // 2 hours
+  require_human_approval_for_high_risk: true,
+  proposal_expiry_hours:      24,
+  max_health_degradation:     20,       // Triggers rollback
+  shadow_test_enabled:        true,
+  verification_enabled:       true,
+  priority_modules: ['memory', 'learning', 'governance', 'security'],
+}</code></pre>
+
+  <h3>Risk Budget (24-hour rolling)</h3>
+  <pre><code>// Source: src/lib/substrate/evolution-hardening.ts
+riskBudget = {
+  totalBudget:    100,    // Total risk units per 24h
+  maxPerProposal: 25,     // No single proposal may exceed 25%
+  resetInterval:  24h,    // Auto-resets daily
+}</code></pre>
+
+  <h3>SEBA Cycle Phases</h3>
+  <div class="sf">
+    <span class="sn s-closed">idle</span><span class="sa">→</span>
+    <span class="sn s-half">cognizing</span><span class="sa">→</span>
+    <span class="sn s-closed">proposing</span><span class="sa">→</span>
+    <span class="sn s-half">evaluating</span><span class="sa">→</span>
+    <span class="sn s-closed">gating</span><span class="sa">→</span>
+    <span class="sn s-half">applying</span><span class="sa">→</span>
+    <span class="sn s-closed">verifying</span><span class="sa">→</span>
+    <span class="sn s-half">complete</span>
+  </div>
+
+  <h3>9 Cognitive Insight Engines</h3>
+  <table>
+    <tr><th>Engine</th><th>Source</th></tr>
+    <tr><td>memory</td><td>Memory optimization signals</td></tr>
+    <tr><td>learning</td><td>CLM training patterns</td></tr>
+    <tr><td>imagination</td><td>DREAM synthesis patterns</td></tr>
+    <tr><td>reasoning</td><td>Logic and inference quality</td></tr>
+    <tr><td>telemetry</td><td>VISION performance data</td></tr>
+    <tr><td>security</td><td>DEFENSE threat analysis</td></tr>
+    <tr><td>governance</td><td>Policy compliance signals</td></tr>
+    <tr><td>resources</td><td>Resource utilization patterns</td></tr>
+    <tr><td>architecture</td><td>Structural evolution opportunities</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="coalesce">13. Request Deduplication (Coalescing)</h2>
   <pre><code>hash = hash(model + messages + parameters)
 if inFlightCache.has(hash):
   return inFlightCache.get(hash)  // Same promise — auth-aware
@@ -259,10 +446,102 @@ if inFlightCache.has(hash):
     <tr><td>System queries</td><td>2 hours</td></tr>
     <tr><td>Static lookups</td><td>24 hours</td></tr>
   </table>
+  <p>Max cache entries: <strong>1,000</strong> (LRU eviction). Cost-aware hit tracking records savings.</p>
 
   <div class="sep"></div>
 
-  <h2 id="health">11. SLO-Based Health Grading</h2>
+  <h2 id="ratelimit">14. Adaptive Rate Limiting</h2>
+  <pre><code>// Source: src/lib/substrate/adaptive-rate-limit/index.ts
+DEFAULT_CONFIG = {
+  baseRefillRate:    10,       // tokens/sec
+  minMultiplier:     0.1,      // 10% of base under extreme pressure
+  maxMultiplier:     3.0,      // 3x base for trusted tenants
+  pressureThresholds: {
+    low:    0.3,
+    medium: 0.6,
+    high:   0.85,
+  },
+  reputationWeight:  0.3,      // 30% of multiplier from tenant reputation
+}</code></pre>
+
+  <h3>Retry Budget (Token Bucket)</h3>
+  <p><strong>10 tokens</strong> per 60-second period per module. When tokens = 0, retries blocked until refill.</p>
+
+  <div class="sep"></div>
+
+  <h2 id="cost">15. Cost Estimation & Provider Pricing</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Internal — Provider Cost Table</div>
+  </div>
+
+  <h3>Provider Pricing (millicents per 1K tokens)</h3>
+  <table>
+    <tr><th>Provider</th><th>Input</th><th>Output</th><th>Notes</th></tr>
+    <tr><td>Groq</td><td>0.5</td><td>1.0</td><td>Fast inference</td></tr>
+    <tr><td>Together</td><td>0.8</td><td>1.5</td><td>General purpose</td></tr>
+    <tr><td>Cerebras</td><td>0.3</td><td>0.6</td><td>Lowest cost text</td></tr>
+    <tr><td>OpenRouter</td><td>2.0</td><td>4.0</td><td>Multi-model access</td></tr>
+    <tr><td>Google</td><td>1.0</td><td>2.0</td><td>Gemini family</td></tr>
+    <tr><td>SambaNova</td><td>0</td><td>0</td><td>Free tier</td></tr>
+    <tr><td>Stability</td><td>0</td><td>50.0</td><td>Per image</td></tr>
+    <tr><td>FAL</td><td>0</td><td>30.0</td><td>Per image</td></tr>
+  </table>
+
+  <h3>Budget Defaults</h3>
+  <pre><code>// Source: src/lib/nexus/costEstimation.ts
+DEFAULT_BUDGET = {
+  dailyLimit:      500,000,    // $5.00
+  monthlyLimit:    10,000,000, // $100.00
+  perRequestLimit: 50,000,     // $0.50
+  warningThreshold: 0.7,       // 70% = warning
+  alertThreshold:   0.9,       // 90% = alert
+  hardStop:         true,      // Enforce limits
+}</code></pre>
+
+  <h3>NEXUS Tier RPD Limits</h3>
+  <table>
+    <tr><th>Tier</th><th>Daily Limit (RPD)</th><th>CLM Budget %</th><th>Spacing Multiplier</th></tr>
+    <tr><td>Free</td><td>1,000</td><td>30%</td><td>2.0×</td></tr>
+    <tr><td>Standard</td><td>236,164</td><td>70%</td><td>1.0×</td></tr>
+    <tr><td>Pro</td><td>25,000</td><td>80%</td><td>0.75×</td></tr>
+    <tr><td>Enterprise</td><td>100,000</td><td>90%</td><td>0.5×</td></tr>
+  </table>
+
+  <div class="sep"></div>
+
+  <h2 id="emotional">16. Emotional Weights (CLM Routing)</h2>
+  <div class="secret">
+    <div class="secret-label">🔒 Trade Secret — Emotional Decision Matrix</div>
+  </div>
+
+  <pre><code>// Source: public/emotional_weights.json
+sentiment_targets = {
+  hope:         0.75,
+  innovation:   0.85,
+  transparency: 0.90,
+  community:    0.70,
+  profit:       0.65,
+}
+
+emotion_multipliers = {
+  positive_innovation: 1.30,
+  growth_mindset:      1.25,
+  empathy_driven:      1.20,
+  profit_focused:      1.00,
+  neutral_technical:   1.00,
+  negative_risk:       0.80,
+  low_human_value:     0.60,
+}
+
+priority_adjustments = {
+  high_emotion_alignment:   +0.30,
+  medium_emotion_alignment: +0.15,
+  low_emotion_alignment:    -0.10,
+}</code></pre>
+
+  <div class="sep"></div>
+
+  <h2 id="health">17. SLO-Based Health Grading</h2>
   <table>
     <tr><th>Grade</th><th>Score Range</th><th>Meaning</th></tr>
     <tr><td><strong style="color:var(--emerald);">A</strong></td><td>90–100</td><td>Optimal — no action needed</td></tr>
@@ -271,6 +550,13 @@ if inFlightCache.has(hash):
     <tr><td><strong style="color:var(--amber);">D</strong></td><td>40–59</td><td>Degraded — active investigation</td></tr>
     <tr><td><strong style="color:var(--rose);">F</strong></td><td>0–39</td><td>Critical — auto-heal triggered</td></tr>
   </table>
+
+  <h3>Composite Score Formula</h3>
+  <pre><code>score = 0.25 × uptime_24h
+      + 0.25 × error_rate_1h (inverted)
+      + 0.20 × circuit_state (closed=1.0, half=0.5, open=0.0)
+      + 0.15 × p95_latency (normalized against baseline)
+      + 0.15 × quarantine_state (1.0 if not quarantined)</code></pre>
 
   <p>SLO-based grading tracks uptime targets, error rate ceilings, P99 latency budgets, and MTTR per module.</p>
 
