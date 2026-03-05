@@ -7,6 +7,8 @@
  */
 
 import { verifyAdminForDecode, type AdminVerification } from './social-engineering-guard';
+import { computeHealth, getOpsCount, getModuleState, getLastActivity } from '@/substrate/substrate-metrics';
+import { logDirective } from '@/substrate/decode-audit';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -99,6 +101,14 @@ export function issueDirective(
     directiveHistory.splice(0, directiveHistory.length - MAX_DIRECTIVE_HISTORY);
   }
 
+  // Audit trail
+  logDirective('admin', directive, {
+    targetModules: dir.targetModules.join(','),
+    priority,
+    type,
+    directiveId: dir.id,
+  });
+
   console.log(`[DECODE/Directive] ADMIN_DIRECTIVE issued → ${dir.targetModules.join(', ')} | Priority: ${priority} | "${directive.slice(0, 80)}"`);
 
   return dir;
@@ -173,16 +183,18 @@ export function getSubstrateInsights(sessionId?: string): SubstrateInsight[] | {
     return { error: 'Substrate insights require admin authentication.' };
   }
 
-  // Generate insights from substrate state
-  // In production this would pull from actual module health stores
-  return ALL_NODES.map(nodeId => ({
-    moduleId: nodeId,
-    state: 'active' as const,
-    currentActivity: getModuleActivity(nodeId),
-    health: 85 + Math.floor(Math.random() * 15), // Would come from real health stores
-    lastActivityAt: new Date().toISOString(),
-    opsCount: Math.floor(Math.random() * 1000),
-  }));
+  // Real runtime metrics from substrate-metrics store
+  return ALL_NODES.map(nodeId => {
+    const lastAct = getLastActivity(nodeId);
+    return {
+      moduleId: nodeId,
+      state: getModuleState(nodeId),
+      currentActivity: getModuleActivity(nodeId),
+      health: computeHealth(nodeId),
+      lastActivityAt: lastAct ? new Date(lastAct).toISOString() : new Date().toISOString(),
+      opsCount: getOpsCount(nodeId),
+    };
+  });
 }
 
 /**

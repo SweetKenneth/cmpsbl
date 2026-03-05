@@ -1,10 +1,13 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export
+ * Now with Pipeline Provenance on click.
  */
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
+import { PipelineProvenance } from './PipelineProvenance';
 import { toast } from 'sonner';
 
 interface InventoryItem {
@@ -52,6 +55,8 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
 }
 
 export function FoundryInventory({ inventory }: Props) {
+  const [provenancePipeline, setProvenancePipeline] = useState<{ name: string; score: number; systemChain: string[] } | null>(null);
+
   if (inventory.length === 0) {
     return (
       <div className="text-center py-20">
@@ -97,7 +102,8 @@ export function FoundryInventory({ inventory }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.03 }}
-            className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm hover:border-border/40 transition-colors"
+            onClick={() => setProvenancePipeline({ name: item.artifactName, score: item.score, systemChain: item.systemChain ?? [] })}
+            className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 transition-colors cursor-pointer"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
@@ -147,6 +153,12 @@ export function FoundryInventory({ inventory }: Props) {
           </motion.div>
         ))}
       </div>
+
+      {/* Provenance overlay */}
+      <PipelineProvenance
+        pipeline={provenancePipeline}
+        onClose={() => setProvenancePipeline(null)}
+      />
     </div>
   );
 }
