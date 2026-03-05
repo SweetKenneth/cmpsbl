@@ -70,6 +70,7 @@ export function formatValuation(amount: number): string {
  */
 export function getTierBadgeClass(tier: PublicTier): string {
   const map: Record<PublicTier, string> = {
+    Raw:    'bg-muted/30 text-muted-foreground border-muted-foreground/20',
     Mint:   'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
     Prime:  'bg-sky-500/10 text-sky-400 border-sky-500/30',
     Relic:  'bg-amber-500/10 text-amber-400 border-amber-500/30',
