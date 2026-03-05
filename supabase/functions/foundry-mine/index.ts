@@ -19,12 +19,27 @@ const TIER_WEIGHTS = [
   { min: 100, max: 100, weight: 0.005, tier: 'Apex' },
 ];
 
-function pickWeightedTierRange(): { min: number; max: number } {
-  const roll = Math.random();
+/**
+ * Pick a weighted tier range for mining.
+ * @param priorMines - number of prior mines for this user (0 = first mine)
+ * First-mine dampener: users with 0 prior mines cannot roll above Relic.
+ * Users with < 5 mines cannot roll Apex.
+ */
+function pickWeightedTierRange(priorMines: number): { min: number; max: number } {
+  // First-mine dampener: cap at Relic (score 93) for brand new users
+  const maxAllowedScore = priorMines === 0 ? 93 : priorMines < 5 ? 99 : 100;
+
+  // Build filtered weights
+  const eligible = TIER_WEIGHTS.filter(t => t.min <= maxAllowedScore);
+  const totalWeight = eligible.reduce((sum, t) => sum + t.weight, 0);
+
+  const roll = Math.random() * totalWeight;
   let cumulative = 0;
-  for (const t of TIER_WEIGHTS) {
+  for (const t of eligible) {
     cumulative += t.weight;
-    if (roll <= cumulative) return { min: t.min, max: t.max };
+    if (roll <= cumulative) {
+      return { min: t.min, max: Math.min(t.max, maxAllowedScore) };
+    }
   }
   return { min: 68, max: 79 };
 }
@@ -185,6 +200,48 @@ async function mapDiscoveryToResult(disc: any) {
   };
 }
 
+/**
+ * Fetch candidates from global pool WITH weighted tier respect.
+ * Used by healing recovery and fallback paths to prevent bypassing rarity curve.
+ */
+async function fetchWeightedGlobalCandidates(
+  supabase: ReturnType<typeof createClient>,
+  fetchCount: number,
+  priorMines: number,
+): Promise<any[]> {
+  const range = pickWeightedTierRange(priorMines);
+  
+  const { data } = await supabase.rpc('get_random_discoveries', {
+    min_score: range.min,
+    max_count: fetchCount,
+    max_score: range.max,
+  });
+
+  if (Array.isArray(data) && data.length > 0) {
+    return shuffleInPlace(data);
+  }
+
+  // Fallback: direct query within weighted range
+  const { count: totalEligible } = await supabase
+    .from('discoveries')
+    .select('id', { count: 'exact', head: true })
+    .gte('cjpi', range.min)
+    .lte('cjpi', range.max);
+
+  if (!totalEligible || totalEligible <= 0) return [];
+
+  const randomOffset = Math.floor(Math.random() * Math.max(1, totalEligible - fetchCount));
+  const { data: fallback } = await supabase
+    .from('discoveries')
+    .select(DISCOVERY_SELECT)
+    .gte('cjpi', range.min)
+    .lte('cjpi', range.max)
+    .range(randomOffset, randomOffset + fetchCount - 1);
+
+  return shuffleInPlace(fallback || []);
+}
+
+/** @deprecated — use fetchWeightedGlobalCandidates instead */
 async function fetchGlobalCandidates(
   supabase: ReturnType<typeof createClient>,
   fetchCount: number,
@@ -210,6 +267,7 @@ async function attemptHealingRecovery(
   supabase: ReturnType<typeof createClient>,
   userId: string,
   maxResults: number,
+  priorMines: number = 0,
 ) {
   const fetchCount = Math.max(8, maxResults * 8);
 
@@ -219,10 +277,12 @@ async function attemptHealingRecovery(
     .eq('user_id', userId);
 
   const ownedIds = new Set((existingItems || []).map((item: any) => item.artifact_id));
-  const globalCandidates = await fetchGlobalCandidates(supabase, fetchCount);
+  
+  // Use weighted candidates instead of unfiltered global pool
+  const candidates = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines);
 
   const healedResults: any[] = [];
-  for (const disc of globalCandidates) {
+  for (const disc of candidates) {
     if (healedResults.length >= maxResults) break;
     if (ownedIds.has(disc.id)) continue;
 
@@ -374,6 +434,9 @@ serve(async (req) => {
     const maxResults = Math.max(1, tierConfig.max_results_per_mine ?? 1);
     healingMaxResults = maxResults;
 
+    // Get prior mine count for first-mine dampener
+    const priorMines = dayCount ?? 0;
+
     const { data: existingItems } = await supabase
       .from('foundry_inventory')
       .select('artifact_id')
@@ -385,7 +448,7 @@ serve(async (req) => {
     const attemptedRanges: { min: number; max: number }[] = [];
 
     for (let slot = 0; slot < maxResults; slot++) {
-      const range = pickWeightedTierRange();
+      const range = pickWeightedTierRange(priorMines);
       attemptedRanges.push(range);
     }
 
@@ -433,7 +496,7 @@ serve(async (req) => {
     let globalFallbackPool: any[] = [];
     const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
     if (allRangePoolsEmpty) {
-      globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
     }
 
     const selectedIds = new Set<string>();
@@ -467,7 +530,7 @@ serve(async (req) => {
 
     if (results.length === 0) {
       if (globalFallbackPool.length === 0) {
-        globalFallbackPool = await fetchGlobalCandidates(supabase, fetchCount * 2);
+        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
       }
       await appendFromPool(globalFallbackPool);
     }
@@ -623,7 +686,7 @@ serve(async (req) => {
 
     if (supabase && authedUserId) {
       try {
-        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults);
+        const healedResults = await attemptHealingRecovery(supabase, authedUserId, healingMaxResults, 0);
 
         if (healedResults.length > 0) {
           const bestScore = Math.max(...healedResults.map((r: any) => r.score));
