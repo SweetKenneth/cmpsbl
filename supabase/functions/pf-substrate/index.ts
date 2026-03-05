@@ -5536,80 +5536,83 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
 4. When asked about something you have a memory for, cite it directly. When you don't, say so honestly.
 5. Memories marked as "user_fact" are the user's own words — treat them as absolute truth.`;
       
-      // ═══ PERSISTENT MEMORY RECALL (v8.5.0 — Enhanced Precision) ═══
+      // ═══ PERSISTENT MEMORY RECALL (v8.5.0 — Auth-Gated to prevent cross-user bleed) ═══
+      // ONLY recall/store persistent memories for AUTHENTICATED users.
+      // Anonymous users get ephemeral conversation only (passed via conversationHistory payload).
       let memoryContext: any[] = [];
       let factMemories: any[] = [];
-      try {
-        const searchTerm = String(message || '').trim();
-        const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 2).slice(0, 8);
-        
-        const searchPromises: Promise<any>[] = [];
-        
-        // Strategy 1: Search user_fact memories with HIGH priority (exact fact recall)
-        if (searchWords.length > 0) {
-          for (const word of searchWords.slice(0, 3)) {
-            searchPromises.push(
-              supabase
-                .from("brain_memories")
-                .select("content, memory_type, confidence")
-                .eq("memory_type", "user_fact")
-                .ilike("content", `%${word}%`)
-                .order("confidence", { ascending: false })
-                .limit(5)
-                .then((r: any) => ({ source: 'fact_search', data: r.data }))
-                .catch(() => ({ source: 'fact_search', data: [] }))
-            );
+      if (isAuthenticated) {
+        try {
+          const searchTerm = String(message || '').trim();
+          const searchWords = searchTerm.split(/\s+/).filter(w => w.length > 2).slice(0, 8);
+          
+          const searchPromises: Promise<any>[] = [];
+          
+          // Strategy 1: Search user_fact memories with HIGH priority (exact fact recall)
+          if (searchWords.length > 0) {
+            for (const word of searchWords.slice(0, 3)) {
+              searchPromises.push(
+                supabase
+                  .from("brain_memories")
+                  .select("content, memory_type, confidence")
+                  .eq("memory_type", "user_fact")
+                  .ilike("content", `%${word}%`)
+                  .order("confidence", { ascending: false })
+                  .limit(5)
+                  .then((r: any) => ({ source: 'fact_search', data: r.data }))
+                  .catch(() => ({ source: 'fact_search', data: [] }))
+              );
+            }
           }
-        }
-        
-        // Strategy 2: Full-text search on all brain_memories
-        searchPromises.push(
-          supabase
-            .from("brain_memories")
-            .select("content, memory_type, confidence")
-            .textSearch("content", searchTerm, { type: 'websearch' })
-            .order("confidence", { ascending: false })
-            .limit(5)
-            .then((r: any) => ({ source: 'fts', data: r.data }))
-            .catch(() => ({ source: 'fts', data: [] }))
-        );
-        
-        // Strategy 3: ILIKE fallback
-        if (searchWords.length > 0) {
+          
+          // Strategy 2: Full-text search on all brain_memories
           searchPromises.push(
             supabase
               .from("brain_memories")
               .select("content, memory_type, confidence")
-              .ilike("content", `%${searchWords[0]}%`)
+              .textSearch("content", searchTerm, { type: 'websearch' })
               .order("confidence", { ascending: false })
               .limit(5)
-              .then((r: any) => ({ source: 'ilike', data: r.data }))
-              .catch(() => ({ source: 'ilike', data: [] }))
+              .then((r: any) => ({ source: 'fts', data: r.data }))
+              .catch(() => ({ source: 'fts', data: [] }))
           );
-        }
-        
-        // Strategy 4: Hot memories
-        searchPromises.push(
-          supabase
-            .from("brain_memory_hot")
-            .select("content, context, priority")
-            .order("priority", { ascending: false })
-            .limit(5)
-            .then((r: any) => ({ source: 'hot', data: r.data }))
-            .catch(() => ({ source: 'hot', data: [] }))
-        );
-        
-        // Strategy 5: Session history
-        searchPromises.push(
-          supabase
-            .from("cascade_conversations")
-            .select("message, reply")
-            .eq("session_id", effectiveSessionId)
-            .order("created_at", { ascending: false })
-            .limit(8)
-            .then((r: any) => ({ source: 'session', data: r.data }))
-            .catch(() => ({ source: 'session', data: [] }))
-        );
+          
+          // Strategy 3: ILIKE fallback
+          if (searchWords.length > 0) {
+            searchPromises.push(
+              supabase
+                .from("brain_memories")
+                .select("content, memory_type, confidence")
+                .ilike("content", `%${searchWords[0]}%`)
+                .order("confidence", { ascending: false })
+                .limit(5)
+                .then((r: any) => ({ source: 'ilike', data: r.data }))
+                .catch(() => ({ source: 'ilike', data: [] }))
+            );
+          }
+          
+          // Strategy 4: Hot memories
+          searchPromises.push(
+            supabase
+              .from("brain_memory_hot")
+              .select("content, context, priority")
+              .order("priority", { ascending: false })
+              .limit(5)
+              .then((r: any) => ({ source: 'hot', data: r.data }))
+              .catch(() => ({ source: 'hot', data: [] }))
+          );
+          
+          // Strategy 5: Session history (only for authenticated users)
+          searchPromises.push(
+            supabase
+              .from("cascade_conversations")
+              .select("message, reply")
+              .eq("session_id", effectiveSessionId)
+              .order("created_at", { ascending: false })
+              .limit(8)
+              .then((r: any) => ({ source: 'session', data: r.data }))
+              .catch(() => ({ source: 'session', data: [] }))
+          );
         
         const results = await Promise.all(searchPromises);
         
