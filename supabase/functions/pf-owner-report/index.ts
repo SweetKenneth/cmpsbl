@@ -48,6 +48,11 @@ serve(async (req: Request) => {
       auditScanErrorsRes,
       enhancementEventsRes,
       moduleHealthEventsRes,
+      // User accounts
+      totalUsersRes,
+      newUsersRes,
+      // DECODE subjects studied (deduplicated)
+      decodeSubjectsRes,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -73,6 +78,12 @@ serve(async (req: Request) => {
       supabase.from("brain_events").select("module, data, created_at").eq("event_type", "enhancement_granted").gte("created_at", iso24h).order("created_at", { ascending: false }).limit(50),
       // Module health: all module events for health scoring
       supabase.from("brain_events").select("module, outcome", { count: "exact" }).gte("created_at", iso24h),
+      // Total user accounts
+      supabase.auth.admin.listUsers({ page: 1, perPage: 1 }),
+      // New users in last 3 hours (profiles table as proxy)
+      supabase.from("profiles").select("id, created_at", { count: "exact" }).gte("created_at", iso3h),
+      // DECODE: all subjects/topics being studied (for dedup display)
+      supabase.from("brain_events").select("data, module").in("event_type", ["technical_learning_cycle", "clm_server_cycle", "module_learning_insight", "learning"]).gte("created_at", iso3h).limit(200),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
@@ -99,6 +110,24 @@ serve(async (req: Request) => {
     const auditScanErrors = extract(auditScanErrorsRes);
     const enhancementEvents = extract(enhancementEventsRes);
     const moduleHealthEvents = extract(moduleHealthEventsRes);
+
+    // User accounts
+    const totalUsersResult = totalUsersRes.status === "fulfilled" ? totalUsersRes.value : null;
+    const totalUsersTotal = (totalUsersResult?.data as any)?.total || totalUsersResult?.data?.users?.length || 0;
+    const newUsers3h = extract(newUsersRes);
+    const newUserCount3h = newUsers3h.count || newUsers3h.data?.length || 0;
+
+    // DECODE subjects studied — deduplicated
+    const decodeSubjectsRaw = extract(decodeSubjectsRes);
+    const allStudiedSubjects = new Set<string>();
+    for (const evt of (decodeSubjectsRaw.data || [])) {
+      const d = evt.data as any;
+      if (d?.domain) allStudiedSubjects.add(d.domain);
+      if (d?.topic) allStudiedSubjects.add(d.topic);
+      if (d?.subject) allStudiedSubjects.add(d.subject);
+      if (d?.title && typeof d.title === 'string' && d.title.length < 80) allStudiedSubjects.add(d.title);
+    }
+    const dedupedSubjects = Array.from(allStudiedSubjects).sort();
 
     // ═══ SUBSTRATE AUDIT SCAN ═══
     // Analyze errors, failures, and anomalies across all modules
@@ -167,6 +196,21 @@ serve(async (req: Request) => {
       identity: { title: 'add session anomaly detection', category: 'security' },
       ripple: { title: 'add event replay filtering', category: 'capability' },
       intent: { title: 'add intent confidence scoring', category: 'capability' },
+      atlas: { title: 'add governance proposal auto-scoring', category: 'capability' },
+      shadow: { title: 'add probe drift detection', category: 'resilience' },
+      oracle: { title: 'add predictive signal weighting', category: 'capability' },
+      compass: { title: 'add directional trend mapping', category: 'capability' },
+      echo: { title: 'add feedback loop amplification', category: 'performance' },
+      harvest: { title: 'add data ingestion quality scoring', category: 'performance' },
+      lingua: { title: 'add translation confidence tracking', category: 'capability' },
+      forge: { title: 'add artifact integrity verification', category: 'security' },
+      nerve: { title: 'add real-time signal prioritization', category: 'resilience' },
+      reflex: { title: 'add automatic response calibration', category: 'resilience' },
+      engineer: { title: 'add maintenance fleet scheduling', category: 'resilience' },
+      mesh: { title: 'add cross-node consensus optimization', category: 'performance' },
+      sovereign: { title: 'add sovereignty boundary enforcement', category: 'security' },
+      conscience: { title: 'add ethical decision audit trail', category: 'security' },
+      treaty: { title: 'add inter-system agreement validation', category: 'security' },
     };
 
     // Track which enhancements were already granted
@@ -346,6 +390,8 @@ serve(async (req: Request) => {
       quota: { total_budget: totalBudget, total_used: totalUsed, utilization_pct: quotaUtilization, providers: quotaData },
       allocation: { estimated_substrate_needs: estimatedSubstrateNeeds, available_for_learning: availableForLearning, per_entity: perEntityAllocation, entity_count: entityCount },
       provider_health: providerReports,
+      users: { total: totalUsersTotal, new_3h: newUserCount3h },
+      subjects_studied: dedupedSubjects,
       flags,
     };
 
@@ -474,6 +520,30 @@ serve(async (req: Request) => {
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;" class="email-text-secondary">${s.label}</div>
       <div style="font-size:24px;font-weight:800;color:${s.color};">${s.value}</div>
     </div>`).join("")}
+</div>
+
+<!-- 👤 USER ACCOUNTS -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 14px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">👤 User Accounts</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;">
+    <div class="email-stat-card" style="flex:1;min-width:130px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;">Total Users</div>
+      <div style="font-size:28px;font-weight:800;color:#059669;">${totalUsersTotal}</div>
+    </div>
+    <div class="email-stat-card" style="flex:1;min-width:130px;background:${newUserCount3h > 0 ? '#eff6ff' : '#f9fafb'};border:1px solid ${newUserCount3h > 0 ? '#bfdbfe' : '#e5e7eb'};border-radius:12px;padding:16px;text-align:center;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;color:#6b7280;margin-bottom:6px;">New (Last 3h)</div>
+      <div style="font-size:28px;font-weight:800;color:${newUserCount3h > 0 ? '#2563eb' : '#9ca3af'};">${newUserCount3h > 0 ? '+' : ''}${newUserCount3h}</div>
+    </div>
+  </div>
+</div>
+
+<!-- 📖 SUBJECTS BEING STUDIED (Deduplicated) -->
+<div class="email-card" style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:20px;">
+  <h2 style="margin:0 0 4px;font-size:15px;font-weight:700;color:#111827;" class="email-text-heading">📖 Subjects Being Studied</h2>
+  <p style="margin:0 0 14px;font-size:12px;color:#6b7280;" class="email-text-secondary">Unique topics DECODE and CLM explored this window · ${dedupedSubjects.length} subject${dedupedSubjects.length !== 1 ? 's' : ''}</p>
+  ${dedupedSubjects.length > 0
+    ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${dedupedSubjects.map(s => `<span class="email-topic-tag" style="display:inline-block;background:#ede9fe;color:#5b21b6;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:500;">${s}</span>`).join('')}</div>`
+    : '<p style="color:#9ca3af;font-size:13px;">No subjects studied this window.</p>'}
 </div>
 
 <!-- 🔴 SUBSTRATE AUDIT SCAN — ALWAYS FIRST -->
@@ -715,6 +785,13 @@ CLM Status: ${clmStatusText}
 Quota Used: ${quotaUtilization}% (${totalUsed}/${totalBudget})
 Learning Events (3h): ${totalLearningEvents}
 Dream Cycles (3h): ${dreamCount}
+
+USER ACCOUNTS
+Total Users: ${totalUsersTotal}
+New Users (3h): ${newUserCount3h > 0 ? '+' : ''}${newUserCount3h}
+
+SUBJECTS BEING STUDIED (${dedupedSubjects.length} unique)
+${dedupedSubjects.length > 0 ? dedupedSubjects.map(s => `  • ${s}`).join("\n") : "No subjects studied this window."}
 
 NEXUS DYNAMIC ALLOCATION
 Daily Capacity: ${totalBudget.toLocaleString()} calls
