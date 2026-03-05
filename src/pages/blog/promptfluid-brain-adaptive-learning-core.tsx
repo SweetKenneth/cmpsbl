@@ -10,11 +10,11 @@ const PromptFluidBrain = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="BRAIN Module: Adaptive Learning Core"
-        description="How the BRAIN module powers autonomous learning, prompt evolution, and persistent memory — the cognitive engine behind self-improving AI."
+        title="BRAIN: Adaptive Learning Core"
+        description="How the BRAIN system powers autonomous learning, prompt evolution, and persistent memory — the cognitive engine behind self-improving AI."
         type="article"
         publishedTime="2025-09-15"
-        keywords={['adaptive AI learning', 'AI memory management', 'self-improving AI', 'BRAIN module', 'cognitive engine']}
+        keywords={['adaptive AI learning', 'AI memory management', 'self-improving AI', 'BRAIN system', 'cognitive engine']}
       />
       
       <PublicNav />
@@ -28,11 +28,11 @@ const PromptFluidBrain = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            BRAIN Module: The Adaptive Learning Core
+            BRAIN: The Adaptive Learning Core
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-            Discover how the BRAIN module orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction within the CMPSBL Substrate.
+            Discover how BRAIN orchestrates AI intelligence, evolves system prompts, and continuously learns from every interaction within the CMPSBL Substrate.
           </p>
 
           <AuthorBio publishDate="2025-08-28" readTime="10 min read" />

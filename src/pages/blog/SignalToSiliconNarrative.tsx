@@ -91,7 +91,7 @@ export default function SignalToSiliconNarrative() {
           <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
             <p>
               When the crystallization engine detects a viable pattern, it begins the condensation process. This is where 
-              the substrate's <Link to="/modules" className="text-primary hover:underline">38-node architecture</Link> comes into play. 
+              the substrate's <Link to="/modules" className="text-primary hover:underline">system architecture</Link> comes into play. 
               Multiple nodes collaborate to transform raw signals into structured software:
             </p>
 

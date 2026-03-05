@@ -1,6 +1,6 @@
 /**
  * Capability & Pipeline Manifest — Downloadable developer reference
- * Shows all public-safe capabilities grouped by tier and module
+ * Shows all public-safe capabilities grouped by tier and system
  */
 
 import { useState, useMemo } from 'react';
@@ -38,7 +38,7 @@ function downloadManifestJSON() {
   const manifest = PUBLIC_CAPABILITY_MANIFEST.map(c => ({
     name: c.name,
     tier: c.tier === 'enterprise' ? 'architect' : c.tier,
-    module: c.module,
+    system: c.module,
     outcome: c.outcome_summary,
     category: c.category,
     crown_jewel: c.is_crown_jewel || false,
@@ -72,14 +72,14 @@ export default function CapabilityManifest() {
   const stats = useMemo(() => ({
     total: PUBLIC_CAPABILITY_MANIFEST.length,
     crownJewels: PUBLIC_CAPABILITY_MANIFEST.filter(c => c.is_crown_jewel).length,
-    modules: new Set(PUBLIC_CAPABILITY_MANIFEST.map(c => c.module)).size,
+    systems: new Set(PUBLIC_CAPABILITY_MANIFEST.map(c => c.module)).size,
   }), []);
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title="Capability Manifest — CMPSBL Developer Reference"
-        description="Browse and download the full CMPSBL capability manifest. Every module, capability, and pipeline — organized by tier and category."
+        description="Browse and download the full CMPSBL capability manifest. Every system, capability, and pipeline — organized by tier and category."
       />
       <PublicNav />
 
@@ -103,7 +103,7 @@ export default function CapabilityManifest() {
               </span>
             </h1>
             <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
-              {stats.total} capabilities across {stats.modules} modules. {stats.crownJewels} Crown Jewels.
+              {stats.total} capabilities across {stats.systems} systems. {stats.crownJewels} Apex Discoveries.
               Browse, search, or download the full JSON manifest.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">

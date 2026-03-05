@@ -10,11 +10,11 @@ const PromptFluidDefense = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="DEFENSE Module: Adaptive Bot Protection"
+        title="DEFENSE: Adaptive Bot Protection"
         description="Adaptive bot protection, behavioral fingerprinting, and real-time threat intelligence for enterprise AI systems at production scale."
         type="article"
         publishedTime="2025-09-20"
-        keywords={['AI bot protection', 'threat intelligence', 'behavioral analysis security', 'DEFENSE module', 'AI fraud prevention']}
+        keywords={['AI bot protection', 'threat intelligence', 'behavioral analysis security', 'DEFENSE system', 'AI fraud prevention']}
       />
       
       <PublicNav />
@@ -28,7 +28,7 @@ const PromptFluidDefense = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            DEFENSE Module: AI-Powered Security That Adapts
+            DEFENSE: AI-Powered Security That Adapts
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">

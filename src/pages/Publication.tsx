@@ -18,17 +18,17 @@ export default function Publication() {
   const [copiedFormat, setCopiedFormat] = useState<string | null>(null);
 
   const citations = {
-    apa: `Sweet, K. E., Jr. (2026). promptfluid substrate: Cognitive orchestration substrate for multi-provider AI systems (Version 2026.01) [Software]. Zenodo. https://doi.org/10.5281/zenodo.18234910`,
-    bibtex: `@software{sweet2026promptfluid,
+    apa: `Sweet, K. E., Jr. (2026). CMPSBL substrate: Cognitive orchestration substrate for multi-provider AI systems (Version 2026.01) [Software]. Zenodo. https://doi.org/10.5281/zenodo.18234910`,
+    bibtex: `@software{sweet2026cmpsbl,
   author       = {Sweet, Kenneth E., Jr.},
-  title        = {promptfluid substrate: Cognitive orchestration substrate for multi-provider AI systems},
+  title        = {CMPSBL substrate: Cognitive orchestration substrate for multi-provider AI systems},
   year         = {2026},
   version      = {2026.01},
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.18234910},
   url          = {https://doi.org/10.5281/zenodo.18234910}
 }`,
-    chicago: `Sweet, Kenneth E., Jr. 2026. "promptfluid substrate: Cognitive orchestration substrate for multi-provider AI systems." Version 2026.01. Zenodo. https://doi.org/10.5281/zenodo.18234910.`
+    chicago: `Sweet, Kenneth E., Jr. 2026. "CMPSBL substrate: Cognitive orchestration substrate for multi-provider AI systems." Version 2026.01. Zenodo. https://doi.org/10.5281/zenodo.18234910.`
   };
 
   const handleCopy = (format: string, text: string) => {

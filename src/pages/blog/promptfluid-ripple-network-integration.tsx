@@ -27,7 +27,7 @@ const PromptFluidRipple = () => {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            RIPPLE Module: Intelligent Network Orchestration
+            RIPPLE: Intelligent Network Orchestration
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
@@ -60,7 +60,7 @@ const PromptFluidRipple = () => {
             
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                RIPPLE serves as the connective tissue of the CMPSBL Substrate, managing how services communicate, how requests flow between modules, and how resources are allocated across the infrastructure.
+                RIPPLE serves as the connective tissue of the CMPSBL Substrate, managing how services communicate, how requests flow between systems, and how resources are allocated across the infrastructure.
               </p>
               
               <p>
