@@ -532,10 +532,11 @@ serve(async (req) => {
     const ownedIds = new Set((existingItems || []).map((e: any) => e.artifact_id));
 
     const results: any[] = [];
+    const activeTierWeights = await resolveAvailableTierWeights(supabase, priorMines);
     const attemptedRanges: { min: number; max: number }[] = [];
 
     for (let slot = 0; slot < maxResults; slot++) {
-      const range = pickWeightedTierRange(priorMines);
+      const range = pickWeightedTierRange(priorMines, activeTierWeights);
       attemptedRanges.push(range);
     }
 
@@ -583,13 +584,13 @@ serve(async (req) => {
     let globalFallbackPool: any[] = [];
     const allRangePoolsEmpty = [...rangedCandidates.values()].every(pool => pool.length === 0);
     if (allRangePoolsEmpty) {
-      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
+      globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
     }
 
     const selectedIds = new Set<string>();
-    const appendFromPool = async (pool: any[]) => {
-      for (const disc of pool) {
-        if (results.length >= maxResults) break;
+    const appendOneFromPool = async (pool: any[]): Promise<boolean> => {
+      while (pool.length > 0) {
+        const disc = pool.pop();
         if (!disc) continue;
         if (ownedIds.has(disc.id)) continue;
         if (selectedIds.has(disc.id)) continue;
@@ -600,7 +601,9 @@ serve(async (req) => {
         results.push(mapped);
         selectedIds.add(mapped.id);
         ownedIds.add(mapped.id);
+        return true;
       }
+      return false;
     };
 
     for (const range of attemptedRanges) {
@@ -608,18 +611,26 @@ serve(async (req) => {
       const key = `${range.min}-${range.max}`;
       const pool = rangedCandidates.get(key) || [];
 
-      await appendFromPool(pool);
+      let filled = await appendOneFromPool(pool);
 
-      if (results.length < maxResults && pool.length === 0 && globalFallbackPool.length > 0) {
-        await appendFromPool(globalFallbackPool);
+      if (!filled) {
+        if (globalFallbackPool.length === 0) {
+          globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
+        }
+        filled = await appendOneFromPool(globalFallbackPool);
+      }
+
+      if (!filled) {
+        const rescuePool = await fetchWeightedGlobalCandidates(supabase, fetchCount, priorMines, activeTierWeights);
+        await appendOneFromPool(rescuePool);
       }
     }
 
     if (results.length === 0) {
       if (globalFallbackPool.length === 0) {
-        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines);
+        globalFallbackPool = await fetchWeightedGlobalCandidates(supabase, fetchCount * 2, priorMines, activeTierWeights);
       }
-      await appendFromPool(globalFallbackPool);
+      await appendOneFromPool(globalFallbackPool);
     }
 
     // ─── Rediscovery tracking + fingerprint persistence ───────────
