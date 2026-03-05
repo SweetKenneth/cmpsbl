@@ -1,6 +1,6 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export
- * Now with Pipeline Provenance on click + fingerprint display.
+ * v13.3: structural pipeline identity with capability-level steps.
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -8,7 +8,7 @@ import { Download, Fingerprint } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
-import { truncateFingerprint } from '@/substrate/pipeline-fingerprint';
+import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import { toast } from 'sonner';
 
 interface InventoryItem {
@@ -23,6 +23,7 @@ interface InventoryItem {
   category: string | null;
   systemChain: string[] | null;
   pipelineFingerprint?: string | null;
+  pipelineSteps?: PipelineStep[] | null;
 }
 
 interface Props {
@@ -41,6 +42,7 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
       tier: item.publicTier,
       valuation: item.valuationDisplay,
       category: item.category,
+      pipelineSteps: item.pipelineSteps || null,
       systemChain: item.systemChain,
       fingerprint: item.pipelineFingerprint || null,
       obtainedAt: item.obtainedAt,
@@ -62,6 +64,7 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
 export function FoundryInventory({ inventory }: Props) {
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
+    pipelineSteps?: PipelineStep[];
     fingerprint?: string;
   } | null>(null);
 
@@ -114,6 +117,7 @@ export function FoundryInventory({ inventory }: Props) {
               name: item.artifactName,
               score: item.score,
               systemChain: item.systemChain ?? [],
+              pipelineSteps: item.pipelineSteps ?? undefined,
               fingerprint: item.pipelineFingerprint ?? undefined,
             })}
             className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 transition-colors cursor-pointer"
@@ -149,8 +153,8 @@ export function FoundryInventory({ inventory }: Props) {
                 )}
                 {item.systemChain && item.systemChain.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {item.systemChain.map(s => (
-                      <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
+                    {item.systemChain.map((s, idx) => (
+                      <span key={`${s}-${idx}`} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
                         {s}
                       </span>
                     ))}

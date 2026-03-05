@@ -7,6 +7,9 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { scoreToPublicTier, computeDisplayValuation, QUALITY_FLOOR, type PublicTier } from './public-tiers';
+import type { PipelineStep } from '@/substrate/pipeline-fingerprint';
+
+export type { PipelineStep };
 
 export interface MineResult {
   id: string;
@@ -17,6 +20,7 @@ export interface MineResult {
   valuationDisplay: number;
   category: string;
   systemChain: string[];
+  pipelineSteps?: PipelineStep[];
   fingerprint?: string;
 }
 

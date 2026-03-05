@@ -1,7 +1,7 @@
 /**
  * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
  * Includes save-to-vault action for each result.
- * Now with Pipeline Provenance on click + fingerprint display.
+ * v13.3: structural pipeline identity with capability-level steps.
  */
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,7 +9,7 @@ import { Pickaxe, Loader2, Download, Check, Fingerprint } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
-import { truncateFingerprint } from '@/substrate/pipeline-fingerprint';
+import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 import { toast } from 'sonner';
 
@@ -35,6 +35,7 @@ function exportResultsAsJSON(results: any[]) {
       tier: r.publicTier,
       valuation: r.valuationDisplay,
       category: r.category,
+      pipelineSteps: r.pipelineSteps || null,
       systemChain: r.systemChain,
       fingerprint: r.fingerprint || null,
       substrate_version: 'SPARTA',
@@ -62,6 +63,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
+    pipelineSteps?: PipelineStep[];
     fingerprint?: string; discoveryCount?: number;
   } | null>(null);
 
@@ -185,6 +187,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                   name: result.name,
                   score: result.score,
                   systemChain: result.systemChain,
+                  pipelineSteps: (result as any).pipelineSteps,
                   fingerprint: (result as any).fingerprint,
                 })}
                 className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-colors"
@@ -219,8 +222,8 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                       </div>
                     )}
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {result.systemChain.map(s => (
-                        <span key={s} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
+                      {result.systemChain.map((s, idx) => (
+                        <span key={`${s}-${idx}`} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
                           {s}
                         </span>
                       ))}

@@ -6083,6 +6083,7 @@ export type Database = {
           module_chain: string[]
           name: string
           pipeline_fingerprint: string | null
+          pipeline_steps: Json | null
           provenance: string | null
           rationale: string | null
           run_id: string
@@ -6107,6 +6108,7 @@ export type Database = {
           module_chain?: string[]
           name: string
           pipeline_fingerprint?: string | null
+          pipeline_steps?: Json | null
           provenance?: string | null
           rationale?: string | null
           run_id: string
@@ -6131,6 +6133,7 @@ export type Database = {
           module_chain?: string[]
           name?: string
           pipeline_fingerprint?: string | null
+          pipeline_steps?: Json | null
           provenance?: string | null
           rationale?: string | null
           run_id?: string
@@ -7551,6 +7554,7 @@ export type Database = {
           metadata: Json | null
           obtained_at: string
           pipeline_fingerprint: string | null
+          pipeline_steps: Json | null
           public_tier: string
           score: number
           source: string
@@ -7567,6 +7571,7 @@ export type Database = {
           metadata?: Json | null
           obtained_at?: string
           pipeline_fingerprint?: string | null
+          pipeline_steps?: Json | null
           public_tier: string
           score: number
           source?: string
@@ -7583,6 +7588,7 @@ export type Database = {
           metadata?: Json | null
           obtained_at?: string
           pipeline_fingerprint?: string | null
+          pipeline_steps?: Json | null
           public_tier?: string
           score?: number
           source?: string

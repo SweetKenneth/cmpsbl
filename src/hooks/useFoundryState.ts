@@ -1,6 +1,7 @@
 /**
  * useFoundryState — Per-user Memory Stream workspace hook
  * Loads user state, vault, handles crystallization, enforces quality floor.
+ * v13.3: structural pipeline identity with pipeline_steps support.
  */
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,6 +31,8 @@ interface InventoryItem {
   source: string;
   category: string | null;
   systemChain: string[] | null;
+  pipelineFingerprint?: string | null;
+  pipelineSteps?: any[] | null;
 }
 
 export function useFoundryState() {
@@ -50,7 +53,6 @@ export function useFoundryState() {
 
     setIsLoading(true);
     try {
-      // Ensure user state exists (upsert)
       const { data: state } = await supabase
         .from('foundry_user_state')
         .select('*')
@@ -95,6 +97,7 @@ export function useFoundryState() {
         category: i.category,
         systemChain: i.system_chain,
         pipelineFingerprint: i.pipeline_fingerprint,
+        pipelineSteps: i.pipeline_steps,
       }));
 
       setInventory(mappedInventory);
@@ -154,7 +157,6 @@ export function useFoundryState() {
           toast.success('Reroll credit earned!');
         }
       } else if (result.persistedCount > 0) {
-        const best = result.results[0];
         toast.success(`${MEMORY_STREAM_EVENT} — saved ${result.persistedCount} to Vault`);
       } else if (result.alreadyOwnedCount === result.results.length) {
         toast.info('Already in your vault');
