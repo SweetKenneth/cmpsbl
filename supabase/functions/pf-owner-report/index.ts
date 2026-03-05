@@ -390,6 +390,8 @@ serve(async (req: Request) => {
       quota: { total_budget: totalBudget, total_used: totalUsed, utilization_pct: quotaUtilization, providers: quotaData },
       allocation: { estimated_substrate_needs: estimatedSubstrateNeeds, available_for_learning: availableForLearning, per_entity: perEntityAllocation, entity_count: entityCount },
       provider_health: providerReports,
+      users: { total: totalUsersTotal, new_3h: newUserCount3h },
+      subjects_studied: dedupedSubjects,
       flags,
     };
 
