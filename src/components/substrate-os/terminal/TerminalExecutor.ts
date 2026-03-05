@@ -542,13 +542,41 @@ function generateFullHelp(): string {
 │  ⚡ ENGINE LAYER                                             │
 │    engine       (${COMMAND_CATEGORIES.engine.commands.length.toString().padStart(2)} cmds)  76 engines + 24 meta-engines       │
 │                                                             │
+│  🔱 EXPANSION — ESZ (help esz)                                │
+│    sovereign    (${COMMAND_CATEGORIES.sovereign.commands.length.toString().padStart(2)} cmds)  Jurisdictional compliance          │
+│    oracle       (${COMMAND_CATEGORIES.oracle.commands.length.toString().padStart(2)} cmds)  Predictive analytics               │
+│    conscience   (${COMMAND_CATEGORIES.conscience.commands.length.toString().padStart(2)} cmds)  Ethical governance & bias           │
+│    treaty       (${COMMAND_CATEGORIES.treaty.commands.length.toString().padStart(2)} cmds)  Inter-system agreements            │
+│                                                             │
+│  🔱 EXPANSION — EPZ (help epz)                                │
+│    compass      (${COMMAND_CATEGORIES.compass.commands.length.toString().padStart(2)} cmds)  Strategic navigation               │
+│    echo         (${COMMAND_CATEGORIES.echo.commands.length.toString().padStart(2)} cmds)  Event replay & simulation          │
+│    reflex       (${COMMAND_CATEGORIES.reflex.commands.length.toString().padStart(2)} cmds)  Edge computing & response          │
+│                                                             │
+│  🔱 EXPANSION — EMZ (help emz)                                │
+│    forge        (${COMMAND_CATEGORIES.forge.commands.length.toString().padStart(2)} cmds)  Artifact manufacturing             │
+│    lingua       (${COMMAND_CATEGORIES.lingua.commands.length.toString().padStart(2)} cmds)  Translation & i18n                 │
+│    harvest      (${COMMAND_CATEGORIES.harvest.commands.length.toString().padStart(2)} cmds)  Data collection & ETL              │
+│                                                             │
+│  🔱 EXPANSION — CSZ (help csz)                                │
+│    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Mutation pipeline & upgrades       │
+│    shadow       Covert testing channel                       │
+│    phantom      (${COMMAND_CATEGORIES.phantom.commands.length.toString().padStart(2)} cmds)  Privacy engineering                │
+│                                                             │
+│  🛡 MESH OVERLAYS                                              │
+│    immunity     (${COMMAND_CATEGORIES.immunity.commands.length.toString().padStart(2)} cmds)  Self-healing & threat correlation   │
+│    governance   (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Policy enforcement                 │
+│    medic        (${COMMAND_CATEGORIES.medic.commands.length.toString().padStart(2)} cmds)  Autonomous diagnostics             │
+│    nerve        (${COMMAND_CATEGORIES.nerve.commands.length.toString().padStart(2)} cmds)  Inter-node signaling               │
+│                                                             │
 │  👁 OBSERVABILITY                                             │
 │    obs          (${COMMAND_CATEGORIES.observability.commands.length.toString().padStart(2)} cmds)  Telemetry, bridges, latency, DLQ   │
-│    gov          (${COMMAND_CATEGORIES.governance.commands.length.toString().padStart(2)} cmds)  Governance modes, vetoes, drift     │
+│    gov          Governance modes, vetoes, drift              │
 │                                                             │
 │  ⚙ INFRASTRUCTURE                                            │
 │    infra        (${COMMAND_CATEGORIES.infra.commands.length.toString().padStart(2)} cmds)  Cron, snapshots, analytics, NL     │
 │    patch        ( 4 cmds)  Distribution patch dispatch        │
+│    matrix       (13 cmds)  Canary, chaos, heatmap, quorum    │
 │                                                             │
 │  ⚙ META COMMANDS                                            │
 │    meta         (${COMMAND_CATEGORIES.meta.commands.length.toString().padStart(2)} cmds)  Terminal controls, help, aliases    │
