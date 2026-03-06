@@ -11,6 +11,11 @@ import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, M
 import { PipelineProvenance } from './PipelineProvenance';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
+import {
+  generateSingleExport,
+  type ExportableArtifact,
+} from '@/lib/export/universal-adapter';
+import { getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
 import { toast } from 'sonner';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
@@ -23,8 +28,12 @@ function scoreColor(score: number): string {
   return 'text-emerald-400';
 }
 
-function exportResultsAsJSON(results: any[]) {
-  const exportData = {
+async function exportResultsAsZip(results: any[]) {
+  const JSZip = (await import('jszip')).default;
+  const zip = new JSZip();
+
+  // Manifest
+  const manifest = {
     exportedAt: new Date().toISOString(),
     source: 'CMPSBL Memory Stream',
     pipelineCount: results.length,
@@ -35,21 +44,59 @@ function exportResultsAsJSON(results: any[]) {
       tier: r.publicTier,
       valuation: r.valuationDisplay,
       category: r.category,
-      pipelineSteps: r.pipelineSteps || null,
       systemChain: r.systemChain,
       fingerprint: r.fingerprint || null,
-      substrate_version: 'SPARTA',
       epoch: 'SPARTA',
     })),
   };
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  zip.file('manifest.json', JSON.stringify(manifest, null, 2));
+
+  // Per-pipeline exports
+  for (const r of results) {
+    const unlocked = getUnlockedLanguages(r.score);
+    const lang = unlocked.includes('typescript') ? 'typescript'
+      : unlocked.includes('python') ? 'python'
+      : unlocked[0];
+    if (!lang) continue;
+
+    const slug = r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+    const exportable: ExportableArtifact = {
+      id: r.fingerprint || r.id,
+      name: r.name,
+      rank: 0,
+      cjpi: r.score,
+      module: r.systemChain?.[0] || 'unknown',
+      description: r.description || `Crystallized pipeline: ${r.name}`,
+      sourceCode: '',
+      synthesisContext: {
+        name: r.name,
+        moduleChain: r.systemChain || [],
+        cjpi: r.score,
+        description: `${r.name} — ${r.category || 'general'} pipeline`,
+        category: r.category || 'general',
+        entryCapability: 'process',
+        exitCapability: 'emit',
+        errorStrategy: 'propagate',
+        maxExecutionMs: 30000,
+      },
+    };
+
+    const bundle = generateSingleExport(exportable, lang);
+    const folder = zip.folder(slug)!;
+    folder.file('README.md', bundle.readme);
+    for (const file of bundle.files) {
+      folder.file(file.filename, file.content);
+    }
+  }
+
+  const blob = await zip.generateAsync({ type: 'blob' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `memory-stream-crystallization-${Date.now()}.json`;
+  a.download = `memory-stream-crystallization-${Date.now()}.zip`;
   a.click();
   URL.revokeObjectURL(url);
-  toast.success('Crystallization exported');
+  toast.success(`Exported ${results.length} pipelines as ZIP`);
 }
 
 interface Props {
@@ -156,11 +203,11 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
               </div>
               <button
-                onClick={() => exportResultsAsJSON(lastResult.results)}
+                onClick={() => exportResultsAsZip(lastResult.results)}
                 className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
               >
                 <Download className="w-3 h-3" />
-                Export
+                Export ZIP
               </button>
             </div>
 

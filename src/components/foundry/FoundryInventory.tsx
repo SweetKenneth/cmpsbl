@@ -4,11 +4,17 @@
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Fingerprint } from 'lucide-react';
+import { Download, Fingerprint, Loader2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
+import {
+  generateSingleExport,
+  type ExportableArtifact,
+  type ExportBundle,
+} from '@/lib/export/universal-adapter';
+import { getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
 import { toast } from 'sonner';
 
 interface InventoryItem {
@@ -30,8 +36,12 @@ interface Props {
   inventory: InventoryItem[];
 }
 
-function exportVaultAsJSON(inventory: InventoryItem[]) {
-  const exportData = {
+async function exportVaultAsZip(inventory: InventoryItem[]) {
+  const JSZip = (await import('jszip')).default;
+  const zip = new JSZip();
+
+  // Manifest with all pipeline metadata
+  const manifest = {
     exportedAt: new Date().toISOString(),
     source: 'CMPSBL Memory Stream Vault',
     pipelineCount: inventory.length,
@@ -42,23 +52,66 @@ function exportVaultAsJSON(inventory: InventoryItem[]) {
       tier: item.publicTier,
       valuation: item.valuationDisplay,
       category: item.category,
-      pipelineSteps: item.pipelineSteps || null,
       systemChain: item.systemChain,
       fingerprint: item.pipelineFingerprint || null,
       obtainedAt: item.obtainedAt,
       source: item.source,
-      substrate_version: 'SPARTA',
       epoch: 'SPARTA',
     })),
   };
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  zip.file('manifest.json', JSON.stringify(manifest, null, 2));
+
+  // Generate per-pipeline exports in the best unlocked language
+  for (const item of inventory) {
+    const unlocked = getUnlockedLanguages(item.score);
+    // Pick best available language: prefer typescript > python > first unlocked
+    const lang = unlocked.includes('typescript') ? 'typescript'
+      : unlocked.includes('python') ? 'python'
+      : unlocked[0];
+    if (!lang) continue;
+
+    const slug = item.artifactName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+    const exportable: ExportableArtifact = {
+      id: item.pipelineFingerprint || item.artifactId,
+      name: item.artifactName,
+      rank: 0,
+      cjpi: item.score,
+      module: item.systemChain?.[0] || 'unknown',
+      description: `Crystallized pipeline: ${item.artifactName}`,
+      sourceCode: '',
+      synthesisContext: {
+        name: item.artifactName,
+        moduleChain: item.systemChain || [],
+        cjpi: item.score,
+        description: `${item.artifactName} — ${item.category || 'general'} pipeline`,
+        category: item.category || 'general',
+        entryCapability: 'process',
+        exitCapability: 'emit',
+        errorStrategy: 'propagate',
+        maxExecutionMs: 30000,
+      },
+    };
+
+    const bundle = generateSingleExport(exportable, lang);
+    const folder = zip.folder(slug)!;
+    folder.file('README.md', bundle.readme);
+    for (const file of bundle.files) {
+      folder.file(file.filename, file.content);
+    }
+  }
+
+  // Add standalone runtime stubs
+  const runtimeFolder = zip.folder('_runtime')!;
+  runtimeFolder.file('README.md', `# CMPSBL Micro-Substrate Runtime\n\nStandalone runtime for exported pipelines.\nSee individual pipeline folders for language-specific implementations.\n`);
+
+  const blob = await zip.generateAsync({ type: 'blob' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `memory-stream-vault-${Date.now()}.json`;
+  a.download = `memory-stream-vault-${Date.now()}.zip`;
   a.click();
   URL.revokeObjectURL(url);
-  toast.success(`Exported ${inventory.length} pipelines`);
+  toast.success(`Exported ${inventory.length} pipelines as ZIP`);
 }
 
 export function FoundryInventory({ inventory }: Props) {
@@ -67,6 +120,7 @@ export function FoundryInventory({ inventory }: Props) {
     pipelineSteps?: PipelineStep[];
     fingerprint?: string;
   } | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   if (inventory.length === 0) {
     return (
@@ -84,6 +138,18 @@ export function FoundryInventory({ inventory }: Props) {
 
   const totalValuation = inventory.reduce((s, i) => s + i.valuationDisplay, 0);
 
+  const handleExportVault = async () => {
+    setIsExporting(true);
+    try {
+      await exportVaultAsZip(inventory);
+    } catch (err) {
+      console.error(err);
+      toast.error('Export failed');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div>
       {/* Summary */}
@@ -96,11 +162,12 @@ export function FoundryInventory({ inventory }: Props) {
             Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
           <button
-            onClick={() => exportVaultAsJSON(inventory)}
-            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+            onClick={handleExportVault}
+            disabled={isExporting}
+            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
           >
-            <Download className="w-3 h-3" />
-            Export Vault
+            {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+            {isExporting ? 'Building ZIP...' : 'Export Vault ZIP'}
           </button>
         </div>
       </div>
