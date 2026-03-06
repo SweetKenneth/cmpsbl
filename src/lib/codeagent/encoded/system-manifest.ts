@@ -78,6 +78,102 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependents: ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'defense', 'immunity', 'evolution', 'intent', 'governance', 'integration', 'medic', 'nerve'],
   },
 
+  // ─── CCR — Cognitive Core Reality (Zone modules) ────────────────────────────
+  system: {
+    id: 'system',
+    name: 'SYSTEM',
+    layer: 'kernel',
+    description: 'Lifecycle management, configuration, diagnostics.',
+    corePath: 'src/lib/core/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+  brain: {
+    id: 'brain',
+    name: 'BRAIN',
+    layer: 'cognitive',
+    description: 'Reasoning, cognition, and knowledge graph zone.',
+    corePath: 'src/lib/brain/',
+    dependencies: ['core'],
+    dependents: ['oracle', 'compass'],
+  },
+  memory: {
+    id: 'memory',
+    name: 'MEMORY',
+    layer: 'cognitive',
+    description: 'Tiered memory storage and retrieval zone.',
+    corePath: 'src/lib/memory/',
+    dependencies: ['core'],
+    dependents: ['echo', 'harvest'],
+  },
+  dream: {
+    id: 'dream',
+    name: 'DREAM',
+    layer: 'cognitive',
+    description: 'Dream synthesis and offline learning zone.',
+    corePath: 'src/lib/dream/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── OCG — Operational Compliance Grid (Zone modules) ──────────────────────
+  ripple: {
+    id: 'ripple',
+    name: 'RIPPLE',
+    layer: 'infrastructure',
+    description: 'Signal and event bus for cross-module communication.',
+    corePath: 'src/lib/substrate/ripple/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+  access: {
+    id: 'access',
+    name: 'ACCESS',
+    layer: 'operational',
+    description: 'Entitlements, API key management, and access control.',
+    corePath: 'src/lib/substrate/access/',
+    dependencies: ['core'],
+    dependents: ['sovereign', 'treaty'],
+  },
+  identity: {
+    id: 'identity',
+    name: 'IDENTITY',
+    layer: 'operational',
+    description: 'Session management, role resolution, and identity verification.',
+    corePath: 'src/lib/substrate/identity/',
+    dependencies: ['core'],
+    dependents: ['phantom'],
+  },
+  relay: {
+    id: 'relay',
+    name: 'RELAY',
+    layer: 'infrastructure',
+    description: 'Webhook dispatch and external event delivery.',
+    corePath: 'src/lib/substrate/relay/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+  audit: {
+    id: 'audit',
+    name: 'AUDIT',
+    layer: 'operational',
+    description: 'Immutable integrity ledger and compliance chain.',
+    corePath: 'src/lib/audit/',
+    dependencies: ['core'],
+    dependents: [],
+  },
+
+  // ─── CSZ — Covert Systems Zone ─────────────────────────────────────────────
+  shadow: {
+    id: 'shadow',
+    name: 'SHADOW',
+    layer: 'operational',
+    description: 'Divergence testing and shadow mesh operations.',
+    corePath: 'src/lib/substrate/shadow/',
+    dependencies: ['core', 'evolution'],
+    dependents: [],
+  },
+
   // ─── 8 Public Modules ──────────────────────────────────────────────────────
   decode: {
     id: 'decode',

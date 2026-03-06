@@ -59,8 +59,8 @@ export function checkMemoryBounds(): AuditFinding[] {
 
   // 3. Verify NEXUS cost ceiling has config setter (budget enforcement wiring)
   try {
-    const { setCostCeilingConfig, getCostCeilingConfig } = require('@/lib/nexus/cost-ceiling');
-    const config = getCostCeilingConfig();
+    const mod = await import('@/lib/nexus/cost-ceiling');
+    const config = mod.getCostCeilingConfig();
     findings.push({
       id: 'mem_bounds_cost_ceiling_ok',
       category: 'runtime',

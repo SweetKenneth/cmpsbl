@@ -118,7 +118,7 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'medic', label: 'MEDIC', sector: 'execution', weight: 0.022, description: 'Autonomous diagnostics & self-repair' },
 
   // ─── Integration (boots last among execution) ──────────────────
-  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.000, description: 'Dependency resolver (boots last)' },
+  { id: 'integration', label: 'INTEGRATION', sector: 'execution', weight: 0.020, description: 'Dependency resolver (boots last)' },
 
   // ─── ESZ — Expansion Sovereignty Zone (4 nodes, 0.08 total) ────
   { id: 'sovereign', label: 'SOVEREIGN', sector: 'esz', weight: 0.020, description: 'Data sovereignty & jurisdictional compliance' },
@@ -142,8 +142,8 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'phantom', label: 'PHANTOM', sector: 'csz', weight: 0.017, description: 'Privacy protection & anonymization' },
 
   // ─── Fields — System-wide transformation fabric ────────────────
-  { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.020, description: 'Resilience field' },
-  { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.020, description: 'Capability discovery field' },
+  { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.030, description: 'Resilience field' },
+  { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.030, description: 'Capability discovery field' },
 
   // ─── Plane — Supervisory blanket ───────────────────────────────
   { id: 'governance', label: 'GOVERNANCE', sector: 'plane', weight: 0.030, description: 'Policy enforcement overlay plane' },
