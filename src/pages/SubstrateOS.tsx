@@ -433,9 +433,11 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'analytics' && (
-              <PanelContainer id="analytics">
-                <Suspense fallback={<PanelLoader />}><AnalyticsTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Analytics" description="Substrate telemetry and human traffic intelligence. System metrics, visitor analytics, and conversion tracking — governor-restricted.">
+                <PanelContainer id="analytics">
+                  <Suspense fallback={<PanelLoader />}><AnalyticsTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'nexus' && (
