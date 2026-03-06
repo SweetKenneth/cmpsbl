@@ -144,6 +144,7 @@ export interface DiscoveryRunResult {
   gapsFound: number;
   recommendationsGenerated: number;
   capabilitiesExpanded: number;
+  pipelineCandidates?: number;
   modulesAnalyzed: number;
   durationMs: number;
   gaps: CapabilityGap[];
