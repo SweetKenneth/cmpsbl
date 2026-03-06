@@ -157,8 +157,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
     
-    <!-- CSS loads normally — deferring Tailwind CSS delays LCP by forcing unstyled React paint -->
-    
+    <!-- CSS loaded synchronously via Vite's standard import to ensure FCP has styled content -->
     <!-- 2026 SEO: Primary Meta Tags — Autonomous Software Discovery -->
     <title>CMPSBL — AI Infrastructure for Autonomous Software Discovery</title>
     <meta name="description" content="CMPSBL is a cognitive infrastructure platform where autonomous systems discover, crystallize, and export deployable software pipelines & hardware architectures." />
