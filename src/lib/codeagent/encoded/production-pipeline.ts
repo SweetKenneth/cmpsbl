@@ -1,5 +1,5 @@
 /**
- * Encoded Production Pipeline — v1.0.0
+ * Encoded Production Pipeline
  * 
  * Graduates shadow practice wins into governed proposals.
  * Pipeline: Shadow Win → Validate → Propose → Review Gate → Merge

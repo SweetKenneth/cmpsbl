@@ -1,7 +1,7 @@
 /**
- * Brain → Encoded Knowledge Transfer Pipeline — v1.0.0
+ * Brain → Encoded Knowledge Transfer Pipeline
  * 
- * Distills Brain memories into actionable code patterns for Encoded.
+ * Distills Brain memories into actionable code patterns for ENCODE.
  * This is the bridge that turns experience into implementation expertise.
  */
 

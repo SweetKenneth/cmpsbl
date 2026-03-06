@@ -85,7 +85,7 @@ export async function updateEncodedConfig(
       .from('atlas_capabilities')
       .upsert({
         key: 'encoded_config',
-        description: 'Encoded v2.2.0 configuration — Nexus fleet routing',
+        description: 'Encoded configuration — Nexus fleet routing',
         enabled: true,
         metadata,
       }, { onConflict: 'key' });
