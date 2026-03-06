@@ -1,8 +1,8 @@
 /**
  * FoundryStats — Quick stats bar for the Memory Stream page
+ * Polished: glass-edge cards, glow accents, smoother entrance
  */
 import { motion } from 'framer-motion';
-import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
 
 interface Props {
   inventoryCount: number;
@@ -12,33 +12,37 @@ interface Props {
   tierCounts: Record<string, number>;
 }
 
-export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays, tierCounts }: Props) {
+export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays }: Props) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <StatCard label="Vault" value={String(inventoryCount)} />
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+      <StatCard label="Vault" value={String(inventoryCount)} delay={0} />
       <StatCard
         label="Best Pull"
         value={bestPull ? String(bestPull.score) : '—'}
         accent={bestPull ? (bestPull.score === 100 ? 'text-primary' : bestPull.score >= 94 ? 'text-purple-400' : bestPull.score >= 90 ? 'text-amber-400' : bestPull.score >= 80 ? 'text-sky-400' : 'text-emerald-400') : undefined}
         sub={bestPull?.publicTier}
+        delay={0.05}
       />
-      <StatCard label="Total Crystallizations" value={String(totalMines)} />
-      <StatCard label="Streak" value={streakDays > 0 ? `${streakDays}d` : '—'} sub={streakDays > 0 ? 'stability bonus' : undefined} />
+      <StatCard label="Crystallizations" value={String(totalMines)} delay={0.1} />
+      <StatCard label="Streak" value={streakDays > 0 ? `${streakDays}d` : '—'} sub={streakDays > 0 ? 'stability bonus' : undefined} delay={0.15} />
     </div>
   );
 }
 
-function StatCard({ label, value, accent, sub }: { label: string; value: string; accent?: string; sub?: string }) {
+function StatCard({ label, value, accent, sub, delay = 0 }: { label: string; value: string; accent?: string; sub?: string; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-card/30 border border-border/20 rounded-lg p-4 text-center"
+      transition={{ delay, type: 'spring', stiffness: 200, damping: 20 }}
+      className="relative bg-card/40 border border-border/20 rounded-xl p-4 sm:p-5 text-center backdrop-blur-sm overflow-hidden stat-card-glow shimmer-on-hover"
     >
-      <div className={`text-2xl font-mono font-black ${accent || 'text-foreground'}`}>
+      {/* Top accent line */}
+      <div className="absolute top-0 left-3 right-3 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      <div className={`text-2xl sm:text-3xl font-mono font-black ${accent || 'text-foreground'}`}>
         {value}
       </div>
-      <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-1">
+      <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-1.5">
         {label}
       </div>
       {sub && (
