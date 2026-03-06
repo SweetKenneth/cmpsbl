@@ -123,7 +123,7 @@ export const DECODE_COMMANDS: CommandDefinition[] = [
   { command: 'decode.dream', description: 'Generate dream content', category: 'decode', icon: Moon, requiresOperator: true, requiredTier: 'creator' },
   { command: 'decode.propose', description: 'Submit substrate proposal', category: 'decode', icon: MessageSquare, requiresOperator: true, requiredTier: 'creator', args: '<idea>' },
   { command: 'decode.learn', description: 'Ingest learning content', category: 'decode', icon: Brain, requiresOperator: true, requiredTier: 'creator', args: '<content> [source]' },
-  // Personality subsystem (v7.1.0) - interpretive filters only
+  // Personality subsystem - interpretive filters only
   { command: 'decode.personality.list', description: 'List personality profiles', category: 'decode', icon: MessageSquare, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.personality.get', description: 'Get current personality', category: 'decode', icon: MessageSquare, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.personality.set', description: 'Set personality profile', category: 'decode', icon: MessageSquare, requiresOperator: true, requiredTier: 'creator', args: '<profile>', example: 'decode.personality.set technical' },
@@ -160,7 +160,7 @@ export const NEXUS_COMMANDS: CommandDefinition[] = [
 ];
 
 export const VISION_COMMANDS: CommandDefinition[] = [
-  { command: 'vision.status', description: 'Module status (Vee v2.0)', category: 'vision', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'vision.status', description: 'Module status (Vee)', category: 'vision', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'vision.health', description: 'System-wide health', category: 'vision', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'vision.pulse', description: 'Lightweight heartbeat', category: 'vision', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'vision.metrics', description: 'System metrics', category: 'vision', icon: Gauge, requiresOperator: false, requiredTier: 'free', args: '[period] [type]' },
@@ -386,7 +386,7 @@ export const INCLUSIVE_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.coverage', description: 'Template coverage stats', category: 'inclusive', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
 ];
 
-// CLM (Constant Learning Mode) commands — v6.7.0
+// CLM (Constant Learning Mode) commands
 export const CLM_COMMANDS: CommandDefinition[] = [
   { command: 'clm.status', description: 'CLM status (budget, topics, queue)', category: 'clm', icon: Brain, requiresOperator: false, requiredTier: 'free' },
   { command: 'clm.enable', description: 'Enable Constant Learning Mode', category: 'clm', icon: Brain, requiresOperator: true, requiredTier: 'architect' },
@@ -424,7 +424,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help encoded', description: 'Encoded agent commands', category: 'meta', icon: PenTool, requiresOperator: false },
   { command: 'help infra', description: 'Infrastructure commands (cron, snapshots, etc)', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help patch', description: 'Patch dispatch commands', category: 'meta', icon: Send, requiresOperator: false },
-  // Infrastructure Six + ENCODE module help (v10.5.4)
+  // Infrastructure Six + ENCODE module help
   { command: 'help memory', description: 'Memory (vector/RAG) module commands', category: 'meta', icon: Database, requiresOperator: false },
   { command: 'help relay', description: 'Relay (outbound webhooks) module commands', category: 'meta', icon: Send, requiresOperator: false },
   { command: 'help audit', description: 'Audit (compliance ledger) module commands', category: 'meta', icon: FileCheck, requiresOperator: false },
@@ -447,12 +447,12 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'debug.enable', description: 'Enable single feature', category: 'meta', icon: CheckCircle, requiresOperator: false, args: '<feature>' },
   { command: 'debug.disable', description: 'Disable single feature', category: 'meta', icon: XCircle, requiresOperator: false, args: '<feature>' },
   
-  // v5.0.0: Aliases
+  // Aliases
   { command: 'alias', description: 'List all command aliases', category: 'meta', icon: Terminal, requiresOperator: false },
   { command: 'alias add', description: 'Create a custom alias', category: 'meta', icon: Terminal, requiresOperator: false, args: '<alias> <command>', example: 'alias add hs system.health' },
   { command: 'alias remove', description: 'Remove a custom alias', category: 'meta', icon: Terminal, requiresOperator: false, args: '<alias>' },
   
-  // v5.0.0: Macros
+  // Macros
   { command: 'macro', description: 'Macro help & commands', category: 'meta', icon: PlayCircle, requiresOperator: false },
   { command: 'macro list', description: 'List all macros', category: 'meta', icon: List, requiresOperator: false },
   { command: 'macro run', description: 'Execute a macro', category: 'meta', icon: PlayCircle, requiresOperator: false, args: '<name>', example: 'macro run health_check' },
@@ -460,7 +460,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'macro create', description: 'Create a custom macro', category: 'meta', icon: Terminal, requiresOperator: false, args: '<name> <commands...>' },
   { command: 'macro delete', description: 'Delete a custom macro', category: 'meta', icon: Terminal, requiresOperator: false, args: '<name>' },
   
-  // v5.0.0: Scheduling & Watch
+  // Scheduling & Watch
   { command: 'schedule', description: 'Schedule command execution', category: 'meta', icon: Clock, requiresOperator: false, args: '<delay> <command>', example: 'schedule 5m brain.reflect' },
   { command: 'schedule list', description: 'List scheduled commands', category: 'meta', icon: List, requiresOperator: false },
   { command: 'schedule cancel', description: 'Cancel a scheduled command', category: 'meta', icon: Terminal, requiresOperator: false, args: '<id>' },
@@ -469,26 +469,26 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'watch list', description: 'List active watch sessions', category: 'meta', icon: List, requiresOperator: false },
   { command: 'watch stop', description: 'Stop a watch session', category: 'meta', icon: Terminal, requiresOperator: false, args: '<id|all>' },
   
-  // v5.0.0: Audit & Analytics
+  // Audit & Analytics
   { command: 'audit', description: 'View session audit log', category: 'meta', icon: Eye, requiresOperator: false, args: '[limit]' },
   { command: 'audit stats', description: 'Session statistics', category: 'meta', icon: Activity, requiresOperator: false },
   { command: 'audit export', description: 'Export audit log as JSON', category: 'meta', icon: Database, requiresOperator: false },
 ];
 
-// AUTOBLOG module — Governed blog automation primitive v2.0
+// AUTOBLOG module — Governed blog automation primitive
 export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   // Status & control
   { command: 'autoblog.status', description: 'AutoBlog status and circuit state', category: 'autoblog', icon: PenTool, requiresOperator: false },
   { command: 'autoblog.enable', description: 'Enable AutoBlog (Governor only)', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.disable', description: 'Disable AutoBlog (Governor only)', category: 'autoblog', icon: Shield, requiresOperator: true },
   
-  // Autonomous mode v2.0
+  // Autonomous mode
   { command: 'autoblog.start', description: 'Start basic autonomous mode', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.stop', description: 'Stop autonomous mode', category: 'autoblog', icon: Shield, requiresOperator: true },
   { command: 'autoblog.state', description: 'View autonomous engine state', category: 'autoblog', icon: Activity, requiresOperator: false },
   { command: 'autoblog.seed', description: 'Seed posts from evolution + community topics', category: 'autoblog', icon: Database, requiresOperator: true, args: '[count]', example: 'autoblog.seed 3' },
   
-  // CLM (Constant Learning Mode) v2.1
+  // CLM (Constant Learning Mode)
   { command: 'autoblog.clm', description: 'Start CLM - 3-6 posts/week, intelligent publishing', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.clm.start', description: 'Start CLM (alias for autoblog.clm)', category: 'autoblog', icon: PlayCircle, requiresOperator: true },
   { command: 'autoblog.clm.stop', description: 'Stop CLM mode', category: 'autoblog', icon: Shield, requiresOperator: true },
@@ -516,7 +516,7 @@ export const AUTOBLOG_COMMANDS: CommandDefinition[] = [
   { command: 'autoblog.heal', description: 'Self-heal AutoBlog subsystem', category: 'autoblog', icon: Shield, requiresOperator: true, args: '[--full]' },
 ];
 
-// SEBA — Self-Evolving Bounded Agent v1.0.0
+// SEBA — Self-Evolving Bounded Agent
 export const SEBA_COMMANDS: CommandDefinition[] = [
   // Status & control
   { command: 'seba.status', description: 'SEBA agent state and mode', category: 'clm', icon: Brain, requiresOperator: false },
@@ -545,7 +545,7 @@ export const SEBA_COMMANDS: CommandDefinition[] = [
   { command: 'seba.resume', description: 'Resume SEBA from pause', category: 'clm', icon: PlayCircle, requiresOperator: true },
 ];
 
-// MODULE CLM — Module-specific self-learning v6.8.0
+// MODULE CLM — Module-specific self-learning
 export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
   { command: 'mclm.status', description: 'View all module CLM states', category: 'clm', icon: Brain, requiresOperator: false },
   { command: 'mclm.run', description: 'Run CLM for a specific module', category: 'clm', icon: Sparkles, requiresOperator: true, args: '<module>', example: 'mclm.run brain' },
@@ -672,7 +672,7 @@ export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'sandbox.destroy', description: 'Destroy sandbox', category: 'sandbox_mod', icon: XCircle, requiresOperator: true, requiredTier: 'architect', args: '<sandbox_id>' },
 ];
 
-// ENCODE MODULE — Code generation & transformation (v10.5.4)
+// ENCODE MODULE — Code generation & transformation
 export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.status', description: 'Code generation engine status', category: 'cortex', icon: PenTool, requiresOperator: false },
   { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },
@@ -681,7 +681,7 @@ export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.help', description: 'ENCODE module command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
 ];
 
-// PATCH — Distribution Patch Dispatch v8.5.0
+// PATCH — Distribution Patch Dispatch
 export const PATCH_COMMANDS: CommandDefinition[] = [
   { command: 'patch.send', description: 'Dispatch a patch to LNCHBL', category: 'infra', icon: Send, requiresOperator: true, args: '<version> <changelog> [capabilities] [engines]', example: 'patch.send 2.1.0 "Enable dream synthesis" dream_synthesis reasoning_engine' },
   { command: 'patch.status', description: 'List recent patches from cmpsbl_patches', category: 'infra', icon: Activity, requiresOperator: false },
