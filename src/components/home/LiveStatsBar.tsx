@@ -71,40 +71,16 @@ export function LiveStatsBar() {
   const stats = useLiveStats();
 
   return (
-    <section className="relative z-10 py-5 sm:py-7 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 backdrop-blur-sm overflow-hidden">
-      {/* Dual accent lines — top and bottom */}
+    <section className="relative z-10 py-3 sm:py-4 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 backdrop-blur-sm overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-[1px] memory-stream-bar opacity-40" />
       <div className="absolute inset-x-0 bottom-0 h-px divider-flow" />
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="flex items-center justify-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-10">
-          {stats.map((stat, i) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="flex items-center gap-2.5 min-w-[110px] px-3.5 py-2 rounded-xl border border-transparent hover:border-border/30 hover:bg-primary/[0.03] transition-all duration-300 group/stat stat-card-glow"
-              >
-                <div className="w-7 h-7 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
-                  <Icon className={cn("w-3.5 h-3.5 flex-shrink-0 transition-transform duration-300 group-hover/stat:scale-110", stat.color)} />
-                </div>
-                <div className="text-center sm:text-left">
-                  <div className="text-sm sm:text-base font-black tabular-nums leading-tight">{stat.value}</div>
-                  <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 uppercase tracking-wider font-semibold leading-none">{stat.label}</div>
-                </div>
-              </motion.div>
-            );
-          })}
         </div>
       </div>
     </section>
