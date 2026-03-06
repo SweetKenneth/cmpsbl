@@ -197,10 +197,31 @@ export function registerInfraHandlers(): void {
     return await healSubsystem('shadow_mesh');
   });
 
+  registerHandler('system.heal.event_stream', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('event_stream');
+  });
+
   registerHandler('system.heal.all_subsystems', async () => {
     const { healAllSubsystems } = await import('@/lib/substrate/subsystem-health');
     const results = await healAllSubsystems();
     return { success: results.every(r => r.ok), data: results };
+  });
+
+  registerHandler('stream.status', async () => {
+    const { getStreamStats } = await import('@/lib/substrate/module-bus/eventStream');
+    const stats = getStreamStats();
+    return {
+      success: true,
+      data: stats,
+      formatted: `Event Stream Status\n` +
+        `Buffer: ${stats.buffer_size}/${stats.max_size}\n` +
+        `Health: ${stats.health.score}/100 (${stats.health.status})\n` +
+        `Breaker: ${stats.breaker.state} (failures: ${stats.breaker.totalFailures})\n` +
+        `Captured: ${stats.total_captured}\n` +
+        `Dropped: ${stats.health.droppedSignals}\n` +
+        `Persistence: ${stats.persistence_enabled ? 'ON' : 'OFF'}`,
+    };
   });
 
   // ═══ DILIGENCE HARNESS ═══

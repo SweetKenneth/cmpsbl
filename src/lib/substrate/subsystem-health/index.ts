@@ -22,7 +22,7 @@ import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from 
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
-export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh';
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream';
 
 export interface SubsystemHealthEntry {
   id: SubsystemId;
@@ -69,9 +69,10 @@ const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string 
   clm: { name: 'CLM', circuitModule: 'subsys:clm' },
   evolution_mesh: { name: 'EVOLUTION Mesh', circuitModule: 'subsys:evolution_mesh' },
   immunity_mesh: { name: 'IMMUNITY Mesh', circuitModule: 'subsys:immunity_mesh' },
+  event_stream: { name: 'Event Stream', circuitModule: 'subsys:event_stream' },
 };
 
-const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh'];
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream'];
 
 // ═══ Init ════════════════════════════════════════════════════════
 
@@ -224,6 +225,9 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
         break;
       case 'immunity_mesh':
         actions.push(...(await healImmunityMesh(force)));
+        break;
+      case 'event_stream':
+        actions.push(...(await healEventStream(force)));
         break;
     }
 
@@ -381,6 +385,28 @@ async function healImmunityMesh(force: boolean): Promise<string[]> {
     }
   } catch (err) {
     actions.push(`IMMUNITY Mesh heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healEventStream(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    const { healStream, getStreamHealth, getStreamBreakerState } = await import('../module-bus/eventStream');
+    const healthBefore = getStreamHealth();
+    const breakerBefore = getStreamBreakerState();
+
+    actions.push(`Pre-heal: health=${healthBefore.score}, breaker=${breakerBefore.state}, dropped=${healthBefore.droppedSignals}`);
+
+    const result = healStream(force);
+    actions.push(...result.actions);
+
+    if (result.breakerReset) {
+      actions.push('Stream circuit breaker restored to closed');
+    }
+    actions.push(`Post-heal: health=${result.newScore}`);
+  } catch (err) {
+    actions.push(`Event Stream heal error: ${err instanceof Error ? err.message : String(err)}`);
   }
   return actions;
 }
