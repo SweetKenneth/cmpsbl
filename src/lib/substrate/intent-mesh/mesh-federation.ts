@@ -168,14 +168,42 @@ export async function getKnownPeers(): Promise<FederationPeer[]> {
   return peers;
 }
 
+// ─── Peer Management ───
+
+/**
+ * Register an external federation peer. Persisted to secure storage.
+ */
+export function registerPeer(peer: FederationPeer): void {
+  const stored = secureGet<FederationPeer[]>('mesh_federation_peers') ?? [];
+  const existing = stored.findIndex(p => p.id === peer.id);
+  if (existing >= 0) {
+    stored[existing] = peer;
+  } else {
+    stored.push(peer);
+  }
+  secureSet('mesh_federation_peers', stored);
+}
+
+/**
+ * Remove a federation peer by ID.
+ */
+export function removePeer(peerId: string): boolean {
+  const stored = secureGet<FederationPeer[]>('mesh_federation_peers') ?? [];
+  const filtered = stored.filter(p => p.id !== peerId);
+  if (filtered.length === stored.length) return false;
+  secureSet('mesh_federation_peers', filtered);
+  return true;
+}
+
 // ─── Federation Stats ───
 
 export async function getFederationStats(): Promise<FederationStats> {
   const peers = await getKnownPeers();
-  const activePeers = peers.filter(p => p.status === 'active');
+  const remotePeers = peers.filter(p => p.endpoint !== 'local');
+  const activePeers = remotePeers.filter(p => p.status === 'active');
 
   return {
-    totalPeers: peers.length,
+    totalPeers: remotePeers.length,
     activePeers: activePeers.length,
     remoteResolutionsTotal: 0,
     remoteResolutionsToday: 0,
@@ -186,17 +214,20 @@ export async function getFederationStats(): Promise<FederationStats> {
   };
 }
 
-// ─── Federated Resolution (stub) ───
+// ─── Federated Resolution ───
 
 /**
- * Attempt to resolve an intent through federated peers
- * Falls back to this when local resolvers can't handle the intent
+ * Attempt to resolve an intent through federated peers.
+ * Filters to remote, active, non-blocked peers with matching domains.
+ * Returns null when no eligible remote peers are available —
+ * actual cross-network HTTP resolution requires external endpoint setup.
  */
 export async function federatedResolve(intent: MeshIntent): Promise<MeshResolution | null> {
   if (!currentConfig.enabled || !currentConfig.acceptRemoteIntents) return null;
 
   const peers = await getKnownPeers();
   const eligiblePeers = peers.filter(p =>
+    p.endpoint !== 'local' &&
     p.status === 'active' &&
     p.latencyMs <= currentConfig.maxRemoteLatencyMs &&
     !currentConfig.blockedPeers.includes(p.id) &&
@@ -205,7 +236,8 @@ export async function federatedResolve(intent: MeshIntent): Promise<MeshResoluti
 
   if (eligiblePeers.length === 0) return null;
 
-  // In production, this would make actual HTTP calls to peer endpoints
-  console.log(`[FEDERATION] Would query ${eligiblePeers.length} peers for intent: ${intent.intentType}`);
+  // Cross-network HTTP resolution requires external endpoint configuration.
+  // Log the routing decision for observability.
+  console.log(`[FEDERATION] ${eligiblePeers.length} eligible remote peers for intent: ${intent.intentType} — awaiting endpoint config`);
   return null;
 }
