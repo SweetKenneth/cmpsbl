@@ -16,9 +16,8 @@ export async function checkMemoryBounds(): Promise<AuditFinding[]> {
 
   // 1. Verify correlation-id span cap
   try {
-    const { getAllSpans, createContext, startSpan, cleanupContexts } = require('@/lib/substrate/correlation-id/index');
+    const { getAllSpans, createContext, cleanupContexts } = await import('@/lib/substrate/correlation-id/index');
     const ctx = createContext('audit', 'mem-check');
-    // Just verify the exports exist and span collection is bounded
     const spans = getAllSpans();
     if (Array.isArray(spans)) {
       findings.push({
@@ -42,7 +41,7 @@ export async function checkMemoryBounds(): Promise<AuditFinding[]> {
 
   // 2. Verify capability gate denial log cap
   try {
-    const { getDenialLog, clearDenialLog } = require('@/lib/substrate/capability-gate/index');
+    const { getDenialLog } = await import('@/lib/substrate/capability-gate/index');
     const log = getDenialLog();
     if (Array.isArray(log)) {
       findings.push({
