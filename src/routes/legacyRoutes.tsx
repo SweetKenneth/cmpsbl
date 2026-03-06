@@ -12,28 +12,28 @@ export const legacyRoutes = (
     <Route path="/brain" element={<Navigate to="/decode" replace />} />
     <Route path="/brain/*" element={<Navigate to="/" replace />} />
     <Route path="/cascade" element={<Navigate to="/decode" replace />} />
-    <Route path="/cascade-*" element={<Navigate to="/" replace />} />
+    <Route path="/cascade-/*" element={<Navigate to="/" replace />} />
 
     {/* Clarity */}
     <Route path="/clarity" element={<Navigate to="/" replace />} />
     <Route path="/clarity/*" element={<Navigate to="/" replace />} />
-    <Route path="/clarity-*" element={<Navigate to="/" replace />} />
+    <Route path="/clarity-/*" element={<Navigate to="/" replace />} />
 
     {/* Defense */}
     <Route path="/defense" element={<Navigate to="/" replace />} />
     <Route path="/defense/*" element={<Navigate to="/" replace />} />
-    <Route path="/defense-*" element={<Navigate to="/" replace />} />
+    <Route path="/defense-/*" element={<Navigate to="/" replace />} />
 
     {/* Ripple */}
     <Route path="/ripple/*" element={<Navigate to="/" replace />} />
-    <Route path="/ripple-*" element={<Navigate to="/" replace />} />
+    <Route path="/ripple-/*" element={<Navigate to="/" replace />} />
 
     {/* Misc legacy */}
     <Route path="/index" element={<Navigate to="/" replace />} />
     <Route path="/checkout" element={<Navigate to="/" replace />} />
     <Route path="/sandbox" element={<Navigate to="/" replace />} />
     <Route path="/system" element={<Navigate to="/" replace />} />
-    <Route path="/system-*" element={<Navigate to="/" replace />} />
+    <Route path="/system-/*" element={<Navigate to="/" replace />} />
     <Route path="/studio" element={<Navigate to="/" replace />} />
     <Route path="/studio/*" element={<Navigate to="/" replace />} />
     <Route path="/modernizer" element={<Navigate to="/" replace />} />
