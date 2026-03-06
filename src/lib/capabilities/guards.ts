@@ -86,7 +86,7 @@ export function validateInvocation(context: CapabilityGuardContext): GuardResult
   // High-risk capabilities require additional scrutiny
   if (capability.risk === 'high') {
     // Check if caller is privileged for high-risk ops
-    if (!['SYSTEM', 'CORTEX'].includes(caller.toUpperCase())) {
+    if (!['SYSTEM', 'CORTEX'].includes(normalizedCaller)) {
       return {
         allowed: false,
         reason: `High-risk capability '${capability.id}' requires SYSTEM or CORTEX caller`,
