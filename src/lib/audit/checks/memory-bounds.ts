@@ -5,11 +5,6 @@
 
 import type { AuditFinding } from '../audit-types';
 
-interface BoundCheck {
-  name: string;
-  importPath: string;
-  validate: () => AuditFinding[];
-}
 
 export async function checkMemoryBounds(): Promise<AuditFinding[]> {
   const findings: AuditFinding[] = [];
