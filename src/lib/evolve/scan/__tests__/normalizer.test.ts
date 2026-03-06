@@ -132,12 +132,12 @@ describe('Proposal Normalization', () => {
           validation_sources: 1,
         }),
         createTestProposal({
-          proposal_id: 'prop_bad_risk',
-          title: 'High risk change',
+          proposal_id: 'prop_high_risk',
+          title: 'High risk change to system',
           category: 'hardening',
-          description: 'Dangerous',
+          description: 'Dangerous system change',
           rationale: 'Risky',
-          risk_level: 'high', // Not allowed
+          risk_level: 'high', // Allowed but requires human
           confidence_score: 0.95,
           requires_human: true,
           source_phases: ['system', 'llm'],
@@ -148,14 +148,13 @@ describe('Proposal Normalization', () => {
 
       const result = normalizeProposals(proposals);
 
-      expect(result.success).toBe(true); // At least one succeeded
-      expect(result.normalized_actions.length).toBe(1);
-      expect(result.rejected_proposals.length).toBe(2);
+      expect(result.success).toBe(true);
+      expect(result.normalized_actions.length).toBe(2); // good + high-risk both normalize
+      expect(result.rejected_proposals.length).toBe(1); // only low-confidence rejected
       expect(result.can_create_plan).toBe(true);
       
       // Verify rejection breakdown
       expect(result.summary.rejection_breakdown.CONFIDENCE_TOO_LOW).toBe(1);
-      expect(result.summary.rejection_breakdown.UNSUPPORTED_RISK_LEVEL).toBe(1);
     });
 
     it('should block plan when all proposals are rejected', () => {
