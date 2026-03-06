@@ -166,7 +166,7 @@ function formatEvolutionLogForTerminal(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PERSONALITY FORMATTERS (v10.5.4 ARCHITECT)
+// PERSONALITY FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function formatPersonalityList(profiles: Array<{ id: string; name: string; description: string }>): string {
@@ -329,7 +329,7 @@ function formatSystemStatus(data: any): string {
   
   let output = `
 ╔══════════════════════════════════════════════════════════════╗
-║  CMPSBL® OS ${version} — SYSTEM STATUS                       ║
+║  CMPSBL® OS — SYSTEM STATUS                                  ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
@@ -369,7 +369,7 @@ function formatSystemHealth(data: any): string {
   
   let output = `
 ╔══════════════════════════════════════════════════════════════╗
-║  CMPSBL® OS ${version || ''} — HEALTH DIAGNOSTICS                    ║
+║  CMPSBL® OS — HEALTH DIAGNOSTICS                              ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
@@ -867,7 +867,7 @@ export async function executeCommand(
     // Expansion zone overviews
     if (module === 'expansion' || module === 'esz' || module === 'epz' || module === 'emz' || module === 'csz') {
       const zones: Record<string, string[]> = {
-        expansion: ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest'],
+        expansion: ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'phantom', 'harvest', 'medic', 'nerve', 'evolution', 'immunity', 'shadow'],
         esz: ['sovereign', 'oracle', 'conscience', 'treaty'],
         epz: ['compass', 'echo', 'reflex'],
         emz: ['forge', 'lingua', 'harvest'],
@@ -1041,7 +1041,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     return { success: true, output: `__THEME__${theme}` };
   }
 
-  // v5.0.0: Alias commands
+  // Alias commands
   if (base === 'alias') {
     if (args[0] === 'add' && args[1] && args[2]) {
       const success = addAlias(args[1], args.slice(2).join(' '));
@@ -1064,7 +1064,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     return { success: true, output: formatAliasHelp() };
   }
 
-  // v5.0.0: Macro commands
+  // Macro commands
   if (base === 'macro') {
     if (args[0] === 'list' || args.length === 0) {
       return { success: true, output: formatMacroHelp() };
@@ -1114,7 +1114,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     return { success: true, output: formatMacroHelp() };
   }
 
-  // v5.0.0: Schedule commands
+  // Schedule commands
   if (base === 'schedule') {
     if (args[0] === 'list' || args.length === 0) {
       return { success: true, output: formatScheduledList() };
@@ -1150,7 +1150,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     return { success: true, output: formatScheduledList() };
   }
 
-  // v5.0.0: Watch commands
+  // Watch commands
   if (base === 'watch') {
     if (args[0] === 'list' || args.length === 0) {
       return { success: true, output: '__WATCH_LIST__' };
@@ -1167,7 +1167,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     return { success: true, output: '__WATCH_LIST__' };
   }
 
-  // v5.0.0: Audit commands
+  // Audit commands
   if (base === 'audit') {
     if (args[0] === 'stats') {
       const stats = getSessionStats();
@@ -2193,7 +2193,7 @@ ${allFeatures.map(f => {
 ╚══════════════════════════════════════════════════════════════╝`
       };
     }
-    // v5.6.0: Module Registry commands
+    // Module Registry commands
     else if (base === 'system.modules') {
       const full = args.includes('--full');
       const health = args.includes('--health');
@@ -2319,7 +2319,7 @@ ${allFeatures.map(f => {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
     }
-    // ═══ EVOLUTION CYCLE v10.5.4 ═══
+    // ═══ EVOLUTION CYCLE ═══
     else if (base === 'modernizer.evolve') {
       const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
       
@@ -2441,7 +2441,7 @@ ${allFeatures.map(f => {
       return { success: cycleResult.success, output };
     }
     else if (base === 'modernizer.scan') {
-      // v0.7.7: Cognitive Systems Scan with options
+      // Cognitive Systems Scan with options
       const hasExplain = args.includes('--explain');
       const hasLLMReport = args.includes('--llm-report');
       const hasDryRun = args.includes('--dry-run');
@@ -2664,7 +2664,7 @@ ${allFeatures.map(f => {
       }
     }
 
-    // ═══ v0.7.6/v0.7.7: CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
+    // ═══ CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
     else if (base === 'modernizer.circuit') {
       const subCmd = args[0] || 'status';
       if (subCmd === 'status') {
@@ -2762,7 +2762,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       }
     }
 
-    // ═══ OMEGA OBSERVER ENGINE v1.0.0 ═══
+    // ═══ OMEGA OBSERVER ENGINE ═══
     else if (base === 'modernizer.verify') {
       try {
         const { checkEligibility, formatEligibility } = await import('@/lib/evolve/eligibility-gate');
@@ -3233,7 +3233,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       }
       result = await cortex.run(args[0], args[1] as 'shadow' | 'production' | undefined);
     }
-    // v5.6.0: Cortex World Model + Inventory
+    // Cortex World Model + Inventory
     else if (base === 'cortex.world') {
       const dag = args.includes('--dag');
       const roles = args.includes('--roles');
@@ -3775,7 +3775,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM (Constant Learning Mode) v10.5.4
+    // CLM (Constant Learning Mode)
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.status') {
       try {
@@ -3948,7 +3948,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // SEBA (Self-Evolving Bounded Agent) v10.5.4
+    // SEBA (Self-Evolving Bounded Agent)
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'seba.status') {
       try {
@@ -4485,7 +4485,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // AUTOBLOG (Governed Blog Automation) v1.0.0
+    // AUTOBLOG (Governed Blog Automation)
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'autoblog.status') {
       try {
@@ -4956,7 +4956,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // ENGINE — Cognitive Engine System v10.5.4
+    // ENGINE — Cognitive Engine System
     // ═══════════════════════════════════════════════════════════════════════════
     
     else if (base === 'engine.status') {
@@ -5424,7 +5424,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
-    // ═══ INFRASTRUCTURE COMMANDS (v10.5.4) ═══
+    // ═══ INFRASTRUCTURE COMMANDS ═══
     else if (base.startsWith('cron.') || base.startsWith('ratelimit.') || base.startsWith('snapshot.') || base.startsWith('cap.') || base.startsWith('stream.') || base.startsWith('file.') || base.startsWith('nl.')) {
       try {
         // Lazy-register infra handlers on first use

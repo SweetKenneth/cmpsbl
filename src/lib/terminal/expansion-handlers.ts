@@ -1,8 +1,9 @@
 /**
  * Expansion Module Terminal Handlers
- * Registers commands for all 11 expansion modules:
+ * Registers commands for all 16 expansion modules:
  * SOVEREIGN, ORACLE, CONSCIENCE, PHANTOM, FORGE,
- * LINGUA, COMPASS, ECHO, TREATY, HARVEST, REFLEX
+ * LINGUA, COMPASS, ECHO, TREATY, HARVEST, REFLEX,
+ * MEDIC, NERVE, EVOLUTION, IMMUNITY, SHADOW
  */
 
 import { registerHandler } from './validate-registry';
