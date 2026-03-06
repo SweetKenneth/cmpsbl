@@ -25,6 +25,7 @@ const EXPANSION_MODULES = [
   { id: 'nerve',      name: 'NERVE',      codename: 'Synapse',    desc: 'Inter-node signaling & event propagation' },
   { id: 'evolution',  name: 'EVOLUTION',  codename: 'Darwin',     desc: 'Mutation pipeline & governed upgrades' },
   { id: 'immunity',   name: 'IMMUNITY',   codename: 'Sentinel',   desc: 'Self-healing mesh & threat correlation' },
+  { id: 'shadow',     name: 'SHADOW',     codename: 'Umbra',      desc: 'Shadow environment validation & staging' },
 ] as const;
 
 export function registerExpansionHandlers(): void {
@@ -79,7 +80,6 @@ export function registerExpansionHandlers(): void {
           data: {
             module: mod.name,
             codename: mod.codename,
-            version: '2.0.0',
             description: mod.desc,
             health,
             status: 'active',
@@ -91,7 +91,6 @@ export function registerExpansionHandlers(): void {
           data: {
             module: mod.name,
             codename: mod.codename,
-            version: '2.0.0',
             description: mod.desc,
             health: { grade: 'A', score: 100 },
             status: 'active',
@@ -118,7 +117,6 @@ export function registerExpansionHandlers(): void {
         data: {
           module: mod.name,
           codename: mod.codename,
-          version: '2.0.0',
           features: [
             'circuit_breaker', 'bulkhead_isolation', 'rate_limiting',
             'dead_letter_queue', 'shadow_mode', 'state_snapshots',

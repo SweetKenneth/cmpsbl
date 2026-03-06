@@ -19,7 +19,7 @@ export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | '
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity' | 'observability';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity' | 'observability' | 'shadow';
   icon: LucideIcon;
   /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
@@ -1218,6 +1218,17 @@ export const HARVEST_COMMANDS: CommandDefinition[] = [
   { command: 'harvest.errors', description: 'Pipeline error log', category: 'harvest', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
 ];
 
+export const SHADOW_COMMANDS: CommandDefinition[] = [
+  { command: 'shadow.status', description: 'Shadow environment status', category: 'shadow', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.health', description: 'Shadow environment health grade', category: 'shadow', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.active', description: 'Active shadow validations', category: 'shadow', icon: ClipboardCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.history', description: 'Shadow run history', category: 'shadow', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.compare', description: 'Shadow vs production diff', category: 'shadow', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.promote', description: 'Promote shadow to production', category: 'shadow', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '<run_id>' },
+  { command: 'shadow.hardening', description: 'Hardening features', category: 'shadow', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.help', description: 'SHADOW command reference', category: 'shadow', icon: Terminal, requiresOperator: false, requiredTier: 'free' },
+];
+
 // ═══ MEDIC & NERVE Commands ═══
 export const MEDIC_COMMANDS: CommandDefinition[] = [
   { command: 'medic.status', description: 'Autonomous diagnostics status', category: 'medic', icon: Activity, requiresOperator: false, requiredTier: 'free' },
@@ -1351,6 +1362,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...LINGUA_COMMANDS,
   ...PHANTOM_COMMANDS,
   ...HARVEST_COMMANDS,
+  ...SHADOW_COMMANDS,
   // Infrastructure
   ...MEDIC_COMMANDS,
   ...NERVE_COMMANDS,
@@ -1413,6 +1425,7 @@ export const COMMAND_CATEGORIES = {
   lingua: { label: 'LINGUA', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: LINGUA_COMMANDS },
   phantom: { label: 'PHANTOM', color: 'text-slate-300', borderColor: 'border-slate-400/30', commands: PHANTOM_COMMANDS },
   harvest: { label: 'HARVEST', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: HARVEST_COMMANDS },
+  shadow: { label: 'SHADOW', color: 'text-slate-400', borderColor: 'border-slate-500/30', commands: SHADOW_COMMANDS },
   // Infrastructure
   medic: { label: 'MEDIC', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: MEDIC_COMMANDS },
   nerve: { label: 'NERVE', color: 'text-sky-300', borderColor: 'border-sky-400/30', commands: NERVE_COMMANDS },
