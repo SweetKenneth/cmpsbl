@@ -1296,6 +1296,29 @@ export default function Documentation() {
         </div>
       </section>
 
+      {/* Mobile horizontal section picker — always visible */}
+      <div className="lg:hidden sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-border/30">
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="flex gap-1 px-4 py-2 min-w-max">
+            {sections.map(s => (
+              <button
+                key={s.id}
+                onClick={() => handleNav(s.id)}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px]",
+                  active === s.id
+                    ? "bg-primary/10 text-primary border border-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+                )}
+              >
+                <s.icon className={cn("w-3.5 h-3.5 shrink-0", active === s.id ? "text-primary" : s.color)} />
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Content area — sidebar + main */}
       <div className="container mx-auto px-4 py-8 sm:py-12">
         <div className="flex gap-8 max-w-7xl mx-auto">
@@ -1327,48 +1350,6 @@ export default function Documentation() {
               ))}
             </div>
           </nav>
-
-          {/* Mobile nav toggle */}
-          <div className="fixed bottom-6 right-6 z-50 lg:hidden">
-            <Button
-              size="icon"
-              className="h-12 w-12 rounded-full shadow-lg shadow-primary/20"
-              onClick={() => setMobileNavOpen(!mobileNavOpen)}
-            >
-              {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
-          </div>
-
-          {/* Mobile nav overlay */}
-          <AnimatePresence>
-            {mobileNavOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-x-4 bottom-20 z-40 lg:hidden rounded-2xl border border-border/60 bg-card/95 backdrop-blur-xl shadow-2xl overflow-hidden"
-              >
-                <div className="p-2 max-h-[60vh] overflow-y-auto">
-                  {sections.map(s => (
-                    <button
-                      key={s.id}
-                      onClick={() => handleNav(s.id)}
-                      className={cn(
-                        "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all",
-                        active === s.id
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
-                      )}
-                    >
-                      <s.icon className={cn("w-4 h-4", active === s.id ? "text-primary" : s.color)} />
-                      <span>{s.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           {/* Main content */}
           <main className="flex-1 min-w-0">
