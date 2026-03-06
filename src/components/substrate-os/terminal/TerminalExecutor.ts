@@ -4106,14 +4106,33 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     } else if (base === 'seba.rollback') {
       const executionId = args[0];
       if (!executionId) {
-        return { success: false, output: '▓ ERROR: Execution ID required\n  Usage: seba.rollback <execution_id>' };
+        return { success: false, output: '▓ ERROR: Proposal/Execution ID required\n  Usage: seba.rollback <proposal_id>' };
       }
       try {
+        const { ProposalStore } = await import('@/lib/substrate/seba/proposal-store');
         const { sebaAgent } = await import('@/lib/substrate/seba');
+        // Mark proposal as rolled_back in DB
+        await ProposalStore.markRolledBack(executionId, 'Manual rollback via terminal');
         const result = await sebaAgent.handleCommand('rollback', { execution_id: executionId });
         return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
       } catch (err) {
         return { success: false, output: `▓ Rollback error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.pause') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('pause');
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Pause error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.resume') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('resume');
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Resume error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'seba.config') {
       try {
