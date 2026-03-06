@@ -20,11 +20,11 @@ const STATUS_SYMBOLS: Record<StatusLevel, string> = {
 };
 
 const STATUS_COLORS: Record<StatusLevel, string> = {
-  success: 'text-green-400',
+  success: 'text-emerald-400',
   warning: 'text-amber-400',
-  error: 'text-red-400',
-  info: 'text-blue-400',
-  pending: 'text-gray-400',
+  error: 'text-destructive',
+  info: 'text-primary',
+  pending: 'text-muted-foreground',
 };
 
 /**
@@ -222,42 +222,45 @@ export function formatHelp(): string[] {
   
   lines.push('  Status & Configuration');
   lines.push('  ──────────────────────');
-  lines.push('    encoded.status        Full agent status');
-  lines.push('    encoded.config        View configuration');
-  lines.push('    encoded.skills        View skill proficiency');
+  lines.push('    encode.status         Full agent status');
+  lines.push('    encode.config         View configuration');
+  lines.push('    encode.skills         View skill proficiency');
   lines.push('');
   
   lines.push('  Execution Modes');
   lines.push('  ───────────────');
-  lines.push('    encoded.dry_run       Preview-only (safest)');
-  lines.push('    encoded.enable        Human approval required');
-  lines.push('    encoded.semi_auto     Auto-approve low-risk');
+  lines.push('    encode.mode dry_run       Preview-only (safest)');
+  lines.push('    encode.mode human_approval  Human approval required');
+  lines.push('    encode.mode semi_auto     Auto-approve low-risk');
   lines.push('');
   
   lines.push('  Code Operations');
   lines.push('  ───────────────');
-  lines.push('    encoded.generate      Generate code from task');
-  lines.push('    encoded.verify        Validate code safety');
-  lines.push('    encoded.analyze       Analyze code quality');
+  lines.push('    encode.run <cmd>      CLI: scan|patch|refactor|guard|audit|status|approve');
+  lines.push('    encode.audit          Architecture snapshot');
+  lines.push('    encode.approve        Unlock execution after audit');
+  lines.push('    encode.patches        View surgical patch history');
+  lines.push('');
+  
+  lines.push('  Navigation');
+  lines.push('  ──────────');
+  lines.push('    encode.navigate <q>   Resolve intent → file targets, tables, conventions');
+  lines.push('    encode.whereis <q>    Quick module/concept location lookup');
   lines.push('');
   
   lines.push('  Learning & History');
   lines.push('  ──────────────────');
-  lines.push('    encoded.patterns      Learned code patterns');
-  lines.push('    encoded.history       Recent executions');
-  lines.push('    encoded.metrics       Quality metrics');
+  lines.push('    encode.receipts       Completion receipts with BRAIN refs');
+  lines.push('    encode.health         Module health score');
+  lines.push('    encode.contract <m>   Build awareness contract for module');
+  lines.push('    encode.conversation   View conversation relay state');
   lines.push('');
   
-  lines.push('  Model Configuration');
-  lines.push('  ───────────────────');
-  lines.push('    encoded.model.nexus   Use Nexus fleet (Groq→Cerebras→DeepSeek)');
-  lines.push('    encoded.model.free    Use free-tier fallback');
-  lines.push('');
-  
-  lines.push('  Integration');
-  lines.push('  ───────────');
-  lines.push('    encoded.seba.enable   Enable SEBA proposals');
-  lines.push('    encoded.seba.disable  Disable SEBA');
+  lines.push('  CLM');
+  lines.push('  ───');
+  lines.push('    decode.inbox          CLM reports from all entities');
+  lines.push('    clm.run <mod>         Run CLM for specific module');
+  lines.push('    clm.run_all           Run CLM for all entities');
   lines.push('');
   
   return lines;

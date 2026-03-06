@@ -1,7 +1,7 @@
 /**
  * Encoded Guardrail Policy — Single Source of Truth
  * Enhanced destructive detection, comprehensive narrative bans, strict approval gates
- * ENCODE routes through Nexus (free-tier) — zero external AI costs
+ * ENCODE routes through Nexus — zero external AI costs
  */
 
 export type ChangeClass = 'comment_only' | 'additive' | 'localized' | 'destructive';
@@ -26,7 +26,7 @@ export interface EncodedConfig {
 }
 
 /**
- * Default configuration for Encoded v2.2.0
+ * Default configuration for Encoded
  * Routes through Nexus fleet — zero paid AI dependencies
  */
 export const DEFAULT_ENCODED_CONFIG: EncodedConfig = {

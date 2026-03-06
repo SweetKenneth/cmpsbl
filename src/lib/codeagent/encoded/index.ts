@@ -54,7 +54,7 @@ export {
   type DiffStats,
 } from './guard';
 
-// Skills (v2.2.0)
+// Skills
 export {
   ENCODED_SKILLS,
   getSkillsByCategory,
@@ -66,7 +66,7 @@ export {
   type SkillCategory,
 } from './skills';
 
-// Communication (v2.2.0)
+// Communication
 export {
   formatStatus,
   formatKV,
@@ -85,7 +85,7 @@ export {
   type EncodedResponse,
 } from './communication';
 
-// Expert Patterns (v3.0.0)
+// Expert Patterns
 export {
   EXPERT_PATTERNS,
   getPatternsByCategory,
@@ -99,7 +99,7 @@ export {
   type PatternTier,
 } from './expert-patterns';
 
-// Knowledge Transfer Pipeline (v3.0.0)
+// Knowledge Transfer Pipeline
 export {
   extractCodePatterns,
   transferToEncoded,
@@ -112,7 +112,7 @@ export {
   type TrainingAccelerationConfig,
 } from './knowledge-transfer';
 
-// Feedback Loop & Graduated Autonomy (v3.1.0)
+// Feedback Loop & Graduated Autonomy
 export {
   recordOutcome,
   getMasteryScores,
@@ -125,7 +125,7 @@ export {
   type GraduatedThresholds,
 } from './feedback-loop';
 
-// System Manifest — Architecture Awareness (v9.3.0)
+// System Manifest — Architecture Awareness
 export {
   SYSTEM_MODULES,
   SYSTEM_COMPONENTS,
@@ -142,7 +142,7 @@ export {
   type RouteEntry,
 } from './system-manifest';
 
-// Shadow Practice Engine (v3.2.0)
+// Shadow Practice Engine
 export {
   shadowPractice,
   type PracticeTask,
