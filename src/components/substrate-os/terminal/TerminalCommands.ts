@@ -700,7 +700,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'hardening.health', description: 'Aggregated hardening health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'hardening.grades', description: 'A–F grade summary for all modules', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'hardening.audit', description: 'Cross-module hardening audit chain verification', category: 'system', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
-  { command: 'hardening.versions', description: 'Hardening version registry', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'hardening.versions', description: 'Hardening module & codename registry', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
 
   // Per-module hardening commands — CORE
   { command: 'core.hardening', description: 'CORE hardening status (Foundation)', category: 'core', icon: Shield, requiresOperator: false, requiredTier: 'free' },

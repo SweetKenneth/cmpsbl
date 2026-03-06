@@ -547,7 +547,7 @@ export function registerSEBAHandlers(): void {
     const lines: string[] = [];
     lines.push('');
     lines.push('┌─────────────────────────────────────────────┐');
-    lines.push('│         SEBA COMMAND REFERENCE v2.1         │');
+    lines.push('│         SEBA COMMAND REFERENCE              │');
     lines.push('│      Self-Evolving Bounded Agent            │');
     lines.push('└─────────────────────────────────────────────┘');
     lines.push('');
