@@ -694,15 +694,6 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous intent resolution mesh',
   },
-    description: 'Autonomous intent resolution layer translating natural language into orchestrated substrate operations across execution surfaces.',
-    ogTitle: 'INTENT Mesh — Autonomous Resolution',
-    ogDescription: 'Natural language to orchestrated operations across surfaces.',
-    ogImage: OG_INTENT,
-    keywords: ['intent resolution layer', 'natural language orchestration', 'autonomous routing', 'execution surface mapping', 'INTENT mesh'],
-    schema: 'feature',
-    intent: 'Feature/Capability',
-    primaryKeyword: 'autonomous intent resolution mesh',
-  },
 
   // ═══════════════════════════════════════════════════
   // LEGAL
