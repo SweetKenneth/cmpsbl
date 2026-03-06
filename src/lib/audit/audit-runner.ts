@@ -52,6 +52,15 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
       detail: err?.message || 'Unknown error during backend check',
     }]);
 
+  const memoryBoundsPromise = checkMemoryBounds()
+    .catch((err): AuditFinding[] => [{
+      id: 'audit_check_crash_memory_bounds',
+      category: 'runtime',
+      severity: 'warn',
+      title: 'Memory bounds check incomplete',
+      detail: err?.message || 'Unknown error during memory bounds check',
+    }]);
+
   // Phase 2: Run sync checks — grouped by cost
   // Fast checks (no DOM queries or minimal) run first
   const fastChecks: AuditFinding[] = [
