@@ -65,6 +65,62 @@ interface Stratum {
 
 const stratumIronclad: Specimen[] = [
   {
+    id: "IRNC-015",
+    fossilized: "2026-03-06",
+    origin: "architecture",
+    stimulus: "Subpages lacked cohesive visual polish — interactions felt flat, navigation lacked animated feedback, and sections blended together without rhythm",
+    adaptations: [
+      "Animated tab underlines with spring-physics layout transitions replaced static border indicators across authenticated surfaces",
+      "Documentation sidebar gained a bordered card container with an animated active-state pill that slides between items",
+      "Status page module cards respond to hover with icon color shifts and border transitions; uptime bars gained hover-scale and glow effects",
+      "Fossil Record specimen cards elevated to rounded-xl with deeper hover shadows; section dividers added for visual rhythm",
+      "Upgrade page baseline highlights gained icon containers, shimmer-on-hover, and card-lift effects; enterprise CTA received shadow depth",
+      "Loading states replaced plain text pulses with spinning ring animations for better perceived performance",
+      "CTA sections across Documentation and Upgrade gained ambient glow orbs and primary-shadow button interactions",
+    ],
+    phenotype: [
+      "Every interactive surface provides animated feedback — tabs slide, cards lift, icons shift color on engagement",
+      "Visual rhythm is consistent across all subpages through section dividers, accent gradients, and shimmer effects",
+      "The substrate's public surface feels like a living system with depth, not a static documentation site",
+    ],
+    affectedNodes: ["SYSTEM"],
+  },
+  {
+    id: "IRNC-014",
+    fossilized: "2026-03-06",
+    origin: "architecture",
+    stimulus: "Foundry mining, inventory, and tier legend surfaces lacked the visual density and micro-interactions present on other substrate pages",
+    adaptations: [
+      "Foundry mining panel crystallize button gained a pulsing glow animation and shimmer sweep on hover",
+      "Mining result cards and inventory items received hover-lift effects with primary-glow shadows",
+      "Empty inventory state redesigned with a themed icon card and refined typography hierarchy",
+      "Tier legend badges gained backdrop-blur and hover-scale transitions within an improved grid layout",
+      "Foundry stats cards rebuilt with glass-morphism, top accent gradients, and spring-based entrance animations",
+    ],
+    phenotype: [
+      "The Foundry surface matches the visual fidelity of the rest of the substrate — glass, glow, and lift effects throughout",
+      "Empty states are informative and visually engaging rather than generic placeholder text",
+      "Crystallization feels like a premium interaction with deliberate animation feedback",
+    ],
+    affectedNodes: ["SYSTEM"],
+  },
+  {
+    id: "IRNC-013",
+    fossilized: "2026-03-06",
+    origin: "architecture",
+    stimulus: "The NotFound page directed users to System Status instead of actionable onboarding paths, and buttons lacked visual hierarchy",
+    adaptations: [
+      "Primary Home button elevated with shadow-glow and scale interactions to establish clear visual hierarchy",
+      "Start Here guide replaced System Status as a recovery destination for better user wayfinding",
+      "All NotFound buttons gained hover border transitions for consistent interaction feedback",
+    ],
+    phenotype: [
+      "Lost users are guided toward productive paths — onboarding and the Memory Stream — rather than diagnostic pages",
+      "Button hierarchy communicates the most important action through visual weight",
+    ],
+    affectedNodes: ["SYSTEM"],
+  },
+  {
     id: "IRNC-012",
     fossilized: "2026-03-05",
     origin: "survival",
