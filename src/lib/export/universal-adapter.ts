@@ -127,6 +127,7 @@ export function getLanguagesForScore(score: number): { value: ExportLanguage; la
   // Inline tier thresholds to avoid circular imports
   // Aligned with public rarity tiers: Mint(68), Prime(80), Relic(90), Mythic/Silicon(94)
   const TIER_GATES: [number, ExportLanguage[]][] = [
+    [0, ['typescript']],
     [68, ['php', 'ruby', 'lua', 'dart', 'swift', 'kotlin']],
     [80, ['typescript', 'python', 'go', 'java', 'csharp']],
     [90, ['rust', 'c', 'cpp', 'zig', 'scala', 'haskell', 'elixir']],

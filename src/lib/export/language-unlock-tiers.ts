@@ -16,6 +16,13 @@ export interface LanguageUnlockTier {
 
 export const LANGUAGE_UNLOCK_TIERS: LanguageUnlockTier[] = [
   {
+    id: 'raw',
+    label: 'Raw',
+    minScore: 0,
+    languages: ['typescript'],
+    description: 'Raw tier baseline — TypeScript export is always available (0+)',
+  },
+  {
     id: 'mint',
     label: 'Mint',
     minScore: 68,
@@ -49,13 +56,13 @@ export const LANGUAGE_UNLOCK_TIERS: LanguageUnlockTier[] = [
  * Get all languages unlocked for a given artifact score
  */
 export function getUnlockedLanguages(score: number): ExportLanguage[] {
-  const unlocked: ExportLanguage[] = [];
+  const unlocked = new Set<ExportLanguage>();
   for (const tier of LANGUAGE_UNLOCK_TIERS) {
     if (score >= tier.minScore) {
-      unlocked.push(...tier.languages);
+      tier.languages.forEach((language) => unlocked.add(language));
     }
   }
-  return unlocked;
+  return Array.from(unlocked);
 }
 
 /**

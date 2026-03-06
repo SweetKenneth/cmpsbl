@@ -27,6 +27,7 @@ interface ArtifactExportPanelProps {
 }
 
 const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
+  raw:     { icon: Code2, color: 'text-muted-foreground' },
   mint:    { icon: Code2, color: 'text-emerald-400' },
   prime:   { icon: Code2, color: 'text-sky-400' },
   relic:   { icon: Code2, color: 'text-amber-400' },
@@ -77,21 +78,6 @@ export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
       setExporting(null);
     }
   };
-
-  // Raw tier — no exports available
-  if (artifact.score < 68) {
-    return (
-      <div className="px-5 pb-4">
-        <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground mb-2">
-          Export Languages
-        </div>
-        <div className="text-xs font-mono text-muted-foreground/60 bg-muted/10 rounded-lg p-3 border border-border/10">
-          <Lock className="w-3 h-3 inline mr-1.5 -mt-0.5" />
-          Raw tier artifacts (score &lt;68) cannot be exported. Crystallize higher-scoring pipelines to unlock language exports.
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="px-5 pb-4">

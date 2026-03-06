@@ -7,15 +7,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2, Download, Check, Fingerprint } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
+import { MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
 import {
-  generateSingleExport,
-  type ExportableArtifact,
-} from '@/lib/export/universal-adapter';
-import { getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
+  downloadTieredFoundryZip,
+  type TieredFoundryExportArtifact,
+} from '@/lib/export/foundry-tiered-zip';
 import { toast } from 'sonner';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
@@ -28,75 +27,19 @@ function scoreColor(score: number): string {
   return 'text-emerald-400';
 }
 
-async function exportResultsAsZip(results: any[]) {
-  const JSZip = (await import('jszip')).default;
-  const zip = new JSZip();
-
-  // Manifest
-  const manifest = {
-    exportedAt: new Date().toISOString(),
-    source: 'CMPSBL Memory Stream',
-    pipelineCount: results.length,
-    pipelines: results.map(r => ({
-      name: r.name,
-      description: r.description,
-      score: r.score,
-      tier: r.publicTier,
-      valuation: r.valuationDisplay,
-      category: r.category,
-      systemChain: r.systemChain,
-      fingerprint: r.fingerprint || null,
-      epoch: 'SPARTA',
-    })),
-  };
-  zip.file('manifest.json', JSON.stringify(manifest, null, 2));
-
-  // Per-pipeline exports
-  for (const r of results) {
-    const unlocked = getUnlockedLanguages(r.score);
-    const lang = unlocked.includes('typescript') ? 'typescript'
-      : unlocked.includes('python') ? 'python'
-      : unlocked[0];
-    if (!lang) continue;
-
-    const slug = r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-    const exportable: ExportableArtifact = {
-      id: r.fingerprint || r.id,
-      name: r.name,
-      rank: 0,
-      cjpi: r.score,
-      module: r.systemChain?.[0] || 'unknown',
-      description: r.description || `Crystallized pipeline: ${r.name}`,
-      sourceCode: '',
-      synthesisContext: {
-        name: r.name,
-        moduleChain: r.systemChain || [],
-        cjpi: r.score,
-        description: `${r.name} — ${r.category || 'general'} pipeline`,
-        category: r.category || 'general',
-        entryCapability: 'process',
-        exitCapability: 'emit',
-        errorStrategy: 'propagate',
-        maxExecutionMs: 30000,
-      },
-    };
-
-    const bundle = generateSingleExport(exportable, lang);
-    const folder = zip.folder(slug)!;
-    folder.file('README.md', bundle.readme);
-    for (const file of bundle.files) {
-      folder.file(file.filename, file.content);
-    }
-  }
-
-  const blob = await zip.generateAsync({ type: 'blob' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `memory-stream-crystallization-${Date.now()}.zip`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast.success(`Exported ${results.length} pipelines as ZIP`);
+function mapResultsToExportArtifacts(results: MineResponse['results']): TieredFoundryExportArtifact[] {
+  return results.map((result) => ({
+    id: result.id,
+    name: result.name,
+    score: result.score,
+    publicTier: result.publicTier,
+    valuationDisplay: result.valuationDisplay,
+    category: result.category,
+    systemChain: result.systemChain,
+    description: result.description,
+    fingerprint: result.fingerprint || null,
+    source: 'Memory Stream',
+  }));
 }
 
 interface Props {
@@ -108,6 +51,7 @@ interface Props {
 
 export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizing }: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
+  const [isExporting, setIsExporting] = useState(false);
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
@@ -124,6 +68,25 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
       onCrystallizing?.(false);
     }, 2200);
     onMine();
+  };
+
+  const handleExportResults = async () => {
+    if (!lastResult || !lastResult.ok || lastResult.results.length === 0) return;
+
+    setIsExporting(true);
+    try {
+      const stats = await downloadTieredFoundryZip({
+        artifacts: mapResultsToExportArtifacts(lastResult.results),
+        filePrefix: 'memory-stream-crystallization-software',
+        sourceLabel: 'Memory Stream Crystallization',
+      });
+      toast.success(`Exported ${stats.artifactCount} pipelines across ${stats.totalLanguageVariants} tiered language bundles`);
+    } catch (error) {
+      console.error(error);
+      toast.error('Export failed');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -203,11 +166,12 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
               </div>
               <button
-                onClick={() => exportResultsAsZip(lastResult.results)}
-                className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+                onClick={handleExportResults}
+                disabled={isExporting}
+                className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
               >
-                <Download className="w-3 h-3" />
-                Export ZIP
+                {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+                {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
               </button>
             </div>
 
@@ -234,8 +198,8 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                   name: result.name,
                   score: result.score,
                   systemChain: result.systemChain,
-                  pipelineSteps: (result as any).pipelineSteps,
-                  fingerprint: (result as any).fingerprint,
+                  pipelineSteps: result.pipelineSteps,
+                  fingerprint: result.fingerprint,
                 })}
                 className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-colors"
               >
@@ -260,11 +224,11 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                     <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
                       {MEMORY_STREAM_PROVENANCE}
                     </div>
-                    {(result as any).fingerprint && (
+                    {result.fingerprint && (
                       <div className="flex items-center gap-1 mt-1">
                         <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
                         <span className="text-[8px] font-mono text-muted-foreground/40">
-                          {truncateFingerprint((result as any).fingerprint)}
+                          {truncateFingerprint(result.fingerprint)}
                         </span>
                       </div>
                     )}
