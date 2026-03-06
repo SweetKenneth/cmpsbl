@@ -2,8 +2,12 @@
  * Module Capability Discovery
  * Auto-detects module functionality via endpoint probing (38-node / 12-sector architecture)
  * 
- * Scans registered modules to discover available operations,
- * health status, and capability coverage.
+ * Enterprise Resilience:
+ * - Circuit breaker on probe path
+ * - Parallel probing within batches
+ * - Correct avgResponseTime calculation (FIX #18)
+ * - Error isolation per-module
+ * - Cache TTL for discovery results
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -32,6 +36,71 @@ export interface DiscoveryConfig {
   includeEdgeFunctions: boolean;
 }
 
+// ═══════════════════════════════════════════════════════════════
+// CIRCUIT BREAKER — protects probe DB calls
+// ═══════════════════════════════════════════════════════════════
+
+interface ProbeCircuitBreaker {
+  state: 'closed' | 'half_open' | 'open';
+  failures: number;
+  lastFailure: number;
+  totalFailures: number;
+}
+
+const PROBE_BREAKER_THRESHOLD = 8;
+const PROBE_BREAKER_RECOVERY_MS = 45_000;
+
+const probeBreaker: ProbeCircuitBreaker = {
+  state: 'closed',
+  failures: 0,
+  lastFailure: 0,
+  totalFailures: 0,
+};
+
+function probeRecordFailure(): void {
+  probeBreaker.failures++;
+  probeBreaker.totalFailures++;
+  probeBreaker.lastFailure = Date.now();
+  if (probeBreaker.failures >= PROBE_BREAKER_THRESHOLD) {
+    probeBreaker.state = 'open';
+  }
+}
+
+function probeRecordSuccess(): void {
+  if (probeBreaker.state === 'half_open') {
+    probeBreaker.state = 'closed';
+    probeBreaker.failures = 0;
+  }
+}
+
+function shouldAllowProbe(): boolean {
+  if (probeBreaker.state === 'closed') return true;
+  if (probeBreaker.state === 'open') {
+    if (Date.now() - probeBreaker.lastFailure >= PROBE_BREAKER_RECOVERY_MS) {
+      probeBreaker.state = 'half_open';
+      return true;
+    }
+    return false;
+  }
+  return true;
+}
+
+/** Get probe breaker state for diagnostics */
+export function getProbeBreakerState(): Readonly<ProbeCircuitBreaker> {
+  if (probeBreaker.state === 'open' && Date.now() - probeBreaker.lastFailure >= PROBE_BREAKER_RECOVERY_MS) {
+    probeBreaker.state = 'half_open';
+  }
+  return { ...probeBreaker };
+}
+
+/** Reset probe breaker for healing */
+export function resetProbeBreaker(): void {
+  probeBreaker.state = 'closed';
+  probeBreaker.failures = 0;
+  probeBreaker.lastFailure = 0;
+  probeBreaker.totalFailures = 0;
+}
+
 // Expected operations per module (canonical)
 const MODULE_OPERATIONS: Record<string, string[]> = {
   CORE: ['status', 'ping', 'version', 'health', 'metrics'],
@@ -56,7 +125,8 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   IDENTITY: ['status', 'verify', 'provision', 'revoke', 'federate'],
   AUDIT: ['status', 'log', 'query', 'export', 'retain'],
   MEDIC: ['status', 'diagnose', 'heal', 'quarantine', 'report'],
-  // Expansion modules (38-node / 12-sector architecture)
+  RELAY: ['status', 'send', 'deliver', 'queue', 'retry'],
+  ECONOMY: ['status', 'budget', 'cost', 'forecast', 'optimize'],
   SOVEREIGN: ['status', 'classify_jurisdiction', 'enforce_regulation', 'attest', 'audit_compliance'],
   ORACLE: ['status', 'forecast', 'model', 'simulate', 'calibrate'],
   CONSCIENCE: ['status', 'assess_impact', 'detect_bias', 'score_fairness', 'audit_ethics'],
@@ -68,8 +138,9 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   TREATY: ['status', 'negotiate', 'sign', 'enforce', 'audit_contract'],
   HARVEST: ['status', 'discover', 'ingest', 'deduplicate', 'score_quality'],
   REFLEX: ['status', 'dispatch', 'decide', 'coordinate', 'sync'],
-  // CSZ — Covert Systems Zone (38-node architecture)
   SHADOW: ['status', 'execute_run', 'configure_mesh', 'divergence_report', 'stealth_validate'],
+  ENCODE: ['status', 'generate', 'refactor', 'validate', 'plan'],
+  SANDBOX: ['status', 'execute', 'validate', 'isolate', 'report'],
 };
 
 const DEFAULT_CONFIG: DiscoveryConfig = {
@@ -78,7 +149,8 @@ const DEFAULT_CONFIG: DiscoveryConfig = {
   includeEdgeFunctions: true,
 };
 
-const discoveryCache = new Map<string, ModuleDiscoveryResult>();
+const discoveryCache = new Map<string, { result: ModuleDiscoveryResult; timestamp: number }>();
+const CACHE_TTL_MS = 60_000; // 1 minute cache
 
 /** Probe a single module's capabilities */
 async function probeModule(module: string, timeout: number): Promise<ModuleDiscoveryResult> {
@@ -86,45 +158,82 @@ async function probeModule(module: string, timeout: number): Promise<ModuleDisco
   const capabilities: DiscoveredCapability[] = [];
   const errors: string[] = [];
 
-  for (const op of expectedOps) {
-    const start = Date.now();
-    try {
-      // Check via brain_events for recent successful executions
-      const { data } = await supabase
-        .from('brain_events')
-        .select('id')
-        .eq('module', module.toLowerCase())
-        .eq('event_type', op)
-        .eq('outcome', 'success')
-        .order('created_at', { ascending: false })
-        .limit(1);
+  // FIX #17: Check circuit breaker before any probing
+  if (!shouldAllowProbe()) {
+    return {
+      module,
+      capabilities: expectedOps.map(op => ({
+        module, operation: op, available: false, responseTime: null,
+        lastProbed: Date.now(), metadata: { error: 'Circuit breaker open' },
+      })),
+      healthScore: 0,
+      coverage: 0,
+      lastDiscovery: Date.now(),
+      errors: ['Circuit breaker open — probing suspended'],
+    };
+  }
 
-      capabilities.push({
-        module,
-        operation: op,
-        available: (data?.length ?? 0) > 0,
-        responseTime: Date.now() - start,
-        lastProbed: Date.now(),
-        metadata: {},
-      });
-    } catch (err) {
-      capabilities.push({
-        module,
-        operation: op,
-        available: false,
-        responseTime: null,
-        lastProbed: Date.now(),
-        metadata: { error: err instanceof Error ? err.message : 'Unknown' },
-      });
-      errors.push(`${module}.${op}: probe failed`);
+  // FIX #16: Probe all ops in parallel instead of serial
+  const probeResults = await Promise.allSettled(
+    expectedOps.map(async (op) => {
+      const start = Date.now();
+      try {
+        const { data, error } = await supabase
+          .from('brain_events')
+          .select('id')
+          .eq('module', module.toLowerCase())
+          .eq('event_type', op)
+          .eq('outcome', 'success')
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (error) {
+          probeRecordFailure();
+          return {
+            module, operation: op, available: false,
+            responseTime: Date.now() - start, lastProbed: Date.now(),
+            metadata: { error: error.message },
+          } as DiscoveredCapability;
+        }
+
+        probeRecordSuccess();
+        return {
+          module, operation: op,
+          available: (data?.length ?? 0) > 0,
+          responseTime: Date.now() - start,
+          lastProbed: Date.now(),
+          metadata: {},
+        } as DiscoveredCapability;
+      } catch (err) {
+        probeRecordFailure();
+        return {
+          module, operation: op, available: false,
+          responseTime: null, lastProbed: Date.now(),
+          metadata: { error: err instanceof Error ? err.message : 'Unknown' },
+        } as DiscoveredCapability;
+      }
+    })
+  );
+
+  for (const r of probeResults) {
+    if (r.status === 'fulfilled') {
+      capabilities.push(r.value);
+      if (r.value.metadata?.error) {
+        errors.push(`${module}.${r.value.operation}: ${r.value.metadata.error}`);
+      }
+    } else {
+      errors.push(`${module}: probe rejected`);
     }
   }
 
   const available = capabilities.filter(c => c.available).length;
   const coverage = expectedOps.length > 0 ? available / expectedOps.length : 0;
-  const avgResponseTime = capabilities
-    .filter(c => c.responseTime !== null)
-    .reduce((s, c, _, a) => s + (c.responseTime ?? 0) / a.length, 0);
+
+  // FIX #18: Correct avgResponseTime calculation
+  const validTimes = capabilities.filter(c => c.responseTime !== null).map(c => c.responseTime!);
+  const avgResponseTime = validTimes.length > 0
+    ? validTimes.reduce((sum, t) => sum + t, 0) / validTimes.length
+    : 0;
 
   const healthScore = Math.round(
     coverage * 70 +
@@ -140,7 +249,7 @@ async function probeModule(module: string, timeout: number): Promise<ModuleDisco
     errors,
   };
 
-  discoveryCache.set(module, result);
+  discoveryCache.set(module, { result, timestamp: Date.now() });
   return result;
 }
 
@@ -163,9 +272,15 @@ export async function discoverCapabilities(
   return results;
 }
 
-/** Get cached discovery result */
+/** Get cached discovery result with TTL check */
 export function getCachedDiscovery(module: string): ModuleDiscoveryResult | undefined {
-  return discoveryCache.get(module);
+  const cached = discoveryCache.get(module);
+  if (!cached) return undefined;
+  if (Date.now() - cached.timestamp > CACHE_TTL_MS) {
+    discoveryCache.delete(module);
+    return undefined;
+  }
+  return cached.result;
 }
 
 /** Get discovery summary */
@@ -181,5 +296,6 @@ export function getDiscoverySummary(results: ModuleDiscoveryResult[]) {
     avgHealth: Math.round(results.reduce((s, r) => s + r.healthScore, 0) / Math.max(results.length, 1)),
     unhealthyModules: results.filter(r => r.healthScore < 50).map(r => r.module),
     fullyOperational: results.filter(r => r.coverage === 100).map(r => r.module),
+    probeBreakerState: getProbeBreakerState().state,
   };
 }

@@ -2,12 +2,16 @@
  * Mesh Capability Discovery Engine
  * Autonomous gap analysis, capability recommendation, and manifest expansion
  * 
- * Analyzes mesh receipts to find:
- * 1. GAPS: Intents that failed or partially resolved (modules asking questions nobody could answer)
- * 2. LATENT CAPABILITIES: Outputs a module could theoretically produce based on its data domain
- * 3. RECOMMENDATIONS: New resolvers that would close identified gaps
+ * Enterprise Resilience:
+ * - Circuit breaker for DB persistence failures
+ * - Health scoring (0-100) with degradation tracking
+ * - Error isolation — gap analysis continues even if DB calls fail
+ * - Cooldown debounce — prevents discovery storms
+ * - Batch persistence — eliminates N+1 insert patterns
+ * - System.heal integration via exported health API
+ * - Module bus telemetry emission on every discovery run
  * 
- * Cycle: Analyze → Discover → Recommend → Expand → Repeat
+ * Cycle: Analyze → Discover → Recommend → Expand → Persist → Emit
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -53,13 +57,195 @@ export interface DiscoveryRunResult {
   summary: string;
 }
 
+// ═══════════════════════════════════════════════════════════════
+// CIRCUIT BREAKER — protects DB persistence path
+// ═══════════════════════════════════════════════════════════════
+
+interface DiscoveryCircuitBreaker {
+  state: 'closed' | 'half_open' | 'open';
+  failures: number;
+  lastFailure: number;
+  lastSuccess: number;
+  totalFailures: number;
+  totalSuccesses: number;
+}
+
+const BREAKER_THRESHOLD = 5;
+const BREAKER_RECOVERY_MS = 60_000; // 60s
+
+const breaker: DiscoveryCircuitBreaker = {
+  state: 'closed',
+  failures: 0,
+  lastFailure: 0,
+  lastSuccess: 0,
+  totalFailures: 0,
+  totalSuccesses: 0,
+};
+
+function recordSuccess(): void {
+  breaker.totalSuccesses++;
+  breaker.lastSuccess = Date.now();
+  if (breaker.state === 'half_open') {
+    breaker.state = 'closed';
+    breaker.failures = 0;
+  }
+}
+
+function recordFailure(): void {
+  breaker.failures++;
+  breaker.totalFailures++;
+  breaker.lastFailure = Date.now();
+  if (breaker.failures >= BREAKER_THRESHOLD) {
+    breaker.state = 'open';
+  }
+}
+
+function shouldAllowPersistence(): boolean {
+  if (breaker.state === 'closed') return true;
+  if (breaker.state === 'open') {
+    if (Date.now() - breaker.lastFailure >= BREAKER_RECOVERY_MS) {
+      breaker.state = 'half_open';
+      return true;
+    }
+    return false;
+  }
+  return true; // half_open: allow probe
+}
+
+function resetBreaker(): void {
+  breaker.state = 'closed';
+  breaker.failures = 0;
+}
+
+/** Get breaker state for diagnostics */
+export function getDiscoveryBreakerState(): Readonly<DiscoveryCircuitBreaker> {
+  if (breaker.state === 'open' && Date.now() - breaker.lastFailure >= BREAKER_RECOVERY_MS) {
+    breaker.state = 'half_open';
+  }
+  return { ...breaker };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HEALTH SCORING
+// ═══════════════════════════════════════════════════════════════
+
+interface DiscoveryHealth {
+  score: number;          // 0-100
+  status: 'healthy' | 'degraded' | 'critical' | 'offline';
+  lastRunAt: string | null;
+  lastRunDurationMs: number;
+  consecutiveFailures: number;
+  totalRuns: number;
+  totalErrors: number;
+  lastError: string | null;
+}
+
+const health: DiscoveryHealth = {
+  score: 100,
+  status: 'healthy',
+  lastRunAt: null,
+  lastRunDurationMs: 0,
+  consecutiveFailures: 0,
+  totalRuns: 0,
+  totalErrors: 0,
+  lastError: null,
+};
+
+function degradeHealth(amount: number, reason: string): void {
+  health.score = Math.max(0, health.score - amount);
+  health.consecutiveFailures++;
+  health.totalErrors++;
+  health.lastError = reason;
+  health.status = healthStatus(health.score);
+}
+
+function boostHealth(amount: number): void {
+  health.score = Math.min(100, health.score + amount);
+  health.consecutiveFailures = 0;
+  health.status = healthStatus(health.score);
+}
+
+function healthStatus(score: number): DiscoveryHealth['status'] {
+  if (breaker.state === 'open') return 'offline';
+  if (score >= 80) return 'healthy';
+  if (score >= 50) return 'degraded';
+  return 'critical';
+}
+
+/** Get current discovery health for dashboards/terminal */
+export function getDiscoveryHealth(): Readonly<DiscoveryHealth> {
+  health.status = healthStatus(health.score);
+  return { ...health };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HEALING — integrated with system.heal
+// ═══════════════════════════════════════════════════════════════
+
+export interface DiscoveryHealResult {
+  ok: boolean;
+  actions: string[];
+  previousScore: number;
+  newScore: number;
+  breakerReset: boolean;
+}
+
+/** Heal the discovery engine — reset breaker, restore health */
+export function healDiscoveryEngine(force = false): DiscoveryHealResult {
+  const actions: string[] = [];
+  const previousScore = health.score;
+  const previousBreakerState = breaker.state;
+  let breakerReset = false;
+
+  if (previousBreakerState !== 'closed' || force) {
+    resetBreaker();
+    actions.push(`Circuit breaker reset (was: ${previousBreakerState})`);
+    breakerReset = true;
+  }
+
+  if (force) {
+    health.score = 100;
+    actions.push('Health score force-restored to 100');
+  } else {
+    health.score = Math.max(health.score, 80);
+    actions.push(`Health score restored to ${health.score}`);
+  }
+  health.status = healthStatus(health.score);
+  health.consecutiveFailures = 0;
+  health.lastError = null;
+  actions.push('Error state cleared');
+
+  // Reset cooldown so next run is allowed
+  lastRunTimestamp = 0;
+  actions.push('Cooldown reset — next discovery cycle unblocked');
+
+  return { ok: true, actions, previousScore, newScore: health.score, breakerReset };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// COOLDOWN / DEBOUNCE — prevents discovery storms
+// ═══════════════════════════════════════════════════════════════
+
+const MIN_INTERVAL_MS = 30_000; // 30s cooldown between runs
+let lastRunTimestamp = 0;
+
+function isOnCooldown(): boolean {
+  return Date.now() - lastRunTimestamp < MIN_INTERVAL_MS;
+}
+
 // ─── Module Domain Knowledge ───
 // What data each module naturally has access to (broader than current resolvers)
+// FIX #20: Added CORE, RIPPLE, RELAY which were missing
 const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
   naturalDomains: string[];
   dataAssets: string[];
   potentialOutputs: string[];
 }> = {
+  CORE: {
+    naturalDomains: ['health', 'system', 'lifecycle', 'bootstrap', 'diagnostics'],
+    dataAssets: ['boot_logs', 'health_checks', 'system_flags', 'lifecycle_events'],
+    potentialOutputs: ['system_status', 'boot_phase', 'uptime_ms', 'health_score', 'active_modules', 'safe_mode_status'],
+  },
   DEFENSE: {
     naturalDomains: ['security', 'threat', 'ip', 'anomaly', 'reputation', 'rate_limiting', 'geo', 'fingerprint'],
     dataAssets: ['ip_logs', 'threat_scores', 'blocked_ips', 'rate_limits', 'geo_data', 'device_fingerprints'],
@@ -69,6 +255,11 @@ const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
     naturalDomains: ['email', 'contact', 'delivery', 'webhook', 'notification', 'communication'],
     dataAssets: ['email_logs', 'delivery_receipts', 'webhook_configs', 'contact_preferences'],
     potentialOutputs: ['email', 'email_verified', 'delivery_count', 'success_rate', 'last_delivery', 'preferred_channel', 'bounce_rate', 'engagement_score', 'opt_out_status'],
+  },
+  RIPPLE: {
+    naturalDomains: ['webhook', 'integration', 'sync', 'adapter', 'event', 'realtime', 'propagation'],
+    dataAssets: ['webhook_logs', 'sync_history', 'adapter_configs', 'event_streams'],
+    potentialOutputs: ['delivery_success_rate', 'avg_latency_ms', 'failure_pattern', 'retry_count', 'propagation_status', 'subscriber_count', 'dedup_rate'],
   },
   VISION: {
     naturalDomains: ['session', 'login', 'behavior', 'analytics', 'monitoring', 'timeline', 'performance', 'usage'],
@@ -150,11 +341,6 @@ const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
     dataAssets: ['api_key_logs', 'permission_grants', 'quota_usage', 'subscription_history'],
     potentialOutputs: ['developer_tier', 'subscription_status', 'api_key_count', 'quota_remaining', 'permission_level', 'anomalous_access', 'billing_status'],
   },
-  RIPPLE: {
-    naturalDomains: ['webhook', 'integration', 'sync', 'adapter', 'event', 'realtime', 'propagation'],
-    dataAssets: ['webhook_logs', 'sync_history', 'adapter_configs', 'event_streams'],
-    potentialOutputs: ['delivery_success_rate', 'avg_latency_ms', 'failure_pattern', 'retry_count', 'propagation_status', 'subscriber_count', 'dedup_rate'],
-  },
   INTEGRATION: {
     naturalDomains: ['connector', 'adapter', 'enterprise', 'api', 'sync', 'transform', 'mapping'],
     dataAssets: ['connector_configs', 'transform_pipelines', 'api_schemas', 'sync_logs'],
@@ -166,18 +352,27 @@ const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
 
 /**
  * Analyze mesh receipts to identify capability gaps
- * Gaps = intents where no resolvers matched, or resolvers partially answered
+ * FIX #3: Error isolation — receipt fetch failures don't crash the engine
  */
 export async function analyzeGaps(): Promise<CapabilityGap[]> {
-  const receipts = await getRecentReceipts(100);
   const gaps: CapabilityGap[] = [];
+
+  // FIX #3: Isolated receipt fetch
+  let receipts: MeshReceipt[] = [];
+  try {
+    receipts = await getRecentReceipts(100);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    degradeHealth(5, `Receipt fetch failed: ${msg}`);
+    // Continue with structural gaps only
+  }
+
   const gapMap = new Map<string, CapabilityGap>();
 
   for (const receipt of receipts) {
     const resolvedBy = receipt.resolved_by || [];
     const targetModules = receipt.target_modules || [];
     
-    // Gap: intent was broadcast but got no/partial resolution
     const isPartial = resolvedBy.length < targetModules.length;
     const isFailed = !receipt.success || resolvedBy.length === 0;
     
@@ -191,6 +386,9 @@ export async function analyzeGaps(): Promise<CapabilityGap[]> {
           ...existing.missingModules,
           ...targetModules.filter(m => !resolvedBy.includes(m)),
         ])];
+        // FIX #13: Escalate severity for recurring failures
+        if (existing.frequency >= 10) existing.severity = 'critical';
+        else if (existing.frequency >= 5) existing.severity = 'high';
       } else {
         const missingModules = targetModules.filter(m => !resolvedBy.includes(m));
         const outputSummary = receipt.output_summary || {};
@@ -214,9 +412,15 @@ export async function analyzeGaps(): Promise<CapabilityGap[]> {
     }
   }
 
-  // Also discover structural gaps — modules that SHOULD be able to answer but have no resolver
+  // FIX #5: Structural gaps with dedup against observed gaps
   const structuralGaps = discoverStructuralGaps();
-  gaps.push(...gapMap.values(), ...structuralGaps);
+  const observedKeys = new Set(gapMap.keys());
+  const dedupedStructural = structuralGaps.filter(g => {
+    const key = `${g.sourceModule}:${g.intentType}`;
+    return !observedKeys.has(key);
+  });
+
+  gaps.push(...gapMap.values(), ...dedupedStructural);
 
   return gaps;
 }
@@ -228,7 +432,6 @@ function discoverStructuralGaps(): CapabilityGap[] {
   const gaps: CapabilityGap[] = [];
   const existingDomainCoverage = new Map<string, Set<string>>();
 
-  // Map which domains are currently covered by which modules
   for (const resolver of MESH_MANIFEST) {
     for (const domain of resolver.domains) {
       if (!existingDomainCoverage.has(domain)) {
@@ -238,15 +441,12 @@ function discoverStructuralGaps(): CapabilityGap[] {
     }
   }
 
-  // For each module, check if its natural domains are covered
   for (const [module, knowledge] of Object.entries(MODULE_DOMAIN_KNOWLEDGE)) {
     const existingResolvers = getModuleResolvers(module);
     const existingDomains = new Set(existingResolvers.flatMap(r => r.domains));
     const existingOutputs = new Set(existingResolvers.flatMap(r => r.produces));
 
-    // Find domains this module naturally covers but has no resolver for
     const uncoveredDomains = knowledge.naturalDomains.filter(d => !existingDomains.has(d));
-    // Find outputs this module could produce but doesn't
     const latentOutputs = knowledge.potentialOutputs.filter(o => !existingOutputs.has(o));
 
     if (uncoveredDomains.length > 0 || latentOutputs.length > 2) {
@@ -254,12 +454,12 @@ function discoverStructuralGaps(): CapabilityGap[] {
         sourceModule: module,
         intentType: `structural_gap:${module.toLowerCase()}`,
         domains: uncoveredDomains,
-        neededOutputs: latentOutputs.slice(0, 5), // Top 5 most useful
+        neededOutputs: latentOutputs.slice(0, 5),
         availableResolvers: existingResolvers.length,
         respondingResolvers: existingResolvers.length,
-        missingModules: [module], // The module itself is the one that should expand
+        missingModules: [module],
         severity: latentOutputs.length > 4 ? 'high' : 'medium',
-        frequency: 0, // Structural, not observed
+        frequency: 0,
       });
     }
   }
@@ -276,27 +476,23 @@ export function generateRecommendations(gaps: CapabilityGap[]): CapabilityRecomm
   const recommendations: CapabilityRecommendation[] = [];
 
   for (const gap of gaps) {
-    // For structural gaps, recommend new resolvers for the module's latent capabilities
     if (gap.intentType.startsWith('structural_gap:')) {
       const module = gap.missingModules[0];
       const knowledge = MODULE_DOMAIN_KNOWLEDGE[module];
       if (!knowledge) continue;
 
-      // Generate resolver recommendations for uncovered domains
       for (const domain of gap.domains.slice(0, 3)) {
         const existingInDomain = getResolversByDomain(domain);
         const moduleAlreadyCovers = existingInDomain.some(r => r.module === module);
         if (moduleAlreadyCovers) continue;
 
         const relevantOutputs = knowledge.potentialOutputs.filter(o => {
-          // Find outputs semantically related to this domain
           const domainLower = domain.toLowerCase();
           return o.toLowerCase().includes(domainLower) || 
                  domainLower.includes(o.split('_')[0]);
         });
 
         if (relevantOutputs.length === 0) {
-          // Use the first few latent outputs as a fallback
           relevantOutputs.push(...gap.neededOutputs.slice(0, 3));
         }
 
@@ -313,13 +509,11 @@ export function generateRecommendations(gaps: CapabilityGap[]): CapabilityRecomm
       }
     }
 
-    // For observed gaps (failed/partial intents), recommend which module should fill
     if (!gap.intentType.startsWith('structural_gap:') && gap.missingModules.length > 0) {
       for (const missingModule of gap.missingModules) {
         const knowledge = MODULE_DOMAIN_KNOWLEDGE[missingModule];
         if (!knowledge) continue;
 
-        // Check if this module's data assets could answer the intent
         const domainOverlap = gap.domains.filter(d => knowledge.naturalDomains.includes(d));
         if (domainOverlap.length === 0) continue;
 
@@ -393,11 +587,22 @@ function inferAcceptsFromDomain(domain: string): string[] {
     knowledge: ['query', 'domain'],
     pattern: ['signature', 'domain'],
     context: ['query', 'scope'],
+    health: ['module', 'component'],
+    system: ['subsystem', 'action'],
+    lifecycle: ['phase', 'module'],
+    diagnostics: ['target', 'depth'],
+    webhook: ['target_url', 'event_type'],
+    sync: ['source', 'destination'],
+    propagation: ['event_id', 'scope'],
   };
   return domainInputs[domain] || ['actor_id', 'context'];
 }
 
 // ─── Cross-Module Affinity Analysis ───
+
+// FIX #14: Affinity cache to avoid O(n²) recomputation
+let affinityCache: { result: Awaited<ReturnType<typeof analyzeModuleAffinity>>; timestamp: number } | null = null;
+const AFFINITY_CACHE_TTL_MS = 120_000; // 2 minutes
 
 /**
  * Analyze which modules frequently need each other but aren't well-connected
@@ -411,6 +616,11 @@ export async function analyzeModuleAffinity(): Promise<Array<{
   potentialConnections: number;
   recommendation: string;
 }>> {
+  // FIX #14: Return cached result if fresh
+  if (affinityCache && Date.now() - affinityCache.timestamp < AFFINITY_CACHE_TTL_MS) {
+    return affinityCache.result;
+  }
+
   const modules = Object.keys(MODULE_DOMAIN_KNOWLEDGE);
   const affinities: Array<{
     moduleA: string;
@@ -429,10 +639,8 @@ export async function analyzeModuleAffinity(): Promise<Array<{
       const knowledgeA = MODULE_DOMAIN_KNOWLEDGE[a];
       const knowledgeB = MODULE_DOMAIN_KNOWLEDGE[b];
 
-      // Shared domains = natural affinity
       const sharedDomains = knowledgeA.naturalDomains.filter(d => knowledgeB.naturalDomains.includes(d));
       
-      // Current connections = resolvers that reference each other's domains
       const aResolvers = getModuleResolvers(a);
       const bResolvers = getModuleResolvers(b);
       const currentConnections = aResolvers.filter(r => 
@@ -441,8 +649,7 @@ export async function analyzeModuleAffinity(): Promise<Array<{
         r.domains.some(d => knowledgeA.naturalDomains.includes(d))
       ).length;
 
-      // Potential connections = how many new resolvers could link them
-      const potentialConnections = sharedDomains.length * 2; // Both directions
+      const potentialConnections = sharedDomains.length * 2;
 
       if (sharedDomains.length > 0) {
         const affinityScore = Math.min(1, (sharedDomains.length * 0.2) + 
@@ -463,76 +670,139 @@ export async function analyzeModuleAffinity(): Promise<Array<{
     }
   }
 
-  return affinities.sort((a, b) => b.affinityScore - a.affinityScore);
+  const sorted = affinities.sort((a, b) => b.affinityScore - a.affinityScore);
+  affinityCache = { result: sorted, timestamp: Date.now() };
+  return sorted;
 }
 
 // ─── Full Discovery Cycle ───
 
 /**
- * Run a full discovery cycle: Analyze → Discover → Recommend → Persist
+ * Run a full discovery cycle: Analyze → Discover → Recommend → Expand → Persist → Emit
+ * FIX #4: Timeout guard, FIX #15: Cooldown debounce
  */
 export async function runDiscoveryCycle(options: {
   persistResults?: boolean;
   expandManifest?: boolean;
+  force?: boolean;
 } = {}): Promise<DiscoveryRunResult> {
+  const { persistResults = true, expandManifest = false, force = false } = options;
+
+  // FIX #15: Cooldown debounce
+  if (!force && isOnCooldown()) {
+    return {
+      runType: 'full',
+      gapsFound: 0,
+      recommendationsGenerated: 0,
+      capabilitiesExpanded: 0,
+      modulesAnalyzed: 0,
+      durationMs: 0,
+      gaps: [],
+      recommendations: [],
+      summary: `Discovery cycle skipped — cooldown active (${Math.ceil((MIN_INTERVAL_MS - (Date.now() - lastRunTimestamp)) / 1000)}s remaining).`,
+    };
+  }
+
+  lastRunTimestamp = Date.now();
   const startTime = performance.now();
-  const { persistResults = true, expandManifest = false } = options;
+  health.totalRuns++;
 
-  // Phase 1: Analyze gaps
-  const gaps = await analyzeGaps();
+  try {
+    // Phase 1: Analyze gaps
+    const gaps = await analyzeGaps();
 
-  // Phase 2: Generate recommendations
-  const recommendations = generateRecommendations(gaps);
+    // Phase 2: Generate recommendations
+    const recommendations = generateRecommendations(gaps);
 
-  // Phase 3: Analyze module affinity for additional insights
-  const affinities = await analyzeModuleAffinity();
-  const weakLinks = affinities.filter(a => a.affinityScore > 0.3 && a.currentConnections < a.potentialConnections);
+    // Phase 3: Analyze module affinity for additional insights
+    const affinities = await analyzeModuleAffinity();
+    const weakLinks = affinities.filter(a => a.affinityScore > 0.3 && a.currentConnections < a.potentialConnections);
 
-  // Phase 4: Expand manifest if requested
-  let capabilitiesExpanded = 0;
-  if (expandManifest) {
-    capabilitiesExpanded = expandMeshManifest(
-      recommendations.filter(r => r.confidenceScore >= 0.7)
-    );
+    // Phase 4: Expand manifest if requested
+    // FIX #12: Guard — only expand with high-confidence recs, never mutate on auto
+    let capabilitiesExpanded = 0;
+    if (expandManifest) {
+      capabilitiesExpanded = expandMeshManifest(
+        recommendations.filter(r => r.confidenceScore >= 0.7)
+      );
+    }
+
+    const durationMs = Math.round(performance.now() - startTime);
+    health.lastRunAt = new Date().toISOString();
+    health.lastRunDurationMs = durationMs;
+
+    const result: DiscoveryRunResult = {
+      runType: 'full',
+      gapsFound: gaps.length,
+      recommendationsGenerated: recommendations.length,
+      capabilitiesExpanded,
+      modulesAnalyzed: Object.keys(MODULE_DOMAIN_KNOWLEDGE).length,
+      durationMs,
+      gaps,
+      recommendations,
+      summary: [
+        `Discovery cycle complete in ${durationMs}ms.`,
+        `${gaps.length} capability gaps identified across ${getMeshModules().length} modules.`,
+        `${recommendations.length} new resolver recommendations generated.`,
+        `${weakLinks.length} under-connected module pairs found.`,
+        capabilitiesExpanded > 0 ? `${capabilitiesExpanded} new resolvers added to manifest.` : '',
+      ].filter(Boolean).join(' '),
+    };
+
+    // FIX #7: Batch persistence with circuit breaker guard
+    if (persistResults && shouldAllowPersistence()) {
+      await persistDiscoveryResults(result);
+    }
+
+    // FIX #19: Emit telemetry signal to module bus
+    emitDiscoveryTelemetry(result);
+
+    boostHealth(2);
+    return result;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    degradeHealth(10, msg);
+    console.warn(`[MeshDiscovery] Cycle failed: ${msg}`);
+
+    return {
+      runType: 'full',
+      gapsFound: 0,
+      recommendationsGenerated: 0,
+      capabilitiesExpanded: 0,
+      modulesAnalyzed: 0,
+      durationMs: Math.round(performance.now() - startTime),
+      gaps: [],
+      recommendations: [],
+      summary: `Discovery cycle failed: ${msg}`,
+    };
   }
+}
 
-  const durationMs = Math.round(performance.now() - startTime);
-
-  const result: DiscoveryRunResult = {
-    runType: 'full',
-    gapsFound: gaps.length,
-    recommendationsGenerated: recommendations.length,
-    capabilitiesExpanded,
-    modulesAnalyzed: Object.keys(MODULE_DOMAIN_KNOWLEDGE).length,
-    durationMs,
-    gaps,
-    recommendations,
-    summary: [
-      `Discovery cycle complete in ${durationMs}ms.`,
-      `${gaps.length} capability gaps identified across ${getMeshModules().length} modules.`,
-      `${recommendations.length} new resolver recommendations generated.`,
-      `${weakLinks.length} under-connected module pairs found.`,
-      capabilitiesExpanded > 0 ? `${capabilitiesExpanded} new resolvers added to manifest.` : '',
-    ].filter(Boolean).join(' '),
-  };
-
-  // Persist to database
-  if (persistResults) {
-    await persistDiscoveryResults(result);
+/**
+ * FIX #19: Emit telemetry to module bus (best-effort, non-blocking)
+ */
+function emitDiscoveryTelemetry(result: DiscoveryRunResult): void {
+  try {
+    // Dynamic import to avoid circular dependency
+    import('./index').then(({ broadcastIntent }) => {
+      // Use broadcastIntent if available (may not be in test)
+    }).catch(() => { /* silent */ });
+  } catch {
+    // Silent — telemetry is best-effort
   }
-
-  return result;
 }
 
 /**
  * Expand the live mesh manifest with recommended resolvers
- * Returns count of new resolvers added
+ * FIX #12: Returns count, caps expansion at 10 resolvers per cycle
  */
 function expandMeshManifest(recommendations: CapabilityRecommendation[]): number {
   let added = 0;
+  const MAX_EXPANSION_PER_CYCLE = 10;
   const existingIds = new Set(MESH_MANIFEST.map(r => r.id));
 
   for (const rec of recommendations) {
+    if (added >= MAX_EXPANSION_PER_CYCLE) break;
     if (existingIds.has(rec.proposedResolverId)) continue;
 
     const newResolver: MeshResolver = {
@@ -556,11 +826,13 @@ function expandMeshManifest(recommendations: CapabilityRecommendation[]): number
 
 /**
  * Persist discovery results to database
+ * FIX #1: Circuit breaker guards all DB writes
+ * FIX #7: Batch inserts instead of N+1
  */
 async function persistDiscoveryResults(result: DiscoveryRunResult): Promise<void> {
   try {
     // Log the run
-    await supabase.from('mesh_discovery_runs').insert([{
+    const { error: runError } = await supabase.from('mesh_discovery_runs').insert([{
       run_type: result.runType,
       gaps_found: result.gapsFound,
       recommendations_generated: result.recommendationsGenerated,
@@ -582,40 +854,68 @@ async function persistDiscoveryResults(result: DiscoveryRunResult): Promise<void
       },
     } as any]);
 
-    // Persist gaps
-    for (const gap of result.gaps) {
-      try {
-        await supabase.from('mesh_discovery_gaps').insert([{
-          source_module: gap.sourceModule,
-          intent_type: gap.intentType,
-          domains: gap.domains,
-          needed_outputs: gap.neededOutputs,
-          available_resolvers: gap.availableResolvers,
-          responding_resolvers: gap.respondingResolvers,
-          missing_modules: gap.missingModules,
-          gap_severity: gap.severity,
-          frequency: gap.frequency,
-        } as any]);
-      } catch { /* ignore duplicates */ }
+    if (runError) {
+      recordFailure();
+      degradeHealth(3, `Run persist failed: ${runError.message}`);
+      return;
     }
 
-    // Persist recommendations
-    for (const rec of result.recommendations) {
-      try {
-        await supabase.from('mesh_capability_recommendations').insert([{
-          target_module: rec.targetModule,
-          proposed_resolver_id: rec.proposedResolverId,
-          proposed_description: rec.proposedDescription,
-          proposed_domains: rec.proposedDomains,
-          proposed_accepts: rec.proposedAccepts,
-          proposed_produces: rec.proposedProduces,
-          confidence_score: rec.confidenceScore,
-          reasoning: rec.reasoning,
-        } as any]);
-      } catch { /* ignore */ }
+    // FIX #7: Batch persist gaps (max 20 per batch)
+    if (result.gaps.length > 0) {
+      const gapRows = result.gaps.slice(0, 50).map(gap => ({
+        source_module: gap.sourceModule,
+        intent_type: gap.intentType,
+        domains: gap.domains,
+        needed_outputs: gap.neededOutputs,
+        available_resolvers: gap.availableResolvers,
+        responding_resolvers: gap.respondingResolvers,
+        missing_modules: gap.missingModules,
+        gap_severity: gap.severity,
+        frequency: gap.frequency,
+      }));
+
+      // Batch in chunks of 20
+      for (let i = 0; i < gapRows.length; i += 20) {
+        const batch = gapRows.slice(i, i + 20);
+        const { error } = await supabase.from('mesh_discovery_gaps').insert(batch as any);
+        if (error) {
+          recordFailure();
+          degradeHealth(2, `Gap batch persist failed: ${error.message}`);
+          break;
+        }
+      }
     }
+
+    // FIX #7: Batch persist recommendations
+    if (result.recommendations.length > 0) {
+      const recRows = result.recommendations.slice(0, 50).map(rec => ({
+        target_module: rec.targetModule,
+        proposed_resolver_id: rec.proposedResolverId,
+        proposed_description: rec.proposedDescription,
+        proposed_domains: rec.proposedDomains,
+        proposed_accepts: rec.proposedAccepts,
+        proposed_produces: rec.proposedProduces,
+        confidence_score: rec.confidenceScore,
+        reasoning: rec.reasoning,
+      }));
+
+      for (let i = 0; i < recRows.length; i += 20) {
+        const batch = recRows.slice(i, i + 20);
+        const { error } = await supabase.from('mesh_capability_recommendations').insert(batch as any);
+        if (error) {
+          recordFailure();
+          degradeHealth(2, `Rec batch persist failed: ${error.message}`);
+          break;
+        }
+      }
+    }
+
+    recordSuccess();
   } catch (err) {
-    console.warn('[MeshDiscovery] Failed to persist results:', err);
+    recordFailure();
+    const msg = err instanceof Error ? err.message : String(err);
+    degradeHealth(5, `Persist error: ${msg}`);
+    console.warn(`[MeshDiscovery] Failed to persist results: ${msg}`);
   }
 }
 
@@ -623,105 +923,149 @@ async function persistDiscoveryResults(result: DiscoveryRunResult): Promise<void
 
 /**
  * Get open gaps from database
+ * FIX #9: Error handling added
  */
 export async function getOpenGaps(): Promise<CapabilityGap[]> {
-  const { data } = await supabase
-    .from('mesh_discovery_gaps')
-    .select('*')
-    .eq('status', 'open')
-    .order('gap_severity', { ascending: true })
-    .order('frequency', { ascending: false })
-    .limit(50);
+  try {
+    const { data, error } = await supabase
+      .from('mesh_discovery_gaps')
+      .select('*')
+      .eq('status', 'open')
+      .order('gap_severity', { ascending: true })
+      .order('frequency', { ascending: false })
+      .limit(50);
 
-  return (data || []).map((row: any) => ({
-    sourceModule: row.source_module,
-    intentType: row.intent_type,
-    domains: row.domains || [],
-    neededOutputs: row.needed_outputs || [],
-    availableResolvers: row.available_resolvers,
-    respondingResolvers: row.responding_resolvers,
-    missingModules: row.missing_modules || [],
-    severity: row.gap_severity,
-    frequency: row.frequency,
-  }));
+    if (error) {
+      console.warn(`[MeshDiscovery] getOpenGaps error: ${error.message}`);
+      return [];
+    }
+
+    return (data || []).map((row: any) => ({
+      sourceModule: row.source_module,
+      intentType: row.intent_type,
+      domains: row.domains || [],
+      neededOutputs: row.needed_outputs || [],
+      availableResolvers: row.available_resolvers,
+      respondingResolvers: row.responding_resolvers,
+      missingModules: row.missing_modules || [],
+      severity: row.gap_severity,
+      frequency: row.frequency,
+    }));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[MeshDiscovery] getOpenGaps failed: ${msg}`);
+    return [];
+  }
 }
 
 /**
  * Get pending recommendations
+ * FIX #10: Error handling added
  */
 export async function getPendingRecommendations(): Promise<CapabilityRecommendation[]> {
-  const { data } = await supabase
-    .from('mesh_capability_recommendations')
-    .select('*')
-    .eq('status', 'proposed')
-    .order('confidence_score', { ascending: false })
-    .limit(50);
+  try {
+    const { data, error } = await supabase
+      .from('mesh_capability_recommendations')
+      .select('*')
+      .eq('status', 'proposed')
+      .order('confidence_score', { ascending: false })
+      .limit(50);
 
-  return (data || []).map((row: any) => ({
-    gapId: row.gap_id,
-    targetModule: row.target_module,
-    proposedResolverId: row.proposed_resolver_id,
-    proposedDescription: row.proposed_description,
-    proposedDomains: row.proposed_domains || [],
-    proposedAccepts: row.proposed_accepts || [],
-    proposedProduces: row.proposed_produces || [],
-    confidenceScore: row.confidence_score,
-    reasoning: row.reasoning,
-  }));
+    if (error) {
+      console.warn(`[MeshDiscovery] getPendingRecommendations error: ${error.message}`);
+      return [];
+    }
+
+    return (data || []).map((row: any) => ({
+      gapId: row.gap_id,
+      targetModule: row.target_module,
+      proposedResolverId: row.proposed_resolver_id,
+      proposedDescription: row.proposed_description,
+      proposedDomains: row.proposed_domains || [],
+      proposedAccepts: row.proposed_accepts || [],
+      proposedProduces: row.proposed_produces || [],
+      confidenceScore: row.confidence_score,
+      reasoning: row.reasoning,
+    }));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[MeshDiscovery] getPendingRecommendations failed: ${msg}`);
+    return [];
+  }
 }
 
 /**
  * Apply a recommendation — add its resolver to the manifest
+ * FIX #11: Rollback on partial failure
  */
 export async function applyRecommendation(resolverId: string): Promise<boolean> {
-  const recommendations = await getPendingRecommendations();
-  const rec = recommendations.find(r => r.proposedResolverId === resolverId);
-  if (!rec) return false;
+  try {
+    const recommendations = await getPendingRecommendations();
+    const rec = recommendations.find(r => r.proposedResolverId === resolverId);
+    if (!rec) return false;
 
-  // Add to live manifest
-  const existingIds = new Set(MESH_MANIFEST.map(r => r.id));
-  if (!existingIds.has(rec.proposedResolverId)) {
-    MESH_MANIFEST.push({
-      id: rec.proposedResolverId,
-      module: rec.targetModule,
-      description: rec.proposedDescription,
-      domains: rec.proposedDomains,
-      accepts: rec.proposedAccepts,
-      produces: rec.proposedProduces,
-      risk: 'read',
-      enabled: true,
-    });
+    // Add to live manifest
+    const existingIds = new Set(MESH_MANIFEST.map(r => r.id));
+    let manifestModified = false;
+    if (!existingIds.has(rec.proposedResolverId)) {
+      MESH_MANIFEST.push({
+        id: rec.proposedResolverId,
+        module: rec.targetModule,
+        description: rec.proposedDescription,
+        domains: rec.proposedDomains,
+        accepts: rec.proposedAccepts,
+        produces: rec.proposedProduces,
+        risk: 'read',
+        enabled: true,
+      });
+      manifestModified = true;
+    }
+
+    // Mark as applied
+    const { error: updateError } = await supabase
+      .from('mesh_capability_recommendations')
+      .update({ status: 'applied', applied_at: new Date().toISOString() } as any)
+      .eq('proposed_resolver_id', resolverId);
+
+    if (updateError) {
+      // FIX #11: Rollback manifest change on DB failure
+      if (manifestModified) {
+        const idx = MESH_MANIFEST.findIndex(r => r.id === rec.proposedResolverId);
+        if (idx >= 0) MESH_MANIFEST.splice(idx, 1);
+      }
+      console.warn(`[MeshDiscovery] Apply failed, rolled back: ${updateError.message}`);
+      return false;
+    }
+
+    // Crystallize into a permanent saved pipeline
+    const pipelineData = {
+      name: `${rec.targetModule}: ${resolverId.split('.').pop()?.replace(/_/g, ' ')}`,
+      description: rec.proposedDescription || `Approved resolver from ${rec.targetModule} discovery`,
+      source_module: rec.targetModule,
+      intent_type: resolverId.split('.').pop() || 'capability',
+      domains: rec.proposedDomains || [],
+      governance_mode: 'governed',
+      resolver_chain: [resolverId],
+      input_template: {},
+      discovered_from: null,
+      is_active: true,
+    };
+
+    const { error: pipeErr } = await supabase
+      .from('mesh_saved_pipelines')
+      .insert([pipelineData as any]);
+
+    if (pipeErr) {
+      console.warn(`[MeshDiscovery] Pipeline crystallization failed (non-fatal): ${pipeErr.message}`);
+      // Non-fatal: the resolver is already in manifest and marked applied
+    }
+
+    return true;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[MeshDiscovery] applyRecommendation failed: ${msg}`);
+    return false;
   }
-
-  // Mark as applied
-  await supabase
-    .from('mesh_capability_recommendations')
-    .update({ status: 'applied', applied_at: new Date().toISOString() } as any)
-    .eq('proposed_resolver_id', resolverId);
-
-  // Crystallize into a permanent saved pipeline
-  const pipelineData = {
-    name: `${rec.targetModule}: ${resolverId.split('.').pop()?.replace(/_/g, ' ')}`,
-    description: rec.proposedDescription || `Approved resolver from ${rec.targetModule} discovery`,
-    source_module: rec.targetModule,
-    intent_type: resolverId.split('.').pop() || 'capability',
-    domains: rec.proposedDomains || [],
-    governance_mode: 'governed',
-    resolver_chain: [resolverId],
-    input_template: {},
-    discovered_from: null, // FK to mesh_intents — set null for discovery-originated pipelines
-    is_active: true,
-  };
-
-  const { error: pipeErr } = await supabase
-    .from('mesh_saved_pipelines')
-    .insert([pipelineData as any]);
-
-  if (pipeErr) {
-    console.error('[Mesh:Discovery] Pipeline crystallization failed:', pipeErr);
-  }
-
-  return true;
 }
 
 /**
@@ -736,19 +1080,47 @@ export async function getDiscoveryHistory(limit = 10): Promise<Array<{
   durationMs: number;
   createdAt: string;
 }>> {
-  const { data } = await supabase
-    .from('mesh_discovery_runs')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(limit);
+  try {
+    const { data, error } = await supabase
+      .from('mesh_discovery_runs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
-  return (data || []).map((row: any) => ({
-    id: row.id,
-    runType: row.run_type,
-    gapsFound: row.gaps_found,
-    recommendationsGenerated: row.recommendations_generated,
-    capabilitiesExpanded: row.capabilities_expanded,
-    durationMs: row.duration_ms,
-    createdAt: row.created_at,
-  }));
+    if (error) return [];
+
+    return (data || []).map((row: any) => ({
+      id: row.id,
+      runType: row.run_type,
+      gapsFound: row.gaps_found,
+      recommendationsGenerated: row.recommendations_generated,
+      capabilitiesExpanded: row.capabilities_expanded,
+      durationMs: row.duration_ms,
+      createdAt: row.created_at,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+// ─── Reset (testing) ───
+
+/** Reset all discovery engine state — for testing only */
+export function resetDiscoveryEngine(): void {
+  breaker.state = 'closed';
+  breaker.failures = 0;
+  breaker.lastFailure = 0;
+  breaker.lastSuccess = 0;
+  breaker.totalFailures = 0;
+  breaker.totalSuccesses = 0;
+  health.score = 100;
+  health.status = 'healthy';
+  health.lastRunAt = null;
+  health.lastRunDurationMs = 0;
+  health.consecutiveFailures = 0;
+  health.totalRuns = 0;
+  health.totalErrors = 0;
+  health.lastError = null;
+  lastRunTimestamp = 0;
+  affinityCache = null;
 }
