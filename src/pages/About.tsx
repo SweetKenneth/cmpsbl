@@ -392,17 +392,28 @@ export default function About() {
          BLOCKQUOTE — Full-width cinematic
          ════════════════════════════════════════════════════════ */}
       <section className="relative z-10 overflow-hidden">
-        <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 py-14 sm:py-20 px-5">
+        <div className="relative py-16 sm:py-24 px-5">
+          {/* Cinematic gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-primary/4 to-primary/8" />
+          <div className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px),
+                               linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
+              backgroundSize: '60px 60px',
+            }}
+          />
           <motion.blockquote
             {...fadeUp}
-            className="max-w-3xl mx-auto text-center"
+            className="relative max-w-3xl mx-auto text-center"
           >
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-foreground leading-tight tracking-tight">
-              "Infrastructure that{" "}
+            <div className="text-6xl sm:text-7xl font-black text-primary/10 leading-none select-none mb-4">"</div>
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-foreground leading-tight tracking-tight -mt-10">
+              Infrastructure that{" "}
               <span className="text-primary">dreams</span>,{" "}
               <span className="text-primary">evolves</span>, and{" "}
-              <span className="text-primary">compounds</span> — every day it runs, it gets better."
+              <span className="text-primary">compounds</span> — every day it runs, it gets better.
             </p>
+            <div className="mt-6 h-px w-16 mx-auto bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
           </motion.blockquote>
         </div>
       </section>
@@ -414,13 +425,16 @@ export default function About() {
         <div className="max-w-4xl mx-auto">
           <motion.div
             {...fadeUp}
-            className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm p-5 sm:p-8 md:p-10"
+            className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm overflow-hidden shimmer-on-hover"
           >
+            {/* Top accent */}
+            <div className="h-1 w-full bg-gradient-to-r from-primary via-neon-cyan to-primary opacity-40" />
+            <div className="p-5 sm:p-8 md:p-10">
             <div className="flex flex-col sm:flex-row gap-5 sm:gap-8 items-start">
               <img
                 src={founderPhoto}
                 alt="Kenneth E Sweet Jr — Founder of CMPSBL"
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl object-cover ring-2 ring-primary/20 shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl object-cover ring-2 ring-primary/20 shadow-lg shadow-primary/10 shrink-0"
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
@@ -439,6 +453,7 @@ export default function About() {
                   <p className="text-xs sm:text-sm text-muted-foreground">Founder & Chief Architect</p>
                 </div>
               </div>
+            </div>
             </div>
           </motion.div>
         </div>
