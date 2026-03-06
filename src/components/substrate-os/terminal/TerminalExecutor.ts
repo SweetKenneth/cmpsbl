@@ -1578,8 +1578,46 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     } else if (base === 'system.audit') {
       result = await system.audit();
     } else if (base === 'system.diagnostics') {
-      const full = args.includes('--full');
-      result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
+      try {
+        const { collectDiagnostics } = await import('@/lib/substrate/diagnostics-aggregator');
+        const diag = collectDiagnostics();
+        const healthIcon = diag.overallHealth === 'healthy' ? '🟢' : diag.overallHealth === 'degraded' ? '🟡' : '🔴';
+        
+        let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  SUBSTRATE DIAGNOSTICS                                        ║
+╠══════════════════════════════════════════════════════════════╣
+║  Overall: ${healthIcon} ${diag.overallHealth.toUpperCase().padEnd(12)}  Timestamp: ${diag.timestamp.substring(11, 19)}       ║
+╠══════════════════════════════════════════════════════════════╣
+║  UPTIME                                                       ║
+║  Since:       ${String(diag.uptime.bootTimestamp || 'N/A').substring(0, 19).padEnd(46)}║
+║  Duration:    ${String(diag.uptime.uptimeFormatted || 'N/A').padEnd(46)}║
+╠══════════════════════════════════════════════════════════════╣
+║  MEMORY                                                       ║
+║  Pressure:    ${String(diag.memory.level || 'normal').toUpperCase().padEnd(46)}║
+╠══════════════════════════════════════════════════════════════╣
+║  CIRCUIT BREAKERS                                             ║
+║  Open:        ${String(diag.circuitBreakers.open).padEnd(3)}  Half-Open: ${String(diag.circuitBreakers.halfOpen).padEnd(3)}  Closed: ${String(diag.circuitBreakers.closed).padEnd(3)}  ║
+╠══════════════════════════════════════════════════════════════╣
+║  DEAD LETTER QUEUE                                            ║
+║  Total:       ${String(diag.deadLetterQueue.total).padEnd(5)}                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  TELEMETRY SAMPLER                                            ║
+║  Window Count: ${String(diag.telemetrySampler.currentWindowCount || 0).padEnd(5)}  Bursting: ${String(diag.telemetrySampler.isBursting).padEnd(5)}                ║
+╠══════════════════════════════════════════════════════════════╣
+║  METRICS CACHE                                                ║
+║  Size:        ${String(diag.metricsCache.size || 0).padEnd(5)}  Modules: ${String(diag.metricsCache.moduleIds?.length || 0).padEnd(5)}                  ║
+╠══════════════════════════════════════════════════════════════╣
+║  SNAPSHOTS                                                    ║
+║  Captures:    ${String(diag.snapshots.totalCaptures || 0).padEnd(5)}  Retained: ${String(diag.snapshots.retainedSnapshots || 0).padEnd(5)}                 ║
+╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: true, output, data: diag };
+      } catch (err) {
+        // Fallback to substrate.invoke
+        const full = args.includes('--full');
+        result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
+      }
     } else if (base === 'system.doctor') {
       // Quick diagnostics: env, DB, routing, providers
       try {
@@ -1767,6 +1805,113 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       }
       
       return { success: false, output: `▓ Unknown module: '${target}'\n  Use system.heal --all for full system heal.` };
+    } else if (base === 'system.fix') {
+      // Audit + auto-repair in one shot
+      try {
+        const { runSystemAudit } = await import('@/lib/substrate/system/auditRunner');
+        const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+        
+        // 1. Run audit
+        const auditReport = await runSystemAudit();
+        const failures = auditReport.results.filter(r => !r.ok);
+        
+        if (failures.length === 0) {
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM FIX — Audit + Auto-Repair                              ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Audit Result: ✅ ALL SUBSYSTEMS HEALTHY                      ║
+║  Checked:      ${String(auditReport.results.length).padEnd(3)} subsystems                                ║
+║  Failures:     0                                              ║
+║                                                              ║
+║  No repair needed. System is stable.                          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          };
+        }
+        
+        // 2. Run self-repair
+        const repairReport = await runSelfRepair(3);
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM FIX — Audit + Auto-Repair                              ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  ┌─ INITIAL AUDIT ────────────────────────────────────────────║
+║  │  Subsystems: ${String(auditReport.results.length).padEnd(3)}  Failures: ${String(failures.length).padEnd(3)}                     ║`;
+        
+        for (const f of failures) {
+          output += `
+║  │  ❌ ${f.module.padEnd(18)} ${(f.detail || 'degraded').substring(0, 30)}    ║`;
+        }
+        
+        output += `
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ REPAIR ACTIONS ───────────────────────────────────────────║
+║  │  Attempts: ${repairReport.attempts}/${repairReport.maxAttempts}                                        ║`;
+        
+        for (const r of repairReport.repairs) {
+          output += `
+║  │  ${r.repaired ? '✅' : '❌'} ${r.module.padEnd(18)} ${r.message.substring(0, 30)}    ║`;
+        }
+        
+        output += `
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ FINAL STATUS ─────────────────────────────────────────────║
+║  │  Stable: ${repairReport.stable ? '✅ YES' : '❌ NO'}                                           ║
+║  │  Final failures: ${String(repairReport.finalAudit.results.filter(r => !r.ok).length).padEnd(3)}                                ║
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  Result: ${repairReport.stable ? '🟢 SYSTEM FIXED' : '🟡 PARTIAL FIX — manual intervention may be needed'}   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: repairReport.stable, output };
+      } catch (err) {
+        return { success: false, output: `▓ System fix error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'system.repair') {
+      // Self-repair loop (3 attempts)
+      try {
+        const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+        const maxAttempts = args[0] ? parseInt(args[0]) : 3;
+        const report = await runSelfRepair(maxAttempts);
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM REPAIR — Self-Repair Loop                              ║
+╠══════════════════════════════════════════════════════════════╣
+║  Attempts:  ${report.attempts}/${report.maxAttempts}                                             ║
+║  Stable:    ${report.stable ? '✅ YES' : '❌ NO'}                                              ║
+╠══════════════════════════════════════════════════════════════╣`;
+        
+        if (report.repairs.length > 0) {
+          output += `\n║  REPAIRS APPLIED                                              ║\n╠══════════════════════════════════════════════════════════════╣`;
+          for (const r of report.repairs) {
+            output += `\n║  ${r.repaired ? '✅' : '❌'} ${r.module.padEnd(18)} ${r.message.substring(0, 32).padEnd(32)}║`;
+          }
+        } else {
+          output += `\n║  No repairs were needed.                                      ║`;
+        }
+        
+        const finalFailures = report.finalAudit.results.filter(r => !r.ok);
+        if (finalFailures.length > 0) {
+          output += `\n╠══════════════════════════════════════════════════════════════╣`;
+          output += `\n║  REMAINING ISSUES (${finalFailures.length})                                       ║`;
+          for (const f of finalFailures) {
+            output += `\n║  ⚠ ${f.module.padEnd(18)} ${(f.detail || 'degraded').substring(0, 32).padEnd(32)}║`;
+          }
+        }
+        
+        output += `\n╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: report.stable, output };
+      } catch (err) {
+        return { success: false, output: `▓ Repair error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     } else if (base === 'system.restart') {
       result = await system.restart(args[0]);
     } else if (base === 'system.backup') {
@@ -3553,7 +3698,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         let output = `╔══════════════════════════════════════════════════════════════╗
 ║  CLM — All Module Learning Complete                           ║
 ╠══════════════════════════════════════════════════════════════╣
-║  Modules analyzed: ${String(results.length).padEnd(2)} / 21                                   ║
+║  Modules analyzed: ${String(results.length).padEnd(2)} / 38                                   ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of results) {
@@ -3578,32 +3723,21 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.run') {
       const moduleArg = args[0]?.toLowerCase();
-      const validModules = [
-        'core', 'ripple', 'access', 'brain', 'decode', 'dream',
-        'defense', 'nexus', 'vision', 'system', 'modernizer', 'inclusive',
-        'cortex', 'integration', 'encode', 'memory', 'relay', 'audit',
-        'identity', 'economy', 'sandbox',
-      ];
+      const validModules = ALL_EXECUTION_SURFACES.map(m => m.key);
       
       if (!moduleArg || !validModules.includes(moduleArg)) {
+        // Group by layer for display
+        const layers = [...new Set(ALL_EXECUTION_SURFACES.map(m => m.layer))];
+        let moduleList = '';
+        for (const layer of layers) {
+          const mods = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer).map(m => m.key);
+          moduleList += `\n  ├─ ${layer.toUpperCase()} ──────────────────────────────────────────\n  │  ${mods.join(', ')}`;
+        }
+        moduleList += `\n  └───────────────────────────────────────────────────`;
+        
         return {
           success: false,
-          output: `▓ Usage: clm.run <module>
-
-  Available modules (21):
-  ┌─ KERNEL ──────────────────────────────────────────
-  │  core, ripple, access
-  ├─ COGNITION ───────────────────────────────────────
-  │  brain, decode, dream
-  ├─ OPERATIONS ──────────────────────────────────────
-  │  defense, nexus, vision
-  ├─ ADMIN ───────────────────────────────────────────
-  │  system, modernizer, inclusive
-  ├─ ORCHESTRATOR ────────────────────────────────────
-  │  cortex, integration, encode
-  ├─ INFRASTRUCTURE ──────────────────────────────────
-  │  memory, relay, audit, identity, economy, sandbox
-  └───────────────────────────────────────────────────`,
+          output: `▓ Usage: clm.run <module>\n\n  Available modules (${validModules.length}):${moduleList}`,
         };
       }
       
