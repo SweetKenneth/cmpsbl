@@ -182,7 +182,7 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 backdrop-blur-md mb-6 sm:mb-8"
             >
               <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground tracking-wide">Cognitive Infrastructure</span>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
@@ -216,7 +216,7 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="text-sm sm:text-base text-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
             >
-              CMPSBL is a cognitive runtime that lets software remember, adapt, and improve itself.
+              CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
             </motion.p>
 
             {/* Tagline — two-part rhythm */}
@@ -252,14 +252,12 @@ export function HeroMetaSubstrate() {
               className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-[1.8]"
             >
               Signals enter the{' '}
-              <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
-              crystallize into{' '}
-              <span className="text-foreground/90 font-medium">deployable software</span>,{' '}
-              and in rare cases —{' '}
-              <span className="text-primary font-medium">silicon</span>.{' '}
-              Powered by persistent memory, governed{' '}
-              <span className="text-foreground/90 font-semibold">EVOLUTION</span>,{' '}
-              and DREAM cycles.
+               <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
+               the system discovers and packages reusable software capabilities called{' '}
+               <span className="text-foreground/90 font-medium">pipelines</span>,{' '}
+               and in rare cases —{' '}
+               <span className="text-primary font-medium">silicon</span>.{' '}
+               CMPSBL sits between AI models and applications — acting as the operating system that manages intelligence.
             </motion.p>
             
             {/* CTAs — primary + ghost for clean hierarchy */}
@@ -335,10 +333,11 @@ export function HeroMetaSubstrate() {
                 <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How Intelligence Flows</h3>
               </div>
               <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                <span className="text-foreground/80 font-medium">Persistent memories</span> survive restarts.{' '}
-                <span className="text-primary font-medium">Self-improving pipelines</span> refine autonomously.{' '}
-                <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>Governed orchestration</span> keeps it auditable.{' '}
-                Nothing resets.
+               A persistent AI runtime where intelligence{' '}
+                 <span className="text-foreground/80 font-medium">remembers</span>,{' '}
+                 <span className="text-primary font-medium">adapts</span>, and{' '}
+                 <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>evolves</span>{' '}
+                 instead of resetting every request.
               </p>
             </motion.div>
 
