@@ -114,9 +114,9 @@ export function EnhancedFooter() {
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
           {/* Main grid: brand + 4 link columns */}
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] lg:gap-10">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] lg:gap-10">
             {/* Brand Column */}
-            <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-6 lg:mb-0">
+            <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-2 lg:mb-0">
               <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3">
                 <CmpsblLogo size="sm" className="sm:hidden" />
                 <CmpsblLogo size="md" className="hidden sm:block" />

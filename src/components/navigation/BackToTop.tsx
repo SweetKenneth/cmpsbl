@@ -43,13 +43,13 @@ export function BackToTop() {
           onClick={scrollToTop}
           className={cn(
             "fixed z-[9980] w-10 h-10 rounded-full",
-            "bg-primary text-primary-foreground shadow-lg",
+            "bg-primary text-primary-foreground shadow-lg shadow-primary/25",
             "flex items-center justify-center",
             "touch-manipulation",
-            // Mobile: bottom-center, above bottom nav
-            // Desktop: right side, above the DECODE fab
-            "bottom-[10.5rem] left-1/2 -translate-x-1/2",
-            "lg:left-auto lg:translate-x-0 lg:right-8 lg:bottom-[212px]"
+            // Mobile: bottom-right corner, clear of footer content
+            // Desktop: right side
+            "bottom-6 right-4",
+            "lg:right-8 lg:bottom-8"
           )}
           aria-label="Back to top"
         >
