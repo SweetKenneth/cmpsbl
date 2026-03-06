@@ -85,14 +85,14 @@ describe('Proposal Normalization', () => {
       expect(result.can_create_plan).toBe(false);
     });
 
-    it('should reject proposals with high risk level', () => {
+    it('should accept proposals with high risk level but flag as requires_human', () => {
       const proposals: ScanProposal[] = [
         createTestProposal({
           proposal_id: 'prop_test_003',
           title: 'Restructure entire database schema',
           description: 'Major schema overhaul',
           rationale: 'Better performance',
-          risk_level: 'high', // Not allowed
+          risk_level: 'high',
           confidence_score: 0.9,
           requires_human: true,
           source_phases: ['health', 'llm'],
@@ -103,10 +103,11 @@ describe('Proposal Normalization', () => {
 
       const result = normalizeProposals(proposals);
 
-      expect(result.success).toBe(false);
-      expect(result.rejected_proposals.length).toBe(1);
-      expect(result.rejected_proposals[0].rejection_code).toBe('UNSUPPORTED_RISK_LEVEL');
-      expect(result.can_create_plan).toBe(false);
+      // 'high' is in the allowed_risk_levels — it normalizes but requires human review
+      expect(result.success).toBe(true);
+      expect(result.normalized_actions.length).toBe(1);
+      expect(result.normalized_actions[0].requires_human).toBe(true);
+      expect(result.can_create_plan).toBe(true);
     });
 
     it('should handle mixed proposals - partial normalization', () => {
