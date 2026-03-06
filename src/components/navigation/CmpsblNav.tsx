@@ -447,13 +447,15 @@ export function CmpsblNav() {
                     to={item.href}
                     className={cn(
                       "flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
-                      "bg-card hover:bg-secondary border border-border shadow-sm",
+                      item.highlight
+                        ? "bg-primary/5 hover:bg-primary/10 border-2 border-primary/30 shadow-sm shadow-primary/10"
+                        : "bg-card hover:bg-secondary border border-border shadow-sm",
                       isActive(item.href) && "bg-primary/10 border-primary/30"
                     )}
                   >
-                    <item.icon className={cn("w-5 h-5", isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
+                    <item.icon className={cn("w-5 h-5", item.highlight || isActive(item.href) ? "text-primary" : "text-muted-foreground")} />
                     <div className="flex items-center gap-2">
-                      <span className={cn("text-sm font-semibold", isActive(item.href) && "text-primary")}>{item.name}</span>
+                      <span className={cn("text-sm font-semibold", (item.highlight || isActive(item.href)) && "text-primary")}>{item.name}</span>
                       {item.badge && (
                         <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase bg-primary/10 text-primary border border-primary/30">{item.badge}</span>
                       )}
