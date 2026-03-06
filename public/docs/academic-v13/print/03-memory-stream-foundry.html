@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 — Memory Stream & Foundry — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+
+<nav class="print-nav">
+<a href="00-release-index.html">Index</a>
+<a href="01-release-abstract.html">Abstract</a>
+<a href="02-system-overview.html">System</a>
+<a href="03-memory-stream-foundry.html"><strong>Memory</strong></a>
+<a href="04-pipeline-crystallization.html">Pipeline</a>
+<a href="05-universal-export.html">Export</a>
+<a href="06-governance-safety.html">Governance</a>
+<a href="07-resilience-hardening.html">IRONCLAD</a>
+<a href="08-intent-mesh.html">Intent Mesh</a>
+<a href="09-domain-extension.html">Domain</a>
+<a href="10-prior-art-statement.html">Prior Art</a>
+</nav>
+
+<div class="doc-meta">
+<span class="badge primary">v13.5 · IRONCLAD</span>
+<span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span>
+</div>
+
+<div class="doi-bar">
+<span>DOI:</span>
+<a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a>
+</div>
+
+<h1>03 — Memory Stream & Foundry</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the memory stream architecture and the Foundry subsystem: the mechanism by which the substrate captures raw signals, processes them into structured discoveries, and crystallizes high-value findings into permanent, replayable artifacts.</p>
+
+<h2>2. Memory Stream Architecture</h2>
+
+<h3>2.1 Signal Lifecycle</h3>
+<p>The memory stream follows a four-stage lifecycle:</p>
+<pre><code>Signal → Observation → Discovery → Crystallization</code></pre>
+
+<table>
+<thead><tr><th>Stage</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Signal</td><td>Raw input event, interaction, or environmental change</td></tr>
+<tr><td>Observation</td><td>Filtered and contextualized signal with metadata</td></tr>
+<tr><td>Discovery</td><td>Validated finding with confidence score and provenance</td></tr>
+<tr><td>Crystallization</td><td>Permanent artifact with structural fingerprint and replay capability</td></tr>
+</tbody>
+</table>
+
+<h3>2.2 Signal Sources</h3>
+<ul>
+<li>User interactions (DECODE)</li>
+<li>Generation outputs (ENCODE)</li>
+<li>Governance decisions (GOVERNANCE)</li>
+<li>Health events (SYSTEM)</li>
+<li>Cross-module synergy completions (CORTEX)</li>
+<li>Offline consolidation results (DREAM)</li>
+</ul>
+
+<h3>2.3 Memory Tiers</h3>
+<table>
+<thead><tr><th>Tier</th><th>Retention</th><th>Access Pattern</th></tr></thead>
+<tbody>
+<tr><td>Working memory</td><td>Session-scoped</td><td>Immediate, high-frequency</td></tr>
+<tr><td>Short-term memory</td><td>Hours to days</td><td>Indexed, searchable</td></tr>
+<tr><td>Long-term memory</td><td>Persistent</td><td>Retrieval-augmented</td></tr>
+<tr><td>Crystallized memory</td><td>Permanent</td><td>Structural fingerprint verified</td></tr>
+</tbody>
+</table>
+
+<h2>3. The Foundry</h2>
+
+<h3>3.1 Overview</h3>
+<p>The Foundry is the subsystem responsible for transforming raw discoveries into production-grade artifacts. It operates as a pipeline with quality gates, validation stages, and structural verification.</p>
+
+<h3>3.2 Processing Stages</h3>
+<ol>
+<li><strong>Intake</strong> — discovery enters the Foundry queue with metadata and provenance chain</li>
+<li><strong>Validation</strong> — discovery is tested against consistency constraints and prior knowledge</li>
+<li><strong>Enrichment</strong> — cross-references are resolved, related discoveries are linked</li>
+<li><strong>Scoring</strong> — the Crown Jewel Pipeline Index (CJPI) assigns a composite quality score</li>
+<li><strong>Tiering</strong> — discoveries are assigned to S/A/B/C/D tiers based on CJPI score</li>
+<li><strong>Crystallization</strong> — top-tier discoveries are fingerprinted and stored permanently</li>
+<li><strong>Audit</strong> — the complete processing chain is logged to the AUDIT module</li>
+</ol>
+
+<h3>3.3 Crown Jewel Pipeline Index</h3>
+<p>The CJPI is a composite scoring system that evaluates discoveries across multiple dimensions. The scoring formula and specific weight allocations are withheld (see Sealed Mechanisms §17), but the evaluated dimensions include:</p>
+<ul>
+<li>Novelty relative to existing knowledge base</li>
+<li>Reproducibility and verification status</li>
+<li>Cross-module applicability</li>
+<li>Potential for downstream pipeline generation</li>
+<li>Structural coherence</li>
+</ul>
+
+<h3>3.4 Structural Fingerprinting</h3>
+<p>Every crystallized artifact receives a structural fingerprint — a content-addressable identifier derived from the artifact's semantic structure rather than its raw bytes. This enables:</p>
+<ul>
+<li><strong>Deduplication</strong> — identical discoveries from different sources are merged</li>
+<li><strong>Lineage tracking</strong> — derived artifacts reference their parent fingerprints</li>
+<li><strong>Replay verification</strong> — crystallized artifacts can be re-validated against their original inputs</li>
+</ul>
+
+<h2>4. DREAM State Integration</h2>
+<p>The DREAM module performs offline cognitive consolidation — analogous to sleep-state memory processing in biological systems. During DREAM cycles:</p>
+<ol>
+<li>Recent observations are replayed against existing long-term memory</li>
+<li>Pattern conflicts are identified and resolved</li>
+<li>Low-confidence memories are either strengthened or pruned</li>
+<li>High-value patterns are promoted for Foundry processing</li>
+</ol>
+
+<h2>5. Disclosure Boundary</h2>
+<ul>
+<li>CJPI scoring weights and formula</li>
+<li>Memory importance scoring heuristics</li>
+<li>DREAM cycle scheduling algorithms</li>
+<li>Structural fingerprint generation method</li>
+</ul>
+
+<h2>Revision History</h2>
+<table>
+<thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial memory stream & foundry documentation — v13.5</td></tr>
+</tbody>
+</table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

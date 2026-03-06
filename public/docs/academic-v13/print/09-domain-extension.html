@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09 — Domain Extension Architecture — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav"><a href="00-release-index.html">Index</a><a href="02-system-overview.html">System</a><a href="07-resilience-hardening.html">IRONCLAD</a><a href="08-intent-mesh.html">Intent Mesh</a><a href="09-domain-extension.html"><strong>Domain</strong></a><a href="10-prior-art-statement.html">Prior Art</a></nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>09 — Domain Extension Architecture</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the domain extension architecture: the mechanism by which the substrate's module topology can be expanded to support new industry domains through primitive-node addition without modifying existing modules.</p>
+
+<h2>2. Extension Model</h2>
+<h3>2.1 Additive Extension</h3>
+<ul>
+<li>Existing modules are not modified</li>
+<li>New domain nodes are added to the topology</li>
+<li>The weight invariant (Σ = 1.000) is rebalanced</li>
+<li>All existing pipelines remain functional</li>
+</ul>
+
+<h3>2.2 Extension Sectors</h3>
+<table>
+<thead><tr><th>Sector</th><th>Abbreviation</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Extended Subsystem Zone</td><td>ESZ</td><td>Core subsystem extensions</td></tr>
+<tr><td>Extended Pipeline Zone</td><td>EPZ</td><td>Pipeline-specific domain modules</td></tr>
+<tr><td>Extended Memory Zone</td><td>EMZ</td><td>Domain-specific memory and knowledge</td></tr>
+<tr><td>Custom Subsystem Zone</td><td>CSZ</td><td>Customer-specific extensions</td></tr>
+</tbody>
+</table>
+
+<h2>3. Domain Node Architecture</h2>
+<h3>3.1 Node Contract</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Capability advertisement</td><td>What the node can do, in mesh-compatible format</td></tr>
+<tr><td>Input/output contracts</td><td>Typed interfaces for data exchange</td></tr>
+<tr><td>Health reporting</td><td>Standard health score for IRONCLAD integration</td></tr>
+<tr><td>Governance compliance</td><td>Respect for autonomy tiers and policies</td></tr>
+<tr><td>Audit integration</td><td>Logging of significant operations to AUDIT chain</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Primitive Composition</h3>
+<pre><code>Domain Node = Primitive A + Primitive B + Domain Logic</code></pre>
+
+<h2>4. Target Domains</h2>
+<table>
+<thead><tr><th>Domain</th><th>Key Requirements</th></tr></thead>
+<tbody>
+<tr><td>Healthcare</td><td>Compliance (HIPAA), terminology, clinical reasoning</td></tr>
+<tr><td>Legal</td><td>Precedent retrieval, regulatory interpretation, confidentiality</td></tr>
+<tr><td>Finance</td><td>Risk modeling, regulatory compliance, audit trails</td></tr>
+<tr><td>Education</td><td>Adaptive learning, assessment, curriculum generation</td></tr>
+<tr><td>Gaming</td><td>Real-time reasoning, procedural generation, player modeling</td></tr>
+<tr><td>Manufacturing</td><td>Process optimization, quality control, supply chain</td></tr>
+</tbody>
+</table>
+
+<h2>5. Disclosure Boundary</h2>
+<ul><li>Weight rebalancing algorithms</li><li>Domain node internal architectures</li><li>Primitive composition optimization strategies</li><li>Customer-specific extension details</li></ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial domain extension documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>
