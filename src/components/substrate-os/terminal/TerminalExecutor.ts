@@ -3698,7 +3698,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         let output = `╔══════════════════════════════════════════════════════════════╗
 ║  CLM — All Module Learning Complete                           ║
 ╠══════════════════════════════════════════════════════════════╣
-║  Modules analyzed: ${String(results.length).padEnd(2)} / 21                                   ║
+║  Modules analyzed: ${String(results.length).padEnd(2)} / 38                                   ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of results) {
@@ -3723,32 +3723,21 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.run') {
       const moduleArg = args[0]?.toLowerCase();
-      const validModules = [
-        'core', 'ripple', 'access', 'brain', 'decode', 'dream',
-        'defense', 'nexus', 'vision', 'system', 'modernizer', 'inclusive',
-        'cortex', 'integration', 'encode', 'memory', 'relay', 'audit',
-        'identity', 'economy', 'sandbox',
-      ];
+      const validModules = ALL_EXECUTION_SURFACES.map(m => m.key);
       
       if (!moduleArg || !validModules.includes(moduleArg)) {
+        // Group by layer for display
+        const layers = [...new Set(ALL_EXECUTION_SURFACES.map(m => m.layer))];
+        let moduleList = '';
+        for (const layer of layers) {
+          const mods = ALL_EXECUTION_SURFACES.filter(m => m.layer === layer).map(m => m.key);
+          moduleList += `\n  ├─ ${layer.toUpperCase()} ──────────────────────────────────────────\n  │  ${mods.join(', ')}`;
+        }
+        moduleList += `\n  └───────────────────────────────────────────────────`;
+        
         return {
           success: false,
-          output: `▓ Usage: clm.run <module>
-
-  Available modules (21):
-  ┌─ KERNEL ──────────────────────────────────────────
-  │  core, ripple, access
-  ├─ COGNITION ───────────────────────────────────────
-  │  brain, decode, dream
-  ├─ OPERATIONS ──────────────────────────────────────
-  │  defense, nexus, vision
-  ├─ ADMIN ───────────────────────────────────────────
-  │  system, modernizer, inclusive
-  ├─ ORCHESTRATOR ────────────────────────────────────
-  │  cortex, integration, encode
-  ├─ INFRASTRUCTURE ──────────────────────────────────
-  │  memory, relay, audit, identity, economy, sandbox
-  └───────────────────────────────────────────────────`,
+          output: `▓ Usage: clm.run <module>\n\n  Available modules (${validModules.length}):${moduleList}`,
         };
       }
       
