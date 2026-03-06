@@ -679,7 +679,7 @@ class SEBAAgent {
       };
     }
 
-    const proposal = proposals[0];
+    const proposal = proposals[0] as { id: string; title: string; expected_impact: Record<string, unknown> | null; [key: string]: unknown };
     const shortId = proposal.id.substring(0, 8);
     const fullId = proposal.id;
     
