@@ -120,6 +120,7 @@ export function FoundryInventory({ inventory }: Props) {
     pipelineSteps?: PipelineStep[];
     fingerprint?: string;
   } | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   if (inventory.length === 0) {
     return (
@@ -137,6 +138,18 @@ export function FoundryInventory({ inventory }: Props) {
 
   const totalValuation = inventory.reduce((s, i) => s + i.valuationDisplay, 0);
 
+  const handleExportVault = async () => {
+    setIsExporting(true);
+    try {
+      await exportVaultAsZip(inventory);
+    } catch (err) {
+      console.error(err);
+      toast.error('Export failed');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div>
       {/* Summary */}
@@ -149,11 +162,12 @@ export function FoundryInventory({ inventory }: Props) {
             Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
           <button
-            onClick={() => exportVaultAsJSON(inventory)}
-            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+            onClick={handleExportVault}
+            disabled={isExporting}
+            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
           >
-            <Download className="w-3 h-3" />
-            Export Vault
+            {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+            {isExporting ? 'Building ZIP...' : 'Export Vault ZIP'}
           </button>
         </div>
       </div>
