@@ -25,6 +25,7 @@ const EXPANSION_MODULES = [
   { id: 'nerve',      name: 'NERVE',      codename: 'Synapse',    desc: 'Inter-node signaling & event propagation' },
   { id: 'evolution',  name: 'EVOLUTION',  codename: 'Darwin',     desc: 'Mutation pipeline & governed upgrades' },
   { id: 'immunity',   name: 'IMMUNITY',   codename: 'Sentinel',   desc: 'Self-healing mesh & threat correlation' },
+  { id: 'shadow',     name: 'SHADOW',     codename: 'Umbra',      desc: 'Shadow environment validation & staging' },
 ] as const;
 
 export function registerExpansionHandlers(): void {
