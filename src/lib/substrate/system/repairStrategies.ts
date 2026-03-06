@@ -6,6 +6,8 @@
 
 import { recheckHealth } from '../control-plane/adapters/queueStateAdapter';
 import { clearStream, healStream, getStreamHealth, getStreamBreakerState } from '../module-bus/eventStream';
+import { healDiscoveryEngine, getDiscoveryHealth, getDiscoveryBreakerState } from '../intent-mesh/discovery-engine';
+import { resetProbeBreaker } from '../capability-discovery';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -41,11 +43,9 @@ export async function repairEventStream(): Promise<RepairResult> {
     const healthBefore = getStreamHealth();
     const breakerBefore = getStreamBreakerState();
 
-    // If health is critical or breaker is open, do a full heal
     const force = healthBefore.score < 50 || breakerBefore.state === 'open';
     const result = healStream(force);
 
-    // Additionally clear buffer if it was a forced heal
     let cleared = 0;
     if (force) {
       cleared = clearStream();
@@ -89,6 +89,28 @@ export async function repairDiscussion(): Promise<RepairResult> {
   }
 }
 
+/** Heal discovery engine — reset breaker, restore health, clear cooldown */
+export async function repairDiscoveryEngine(): Promise<RepairResult> {
+  try {
+    const healthBefore = getDiscoveryHealth();
+    const breakerBefore = getDiscoveryBreakerState();
+
+    const force = healthBefore.score < 50 || breakerBefore.state === 'open';
+    const result = healDiscoveryEngine(force);
+
+    // Also reset the capability-discovery probe breaker
+    resetProbeBreaker();
+
+    return {
+      repaired: true,
+      module: 'discovery_engine',
+      message: `Healed: ${result.actions.length} actions, score ${result.previousScore}→${result.newScore}, probe breaker reset`,
+    };
+  } catch (err: any) {
+    return { repaired: false, module: 'discovery_engine', message: err?.message || 'repair failed' };
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════
@@ -98,4 +120,5 @@ export const RepairStrategies: Record<string, () => Promise<RepairResult>> = {
   event_stream: repairEventStream,
   plan_store: repairPlanStore,
   discussion: repairDiscussion,
+  discovery_engine: repairDiscoveryEngine,
 };
