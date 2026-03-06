@@ -192,20 +192,20 @@ const NotFound = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
             >
-              <Button onClick={() => navigate('/')} variant="outline" className="gap-2 backdrop-blur-sm">
+              <Button onClick={() => navigate('/')} className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Home className="w-4 h-4" />
                 Home
               </Button>
-              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm">
+              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm hover:border-primary/30 transition-colors">
                 <Link to="/foundry">
                   <Sparkles className="w-4 h-4" />
                   Memory Stream
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm">
-                <Link to="/status">
-                  <Terminal className="w-4 h-4" />
-                  System Status
+              <Button asChild variant="outline" className="gap-2 backdrop-blur-sm hover:border-primary/30 transition-colors">
+                <Link to="/start-here">
+                  <BookOpen className="w-4 h-4" />
+                  Start Here
                 </Link>
               </Button>
             </motion.div>
