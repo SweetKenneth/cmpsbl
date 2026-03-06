@@ -737,7 +737,7 @@ export default function Changelog() {
                     )} />
 
                     {/* Specimen Card */}
-                    <div className="border border-border/40 rounded-lg bg-card/30 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 overflow-hidden stratum-glow gradient-border-reveal">
+                    <div className="border border-border/40 rounded-xl bg-card/30 backdrop-blur-sm hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-500 overflow-hidden stratum-glow gradient-border-reveal">
                       {/* Specimen header bar */}
                       <div className="flex flex-wrap items-center gap-3 px-5 py-3 border-b border-border/20 bg-muted/20">
                         <span className="font-mono text-xs text-primary font-bold tracking-wider">{specimen.id}</span>
@@ -804,9 +804,9 @@ export default function Changelog() {
         </div>
 
         {/* Footer inscription */}
-        <div className="text-center mt-24 space-y-3 opacity-50">
-          <div className="w-16 h-px bg-border mx-auto" />
-          <p className="text-xs font-mono text-muted-foreground tracking-widest">
+        <div className="text-center mt-24 space-y-4 opacity-50">
+          <div className="section-divider max-w-xs mx-auto" />
+          <p className="text-xs font-mono text-muted-foreground tracking-[0.3em]">
             END OF GEOLOGICAL RECORD
           </p>
           <p className="text-xs text-muted-foreground/60 italic">

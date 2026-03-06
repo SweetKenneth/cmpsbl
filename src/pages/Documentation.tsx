@@ -1302,21 +1302,27 @@ export default function Documentation() {
 
           {/* Desktop sidebar */}
           <nav className="hidden lg:block w-56 shrink-0 sticky top-24 self-start">
-            <div className="space-y-1">
+            <div className="space-y-0.5 p-2 rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm">
               {sections.map(s => (
                 <button
                   key={s.id}
                   onClick={() => handleNav(s.id)}
                   className={cn(
-                    "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-200 text-left",
+                    "w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left relative",
                     active === s.id
-                      ? "bg-primary/10 text-primary font-medium"
+                      ? "bg-primary/10 text-primary font-medium shadow-sm"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   )}
                 >
+                  {active === s.id && (
+                    <motion.div
+                      layoutId="docs-sidebar-active"
+                      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
                   <s.icon className={cn("w-4 h-4 shrink-0", active === s.id ? "text-primary" : s.color)} />
                   <span>{s.label}</span>
-                  {active === s.id && <ChevronRight className="w-3 h-3 ml-auto" />}
                 </button>
               ))}
             </div>
@@ -1382,19 +1388,22 @@ export default function Documentation() {
       </div>
 
       {/* CTA */}
-      <section className="border-t border-border/30 bg-muted/20">
-        <div className="container mx-auto px-4 py-16 sm:py-20 max-w-3xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Build?</h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+      <section className="border-t border-border/30 bg-muted/20 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-[120px]" />
+        </div>
+        <div className="relative container mx-auto px-4 py-16 sm:py-20 max-w-3xl text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Build?</h2>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
             Deploy your own substrate instance and start building with BYOK architecture.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
               <Link to="/developers">
                 Developer Portal <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
               <Link to="/start-here">Start Here</Link>
             </Button>
           </div>
