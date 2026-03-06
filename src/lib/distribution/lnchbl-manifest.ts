@@ -1,26 +1,15 @@
 /**
- * LNCHBL Distribution Manifest
+ * LNCHBL Distribution Manifest — SUSPENDED
  * 
- * Defines the ONLY edge functions that exist in the LNCHBL distribution.
- * Used by patch authoring to validate outbound patches never reference
- * functions that don't exist downstream.
+ * ⛔ LNCHBL distribution is SUSPENDED pending licensing agreement.
+ * All outbound operations (patches, brain sync, downloads) are blocked.
+ * Edge functions return 503. No new patches will be authored or dispatched.
  * 
- * CRITICAL: LNCHBL has ZERO pf-* functions. All were permanently removed
- * in v8.5.0. New function code must be delivered via the edge_function_code
- * field in the patch payload, which lnchbl-patch-receive writes to the
- * distribution_edge_functions table.
- * 
- * v11.3.0: Added brain_sync patch type — CMPSBL CLM learnings are now
- * packaged and dispatched to LNCHBL via pf-brain-sync-dispatch every 30min.
- * 
- * v11.5.0: Added Neural Substrate Layer — embedding engine, vector index,
- * confidence classifier, drift detector, and 10 automated maintenance tasks.
- * New edge functions: lnchbl-neural-bootstrap, lnchbl-maintenance-tick.
- * New tables: brain_embeddings, brain_classifier_models, brain_drift_log,
- * brain_maintenance_log.
+ * To re-enable: remove 'LNCHBL' from SUSPENDED_DISTRIBUTIONS in distribution.ts
+ * and restore edge function implementations from git history.
  * 
  * @module distribution/lnchbl-manifest
- * @version 11.5.0
+ * @version 11.6.0-suspended
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────
@@ -94,33 +83,11 @@ export function isCmpsblOnlyFunction(name: string): boolean {
 /**
  * Validate that a patch payload doesn't reference any pf-* functions
  * as dependencies. Returns validation errors if any are found.
+ * 
+ * ⛔ SUSPENDED: Always rejects with suspension error.
  */
 export function validatePatchForLnchbl(payload: LnchblPatchPayload): string[] {
-  const errors: string[] = [];
-
-  if (payload.target_distribution !== 'LNCHBL') {
-    errors.push(`Invalid target_distribution: ${payload.target_distribution}`);
-  }
-
-  // Check if any edge_function_code entries use pf-* names
-  if (payload.edge_function_code) {
-    for (const fn of payload.edge_function_code) {
-      if (isCmpsblOnlyFunction(fn.function_name)) {
-        errors.push(
-          `edge_function_code.function_name "${fn.function_name}" uses pf-* prefix which is reserved for CMPSBL. ` +
-          `Use lnchbl-* prefix for LNCHBL functions.`
-        );
-      }
-    }
-  }
-
-  // Check protected fields in config_overrides
-  const PROTECTED = ['distribution_id', 'identity', 'canon_authority', 'federation_enabled', 'self_evolution', 'self_improvement'];
-  for (const field of PROTECTED) {
-    if (field in (payload.config_overrides || {})) {
-      errors.push(`Protected field "${field}" cannot be overridden in config_overrides`);
-    }
-  }
-
-  return errors;
+  return [
+    'LNCHBL distribution is SUSPENDED. No patches may be authored or dispatched until licensing is resolved.',
+  ];
 }
