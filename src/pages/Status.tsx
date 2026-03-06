@@ -200,11 +200,11 @@ function ModuleStatusCard({ module, index }: { module: ModuleHealth; index: numb
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03 }}
-      className="flex items-center justify-between p-3.5 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 transition-colors"
+      className="group flex items-center justify-between p-3.5 rounded-xl border border-border/50 bg-card/50 hover:bg-card/80 hover:border-primary/15 hover:shadow-sm transition-all duration-300"
     >
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-muted-foreground" />
+        <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
+          <Icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors duration-300" />
         </div>
         <div>
           <span className="text-sm font-semibold">{module.name}</span>
@@ -268,11 +268,13 @@ export default function Status() {
         </div>
 
         {/* Uptime History Bar (90 days visual) */}
-        <Card className="mb-8 border-border/50">
+        <Card className="mb-8 border-border/50 overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
               90-Day Uptime History
+              <span className="ml-auto text-[10px] font-normal text-muted-foreground">99.9% uptime</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -284,9 +286,9 @@ export default function Status() {
                   <div
                     key={i}
                     className={cn(
-                      "flex-1 h-8 rounded-sm transition-colors",
-                      isToday ? "bg-emerald-500 ring-1 ring-emerald-400" :
-                      hasIncident ? "bg-amber-500/80" : "bg-emerald-500/70"
+                      "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-110 cursor-default",
+                      isToday ? "bg-emerald-500 ring-1 ring-emerald-400 shadow-sm shadow-emerald-500/30" :
+                      hasIncident ? "bg-amber-500/80 hover:bg-amber-500" : "bg-emerald-500/70 hover:bg-emerald-500/90"
                     )}
                     title={isToday ? "Today" : `${90 - i} days ago${hasIncident ? " — incident" : ""}`}
                   />
@@ -306,10 +308,13 @@ export default function Status() {
             const layerModules = groupedByLayer[layer];
             if (!layerModules) return null;
             return (
-              <Card key={layer} className="border-border/50">
+              <Card key={layer} className="border-border/50 overflow-hidden relative">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-primary/60" />
+                    <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+                      <Layers className="w-3.5 h-3.5 text-primary" />
+                    </div>
                     {layer} Layer
                     <Badge variant="secondary" className="text-[10px] ml-auto">
                       {layerModules.filter(m => m.status === "operational").length}/{layerModules.length} operational
@@ -362,8 +367,9 @@ export default function Status() {
         </Card>
 
         {/* Footer note */}
-        <div className="mt-8 text-center text-xs text-muted-foreground/50">
-          <p>Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Memory Stream Immunity</p>
+        <div className="mt-10 text-center space-y-2">
+          <div className="section-divider max-w-xs mx-auto" />
+          <p className="text-xs text-muted-foreground/50 pt-2">Last updated: {lastUpdated.toLocaleTimeString()} · Monitored by Memory Stream Immunity</p>
         </div>
       </main>
 
