@@ -2,18 +2,11 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "next-themes";
 import App from "./App.tsx";
 
-// Defer full Tailwind CSS — critical CSS is inlined in index.html for FCP
-// Use ?url import to get hashed asset path without Vite injecting a render-blocking <link>
-// Then load it as print→all to make it fully non-render-blocking
-requestAnimationFrame(async () => {
-  const { default: cssUrl } = await import('./index.css?url');
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = cssUrl;
-  link.media = 'print';
-  link.onload = () => { link.media = 'all'; };
-  document.head.appendChild(link);
-});
+// Load Tailwind CSS normally so it's available when React first paints.
+// Deferring CSS via JS (print→all trick) delays FCP because React renders
+// unstyled content until the stylesheet arrives asynchronously.
+// Vite injects this as a <link> in <head> that loads in parallel with JS.
+import './index.css';
 
 // Pre-render cache safety: validate persisted Zustand stores before React mounts.
 // If any persisted store has corrupted/stale data, clear it so the app starts fresh.
