@@ -29,26 +29,32 @@ export function ModuleCard({
       className={cn(
         "glass glass-hover p-6 rounded-xl animate-slide-up",
         "group relative overflow-hidden",
+        "glass-edge shimmer-on-hover card-lift",
         className
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Gradient background sweep on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+      
+      {/* Top accent bar */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 group-hover:bg-primary/20 transition-colors duration-300">
-              <Icon className="w-6 h-6 text-primary" />
+            <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 group-hover:bg-primary/15 group-hover:border-primary/30 transition-all duration-300">
+              <Icon className="w-6 h-6 text-primary transition-transform duration-300 group-hover:scale-110" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-              <p className="text-sm text-muted-foreground">{description}</p>
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">{title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
             </div>
           </div>
           <div
             className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium border",
-              statusColors[status]
+              "px-3 py-1 rounded-full text-xs font-semibold border transition-all duration-300",
+              statusColors[status],
+              status === "active" && "animate-live-pulse"
             )}
           >
             {status}

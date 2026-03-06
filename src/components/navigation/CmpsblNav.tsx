@@ -279,9 +279,9 @@ export function CmpsblNav() {
                   >
                     <div
                       ref={dropdownRef}
-                      className="relative bg-popover rounded-xl border border-border shadow-xl overflow-hidden pointer-events-auto"
+                      className="relative bg-popover rounded-xl border border-border/80 shadow-2xl shadow-primary/[0.06] overflow-hidden pointer-events-auto"
                     >
-                      <div className="h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+                      <div className="h-0.5 memory-stream-bar opacity-60" />
                       <div className="p-2">
                         {activeNavSection.items.map((item) => {
                           const linkClass = cn(

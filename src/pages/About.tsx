@@ -5,6 +5,7 @@
 
 import { Link } from "react-router-dom";
 import { useMetric } from "@/stores/publicMetricsStore";
+import { PageTransition } from "@/components/PageTransition";
 import {
   Shield, Brain, Zap, ArrowRight, Mail, Phone,
   Sparkles, Moon, Layers, Activity, Wrench, Eye,
@@ -148,6 +149,7 @@ export default function About() {
          HERO — Mobile-first, full-bleed gradient
          ════════════════════════════════════════════════════════ */}
       <section className="relative z-10 overflow-hidden">
+        <PageTransition>
         {/* Gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/8 via-background to-background" />
 
@@ -217,6 +219,7 @@ export default function About() {
             ))}
           </motion.div>
         </div>
+      </PageTransition>
       </section>
 
       {/* ════════════════════════════════════════════════════════
