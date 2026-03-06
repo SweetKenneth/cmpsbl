@@ -326,11 +326,19 @@ export function useAutoMiner() {
     toast.success('Auto-Miner reset — all retired combos cleared');
   }, []);
 
+  /** Clear only retired combos without resetting mining state */
+  const clearRetiredCombos = useCallback(() => {
+    clearRetired();
+    setState(prev => ({ ...prev, retiredCombos: [] }));
+    toast.success('All retired combos cleared — those paths are now discoverable again');
+  }, []);
+
   return {
     state,
     start,
     stop,
     reset,
+    clearRetiredCombos,
     stats: getGeneratorStats(),
     isRunning: runningRef.current && !abortRef.current,
   };
