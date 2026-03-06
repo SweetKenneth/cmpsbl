@@ -1,6 +1,6 @@
 /**
  * Encoded Change Guard — Validation before any write operation
- * Fail-closed enforcement of guardrails
+ * Fail-closed enforcement of guardrails with dangerous import detection
  */
 
 import { 
@@ -193,6 +193,16 @@ export function runEncodedGuard(
     reasons.push(`Narrative code detected: "${narrativeCheck.matches[0]}"`);
   }
   
+  // INVARIANT 4b: Dangerous import detection
+  const dangerousImports = detectDangerousImports(after);
+  if (dangerousImports.length > 0) {
+    if (!humanApproved) {
+      reasons.push(`Dangerous imports detected: ${dangerousImports.join(', ')}`);
+    } else {
+      warnings.push(`Dangerous imports approved: ${dangerousImports.join(', ')}`);
+    }
+  }
+  
   // Compute stats and classify
   const diff = computeDiffStats(before, after);
   const changeClass = classifyChange(before, after, anchorsBefore, anchorsAfter);
@@ -277,4 +287,48 @@ export function summarizeGuardResult(result: GuardResult): string {
   }
   
   return lines.join('\n');
+}
+
+/**
+ * Detect dangerous or unapproved import patterns in generated code
+ */
+function detectDangerousImports(code: string): string[] {
+  const dangerous: string[] = [];
+  const lines = code.split('\n');
+  
+  for (const line of lines) {
+    const importMatch = line.match(/import\s+.*from\s+['"]([^'"]+)['"]/);
+    if (!importMatch) continue;
+    const source = importMatch[1];
+    
+    // Flag service role key imports
+    if (/service[_-]?role/i.test(line)) {
+      dangerous.push(`Service role key import: ${source}`);
+    }
+    
+    // Flag direct .env or process.env access
+    if (/process\.env|import\.meta\.env\.(?!VITE_)/i.test(line)) {
+      dangerous.push(`Non-VITE env access in: ${source}`);
+    }
+    
+    // Flag eval/Function constructor usage
+    if (/\beval\s*\(|\bnew\s+Function\s*\(/i.test(line)) {
+      dangerous.push('eval() or new Function() — code injection risk');
+    }
+    
+    // Flag unknown npm packages (not in known safe list)
+    if (!source.startsWith('.') && !source.startsWith('@/') && !source.startsWith('@supabase') && 
+        !source.startsWith('@radix-ui') && !source.startsWith('@tanstack') && !source.startsWith('@hookform') &&
+        !source.startsWith('react') && !source.startsWith('lucide') && !source.startsWith('sonner') &&
+        !source.startsWith('zod') && !source.startsWith('zustand') && !source.startsWith('framer') &&
+        !source.startsWith('class-variance') && !source.startsWith('clsx') && !source.startsWith('tailwind') &&
+        !source.startsWith('date-fns') && !source.startsWith('recharts') && !source.startsWith('three') &&
+        !source.startsWith('cmdk') && !source.startsWith('vaul') && !source.startsWith('next-themes') &&
+        !source.startsWith('embla') && !source.startsWith('input-otp') && !source.startsWith('remark') &&
+        !source.startsWith('react-')) {
+      dangerous.push(`Unknown package: ${source} — requires approval`);
+    }
+  }
+  
+  return dangerous;
 }

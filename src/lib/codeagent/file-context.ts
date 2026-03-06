@@ -469,12 +469,16 @@ function getModuleFiles(module: string): string[] {
 
 function getChangeTypeFiles(changeType: string): string[] {
   const mapping: Record<string, string[]> = {
-    edge_function: ['supabase/functions/pf-substrate/index.ts'],
-    react_component: ['src/components/ui/button.tsx'],
-    react_hook: ['src/hooks/useSubstrate.ts'],
-    config_update: ['src/config/index.ts'],
-    rls_policy: [],
-    rate_limit: ['src/lib/codeagent/circuit-breaker.ts'],
+    edge_function: ['supabase/functions/'],
+    react_component: ['src/components/'],
+    react_hook: ['src/hooks/'],
+    config_update: ['src/config/'],
+    rls_policy: ['supabase/migrations/'],
+    rate_limit: ['src/lib/system/rateLimit.ts', 'src/lib/substrate/adaptive-rate-limit/'],
+    circuit_breaker: ['src/lib/substrate/tenant-circuit-breaker.ts', 'src/lib/codeagent/circuit-breaker.ts'],
+    telemetry: ['src/lib/substrate/telemetry-engine.ts', 'src/core/metrics/'],
+    auth: ['src/lib/auth/', 'src/hooks/useAuth.ts'],
+    styling: ['src/index.css', 'tailwind.config.ts'],
   };
   
   return mapping[changeType] || [];

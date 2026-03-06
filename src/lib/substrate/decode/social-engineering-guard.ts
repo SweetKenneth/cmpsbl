@@ -1,5 +1,5 @@
 /**
- * DECODE Social Engineering Guard v1.0.0
+ * DECODE Social Engineering Guard
  * 
  * Detects and blocks conversational attack patterns used to extract
  * sensitive information from the interpreter. Integrates with IDENTITY
