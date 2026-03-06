@@ -805,6 +805,15 @@ export async function runDiscoveryCycle(options: {
     // Phase 1: Analyze gaps
     const gaps = await analyzeGaps();
 
+    // Phase 1b: Cluster analysis & pipeline crystallization
+    const receipts = await getRecentReceipts(200);
+    const clusters = analyzeClusters(receipts);
+    const pipelineCandidates = detectPipelineCandidates(clusters);
+
+    for (const cluster of pipelineCandidates) {
+      await crystallizePipeline(cluster);
+    }
+
     // Phase 2: Generate recommendations
     const recommendations = generateRecommendations(gaps);
 
@@ -830,6 +839,7 @@ export async function runDiscoveryCycle(options: {
       gapsFound: gaps.length,
       recommendationsGenerated: recommendations.length,
       capabilitiesExpanded,
+      pipelineCandidates: pipelineCandidates.length,
       modulesAnalyzed: Object.keys(MODULE_DOMAIN_KNOWLEDGE).length,
       durationMs,
       gaps,
@@ -839,6 +849,7 @@ export async function runDiscoveryCycle(options: {
         `${gaps.length} capability gaps identified across ${getMeshModules().length} modules.`,
         `${recommendations.length} new resolver recommendations generated.`,
         `${weakLinks.length} under-connected module pairs found.`,
+        pipelineCandidates.length > 0 ? `${pipelineCandidates.length} pipelines auto-crystallized.` : '',
         capabilitiesExpanded > 0 ? `${capabilitiesExpanded} new resolvers added to manifest.` : '',
       ].filter(Boolean).join(' '),
     };
@@ -851,7 +862,11 @@ export async function runDiscoveryCycle(options: {
     // FIX #19: Emit telemetry signal to module bus
     emitDiscoveryTelemetry(result);
 
+    // Health boost for successful cycle + pipeline discoveries
     boostHealth(2);
+    if (pipelineCandidates.length > 0) {
+      boostHealth(3);
+    }
     return result;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
