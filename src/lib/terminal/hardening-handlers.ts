@@ -55,43 +55,44 @@ export function registerHardeningHandlers(): void {
   });
 
   registerHandler('hardening.versions', async () => {
-    const versions = [
-      { module: 'CORE', version: '2.0.0', codename: 'Foundation' },
-      { module: 'SYSTEM', version: '2.0.0', codename: 'Bastion' },
-      { module: 'CORTEX', version: '2.0.0', codename: 'Conductor' },
-      { module: 'ENCODE', version: '2.0.0', codename: 'Forge' },
-      { module: 'DECODE', version: '2.0.0', codename: 'Cipher' },
-      { module: 'VISION', version: '2.0.0', codename: 'Sentinel' },
-      { module: 'DEFENSE', version: '2.0.0', codename: 'Fortress' },
-      { module: 'GOVERNANCE', version: '2.0.0', codename: 'Magistrate' },
-      { module: 'BRAIN', version: '2.0.0', codename: 'Memoria' },
-      { module: 'MEMORY', version: '2.0.0', codename: 'Vault' },
-      { module: 'DREAM', version: '2.0.0', codename: 'Nocturne' },
-      { module: 'ECONOMY', version: '2.0.0', codename: 'Ledger' },
-      { module: 'IMMUNITY', version: '2.0.0', codename: 'Watchguard' },
-      { module: 'EVOLUTION', version: '2.0.0', codename: 'Chrysalis' },
-      { module: 'INTENT', version: '2.0.0', codename: 'Navigator' },
-      { module: 'ENGINEER', version: '2.0.0', codename: 'Mechanist' },
-      { module: 'ATLAS', version: '2.0.0', codename: 'Prometheus' },
-      { module: 'AUDIT', version: '2.0.0', codename: 'Ironclad' },
-      { module: 'RELAY', version: '2.0.0', codename: 'Conduit' },
-      { module: 'RIPPLE', version: '2.0.0', codename: 'Tsunami' },
-      { module: 'SANDBOX', version: '2.0.0', codename: 'Crucible' },
-      { module: 'INCLUSIVE', version: '2.0.0', codename: 'Clarity' },
+    const modules = [
+      { module: 'CORE', codename: 'Foundation' },
+      { module: 'SYSTEM', codename: 'Bastion' },
+      { module: 'CORTEX', codename: 'Conductor' },
+      { module: 'ENCODE', codename: 'Forge' },
+      { module: 'DECODE', codename: 'Cipher' },
+      { module: 'VISION', codename: 'Sentinel' },
+      { module: 'DEFENSE', codename: 'Fortress' },
+      { module: 'GOVERNANCE', codename: 'Magistrate' },
+      { module: 'BRAIN', codename: 'Memoria' },
+      { module: 'MEMORY', codename: 'Vault' },
+      { module: 'DREAM', codename: 'Nocturne' },
+      { module: 'ECONOMY', codename: 'Ledger' },
+      { module: 'IMMUNITY', codename: 'Watchguard' },
+      { module: 'EVOLUTION', codename: 'Chrysalis' },
+      { module: 'INTENT', codename: 'Navigator' },
+      { module: 'ENGINEER', codename: 'Mechanist' },
+      { module: 'ATLAS', codename: 'Prometheus' },
+      { module: 'AUDIT', codename: 'Ironclad' },
+      { module: 'RELAY', codename: 'Conduit' },
+      { module: 'RIPPLE', codename: 'Tsunami' },
+      { module: 'SANDBOX', codename: 'Crucible' },
+      { module: 'INCLUSIVE', codename: 'Clarity' },
       // Expansion Modules
-      { module: 'SOVEREIGN', version: '2.0.0', codename: 'Dominion' },
-      { module: 'ORACLE', version: '2.0.0', codename: 'Pythia' },
-      { module: 'CONSCIENCE', version: '2.0.0', codename: 'Arbiter' },
-      { module: 'PHANTOM', version: '2.0.0', codename: 'Specter' },
-      { module: 'FORGE', version: '2.0.0', codename: 'Foundry' },
-      { module: 'LINGUA', version: '2.0.0', codename: 'Rosetta' },
-      { module: 'COMPASS', version: '2.0.0', codename: 'Meridian' },
-      { module: 'ECHO', version: '2.0.0', codename: 'Resonance' },
-      { module: 'TREATY', version: '2.0.0', codename: 'Accord' },
-      { module: 'HARVEST', version: '2.0.0', codename: 'Reaper' },
-      { module: 'REFLEX', version: '2.0.0', codename: 'Impulse' },
+      { module: 'SOVEREIGN', codename: 'Dominion' },
+      { module: 'ORACLE', codename: 'Pythia' },
+      { module: 'CONSCIENCE', codename: 'Arbiter' },
+      { module: 'PHANTOM', codename: 'Specter' },
+      { module: 'FORGE', codename: 'Foundry' },
+      { module: 'LINGUA', codename: 'Rosetta' },
+      { module: 'COMPASS', codename: 'Meridian' },
+      { module: 'ECHO', codename: 'Resonance' },
+      { module: 'TREATY', codename: 'Accord' },
+      { module: 'HARVEST', codename: 'Reaper' },
+      { module: 'REFLEX', codename: 'Impulse' },
+      { module: 'SHADOW', codename: 'Umbra' },
     ];
-    return { success: true, data: versions };
+    return { success: true, data: modules };
   });
 
   // ═══ CORE HARDENING ═══
@@ -99,8 +100,8 @@ export function registerHardeningHandlers(): void {
   registerHandler('core.hardening', async () => {
     try {
       const m = await import('@/lib/substrate/core-hardening') as any;
-      return { success: true, data: m.getCoreHardeningStatus?.() ?? { version: '2.0.0', codename: 'Foundation', status: 'active' } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Foundation', status: 'active' } }; }
+      return { success: true, data: m.getCoreHardeningStatus?.() ?? { codename: 'Foundation', status: 'active' } };
+    } catch { return { success: true, data: { codename: 'Foundation', status: 'active' } }; }
   });
 
   registerHandler('core.hardening.health', async () => {
