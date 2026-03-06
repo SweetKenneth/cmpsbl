@@ -8,9 +8,6 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PageTransition } from "@/components/PageTransition";
-import { SEO } from "@/components/SEO";
-import { PublicNav } from "@/components/PublicNav";
-import { EnhancedFooter } from "@/components/EnhancedFooter";
 import {
   ArrowRight, Sparkles, Brain, Code, Zap, BookOpen, CheckCircle2,
   Moon, RefreshCw, TrendingUp, Shield, Layers, Hammer,
