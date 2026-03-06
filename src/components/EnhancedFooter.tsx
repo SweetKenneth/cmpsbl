@@ -109,6 +109,7 @@ export function EnhancedFooter() {
         {/* Memory Stream flowing accent bar at top of footer */}
         <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-70" />
         <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+        <div className="absolute inset-x-0 top-[3px] h-8 bg-gradient-to-b from-primary/[0.02] to-transparent pointer-events-none" />
         {/* Subtle background texture */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--primary)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
 
@@ -164,8 +165,8 @@ export function EnhancedFooter() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={cn(
-                            "text-sm transition-colors inline-block",
-                            link.highlight ? "text-primary hover:text-primary/80" : "text-muted-foreground hover:text-foreground"
+                            "text-sm transition-all duration-300 inline-block underline-reveal",
+                            link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -174,8 +175,8 @@ export function EnhancedFooter() {
                         <Link
                           to={link.href}
                           className={cn(
-                            "text-sm transition-colors inline-block",
-                            link.highlight ? "text-primary hover:text-primary/80" : "text-muted-foreground hover:text-foreground"
+                            "text-sm transition-all duration-300 inline-block underline-reveal hover:translate-x-0.5",
+                            link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
