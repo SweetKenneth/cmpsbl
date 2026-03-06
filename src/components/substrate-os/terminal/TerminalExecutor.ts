@@ -631,14 +631,14 @@ function generateFullHelp(): string {
 │  clm.disable         Disable autonomous learning            │
 │  clm.cycle           Run a manual CLM cycle                 │
 │  clm.run <module>    Run CLM for a single module            │
-│  clm.run_all         Run CLM for ALL 9 modules              │
+│  clm.run_all         Run CLM for ALL modules                │
 │  clm.budget          View daily budget allocation           │
 │  clm.kill_switch     Activate/deactivate kill switch        │
 │  clm.topics          View topic bank with mastery           │
 │  clm.add_topic       Add custom topic to bank               │
 │  clm.review_queue    View spaced repetition queue           │
 │  clm.next_review     Get next review item                   │
-│  decode.inbox        CLM reports from ALL 9 modules         │
+│  decode.inbox        CLM reports from ALL modules            │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
@@ -3578,7 +3578,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // DECODE INBOX — CLM reports from ALL 9 modules
+    // DECODE INBOX — CLM reports from ALL modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'decode.inbox') {
       try {
@@ -3599,7 +3599,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         let output = `╔══════════════════════════════════════════════════════════════╗
-║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from 9 Modules                ║
+║  DECODE INBOX — ${String(feed.length).padEnd(3)} Reports from ${ALL_EXECUTION_SURFACES.length} Modules               ║
 ╠══════════════════════════════════════════════════════════════╣\n`;
         
         for (const r of feed.slice(0, 20)) {
@@ -3632,7 +3632,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         for (const mod of ALL_EXECUTION_SURFACES) {
           statesObj[mod.key] = moduleCLM.getModuleState?.(mod.key as any) || {};
         }
-        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — 9 Modules + Zones                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
+        let output = `╔══════════════════════════════════════════════════════════════╗\n║  MODULE CLM STATUS — ${ALL_EXECUTION_SURFACES.length} Modules                               ║\n╠══════════════════════════════════════════════════════════════╣\n`;
         for (const mod of ALL_EXECUTION_SURFACES) {
           const s = statesObj[mod.key] || {};
           const icon = s.enabled ? '🟢' : '⚫';
@@ -3664,7 +3664,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       try {
         const { moduleCLM } = await import('@/lib/substrate/module-clm/index');
         const results = await moduleCLM.runAllModuleLearning();
-        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across 9 modules`, data: results };
+        return { success: true, output: `◉ MCLM run all complete — ${results.length} insights generated across ${ALL_EXECUTION_SURFACES.length} modules`, data: results };
       } catch (err) {
         return { success: false, output: `▓ MCLM run all error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
@@ -3688,7 +3688,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // CLM.RUN_ALL — Run CLM for ALL 9 modules
+    // CLM.RUN_ALL — Run CLM for ALL modules
     // ═══════════════════════════════════════════════════════════════
     else if (base === 'clm.run_all') {
       try {
@@ -4042,7 +4042,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
 ║                                                              ║
 ║  Phase: COGNITIVE ANALYSIS                                   ║
 ║                                                              ║
-║  Engines Scanned: 9                                          ║
+║  Engines Scanned: ${ALL_EXECUTION_SURFACES.length}                                         ║
 ║    ✅ Memory    ✅ Learning    ✅ Imagination                ║
 ║    ✅ Reasoning ✅ Security    ✅ Telemetry                  ║
 ║    ✅ Governance ✅ Resources  ✅ Architecture               ║
@@ -5212,7 +5212,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         output += `│\n│  These engines orchestrate the substrate's 56 unique world-first\n`;
-        output += `│  enhancements across all 9 modules.\n`;
+        output += `│  enhancements across all ${ALL_EXECUTION_SURFACES.length} modules.\n`;
         output += `│\n└───────────────────────────────────────────────────────────────\n`;
         
         return { success: true, output, data: worldFirst };
