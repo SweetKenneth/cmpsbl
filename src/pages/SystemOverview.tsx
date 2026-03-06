@@ -10,6 +10,8 @@ import {
   Sparkles, Code2, CircuitBoard, Eye, Clock, 
   TrendingUp, Users, Check, ChevronRight, Globe
 } from 'lucide-react';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
