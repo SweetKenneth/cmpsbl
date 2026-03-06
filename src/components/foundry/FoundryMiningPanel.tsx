@@ -203,11 +203,11 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                 Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
               </div>
               <button
-                onClick={() => exportResultsAsJSON(lastResult.results)}
+                onClick={() => exportResultsAsZip(lastResult.results)}
                 className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
               >
                 <Download className="w-3 h-3" />
-                Export
+                Export ZIP
               </button>
             </div>
 
