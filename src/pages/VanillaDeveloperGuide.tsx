@@ -64,13 +64,16 @@ const MODULES = [
 ];
 
 const INSTALL_STEPS = [
-  { step: "1", title: "Install the SDK", code: "npm install @cmpsbl/sdk" },
-  { step: "2", title: "Get your API key", description: "Sign up at cmpsbl.com and generate an API key from your developer dashboard." },
-  { step: "3", title: "Initialize the client", code: `import { Substrate } from '@cmpsbl/sdk';
-
-const substrate = new Substrate({
-  apiKey: process.env.CMPSBL_API_KEY,
-});` },
+  { step: "1", title: "Get your API key", description: "Sign up at cmpsbl.com and generate an API key from your developer dashboard." },
+  { step: "2", title: "Make your first call", code: `const res = await fetch('https://api.cmpsbl.com/v1/substrate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ action: 'brain.query', query: 'hello' }),
+});
+const data = await res.json();` },
 ];
 
 export default function VanillaDeveloperGuide() {
@@ -133,7 +136,7 @@ export default function VanillaDeveloperGuide() {
               What you get
             </h2>
             <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
-              A single <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">npm install</code> gives you
+              A single API call gives you
               an entire cognitive backend — no infra to provision, no models to host, no vector databases to manage.
             </p>
           </motion.div>

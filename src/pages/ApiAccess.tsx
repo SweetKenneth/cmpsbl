@@ -137,19 +137,22 @@ export default function ApiAccess() {
             <div className="relative">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
               <pre className="p-5 text-sm font-mono text-foreground overflow-x-auto code-glow">
-{`// Install the SDK
-npm install @cmpsbl/sdk
-
-// Initialize and call
-import { Substrate } from '@cmpsbl/sdk';
-
-const substrate = new Substrate({ apiKey: 'your-key' });
-const result = await substrate.decode.analyze({
-  input: 'Your content here',
-  modules: ['sentiment', 'intent', 'entities']
+{`// Call the Substrate REST API directly
+const res = await fetch('https://api.cmpsbl.com/v1/substrate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    action: 'decode.analyze',
+    input: 'Your content here',
+    modules: ['sentiment', 'intent', 'entities'],
+  }),
 });
 
-console.log(result.insights);`}
+const { insights } = await res.json();
+console.log(insights);`}
               </pre>
             </div>
           </motion.div>
