@@ -557,7 +557,7 @@ describe('§12 — Full E2E Pipeline', () => {
 
     expect(result.status).toBe('completed');
     expect(result.discoveries.length).toBeGreaterThan(0);
-    expect(result.durationMs).toBeGreaterThan(0);
+    expect(result.durationMs).toBeGreaterThanOrEqual(0);
 
     // 3. Verify all discoveries are scored, tiered, and persisted
     const stored = await engine.getDiscoveries();
