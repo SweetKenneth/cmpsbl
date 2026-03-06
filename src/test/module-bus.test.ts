@@ -39,6 +39,19 @@ vi.mock('@/lib/substrate/control-plane/adapters/queueStateAdapter', () => ({
 }));
 
 import {
+  initEventStream,
+  resetEventStream,
+  getRecentStreamEvents,
+  getStreamByType,
+  getStreamByModule,
+  getStreamStats,
+  clearStream,
+  setStreamPersistence,
+  isStreamPersistent,
+  getStreamHealth,
+  getStreamBreakerState,
+  healStream,
+} from '@/lib/substrate/module-bus/eventStream';
   publish,
   subscribe,
   unsubscribe,
