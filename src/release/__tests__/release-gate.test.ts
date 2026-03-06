@@ -6,18 +6,45 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// ─── Global Mocks ────────────────────────────────────────────────────────────
+// ─── Global Mocks (vi.hoisted for proper hoisting with vi.mock) ──────────────
 
-const mockExecSync = vi.fn((cmd: string) => {
-  if (cmd.includes('tsc --noEmit')) return '';
-  if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
-  if (cmd.includes('vitest run')) return JSON.stringify({
-    numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
+const { mockExecSync, MOCK_FILES, mockExistsSync, mockReadFileSync } = vi.hoisted(() => {
+  const MOCK_FILES: Record<string, string> = {
+    'src/App.tsx': 'import ErrorBoundary from "./ErrorBoundary";\nexport default App;',
+    'src/main.tsx': 'import { installProductionLogGuard } from "./lib/system/productionLogGuard";\n',
+    'src/lib/system/productionLogGuard.ts': '// NEVER suppressed console.error\nexport function installProductionLogGuard() {}',
+    'src/lib/substrate/events/emit.ts': 'export function emit() {}',
+    'src/lib/system/log.ts': 'export function log() {}',
+    'docs/ROLLBACK.md': '# Rollback Plan',
+    'docs/v11/evolution-and-shadow.md': '# Shadow and canary deployment',
+    'src/lib/atlas/capability-gate.ts': 'export const gates = {};',
+  };
+
+  const mockExecSync = vi.fn((cmd: string) => {
+    if (cmd.includes('tsc --noEmit')) return '';
+    if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
+    if (cmd.includes('vitest run')) return JSON.stringify({
+      numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
+    });
+    if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
+    if (cmd.includes('git rev-parse --short')) return 'abc1234';
+    if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
+    return '';
   });
-  if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
-  if (cmd.includes('git rev-parse --short')) return 'abc1234';
-  if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
-  return '';
+
+  const mockExistsSync = vi.fn((p: string) => {
+    const rel = String(p).replace(process.cwd() + '/', '');
+    if (rel === 'src' || rel === 'supabase/functions') return true;
+    return rel in MOCK_FILES || Object.keys(MOCK_FILES).some(k => k.startsWith(rel + '/'));
+  });
+
+  const mockReadFileSync = vi.fn((p: string, _enc?: string) => {
+    const rel = String(p).replace(process.cwd() + '/', '');
+    if (rel in MOCK_FILES) return MOCK_FILES[rel];
+    return '';
+  });
+
+  return { mockExecSync, MOCK_FILES, mockExistsSync, mockReadFileSync };
 });
 
 vi.mock('child_process', () => ({
@@ -25,29 +52,10 @@ vi.mock('child_process', () => ({
   execSync: mockExecSync,
 }));
 
-const MOCK_FILES: Record<string, string> = {
-  'src/App.tsx': 'import ErrorBoundary from "./ErrorBoundary";\nexport default App;',
-  'src/main.tsx': 'import { installProductionLogGuard } from "./lib/system/productionLogGuard";\n',
-  'src/lib/system/productionLogGuard.ts': '// NEVER suppressed console.error\nexport function installProductionLogGuard() {}',
-  'src/lib/substrate/events/emit.ts': 'export function emit() {}',
-  'src/lib/system/log.ts': 'export function log() {}',
-  'docs/ROLLBACK.md': '# Rollback Plan',
-  'docs/v11/evolution-and-shadow.md': '# Shadow and canary deployment',
-  'src/lib/atlas/capability-gate.ts': 'export const gates = {};',
-};
-
 vi.mock('fs', () => ({
   default: {},
-  existsSync: vi.fn((p: string) => {
-    const rel = String(p).replace(process.cwd() + '/', '');
-    if (rel === 'src' || rel === 'supabase/functions') return true;
-    return rel in MOCK_FILES || Object.keys(MOCK_FILES).some(k => k.startsWith(rel + '/'));
-  }),
-  readFileSync: vi.fn((p: string, _enc?: string) => {
-    const rel = String(p).replace(process.cwd() + '/', '');
-    if (rel in MOCK_FILES) return MOCK_FILES[rel];
-    return '';
-  }),
+  existsSync: mockExistsSync,
+  readFileSync: mockReadFileSync,
   writeFileSync: vi.fn(),
   mkdirSync: vi.fn(),
   readdirSync: vi.fn((_dir: string) => []),
