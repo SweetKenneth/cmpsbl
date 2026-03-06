@@ -169,26 +169,54 @@ export async function getKnownPeers(): Promise<FederationPeer[]> {
   return peers;
 }
 
+// ─── Peer Validation ───
+
+const federationPeerSchema = z.object({
+  id: z.string().min(1).max(128),
+  name: z.string().min(1).max(256),
+  endpoint: z.string().min(1).max(512),
+  status: z.enum(['active', 'degraded', 'offline']),
+  lastSeen: z.string().datetime(),
+  resolverCount: z.number().int().min(0).max(10000),
+  sharedDomains: z.array(z.string().max(64)).max(50),
+  latencyMs: z.number().min(0).max(60000),
+  trustScore: z.number().min(0).max(1),
+});
+
 // ─── Peer Management ───
 
 /**
- * Register an external federation peer. Persisted to secure storage.
+ * Register an external federation peer. Validated and persisted to secure storage.
+ * Rejects malformed or oversized peer data.
  */
-export function registerPeer(peer: FederationPeer): void {
+export function registerPeer(peer: FederationPeer): { success: boolean; error?: string } {
+  const parsed = federationPeerSchema.safeParse(peer);
+  if (!parsed.success) {
+    return { success: false, error: `Invalid peer data: ${parsed.error.issues.map(i => i.message).join(', ')}` };
+  }
+
   const stored = secureGet<FederationPeer[]>('mesh_federation_peers') ?? [];
+
+  // Cap total external peers to prevent storage bloat
+  if (stored.length >= 50 && !stored.find(p => p.id === peer.id)) {
+    return { success: false, error: 'Maximum peer limit (50) reached' };
+  }
+
   const existing = stored.findIndex(p => p.id === peer.id);
   if (existing >= 0) {
-    stored[existing] = peer;
+    stored[existing] = parsed.data as FederationPeer;
   } else {
-    stored.push(peer);
+    stored.push(parsed.data as FederationPeer);
   }
   secureSet('mesh_federation_peers', stored);
+  return { success: true };
 }
 
 /**
  * Remove a federation peer by ID.
  */
 export function removePeer(peerId: string): boolean {
+  if (!peerId || peerId.length > 128) return false;
   const stored = secureGet<FederationPeer[]>('mesh_federation_peers') ?? [];
   const filtered = stored.filter(p => p.id !== peerId);
   if (filtered.length === stored.length) return false;
