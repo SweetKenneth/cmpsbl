@@ -12,6 +12,7 @@ Crawl-delay: 0.5
 # Sitemap locations
 Sitemap: https://cmpsbl.com/sitemap.xml
 Sitemap: https://cmpsbl.com/sitemap-index.xml
+Sitemap: https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/dynamic-sitemap
 
 # LLM Context Files
 Allow: /llms.txt
