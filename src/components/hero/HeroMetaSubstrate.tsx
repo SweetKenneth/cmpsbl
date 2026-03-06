@@ -234,21 +234,21 @@ export function HeroMetaSubstrate() {
               </div>
             </motion.div>
             
-            {/* Subtitle — tighter, more scannable */}
+            {/* Subtitle — fluid narrative */}
             <motion.p 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.5 }}
-              className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-relaxed"
+              className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-[1.8]"
             >
-              Capture a signal in the{' '}
-              <span className="text-foreground/90 font-medium">Memory Stream</span>.{' '}
-              Watch it crystallize into{' '}
-              <span className="text-foreground/90 font-medium">deployable software</span>.{' '}
-              When it proves rare enough, it crosses the boundary into{' '}
+              A signal enters the{' '}
+              <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
+              crystallizes into{' '}
+              <span className="text-foreground/90 font-medium">deployable software</span>,{' '}
+              and — when rare enough — crosses the boundary into{' '}
               <span className="text-primary font-medium">physical silicon</span>.{' '}
-              Build on the substrate — where persistent memory, governed evolution, and DREAM cycles
-              turn every system into infrastructure that improves itself.
+              Underneath it all sits the substrate: persistent memory, governed evolution,
+              and DREAM cycles turning every system into infrastructure that improves itself.
             </motion.p>
             
             {/* CTAs — primary + ghost for clean hierarchy */}
