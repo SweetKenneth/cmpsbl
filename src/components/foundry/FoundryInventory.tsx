@@ -10,11 +10,9 @@ import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import {
-  generateSingleExport,
-  type ExportableArtifact,
-  type ExportBundle,
-} from '@/lib/export/universal-adapter';
-import { getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
+  downloadTieredFoundryZip,
+  type TieredFoundryExportArtifact,
+} from '@/lib/export/foundry-tiered-zip';
 import { toast } from 'sonner';
 
 interface InventoryItem {
@@ -36,82 +34,20 @@ interface Props {
   inventory: InventoryItem[];
 }
 
-async function exportVaultAsZip(inventory: InventoryItem[]) {
-  const JSZip = (await import('jszip')).default;
-  const zip = new JSZip();
-
-  // Manifest with all pipeline metadata
-  const manifest = {
-    exportedAt: new Date().toISOString(),
-    source: 'CMPSBL Memory Stream Vault',
-    pipelineCount: inventory.length,
-    totalValuation: inventory.reduce((s, i) => s + i.valuationDisplay, 0),
-    pipelines: inventory.map(item => ({
-      name: item.artifactName,
-      score: item.score,
-      tier: item.publicTier,
-      valuation: item.valuationDisplay,
-      category: item.category,
-      systemChain: item.systemChain,
-      fingerprint: item.pipelineFingerprint || null,
-      obtainedAt: item.obtainedAt,
-      source: item.source,
-      epoch: 'SPARTA',
-    })),
-  };
-  zip.file('manifest.json', JSON.stringify(manifest, null, 2));
-
-  // Generate per-pipeline exports in the best unlocked language
-  for (const item of inventory) {
-    const unlocked = getUnlockedLanguages(item.score);
-    // Pick best available language: prefer typescript > python > first unlocked
-    const lang = unlocked.includes('typescript') ? 'typescript'
-      : unlocked.includes('python') ? 'python'
-      : unlocked[0];
-    if (!lang) continue;
-
-    const slug = item.artifactName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-    const exportable: ExportableArtifact = {
-      id: item.pipelineFingerprint || item.artifactId,
-      name: item.artifactName,
-      rank: 0,
-      cjpi: item.score,
-      module: item.systemChain?.[0] || 'unknown',
-      description: `Crystallized pipeline: ${item.artifactName}`,
-      sourceCode: '',
-      synthesisContext: {
-        name: item.artifactName,
-        moduleChain: item.systemChain || [],
-        cjpi: item.score,
-        description: `${item.artifactName} — ${item.category || 'general'} pipeline`,
-        category: item.category || 'general',
-        entryCapability: 'process',
-        exitCapability: 'emit',
-        errorStrategy: 'propagate',
-        maxExecutionMs: 30000,
-      },
-    };
-
-    const bundle = generateSingleExport(exportable, lang);
-    const folder = zip.folder(slug)!;
-    folder.file('README.md', bundle.readme);
-    for (const file of bundle.files) {
-      folder.file(file.filename, file.content);
-    }
-  }
-
-  // Add standalone runtime stubs
-  const runtimeFolder = zip.folder('_runtime')!;
-  runtimeFolder.file('README.md', `# CMPSBL Micro-Substrate Runtime\n\nStandalone runtime for exported pipelines.\nSee individual pipeline folders for language-specific implementations.\n`);
-
-  const blob = await zip.generateAsync({ type: 'blob' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `memory-stream-vault-${Date.now()}.zip`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast.success(`Exported ${inventory.length} pipelines as ZIP`);
+function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundryExportArtifact[] {
+  return inventory.map((item) => ({
+    id: item.artifactId || item.id,
+    name: item.artifactName,
+    score: item.score,
+    publicTier: item.publicTier,
+    valuationDisplay: item.valuationDisplay,
+    category: item.category,
+    systemChain: item.systemChain,
+    description: `Crystallized pipeline: ${item.artifactName}`,
+    fingerprint: item.pipelineFingerprint || null,
+    obtainedAt: item.obtainedAt,
+    source: item.source,
+  }));
 }
 
 export function FoundryInventory({ inventory }: Props) {
@@ -141,7 +77,12 @@ export function FoundryInventory({ inventory }: Props) {
   const handleExportVault = async () => {
     setIsExporting(true);
     try {
-      await exportVaultAsZip(inventory);
+      const stats = await downloadTieredFoundryZip({
+        artifacts: mapInventoryToExportArtifacts(inventory),
+        filePrefix: 'memory-stream-vault-software',
+        sourceLabel: 'Memory Stream Vault',
+      });
+      toast.success(`Exported ${stats.artifactCount} pipelines across ${stats.totalLanguageVariants} tiered language bundles`);
     } catch (err) {
       console.error(err);
       toast.error('Export failed');
@@ -167,7 +108,7 @@ export function FoundryInventory({ inventory }: Props) {
             className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
           >
             {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-            {isExporting ? 'Building ZIP...' : 'Export Vault ZIP'}
+            {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
           </button>
         </div>
       </div>

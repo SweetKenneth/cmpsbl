@@ -16,6 +16,13 @@ export interface LanguageUnlockTier {
 
 export const LANGUAGE_UNLOCK_TIERS: LanguageUnlockTier[] = [
   {
+    id: 'raw',
+    label: 'Raw',
+    minScore: 0,
+    languages: ['typescript'],
+    description: 'Raw tier baseline — TypeScript export is always available (0+)',
+  },
+  {
     id: 'mint',
     label: 'Mint',
     minScore: 68,
