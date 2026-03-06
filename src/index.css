@@ -759,6 +759,31 @@ All colors MUST be HSL.
     animation: fade-in-up 0.5s ease-out both;
   }
 
+  /* Divider diamond pulse — replaces framer-motion in Explore SectionDivider */
+  @keyframes divider-diamond {
+    0%, 100% { transform: rotate(45deg) scale(1); opacity: 0.4; }
+    50% { transform: rotate(45deg) scale(1.3); opacity: 0.9; }
+  }
+  .animate-divider-diamond {
+    animation: divider-diamond 4s ease-in-out infinite;
+  }
+
+  /* Glow orb animations — replaces framer-motion in Explore final CTA */
+  @keyframes glow-orb-a {
+    0%, 100% { transform: scale(1); opacity: 0.25; }
+    50% { transform: scale(1.3); opacity: 0.5; }
+  }
+  @keyframes glow-orb-b {
+    0%, 100% { transform: scale(1.3); opacity: 0.5; }
+    50% { transform: scale(1); opacity: 0.2; }
+  }
+  .animate-glow-orb-a {
+    animation: glow-orb-a 7s ease-in-out infinite;
+  }
+  .animate-glow-orb-b {
+    animation: glow-orb-b 7s ease-in-out infinite 2s;
+  }
+
   /* Premium card base — consistent elevated surface */
   .card-premium {
     @apply bg-card/50 backdrop-blur-sm border border-border/40 rounded-2xl;
