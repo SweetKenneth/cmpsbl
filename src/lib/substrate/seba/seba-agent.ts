@@ -560,19 +560,38 @@ class SEBAAgent {
       };
     }
 
-    // Update status in evolution_proposals table (critical for preventing re-scan)
-    const updateResult = await ProposalStore.updateStatus(proposalId, 'approved', 'HUMAN_OPERATOR');
+    // Resolve the full proposal ID first (handle short ID prefix)
+    let resolvedId = proposalId;
     
-    if (!updateResult.success) {
+    // Try exact match first
+    const exactResult = await ProposalStore.updateStatus(proposalId, 'approved', 'HUMAN_OPERATOR');
+    
+    if (!exactResult.success) {
       // Try matching by short_id prefix
       const { data: matchingProposals } = await supabase
         .from('evolution_proposals')
         .select('id')
         .ilike('id', `${proposalId}%`)
+        .eq('status', 'pending')
         .limit(1);
         
       if (matchingProposals && matchingProposals.length > 0) {
-        await ProposalStore.updateStatus(matchingProposals[0].id, 'approved', 'HUMAN_OPERATOR');
+        resolvedId = matchingProposals[0].id;
+        const prefixResult = await ProposalStore.updateStatus(resolvedId, 'approved', 'HUMAN_OPERATOR');
+        
+        if (!prefixResult.success) {
+          return {
+            success: false,
+            command: 'approve',
+            message: `Failed to approve proposal ${proposalId}: ${prefixResult.error}`,
+          };
+        }
+      } else {
+        return {
+          success: false,
+          command: 'approve',
+          message: `No pending proposal found matching ${proposalId}. Use seba.review to list proposals.`,
+        };
       }
     }
 
@@ -580,7 +599,7 @@ class SEBAAgent {
     await supabase.from('brain_events').insert({
       module: 'seba',
       event_type: 'manual_approval',
-      data: { proposal_id: proposalId, approved_by: 'human' },
+      data: { proposal_id: resolvedId, approved_by: 'human' },
       outcome: 'success',
     });
 
@@ -590,7 +609,7 @@ class SEBAAgent {
     return {
       success: true,
       command: 'approve',
-      message: `Proposal ${proposalId} approved. Run seba.execute ${proposalId} to apply.`,
+      message: `Proposal ${resolvedId} approved. Run seba.execute ${resolvedId} to apply.`,
     };
   }
 
@@ -627,13 +646,30 @@ class SEBAAgent {
       };
     }
 
-    // Fetch the proposal from database
-    const { data: proposals } = await supabase
+    // Fetch the proposal from database - try exact match first, then prefix
+    let proposals: Record<string, unknown>[] | null = null;
+    
+    // Exact match
+    const { data: exactData } = await supabase
       .from('evolution_proposals')
       .select('*')
-      .or(`id.eq.${proposalId},id.ilike.${proposalId}%`)
+      .eq('id', proposalId)
       .eq('status', 'approved')
       .limit(1);
+    
+    proposals = exactData;
+    
+    // If no exact match, try prefix match
+    if (!proposals || proposals.length === 0) {
+      const { data: prefixData } = await supabase
+        .from('evolution_proposals')
+        .select('*')
+        .ilike('id', `${proposalId}%`)
+        .eq('status', 'approved')
+        .limit(1);
+      
+      proposals = prefixData;
+    }
 
     if (!proposals || proposals.length === 0) {
       return {
@@ -643,7 +679,7 @@ class SEBAAgent {
       };
     }
 
-    const proposal = proposals[0];
+    const proposal = proposals[0] as { id: string; title: string; expected_impact: Record<string, unknown> | null; [key: string]: unknown };
     const shortId = proposal.id.substring(0, 8);
     const fullId = proposal.id;
     
@@ -664,7 +700,7 @@ class SEBAAgent {
         expected_impact: updatedImpact,
       }).eq('id', fullId);
 
-      await supabase.from('brain_events').insert({
+      await supabase.from('brain_events').insert([{
         module: 'seba',
         event_type: 'shadow_execution',
         data: { 
@@ -674,7 +710,7 @@ class SEBAAgent {
           phase: 'shadow_applied',
         },
         outcome: 'success',
-      });
+      }]);
 
       return {
         success: true,
@@ -712,7 +748,7 @@ class SEBAAgent {
         status: 'applied',
       }).eq('id', fullId);
 
-      await supabase.from('brain_events').insert({
+      await supabase.from('brain_events').insert([{
         module: 'seba',
         event_type: 'production_execution',
         data: { 
@@ -723,7 +759,7 @@ class SEBAAgent {
           phase: 'production_applied',
         },
         outcome: 'success',
-      });
+      }]);
 
       this.state.executed_proposals++;
       this.state.evolutions_applied++;

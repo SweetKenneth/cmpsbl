@@ -44,7 +44,7 @@ export interface NormalizedAction {
   target_scope: TargetScope;
   target_module?: string;
   target_file?: string;
-  risk_level: 'low' | 'medium';
+  risk_level: 'low' | 'medium' | 'high';
   confidence_score: number;
   source_proposal_id: string;
   description: string;
@@ -78,8 +78,8 @@ export interface NormalizationResult {
 // ═══════════════════════════════════════════════════════════════
 
 const NORMALIZATION_CONFIG = {
-  min_confidence: 0.7,           // Proposals below this are rejected
-  allowed_risk_levels: ['low', 'medium'] as const,
+  min_confidence: 0.6,           // Proposals below this are rejected
+  allowed_risk_levels: ['low', 'medium', 'high'] as const,
   require_target_scope: true,
   min_actions_for_plan: 1,       // Minimum normalized actions to create plan
 };
@@ -186,14 +186,14 @@ function normalizeProposal(proposal: ScanProposal): {
   }
 
   // Check risk level
-  if (!NORMALIZATION_CONFIG.allowed_risk_levels.includes(proposal.risk_level as 'low' | 'medium')) {
+  if (!NORMALIZATION_CONFIG.allowed_risk_levels.includes(proposal.risk_level as 'low' | 'medium' | 'high')) {
     return {
       success: false,
       rejection: {
         proposal_id: proposal.proposal_id,
         title: proposal.title,
         rejection_code: 'UNSUPPORTED_RISK_LEVEL',
-        reason: `Risk level '${proposal.risk_level}' not allowed (only low/medium)`,
+        reason: `Risk level '${proposal.risk_level}' not allowed (only ${NORMALIZATION_CONFIG.allowed_risk_levels.join('/')})`,
       },
     };
   }
@@ -231,16 +231,18 @@ function normalizeProposal(proposal: ScanProposal): {
 
   // Create normalized action
   // action_id uses UUID for database compatibility
+  // High risk proposals always require human review
+  const isHighRisk = proposal.risk_level === 'high';
   const action: NormalizedAction = {
     action_id: crypto.randomUUID(),
     action_type: actionType,
     target_scope: targetScope,
     target_module: targetModule,
-    risk_level: proposal.risk_level as 'low' | 'medium',
+    risk_level: proposal.risk_level as 'low' | 'medium' | 'high',
     confidence_score: proposal.confidence_score,
     source_proposal_id: proposal.proposal_id,
     description: stripDecorations(proposal.description),
-    requires_human: proposal.requires_human || actionType === 'manual_review',
+    requires_human: isHighRisk || proposal.requires_human || actionType === 'manual_review',
     normalized_at: new Date().toISOString(),
   };
 
@@ -294,8 +296,14 @@ function resolveActionType(proposal: ScanProposal): NormalizedActionType | null 
     return 'manual_review';
   }
 
-  // Default to code_mutation for any fix/update/add
+  // Default to code_mutation for any fix/update/add/improve
   if (content.includes('fix') || content.includes('update') || content.includes('add') || content.includes('improve')) {
+    return 'code_mutation';
+  }
+
+  // Final fallback: any proposal that has an action_type field gets code_mutation
+  // This prevents rejecting otherwise valid proposals due to category mismatch
+  if (proposal.action_type) {
     return 'code_mutation';
   }
 
@@ -315,12 +323,14 @@ function resolveTargetScope(proposal: ScanProposal): TargetScope | null {
     }
   }
 
-  // Default to 'module' for most proposals
+  // Default to 'module' for proposals with source phases
   if (proposal.source_phases?.length > 0) {
     return 'module';
   }
 
-  return null;
+  // Final fallback: always return 'system' rather than null
+  // This prevents rejection of valid proposals that lack scope keywords
+  return 'system';
 }
 
 /**

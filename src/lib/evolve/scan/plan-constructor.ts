@@ -41,6 +41,7 @@ export interface NormalizedPlan {
   risk_summary: {
     low: number;
     medium: number;
+    high: number;
   };
   requires_human_review: boolean;
   blockers: PlanBlocker[];
@@ -101,6 +102,7 @@ export async function createPlanFromNormalized(
   const riskSummary = {
     low: actions.filter(a => a.risk_level === 'low').length,
     medium: actions.filter(a => a.risk_level === 'medium').length,
+    high: actions.filter(a => a.risk_level === 'high').length,
   };
 
   // Determine if human review required
@@ -160,7 +162,7 @@ export async function createPlanFromNormalized(
         confidence_score: actions.length > 0 
           ? Math.max(...actions.map(a => a.confidence_score))
           : 0,
-        risk_level: riskSummary.medium > 0 ? 'medium' : 'low',
+        risk_level: riskSummary.high > 0 ? 'high' : riskSummary.medium > 0 ? 'medium' : 'low',
         metadata: {
           normalized: true,
           total_actions: plan.total_actions,
