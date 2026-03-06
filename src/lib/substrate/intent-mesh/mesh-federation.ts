@@ -124,49 +124,48 @@ export async function publishManifest(): Promise<{ published: number; domains: s
 // ─── Peer Discovery ───
 
 /**
- * Get known federation peers (mock for local substrate; 
- * would query federation registry in production)
+ * Get known federation peers.
+ * Returns the local substrate as a self-referencing peer with live resolver data.
+ * External peers are loaded from persistent storage when federation is enabled.
  */
 export async function getKnownPeers(): Promise<FederationPeer[]> {
   if (!currentConfig.enabled) return [];
 
-  // In production, this queries a shared peer registry
-  // For now, return mock data to demonstrate the UI
-  return [
-    {
-      id: 'peer-staging',
-      name: 'Staging Substrate',
-      endpoint: 'https://staging.cmpsbl.com/api/mesh',
-      status: 'active',
-      lastSeen: new Date(Date.now() - 30000).toISOString(),
-      resolverCount: 18,
-      sharedDomains: ['security', 'identity', 'performance'],
-      latencyMs: 45,
-      trustScore: 0.95,
-    },
-    {
-      id: 'peer-edge-us',
-      name: 'Edge US-East',
-      endpoint: 'https://us-east.cmpsbl.com/api/mesh',
-      status: 'active',
-      lastSeen: new Date(Date.now() - 120000).toISOString(),
-      resolverCount: 12,
-      sharedDomains: ['security', 'seo'],
-      latencyMs: 120,
-      trustScore: 0.88,
-    },
-    {
-      id: 'peer-edge-eu',
-      name: 'Edge EU-West',
-      endpoint: 'https://eu-west.cmpsbl.com/api/mesh',
-      status: 'degraded',
-      lastSeen: new Date(Date.now() - 300000).toISOString(),
-      resolverCount: 8,
-      sharedDomains: ['identity'],
-      latencyMs: 280,
-      trustScore: 0.72,
-    },
-  ];
+  const peers: FederationPeer[] = [];
+
+  // 1. Always include self as the local substrate peer
+  const localModules = getMeshModules();
+  const enabledResolvers = MESH_MANIFEST.filter(r => r.enabled);
+  const localDomains = [...new Set(enabledResolvers.flatMap(r => r.domains))];
+
+  peers.push({
+    id: currentConfig.instanceId,
+    name: currentConfig.instanceName,
+    endpoint: 'local',
+    status: 'active',
+    lastSeen: new Date().toISOString(),
+    resolverCount: enabledResolvers.length,
+    sharedDomains: localDomains.filter(d => currentConfig.sharedDomains.includes(d)),
+    latencyMs: 0,
+    trustScore: 1.0,
+  });
+
+  // 2. Load any externally-registered peers from secure storage
+  try {
+    const stored = secureGet<FederationPeer[]>('mesh_federation_peers');
+    if (stored && Array.isArray(stored)) {
+      for (const peer of stored) {
+        // Skip stale peers (offline > 24h)
+        const lastSeen = new Date(peer.lastSeen).getTime();
+        if (Date.now() - lastSeen > 24 * 60 * 60 * 1000) {
+          peer.status = 'offline';
+        }
+        peers.push(peer);
+      }
+    }
+  } catch { /* Storage unavailable — local peer only */ }
+
+  return peers;
 }
 
 // ─── Federation Stats ───

@@ -125,6 +125,14 @@ export async function calculateIntentScores(): Promise<IntentQualityScore[]> {
                 : recentSuccess < olderSuccess - 0.1 ? 'declining' 
                 : 'stable';
 
+    // Refinement efficiency: receipts with _refinementTurn > 0 needed extra turns.
+    // Efficiency = proportion that resolved in first turn (no refinement needed).
+    const firstTurnCount = receipts.filter(r => {
+      const turn = (r.input_summary as any)?._refinementTurn;
+      return !turn || turn <= 1;
+    }).length;
+    const refinementEfficiency = firstTurnCount / receipts.length;
+
     scores.push({
       intentType,
       sourceModule,
@@ -133,7 +141,7 @@ export async function calculateIntentScores(): Promise<IntentQualityScore[]> {
       responseRichness: avgRichness,
       latencyScore,
       crossModuleCoverage: avgCoverage,
-      refinementEfficiency: 0.8, // Placeholder until refinement data is tracked
+      refinementEfficiency,
       sampleSize: receipts.length,
       trend,
       lastUpdated: new Date().toISOString(),
