@@ -49,12 +49,27 @@ export interface StoreState {
 class ShadowStoreClient {
   private entries: Map<string, ShadowStoreEntry> = new Map();
   
+  // Hardening: Max entries to prevent unbounded memory growth
+  private readonly MAX_ENTRIES = 50;
+  // Hardening: Max content size per artifact (1MB)
+  private readonly MAX_CONTENT_SIZE = 1_048_576;
+  // Hardening: Max artifacts per evolution
+  private readonly MAX_ARTIFACTS_PER_EVOLUTION = 100;
+  // Hardening: Blocked path traversal patterns
+  private readonly BLOCKED_PATH_PATTERNS = [/\.\.\//, /\.\.\\/, /^\//, /^~\//];
+  
   /**
    * Initialize or get entry for an evolution
    */
   private getOrCreateEntry(evolution_id: string): ShadowStoreEntry {
     let entry = this.entries.get(evolution_id);
     if (!entry) {
+      // Hardening 5: Evict oldest entries if at capacity
+      if (this.entries.size >= this.MAX_ENTRIES) {
+        const oldest = Array.from(this.entries.entries())
+          .sort((a, b) => a[1].updated_at.getTime() - b[1].updated_at.getTime())[0];
+        if (oldest) this.entries.delete(oldest[0]);
+      }
       entry = {
         evolution_id,
         artifacts: [],
@@ -82,7 +97,29 @@ class ShadowStoreClient {
     }
   ): Promise<WriteResult> {
     try {
+      // Hardening 1: Validate file_path against traversal attacks
+      if (this.BLOCKED_PATH_PATTERNS.some(p => p.test(file_path))) {
+        return { success: false, error: 'Path traversal detected — blocked' };
+      }
+      
+      // Hardening 2: Enforce content size limit
+      if (content.length > this.MAX_CONTENT_SIZE) {
+        return { success: false, error: `Content exceeds ${this.MAX_CONTENT_SIZE} byte limit` };
+      }
+
       const entry = this.getOrCreateEntry(evolution_id);
+      
+      // Hardening 3: Cap artifacts per evolution
+      if (entry.artifacts.length >= this.MAX_ARTIFACTS_PER_EVOLUTION) {
+        return { success: false, error: `Max ${this.MAX_ARTIFACTS_PER_EVOLUTION} artifacts per evolution` };
+      }
+      
+      // Hardening 4: Prevent duplicate file_path in same evolution
+      if (entry.artifacts.some(a => a.file_path === file_path && a.operation !== 'delete')) {
+        // Overwrite existing artifact instead of duplicating
+        const idx = entry.artifacts.findIndex(a => a.file_path === file_path);
+        if (idx >= 0) entry.artifacts.splice(idx, 1);
+      }
       
       // Validate content
       if (!content || content.trim().length === 0) {

@@ -99,11 +99,31 @@ const MAX_BUFFER_SIZE = 100;
 /**
  * Emit an evolve event
  */
+// Hardening 6: PII scrubbing keys that should never appear in telemetry
+const PII_KEYS = new Set(['password', 'secret', 'token', 'api_key', 'authorization', 'cookie', 'session']);
+
+function scrubPII(data: Record<string, unknown>): Record<string, unknown> {
+  const cleaned: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (PII_KEYS.has(key.toLowerCase())) {
+      cleaned[key] = '[REDACTED]';
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      cleaned[key] = scrubPII(value as Record<string, unknown>);
+    } else {
+      cleaned[key] = value;
+    }
+  }
+  return cleaned;
+}
+
 export function emitEvolveEvent(type: EvolveEventType, data: Record<string, unknown>): void {
+  // Hardening 7: Scrub PII from telemetry data
+  const cleanData = scrubPII(data);
+  
   const event: EvolveEvent = {
     type,
     timestamp: new Date(),
-    data,
+    data: cleanData,
   };
 
   // Buffer locally
@@ -112,11 +132,13 @@ export function emitEvolveEvent(type: EvolveEventType, data: Record<string, unkn
     eventBuffer.shift();
   }
 
-  // Log to console
-  console.log(`[Evolve:${type}]`, data);
+  // Log to console (production: suppress verbose logging)
+  if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
+    console.log(`[Evolve:${type}]`, cleanData);
+  }
 
   // Persist to database (non-blocking)
-  persistEvent(event).catch(console.warn);
+  persistEvent(event).catch(() => { /* silent */ });
 }
 
 /**

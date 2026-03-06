@@ -93,6 +93,18 @@ export async function applyProduction(context: EvolveContext): Promise<ApplyResu
     };
   }
 
+  // Hardening 13: Idempotency — block re-apply of already-applied evolutions
+  const entry = shadowStore.getEntry(context.evolution_id);
+  if (entry?.status === 'applied') {
+    return {
+      success: false,
+      evolution_id: context.evolution_id,
+      short_id,
+      artifacts_applied: 0,
+      error: 'Evolution already applied — idempotency guard triggered',
+    };
+  }
+
   // Apply each artifact
   try {
     for (const artifact of artifacts) {

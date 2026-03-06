@@ -32,8 +32,20 @@ const ALLOWED_CALLER_MODULES = [
 export function validateInvocation(context: CapabilityGuardContext): GuardResult {
   const { capability, caller, input } = context;
   
+  // Hardening 10: Normalize caller to uppercase for case-insensitive matching
+  const normalizedCaller = (caller || '').trim().toUpperCase();
+  
+  // Hardening 11: Reject empty or suspiciously long caller names
+  if (!normalizedCaller || normalizedCaller.length > 64) {
+    return {
+      allowed: false,
+      reason: 'Invalid caller identifier',
+      riskLevel: 'high',
+    };
+  }
+  
   // Check caller is allowed
-  if (!ALLOWED_CALLER_MODULES.includes(caller.toUpperCase())) {
+  if (!ALLOWED_CALLER_MODULES.includes(normalizedCaller)) {
     return {
       allowed: false,
       reason: `Caller module '${caller}' is not authorized to invoke capabilities`,
@@ -50,8 +62,17 @@ export function validateInvocation(context: CapabilityGuardContext): GuardResult
     };
   }
   
-  // Check for blocked patterns in input
+  // Hardening 12: Input size guard — reject oversized payloads
   const inputStr = JSON.stringify(input);
+  if (inputStr.length > 500_000) {
+    return {
+      allowed: false,
+      reason: 'Input payload exceeds 500KB safety limit',
+      riskLevel: 'high',
+    };
+  }
+  
+  // Check for blocked patterns in input
   for (const pattern of BLOCKED_PATTERNS) {
     if (pattern.test(inputStr)) {
       return {
@@ -65,7 +86,7 @@ export function validateInvocation(context: CapabilityGuardContext): GuardResult
   // High-risk capabilities require additional scrutiny
   if (capability.risk === 'high') {
     // Check if caller is privileged for high-risk ops
-    if (!['SYSTEM', 'CORTEX'].includes(caller.toUpperCase())) {
+    if (!['SYSTEM', 'CORTEX'].includes(normalizedCaller)) {
       return {
         allowed: false,
         reason: `High-risk capability '${capability.id}' requires SYSTEM or CORTEX caller`,

@@ -42,6 +42,11 @@ export function createEvolveContext(options: EvolveContextOptions): EvolveContex
   const evolution_id = options.evolution_id || crypto.randomUUID();
   const mode = options.mode;
   
+  // Hardening 14: Enforce timeout ceiling (5 minutes max)
+  const MAX_TIMEOUT_MS = 300_000;
+  const shadowTimeout = Math.min(60_000, MAX_TIMEOUT_MS);
+  const prodTimeout = Math.min(30_000, MAX_TIMEOUT_MS);
+  
   return {
     mode,
     evolution_id,
@@ -51,7 +56,7 @@ export function createEvolveContext(options: EvolveContextOptions): EvolveContex
     invoked_from: options.invoked_from || 'terminal',
     started_at: new Date(),
     max_retries: mode === 'shadow' ? 3 : 1, // More lenient in shadow
-    timeout_ms: mode === 'shadow' ? 60000 : 30000,
+    timeout_ms: mode === 'shadow' ? shadowTimeout : prodTimeout,
     metadata: options.metadata,
   };
 }
