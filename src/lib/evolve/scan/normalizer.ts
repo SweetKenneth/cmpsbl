@@ -296,8 +296,14 @@ function resolveActionType(proposal: ScanProposal): NormalizedActionType | null 
     return 'manual_review';
   }
 
-  // Default to code_mutation for any fix/update/add
+  // Default to code_mutation for any fix/update/add/improve
   if (content.includes('fix') || content.includes('update') || content.includes('add') || content.includes('improve')) {
+    return 'code_mutation';
+  }
+
+  // Final fallback: any proposal that has an action_type field gets code_mutation
+  // This prevents rejecting otherwise valid proposals due to category mismatch
+  if (proposal.action_type) {
     return 'code_mutation';
   }
 
@@ -317,12 +323,14 @@ function resolveTargetScope(proposal: ScanProposal): TargetScope | null {
     }
   }
 
-  // Default to 'module' for most proposals
+  // Default to 'module' for proposals with source phases
   if (proposal.source_phases?.length > 0) {
     return 'module';
   }
 
-  return null;
+  // Final fallback: always return 'system' rather than null
+  // This prevents rejection of valid proposals that lack scope keywords
+  return 'system';
 }
 
 /**
