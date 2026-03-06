@@ -1805,6 +1805,113 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       }
       
       return { success: false, output: `▓ Unknown module: '${target}'\n  Use system.heal --all for full system heal.` };
+    } else if (base === 'system.fix') {
+      // Audit + auto-repair in one shot
+      try {
+        const { runSystemAudit } = await import('@/lib/substrate/system/auditRunner');
+        const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+        
+        // 1. Run audit
+        const auditReport = await runSystemAudit();
+        const failures = auditReport.results.filter(r => !r.ok);
+        
+        if (failures.length === 0) {
+          return {
+            success: true,
+            output: `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM FIX — Audit + Auto-Repair                              ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  Audit Result: ✅ ALL SUBSYSTEMS HEALTHY                      ║
+║  Checked:      ${String(auditReport.results.length).padEnd(3)} subsystems                                ║
+║  Failures:     0                                              ║
+║                                                              ║
+║  No repair needed. System is stable.                          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`,
+          };
+        }
+        
+        // 2. Run self-repair
+        const repairReport = await runSelfRepair(3);
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM FIX — Audit + Auto-Repair                              ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  ┌─ INITIAL AUDIT ────────────────────────────────────────────║
+║  │  Subsystems: ${String(auditReport.results.length).padEnd(3)}  Failures: ${String(failures.length).padEnd(3)}                     ║`;
+        
+        for (const f of failures) {
+          output += `
+║  │  ❌ ${f.module.padEnd(18)} ${(f.message || 'degraded').substring(0, 30)}    ║`;
+        }
+        
+        output += `
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ REPAIR ACTIONS ───────────────────────────────────────────║
+║  │  Attempts: ${repairReport.attempts}/${repairReport.maxAttempts}                                        ║`;
+        
+        for (const r of repairReport.repairs) {
+          output += `
+║  │  ${r.repaired ? '✅' : '❌'} ${r.module.padEnd(18)} ${r.message.substring(0, 30)}    ║`;
+        }
+        
+        output += `
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ FINAL STATUS ─────────────────────────────────────────────║
+║  │  Stable: ${repairReport.stable ? '✅ YES' : '❌ NO'}                                           ║
+║  │  Final failures: ${String(repairReport.finalAudit.results.filter(r => !r.ok).length).padEnd(3)}                                ║
+║  └────────────────────────────────────────────────────────────║
+║                                                              ║
+║  Result: ${repairReport.stable ? '🟢 SYSTEM FIXED' : '🟡 PARTIAL FIX — manual intervention may be needed'}   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: repairReport.stable, output };
+      } catch (err) {
+        return { success: false, output: `▓ System fix error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'system.repair') {
+      // Self-repair loop (3 attempts)
+      try {
+        const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+        const maxAttempts = args[0] ? parseInt(args[0]) : 3;
+        const report = await runSelfRepair(maxAttempts);
+        
+        let output = `╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM REPAIR — Self-Repair Loop                              ║
+╠══════════════════════════════════════════════════════════════╣
+║  Attempts:  ${report.attempts}/${report.maxAttempts}                                             ║
+║  Stable:    ${report.stable ? '✅ YES' : '❌ NO'}                                              ║
+╠══════════════════════════════════════════════════════════════╣`;
+        
+        if (report.repairs.length > 0) {
+          output += `\n║  REPAIRS APPLIED                                              ║\n╠══════════════════════════════════════════════════════════════╣`;
+          for (const r of report.repairs) {
+            output += `\n║  ${r.repaired ? '✅' : '❌'} ${r.module.padEnd(18)} ${r.message.substring(0, 32).padEnd(32)}║`;
+          }
+        } else {
+          output += `\n║  No repairs were needed.                                      ║`;
+        }
+        
+        const finalFailures = report.finalAudit.results.filter(r => !r.ok);
+        if (finalFailures.length > 0) {
+          output += `\n╠══════════════════════════════════════════════════════════════╣`;
+          output += `\n║  REMAINING ISSUES (${finalFailures.length})                                       ║`;
+          for (const f of finalFailures) {
+            output += `\n║  ⚠ ${f.module.padEnd(18)} ${(f.message || 'degraded').substring(0, 32).padEnd(32)}║`;
+          }
+        }
+        
+        output += `\n╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: report.stable, output };
+      } catch (err) {
+        return { success: false, output: `▓ Repair error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
     } else if (base === 'system.restart') {
       result = await system.restart(args[0]);
     } else if (base === 'system.backup') {
