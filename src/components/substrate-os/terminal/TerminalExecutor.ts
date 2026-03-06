@@ -1844,7 +1844,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         
         for (const f of failures) {
           output += `
-║  │  ❌ ${f.module.padEnd(18)} ${(f.message || 'degraded').substring(0, 30)}    ║`;
+║  │  ❌ ${f.module.padEnd(18)} ${(f.detail || 'degraded').substring(0, 30)}    ║`;
         }
         
         output += `
@@ -1902,7 +1902,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           output += `\n╠══════════════════════════════════════════════════════════════╣`;
           output += `\n║  REMAINING ISSUES (${finalFailures.length})                                       ║`;
           for (const f of finalFailures) {
-            output += `\n║  ⚠ ${f.module.padEnd(18)} ${(f.message || 'degraded').substring(0, 32).padEnd(32)}║`;
+            output += `\n║  ⚠ ${f.module.padEnd(18)} ${(f.detail || 'degraded').substring(0, 32).padEnd(32)}║`;
           }
         }
         
