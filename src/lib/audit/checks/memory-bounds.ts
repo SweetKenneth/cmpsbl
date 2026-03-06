@@ -5,20 +5,14 @@
 
 import type { AuditFinding } from '../audit-types';
 
-interface BoundCheck {
-  name: string;
-  importPath: string;
-  validate: () => AuditFinding[];
-}
 
-export function checkMemoryBounds(): AuditFinding[] {
+export async function checkMemoryBounds(): Promise<AuditFinding[]> {
   const findings: AuditFinding[] = [];
 
   // 1. Verify correlation-id span cap
   try {
-    const { getAllSpans, createContext, startSpan, cleanupContexts } = require('@/lib/substrate/correlation-id/index');
+    const { getAllSpans, createContext, cleanupContexts } = await import('@/lib/substrate/correlation-id/index');
     const ctx = createContext('audit', 'mem-check');
-    // Just verify the exports exist and span collection is bounded
     const spans = getAllSpans();
     if (Array.isArray(spans)) {
       findings.push({
@@ -42,7 +36,7 @@ export function checkMemoryBounds(): AuditFinding[] {
 
   // 2. Verify capability gate denial log cap
   try {
-    const { getDenialLog, clearDenialLog } = require('@/lib/substrate/capability-gate/index');
+    const { getDenialLog } = await import('@/lib/substrate/capability-gate/index');
     const log = getDenialLog();
     if (Array.isArray(log)) {
       findings.push({
@@ -59,8 +53,8 @@ export function checkMemoryBounds(): AuditFinding[] {
 
   // 3. Verify NEXUS cost ceiling has config setter (budget enforcement wiring)
   try {
-    const { setCostCeilingConfig, getCostCeilingConfig } = require('@/lib/nexus/cost-ceiling');
-    const config = getCostCeilingConfig();
+    const mod = await import('@/lib/nexus/cost-ceiling');
+    const config = mod.getCostCeilingConfig();
     findings.push({
       id: 'mem_bounds_cost_ceiling_ok',
       category: 'runtime',

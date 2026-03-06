@@ -52,6 +52,15 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
       detail: err?.message || 'Unknown error during backend check',
     }]);
 
+  const memoryBoundsPromise = checkMemoryBounds()
+    .catch((err): AuditFinding[] => [{
+      id: 'audit_check_crash_memory_bounds',
+      category: 'runtime',
+      severity: 'warn',
+      title: 'Memory bounds check incomplete',
+      detail: err?.message || 'Unknown error during memory bounds check',
+    }]);
+
   // Phase 2: Run sync checks — grouped by cost
   // Fast checks (no DOM queries or minimal) run first
   const fastChecks: AuditFinding[] = [
@@ -61,7 +70,6 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     ...runSyncCheck('hooks', checkHooksContracts),
     ...runSyncCheck('branding', checkBrandingContracts),
     ...runSyncCheck('provider-branding', checkProviderBranding),
-    ...runSyncCheck('memory-bounds', checkMemoryBounds),
   ];
 
   // Terminal check only if detected
@@ -79,9 +87,9 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   ];
 
   // Phase 3: Await backend results (should already be resolved by now)
-  const supabaseFindings = await supabasePromise;
+  const [supabaseFindings, memoryBoundsFindings] = await Promise.all([supabasePromise, memoryBoundsPromise]);
 
-  const findings = [...fastChecks, ...domChecks, ...supabaseFindings];
+  const findings = [...fastChecks, ...domChecks, ...supabaseFindings, ...memoryBoundsFindings];
 
   const duration_ms = Math.round(performance.now() - start);
 
