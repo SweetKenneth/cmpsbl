@@ -52,7 +52,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
   });
 
   if (!entry) {
-    result.errors.push('Shadow entry not found. Run evolve.shadow first.');
+    result.errors.push('Memory Stream did not record this evolution. No memory signature found.');
     return result;
   }
 
@@ -66,7 +66,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
   });
 
   if (artifacts.length === 0) {
-    result.errors.push('No artifacts in shadow store. Nothing was written.');
+    result.errors.push('Memory Stream score too weak — no pipelines crystallized for export.');
     return result;
   }
 
@@ -80,7 +80,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
   });
 
   if (!hasNonEmptyContent) {
-    result.errors.push('Some artifacts have empty content.');
+    result.errors.push('Memory Stream recorded incomplete artifacts — not strong enough to export into pipelines.');
   }
 
   // Check 4: No production paths touched (safety check)
@@ -103,7 +103,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
   });
 
   if (prodPathViolations.length > 0) {
-    result.errors.push(`Protected paths cannot be modified: ${prodPathViolations.map(a => a.file_path).join(', ')}`);
+    result.errors.push(`Memory Stream blocked — protected system boundaries were touched: ${prodPathViolations.map(a => a.file_path).join(', ')}`);
   }
 
   // Check 5: Status is valid for verification
@@ -135,7 +135,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
       : `${traversalViolations.length} artifact(s) with suspicious paths`,
   });
   if (traversalViolations.length > 0) {
-    result.errors.push(`Path traversal detected in: ${traversalViolations.map(a => a.file_path).join(', ')}`);
+    result.errors.push(`Memory Stream rejected — unsafe path patterns detected in: ${traversalViolations.map(a => a.file_path).join(', ')}`);
   }
 
   // Check 8 (Hardening): Content size sanity — reject artifacts > 1MB
@@ -148,7 +148,7 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
       : `${oversizedArtifacts.length} artifact(s) exceed 1MB`,
   });
   if (oversizedArtifacts.length > 0) {
-    result.warnings.push('Some artifacts exceed 1MB — review before apply');
+    result.warnings.push('Memory Stream recorded oversized artifacts — review before crystallizing');
   }
 
   // Compute final result
@@ -169,11 +169,11 @@ export function canApplyProduction(evolution_id: string): { allowed: boolean; re
   const entry = shadowStore.getEntry(evolution_id);
   
   if (!entry) {
-    return { allowed: false, reason: 'No shadow entry found. Run evolve.shadow first.' };
+    return { allowed: false, reason: 'Memory Stream did not record this evolution. No memory signature found.' };
   }
   
   if (entry.artifacts.length === 0) {
-    return { allowed: false, reason: 'No artifacts in shadow store.' };
+    return { allowed: false, reason: 'Memory Stream score too weak — nothing crystallized for export.' };
   }
   
   if (!shadowStore.isVerified(evolution_id)) {
