@@ -80,7 +80,6 @@ export function registerExpansionHandlers(): void {
           data: {
             module: mod.name,
             codename: mod.codename,
-            version: '2.0.0',
             description: mod.desc,
             health,
             status: 'active',
@@ -92,7 +91,6 @@ export function registerExpansionHandlers(): void {
           data: {
             module: mod.name,
             codename: mod.codename,
-            version: '2.0.0',
             description: mod.desc,
             health: { grade: 'A', score: 100 },
             status: 'active',
@@ -119,7 +117,6 @@ export function registerExpansionHandlers(): void {
         data: {
           module: mod.name,
           codename: mod.codename,
-          version: '2.0.0',
           features: [
             'circuit_breaker', 'bulkhead_isolation', 'rate_limiting',
             'dead_letter_queue', 'shadow_mode', 'state_snapshots',
