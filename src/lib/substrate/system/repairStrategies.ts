@@ -5,7 +5,7 @@
  */
 
 import { recheckHealth } from '../control-plane/adapters/queueStateAdapter';
-import { clearStream } from '../module-bus/eventStream';
+import { clearStream, healStream, getStreamHealth, getStreamBreakerState } from '../module-bus/eventStream';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -35,14 +35,26 @@ export async function repairControlPlane(): Promise<RepairResult> {
   }
 }
 
-/** Flush event stream buffer to free memory */
+/** Heal event stream — reset breaker, restore health, flush if needed */
 export async function repairEventStream(): Promise<RepairResult> {
   try {
-    const cleared = clearStream();
+    const healthBefore = getStreamHealth();
+    const breakerBefore = getStreamBreakerState();
+
+    // If health is critical or breaker is open, do a full heal
+    const force = healthBefore.score < 50 || breakerBefore.state === 'open';
+    const result = healStream(force);
+
+    // Additionally clear buffer if it was a forced heal
+    let cleared = 0;
+    if (force) {
+      cleared = clearStream();
+    }
+
     return {
       repaired: true,
       module: 'event_stream',
-      message: `Cleared ${cleared} buffered events`,
+      message: `Healed: ${result.actions.length} actions, score ${result.previousScore}→${result.newScore}${cleared > 0 ? `, cleared ${cleared} events` : ''}`,
     };
   } catch (err: any) {
     return { repaired: false, module: 'event_stream', message: err?.message || 'repair failed' };

@@ -5,7 +5,7 @@
 
 import { cpPut, cpGet, cpDelete, getStorageMode } from '../control-plane/adapters/queueStateAdapter';
 import { verifyChain } from '../matrix/receipt-chain';
-import { getStreamStats } from '../module-bus/eventStream';
+import { getStreamStats, getStreamHealth, getStreamBreakerState } from '../module-bus/eventStream';
 import { planStoreHealth } from '../plans/planStore';
 import { discussionHealth } from '../encode-module/discussion';
 import { getIroncladState } from '../ironclad/fabric';
@@ -80,10 +80,30 @@ async function testReceiptChain(): Promise<AuditResult> {
 function testEventStream(): AuditResult {
   try {
     const stats = getStreamStats();
+    const health = getStreamHealth();
+    const breaker = getStreamBreakerState();
+
+    // Fail audit if breaker is open or health is critical
+    if (breaker.state === 'open') {
+      return {
+        ok: false,
+        module: 'event_stream',
+        detail: `circuit OPEN (failures=${breaker.totalFailures}), health=${health.score}`,
+      };
+    }
+
+    if (health.score < 50) {
+      return {
+        ok: false,
+        module: 'event_stream',
+        detail: `health critical (${health.score}/100), dropped=${health.droppedSignals}, breaker=${breaker.state}`,
+      };
+    }
+
     return {
       ok: true,
       module: 'event_stream',
-      detail: `buffer=${stats.buffer_size}/${stats.max_size}, captured=${stats.total_captured}`,
+      detail: `buffer=${stats.buffer_size}/${stats.max_size}, health=${health.score}, breaker=${breaker.state}, captured=${stats.total_captured}`,
     };
   } catch (err: any) {
     return { ok: false, module: 'event_stream', detail: err?.message || 'stream failure' };
