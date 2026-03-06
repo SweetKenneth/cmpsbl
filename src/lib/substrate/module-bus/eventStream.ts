@@ -43,7 +43,7 @@ function calculateSignalSalience(signal: ModuleSignal): SignalSalience {
   signalHistory.set(type, seen + 1);
 
   const rarity = Math.max(0, 1 - (seen / 200));
-  const crossModule = signal.from !== signal.target ? 1 : 0.3;
+  const crossModule = signal.from !== signal.to ? 1 : 0.3;
   const novelty = seen < 10 ? 1 : 0.2;
   const success = signal.payload?.success ? 1 : 0.5;
 
