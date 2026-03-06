@@ -4224,6 +4224,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       } catch (err) {
         return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
+    }
     // (seba.config and seba.thresholds handled above — no duplicate)
     else if (base === 'seba.stamps') {
       // Evolution stamp verification command
