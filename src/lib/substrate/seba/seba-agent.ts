@@ -700,7 +700,7 @@ class SEBAAgent {
         expected_impact: updatedImpact,
       }).eq('id', fullId);
 
-      await supabase.from('brain_events').insert({
+      await supabase.from('brain_events').insert([{
         module: 'seba',
         event_type: 'shadow_execution',
         data: { 
@@ -710,7 +710,7 @@ class SEBAAgent {
           phase: 'shadow_applied',
         },
         outcome: 'success',
-      });
+      }]);
 
       return {
         success: true,
