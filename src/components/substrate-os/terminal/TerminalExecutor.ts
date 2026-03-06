@@ -286,7 +286,7 @@ const ALL_EXECUTION_SURFACES = [
   { key: 'relay', label: 'RELAY', layer: 'OCG' },
   { key: 'audit', label: 'AUDIT', layer: 'OCG' },
   { key: 'nerve', label: 'NERVE', layer: 'OCG' },
-  // Execution (9)
+  // Execution (10)
   { key: 'decode', label: 'DECODE', layer: 'Execution' },
   { key: 'encode', label: 'ENCODE', layer: 'Execution' },
   { key: 'vision', label: 'VISION', layer: 'Execution' },
@@ -365,10 +365,11 @@ function formatSystemHealth(data: any): string {
   const overallPct = typeof overall === 'number' ? (overall <= 1 ? (overall * 100).toFixed(0) : overall.toFixed(0)) : '100';
   const circuitState = data?.circuit_state || 'closed';
   const threatLevel = data?.threat_level || 'low';
+  const version = data?.version || '';
   
   let output = `
 ╔══════════════════════════════════════════════════════════════╗
-║  CMPSBL® OS v10.5.0 — HEALTH DIAGNOSTICS                    ║
+║  CMPSBL® OS ${version || ''} — HEALTH DIAGNOSTICS                    ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
@@ -4105,14 +4106,33 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
     } else if (base === 'seba.rollback') {
       const executionId = args[0];
       if (!executionId) {
-        return { success: false, output: '▓ ERROR: Execution ID required\n  Usage: seba.rollback <execution_id>' };
+        return { success: false, output: '▓ ERROR: Proposal/Execution ID required\n  Usage: seba.rollback <proposal_id>' };
       }
       try {
+        const { ProposalStore } = await import('@/lib/substrate/seba/proposal-store');
         const { sebaAgent } = await import('@/lib/substrate/seba');
+        // Mark proposal as rolled_back in DB
+        await ProposalStore.markRolledBack(executionId, 'Manual rollback via terminal');
         const result = await sebaAgent.handleCommand('rollback', { execution_id: executionId });
         return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
       } catch (err) {
         return { success: false, output: `▓ Rollback error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.pause') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('pause');
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Pause error: ${err instanceof Error ? err.message : 'Unknown'}` };
+      }
+    } else if (base === 'seba.resume') {
+      try {
+        const { sebaAgent } = await import('@/lib/substrate/seba');
+        const result = await sebaAgent.handleCommand('resume');
+        return { success: result.success, output: result.success ? `◉ ${result.message}` : `▓ ${result.message}` };
+      } catch (err) {
+        return { success: false, output: `▓ Resume error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'seba.config') {
       try {
@@ -4223,37 +4243,9 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       } catch (err) {
         return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
-    } else if (base === 'seba.config') {
-      try {
-        const { sebaAgent } = await import('@/lib/substrate/seba');
-        if (args[0] && args[0].includes('=')) {
-          const [key, val] = args[0].split('=');
-          const result = await sebaAgent.handleCommand('config', { key, value: val });
-          return { success: result.success, output: result.success ? `◉ SEBA config updated: ${key} = ${val}` : `▓ ${result.message}`, data: result.data };
-        }
-        const result = await sebaAgent.handleCommand('config');
-        return { success: result.success, output: `◉ SEBA Configuration\n\n${JSON.stringify(result.data, null, 2)}`, data: result.data };
-      } catch (err) {
-        return { success: false, output: `▓ Config error: ${err instanceof Error ? err.message : 'Unknown'}` };
-      }
-    } else if (base === 'seba.thresholds') {
-      try {
-        const { sebaAgent } = await import('@/lib/substrate/seba');
-        if (args[0] === 'auto_approve' && args[1]) {
-          const result = await sebaAgent.handleCommand('config', { key: 'auto_approve_threshold', value: parseFloat(args[1]) });
-          return { success: result.success, output: `◉ Auto-approve threshold set to ${args[1]}` };
-        }
-        if (args[0] === 'risk' && args[1]) {
-          const result = await sebaAgent.handleCommand('config', { key: 'risk_tolerance', value: args[1] });
-          return { success: result.success, output: `◉ Risk tolerance set to ${args[1]}` };
-        }
-        const result = await sebaAgent.handleCommand('status');
-        const state = (result.data as any)?.state || {};
-        return { success: true, output: `◉ SEBA Thresholds\n  Auto-approve: ≥${(state.auto_approve_threshold || 0.85).toFixed(2)}\n  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase()}\n\n  Usage: seba.thresholds auto_approve <0.0-1.0>\n         seba.thresholds risk <low|medium|high>` };
-      } catch (err) {
-        return { success: false, output: `▓ Thresholds error: ${err instanceof Error ? err.message : 'Unknown'}` };
-      }
-    } else if (base === 'seba.stamps') {
+    }
+    // (seba.config and seba.thresholds handled above — no duplicate)
+    else if (base === 'seba.stamps') {
       // Evolution stamp verification command
       const limit = parseInt(args[0]) || 10;
       try {

@@ -539,6 +539,8 @@ export const SEBA_COMMANDS: CommandDefinition[] = [
   { command: 'seba.history', description: 'View evolution history', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'seba.history 20' },
   { command: 'seba.stamps', description: 'View evolution stamps for verification', category: 'clm', icon: FileCheck, requiresOperator: false, args: '[limit]', example: 'seba.stamps 5' },
   { command: 'seba.cooldown', description: 'View/manage insight cooldowns', category: 'clm', icon: Clock, requiresOperator: false },
+  { command: 'seba.pause', description: 'Pause SEBA for 24 hours', category: 'clm', icon: Clock, requiresOperator: true },
+  { command: 'seba.resume', description: 'Resume SEBA from pause', category: 'clm', icon: PlayCircle, requiresOperator: true },
 ];
 
 // MODULE CLM — Module-specific self-learning v6.8.0

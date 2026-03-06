@@ -622,18 +622,54 @@ class SEBAAgent {
       };
     }
 
+    // Resolve the full proposal ID first (handle short ID prefix)
+    let resolvedId = proposalId;
+
+    // Try exact match first
+    const exactResult = await ProposalStore.updateStatus(proposalId, 'rejected', 'HUMAN_OPERATOR');
+
+    if (!exactResult.success) {
+      // Try matching by short_id prefix
+      const { data: matchingProposals } = await supabase
+        .from('evolution_proposals')
+        .select('id')
+        .ilike('id', `${proposalId}%`)
+        .eq('status', 'pending')
+        .limit(1);
+
+      if (matchingProposals && matchingProposals.length > 0) {
+        resolvedId = matchingProposals[0].id;
+        const prefixResult = await ProposalStore.updateStatus(resolvedId, 'rejected', 'HUMAN_OPERATOR');
+
+        if (!prefixResult.success) {
+          return {
+            success: false,
+            command: 'reject',
+            message: `Failed to reject proposal ${proposalId}: ${prefixResult.error}`,
+          };
+        }
+      } else {
+        return {
+          success: false,
+          command: 'reject',
+          message: `No pending proposal found matching ${proposalId}. Use seba.review to list proposals.`,
+        };
+      }
+    }
+
     await supabase.from('brain_events').insert({
       module: 'seba',
       event_type: 'manual_rejection',
-      data: { proposal_id: proposalId, rejected_by: 'human', reason: reason || 'Manual rejection' },
+      data: { proposal_id: resolvedId, rejected_by: 'human', reason: reason || 'Manual rejection' },
       outcome: 'rejected',
     });
 
     this.state.rejected_proposals++;
+    this.state.pending_proposals = Math.max(0, this.state.pending_proposals - 1);
     return {
       success: true,
       command: 'reject',
-      message: `Proposal ${proposalId} rejected${reason ? `: ${reason}` : ''}`,
+      message: `Proposal ${resolvedId} rejected${reason ? `: ${reason}` : ''}`,
     };
   }
 
