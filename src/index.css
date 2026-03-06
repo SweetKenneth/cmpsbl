@@ -1193,3 +1193,235 @@ All colors MUST be HSL.
 
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */
+
+/* ─── Academic Document Content (scoped for inline HTML rendering) ─── */
+.academic-doc-content {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: hsl(var(--foreground));
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide elements meant for standalone HTML viewing */
+.academic-doc-content .back-link,
+.academic-doc-content .print-btn,
+.academic-doc-content .print-nav {
+  display: none !important;
+}
+
+.academic-doc-content h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.academic-doc-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.academic-doc-content h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.academic-doc-content p {
+  margin-bottom: 0.85rem;
+  color: hsl(var(--foreground));
+}
+
+.academic-doc-content strong {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.academic-doc-content a {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.academic-doc-content a:hover {
+  border-bottom-color: hsl(var(--primary));
+}
+
+/* Meta badges */
+.academic-doc-content .doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.academic-doc-content .doc-meta .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
+}
+
+.academic-doc-content .doc-meta .badge.primary {
+  border-color: hsl(var(--primary) / 0.3);
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.06);
+}
+
+.academic-doc-content .doc-meta .badge.sealed {
+  border-color: hsl(var(--destructive) / 0.25);
+  color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.05);
+}
+
+.academic-doc-content .doc-meta .badge.diligence {
+  border-color: hsl(var(--accent) / 0.35);
+  color: hsl(38 70% 38%);
+  background: hsl(var(--accent) / 0.08);
+}
+
+/* DOI bar */
+.academic-doc-content .doi-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.academic-doc-content .doi-bar a {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: hsl(var(--primary));
+}
+
+.academic-doc-content .doi-bar .separator {
+  color: hsl(var(--border));
+}
+
+/* Tables */
+.academic-doc-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  font-size: 0.875rem;
+}
+
+.academic-doc-content th,
+.academic-doc-content td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.academic-doc-content th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.academic-doc-content tr:nth-child(even) td {
+  background: hsl(220 10% 98%);
+}
+
+/* Code */
+.academic-doc-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: hsl(var(--primary) / 0.06);
+  color: hsl(var(--primary));
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+.academic-doc-content pre {
+  background: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.academic-doc-content pre code {
+  background: none;
+  padding: 0;
+  color: hsl(var(--foreground));
+}
+
+/* Lists */
+.academic-doc-content ul,
+.academic-doc-content ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.academic-doc-content li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+  color: hsl(var(--foreground));
+}
+
+.academic-doc-content li::marker {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Blockquotes */
+.academic-doc-content blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsl(var(--primary) / 0.04);
+  color: hsl(var(--muted-foreground));
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+}
+
+.academic-doc-content blockquote.warning {
+  border-left-color: hsl(var(--accent));
+  background: hsl(var(--accent) / 0.06);
+}
+
+/* Horizontal rule */
+.academic-doc-content hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 2rem 0;
+}
+
+/* Footer */
+.academic-doc-content .doc-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid hsl(var(--border));
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
