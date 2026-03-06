@@ -1243,7 +1243,7 @@ const sectionComponents: Record<string, React.FC> = {
 
 export default function Documentation() {
   const [active, setActive] = useState("overview");
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileNavOpen] = useState(false); // kept for type safety, mobile uses sticky picker now
 
   const ActiveComponent = sectionComponents[active] || OverviewSection;
 
