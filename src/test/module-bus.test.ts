@@ -1,6 +1,7 @@
 /**
  * Module Bus + Event Stream — E2E Unit Tests
- * Validates pub/sub delivery, ring buffer, filtering, and stream lifecycle.
+ * Validates pub/sub delivery, ring buffer, filtering, circuit breaker,
+ * health scoring, healing, and stream lifecycle.
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -39,19 +40,6 @@ vi.mock('@/lib/substrate/control-plane/adapters/queueStateAdapter', () => ({
 }));
 
 import {
-  initEventStream,
-  resetEventStream,
-  getRecentStreamEvents,
-  getStreamByType,
-  getStreamByModule,
-  getStreamStats,
-  clearStream,
-  setStreamPersistence,
-  isStreamPersistent,
-  getStreamHealth,
-  getStreamBreakerState,
-  healStream,
-} from '@/lib/substrate/module-bus/eventStream';
   publish,
   subscribe,
   unsubscribe,
@@ -72,6 +60,9 @@ import {
   clearStream,
   setStreamPersistence,
   isStreamPersistent,
+  getStreamHealth,
+  getStreamBreakerState,
+  healStream,
 } from '@/lib/substrate/module-bus/eventStream';
 
 
@@ -100,7 +91,6 @@ describe('Module Bus — Core', () => {
     await publish('brain', 'threat.detected', { level: 'high' });
     await publish('brain', 'other.event', { level: 'low' });
 
-    // Should only get the threat signal (auto-routed to defense)
     expect(received.length).toBe(1);
     expect(received[0].type).toBe('threat.detected');
 
@@ -134,7 +124,6 @@ describe('Module Bus — Core', () => {
     unsubscribe(subId);
 
     await publish('brain', 'after.unsub', {});
-    // No new deliveries after unsub
     expect(received.length).toBe(countBefore);
   });
 
@@ -147,10 +136,7 @@ describe('Module Bus — Core', () => {
   });
 
   it('should cleanup expired signals', async () => {
-    // Publish with very short TTL
     await publish('brain', 'expire.test', {}, { ttl_ms: 1 });
-
-    // Wait just enough for TTL to expire
     await new Promise(r => setTimeout(r, 5));
 
     const cleaned = cleanupExpired();
@@ -229,7 +215,7 @@ describe('Event Stream', () => {
     expect(isStreamPersistent()).toBe(false);
   });
 
-  it('should report accurate stats', async () => {
+  it('should report accurate stats with health and breaker', async () => {
     initEventStream();
 
     await publish('brain', 'stats.test', {});
@@ -240,5 +226,78 @@ describe('Event Stream', () => {
     expect(stats.buffer_size).toBeGreaterThan(0);
     expect(stats.max_size).toBe(500);
     expect(stats.newest_entry).toBeTruthy();
+    // New: health and breaker in stats
+    expect(stats.health).toBeDefined();
+    expect(stats.health.score).toBeGreaterThanOrEqual(0);
+    expect(stats.health.status).toBeTruthy();
+    expect(stats.breaker).toBeDefined();
+    expect(stats.breaker.state).toBe('closed');
+  });
+});
+
+
+// ═══════════════════════════════════════════════════════════════
+// CIRCUIT BREAKER & HEALTH
+// ═══════════════════════════════════════════════════════════════
+
+describe('Event Stream — Circuit Breaker & Health', () => {
+  beforeEach(() => {
+    resetEventStream();
+  });
+
+  it('should start with healthy state', () => {
+    const health = getStreamHealth();
+    expect(health.score).toBe(100);
+    expect(health.status).toBe('healthy');
+    expect(health.droppedSignals).toBe(0);
+    expect(health.lastError).toBeNull();
+  });
+
+  it('should start with closed breaker', () => {
+    const breaker = getStreamBreakerState();
+    expect(breaker.state).toBe('closed');
+    expect(breaker.failures).toBe(0);
+    expect(breaker.totalFailures).toBe(0);
+  });
+
+  it('should heal and restore health', () => {
+    const result = healStream(false);
+    expect(result.ok).toBe(true);
+    expect(result.newScore).toBeGreaterThanOrEqual(80);
+    expect(result.actions.length).toBeGreaterThan(0);
+  });
+
+  it('should force-heal to 100', () => {
+    const result = healStream(true);
+    expect(result.ok).toBe(true);
+    expect(result.newScore).toBe(100);
+    expect(result.actions).toContain('Health score force-restored to 100');
+  });
+
+  it('should reinit stream if not initialized during heal', () => {
+    // Don't init first
+    const result = healStream(false);
+    expect(result.actions.some(a => a.includes('re-initialized'))).toBe(true);
+    // Should now be initialized
+    const stats = getStreamStats();
+    expect(stats.initialized).toBe(true);
+  });
+
+  it('should reset breaker on force heal', () => {
+    const result = healStream(true);
+    expect(result.breakerReset).toBe(true);
+    const breaker = getStreamBreakerState();
+    expect(breaker.state).toBe('closed');
+  });
+
+  it('should include health and breaker in full reset', () => {
+    resetEventStream();
+    const health = getStreamHealth();
+    const breaker = getStreamBreakerState();
+    expect(health.score).toBe(100);
+    expect(health.droppedSignals).toBe(0);
+    expect(breaker.state).toBe('closed');
+    expect(breaker.totalFailures).toBe(0);
+    expect(breaker.totalSuccesses).toBe(0);
   });
 });
