@@ -1,10 +1,10 @@
 /**
- * Encoded Feedback Loop — v1.0.0
+ * Encoded Feedback Loop
  * 
  * Tracks pattern outcomes, records guard rejections as learning events,
  * and implements graduated autonomy based on mastery scores.
  * 
- * This closes the loop: Encoded writes code → Guard validates → Outcome feeds back → Patterns strengthen or weaken
+ * This closes the loop: ENCODE writes code → Guard validates → Outcome feeds back → Patterns strengthen or weaken
  */
 
 import { supabase } from '@/integrations/supabase/client';

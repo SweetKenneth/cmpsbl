@@ -55,12 +55,21 @@ export function extractAnchors(code: string): FileAnchors {
   const typeExports: string[] = [];
   let hasDefaultExport = false;
 
-  // Named exports: export const/function/class Name
+  // Named exports: export const/function/class/let Name
   const exportMatches = code.matchAll(
     /\bexport\s+(?:async\s+)?(function|const|let|class)\s+([A-Za-z_$][A-Za-z0-9_$]*)/g
   );
   for (const m of exportMatches) {
     exports.push(m[2]);
+  }
+
+  // Re-exports: export { Name } from './module'
+  const reExportMatches = code.matchAll(
+    /\bexport\s+\{([^}]+)\}/g
+  );
+  for (const m of reExportMatches) {
+    const names = m[1].split(',').map(n => n.trim().split(/\s+as\s+/).pop()!.trim()).filter(Boolean);
+    exports.push(...names.filter(n => !n.startsWith('type ')));
   }
 
   // Type exports: export type/interface Name

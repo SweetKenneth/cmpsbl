@@ -1,8 +1,8 @@
 /**
- * Encoded Expert Patterns Library — v1.0.0
+ * Encoded Expert Patterns Library
  * 150+ battle-tested code patterns for elite implementation
  * 
- * These patterns are the "DNA" that makes Encoded write production-grade code.
+ * These patterns are the "DNA" that makes ENCODE write production-grade code.
  * Each pattern includes: template, anti-patterns to avoid, quality signals, and context.
  */
 
