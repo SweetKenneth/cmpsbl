@@ -19,7 +19,7 @@ export function registerHardeningHandlers(): void {
   registerHandler('hardening.status', async () => {
     const results = await collectAllHardeningHealth();
     const lines = [
-      '┌─ HARDENING v2.0.0 — All Modules ─────────────────────────────┐',
+      '┌─ HARDENING — All Modules ─────────────────────────────────────┐',
       '│                                                               │',
     ];
     for (const mod of results) {

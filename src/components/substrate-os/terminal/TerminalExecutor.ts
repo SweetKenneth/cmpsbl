@@ -949,7 +949,7 @@ export async function executeCommand(
       // continue
     }
     
-    // If no identity from API, try Supabase directly
+    // If no identity from API, try backend directly
     if (!devName) {
       try {
         const { supabase: sb } = await import('@/integrations/supabase/client');
@@ -2043,7 +2043,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║    1: polling-intervals (basic poll loops)                   ║
 ║    2: + module-status-polling (38 node status calls)          ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
-║    4: + realtime-subscriptions (Supabase channels)           ║
+║    4: + realtime-subscriptions (backend channels)            ║
 ║                                                              ║
 ║  Other features to test individually:                        ║
 ║    learning-collector, metrics-flush,                        ║
@@ -4498,7 +4498,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  AUTOBLOG PRIMITIVE — v1.0.0                                 ║
+║  AUTOBLOG PRIMITIVE                                           ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Status:     ${modeIcon} ${s?.enabled ? 'ENABLED' : 'DISABLED'}                                       ║
 ║  Mode:       ${(s?.mode || 'off').toUpperCase().padEnd(10)}                                      ║
