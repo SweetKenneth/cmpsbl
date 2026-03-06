@@ -126,25 +126,35 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     });
   }, [chatOpen, clamp, orbRef]);
 
-  // Run dodge on scroll, resize, and periodically
+  // Run dodge on scroll, resize, and periodically (debounced to reduce forced reflows)
   useEffect(() => {
     if (userPlaced.current) return;
-    const handleScroll = () => dodge();
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(dodge, 300);
+    };
     const handleResize = () => {
-      setPos(prev => clamp(prev.x, prev.y));
-      dodge();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        setPos(prev => clamp(prev.x, prev.y));
+        dodge();
+      }, 300);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
-    const interval = setInterval(dodge, 2000);
+    const interval = setInterval(dodge, 5000);
 
     // Initial dodge after layout
-    setTimeout(dodge, 500);
+    setTimeout(dodge, 1000);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      clearTimeout(scrollTimeout);
+      clearTimeout(resizeTimeout);
       clearInterval(interval);
       cancelAnimationFrame(dodgeRaf.current);
     };
