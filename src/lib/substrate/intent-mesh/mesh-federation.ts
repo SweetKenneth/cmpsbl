@@ -11,6 +11,7 @@
  * requires external endpoint configuration (planned 2027 roadmap).
  */
 
+import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { secureSet, secureGet } from '@/lib/system/secureStorage';
 import { MESH_MANIFEST, getMeshModules } from './manifest';
