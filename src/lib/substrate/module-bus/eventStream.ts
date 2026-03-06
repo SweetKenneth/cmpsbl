@@ -21,9 +21,48 @@ import { cpPut, cpDelete } from '../control-plane/adapters/queueStateAdapter';
 const MAX_STREAM_SIZE = 500;
 const MAX_PERSISTED = 100;
 
+// ═══════════════════════════════════════════════════════════════
+// SIGNAL SALIENCE — scores each signal for discovery potential
+// ═══════════════════════════════════════════════════════════════
+
+interface SignalSalience {
+  score: number;
+  factors: {
+    rarity: number;
+    crossModule: number;
+    novelty: number;
+    success: number;
+  };
+}
+
+const signalHistory = new Map<string, number>();
+
+function calculateSignalSalience(signal: ModuleSignal): SignalSalience {
+  const type = signal.type;
+  const seen = signalHistory.get(type) || 0;
+  signalHistory.set(type, seen + 1);
+
+  const rarity = Math.max(0, 1 - (seen / 200));
+  const crossModule = signal.from !== signal.target ? 1 : 0.3;
+  const novelty = seen < 10 ? 1 : 0.2;
+  const success = signal.payload?.success ? 1 : 0.5;
+
+  const score =
+    rarity * 0.35 +
+    crossModule * 0.25 +
+    novelty * 0.25 +
+    success * 0.15;
+
+  return {
+    score,
+    factors: { rarity, crossModule, novelty, success },
+  };
+}
+
 export interface StreamEntry {
   index: number;
   signal: ModuleSignal;
+  salience?: SignalSalience;
   captured_at: string;
 }
 
@@ -172,13 +211,23 @@ export function initEventStream(): void {
 
   subscribe('system', '*', async (signal: ModuleSignal) => {
     try {
+      const salience = calculateSignalSalience(signal);
+
       const entry: StreamEntry = {
         index: counter++,
         signal,
+        salience,
         captured_at: new Date().toISOString(),
       };
 
       stream.push(entry);
+
+      // High-salience signals auto-trigger discovery
+      if (salience.score > 0.82) {
+        import('../intent-mesh/discovery-engine')
+          .then(m => m.runDiscoveryCycle({ persistResults: true }))
+          .catch(() => {});
+      }
 
       // Ring buffer — drop oldest when full
       if (stream.length > MAX_STREAM_SIZE) {
