@@ -1,5 +1,5 @@
 /**
- * DECODE Admin Directive Authority v1.0.0
+ * DECODE Admin Directive Authority
  * 
  * When the system administrator speaks through DECODE, directives carry
  * ADMIN_DIRECTIVE authority. Modules remain autonomous but acknowledge

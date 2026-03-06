@@ -1,5 +1,5 @@
 /**
- * DECODE Module — Hardening Layer v2.0.0 ("Cipher")
+ * DECODE Module — Hardening Layer ("Cipher")
  * 25 enterprise-grade intent parsing, identity, and routing safety features.
  * Non-breaking additive layer — all existing DECODE internals remain frozen.
  *
@@ -722,8 +722,8 @@ export function getConversationSnapshots(sessionId?: string): ConversationSnapsh
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const TERMINOLOGY_CORRECTIONS: Array<{ incorrect: RegExp; correct: string }> = [
-  { incorrect: /\bloveable\b/gi, correct: '' },
-  { incorrect: /\blovable\s+ai\b/gi, correct: '' },
+  { incorrect: /\bloveable\b/gi, correct: 'Clockless' },
+  { incorrect: /\blovable\s+ai\b/gi, correct: 'Clockless' },
   { incorrect: /\bsupabase\s+dashboard\b/gi, correct: 'backend' },
   { incorrect: /\bedge\s+function\b/gi, correct: 'backend function' },
   { incorrect: /\bsupabase\s+auth\b/gi, correct: 'authentication system' },

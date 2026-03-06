@@ -438,10 +438,12 @@ export const ENCODE_IDENTITY = {
     'Accepts task packets ONLY from DECODE — no direct interaction.',
   ],
   capabilities: [
-    'Code generation across 6 target surfaces: code, UI, docs, database, edge functions, tests.',
+    'Code generation across 7 target surfaces: code, UI, docs, database, edge functions, tests, styling.',
     'Confidence scoring (0-1) for generated output.',
     'Diff preview before application.',
     'CLM self-improvement cycles.',
+    'Substrate navigation via navigateIntent(), resolveAlias(), detectConcerns().',
+    'Cross-cutting concern detection and impact chain analysis.',
   ],
   navigation: [
     'Use navigateIntent() to resolve ANY natural-language request to exact file paths, tables, and conventions.',

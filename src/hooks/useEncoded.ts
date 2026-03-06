@@ -79,7 +79,7 @@ export function useEncoded() {
         setStats({
           patterns_learned: data.stats?.patterns_learned || 0,
           executions_today: data.stats?.executions_today || 0,
-          version: data.version || '2.0.0',
+          version: data.version || 'latest',
         });
       }
     } catch (err) {
