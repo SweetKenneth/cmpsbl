@@ -85,64 +85,78 @@ function createMeasurements(): PerfMeasurement[] {
 export async function runPerformancePass(): Promise<PassResult> {
   const start = Date.now();
   const notes: string[] = [];
-  const measurements = createMeasurements();
-  const results: Record<string, number> = {};
-  let failed = 0;
 
-  // Load baseline
-  let baseline: PerfBaseline | null = null;
-  if (existsSync(BASELINE_PATH)) {
+  try {
+    const measurements = createMeasurements();
+    const results: Record<string, number> = {};
+    let failed = 0;
+
+    // Load baseline
+    let baseline: PerfBaseline | null = null;
     try {
-      baseline = JSON.parse(readFileSync(BASELINE_PATH, 'utf-8'));
+      if (existsSync(BASELINE_PATH)) {
+        baseline = JSON.parse(readFileSync(BASELINE_PATH, 'utf-8'));
+      }
     } catch { /* ignore */ }
-  }
 
-  for (const m of measurements) {
-    try {
-      // Run 3 times, take median
-      const runs: number[] = [];
-      for (let i = 0; i < 3; i++) {
-        runs.push(await m.measure());
+    for (const m of measurements) {
+      try {
+        // Run 3 times, take median
+        const runs: number[] = [];
+        for (let i = 0; i < 3; i++) {
+          runs.push(await m.measure());
+        }
+        runs.sort((a, b) => a - b);
+        const median = runs[1];
+        results[m.name] = median;
+
+        const threshold = baseline?.thresholds[m.name] ?? m.budgetMs;
+        const overBudget = median > threshold * 1.5; // 50% regression tolerance
+
+        if (overBudget) {
+          failed++;
+          notes.push(`✗ ${m.name}: ${median.toFixed(1)}ms (budget: ${threshold.toFixed(1)}ms, +50% breach)`);
+        } else {
+          notes.push(`✓ ${m.name}: ${median.toFixed(1)}ms (budget: ${threshold.toFixed(1)}ms)`);
+        }
+      } catch (e: any) {
+        notes.push(`⚠ ${m.name}: Could not measure — ${e.message?.slice(0, 80)}`);
       }
-      runs.sort((a, b) => a - b);
-      const median = runs[1];
-      results[m.name] = median;
-
-      const threshold = baseline?.thresholds[m.name] ?? m.budgetMs;
-      const overBudget = median > threshold * 1.5; // 50% regression tolerance
-
-      if (overBudget) {
-        failed++;
-        notes.push(`✗ ${m.name}: ${median.toFixed(1)}ms (budget: ${threshold.toFixed(1)}ms, +50% breach)`);
-      } else {
-        notes.push(`✓ ${m.name}: ${median.toFixed(1)}ms (budget: ${threshold.toFixed(1)}ms)`);
-      }
-    } catch (e: any) {
-      notes.push(`⚠ ${m.name}: Could not measure — ${e.message?.slice(0, 80)}`);
     }
-  }
 
-  // Save baseline if first run
-  if (!baseline && Object.keys(results).length > 0) {
-    try {
-      mkdirSync(join(process.cwd(), 'reports', 'release'), { recursive: true });
-      const newBaseline: PerfBaseline = {
-        createdAt: new Date().toISOString(),
-        thresholds: results,
-      };
-      writeFileSync(BASELINE_PATH, JSON.stringify(newBaseline, null, 2));
-      notes.push('📏 Baseline created (first run)');
-    } catch { /* ignore */ }
-  }
+    // Save baseline if first run
+    if (!baseline && Object.keys(results).length > 0) {
+      try {
+        mkdirSync(join(process.cwd(), 'reports', 'release'), { recursive: true });
+        const newBaseline: PerfBaseline = {
+          createdAt: new Date().toISOString(),
+          thresholds: results,
+        };
+        writeFileSync(BASELINE_PATH, JSON.stringify(newBaseline, null, 2));
+        notes.push('📏 Baseline created (first run)');
+      } catch { /* ignore */ }
+    }
 
-  return {
-    pass: 5,
-    name: 'PERFORMANCE',
-    status: failed > 0 ? 'FAIL' : 'PASS',
-    required: true,
-    durationMs: Date.now() - start,
-    notes,
-    artifacts: baseline ? [] : [BASELINE_PATH],
-    details: results,
-  };
+    return {
+      pass: 5,
+      name: 'PERFORMANCE',
+      status: failed > 0 ? 'FAIL' : 'PASS',
+      required: true,
+      durationMs: Date.now() - start,
+      notes,
+      artifacts: baseline ? [] : [BASELINE_PATH],
+      details: results,
+    };
+  } catch (e: any) {
+    notes.push(`Uncaught error: ${e.message}`);
+    return {
+      pass: 5,
+      name: 'PERFORMANCE',
+      status: 'FAIL',
+      required: true,
+      durationMs: Date.now() - start,
+      notes,
+      artifacts: [],
+    };
+  }
 }

@@ -129,15 +129,17 @@ export async function runSecurityPass(): Promise<PassResult> {
     join(process.cwd(), 'src/lib/system/csp.ts'),
   ];
   let hasCsp = false;
-  for (const p of cspPaths) {
-    if (existsSync(p)) {
-      const content = readFileSync(p, 'utf-8');
-      if (content.includes('Content-Security-Policy') || content.includes('content-security-policy')) {
-        hasCsp = true;
-        break;
+  try {
+    for (const p of cspPaths) {
+      if (existsSync(p)) {
+        const content = readFileSync(p, 'utf-8');
+        if (content.includes('Content-Security-Policy') || content.includes('content-security-policy')) {
+          hasCsp = true;
+          break;
+        }
       }
     }
-  }
+  } catch { /* fs may not be available in test */ }
   if (hasCsp) {
     notes.push('✓ CSP headers configured');
   } else {
