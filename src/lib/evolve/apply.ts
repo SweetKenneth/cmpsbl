@@ -89,7 +89,7 @@ export async function applyProduction(context: EvolveContext): Promise<ApplyResu
       evolution_id: context.evolution_id,
       short_id,
       artifacts_applied: 0,
-      error: 'No artifacts found in shadow store',
+      error: 'Memory Stream score too weak — no pipelines crystallized for export.',
     };
   }
 
@@ -101,7 +101,7 @@ export async function applyProduction(context: EvolveContext): Promise<ApplyResu
       evolution_id: context.evolution_id,
       short_id,
       artifacts_applied: 0,
-      error: 'Evolution already applied — idempotency guard triggered',
+      error: 'This evolution has already been applied — Memory Stream recorded it as complete.',
     };
   }
 
@@ -181,7 +181,7 @@ export function canApply(context: EvolveContext): { allowed: boolean; reason: st
 
   const artifacts = shadowStore.getArtifacts(context.evolution_id);
   if (artifacts.length === 0) {
-    return { allowed: false, reason: 'No artifacts to apply' };
+    return { allowed: false, reason: 'Memory Stream score too weak — no pipelines available to apply.' };
   }
 
   return { allowed: true, reason: 'Ready to apply' };
