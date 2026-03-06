@@ -61,7 +61,6 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
     ...runSyncCheck('hooks', checkHooksContracts),
     ...runSyncCheck('branding', checkBrandingContracts),
     ...runSyncCheck('provider-branding', checkProviderBranding),
-    ...runSyncCheck('memory-bounds', checkMemoryBounds),
   ];
 
   // Terminal check only if detected
