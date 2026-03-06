@@ -194,7 +194,7 @@ export function HeroMetaSubstrate() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-5 sm:mb-7"
+              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
             >
               <span 
                 className="inline-block clockless-river-text"
@@ -208,6 +208,16 @@ export function HeroMetaSubstrate() {
                 CMPSBL
               </span>
             </motion.h1>
+
+            {/* Thesis line */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="text-sm sm:text-base text-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
+            >
+              CMPSBL is a cognitive runtime that lets software remember, adapt, and improve itself.
+            </motion.p>
 
             {/* Tagline — two-part rhythm */}
             <motion.div 
@@ -241,14 +251,15 @@ export function HeroMetaSubstrate() {
               transition={{ delay: 0.35, duration: 0.5 }}
               className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-[1.8]"
             >
-              A signal enters the{' '}
+              Signals enter the{' '}
               <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
-              crystallizes into{' '}
+              crystallize into{' '}
               <span className="text-foreground/90 font-medium">deployable software</span>,{' '}
-              and — when rare enough — crosses the boundary into{' '}
-              <span className="text-primary font-medium">physical silicon</span>.{' '}
-              Underneath it all sits the substrate: persistent memory, governed evolution,
-              and DREAM cycles turning every system into infrastructure that improves itself.
+              and in rare cases —{' '}
+              <span className="text-primary font-medium">silicon</span>.{' '}
+              Powered by persistent memory, governed{' '}
+              <span className="text-foreground/90 font-semibold">EVOLUTION</span>,{' '}
+              and DREAM cycles.
             </motion.p>
             
             {/* CTAs — primary + ghost for clean hierarchy */}
@@ -387,6 +398,34 @@ export function HeroMetaSubstrate() {
               </Link>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* Architecture strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.85 }}
+          className="mb-6 sm:mb-10"
+        >
+          <div className="flex items-center justify-center gap-0 overflow-x-auto scrollbar-hide py-2">
+            {[
+              "Signal",
+              "Memory Stream",
+              "Governed Runtime",
+              "Pipeline Packs",
+              "Sealed Engines",
+              "Applications",
+            ].map((step, i, arr) => (
+              <div key={step} className="flex items-center shrink-0">
+                <div className="px-3 py-1.5 rounded-lg border border-border/25 bg-card/30 backdrop-blur-sm">
+                  <span className="text-[10px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                </div>
+                {i < arr.length - 1 && (
+                  <span className="text-muted-foreground/30 text-xs font-bold px-1.5">→</span>
+                )}
+              </div>
+            ))}
+          </div>
         </motion.div>
         
         {/* Stats bar — minimal, glassy */}

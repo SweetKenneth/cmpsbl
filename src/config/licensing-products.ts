@@ -36,7 +36,7 @@ export const UNIFIED_TIERS = {
     price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
     amount: 2900, // $29/month
     interval: 'month' as const,
-    name: 'Creator',
+    name: 'Studio',
     tagline: 'More juice for builders shipping products',
     description: 'Expanded catalog, executable capabilities, private memory, light automation — everything in Free plus real power.',
     features: [
@@ -57,11 +57,11 @@ export const UNIFIED_TIERS = {
     price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
     amount: 4900, // $49/month
     interval: 'month' as const,
-    name: 'Studio',
+    name: 'Creator',
     tagline: '9 template packs with expanded depth',
     description: '9 artifact slots, expanded memory, template packs, trace exports, and high-priority Nexus routing.',
     features: [
-      'Everything in Creator, plus:',
+      'Everything in Studio, plus:',
       '9 Artifact Slots',
       '9 template packs included',
       'Expanded memory partitions',

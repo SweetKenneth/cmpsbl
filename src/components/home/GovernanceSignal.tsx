@@ -30,7 +30,7 @@ const signals = [
   {
     icon: Eye,
     label: "Diligence Harness",
-    description: "Full observability across every invocation. Cost tracking, latency monitoring, and confidence scoring on every operation.",
+    description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     code: "vision.trace({ cost: true, latency: true })",
   },
 ];

@@ -154,7 +154,7 @@ function SubstrateCapabilities() {
       icon: Brain, 
       name: 'DREAM', 
       desc: 'Background optimization cycles that continuously improve system performance and discover new patterns while idle.',
-      tier: 'Creator+' 
+      tier: 'Studio+' 
     },
     { 
       icon: Zap, 
@@ -280,7 +280,7 @@ function PricingSection() {
       highlight: false,
     },
     {
-      name: 'Creator',
+      name: 'Studio',
       price: '$29',
       interval: '/mo',
       desc: 'Expanded depth for serious builders.',
@@ -297,19 +297,19 @@ function PricingSection() {
       highlight: false,
     },
     {
-      name: 'Studio',
+      name: 'Creator',
       price: '$49',
       interval: '/mo',
       desc: 'Full operational depth with trace exports.',
       features: [
-        'Everything in Creator',
+        'Everything in Studio',
         '6 memory namespaces',
         'High-priority NEXUS routing',
         'Execution trace exports',
         '45 crystallized assets',
         '45 min/day radio access',
       ],
-      cta: 'Upgrade to Studio',
+      cta: 'Upgrade to Creator',
       href: '/upgrade',
       highlight: true,
     },
@@ -319,7 +319,7 @@ function PricingSection() {
       interval: '/mo',
       desc: 'Maximum depth. Full substrate control.',
       features: [
-        'Everything in Studio',
+        'Everything in Creator',
         '12 memory namespaces',
         'Highest-priority routing',
         'EVOLUTION safe self-modification',
@@ -439,7 +439,7 @@ function InvestorHighlights() {
             <TrendingUp className="w-6 h-6 text-primary mb-3" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Revenue Model</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Consumer SaaS: $0 / $29 / $49 / $79 per month</li>
+               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Consumer SaaS: $0 / $29 / $49 / $79 per month</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Enterprise licensing: $2,500/mo standalone</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />OEM partnerships: $50K–$150K/yr</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Discovery Corpus API: $500/mo</li>
