@@ -38,6 +38,8 @@ export function EnhancedFooter() {
         { name: "Runtime", href: "/runtime" },
         { name: "Foundations", href: "/foundations" },
         { name: "Proof mode", href: "/proof" },
+        { name: "System status", href: "/status" },
+        { name: "Scanner", href: "/scanner" },
       ]
     },
     {
@@ -49,6 +51,8 @@ export function EnhancedFooter() {
         { name: "Persistent memory", href: "/persistent-memory" },
         { name: "Dream eater", href: "/feed-dream-eater" },
         { name: "World engine", href: "/gaming" },
+        { name: "Projects", href: "/projects" },
+        { name: "Clockless engine", href: "/clockless-world-engine" },
       ]
     },
     {
@@ -60,6 +64,8 @@ export function EnhancedFooter() {
         { name: "Academy", href: "/academy" },
         { name: "Developer guide", href: "/developers/guide" },
         { name: "System integrity", href: "/system-integrity", highlight: true },
+        { name: "Developer showcase", href: "/developers" },
+        { name: "Use cases", href: "/use-cases" },
       ]
     },
     {
@@ -71,6 +77,8 @@ export function EnhancedFooter() {
         { name: "Showcase", href: "/showcase" },
         { name: "System overview", href: "/overview" },
         { name: "Publication", href: "/publication" },
+        { name: "Roadmap", href: "/roadmap" },
+        { name: "Changelog", href: "/changelog" },
       ]
     },
   ];
