@@ -153,13 +153,7 @@ export default function Explore() {
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-5xl mx-auto relative"
-        >
+        <div className="max-w-5xl mx-auto relative animate-fade-in-up">
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
             {/* Layered gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
@@ -178,33 +172,23 @@ export default function Explore() {
               }}
             />
             
-            {/* Glow orbs */}
-            <motion.div 
-              className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[100px]"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.5, 0.25] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            {/* Glow orbs — CSS animation replaces framer-motion */}
+            <div 
+              className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[100px] animate-glow-orb-a"
             />
-            <motion.div 
-              className="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-white/10 blur-[80px]"
-              animate={{ scale: [1.3, 1, 1.3], opacity: [0.5, 0.2, 0.5] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            <div 
+              className="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-white/10 blur-[80px] animate-glow-orb-b"
             />
             
             {/* Flowing accent at top */}
             <div className="h-[2px] memory-stream-bar opacity-70" />
 
             <div className="relative p-7 sm:p-14 md:p-20 text-center">
-              {/* Floating badge */}
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8"
-              >
+              {/* Floating badge — CSS fade-in replaces motion */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
-              </motion.div>
+              </div>
               
               <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
@@ -250,7 +234,7 @@ export default function Explore() {
             {/* Bottom accent */}
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           </div>
-        </motion.div>
+        </div>
       </section>
 
       <Suspense fallback={<div className="min-h-[100px]" />}>
