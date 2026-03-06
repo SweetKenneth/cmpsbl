@@ -1,7 +1,6 @@
 /**
  * COMPOSABLE ENGINES — The Arsenal
  * Black-boxed sealed runtimes. Horizontal scroll. Mission-briefing aesthetic.
- * Crown Jewel Edition — Polished
  */
 
 import { useRef, useState } from "react";
@@ -171,7 +170,7 @@ export default function Engines() {
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
                 Each Engine is a self-contained, obfuscated, tamper-proof runtime
-                forged from our highest-scoring Crown Jewel artifacts. You don't see the source. You see the results.
+                forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-sm text-muted-foreground/60 font-mono">
                 20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled
