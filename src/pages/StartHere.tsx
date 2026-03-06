@@ -212,10 +212,12 @@ export default function StartHere() {
           </div>
 
           {/* Free-tier callout */}
-          <motion.p {...stagger(0.4)} className="text-foreground font-semibold text-lg flex items-center gap-2 mb-8">
-            <CheckCircle2 className="w-5 h-5 text-primary" />
-            Free users are first-class builders here. 3 pipeline slots. Full runtime. No credit card.
-          </motion.p>
+          <motion.div {...stagger(0.4)} className="callout-accent rounded-xl p-5 mb-8">
+            <p className="text-foreground font-semibold text-base sm:text-lg flex items-center gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+              Free users are first-class builders here. 3 pipeline slots. Full runtime. No credit card.
+            </p>
+          </motion.div>
 
           {/* CTAs */}
           <motion.div {...stagger(0.45)} className="flex flex-col sm:flex-row gap-3">
@@ -240,12 +242,14 @@ export default function StartHere() {
             </Button>
           </motion.div>
 
+          {/* Section divider */}
+          <div className="section-divider w-full mt-16 mb-8" />
+
           {/* Footer Note */}
           <motion.div
             {...stagger(0.55)}
-            className="mt-16 pt-8 border-t border-border/30"
           >
-            <p className="text-sm text-muted-foreground italic">
+            <p className="text-sm text-muted-foreground italic leading-relaxed">
               The substrate compounds because of the architecture — DREAM cycles synthesize, ADAPT governs, EVOLUTION improves, and the Memory Stream captures it all. Start with one build. See for yourself.
             </p>
           </motion.div>

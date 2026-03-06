@@ -1132,5 +1132,39 @@ All colors MUST be HSL.
   border: 1px solid hsl(var(--border) / 0.3);
 }
 
+/* Crystallize button glow ring */
+@keyframes crystallize-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.15), 0 0 60px hsl(var(--primary) / 0.05); }
+  50% { box-shadow: 0 0 30px hsl(var(--primary) / 0.25), 0 0 80px hsl(var(--primary) / 0.1); }
+}
+.crystallize-glow {
+  animation: crystallize-glow 3s ease-in-out infinite;
+}
+.crystallize-glow:hover {
+  animation: crystallize-glow 1.5s ease-in-out infinite;
+}
+
+/* Section divider — subtle flowing line between sections */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.15), hsl(var(--neon-cyan) / 0.1), transparent);
+}
+
+/* Enhanced result card hover */
+.result-card-hover {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.result-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px hsl(var(--primary) / 0.1);
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+/* Callout card — subtle left-border accent */
+.callout-accent {
+  border-left: 3px solid hsl(var(--primary) / 0.4);
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.03), transparent);
+}
+
 /* Non-critical animations (substrate voice, decode orb, clockless river)
    are loaded on-demand via src/styles/deferred.css */

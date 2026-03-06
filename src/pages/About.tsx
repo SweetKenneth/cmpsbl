@@ -356,9 +356,11 @@ export default function About() {
       </section>
 
       {/* ════════════════════════════════════════════════════════
-         SYSTEMS INSIDE — Compact grid, mobile-optimized
-         ════════════════════════════════════════════════════════ */}
+          SYSTEMS INSIDE — Compact grid, mobile-optimized
+          ════════════════════════════════════════════════════════ */}
       <section className="relative z-10 px-5 py-14 sm:py-24">
+        {/* Section divider */}
+        <div className="section-divider max-w-5xl mx-auto mb-14 sm:mb-20" />
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp} className="mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">The Systems Inside</h2>
@@ -509,10 +511,12 @@ export default function About() {
          FINAL CTA
          ════════════════════════════════════════════════════════ */}
       <section className="relative z-10 px-5 py-14 sm:py-24">
+        {/* Section divider */}
+        <div className="section-divider max-w-4xl mx-auto mb-14 sm:mb-20" />
         <div className="max-w-4xl mx-auto">
           <motion.div
             {...fadeUp}
-            className="rounded-2xl overflow-hidden"
+            className="rounded-2xl overflow-hidden shadow-2xl shadow-primary/10"
           >
             <div className="relative bg-gradient-to-br from-primary via-primary/90 to-violet-600 p-6 sm:p-10 md:p-14 text-center">
               {/* Grid overlay */}
