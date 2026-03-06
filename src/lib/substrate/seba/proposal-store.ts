@@ -177,17 +177,26 @@ export class ProposalStore {
     status: StoredProposal['status'],
     reviewer = 'ATLAS_USER'
   ): Promise<{ success: boolean; error?: string }> {
-    const { error } = await supabase
+    // Use .select() to verify the update actually affected a row
+    const { data, error } = await supabase
       .from('evolution_proposals')
       .update({
         status,
         reviewer,
         reviewed_at: new Date().toISOString(),
       })
-      .eq('id', id);
+      .eq('id', id)
+      .select('id')
+      .maybeSingle();
 
     if (error) {
       return { success: false, error: error.message };
+    }
+
+    // If no row was returned, the update affected 0 rows
+    if (!data) {
+      console.warn(`[ProposalStore] ⚠ Update to ${status} matched 0 rows for id=${id}`);
+      return { success: false, error: `No proposal found with id ${id}` };
     }
 
     console.log(`[ProposalStore] ✅ Updated proposal ${id} to ${status}`);

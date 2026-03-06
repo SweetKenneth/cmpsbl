@@ -78,8 +78,8 @@ export interface NormalizationResult {
 // ═══════════════════════════════════════════════════════════════
 
 const NORMALIZATION_CONFIG = {
-  min_confidence: 0.7,           // Proposals below this are rejected
-  allowed_risk_levels: ['low', 'medium'] as const,
+  min_confidence: 0.6,           // Proposals below this are rejected
+  allowed_risk_levels: ['low', 'medium', 'high'] as const,
   require_target_scope: true,
   min_actions_for_plan: 1,       // Minimum normalized actions to create plan
 };

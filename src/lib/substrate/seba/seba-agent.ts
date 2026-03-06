@@ -560,19 +560,38 @@ class SEBAAgent {
       };
     }
 
-    // Update status in evolution_proposals table (critical for preventing re-scan)
-    const updateResult = await ProposalStore.updateStatus(proposalId, 'approved', 'HUMAN_OPERATOR');
+    // Resolve the full proposal ID first (handle short ID prefix)
+    let resolvedId = proposalId;
     
-    if (!updateResult.success) {
+    // Try exact match first
+    const exactResult = await ProposalStore.updateStatus(proposalId, 'approved', 'HUMAN_OPERATOR');
+    
+    if (!exactResult.success) {
       // Try matching by short_id prefix
       const { data: matchingProposals } = await supabase
         .from('evolution_proposals')
         .select('id')
         .ilike('id', `${proposalId}%`)
+        .eq('status', 'pending')
         .limit(1);
         
       if (matchingProposals && matchingProposals.length > 0) {
-        await ProposalStore.updateStatus(matchingProposals[0].id, 'approved', 'HUMAN_OPERATOR');
+        resolvedId = matchingProposals[0].id;
+        const prefixResult = await ProposalStore.updateStatus(resolvedId, 'approved', 'HUMAN_OPERATOR');
+        
+        if (!prefixResult.success) {
+          return {
+            success: false,
+            command: 'approve',
+            message: `Failed to approve proposal ${proposalId}: ${prefixResult.error}`,
+          };
+        }
+      } else {
+        return {
+          success: false,
+          command: 'approve',
+          message: `No pending proposal found matching ${proposalId}. Use seba.review to list proposals.`,
+        };
       }
     }
 
@@ -580,7 +599,7 @@ class SEBAAgent {
     await supabase.from('brain_events').insert({
       module: 'seba',
       event_type: 'manual_approval',
-      data: { proposal_id: proposalId, approved_by: 'human' },
+      data: { proposal_id: resolvedId, approved_by: 'human' },
       outcome: 'success',
     });
 
@@ -590,7 +609,7 @@ class SEBAAgent {
     return {
       success: true,
       command: 'approve',
-      message: `Proposal ${proposalId} approved. Run seba.execute ${proposalId} to apply.`,
+      message: `Proposal ${resolvedId} approved. Run seba.execute ${resolvedId} to apply.`,
     };
   }
 
