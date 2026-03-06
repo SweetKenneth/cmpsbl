@@ -1218,6 +1218,17 @@ export const HARVEST_COMMANDS: CommandDefinition[] = [
   { command: 'harvest.errors', description: 'Pipeline error log', category: 'harvest', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
 ];
 
+export const SHADOW_COMMANDS: CommandDefinition[] = [
+  { command: 'shadow.status', description: 'Shadow environment status', category: 'shadow', icon: Eye, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.health', description: 'Shadow environment health grade', category: 'shadow', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.active', description: 'Active shadow validations', category: 'shadow', icon: ClipboardCheck, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.history', description: 'Shadow run history', category: 'shadow', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.compare', description: 'Shadow vs production diff', category: 'shadow', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.promote', description: 'Promote shadow to production', category: 'shadow', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '<run_id>' },
+  { command: 'shadow.hardening', description: 'Hardening features', category: 'shadow', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'shadow.help', description: 'SHADOW command reference', category: 'shadow', icon: Terminal, requiresOperator: false, requiredTier: 'free' },
+];
+
 // ═══ MEDIC & NERVE Commands ═══
 export const MEDIC_COMMANDS: CommandDefinition[] = [
   { command: 'medic.status', description: 'Autonomous diagnostics status', category: 'medic', icon: Activity, requiresOperator: false, requiredTier: 'free' },
