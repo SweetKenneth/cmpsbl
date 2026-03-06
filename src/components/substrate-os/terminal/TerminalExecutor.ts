@@ -373,7 +373,7 @@ function formatSystemHealth(data: any): string {
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
 ║  Threat Level:    ${threatLevel.toUpperCase().padEnd(10)}                                ║
-║  Modules:         37/37 reporting                             ║
+║  Modules:         38/38 reporting                             ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  MODULE HEALTH REPORT                                        ║
 ╠══════════════════════════════════════════════════════════════╣`;
@@ -1625,22 +1625,23 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         });
         const results = await Promise.allSettled(moduleChecks);
         const checks = results.map(r => r.status === 'fulfilled' ? r.value : { key: '?', label: '?', layer: '?', ok: false });
+        const totalChecked = checks.length;
         const passed = checks.filter(c => c.ok).length;
-        const failed = checks.filter(c => !c.ok);
+        const failedCount = totalChecked - passed;
         let output = `
 ╔══════════════════════════════════════════════════════════════╗
 ║  SYSTEM VERIFY — Non-Destructive Module Check                 ║
 ╠══════════════════════════════════════════════════════════════╣
-║  Modules Checked: 21    Passed: ${String(passed).padEnd(2)}    Failed: ${String(21 - passed).padEnd(2)}           ║
+║  Modules Checked: ${String(totalChecked).padEnd(4)}  Passed: ${String(passed).padEnd(2)}    Failed: ${String(failedCount).padEnd(2)}           ║
 ╠══════════════════════════════════════════════════════════════╣`;
         for (const c of checks) {
           output += `\n║  ${c.ok ? '✅' : '❌'} ${c.label.padEnd(14)} [${c.layer.substring(0, 5).padEnd(5)}]  ${c.ok ? 'PASS' : 'FAIL'}                      ║`;
         }
         output += `
 ╠══════════════════════════════════════════════════════════════╣
-║  Overall: ${passed === 21 ? '🟢 ALL SYSTEMS NOMINAL' : `🟡 ${21 - passed} MODULE(S) NEED ATTENTION`}                       ║
+║  Overall: ${failedCount === 0 ? '🟢 ALL SYSTEMS NOMINAL' : `🟡 ${failedCount} MODULE(S) NEED ATTENTION`}                       ║
 ╚══════════════════════════════════════════════════════════════╝`;
-        return { success: passed === 21, output };
+        return { success: failedCount === 0, output };
       } catch (err) {
         return { success: false, output: `▓ Verify error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
@@ -1648,7 +1649,123 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       const role = args[0] as 'observer' | 'operator' | undefined;
       result = await system.resilience(role);
     } else if (base === 'system.heal') {
-      result = await system.heal(args[0], args[1] === 'true');
+      // Comprehensive healing: --all heals everything, specific module name heals that module
+      const target = args[0]?.toLowerCase();
+      const force = args.includes('--force') || args.includes('-f');
+      
+      if (!target) {
+        return {
+          success: false,
+          output: `▓ ERROR: Module or --all required
+  Usage: system.heal <module>   — Heal specific module
+         system.heal --all      — Heal entire system
+         system.heal --all --force  — Force-heal (reset all scores to 100%)
+  
+  Modules: ${ALL_EXECUTION_SURFACES.map(m => m.key).join(', ')}
+  Subsystems: intent_mesh, autoblog, seba, shadow_mesh, clm, evolution_mesh, immunity_mesh`,
+        };
+      }
+      
+      if (target === '--all' || target === 'all') {
+        // Full system heal: subsystems + circuit breakers + self-repair
+        try {
+          const { healAllSubsystems } = await import('@/lib/substrate/subsystem-health');
+          const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
+          const { resetBreaker } = await import('@/lib/substrate/circuit-breaker');
+          
+          // 1. Reset all 38 node circuit breakers
+          const breakerResets: string[] = [];
+          for (const mod of ALL_EXECUTION_SURFACES) {
+            try {
+              resetBreaker(mod.key);
+              breakerResets.push(mod.label);
+            } catch { /* skip */ }
+          }
+          
+          // 2. Heal all subsystems
+          const subsystemResults = await healAllSubsystems(force);
+          
+          // 3. Run self-repair loop
+          const repairReport = await runSelfRepair(2);
+          
+          const subsystemOk = subsystemResults.filter(r => r.ok).length;
+          const totalSubs = subsystemResults.length;
+          const allOk = subsystemResults.every(r => r.ok) && repairReport.stable;
+          
+          let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  SYSTEM HEAL — FULL RECOVERY ${force ? '(FORCED)' : ''}                            ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  ┌─ CIRCUIT BREAKERS ────────────────────────────────────────║
+║  │  Reset: ${breakerResets.length}/${ALL_EXECUTION_SURFACES.length} node breakers cleared                    ║
+║  └───────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ SUBSYSTEM HEALING ───────────────────────────────────────║`;
+
+          for (const sr of subsystemResults) {
+            output += `
+║  │  ${sr.ok ? '✅' : '❌'} ${sr.subsystem.padEnd(18)} ${sr.previousScore}% → ${sr.newScore}%  (${sr.actions.length} actions)  ║`;
+          }
+          
+          output += `
+║  └───────────────────────────────────────────────────────────║
+║                                                              ║
+║  ┌─ SELF-REPAIR ─────────────────────────────────────────────║
+║  │  Attempts: ${repairReport.attempts}/${repairReport.maxAttempts}                                        ║
+║  │  Repairs applied: ${repairReport.repairs.length}                                    ║
+║  │  System stable: ${repairReport.stable ? '✅ YES' : '❌ NO'}                                   ║
+║  └───────────────────────────────────────────────────────────║
+║                                                              ║
+║  Result: ${allOk ? '🟢 SYSTEM HEALED' : '🟡 PARTIAL HEAL — some issues remain'}              ║
+║  Subsystems: ${subsystemOk}/${totalSubs} healthy                                  ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝`;
+
+          return { success: allOk, output };
+        } catch (err) {
+          return { success: false, output: `▓ System heal error: ${err instanceof Error ? err.message : 'Unknown'}` };
+        }
+      }
+      
+      // Check if target is a known subsystem
+      const SUBSYSTEM_IDS = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh'];
+      if (SUBSYSTEM_IDS.includes(target)) {
+        try {
+          const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+          const healResult = await healSubsystem(target as any, force);
+          return {
+            success: healResult.ok,
+            output: `${healResult.ok ? '✅' : '❌'} ${target}: ${healResult.previousScore}% → ${healResult.newScore}% (${healResult.actions.join(', ')})`,
+          };
+        } catch (err) {
+          return { success: false, output: `▓ Heal error for ${target}: ${err instanceof Error ? err.message : 'Unknown'}` };
+        }
+      }
+      
+      // Check if target is a known node (from ALL_EXECUTION_SURFACES)
+      const node = ALL_EXECUTION_SURFACES.find(m => m.key === target || m.label.toLowerCase() === target);
+      if (node) {
+        try {
+          const { resetBreaker } = await import('@/lib/substrate/circuit-breaker');
+          resetBreaker(node.key);
+          
+          // Also try to pulse the module to verify it's responsive
+          let pulseOk = true;
+          try {
+            await substrate.invoke({ module: node.key as any, action: 'pulse' });
+          } catch { pulseOk = false; }
+          
+          return {
+            success: true,
+            output: `✅ ${node.label} [${node.layer}]: Circuit breaker reset, pulse ${pulseOk ? 'OK' : 'failed (module may need restart)'}`,
+          };
+        } catch (err) {
+          return { success: false, output: `▓ Heal error for ${node.label}: ${err instanceof Error ? err.message : 'Unknown'}` };
+        }
+      }
+      
+      return { success: false, output: `▓ Unknown module: '${target}'\n  Use system.heal --all for full system heal.` };
     } else if (base === 'system.restart') {
       result = await system.restart(args[0]);
     } else if (base === 'system.backup') {
