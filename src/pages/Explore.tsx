@@ -2,11 +2,13 @@
  * Explore — The CMPSBL Gateway
  * Narrative flow: Hero → Stats → What It Is → How It's Different → Who It's For →
  * Activation Model → Governance → Social Proof → Evolution → Engines → Final CTA
+ *
+ * NOTE: framer-motion is NOT imported here to avoid pulling 56KB into the
+ * landing page critical path. All animations use CSS keyframes instead.
  */
 
 import { useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { 
   ArrowRight, 
   Terminal, 
@@ -34,6 +36,7 @@ const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => (
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 
 // Section divider with animated gradient, memory-stream accent, and side flair
+// Uses CSS keyframes instead of framer-motion to avoid 56KB dependency
 function SectionDivider() {
   return (
     <div className="relative py-12 sm:py-16">
@@ -43,12 +46,10 @@ function SectionDivider() {
       <div className="absolute left-[10%] right-[10%] top-1/2 h-px">
         <div className="h-full divider-flow" />
       </div>
-      {/* Center diamond with concentric rings */}
+      {/* Center diamond with concentric rings — CSS pulse replaces motion.div */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <motion.div 
-          className="w-2.5 h-2.5 bg-primary/50 rotate-45 rounded-[1px]"
-          animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.9, 0.4] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        <div 
+          className="w-2.5 h-2.5 bg-primary/50 rotate-45 rounded-[1px] animate-divider-diamond"
         />
         <div className="absolute -inset-2 border border-primary/10 rotate-45 rounded-[2px]" />
         <div className="absolute -inset-4 border border-primary/5 rotate-45 rounded-[3px]" />

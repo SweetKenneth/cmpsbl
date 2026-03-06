@@ -133,15 +133,11 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@radix-ui/')) {
               return 'ui-misc';
             }
-            // Lucide icons - consolidate into single chunk to avoid ~40+ tiny
-            // individual icon chunks that create deep network dependency chains
-            if (id.includes('lucide-react')) {
-              return 'icons';
-            }
-            // Framer Motion - defer animations
-            if (id.includes('framer-motion')) {
-              return 'motion';
-            }
+            // Lucide icons & Framer Motion: Do NOT assign to manualChunks.
+            // Named manual chunks create static import edges from the entry bundle,
+            // loading ~103KB (icons 47KB + motion 56KB) on every page even when
+            // only a fraction is used. Let Rollup naturally inline them into the
+            // lazy chunks that import them — each route loads only what it needs.
             // TanStack Query - essential but separate
             if (id.includes('@tanstack/react-query')) {
               return 'query';
