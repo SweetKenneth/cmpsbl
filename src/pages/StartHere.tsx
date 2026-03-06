@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PageTransition } from "@/components/PageTransition";
+import { SEO } from "@/components/SEO";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import {
   ArrowRight, Sparkles, Brain, Code, Zap, BookOpen, CheckCircle2,
   Moon, RefreshCw, TrendingUp, Shield, Layers, Hammer,
@@ -94,6 +98,7 @@ export default function StartHere() {
       </div>
 
       <main className="flex-1 relative z-10">
+        <PageTransition>
         <div className="container mx-auto px-4 py-20 sm:py-28 max-w-5xl">
           {/* Badge */}
           <motion.div {...fadeUp}>
@@ -248,6 +253,7 @@ export default function StartHere() {
             </p>
           </motion.div>
         </div>
+        </PageTransition>
       </main>
       <EnhancedFooter />
     </div>
