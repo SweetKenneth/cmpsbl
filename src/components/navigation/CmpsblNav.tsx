@@ -133,8 +133,8 @@ export function CmpsblNav() {
       name: "Explore",
       icon: Globe,
       items: [
-        { name: "Memory stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "PUBLIC", highlight: true },
-        { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW", highlight: true },
+        { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW" },
+        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "LIVE", highlight: true },
         { name: "Evolution", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
@@ -437,10 +437,10 @@ export function CmpsblNav() {
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
-                  { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW", highlight: true },
+                  { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
                   { name: "Evolution", href: "/evolution", icon: Zap, badge: "LIVE" },
                   { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
-                  { name: "Memory stream", href: "/foundry", icon: Sparkles },
+                  { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW" },
                 ].map((item) => (
                   <Link
                     key={item.href}
