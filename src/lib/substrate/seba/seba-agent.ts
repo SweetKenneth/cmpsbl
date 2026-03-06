@@ -748,7 +748,7 @@ class SEBAAgent {
         status: 'applied',
       }).eq('id', fullId);
 
-      await supabase.from('brain_events').insert({
+      await supabase.from('brain_events').insert([{
         module: 'seba',
         event_type: 'production_execution',
         data: { 
@@ -759,7 +759,7 @@ class SEBAAgent {
           phase: 'production_applied',
         },
         outcome: 'success',
-      });
+      }]);
 
       this.state.executed_proposals++;
       this.state.evolutions_applied++;
