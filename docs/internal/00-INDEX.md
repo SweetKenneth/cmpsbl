@@ -42,6 +42,9 @@ This library is the single source of truth for all internal knowledge required t
 | 32 | [Agents & Cognitives Marketplace](./32-agents-and-cognitives.md) | 20 agents, sealed runtime, DREAM synthesis, tiered pricing |
 | 33 | [Scanner Orchestrator](./33-scanner-orchestrator.md) | Substrate-integrated scanning, prioritization, regression detection |
 | 34 | [ATLAS v2.0.0 (Prometheus)](./34-atlas-governance-hub.md) | 7-tab governance hub, Node Inbox, governance modes, marketplace |
+| 35 | [Mutation & Evolution Deep Dive](./35-mutation-evolution-deep-dive.md) | Complete pipeline execution, shadow delegation, receipt chain, dual executor, entropy |
+| 36 | [Memory Persistence Deep Dive](./36-memory-persistence-deep-dive.md) | 3-tier lifecycle, salience scoring, neural substrate, auto-tiering, recall feedback |
+| 37 | [Orchestration Layer Deep Dive](./37-orchestration-layer-deep-dive.md) | Module Bus, Matrix Communication Bus, Orchestrator Engine, control planes, signal flow |
 
 ## Classification Policy
 
