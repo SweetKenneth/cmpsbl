@@ -1,9 +1,9 @@
 /**
  * Hardening Terminal Handlers
- * Registers commands for all 20 hardened modules + operational commands
+ * Registers commands for all 24 hardened modules + operational commands
  * CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE,
  * BRAIN, MEMORY, DREAM, ECONOMY, IMMUNITY, EVOLUTION, INTENT,
- * ENGINEER, ATLAS, AUDIT, RELAY, RIPPLE
+ * ENGINEER, ATLAS, AUDIT, RELAY, RIPPLE, SANDBOX, INCLUSIVE
  */
 
 import { registerHandler } from './validate-registry';
@@ -129,9 +129,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('system.hardening', async () => {
     try {
-      const { SYSTEM_HARDENING_VERSION, SYSTEM_HARDENING_CODENAME, calculateSystemHealth } = await import('@/lib/system/system-hardening');
-      return { success: true, data: { version: SYSTEM_HARDENING_VERSION, codename: SYSTEM_HARDENING_CODENAME, health: calculateSystemHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Bastion' } }; }
+      const { SYSTEM_HARDENING_CODENAME, calculateSystemHealth } = await import('@/lib/system/system-hardening');
+      return { success: true, data: { codename: SYSTEM_HARDENING_CODENAME, health: calculateSystemHealth() } };
+    } catch { return { success: true, data: { codename: 'Bastion' } }; }
   });
 
   registerHandler('system.hardening.health', async () => {
@@ -194,9 +194,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('cortex.hardening', async () => {
     try {
-      const { CORTEX_HARDENING_VERSION, calculateCortexHealth } = await import('@/lib/cortex/cortex-hardening');
-      return { success: true, data: { version: CORTEX_HARDENING_VERSION, codename: 'Conductor', health: calculateCortexHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Conductor' } }; }
+      const { calculateCortexHealth } = await import('@/lib/cortex/cortex-hardening');
+      return { success: true, data: { codename: 'Conductor', health: calculateCortexHealth() } };
+    } catch { return { success: true, data: { codename: 'Conductor' } }; }
   });
 
   registerHandler('cortex.hardening.health', async () => {
@@ -224,9 +224,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('encode.hardening', async () => {
     try {
-      const { ENCODE_HARDENING_VERSION, calculateEncodeHealth } = await import('@/lib/substrate/encode-module/encode-hardening');
-      return { success: true, data: { version: ENCODE_HARDENING_VERSION, codename: 'Forge', health: calculateEncodeHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Forge' } }; }
+      const { calculateEncodeHealth } = await import('@/lib/substrate/encode-module/encode-hardening');
+      return { success: true, data: { codename: 'Forge', health: calculateEncodeHealth() } };
+    } catch { return { success: true, data: { codename: 'Forge' } }; }
   });
 
   registerHandler('encode.hardening.health', async () => {
@@ -254,9 +254,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('decode.hardening', async () => {
     try {
-      const { DECODE_HARDENING_VERSION, calculateDecodeHealth } = await import('@/lib/substrate/decode/decode-hardening');
-      return { success: true, data: { version: DECODE_HARDENING_VERSION, codename: 'Cipher', health: calculateDecodeHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Cipher' } }; }
+      const { calculateDecodeHealth } = await import('@/lib/substrate/decode/decode-hardening');
+      return { success: true, data: { codename: 'Cipher', health: calculateDecodeHealth() } };
+    } catch { return { success: true, data: { codename: 'Cipher' } }; }
   });
 
   registerHandler('decode.hardening.health', async () => {
@@ -284,9 +284,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('vision.hardening', async () => {
     try {
-      const { VISION_HARDENING_VERSION, calculateVisionHealth } = await import('@/lib/vision/vision-hardening');
-      return { success: true, data: { version: VISION_HARDENING_VERSION, codename: 'Sentinel', health: calculateVisionHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Sentinel' } }; }
+      const { calculateVisionHealth } = await import('@/lib/vision/vision-hardening');
+      return { success: true, data: { codename: 'Sentinel', health: calculateVisionHealth() } };
+    } catch { return { success: true, data: { codename: 'Sentinel' } }; }
   });
 
   registerHandler('vision.hardening.health', async () => {
@@ -308,8 +308,8 @@ export function registerHardeningHandlers(): void {
   registerHandler('defense.hardening', async () => {
     try {
       const m = await import('@/lib/defense/defense-hardening') as any;
-      return { success: true, data: { version: m.DEFENSE_HARDENING_VERSION, codename: m.DEFENSE_HARDENING_CODENAME, ...(m.getDefenseHardeningStatus?.() ?? {}) } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Fortress' } }; }
+      return { success: true, data: { codename: m.DEFENSE_HARDENING_CODENAME, ...(m.getDefenseHardeningStatus?.() ?? {}) } };
+    } catch { return { success: true, data: { codename: 'Fortress' } }; }
   });
 
   registerHandler('defense.hardening.health', async () => {
@@ -330,9 +330,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('governance.hardening', async () => {
     try {
-      const { GOVERNANCE_HARDENING_VERSION, calculateGovernanceHealth } = await import('@/lib/substrate/governance/governance-hardening');
-      return { success: true, data: { version: GOVERNANCE_HARDENING_VERSION, codename: 'Magistrate', health: calculateGovernanceHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Magistrate' } }; }
+      const { calculateGovernanceHealth } = await import('@/lib/substrate/governance/governance-hardening');
+      return { success: true, data: { codename: 'Magistrate', health: calculateGovernanceHealth() } };
+    } catch { return { success: true, data: { codename: 'Magistrate' } }; }
   });
 
   registerHandler('governance.hardening.health', async () => {
@@ -353,9 +353,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('brain.hardening', async () => {
     try {
-      const { BRAIN_HARDENING_VERSION, calculateBrainHealth } = await import('@/lib/substrate/ccr/brain-hardening');
-      return { success: true, data: { version: BRAIN_HARDENING_VERSION, codename: 'Memoria', health: calculateBrainHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Memoria' } }; }
+      const { calculateBrainHealth } = await import('@/lib/substrate/ccr/brain-hardening');
+      return { success: true, data: { codename: 'Memoria', health: calculateBrainHealth() } };
+    } catch { return { success: true, data: { codename: 'Memoria' } }; }
   });
 
   registerHandler('brain.hardening.health', async () => {
@@ -446,9 +446,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('memory.hardening', async () => {
     try {
-      const { MEMORY_HARDENING_VERSION, calculateMemoryHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
-      return { success: true, data: { version: MEMORY_HARDENING_VERSION, codename: 'Vault', health: calculateMemoryHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Vault' } }; }
+      const { calculateMemoryHealth } = await import('@/lib/substrate/memory-module/memory-hardening');
+      return { success: true, data: { codename: 'Vault', health: calculateMemoryHealth() } };
+    } catch { return { success: true, data: { codename: 'Vault' } }; }
   });
 
   registerHandler('memory.hardening.health', async () => {
@@ -553,9 +553,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('dream.hardening', async () => {
     try {
-      const { DREAM_HARDENING_VERSION, calculateDreamHealth } = await import('@/lib/substrate/ccr/dream-hardening');
-      return { success: true, data: { version: DREAM_HARDENING_VERSION, codename: 'Nocturne', health: calculateDreamHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Nocturne' } }; }
+      const { calculateDreamHealth } = await import('@/lib/substrate/ccr/dream-hardening');
+      return { success: true, data: { codename: 'Nocturne', health: calculateDreamHealth() } };
+    } catch { return { success: true, data: { codename: 'Nocturne' } }; }
   });
 
   registerHandler('dream.hardening.health', async () => {
@@ -646,9 +646,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('economy.hardening', async () => {
     try {
-      const { ECONOMY_HARDENING_VERSION, calculateEconomyHealth } = await import('@/lib/substrate/economy-module/economy-hardening');
-      return { success: true, data: { version: ECONOMY_HARDENING_VERSION, codename: 'Ledger', health: calculateEconomyHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Ledger' } }; }
+      const { calculateEconomyHealth } = await import('@/lib/substrate/economy-module/economy-hardening');
+      return { success: true, data: { codename: 'Ledger', health: calculateEconomyHealth() } };
+    } catch { return { success: true, data: { codename: 'Ledger' } }; }
   });
 
   registerHandler('economy.hardening.health', async () => {
@@ -760,9 +760,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('immunity.hardening', async () => {
     try {
-      const { IMMUNITY_HARDENING_VERSION, calculateImmunityHealth } = await import('@/lib/substrate/immunity-hardening');
-      return { success: true, data: { version: IMMUNITY_HARDENING_VERSION, codename: 'Watchguard', health: calculateImmunityHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Watchguard' } }; }
+      const { calculateImmunityHealth } = await import('@/lib/substrate/immunity-hardening');
+      return { success: true, data: { codename: 'Watchguard', health: calculateImmunityHealth() } };
+    } catch { return { success: true, data: { codename: 'Watchguard' } }; }
   });
 
   registerHandler('immunity.hardening.health', async () => {
@@ -867,9 +867,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('evolution.hardening', async () => {
     try {
-      const { EVOLUTION_HARDENING_VERSION, calculateEvolutionHealth } = await import('@/lib/substrate/evolution-hardening');
-      return { success: true, data: { version: EVOLUTION_HARDENING_VERSION, codename: 'Chrysalis', health: calculateEvolutionHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Chrysalis' } }; }
+      const { calculateEvolutionHealth } = await import('@/lib/substrate/evolution-hardening');
+      return { success: true, data: { codename: 'Chrysalis', health: calculateEvolutionHealth() } };
+    } catch { return { success: true, data: { codename: 'Chrysalis' } }; }
   });
 
   registerHandler('evolution.hardening.health', async () => {
@@ -981,9 +981,9 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('intent.hardening', async () => {
     try {
-      const { INTENT_HARDENING_VERSION, calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
-      return { success: true, data: { version: INTENT_HARDENING_VERSION, codename: 'Navigator', health: calculateIntentHealth() } };
-    } catch { return { success: true, data: { version: '2.0.0', codename: 'Navigator' } }; }
+      const { calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      return { success: true, data: { codename: 'Navigator', health: calculateIntentHealth() } };
+    } catch { return { success: true, data: { codename: 'Navigator' } }; }
   });
 
   registerHandler('intent.hardening.health', async () => {
@@ -1171,7 +1171,7 @@ export function registerHardeningHandlers(): void {
   });
 
   registerHandler('engineer.hardening', async () => {
-    return { success: true, data: { version: '2.0.0', codename: 'Mechanist', status: 'active' } };
+    return { success: true, data: { codename: 'Mechanist', status: 'active' } };
   });
 
   registerHandler('engineer.hardening.health', async () => {
@@ -1517,7 +1517,7 @@ export function registerHardeningHandlers(): void {
   });
 
   registerHandler('atlas.hardening', async () => {
-    return { success: true, data: { version: '2.0.0', codename: 'Prometheus', status: 'active' } };
+    return { success: true, data: { codename: 'Prometheus', status: 'active' } };
   });
 
   registerHandler('atlas.hardening.health', async () => {
@@ -1528,8 +1528,8 @@ export function registerHardeningHandlers(): void {
   // ═══ AUDIT HARDENING ═══
 
   registerHandler('audit.hardening', async () => {
-    const { AUDIT_HARDENING_VERSION, AUDIT_HARDENING_CODENAME, calculateAuditHealth } = await import('@/lib/substrate/audit-hardening');
-    return { success: true, data: { version: AUDIT_HARDENING_VERSION, codename: AUDIT_HARDENING_CODENAME, health: calculateAuditHealth() } };
+    const { AUDIT_HARDENING_CODENAME, calculateAuditHealth } = await import('@/lib/substrate/audit-hardening');
+    return { success: true, data: { codename: AUDIT_HARDENING_CODENAME, health: calculateAuditHealth() } };
   });
   registerHandler('audit.hardening.health', async () => { const { calculateAuditHealth } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: calculateAuditHealth() }; });
   registerHandler('audit.hardening.chain', async () => { const { validateChainIntegrity } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: validateChainIntegrity() }; });
@@ -1559,8 +1559,8 @@ export function registerHardeningHandlers(): void {
   // ═══ RELAY HARDENING ═══
 
   registerHandler('relay.hardening', async () => {
-    const { RELAY_HARDENING_VERSION, RELAY_HARDENING_CODENAME, calculateRelayHealth } = await import('@/lib/substrate/relay-hardening');
-    return { success: true, data: { version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME, health: calculateRelayHealth() } };
+    const { RELAY_HARDENING_CODENAME, calculateRelayHealth } = await import('@/lib/substrate/relay-hardening');
+    return { success: true, data: { codename: RELAY_HARDENING_CODENAME, health: calculateRelayHealth() } };
   });
   registerHandler('relay.hardening.health', async () => { const { calculateRelayHealth } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: calculateRelayHealth() }; });
   registerHandler('relay.hardening.delivery', async () => { const { getDeliveryStats, getDeliveryLog } = await import('@/lib/substrate/relay-hardening'); return { success: true, data: { stats: getDeliveryStats(), recentLog: getDeliveryLog(10) } }; });
@@ -1590,8 +1590,8 @@ export function registerHardeningHandlers(): void {
   // ═══ RIPPLE HARDENING ═══
 
   registerHandler('ripple.hardening', async () => {
-    const { RIPPLE_HARDENING_VERSION, RIPPLE_HARDENING_CODENAME, calculateRippleHealth } = await import('@/lib/ripple/ripple-hardening');
-    return { success: true, data: { version: RIPPLE_HARDENING_VERSION, codename: RIPPLE_HARDENING_CODENAME, health: calculateRippleHealth() } };
+    const { RIPPLE_HARDENING_CODENAME, calculateRippleHealth } = await import('@/lib/ripple/ripple-hardening');
+    return { success: true, data: { codename: RIPPLE_HARDENING_CODENAME, health: calculateRippleHealth() } };
   });
   registerHandler('ripple.hardening.health', async () => { const { calculateRippleHealth } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: calculateRippleHealth() }; });
   registerHandler('ripple.hardening.bloom', async () => { const { getBloomStats } = await import('@/lib/ripple/ripple-hardening'); return { success: true, data: getBloomStats() }; });
@@ -1621,8 +1621,8 @@ export function registerHardeningHandlers(): void {
   // ═══ SANDBOX HARDENING ═══
 
   registerHandler('sandbox.hardening', async () => {
-    const { SANDBOX_HARDENING_VERSION, SANDBOX_HARDENING_CODENAME, calculateSandboxHealth } = await import('@/lib/substrate/sandbox-module/sandbox-hardening');
-    return { success: true, data: { version: SANDBOX_HARDENING_VERSION, codename: SANDBOX_HARDENING_CODENAME, health: calculateSandboxHealth() } };
+    const { SANDBOX_HARDENING_CODENAME, calculateSandboxHealth } = await import('@/lib/substrate/sandbox-module/sandbox-hardening');
+    return { success: true, data: { codename: SANDBOX_HARDENING_CODENAME, health: calculateSandboxHealth() } };
   });
   registerHandler('sandbox.hardening.health', async () => { const { calculateSandboxHealth } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: calculateSandboxHealth() }; });
   registerHandler('sandbox.hardening.escapes', async () => { const { getEscapeStats } = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return { success: true, data: getEscapeStats() }; });
@@ -1652,8 +1652,8 @@ export function registerHardeningHandlers(): void {
   // ═══ INCLUSIVE HARDENING ═══
 
   registerHandler('inclusive.hardening', async () => {
-    const { INCLUSIVE_HARDENING_VERSION, INCLUSIVE_HARDENING_CODENAME, calculateInclusiveHealth } = await import('@/lib/inclusive/inclusive-hardening');
-    return { success: true, data: { version: INCLUSIVE_HARDENING_VERSION, codename: INCLUSIVE_HARDENING_CODENAME, health: calculateInclusiveHealth() } };
+    const { INCLUSIVE_HARDENING_CODENAME, calculateInclusiveHealth } = await import('@/lib/inclusive/inclusive-hardening');
+    return { success: true, data: { codename: INCLUSIVE_HARDENING_CODENAME, health: calculateInclusiveHealth() } };
   });
   registerHandler('inclusive.hardening.health', async () => { const { calculateInclusiveHealth } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: calculateInclusiveHealth() }; });
   registerHandler('inclusive.hardening.compliance', async () => { const { getComplianceTrend } = await import('@/lib/inclusive/inclusive-hardening'); return { success: true, data: { trend: getComplianceTrend() } }; });
