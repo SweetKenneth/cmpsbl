@@ -492,24 +492,6 @@ function ClosingCTA() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="py-10 px-6 border-t border-border bg-secondary/20">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} CMPSBL® by PromptFluid®. All rights reserved.
-        </p>
-        <div className="flex items-center gap-6 text-xs text-muted-foreground">
-          <Link to="/about" className="hover:text-foreground transition-colors">About</Link>
-          <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-          <Link to="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-          <Link to="/contact" className="hover:text-foreground transition-colors">Contact</Link>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 // ── Page Composition ────────────────────────────────────────────
 
 export default function SystemOverview() {
@@ -521,20 +503,7 @@ export default function SystemOverview() {
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
-        {/* Minimal top nav */}
-        <nav className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
-          <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-            <Link to="/" className="text-sm font-bold tracking-tight text-foreground">CMPSBL®</Link>
-            <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-              <a href="#memory-stream" className="hover:text-foreground transition-colors">Memory Stream</a>
-              <a href="#systems" className="hover:text-foreground transition-colors">Systems</a>
-              <a href="#exports" className="hover:text-foreground transition-colors">Exports</a>
-              <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
-              <a href="#investors" className="hover:text-foreground transition-colors">Investors</a>
-            </div>
-            <Link to="/auth" className="text-sm font-medium text-primary hover:underline">Sign In</Link>
-          </div>
-        </nav>
+        <PublicNav />
 
         <Hero />
         <WhatIs />
@@ -544,7 +513,7 @@ export default function SystemOverview() {
         <div id="pricing"><PricingSection /></div>
         <div id="investors"><InvestorHighlights /></div>
         <ClosingCTA />
-        <Footer />
+        <EnhancedFooter />
       </div>
     </>
   );
