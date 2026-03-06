@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 const TIER_DISPLAY: { key: ProductTier; label: string; gradient: string }[] = [
   { key: 'builder', label: 'Builder', gradient: 'from-emerald-500 to-emerald-600' },
-  { key: 'operator', label: 'Operator', gradient: 'from-violet-500 to-purple-500' },
+  { key: 'operator', label: 'Studio', gradient: 'from-violet-500 to-purple-500' },
   { key: 'architect', label: 'Architect', gradient: 'from-amber-500 to-orange-500' },
 ];
 
