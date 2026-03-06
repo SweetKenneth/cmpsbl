@@ -10,6 +10,7 @@
 
 import { emit } from '../events';
 import { log } from '@/lib/system/log';
+import { SYSTEM_MODULES } from '@/lib/codeagent/encoded/system-manifest';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 1. ROLE DEFINITIONS (hardcoded, non-overridable)
@@ -233,50 +234,27 @@ let architectureSnapshot: ArchitectureSnapshot | null = null;
 export function runAuditMode(): ArchitectureSnapshot {
   const snapshotId = `snapshot-${Date.now()}`;
 
-  // Build module registry from known substrate directories
-  const moduleRegistry: ModuleRegistryEntry[] = [
-    { name: 'substrate-core', path: 'src/lib/substrate/index.ts', layer: 'core', exports: ['substrate', 'SubstrateClient'], imports_from: ['events', 'memory-core', 'engine-bus'] },
-    { name: 'engine-bus', path: 'src/lib/substrate/engine-bus.ts', layer: 'core', exports: ['engineBus', 'dispatch'], imports_from: ['events'] },
-    { name: 'memory-core', path: 'src/lib/substrate/memory-core.ts', layer: 'core', exports: ['memoryCore', 'remember', 'recall'], imports_from: ['events'] },
-    { name: 'events', path: 'src/lib/substrate/events/index.ts', layer: 'core', exports: ['emit', 'emitStarted', 'emitSucceeded', 'emitFailed', 'queryEvents'], imports_from: [] },
-    { name: 'governance', path: 'src/lib/substrate/governance-guard.ts', layer: 'core', exports: ['governanceGuard'], imports_from: ['events'] },
-    { name: 'encode', path: 'src/lib/substrate/encode-module/index.ts', layer: 'module', exports: ['initEncode', 'enqueueTask', 'completeTask', 'getEncodeState', 'getEncodeHealth'], imports_from: ['events'] },
-    { name: 'encode-pipeline', path: 'src/lib/substrate/encode-module/pipeline.ts', layer: 'module', exports: ['routeFromDecode', 'completeAndWriteback', 'recallForEncode'], imports_from: ['events', 'memory-core', 'encode'] },
-    { name: 'encode-clm', path: 'src/lib/substrate/encode-module/clm.ts', layer: 'module', exports: ['runEncodeCLMCycle', 'getSubstrateDirectories', 'getCriticalFiles'], imports_from: ['events', 'memory-core', 'encode'] },
-    { name: 'encode-orchestration', path: 'src/lib/substrate/encode-module/orchestration.ts', layer: 'module', exports: ['submitIntentForReview', 'approveExecution', 'runAuditMode', 'executeSurgicalPatch'], imports_from: ['events', 'encode'] },
-    { name: 'decode', path: 'src/lib/substrate/decode/index.ts', layer: 'module', exports: ['decode', 'parseIntent'], imports_from: ['events', 'memory-core'] },
-    { name: 'brain-transfer', path: 'src/lib/substrate/brain-transfer/index.ts', layer: 'module', exports: ['brainTransfer'], imports_from: ['events', 'memory-core'] },
-    { name: 'intent-mesh', path: 'src/lib/substrate/intent-mesh/index.ts', layer: 'module', exports: ['intentMesh'], imports_from: ['events', 'engine-bus'] },
-    { name: 'circuit-breaker', path: 'src/lib/substrate/circuit-breaker/', layer: 'module', exports: ['CircuitBreaker'], imports_from: ['events'] },
-    { name: 'hot-swap', path: 'src/lib/substrate/hot-swap/', layer: 'module', exports: ['hotSwap'], imports_from: ['events'] },
-    { name: 'sandbox', path: 'src/lib/substrate/sandbox-module/', layer: 'module', exports: ['sandbox'], imports_from: ['events'] },
-    { name: 'audit', path: 'src/lib/substrate/audit-module/', layer: 'module', exports: ['auditModule'], imports_from: ['events'] },
-    { name: 'relay', path: 'src/lib/substrate/relay-module/', layer: 'module', exports: ['relay'], imports_from: ['events'] },
-    { name: 'identity', path: 'src/lib/substrate/identity-module/', layer: 'module', exports: ['identity'], imports_from: ['events'] },
-    { name: 'economy', path: 'src/lib/substrate/economy-module/', layer: 'module', exports: ['economy'], imports_from: ['events', 'cost-attribution'] },
-    { name: 'memory', path: 'src/lib/substrate/memory-module/', layer: 'module', exports: ['memoryModule'], imports_from: ['events', 'memory-core'] },
-    { name: 'defense', path: 'src/lib/substrate/anomaly-correlation/', layer: 'module', exports: ['anomalyCorrelation'], imports_from: ['events'] },
-  ];
+  // Build module registry from system manifest (single source of truth)
+  const moduleRegistry: ModuleRegistryEntry[] = Object.values(SYSTEM_MODULES).map(mod => ({
+    name: mod.id,
+    path: mod.corePath,
+    layer: mod.layer === 'kernel' ? 'core'
+      : mod.layer === 'mesh-overlay' ? 'lib'
+      : 'module',
+    exports: [],
+    imports_from: mod.dependencies,
+  }));
 
-  // Build dependency graph
-  const dependencyGraph: DependencyEdge[] = [
-    { from: 'decode', to: 'encode', type: 'pipeline' },
-    { from: 'encode', to: 'brain-transfer', type: 'memory' },
-    { from: 'encode', to: 'memory-core', type: 'memory' },
-    { from: 'encode', to: 'sandbox', type: 'pipeline' },
-    { from: 'encode', to: 'audit', type: 'event' },
-    { from: 'encode', to: 'events', type: 'event' },
-    { from: 'encode-pipeline', to: 'encode', type: 'import' },
-    { from: 'encode-pipeline', to: 'memory-core', type: 'memory' },
-    { from: 'encode-clm', to: 'encode', type: 'import' },
-    { from: 'encode-clm', to: 'memory-core', type: 'memory' },
-    { from: 'intent-mesh', to: 'decode', type: 'pipeline' },
-    { from: 'intent-mesh', to: 'engine-bus', type: 'event' },
-    { from: 'governance', to: 'events', type: 'event' },
-    { from: 'substrate-core', to: 'engine-bus', type: 'import' },
-    { from: 'substrate-core', to: 'memory-core', type: 'import' },
-    { from: 'substrate-core', to: 'events', type: 'import' },
-  ];
+  // Build dependency graph from manifest
+  const dependencyGraph: DependencyEdge[] = [];
+  for (const mod of Object.values(SYSTEM_MODULES)) {
+    for (const dep of mod.dependencies) {
+      dependencyGraph.push({ from: mod.id, to: dep, type: 'import' });
+    }
+    for (const dependent of mod.dependents) {
+      dependencyGraph.push({ from: mod.id, to: dependent, type: 'pipeline' });
+    }
+  }
 
   // Shared utilities
   const sharedUtilities: UtilityEntry[] = [
