@@ -18,22 +18,22 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote: "We plugged DREAM cycles into our agent fleet and within a week they were surfacing patterns we'd never have found manually. The substrate does the thinking while we sleep.",
-    author: "Engineering Lead",
-    role: "Fortune 500 AI Team",
+    author: "J.L.",
+    role: "",
     rating: 5,
     highlight: "DREAM Cycles",
   },
   {
     quote: "Building on the substrate changed everything. Our agents adapt their routing in real-time, and EVOLUTION auto-patches drift before we even notice it. We just build — the substrate handles the rest.",
-    author: "CTO",
-    role: "Series B Startup",
+    author: "M.K.",
+    role: "",
     rating: 5,
     highlight: "EVOLUTION",
   },
   {
     quote: "Persistent memory and governed evolution gave us what we couldn't build ourselves — an AI system that remembers, adapts, and stays compliant. Every action is auditable.",
-    author: "VP of Compliance",
-    role: "Enterprise SaaS",
+    author: "R.S.",
+    role: "",
     rating: 5,
     highlight: "Governance",
   },
@@ -106,7 +106,7 @@ export function SocialProof() {
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[10px] font-bold text-primary">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
-                  <span className="text-[11px] text-muted-foreground/60">{t.role}</span>
+                  {t.role && <span className="text-[11px] text-muted-foreground/60">{t.role}</span>}
                 </div>
               </div>
             </motion.div>
