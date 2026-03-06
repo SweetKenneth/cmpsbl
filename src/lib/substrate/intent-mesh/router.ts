@@ -126,33 +126,64 @@ function findMatchingResolvers(intent: Omit<MeshIntent, 'id' | 'timestamp'>): Me
 }
 
 /**
- * Execute a single resolver (simulated — resolvers run locally for now)
- * In production, these would call actual module APIs or edge functions
+ * Execute a single resolver by dispatching through the substrate.
+ * Routes to the owning module via substrate.invoke with the resolver's
+ * accepted input keys. Falls back to a provenance stub if the module
+ * doesn't handle the resolver action (safe degradation).
  */
 async function executeResolver(
   resolver: MeshResolver,
   input: Record<string, unknown>
 ): Promise<ResolverResponse> {
   const startTime = performance.now();
-  
+
   try {
-    // For now, resolvers return structured metadata about what they WOULD provide
-    // This proves the routing works without requiring live module endpoints
-    // As modules get real APIs, these become actual calls
-    const data: Record<string, unknown> = {};
-    
-    for (const key of resolver.produces) {
-      data[key] = `[${resolver.module}:${key}]`; // Placeholder showing provenance
+    // Dynamically import substrate client to avoid circular deps
+    const { substrate } = await import('@/lib/substrate');
+
+    // Build a scoped payload containing only the keys this resolver accepts
+    const scopedInput: Record<string, unknown> = {};
+    for (const key of resolver.accepts) {
+      if (key in input) scopedInput[key] = input[key];
     }
-    
+
+    const response = await substrate.invoke({
+      module: resolver.module.toLowerCase() as any,
+      action: resolver.id.split('.').slice(1).join('.') || resolver.id,
+      payload: { ...scopedInput, _meshResolver: resolver.id },
+    });
+
+    if (response.success && response.data) {
+      return {
+        resolverId: resolver.id,
+        module: resolver.module,
+        success: true,
+        data: {
+          ...(typeof response.data === 'object' ? response.data as Record<string, unknown> : { result: response.data }),
+          _resolvedBy: resolver.id,
+          _module: resolver.module,
+          _risk: resolver.risk,
+        },
+        durationMs: Math.round(performance.now() - startTime),
+      };
+    }
+
+    // Module returned a soft failure — fall back to provenance stub
+    // so downstream composition still knows this resolver was reached
+    const data: Record<string, unknown> = {};
+    for (const key of resolver.produces) {
+      data[key] = null; // null signals "resolver reached, no data available"
+    }
     data._resolvedBy = resolver.id;
     data._module = resolver.module;
     data._risk = resolver.risk;
-    
+    data._fallback = true;
+    data._reason = response.error || 'Module returned no data';
+
     return {
       resolverId: resolver.id,
       module: resolver.module,
-      success: true,
+      success: true, // routing succeeded even if data was empty
       data,
       durationMs: Math.round(performance.now() - startTime),
     };
