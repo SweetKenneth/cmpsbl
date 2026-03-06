@@ -547,7 +547,7 @@ function TemplateComposer() {
 // ─── Auto-Miner Tab ─────────────────────────────────────────────────
 
 function AutoMinerTab() {
-  const { state, start, stop, reset, stats, isRunning } = useAutoMiner();
+  const { state, start, stop, reset, clearRetiredCombos, stats, isRunning } = useAutoMiner();
   const [config, setConfig] = useState<Partial<MinerConfig>>({
     batchSize: 15,
     probeRuns: 3,
@@ -752,12 +752,20 @@ function AutoMinerTab() {
       {state.retiredCombos.length > 0 && (
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <Hash className="w-4 h-4" /> Retired Combinations
-            </CardTitle>
-            <CardDescription className="text-xs">
-              {state.retiredCombos.length} module×category combos exhausted and retired
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Hash className="w-4 h-4" /> Retired Combinations
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  {state.retiredCombos.length} module×category combos exhausted and retired
+                </CardDescription>
+              </div>
+              <Button variant="outline" size="sm" onClick={clearRetiredCombos} disabled={isRunning} className="gap-1 text-xs">
+                <RotateCcw className="w-3 h-3" />
+                Clear All
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <ScrollArea className="max-h-40">
