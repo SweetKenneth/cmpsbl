@@ -135,13 +135,12 @@ function pickWeightedTierRange(
 }
 
 function scoreToPublicTier(score: number): string | null {
-  if (score < QUALITY_FLOOR) return null;
+  if (score < 68) return null;
   if (score === 100) return 'Apex';
   if (score >= 94) return 'Mythic';
   if (score >= 90) return 'Relic';
   if (score >= 80) return 'Prime';
-  if (score >= 68) return 'Mint';
-  return 'Raw';
+  return 'Mint';
 }
 
 function computeDisplayValuation(score: number): number {
@@ -777,20 +776,41 @@ serve(async (req) => {
     let alreadyOwnedCount = 0;
 
     if (results.length > 0) {
-      const inventoryRows = results.map((r: any) => ({
-        user_id: user.id,
-        artifact_id: r.id,
-        artifact_name: r.name,
-        artifact_description: r.description,
-        score: Number.isFinite(r.score) ? Math.max(0, Math.min(100, Math.floor(r.score))) : 0,
-        public_tier: r.publicTier,
-        valuation_display: r.valuationDisplay,
-        source: 'mined',
-        category: r.category,
-        system_chain: r.systemChain,
-        pipeline_fingerprint: r.fingerprint || null,
-        pipeline_steps: r.pipelineSteps || null,
-      }));
+      const VALID_TIERS = ['Mint', 'Prime', 'Relic', 'Mythic', 'Apex'];
+      const inventoryRows = results
+        .filter((r: any) => {
+          const score = Number.isFinite(r.score) ? Math.floor(r.score) : 0;
+          return score >= 68 && VALID_TIERS.includes(r.publicTier);
+        })
+        .map((r: any) => ({
+          user_id: user.id,
+          artifact_id: r.id,
+          artifact_name: r.name,
+          artifact_description: r.description,
+          score: Math.max(68, Math.min(100, Math.floor(r.score))),
+          public_tier: r.publicTier,
+          valuation_display: r.valuationDisplay,
+          source: 'mined',
+          category: r.category,
+          system_chain: r.systemChain,
+          pipeline_fingerprint: r.fingerprint || null,
+          pipeline_steps: r.pipelineSteps || null,
+        }));
+
+      if (inventoryRows.length === 0) {
+        // All results filtered out — nothing to persist
+        return new Response(JSON.stringify({
+          success: true,
+          results,
+          persisted: 0,
+          alreadyOwned: 0,
+          tierBreakdown: {},
+          message: 'Mining complete — no qualifying artifacts this round.',
+        }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
 
       const { data: insertedData, error: insertError } = await supabase
         .from('foundry_inventory')
