@@ -100,9 +100,17 @@ export class MemoryClient {
   setUserId(userId: string): void {
     this.userId = userId;
   }
+
+  /** FIX #3: Guard — ensure userId is set before any DB operation */
+  private assertUserId(): string {
+    if (!this.userId) {
+      throw new Error('[Memory] userId not set — call setUserId() before store/recall');
+    }
+    return this.userId;
+  }
   
   /** Extract discrete facts from text */
-  private extractFacts(text: string): string[] {
+  extractFacts(text: string): string[] {
     const patterns = [
       /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
       /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
@@ -144,29 +152,33 @@ export class MemoryClient {
 
   /**
    * Store a memory with salience gating + contradiction detection + fingerprinting
+   * FIX #1: Errors now logged with details instead of swallowed silently
+   * FIX #3: userId guard enforced
    */
   async store(content: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
+      const userId = this.assertUserId();
       const facts = this.extractFacts(content);
       const memoryType = facts.length > 0 ? 'user_fact' : 
         (metadata?.memory_type as string) || 'general';
       
-      // #13: Update user fingerprint
-      await this.updateFingerprint(content);
+      // #13: Update user fingerprint (parallel with stores)
+      const fingerprintPromise = this.updateFingerprint(content, userId);
       
       // Store each extracted fact as high-salience hot memory
-      if (facts.length > 0) {
-        for (const fact of facts) {
-          await this.storeToTier(fact, 'user_fact', 0.95);
-        }
-      }
+      const factPromises = facts.map(fact => 
+        this.storeToTier(fact, 'user_fact', 0.95)
+      );
       
       // Store full content — let salience gate decide tier
       const salience = this.estimateLocalSalience(content, memoryType);
-      await this.storeToTier(content, memoryType, salience, metadata);
+      const contentPromise = this.storeToTier(content, memoryType, salience, metadata);
       
-      // Update metacognition
-      await this.updateMetaStore();
+      // FIX #4: Run fingerprint + stores in parallel
+      await Promise.allSettled([fingerprintPromise, ...factPromises, contentPromise]);
+      
+      // FIX #2: Increment total_stores properly via RPC, not broken upsert
+      await this.incrementMetaStores();
       
       // #11: Track hourly activity for workload-aware tiering
       await this.trackHourlyActivity();
@@ -174,12 +186,13 @@ export class MemoryClient {
       // Run tiering if we might be near capacity
       await this.maybeRunTiering();
     } catch (error) {
-      console.warn('[Memory] Store failed gracefully');
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] Store failed: ${msg}`);
     }
   }
 
   /** Estimate salience locally (fast, before DB call) */
-  private estimateLocalSalience(content: string, memoryType: string): number {
+  estimateLocalSalience(content: string, memoryType: string): number {
     let salience = 0.5;
     const wordCount = content.split(/\s+/).length;
     
@@ -199,9 +212,9 @@ export class MemoryClient {
     salience: number,
     metadata?: Record<string, unknown>
   ): Promise<void> {
-    // #15: Build provenance
+    // FIX #5: Remove version string from source
     const provenance = this.buildProvenance(
-      (metadata?.source as string) || 'memory_sdk_v3'
+      (metadata?.source as string) || 'memory_sdk'
     );
 
     // #8: Assign decay curve based on type
@@ -220,7 +233,7 @@ export class MemoryClient {
         scope: this.scope,
         sessionId: this.scope === 'session' ? this.sessionId : undefined,
         salience_score: salience,
-        source: 'memory_sdk_v3',
+        source: 'memory_sdk',
         decay_curve: decayCurve,
         provenance,
         ...metadata
@@ -242,7 +255,7 @@ export class MemoryClient {
         decay_curve: decayCurve,
         provenance,
         metadata: basePayload.metadata,
-        tags: { source: 'memory_sdk_v3' },
+        tags: { source: 'memory_sdk' },
       });
     }
     // salience < 0.3 → don't store (noise)
@@ -250,11 +263,11 @@ export class MemoryClient {
   
   /**
    * Recall relevant memories across ALL tiers
-   * #1: Vector search, #2: Spaced repetition boost, #3: Contextual pre-fetch
-   * #5: Episodic replay, #10: Metacognitive strategy, #14: RAG context
+   * FIX #4: Parallel tier queries instead of sequential waterfall
    */
   async recall(query: string, limit: number = 5): Promise<RecallResult> {
     try {
+      const userId = this.assertUserId();
       const tiersSearched: string[] = [];
       const allMemories: MemoryEntry[] = [];
       
@@ -263,109 +276,124 @@ export class MemoryClient {
       const strategy = meta?.retrieval_strategy || 'balanced';
       const effectiveLimit = strategy === 'exploration' ? limit * 2 : limit;
       
-      // #3: Contextual pre-fetch — boost memories due for review (#2 spaced repetition)
-      const { data: dueForReviewRaw } = await supabase
-        .from('brain_memory_hot' as any)
-        .select('id, content, created_at, value_score, memory_type, provenance')
-        .eq('user_id', this.userId)
-        .eq('agent_id', this.agentId)
-        .lte('next_review_at', new Date().toISOString())
-        .order('value_score', { ascending: false })
-        .limit(3);
-      
-      const dueForReview = (dueForReviewRaw || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-      if (dueForReview.length > 0) {
-        tiersSearched.push('spaced_repetition');
-        for (const m of dueForReview) {
-          allMemories.push({
-            id: m.id, content: m.content,
-            timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.1, // boost
-            tier: 'hot', memory_type: m.memory_type,
-            provenance: m.provenance,
-          });
-          // #2: Reinforce via SM-2
-          try {
-            await supabase.rpc('sm2_update_memory', {
-              p_memory_id: m.id, p_tier: 'hot', p_quality: 4
-            });
-          } catch { /* silent */ }
-        }
-      }
+      // FIX #4: Run all tier queries in parallel
+      const [dueForReviewResult, hotResult, substrateResult] = await Promise.allSettled([
+        // #3: Contextual pre-fetch — boost memories due for review (#2 spaced repetition)
+        supabase
+          .from('brain_memory_hot' as any)
+          .select('id, content, created_at, value_score, memory_type, provenance')
+          .eq('user_id', userId)
+          .eq('agent_id', this.agentId)
+          .lte('next_review_at', new Date().toISOString())
+          .order('value_score', { ascending: false })
+          .limit(3),
+        // 1. Search hot tier
+        supabase
+          .from('brain_memory_hot' as any)
+          .select('id, content, created_at, value_score, memory_type, provenance')
+          .eq('user_id', userId)
+          .eq('agent_id', this.agentId)
+          .order('value_score', { ascending: false })
+          .limit(effectiveLimit),
+        // 3. Vector-based recall via substrate
+        supabase.functions.invoke('pf-substrate', {
+          body: {
+            module: 'brain',
+            action: 'query',
+            query_text: query,
+            limit: effectiveLimit,
+            recall_strategy: strategy === 'precision' ? 'fidelity_first' : 'broad',
+            filters: {
+              memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
+              'metadata.agentId': this.agentId,
+              'metadata.userId': userId,
+              ...(this.scope === 'session' ? { 'metadata.sessionId': this.sessionId } : {})
+            }
+          }
+        }),
+      ]);
 
-      // 1. Search hot tier (fastest, most relevant)
-      const { data: hotDataRaw } = await supabase
-        .from('brain_memory_hot' as any)
-        .select('id, content, created_at, value_score, memory_type, provenance')
-        .eq('user_id', this.userId)
-        .eq('agent_id', this.agentId)
-        .order('value_score', { ascending: false })
-        .limit(effectiveLimit);
-      
-      const hotData = (hotDataRaw || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-      if (hotData.length > 0) {
-        tiersSearched.push('hot');
-        for (const m of hotData) {
-          if (!allMemories.some(e => e.id === m.id)) {
+      // Process spaced repetition results
+      if (dueForReviewResult.status === 'fulfilled') {
+        const dueForReview = ((dueForReviewResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        if (dueForReview.length > 0) {
+          tiersSearched.push('spaced_repetition');
+          for (const m of dueForReview) {
             allMemories.push({
               id: m.id, content: m.content,
-              timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.0,
+              timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.1,
               tier: 'hot', memory_type: m.memory_type,
               provenance: m.provenance,
             });
+            // #2: Reinforce via SM-2
+            try {
+              await supabase.rpc('sm2_update_memory', {
+                p_memory_id: m.id, p_tier: 'hot', p_quality: 4
+              });
+            } catch { /* silent */ }
+          }
+        }
+      }
+
+      // Process hot tier results
+      if (hotResult.status === 'fulfilled') {
+        const hotData = ((hotResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        if (hotData.length > 0) {
+          tiersSearched.push('hot');
+          for (const m of hotData) {
+            if (!allMemories.some(e => e.id === m.id)) {
+              allMemories.push({
+                id: m.id, content: m.content,
+                timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.0,
+                tier: 'hot', memory_type: m.memory_type,
+                provenance: m.provenance,
+              });
+            }
           }
         }
       }
 
       // 2. Search warm if hot didn't fill limit
       if (allMemories.length < effectiveLimit) {
-        const { data: warmDataRaw } = await supabase
-          .from('brain_memory_warm' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
-          .eq('user_id', this.userId)
-          .eq('agent_id', this.agentId)
-          .order('value_score', { ascending: false })
-          .limit(effectiveLimit - allMemories.length);
-        
-        const warmData = (warmDataRaw || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-        if (warmData.length > 0) {
-          tiersSearched.push('warm');
-          for (const m of warmData) {
-            allMemories.push({
-              id: m.id, content: m.content,
-              timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
-              tier: 'warm', memory_type: m.memory_type,
-              provenance: m.provenance,
-            });
+        try {
+          const { data: warmDataRaw } = await supabase
+            .from('brain_memory_warm' as any)
+            .select('id, content, created_at, value_score, memory_type, provenance')
+            .eq('user_id', userId)
+            .eq('agent_id', this.agentId)
+            .order('value_score', { ascending: false })
+            .limit(effectiveLimit - allMemories.length);
+          
+          const warmData = (warmDataRaw || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+          if (warmData.length > 0) {
+            tiersSearched.push('warm');
+            for (const m of warmData) {
+              if (!allMemories.some(e => e.id === m.id)) {
+                allMemories.push({
+                  id: m.id, content: m.content,
+                  timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
+                  tier: 'warm', memory_type: m.memory_type,
+                  provenance: m.provenance,
+                });
+              }
+            }
           }
-        }
+        } catch { /* warm tier is best-effort */ }
       }
 
-      // 3. Also query via substrate for vector-based recall (#1 Vector Search)
-      const response = await supabase.functions.invoke('pf-substrate', {
-        body: {
-          module: 'brain',
-          action: 'query',
-          query_text: query,
-          limit: effectiveLimit,
-          recall_strategy: strategy === 'precision' ? 'fidelity_first' : 'broad',
-          filters: {
-            memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
-            'metadata.agentId': this.agentId,
-            'metadata.userId': this.userId,
-            ...(this.scope === 'session' ? { 'metadata.sessionId': this.sessionId } : {})
-          }
-        }
-      });
-      
-      if (response.data?.memories) {
-        tiersSearched.push('substrate_vector');
-        for (const m of response.data.memories) {
-          if (!allMemories.some(existing => existing.content === m.content)) {
-            allMemories.push({
-              id: m.id, content: m.content,
-              timestamp: m.created_at, relevance: m.relevance_score,
-              tier: 'hot', memory_type: m.memory_type,
-            });
+      // Process substrate vector results
+      if (substrateResult.status === 'fulfilled') {
+        const response = substrateResult.value as any;
+        if (response?.data?.memories) {
+          tiersSearched.push('substrate_vector');
+          for (const m of response.data.memories) {
+            if (!allMemories.some(existing => existing.content === m.content)) {
+              allMemories.push({
+                id: m.id, content: m.content,
+                timestamp: m.created_at, relevance: m.relevance_score,
+                tier: 'hot', memory_type: m.memory_type,
+              });
+            }
           }
         }
       }
@@ -390,77 +418,140 @@ export class MemoryClient {
         rag_context_id: ragContextId,
       };
     } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] Recall failed: ${msg}`);
       return { memories: [], confidence: 0, tiers_searched: [] };
     }
   }
 
   // ═══════════════════════════════════════════════════════════════════
   // #5 EPISODIC REPLAY — Reconstruct interaction timelines
+  // FIX #11: Now searches BOTH hot and warm tiers
   // ═══════════════════════════════════════════════════════════════════
   async replayEpisode(timeframe: { from: string; to: string }, limit: number = 20): Promise<MemoryEntry[]> {
     try {
-      const { data } = await supabase
-        .from('brain_memory_hot' as any)
-        .select('id, content, created_at, value_score, memory_type, provenance')
-        .eq('user_id', this.userId)
-        .eq('agent_id', this.agentId)
-        .gte('created_at', timeframe.from)
-        .lte('created_at', timeframe.to)
-        .order('created_at', { ascending: true })
-        .limit(limit);
-      
-      const results = (data || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-      return results.map(m => ({
-        id: m.id,
-        content: m.content,
-        timestamp: m.created_at,
-        relevance: m.value_score,
-        tier: 'hot' as const,
-        memory_type: m.memory_type,
-        provenance: m.provenance,
-      }));
-    } catch {
+      const userId = this.assertUserId();
+
+      // FIX #11: Query hot AND warm in parallel
+      const [hotResult, warmResult] = await Promise.allSettled([
+        supabase
+          .from('brain_memory_hot' as any)
+          .select('id, content, created_at, value_score, memory_type, provenance')
+          .eq('user_id', userId)
+          .eq('agent_id', this.agentId)
+          .gte('created_at', timeframe.from)
+          .lte('created_at', timeframe.to)
+          .order('created_at', { ascending: true })
+          .limit(limit),
+        supabase
+          .from('brain_memory_warm' as any)
+          .select('id, content, created_at, value_score, memory_type, provenance')
+          .eq('user_id', userId)
+          .eq('agent_id', this.agentId)
+          .gte('created_at', timeframe.from)
+          .lte('created_at', timeframe.to)
+          .order('created_at', { ascending: true })
+          .limit(limit),
+      ]);
+
+      const entries: MemoryEntry[] = [];
+      const seen = new Set<string>();
+
+      const processTier = (result: PromiseSettledResult<any>, tier: 'hot' | 'warm') => {
+        if (result.status !== 'fulfilled') return;
+        const data = (result.value?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        for (const m of data) {
+          if (seen.has(m.id)) continue;
+          seen.add(m.id);
+          entries.push({
+            id: m.id, content: m.content, timestamp: m.created_at,
+            relevance: m.value_score, tier, memory_type: m.memory_type,
+            provenance: m.provenance,
+          });
+        }
+      };
+
+      processTier(hotResult, 'hot');
+      processTier(warmResult, 'warm');
+
+      // Sort chronologically, trim to limit
+      return entries
+        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+        .slice(0, limit);
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] Replay failed: ${msg}`);
       return [];
     }
   }
 
   // ═══════════════════════════════════════════════════════════════════
   // #4 CROSS-AGENT MEMORY SHARING
+  // FIX #12: Respects salience score for target tier placement
   // ═══════════════════════════════════════════════════════════════════
   async shareWithAgent(targetAgentId: string, memoryIds: string[]): Promise<number> {
     try {
+      const userId = this.assertUserId();
       let shared = 0;
       for (const memoryId of memoryIds) {
         const { data } = await supabase
           .from('brain_memory_hot' as any)
           .select('*')
           .eq('id', memoryId)
-          .eq('user_id', this.userId)
+          .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .single();
         
         if (data) {
           const entry = data as any;
-          await supabase.from('brain_memory_warm' as any).insert({
-            content: entry.content,
-            context: entry.context,
-            user_id: this.userId,
-            agent_id: targetAgentId,
-            memory_type: entry.memory_type,
-            salience_score: (entry.salience_score || 0.5) * 0.8,
-            value_score: (entry.value_score || 0.5) * 0.7,
-            provenance: {
-              ...this.buildProvenance('cross_agent_share'),
-              lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
-            },
-            metadata: { ...entry.metadata, shared_from_agent: this.agentId },
-            tags: { source: 'cross_agent_share' },
-          });
+          const sourceSalience = entry.salience_score || 0.5;
+          // FIX #12: Shared memories use salience-aware tier routing
+          const sharedSalience = sourceSalience * 0.8; // slight penalty for cross-agent
+
+          if (sharedSalience >= 0.7) {
+            // High salience → route through substrate to hot tier
+            await supabase.functions.invoke('pf-substrate', {
+              body: {
+                module: 'brain',
+                action: 'remember',
+                content: entry.content,
+                memory_type: entry.memory_type,
+                confidence: sharedSalience,
+                metadata: {
+                  agentId: targetAgentId,
+                  userId,
+                  scope: this.scope,
+                  salience_score: sharedSalience,
+                  source: 'cross_agent_share',
+                  shared_from_agent: this.agentId,
+                }
+              }
+            });
+          } else {
+            // Lower salience → warm tier direct
+            await supabase.from('brain_memory_warm' as any).insert({
+              content: entry.content,
+              context: entry.context,
+              user_id: userId,
+              agent_id: targetAgentId,
+              memory_type: entry.memory_type,
+              salience_score: sharedSalience,
+              value_score: sharedSalience * 0.7,
+              provenance: {
+                ...this.buildProvenance('cross_agent_share'),
+                lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
+              },
+              metadata: { ...entry.metadata, shared_from_agent: this.agentId },
+              tags: { source: 'cross_agent_share' },
+            });
+          }
           shared++;
         }
       }
       return shared;
-    } catch {
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] Share failed: ${msg}`);
       return 0;
     }
   }
@@ -487,28 +578,29 @@ export class MemoryClient {
   // ═══════════════════════════════════════════════════════════════════
   async triggerConsolidation(): Promise<{ merged: number; compressed: number }> {
     try {
-      // Compress verbose warm memories
-      const compressResult = await supabase.rpc('compress_warm_memories', {
-        p_user_id: this.userId,
-        p_agent_id: this.agentId,
-      });
+      const userId = this.assertUserId();
 
-      // Apply confidence decay
-      await supabase.rpc('apply_confidence_decay', {
-        p_user_id: this.userId,
-        p_agent_id: this.agentId,
-      });
+      // Run all consolidation RPCs in parallel
+      const [compressResult] = await Promise.allSettled([
+        supabase.rpc('compress_warm_memories', {
+          p_user_id: userId,
+          p_agent_id: this.agentId,
+        }),
+        supabase.rpc('apply_confidence_decay', {
+          p_user_id: userId,
+          p_agent_id: this.agentId,
+        }),
+        supabase.rpc('run_metacognitive_assessment', {
+          p_user_id: userId,
+          p_agent_id: this.agentId,
+        }),
+      ]);
 
-      // Run metacognitive assessment
-      await supabase.rpc('run_metacognitive_assessment', {
-        p_user_id: this.userId,
-        p_agent_id: this.agentId,
-      });
+      const compressed = compressResult.status === 'fulfilled' 
+        ? ((compressResult.value as any)?.data?.compressed || 0)
+        : 0;
 
-      return {
-        merged: 0, // future: merge similar warm memories
-        compressed: (compressResult.data as any)?.compressed || 0,
-      };
+      return { merged: 0, compressed };
     } catch {
       return { merged: 0, compressed: 0 };
     }
@@ -516,8 +608,11 @@ export class MemoryClient {
 
   // ═══════════════════════════════════════════════════════════════════
   // #13 USER FINGERPRINTING
+  // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
-  private async updateFingerprint(content: string): Promise<void> {
+  private async updateFingerprint(content: string, userId?: string): Promise<void> {
+    const uid = userId || this.userId;
+    if (!uid) return;
     try {
       const keywords = content.toLowerCase()
         .replace(/[^a-z0-9\s]/g, ' ')
@@ -526,7 +621,7 @@ export class MemoryClient {
         .slice(0, 10);
 
       await supabase.rpc('update_user_fingerprint', {
-        p_user_id: this.userId,
+        p_user_id: uid,
         p_agent_id: this.agentId,
         p_message_length: content.length,
         p_keywords: keywords,
@@ -538,10 +633,11 @@ export class MemoryClient {
 
   async getUserFingerprint(): Promise<UserFingerprint | null> {
     try {
+      const userId = this.assertUserId();
       const { data } = await supabase
         .from('brain_user_fingerprints' as any)
         .select('preferred_topics, communication_style, complexity_preference, interaction_count, avg_message_length, top_keywords')
-        .eq('user_id', this.userId)
+        .eq('user_id', userId)
         .eq('agent_id', this.agentId)
         .single();
       return data as unknown as UserFingerprint | null;
@@ -590,15 +686,18 @@ export class MemoryClient {
   /** Store workload outcomes */
   async storeWorkload(summary: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
+      this.assertUserId();
       await this.storeToTier(summary, 'workload_outcome', 0.75, metadata);
     } catch (error) {
-      console.warn('[Memory] Workload store failed gracefully');
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] Workload store failed: ${msg}`);
     }
   }
   
   /** Get metacognitive state — the brain knowing its own memory */
   async getMetaState(): Promise<MemoryMetaState | null> {
     try {
+      if (!this.userId) return null;
       const { data } = await supabase
         .from('brain_memory_meta' as any)
         .select('*')
@@ -631,6 +730,7 @@ export class MemoryClient {
   /** Track recall hit/miss for metacognition */
   private async trackRecallHit(hit: boolean): Promise<void> {
     try {
+      if (!this.userId) return;
       await supabase.rpc('track_memory_recall', {
         p_user_id: this.userId,
         p_agent_id: this.agentId,
@@ -641,16 +741,35 @@ export class MemoryClient {
     }
   }
 
-  /** Update meta on store */
-  private async updateMetaStore(): Promise<void> {
+  /**
+   * FIX #2: Increment total_stores via RPC instead of broken upsert that always sets 1
+   */
+  private async incrementMetaStores(): Promise<void> {
     try {
-      await supabase
-        .from('brain_memory_meta' as any)
-        .upsert({
-          user_id: this.userId,
-          agent_id: this.agentId,
-          total_stores: 1,
-        }, { onConflict: 'user_id,agent_id' });
+      if (!this.userId) return;
+      // Try RPC first; fall back to upsert with proper increment
+      const { error } = await supabase.rpc('increment_memory_stores' as any, {
+        p_user_id: this.userId,
+        p_agent_id: this.agentId,
+      });
+      if (error) {
+        // Fallback: read-modify-write
+        const { data: existing } = await supabase
+          .from('brain_memory_meta' as any)
+          .select('total_stores')
+          .eq('user_id', this.userId)
+          .eq('agent_id', this.agentId)
+          .maybeSingle();
+
+        const current = (existing as any)?.total_stores || 0;
+        await supabase
+          .from('brain_memory_meta' as any)
+          .upsert({
+            user_id: this.userId,
+            agent_id: this.agentId,
+            total_stores: current + 1,
+          }, { onConflict: 'user_id,agent_id' });
+      }
     } catch {
       // Silent
     }
@@ -661,6 +780,7 @@ export class MemoryClient {
   // ═══════════════════════════════════════════════════════════════════
   private async trackHourlyActivity(): Promise<void> {
     try {
+      if (!this.userId) return;
       const hour = new Date().getHours();
       const { data: meta } = await supabase
         .from('brain_memory_meta' as any)
@@ -693,6 +813,7 @@ export class MemoryClient {
   /** Run tiering cascade if near capacity */
   private async maybeRunTiering(): Promise<void> {
     try {
+      if (!this.userId) return;
       const meta = await this.getMetaState();
       if (!meta) return;
       

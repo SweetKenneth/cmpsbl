@@ -1,7 +1,7 @@
 /**
  * withPersistentMemory - Agent Wrapper Integration
  * 
- * Add persistent memory to any agent in 10 minutes.
+ * Add persistent memory to any agent.
  * 
  * Usage:
  * ```typescript
@@ -77,38 +77,62 @@ export function withPersistentMemory(config: MemoryConfig): PersistentMemoryAgen
   };
   
   const respond = async (input: string): Promise<string> => {
-    // 1. Auto-store the user's input (extracts facts automatically via client)
-    await client.store(input, { type: 'user_input' });
-    
-    // 2. Recall relevant memories
-    const context = await getContext(input);
-    
-    // 3. If custom handler provided, use it
-    if (handler) {
-      const response = await handler(input, context);
+    try {
+      // 1. Auto-store the user's input (extracts facts automatically via client)
+      await client.store(input, { type: 'user_input' });
       
-      // 4. Store the interaction outcome
-      await storeInteraction(input, response);
+      // 2. Recall relevant memories
+      const context = await getContext(input);
       
-      return response;
+      // 3. If custom handler provided, use it
+      if (handler) {
+        const response = await handler(input, context);
+        
+        // 4. Store the interaction outcome
+        await storeInteraction(input, response);
+        
+        return response;
+      }
+      
+      // 3. Default: return context for manual integration
+      return context.contextString || 'No relevant memories found.';
+    } catch (error) {
+      // FIX #16: Log error details instead of crashing
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] respond failed: ${msg}`);
+      return 'Memory unavailable — proceeding without context.';
     }
-    
-    // 3. Default: return context for manual integration
-    return context.contextString || 'No relevant memories found.';
   };
   
+  // FIX #16: Error handling in remember
   const remember = async (note: string): Promise<void> => {
-    await client.store(note, { type: 'manual_note' });
+    try {
+      await client.store(note, { type: 'manual_note' });
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] remember failed: ${msg}`);
+    }
   };
   
+  // FIX #15: Only truncate if string is actually long
   const storeInteraction = async (input: string, response: string): Promise<void> => {
-    // Store condensed interaction summary
-    const summary = `Q: ${input.slice(0, 100)}... A: ${response.slice(0, 200)}...`;
-    await client.store(summary, { type: 'interaction' });
+    try {
+      const q = input.length > 100 ? `${input.slice(0, 100)}…` : input;
+      const a = response.length > 200 ? `${response.slice(0, 200)}…` : response;
+      const summary = `Q: ${q} A: ${a}`;
+      await client.store(summary, { type: 'interaction' });
+    } catch {
+      // Silent — interaction logging is best-effort
+    }
   };
   
   const logWorkload = async (summary: string): Promise<void> => {
-    await client.storeWorkload(summary, { agentId });
+    try {
+      await client.storeWorkload(summary, { agentId });
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn(`[Memory] logWorkload failed: ${msg}`);
+    }
   };
   
   return {
