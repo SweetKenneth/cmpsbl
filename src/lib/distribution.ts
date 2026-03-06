@@ -45,6 +45,17 @@ export type DownstreamDistribution = 'LNCHBL';
 /** All known distribution identifiers */
 export type KnownDistribution = DistributionId | DownstreamDistribution;
 
+/**
+ * Suspended distributions — all outbound operations (patches, brain sync, downloads) are blocked.
+ * LNCHBL suspended pending licensing agreement. Remove from this set to re-enable.
+ */
+export const SUSPENDED_DISTRIBUTIONS: ReadonlySet<string> = new Set(['LNCHBL']);
+
+/** Check if a distribution is currently suspended */
+export function isDistributionSuspended(id: string): boolean {
+  return SUSPENDED_DISTRIBUTIONS.has(id);
+}
+
 // ─── Identity Accessor (read-only, no mutation possible) ─────────────────────
 
 export interface CanonIdentity {
@@ -77,7 +88,7 @@ export function getCanonIdentity(): Readonly<CanonIdentity> {
  * Only downstream distributions may receive patches.
  */
 export function isDownstreamDistribution(id: string): id is DownstreamDistribution {
-  return id === 'LNCHBL';
+  return id === 'LNCHBL' && !isDistributionSuspended(id);
 }
 
 /**
