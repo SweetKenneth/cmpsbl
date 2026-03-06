@@ -202,6 +202,11 @@ export function registerInfraHandlers(): void {
     return await healSubsystem('event_stream');
   });
 
+  registerHandler('system.heal.discovery_engine', async () => {
+    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
+    return await healSubsystem('discovery_engine');
+  });
+
   registerHandler('system.heal.all_subsystems', async () => {
     const { healAllSubsystems } = await import('@/lib/substrate/subsystem-health');
     const results = await healAllSubsystems();
