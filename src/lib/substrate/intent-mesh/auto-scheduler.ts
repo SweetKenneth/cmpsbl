@@ -108,26 +108,42 @@ class MeshAutoScheduler {
 
     // Module self-discovery
     this.timers.moduleDiscovery = setInterval(async () => {
-      if (!isMeshEnabled()) return;
-      await this.runModuleDiscoveryCycle();
+      try {
+        if (!isMeshEnabled()) return;
+        await this.runModuleDiscoveryCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in module discovery interval:', err);
+      }
     }, this.config.moduleDiscoveryIntervalMs);
 
     // Gap analysis
     this.timers.gapAnalysis = setInterval(async () => {
-      if (!isMeshEnabled()) return;
-      await this.runGapAnalysisCycle();
+      try {
+        if (!isMeshEnabled()) return;
+        await this.runGapAnalysisCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in gap analysis interval:', err);
+      }
     }, this.config.gapAnalysisIntervalMs);
 
     // Intent scoring
     this.timers.intentScoring = setInterval(async () => {
-      if (!isMeshEnabled()) return;
-      await this.runIntentScoringCycle();
+      try {
+        if (!isMeshEnabled()) return;
+        await this.runIntentScoringCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in intent scoring interval:', err);
+      }
     }, this.config.intentScoringIntervalMs);
 
     // Full expansion
     this.timers.fullExpansion = setInterval(async () => {
-      if (!isMeshEnabled()) return;
-      await this.runFullExpansionCycle();
+      try {
+        if (!isMeshEnabled()) return;
+        await this.runFullExpansionCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in full expansion interval:', err);
+      }
     }, this.config.fullExpansionIntervalMs);
 
     console.log('[MeshScheduler] Started — all cycles armed');
