@@ -53,7 +53,7 @@ export function DecodeChat() {
     const persisted = loadPersistedMessages();
     if (persisted.length > 0) return persisted;
     return [
-      { role: 'assistant', content: 'DECODE online. Sovereign cognitive interface active.\n\nState your intent, Operator.' }
+      { role: 'assistant', content: 'DECODE online.\n\nNatural language → structured intent → substrate execution.\n\nHow can I help?' }
     ];
   });
   const [input, setInput] = useState('');
@@ -254,7 +254,7 @@ export function DecodeChat() {
 
   const clearHistory = () => {
     const fresh: Message[] = [
-      { role: 'assistant', content: 'DECODE online. Memory cleared. Sovereign cognitive interface active.\n\nState your intent, Operator.' }
+      { role: 'assistant', content: 'DECODE online.\n\nNatural language → structured intent → substrate execution.\n\nHow can I help?' }
     ];
     setMessages(fresh);
     sessionStorage.removeItem(SESSION_STORAGE_KEY);

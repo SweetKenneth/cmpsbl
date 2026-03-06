@@ -198,7 +198,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const orbRef = useRef<HTMLButtonElement | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "DECODE online. I interpret natural language into structured intents and route them to the appropriate substrate execution surfaces.\n\nHow can I help you?" },
+    { role: "assistant", content: "DECODE online.\n\nNatural language → structured intent → substrate execution.\n\nHow can I help?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);

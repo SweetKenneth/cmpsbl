@@ -81,7 +81,7 @@ const modules = [
     icon: Eye,
     title: "Full Observability",
     module: "VISION",
-    description: "Health metrics, latency, costs, and real-time dashboards and alerts.",
+    description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     highlight: "See Everything",
     stat: "24/7",
     statLabel: "Monitoring",

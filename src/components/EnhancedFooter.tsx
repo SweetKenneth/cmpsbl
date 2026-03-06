@@ -71,8 +71,8 @@ export function EnhancedFooter() {
     {
       title: "Explore",
       links: [
-        { name: "Memory stream", href: "/foundry", highlight: true },
-        { name: "Evolution", href: "/evolution", highlight: true },
+        { name: "Memory Stream", href: "/foundry", highlight: true },
+        { name: "EVOLUTION", href: "/evolution", highlight: true },
         { name: "Blog", href: "/blog" },
         { name: "Showcase", href: "/showcase" },
         { name: "System overview", href: "/overview" },
