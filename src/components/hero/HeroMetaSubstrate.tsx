@@ -190,10 +190,7 @@ export function HeroMetaSubstrate() {
             </motion.div>
             
             {/* CMPSBL — massive wordmark */}
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            <h1 
               className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
             >
               <span 
@@ -207,7 +204,7 @@ export function HeroMetaSubstrate() {
               >
                 CMPSBL
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Thesis line */}
             <motion.p
