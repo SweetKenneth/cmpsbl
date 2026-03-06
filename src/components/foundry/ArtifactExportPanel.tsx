@@ -27,6 +27,7 @@ interface ArtifactExportPanelProps {
 }
 
 const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
+  raw:     { icon: Code2, color: 'text-muted-foreground' },
   mint:    { icon: Code2, color: 'text-emerald-400' },
   prime:   { icon: Code2, color: 'text-sky-400' },
   relic:   { icon: Code2, color: 'text-amber-400' },
