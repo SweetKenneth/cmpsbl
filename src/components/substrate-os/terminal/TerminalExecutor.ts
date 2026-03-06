@@ -365,6 +365,7 @@ function formatSystemHealth(data: any): string {
   const overallPct = typeof overall === 'number' ? (overall <= 1 ? (overall * 100).toFixed(0) : overall.toFixed(0)) : '100';
   const circuitState = data?.circuit_state || 'closed';
   const threatLevel = data?.threat_level || 'low';
+  const version = data?.version || '';
   
   let output = `
 ╔══════════════════════════════════════════════════════════════╗
