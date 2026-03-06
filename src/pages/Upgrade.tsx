@@ -440,16 +440,19 @@ export default function Upgrade() {
           </div>
         </div>
 
+        {/* Section divider */}
+        <div className="section-divider max-w-4xl mx-auto mt-24 mb-0" />
+
         {/* ═══ EVERY PLAN INCLUDES — Baseline Highlights ═══ */}
-        <section className="container mx-auto px-4 mt-24">
+        <section className="container mx-auto px-4 mt-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
               <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
                 <Lock className="w-3 h-3 mr-1.5 inline" />
                 Always Active
               </Badge>
-              <h2 className="text-3xl font-bold">Every Plan Includes</h2>
-              <p className="text-muted-foreground mt-2">The full runtime runs for every user. Plans scale capacity, not capability.</p>
+              <h2 className="text-3xl font-bold tracking-tight">Every Plan Includes</h2>
+              <p className="text-muted-foreground mt-2 max-w-lg mx-auto">The full runtime runs for every user. Plans scale capacity, not capability.</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {BASELINE_HIGHLIGHTS.map((item, i) => (
@@ -459,11 +462,13 @@ export default function Upgrade() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5 hover:border-primary/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                  className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5 shimmer-on-hover card-lift"
                 >
-                  <Check className="w-4 h-4 text-primary" />
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-1">
+                    <Check className="w-4 h-4 text-primary" />
+                  </div>
                   <h4 className="text-sm font-semibold">{item.label}</h4>
-                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -476,10 +481,10 @@ export default function Upgrade() {
         </section>
 
         {/* ═══ VALUE PILLARS ═══ */}
-        <section className="container mx-auto px-4 mt-24">
+        <section className="container mx-auto px-4 mt-20">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold">What Powers Every Plan</h2>
+              <h2 className="text-3xl font-bold tracking-tight">What Powers Every Plan</h2>
               <p className="text-muted-foreground mt-2">The full runtime runs for every user. Plans differ in capacity, not capability.</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -493,11 +498,13 @@ export default function Upgrade() {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.08 }}
                   >
-                    <Card className="h-full border-border/50 hover:border-primary/20 transition-colors">
+                    <Card className="h-full border-border/50 hover:border-primary/20 transition-all duration-300 card-lift shimmer-on-hover">
                       <CardContent className="p-5 space-y-3">
-                        <PIcon className="w-8 h-8 text-primary" />
+                        <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                          <PIcon className="w-5 h-5 text-primary" />
+                        </div>
                         <h3 className="font-bold">{p.title}</h3>
-                        <p className="text-sm text-muted-foreground">{p.description}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
@@ -563,22 +570,25 @@ export default function Upgrade() {
 
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">
-          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
-            <Building2 className="w-10 h-10 text-amber-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">Architect Custom</h3>
-            <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
+          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-5">
+              <Building2 className="w-7 h-7 text-amber-500" />
+            </div>
+            <h3 className="text-2xl font-bold tracking-tight">Architect Custom</h3>
+            <p className="text-muted-foreground mt-2 max-w-lg mx-auto leading-relaxed">
               Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
             </p>
-            <Button variant="outline" className="mt-6" asChild>
-              <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4 ml-1" /></a>
+            <Button variant="outline" className="mt-6 gap-2" asChild>
+              <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4" /></a>
             </Button>
           </div>
         </section>
 
         {/* ═══ FAQ ═══ */}
         <section className="container mx-auto px-4 mt-24 mb-8">
+          <div className="section-divider max-w-2xl mx-auto mb-16" />
           <div className="max-w-2xl mx-auto space-y-8">
-            <h2 className="text-2xl font-bold text-center">Common Questions</h2>
+            <h2 className="text-2xl font-bold text-center tracking-tight">Common Questions</h2>
             {[
               { q: 'What is the baseline runtime?', a: 'Every plan includes the full system runtime — all engines, pipelines, and core capabilities. There is no capability gating. Plans differ in pipeline capacity, not in what the system can do.' },
               { q: 'Why does every pack cost 1 slot?', a: 'Simplicity enables clarity. Every pipeline pack is a composed capability of equal strategic weight. Choose any combination — no pack is locked behind a specific tier.' },
@@ -587,9 +597,9 @@ export default function Upgrade() {
               { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
-              <div key={faq.q} className="space-y-2">
+              <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/20 transition-colors">
                 <h3 className="font-semibold">{faq.q}</h3>
-                <p className="text-sm text-muted-foreground">{faq.a}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>

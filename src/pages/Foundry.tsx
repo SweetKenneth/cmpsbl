@@ -28,8 +28,13 @@ export default function Foundry() {
 
   if (authLoading || foundry.isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-muted-foreground font-mono text-sm animate-pulse">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-8 h-8 rounded-full border-2 border-primary/30 border-t-primary"
+        />
+        <div className="text-muted-foreground font-mono text-sm">
           Loading Memory Stream...
         </div>
       </div>
@@ -112,23 +117,37 @@ export default function Foundry() {
             <div className="flex items-center gap-1 border-b border-border/20 mb-8 mt-8">
                <button
                 onClick={() => setActiveTab('mine')}
-                className={`px-4 py-3 sm:py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px min-h-[44px] ${
+                className={`relative px-5 py-3 sm:py-2.5 font-mono text-sm transition-colors -mb-px min-h-[44px] ${
                   activeTab === 'mine'
-                    ? 'border-primary text-foreground font-bold'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                    ? 'text-foreground font-bold'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 Crystallize
+                {activeTab === 'mine' && (
+                  <motion.div
+                    layoutId="foundry-tab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] memory-stream-bar"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
               </button>
                <button
                 onClick={() => setActiveTab('inventory')}
-                className={`px-4 py-3 sm:py-2.5 font-mono text-sm transition-colors border-b-2 -mb-px min-h-[44px] ${
+                className={`relative px-5 py-3 sm:py-2.5 font-mono text-sm transition-colors -mb-px min-h-[44px] ${
                   activeTab === 'inventory'
-                    ? 'border-primary text-foreground font-bold'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                    ? 'text-foreground font-bold'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 Vault ({foundry.inventoryCount})
+                {activeTab === 'inventory' && (
+                  <motion.div
+                    layoutId="foundry-tab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] memory-stream-bar"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
               </button>
             </div>
 
