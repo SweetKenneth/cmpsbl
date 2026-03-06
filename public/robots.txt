@@ -1,6 +1,6 @@
 # CMPSBL® Memory Stream — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-03-04
+# Last updated: 2026-03-06
 
 # =============================================================
 # DEFAULT: Allow all crawlers
@@ -11,6 +11,7 @@ Crawl-delay: 0.5
 
 # Sitemap locations
 Sitemap: https://cmpsbl.com/sitemap.xml
+Sitemap: https://cmpsbl.com/sitemap-index.xml
 
 # LLM Context Files
 Allow: /llms.txt

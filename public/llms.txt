@@ -1,7 +1,7 @@
 # CMPSBL® Memory Stream — Machine-Readable AI Context
 # IRONCLAD Epoch | 38-Node / 12-Sector Architecture
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-04
+# Updated: 2026-03-06
 
 ## STANDARD CLAIM
 
@@ -157,7 +157,9 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 - Persistent Memory: https://cmpsbl.com/persistent-memory
 - Composable Cognitives: https://cmpsbl.com/composable-cognitives
 - Orchestration Engines: https://cmpsbl.com/engines
-- Memory Stream: https://cmpsbl.com/foundry
+- Memory Stream: https://cmpsbl.com/memory-stream
+- Software Foundry: https://cmpsbl.com/foundry
+- Roadmap: https://cmpsbl.com/roadmap
 - DECODE Terminal: https://cmpsbl.com/decode
 - Dream Feeder: https://cmpsbl.com/feed-dream-eater
 - Proof Mode: https://cmpsbl.com/proof

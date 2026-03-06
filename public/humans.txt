@@ -17,7 +17,7 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/02/27
+Last update: 2026/03/06
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
