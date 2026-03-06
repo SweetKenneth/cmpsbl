@@ -40,7 +40,7 @@ const ClocklessWorldEngine = lazy(() => import("@/pages/ClocklessWorldEngine"));
 const SubstrateCapabilitiesDocs = lazy(() => import("@/pages/SubstrateCapabilitiesDocs"));
 const SystemIntelligenceFeed = lazy(() => import("@/pages/SystemIntelligenceFeed"));
 const CheckoutRedirect = lazy(() => import("@/pages/CheckoutRedirect"));
-const CMPSBLEngine = lazy(() => import("@/pages/CMPSBLEngine"));
+
 const Engines = lazy(() => import("@/pages/Engines"));
 const EngineDetail = lazy(() => import("@/pages/EngineDetail"));
 const Upgrade = lazy(() => import("@/pages/Upgrade"));
@@ -159,7 +159,7 @@ export const publicRoutes = (
     <Route path="/status" element={<Status />} />
     <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
     <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
-    <Route path="/cmpsbl-engine" element={<CMPSBLEngine />} />
+    <Route path="/cmpsbl-engine" element={<Navigate to="/" replace />} />
     <Route path="/composable-cognitives" element={<ComposableCognitives />} />
     <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
     <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
