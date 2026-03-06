@@ -424,7 +424,7 @@ async function healDiscoveryEngine(force: boolean): Promise<string[]> {
     const healthBefore = getDiscoveryHealth();
     const breakerBefore = getDiscoveryBreakerState();
 
-    actions.push(`Pre-heal: health=${healthBefore.score}, breaker=${breakerBefore.state}, cooldown=${healthBefore.cooldownActive}`);
+    actions.push(`Pre-heal: health=${healthBefore.score}, breaker=${breakerBefore.state}, failures=${healthBefore.consecutiveFailures}`);
 
     const result = heal(force);
     actions.push(...result.actions);
