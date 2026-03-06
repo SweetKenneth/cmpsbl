@@ -120,7 +120,7 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
       assert(a === b, 'Canonicalization not deterministic');
     }],
     ['computeSnapshotHash produces hash', async () => {
-      const hash = await computeSnapshotHash({ test: true });
+      const hash = await computeSnapshotHash({ test: true }, 1, null);
       assert(typeof hash === 'string' && hash.length === 64, `Bad hash: ${hash}`);
     }],
 
