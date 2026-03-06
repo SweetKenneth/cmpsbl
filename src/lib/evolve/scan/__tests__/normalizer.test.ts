@@ -166,11 +166,8 @@ describe('Proposal Normalization', () => {
         }),
         createTestProposal({
           proposal_id: 'prop_reject_2',
-          title: 'High risk',
-          risk_level: 'high',
-          confidence_score: 0.95,
-          requires_human: true,
-          reversible: false,
+          title: 'Also low confidence',
+          confidence_score: 0.2,
         }),
       ];
 

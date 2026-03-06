@@ -8,19 +8,23 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ─── Global Mocks ────────────────────────────────────────────────────────────
 
-vi.mock('child_process', () => ({
-  execSync: vi.fn((cmd: string) => {
-    if (cmd.includes('tsc --noEmit')) return '';
-    if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
-    if (cmd.includes('vitest run')) return JSON.stringify({
-      numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
-    });
-    if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
-    if (cmd.includes('git rev-parse --short')) return 'abc1234';
-    if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
-    return '';
-  }),
-}));
+vi.mock('child_process', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    execSync: vi.fn((cmd: string) => {
+      if (cmd.includes('tsc --noEmit')) return '';
+      if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
+      if (cmd.includes('vitest run')) return JSON.stringify({
+        numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
+      });
+      if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
+      if (cmd.includes('git rev-parse --short')) return 'abc1234';
+      if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
+      return '';
+    }),
+  };
+});
 
 const MOCK_FILES: Record<string, string> = {
   'src/App.tsx': 'import ErrorBoundary from "./ErrorBoundary";\nexport default App;',
