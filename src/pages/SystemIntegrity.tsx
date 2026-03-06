@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { SEO } from '@/components/SEO';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { useSubstrateHealthScore } from '@/hooks/useSubstrateOS';
 import { getAllBreakerStates, getBreaker, getCircuitBreakerSummary } from '@/lib/substrate/circuit-breaker';
 import { cn } from '@/lib/utils';
@@ -241,6 +243,8 @@ export default function SystemIntegrity() {
         noindex
       />
 
+      <PublicNav />
+
       <div className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
         {/* Header */}
         <motion.div 
@@ -320,11 +324,13 @@ export default function SystemIntegrity() {
           ))}
         </div>
 
-        {/* Footer */}
+        {/* Inline Footer Note */}
         <div className="text-center text-[9px] text-muted-foreground/30 font-mono uppercase tracking-widest pb-8">
           System Integrity Map · Read-Only · No Mutation Endpoints
         </div>
       </div>
+
+      <EnhancedFooter />
     </div>
   );
 }

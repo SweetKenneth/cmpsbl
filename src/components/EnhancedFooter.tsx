@@ -61,7 +61,7 @@ export function EnhancedFooter() {
         { name: "Builder Workspace", href: "/workspace" },
         { name: "Documentation", href: "/documentation" },
         { name: "Developer Guide", href: "/developers/guide" },
-        { name: "Start Here", href: "/start-here", highlight: true },
+        { name: "System Integrity", href: "/system-integrity", highlight: true },
       ]
     },
     {
@@ -69,7 +69,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Capability Map", href: "/capability-map" },
         { name: "System Overview", href: "/overview" },
-        { name: "EVOLUTION", href: "/evolution", highlight: true },
+        { name: "Publication", href: "/publication", highlight: true },
         { name: "Fossil Record", href: "/changelog" },
         { name: "Showcase", href: "/showcase" },
         { name: "Use Cases", href: "/use-cases" },
@@ -78,7 +78,7 @@ export function EnhancedFooter() {
   ];
 
   const legalLinks: FooterLink[] = [
-    { name: "About", href: "/about" },
+    { name: "Company", href: "/promptfluid" },
     { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
     { name: "Investors", href: "/investors" },
@@ -89,6 +89,8 @@ export function EnhancedFooter() {
     { name: "Namespace", href: "/namespace" },
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
+    { name: "LLMs.txt", href: "/llms-txt" },
+    { name: "humans.txt", href: "/humans-txt" },
     { name: "XCTBL", href: "#xctbl" },
   ];
 
