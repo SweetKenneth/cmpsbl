@@ -6,6 +6,7 @@
  * - Authenticated: crystallize button, vault, stats
  */
 import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
