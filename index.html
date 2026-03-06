@@ -535,9 +535,23 @@
   <body>
     <!-- 2026 SEO: Semantic HTML structure -->
     <div id="root">
-      <div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">
-        <h1>CMPSBL — AI Infrastructure for Autonomous Software Discovery</h1>
-        <p>Cognitive infrastructure platform where autonomous systems discover, crystallize, and export deployable software pipelines & hardware architectures.</p>
+      <!-- Pre-render shell: visible skeleton for instant FCP, replaced when React mounts -->
+      <div id="pre-render-shell">
+        <!-- Nav skeleton -->
+        <header style="position:sticky;top:0;z-index:50;background:hsl(var(--background));border-bottom:1px solid hsl(var(--border)/0.5)">
+          <div style="max-width:1400px;margin:0 auto;padding:0 1rem;display:flex;align-items:center;height:64px;gap:0.75rem">
+            <div style="width:40px;height:40px;border-radius:8px;background:hsl(var(--muted))"></div>
+            <div>
+              <div style="font-size:1.125rem;font-weight:700;color:hsl(var(--foreground));letter-spacing:-0.025em">Memory Stream</div>
+              <div style="font-size:0.625rem;font-weight:500;text-transform:uppercase;letter-spacing:0.15em;color:hsl(var(--muted-foreground))">by CMPSBL</div>
+            </div>
+          </div>
+        </header>
+        <!-- Hero skeleton -->
+        <div class="hero-section" style="min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem 1rem">
+          <h1 style="font-size:clamp(2rem,5vw,3.75rem);font-weight:700;max-width:800px;color:hsl(var(--foreground));line-height:1.1;margin-bottom:1rem">AI Infrastructure for Autonomous Software Discovery</h1>
+          <p style="font-size:clamp(1rem,2vw,1.25rem);max-width:640px;color:hsl(var(--muted-foreground));line-height:1.6">Autonomous systems that discover, crystallize, and export deployable software pipelines & hardware architectures.</p>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
