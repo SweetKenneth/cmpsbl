@@ -134,11 +134,11 @@ export function CmpsblNav() {
       icon: Globe,
       items: [
         { name: "Memory stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "PUBLIC", highlight: true },
+        { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW", highlight: true },
         { name: "Evolution", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
         { name: "System overview", href: "/overview", description: "The full picture", icon: Globe },
-        { name: "Substrate demo", href: "/demo", description: "Interactive live demo", icon: Cpu },
       ]
     },
   ];
@@ -437,9 +437,9 @@ export function CmpsblNav() {
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
+                  { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW", highlight: true },
                   { name: "Evolution", href: "/evolution", icon: Zap, badge: "LIVE" },
                   { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
-                  { name: "Upgrade", href: "/upgrade", icon: Package },
                   { name: "Memory stream", href: "/foundry", icon: Sparkles },
                 ].map((item) => (
                   <Link
