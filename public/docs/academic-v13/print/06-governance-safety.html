@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>06 — Governance & Safety — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav"><a href="00-release-index.html">Index</a><a href="02-system-overview.html">System</a><a href="05-universal-export.html">Export</a><a href="06-governance-safety.html"><strong>Governance</strong></a><a href="07-resilience-hardening.html">IRONCLAD</a><a href="08-intent-mesh.html">Intent Mesh</a><a href="10-prior-art-statement.html">Prior Art</a></nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>06 — Governance & Safety</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the governance and safety architecture: the mechanisms that ensure autonomous operations remain within defined safety boundaries, all significant decisions are auditable, and system evolution is governed rather than unconstrained.</p>
+
+<h2>2. Autonomy Tiers</h2>
+<table>
+<thead><tr><th>Tier</th><th>Name</th><th>Scope</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Supervised</td><td>All actions require explicit human approval</td></tr>
+<tr><td>2</td><td>Bounded</td><td>Pre-approved action classes execute autonomously; novel actions escalate</td></tr>
+<tr><td>3</td><td>Full</td><td>System operates autonomously within governance policy boundaries</td></tr>
+</tbody>
+</table>
+
+<h3>2.1 Tier Transitions</h3>
+<ul>
+<li>Tier escalation requires governance approval</li>
+<li>Tier de-escalation can occur automatically on safety violations</li>
+<li>Tier status is logged to the AUDIT chain</li>
+</ul>
+
+<h3>2.2 Action Classification</h3>
+<table>
+<thead><tr><th>Risk Level</th><th>Examples</th><th>Required Tier</th></tr></thead>
+<tbody>
+<tr><td>Read-only</td><td>Query, observe, report</td><td>Any</td></tr>
+<tr><td>State modification</td><td>Update memory, modify configuration</td><td>Bounded+</td></tr>
+<tr><td>Structural mutation</td><td>Modify module behavior, evolve pipelines</td><td>Full (with governance gate)</td></tr>
+<tr><td>Security-sensitive</td><td>Access control changes, defense modifications</td><td>Supervised only</td></tr>
+</tbody>
+</table>
+
+<h2>3. Shadow Mode Verification</h2>
+<ol>
+<li>The current state is captured as a snapshot</li>
+<li>The proposed change is applied in an isolated shadow context</li>
+<li>The shadow result is validated against expected behavior constraints</li>
+<li>If valid: applied to production. If invalid: rejected.</li>
+</ol>
+
+<h2>4. Governance Module</h2>
+<table>
+<thead><tr><th>Responsibility</th><th>Mechanism</th></tr></thead>
+<tbody>
+<tr><td>Policy enforcement</td><td>Rules evaluated before state mutations</td></tr>
+<tr><td>Escalation routing</td><td>Unresolvable decisions escalate to human operators</td></tr>
+<tr><td>Evolution gating</td><td>Self-modification proposals require governance approval</td></tr>
+<tr><td>Coherence scoring</td><td>System-wide coherence is evaluated after mutations</td></tr>
+<tr><td>Ethical risk tiering</td><td>Operations are assessed for ethical risk before execution</td></tr>
+</tbody>
+</table>
+
+<h3>4.1 Governance Chain</h3>
+<pre><code>Request → Policy Evaluation → Decision → Execution → Audit Log</code></pre>
+
+<h2>5. Auditability</h2>
+<table>
+<thead><tr><th>Property</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Immutability</td><td>Records cannot be modified after creation</td></tr>
+<tr><td>Completeness</td><td>All governed operations are logged</td></tr>
+<tr><td>Verifiability</td><td>Chain integrity is verifiable through hash linkage</td></tr>
+<tr><td>Anchoring</td><td>Periodic anchors are written for chain verification</td></tr>
+</tbody>
+</table>
+
+<h2>6. Safety Boundaries</h2>
+<h3>6.1 Hard Boundaries</h3>
+<ul>
+<li>Modification of the AUDIT chain</li>
+<li>Bypass of DEFENSE boundary filters</li>
+<li>Self-modification of the GOVERNANCE module</li>
+<li>Removal of safety constraints</li>
+</ul>
+
+<h3>6.2 Soft Boundaries</h3>
+<ul>
+<li>Novel action classes not seen in training data</li>
+<li>Operations with high ethical risk scores</li>
+<li>Cross-module mutations affecting multiple sectors</li>
+<li>Operations approaching resource quotas</li>
+</ul>
+
+<h2>7. Disclosure Boundary</h2>
+<ul><li>Coherence scoring formula and weights</li><li>Ethical risk tiering specifics</li><li>Escalation priority weighting</li><li>Policy evaluation internals</li></ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial governance & safety documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

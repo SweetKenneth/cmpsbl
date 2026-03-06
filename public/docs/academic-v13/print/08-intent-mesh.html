@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 — Intent Mesh & Orchestration — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav"><a href="00-release-index.html">Index</a><a href="02-system-overview.html">System</a><a href="06-governance-safety.html">Governance</a><a href="07-resilience-hardening.html">IRONCLAD</a><a href="08-intent-mesh.html"><strong>Intent Mesh</strong></a><a href="09-domain-extension.html">Domain</a><a href="10-prior-art-statement.html">Prior Art</a></nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>08 — Intent Mesh & Orchestration</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the Intent Mesh: the cross-module collaboration and semantic routing layer that enables modules to discover, negotiate, and compose multi-step operations without centralized orchestration.</p>
+
+<h2>2. Design Rationale</h2>
+<p>In a 38-node topology, centralized orchestration creates bottlenecks and single points of failure. The Intent Mesh provides a decentralized coordination mechanism where modules advertise capabilities, express intents, and negotiate collaboration through structured protocols.</p>
+
+<h2>3. Core Concepts</h2>
+<h3>3.1 Intent</h3>
+<table>
+<thead><tr><th>Field</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Source module</td><td>The module originating the intent</td></tr>
+<tr><td>Capability required</td><td>What needs to be accomplished</td></tr>
+<tr><td>Input contract</td><td>Data available to the fulfilling module</td></tr>
+<tr><td>Quality constraints</td><td>Minimum acceptable quality thresholds</td></tr>
+<tr><td>Governance tier</td><td>Required autonomy level</td></tr>
+<tr><td>Deadline</td><td>Maximum acceptable latency</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Resolution</h3>
+<ol>
+<li><strong>Discovery</strong> — the mesh identifies modules that can fulfill the intent</li>
+<li><strong>Negotiation</strong> — candidate modules evaluate whether they can meet constraints</li>
+<li><strong>Routing</strong> — the best-fit module (or chain) is selected</li>
+<li><strong>Execution</strong> — the intent is fulfilled through the selected route</li>
+<li><strong>Verification</strong> — the output is validated against quality constraints</li>
+</ol>
+
+<h2>4. Multi-Step Orchestration</h2>
+<pre><code>Intent → [Module A] → [Module B] → [Module C] → Result</code></pre>
+
+<h3>4.1 CORTEX Integration</h3>
+<ul>
+<li>Multi-step chain-of-thought decomposition</li>
+<li>Parallel branch execution with result merging</li>
+<li>Fallback routing when preferred modules are unavailable</li>
+<li>Progress tracking and partial result delivery</li>
+</ul>
+
+<h3>4.2 NEXUS Routing</h3>
+<ul>
+<li>Model selection based on task requirements</li>
+<li>Provider failover and load balancing</li>
+<li>Cost-aware routing for budget-constrained operations</li>
+<li>Latency-optimized routing for real-time operations</li>
+</ul>
+
+<h2>5. Cross-Sector Collaboration</h2>
+<table>
+<thead><tr><th>Pattern</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>CCR ↔ Execution</td><td>MEMORY provides context to DECODE for informed responses</td></tr>
+<tr><td>Execution ↔ Fields</td><td>ENCODE generates content that EVOLUTION proposes as improvements</td></tr>
+<tr><td>OCG ↔ Execution</td><td>AUDIT logs all NEXUS routing decisions</td></tr>
+<tr><td>Fields ↔ Plane</td><td>EVOLUTION proposals are gated by GOVERNANCE approval</td></tr>
+</tbody>
+</table>
+
+<h2>6. Fault Tolerance</h2>
+<ul>
+<li><strong>Capability redundancy</strong> — multiple modules may advertise overlapping capabilities</li>
+<li><strong>Graceful degradation</strong> — intents can be fulfilled at reduced quality</li>
+<li><strong>Timeout escalation</strong> — unresolvable intents escalate to GOVERNANCE</li>
+<li><strong>Circuit breaker integration</strong> — the mesh respects module circuit breaker states</li>
+</ul>
+
+<h2>7. Disclosure Boundary</h2>
+<ul><li>Routing algorithm specifics</li><li>Capability matching heuristics</li><li>Negotiation protocol internals</li><li>Cost-optimization formulas</li></ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial intent mesh documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

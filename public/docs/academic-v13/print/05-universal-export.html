@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 — Universal Export Architecture — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav">
+<a href="00-release-index.html">Index</a><a href="02-system-overview.html">System</a><a href="03-memory-stream-foundry.html">Memory</a><a href="04-pipeline-crystallization.html">Pipeline</a><a href="05-universal-export.html"><strong>Export</strong></a><a href="06-governance-safety.html">Governance</a><a href="07-resilience-hardening.html">IRONCLAD</a><a href="08-intent-mesh.html">Intent Mesh</a><a href="09-domain-extension.html">Domain</a><a href="10-prior-art-statement.html">Prior Art</a>
+</nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>05 — Universal Export Architecture</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the Universal Export Adapter: the mechanism by which substrate discoveries and crystallized pipelines are exported to external programming languages and hardware description languages as complete, self-contained packages.</p>
+
+<h2>2. Design Rationale</h2>
+<p>The substrate's internal runtime is TypeScript-based. To maximize the utility of crystallized discoveries, the Universal Export Adapter translates them into idiomatic implementations across 25 target languages, each packaged with build tooling, test harnesses, and a standalone micro-runtime.</p>
+
+<h2>3. Target Languages</h2>
+<h3>3.1 Software Languages (18)</h3>
+<table>
+<thead><tr><th>Language</th><th>Build Tool</th><th>Test Framework</th></tr></thead>
+<tbody>
+<tr><td>TypeScript</td><td>tsc + esbuild</td><td>Vitest</td></tr>
+<tr><td>JavaScript</td><td>esbuild</td><td>Jest</td></tr>
+<tr><td>Python</td><td>pip + setuptools</td><td>pytest</td></tr>
+<tr><td>Rust</td><td>Cargo</td><td>built-in</td></tr>
+<tr><td>Go</td><td>go build</td><td>go test</td></tr>
+<tr><td>Java</td><td>Maven</td><td>JUnit</td></tr>
+<tr><td>Kotlin</td><td>Gradle</td><td>JUnit</td></tr>
+<tr><td>Swift</td><td>Swift Package Manager</td><td>XCTest</td></tr>
+<tr><td>C#</td><td>dotnet</td><td>xUnit</td></tr>
+<tr><td>C++</td><td>CMake</td><td>Google Test</td></tr>
+<tr><td>Ruby</td><td>Bundler</td><td>RSpec</td></tr>
+<tr><td>PHP</td><td>Composer</td><td>PHPUnit</td></tr>
+<tr><td>Dart</td><td>pub</td><td>dart test</td></tr>
+<tr><td>Scala</td><td>sbt</td><td>ScalaTest</td></tr>
+<tr><td>Elixir</td><td>mix</td><td>ExUnit</td></tr>
+<tr><td>Haskell</td><td>Stack</td><td>HSpec</td></tr>
+<tr><td>Lua</td><td>LuaRocks</td><td>busted</td></tr>
+<tr><td>R</td><td>devtools</td><td>testthat</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Hardware / HDL Targets (7)</h3>
+<table>
+<thead><tr><th>Target</th><th>Toolchain</th><th>Simulation</th></tr></thead>
+<tbody>
+<tr><td>VHDL</td><td>GHDL</td><td>GHDL sim</td></tr>
+<tr><td>Verilog</td><td>Icarus Verilog</td><td>iverilog</td></tr>
+<tr><td>SystemVerilog</td><td>Verilator</td><td>Verilator sim</td></tr>
+<tr><td>Chisel</td><td>sbt + Chisel3</td><td>ChiselTest</td></tr>
+<tr><td>Amaranth</td><td>Python + Amaranth</td><td>built-in sim</td></tr>
+<tr><td>SPICE</td><td>ngspice</td><td>ngspice sim</td></tr>
+<tr><td>SystemC</td><td>CMake + SystemC</td><td>built-in sim</td></tr>
+</tbody>
+</table>
+
+<h2>4. Export Bundle Structure</h2>
+<pre><code>cmpsbl-export-{language}-{timestamp}/
+├── src/                          — Generated source code
+│   └── {discovery-name}.{ext}
+├── test/                         — Auto-generated test harness
+│   └── {discovery-name}_test.{ext}
+├── _runtime/
+│   ├── standalone-runtime        — Micro-Substrate runtime
+│   └── standalone-discovery-engine
+├── Makefile                      — Build & test commands
+├── {package-manifest}            — Language-specific manifest
+├── LICENSE
+└── README.md</code></pre>
+
+<h2>5. Micro-Substrate Runtime</h2>
+<table>
+<thead><tr><th>Capability</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>CJPI scoring</td><td>Crown Jewel Pipeline Index computation</td></tr>
+<tr><td>Auto-tiering</td><td>S/A/B/C/D tier assignment</td></tr>
+<tr><td>Pipeline orchestration</td><td>Sequential chain execution</td></tr>
+<tr><td>Manifest parsing</td><td>Import/export discovery manifests</td></tr>
+</tbody>
+</table>
+
+<h2>6. Test Harness Generation</h2>
+<ul>
+<li>Validate CJPI metadata preservation</li>
+<li>Test basic invocation and output shape</li>
+<li>Verify structural fingerprint consistency</li>
+<li>Include performance benchmarks where applicable</li>
+</ul>
+
+<h2>7. Disclosure Boundary</h2>
+<ul>
+<li>Language translation algorithms</li>
+<li>CJPI metadata embedding format</li>
+<li>Micro-runtime internal architecture</li>
+<li>Test harness generation heuristics</li>
+</ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial universal export documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

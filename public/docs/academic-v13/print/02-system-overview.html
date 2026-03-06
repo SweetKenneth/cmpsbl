@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 — System Overview — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+
+<nav class="print-nav">
+<a href="00-release-index.html">Index</a>
+<a href="01-release-abstract.html">Abstract</a>
+<a href="02-system-overview.html"><strong>System</strong></a>
+<a href="03-memory-stream-foundry.html">Memory</a>
+<a href="04-pipeline-crystallization.html">Pipeline</a>
+<a href="05-universal-export.html">Export</a>
+<a href="06-governance-safety.html">Governance</a>
+<a href="07-resilience-hardening.html">IRONCLAD</a>
+<a href="08-intent-mesh.html">Intent Mesh</a>
+<a href="09-domain-extension.html">Domain</a>
+<a href="10-prior-art-statement.html">Prior Art</a>
+<a href="17-sealed-mechanisms.html">Sealed</a>
+<a href="18-zenodo-metadata.html">Metadata</a>
+</nav>
+
+<div class="doc-meta">
+<span class="badge primary">v13.5 · IRONCLAD</span>
+<span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span>
+</div>
+
+<div class="doi-bar">
+<span>DOI:</span>
+<a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a>
+</div>
+
+<h1>02 — System Overview</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the CMPSBL® Substrate OS at the system level: its organizing principles, architectural topology, and operational model. It is written for researchers, technical evaluators, and investors seeking to understand what the system is and how it is structured.</p>
+
+<h2>2. What Is the Substrate</h2>
+<p>The CMPSBL® Substrate OS is a <strong>cognitive orchestration system</strong> — a runtime environment that coordinates multiple specialized AI modules into a coherent, self-governing whole. Unlike monolithic AI applications, the substrate treats cognition as an infrastructure problem: modules are composable primitives that communicate through structured protocols, governed by explicit safety and autonomy policies.</p>
+<p>The system is designed to:</p>
+<ul>
+<li><strong>Persist</strong> — maintain state, memory, and learned knowledge across sessions</li>
+<li><strong>Evolve</strong> — propose, validate, and apply self-modifications under governance</li>
+<li><strong>Reason</strong> — orchestrate multi-module reasoning chains with auditable provenance</li>
+<li><strong>Harden</strong> — operate resiliently under partial failure with automatic recovery</li>
+</ul>
+
+<h2>3. Architectural Topology</h2>
+<p>The substrate is organized into <strong>seven sectors</strong>, each containing one or more specialized modules (nodes). The full topology comprises 38 nodes.</p>
+
+<h3>3.1 Sector Map</h3>
+<table>
+<thead><tr><th>Sector</th><th>Role</th><th>Node Count</th></tr></thead>
+<tbody>
+<tr><td>SPINE</td><td>Foundation and production runtime</td><td>2</td></tr>
+<tr><td>CCR (Clockless Cognitive Reality)</td><td>Memory, learning, and offline consolidation</td><td>3</td></tr>
+<tr><td>OCG (Operational Compliance Grid)</td><td>Access control, audit, identity, event propagation</td><td>6</td></tr>
+<tr><td>EXECUTION</td><td>Conversational, generative, routing, and sandbox engines</td><td>10</td></tr>
+<tr><td>ESZ / EPZ / EMZ / CSZ</td><td>Extended subsystem zones</td><td>13</td></tr>
+<tr><td>FIELDS</td><td>Evolution, immunity, and intent</td><td>2</td></tr>
+<tr><td>PLANE</td><td>Supervisory governance</td><td>1</td></tr>
+<tr><td>SHELL</td><td>Boundary defense</td><td>1</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Clockless Coordination</h3>
+<p>Modules do not share a global clock. Coordination occurs through:</p>
+<ul>
+<li><strong>Event-driven signal propagation</strong> — the RIPPLE module distributes events across the topology</li>
+<li><strong>Weighted integrity scoring</strong> — each module contributes to a composite system health score</li>
+<li><strong>Deterministic boot sequence</strong> — modules initialize in a fixed order (CORE → SYSTEM → CCR → OCG → EXECUTION → FIELDS/PLANE → DEFENSE)</li>
+</ul>
+
+<h3>3.3 Weight Invariant</h3>
+<p>Every module carries a governance weight. The sum of all weights is constrained:</p>
+<pre><code>Σ(module_weight) = 1.000</code></pre>
+<p>This invariant ensures that no single module can dominate system-level decisions without proportional representation.</p>
+
+<h2>4. Module Categories</h2>
+
+<h3>4.1 Cognitive Modules</h3>
+<table>
+<thead><tr><th>Module</th><th>Function</th></tr></thead>
+<tbody>
+<tr><td>DECODE</td><td>Conversational interpretation and intent extraction</td></tr>
+<tr><td>ENCODE</td><td>Content generation and structured output</td></tr>
+<tr><td>VISION</td><td>Multimodal perception and image analysis</td></tr>
+<tr><td>CORTEX</td><td>Multi-step orchestration and chain-of-thought</td></tr>
+<tr><td>NEXUS</td><td>AI provider routing and model selection</td></tr>
+</tbody>
+</table>
+
+<h3>4.2 Infrastructure Modules</h3>
+<table>
+<thead><tr><th>Module</th><th>Function</th></tr></thead>
+<tbody>
+<tr><td>CORE</td><td>Foundation state and boot coordination</td></tr>
+<tr><td>SYSTEM</td><td>Production runtime and health monitoring</td></tr>
+<tr><td>MEMORY</td><td>Persistent knowledge storage and retrieval</td></tr>
+<tr><td>BRAIN</td><td>Cognitive state and learning consolidation</td></tr>
+<tr><td>DREAM</td><td>Offline optimization and pattern discovery</td></tr>
+</tbody>
+</table>
+
+<h3>4.3 Governance Modules</h3>
+<table>
+<thead><tr><th>Module</th><th>Function</th></tr></thead>
+<tbody>
+<tr><td>GOVERNANCE</td><td>Policy enforcement and autonomy tier management</td></tr>
+<tr><td>ACCESS</td><td>Entitlement and quota control</td></tr>
+<tr><td>IDENTITY</td><td>Actor provenance and authentication</td></tr>
+<tr><td>AUDIT</td><td>Immutable accountability logging</td></tr>
+<tr><td>DEFENSE</td><td>Boundary protection and threat filtering</td></tr>
+</tbody>
+</table>
+
+<h2>5. Operational Model</h2>
+<ol>
+<li><strong>Persistence</strong> — all module states are persisted with point-in-time snapshots</li>
+<li><strong>Circuit breakers</strong> — each module has independent failure isolation</li>
+<li><strong>Governed mutation</strong> — changes to system behavior require governance approval</li>
+<li><strong>Audit trail</strong> — all significant operations are logged to an immutable chain</li>
+<li><strong>Graceful degradation</strong> — the system continues operating with reduced capability when individual modules fail</li>
+</ol>
+
+<h2>6. Disclosure Boundary</h2>
+<p>This document describes the system at the architectural level. The following are intentionally withheld:</p>
+<ul>
+<li>Specific scoring weights and formulas</li>
+<li>Internal heuristic algorithms</li>
+<li>Security-sensitive threshold values</li>
+<li>Proprietary optimization techniques</li>
+</ul>
+
+<h2>Revision History</h2>
+<table>
+<thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial system overview — v13.5</td></tr>
+</tbody>
+</table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

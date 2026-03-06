@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 — Resilience / IRONCLAD Hardening — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav"><a href="00-release-index.html">Index</a><a href="02-system-overview.html">System</a><a href="06-governance-safety.html">Governance</a><a href="07-resilience-hardening.html"><strong>IRONCLAD</strong></a><a href="08-intent-mesh.html">Intent Mesh</a><a href="09-domain-extension.html">Domain</a><a href="10-prior-art-statement.html">Prior Art</a></nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>07 — Resilience / IRONCLAD Hardening</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the IRONCLAD hardening fabric: the unified resilience layer that protects all 38 matrix nodes through additive hardening — shadow mode validation, state snapshots, auto-restore health polling, rate limiting, and bulkhead isolation.</p>
+
+<h2>2. Design Principles</h2>
+<p>The hardening fabric is <strong>additive</strong> — it wraps existing module behavior without modifying core engine logic:</p>
+<pre><code>Request → Rate Limiter → Bulkhead → Module Logic → Output Validator → Response
+               ↓ (on failure)
+        Auto-Restore → State Snapshot Restore → Circuit Breaker Reset</code></pre>
+
+<h2>3. Hardening Capabilities</h2>
+
+<h3>3.1 Circuit Breakers</h3>
+<table>
+<thead><tr><th>State</th><th>Behavior</th></tr></thead>
+<tbody>
+<tr><td>Closed</td><td>Normal operation</td></tr>
+<tr><td>Open</td><td>Requests are rejected; module is recovering</td></tr>
+<tr><td>Half-open</td><td>Limited requests allowed to test recovery</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Bulkhead Isolation</h3>
+<ul>
+<li>Request queues are isolated per module</li>
+<li>Queue overflow in one module does not affect others</li>
+<li>Timeout budgets are per-module</li>
+<li>Resource consumption is tracked independently</li>
+</ul>
+
+<h3>3.3 Rate Limiting</h3>
+<table>
+<thead><tr><th>Profile</th><th>Example Modules</th><th>Characteristic</th></tr></thead>
+<tbody>
+<tr><td>Latency-critical</td><td>REFLEX</td><td>High throughput, low latency</td></tr>
+<tr><td>User-facing</td><td>DECODE</td><td>Moderate throughput</td></tr>
+<tr><td>Compute-heavy</td><td>FORGE, ENCODE</td><td>Lower throughput, longer execution</td></tr>
+<tr><td>Batch processing</td><td>DREAM</td><td>Low frequency, long-running</td></tr>
+<tr><td>Governance-gated</td><td>EVOLUTION</td><td>Very low frequency, high-impact</td></tr>
+</tbody>
+</table>
+
+<h3>3.4 Auto-Restore Health Loop</h3>
+<ol>
+<li>Check module health score</li>
+<li>If health is below threshold: increment failure counter</li>
+<li>After repeated failures: reset circuit breaker and restore last known-good state snapshot</li>
+<li>If health is above threshold: capture new state snapshot as known-good baseline</li>
+</ol>
+
+<h2>4. Coverage</h2>
+<table>
+<thead><tr><th>Sector</th><th>Nodes</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>CORE + SYSTEM</td><td>2</td><td>Protected</td></tr>
+<tr><td>CCR</td><td>3</td><td>Protected</td></tr>
+<tr><td>OCG</td><td>6</td><td>Protected</td></tr>
+<tr><td>Execution</td><td>10</td><td>Protected</td></tr>
+<tr><td>ESZ / EPZ / EMZ / CSZ</td><td>13</td><td>Protected</td></tr>
+<tr><td>Fields</td><td>2</td><td>Protected</td></tr>
+<tr><td>Plane</td><td>1</td><td>Protected</td></tr>
+<tr><td>Shell</td><td>1</td><td>Protected</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>38</strong></td><td><strong>100%</strong></td></tr>
+</tbody>
+</table>
+
+<h2>5. Failure Escalation</h2>
+<table>
+<thead><tr><th>Consecutive Failures</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Log warning, continue monitoring</td></tr>
+<tr><td>2</td><td>Alert INTEL, prepare restoration</td></tr>
+<tr><td>3</td><td>Auto-restore: reset breaker + restore snapshot</td></tr>
+<tr><td>5+</td><td>Escalate to GOVERNANCE for intervention</td></tr>
+</tbody>
+</table>
+
+<h2>6. Disclosure Boundary</h2>
+<ul><li>Specific rate limit values per module</li><li>Health score calculation formula</li><li>Auto-restore timing parameters</li><li>Circuit breaker transition heuristics</li></ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial resilience / IRONCLAD documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

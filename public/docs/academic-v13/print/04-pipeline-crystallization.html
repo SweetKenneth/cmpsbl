@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 — Pipeline Crystallization Model — CMPSBL® v13.5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/publication" class="back-link">← Back to Publication</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+<nav class="print-nav">
+<a href="00-release-index.html">Index</a><a href="01-release-abstract.html">Abstract</a><a href="02-system-overview.html">System</a><a href="03-memory-stream-foundry.html">Memory</a><a href="04-pipeline-crystallization.html"><strong>Pipeline</strong></a><a href="05-universal-export.html">Export</a><a href="06-governance-safety.html">Governance</a><a href="07-resilience-hardening.html">IRONCLAD</a><a href="08-intent-mesh.html">Intent Mesh</a><a href="09-domain-extension.html">Domain</a><a href="10-prior-art-statement.html">Prior Art</a>
+</nav>
+<div class="doc-meta"><span class="badge primary">v13.5 · IRONCLAD</span><span class="badge primary">📖 OPEN ACCESS / PRIOR ART</span></div>
+<div class="doi-bar"><span>DOI:</span><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></div>
+
+<h1>04 — Pipeline Crystallization Model</h1>
+
+<h2>1. Purpose</h2>
+<p>This document describes the pipeline crystallization model: the mechanism by which multi-module synergy chains are identified, validated, and frozen into replayable production pipelines.</p>
+
+<h2>2. Synergy Pipelines</h2>
+<h3>2.1 Definition</h3>
+<p>A synergy pipeline is a validated sequence of module invocations that produces a deterministic, auditable output from a given input class. Pipelines are the substrate's primary unit of compound capability.</p>
+
+<h3>2.2 Pipeline Composition</h3>
+<table>
+<thead><tr><th>Component</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Module chain</td><td>Ordered sequence of modules invoked</td></tr>
+<tr><td>Input contract</td><td>Expected input schema and constraints</td></tr>
+<tr><td>Output contract</td><td>Guaranteed output schema</td></tr>
+<tr><td>Quality gates</td><td>Per-stage validation requirements</td></tr>
+<tr><td>Governance tier</td><td>Required autonomy level for execution</td></tr>
+</tbody>
+</table>
+
+<h3>2.3 Scale</h3>
+<p>As of v13.5: <strong>300+</strong> identified synergy pipelines, <strong>100</strong> crystallized (frozen, production-verified), <strong>7</strong> sectors contributing to pipeline discovery.</p>
+
+<h2>3. Crystallization Process</h2>
+<h3>3.1 Pipeline Lifecycle</h3>
+<pre><code>Discovery → Validation → Staging → Crystallization → Production</code></pre>
+<ol>
+<li><strong>Discovery</strong> — a module chain is observed to produce consistent, valuable outputs</li>
+<li><strong>Validation</strong> — the chain is executed against a test corpus with reproducibility verification</li>
+<li><strong>Staging</strong> — the pipeline runs in shadow mode alongside existing pipelines</li>
+<li><strong>Crystallization</strong> — the pipeline is frozen with a structural fingerprint and version stamp</li>
+<li><strong>Production</strong> — the crystallized pipeline is available for invocation</li>
+</ol>
+
+<h3>3.2 Structural Fingerprint</h3>
+<p>Each crystallized pipeline receives a fingerprint derived from module chain composition, I/O contract schemas, quality gate definitions, and governance constraints. The fingerprint enables drift detection.</p>
+
+<h3>3.3 Replay Verification</h3>
+<p>Crystallized pipelines support replay verification through deterministic module execution paths, pinned model versions, and structural output comparison.</p>
+
+<h2>4. Artifact Model</h2>
+<table>
+<thead><tr><th>Artifact Type</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Discovery manifest</td><td>Metadata and provenance for the pipeline's origin</td></tr>
+<tr><td>Execution trace</td><td>Auditable record of each module invocation</td></tr>
+<tr><td>Output package</td><td>The pipeline's deliverable output</td></tr>
+<tr><td>Quality report</td><td>Per-gate validation results</td></tr>
+</tbody>
+</table>
+
+<h2>5. Governance Integration</h2>
+<ul>
+<li>New pipeline discovery requires at least <strong>Bounded Autonomy</strong> tier</li>
+<li>Crystallization requires <strong>governance approval</strong></li>
+<li>Production deployment is logged to AUDIT</li>
+<li>Post-crystallization modification is prohibited — new versions create new fingerprints</li>
+</ul>
+
+<h2>6. Disclosure Boundary</h2>
+<ul>
+<li>Pipeline scoring and ranking algorithms</li>
+<li>Shadow mode validation criteria</li>
+<li>Specific crystallization threshold values</li>
+<li>Internal replay verification tolerances</li>
+</ul>
+
+<h2>Revision History</h2>
+<table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead>
+<tbody><tr><td>2026-03-06</td><td>Kenneth E. Sweet Jr.</td><td>Initial pipeline crystallization documentation — v13.5</td></tr></tbody></table>
+
+<div class="doc-footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>
