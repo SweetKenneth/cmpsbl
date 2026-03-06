@@ -437,10 +437,10 @@ export function CmpsblNav() {
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
-                  { name: "EVOLUTION", href: "/evolution", icon: Zap, badge: "LIVE" },
-                  { name: "ENGINES", href: "/engines", icon: Shield, badge: "20" },
+                  { name: "Evolution", href: "/evolution", icon: Zap, badge: "LIVE" },
+                  { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
                   { name: "Upgrade", href: "/upgrade", icon: Package },
-                  { name: "Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
+                  { name: "Memory stream", href: "/foundry", icon: Sparkles },
                 ].map((item) => (
                   <Link
                     key={item.href}
