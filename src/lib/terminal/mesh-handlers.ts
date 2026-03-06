@@ -603,7 +603,7 @@ export function registerMeshHandlers() {
     };
   });
 
-  // ═══ mesh.discover.advanced — Run all three v10.4 discovery phases ═══
+  // ═══ mesh.discover.advanced — Run all three advanced discovery phases ═══
   registerHandler('mesh.discover.advanced', async () => {
     const { meshScheduler } = await import('@/lib/substrate/intent-mesh');
     const result = await meshScheduler.runOnce();
@@ -621,7 +621,7 @@ export function registerMeshHandlers() {
     return {
       success: true,
       data: {
-        description: 'Intent Mesh — Emergent Module Intelligence (v10.4)',
+        description: 'Intent Mesh — Emergent Module Intelligence',
         commands: {
           'mesh.status': 'Get mesh state, stats, and top routes',
           'mesh.toggle': 'Toggle mesh on/off (kill switch)',
@@ -641,7 +641,7 @@ export function registerMeshHandlers() {
           'mesh.discover': 'Run discovery cycle (gaps → recommendations)',
           'mesh.discover.all': 'Run self-discovery for all 9 modules',
           'mesh.discover.module <name>': 'Run self-discovery for one module',
-          'mesh.discover.advanced': '🆕 Run all v10.4 discovery phases',
+          'mesh.discover.advanced': 'Run all advanced discovery phases',
           'mesh.scores': 'Intent quality leaderboard',
           'mesh.proposals': 'View pending module proposals',
           'mesh.approve <id>': 'Approve a proposal → add to manifest',

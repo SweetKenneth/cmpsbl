@@ -36,7 +36,7 @@ export function registerObservabilityHandlers(): void {
       formatted: [
         '┌─────────────────────────────────────────────┐',
         '│       OBSERVABILITY SUMMARY                 │',
-         `│       ${getMetric('epoch')} v${getMetric('version')}`.padEnd(46) + '│',
+         `│       ${getMetric('epoch')}`.padEnd(46) + '│',
         '└─────────────────────────────────────────────┘',
         '',
         `  Health Score:      ${summary.healthScore}%`,
@@ -296,7 +296,7 @@ export function registerObservabilityHandlers(): void {
       formatted: [
         '┌─────────────────────────────────────────────┐',
         '│       OBSERVABILITY COMMANDS                 │',
-        `│       ${getMetric('epoch')} v${getMetric('version')}`.padEnd(46) + '│',
+        `│       ${getMetric('epoch')}`.padEnd(46) + '│',
         '└─────────────────────────────────────────────┘',
         '',
         '  obs.summary            Full observability overview',
