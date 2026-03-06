@@ -8,23 +8,22 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ─── Global Mocks ────────────────────────────────────────────────────────────
 
-vi.mock(import('child_process'), async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    execSync: vi.fn((cmd: string) => {
-      if (cmd.includes('tsc --noEmit')) return '';
-      if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
-      if (cmd.includes('vitest run')) return JSON.stringify({
-        numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
-      });
-      if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
-      if (cmd.includes('git rev-parse --short')) return 'abc1234';
-      if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
-      return '';
-    }),
-  } as any;
+const mockExecSync = vi.fn((cmd: string) => {
+  if (cmd.includes('tsc --noEmit')) return '';
+  if (cmd.includes('vite build')) return 'dist/index.js 150.00 kB';
+  if (cmd.includes('vitest run')) return JSON.stringify({
+    numTotalTests: 220, numPassedTests: 220, numFailedTests: 0,
+  });
+  if (cmd.includes('npm audit')) return 'found 0 vulnerabilities';
+  if (cmd.includes('git rev-parse --short')) return 'abc1234';
+  if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
+  return '';
 });
+
+vi.mock('child_process', () => ({
+  default: {},
+  execSync: mockExecSync,
+}));
 
 const MOCK_FILES: Record<string, string> = {
   'src/App.tsx': 'import ErrorBoundary from "./ErrorBoundary";\nexport default App;',
@@ -37,26 +36,23 @@ const MOCK_FILES: Record<string, string> = {
   'src/lib/atlas/capability-gate.ts': 'export const gates = {};',
 };
 
-vi.mock(import('fs'), async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    existsSync: vi.fn((p: string) => {
-      const rel = String(p).replace(process.cwd() + '/', '');
-      if (rel === 'src' || rel === 'supabase/functions') return true;
-      return rel in MOCK_FILES || Object.keys(MOCK_FILES).some(k => k.startsWith(rel + '/'));
-    }),
-    readFileSync: vi.fn((p: string, _enc?: string) => {
-      const rel = String(p).replace(process.cwd() + '/', '');
-      if (rel in MOCK_FILES) return MOCK_FILES[rel];
-      return '';
-    }),
-    writeFileSync: vi.fn(),
-    mkdirSync: vi.fn(),
-    readdirSync: vi.fn((_dir: string) => []),
-    statSync: vi.fn(() => ({ isDirectory: () => false, isFile: () => true, size: 100 })),
-  } as any;
-});
+vi.mock('fs', () => ({
+  default: {},
+  existsSync: vi.fn((p: string) => {
+    const rel = String(p).replace(process.cwd() + '/', '');
+    if (rel === 'src' || rel === 'supabase/functions') return true;
+    return rel in MOCK_FILES || Object.keys(MOCK_FILES).some(k => k.startsWith(rel + '/'));
+  }),
+  readFileSync: vi.fn((p: string, _enc?: string) => {
+    const rel = String(p).replace(process.cwd() + '/', '');
+    if (rel in MOCK_FILES) return MOCK_FILES[rel];
+    return '';
+  }),
+  writeFileSync: vi.fn(),
+  mkdirSync: vi.fn(),
+  readdirSync: vi.fn((_dir: string) => []),
+  statSync: vi.fn(() => ({ isDirectory: () => false, isFile: () => true, size: 100 })),
+}));
 
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
