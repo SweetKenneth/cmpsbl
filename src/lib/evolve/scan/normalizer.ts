@@ -44,7 +44,7 @@ export interface NormalizedAction {
   target_scope: TargetScope;
   target_module?: string;
   target_file?: string;
-  risk_level: 'low' | 'medium';
+  risk_level: 'low' | 'medium' | 'high';
   confidence_score: number;
   source_proposal_id: string;
   description: string;
@@ -186,14 +186,14 @@ function normalizeProposal(proposal: ScanProposal): {
   }
 
   // Check risk level
-  if (!NORMALIZATION_CONFIG.allowed_risk_levels.includes(proposal.risk_level as 'low' | 'medium')) {
+  if (!NORMALIZATION_CONFIG.allowed_risk_levels.includes(proposal.risk_level as 'low' | 'medium' | 'high')) {
     return {
       success: false,
       rejection: {
         proposal_id: proposal.proposal_id,
         title: proposal.title,
         rejection_code: 'UNSUPPORTED_RISK_LEVEL',
-        reason: `Risk level '${proposal.risk_level}' not allowed (only low/medium)`,
+        reason: `Risk level '${proposal.risk_level}' not allowed (only ${NORMALIZATION_CONFIG.allowed_risk_levels.join('/')})`,
       },
     };
   }
@@ -231,16 +231,18 @@ function normalizeProposal(proposal: ScanProposal): {
 
   // Create normalized action
   // action_id uses UUID for database compatibility
+  // High risk proposals always require human review
+  const isHighRisk = proposal.risk_level === 'high';
   const action: NormalizedAction = {
     action_id: crypto.randomUUID(),
     action_type: actionType,
     target_scope: targetScope,
     target_module: targetModule,
-    risk_level: proposal.risk_level as 'low' | 'medium',
+    risk_level: proposal.risk_level as 'low' | 'medium' | 'high',
     confidence_score: proposal.confidence_score,
     source_proposal_id: proposal.proposal_id,
     description: stripDecorations(proposal.description),
-    requires_human: proposal.requires_human || actionType === 'manual_review',
+    requires_human: isHighRisk || proposal.requires_human || actionType === 'manual_review',
     normalized_at: new Date().toISOString(),
   };
 
