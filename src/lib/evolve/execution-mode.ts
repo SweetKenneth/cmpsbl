@@ -70,7 +70,20 @@ export function getExecutionModeConfig(): ExecutionModeConfig {
   return { ..._config };
 }
 
+// Hardening 8: Track mode transitions for tamper detection
+const modeTransitionLog: Array<{ from: EvolutionExecutionMode; to: EvolutionExecutionMode; at: string; by: string }> = [];
+
 export function setExecutionMode(mode: EvolutionExecutionMode, set_by = 'system'): void {
+  // Hardening 9: Log every mode transition
+  modeTransitionLog.push({
+    from: _config.mode,
+    to: mode,
+    at: new Date().toISOString(),
+    by: set_by,
+  });
+  // Cap transition log
+  if (modeTransitionLog.length > 50) modeTransitionLog.shift();
+  
   _config = {
     mode,
     set_at: new Date().toISOString(),
@@ -79,6 +92,10 @@ export function setExecutionMode(mode: EvolutionExecutionMode, set_by = 'system'
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(_config));
   } catch { /* silent */ }
+}
+
+export function getModeTransitionLog() {
+  return [...modeTransitionLog];
 }
 
 export function isExternalAIMode(): boolean {

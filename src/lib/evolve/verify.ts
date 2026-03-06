@@ -123,6 +123,34 @@ export function verifyShadowArtifacts(evolution_id: string): VerificationResult 
     message: invalidOps.length === 0 ? 'All operations valid' : 'Invalid operations found',
   });
 
+  // Check 7 (Hardening): Path traversal detection
+  const traversalViolations = artifacts.filter(a => 
+    /\.\.[\\/]/.test(a.file_path) || a.file_path.startsWith('/') || a.file_path.startsWith('~')
+  );
+  result.checks.push({
+    name: 'no_path_traversal',
+    passed: traversalViolations.length === 0,
+    message: traversalViolations.length === 0
+      ? 'No path traversal detected'
+      : `${traversalViolations.length} artifact(s) with suspicious paths`,
+  });
+  if (traversalViolations.length > 0) {
+    result.errors.push(`Path traversal detected in: ${traversalViolations.map(a => a.file_path).join(', ')}`);
+  }
+
+  // Check 8 (Hardening): Content size sanity — reject artifacts > 1MB
+  const oversizedArtifacts = artifacts.filter(a => a.content.length > 1_048_576);
+  result.checks.push({
+    name: 'content_size_limit',
+    passed: oversizedArtifacts.length === 0,
+    message: oversizedArtifacts.length === 0
+      ? 'All artifacts within size limits'
+      : `${oversizedArtifacts.length} artifact(s) exceed 1MB`,
+  });
+  if (oversizedArtifacts.length > 0) {
+    result.warnings.push('Some artifacts exceed 1MB — review before apply');
+  }
+
   // Compute final result
   result.passed = result.errors.length === 0 && result.checks.every(c => c.passed);
   

@@ -92,6 +92,12 @@ export async function downloadTieredFoundryZip(options: {
     return { artifactCount: 0, totalLanguageVariants: 0, fileCount: 0 };
   }
 
+  // Hardening 15: Cap export batch size to prevent zip bombs
+  const MAX_EXPORT_ARTIFACTS = 200;
+  if (artifacts.length > MAX_EXPORT_ARTIFACTS) {
+    throw new Error(`Export capped at ${MAX_EXPORT_ARTIFACTS} artifacts for safety. Got ${artifacts.length}.`);
+  }
+
   const [JSZipMod, runtimeFiles] = await Promise.all([
     import('jszip'),
     loadRuntimeFiles(),
