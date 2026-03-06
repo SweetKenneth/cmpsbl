@@ -11,7 +11,7 @@ interface BoundCheck {
   validate: () => AuditFinding[];
 }
 
-export function checkMemoryBounds(): AuditFinding[] {
+export async function checkMemoryBounds(): Promise<AuditFinding[]> {
   const findings: AuditFinding[] = [];
 
   // 1. Verify correlation-id span cap
