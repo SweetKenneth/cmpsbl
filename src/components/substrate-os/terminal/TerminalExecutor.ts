@@ -561,7 +561,7 @@ function generateFullHelp(): string {
 │                                                             │
 │  🔱 EXPANSION — CSZ (help csz)                                │
 │    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Mutation pipeline & upgrades       │
-│    shadow       Covert testing channel                       │
+│    shadow       (${COMMAND_CATEGORIES.shadow.commands.length.toString().padStart(2)} cmds)  Shadow environment & staging       │
 │    phantom      (${COMMAND_CATEGORIES.phantom.commands.length.toString().padStart(2)} cmds)  Privacy engineering                │
 │                                                             │
 │  🛡 MESH OVERLAYS                                              │
