@@ -207,6 +207,8 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.config', description: 'View configuration', category: 'system', icon: Settings, requiresOperator: false, requiredTier: 'free', args: '[key]' },
   { command: 'system.audit', description: 'Query health incidents & audit log', category: 'system', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '[since] [type]', example: 'system.audit 24h heal' },
   { command: 'system.diagnostics', description: 'Full diagnostics (all entities + meshes)', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free', args: '[--full]' },
+  { command: 'system.fix', description: 'Audit + auto-repair in one shot', category: 'system', icon: Shield, requiresOperator: true, requiredTier: 'architect' },
+  { command: 'system.repair', description: 'Self-repair loop (3 attempts)', category: 'system', icon: RefreshCw, requiresOperator: true, requiredTier: 'architect' },
   { command: 'system.heal', description: 'Self-healing trigger', category: 'system', icon: Shield, requiresOperator: true, requiredTier: 'architect', args: '[target] [force]' },
   { command: 'system.restart', description: 'Restart service', category: 'system', icon: Cpu, requiresOperator: true, requiredTier: 'architect', args: '[service]' },
   { command: 'system.backup', description: 'Create backup snapshot', category: 'system', icon: Database, requiresOperator: true, requiredTier: 'architect', args: '[include_data]' },

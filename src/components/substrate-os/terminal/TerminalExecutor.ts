@@ -1578,8 +1578,47 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     } else if (base === 'system.audit') {
       result = await system.audit();
     } else if (base === 'system.diagnostics') {
-      const full = args.includes('--full');
-      result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
+      try {
+        const { collectDiagnostics } = await import('@/lib/substrate/diagnostics-aggregator');
+        const diag = collectDiagnostics();
+        const healthIcon = diag.overallHealth === 'healthy' ? '🟢' : diag.overallHealth === 'degraded' ? '🟡' : '🔴';
+        
+        let output = `
+╔══════════════════════════════════════════════════════════════╗
+║  SUBSTRATE DIAGNOSTICS                                        ║
+╠══════════════════════════════════════════════════════════════╣
+║  Overall: ${healthIcon} ${diag.overallHealth.toUpperCase().padEnd(12)}  Timestamp: ${diag.timestamp.substring(11, 19)}       ║
+╠══════════════════════════════════════════════════════════════╣
+║  UPTIME                                                       ║
+║  Since:       ${String(diag.uptime.bootedAt || 'N/A').padEnd(46)}║
+║  Duration:    ${String(diag.uptime.uptimeFormatted || 'N/A').padEnd(46)}║
+╠══════════════════════════════════════════════════════════════╣
+║  MEMORY                                                       ║
+║  Pressure:    ${String(diag.memory.level || 'normal').toUpperCase().padEnd(46)}║
+║  Used:        ${String(diag.memory.usedMB || 'N/A').padEnd(3)} MB                                         ║
+╠══════════════════════════════════════════════════════════════╣
+║  CIRCUIT BREAKERS                                             ║
+║  Open:        ${String(diag.circuitBreakers.open).padEnd(3)}  Half-Open: ${String(diag.circuitBreakers.halfOpen).padEnd(3)}  Closed: ${String(diag.circuitBreakers.closed).padEnd(3)}  ║
+╠══════════════════════════════════════════════════════════════╣
+║  DEAD LETTER QUEUE                                            ║
+║  Total:       ${String(diag.deadLetterQueue.total).padEnd(5)}  Pending: ${String(diag.deadLetterQueue.pending || 0).padEnd(5)}                  ║
+╠══════════════════════════════════════════════════════════════╣
+║  TELEMETRY SAMPLER                                            ║
+║  Sampled:     ${String(diag.telemetrySampler.sampled || 0).padEnd(5)}  Dropped: ${String(diag.telemetrySampler.dropped || 0).padEnd(5)}                  ║
+╠══════════════════════════════════════════════════════════════╣
+║  METRICS CACHE                                                ║
+║  Entries:     ${String(diag.metricsCache.entries || 0).padEnd(5)}  Hit Rate: ${String(diag.metricsCache.hitRate || 'N/A').padEnd(5)}                 ║
+╠══════════════════════════════════════════════════════════════╣
+║  SNAPSHOTS                                                    ║
+║  Total:       ${String(diag.snapshots.total || 0).padEnd(5)}                                           ║
+╚══════════════════════════════════════════════════════════════╝`;
+        
+        return { success: true, output, data: diag };
+      } catch (err) {
+        // Fallback to substrate.invoke
+        const full = args.includes('--full');
+        result = await substrate.invoke({ module: 'system', action: 'diagnostics', payload: { full } });
+      }
     } else if (base === 'system.doctor') {
       // Quick diagnostics: env, DB, routing, providers
       try {
