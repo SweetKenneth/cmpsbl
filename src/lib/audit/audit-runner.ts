@@ -87,9 +87,9 @@ export async function runFullAudit(opts?: { version?: string }): Promise<AuditRe
   ];
 
   // Phase 3: Await backend results (should already be resolved by now)
-  const supabaseFindings = await supabasePromise;
+  const [supabaseFindings, memoryBoundsFindings] = await Promise.all([supabasePromise, memoryBoundsPromise]);
 
-  const findings = [...fastChecks, ...domChecks, ...supabaseFindings];
+  const findings = [...fastChecks, ...domChecks, ...supabaseFindings, ...memoryBoundsFindings];
 
   const duration_ms = Math.round(performance.now() - start);
 
