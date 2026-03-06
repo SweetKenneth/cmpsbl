@@ -43,7 +43,6 @@ export function registerEncodedHandlers(): void {
 
     // Format for display
     const formatted = formatAgentStatus({
-      version: '2.2.0',
       mode: config.executionMode,
       modeLabel: getExecutionModeLabel(config.executionMode),
       model: config.primaryModel,
@@ -58,7 +57,6 @@ export function registerEncodedHandlers(): void {
       success: true,
       formatted,
       data: {
-        version: '2.2.0',
         mode: {
           current: config.executionMode,
           label: getExecutionModeLabel(config.executionMode),
@@ -309,14 +307,13 @@ export function registerEncodedHandlers(): void {
       success: true,
       formatted,
       data: {
-        version: '2.2.0',
         description: 'Encoded — Precision Code Generation Agent',
         command_count: 17,
       },
     };
   });
 
-  // encoded.skills — View skill proficiency (v2.2.0)
+  // encoded.skills — View skill proficiency
   registerHandler('encoded.skills', async () => {
     const summary = getSkillsSummary();
     
@@ -348,7 +345,7 @@ export function registerEncodedHandlers(): void {
     };
   });
 
-  // encoded.analyze — Analyze code quality (v2.2.0)
+  // encoded.analyze — Analyze code quality
   registerHandler('encoded.analyze', async () => {
     return {
       success: true,
@@ -366,7 +363,7 @@ export function registerEncodedHandlers(): void {
     };
   });
 
-  // encoded.metrics — Quality metrics summary (v2.2.0)
+  // encoded.metrics — Quality metrics summary
   registerHandler('encoded.metrics', async () => {
     const { data: events, error } = await supabase
       .from('brain_events')

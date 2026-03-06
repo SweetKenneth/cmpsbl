@@ -46,37 +46,37 @@ export {
   executeSEBACommand,
 } from './seba-handlers';
 
-// Infrastructure handlers (v8.5.0)
+// Infrastructure handlers
 export {
   registerInfraHandlers,
 } from './infra-handlers';
 
-// ENCODE module handlers (v9.1.0)
+// ENCODE module handlers
 export {
   registerEncodeModuleHandlers,
 } from './encode-handlers';
 
-// Infrastructure Six module handlers (v9.2.0)
+// Infrastructure Six module handlers
 export {
   registerInfraModuleHandlers,
 } from './infra-module-handlers';
 
-// Intent Mesh handlers (v10.0)
+// Intent Mesh handlers
 export {
   registerMeshHandlers,
 } from './mesh-handlers';
 
-// Observability handlers (v11.5.0)
+// Observability handlers
 export {
   registerObservabilityHandlers,
 } from './observability-handlers';
 
-// Governance handlers (v11.5.0)
+// Governance handlers
 export {
   registerGovernanceHandlers,
 } from './governance-handlers';
 
-// Analytics handlers (v11.5.2)
+// Analytics handlers
 export {
   registerAnalyticsHandlers,
 } from './analytics-handlers';

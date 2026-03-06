@@ -1688,7 +1688,6 @@ interface ModuleHardeningHealth {
   codename: string;
   grade: string;
   score: number;
-  version: string;
 }
 
 async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
@@ -1745,7 +1744,6 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
       codename: mod.codename,
       grade: (health as any)?.grade || 'A',
       score: (health as any)?.score ?? 100,
-      version: '2.0.0',
     });
   }
 

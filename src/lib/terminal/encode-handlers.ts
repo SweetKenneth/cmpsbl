@@ -219,7 +219,7 @@ export function registerEncodeModuleHandlers(): void {
         '',
         '┌─────────────────────────────────────────────┐',
         '│       ENCODE MODULE — Terminal Commands      │',
-        '│       v11.0.0 Orchestration Epoch            │',
+        '│         Orchestration Epoch                  │',
         '└─────────────────────────────────────────────┘',
         '',
         '  ── Core ──',

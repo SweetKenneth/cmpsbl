@@ -41,7 +41,7 @@ function formatStatusOutput(state: any, config: any, health: any): string[] {
   const approved = state?.approved_proposals || 0;
   const applied = state?.evolutions_applied || state?.executed_proposals || 0;
   
-  return formatBox('SEBA v2.0.0 — Full Spectrum Autonomy', [
+  return formatBox('SEBA — Full Spectrum Autonomy', [
     '',
     `Mode:        ${mode}`,
     `Phase:       ${phase}`,
@@ -184,7 +184,6 @@ export function registerSEBAHandlers(): void {
       success: result.success,
       formatted: formatStatusOutput(state, config, health),
       data: {
-        version: '2.0.0',
         codename: 'Full Spectrum Autonomy',
         state,
         config,
@@ -594,7 +593,6 @@ export function registerSEBAHandlers(): void {
       success: true,
       formatted: lines,
       data: {
-        version: '2.1.0',
         command_count: 22,
         categories: ['Status', 'Cycle', 'Governance', 'Mode', 'History'],
       },
