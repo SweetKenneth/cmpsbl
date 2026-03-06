@@ -23,7 +23,7 @@ vi.mock(import('child_process'), async (importOriginal) => {
       if (cmd.includes('git rev-parse --abbrev-ref')) return 'main';
       return '';
     }),
-  };
+  } as any;
 });
 
 const MOCK_FILES: Record<string, string> = {
@@ -55,7 +55,7 @@ vi.mock(import('fs'), async (importOriginal) => {
     mkdirSync: vi.fn(),
     readdirSync: vi.fn((_dir: string) => []),
     statSync: vi.fn(() => ({ isDirectory: () => false, isFile: () => true, size: 100 })),
-  };
+  } as any;
 });
 
 vi.mock('@/integrations/supabase/client', () => ({
