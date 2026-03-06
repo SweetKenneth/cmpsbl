@@ -96,10 +96,10 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@supabase/')) {
               return 'supabase';
             }
-            // Charts - defer heavily (recharts is huge)
-            if (id.includes('recharts') || id.includes('d3-')) {
-              return 'charts';
-            }
+            // Charts: Do NOT assign to manualChunks — let Rollup naturally
+            // place recharts/d3 in the lazy chunk that imports them.
+            // Forcing them into a named chunk creates a static import edge
+            // from the entry bundle, loading 106KB on every page load.
             // Radix UI - split into micro-chunks by component for tree-shaking
             // Critical UI (needed immediately)
             if (id.includes('@radix-ui/react-slot') || id.includes('@radix-ui/react-primitive')) {
