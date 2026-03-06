@@ -56,6 +56,7 @@ const CognitivesDownload = lazy(() => import("@/pages/CognitivesDownload"));
 const AdminCognitiveUploads = lazy(() => import("@/pages/AdminCognitiveUploads"));
 const PersistentMemoryDocs = lazy(() => import("@/pages/docs/PersistentMemoryDocs"));
 const DocsReader = lazy(() => import("@/pages/docs/DocsReader"));
+const AcademicV13Docs = lazy(() => import("@/pages/docs/AcademicV13Docs"));
 const RuntimeReference = lazy(() => import("@/pages/docs/RuntimeReference"));
 const EngineDocsPage = lazy(() => import("@/pages/docs/EngineDocsPage"));
 const CapabilityManifest = lazy(() => import("@/pages/docs/CapabilityManifest"));
