@@ -52,7 +52,7 @@ export function GovernanceSignal() {
           <div className="p-6 sm:p-10">
             <div className="text-center mb-8">
               <div className="relative inline-block">
-                <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">06</span>
+                <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">05</span>
               </div>
               <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
                 <Hammer className="w-3 h-3 text-primary" />

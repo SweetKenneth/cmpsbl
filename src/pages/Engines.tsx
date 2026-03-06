@@ -164,7 +164,7 @@ export default function Engines() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
-                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM — CROWN JEWEL EDITION</span>
+                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM</span>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
                 COMPOSABLE <span className="text-primary">ENGINES</span>

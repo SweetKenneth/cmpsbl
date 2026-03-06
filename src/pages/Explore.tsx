@@ -143,7 +143,7 @@ export default function Explore() {
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
-      <section className="relative z-10 px-4 py-16 sm:py-36 overflow-hidden">
+      <section className="relative z-10 px-4 py-16 sm:py-32 overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
@@ -173,7 +173,7 @@ export default function Explore() {
               }}
             />
             
-            {/* Glow orbs — staggered */}
+            {/* Glow orbs */}
             <motion.div 
               className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[100px]"
               animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.5, 0.25] }}
@@ -184,58 +184,52 @@ export default function Explore() {
               animate={{ scale: [1.3, 1, 1.3], opacity: [0.5, 0.2, 0.5] }}
               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             />
-            <motion.div 
-              className="absolute top-1/3 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-white/5 blur-[60px]"
-              animate={{ scale: [1, 1.5, 1], opacity: [0.1, 0.3, 0.1] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            />
             
             {/* Flowing accent at top */}
             <div className="h-[2px] memory-stream-bar opacity-70" />
 
-            <div className="relative p-7 sm:p-16 md:p-24 text-center">
+            <div className="relative p-7 sm:p-14 md:p-20 text-center">
               {/* Floating badge */}
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 sm:mb-10"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8"
               >
                 <Sparkles className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </motion.div>
               
-              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 sm:mb-8 leading-[1.05] tracking-tight">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
-              <p className="text-white/65 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                The substrate and Memory Stream working together — systems that DREAM, ADAPT, and EVOLVE,
-                governed by policy, powered by persistent memory. Start free with 3 pipeline slots.
+              <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+                Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 pipeline slots.
               </p>
               
               {/* Mini stats row */}
-              <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10 sm:mb-14">
+              <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10">
                  {[
-                   { value: "1,143+", label: "Crystallized" },
+                   { value: "38", label: "Substrate Nodes" },
                    { value: "24", label: "Pipeline Packs" },
-                   { value: "68+", label: "Quality Floor" },
+                   { value: "20", label: "Sealed Engines" },
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                    <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-white/45 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                    <div className="text-2xl sm:text-3xl font-black text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="relative px-10 h-14 sm:h-16 text-base sm:text-lg bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
-                  <Link to="/start-here">
+                  <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Start Building
+                    Start Building — Free
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
