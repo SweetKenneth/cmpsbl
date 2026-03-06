@@ -1362,6 +1362,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...LINGUA_COMMANDS,
   ...PHANTOM_COMMANDS,
   ...HARVEST_COMMANDS,
+  ...SHADOW_COMMANDS,
   // Infrastructure
   ...MEDIC_COMMANDS,
   ...NERVE_COMMANDS,
@@ -1424,6 +1425,7 @@ export const COMMAND_CATEGORIES = {
   lingua: { label: 'LINGUA', color: 'text-teal-300', borderColor: 'border-teal-400/30', commands: LINGUA_COMMANDS },
   phantom: { label: 'PHANTOM', color: 'text-slate-300', borderColor: 'border-slate-400/30', commands: PHANTOM_COMMANDS },
   harvest: { label: 'HARVEST', color: 'text-lime-300', borderColor: 'border-lime-400/30', commands: HARVEST_COMMANDS },
+  shadow: { label: 'SHADOW', color: 'text-slate-400', borderColor: 'border-slate-500/30', commands: SHADOW_COMMANDS },
   // Infrastructure
   medic: { label: 'MEDIC', color: 'text-rose-300', borderColor: 'border-rose-400/30', commands: MEDIC_COMMANDS },
   nerve: { label: 'NERVE', color: 'text-sky-300', borderColor: 'border-sky-400/30', commands: NERVE_COMMANDS },
