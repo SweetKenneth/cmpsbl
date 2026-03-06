@@ -150,3 +150,17 @@ export {
   type PracticeResult,
   type ShadowPracticeState,
 } from './shadow-practice';
+
+// Substrate Navigator — Codebase Navigation Intelligence
+export {
+  navigateIntent,
+  resolveAlias,
+  getAliasesForModule,
+  detectConcerns,
+  getConcernFiles,
+  getModuleTables,
+  whereIs,
+  CONVENTIONS,
+  type NavigationResult,
+  type ConcernType,
+} from './substrate-navigator';
