@@ -1,5 +1,5 @@
 /**
- * Encoded Shadow Practice Engine — v1.0.0
+ * Encoded Shadow Practice Engine
  * 
  * Auto-cycling practice mode where Encoded writes real code against
  * a shadow copy of actual substrate files. Changes are NEVER committed —
