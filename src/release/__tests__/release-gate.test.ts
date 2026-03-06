@@ -8,8 +8,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ─── Global Mocks ────────────────────────────────────────────────────────────
 
-vi.mock('child_process', async (importOriginal) => {
-  const actual = await importOriginal() as Record<string, unknown>;
+vi.mock(import('child_process'), async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
     execSync: vi.fn((cmd: string) => {
@@ -37,8 +37,8 @@ const MOCK_FILES: Record<string, string> = {
   'src/lib/atlas/capability-gate.ts': 'export const gates = {};',
 };
 
-vi.mock('fs', async (importOriginal) => {
-  const actual = await importOriginal() as Record<string, unknown>;
+vi.mock(import('fs'), async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
     existsSync: vi.fn((p: string) => {
