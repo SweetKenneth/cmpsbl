@@ -242,10 +242,13 @@ export function healStream(force = false): StreamHealResult {
   const previousScore = health.score;
   let breakerReset = false;
 
+  // FIX #13: Capture breaker state BEFORE resetting so log is accurate
+  const previousBreakerState = breaker.state;
+
   // Step 1: Reset circuit breaker if open/half-open
-  if (breaker.state !== 'closed' || force) {
+  if (previousBreakerState !== 'closed' || force) {
     resetBreaker();
-    actions.push(`Circuit breaker reset (was: ${breaker.state})`);
+    actions.push(`Circuit breaker reset (was: ${previousBreakerState})`);
     breakerReset = true;
   }
 

@@ -1,7 +1,7 @@
 /**
  * usePersistentAgent - React Hook Integration
  * 
- * Add persistent memory to any React component in minutes.
+ * Add persistent memory to any React component.
  * No provider setup required beyond import.
  * 
  * Usage:
@@ -43,10 +43,7 @@ export interface PersistentAgentResult {
 /**
  * React hook for persistent agent memory
  * 
- * Works with:
- * - Existing components
- * - Existing agent calls
- * - No provider setup required
+ * FIX #17: Single client instance via stable ref — no redundant creation
  * 
  * @param agentId - Unique identifier for this agent
  * @param scope - Memory scope: 'session' or 'project' (default: 'project')
@@ -59,22 +56,27 @@ export function usePersistentAgent(
   const [error, setError] = useState<Error | null>(null);
   const clientRef = useRef<MemoryClient | null>(null);
   
-  // Initialize client on mount
+  // FIX #17: Create client once on mount, recreate only when agentId/scope change
   useEffect(() => {
     clientRef.current = new MemoryClient(agentId, scope);
+    return () => { clientRef.current = null; };
   }, [agentId, scope]);
-  
-  const respond = useCallback(async (input: string): Promise<MemoryContext> => {
+
+  // Stable getter — never creates a new client outside of useEffect
+  const getClient = useCallback((): MemoryClient => {
     if (!clientRef.current) {
       clientRef.current = new MemoryClient(agentId, scope);
     }
+    return clientRef.current;
+  }, [agentId, scope]);
+  
+  const respond = useCallback(async (input: string): Promise<MemoryContext> => {
+    const client = getClient();
     
     setIsLoading(true);
     setError(null);
     
     try {
-      const client = clientRef.current;
-      
       // Auto-store user input first (extracts facts automatically)
       await client.store(input, { type: 'user_input' });
       
@@ -91,46 +93,43 @@ export function usePersistentAgent(
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Memory operation failed');
       setError(error);
+      console.warn(`[Memory] respond error: ${error.message}`);
       // Return empty context on error - memory is enhancement, not requirement
       return { memories: [], confidence: 0, contextString: '' };
     } finally {
       setIsLoading(false);
     }
-  }, [agentId, scope]);
+  }, [getClient]);
   
   const remember = useCallback(async (note: string): Promise<void> => {
-    if (!clientRef.current) {
-      clientRef.current = new MemoryClient(agentId, scope);
-    }
+    const client = getClient();
     
     setIsLoading(true);
     setError(null);
     
     try {
-      await clientRef.current.store(note, { type: 'manual_note' });
+      await client.store(note, { type: 'manual_note' });
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Memory store failed');
       setError(error);
-      // Fail silently - memory is enhancement
+      console.warn(`[Memory] remember error: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-  }, [agentId, scope]);
+  }, [getClient]);
   
   const clearError = useCallback(() => {
     setError(null);
   }, []);
   
   const logWorkload = useCallback(async (summary: string): Promise<void> => {
-    if (!clientRef.current) {
-      clientRef.current = new MemoryClient(agentId, scope);
-    }
+    const client = getClient();
     try {
-      await clientRef.current.storeWorkload(summary);
+      await client.storeWorkload(summary);
     } catch (err) {
       console.warn('[Memory] Workload log failed gracefully');
     }
-  }, [agentId, scope]);
+  }, [getClient]);
   
   return {
     respond,

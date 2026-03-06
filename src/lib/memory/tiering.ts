@@ -1,6 +1,8 @@
 /**
  * Memory Tiering — RPS-driven tier management with receipts
  * Extends SM-2 repetition scheduling with RPS + credibility + contradiction guards
+ *
+ * FIX #14: inferReason now uses rps score for threshold-based reasoning
  */
 
 import { computeRPS, type MemoryEntry, type RpsWeights, DEFAULT_RPS_WEIGHTS } from './rps';
@@ -28,7 +30,8 @@ export type TierMoveReason =
   | 'contradiction_penalty'
   | 'staleness_decay'
   | 'rps_promotion'
-  | 'rps_demotion';
+  | 'rps_demotion'
+  | 'rps_marginal_demotion';
 
 export type TierMoveActor = 'system' | 'user' | 'governor';
 
@@ -44,6 +47,8 @@ export interface TierMoveReceipt {
   evidence: Record<string, unknown>;
   timestamp: string;
 }
+
+const TIER_RANK: Record<MemoryTier, number> = { hot: 3, warm: 2, cold: 1, glacier: 0 };
 
 /** Determine tier from RPS */
 export function tierFromRPS(rps: number, thresholds: TierThresholds = DEFAULT_TIER_THRESHOLDS): MemoryTier {
@@ -82,17 +87,30 @@ export function computeTierMove(
       link_count: entry.link_count,
       contradicted: entry.contradicted,
       source_credibility: entry.source_credibility,
+      rps_score: rps,
     },
     timestamp: new Date().toISOString(),
   };
 }
 
+/**
+ * FIX #14: inferReason now uses rps score for threshold-based reasoning
+ */
 function inferReason(entry: MemoryEntry, from: MemoryTier, to: MemoryTier, rps: number): TierMoveReason {
   if (entry.contradicted) return 'contradiction_penalty';
-  const tierRank = { hot: 3, warm: 2, cold: 1, glacier: 0 };
-  if (tierRank[to] > tierRank[from]) return 'rps_promotion';
+
+  const isPromotion = TIER_RANK[to] > TIER_RANK[from];
+
+  if (isPromotion) {
+    // Distinguish strong promotions from marginal ones
+    if (rps >= DEFAULT_TIER_THRESHOLDS.hot_min) return 'used_recently';
+    return 'rps_promotion';
+  }
+
+  // Demotion reasons
   if (entry.access_count <= 1) return 'staleness_decay';
-  return 'rps_demotion';
+  if (rps < DEFAULT_TIER_THRESHOLDS.cold_min) return 'rps_demotion';
+  return 'rps_marginal_demotion';
 }
 
 /** Check if memory should be hidden by default (below glacier threshold) */

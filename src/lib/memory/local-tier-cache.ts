@@ -74,6 +74,7 @@ export class LocalTierCache<T = unknown> {
   /**
    * Read-through lookup: hot → warm → central MEMORY
    * Promotes on hit; returns null on full miss.
+   * FIX #10: Central fallback errors are now caught instead of propagating
    */
   async get(key: string): Promise<T | null> {
     const now = Date.now();
@@ -95,13 +96,19 @@ export class LocalTierCache<T = unknown> {
       return warmEntry.value;
     }
 
-    // 3. Central MEMORY fallback
+    // 3. Central MEMORY fallback (with error isolation)
     if (this.centralFallback) {
-      const centralValue = await this.centralFallback(key);
-      if (centralValue !== null && centralValue !== undefined) {
-        this.stats.centralHits++;
-        this.put(key, centralValue);
-        return centralValue;
+      try {
+        const centralValue = await this.centralFallback(key);
+        if (centralValue !== null && centralValue !== undefined) {
+          this.stats.centralHits++;
+          this.put(key, centralValue);
+          return centralValue;
+        }
+      } catch (err) {
+        // FIX #10: Don't let central fallback errors crash the cache
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`[LocalTierCache:${this.nodeId}] Central fallback error for "${key}": ${msg}`);
       }
     }
 
