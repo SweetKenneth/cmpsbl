@@ -97,25 +97,23 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Layers,
       items: [
-        { name: "All Modules", href: "/modules", description: "38 nodes across 12 sectors", icon: Layers },
-        ...(user ? [{ name: "Dashboard", href: "/os", description: "Your command center", icon: Cpu }] : []),
-        { name: "EVOLUTION", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
-        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines — 1,143+ programs", icon: Sparkles, badge: "PUBLIC", highlight: true },
-        { name: "How It Works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
-        { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
         { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
-        { name: "Substrate Demo", href: "/demo", description: "Interactive live demo", icon: Sparkles },
+        { name: "All modules", href: "/modules", description: "38 nodes across 12 sectors", icon: Layers },
+        { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
+        { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
+        { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
+        { name: "Foundations", href: "/foundations", description: "Core primitives", icon: Shield },
       ]
     },
     {
-      name: "Product",
+      name: "Products",
       icon: Sparkles,
       items: [
-        { name: "Artifact Packs", href: "/packs", description: "Activate capabilities with slot-based control", icon: Package, badge: "24 PACKS" },
-        { name: "ENGINES", href: "/engines", description: "20 sealed runtime engines — $199 standalone / $99 bundled", icon: Shield, badge: "20", highlight: true },
-        { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents powered by the substrate", icon: Zap },
+        { name: "Engines", href: "/engines", description: "20 sealed runtime engines", icon: Shield, badge: "20", highlight: true },
+        { name: "Artifact packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
+        { name: "Composable agents", href: "/composable-cognitives", description: "Pre-built AI agents", icon: Zap },
+        { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
-        { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain, badge: "FREE" },
         { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers", icon: Rocket, highlight: true },
       ]
     },
@@ -123,27 +121,24 @@ export function CmpsblNav() {
       name: "Developers",
       icon: Code,
       items: [
-        { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
-        { name: "API Access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
-        { name: "Builder Workspace", href: "/workspace", description: "SDK, terminal & build tools — free tier included", icon: Terminal, badge: "NEW", highlight: true },
-        { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "Developer Guide", href: "/developers/guide", description: "SDK setup for traditional stacks", icon: BookOpen },
-        { name: "Developer Showcase", href: "/developers", description: "Community builds & integrations", icon: Users },
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
-        { name: "Start Here", href: "/start-here", description: "Get oriented fast", icon: Rocket },
+        { name: "Api access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
+        { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
+        { name: "Codelab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
+        { name: "Developer guide", href: "/developers/guide", description: "SDK setup & integration", icon: BookOpen },
       ]
     },
     {
-      name: "Company",
-      icon: Users,
+      name: "Explore",
+      icon: Globe,
       items: [
-        { name: "About", href: "/about", description: "Our mission & team", icon: Info },
-        { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Contact", href: "/contact", description: "Get in touch", icon: Mail },
-        { name: "System Overview", href: "/overview", description: "Memory Stream & substrate — the full picture", icon: Globe, badge: "NEW" },
-        { name: "Scanner", href: "/scanner", description: "Evolution scanner — coming soon", icon: BookOpen },
+        { name: "Memory stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "PUBLIC", highlight: true },
+        { name: "Evolution", href: "/evolution", description: "Governed self-improvement loop", icon: Zap, badge: "LIVE", highlight: true },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
-        { name: "System Status", href: "/status", description: "Live health & uptime", icon: Shield, badge: "LIVE" },
+        { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "System overview", href: "/overview", description: "The full picture", icon: Globe },
+        { name: "Substrate demo", href: "/demo", description: "Interactive live demo", icon: Cpu },
       ]
     },
   ];
@@ -442,10 +437,10 @@ export function CmpsblNav() {
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
-                  { name: "EVOLUTION", href: "/evolution", icon: Zap, badge: "LIVE" },
-                  { name: "ENGINES", href: "/engines", icon: Shield, badge: "20" },
+                  { name: "Evolution", href: "/evolution", icon: Zap, badge: "LIVE" },
+                  { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
                   { name: "Upgrade", href: "/upgrade", icon: Package },
-                  { name: "Academy", href: "/academy", icon: GraduationCap, badge: "NEW" },
+                  { name: "Memory stream", href: "/foundry", icon: Sparkles },
                 ].map((item) => (
                   <Link
                     key={item.href}
