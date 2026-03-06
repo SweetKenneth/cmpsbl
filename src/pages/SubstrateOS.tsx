@@ -217,7 +217,7 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
       </ScrollArea>
 
       {/* Footer */}
-      <div className={cn("border-t border-border/15", collapsed ? "p-1.5" : "p-3")}>
+      <div className={cn("border-t border-border/15 shrink-0", collapsed ? "p-1.5" : "p-3")} style={{ paddingBottom: `max(${collapsed ? '0.375rem' : '0.75rem'}, env(safe-area-inset-bottom))` }}>
         <div className={cn("flex gap-1", collapsed ? "flex-col" : "")}>
           <Button variant="ghost" size="sm" asChild className={cn("text-muted-foreground/60 hover:text-foreground h-8", collapsed ? "w-full justify-center px-1" : "flex-1")}>
             <Link to="/"><Home className="w-3.5 h-3.5" />{!collapsed && <span className="ml-1.5 text-xs">Home</span>}</Link>
