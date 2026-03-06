@@ -94,7 +94,7 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
       assert(!!core, 'CORE node not found');
     }],
     ['Integrity report is valid', () => {
-      const nodes = buildMatrixNodes();
+      const nodes = buildMatrixNodes({});
       const report = calculateIntegrity(nodes);
       assert(typeof report.operational === 'number', 'Missing operational score');
       assert(typeof report.status === 'string', 'Missing status');
@@ -140,7 +140,7 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
       clearGraph();
       registerModule('a', 'A', ['b']);
       registerModule('b', 'B', ['a']);
-      registerModule('c', 'C');
+      registerModule('c', 'C', []);
       const { order, cycles } = computeBootOrder();
       assert(cycles.length > 0, 'Should detect cycle');
       assert(!order.includes('a'), 'Cyclic node should be excluded');
@@ -195,8 +195,8 @@ async function memoryStreamTests(): Promise<Array<[string, TestFn]>> {
       assert(h1 === h2, 'Hash not deterministic');
     }],
     ['computeStableId is consistent', () => {
-      const id1 = computeStableId(['mod', 'cat', 'name']);
-      const id2 = computeStableId(['mod', 'cat', 'name']);
+      const id1 = computeStableId('name', ['mod'], 'cat');
+      const id2 = computeStableId('name', ['mod'], 'cat');
       assert(id1 === id2, 'Stable ID not consistent');
     }],
     ['canonicalize sorts keys deterministically', () => {
@@ -221,6 +221,7 @@ async function memoryStreamTests(): Promise<Array<[string, TestFn]>> {
       const fsm = createStateMachine({
         id: 'test-fsm',
         initial: 'idle',
+        context: {},
         states: { idle: {}, running: {}, done: {} },
         transitions: [
           { from: 'idle', event: 'start', to: 'running' },
