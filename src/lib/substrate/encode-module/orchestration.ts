@@ -403,6 +403,19 @@ export function createSurgicalPatch(params: {
   const lock = checkExecutionLock();
   if (!lock.allowed) return { error: lock.error! };
 
+  // Validate file path against safe paths
+  const SAFE_PREFIXES = ['src/', 'supabase/functions/', 'docs/', 'public/'];
+  const BLOCKED = ['src/integrations/supabase/client.ts', 'src/integrations/supabase/types.ts', '.env', 'supabase/config.toml', 'node_modules/'];
+  if (params.file.startsWith('/') || params.file.includes('..') || params.file.includes('//')) {
+    return { error: `Dangerous path pattern in: "${params.file}"` };
+  }
+  if (!SAFE_PREFIXES.some(p => params.file.startsWith(p))) {
+    return { error: `Unsafe path: "${params.file}" — must start with: ${SAFE_PREFIXES.join(', ')}` };
+  }
+  if (BLOCKED.some(b => params.file.startsWith(b))) {
+    return { error: `Blocked path: "${params.file}" — this file is read-only` };
+  }
+
   const patch: SurgicalPatch = {
     id: `patch-${Date.now()}-${patchHistory.length}`,
     ...params,
