@@ -23,6 +23,7 @@ import { LiveStatsBar } from "@/components/home/LiveStatsBar";
 // Below-fold: lazy loaded to reduce initial JS and improve FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 const WhySubstrate = lazy(() => import("@/components/home/WhySubstrate").then(m => ({ default: m.WhySubstrate })));
+const HowCmpsblWorks = lazy(() => import("@/components/home/HowCmpsblWorks").then(m => ({ default: m.HowCmpsblWorks })));
 const DifferentiationSection = lazy(() => import("@/components/home/DifferentiationSection").then(m => ({ default: m.DifferentiationSection })));
 const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").then(m => ({ default: m.BuiltForSection })));
 const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
@@ -104,6 +105,9 @@ export default function Explore() {
       <Suspense fallback={<div className="min-h-[200px]" />}>
         {/* ═══ WHAT IT IS — 9 core systems ═══ */}
         <WhySubstrate />
+
+        {/* ═══ MENTAL MODEL — How CMPSBL Works ═══ */}
+        <HowCmpsblWorks />
 
         <SectionDivider />
 

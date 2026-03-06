@@ -314,33 +314,32 @@ export function WhySubstrate() {
           <div className="relative inline-block">
             <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">01</span>
           </div>
-          <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Hammer className="w-3 h-3 text-primary" />
-            <span className="text-xs">Build on the Substrate</span>
-          </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
-            Nine Systems.{" "}
-            <span 
-              className="inline-block"
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)), hsl(var(--neon-purple)))",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 4s ease-in-out infinite",
-              }}
-            >
-              One Substrate.
-            </span>
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-             Build with persistent memory, DREAM cycles, governed evolution, and intelligent routing.
-             Your systems don't just run — they
-             <span className="text-foreground font-medium"> dream</span>,{" "}
-             <span className="text-foreground font-medium">adapt</span>, and{" "}
-             <span className="text-foreground font-medium">improve themselves</span> over time.
-             All included in every plan.
-           </p>
+           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
+             <Hammer className="w-3 h-3 text-primary" />
+             <span className="text-xs">Build on the AI OS</span>
+           </Badge>
+           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+             Nine Systems.{" "}
+             <span 
+               className="inline-block"
+               style={{
+                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)), hsl(var(--neon-purple)))",
+                 backgroundSize: "200% 200%",
+                 WebkitBackgroundClip: "text",
+                 WebkitTextFillColor: "transparent",
+                 animation: "gradientShift 4s ease-in-out infinite",
+               }}
+             >
+               One Operating System.
+             </span>
+           </h2>
+           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Build apps that{" "}
+              <span className="text-foreground font-medium">think with reasoning models</span>,{" "}
+              <span className="text-foreground font-medium">remember across sessions</span>, and{" "}
+              <span className="text-foreground font-medium">improve themselves through learning cycles</span>.
+              All included in every plan.
+            </p>
         </motion.div>
         
         {/* Systems Grid — 3 columns on desktop, 9 cards */}

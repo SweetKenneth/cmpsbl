@@ -94,10 +94,10 @@ export function DifferentiationSection() {
               Dream · Adapt · Evolve
             </span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Most AI platforms process and forget. The substrate and Memory Stream work together — your systems
-            dream during downtime, adapt under governance, and compound intelligence over every interaction.
-          </p>
+           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+             Most AI platforms process and forget. CMPSBL runs like an operating system for AI — your systems
+             dream during downtime, adapt under governance, and compound intelligence over every interaction.
+           </p>
         </motion.div>
 
         {/* Pillar Grid */}
