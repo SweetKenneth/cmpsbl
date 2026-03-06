@@ -1233,4 +1233,5 @@ export function resetDiscoveryEngine(): void {
   health.lastError = null;
   lastRunTimestamp = 0;
   affinityCache = null;
+  clusterStore.clear();
 }
