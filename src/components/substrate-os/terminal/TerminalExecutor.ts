@@ -4224,37 +4224,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       } catch (err) {
         return { success: false, output: `▓ History error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
-    } else if (base === 'seba.config') {
-      try {
-        const { sebaAgent } = await import('@/lib/substrate/seba');
-        if (args[0] && args[0].includes('=')) {
-          const [key, val] = args[0].split('=');
-          const result = await sebaAgent.handleCommand('config', { key, value: val });
-          return { success: result.success, output: result.success ? `◉ SEBA config updated: ${key} = ${val}` : `▓ ${result.message}`, data: result.data };
-        }
-        const result = await sebaAgent.handleCommand('config');
-        return { success: result.success, output: `◉ SEBA Configuration\n\n${JSON.stringify(result.data, null, 2)}`, data: result.data };
-      } catch (err) {
-        return { success: false, output: `▓ Config error: ${err instanceof Error ? err.message : 'Unknown'}` };
-      }
-    } else if (base === 'seba.thresholds') {
-      try {
-        const { sebaAgent } = await import('@/lib/substrate/seba');
-        if (args[0] === 'auto_approve' && args[1]) {
-          const result = await sebaAgent.handleCommand('config', { key: 'auto_approve_threshold', value: parseFloat(args[1]) });
-          return { success: result.success, output: `◉ Auto-approve threshold set to ${args[1]}` };
-        }
-        if (args[0] === 'risk' && args[1]) {
-          const result = await sebaAgent.handleCommand('config', { key: 'risk_tolerance', value: args[1] });
-          return { success: result.success, output: `◉ Risk tolerance set to ${args[1]}` };
-        }
-        const result = await sebaAgent.handleCommand('status');
-        const state = (result.data as any)?.state || {};
-        return { success: true, output: `◉ SEBA Thresholds\n  Auto-approve: ≥${(state.auto_approve_threshold || 0.85).toFixed(2)}\n  Risk tolerance: ${(state.risk_tolerance || 'low').toUpperCase()}\n\n  Usage: seba.thresholds auto_approve <0.0-1.0>\n         seba.thresholds risk <low|medium|high>` };
-      } catch (err) {
-        return { success: false, output: `▓ Thresholds error: ${err instanceof Error ? err.message : 'Unknown'}` };
-      }
-    } else if (base === 'seba.stamps') {
+    // (seba.config and seba.thresholds handled above — no duplicate)
+    else if (base === 'seba.stamps') {
       // Evolution stamp verification command
       const limit = parseInt(args[0]) || 10;
       try {
