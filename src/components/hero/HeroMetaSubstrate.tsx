@@ -275,7 +275,7 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl hover:bg-muted/40 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/about">
+                <Link to="/promptfluid">
                   <Brain className="w-4 h-4 text-muted-foreground" />
                   About CMPSBL
                 </Link>

@@ -49,6 +49,9 @@ export function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
+          <div className="relative inline-block">
+            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">06</span>
+          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
             <Users className="w-3 h-3 text-primary" />
             <span className="text-xs font-semibold">Builders on the Substrate</span>
