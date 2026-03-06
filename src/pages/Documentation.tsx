@@ -1249,7 +1249,6 @@ export default function Documentation() {
 
   const handleNav = (id: string) => {
     setActive(id);
-    setMobileNavOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
