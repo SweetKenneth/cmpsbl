@@ -19,6 +19,100 @@ import { MESH_MANIFEST, getModuleResolvers, getMeshModules, getResolversByDomain
 import { getRecentReceipts, getMeshStats } from './router';
 import type { MeshResolver, MeshReceipt } from './types';
 
+// ═══════════════════════════════════════════════════════════════
+// CAPABILITY CLUSTERING — detects emergent resolver chains
+// ═══════════════════════════════════════════════════════════════
+
+interface CapabilityCluster {
+  signature: string;
+  resolverChain: string[];
+  frequency: number;
+  successRate: number;
+  modules: string[];
+  lastSeen: number;
+}
+
+const clusterStore = new Map<string, CapabilityCluster>();
+const CLUSTER_TTL_MS = 10 * 60 * 1000; // 10 min
+
+function analyzeClusters(receipts: MeshReceipt[]): CapabilityCluster[] {
+  const now = Date.now();
+
+  // Evict stale clusters
+  for (const [sig, cluster] of clusterStore) {
+    if (now - cluster.lastSeen > CLUSTER_TTL_MS) {
+      clusterStore.delete(sig);
+    }
+  }
+
+  for (const r of receipts) {
+    const chain = (r.resolved_by || []).sort();
+    const signature = chain.join('>');
+    if (!signature) continue;
+
+    const existing = clusterStore.get(signature);
+    if (existing) {
+      existing.frequency++;
+      existing.lastSeen = Date.now();
+      if (r.success) {
+        existing.successRate =
+          (existing.successRate * (existing.frequency - 1) + 1) /
+          existing.frequency;
+      }
+    } else {
+      clusterStore.set(signature, {
+        signature,
+        resolverChain: chain,
+        frequency: 1,
+        successRate: r.success ? 1 : 0,
+        modules: chain,
+        lastSeen: Date.now(),
+      });
+    }
+  }
+
+  return [...clusterStore.values()];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PIPELINE CRYSTALLIZATION — auto-saves high-frequency chains
+// ═══════════════════════════════════════════════════════════════
+
+const PIPELINE_CRYSTAL_THRESHOLD = 8;
+const PIPELINE_SUCCESS_THRESHOLD = 0.75;
+const MAX_PIPELINES_PER_CYCLE = 5;
+
+function detectPipelineCandidates(clusters: CapabilityCluster[]): CapabilityCluster[] {
+  return clusters
+    .filter(c =>
+      c.frequency >= PIPELINE_CRYSTAL_THRESHOLD &&
+      c.successRate >= PIPELINE_SUCCESS_THRESHOLD
+    )
+    .slice(0, MAX_PIPELINES_PER_CYCLE);
+}
+
+async function crystallizePipeline(cluster: CapabilityCluster): Promise<void> {
+  const pipeline = {
+    name: `Auto Pipeline: ${cluster.signature}`,
+    resolver_chain: cluster.resolverChain,
+    source_module: cluster.resolverChain[0],
+    intent_type: 'auto_cluster',
+    domains: [],
+    governance_mode: 'governed',
+    input_template: {},
+    discovered_from: cluster.signature,
+    is_active: true,
+  };
+
+  try {
+    await supabase
+      .from('mesh_saved_pipelines')
+      .insert([pipeline as any]);
+  } catch (err) {
+    console.warn('[Foundry] Pipeline crystallization failed', err);
+  }
+}
+
 // ─── Types ───
 
 export interface CapabilityGap {
