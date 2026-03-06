@@ -126,10 +126,19 @@ function findMatchingResolvers(intent: Omit<MeshIntent, 'id' | 'timestamp'>): Me
 }
 
 /**
+ * Per-resolver timeout (ms). Prevents a slow module from hanging the entire
+ * mesh resolution. The substrate.invoke layer has its own timeouts (15-60s)
+ * but this adds a tighter ceiling for mesh routing specifically.
+ */
+const RESOLVER_TIMEOUT_MS = 5000;
+
+/**
  * Execute a single resolver by dispatching through the substrate.
  * Routes to the owning module via substrate.invoke with the resolver's
  * accepted input keys. Falls back to a provenance stub if the module
  * doesn't handle the resolver action (safe degradation).
+ * 
+ * Hardened: 5s timeout via Promise.race prevents hanging.
  */
 async function executeResolver(
   resolver: MeshResolver,
@@ -137,11 +146,36 @@ async function executeResolver(
 ): Promise<ResolverResponse> {
   const startTime = performance.now();
 
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error(`Resolver ${resolver.id} timed out after ${RESOLVER_TIMEOUT_MS}ms`)), RESOLVER_TIMEOUT_MS);
+  });
+
   try {
-    // Dynamically import substrate client to avoid circular deps
+    const result = await Promise.race([
+      executeResolverInner(resolver, input),
+      timeoutPromise,
+    ]);
+    return result;
+  } catch (err) {
+    return {
+      resolverId: resolver.id,
+      module: resolver.module,
+      success: false,
+      error: err instanceof Error ? err.message : 'Resolver failed',
+      durationMs: Math.round(performance.now() - startTime),
+    };
+  }
+}
+
+async function executeResolverInner(
+  resolver: MeshResolver,
+  input: Record<string, unknown>
+): Promise<ResolverResponse> {
+  const startTime = performance.now();
+
+  try {
     const { substrate } = await import('@/lib/substrate');
 
-    // Build a scoped payload containing only the keys this resolver accepts
     const scopedInput: Record<string, unknown> = {};
     for (const key of resolver.accepts) {
       if (key in input) scopedInput[key] = input[key];
@@ -169,10 +203,9 @@ async function executeResolver(
     }
 
     // Module returned a soft failure — fall back to provenance stub
-    // so downstream composition still knows this resolver was reached
     const data: Record<string, unknown> = {};
     for (const key of resolver.produces) {
-      data[key] = null; // null signals "resolver reached, no data available"
+      data[key] = null;
     }
     data._resolvedBy = resolver.id;
     data._module = resolver.module;
@@ -183,7 +216,7 @@ async function executeResolver(
     return {
       resolverId: resolver.id,
       module: resolver.module,
-      success: true, // routing succeeded even if data was empty
+      success: true,
       data,
       durationMs: Math.round(performance.now() - startTime),
     };
@@ -199,14 +232,21 @@ async function executeResolver(
 }
 
 /**
- * Queue gap detection for failed/partial intents (non-blocking)
+ * Queue gap detection for failed/partial intents (non-blocking).
+ * Buffer is capped at MAX_PENDING_GAPS to prevent unbounded memory growth.
  */
+const MAX_PENDING_GAPS = 200;
+
 function queueGapDetection(
   intent: Omit<MeshIntent, 'id' | 'timestamp'>,
   resolvedBy: string[],
   targetModules: string[]
 ): void {
-  // Debounce: store in memory, batch-analyze periodically
+  // Cap buffer — drop oldest entries when full
+  if (pendingGapIntents.length >= MAX_PENDING_GAPS) {
+    pendingGapIntents.splice(0, pendingGapIntents.length - MAX_PENDING_GAPS + 1);
+  }
+
   pendingGapIntents.push({
     sourceModule: intent.sourceModule,
     intentType: intent.intentType,
