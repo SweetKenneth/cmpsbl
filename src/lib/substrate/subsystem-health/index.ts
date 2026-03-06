@@ -22,7 +22,7 @@ import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from 
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
-export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream';
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream' | 'discovery_engine';
 
 export interface SubsystemHealthEntry {
   id: SubsystemId;
@@ -70,9 +70,10 @@ const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string 
   evolution_mesh: { name: 'EVOLUTION Mesh', circuitModule: 'subsys:evolution_mesh' },
   immunity_mesh: { name: 'IMMUNITY Mesh', circuitModule: 'subsys:immunity_mesh' },
   event_stream: { name: 'Event Stream', circuitModule: 'subsys:event_stream' },
+  discovery_engine: { name: 'Discovery Engine', circuitModule: 'subsys:discovery_engine' },
 };
 
-const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream'];
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream', 'discovery_engine'];
 
 // ═══ Init ════════════════════════════════════════════════════════
 
@@ -228,6 +229,9 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
         break;
       case 'event_stream':
         actions.push(...(await healEventStream(force)));
+        break;
+      case 'discovery_engine':
+        actions.push(...(await healDiscoveryEngine(force)));
         break;
     }
 
@@ -407,6 +411,34 @@ async function healEventStream(force: boolean): Promise<string[]> {
     actions.push(`Post-heal: health=${result.newScore}`);
   } catch (err) {
     actions.push(`Event Stream heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healDiscoveryEngine(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    const { healDiscoveryEngine: heal, getDiscoveryHealth, getDiscoveryBreakerState } = await import('../intent-mesh/discovery-engine');
+    const { resetProbeBreaker } = await import('../capability-discovery');
+
+    const healthBefore = getDiscoveryHealth();
+    const breakerBefore = getDiscoveryBreakerState();
+
+    actions.push(`Pre-heal: health=${healthBefore.score}, breaker=${breakerBefore.state}, failures=${healthBefore.consecutiveFailures}`);
+
+    const result = heal(force);
+    actions.push(...result.actions);
+
+    // Also reset the capability-discovery probe breaker
+    resetProbeBreaker();
+    actions.push('Probe breaker reset');
+
+    if (result.breakerReset) {
+      actions.push('Discovery breaker restored to closed');
+    }
+    actions.push(`Post-heal: health=${result.newScore}`);
+  } catch (err) {
+    actions.push(`Discovery Engine heal error: ${err instanceof Error ? err.message : String(err)}`);
   }
   return actions;
 }
