@@ -59,24 +59,44 @@ export default function Foundry() {
         ) : (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
             {/* Header */}
-            <div className="text-center mb-8">
-              <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
-                Memory Stream
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4">
-                <span className="memory-stream-gradient-text">Crystallize Pipelines</span>
-              </h1>
-              <p className="text-muted-foreground/70 max-w-lg mx-auto text-sm">
+            <div className="text-center mb-10">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-live-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-primary/80">Memory Stream</span>
+              </motion.div>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4"
+              >
+                <span className="section-gradient-text">Crystallize Pipelines</span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-muted-foreground/70 max-w-lg mx-auto text-sm leading-relaxed"
+              >
                 The Memory Stream is a continuous substrate of evolving software systems.
                 The engine samples the stream and crystallizes viable pipelines.
                 Quality floor: 68+. No filler. Only stable systems survive.
-              </p>
+              </motion.p>
             </div>
 
             {/* Memory Stream visualization */}
-            <div className="relative w-full h-24 sm:h-28 md:h-32 mb-8 rounded-lg overflow-hidden signal-border bg-card/20">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="relative w-full h-24 sm:h-28 md:h-32 mb-8 rounded-xl overflow-hidden signal-border bg-card/20"
+            >
               <MemoryRiver crystallizing={crystallizing} />
-            </div>
+            </motion.div>
 
             {/* Stats row */}
             <FoundryStats
