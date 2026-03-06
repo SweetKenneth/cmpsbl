@@ -599,7 +599,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ EVOLUTION CYCLE v0.7.7 ────────────────────────────────────┐
+┌─ EVOLUTION CYCLE ────────────────────────────────────────────┐
 │                                                             │
 │  ┌─ COGNITIVE SCAN ─────────────────────────────────────┐   │
 │  │  modernizer.scan              Full systems scan       │   │
@@ -624,7 +624,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ CLM (CONSTANT LEARNING MODE) v10.5.4 ──────────────────────┐
+┌─ CLM (CONSTANT LEARNING MODE) ───────────────────────────────┐
 │                                                             │
 │  clm.status          Status, budget, queue size             │
 │  clm.enable          Enable autonomous learning             │
@@ -642,7 +642,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) v10.5.4 ──────────────────┐
+┌─ SEBA (SELF-EVOLVING BOUNDED AGENT) ─────────────────────────┐
 │                                                             │
 │  seba.status         Agent state, mode, and statistics      │
 │  seba.enable         Enable bounded autonomy                │
@@ -659,7 +659,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE v10.5.4 (200 Pipelines) ────────────────────┐
+┌─ SYNERGY ENGINE (200 Pipelines) ─────────────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
 │  cortex.synergy.list      List all 200 pipelines            │
@@ -719,7 +719,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ ENCODED AGENT v10.5.4 ─────────────────────────────────────┐
+┌─ ENCODED AGENT ──────────────────────────────────────────────┐
 │                                                             │
 │  encoded.status          Agent status and configuration     │
 │  encoded.generate        Generate code (with task spec)     │
@@ -768,6 +768,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
+┌─ ENGINE FRAMEWORK ──────────────────────────────────────────┐
 │                                                             │
 │  engine.list [cat]       List engines by category           │
 │  engine.get <id>         Engine details                     │
@@ -780,7 +781,7 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ TERMINAL FEATURES v10.5.4 ─────────────────────────────────┐
+┌─ TERMINAL FEATURES ──────────────────────────────────────────┐
 │                                                             │
 │  alias               Shorthand commands                     │
 │  macro               Multi-command scripts (@name)          │
@@ -3255,7 +3256,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return {
           success: true,
           output: `
-┌─ SYNERGY ENGINE v10.5.4 ─────────────────────────────────────
+┌─ SYNERGY ENGINE ──────────────────────────────────────────────
 │
 │  Pipelines:  200 total
 │  Executors:  125 custom
@@ -3783,7 +3784,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  CONSTANT LEARNING MODE — v10.5.4 ARCHITECT                  ║
+║  CONSTANT LEARNING MODE                                       ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Status:      ${status.enabled ? '🟢 ENABLED' : '🔴 DISABLED'}                                    ║
 ║  Kill Switch: ${status.kill_switch ? '🛑 ACTIVE' : '✅ OFF'}                                      ║
@@ -3966,7 +3967,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         return {
           success: true,
           output: `╔══════════════════════════════════════════════════════════════╗
-║  SEBA v10.5.4 — Full Spectrum Autonomy                        ║
+║  SEBA — Full Spectrum Autonomy                                ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  Mode:        ${(config.mode || 'advisory').padEnd(46)}║
@@ -5267,7 +5268,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
           success: true,
           output: `
 ╔══════════════════════════════════════════════════════════════╗
-║  META-ENGINE SYSTEM v10.5.4                                  ║
+║  META-ENGINE SYSTEM                                           ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Total Meta-Engines:    ${String(summary.totalMetaEngines).padEnd(2)}                                    ║
 ║  Engines Orchestrated:  ${String(summary.totalEnginesOrchestrated).padEnd(2)}                                    ║
