@@ -431,13 +431,35 @@ export function gatherContextForChange(
 }
 
 function getModuleFiles(module: string): string[] {
+  // Use the Substrate Navigator for intelligent resolution
+  try {
+    const { navigateIntent } = require('./encoded/substrate-navigator');
+    const result = navigateIntent(module);
+    if (result.targetFiles.length > 0) {
+      return result.targetFiles;
+    }
+  } catch {
+    // Fallback to static map if navigator not available
+  }
+
   const mapping: Record<string, string[]> = {
-    brain: ['src/lib/substrate.ts', 'src/hooks/useSubstrate.ts'],
-    defense: ['src/lib/codeagent/circuit-breaker.ts', 'src/lib/codeagent/executor.ts'],
-    nexus: ['src/lib/nexus/core.ts', 'src/lib/nexus/router.ts'],
-    vision: ['src/hooks/useSubstrate.ts'],
-    decode: ['src/lib/substrate.ts'],
-    modernizer: ['src/pages/Modernizer.tsx'],
+    brain: ['src/lib/substrate.ts', 'src/hooks/useSubstrate.ts', 'src/core/metrics/moduleAdapters/brain.adapter.ts'],
+    defense: ['src/lib/defense/', 'src/lib/codeagent/circuit-breaker.ts', 'src/lib/codeagent/executor.ts'],
+    nexus: ['src/lib/nexus/', 'src/lib/nexus/core.ts', 'src/lib/nexus/router.ts'],
+    vision: ['src/lib/substrate/telemetry-engine.ts', 'src/hooks/useSubstrate.ts'],
+    decode: ['src/lib/substrate/decode/', 'src/lib/substrate.ts'],
+    encode: ['src/lib/substrate/encode-module/', 'src/lib/codeagent/encoded/'],
+    evolution: ['src/lib/evolution-mesh/', 'src/pages/Modernizer.tsx'],
+    economy: ['src/lib/substrate/economy-module/'],
+    sandbox: ['src/lib/substrate/sandbox-module/'],
+    inclusive: ['src/lib/inclusive/'],
+    cortex: ['src/lib/substrate/orchestrator-engine.ts'],
+    governance: ['src/lib/substrate/governance/'],
+    immunity: ['src/lib/substrate/modernizer-shadow-resolver/'],
+    intent: ['src/lib/substrate/intent-mesh/'],
+    integration: ['src/lib/integrations/'],
+    medic: ['src/lib/substrate/medic/'],
+    nerve: ['src/lib/substrate/nerve/'],
     system: ['src/lib/substrate.ts'],
     core: ['src/lib/codeagent/workflow.ts'],
   };

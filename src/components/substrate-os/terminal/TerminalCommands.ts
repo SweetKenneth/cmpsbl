@@ -678,6 +678,8 @@ export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },
   { command: 'encode.receipts', description: 'Completion receipts with BRAIN refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
   { command: 'encode.health', description: 'ENCODE module health score', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'encode.navigate', description: 'Resolve intent to file targets & conventions', category: 'cortex', icon: Search, requiresOperator: false, args: '<intent>' },
+  { command: 'encode.whereis', description: 'Quick module/concept location lookup', category: 'cortex', icon: Search, requiresOperator: false, args: '<query>' },
   { command: 'encode.help', description: 'ENCODE module command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
 ];
 

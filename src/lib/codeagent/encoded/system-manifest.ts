@@ -443,7 +443,14 @@ export const ENCODE_IDENTITY = {
     'Diff preview before application.',
     'CLM self-improvement cycles.',
   ],
-  systemAwareness: 'Use resolveModule() and resolveComponent() to locate any part of the system before modifying it. NEVER create a new component if one already exists.',
+  navigation: [
+    'Use navigateIntent() to resolve ANY natural-language request to exact file paths, tables, and conventions.',
+    'Use resolveAlias() when a user says "cognition" to map it to module "brain".',
+    'Use detectConcerns() to find cross-cutting files (rate limiting, circuit breakers, etc.).',
+    'Use whereIs() for quick "where does X live?" lookups.',
+    'NEVER guess file paths — always resolve through the navigator or manifest.',
+  ],
+  systemAwareness: 'Use navigateIntent(), resolveModule(), and resolveComponent() to locate any part of the system before modifying it. NEVER create a new component if one already exists.',
 };
 
 // ─── Resolution Functions ────────────────────────────────────────────────────

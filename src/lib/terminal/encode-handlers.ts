@@ -237,6 +237,10 @@ export function registerEncodeModuleHandlers(): void {
         '  encode.patches       View surgical patch history',
         '  encode.conversation  View conversation relay state',
         '',
+        '  ── Navigation ──',
+        '  encode.navigate <q>  Resolve intent → file targets, tables, conventions',
+        '  encode.whereis <q>   Quick "where does X live?" lookup',
+        '',
         '  ── CLM ──',
         '  decode.inbox         CLM reports from all entities + zones',
         '  clm.run_all          Run CLM for all entities',
@@ -265,5 +269,53 @@ export function registerEncodeModuleHandlers(): void {
     return { success: true, data: { health: getEncodeHealth(), module: 'ENCODE', layer: 'Orchestrator' } };
   });
 
-  log.info('terminal', 'ENCODE module handlers registered', { count: 16 });
+  // encode.navigate — Substrate Navigator: resolve intent to file targets
+  registerHandler('encode.navigate', async (args?: string) => {
+    const query = (args || '').trim();
+    if (!query) {
+      return {
+        success: false,
+        error: 'Usage: encode.navigate <intent>  — e.g. "rate limit BRAIN cognition"',
+      };
+    }
+    const { navigateIntent } = await import('@/lib/codeagent/encoded/substrate-navigator');
+    const result = navigateIntent(query);
+    return {
+      success: true,
+      data: {
+        modules: result.modules.map(m => ({ id: m.id, name: m.name, corePath: m.corePath })),
+        concerns: result.concerns,
+        tables: result.tables,
+        targetFiles: result.targetFiles,
+        conventionPaths: result.conventionPaths,
+        impactChain: result.impactChain,
+      },
+      formatted: [
+        '┌─────────────────────────────────────────┐',
+        '│  SUBSTRATE NAVIGATOR                    │',
+        '└─────────────────────────────────────────┘',
+        '',
+        result.summary,
+        '',
+        '── Convention Paths ──',
+        ...Object.entries(result.conventionPaths).map(([k, v]) => `  ${k}: ${v}`),
+      ],
+    };
+  });
+
+  // encode.whereis — Quick "where does X live?" lookup
+  registerHandler('encode.whereis', async (args?: string) => {
+    const query = (args || '').trim();
+    if (!query) {
+      return { success: false, error: 'Usage: encode.whereis <module or concept>' };
+    }
+    const { whereIs } = await import('@/lib/codeagent/encoded/substrate-navigator');
+    return {
+      success: true,
+      data: { query, result: whereIs(query) },
+      formatted: [whereIs(query)],
+    };
+  });
+
+  log.info('terminal', 'ENCODE module handlers registered', { count: 18 });
 }
