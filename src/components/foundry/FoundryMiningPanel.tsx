@@ -96,18 +96,24 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
         <motion.button
           onClick={handleCrystallize}
           disabled={isMining}
-          whileHover={!isMining ? { scale: 1.02 } : {}}
-          whileTap={!isMining ? { scale: 0.98 } : {}}
+          whileHover={!isMining ? { scale: 1.03 } : {}}
+          whileTap={!isMining ? { scale: 0.97 } : {}}
           className={`
-            relative w-full max-w-md py-6 rounded-xl font-mono text-lg font-black uppercase tracking-wider
-            transition-all border
+            relative w-full max-w-md py-6 rounded-2xl font-mono text-lg font-black uppercase tracking-wider
+            transition-all border-2
             ${isMining
               ? 'bg-muted/20 border-border/20 text-muted-foreground cursor-wait'
-              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50'
+              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50 crystallize-glow'
             }
           `}
         >
-          <div className="flex items-center justify-center gap-3">
+          {/* Inner shimmer on hover */}
+          {!isMining && (
+            <div className="absolute inset-0 rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+            </div>
+          )}
+          <div className="relative flex items-center justify-center gap-3">
             {isMining ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -121,7 +127,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
             )}
           </div>
         </motion.button>
-        <div className="text-[10px] font-mono text-muted-foreground/50 mt-2">
+        <div className="text-[10px] font-mono text-muted-foreground/50 mt-3">
           {MEMORY_STREAM_QUALITY_NOTE}
         </div>
 
@@ -201,7 +207,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                   pipelineSteps: result.pipelineSteps,
                   fingerprint: result.fingerprint,
                 })}
-                className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm cursor-pointer hover:border-primary/30 transition-colors"
+                className="bg-card/30 border border-border/20 rounded-xl p-4 backdrop-blur-sm cursor-pointer result-card-hover"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">

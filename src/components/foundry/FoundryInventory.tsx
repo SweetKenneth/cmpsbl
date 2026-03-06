@@ -60,13 +60,15 @@ export function FoundryInventory({ inventory }: Props) {
 
   if (inventory.length === 0) {
     return (
-      <div className="text-center py-20">
-        <div className="text-4xl mb-4">⛏️</div>
-        <div className="text-muted-foreground font-mono text-sm mb-2">
+      <div className="text-center py-24">
+        <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <Fingerprint className="w-7 h-7 text-primary/40" />
+        </div>
+        <div className="text-foreground font-mono text-sm font-bold mb-2">
           No pipelines crystallized yet
         </div>
-        <div className="text-xs text-muted-foreground/50">
-          Hit Crystallize to start pulling pipelines
+        <div className="text-xs text-muted-foreground/60 max-w-xs mx-auto leading-relaxed">
+          Switch to the Crystallize tab and pull your first pipeline from the Memory Stream
         </div>
       </div>
     );
@@ -128,7 +130,7 @@ export function FoundryInventory({ inventory }: Props) {
               pipelineSteps: item.pipelineSteps ?? undefined,
               fingerprint: item.pipelineFingerprint ?? undefined,
             })}
-            className="bg-card/30 border border-border/20 rounded-lg p-4 backdrop-blur-sm hover:border-primary/30 transition-colors cursor-pointer"
+            className="bg-card/30 border border-border/20 rounded-xl p-4 backdrop-blur-sm cursor-pointer result-card-hover"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
