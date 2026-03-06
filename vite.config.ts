@@ -133,6 +133,11 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@radix-ui/')) {
               return 'ui-misc';
             }
+            // Lucide icons - consolidate into single chunk to avoid ~40+ tiny
+            // individual icon chunks that create deep network dependency chains
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
             // Framer Motion - defer animations
             if (id.includes('framer-motion')) {
               return 'motion';
