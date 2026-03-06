@@ -690,7 +690,7 @@ export const PATCH_COMMANDS: CommandDefinition[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// HARDENING v2.0.0 — Cross-module hardening observability commands
+// HARDENING — Cross-module hardening observability commands
 // Covers: CORE, SYSTEM, CORTEX, ENCODE, DECODE, VISION, DEFENSE, GOVERNANCE
 // ═══════════════════════════════════════════════════════════════════════════════
 
