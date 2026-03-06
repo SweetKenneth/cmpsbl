@@ -646,13 +646,30 @@ class SEBAAgent {
       };
     }
 
-    // Fetch the proposal from database
-    const { data: proposals } = await supabase
+    // Fetch the proposal from database - try exact match first, then prefix
+    let proposals: Record<string, unknown>[] | null = null;
+    
+    // Exact match
+    const { data: exactData } = await supabase
       .from('evolution_proposals')
       .select('*')
-      .or(`id.eq.${proposalId},id.ilike.${proposalId}%`)
+      .eq('id', proposalId)
       .eq('status', 'approved')
       .limit(1);
+    
+    proposals = exactData;
+    
+    // If no exact match, try prefix match
+    if (!proposals || proposals.length === 0) {
+      const { data: prefixData } = await supabase
+        .from('evolution_proposals')
+        .select('*')
+        .ilike('id', `${proposalId}%`)
+        .eq('status', 'approved')
+        .limit(1);
+      
+      proposals = prefixData;
+    }
 
     if (!proposals || proposals.length === 0) {
       return {
