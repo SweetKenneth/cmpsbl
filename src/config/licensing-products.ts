@@ -61,7 +61,7 @@ export const UNIFIED_TIERS = {
     tagline: '9 template packs with expanded depth',
     description: '9 artifact slots, expanded memory, template packs, trace exports, and high-priority Nexus routing.',
     features: [
-      'Everything in Creator, plus:',
+      'Everything in Studio, plus:',
       '9 Artifact Slots',
       '9 template packs included',
       'Expanded memory partitions',
