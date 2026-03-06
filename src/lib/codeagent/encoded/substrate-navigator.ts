@@ -232,6 +232,23 @@ const MODULE_TABLES: Record<string, string[]> = {
   governance: ['audit_logs', 'audit_chain_anchors'],
   access: ['access_api_keys', 'access_developers', 'access_products', 'access_subscriptions', 'access_usage', 'access_quotas'],
   inclusive: ['accessibility_scans'],
+  identity: ['analytics_events'],
+  audit: ['audit_logs', 'audit_chain_anchors'],
+  system: ['analytics_snapshots'],
+  medic: ['analytics_events'],
+  nerve: ['analytics_events'],
+  sandbox: ['analytics_events'],
+  cortex: ['analytics_events'],
+  integration: ['analytics_events'],
+  immunity: ['analytics_events'],
+  intent: ['analytics_events'],
+  sovereign: ['analytics_events'],
+  oracle: ['ai_usage_log', 'analytics_events'],
+  conscience: ['analytics_events'],
+  forge: ['analytics_events'],
+  lingua: ['ai_usage_log'],
+  harvest: ['analytics_events'],
+  phantom: ['analytics_events'],
 };
 
 // ═══════════════════════════════════════════════════════════════
