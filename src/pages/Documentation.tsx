@@ -1203,14 +1203,17 @@ Content-Type: application/json`}</CodeBlock>
       {/* SDKs */}
       <div>
         <h3 className="font-semibold mb-3">SDK & Client Libraries</h3>
-        <CodeBlock title="JavaScript / TypeScript">{`npm install @cmpsbl/sdk
-
-import { Substrate } from '@cmpsbl/sdk';
-const substrate = new Substrate({
-  apiKey: process.env.CMPSBL_API_KEY,
-  developerId: process.env.CMPSBL_DEVELOPER_ID,
-  appId: process.env.CMPSBL_APP_ID
-});`}</CodeBlock>
+        <CodeBlock title="JavaScript / TypeScript">{`// Call the Substrate API directly via fetch
+const res = await fetch('https://api.cmpsbl.com/v1/substrate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'X-Developer-ID': 'YOUR_DEV_ID',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ action: 'brain.query', query: 'user preferences' }),
+});
+const data = await res.json();`}</CodeBlock>
         <CodeBlock title="cURL">{`curl -X POST https://api.cmpsbl.com/v1/substrate \\
   -H "Authorization: Bearer YOUR_JWT" \\
   -H "X-Developer-ID: YOUR_DEV_ID" \\
