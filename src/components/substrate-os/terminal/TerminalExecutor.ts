@@ -286,7 +286,7 @@ const ALL_EXECUTION_SURFACES = [
   { key: 'relay', label: 'RELAY', layer: 'OCG' },
   { key: 'audit', label: 'AUDIT', layer: 'OCG' },
   { key: 'nerve', label: 'NERVE', layer: 'OCG' },
-  // Execution (9)
+  // Execution (10)
   { key: 'decode', label: 'DECODE', layer: 'Execution' },
   { key: 'encode', label: 'ENCODE', layer: 'Execution' },
   { key: 'vision', label: 'VISION', layer: 'Execution' },
@@ -368,7 +368,7 @@ function formatSystemHealth(data: any): string {
   
   let output = `
 ╔══════════════════════════════════════════════════════════════╗
-║  CMPSBL® OS v10.5.0 — HEALTH DIAGNOSTICS                    ║
+║  CMPSBL® OS ${version || ''} — HEALTH DIAGNOSTICS                    ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
