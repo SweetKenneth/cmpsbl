@@ -43,6 +43,7 @@ let maxPersistedIndex = -1;
  */
 export function initEventStream(): void {
   if (initialized) return;
+  initialized = true; // Set BEFORE subscribe to prevent re-entrant init
 
   subscribe('system', '*', async (signal: ModuleSignal) => {
     const entry: StreamEntry = {
@@ -83,8 +84,16 @@ export function initEventStream(): void {
       }
     }
   });
+}
 
-  initialized = true;
+/** Reset stream state — for testing only */
+export function resetEventStream(): void {
+  initialized = false;
+  persistenceEnabled = false;
+  stream.length = 0;
+  counter = 0;
+  minPersistedIndex = -1;
+  maxPersistedIndex = -1;
 }
 
 // ═══════════════════════════════════════════════════════════════

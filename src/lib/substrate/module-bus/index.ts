@@ -1,5 +1,5 @@
 /**
- * Inter-Module Communication Bus — v1.0.0
+ * Inter-Module Communication Bus
  * Real-time pub/sub for cross-module alerts and coordination.
  * Modules can publish signals and subscribe to other modules' events.
  */
