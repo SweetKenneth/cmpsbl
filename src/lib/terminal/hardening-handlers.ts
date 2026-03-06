@@ -1745,7 +1745,6 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
       codename: mod.codename,
       grade: (health as any)?.grade || 'A',
       score: (health as any)?.score ?? 100,
-      version: '2.0.0',
     });
   }
 

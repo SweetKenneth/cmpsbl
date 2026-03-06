@@ -162,7 +162,6 @@ export function formatGeneration(g: GenerationDisplay): string[] {
  * Format agent status for terminal display
  */
 export interface AgentStatusDisplay {
-  version: string;
   mode: string;
   modeLabel: string;
   model: string;
@@ -178,7 +177,7 @@ export function formatAgentStatus(s: AgentStatusDisplay): string[] {
   
   lines.push('');
   lines.push('┌─────────────────────────────────────────────┐');
-  lines.push('│           ENCODED v' + s.version.padEnd(8) + '                  │');
+  lines.push('│               ENCODED                      │');
   lines.push('│      Precision Code Generation Agent       │');
   lines.push('└─────────────────────────────────────────────┘');
   lines.push('');
