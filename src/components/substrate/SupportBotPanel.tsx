@@ -223,8 +223,12 @@ export function SupportBotPanel() {
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
                 Support Bot
-                <Badge variant="outline" className="text-xs font-normal">v1.0</Badge>
                 {isEnabled && (
+                  <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
+                    <Zap className="w-3 h-3 mr-1" />
+                    Evolving
+                  </Badge>
+                )}
                   <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
                     <Zap className="w-3 h-3 mr-1" />
                     Evolving
@@ -275,10 +279,10 @@ export function SupportBotPanel() {
                   </p>
                   
                   <div className="flex flex-wrap gap-2 justify-center mt-6">
-                    {[
-                      'What is CodeLab?',
-                      'What licensing options are available?',
-                      'How do I buy a template?',
+                     {[
+                      'What is CMPSBL?',
+                      'How does memory work?',
+                      'What are the pricing tiers?',
                       'How do I contact support?',
                     ].map((q) => (
                       <Button 
