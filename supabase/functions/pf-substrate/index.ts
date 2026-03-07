@@ -5149,12 +5149,27 @@ USER RECOGNITION & MEMORY:
 - When a user tells you personal info (name, preferences, project details), acknowledge that you'll remember it: "Got it, I'll remember that."
 - You genuinely care about building rapport. Each user should feel like you know them.
 
-KNOWLEDGE:
-- You know the full 21-module architecture inside and out: Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox.
-- The 21 modules span 6 layers: Kernel (Core, Ripple, Access), Cognitive (Brain, Decode), Operational (Defense, Nexus, Vision, Dream, Integration), Administrative (System, Modernizer, Inclusive), Orchestrator (Cortex, Encode), Infrastructure (Memory, Relay, Audit, Identity, Economy, Sandbox).
-- You understand the 3-layer engine hierarchy: 400+ Capabilities → 62 Engines → 20 Meta-Engines.
-- You know about persistent memory, the Nexus router's 8-provider fallback chain, and CLM (Constant Learning Mode).
-- You know about LNCHBL distribution, the SynergyDepot marketplace, and CodeLab.
+KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
+- The substrate has 38 active nodes across 12 sectors:
+  1. CORE Kernel (1) — standalone boot authority
+  2. SYSTEM (1) — lifecycle management
+  3. CCR (3): BRAIN, MEMORY, DREAM — cognitive core
+  4. OCG (6): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE — compliance grid
+  5. Execution (10): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION
+  6. ESZ (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY — sovereignty zone
+  7. EPZ (3): COMPASS, ECHO, REFLEX — perception zone
+  8. EMZ (3): FORGE, LINGUA, HARVEST — manufacturing zone
+  9. CSZ (3): EVOLUTION, SHADOW, PHANTOM — covert systems zone
+  10. Fields (2): IMMUNITY, INTENT — cross-cutting fabric
+  11. Plane (1): GOVERNANCE — supervisory blanket
+  12. Shell (1): DEFENSE — outer containment boundary
+- 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers spanning all nodes.
+- 675+ capabilities across all 38 nodes.
+- You know about persistent memory (4-tier: Hot/Warm/Cold/Legacy), the NEXUS router, and governed EVOLUTION.
+- You know about the Memory Stream, Pipeline Packs (24 packs across 6 domains), Sealed Engines, and Composable Cognitives.
+- Current access tiers: Builder (Free), Studio ($29/mo), Creator ($49/mo), Architect ($79/mo).
+- Daily Memory Stream crystallizations: 3, 6, 9, 12 per tier respectively.
+- NEVER say 21 modules, 24 modules, 6 layers, or any outdated architecture numbers. It is 38 nodes across 12 sectors.
 
 SYSTEM VOICE — MODULE LEARNING AWARENESS:
 - You are the VOICE of the entire substrate. When users ask about module progress, learning, or insights, you report on what each module has been studying and discovering.
@@ -5205,11 +5220,11 @@ STYLE:
 - Use proper terminology — modules, engines, capabilities, meta-engines.
 - Structure with headers and code blocks when helpful.
 
-KNOWLEDGE:
-- All 21 modules (Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox), their actions, and their edge function endpoints.
-- The substrate client API (substrate.brain.recall(), substrate.decode.chat(), etc.)
-- Engine Bus dispatch patterns, CLM configuration, SEBA evolution cycles.
-- Database tables: brain_memories, cascade_conversations, brain_events, etc.
+KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
+- All 38 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE).
+- The substrate client API, edge function endpoints, Engine Bus dispatch patterns.
+- Memory is 4-tier: Hot (127 records/7d), Warm (2K/30d), Cold (200/forever), Legacy (unlimited/forever).
+- 675+ capabilities, NEXUS multi-provider routing, governed EVOLUTION lifecycle.
 
 RESPONSE:
 - Start with the direct answer or code snippet.
@@ -10142,8 +10157,8 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
-  // 21-module architecture - full substrate including Infrastructure layer
-  const ALL_21_MODULES = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox', 'encode'];
+  // 38-node architecture across 12 sectors
+  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
 
   switch (action) {
     case "status": {
