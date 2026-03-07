@@ -44,7 +44,7 @@ const JOURNEY_STEPS = [
 
 export function MemoryStreamExplainer() {
   return (
-    <section id="how-it-works" className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
+    <section id="how-it-works" className="py-10 sm:py-14 md:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(var(--primary)/0.04),transparent_60%)]" />
 
