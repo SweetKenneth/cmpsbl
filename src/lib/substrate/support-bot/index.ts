@@ -984,10 +984,11 @@ export class SupportBotEngine {
     search_results?: Array<{ id: string; question: string; answer: string; score: number }>;
   } {
     const categoryStats: Record<string, number> = {
-      codelab: KNOWLEDGE_CATEGORIES.codelab.length,
-      marketplace: KNOWLEDGE_CATEGORIES.marketplace.length,
-      licensing: KNOWLEDGE_CATEGORIES.licensing.length,
-      general: KNOWLEDGE_CATEGORIES.general.length,
+      platform: KNOWLEDGE_CATEGORIES.platform.length,
+      pricing: KNOWLEDGE_CATEGORIES.pricing.length,
+      getting_started: KNOWLEDGE_CATEGORIES.getting_started.length,
+      security: KNOWLEDGE_CATEGORIES.security.length,
+      support: KNOWLEDGE_CATEGORIES.support.length,
     };
 
     const result: ReturnType<typeof this.handleKnowledgeBase> = {
@@ -1067,10 +1068,11 @@ export * from './types';
 export { 
   FULL_KNOWLEDGE_BASE, 
   KNOWLEDGE_CATEGORIES,
-  CODELAB_KNOWLEDGE,
-  MARKETPLACE_KNOWLEDGE,
-  LICENSING_KNOWLEDGE,
-  GENERAL_KNOWLEDGE,
+  PLATFORM_KNOWLEDGE,
+  PRICING_KNOWLEDGE,
+  GETTING_STARTED_KNOWLEDGE,
+  SECURITY_KNOWLEDGE,
+  SUPPORT_KNOWLEDGE,
   type KnowledgeEntry,
   type KnowledgeCategory,
 } from './knowledge-base';
