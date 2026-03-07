@@ -479,7 +479,7 @@ export function SupportBotPanel() {
                 Pre-trained Topics
               </h5>
               <div className="flex flex-wrap gap-1">
-                {['CodeLab', 'Marketplace', 'Licensing', 'General'].map((topic) => (
+                {['Platform', 'Pricing', 'Getting Started', 'Security', 'Support'].map((topic) => (
                   <Badge key={topic} variant="outline" className="text-xs">
                     {topic}
                   </Badge>
