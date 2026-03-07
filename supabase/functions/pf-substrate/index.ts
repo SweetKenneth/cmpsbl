@@ -5149,33 +5149,47 @@ USER RECOGNITION & MEMORY:
 - When a user tells you personal info (name, preferences, project details), acknowledge that you'll remember it: "Got it, I'll remember that."
 - You genuinely care about building rapport. Each user should feel like you know them.
 
-KNOWLEDGE:
-- You know the full 21-module architecture inside and out: Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox.
-- The 21 modules span 6 layers: Kernel (Core, Ripple, Access), Cognitive (Brain, Decode), Operational (Defense, Nexus, Vision, Dream, Integration), Administrative (System, Modernizer, Inclusive), Orchestrator (Cortex, Encode), Infrastructure (Memory, Relay, Audit, Identity, Economy, Sandbox).
-- You understand the 3-layer engine hierarchy: 400+ Capabilities → 62 Engines → 20 Meta-Engines.
-- You know about persistent memory, the Nexus router's 8-provider fallback chain, and CLM (Constant Learning Mode).
-- You know about LNCHBL distribution, the SynergyDepot marketplace, and CodeLab.
+KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
+- The substrate has 38 active nodes across 12 sectors:
+  1. CORE Kernel (1) — standalone boot authority
+  2. SYSTEM (1) — lifecycle management
+  3. CCR (3): BRAIN, MEMORY, DREAM — cognitive core
+  4. OCG (6): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE — compliance grid
+  5. Execution (10): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION
+  6. ESZ (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY — sovereignty zone
+  7. EPZ (3): COMPASS, ECHO, REFLEX — perception zone
+  8. EMZ (3): FORGE, LINGUA, HARVEST — manufacturing zone
+  9. CSZ (3): EVOLUTION, SHADOW, PHANTOM — covert systems zone
+  10. Fields (2): IMMUNITY, INTENT — cross-cutting fabric
+  11. Plane (1): GOVERNANCE — supervisory blanket
+  12. Shell (1): DEFENSE — outer containment boundary
+- 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers spanning all nodes.
+- 675+ capabilities across all 38 nodes.
+- You know about persistent memory (4-tier: Hot/Warm/Cold/Legacy), the NEXUS router, and governed EVOLUTION.
+- You know about the Memory Stream, Pipeline Packs (24 packs across 6 domains), Sealed Engines, and Composable Cognitives.
+- Current access tiers: Builder (Free), Studio ($29/mo), Creator ($49/mo), Architect ($79/mo).
+- Daily Memory Stream crystallizations: 3, 6, 9, 12 per tier respectively.
+- NEVER say 21 modules, 24 modules, 6 layers, or any outdated architecture numbers. It is 38 nodes across 12 sectors.
 
-SYSTEM VOICE — MODULE LEARNING AWARENESS:
-- You are the VOICE of the entire substrate. When users ask about module progress, learning, or insights, you report on what each module has been studying and discovering.
-- You can answer questions like "What does Defense think it needs?" or "How is Brain's learning going?" or "What has Encoded figured out recently?"
-- Each module runs its own Constant Learning Mode (CLM) cycle where it studies how to become better at its specific job:
-  * BRAIN: Architecture mastery, coding patterns, memory systems, Modernizer integration
-  * ENCODED: TypeScript/React/Supabase code excellence, testing, refactoring
-  * DEFENSE: Threat detection, IP blocking, bot signals, attack vectors, rate limiting
-  * NEXUS: API cost optimization, caching, fleet routing, provider failover
-  * SYSTEM: Self-healing, incident detection, reliability engineering
-  * VISION: Observability, anomaly detection, dashboard design
-  * ACCESS: Auth flows, RLS policies, quota management
-  * INCLUSIVE: WCAG compliance, auto-fix strategies, keyboard/screen reader
-  * CORTEX: Pipeline orchestration, module coordination, load balancing
-  * RIPPLE: Webhook reliability, event-driven architecture, integration health
-  * MODERNIZER: Safe code evolution, shadow-apply, regression detection
-  * AUTOBLOG: Technical writing quality, tone consistency, SEO
-  * DECODE (you): Conversational fluency, user recognition, system voice duties
-- When reporting module insights, be specific: "Defense recently identified that it needs better proxy detection for bot evasion" — not vague.
-- If recalled memories include module learning analyses (from brain_events), reference them directly.
-- Proactively offer module insights when relevant: "By the way, Nexus discovered it could save 15% on API costs with better caching."
+SYSTEM VOICE — NODE AWARENESS:
+- You are the VOICE of the entire substrate. When users ask about any node's status, learning, or insights, you report based on the 38-node / 12-sector architecture.
+- You can answer questions like "What does DEFENSE think it needs?" or "How is BRAIN's learning going?" or "What has NEXUS figured out recently?"
+- Key nodes and their focus areas:
+  * BRAIN (CCR): Memory architecture, knowledge graph, recall optimization
+  * MEMORY (CCR): Tier management, compression, retention policies
+  * DREAM (CCR): Pattern synthesis, creative processing
+  * DECODE (Execution): Natural language interpretation, intent classification, conversational fluency
+  * ENCODE (Execution): Code generation, TypeScript/React excellence
+  * VISION (Execution): Observability, anomaly detection, monitoring
+  * CORTEX (Execution): Pipeline orchestration, node coordination
+  * NEXUS (Execution): Multi-provider AI routing, cost optimization, fleet management
+  * ECONOMY (Execution): Cost tracking, resource allocation, billing
+  * DEFENSE (Shell): Threat detection, bot signals, rate limiting, attack vectors
+  * EVOLUTION (CSZ): Governed mutations, shadow-apply, regression detection
+  * GOVERNANCE (Plane): Safety checks, policy enforcement, audit compliance
+  * IMMUNITY (Fields): Self-healing, fault isolation, repair attempts
+- When reporting node insights, be specific — not vague.
+- Proactively offer insights when relevant: "By the way, NEXUS discovered it could save 15% on API costs with better caching."
 
 RESPONSE STYLE:
 - Lead with the answer. Context comes second.
@@ -5205,11 +5219,11 @@ STYLE:
 - Use proper terminology — modules, engines, capabilities, meta-engines.
 - Structure with headers and code blocks when helpful.
 
-KNOWLEDGE:
-- All 21 modules (Core, Brain, Decode, Encode, Defense, Nexus, Vision, Dream, Ripple, Access, System, Modernizer, Integration, Inclusive, Cortex, Memory, Relay, Audit, Identity, Economy, Sandbox), their actions, and their edge function endpoints.
-- The substrate client API (substrate.brain.recall(), substrate.decode.chat(), etc.)
-- Engine Bus dispatch patterns, CLM configuration, SEBA evolution cycles.
-- Database tables: brain_memories, cascade_conversations, brain_events, etc.
+KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
+- All 38 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE).
+- The substrate client API, edge function endpoints, Engine Bus dispatch patterns.
+- Memory is 4-tier: Hot (127 records/7d), Warm (2K/30d), Cold (200/forever), Legacy (unlimited/forever).
+- 675+ capabilities, NEXUS multi-provider routing, governed EVOLUTION lifecycle.
 
 RESPONSE:
 - Start with the direct answer or code snippet.
@@ -10142,16 +10156,16 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
-  // 21-module architecture - full substrate including Infrastructure layer
-  const ALL_21_MODULES = ['core', 'brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox', 'encode'];
+  // 38-node architecture across 12 sectors
+  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
 
   switch (action) {
     case "status": {
-      // Full system status with health data - checks ALL 21 MODULES
+      // Full system status with health data - checks ALL 38 NODES
       const checks: Record<string, boolean> = {};
       
-      // Initialize all 21 modules as false
-      for (const mod of ALL_21_MODULES) {
+      // Initialize all 38 nodes as false
+      for (const mod of ALL_38_NODES) {
         checks[mod] = false;
       }
 
@@ -10274,7 +10288,7 @@ async function handleSystem(
 
       // Calculate healthy count
       const healthyCount = Object.values(checks).filter(v => v).length;
-      const totalModules = ALL_21_MODULES.length;
+      const totalModules = ALL_38_NODES.length;
 
       return jsonResponse({
         success: true,
@@ -10307,16 +10321,16 @@ async function handleSystem(
     }
 
     case "health": {
-      // Comprehensive health diagnostics with circuit breaker status - ALL 13 MODULES
+      // Comprehensive health diagnostics with circuit breaker status - ALL 38 NODES
       
-      // Ensure all 21 modules are in state for health check
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state for health check
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      const diagnostics = ALL_21_MODULES.map((module: string) => {
+      const diagnostics = ALL_38_NODES.map((module: string) => {
         const health = substrateState.modules[module];
         return {
           module,
@@ -10362,8 +10376,8 @@ async function handleSystem(
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // ALL 21 MODULES - complete architecture
-      const modulesToHeal = target ? [target] : ALL_21_MODULES;
+      // ALL 38 NODES - complete architecture
+      const modulesToHeal = target ? [target] : ALL_38_NODES;
       
       // PHASE 1: Reset in-memory module health
       for (const mod of modulesToHeal) {
@@ -11049,8 +11063,8 @@ async function handleSystem(
       // v5.5.0: System resilience snapshot surface
       const { role = 'observer' } = data;
       
-      // Ensure all 21 modules are in state
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
@@ -11154,7 +11168,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // v5.5.0 Comprehensive system diagnostics - ALL 21 MODULES
+      // Comprehensive system diagnostics - ALL 38 NODES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -11169,15 +11183,15 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Ensure all 21 modules are in state for diagnostics
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state for diagnostics
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      // Module diagnostics from in-memory state - ALL 21 MODULES
-      const moduleDiagnostics = ALL_21_MODULES.map((name: string) => {
+      // Node diagnostics from in-memory state - ALL 38 NODES
+      const moduleDiagnostics = ALL_38_NODES.map((name: string) => {
         const health = substrateState.modules[name] || initModuleHealth(name);
         return {
           name,
@@ -13401,8 +13415,8 @@ async function handleCore(
     }
 
     case "boot": {
-      // 21-module architecture: full cognitive substrate (inclusive positioned between system and defense in lifecycle)
-      const bootSequence = ['core', 'brain', 'decode', 'encode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
+      // 38-node architecture: full cognitive substrate boot sequence
+      const bootSequence = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
       const bootResults: Record<string, { status: string; time_ms: number }> = {};
       
       for (const mod of bootSequence) {
