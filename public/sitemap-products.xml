@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL Products Sitemap — Updated 2026-03-05 -->
+<!-- CMPSBL Products Sitemap — Updated 2026-03-07 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -7,85 +7,55 @@
   <!-- PRODUCT: Defense -->
   <url>
     <loc>https://cmpsbl.com/products/defense</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/defense" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/modules.jpg</image:loc>
-      <image:title>DEFENSE — Autonomous Threat Neutralization</image:title>
-      <image:caption>AI-powered bot detection and autonomous threat response for production systems</image:caption>
-    </image:image>
   </url>
   
   <!-- PRODUCT: Clarity -->
   <url>
     <loc>https://cmpsbl.com/products/clarity</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/clarity" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/decode.jpg</image:loc>
-      <image:title>Clarity — Accessibility Discovery Engine</image:title>
-      <image:caption>Automated WCAG 2.2 accessibility scanning and remediation pipelines</image:caption>
-    </image:image>
   </url>
   
   <!-- PRODUCT: Brain -->
   <url>
     <loc>https://cmpsbl.com/products/brain</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/brain" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/cognitives.jpg</image:loc>
-      <image:title>BRAIN — Multi-Provider AI Orchestration</image:title>
-      <image:caption>Intelligent routing, failover, and cost optimization across AI providers</image:caption>
-    </image:image>
   </url>
   
   <!-- PRODUCT: Modernizer -->
   <url>
     <loc>https://cmpsbl.com/products/modernizer</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/modernizer" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/architecture.jpg</image:loc>
-      <image:title>Modernizer — Legacy Codebase Transformation</image:title>
-      <image:caption>Autonomous conversion of legacy systems into modern deployable architectures</image:caption>
-    </image:image>
   </url>
   
   <!-- PRODUCT: Cascade -->
   <url>
     <loc>https://cmpsbl.com/products/cascade</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/cascade" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/dream-feeder.jpg</image:loc>
-      <image:title>Cascade — Dream-State Processing Engine</image:title>
-      <image:caption>Self-improving AI system with autonomous dream-state optimization cycles</image:caption>
-    </image:image>
   </url>
   
   <!-- PRODUCT: Marketing -->
   <url>
     <loc>https://cmpsbl.com/products/marketing</loc>
-    <lastmod>2026-03-05</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/products/marketing" />
-    <image:image>
-      <image:loc>https://cmpsbl.com/og/solutions.jpg</image:loc>
-      <image:title>Marketing — Autonomous Content Discovery</image:title>
-      <image:caption>AI-driven content generation and autonomous SEO pipeline optimization</image:caption>
-    </image:image>
   </url>
 
 </urlset>

@@ -1,180 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL Blog Sitemap - 2026 SEO Optimized -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+<!-- CMPSBL Blog Sitemap — 40-Chapter Origin Story + Autonomous Posts — Updated 2026-03-07 -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
+
   <!-- BLOG INDEX -->
   <url>
     <loc>https://cmpsbl.com/blog</loc>
-    <lastmod>2026-02-13</lastmod>
+    <lastmod>2026-03-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/blog" />
   </url>
-  
-  <!-- V9.1.0 ARCHITECT ARTICLES -->
-  <url>
-    <loc>https://cmpsbl.com/blog/evolving-software-v6-breakthrough</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.98</priority>
-    <news:news>
-      <news:publication>
-        <news:name>CMPSBL Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-01-30</news:publication_date>
-      <news:title>Evolving Software v6.x.x: The Breakthrough in Self-Improving AI Systems</news:title>
-      <news:keywords>evolving software, self-improving AI, CMPSBL, adaptive systems, cognitive infrastructure</news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>https://cmpsbl.com/assets/blog/evolving-software-v6-breakthrough.jpg</image:loc>
-      <image:title>Evolving Software v6.x.x Breakthrough</image:title>
-    </image:image>
-  </url>
-  
-  <!-- LLMS.TXT PROTOCOL -->
-  <url>
-    <loc>https://cmpsbl.com/blog/llms-txt-protocol-ai-context</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.92</priority>
-    <news:news>
-      <news:publication>
-        <news:name>CMPSBL Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-01-30</news:publication_date>
-      <news:title>LLMs.txt: The Protocol for Machine-Readable AI Context Sharing</news:title>
-      <news:keywords>LLMs.txt, AI protocol, context sharing, machine-readable, AI interaction</news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>https://cmpsbl.com/assets/blog/llms-txt-protocol-standard.jpg</image:loc>
-      <image:title>LLMs.txt Protocol Standard</image:title>
-    </image:image>
-  </url>
-  
-  <!-- AI GOVERNANCE NAMESPACE -->
-  <url>
-    <loc>https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.92</priority>
-    <news:news>
-      <news:publication>
-        <news:name>CMPSBL Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-01-30</news:publication_date>
-      <news:title>AI Governance Namespace: Unified Terminology for Cognitive Systems</news:title>
-      <news:keywords>AI governance, terminology, namespace, cognitive systems, standardization</news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>https://cmpsbl.com/assets/blog/ai-governance-namespace-unified.jpg</image:loc>
-      <image:title>AI Governance Namespace</image:title>
-    </image:image>
-  </url>
-  
-  <!-- SECURITY ARTICLES -->
-  <url>
-    <loc>https://cmpsbl.com/blog/wordpress-bot-defense</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-    <news:news>
-      <news:publication>
-        <news:name>CMPSBL Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-01-10</news:publication_date>
-      <news:title>WordPress Bot Defense: AI-Powered Protection</news:title>
-      <news:keywords>WordPress, security, bot detection, AI</news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
-      <image:title>WordPress Bot Defense</image:title>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/top-security-plugins-2025</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/ai-cybersecurity-evolution-2025</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <!-- ACCESSIBILITY ARTICLES -->
-  <url>
-    <loc>https://cmpsbl.com/blog/wordpress-accessibility-guide</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-    <news:news>
-      <news:publication>
-        <news:name>CMPSBL Blog</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-01-08</news:publication_date>
-      <news:title>Complete WordPress Accessibility Guide 2026</news:title>
-      <news:keywords>WordPress, accessibility, WCAG, compliance</news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>https://cmpsbl.com/og-default.jpg</image:loc>
-      <image:title>WordPress Accessibility Guide</image:title>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/wcag-2-2-wordpress-changes</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  
-  <!-- AI ARTICLES -->
-  <url>
-    <loc>https://cmpsbl.com/blog/ai-automation-trends-2025</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/ai-business-operations-2025</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  
-  <!-- COMPANY ARTICLES -->
-  <url>
-    <loc>https://cmpsbl.com/blog/cmpsbl-market-disruptor</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  
-  <url>
-    <loc>https://cmpsbl.com/blog/product-roadmap-2025</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
+
+  <!-- ============================================================= -->
+  <!-- ORIGIN STORY: Chapters 1–20 (Dec 2024 – Feb 2025) -->
+  <!-- ============================================================= -->
+  <url><loc>https://cmpsbl.com/blog/the-first-line-of-code</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/signal-to-silicon</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/routing-the-unknown</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/teaching-machines-to-remember</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/when-bots-found-us-first</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/what-if-software-could-dream</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/seeing-everything-at-once</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/nodes-that-talk</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/building-on-the-substrate</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/identity-at-every-layer</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/cybersecurity-through-cognition</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/agents-that-actually-learn</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-bot-wars</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/burning-it-down</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/accessibility-is-infrastructure</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/protocols-for-machines</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-governance-question</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/when-software-starts-evolving</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/how-we-compare</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://cmpsbl.com/blog/why-agents-forget</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
+
+  <!-- ============================================================= -->
+  <!-- ORIGIN STORY: Chapters 21–40 (Mar 2025 – Mar 2026) -->
+  <!-- ============================================================= -->
+  <url><loc>https://cmpsbl.com/blog/when-one-model-isnt-enough</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/breaking-problems-apart</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/trust-but-verify</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/mapping-what-we-built</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-composable-agent</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/teams-of-machines</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/interfaces-that-think</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/from-thought-to-artifact</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-marketplace</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/packing-intelligence</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-intent-layer</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/thirty-eight-nodes-deep</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-memory-stream</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-economics-of-intelligence</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/gaming-the-substrate</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/when-the-system-writes</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/open-standards</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
+  <url><loc>https://cmpsbl.com/blog/what-we-got-wrong</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-scanner</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/blog/where-we-are-now</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+
+  <!-- ============================================================= -->
+  <!-- AUTONOMOUS / AI-GENERATED POSTS (indexed via dynamic-sitemap) -->
+  <!-- ============================================================= -->
+  <url><loc>https://cmpsbl.com/blog/machine-protocol-standards-architect-epoch</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/autonomous-ai-governance-runtime-enforcement</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/adversarial-ai-defense-module-response-2026</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/evolving-software-v6-breakthrough</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/rag-without-infrastructure</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/agent-memory-anti-patterns</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/langchain-memory-integration</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/building-agents-that-learn</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://cmpsbl.com/blog/llms-txt-protocol-ai-context</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-governance-namespace-unified-terminology</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/inclusive-module-accessibility-mission</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/accessibility-free-for-all</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wordpress-accessibility-guide</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wcag-2-2-wordpress-changes</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/automated-accessibility-fixes-wordpress</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-systems-that-dream-press-release</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/wordpress-bot-defense</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.72</priority></url>
+  <url><loc>https://cmpsbl.com/blog/top-security-plugins-2025</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
+  <url><loc>https://cmpsbl.com/blog/ai-cybersecurity-evolution-2025</loc><lastmod>2026-03-07</lastmod><changefreq>monthly</changefreq><priority>0.70</priority></url>
 
 </urlset>

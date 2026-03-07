@@ -22,21 +22,35 @@ export default function TheComposableAgent() {
         <article className="container max-w-3xl mx-auto px-4 py-16">
           <img src={heroImg} alt="Composable Cognitive agent architecture" className="w-full rounded-xl mb-8 aspect-video object-cover" />
           <h1 className="text-4xl font-black mb-4">The Composable Agent</h1>
-          <p className="text-muted-foreground mb-8">July 20, 2025 · 14 min read · Written by the CMPSBL team</p>
+          <p className="text-muted-foreground mb-8">July 20, 2025 · 18 min read · Written by the CMPSBL team</p>
           <RewrittenNotice />
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
             <p className="text-lg leading-relaxed">Every AI agent framework makes the same mistake: they treat agents as monoliths. One system prompt, one model, one set of tools. The agent either does everything or nothing.</p>
 
-            <p>We'd been building substrate nodes for seven months. Each node was a specialized capability. What if an agent wasn't a single thing, but a composition of those capabilities?</p>
+            <p>We'd been building substrate nodes for seven months. Each node was a specialized capability. What if an agent wasn't a single thing, but a composition of those capabilities? The idea seemed obvious in retrospect — we'd been building the components for a composable agent system without realizing it. NEXUS routes. BRAIN remembers. DECODE decomposes. CASCADE orchestrates models. An agent is just a personality wrapped around a weighted combination of these capabilities.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Cognitives</h2>
             <p>A Cognitive is a substrate-native agent. It has a personality (communication style, domain expertise), skill weights (which nodes it leans on most), and a competency score that improves with every task. Unlike traditional agents, Cognitives don't own their tools — they delegate to substrate nodes.</p>
 
+            <p>This delegation model solves the "tool sprawl" problem that plagues agent frameworks. In LangChain or AutoGPT, you define tools per agent. Every agent carries its own search function, its own database connector, its own API integrations. In the substrate, those capabilities live at the node level. Cognitives access them through NEXUS. This means improvements to any node immediately benefit every Cognitive that uses it. When we upgrade BRAIN's memory retrieval algorithm, every Cognitive in the system gets smarter without a single line of agent-level code changing.</p>
+
+            <h2 className="text-2xl font-bold text-foreground mt-8">Personality as Configuration</h2>
+            <p>A Cognitive's personality isn't just a system prompt — it's a structured configuration that influences every aspect of its behavior. Communication style determines how it formats outputs (formal/technical/conversational). Domain expertise primes its context retrieval from <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link>. Risk tolerance affects how it handles <Link to="/blog/trust-but-verify" className="text-primary hover:underline">PROOF</Link> confidence thresholds. Even its escalation behavior — when to ask for help versus push through — is part of the personality profile.</p>
+
+            <p>We tested this with two Cognitives given the same task: "analyze this company's competitive position." The research-personality Cognitive produced a 4,000-word report with 23 citations and a methodology section. The executive-personality Cognitive produced a 500-word brief with three bullet-point recommendations and a confidence rating. Same substrate. Same data. Radically different outputs because the personality shaped which nodes were invoked and how outputs were formatted.</p>
+
             <h2 className="text-2xl font-bold text-foreground mt-8">Skill Weights</h2>
             <p>A research-focused Cognitive might weight <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link> heavily for memory retrieval and <Link to="/blog/breaking-problems-apart" className="text-primary hover:underline">DECODE</Link> for analysis. A security Cognitive weights <Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">DEFENSE</Link> and <Link to="/blog/trust-but-verify" className="text-primary hover:underline">PROOF</Link>. Same substrate, radically different agents — just by shifting the weights.</p>
 
+            <p>Weights aren't binary — they're continuous values between 0 and 1 that influence routing priority, resource allocation, and output synthesis. A Cognitive with BRAIN weight 0.9 and DECODE weight 0.3 will spend more compute budget on memory retrieval and contextual enrichment, producing outputs that are deeply informed by historical data. Swap those weights, and the same Cognitive becomes an analytical powerhouse that decomposes problems into sub-tasks but references less historical context.</p>
+
             <h2 className="text-2xl font-bold text-foreground mt-8">Learning Through Experience</h2>
             <p>Every task a Cognitive completes updates its competency score. Successful completions reinforce skill weights. Failures trigger <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM consolidation</Link> to extract lessons. Over time, Cognitives genuinely improve — not because we retrain them, but because their routing and weighting adapts to experience.</p>
+
+            <p>The learning curve is measurable. A new security Cognitive starts with a competency score around 45. After 100 tasks, it typically reaches 65. After 1,000 tasks, scores plateau around 80-85 — reflecting genuine improvement in how the Cognitive leverages substrate nodes. The remaining gap to 100 represents tasks that are genuinely hard or novel. Interestingly, different Cognitives with the same starting configuration converge on different skill weight distributions based on the tasks they receive. Two "security" Cognitives diverge after enough experience — one might specialize in web application security while the other becomes stronger in infrastructure analysis. The substrate produces specialists organically.</p>
+
+            <h2 className="text-2xl font-bold text-foreground mt-8">The Composition Model</h2>
+            <p>Cognitives can be composed from other Cognitives. A "full-stack security audit" Cognitive might compose a vulnerability scanner Cognitive, a compliance checker Cognitive, and a report generator Cognitive. Each sub-Cognitive has its own personality and skill weights. The parent Cognitive orchestrates them, resolves conflicts between their outputs, and produces a unified deliverable. This recursive composition is what makes the system scale — you build simple Cognitives, then compose them into arbitrarily complex agents.</p>
 
             <p>Cognitives were the answer to a question we'd been asking since <Link to="/blog/agents-that-actually-learn" className="text-primary hover:underline">Chapter 12</Link>: how do you build agents that get better? The next step was putting them in <Link to="/blog/teams-of-machines" className="text-primary hover:underline">teams</Link>.</p>
           </div>

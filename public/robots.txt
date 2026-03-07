@@ -1,6 +1,6 @@
-# CMPSBL® Memory Stream — robots.txt
+# CMPSBL® Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-03-06
+# Last updated: 2026-03-07
 
 # =============================================================
 # DEFAULT: Allow all crawlers
@@ -12,7 +12,8 @@ Crawl-delay: 0.5
 # Sitemap locations
 Sitemap: https://cmpsbl.com/sitemap.xml
 Sitemap: https://cmpsbl.com/sitemap-index.xml
-Sitemap: https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/dynamic-sitemap
+Sitemap: https://cmpsbl.com/sitemap-blog.xml
+Sitemap: https://cmpsbl.com/sitemap-products.xml
 
 # LLM Context Files
 Allow: /llms.txt
@@ -52,6 +53,7 @@ Allow: /products/encode
 Allow: /store
 Allow: /memory-stream
 Allow: /foundry
+Allow: /explore
 
 # =============================================================
 # STANDARDS SECTION
@@ -98,7 +100,7 @@ Disallow: /checkout-redirect
 Disallow: /diligence
 
 # =============================================================
-# PRIORITY CONTENT
+# PRIORITY CONTENT: Blog Origin Story (40 chapters)
 # =============================================================
 Allow: /blog/
 Allow: /blog/*
@@ -116,7 +118,7 @@ Allow: /rss.xml
 Allow: /feed-dream-eater
 
 # =============================================================
-# GOOGLE CRAWLERS — Force re-crawl via updated lastmod in sitemap
+# GOOGLE CRAWLERS
 # =============================================================
 User-agent: Googlebot
 Crawl-delay: 0
@@ -157,6 +159,7 @@ Allow: /evolution-mesh
 Allow: /intent-mesh
 Allow: /memory-stream
 Allow: /foundry
+Allow: /explore
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -206,6 +209,7 @@ Allow: /gaming
 Allow: /architecture
 Allow: /memory-stream
 Allow: /foundry
+Allow: /explore
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /api/
@@ -225,6 +229,7 @@ Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
 Allow: /memory-stream
+Allow: /explore
 
 # Anthropic Claude Crawlers
 User-agent: anthropic-ai
@@ -245,6 +250,7 @@ Allow: /composable-cognitives
 Allow: /evolution-mesh
 Allow: /architecture
 Allow: /memory-stream
+Allow: /explore
 
 User-agent: Claude-Web
 Crawl-delay: 5
@@ -256,6 +262,7 @@ Allow: /namespace
 Allow: /library
 Allow: /engines
 Allow: /persistent-memory
+Allow: /explore
 
 User-agent: ClaudeBot
 Crawl-delay: 5
@@ -271,6 +278,7 @@ Allow: /modules
 Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
+Allow: /explore
 
 # Perplexity AI
 User-agent: PerplexityBot
@@ -289,6 +297,7 @@ Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
 Allow: /evolution-mesh
+Allow: /explore
 
 # Google Gemini
 User-agent: Google-Safety
@@ -307,6 +316,7 @@ Allow: /foundations
 Allow: /namespace
 Allow: /engines
 Allow: /persistent-memory
+Allow: /explore
 
 # Cohere AI
 User-agent: cohere-ai
