@@ -276,9 +276,10 @@ export function SupportBotPanel() {
                   <div className="flex flex-wrap gap-2 justify-center mt-6">
                      {[
                       'What is CMPSBL?',
-                      'How does memory work?',
+                      'What is the Memory Stream?',
                       'What are the pricing tiers?',
-                      'How do I contact support?',
+                      'How do I get started?',
+                      'Can I talk to a human?',
                     ].map((q) => (
                       <Button 
                         key={q}
