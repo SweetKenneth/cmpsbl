@@ -43,22 +43,13 @@ const JOURNEY_STEPS = [
 ];
 
 export function MemoryStreamExplainer() {
-
   return (
     <section id="how-it-works" className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
-      {/* Section divider top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(var(--primary)/0.04),transparent_60%)]" />
 
       <div className="max-w-4xl mx-auto relative">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.8 }}
-          style={{ opacity: 1 }}
-        >
+        <div>
           <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
             From Signal to Silicon
           </h2>
@@ -69,28 +60,23 @@ export function MemoryStreamExplainer() {
           <p className="text-center text-muted-foreground/40 mb-16 sm:mb-20 max-w-xl mx-auto text-xs sm:text-sm font-mono px-2">
             Every stage is autonomous. Every output is verifiable. Nothing is simulated.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Journey timeline */}
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-5 sm:left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-border/40 via-primary/20 to-border/40" />
-
           <div className="space-y-10 sm:space-y-12 md:space-y-16">
             {JOURNEY_STEPS.map((step, i) => (
               <motion.div
                 key={step.phase}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
                 className="relative pl-12 sm:pl-16 md:pl-20"
               >
-                {/* Node */}
                 <div className="absolute left-2 sm:left-3 md:left-5 top-1 w-6 h-6 rounded-full border border-border/30 bg-background flex items-center justify-center">
                   <span className="text-xs text-primary font-mono">{step.icon}</span>
                 </div>
-
                 <div className="text-[9px] sm:text-[10px] font-mono text-primary/60 uppercase tracking-[0.3em] mb-1">
                   Phase {step.phase}
                 </div>
@@ -110,14 +96,7 @@ export function MemoryStreamExplainer() {
           </div>
         </div>
 
-        {/* Closing insight */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-16 sm:mt-20 text-center"
-        >
+        <div className="mt-16 sm:mt-20 text-center">
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-3 sm:py-4 max-w-lg">
             <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
               The Memory Stream has already produced{' '}
@@ -126,7 +105,7 @@ export function MemoryStreamExplainer() {
               in under 9 hours. Each one is a real program. Each one is verifiable.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
