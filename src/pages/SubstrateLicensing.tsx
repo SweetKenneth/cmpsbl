@@ -26,6 +26,14 @@ import {
 } from "lucide-react";
 
 // ── Tier visual config ──
+// ── Memory Stream daily crystallization limits per tier ──
+const MEMORY_STREAM_LIMITS: Record<string, string> = {
+  free: '3 crystallizations / day',
+  creator: '25 crystallizations / day',
+  architect: '100 crystallizations / day',
+  enterprise: 'Unlimited crystallizations',
+};
+
 const TIERS = [
   {
     key: 'free' as const,
