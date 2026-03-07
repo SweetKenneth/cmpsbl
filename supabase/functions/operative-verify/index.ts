@@ -123,6 +123,16 @@ serve(async (req) => {
       console.log(`[OPERATIVE-VERIFY] Email sent to ${customerEmail} for ${operativeName}`);
     }
 
+    // Notify owner of purchase
+    if (resendKey) {
+      await notifyOwnerPurchase({
+        product: `${operativeName} Operative`,
+        customerEmail,
+        licenseId: editionId,
+        resendKey,
+      });
+    }
+
     return new Response(
       JSON.stringify({
         success: true,

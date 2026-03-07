@@ -119,6 +119,17 @@ serve(async (req) => {
       }
     }
 
+    // Notify owner of purchase
+    if (resendKey) {
+      await notifyOwnerPurchase({
+        product: `${engineName} Engine`,
+        customerEmail,
+        amount: '$199',
+        licenseId: editionId,
+        resendKey,
+      });
+    }
+
     return new Response(
       JSON.stringify({
         success: true,

@@ -115,6 +115,27 @@ serve(async (req) => {
       }
     }
 
+    // Notify owner of purchase
+    const resendKeyOwner = Deno.env.get("RESEND_API_KEY");
+    if (resendKeyOwner) {
+      await notifyOwnerPurchase({
+        product: 'CMPSBL Engine (Annual)',
+        customerEmail: customerEmail || 'unknown',
+        amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
+        licenseId: subscription?.id || session.id,
+        resendKey: resendKeyOwner,
+      });
+    }
+
+    // Insert analytics event
+    await supabase.from('analytics_events').insert({
+      event_type: 'purchase_verified',
+      category: 'conversion',
+      label: 'cmpsbl-engine-annual',
+      value: session.amount_total ? session.amount_total / 100 : null,
+      page: '/engine/success',
+    });
+
     console.log(
       `CMPSBL Engine license verified: ${session.id}, email: ${customerEmail}`
     );
