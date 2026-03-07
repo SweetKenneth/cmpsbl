@@ -10,7 +10,7 @@ import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
 import {
   Loader2, Terminal, LayoutDashboard, Activity, Bot, Sparkles,
   Building2, Cpu, Shield, Layers, Eye, LogOut, Home, Network, Zap,
-  Menu, X, Brain, Gauge, HardDrive, FileText, Settings,
+  Menu, X, Brain, Gauge, HardDrive, FileText, Settings, UserCircle,
   GitBranch, Wrench, AlertTriangle, MessageSquare, Dna,
   Users, Wand2, Key, Radio, Hammer, Compass,
 } from 'lucide-react';
@@ -92,6 +92,8 @@ interface TabDef {
  */
 function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
+    // ── Account (always first) ──
+    { id: 'account', label: 'Account', icon: UserCircle, group: 'Command', description: 'Your profile & quick links' },
     // ── Free tier ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
