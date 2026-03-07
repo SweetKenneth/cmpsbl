@@ -99,9 +99,9 @@ export default function Foundry() {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.15 }}
-              className="relative w-full h-24 sm:h-28 md:h-32 mb-8 rounded-xl overflow-hidden signal-border bg-card/20"
+              className="relative w-full mb-8"
             >
-              <MemoryRiver crystallizing={crystallizing} />
+              <MemoryRiver crystallizing={crystallizing} compact hideTagline hideLegend />
             </motion.div>
 
             {/* Stats row */}

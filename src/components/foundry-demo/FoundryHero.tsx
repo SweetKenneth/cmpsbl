@@ -49,7 +49,7 @@ export function FoundryHero() {
 
         {/* Memory Stream visualization */}
         <div className="mb-10 sm:mb-12">
-          <MemoryRiver autoCrystallize />
+          <MemoryRiver autoCrystallize hideTagline />
         </div>
 
         {/* Key stat trio */}

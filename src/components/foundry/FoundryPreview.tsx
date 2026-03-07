@@ -66,9 +66,9 @@ export function FoundryPreview() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="mb-10 rounded-xl overflow-hidden border border-border/20"
+          className="mb-10"
         >
-          <MemoryRiver autoCrystallize />
+          <MemoryRiver autoCrystallize hideTagline />
         </motion.div>
 
         {/* Tier preview — staggered entrance */}
