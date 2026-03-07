@@ -17,6 +17,8 @@ export interface CLMPriority {
     { capability: string; description: string; priority: number },
   ];
   acknowledged: boolean;
+  /** Generation 1 = original learning nodes, Generation 2 = recently created nodes */
+  generation: 1 | 2;
 }
 
 export const NODE_CLM_PRIORITIES: CLMPriority[] = [
