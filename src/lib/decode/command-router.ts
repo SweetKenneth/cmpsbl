@@ -169,7 +169,8 @@ const COMMANDS: Record<string, CommandHandler> = {
 
   version: () => formatBlock('SUBSTRATE', [
     'CMPSBL® Substrate OS',
-    'Cognitive Infrastructure Standard',
+    'v14.0.0 — MINDGAMES Epoch',
+    'The Era of Users & Memory Stream',
     '40-Node · 12-Sector Matrix',
   ]),
 };
