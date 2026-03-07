@@ -7,6 +7,7 @@
  */
 
 import type { CJPIScoreBreakdown, DiscoveryCategory } from '@/lib/capabilities/synergies/discovery-epoch';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -262,7 +263,6 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
   };
 
   // Description — use centralized functional description engine
-  const { getFunctionalDescription } = await import('@/lib/pipeline-descriptions');
   const desc = getFunctionalDescription(name, selectedModules);
 
   // Rationale
