@@ -1,5 +1,5 @@
 /**
- * useRelay Hook — RELAY zone operations
+ * useRelay Hook — RELAY node operations
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';

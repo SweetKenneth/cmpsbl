@@ -46,7 +46,7 @@ export {
   INFRASTRUCTURE_MODULES,
 } from './high-value-v9';
 
-// Expansion layer capabilities (v10.0.0 — 275 capabilities, 11 modules × 25)
+// Expansion layer capabilities (11 nodes × 25)
 export {
   ALL_EXPANSION_CAPABILITIES,
   EXPANSION_CAPABILITY_COUNT,
