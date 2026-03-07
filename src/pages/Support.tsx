@@ -1,16 +1,17 @@
 /**
- * Support — Redesigned with bot as centerpiece, searchable FAQs, and human escalation
+ * Support — Professional FAQ help center with DECODE integration
+ * No standalone chatbot — "Chat with Support" opens DECODE in support mode
  */
 
 import { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { SupportBotPanel } from "@/components/substrate/SupportBotPanel";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -18,80 +19,129 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Brain,
-  Shield,
-  Sparkles,
-  MessageCircle,
   Search,
   Mail,
   Clock,
   ArrowUpCircle,
   HelpCircle,
-  Zap,
   BookOpen,
+  Sparkles,
+  MessageCircle,
+  Rocket,
+  Layers,
+  Package,
+  Monitor,
+  KeyRound,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useDecodeStore } from "@/stores/decodeStore";
 
-// ── FAQ Data (sourced from canonical docs) ──────────────────────
+// ── Expanded FAQ Data ──────────────────────────────────────────
 const FAQ_ITEMS = [
+  // Getting Started
   {
-    category: "General",
+    category: "Getting Started",
     question: "What is CMPSBL?",
-    answer:
-      "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides memory, learning, multi-provider AI routing, security, and self-evolution capabilities — the operating system for AI.",
+    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing through the NEXUS router, security via the DEFENSE module, and self-evolution — the operating system for AI.",
   },
   {
-    category: "General",
-    question: "How is this different from OpenAI or Anthropic?",
-    answer:
-      "We don't compete with AI model providers — we make them more valuable. CMPSBL sits between your application and AI providers, adding memory, learning, security, and routing. You can use any AI provider (or multiple) through CMPSBL.",
+    category: "Getting Started",
+    question: "How do I get started?",
+    answer: "Sign up for a free Builder account. From the dashboard, you can explore the Module Library, create your first Pipeline Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
   },
   {
-    category: "General",
+    category: "Getting Started",
     question: "Do I need to use a specific AI provider?",
-    answer:
-      "No. CMPSBL is model-agnostic and provider-agnostic. You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination.",
+    answer: "No. CMPSBL is model-agnostic and provider-agnostic. The NEXUS router supports OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — with automatic failover and cost optimization.",
   },
   {
-    category: "General",
-    question: "Can the system really improve itself?",
-    answer:
-      "Yes. The MODERNIZER module proposes code improvements, which go through confidence gating and (for significant changes) human approval before being applied.",
+    category: "Getting Started",
+    question: "What is DECODE?",
+    answer: "DECODE is the unified conversational interface for CMPSBL. It handles support, system guidance, builder assistance, and governance — all through natural language. You can reach DECODE from anywhere in the platform by clicking the chat icon.",
+  },
+
+  // Pipelines & Foundry
+  {
+    category: "Pipelines & Foundry",
+    question: "What are Pipeline Packs?",
+    answer: "Pipeline Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate modules for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
-    category: "Technical",
-    question: "What technology stack does CMPSBL use?",
-    answer:
-      "Frontend: React + TypeScript + Vite + Tailwind. Backend: PostgreSQL + Edge Functions. AI: Model-agnostic, connects to any provider. Infrastructure: Runs on any cloud or on-premise.",
+    category: "Pipelines & Foundry",
+    question: "What is the Foundry?",
+    answer: "The Foundry is the build environment where you compose, test, and deploy Pipeline Packs. It provides a visual editor for connecting modules, setting triggers, and configuring capability chains without writing code.",
   },
   {
-    category: "Technical",
-    question: "How does memory work?",
-    answer:
-      "Memory is stored in a four-tier system: Hot (127 records, 7 days), Warm (2,000 records, 30 days), Cold (200 records, forever), Legacy (unlimited, forever). The system automatically demotes, compresses, and optimizes memory over time. Protected memory types are locked at 1.0 value with zero decay.",
+    category: "Pipelines & Foundry",
+    question: "How does the Memory Stream work?",
+    answer: "The Memory Stream is a four-tier persistent memory system: Hot (active recall, 7-day window), Warm (recent context, 30 days), Cold (permanent archive), and Legacy (unlimited historical). Daily crystallization limits are tier-based: Builder (3), Creator (6), Architect (9), Governor (12).",
   },
   {
-    category: "Business",
-    question: "How much does it cost?",
-    answer:
-      "Free ($0) — Artifact Store, Persistent Memory, Composition. Creator ($9/mo) — Expanded store, executable capabilities, synergy pipelines. Architect ($19/mo) — Cross-module orchestration, larger memory. Enterprise ($99/mo) — Organization workspaces, governance, SLA. Plus standalone: Composable Cognitives ($39 each), Template Generator ($29 one-time).",
+    category: "Pipelines & Foundry",
+    question: "What is CLM (Constant Learning Mode)?",
+    answer: "CLM is the autonomous background learning engine that runs on 30-minute cycles. It uses a 70/30 weighting between global topics (system stability) and node-specific topics, achieving up to 14,400 AI calls per day for continuous knowledge acquisition.",
+  },
+
+  // Artifact Packs
+  {
+    category: "Artifact Packs",
+    question: "What are Composable Cognitives?",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as Sealed Runtimes. Each comes with 3–5 Crown Jewel powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
-    category: "Comparison",
-    question: "How is this different from LangChain?",
-    answer:
-      "LangChain is a library — you build memory, security, and orchestration yourself. CMPSBL is infrastructure with built-in multi-tier memory, autonomous learning, built-in security, and self-improving evolution out of the box.",
+    category: "Artifact Packs",
+    question: "What are Engines?",
+    answer: "Engines are the 20 specialized processing modules in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
-    category: "Security",
+    category: "Artifact Packs",
+    question: "Can I create custom artifacts?",
+    answer: "Yes. The Artifact Store allows you to compose custom pipeline packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
+  },
+
+  // Exports
+  {
+    category: "Exports",
+    question: "Can I export my work as software?",
+    answer: "Yes. Pipeline Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes artifact export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
+  },
+  {
+    category: "Exports",
+    question: "Is there hardware export support?",
+    answer: "Hardware export is on the roadmap. Currently, all substrate capabilities run in cloud infrastructure. Contact us at support@cmpsbl.com for enterprise deployment requirements including on-premise options.",
+  },
+
+  // Account & Access
+  {
+    category: "Account & Access",
+    question: "What subscription tiers are available?",
+    answer: "Builder (Free) — Artifact Store, Persistent Memory, Composition basics. Creator ($9/mo) — Expanded store, executable capabilities, synergy pipelines. Architect ($19/mo) — Cross-module orchestration, larger memory limits. Enterprise ($99/mo) — Organization workspaces, governance controls, SLA.",
+  },
+  {
+    category: "Account & Access",
+    question: "How do I upgrade my account?",
+    answer: "Navigate to your Dashboard → Settings → Subscription. You can upgrade, downgrade, or manage your plan at any time. Changes take effect immediately with prorated billing.",
+  },
+  {
+    category: "Account & Access",
     question: "Is CMPSBL secure for enterprise use?",
-    answer:
-      "Yes. Security is built into the core: rate limiting, bot detection, input sanitization, passwordless WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR).",
+    answer: "Yes. Security is built into the core via the DEFENSE module: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
+  },
+  {
+    category: "Account & Access",
+    question: "How do I contact human support?",
+    answer: "You can ask DECODE to escalate your issue, or email support@cmpsbl.com directly. Average response time is under 48 hours. All escalations are reviewed by our team.",
   },
 ];
 
-const FAQ_CATEGORIES = [...new Set(FAQ_ITEMS.map((i) => i.category))];
+const CATEGORY_ICONS: Record<string, typeof Rocket> = {
+  "Getting Started": Rocket,
+  "Pipelines & Foundry": Layers,
+  "Artifact Packs": Package,
+  "Exports": Monitor,
+  "Account & Access": KeyRound,
+};
 
 const QUICK_LINKS = [
   { to: "/documentation", icon: BookOpen, label: "Documentation", desc: "Browse the full docs library" },
@@ -101,6 +151,7 @@ const QUICK_LINKS = [
 
 export default function Support() {
   const [faqSearch, setFaqSearch] = useState("");
+  const { open } = useDecodeStore();
 
   const filteredFaqs = useMemo(() => {
     if (!faqSearch.trim()) return FAQ_ITEMS;
@@ -122,13 +173,17 @@ export default function Support() {
     return groups;
   }, [filteredFaqs]);
 
+  const handleChatWithSupport = () => {
+    open('support');
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Support — AI Assistant & FAQ | CMPSBL"
-        description="Get help from the CMPSBL evolving AI support system or browse our FAQ. Memory-backed, governed assistance that escalates to humans when needed."
+        title="Support — Help Center & FAQ | CMPSBL"
+        description="Get help with CMPSBL through our FAQ, documentation, or chat directly with DECODE — the cognitive interface that answers questions, troubleshoots issues, and escalates to humans."
         canonical="https://cmpsbl.com/support"
-        keywords={["CMPSBL support", "AI support assistant", "cognitive support", "FAQ"]}
+        keywords={["CMPSBL support", "help center", "FAQ", "DECODE support"]}
       />
       <StructuredData
         type="faq"
@@ -142,15 +197,7 @@ export default function Support() {
         <div className="fixed inset-0 pointer-events-none z-0">
           <div
             className="absolute top-32 left-1/3 w-[400px] h-[400px] rounded-full animate-hero-orb-2"
-            style={{
-              background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)",
-            }}
-          />
-          <div
-            className="absolute bottom-20 right-1/4 w-[300px] h-[300px] rounded-full"
-            style={{
-              background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.04) 0%, transparent 60%)",
-            }}
+            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }}
           />
         </div>
 
@@ -163,95 +210,38 @@ export default function Support() {
               className="text-center max-w-3xl mx-auto mb-8"
             >
               <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
-                <Sparkles className="w-3 h-3 text-primary" />
-                <span className="text-xs font-semibold">Evolving Support System</span>
+                <HelpCircle className="w-3 h-3 text-primary" />
+                <span className="text-xs font-semibold">Help Center</span>
               </Badge>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight">
                 How can we{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
+                <span style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
                   help?
                 </span>
               </h1>
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                Start with our AI support bot below — it learns from verified resolutions and
-                escalates to a human when it can't help. You can also search our FAQ or reach us directly.
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
+                Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate to our team when needed.
               </p>
-            </motion.div>
 
-            {/* Feature pills */}
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {[
-                { icon: Brain, label: "Memory-Backed" },
-                { icon: Shield, label: "Governed Responses" },
-                { icon: MessageCircle, label: "Escalation-First" },
-              ].map((f) => (
-                <div
-                  key={f.label}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border/30 text-sm backdrop-blur-sm shimmer-on-hover"
-                >
-                  <f.icon className="w-4 h-4 text-primary" />
-                  <span className="font-medium">{f.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Support Bot (Centerpiece) ── */}
-        <section className="container mx-auto px-4 pb-10 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <SupportBotPanel />
-          </div>
-        </section>
-
-        {/* ── Human Escalation Banner ── */}
-        <section className="container mx-auto px-4 pb-10 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-6 sm:p-8 glass-edge"
-            >
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <ArrowUpCircle className="w-7 h-7 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-black tracking-tight mb-1">Need a Human?</h2>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    If the support bot can't resolve your issue, choose{" "}
-                    <span className="font-semibold text-foreground">"Escalate to Human"</span>{" "}
-                    in the chat — or email us directly. We'll get back to you within{" "}
-                    <span className="font-semibold text-foreground">48 hours</span>.
-                  </p>
-                </div>
-                <a
-                  href="mailto:support@cmpsbl.com"
-                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                >
-                  <Mail className="w-4 h-4" />
-                  support@cmpsbl.com
-                </a>
-              </div>
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/30">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground">
-                  Average response time: under 48 hours · All escalations are reviewed by our team
-                </span>
-              </div>
+              {/* Chat with Support CTA */}
+              <Button
+                onClick={handleChatWithSupport}
+                size="lg"
+                className="bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold px-8 py-6 text-base rounded-xl shadow-glow hover:scale-105 transition-transform"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Chat with Support
+              </Button>
             </motion.div>
           </div>
         </section>
 
         {/* ── Searchable FAQ ── */}
-        <section className="container mx-auto px-4 pb-16 relative z-10">
+        <section className="container mx-auto px-4 pb-10 relative z-10">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -274,7 +264,7 @@ export default function Support() {
                 <Input
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
-                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'security'..."
+                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'pipeline'..."
                   className="pl-10 bg-card/50 border-border/40 backdrop-blur-sm"
                 />
               </div>
@@ -284,38 +274,87 @@ export default function Support() {
                 <div className="text-center py-12 text-muted-foreground">
                   <Search className="w-8 h-8 mx-auto mb-3 opacity-40" />
                   <p className="font-medium">No matching questions found</p>
-                  <p className="text-sm mt-1">Try a different search term or ask the support bot above</p>
+                  <p className="text-sm mt-1">
+                    Try a different search term or{" "}
+                    <button onClick={handleChatWithSupport} className="text-primary hover:underline font-semibold">
+                      ask DECODE
+                    </button>
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-8">
-                  {Object.entries(groupedFaqs).map(([category, items]) => (
-                    <div key={category}>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge variant="outline" className="text-xs font-semibold border-primary/20 text-primary">
-                          {category}
-                        </Badge>
-                        <span className="text-xs text-muted-foreground">{items.length} question{items.length !== 1 ? "s" : ""}</span>
+                  {Object.entries(groupedFaqs).map(([category, items]) => {
+                    const CategoryIcon = CATEGORY_ICONS[category] || HelpCircle;
+                    return (
+                      <div key={category}>
+                        <div className="flex items-center gap-2 mb-3">
+                          <CategoryIcon className="w-4 h-4 text-primary" />
+                          <Badge variant="outline" className="text-xs font-semibold border-primary/20 text-primary">
+                            {category}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {items.length} question{items.length !== 1 ? "s" : ""}
+                          </span>
+                        </div>
+                        <Accordion type="single" collapsible className="w-full">
+                          {items.map((faq, idx) => (
+                            <AccordionItem
+                              key={`${category}-${idx}`}
+                              value={`${category}-${idx}`}
+                              className="border-border/30"
+                            >
+                              <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:text-primary transition-colors py-4">
+                                {faq.question}
+                              </AccordionTrigger>
+                              <AccordionContent className="text-muted-foreground leading-relaxed text-sm pb-4">
+                                {faq.answer}
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
                       </div>
-                      <Accordion type="single" collapsible className="w-full">
-                        {items.map((faq, idx) => (
-                          <AccordionItem
-                            key={`${category}-${idx}`}
-                            value={`${category}-${idx}`}
-                            className="border-border/30"
-                          >
-                            <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:text-primary transition-colors py-4">
-                              {faq.question}
-                            </AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground leading-relaxed text-sm pb-4">
-                              {faq.answer}
-                            </AccordionContent>
-                          </AccordionItem>
-                        ))}
-                      </Accordion>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── Human Escalation Banner ── */}
+        <section className="container mx-auto px-4 pb-10 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-6 sm:p-8 glass-edge"
+            >
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <ArrowUpCircle className="w-7 h-7 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-black tracking-tight mb-1">Need a Human?</h2>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    DECODE can handle most questions, but if you need a human — just ask DECODE to escalate, or email us directly. We respond within{" "}
+                    <span className="font-semibold text-foreground">48 hours</span>.
+                  </p>
+                </div>
+                <a
+                  href="mailto:support@cmpsbl.com"
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                >
+                  <Mail className="w-4 h-4" />
+                  support@cmpsbl.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/30">
+                <Clock className="w-4 h-4 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">
+                  Average response time: under 48 hours · All escalations reviewed by our team
+                </span>
+              </div>
             </motion.div>
           </div>
         </section>
