@@ -32,23 +32,23 @@ export function RecursiveLoop() {
   }, [inView]);
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
+    <section ref={ref} className="py-16 sm:py-20 md:py-40 px-5 sm:px-6 relative overflow-hidden">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       {/* Subtle radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.04),transparent_70%)]" />
       
       <div className="max-w-5xl mx-auto relative">
-        <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
+        <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
           The Crystallization Engine
         </h2>
-        <p className="text-center text-muted-foreground/60 mb-12 sm:mb-16 max-w-2xl mx-auto text-sm px-2">
+        <p className="text-center text-muted-foreground/60 mb-10 sm:mb-16 max-w-2xl mx-auto text-sm sm:text-base px-2">
           Each cycle expands the search space. Crystallization is not linear — it compounds.
         </p>
 
         {/* Loop visualization */}
-        <div className="flex items-center justify-center mb-12 sm:mb-16">
-          <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px]">
+        <div className="flex items-center justify-center mb-10 sm:mb-16">
+          <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px]">
             {/* Rotating ring */}
             <motion.div
               className="absolute inset-0 rounded-full border border-border/20"
@@ -64,9 +64,7 @@ export function RecursiveLoop() {
             {/* Phase nodes */}
             {PHASES.map((phase, i) => {
               const angle = (i / PHASES.length) * Math.PI * 2 - Math.PI / 2;
-              // Responsive radius via CSS calc would be complex; use a moderate fixed value
-              const radius = 120; // works for 264px container, scales with md
-              const mdRadius = 160;
+              const radius = 130;
               const isActive = i === activePhase;
 
               return (
@@ -74,9 +72,9 @@ export function RecursiveLoop() {
                   key={phase.id}
                   className="absolute flex flex-col items-center"
                   style={{
-                    left: `calc(50% + ${Math.cos(angle) * radius}px - 36px)`,
-                    top: `calc(50% + ${Math.sin(angle) * radius}px - 26px)`,
-                    width: 72,
+                    left: `calc(50% + ${Math.cos(angle) * radius}px - 40px)`,
+                    top: `calc(50% + ${Math.sin(angle) * radius}px - 28px)`,
+                    width: 80,
                   }}
                   animate={{
                     scale: isActive ? 1.2 : 0.9,
@@ -90,7 +88,7 @@ export function RecursiveLoop() {
                   >
                     {phase.icon}
                   </div>
-                  <span className="text-[9px] sm:text-[10px] md:text-xs font-mono font-bold tracking-wider text-foreground whitespace-nowrap">
+                  <span className="text-[11px] sm:text-xs md:text-sm font-mono font-bold tracking-wider text-foreground whitespace-nowrap">
                     {phase.label}
                   </span>
                 </motion.div>
@@ -107,7 +105,7 @@ export function RecursiveLoop() {
               >
                 ∞
               </motion.div>
-              <div className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+              <div className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-widest mt-1">
                 Cycle {cycleCount}
               </div>
             </div>
@@ -127,21 +125,21 @@ export function RecursiveLoop() {
             <div className="text-base sm:text-lg font-mono font-bold text-foreground mb-1.5 sm:mb-2">
               {PHASES[activePhase].label}
             </div>
-            <div className="text-muted-foreground text-sm">
+            <div className="text-muted-foreground text-sm sm:text-base">
               {PHASES[activePhase].description}
             </div>
           </motion.div>
         </AnimatePresence>
 
         {/* Formula */}
-        <div className="mt-16 sm:mt-20 text-center">
-          <div className="inline-block bg-card/50 border border-border/30 rounded-lg px-5 sm:px-8 py-3 sm:py-4 font-mono text-xs sm:text-sm text-muted-foreground">
+        <div className="mt-12 sm:mt-20 text-center">
+          <div className="inline-block bg-card/50 border border-border/30 rounded-lg px-5 sm:px-8 py-3.5 sm:py-4 font-mono text-xs sm:text-sm text-muted-foreground">
             <span className="text-foreground font-bold">topology(n+1)</span>
             {' = '}
             <span className="text-foreground font-bold">topology(n)</span>
             {' × '}
             <span className="text-primary font-bold">discovered(n)</span>
-            <span className="block mt-1 text-[10px] sm:text-xs text-muted-foreground/60">
+            <span className="block mt-1.5 text-xs sm:text-xs text-muted-foreground/60">
               Every discovery changes the denominator
             </span>
           </div>
