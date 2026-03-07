@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * 38-Node / 12-Sector Field-Based Topology
+ * 40-Node / 12-Sector Field-Based Topology
  *
  * CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
  */
@@ -27,7 +27,7 @@ interface ModuleState {
   id: string;
   name: string;
   icon: React.ElementType;
-  layer: 'kernel' | 'module' | 'mesh-overlay' | 'zone-ccr' | 'zone-ocg';
+  layer: 'kernel' | 'node' | 'mesh-overlay' | 'zone-ccr' | 'zone-ocg';
   status: 'idle' | 'active' | 'processing' | 'complete';
   color: string;
   description: string;
@@ -42,26 +42,26 @@ interface LogEntry {
 
 const LAYER_COLORS = {
   kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
-  module: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
+  node: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
   'mesh-overlay': { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
   'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
   'zone-ocg': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
 };
 
-const INITIAL_MODULES: ModuleState[] = [
+const INITIAL_NODES: ModuleState[] = [
   // KERNEL (boots first)
   { id: 'core', name: 'CORE', icon: Cpu, layer: 'kernel', status: 'idle', color: 'orange', description: 'Kernel — Boots First' },
-  // 8 PUBLIC MODULES
-  { id: 'decode', name: 'DECODE', icon: MessageSquare, layer: 'module', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
-  { id: 'encode', name: 'ENCODE', icon: Code2, layer: 'module', status: 'idle', color: 'lime', description: 'Code Intelligence' },
-  { id: 'vision', name: 'VISION', icon: Eye, layer: 'module', status: 'idle', color: 'rose', description: 'Observability' },
-  { id: 'cortex', name: 'CORTEX', icon: Workflow, layer: 'module', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
-  { id: 'nexus', name: 'NEXUS', icon: Layers, layer: 'module', status: 'idle', color: 'amber', description: 'AI Routing' },
-  { id: 'economy', name: 'ECONOMY', icon: Coins, layer: 'module', status: 'idle', color: 'amber', description: 'Cost Control' },
-  { id: 'sandbox', name: 'SANDBOX', icon: FlaskConical, layer: 'module', status: 'idle', color: 'cyan', description: 'Isolation' },
-  { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'module', status: 'idle', color: 'rose', description: 'Accessibility' },
-  // INTEGRATION (module — boots last)
-  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'module', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
+  // 8 PUBLIC NODES
+  { id: 'decode', name: 'DECODE', icon: MessageSquare, layer: 'node', status: 'idle', color: 'cyan', description: 'Intent Parsing' },
+  { id: 'encode', name: 'ENCODE', icon: Code2, layer: 'node', status: 'idle', color: 'lime', description: 'Code Intelligence' },
+  { id: 'vision', name: 'VISION', icon: Eye, layer: 'node', status: 'idle', color: 'rose', description: 'Observability' },
+  { id: 'cortex', name: 'CORTEX', icon: Workflow, layer: 'node', status: 'idle', color: 'fuchsia', description: 'Orchestrator' },
+  { id: 'nexus', name: 'NEXUS', icon: Layers, layer: 'node', status: 'idle', color: 'amber', description: 'AI Routing' },
+  { id: 'economy', name: 'ECONOMY', icon: Coins, layer: 'node', status: 'idle', color: 'amber', description: 'Cost Control' },
+  { id: 'sandbox', name: 'SANDBOX', icon: FlaskConical, layer: 'node', status: 'idle', color: 'cyan', description: 'Isolation' },
+  { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'node', status: 'idle', color: 'rose', description: 'Accessibility' },
+  // INTEGRATION (node — boots last)
+  { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'node', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
   // MESH OVERLAYS (Fields + Plane + Shell — protective layers wrapping all sectors)
   { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Outermost — Security Shield' },
   { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Resilience Layer' },
@@ -103,13 +103,13 @@ const DEMO_SCENARIOS = [
   {
     name: 'Full Orchestration',
     sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'governance', 'intent', 'immunity', 'defense'],
-    description: '38 nodes across 12 sectors — full substrate orchestration',
+    description: '40 nodes across 12 sectors — full substrate orchestration',
     icon: Sparkles,
   },
 ];
 
 export default function SubstrateDemo() {
-  const [modules, setModules] = useState<ModuleState[]>(INITIAL_MODULES);
+  const [modules, setModules] = useState<ModuleState[]>(INITIAL_NODES);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [currentScenario, setCurrentScenario] = useState(3);
@@ -122,7 +122,7 @@ export default function SubstrateDemo() {
   }, []);
 
   const resetDemo = () => {
-    setModules(INITIAL_MODULES);
+    setModules(INITIAL_NODES);
     setLogs([]);
     setIsRunning(false);
     setCurrentStep(-1);
@@ -137,20 +137,20 @@ export default function SubstrateDemo() {
     addLog('SUBSTRATE', `→ ${scenario.name}`, 'info');
 
     for (let i = 0; i < scenario.sequence.length; i++) {
-      const moduleId = scenario.sequence[i];
+      const nodeId = scenario.sequence[i];
       setCurrentStep(i);
       
       setModules(prev => prev.map(m => 
-        m.id === moduleId ? { ...m, status: 'processing' } : m
+        m.id === nodeId ? { ...m, status: 'processing' } : m
       ));
-      addLog(moduleId.toUpperCase(), 'Processing...', 'info');
+      addLog(nodeId.toUpperCase(), 'Processing...', 'info');
 
       await new Promise(r => setTimeout(r, 700));
 
       setModules(prev => prev.map(m => 
-        m.id === moduleId ? { ...m, status: 'complete' } : m
+        m.id === nodeId ? { ...m, status: 'complete' } : m
       ));
-      addLog(moduleId.toUpperCase(), '✓ Complete', 'success');
+      addLog(nodeId.toUpperCase(), '✓ Complete', 'success');
       setTotalOperations(prev => prev + 1);
 
       await new Promise(r => setTimeout(r, 200));
@@ -162,10 +162,10 @@ export default function SubstrateDemo() {
     setCurrentStep(-1);
   };
 
-  // Group by new architecture layers
+  // Group by architecture layers
   const groupedModules = {
     kernel: modules.filter(m => m.layer === 'kernel'),
-    module: modules.filter(m => m.layer === 'module'),
+    node: modules.filter(m => m.layer === 'node'),
     'mesh-overlay': modules.filter(m => m.layer === 'mesh-overlay'),
     'zone-ccr': modules.filter(m => m.layer === 'zone-ccr'),
     'zone-ocg': modules.filter(m => m.layer === 'zone-ocg'),
@@ -210,7 +210,7 @@ export default function SubstrateDemo() {
                 className="text-3xl md:text-5xl font-bold mb-4"
               >
                 <span className="bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                  38 Nodes
+                  40 Nodes
                 </span>
                 <span className="text-foreground"> · 12 Sectors · 675+ Capabilities</span>
               </motion.h1>
@@ -221,7 +221,7 @@ export default function SubstrateDemo() {
                 transition={{ delay: 0.2 }}
                 className="text-muted-foreground max-w-xl mx-auto"
               >
-                Watch cognitive modules orchestrate in real-time. Select a scenario and observe data flow through the system.
+                Watch cognitive nodes orchestrate in real-time. Select a scenario and observe data flow through the system.
               </motion.p>
             </div>
 
@@ -265,7 +265,7 @@ export default function SubstrateDemo() {
 
                 <CardContent className="p-6">
                   <div className="grid lg:grid-cols-[1fr,280px] gap-6">
-                    {/* Module Visualization - Stacked Layers */}
+                    {/* Node Visualization - Stacked Layers */}
                     <div className="space-y-3">
                       {/* CORE Kernel */}
                       <LayerRow 
@@ -277,11 +277,11 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
                       
-                      {/* 8 Public Modules */}
+                      {/* 8 Public Nodes */}
                       <LayerRow 
-                        label="Modules" 
-                        modules={groupedModules.module} 
-                        layerKey="module"
+                        label="Nodes" 
+                        modules={groupedModules.node} 
+                        layerKey="node"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}
