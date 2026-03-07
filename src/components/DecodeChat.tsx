@@ -118,13 +118,38 @@ export function DecodeChat() {
   const sendMessage = async (messageText?: string) => {
     const userMessage = messageText || input.trim();
     if (!userMessage || isLoading) return;
-
     setInput('');
+    setShowMenu(false);
+
+    // ─── Terminal Command Layer ───
+    if (isCommand(userMessage)) {
+      const { capabilities } = useDecodeStore.getState();
+      const result = routeCommand(userMessage, {
+        mode,
+        identityRole,
+        capabilities,
+        connectionStatus: connection.status,
+        messageCount: messages.length,
+      });
+
+      if (result.handled) {
+        if (result.output === '__CLEAR__') {
+          clearHistory();
+          return;
+        }
+        setMessages(prev => [
+          ...prev,
+          { role: 'user', content: userMessage },
+          { role: 'assistant', content: result.output },
+        ]);
+        return;
+      }
+    }
+
     const newUserMsg: Message = { role: 'user', content: userMessage };
     const updatedMessages = [...messages, newUserMsg];
     setMessages(updatedMessages);
     setIsLoading(true);
-    setShowMenu(false);
 
     try {
       const llmMessages = updatedMessages
