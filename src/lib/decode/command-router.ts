@@ -81,17 +81,6 @@ const COMMANDS: Record<string, CommandHandler> = {
     'Prefix with /  >  or  :',
     'Non-command messages route to LLM.',
   ]),
-    '/status        — system status',
-    '/memory        — memory tier overview',
-    '/mode          — current mode + identity',
-    '/clear         — clear conversation',
-    '/capabilities  — list active capabilities',
-    '/nodes         — substrate node count',
-    '/version       — substrate version',
-    '',
-    'Prefix with /  >  or  :',
-    'Non-command messages route to LLM.',
-  ]),
 
   status: (ctx) => formatBlock('DECODE SYSTEM STATUS', [
     `interface:     online`,
