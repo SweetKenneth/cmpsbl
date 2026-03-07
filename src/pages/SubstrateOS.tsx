@@ -10,7 +10,7 @@ import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
 import {
   Loader2, Terminal, LayoutDashboard, Activity, Bot, Sparkles,
   Building2, Cpu, Shield, Layers, Eye, LogOut, Home, Network, Zap,
-  Menu, X, Brain, Gauge, HardDrive, FileText, Settings,
+  Menu, X, Brain, Gauge, HardDrive, FileText, Settings, UserCircle,
   GitBranch, Wrench, AlertTriangle, MessageSquare, Dna,
   Users, Wand2, Key, Radio, Hammer, Compass,
 } from 'lucide-react';
@@ -53,6 +53,7 @@ const AtlasTab = lazy(() => import('@/components/substrate-os/AtlasTab').then(m 
 const AgencyMintWizard = lazy(() => import('@/components/agency/AgencyMintWizard').then(m => ({ default: m.AgencyMintWizard })));
 const AgencyGallery = lazy(() => import('@/components/agency/AgencyGallery').then(m => ({ default: m.AgencyGallery })));
 const CognitivesPanel = lazy(() => import('@/components/substrate-os/CognitivesPanel').then(m => ({ default: m.CognitivesPanel })));
+const AccountTab = lazy(() => import('@/components/substrate-os/AccountTab').then(m => ({ default: m.AccountTab })));
 
 // ── Loading state ──
 function PanelLoader() {
@@ -91,6 +92,8 @@ interface TabDef {
  */
 function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
+    // ── Account (always first) ──
+    { id: 'account', label: 'Account', icon: UserCircle, group: 'Command', description: 'Your profile & quick links' },
     // ── Free tier ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
@@ -354,7 +357,7 @@ export default function SubstrateOS() {
             className="grid grid-cols-5 px-1 py-1"
             style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
           >
-            {['overview', 'terminal', 'nexus', 'security'].map(id => {
+            {['account', 'overview', 'nexus', 'security'].map(id => {
               const tab = tabs.find(t => t.id === id)!;
               const active = activeTab === id;
               return (
@@ -407,6 +410,14 @@ export default function SubstrateOS() {
         {/* Content — extra bottom padding on mobile for bottom nav */}
         <div className="flex-1 overflow-auto pb-24 lg:pb-0">
           <AnimatePresence mode="wait">
+            {activeTab === 'account' && (
+              <PanelContainer id="account">
+                <Suspense fallback={<PanelLoader />}>
+                  <AccountTab />
+                </Suspense>
+              </PanelContainer>
+            )}
+
             {activeTab === 'overview' && (
               <PanelContainer id="overview">
                 <ModuleErrorBoundary moduleName="Overview">
