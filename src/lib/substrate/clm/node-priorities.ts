@@ -386,7 +386,7 @@ let _registered = false;
  * Actual capability activation requires ENGINEER approval
  * through the governance flow.
  */
-export function registerCLMPriorities(): void {
+export function registerCLMPriorities(registerCapability: RegisterCapabilityFn): void {
   if (_registered) return;
   _registered = true;
 

@@ -171,4 +171,4 @@ registerCapability('modernizer', 'api_versioning', 80);
 
 // ─── CLM-Priority Capabilities (38 nodes × 2 = 76 capabilities) ────────────
 import { registerCLMPriorities } from './clm/node-priorities';
-registerCLMPriorities();
+registerCLMPriorities(registerCapability);
