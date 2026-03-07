@@ -2,8 +2,7 @@
  * Category Breakdown — Visual proof of domain coverage
  * Real data from 9 capability domains.
  */
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const CATEGORY_ICONS: Record<string, string> = {
   security: '🛡️',

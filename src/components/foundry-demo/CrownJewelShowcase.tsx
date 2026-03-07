@@ -2,8 +2,7 @@
  * Apex Discovery Showcase — Highlight specific CJPI-100 discoveries
  * Shows what these pipelines actually DO and how they chain systems.
  */
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 interface ApexDiscovery {
   name: string;

@@ -5,8 +5,8 @@
  * 
  * Uses server-side RPC aggregation to avoid the 1000-row PostgREST limit.
  */
-import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 
 interface QueryPreset {

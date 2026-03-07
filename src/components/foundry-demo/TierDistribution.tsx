@@ -2,8 +2,7 @@
  * Tier Distribution — Visual breakdown of discovery quality
  * Real data: 578 Apex, 484 Enterprise, 81 Architect
  */
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 interface TierData {
   tier: string;

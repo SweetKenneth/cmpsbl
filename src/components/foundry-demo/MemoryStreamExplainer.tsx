@@ -2,8 +2,7 @@
  * Memory Stream Explainer — Deep dive into how the Memory Stream works
  * From signal capture to software crystallization to physical silicon.
  */
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const JOURNEY_STEPS = [
   {
