@@ -124,6 +124,40 @@ const BLOG_CATEGORIES = [
   { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-orange-500/20 to-orange-600/5', border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/10' },
 ] as const;
 
+const CATEGORY_ALIASES: Record<string, string> = {
+  security: 'Security',
+  'ai technology': 'AI Technology',
+  ai: 'AI Technology',
+  technology: 'Technology',
+  platform: 'Platform',
+  research: 'Research',
+  insight: 'Research',
+  development: 'Development',
+  changelog: 'Development',
+  release: 'Development',
+  update: 'Development',
+  internal: 'Development',
+  accessibility: 'Accessibility',
+  protocol: 'Protocol',
+  governance: 'Governance',
+  'threat intel': 'Threat Intel',
+  'ai security': 'AI Security',
+};
+
+function normalizeBlogCategory(rawCategory?: string | null): string {
+  if (!rawCategory?.trim()) return 'Research';
+
+  const normalized = rawCategory.trim().toLowerCase();
+  const fromAliases = CATEGORY_ALIASES[normalized];
+  if (fromAliases) return fromAliases;
+
+  const existingCategory = BLOG_CATEGORIES.find(
+    (category) => category.id.toLowerCase() === normalized,
+  );
+
+  return existingCategory?.id ?? 'Research';
+}
+
 // ─── Horizontal Scroll Carousel (same as SubstrateStore) ───
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -534,7 +568,7 @@ export default function Blog() {
           title: p.title,
           excerpt: p.excerpt || "AI-generated insight from the CMPSBL Substrate.",
           href: `/blog/auto/${p.slug}`,
-          category: p.category || "AI Technology",
+          category: normalizeBlogCategory(p.category),
           date: p.published_at || new Date().toISOString(),
           readTime: "5 min",
           image: getAutoblogImage(p.id),
