@@ -6,6 +6,7 @@ import { DecodeMarkdown } from "./DecodeMarkdown";
 import { DecodeStatusBar } from "./DecodeStatusBar";
 import { decode, substrate } from "@/lib/substrate";
 import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
+import { isCommand, routeCommand } from "@/lib/decode/command-router";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -286,11 +287,37 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     const userMessage = messageText || input.trim();
     if (!userMessage || isLoading) return;
     setInput("");
+    setShowMenu(false);
+
+    // ─── Terminal Command Layer ───
+    if (isCommand(userMessage)) {
+      const { capabilities } = useDecodeStore.getState();
+      const result = routeCommand(userMessage, {
+        mode,
+        identityRole,
+        capabilities,
+        connectionStatus: connection.status,
+        messageCount: messages.length,
+      });
+
+      if (result.handled) {
+        if (result.output === '__CLEAR__') {
+          clearHistory();
+          return;
+        }
+        setMessages(prev => [
+          ...prev,
+          { role: 'user', content: userMessage },
+          { role: 'assistant', content: result.output },
+        ]);
+        return;
+      }
+    }
+
     const newUserMsg: Message = { role: "user", content: userMessage };
     const updatedMessages = [...messages, newUserMsg];
     setMessages(updatedMessages);
     setIsLoading(true);
-    setShowMenu(false);
 
     try {
       // Build full conversation history for the LLM
@@ -599,7 +626,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={mode === 'support' ? "Describe your issue…" : "Speak to DECODE…"}
+                placeholder={mode === 'support' ? "Describe your issue or type /help…" : "Speak to DECODE or type /help…"}
                 disabled={isLoading || connection.status === "disconnected"}
                 className="flex-1 h-10 px-3 rounded-xl text-sm bg-muted/60 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 disabled:opacity-50"
               />
