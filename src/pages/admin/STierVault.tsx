@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -100,31 +101,10 @@ function getTierLabel(cjpi: number): string {
 const LANGUAGES = getAllLanguages();
 const ADAPTERS = getAllAdapters();
 
-// ─── Market Value Estimation ────────────────────────────────────────
+// ─── Market Value (uses shared @/lib/pipeline-valuation) ────────────
 
 type SortMode = 'cjpi' | 'market_value' | 'name' | 'category';
 
-const CATEGORY_MARKET_MULTIPLIERS: Record<string, number> = {
-  security: 1.8, governance: 1.6, cognitive: 1.5, evolution: 1.4,
-  orchestration: 1.3, routing: 1.2, learning: 1.3, observability: 1.1, integration: 1.0,
-  compliance: 1.7, prediction: 1.5, ethics: 1.4, privacy: 1.6, synthesis: 1.5,
-  localization: 1.1, geospatial: 1.3, simulation: 1.4, contracts: 1.5, acquisition: 1.2, edge: 1.3,
-};
-
-function estimateMarketValue(cjpi: number, category: string, moduleChainLength: number): number {
-  const normalized = Math.max(0, cjpi - 60) / 40;
-  const baseValue = 5000 + Math.pow(normalized, 2.5) * 495000;
-  const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
-  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.08;
-  const apexMult = cjpi >= 95 ? 1.5 : cjpi >= 92 ? 1.2 : 1.0;
-  return Math.round(baseValue * catMult * complexityMult * apexMult);
-}
-
-function formatMarketValue(value: number): string {
-  if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
-  if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
-  return `$${value}`;
-}
 
 interface PromotedDiscovery {
   id: string;
