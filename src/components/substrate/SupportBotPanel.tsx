@@ -208,7 +208,11 @@ export function SupportBotPanel() {
 
   const handleEscalate = async () => {
     await escalate('user_requested');
+    // After escalation, show the human contact info
+    setShowEscalationInfo(true);
   };
+
+  const [showEscalationInfo, setShowEscalationInfo] = useState(false);
 
   return (
     <Card className="h-full flex flex-col">
