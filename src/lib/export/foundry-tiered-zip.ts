@@ -6,6 +6,9 @@ import {
   type ExportTarget,
   type ExportableArtifact,
 } from './universal-adapter';
+import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
 export interface TieredFoundryExportArtifact {
   id: string;
@@ -166,12 +169,33 @@ export async function downloadTieredFoundryZip(options: {
     const artifactFolder = root.folder(slugify(item.name || item.id))!;
 
     artifactFolder.file('README.md', bundle.readme);
+
+    // Pipeline Details page — in-depth HTML report with valuation
+    const detailsHTML = generatePipelineDetailsHTML({
+      name: item.name,
+      description: item.description || `Crystallized pipeline: ${item.name}`,
+      category: item.category || 'general',
+      score: item.score,
+      tier: item.publicTier || getTierFromScore(item.score),
+      systemChain: item.systemChain || ['SYSTEM'],
+      fingerprint: item.fingerprint,
+      exportLanguages: unlockedLanguages,
+      obtainedAt: item.obtainedAt,
+      source: item.source,
+    });
+    artifactFolder.file('PIPELINE-DETAILS.html', detailsHTML);
+
     artifactFolder.file(
       'export-tier.json',
       JSON.stringify(
         {
           score: item.score,
           tier: item.publicTier,
+          valuation: {
+            estimated: estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length),
+            formatted: formatMarketValue(estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length)),
+            disclaimer: 'AI-generated estimate. Not financial advice. May be significantly inaccurate.',
+          },
           unlockedSoftwareLanguages: unlockedLanguages,
         },
         null,
