@@ -8,6 +8,7 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-market-disruptor.jpg";
+import imgEcosystem from "@/assets/blog/promptfluid-ecosystem.jpg";
 
 const SLUG = "the-first-line-of-code";
 
@@ -18,6 +19,7 @@ export default function TheFirstLineOfCode() {
         title="The First Line of Code — Why We Started Building"
         description="In December 2024, we wrote the first line of what would become the CMPSBL substrate. This is the honest story of why."
         type="article"
+        image={heroImg}
         publishedTime="2024-12-15"
         keywords={["cognitive infrastructure origin", "AI substrate story", "CMPSBL founding", "why build AI infrastructure"]}
         canonical={`https://cmpsbl.com/blog/${SLUG}`}
@@ -50,6 +52,11 @@ export default function TheFirstLineOfCode() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">What We Decided to Build</h2>
             <p>We decided to build the missing layer. Not another model. Not another wrapper. Infrastructure — cognitive infrastructure that could persist state, route intelligently, secure itself, and learn from every interaction. What would eventually become the <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS routing node</Link> started here as a simple failover function.</p>
+
+            <figure className="my-8">
+              <img src={imgEcosystem} alt="The emerging CMPSBL substrate ecosystem — nodes working together as composable cognitive infrastructure" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The substrate ecosystem as it would eventually look — composable nodes forming cognitive infrastructure.</figcaption>
+            </figure>
 
             <p>The first commit was a routing function. Embarrassingly simple. It took a request, checked which AI provider was healthy, and forwarded it. That was it. But in that simple function was the seed of everything that followed: the idea that infrastructure should make decisions, not just pass messages.</p>
 

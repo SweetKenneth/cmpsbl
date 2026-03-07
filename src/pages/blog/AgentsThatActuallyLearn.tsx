@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/building-agents-that-learn.jpg";
+import imgAdaptive from "@/assets/blog/brain-adaptive-learning.jpg";
 
 const SLUG = "agents-that-actually-learn";
 
 export default function AgentsThatActuallyLearn() {
   return (
     <>
-      <SEO title="Agents That Actually Learn — Patterns That Work" description="After months of building learning agents, these are the architectural patterns that actually improve agent performance over time." type="article" publishedTime="2025-07-12" keywords={["learning AI agents", "agent improvement patterns", "experience-based learning", "agent competency"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Agents That Actually Learn", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="Agents That Actually Learn — Patterns That Work" description="After months of building learning agents, these are the architectural patterns that actually improve agent performance over time." type="article" image={heroImg} publishedTime="2025-07-12" keywords={["learning AI agents", "agent improvement patterns", "experience-based learning", "agent competency"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Agents That Actually Learn", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="Agents That Actually Learn — Patterns That Work" description="Architectural patterns that actually improve agent performance." slug={SLUG} datePublished="2025-07-12" imageUrl={heroImg} keywords={["learning agents", "competency scoring", "experience replay"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -30,6 +31,11 @@ export default function AgentsThatActuallyLearn() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Pattern 2: Competency Scoring</h2>
             <p>Track what your agent is good at and bad at. We introduced competency scores — per-task-type success rates. When competency drops below threshold, escalate to a more capable model via <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS</Link>. When competency is high, use cheaper, faster models.</p>
+
+            <figure className="my-8">
+              <img src={imgAdaptive} alt="Adaptive learning feedback loop — competency scoring driving model selection and memory retrieval" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The adaptive learning loop: competency scores drive model selection, memory retrieval, and escalation decisions.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Pattern 3: Experience Replay</h2>
             <p>Borrowed from <a href="https://en.wikipedia.org/wiki/Experience_replay" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">reinforcement learning</a>. During <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM cycles</Link>, the substrate replays successful interactions and extracts generalizable heuristics. Not "what happened" but "why it worked."</p>

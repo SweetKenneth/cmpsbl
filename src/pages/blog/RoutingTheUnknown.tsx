@@ -8,6 +8,7 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
+import imgRouting from "@/assets/blog/ai-triad-intelligent-routing.jpg";
 
 const SLUG = "routing-the-unknown";
 
@@ -18,6 +19,7 @@ export default function RoutingTheUnknown() {
         title="Routing the Unknown — Building the NEXUS Node"
         description="How the NEXUS node evolved from a simple failover function into an intelligent AI routing gateway with cost arbitrage and health-weighted selection."
         type="article"
+        image={heroImg}
         publishedTime="2025-01-10"
         keywords={["AI routing gateway", "NEXUS node", "multi-provider AI", "intelligent model selection", "cost arbitrage AI"]}
         canonical={`https://cmpsbl.com/blog/${SLUG}`}
@@ -47,6 +49,11 @@ export default function RoutingTheUnknown() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Health-Weighted Selection</h2>
             <p>The first real feature was health scoring. Every provider got a rolling score based on latency, error rate, and throughput. Requests routed to the healthiest option by default. Simple, but it eliminated the "provider is degraded and nobody noticed" problem. This approach later informed how <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">VISION</Link> built system-wide health scoring.</p>
+
+            <figure className="my-8">
+              <img src={imgRouting} alt="Intelligent routing across multiple AI providers with health scoring and cost arbitrage" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">NEXUS routes requests across providers using health scores, cost data, and task complexity analysis.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Cost Arbitrage</h2>
             <p>The second feature was cost-aware routing. Not every request needs the most expensive model. A classification task doesn't need GPT-4. A summarization can run on a smaller model. NEXUS learned to match request complexity to model capability, and the cost savings were immediate — 40% reduction in our own API spend within the first week.</p>

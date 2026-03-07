@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-ripple-network.jpg";
+import imgEcosystem from "@/assets/blog/promptfluid-ecosystem.jpg";
 
 const SLUG = "nodes-that-talk";
 
 export default function NodesThatTalk() {
   return (
     <>
-      <SEO title="Nodes That Talk — Event-Driven Architecture" description="When five nodes needed to coordinate, point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate." type="article" publishedTime="2025-04-02" keywords={["event-driven AI", "RIPPLE node", "pub/sub architecture", "inter-node communication"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Nodes That Talk", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="Nodes That Talk — Event-Driven Architecture" description="When five nodes needed to coordinate, point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate." type="article" image={heroImg} publishedTime="2025-04-02" keywords={["event-driven AI", "RIPPLE node", "pub/sub architecture", "inter-node communication"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Nodes That Talk", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="Nodes That Talk — Event-Driven Architecture" description="Pub/sub event propagation across the substrate." slug={SLUG} datePublished="2025-04-02" imageUrl={heroImg} keywords={["RIPPLE", "event-driven", "pub/sub"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -30,6 +31,11 @@ export default function NodesThatTalk() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">RIPPLE: Pub/Sub for Nodes</h2>
             <p>RIPPLE is deceptively simple. A node emits an event — "threat detected," "memory updated," "provider degraded." Any node that cares about that event type receives it. No direct coupling. No shared state. Just signals propagating through the substrate.</p>
+
+            <figure className="my-8">
+              <img src={imgEcosystem} alt="Nodes communicating through RIPPLE's event bus — signals propagating across the substrate" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">RIPPLE connects every node through a pub/sub event bus — the substrate's nervous system.</figcaption>
+            </figure>
 
             <p>The elegance is in what it enables. DEFENSE emits "threat.detected" → NEXUS adjusts routing. BRAIN emits "memory.consolidated" → <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM</Link> schedules processing. VISION emits "health.degraded" → CORTEX triggers failover.</p>
 

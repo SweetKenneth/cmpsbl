@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/cmptbl-mission-accessibility.jpg";
+import imgFixes from "@/assets/blog/automated-accessibility-fixes.jpg";
 
 const SLUG = "accessibility-is-infrastructure";
 
 export default function AccessibilityIsInfrastructure() {
   return (
     <>
-      <SEO title="Accessibility Is Infrastructure — The INCLUSIVE Node" description="We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation, available to every application." type="article" publishedTime="2025-10-15" keywords={["AI accessibility", "INCLUSIVE node", "automated WCAG compliance", "accessibility remediation"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Accessibility Is Infrastructure", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="Accessibility Is Infrastructure — The INCLUSIVE Node" description="We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation, available to every application." type="article" image={heroImg} publishedTime="2025-10-15" keywords={["AI accessibility", "INCLUSIVE node", "automated WCAG compliance", "accessibility remediation"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Accessibility Is Infrastructure", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="Accessibility Is Infrastructure — The INCLUSIVE Node" description="AI-powered accessibility scanning and remediation for every app." slug={SLUG} datePublished="2025-10-15" imageUrl={heroImg} keywords={["INCLUSIVE", "accessibility", "WCAG"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -30,6 +31,11 @@ export default function AccessibilityIsInfrastructure() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">What INCLUSIVE Does</h2>
             <p>INCLUSIVE is an AI-powered accessibility scanner and remediator. It analyzes DOM structure, evaluates <a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WCAG 2.2 criteria</a>, identifies violations, and generates fix recommendations with production-ready code.</p>
+
+            <figure className="my-8">
+              <img src={imgFixes} alt="Automated accessibility fixes — ARIA labels, color contrast, focus management remediation" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">INCLUSIVE doesn't just flag problems — it generates production-ready fixes for ARIA, contrast, and focus issues.</figcaption>
+            </figure>
 
             <p>It's not just flagging problems — it's solving them. Missing <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ARIA labels</a> get generated. Color contrast violations get correction suggestions. Focus management issues get remediation patterns.</p>
 

@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import imgCycles from "@/assets/blog/cascade-ai-brain-cycles.jpg";
 
 const SLUG = "what-if-software-could-dream";
 
 export default function WhatIfSoftwareCouldDream() {
   return (
     <>
-      <SEO title="What If Software Could Dream — The DREAM Node" description="During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built." type="article" publishedTime="2025-05-10" keywords={["autonomous AI learning", "DREAM node", "idle-cycle processing", "self-improving AI"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "What If Software Could Dream", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="What If Software Could Dream — The DREAM Node" description="During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built." type="article" image={heroImg} publishedTime="2025-05-10" keywords={["autonomous AI learning", "DREAM node", "idle-cycle processing", "self-improving AI"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "What If Software Could Dream", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="What If Software Could Dream — The DREAM Node" description="Idle-cycle processing and autonomous learning in the substrate." slug={SLUG} datePublished="2025-05-10" imageUrl={heroImg} keywords={["DREAM node", "autonomous learning", "consolidation"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -33,6 +34,12 @@ export default function WhatIfSoftwareCouldDream() {
             <p>It's not training. We're not <a href="https://en.wikipedia.org/wiki/Fine-tuning_(deep_learning)" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">fine-tuning models</a>. DREAM analyzes interaction logs, extracts heuristic patterns, updates routing weights, and consolidates memory tiers. Think of it as the substrate digesting its own experience.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">What DREAM Actually Does</h2>
+
+            <figure className="my-8">
+              <img src={imgCycles} alt="DREAM consolidation cycles — pattern extraction, memory consolidation, and anomaly synthesis" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">DREAM's three consolidation phases: pattern extraction, memory promotion/demotion, and anomaly synthesis.</figcaption>
+            </figure>
+
             <p><strong>Pattern extraction:</strong> Identifies recurring request patterns and pre-computes optimal routing. Next time a similar pattern appears, NEXUS routes it faster.</p>
             <p><strong>Memory consolidation:</strong> Promotes warm memories that were frequently accessed to hot tier. Demotes cold memories. Compresses redundant entries.</p>
             <p><strong>Anomaly synthesis:</strong> Cross-references DEFENSE alerts with traffic patterns to identify new attack signatures.</p>
