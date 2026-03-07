@@ -251,10 +251,23 @@ export function AnalyticsTab() {
         >
           <BarChart3 className="w-4 h-4" /> Substrate Telemetry
         </button>
+        <button
+          onClick={() => setActiveSection('behavior')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+            activeSection === 'behavior'
+              ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Users className="w-4 h-4" /> User Behavior
+        </button>
       </div>
 
       {activeSection === 'traffic' ? (
         <SiteAnalyticsSection />
+      ) : activeSection === 'behavior' ? (
+        <UserBehaviorSection />
       ) : (
         <>
       {/* Header */}
