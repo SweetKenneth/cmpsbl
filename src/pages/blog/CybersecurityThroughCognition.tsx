@@ -1,22 +1,21 @@
 /**
  * Chapter 14: Cybersecurity Through Cognition — September 2025
- * Beyond traditional security.
  */
+import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
+import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/ai-cybersecurity-evolution-2025.jpg";
+
+const SLUG = "cybersecurity-through-cognition";
 
 export default function CybersecurityThroughCognition() {
   return (
     <>
-      <SEO
-        title="Cybersecurity Through Cognition — Beyond Firewalls"
-        description="Traditional security reacts to known threats. DEFENSE predicts unknown ones. How cognitive security fundamentally changes threat detection."
-        type="article"
-        publishedTime="2025-09-08"
-        keywords={['cognitive cybersecurity', 'predictive threat detection', 'behavioral AI security', 'beyond traditional firewalls', 'AI-native security']}
-      />
+      <SEO title="Cybersecurity Through Cognition — Beyond Firewalls" description="Traditional security reacts to known threats. DEFENSE predicts unknown ones. How cognitive security fundamentally changes threat detection." type="article" publishedTime="2025-09-08" keywords={["cognitive cybersecurity", "predictive threat detection", "behavioral AI security", "AI-native security"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-security" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Cybersecurity Through Cognition", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <BlogArticleJsonLd title="Cybersecurity Through Cognition — Beyond Firewalls" description="How cognitive security fundamentally changes threat detection." slug={SLUG} datePublished="2025-09-08" imageUrl={heroImg} keywords={["cognitive security", "predictive defense", "behavioral analysis"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">
@@ -24,24 +23,23 @@ export default function CybersecurityThroughCognition() {
           <h1 className="text-4xl font-black mb-4">Cybersecurity Through Cognition</h1>
           <p className="text-muted-foreground mb-8">September 8, 2025 · 12 min read · Written by the CMPSBL team</p>
           <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
-            <p className="text-lg leading-relaxed">Six months into running DEFENSE, we had enough data to see something clearly: traditional security is reactive. It waits for an attack, matches it against known patterns, and blocks it. DEFENSE had evolved past that. It was starting to predict attacks before they happened.</p>
+            <p className="text-lg leading-relaxed">Six months into running <Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">DEFENSE</Link>, we had enough data to see something clearly: traditional security is reactive. DEFENSE had evolved past that. It was starting to predict attacks before they happened.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">From Signatures to Behavior</h2>
-            <p>Signature-based detection — the foundation of every firewall and WAF — works for known attacks. The problem is that known attacks are the minority. Every new bot framework, every modified payload, every slight variation requires a new signature. You're always one step behind.</p>
-
-            <p>DEFENSE shifted to behavioral baselines. What does normal traffic look like for this endpoint? What's the typical request distribution? When behavior deviates from baseline, flag it — even if the individual requests look legitimate. This catches novel attacks that no signature database has seen.</p>
+            <p><a href="https://en.wikipedia.org/wiki/Intrusion_detection_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Signature-based detection</a> works for known attacks. DEFENSE shifted to behavioral baselines. What does normal traffic look like? When behavior deviates, flag it — even if individual requests look legitimate.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Multi-Stage Prompt Injection</h2>
-            <p>By September, prompt injection attacks had evolved. Attackers stopped trying single-shot injections — those were too easy to catch. Instead, they used multi-turn conversations where each message was benign individually but collectively steered the model into unsafe behavior.</p>
+            <p>By September, <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">prompt injection attacks</a> had evolved. Attackers used multi-turn conversations where each message was benign individually but collectively steered the model into unsafe behavior.</p>
 
-            <p>DEFENSE added sliding-window analysis across conversation history. It doesn't just evaluate each message — it evaluates the trajectory. Where is this conversation heading? Does this sequence of messages match known manipulation patterns? The detection rate for multi-stage attacks went from 60% to 88% overnight.</p>
+            <p>DEFENSE added sliding-window analysis across conversation history. Detection rate for multi-stage attacks went from 60% to 88%. This analysis was fed back through <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN's memory</Link> for long-term pattern recognition.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The Zero-Trust Mesh</h2>
-            <p>For enterprise customers, we implemented zero-trust principles at the node level. Every inter-node communication is authenticated. Even if an attacker compromises one node, they can't move laterally — each node independently verifies the caller before processing. This is expensive in latency (2-5ms per hop) but essential for environments where compromise is existential.</p>
+            <p>For enterprise customers, we implemented <a href="https://www.nist.gov/publications/zero-trust-architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">zero-trust principles</a> at the node level. Every inter-node communication is authenticated through <Link to="/blog/identity-at-every-layer" className="text-primary hover:underline">ACCESS</Link>. This is expensive in latency (2-5ms per hop) but essential.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Honest Assessment</h2>
-            <p>We're not selling perfect security. Nobody should. What we're selling is security that learns — security that gets smarter with every attack, every false positive, every near-miss. The compounding effect of cognitive security is the real advantage, not any individual detection technique.</p>
+            <p>We're not selling perfect security. What we're selling is security that learns — that compounds improvement through <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM consolidation</Link>. The <Link to="/blog/the-governance-question" className="text-primary hover:underline">governance layer</Link> we built next ensures every security decision is cryptographically logged.</p>
           </div>
+          <BlogPostNav slug={SLUG} />
         </article>
       </main>
       <EnhancedFooter />
