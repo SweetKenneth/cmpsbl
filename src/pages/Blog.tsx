@@ -925,9 +925,7 @@ export default function Blog() {
                           <PostCard
                             key={post.id}
                             post={post}
-                            onClick={() => {
-                              window.location.href = post.href;
-                            }}
+                            href={post.href}
                           />
                         ))}
                       </ScrollCarousel>
