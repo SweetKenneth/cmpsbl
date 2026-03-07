@@ -1,17 +1,19 @@
 /**
- * CMPSBL® DECODE Chat
- * User-facing cognitive interface to the substrate
- * Now with full conversation memory — DECODE remembers the entire thread.
+ * CMPSBL® DECODE Chat — Unified Conversational Interface
+ * Modes: assistant | support | builder | governor
+ * Single persistent conversation memory across all modes.
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { MessageCircle, X, Send, Sparkles, RefreshCw, WifiOff } from "lucide-react";
 import { DecodeMarkdown } from "./decode/DecodeMarkdown";
+import { DecodeStatusBar } from "./decode/DecodeStatusBar";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
+import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -31,88 +33,84 @@ interface ConnectionState {
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode-chat`;
 const SESSION_STORAGE_KEY = 'decode_chat_messages';
 
-/** Persist messages to sessionStorage so refreshes within a tab keep context */
+const MODE_GREETINGS: Record<DecodeMode, string> = {
+  assistant: "Hello. I'm DECODE — the interface between you and the CMPSBL substrate.\n\nI can answer questions, guide you through the system, or help troubleshoot issues.\n\nIf you need support, just ask.",
+  support: "Hello — I'm DECODE. I translate intent between you and the CMPSBL substrate.\n\nYou're currently in **support mode**. Tell me what you need help with.\n\nI can troubleshoot issues, explain features, walk you through setup, or escalate to a human at support@cmpsbl.com.",
+  builder: "DECODE online — builder mode active.\n\nReady to assist with substrate configuration, pipeline setup, and capability integration.\n\nState your objective.",
+  governor: "DECODE online — **governor mode** active.\n\nFull substrate telemetry and governance controls are available.\n\nAll 38 nodes across 12 sectors reporting. Awaiting directive.",
+};
+
 function persistMessages(msgs: Message[]) {
   try {
     sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(msgs.slice(-60)));
-  } catch { /* storage full — ignore */ }
+  } catch { /* storage full */ }
 }
 
 function loadPersistedMessages(): Message[] {
   try {
     const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch { /* corrupt — ignore */ }
+  } catch { /* corrupt */ }
   return [];
 }
 
 export function DecodeChat() {
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, mode, identityRole, close, toggle, pendingModeOnOpen, setMode } = useDecodeStore();
   const [messages, setMessages] = useState<Message[]>(() => {
     const persisted = loadPersistedMessages();
     if (persisted.length > 0) return persisted;
-    return [
-      { role: 'assistant', content: 'DECODE online.\n\nNatural language → structured intent → substrate execution.\n\nHow can I help?' }
-    ];
+    return [{ role: 'assistant', content: MODE_GREETINGS.assistant }];
   });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [mode, setMode] = useState<'customer_service' | 'admin'>('customer_service');
   const [showMenu, setShowMenu] = useState(true);
   const [connection, setConnection] = useState<ConnectionState>({
-    status: 'connected',
-    lastSuccess: null,
-    retryCount: 0
+    status: 'connected', lastSuccess: null, retryCount: 0,
   });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastModeRef = useRef<DecodeMode>(mode);
   const { user } = useAuth();
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
+  useEffect(() => { scrollToBottom(); }, [messages, scrollToBottom]);
 
-  // Persist messages whenever they change
+  // Persist messages
   useEffect(() => {
-    if (messages.length > 1) {
-      persistMessages(messages);
-    }
+    if (messages.length > 1) persistMessages(messages);
   }, [messages]);
 
-  // Cleanup retry timeout on unmount
+  // Cleanup
   useEffect(() => {
-    return () => {
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current);
-      }
-    };
+    return () => { if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current); };
   }, []);
+
+  // Inject mode-switch greeting when mode changes
+  useEffect(() => {
+    if (mode !== lastModeRef.current) {
+      lastModeRef.current = mode;
+      const greeting = MODE_GREETINGS[mode];
+      setMessages(prev => [...prev, { role: 'assistant', content: `---\n\n*Mode switched to **${mode.toUpperCase()}***\n\n${greeting}` }]);
+    }
+  }, [mode]);
 
   // Self-healing connection recovery
   const attemptRecovery = useCallback(async () => {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
-      toast.error('Connection issues', {
-        description: 'Unable to reach DECODE. Please try again later.'
-      });
+      toast.error('Connection issues', { description: 'Unable to reach DECODE. Please try again later.' });
       return;
     }
-
-    setConnection(prev => ({
-      ...prev,
-      retryCount: prev.retryCount + 1,
-      status: 'degraded'
-    }));
+    setConnection(prev => ({ ...prev, retryCount: prev.retryCount + 1, status: 'degraded' }));
   }, [connection.retryCount]);
 
   // Hide on homepage and decode page
   const hiddenPaths = ['/', '/decode'];
-  if (hiddenPaths.includes(location.pathname)) {
+  if (hiddenPaths.includes(location.pathname) && !isOpen) {
     return null;
   }
 
@@ -128,7 +126,6 @@ export function DecodeChat() {
     setShowMenu(false);
 
     try {
-      // Build the messages payload for the LLM — full conversation history
       const llmMessages = updatedMessages
         .filter(m => m.role === 'user' || m.role === 'assistant')
         .map(m => ({ role: m.role, content: m.content }));
@@ -145,13 +142,14 @@ export function DecodeChat() {
           agentName: "DECODE",
           agentSubtitle: "Sovereign Cognitive Interface",
           agentPowers: ["Intent Interpretation", "Memory Recall", "Module Routing", "Personality Engine"],
+          decodeMode: mode,
+          identityRole: identityRole,
         }),
       });
 
       if (!resp.ok || !resp.body) {
         const errorData = resp.status === 429 || resp.status === 402
-          ? await resp.json()
-          : null;
+          ? await resp.json() : null;
         const errorMsg = errorData?.error || "DECODE relay offline. Retry.";
         setMessages(prev => [...prev, { role: 'assistant', content: `⚠ ${errorMsg}` }]);
         setIsLoading(false);
@@ -224,7 +222,6 @@ export function DecodeChat() {
         }
       }
 
-      // Update connection state on success
       setConnection({ status: 'connected', lastSuccess: Date.now(), retryCount: 0 });
 
     } catch (error: any) {
@@ -234,8 +231,8 @@ export function DecodeChat() {
         lastSuccess: prev.lastSuccess,
         retryCount: prev.retryCount + 1
       }));
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
+      setMessages(prev => [...prev, {
+        role: 'assistant',
         content: '⚠ Connection interrupted. Attempting recovery…',
         provider: 'fallback'
       }]);
@@ -245,48 +242,33 @@ export function DecodeChat() {
     }
   };
 
+
+
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   };
 
   const clearHistory = () => {
-    const fresh: Message[] = [
-      { role: 'assistant', content: 'DECODE online.\n\nNatural language → structured intent → substrate execution.\n\nHow can I help?' }
-    ];
+    const fresh: Message[] = [{ role: 'assistant', content: MODE_GREETINGS[mode] }];
     setMessages(fresh);
     sessionStorage.removeItem(SESSION_STORAGE_KEY);
     setShowMenu(true);
   };
 
-  const quickActions = [
-    {
-      icon: "💡",
-      title: "Remember a Fact",
-      description: "Teach me about you",
-      prompt: "I want to teach you something about me. Remember this fact:"
-    },
-    {
-      icon: "🧠",
-      title: "What Do You Know?",
-      description: "Recall your memories",
-      prompt: "What do you know about me? Show me everything you've learned from our conversation."
-    },
-    {
-      icon: "🛡️",
-      title: "Defense Update",
-      description: "Security status check",
-      prompt: "Give me a defense status update. Any threats detected recently?"
-    },
-    {
-      icon: "🚀",
-      title: "Getting Started",
-      description: "Learn the substrate",
-      prompt: "How do I start using the substrate? Walk me through the key features and modules."
-    }
-  ];
+  const quickActions = mode === 'support'
+    ? [
+        { icon: "❓", title: "Getting Started", description: "Setup walkthrough", prompt: "How do I get started with CMPSBL? Walk me through the basics." },
+        { icon: "🔧", title: "Troubleshoot", description: "Fix an issue", prompt: "I'm having an issue and need help troubleshooting." },
+        { icon: "💰", title: "Plans & Pricing", description: "Subscription tiers", prompt: "Explain the CMPSBL subscription tiers and what each includes." },
+        { icon: "👤", title: "Talk to a Human", description: "Escalate to support", prompt: "I'd like to escalate this to a human support agent." },
+      ]
+    : [
+        { icon: "💡", title: "Remember a Fact", description: "Teach me about you", prompt: "I want to teach you something about me. Remember this fact:" },
+        { icon: "🧠", title: "What Do You Know?", description: "Recall your memories", prompt: "What do you know about me? Show me everything you've learned from our conversation." },
+        { icon: "🛡️", title: "Defense Update", description: "Security status check", prompt: "Give me a defense status update. Any threats detected recently?" },
+        { icon: "🚀", title: "Getting Started", description: "Learn the substrate", prompt: "How do I start using the substrate? Walk me through the key features and modules." },
+      ];
 
   // Connection status indicator
   const ConnectionIndicator = () => {
@@ -295,17 +277,11 @@ export function DecodeChat() {
       degraded: 'bg-[hsl(var(--system-amber))]',
       disconnected: 'bg-destructive'
     };
-
     return (
       <div className="flex items-center gap-1">
         <div className={`w-2 h-2 rounded-full ${colors[connection.status]} ${connection.status === 'degraded' ? 'animate-pulse' : ''}`} />
         {connection.status === 'disconnected' && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-6 h-6"
-            onClick={attemptRecovery}
-          >
+          <Button variant="ghost" size="icon" className="w-6 h-6" onClick={attemptRecovery}>
             <RefreshCw className="w-3 h-3" />
           </Button>
         )}
@@ -314,9 +290,11 @@ export function DecodeChat() {
   };
 
   if (!isOpen) {
+    // Only show the FAB on non-hidden paths
+    if (hiddenPaths.includes(location.pathname)) return null;
     return (
       <Button
-        onClick={() => setIsOpen(true)}
+        onClick={() => toggle()}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
         aria-label="Open DECODE chat"
@@ -341,77 +319,46 @@ export function DecodeChat() {
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary">sovereign</span>
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-xs text-muted-foreground">
-                CMPSBL® cognitive interface
-              </p>
+              <p className="text-xs text-muted-foreground">CMPSBL® cognitive interface</p>
               <ConnectionIndicator />
             </div>
           </div>
         </div>
         <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={clearHistory}
-            className="hover:bg-primary/10 w-8 h-8"
-            title="Clear conversation"
-          >
+          <Button variant="ghost" size="icon" onClick={clearHistory} className="hover:bg-primary/10 w-8 h-8" title="Clear conversation">
             <RefreshCw className="w-3.5 h-3.5 text-muted-foreground" />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsOpen(false)}
-            className="hover:bg-destructive/10"
-          >
+          <Button variant="ghost" size="icon" onClick={close} className="hover:bg-destructive/10">
             <X className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
+      {/* Status Bar */}
+      <DecodeStatusBar />
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 font-inter">
         {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[85%] rounded-2xl px-5 py-3 ${
-                msg.role === 'user'
-                  ? 'bg-primary text-primary-foreground shadow-glow'
-                  : msg.provider === 'fallback' 
-                    ? 'bg-muted/60 text-foreground/70 border border-border/50'
-                    : 'bg-muted/80 text-foreground backdrop-blur-sm'
-              }`}
-            >
+          <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${
+              msg.role === 'user'
+                ? 'bg-primary text-primary-foreground shadow-glow'
+                : msg.provider === 'fallback'
+                  ? 'bg-muted/60 text-foreground/70 border border-border/50'
+                  : 'bg-muted/80 text-foreground backdrop-blur-sm'
+            }`}>
               {msg.imageUrl && (
                 <div className="mb-3 rounded-lg overflow-hidden">
                   <img src={msg.imageUrl} alt="Generated" className="w-full h-auto" />
                 </div>
               )}
-              {msg.generatedText && (
-                <div className="mb-3 p-3 bg-background/50 rounded-lg border border-border/50">
-                  <p className="text-sm text-muted-foreground mb-1">Generated Content:</p>
-                  <p className="text-[1.05rem] leading-relaxed">{msg.generatedText}</p>
-                </div>
-              )}
               <DecodeMarkdown content={msg.content} isUser={msg.role === 'user'} className="text-[1.05rem]" />
-              {mode === 'admin' && msg.provider && msg.provider !== 'fallback' && (
-                <div className="mt-2 flex items-center gap-1 text-[10px] text-muted-foreground">
-                  <span className="px-1.5 py-0.5 rounded bg-primary/10">{msg.provider}</span>
-                  {msg.healthScore && (
-                    <span className="px-1.5 py-0.5 rounded bg-[hsl(var(--system-green))]/10">
-                      {msg.healthScore}%
-                    </span>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         ))}
-        
-        {/* Quick Actions Menu */}
+
+        {/* Quick Actions */}
         {showMenu && messages.length <= 1 && !isLoading && (
           <div className="grid grid-cols-2 gap-2 px-2 animate-fade-in">
             {quickActions.map((action, idx) => (
@@ -421,17 +368,13 @@ export function DecodeChat() {
                 className="flex flex-col items-start p-3 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 hover:border-primary/40 transition-all hover:scale-105 text-left group"
               >
                 <span className="text-2xl mb-1">{action.icon}</span>
-                <h4 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
-                  {action.title}
-                </h4>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {action.description}
-                </p>
+                <h4 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{action.title}</h4>
+                <p className="text-xs text-muted-foreground mt-0.5">{action.description}</p>
               </button>
             ))}
           </div>
         )}
-        
+
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-muted rounded-2xl px-4 py-2">
@@ -453,7 +396,7 @@ export function DecodeChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Speak to DECODE…"
+            placeholder={mode === 'support' ? "Describe your issue…" : "Speak to DECODE…"}
             className="flex-1"
             disabled={isLoading || connection.status === 'disconnected'}
           />
