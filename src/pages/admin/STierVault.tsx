@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -361,14 +362,10 @@ function PromotedCard({
         </div>
         <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{discovery.name}</h3>
         <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">{discovery.description}</p>
-        {modules.length > 0 && (
-          <div className="flex items-center gap-1 flex-wrap mb-3">
-            <span className="text-xs text-muted-foreground">Pipeline:</span>
-            {modules.map((m, i) => (
-              <Badge key={`${m}-${i}`} variant="outline" className={`text-[10px] px-1.5 py-0 ${MODULE_COLORS[m] ?? ''}`}>{m}</Badge>
-            ))}
-          </div>
-        )}
+        {/* Functional description */}
+        <p className="text-[10px] text-primary/50 font-mono mb-3 leading-relaxed">
+          {getFunctionalDescription(discovery.name, modules)}
+        </p>
         <div className="flex items-center gap-2 flex-wrap">
           <Button variant="outline" size="sm" onClick={() => onExport(discovery)} className="gap-1.5 text-xs border-amber-500/40 text-amber-400 hover:bg-amber-500/10">
             <Globe className="w-3.5 h-3.5" /> Universal Export
