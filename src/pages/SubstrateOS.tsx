@@ -410,6 +410,14 @@ export default function SubstrateOS() {
         {/* Content — extra bottom padding on mobile for bottom nav */}
         <div className="flex-1 overflow-auto pb-24 lg:pb-0">
           <AnimatePresence mode="wait">
+            {activeTab === 'account' && (
+              <PanelContainer id="account">
+                <Suspense fallback={<PanelLoader />}>
+                  <AccountTab />
+                </Suspense>
+              </PanelContainer>
+            )}
+
             {activeTab === 'overview' && (
               <PanelContainer id="overview">
                 <ModuleErrorBoundary moduleName="Overview">
