@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { SiteAnalyticsSection } from './SiteAnalyticsSection';
+import { UserBehaviorSection } from './UserBehaviorSection';
 
 interface TelemetryData {
   brainEvents: number;
