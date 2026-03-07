@@ -19,22 +19,7 @@ const TIER_STYLES: Record<string, string> = {
   'architect': 'bg-sky-500/10 text-sky-400 border-sky-500/30',
 };
 
-/** Map module chains to a human-readable functional description */
-function getFunctionalDescription(name: string, modules: string[]): string {
-  const moduleSet = new Set(modules.map(m => m.toUpperCase()));
-  if (moduleSet.has('EVOLUTION') && moduleSet.has('VISION')) return 'Explores solution spaces and adapts strategies using visual pattern recognition.';
-  if (moduleSet.has('BRAIN') && moduleSet.has('CORTEX') && moduleSet.has('DREAM')) return 'Combines reasoning, pattern analysis, and speculative simulation for deep inference.';
-  if (moduleSet.has('DEFENSE') && moduleSet.has('GOVERNANCE')) return 'Enforces security constraints and policy compliance across system operations.';
-  if (moduleSet.has('MEMORY') && moduleSet.has('NEXUS')) return 'Routes and stores persistent signals across the substrate network.';
-  if (moduleSet.has('RIPPLE') && moduleSet.has('SYSTEM')) return 'Propagates state changes through interconnected system components.';
-  if (moduleSet.has('CORTEX') && moduleSet.has('EVOLUTION')) return 'Applies pattern recognition to guide evolutionary optimization.';
-  if (moduleSet.has('BRAIN') && moduleSet.has('GOVERNANCE')) return 'Coordinates intelligent decision-making with governance oversight.';
-  if (moduleSet.has('DREAM')) return 'Uses speculative simulation to explore hypothetical system configurations.';
-  if (moduleSet.has('VISION')) return 'Analyzes structural patterns across data and system state.';
-  if (moduleSet.has('EVOLUTION')) return 'Applies adaptive optimization to discover improved configurations.';
-  // Fallback: generic from name
-  return `Autonomous pipeline combining ${modules.length} substrate systems into a unified capability.`;
-}
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
 function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: number }) {
   const tierStyle = TIER_STYLES[discovery.tier] || TIER_STYLES['architect'];

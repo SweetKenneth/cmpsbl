@@ -11,6 +11,7 @@ import { MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENAN
 import { PipelineProvenance } from './PipelineProvenance';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse } from '@/lib/foundry/public-mining-engine';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import {
   downloadTieredFoundryZip,
   type TieredFoundryExportArtifact,
@@ -219,14 +220,17 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                         {result.category}
                       </span>
                     </div>
-                    <div className="font-mono text-sm font-bold text-foreground truncate">
+                    <div className="font-mono text-sm font-bold text-foreground">
                       {result.name}
                     </div>
                     {result.description && (
-                      <p className="text-xs text-muted-foreground/60 mt-1 line-clamp-2">
+                      <p className="text-xs text-muted-foreground/60 mt-1">
                         {result.description}
                       </p>
                     )}
+                    <p className="text-[10px] text-primary/50 font-mono mt-1.5 leading-relaxed">
+                      {getFunctionalDescription(result.name, result.systemChain)}
+                    </p>
                     <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
                       {MEMORY_STREAM_PROVENANCE}
                     </div>
@@ -238,13 +242,6 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                         </span>
                       </div>
                     )}
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {result.systemChain.map((s, idx) => (
-                        <span key={`${s}-${idx}`} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                   <div className="text-right shrink-0">
                     <div className={`text-2xl font-mono font-black ${scoreColor(result.score)}`}>

@@ -164,12 +164,10 @@ function DiscoveryCard({
         {/* Description — never truncated */}
         <p className="text-xs text-muted-foreground mb-2 break-words">{d.description}</p>
 
-        {/* Module chain */}
-        <div className="flex gap-1 flex-wrap mb-2">
-          {d.moduleChain.map(m => (
-            <Badge key={m} variant="outline" className="text-[10px] px-1.5 py-0">{m}</Badge>
-          ))}
-        </div>
+        {/* Functional description */}
+        <p className="text-[10px] text-primary/50 font-mono mb-2 leading-relaxed">
+          {getFunctionalDescription(d.name, d.moduleChain)}
+        </p>
 
         {/* Expand */}
         <Button variant="ghost" size="sm" onClick={() => setExpanded(!expanded)} className="gap-1 text-xs p-0 h-auto">

@@ -8,6 +8,7 @@ import { Download, Fingerprint, Loader2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import {
   downloadTieredFoundryZip,
@@ -147,9 +148,14 @@ export function FoundryInventory({ inventory }: Props) {
                     {item.source}
                   </span>
                 </div>
-                <div className="font-mono text-sm font-bold text-foreground truncate">
+                <div className="font-mono text-sm font-bold text-foreground">
                   {item.artifactName}
                 </div>
+                {item.systemChain && item.systemChain.length > 0 && (
+                  <p className="text-[10px] text-primary/50 font-mono mt-1 leading-relaxed">
+                    {getFunctionalDescription(item.artifactName, item.systemChain)}
+                  </p>
+                )}
                 <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
                   {MEMORY_STREAM_PROVENANCE}
                 </div>
@@ -159,15 +165,6 @@ export function FoundryInventory({ inventory }: Props) {
                     <span className="text-[8px] font-mono text-muted-foreground/40">
                       {truncateFingerprint(item.pipelineFingerprint)}
                     </span>
-                  </div>
-                )}
-                {item.systemChain && item.systemChain.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {item.systemChain.map((s, idx) => (
-                      <span key={`${s}-${idx}`} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
-                        {s}
-                      </span>
-                    ))}
                   </div>
                 )}
               </div>
