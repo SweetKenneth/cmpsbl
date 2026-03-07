@@ -26,56 +26,27 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
-// Blog post images
-import wpBotDefenseImg from "@/assets/blog/wordpress-bot-defense.jpg";
-import topSecurityPluginsImg from "@/assets/blog/top-security-plugins-2025.jpg";
-import aiCybersecurityImg from "@/assets/blog/ai-cybersecurity-evolution-2025.jpg";
-import aiHackersImg from "@/assets/blog/ai-hackers-underground-2025.jpg";
-import howPFWorksImg from "@/assets/blog/how-promptfluid-works-cascade.jpg";
-import cascadeAIImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
-import cascadeAIBrainImg from "@/assets/blog/cascade-ai-adaptive-brain.jpg";
-import pfStudioImg from "@/assets/blog/promptfluid-studio-build-apps.jpg";
-import aiTriadImg from "@/assets/blog/ai-triad-intelligent-routing.jpg";
-import pfBrainImg from "@/assets/blog/promptfluid-brain-learning-core.jpg";
-import pfVisionImg from "@/assets/blog/promptfluid-vision-dashboard.jpg";
-import pfDefenseImg from "@/assets/blog/promptfluid-defense-ai-security.jpg";
-import pfRippleImg from "@/assets/blog/promptfluid-ripple-network.jpg";
-import pfAccessImg from "@/assets/blog/promptfluid-access-identity-billing.jpg";
-import pfNexusImg from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
-import aiComparisonImg from "@/assets/blog/ai-product-comparison-2025.jpg";
-import marketDisruptorImg from "@/assets/blog/promptfluid-market-disruptor.jpg";
-import roadmapImg from "@/assets/blog/product-roadmap-2025.jpg";
-import automationTrendsImg from "@/assets/blog/ai-automation-trends-2025.jpg";
-import businessOpsImg from "@/assets/blog/ai-business-operations-2025.jpg";
-import cmptblMissionImg from "@/assets/blog/cmptbl-mission-accessibility.jpg";
-import wpAccessibilityImg from "@/assets/blog/wordpress-accessibility-guide.jpg";
-import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
-import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
-import accessibilityFreeImg from "@/assets/blog/accessibility-free-for-all.jpg";
-import evolvingSoftwareImg from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
-import llmsTxtImg from "@/assets/blog/llms-txt-protocol-standard.jpg";
-import aiGovernanceImg from "@/assets/blog/ai-governance-namespace-unified.jpg";
-import ragWithoutInfraImg from "@/assets/blog/rag-without-infrastructure.jpg";
-import agentMemoryAntiPatternsImg from "@/assets/blog/agent-memory-anti-patterns.jpg";
-import langchainMemoryImg from "@/assets/blog/langchain-memory-integration.jpg";
-import whyAgentsForgetImg from "@/assets/blog/why-agents-forget.jpg";
-import buildingAgentsLearnImg from "@/assets/blog/building-agents-that-learn.jpg";
-import protocolStandardsImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
-import governanceComplianceImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
-import threatIntelAdversarialImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
-import spartaRebuildImg from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
-
-// New pillar/cluster images
-import clocklessSetupImg from "@/assets/blog/clockless-account-setup-artifact-packs.jpg";
-import clocklessDifferentImg from "@/assets/blog/what-makes-clockless-different.jpg";
-import clocklessModulesImg from "@/assets/blog/clockless-modules-deep-dive.jpg";
-
-// Memory Stream series images
-import memoryStreamGuideImg from "@/assets/blog/memory-stream-crystallization-guide.jpg";
-import signalToSiliconImg from "@/assets/blog/signal-to-silicon-narrative.jpg";
-import tierAnatomyImg from "@/assets/blog/memory-stream-tier-anatomy.jpg";
-import vaultMasteryImg from "@/assets/blog/memory-stream-vault-mastery.jpg";
-import discoveryEngineImg from "@/assets/blog/autonomous-discovery-engine.jpg";
+// Blog post images (chronological substrate story)
+import ch01Img from "@/assets/blog/promptfluid-market-disruptor.jpg";
+import ch02Img from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
+import ch03Img from "@/assets/blog/promptfluid-brain-learning-core.jpg";
+import ch04Img from "@/assets/blog/promptfluid-defense-ai-security.jpg";
+import ch05Img from "@/assets/blog/promptfluid-vision-dashboard.jpg";
+import ch06Img from "@/assets/blog/promptfluid-ripple-network.jpg";
+import ch07Img from "@/assets/blog/promptfluid-access-identity-billing.jpg";
+import ch08Img from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import ch09Img from "@/assets/blog/promptfluid-studio-build-apps.jpg";
+import ch10Img from "@/assets/blog/why-agents-forget.jpg";
+import ch11Img from "@/assets/blog/ai-product-comparison-2025.jpg";
+import ch12Img from "@/assets/blog/building-agents-that-learn.jpg";
+import ch13Img from "@/assets/blog/ai-hackers-underground-2025.jpg";
+import ch14Img from "@/assets/blog/ai-cybersecurity-evolution-2025.jpg";
+import ch15Img from "@/assets/blog/cmptbl-mission-accessibility.jpg";
+import ch16Img from "@/assets/blog/ai-governance-compliance-v9.jpg";
+import ch17Img from "@/assets/blog/ai-protocol-standards-v9.jpg";
+import ch18Img from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
+import ch19Img from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
+import ch20Img from "@/assets/blog/signal-to-silicon-narrative.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
