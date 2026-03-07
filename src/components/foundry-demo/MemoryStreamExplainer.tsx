@@ -55,8 +55,9 @@ export function MemoryStreamExplainer() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8 }}
+          style={{ opacity: 1 }}
         >
           <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
             From Signal to Silicon
