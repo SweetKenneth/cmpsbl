@@ -1,6 +1,6 @@
 /**
- * Substrate Module Hooks — Barrel Export
- * 38-Node / 12-Sector Architecture Hooks
+ * Substrate Node Hooks — Barrel Export
+ * 40-Node / 12-Sector Architecture Hooks
  *
  * Sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell
  */
@@ -40,7 +40,7 @@ export { useEconomy, type UseEconomyReturn } from './useEconomy';
 export { useSandbox, type UseSandboxReturn } from './useSandbox';
 
 // ═══════════════════════════════════════════════════════════════════
-// EXPANSION MODULES (38-Node Architecture)
+// EXPANSION NODES (40-Node Architecture)
 // ═══════════════════════════════════════════════════════════════════
 
 // ESZ — Expansion Sovereignty Zone
