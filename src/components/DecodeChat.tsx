@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
+import { isCommand, routeCommand } from "@/lib/decode/command-router";
 
 interface Message {
   role: 'user' | 'assistant';
