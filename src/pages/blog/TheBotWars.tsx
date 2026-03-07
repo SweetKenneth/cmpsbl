@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/ai-hackers-underground-2025.jpg";
+import imgThreat from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
 
 const SLUG = "the-bot-wars";
 
 export default function TheBotWars() {
   return (
     <>
-      <SEO title="The Bot Wars — Real Attacks, Real Defense" description="By August 2025, AI-powered bots were attacking our infrastructure daily. This is what we learned fighting them." type="article" publishedTime="2025-08-05" keywords={["AI bot attacks", "bot defense real world", "automated attack defense", "AI security warfare"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-security" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "The Bot Wars", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="The Bot Wars — Real Attacks, Real Defense" description="By August 2025, AI-powered bots were attacking our infrastructure daily. This is what we learned fighting them." type="article" image={heroImg} publishedTime="2025-08-05" keywords={["AI bot attacks", "bot defense real world", "automated attack defense", "AI security warfare"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-security" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "The Bot Wars", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="The Bot Wars — Real Attacks, Real Defense" description="What we learned from five months of daily bot attacks." slug={SLUG} datePublished="2025-08-05" imageUrl={heroImg} keywords={["bot wars", "bot defense", "AI attacks"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -27,6 +28,11 @@ export default function TheBotWars() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The New Economics of Attacks</h2>
             <p>Modern bot attacks are a service industry. Attackers don't write their own tools — they rent infrastructure. $50/day gets you a <a href="https://en.wikipedia.org/wiki/Residential_proxy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">residential proxy network</a>, AI-powered CAPTCHA solving, and a dashboard with analytics. The <a href="https://www.europol.europa.eu/publications-events/publications/internet-organised-crime-threat-assessment-iocta-2024" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">barrier to launching</a> a sophisticated attack has collapsed.</p>
+
+            <figure className="my-8">
+              <img src={imgThreat} alt="Threat intelligence visualization showing adversarial attack patterns and bot signatures" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">340 unique bot signatures identified over five months — each one teaching DEFENSE new detection patterns.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">What We Learned</h2>
             <p><strong>Residential IPs broke everything.</strong> IP reputation databases are useless when bots route through real home connections. We had to go fully behavioral.</p>

@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/ai-product-comparison-2025.jpg";
+import imgDiff from "@/assets/blog/what-makes-clockless-different.jpg";
 
 const SLUG = "how-we-compare";
 
 export default function HowWeCompare() {
   return (
     <>
-      <SEO title="How We Compare — Honest AI Platform Landscape" description="An honest comparison of CMPSBL against OpenAI, Anthropic, LangChain, and other AI platforms. What we do better. What they do better." type="article" publishedTime="2025-06-20" keywords={["AI platform comparison", "CMPSBL vs OpenAI", "cognitive infrastructure comparison"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-business" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "How We Compare", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="How We Compare — Honest AI Platform Landscape" description="An honest comparison of CMPSBL against OpenAI, Anthropic, LangChain, and other AI platforms. What we do better. What they do better." type="article" image={heroImg} publishedTime="2025-06-20" keywords={["AI platform comparison", "CMPSBL vs OpenAI", "cognitive infrastructure comparison"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-business" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "How We Compare", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="How We Compare — Honest AI Platform Landscape" description="Honest comparison of CMPSBL vs major AI platforms." slug={SLUG} datePublished="2025-06-20" imageUrl={heroImg} keywords={["AI comparison", "infrastructure landscape"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -30,6 +31,11 @@ export default function HowWeCompare() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">What We Are</h2>
             <p>We're cognitive infrastructure. The layer between your application and the AI providers. We handle <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">routing</Link>, <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">memory</Link>, <Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">security</Link>, <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">observability</Link>, <Link to="/blog/nodes-that-talk" className="text-primary hover:underline">event coordination</Link>, <Link to="/blog/identity-at-every-layer" className="text-primary hover:underline">identity</Link>, and <Link to="/blog/the-governance-question" className="text-primary hover:underline">governance</Link>.</p>
+
+            <figure className="my-8">
+              <img src={imgDiff} alt="What makes cognitive infrastructure different from traditional AI platforms" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The cognitive infrastructure layer sits between your application and AI providers — complementing, not competing.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Where We're Better</h2>
             <p><strong>Persistent memory.</strong> No major platform offers cross-session, cross-deployment memory with tiered decay and consolidation. <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link> does.</p>

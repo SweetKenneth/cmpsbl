@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-studio-build-apps.jpg";
+import imgStudio from "@/assets/blog/studio-app-builder.jpg";
 
 const SLUG = "building-on-the-substrate";
 
 export default function BuildingOnTheSubstrate() {
   return (
     <>
-      <SEO title="Building on the Substrate — Developer Experience" description="We had eight nodes and no developer documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure." type="article" publishedTime="2025-05-25" keywords={["AI developer experience", "substrate SDK", "ENCODE node", "cognitive infrastructure API"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-developer" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Building on the Substrate", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="Building on the Substrate — Developer Experience" description="We had eight nodes and no developer documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure." type="article" image={heroImg} publishedTime="2025-05-25" keywords={["AI developer experience", "substrate SDK", "ENCODE node", "cognitive infrastructure API"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-developer" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Building on the Substrate", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="Building on the Substrate — Developer Experience" description="How we made cognitive infrastructure usable for developers." slug={SLUG} datePublished="2025-05-25" imageUrl={heroImg} keywords={["developer experience", "ENCODE", "SDK"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -32,6 +33,11 @@ export default function BuildingOnTheSubstrate() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">ENCODE: From Intent to Code</h2>
             <p>ENCODE started as our internal tool for generating integration code. You describe what you want — "route this through NEXUS with BRAIN memory and DEFENSE enabled" — and ENCODE generates the API call, complete with authentication, error handling, and retry logic.</p>
+
+            <figure className="my-8">
+              <img src={imgStudio} alt="Developer studio interface for building applications on the substrate" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The substrate studio — where developers compose node pipelines and test integrations.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The DECODE → ENCODE Pipeline</h2>
             <p>DECODE takes natural language. ENCODE produces structured output. Together, they form a pipeline where a developer can describe intent in plain English and receive production-ready code. For <Link to="/blog/how-we-compare" className="text-primary hover:underline">how this compares</Link> to other AI development platforms, see Chapter 11.</p>

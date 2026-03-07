@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-defense-ai-security.jpg";
+import imgDefense from "@/assets/blog/defense-ai-security.jpg";
 
 const SLUG = "when-bots-found-us-first";
 
 export default function WhenBotsFoundUsFirst() {
   return (
     <>
-      <SEO title="When Bots Found Us First — Building DEFENSE" description="We didn't plan to build a security node. Then automated attacks found our API endpoints before we'd even launched." type="article" publishedTime="2025-03-05" keywords={["AI security defense", "DEFENSE node", "bot attack defense", "behavioral fingerprinting"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-security" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "When Bots Found Us First", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="When Bots Found Us First — Building DEFENSE" description="We didn't plan to build a security node. Then automated attacks found our API endpoints before we'd even launched." type="article" image={heroImg} publishedTime="2025-03-05" keywords={["AI security defense", "DEFENSE node", "bot attack defense", "behavioral fingerprinting"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-security" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "When Bots Found Us First", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="When Bots Found Us First — Building DEFENSE" description="How automated attacks forced us to build DEFENSE before launch." slug={SLUG} datePublished="2025-03-05" imageUrl={heroImg} keywords={["DEFENSE node", "bot defense", "AI security"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -34,6 +35,11 @@ export default function WhenBotsFoundUsFirst() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Behavioral Fingerprinting</h2>
             <p>IP blocking was useless. We needed to detect bots by behavior, not identity. We started logging everything: request timing, payload entropy, session coherence, interaction patterns. Humans are messy. Bots, even sophisticated ones, have <a href="https://en.wikipedia.org/wiki/Device_fingerprint" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">statistical fingerprints</a> that emerge over a sequence of requests.</p>
+
+            <figure className="my-8">
+              <img src={imgDefense} alt="DEFENSE behavioral analysis detecting bot patterns through session-level fingerprinting" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">DEFENSE analyzes behavioral patterns across request sequences to distinguish bots from humans.</figcaption>
+            </figure>
 
             <p>Within a week, we had a behavioral fingerprinting system that could distinguish bot traffic with 94% accuracy. By <Link to="/blog/the-bot-wars" className="text-primary hover:underline">August</Link>, that number would reach 96%.</p>
 

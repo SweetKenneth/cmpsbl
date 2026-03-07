@@ -8,13 +8,15 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/signal-to-silicon-narrative.jpg";
+import imgVault from "@/assets/blog/memory-stream-vault-mastery.jpg";
+import imgPacks from "@/assets/blog/artifact-pack-capabilities.jpg";
 
 const SLUG = "signal-to-silicon";
 
 export default function SignalToSilicon() {
   return (
     <>
-      <SEO title="Signal to Silicon — The Complete Pipeline" description="From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained." type="article" publishedTime="2026-03-04" keywords={["signal to silicon", "cognitive pipeline", "autonomous software discovery", "substrate architecture"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-origin" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Signal to Silicon", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="Signal to Silicon — The Complete Pipeline" description="From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained." type="article" image={heroImg} publishedTime="2026-03-04" keywords={["signal to silicon", "cognitive pipeline", "autonomous software discovery", "substrate architecture"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-origin" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Signal to Silicon", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="Signal to Silicon — The Complete Pipeline" description="The substrate's complete signal-to-silicon pipeline explained." slug={SLUG} datePublished="2026-03-04" imageUrl={heroImg} keywords={["signal to silicon", "pipeline", "substrate"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -31,8 +33,18 @@ export default function SignalToSilicon() {
             <h2 className="text-2xl font-bold text-foreground mt-8">The Cognitive Layer</h2>
             <p>This is where intelligence happens. BRAIN retrieves relevant memories. NEXUS selects the optimal AI model. <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM</Link> contributes heuristics from past consolidation cycles. <Link to="/blog/when-software-starts-evolving" className="text-primary hover:underline">EVOLUTION</Link> applies self-discovered optimizations. Events propagate through <Link to="/blog/nodes-that-talk" className="text-primary hover:underline">RIPPLE</Link>. Every decision is <Link to="/blog/the-governance-question" className="text-primary hover:underline">cryptographically logged</Link>.</p>
 
+            <figure className="my-8">
+              <img src={imgVault} alt="Memory vault — the substrate's accumulated knowledge being accessed during cognitive processing" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The cognitive layer draws on the full memory vault — hot, warm, and cold tiers working in concert.</figcaption>
+            </figure>
+
             <h2 className="text-2xl font-bold text-foreground mt-8">The Crystallization</h2>
             <p>The output isn't just a response — it's a crystallized artifact. Over time, frequently-used processing paths crystallize into reusable pipelines. Each gets scored across five dimensions: novelty, utility, reliability, efficiency, and composability. High-scoring pipelines get promoted from Mint to Prime to Relic to Mythic to Apex — a <a href="https://en.wikipedia.org/wiki/Maturity_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">maturity model</a> for discovered software.</p>
+
+            <figure className="my-8">
+              <img src={imgPacks} alt="Crystallized artifact packs — deployable software pipelines discovered by the substrate" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">Crystallized pipelines become deployable artifact packs — software discovered autonomously by the substrate.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The Silicon</h2>
             <p>The ultimate destination is deployment. A crystallized pipeline is executable. Export it as a JSON artifact, deploy it to your infrastructure, run it without the substrate if you want to. The substrate discovered it, crystallized it, and scored it. But you own it.</p>

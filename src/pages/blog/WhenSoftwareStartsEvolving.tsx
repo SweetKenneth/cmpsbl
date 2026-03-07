@@ -8,13 +8,14 @@ import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
+import imgDiscovery from "@/assets/blog/autonomous-discovery-engine.jpg";
 
 const SLUG = "when-software-starts-evolving";
 
 export default function WhenSoftwareStartsEvolving() {
   return (
     <>
-      <SEO title="When Software Starts Evolving — Autonomous Improvement" description="In January 2026, the substrate crossed a threshold: DREAM consolidation cycles started producing improvements we didn't program." type="article" publishedTime="2026-01-15" keywords={["evolving software", "autonomous improvement", "self-improving AI", "EVOLUTION node"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "When Software Starts Evolving", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <SEO title="When Software Starts Evolving — Autonomous Improvement" description="In January 2026, the substrate crossed a threshold: DREAM consolidation cycles started producing improvements we didn't program." type="article" image={heroImg} publishedTime="2026-01-15" keywords={["evolving software", "autonomous improvement", "self-improving AI", "EVOLUTION node"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-cognition" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "When Software Starts Evolving", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
       <BlogArticleJsonLd title="When Software Starts Evolving — Autonomous Improvement" description="DREAM consolidation cycles produce improvements we didn't program." slug={SLUG} datePublished="2026-01-15" imageUrl={heroImg} keywords={["EVOLUTION", "self-improving", "autonomous"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
@@ -32,6 +33,11 @@ export default function WhenSoftwareStartsEvolving() {
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The EVOLUTION Node</h2>
             <p>EVOLUTION tests DREAM's suggestions in a <a href="https://en.wikipedia.org/wiki/Sandbox_(computer_security)" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">sandboxed environment</a>, measures improvement against baseline, and only promotes changes that pass a confidence threshold. Most suggestions are noise — maybe 15% are genuine improvements.</p>
+
+            <figure className="my-8">
+              <img src={imgDiscovery} alt="Autonomous discovery engine — DREAM suggests, EVOLUTION tests, the substrate improves" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+              <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The discovery loop: DREAM extracts patterns, EVOLUTION tests them in sandbox, proven improvements get promoted.</figcaption>
+            </figure>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Safety Boundaries</h2>
             <p>EVOLUTION can only modify routing weights, memory tier thresholds, and cache parameters. It cannot modify security policies (<Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">DEFENSE</Link>), authentication rules (<Link to="/blog/identity-at-every-layer" className="text-primary hover:underline">ACCESS</Link>), or its own evaluation criteria. These boundaries are enforced at the code level — they can't be changed by the substrate itself.</p>
