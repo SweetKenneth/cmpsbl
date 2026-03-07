@@ -1,7 +1,7 @@
 /**
- * Why CMPSBL — 9 Core Systems Showcase
+ * Why CMPSBL — 9 Core Nodes Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * Only the 9 public-facing systems
+ * Only the 9 public-facing nodes
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -23,12 +23,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing systems only — no kernel, zones, overlays, or infrastructure
-const modules = [
+// 9 public-facing nodes only — no kernel, zones, overlays, or infrastructure
+const nodes = [
   {
     icon: Brain,
     title: "Persistent Memory",
-    module: "BRAIN",
+    node: "BRAIN",
     description: "3-tier memory (hot/warm/cold) that survives sessions. Your AI never forgets.",
     highlight: "Never Forgets",
     stat: "∞",
@@ -41,7 +41,7 @@ const modules = [
   {
     icon: MessageSquare,
     title: "Epistemic Chat",
-    module: "DECODE",
+    node: "DECODE",
     description: "Memory-aware conversations with context injection and session persistence.",
     highlight: "Context-Aware",
     stat: "∞",
@@ -54,7 +54,7 @@ const modules = [
   {
     icon: Shield,
     title: "Defense-First",
-    module: "DEFENSE",
+    node: "DEFENSE",
     description: "Behavioral analysis, threat detection, rate limiting, and governance rules.",
     highlight: "Enterprise Security",
     stat: "100%",
@@ -67,7 +67,7 @@ const modules = [
   {
     icon: Zap,
     title: "Smart Routing",
-    module: "NEXUS",
+    node: "NEXUS",
     description: "Routes every request to the optimal AI provider based on task, cost, and latency.",
     highlight: "Auto-Optimized",
     stat: "<100ms",
@@ -80,7 +80,7 @@ const modules = [
   {
     icon: Eye,
     title: "Full Observability",
-    module: "VISION",
+    node: "VISION",
     description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     highlight: "See Everything",
     stat: "24/7",
@@ -93,7 +93,7 @@ const modules = [
   {
     icon: Moon,
     title: "Dream Cycles",
-    module: "DREAM",
+    node: "DREAM",
     description: "Offline processing to consolidate memories, extract patterns, and evolve understanding.",
     highlight: "Learns While Idle",
     stat: "24/7",
@@ -106,7 +106,7 @@ const modules = [
   {
     icon: Code2,
     title: "Code Intelligence",
-    module: "ENCODE",
+    node: "ENCODE",
     description: "Code execution, generation intelligence, and the DECODE → ENCODE pipeline.",
     highlight: "Code Execution",
     stat: "AI",
@@ -119,7 +119,7 @@ const modules = [
   {
     icon: Plug,
     title: "Enterprise Integration",
-    module: "INTEGRATION",
+    node: "INTEGRATION",
     description: "Connect to enterprise systems (SAP, Oracle, Workday) with LLM governance.",
     highlight: "LLM Governance",
     stat: "35+",
@@ -132,7 +132,7 @@ const modules = [
   {
     icon: Accessibility,
     title: "Inclusive A11y",
-    module: "INCLUSIVE",
+    node: "INCLUSIVE",
     description: "Human-compatibility pipeline with WCAG 2.2 scanning and AI ethics governance.",
     highlight: "Human Compatibility",
     stat: "WCAG",
@@ -171,7 +171,7 @@ function useTilt() {
 }
 
 // Individual feature card with tilt effect
-function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
+function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
   const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt();
   const [isHovered, setIsHovered] = useState(false);
   
@@ -253,7 +253,7 @@ function FeatureCard({ item, idx }: { item: typeof modules[0]; idx: number }) {
           )}>
             {item.highlight}
           </div>
-          <span className="text-[10px] font-mono text-muted-foreground/60">{item.module}</span>
+          <span className="text-[10px] font-mono text-muted-foreground/60">{item.node}</span>
         </div>
         
         {/* Content */}
@@ -347,7 +347,7 @@ export function WhySubstrate() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           layout
         >
-          {modules.map((item, idx) => (
+          {nodes.map((item, idx) => (
             <FeatureCard key={item.title} item={item} idx={idx} />
           ))}
         </motion.div>

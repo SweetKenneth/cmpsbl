@@ -43,7 +43,7 @@ const METRIC_FIELDS: MetricField[] = [
   { key: 'epoch', label: 'Epoch', description: 'Current epoch name', type: 'string', icon: Settings, category: 'version' },
   
   // Architecture
-  { key: 'modulesCount', label: 'Modules', description: 'Total substrate modules', type: 'number', icon: Layers, category: 'architecture' },
+  { key: 'modulesCount', label: 'Nodes', description: 'Total substrate nodes', type: 'number', icon: Layers, category: 'architecture' },
   { key: 'layersCount', label: 'Layers', description: 'Architectural layers', type: 'number', icon: Layers, category: 'architecture' },
   
   // Synergy
@@ -277,7 +277,7 @@ export function PublicMetricsTab() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <div className="p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-2xl font-bold text-primary">{localMetrics.modulesCount}</p>
-              <p className="text-xs text-muted-foreground">Modules</p>
+              <p className="text-xs text-muted-foreground">Nodes</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-2xl font-bold text-primary">{localMetrics.synergyPipelinesCount}</p>

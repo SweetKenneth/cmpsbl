@@ -21,7 +21,7 @@ const LINK_GRAPH: LinkNode[] = [
 
   // ── Core platform ────────────────────────────────────
   { path: '/persistent-memory', label: 'Persistent Memory', tags: ['memory', 'brain', 'agent', 'sdk', 'cognitive'] },
-  { path: '/modules', label: 'Substrate Modules', tags: ['architecture', 'modules', 'brain', 'encode', 'decode', 'substrate'] },
+  { path: '/modules', label: 'Substrate Nodes', tags: ['architecture', 'nodes', 'brain', 'encode', 'decode', 'substrate'] },
   { path: '/substrate', label: 'Substrate Overview', tags: ['substrate', 'platform', 'architecture', 'runtime'] },
   { path: '/os', label: 'Substrate OS', tags: ['runtime', 'orchestration', 'telemetry', 'substrate'] },
   { path: '/decode', label: 'DECODE Terminal', tags: ['decode', 'nlp', 'terminal', 'agent', 'evolution'] },

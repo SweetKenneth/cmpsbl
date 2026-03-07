@@ -86,7 +86,7 @@ export const DEFAULT_METRICS: PublicMetrics = {
   epoch: 'MINDGAMES',
   buildDate: new Date().toISOString().split('T')[0],
   
-  // Architecture Counts — 10 public entities (CORE + 9 Modules)
+  // Architecture Counts — 10 public entities (CORE + 9 Nodes)
   modulesCount: 10,
   layersCount: 6,
   
