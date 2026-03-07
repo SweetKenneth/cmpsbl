@@ -103,15 +103,15 @@ export default function Foundry() {
 
       <PublicNav />
 
-      <div className="min-h-screen bg-background text-foreground relative">
+      <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
         {/* Substrate ambient background */}
-        <div className="fixed inset-0 pointer-events-none z-0 substrate-grid-bg opacity-30" />
-        <div className="fixed inset-0 pointer-events-none z-0 animate-substrate-breathe">
+        <div className="absolute inset-0 pointer-events-none z-0 substrate-grid-bg opacity-30" />
+        <div className="absolute inset-0 pointer-events-none z-0 animate-substrate-breathe">
           <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06), transparent)" }} />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.04), transparent)" }} />
         </div>
         {!user ? (
-          <div className="min-h-screen bg-background text-foreground">
+          <div className="min-h-screen bg-background text-foreground relative z-10">
             <div id="hero"><FoundryHero /></div>
             <MemoryStreamExplainer />
             <div id="proof"><ProofNumbers /></div>
