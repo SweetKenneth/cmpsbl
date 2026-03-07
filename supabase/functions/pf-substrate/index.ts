@@ -10161,7 +10161,7 @@ async function handleSystem(
 
   switch (action) {
     case "status": {
-      // Full system status with health data - checks ALL 21 MODULES
+      // Full system status with health data - checks ALL 38 NODES
       const checks: Record<string, boolean> = {};
       
       // Initialize all 38 nodes as false
@@ -11168,7 +11168,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // v5.5.0 Comprehensive system diagnostics - ALL 21 MODULES
+      // Comprehensive system diagnostics - ALL 38 NODES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -13415,8 +13415,8 @@ async function handleCore(
     }
 
     case "boot": {
-      // 21-module architecture: full cognitive substrate (inclusive positioned between system and defense in lifecycle)
-      const bootSequence = ['core', 'brain', 'decode', 'encode', 'system', 'inclusive', 'defense', 'nexus', 'vision', 'dream', 'ripple', 'access', 'modernizer', 'integration', 'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox'];
+      // 38-node architecture: full cognitive substrate boot sequence
+      const bootSequence = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
       const bootResults: Record<string, { status: string; time_ms: number }> = {};
       
       for (const mod of bootSequence) {
