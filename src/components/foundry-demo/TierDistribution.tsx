@@ -47,17 +47,20 @@ export function TierDistribution() {
   const total = TIERS.reduce((s, t) => s + t.count, 0);
 
   return (
-    <section ref={ref} className="py-24 md:py-40 px-6">
+    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
+      {/* Section divider */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
+        <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
           Quality Distribution
         </h2>
-        <p className="text-center text-muted-foreground/50 text-xs font-mono mb-16">
+        <p className="text-center text-muted-foreground/50 text-[10px] sm:text-xs font-mono mb-12 sm:mb-16 px-2">
           {total.toLocaleString()} programs · 50.6% Apex tier · Zero below CJPI 80
         </p>
 
         {/* Stacked bar */}
-        <div className="h-14 rounded-lg overflow-hidden flex mb-8 border border-border/10">
+        <div className="h-10 sm:h-14 rounded-lg overflow-hidden flex mb-6 sm:mb-8 border border-border/10">
           {TIERS.map((t, i) => (
             <motion.div
               key={t.tier}
@@ -67,7 +70,7 @@ export function TierDistribution() {
               animate={inView ? { width: `${(t.count / total) * 100}%` } : {}}
               transition={{ duration: 1, delay: i * 0.2, ease: 'easeOut' }}
             >
-              <span className="text-xs font-mono font-bold text-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-[10px] sm:text-xs font-mono font-bold text-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
                 {t.percentage}
               </span>
             </motion.div>
@@ -75,7 +78,7 @@ export function TierDistribution() {
         </div>
 
         {/* Legend */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {TIERS.map((t, i) => (
             <motion.div
               key={t.tier}
@@ -84,12 +87,12 @@ export function TierDistribution() {
               transition={{ duration: 0.5, delay: i * 0.15 + 0.5 }}
               className="flex items-start gap-3"
             >
-              <div className="w-3 h-3 rounded-sm mt-1 shrink-0" style={{ backgroundColor: t.color }} />
+              <div className="w-3 h-3 rounded-sm mt-0.5 sm:mt-1 shrink-0" style={{ backgroundColor: t.color }} />
               <div>
-                <div className="font-mono text-sm font-bold text-foreground">
+                <div className="font-mono text-xs sm:text-sm font-bold text-foreground">
                   {t.label} <span className="text-muted-foreground font-normal">· {t.count}</span>
                 </div>
-                <div className="text-xs text-muted-foreground/60 mt-0.5">
+                <div className="text-[10px] sm:text-xs text-muted-foreground/60 mt-0.5">
                   {t.description}
                 </div>
               </div>
@@ -102,11 +105,11 @@ export function TierDistribution() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1.2 }}
-          className="mt-12 text-center"
+          className="mt-10 sm:mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-2 bg-card/50 border border-border/20 rounded-lg px-5 py-2.5">
+          <div className="inline-flex items-center gap-2 bg-card/50 border border-border/20 rounded-lg px-4 sm:px-5 py-2 sm:py-2.5">
             <div className="w-2 h-2 rounded-full bg-primary" />
-            <span className="text-xs font-mono text-muted-foreground">
+            <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">
               Quality floor: <span className="text-foreground font-bold">Score 68</span> · 
               Nothing below Mint-grade enters the registry
             </span>
