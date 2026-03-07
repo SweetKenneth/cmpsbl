@@ -7,7 +7,7 @@ import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryHero() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-start px-4 sm:px-6 pt-20 sm:pt-24 pb-10 overflow-hidden">
+    <section className="relative flex flex-col items-center justify-start px-4 sm:px-6 pt-16 sm:pt-20 pb-12 sm:pb-14 overflow-hidden">
       {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -21,15 +21,15 @@ export function FoundryHero() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06),transparent_60%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         className="relative text-center max-w-4xl w-full"
       >
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.1 }}
           className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-muted-foreground mb-6 sm:mb-8"
         >
           Memory Stream — CMPSBL®
@@ -55,9 +55,9 @@ export function FoundryHero() {
         {/* Key stat trio */}
         <div className="flex items-center justify-center gap-6 sm:gap-8 md:gap-16 font-mono">
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.2 }}
             className="text-center"
           >
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">1,143</div>
@@ -65,9 +65,9 @@ export function FoundryHero() {
           </motion.div>
           <div className="w-px h-8 sm:h-10 bg-border/30" />
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.25 }}
             className="text-center"
           >
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-primary">95</div>
@@ -75,9 +75,9 @@ export function FoundryHero() {
           </motion.div>
           <div className="w-px h-8 sm:h-10 bg-border/30" />
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0 }}
+            transition={{ delay: 0.3 }}
             className="text-center"
           >
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">~9h</div>
@@ -87,9 +87,9 @@ export function FoundryHero() {
 
         {/* Runtime detail */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
+          transition={{ delay: 0.35 }}
           className="mt-6 sm:mt-8 text-[10px] sm:text-xs font-mono text-muted-foreground/50 px-2"
         >
           431 autonomous discovery runs · 9 capability domains · avg CJPI 94.0
