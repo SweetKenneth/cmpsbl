@@ -61,7 +61,22 @@ export default function Foundry() {
     load();
   }, [user]);
 
-  if (authLoading || foundry.isLoading) {
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-8 h-8 rounded-full border-2 border-primary/30 border-t-primary"
+        />
+        <div className="text-muted-foreground font-mono text-sm">
+          Loading Memory Stream...
+        </div>
+      </div>
+    );
+  }
+
+  if (user && foundry.isLoading) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
         <motion.div
