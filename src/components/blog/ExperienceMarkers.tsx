@@ -21,10 +21,10 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
   ],
   changelog: [
     { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and artifacts' },
-    { icon: Layers, label: 'Modules', href: '/modules', description: 'Full substrate architecture' },
+    { icon: Layers, label: 'Nodes', href: '/modules', description: 'Full substrate architecture' },
   ],
   release: [
-    { icon: Layers, label: 'All Modules', href: '/modules', description: 'See the full substrate architecture' },
+    { icon: Layers, label: 'All Nodes', href: '/modules', description: 'See the full substrate architecture' },
     { icon: Shield, label: 'Enterprise Solutions', href: '/solutions', description: 'How enterprises deploy these releases' },
   ],
   update: [

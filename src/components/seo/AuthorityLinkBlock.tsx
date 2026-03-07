@@ -34,7 +34,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'AI Operating System', href: '/ai-operating-system' },
   { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
-  { label: 'All Modules', href: '/modules' },
+  { label: 'All Nodes', href: '/modules' },
   { label: 'DECODE Terminal', href: '/decode' },
   { label: 'Proof Mode', href: '/proof' },
   // Products

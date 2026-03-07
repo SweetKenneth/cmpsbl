@@ -282,7 +282,7 @@ export function MeshActivityTab() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-        <StatCard label="Modules" value={modules.length} icon={<Radio className="h-4 w-4 text-cyan-400" />} />
+        <StatCard label="Nodes" value={modules.length} icon={<Radio className="h-4 w-4 text-cyan-400" />} />
         <StatCard label="Resolvers" value={activeResolvers} icon={<Zap className="h-4 w-4 text-amber-400" />} />
         <StatCard label="Intents" value={stats?.totalIntents || 0} icon={<Activity className="h-4 w-4 text-fuchsia-400" />} />
         <StatCard label="Success" value={`${((stats?.successRate || 0) * 100).toFixed(0)}%`} icon={<CheckCircle className="h-4 w-4 text-emerald-400" />} />

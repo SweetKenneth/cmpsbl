@@ -23,7 +23,7 @@ const fadeUp = {
 
 const KERNEL = { name: "CORE", icon: Cpu, desc: "Standalone boot authority — initializes all layers, maintains canonical registry" };
 
-const MODULES = [
+const NODES = [
   { name: "DECODE", icon: Brain, desc: "Natural language interpreter — prompt parsing, intent extraction" },
   { name: "ENCODE", icon: Code2, desc: "Code generation pipeline — fix generation, rule absorption" },
   { name: "VISION", icon: Eye, desc: "Unified observability — health aggregation, metric visualization" },
@@ -39,7 +39,7 @@ const MESHES = [
   { name: "DEFENSE", icon: Shield, desc: "Outermost — AI-powered security, threat analysis", position: "Outermost" },
   { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience, self-healing patterns", position: "Outer" },
   { name: "EVOLUTION", icon: Dna, desc: "Self-improvement — mutation proposals, shadow A/B", position: "Middle" },
-  { name: "INTENT", icon: Target, desc: "Cross-module intent routing, goal decomposition", position: "Inner" },
+  { name: "INTENT", icon: Target, desc: "Cross-node intent routing, goal decomposition", position: "Inner" },
   { name: "GOVERNANCE", icon: Scale, desc: "Ethical constraints, veto authority, coherence", position: "Innermost" },
 ];
 
@@ -63,7 +63,7 @@ export default function Architecture() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Cognitive Kernel Architecture | CMPSBL"
-        description="CMPSBL architecture: CORE boot authority, 9 execution modules, 5 protective layers, and 9 internal infrastructure zones. Hot-swappable, autonomously evolving."
+        description="CMPSBL architecture: CORE boot authority, 9 execution nodes, 5 protective layers, and 9 internal infrastructure zones. Hot-swappable, autonomously evolving."
         image="https://cmpsbl.com/og/architecture.jpg"
         keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI architecture', 'modular AI platform', 'AI infrastructure layers']}
         breadcrumbs={[
@@ -71,9 +71,9 @@ export default function Architecture() {
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a 12-phase boot sequence: CORE initializes all sectors, maintains the module registry, and orchestrates lifecycle events across 38 nodes.' },
-          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 38 nodes across 12 sectors: CORE, SYSTEM, CCR (3), OCG (6), Execution (10), ESZ (4), EPZ (3), EMZ (3), CSZ (3), Fields (2), Plane (1), and Shell (1).' },
-          { question: 'What are the protective layers?', answer: 'Four shielded expansion zones (ESZ, EPZ, EMZ, CSZ) group specialized modules, while Fields (IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a 12-phase boot sequence: CORE initializes all sectors, maintains the node registry, and orchestrates lifecycle events across 40 nodes.' },
+          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 40 nodes across 12 sectors: CORE, SYSTEM, CCR (3), OCG (6), Execution (11), ESZ (4), EPZ (3), EMZ (3), CSZ (3), Fields (2), Plane (2), and Shell (1).' },
+          { question: 'What are the protective layers?', answer: 'Four shielded expansion zones (ESZ, EPZ, EMZ, CSZ) group specialized nodes, while Fields (IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
         ]}
       />
 
@@ -94,7 +94,7 @@ export default function Architecture() {
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 A layered orchestration architecture that boots deterministically, heals autonomously, 
-                and evolves without human intervention. 38 nodes across 12 sectors, 675+ capabilities.
+                and evolves without human intervention. 40 nodes across 12 sectors, 675+ capabilities.
               </p>
             </motion.div>
           </div>
@@ -140,14 +140,14 @@ export default function Architecture() {
           </motion.div>
         </section>
 
-        {/* Execution Surface Modules */}
+        {/* Execution Surface Nodes */}
         <section className="border-t border-border bg-muted/20">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Execution Surface Modules</h2>
+              <h2 className="text-3xl font-bold mb-2">Execution Surface Nodes</h2>
               <p className="text-muted-foreground mb-8">Public-facing cognitive capabilities that boot after CORE and convergence layers are online.</p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {MODULES.map((mod) => (
+                {NODES.map((mod) => (
                   <Card key={mod.name} className="hover:border-primary/30 transition-colors">
                     <CardContent className="p-5 flex items-start gap-3">
                       <mod.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -168,7 +168,7 @@ export default function Architecture() {
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
               <h2 className="text-3xl font-bold mb-2">Protective Layers</h2>
-              <p className="text-muted-foreground mb-8">Behavioral layers that wrap all modules, ordered outermost to innermost.</p>
+              <p className="text-muted-foreground mb-8">Behavioral layers that wrap all nodes, ordered outermost to innermost.</p>
               <div className="space-y-3">
                 {MESHES.map((mesh, i) => (
                   <Card key={mesh.name} className="hover:border-primary/30 transition-colors">
@@ -251,12 +251,12 @@ export default function Architecture() {
           <div className="container mx-auto max-w-4xl px-4 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              Dive deeper into the modules, documentation, and live infrastructure.
+              Dive deeper into the nodes, documentation, and live infrastructure.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/modules">
                 <Button className="gap-2">
-                  All Modules <ArrowRight className="w-4 h-4" />
+                  All Nodes <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">

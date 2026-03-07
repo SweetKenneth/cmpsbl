@@ -28,7 +28,7 @@ export default function ModulesHub() {
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
         ]}
       />
 

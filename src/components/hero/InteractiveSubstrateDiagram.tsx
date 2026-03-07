@@ -106,7 +106,7 @@ const modules: ModuleNode[] = [
   }
 ];
 
-// Connection lines between modules
+// Connection lines between nodes
 const connections = [
   { from: "brain", to: "core" },
   { from: "decode", to: "core" },
@@ -155,7 +155,7 @@ const DataPulse = memo(function DataPulse({
   );
 });
 
-// Memoized module node component
+// Memoized node component
 const ModuleNodeComponent = memo(function ModuleNodeComponent({ 
   module, 
   isActive, 
