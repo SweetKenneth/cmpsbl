@@ -1,23 +1,13 @@
 /**
  * Category Breakdown — Visual proof of domain coverage
- * Real data from 9 capability domains.
  */
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const CATEGORY_ICONS: Record<string, string> = {
-  security: '🛡️',
-  orchestration: '🎯',
-  integration: '🔗',
-  routing: '🔀',
-  evolution: '🧬',
-  observability: '👁️',
-  governance: '⚖️',
-  learning: '🧠',
-  cognitive: '💡',
+  security: '🛡️', orchestration: '🎯', integration: '🔗', routing: '🔀',
+  evolution: '🧬', observability: '👁️', governance: '⚖️', learning: '🧠', cognitive: '💡',
 };
 
-// Real production data
 const CATEGORIES = [
   { category: 'security', count: 138, avgCjpi: 94.6, maxCjpi: 100, perfect: 14 },
   { category: 'orchestration', count: 137, avgCjpi: 93.1, maxCjpi: 100, perfect: 10 },
@@ -31,15 +21,11 @@ const CATEGORIES = [
 ];
 
 export function CategoryBreakdown() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
   const maxCount = Math.max(...CATEGORIES.map(c => c.count));
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
-      {/* Section divider */}
+    <section className="py-20 md:py-40 px-4 sm:px-6 relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-
       <div className="max-w-4xl mx-auto">
         <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
           9 Domains — Full Spectrum Coverage
@@ -54,8 +40,9 @@ export function CategoryBreakdown() {
             <motion.div
               key={cat.category}
               initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.5, delay: i * 0.04 }}
               className="flex items-center gap-2.5 sm:gap-4"
             >
               <div className="w-6 sm:w-8 text-center text-base sm:text-lg shrink-0">
@@ -70,39 +57,27 @@ export function CategoryBreakdown() {
                 <motion.div
                   className="h-full rounded bg-gradient-to-r from-primary/60 to-primary/30"
                   initial={{ width: 0 }}
-                  animate={inView ? { width: `${(cat.count / maxCount) * 100}%` } : {}}
-                  transition={{ duration: 1, delay: i * 0.06 + 0.3, ease: 'easeOut' }}
+                  whileInView={{ width: `${(cat.count / maxCount) * 100}%` }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{ duration: 1, delay: i * 0.04 + 0.2, ease: 'easeOut' }}
                 />
                 <div className="absolute inset-0 flex items-center px-2 sm:px-3 justify-between">
-                  <span className="text-[10px] sm:text-xs font-mono text-foreground/80 font-bold">
-                    {cat.count}
-                  </span>
-                  <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground hidden sm:inline">
-                    avg {cat.avgCjpi} · {cat.perfect} perfect
-                  </span>
-                  <span className="text-[9px] font-mono text-muted-foreground sm:hidden">
-                    {cat.perfect}★
-                  </span>
+                  <span className="text-[10px] sm:text-xs font-mono text-foreground/80 font-bold">{cat.count}</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground hidden sm:inline">avg {cat.avgCjpi} · {cat.perfect} perfect</span>
+                  <span className="text-[9px] font-mono text-muted-foreground sm:hidden">{cat.perfect}★</span>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Uniformity insight */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 1 }}
-          className="mt-8 sm:mt-10 text-center"
-        >
+        <div className="mt-8 sm:mt-10 text-center">
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-5 py-2 sm:py-2.5">
             <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground">
-              Distribution range: 103–138 per domain · 
-              <span className="text-foreground font-bold">Near-uniform</span> coverage — no blind spots
+              Distribution range: 103–138 per domain · <span className="text-foreground font-bold">Near-uniform</span> coverage — no blind spots
             </span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

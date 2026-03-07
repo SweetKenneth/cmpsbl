@@ -5,13 +5,13 @@
  * - Anonymous: preview + CTA
  * - Authenticated: crystallize button, vault, stats
  */
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
-import { FoundryPreview } from '@/components/foundry/FoundryPreview';
+import { supabase } from '@/integrations/supabase/client';
 import { FoundryMiningPanel } from '@/components/foundry/FoundryMiningPanel';
 import { FoundryInventory } from '@/components/foundry/FoundryInventory';
 import { FoundryStats } from '@/components/foundry/FoundryStats';
@@ -19,12 +19,47 @@ import { FoundryTierLegend } from '@/components/foundry/FoundryTierLegend';
 import { MemoryRiver } from '@/components/hero/MemoryRiver';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { FoundryHero } from '@/components/foundry-demo/FoundryHero';
+import { MemoryStreamExplainer } from '@/components/foundry-demo/MemoryStreamExplainer';
+import { ProofNumbers } from '@/components/foundry-demo/ProofNumbers';
+import { RecursiveLoop } from '@/components/foundry-demo/RecursiveLoop';
+import { CrownJewelShowcase } from '@/components/foundry-demo/CrownJewelShowcase';
+import { LiveDiscoveryStream } from '@/components/foundry-demo/LiveDiscoveryStream';
+import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
+import { TierDistribution } from '@/components/foundry-demo/TierDistribution';
+import { VerifyPanel } from '@/components/foundry-demo/VerifyPanel';
+import { FoundryFooter } from '@/components/foundry-demo/FoundryFooter';
+import { MemoryStreamMobileNav } from '@/components/foundry-demo/MemoryStreamMobileNav';
 
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
   const foundry = useFoundryState();
   const [activeTab, setActiveTab] = useState<'mine' | 'inventory'>('mine');
   const [crystallizing, setCrystallizing] = useState(false);
+  const [discoveries, setDiscoveries] = useState<any[]>([]);
+
+  // Load discoveries for anonymous view
+  useEffect(() => {
+    if (user) return;
+    async function load() {
+      const all: any[] = [];
+      let from = 0;
+      const pageSize = 1000;
+      while (true) {
+        const { data } = await supabase
+          .from('discoveries')
+          .select('name, cjpi, tier, category, module_chain, created_at')
+          .order('cjpi', { ascending: false })
+          .range(from, from + pageSize - 1);
+        if (!data || data.length === 0) break;
+        all.push(...data);
+        if (data.length < pageSize) break;
+        from += pageSize;
+      }
+      setDiscoveries(all);
+    }
+    load();
+  }, [user]);
 
   if (authLoading || foundry.isLoading) {
     return (
@@ -61,7 +96,19 @@ export default function Foundry() {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.04), transparent)" }} />
         </div>
         {!user ? (
-          <FoundryPreview />
+          <div className="min-h-screen bg-background text-foreground">
+            <div id="hero"><FoundryHero /></div>
+            <MemoryStreamExplainer />
+            <div id="proof"><ProofNumbers /></div>
+            <div id="engine"><RecursiveLoop /></div>
+            <div id="apex"><CrownJewelShowcase /></div>
+            <div id="stream"><LiveDiscoveryStream discoveries={discoveries} /></div>
+            <CategoryBreakdown />
+            <TierDistribution />
+            <div id="verify"><VerifyPanel /></div>
+            <FoundryFooter />
+            <MemoryStreamMobileNav />
+          </div>
         ) : (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
             {/* Header */}
