@@ -1,7 +1,7 @@
 /**
  * Support Bot Knowledge Base
- * Pre-trained FAQ data for CodeLab, Marketplace, and Licensing
- * 
+ * Current CMPSBL product knowledge — Memory Stream, Pipeline Packs, Sealed Engines, and tiers.
+ *
  * This module contains curated Q&A pairs that seed the support bot's
  * memory system with foundational product knowledge.
  */
@@ -24,737 +24,455 @@ export interface KnowledgeEntry {
 }
 
 // ============================================================================
-// CodeLab Knowledge
+// Platform & Product Knowledge
 // ============================================================================
 
-export const CODELAB_KNOWLEDGE: KnowledgeEntry[] = [
+export const PLATFORM_KNOWLEDGE: KnowledgeEntry[] = [
   {
-    id: 'codelab_001',
-    question_pattern: 'What is CodeLab?',
-    answer: `CodeLab is a live, execution-first development environment that runs real schedulers and cognition — not mock or demo mode. It's designed for builders and researchers who need to experiment with the substrate's cognitive capabilities in a professional, production-ready context. CodeLab provides direct access to terminal commands, memory operations, and cognitive primitives.`,
+    id: 'platform_001',
+    question_pattern: 'What is CMPSBL?',
+    answer: `CMPSBL® (Composable) is a cognitive infrastructure substrate — the operating layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing, built-in security, and self-evolution capabilities.
+
+Key characteristics:
+• Model-agnostic and provider-agnostic — use OpenAI, Anthropic, Google, Mistral, or any combination
+• Persistent memory that never resets
+• Governed EVOLUTION with audit trails
+• Built-in DEFENSE system for security
+• The NEXUS router handles intelligent multi-provider AI routing
+
+Think of it as the infrastructure layer that makes any AI provider more capable.`,
     category: 'question',
-    keywords: ['codelab', 'what', 'development', 'environment'],
+    keywords: ['cmpsbl', 'composable', 'what is', 'platform', 'substrate'],
     confidence: 0.95,
     verified: true,
     priority: 'critical',
   },
   {
-    id: 'codelab_002',
-    question_pattern: 'How do I get started with CodeLab?',
-    answer: `To get started with CodeLab:
+    id: 'platform_002',
+    question_pattern: 'What is the Memory Stream?',
+    answer: `The Memory Stream is CMPSBL's continuous substrate of evolving software systems. It surfaces real, scored pipelines that you can crystallize and use.
 
-1. Navigate to /codelab from the main navigation
-2. The terminal interface will initialize automatically
-3. Run 'help' to see available commands
-4. Use 'brain.status' to check memory system health
-5. Try 'decode.interpret "your text"' to test intent parsing
+How it works:
+1. The Memory Stream continuously generates and evaluates pipelines
+2. Each pipeline is scored for quality (minimum floor: 68+)
+3. You can "crystallize" a pipeline — pulling it from the stream into your workspace
+4. Every pull is real, production-grade software
 
-CodeLab provides real-time execution with live substrate integration. All commands execute against the actual cognitive engine, not simulations.`,
-    category: 'how_to',
-    keywords: ['codelab', 'start', 'getting started', 'begin', 'setup'],
-    confidence: 0.92,
+Daily crystallization limits depend on your tier:
+• Builder (Free): 3 pulls / day
+• Studio ($29/mo): 6 pulls / day
+• Creator ($49/mo): 9 pulls / day
+• Architect ($79/mo): 12 pulls / day`,
+    category: 'question',
+    keywords: ['memory stream', 'crystallize', 'pipeline', 'pulls', 'stream'],
+    confidence: 0.95,
     verified: true,
-    priority: 'high',
+    priority: 'critical',
   },
   {
-    id: 'codelab_003',
-    question_pattern: 'What commands are available in CodeLab?',
-    answer: `CodeLab supports comprehensive terminal commands across all substrate modules:
+    id: 'platform_003',
+    question_pattern: 'What are Pipeline Packs?',
+    answer: `Pipeline Packs are CMPSBL's modular capability system. There are 24 pipeline packs across 6 strategic domains. Each pack unlocks a specific set of capabilities.
 
-**Core Commands:**
-- 'help' — List all available commands
-- 'status' — Show system health overview
-- 'version' — Display current substrate version
+How they work:
+• Every pipeline pack uses exactly 1 slot
+• Your plan controls how many slots you have
+• Activation is atomic and server-enforced — no race conditions or overflows
+• You can swap packs anytime within your slot capacity
 
-**Brain/Memory Commands:**
-- 'brain.status' — Memory tier health
-- 'brain.recall [query]' — Search memories
-- 'brain.ingest [content]' — Store new memory
+Your tier determines your slot capacity. Choose the packs that match your workload and swap them as your needs change.`,
+    category: 'question',
+    keywords: ['pipeline packs', 'packs', 'slots', 'capabilities', 'activate'],
+    confidence: 0.94,
+    verified: true,
+    priority: 'critical',
+  },
+  {
+    id: 'platform_004',
+    question_pattern: 'What are Sealed Engines?',
+    answer: `Sealed Engines are production-grade runtimes crystallized from high-scoring Memory Stream pipelines. They represent the highest-quality outputs from the system.
 
-**Decode Commands:**
-- 'decode.interpret [text]' — Analyze intent
-- 'decode.personality.list' — Show personality profiles
+Key characteristics:
+• Crystallized from pipelines that exceed quality thresholds
+• Production-ready — designed for deployment, not experimentation
+• Each engine is a self-contained runtime
+• Available as standalone purchases ($39 each) — Composable Cognitives
 
-**System Commands:**
-- 'system.events' — View recent events
-- 'defense.status' — Security posture
-
-Run 'help [module]' for detailed command documentation.`,
-    category: 'how_to',
-    keywords: ['commands', 'terminal', 'codelab', 'available', 'list'],
+Sealed Engines are the bridge from exploration (Memory Stream) to production deployment.`,
+    category: 'question',
+    keywords: ['sealed engines', 'engines', 'runtime', 'production', 'cognitives'],
     confidence: 0.93,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'codelab_004',
-    question_pattern: 'Is CodeLab a demo or sandbox?',
-    answer: `No, CodeLab is NOT a demo or sandbox. It is a live, execution-first development environment that runs real schedulers and cognition. Key distinctions:
+    id: 'platform_005',
+    question_pattern: 'How does memory work?',
+    answer: `CMPSBL uses a four-tier persistent memory system that never resets:
 
-• **Real Execution**: Commands execute against the production cognitive engine
-• **Persistent Memory**: Brain operations affect actual memory tiers
-• **Live Events**: System events are real-time, not simulated
-• **Professional Tool**: Designed for builders and researchers, not demos
+• Hot tier: 127 records, 7-day window — fast-access recent context
+• Warm tier: 2,000 records, 30-day window — medium-term knowledge
+• Cold tier: 200 records, retained forever — long-term important memories
+• Legacy tier: Unlimited records, retained forever — historical archive
 
-CodeLab is production infrastructure for cognitive development, positioned as a professional tool rather than a toy environment.`,
+The system automatically demotes, compresses, and optimizes memory over time. Protected memory types are locked at 1.0 value with zero decay — they never fade.
+
+Memory powers the entire substrate: the support bot, EVOLUTION, the NEXUS router, and every capability you use.`,
     category: 'question',
-    keywords: ['demo', 'sandbox', 'mock', 'simulation', 'test'],
+    keywords: ['memory', 'tiers', 'hot', 'warm', 'cold', 'legacy', 'persistent'],
     confidence: 0.94,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'codelab_005',
-    question_pattern: 'CodeLab terminal not working',
-    answer: `If the CodeLab terminal isn't responding, try these troubleshooting steps:
+    id: 'platform_006',
+    question_pattern: 'What is the NEXUS router?',
+    answer: `The NEXUS router is CMPSBL's intelligent multi-provider AI routing system. Instead of being locked to a single AI provider, NEXUS routes your requests to the optimal model based on:
 
-1. **Refresh the page** — The terminal may need to reinitialize
-2. **Check system status** — Look for any error banners at the top
-3. **Clear session** — Run 'clear' or use the trash icon
-4. **Verify connection** — Ensure you have stable internet
-5. **Browser console** — Check for JavaScript errors (F12)
+• Task type and complexity
+• Cost optimization
+• Latency requirements
+• Provider availability
 
-If the issue persists, the substrate may be in a degraded state. Check 'system.health' for diagnostics or escalate to support.`,
-    category: 'troubleshoot',
-    keywords: ['not working', 'broken', 'error', 'terminal', 'stuck'],
-    confidence: 0.88,
-    verified: true,
-    priority: 'medium',
-  },
-  {
-    id: 'codelab_006',
-    question_pattern: 'How do I save my work in CodeLab?',
-    answer: `CodeLab automatically persists cognitive operations to the substrate:
-
-• **Memory writes** — Stored in Brain tiers (Hot/Warm/Cold)
-• **Learning events** — Logged to the learning system
-• **Session history** — Terminal commands are not persisted between sessions
-
-For explicit saves:
-- Use 'brain.ingest [content]' to store important information
-- Use 'export' commands where available for data extraction
-
-Note: Terminal command history is session-scoped and clears on page refresh.`,
-    category: 'how_to',
-    keywords: ['save', 'persist', 'store', 'export', 'work'],
-    confidence: 0.87,
-    verified: true,
-    priority: 'medium',
-  },
-];
-
-// ============================================================================
-// Marketplace Knowledge
-// ============================================================================
-
-export const MARKETPLACE_KNOWLEDGE: KnowledgeEntry[] = [
-  {
-    id: 'marketplace_001',
-    question_pattern: 'What is the Marketplace?',
-    answer: `The CMPSBL Marketplace offers production-ready templates and patterns built on the substrate. Key features:
-
-• **109+ Templates** — Covering Elite, Pro, and Standard tiers
-• **AI Generator** — Premium $87 feature creating unique templates from 82,944+ combinations
-• **Cognitive Integration** — All templates include Brain and INCLUSIVE module hooks
-• **Rarity System** — Templates rated from Common to Mythic based on complexity
-
-Templates are priced by engineering time compression, with ROI expressed as hours saved (2 to 64+ hours).`,
+You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — NEXUS handles the routing transparently. This makes CMPSBL model-agnostic and provider-agnostic.`,
     category: 'question',
-    keywords: ['marketplace', 'what', 'templates', 'store'],
-    confidence: 0.95,
-    verified: true,
-    priority: 'critical',
-  },
-  {
-    id: 'marketplace_002',
-    question_pattern: 'How do I buy a template?',
-    answer: `To purchase a Marketplace template:
-
-1. Browse templates at /marketplace
-2. Click on a template to view details and preview
-3. Review the price and included features
-4. Click "Purchase" to proceed to checkout
-5. Complete payment via Stripe
-6. Access your template in your dashboard
-
-All purchases include:
-• Source code download
-• Documentation
-• 6 months of update access (varies by tier)
-• INCLUSIVE accessibility compliance built-in`,
-    category: 'how_to',
-    keywords: ['buy', 'purchase', 'template', 'checkout', 'payment'],
-    confidence: 0.92,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'marketplace_003',
-    question_pattern: 'What is the AI Template Generator?',
-    answer: `The AI Template Generator is a premium $87 Marketplace feature that creates unique, production-ready templates from 82,944+ possible combinations.
-
-**How it works:**
-1. The Nexus router analyzes your requirements
-2. Rarity and difficulty multipliers are calculated
-3. A unique template is generated with variable value up to $499
-4. Your generation is stored with RLS protection
-
-**Key benefits:**
-• Unique templates not available in the standard catalog
-• Instant generation using cognitive primitives
-• Full ownership of generated output
-• Production-ready code with accessibility built-in`,
-    category: 'question',
-    keywords: ['ai generator', 'template generator', 'generate', 'unique'],
+    keywords: ['nexus', 'router', 'ai routing', 'multi-provider', 'model'],
     confidence: 0.93,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'marketplace_004',
-    question_pattern: 'What are template tiers?',
-    answer: `Marketplace templates are organized into tiers based on complexity and value:
+    id: 'platform_007',
+    question_pattern: 'Can the system improve itself?',
+    answer: `Yes. CMPSBL includes governed self-EVOLUTION capabilities:
 
-**Elite Tier** ($299-$499)
-• Most complex patterns
-• 48-64+ hours saved
-• Full cognitive integration
-• Premium support
+• The system proposes code improvements autonomously
+• All proposals go through confidence gating
+• Significant changes require human approval before being applied
+• Every mutation is versioned and auditable
 
-**Pro Tier** ($99-$249)
-• Advanced patterns
-• 16-48 hours saved
-• Extended features
-• Priority updates
-
-**Standard Tier** ($27-$79)
-• Essential patterns
-• 2-16 hours saved
-• Core functionality
-• Community support
-
-Each tier includes the substrate's INCLUSIVE accessibility module for WCAG compliance.`,
+This isn't uncontrolled self-modification — it's governed EVOLUTION with full audit trails and safety checks enforced by the GOVERNANCE layer.`,
     category: 'question',
-    keywords: ['tiers', 'elite', 'pro', 'standard', 'pricing', 'levels'],
-    confidence: 0.91,
+    keywords: ['improve', 'evolution', 'self-improving', 'modernizer', 'evolve'],
+    confidence: 0.92,
+    verified: true,
+    priority: 'high',
+  },
+];
+
+// ============================================================================
+// Pricing & Tiers Knowledge
+// ============================================================================
+
+export const PRICING_KNOWLEDGE: KnowledgeEntry[] = [
+  {
+    id: 'pricing_001',
+    question_pattern: 'What are the pricing tiers?',
+    answer: `CMPSBL offers four access tiers:
+
+**Builder (Free) — $0/mo**
+• 3 Memory Stream crystallizations per day
+• Artifact Store access
+• Persistent Memory
+• Composition capabilities
+
+**Studio — $29/mo**
+• 6 crystallizations per day
+• Expanded artifact store
+• Executable capabilities
+• Synergy pipelines
+
+**Creator — $49/mo**
+• 9 crystallizations per day
+• Cross-system orchestration
+• Larger memory allocation
+• Priority support
+
+**Architect — $79/mo**
+• 12 crystallizations per day
+• Organization workspaces
+• Full governance controls
+• SLA support
+
+Start free — no credit card required. Upgrade anytime at /upgrade.`,
+    category: 'question',
+    keywords: ['pricing', 'tiers', 'cost', 'price', 'how much', 'plans', 'free'],
+    confidence: 0.95,
+    verified: true,
+    priority: 'critical',
+  },
+  {
+    id: 'pricing_002',
+    question_pattern: 'Is there a free tier?',
+    answer: `Yes! The Builder tier is completely free:
+
+• 3 Memory Stream crystallizations per day
+• Full access to the Artifact Store
+• Persistent Memory
+• Composition capabilities
+• 3 pipeline slots included
+
+No credit card required. Create an account and start immediately. You can upgrade to Studio ($29), Creator ($49), or Architect ($79) anytime.`,
+    category: 'question',
+    keywords: ['free', 'trial', 'free tier', 'builder', 'no cost'],
+    confidence: 0.94,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'marketplace_005',
-    question_pattern: 'Can I get a refund on a template?',
-    answer: `Template refund policy:
+    id: 'pricing_003',
+    question_pattern: 'How many crystallizations do I get per day?',
+    answer: `Daily Memory Stream crystallization limits by tier:
 
-**Digital products are generally non-refundable** due to immediate access upon purchase. However, exceptions may be made for:
+• Builder (Free): 3 per day
+• Studio ($29/mo): 6 per day
+• Creator ($49/mo): 9 per day
+• Architect ($79/mo): 12 per day
 
-• Technical issues preventing download
-• Template not matching documented features
-• Duplicate purchases
-
-To request a refund:
-1. Contact Dev@CMPSBL.com within 7 days
-2. Include your order ID and reason
-3. Our team will review and respond within 48 hours
-
-For technical issues, we'll first attempt to resolve the problem before processing refunds.`,
-    category: 'account',
-    keywords: ['refund', 'money back', 'return', 'cancel', 'purchase'],
-    confidence: 0.88,
+Each crystallization pulls a real, scored pipeline (quality floor: 68+) from the Memory Stream into your workspace. Limits reset daily.`,
+    category: 'question',
+    keywords: ['crystallizations', 'pulls', 'daily', 'limit', 'how many'],
+    confidence: 0.95,
     verified: true,
-    priority: 'medium',
+    priority: 'high',
   },
   {
-    id: 'marketplace_006',
-    question_pattern: 'How do I access my purchased templates?',
-    answer: `To access templates you've purchased:
+    id: 'pricing_004',
+    question_pattern: 'What are Composable Cognitives?',
+    answer: `Composable Cognitives are standalone, production-grade AI capabilities you can purchase individually for $39 each.
+
+They are Sealed Engines — crystallized from high-scoring Memory Stream pipelines. Each Cognitive is a self-contained runtime you can deploy independently.
+
+Composable Cognitives work with any tier and don't require a subscription. They're ideal if you want a specific capability without committing to a higher plan.`,
+    category: 'question',
+    keywords: ['cognitives', 'standalone', '$39', 'composable', 'purchase'],
+    confidence: 0.92,
+    verified: true,
+    priority: 'high',
+  },
+  {
+    id: 'pricing_005',
+    question_pattern: 'How do I upgrade my plan?',
+    answer: `To upgrade your CMPSBL plan:
 
 1. Sign in to your account
-2. Navigate to your Dashboard
-3. Click on "My Purchases" or "Templates"
-4. Find your template and click "Download"
+2. Navigate to /upgrade
+3. Select your desired tier (Studio, Creator, or Architect)
+4. Complete checkout via Stripe
+5. Your new tier activates immediately
 
-**Access includes:**
-• Source code in a ZIP file
-• Documentation in Markdown
-• Any associated assets
-• Update access based on your tier
-
-Templates are linked to your account and can be re-downloaded anytime during your update access period.`,
+Upgrades are prorated — you only pay the difference for the remaining billing period. You can upgrade at any time.`,
     category: 'how_to',
-    keywords: ['access', 'download', 'purchased', 'my templates', 'dashboard'],
-    confidence: 0.90,
+    keywords: ['upgrade', 'change plan', 'higher tier', 'switch'],
+    confidence: 0.93,
     verified: true,
     priority: 'high',
-  },
-  {
-    id: 'marketplace_007',
-    question_pattern: 'What is template rarity?',
-    answer: `Template rarity indicates complexity and uniqueness:
-
-• **Common** — Basic patterns, widely applicable
-• **Uncommon** — Enhanced functionality, moderate complexity
-• **Rare** — Specialized patterns, significant engineering
-• **Epic** — Advanced cognitive integration, complex architecture
-• **Legendary** — Highly specialized, extensive R&D
-• **Mythic** — Unique, maximum complexity and value
-
-Rarity is calculated based on:
-• Engineering time required
-• Cognitive primitive usage
-• Pattern uniqueness
-• Integration complexity
-
-Higher rarity generally means higher value and price.`,
-    category: 'question',
-    keywords: ['rarity', 'common', 'rare', 'epic', 'legendary', 'mythic'],
-    confidence: 0.89,
-    verified: true,
-    priority: 'medium',
   },
 ];
 
 // ============================================================================
-// Licensing Knowledge
+// Getting Started Knowledge
 // ============================================================================
 
-export const LICENSING_KNOWLEDGE: KnowledgeEntry[] = [
+export const GETTING_STARTED_KNOWLEDGE: KnowledgeEntry[] = [
   {
-    id: 'licensing_001',
-    question_pattern: 'What licensing options are available?',
-    answer: `The CMPSBL Substrate offers tiered infrastructure licensing:
+    id: 'start_001',
+    question_pattern: 'How do I get started?',
+    answer: `Getting started with CMPSBL is simple:
 
-**Developer License** — $15,000/year
-• Automated Stripe checkout
-• Local deployment on your infrastructure
-• SDK access and documentation
-• Community support
+1. **Create an account** — Sign up for free at /auth. No credit card required.
+2. **Explore the Memory Stream** — Visit /memory-stream to see crystallized pipelines
+3. **Activate Pipeline Packs** — Choose capabilities that match your workload from 24 available packs across 6 strategic domains
+4. **Start crystallizing** — Pull real, scored pipelines from the Memory Stream (3 free pulls per day)
 
-**Research License** — $80,000/year
-• Institutional research focus
-• Academic use rights
-• Publication support
-• Contact-based contract
-
-**Enterprise License** — $180,000/year
-• Product embedding rights
-• SLA support
-• Custom integration
-• Dedicated account manager
-
-**Strategic** — Custom pricing
-• Cloud/autonomy partnerships
-• Exclusive arrangements
-• Contact for details
-
-Annual billing provides 25% discount.`,
-    category: 'question',
-    keywords: ['licensing', 'options', 'license', 'tiers', 'pricing'],
-    confidence: 0.95,
-    verified: true,
-    priority: 'critical',
-  },
-  {
-    id: 'licensing_002',
-    question_pattern: 'How much does a license cost?',
-    answer: `Substrate licensing pricing:
-
-| Tier | Annual Price | Monthly Equivalent |
-|------|-------------|-------------------|
-| Developer | $15,000/yr | ~$1,250/mo |
-| Research | $80,000/yr | Contact sales |
-| Enterprise | $180,000/yr | Contact sales |
-| Strategic | Custom | Contact sales |
-
-**Notes:**
-• Only Developer tier has automated checkout
-• Annual billing includes 25% discount
-• Research/Enterprise require contract negotiation
-• Downgrade restrictions apply mid-term
-
-Contact Dev@CMPSBL.com for quotes and custom arrangements.`,
-    category: 'question',
-    keywords: ['cost', 'price', 'pricing', 'how much', 'fee'],
+Your free Builder tier gives you 3 pipeline slots immediately. Upgrade anytime for more slots and daily crystallizations.`,
+    category: 'how_to',
+    keywords: ['get started', 'begin', 'start', 'new user', 'sign up', 'onboarding'],
     confidence: 0.94,
     verified: true,
     priority: 'critical',
   },
   {
-    id: 'licensing_003',
-    question_pattern: 'How do I purchase a Developer License?',
-    answer: `The Developer License ($15,000/year) is the only tier with automated checkout:
+    id: 'start_002',
+    question_pattern: 'How do I create an account?',
+    answer: `To create a CMPSBL account:
 
-1. Navigate to /substrate/licensing
-2. Select "Developer License"
-3. Click "Purchase License"
-4. Complete Stripe checkout
-5. Receive instant access and download links
+1. Go to /auth
+2. Click "Sign Up"
+3. Enter your email address and create a password
+4. Check your email for a verification link
+5. Click the link to verify your account
+6. Sign in and you're ready to go
 
-**Included:**
-• Full API access (all 10 entities + 5 mesh overlays via hosted API)
-• Unlimited API calls (fair use)
-• Documentation library
-• 12 months of updates
-• Community support channel
-
-Note: Developer license provides hosted API access. For self-hosted deployment with source code, see Enterprise tier ($49,999/yr).
-
-For Research, Enterprise, or Strategic licenses, contact Dev@CMPSBL.com for contract-based purchase.`,
+You'll start on the Builder (Free) tier with 3 pipeline slots and 3 daily Memory Stream crystallizations. No credit card required.`,
     category: 'how_to',
-    keywords: ['purchase', 'buy', 'developer license', 'checkout', 'how to buy'],
+    keywords: ['account', 'create', 'sign up', 'register', 'join'],
     confidence: 0.93,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'licensing_004',
-    question_pattern: 'What is the difference between templates and licenses?',
-    answer: `**Templates** and **Licenses** serve different purposes:
-
-**Marketplace Templates ($27-$499)**
-• Pre-built patterns and components
-• One-time purchase
-• Use in your projects
-• No substrate infrastructure included
-
-**Substrate Licenses ($15,000-$180,000+/yr)**
-• Full cognitive infrastructure
-• Deploy the entire substrate
-• Run your own instance
-• Build products on top
-
-**Think of it as:**
-• Templates = buying furniture
-• License = buying the factory
-
-Templates run ON the substrate; licenses give you the substrate itself.`,
-    category: 'question',
-    keywords: ['difference', 'templates', 'licenses', 'compare', 'vs'],
-    confidence: 0.92,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'licensing_005',
-    question_pattern: 'Can I downgrade my license?',
-    answer: `License downgrade policy:
-
-**Mid-term downgrades are NOT permitted.** If you need to downgrade:
-
-1. Your request is queued for end of renewal cycle
-2. You retain current tier access until expiration
-3. Downgrade takes effect at next renewal
-4. Refunds are not provided for unused time
-
-**Upgrades** are processed immediately with prorated billing.
-
-This policy ensures predictable infrastructure planning and fair usage of resources.
-
-Contact Dev@CMPSBL.com for special circumstances.`,
-    category: 'account',
-    keywords: ['downgrade', 'lower', 'reduce', 'change tier', 'cancel'],
-    confidence: 0.88,
-    verified: true,
-    priority: 'medium',
-  },
-  {
-    id: 'licensing_006',
-    question_pattern: 'What rights do I get with a license?',
-    answer: `License rights follow a Rights & Permissions Matrix:
-
-**Developer License:**
-• Personal use ✓
-• Commercial use ✓ (limited)
-• Internal deployment ✓
-• Client distribution ✗
-• White-label ✗
-• BYOK (Bring Your Own Key) ✓
-
-**Enterprise License:**
-• All Developer rights ✓
-• Client distribution ✓
-• White-label (negotiable)
-• Custom SLA ✓
-• Priority support ✓
-
-**Research License:**
-• Academic use ✓
-• Publication rights ✓
-• Commercial use ✗
-
-Full matrix available at /substrate/licensing.`,
-    category: 'question',
-    keywords: ['rights', 'permissions', 'what can i do', 'allowed', 'usage'],
-    confidence: 0.91,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'licensing_007',
-    question_pattern: 'How do I contact sales for Enterprise licensing?',
-    answer: `For Enterprise, Research, or Strategic licensing inquiries:
-
-**Email:** Dev@CMPSBL.com
-**Phone:** (760) FLUID-AI
-
-**Please include:**
-• Organization name
-• Intended use case
-• Deployment scale requirements
-• Timeline for implementation
-
-Our team typically responds within 24-48 business hours. For urgent inquiries, phone is preferred.
-
-Enterprise contracts involve:
-• Custom pricing negotiation
-• SLA definition
-• Integration planning
-• Dedicated onboarding`,
-    category: 'account',
-    keywords: ['contact', 'sales', 'enterprise', 'inquiry', 'reach out'],
-    confidence: 0.90,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'licensing_008',
-    question_pattern: 'Is there a free trial?',
-    answer: `Currently, we do not offer free trials for substrate licenses due to infrastructure costs. However:
-
-**Free exploration options:**
-• Browse documentation at /library
-• Explore CodeLab for terminal interaction
-• View template previews in Marketplace
-• Read the technical specifications
-
-**Low-commitment entry:**
-• Marketplace templates ($27-$499) let you experience substrate-powered patterns
-• Developer License ($15,000/yr) is the lowest infrastructure tier
-
-For evaluation discussions or proof-of-concept arrangements, contact Dev@CMPSBL.com.`,
-    category: 'question',
-    keywords: ['free trial', 'trial', 'demo', 'try', 'test', 'free'],
-    confidence: 0.87,
-    verified: true,
-    priority: 'medium',
-  },
-];
-
-// ============================================================================
-// General/Support Knowledge
-// ============================================================================
-
-export const GENERAL_KNOWLEDGE: KnowledgeEntry[] = [
-  {
-    id: 'general_001',
-    question_pattern: 'How do I contact support?',
-    answer: `You can reach support through several channels:
-
-**Email:** Dev@CMPSBL.com
-**Phone:** (760) FLUID-AI
-
-**Self-service:**
-• This Support Bot (available 24/7)
-• Documentation at /library
-• FAQ sections on product pages
-
-**Response times:**
-• Email: 24-48 business hours
-• Phone: Business hours (CST)
-• Support Bot: Instant
-
-For urgent issues, phone is recommended. For complex technical questions, email with details is preferred.`,
-    category: 'account',
-    keywords: ['contact', 'support', 'help', 'reach', 'email', 'phone'],
-    confidence: 0.93,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'general_002',
-    question_pattern: 'What is CMPSBL?',
-    answer: `CMPSBL (Composable) is the cognitive infrastructure substrate powering the Clockless Cognitive Reality System. It is NOT an operating system — it is a substrate.
-
-**Architecture:**
-• 38 total nodes across 12 sectors
-• 1 CORE Kernel — the standalone boot authority
-• 1 SYSTEM — lifecycle management
-• CCR (3): BRAIN, MEMORY, DREAM — cognitive core
-• OCG (6): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE — compliance grid
-• Execution (10): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION
-• ESZ (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY — sovereignty zone
-• EPZ (3): COMPASS, ECHO, REFLEX — perception zone
-• EMZ (3): FORGE, LINGUA, HARVEST — manufacturing zone
-• CSZ (3): EVOLUTION, SHADOW, PHANTOM — covert systems zone
-• Fields (2): IMMUNITY, INTENT — cross-cutting fabric
-• Plane (1): GOVERNANCE — supervisory blanket
-• Shell (1): DEFENSE — outer containment boundary
-
-**Key characteristics:**
-• Persistent memory systems (no resets)
-• Intent interpretation via DECODE
-• Autonomous learning cycles
-• Governed evolution with audit trails
-• Self-defense and resilience
-
-It's designed as infrastructure, not a product — a substrate for building cognitive applications.`,
-    category: 'question',
-    keywords: ['cmpsbl', 'composable', 'what is', 'platform', 'substrate', 'architecture', 'modules'],
-    confidence: 0.95,
-    verified: true,
-    priority: 'critical',
-  },
-  {
-    id: 'general_003',
+    id: 'start_003',
     question_pattern: 'How do I reset my password?',
     answer: `To reset your password:
 
-1. Go to the login page
+1. Go to the login page at /auth
 2. Click "Forgot Password"
 3. Enter your registered email
-4. Check your inbox for reset link
-5. Click the link and set new password
+4. Check your inbox for a reset link
+5. Click the link and set a new password
 
-**Note:** Reset links expire after 24 hours.
-
-If you don't receive the email:
-• Check spam/junk folders
-• Verify you're using the correct email
-• Contact support if issues persist
-
-For account security, we recommend using a strong, unique password.`,
+Reset links expire after 24 hours. If you don't receive the email, check your spam folder or contact support@cmpsbl.com.`,
     category: 'account',
     keywords: ['password', 'reset', 'forgot', 'login', 'access'],
     confidence: 0.91,
     verified: true,
     priority: 'high',
   },
+];
+
+// ============================================================================
+// Security & Architecture Knowledge
+// ============================================================================
+
+export const SECURITY_KNOWLEDGE: KnowledgeEntry[] = [
   {
-    id: 'general_004',
-    question_pattern: 'Is my data secure?',
-    answer: `Data security is a core priority:
+    id: 'security_001',
+    question_pattern: 'Is CMPSBL secure?',
+    answer: `Yes. Security is built into the core of CMPSBL through the DEFENSE system:
 
-**Technical Measures:**
-• Encryption at rest and in transit (TLS 1.3)
+• Rate limiting and bot detection
+• Input sanitization on all endpoints
+• Passwordless WebAuthn authentication support
+• Complete audit logging via the AUDIT system
 • Row Level Security (RLS) on all user data
-• No plain-text storage of sensitive data
-• Regular security audits
+• Encryption at rest and in transit (TLS 1.3)
 
-**DEFENSE Mesh Overlay:**
-• Behavioral analysis for threat detection
-• IP reputation tracking
-• Rate limiting and abuse prevention
-• Automatic anomaly alerting
+The DEFENSE system is an outer containment boundary — a mesh overlay that spans all systems. All access attempts are monitored, logged, and analyzed for threats.
 
-**Data Sovereignty:**
-• Brain memory data remains your property
-• Deletion requests honored
-• No data sold or transferred
-• Learning transparency maintained
-
-See /library for detailed security documentation.`,
+CMPSBL follows compliance-ready patterns for SOC 2 and GDPR.`,
     category: 'question',
-    keywords: ['secure', 'security', 'data', 'privacy', 'safe'],
-    confidence: 0.92,
+    keywords: ['secure', 'security', 'safe', 'defense', 'privacy', 'data'],
+    confidence: 0.93,
     verified: true,
     priority: 'high',
   },
   {
-    id: 'general_005',
+    id: 'security_002',
+    question_pattern: 'How is CMPSBL different from LangChain?',
+    answer: `CMPSBL and LangChain serve different purposes:
+
+| Aspect | LangChain | CMPSBL |
+|--------|-----------|--------|
+| Type | Library | Infrastructure |
+| Memory | You build it | Built-in, multi-tier |
+| Learning | None | Autonomous |
+| Security | You build it | Built-in (DEFENSE) |
+| EVOLUTION | None | Self-improving |
+| AI Routing | Manual | NEXUS router (automatic) |
+
+LangChain is a toolkit for chaining LLM calls. CMPSBL is the infrastructure layer underneath — persistent memory, governed EVOLUTION, security, and intelligent routing all built in.`,
+    category: 'question',
+    keywords: ['langchain', 'different', 'compare', 'vs', 'comparison'],
+    confidence: 0.92,
+    verified: true,
+    priority: 'high',
+  },
+];
+
+// ============================================================================
+// Support & Contact Knowledge
+// ============================================================================
+
+export const SUPPORT_KNOWLEDGE: KnowledgeEntry[] = [
+  {
+    id: 'support_001',
+    question_pattern: 'How do I contact support?',
+    answer: `You can reach CMPSBL support through:
+
+**Email:** support@cmpsbl.com
+Response time: within 48 hours
+
+**Self-service options:**
+• This Support Bot (available 24/7, memory-backed)
+• Documentation at /documentation
+• FAQ section on this page (searchable)
+
+**For account or billing questions:**
+Email support@cmpsbl.com with your account email and details.
+
+If the support bot can't resolve your issue, click "Escalate to Human" and we'll follow up via email.`,
+    category: 'account',
+    keywords: ['contact', 'support', 'help', 'reach', 'email', 'human'],
+    confidence: 0.94,
+    verified: true,
+    priority: 'critical',
+  },
+  {
+    id: 'support_002',
+    question_pattern: 'Can I talk to a human?',
+    answer: `Absolutely. You have two options:
+
+1. **Escalate from this chat** — Click "Escalate to Human" and our team will follow up at support@cmpsbl.com within 48 hours.
+
+2. **Email directly** — Send your question to support@cmpsbl.com. Include your account email and a description of your issue.
+
+The support bot handles common questions instantly, but we always prioritize getting you to a human when you need one. We never guess — if the bot isn't confident, it escalates automatically.`,
+    category: 'account',
+    keywords: ['human', 'person', 'real person', 'talk to someone', 'escalate'],
+    confidence: 0.94,
+    verified: true,
+    priority: 'high',
+  },
+  {
+    id: 'support_003',
+    question_pattern: 'Where is the documentation?',
+    answer: `CMPSBL documentation is available at /documentation. It covers:
+
+• Getting started guides
+• Memory Stream and Pipeline Pack usage
+• Architecture overview
+• API reference
+• Security and governance documentation
+
+You can also browse the Evolution Log at /changelog for recent updates. For questions not covered in the docs, ask this support bot or email support@cmpsbl.com.`,
+    category: 'question',
+    keywords: ['documentation', 'docs', 'guides', 'reference', 'library'],
+    confidence: 0.91,
+    verified: true,
+    priority: 'high',
+  },
+  {
+    id: 'support_004',
     question_pattern: 'What browsers are supported?',
-    answer: `The platform supports modern browsers:
+    answer: `CMPSBL supports all modern browsers:
 
-**Fully Supported:**
-• Chrome 90+
-• Firefox 88+
-• Safari 14+
-• Edge 90+
+**Fully supported:** Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+**Mobile:** iOS Safari 14+, Chrome Mobile, Samsung Internet
+**Not supported:** Internet Explorer, browsers with JavaScript disabled
 
-**Mobile:**
-• iOS Safari 14+
-• Chrome Mobile
-• Samsung Internet
-
-**Not Supported:**
-• Internet Explorer
-• Opera Mini
-• Browsers with JavaScript disabled
-
-For best experience, use the latest version of Chrome or Firefox. Some features like CodeLab terminal work best on desktop browsers.`,
+For the best experience, use the latest version of Chrome or Firefox on desktop.`,
     category: 'troubleshoot',
-    keywords: ['browser', 'supported', 'chrome', 'firefox', 'safari', 'compatibility'],
+    keywords: ['browser', 'supported', 'chrome', 'firefox', 'safari', 'mobile'],
     confidence: 0.88,
     verified: true,
     priority: 'medium',
   },
   {
-    id: 'general_006',
-    question_pattern: 'How many modules does the substrate have?',
-    answer: `The CMPSBL Substrate has **38 active nodes** across **12 sectors**:
+    id: 'support_005',
+    question_pattern: 'I have a billing issue',
+    answer: `For billing issues, email support@cmpsbl.com with:
 
-1. **CORE** — Standalone kernel boot authority
-2. **SYSTEM** — Lifecycle management
-3. **CCR** (3): BRAIN, MEMORY, DREAM
-4. **OCG** (6): RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
-5. **Execution** (10): DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION
-6. **ESZ** (4): SOVEREIGN, ORACLE, CONSCIENCE, TREATY
-7. **EPZ** (3): COMPASS, ECHO, REFLEX
-8. **EMZ** (3): FORGE, LINGUA, HARVEST
-9. **CSZ** (3): EVOLUTION, SHADOW, PHANTOM
-10. **Fields** (2): IMMUNITY, INTENT
-11. **Plane** (1): GOVERNANCE
-12. **Shell** (1): DEFENSE
+• Your account email
+• Description of the issue (charge question, refund request, etc.)
+• Any relevant order or transaction IDs
 
-**Important distinctions:**
-• 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers
-• 4 Shielded Expansion Zones: ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM)
-• Grand total: 38 nodes across 12 sectors
+We'll respond within 48 hours. All payments are processed securely through Stripe.
 
-Do NOT confuse overlays or zones with modules.`,
-    category: 'question',
-    keywords: ['modules', 'how many', 'entities', 'architecture', 'count', 'number'],
-    confidence: 0.95,
-    verified: true,
-    priority: 'critical',
-  },
-  {
-    id: 'general_007',
-    question_pattern: 'What are mesh overlays?',
-    answer: `Mesh Overlays are cross-cutting behavioral layers that span all entities in the substrate. They are NOT modules.
-
-The 5 Mesh Overlays:
-1. **DEFENSE** — Security posture, threat detection, IP reputation
-2. **IMMUNITY** — Self-healing, repair attempts, fault isolation
-3. **EVOLUTION** — Governed mutations, A/B testing, versioned upgrades
-4. **INTENT** — Goal alignment, priority resolution
-5. **GOVERNANCE** — Safety checks, policy enforcement, audit compliance
-
-**Key difference from modules:**
-• Modules are discrete functional units (DECODE, ENCODE, etc.)
-• Overlays span across ALL modules and zones simultaneously
-• You interact with modules directly; overlays operate autonomously in the background`,
-    category: 'question',
-    keywords: ['mesh', 'overlay', 'defense', 'immunity', 'evolution', 'intent', 'governance'],
-    confidence: 0.93,
-    verified: true,
-    priority: 'high',
-  },
-  {
-    id: 'general_008',
-    question_pattern: 'What is CORE?',
-    answer: `CORE is the kernel of the CMPSBL Substrate — the standalone boot authority.
-
-**Responsibilities:**
-• Initializes all downstream layers
-• Maintains the canonical registry of all entities, zones, and overlays
-• Manages boot graph and dependency resolution
-• Has no upstream dependencies — it IS the root
-
-**CORE is not a module.** It is a kernel. The 10 public entities are: 1 CORE Kernel + 9 Modules.
-
-CORE boots the system, then the 9 modules, 5 mesh overlays, and 9 hidden zones all operate under its authority.`,
-    category: 'question',
-    keywords: ['core', 'kernel', 'boot', 'authority', 'root'],
-    confidence: 0.93,
+If you need to cancel or change your plan, you can do so from your account settings or by contacting us.`,
+    category: 'account',
+    keywords: ['billing', 'charge', 'refund', 'payment', 'invoice', 'cancel'],
+    confidence: 0.90,
     verified: true,
     priority: 'high',
   },
@@ -765,10 +483,11 @@ CORE boots the system, then the 9 modules, 5 mesh overlays, and 9 hidden zones a
 // ============================================================================
 
 export const FULL_KNOWLEDGE_BASE: KnowledgeEntry[] = [
-  ...CODELAB_KNOWLEDGE,
-  ...MARKETPLACE_KNOWLEDGE,
-  ...LICENSING_KNOWLEDGE,
-  ...GENERAL_KNOWLEDGE,
+  ...PLATFORM_KNOWLEDGE,
+  ...PRICING_KNOWLEDGE,
+  ...GETTING_STARTED_KNOWLEDGE,
+  ...SECURITY_KNOWLEDGE,
+  ...SUPPORT_KNOWLEDGE,
 ];
 
 // ============================================================================
@@ -776,10 +495,11 @@ export const FULL_KNOWLEDGE_BASE: KnowledgeEntry[] = [
 // ============================================================================
 
 export const KNOWLEDGE_CATEGORIES = {
-  codelab: CODELAB_KNOWLEDGE,
-  marketplace: MARKETPLACE_KNOWLEDGE,
-  licensing: LICENSING_KNOWLEDGE,
-  general: GENERAL_KNOWLEDGE,
+  platform: PLATFORM_KNOWLEDGE,
+  pricing: PRICING_KNOWLEDGE,
+  getting_started: GETTING_STARTED_KNOWLEDGE,
+  security: SECURITY_KNOWLEDGE,
+  support: SUPPORT_KNOWLEDGE,
 } as const;
 
 export type KnowledgeCategory = keyof typeof KNOWLEDGE_CATEGORIES;

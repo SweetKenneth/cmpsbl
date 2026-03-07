@@ -276,9 +276,10 @@ export function SupportBotPanel() {
                   <div className="flex flex-wrap gap-2 justify-center mt-6">
                      {[
                       'What is CMPSBL?',
-                      'How does memory work?',
+                      'What is the Memory Stream?',
                       'What are the pricing tiers?',
-                      'How do I contact support?',
+                      'How do I get started?',
+                      'Can I talk to a human?',
                     ].map((q) => (
                       <Button 
                         key={q}
@@ -478,7 +479,7 @@ export function SupportBotPanel() {
                 Pre-trained Topics
               </h5>
               <div className="flex flex-wrap gap-1">
-                {['CodeLab', 'Marketplace', 'Licensing', 'General'].map((topic) => (
+                {['Platform', 'Pricing', 'Getting Started', 'Security', 'Support'].map((topic) => (
                   <Badge key={topic} variant="outline" className="text-xs">
                     {topic}
                   </Badge>
