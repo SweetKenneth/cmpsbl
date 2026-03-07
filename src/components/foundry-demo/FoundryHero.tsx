@@ -7,7 +7,7 @@ import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryHero() {
   return (
-    <section className="relative flex flex-col items-center justify-start px-4 sm:px-6 pt-16 sm:pt-20 pb-12 sm:pb-14 overflow-hidden">
+    <section className="relative flex flex-col items-center justify-start px-4 sm:px-6 pt-16 sm:pt-20 pb-14 sm:pb-16 overflow-hidden">
       {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -20,20 +20,10 @@ export function FoundryHero() {
       {/* Radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.06),transparent_60%)]" />
 
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative text-center max-w-4xl w-full"
-      >
-        <motion.div
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.3em] sm:tracking-[0.4em] text-muted-foreground mb-6 sm:mb-8"
-        >
+      <div className="relative text-center max-w-4xl w-full">
+        <div className="text-xs sm:text-xs font-mono uppercase tracking-[0.25em] sm:tracking-[0.4em] text-muted-foreground mb-6 sm:mb-8">
           Memory Stream — CMPSBL®
-        </motion.div>
+        </div>
 
         <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-6 sm:mb-8">
           Software that
@@ -54,47 +44,27 @@ export function FoundryHero() {
 
         {/* Key stat trio */}
         <div className="flex items-center justify-center gap-6 sm:gap-8 md:gap-16 font-mono">
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">1,143</div>
-            <div className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-[0.15em] sm:tracking-[0.2em]">Pipelines Crystallized</div>
-          </motion.div>
+            <div className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-[0.12em] sm:tracking-[0.2em]">Pipelines Crystallized</div>
+          </div>
           <div className="w-px h-8 sm:h-10 bg-border/30" />
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-primary">95</div>
-            <div className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-[0.15em] sm:tracking-[0.2em]">Perfect CJPI 100</div>
-          </motion.div>
+            <div className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-[0.12em] sm:tracking-[0.2em]">Perfect CJPI 100</div>
+          </div>
           <div className="w-px h-8 sm:h-10 bg-border/30" />
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <div className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground">~9h</div>
-            <div className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-[0.15em] sm:tracking-[0.2em]">Total Runtime</div>
-          </motion.div>
+            <div className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-[0.12em] sm:tracking-[0.2em]">Total Runtime</div>
+          </div>
         </div>
 
         {/* Runtime detail */}
-        <motion.div
-          initial={false}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35 }}
-          className="mt-6 sm:mt-8 text-[10px] sm:text-xs font-mono text-muted-foreground/50 px-2"
-        >
+        <div className="mt-6 sm:mt-8 text-xs sm:text-xs font-mono text-muted-foreground/50 px-2">
           431 autonomous discovery runs · 9 capability domains · avg CJPI 94.0
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div

@@ -8,35 +8,35 @@ const JOURNEY_STEPS = [
   {
     phase: '01',
     title: 'Signal Capture',
-    description: 'The Memory Stream continuously monitors the substrate — a living network of interconnected software systems. Every interaction, every mutation, every emergent behavior is recorded as a signal. These signals are the raw material of discovery.',
+    description: 'The Memory Stream continuously monitors the substrate — a living network of interconnected software systems. Every interaction, every mutation, every emergent behavior is recorded as a signal.',
     detail: 'Signals are not instructions. They are observations. The stream watches what systems do when left to interact freely.',
     icon: '◉',
   },
   {
     phase: '02',
     title: 'Memory Formation',
-    description: 'When signals repeat with enough fidelity, they condense into memories — stable patterns that represent viable software configurations. A memory is a hypothesis: this combination of systems produces something useful.',
+    description: 'When signals repeat with enough fidelity, they condense into memories — stable patterns that represent viable software configurations.',
     detail: 'Not every signal becomes a memory. The stream enforces a quality floor of 68. Below that threshold, patterns dissolve back into noise.',
     icon: '◈',
   },
   {
     phase: '03',
     title: 'Crystallization',
-    description: 'Strong memories crystallize into pipelines — complete, production-grade software systems scored by the CJPI engine. Each pipeline is a real program with real capabilities, assembled from substrate systems that were never explicitly designed to work together.',
+    description: 'Strong memories crystallize into pipelines — complete, production-grade software systems scored by the CJPI engine. Each pipeline is a real program with real capabilities.',
     detail: 'Crystallization is irreversible. Once a pipeline forms, it enters the permanent registry. 1,143 have formed so far.',
     icon: '◆',
   },
   {
     phase: '04',
     title: 'Software Export',
-    description: 'Crystallized pipelines can be exported as deployable software. They carry their full lineage — which systems combined, what score they achieved, which tier they occupy. Every export is traceable back to its original signal.',
+    description: 'Crystallized pipelines can be exported as deployable software. They carry their full lineage — which systems combined, what score they achieved, which tier they occupy.',
     detail: 'Exported pipelines are sealed. They run as discovered — no modification, no tampering, no drift.',
     icon: '▣',
   },
   {
     phase: '05',
     title: 'Silicon Boundary',
-    description: 'When a memory proves rare enough — strong enough — it crosses the final boundary. From code into physical silicon. Burned onto hardware that outlasts every runtime it was born from. This is the endgame: software so stable it deserves to exist in matter.',
+    description: 'When a memory proves rare enough — strong enough — it crosses the final boundary. From code into physical silicon. Burned onto hardware that outlasts every runtime.',
     detail: 'The silicon boundary is not theoretical. It is the natural conclusion of a system that produces software faster than humans can review it.',
     icon: '◇',
   },
@@ -44,20 +44,20 @@ const JOURNEY_STEPS = [
 
 export function MemoryStreamExplainer() {
   return (
-    <section id="how-it-works" className="py-10 sm:py-14 md:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section id="how-it-works" className="py-14 sm:py-16 md:py-24 px-5 sm:px-6 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(var(--primary)/0.04),transparent_60%)]" />
 
       <div className="max-w-4xl mx-auto relative">
         <div>
-          <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
+          <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
             From Signal to Silicon
           </h2>
-          <p className="text-center text-muted-foreground/70 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base px-2">
+          <p className="text-center text-muted-foreground/70 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base px-1">
             The Memory Stream is not a tool. It is a continuous process that transforms raw system behavior
             into permanent software — and when that software proves exceptional, into physical hardware.
           </p>
-          <p className="text-center text-muted-foreground/40 mb-16 sm:mb-20 max-w-xl mx-auto text-xs sm:text-sm font-mono px-2">
+          <p className="text-center text-muted-foreground/40 mb-14 sm:mb-20 max-w-xl mx-auto text-xs sm:text-sm font-mono px-1">
             Every stage is autonomous. Every output is verifiable. Nothing is simulated.
           </p>
         </div>
@@ -72,22 +72,22 @@ export function MemoryStreamExplainer() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="relative pl-12 sm:pl-16 md:pl-20"
+                className="relative pl-14 sm:pl-16 md:pl-20"
               >
-                <div className="absolute left-2 sm:left-3 md:left-5 top-1 w-6 h-6 rounded-full border border-border/30 bg-background flex items-center justify-center">
-                  <span className="text-xs text-primary font-mono">{step.icon}</span>
+                <div className="absolute left-2 sm:left-3 md:left-5 top-1 w-7 h-7 sm:w-6 sm:h-6 rounded-full border border-border/30 bg-background flex items-center justify-center">
+                  <span className="text-sm sm:text-xs text-primary font-mono">{step.icon}</span>
                 </div>
-                <div className="text-[9px] sm:text-[10px] font-mono text-primary/60 uppercase tracking-[0.3em] mb-1">
+                <div className="text-[11px] sm:text-xs font-mono text-primary/60 uppercase tracking-[0.3em] mb-1">
                   Phase {step.phase}
                 </div>
-                <h3 className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-foreground mb-2 sm:mb-3">
+                <h3 className="text-xl sm:text-xl md:text-2xl font-black tracking-tight text-foreground mb-2 sm:mb-3">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground/70 leading-relaxed mb-3 text-sm">
+                <p className="text-muted-foreground/70 leading-relaxed mb-3 text-sm sm:text-base">
                   {step.description}
                 </p>
-                <div className="bg-card/30 border border-border/15 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3">
-                  <p className="text-[11px] sm:text-xs font-mono text-muted-foreground/50 leading-relaxed">
+                <div className="bg-card/30 border border-border/15 rounded-lg px-4 sm:px-4 py-3 sm:py-3">
+                  <p className="text-xs sm:text-xs font-mono text-muted-foreground/50 leading-relaxed">
                     {step.detail}
                   </p>
                 </div>
@@ -96,9 +96,9 @@ export function MemoryStreamExplainer() {
           </div>
         </div>
 
-        <div className="mt-16 sm:mt-20 text-center">
-          <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-3 sm:py-4 max-w-lg">
-            <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
+        <div className="mt-14 sm:mt-20 text-center">
+          <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-5 sm:px-6 py-3.5 sm:py-4 max-w-lg">
+            <p className="text-sm sm:text-sm text-muted-foreground/70 leading-relaxed">
               The Memory Stream has already produced{' '}
               <span className="text-foreground font-bold">1,143 crystallized pipelines</span> across{' '}
               <span className="text-foreground font-bold">9 capability domains</span> — autonomously,
