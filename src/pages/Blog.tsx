@@ -408,11 +408,11 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ms-signal-silicon', title: "Signal → Silicon: How Raw Signals Become Crystallized Software",
-    excerpt: "The complete narrative behind CMPSBL's Signal → Silicon pipeline — from behavioral signals through 38-node processing to physical silicon.",
+    excerpt: "The complete narrative behind CMPSBL's Signal → Silicon pipeline — from behavioral signals through 40-node processing to physical silicon.",
     href: "/blog/signal-to-silicon-narrative", category: "Research",
     date: "2026-03-04", readTime: "20 min", image: signalToSiliconImg,
     imageAlt: "Digital signals flowing through neural pathways and condensing into a silicon microprocessor",
-    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ms-tier-anatomy', title: "Anatomy of Memory Stream Tiers: Rarity, Scoring & What Each Tier Means",
@@ -420,7 +420,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/memory-stream-tier-anatomy-rarity", category: "Platform",
     date: "2026-03-04", readTime: "18 min", image: tierAnatomyImg,
     imageAlt: "Five quality tier crystals in ascending pyramid from green Mint to diamond Apex",
-    source: 'human', featured: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ms-vault-mastery', title: "Your Vault: Mastering Pipeline Management in the Memory Stream",
@@ -436,7 +436,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/autonomous-discovery-engine-architecture", category: "Technology",
     date: "2026-03-04", readTime: "22 min", image: discoveryEngineImg,
     imageAlt: "Autonomous discovery engine with recursive orbital loops around a central processing core",
-    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   // ═══ NEW PILLAR/CLUSTER POSTS ═══
   {
@@ -453,7 +453,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/clockless-what-makes-it-different", category: "Platform",
     date: "2026-02-27", readTime: "8 min", image: clocklessDifferentImg,
     imageAlt: "Composable cognitive infrastructure platform with interconnected systems",
-    source: 'human', featured: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'clockless-modules', title: "Inside the Nodes: What Makes Each One Special",
@@ -470,7 +470,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/sparta-epoch-rebuild-from-scratch", category: "Technology",
     date: "2026-02-24", readTime: "22 min", image: spartaRebuildImg,
     imageAlt: "Architectural blueprint showing old structures crumbling and new layered architecture rising",
-    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the CMPSBL Substrate",
@@ -478,7 +478,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
     date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
     imageAlt: "AI protocol standards visualization",
-    source: 'human', featured: true, pillar: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
@@ -486,7 +486,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/autonomous-ai-governance-runtime-enforcement", category: "Governance",
     date: "2026-02-08", readTime: "14 min", image: governanceComplianceImg,
     imageAlt: "AI governance compliance framework",
-    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE System's Response",
@@ -494,7 +494,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/adversarial-ai-defense-module-response-2026", category: "Threat Intel",
     date: "2026-02-06", readTime: "18 min", image: threatIntelAdversarialImg,
     imageAlt: "Adversarial AI threat intelligence",
-    source: 'human', author: "James Whitfield", authorRole: "Security Researcher",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'evolving-software', title: "Evolving Software: The Breakthrough",
@@ -502,7 +502,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/evolving-software-v6-breakthrough", category: "Technology",
     date: "2026-01-30", readTime: "22 min", image: evolvingSoftwareImg,
     imageAlt: "Digital DNA helix representing evolving software systems",
-    source: 'human', featured: true, pillar: true, author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'rag-infra', title: "RAG Without Infrastructure",
@@ -510,7 +510,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/rag-without-infrastructure", category: "Development",
     date: "2026-01-28", readTime: "14 min", image: ragWithoutInfraImg,
     imageAlt: "RAG document network visualization",
-    source: 'human', featured: true, author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
+    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'agent-anti', title: "Agent Memory Anti-Patterns",
@@ -518,7 +518,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/agent-memory-anti-patterns", category: "Development",
     date: "2026-01-26", readTime: "12 min", image: agentMemoryAntiPatternsImg,
     imageAlt: "Memory anti-patterns warning visualization",
-    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'langchain', title: "LangChain Memory Integration",
@@ -526,7 +526,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/langchain-memory-integration", category: "Development",
     date: "2026-01-24", readTime: "15 min", image: langchainMemoryImg,
     imageAlt: "LangChain memory integration",
-    source: 'human', author: "Priya Nakamura", authorRole: "Junior Developer & DevOps",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'agents-forget', title: "Why Agents Forget",
@@ -534,7 +534,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/why-agents-forget", category: "Research",
     date: "2026-01-22", readTime: "11 min", image: whyAgentsForgetImg,
     imageAlt: "Agent memory fading visualization",
-    source: 'human', pillar: true, author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'building-agents', title: "Building Agents That Learn",
@@ -542,7 +542,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/building-agents-that-learn", category: "Development",
     date: "2026-01-20", readTime: "18 min", image: buildingAgentsLearnImg,
     imageAlt: "Agents learning and evolving",
-    source: 'human', author: "Marcus Rodriguez", authorRole: "Senior Systems Engineer",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'llms-txt', title: "LLMs.txt: The Protocol for AI Context",
@@ -550,7 +550,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/llms-txt-protocol-ai-context", category: "Protocol",
     date: "2026-01-30", readTime: "14 min", image: llmsTxtImg,
     imageAlt: "Visualization of LLMs.txt protocol structure",
-    source: 'human', author: "Elena Vasquez", authorRole: "VP of Communications",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'governance', title: "AI Governance Namespace: Unified Terminology",
@@ -558,7 +558,7 @@ const HUMAN_POSTS: BlogPost[] = [
     href: "/blog/ai-governance-namespace-unified-terminology", category: "Governance",
     date: "2026-01-30", readTime: "12 min", image: aiGovernanceImg,
     imageAlt: "Network visualization of AI governance terminology",
-    source: 'human', author: "Dr. Sarah Chen", authorRole: "Head of AI Research",
+    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'inclusive', title: "INCLUSIVE Node Mission",
