@@ -68,13 +68,13 @@ function createExportableArtifact(item: TieredFoundryExportArtifact): Exportable
     rank: 0,
     cjpi: item.score,
     module: moduleChain[0],
-    description: item.description || `Crystallized pipeline: ${item.name}`,
+    description: item.description || getFunctionalDescription(item.name, moduleChain),
     sourceCode: '',
     synthesisContext: {
       name: item.name,
       moduleChain,
       cjpi: item.score,
-      description: item.description || `${item.name} pipeline export`,
+      description: item.description || getFunctionalDescription(item.name, moduleChain),
       category: item.category || 'general',
       entryCapability: 'process',
       exitCapability: 'emit',
@@ -173,7 +173,7 @@ export async function downloadTieredFoundryZip(options: {
     // Pipeline Details page — in-depth HTML report with valuation
     const detailsHTML = generatePipelineDetailsHTML({
       name: item.name,
-      description: item.description || `Crystallized pipeline: ${item.name}`,
+      description: item.description || getFunctionalDescription(item.name, item.systemChain || ['SYSTEM']),
       category: item.category || 'general',
       score: item.score,
       tier: item.publicTier || getTierFromScore(item.score),
