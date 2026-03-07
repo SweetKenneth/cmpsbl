@@ -24,28 +24,28 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -40, scale: 0.95 }}
+      initial={{ opacity: 0, x: -30, scale: 0.96 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 40, scale: 0.95 }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="bg-card/30 border border-border/20 rounded-lg p-4 sm:p-4 backdrop-blur-sm hover:border-border/30 hover:bg-card/50 transition-all duration-300"
+      exit={{ opacity: 0, x: 30, scale: 0.96 }}
+      transition={{ duration: 0.45, delay: index * 0.06 }}
+      className="bg-card/30 border border-border/15 rounded-xl p-4 sm:p-5 backdrop-blur-sm hover:border-border/25 hover:bg-card/50 transition-all duration-300 hover:shadow-md hover:shadow-primary/5"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
-            <span className={`text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded border ${tierStyle} uppercase tracking-wider`}>
+            <span className={`text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded-md border ${tierStyle} uppercase tracking-wider font-bold`}>
               {discovery.tier === 'cmpsbl-only' ? 'APEX' : discovery.tier}
             </span>
             <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider truncate">
               {discovery.category}
             </span>
           </div>
-          <div className="font-mono text-sm sm:text-sm font-bold text-foreground truncate">
+          <div className="font-mono text-sm sm:text-base font-bold text-foreground truncate">
             {discovery.name}
           </div>
-          <div className="flex flex-wrap gap-1.5 mt-2">
+          <div className="flex flex-wrap gap-1.5 mt-2.5">
             {discovery.module_chain.slice(0, 4).map(m => (
-              <span key={m} className="text-[10px] sm:text-xs font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground">
+              <span key={m} className="text-[10px] sm:text-xs font-mono px-1.5 py-0.5 rounded-md bg-muted/30 text-muted-foreground">
                 {m}
               </span>
             ))}
@@ -57,7 +57,7 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
           </div>
         </div>
         <div className="text-right shrink-0">
-          <div className={`text-xl sm:text-2xl font-mono font-black ${
+          <div className={`text-2xl sm:text-3xl font-mono font-black ${
             discovery.cjpi >= 95 ? 'text-primary' : 
             discovery.cjpi >= 85 ? 'text-amber-400' : 'text-sky-400'
           }`}>
@@ -95,27 +95,32 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
   );
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 md:py-40 px-5 sm:px-6 relative">
+    <section ref={ref} className="py-20 sm:py-24 md:py-40 px-5 sm:px-6 relative">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8 sm:mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex items-center justify-between mb-10 sm:mb-12"
+        >
           <div>
             <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground font-mono">
               Discovery Stream
             </h2>
-            <p className="text-muted-foreground/60 text-sm sm:text-sm mt-1">
+            <p className="text-muted-foreground/70 text-sm sm:text-base mt-1">
               Real pipelines. Real scores. Real systems.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs sm:text-xs font-mono text-muted-foreground">
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-sm shadow-primary/30" />
+            <span className="text-xs sm:text-sm font-mono text-muted-foreground">
               {discoveries.length} surfaced
             </span>
           </div>
-        </div>
+        </motion.div>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -123,7 +128,7 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
           >
             {currentDiscoveries.map((d, i) => (
               <DiscoveryCard key={`${d.name}-${visibleSet}`} discovery={d} index={i} />
@@ -132,12 +137,12 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
         </AnimatePresence>
 
         {/* Page indicators */}
-        <div className="flex justify-center gap-1.5 mt-6 sm:mt-8">
+        <div className="flex justify-center gap-1.5 mt-8 sm:mt-10">
           {Array.from({ length: Math.min(totalSets, 20) }).map((_, i) => (
             <div
               key={i}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === visibleSet ? 'bg-primary w-6' : 'bg-border/40 w-1.5'
+                i === visibleSet ? 'bg-primary w-7' : 'bg-border/30 w-1.5'
               }`}
             />
           ))}
