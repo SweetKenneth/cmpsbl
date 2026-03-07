@@ -29,19 +29,15 @@ export function TierDistribution() {
 
         <div className="h-10 sm:h-14 rounded-lg overflow-hidden flex mb-6 sm:mb-8 border border-border/10">
           {TIERS.map((t, i) => (
-            <motion.div
+            <div
               key={t.tier}
               className="h-full relative group cursor-default flex items-center justify-center"
-              style={{ backgroundColor: t.color }}
-              initial={{ width: 0 }}
-              whileInView={{ width: `${(t.count / total) * 100}%` }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 1, delay: i * 0.2, ease: 'easeOut' }}
+              style={{ backgroundColor: t.color, width: `${(t.count / total) * 100}%` }}
             >
               <span className="text-[10px] sm:text-xs font-mono font-bold text-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
                 {t.percentage}
               </span>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -49,7 +45,7 @@ export function TierDistribution() {
           {TIERS.map((t, i) => (
             <motion.div
               key={t.tier}
-              initial={{ opacity: 0, y: 15 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}

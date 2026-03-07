@@ -7,7 +7,7 @@ import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryHero() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 overflow-hidden">
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-start px-4 sm:px-6 pt-20 sm:pt-24 pb-10 overflow-hidden">
       {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.03]"
         style={{

@@ -20,7 +20,10 @@ function AnimatedStat({ label, value, suffix = '', prefix = '', delay = 0, highl
   const inView = useInView(ref, { once: true, margin: '-50px' });
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) {
+      setCount(value);
+      return;
+    }
     const timeout = setTimeout(() => {
       const duration = 2000;
       const steps = 60;
@@ -43,8 +46,8 @@ function AnimatedStat({ label, value, suffix = '', prefix = '', delay = 0, highl
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={false}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: delay / 1000 }}
       className="text-center"
     >
@@ -65,9 +68,7 @@ export function ProofNumbers() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
+        initial={false}
         className="max-w-6xl mx-auto"
       >
         <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
@@ -92,9 +93,7 @@ export function ProofNumbers() {
 
         {/* Runtime context */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          initial={false}
           className="mt-12 sm:mt-16 text-center"
         >
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-2.5 sm:py-3">

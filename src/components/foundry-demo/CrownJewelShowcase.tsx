@@ -36,7 +36,7 @@ export function CrownJewelShowcase() {
           {APEX_DISCOVERIES.map((discovery, i) => (
             <motion.div
               key={discovery.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
