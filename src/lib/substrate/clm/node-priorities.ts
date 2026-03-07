@@ -7,7 +7,11 @@
  * Generation 2 = expansion and governance nodes added later
  */
 
-import { registerCapability } from '../capability-router';
+type RegisterCapabilityFn = (
+  module: string,
+  capability: string,
+  priority?: number,
+) => void;
 
 // ─── Priority Definitions ───────────────────────────────────────────────────
 
