@@ -568,7 +568,7 @@ export default function Blog() {
           title: p.title,
           excerpt: p.excerpt || "AI-generated insight from the CMPSBL Substrate.",
           href: `/blog/auto/${p.slug}`,
-          category: p.category || "AI Technology",
+          category: normalizeBlogCategory(p.category),
           date: p.published_at || new Date().toISOString(),
           readTime: "5 min",
           image: getAutoblogImage(p.id),
