@@ -29,6 +29,7 @@ import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
 import { TierDistribution } from '@/components/foundry-demo/TierDistribution';
 import { VerifyPanel } from '@/components/foundry-demo/VerifyPanel';
 import { FoundryFooter } from '@/components/foundry-demo/FoundryFooter';
+import { FoundryMidCTA } from '@/components/foundry-demo/FoundryMidCTA';
 
 
 export default function Foundry() {
@@ -116,6 +117,8 @@ export default function Foundry() {
             <MemoryStreamExplainer />
             <div id="proof"><ProofNumbers /></div>
             <div id="engine"><RecursiveLoop /></div>
+            {/* Mid-page conversion nudge */}
+            <FoundryMidCTA />
             <div id="apex"><CrownJewelShowcase /></div>
             <div id="stream"><LiveDiscoveryStream discoveries={discoveries} /></div>
             <CategoryBreakdown />

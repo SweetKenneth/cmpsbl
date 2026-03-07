@@ -48,7 +48,7 @@ const PRESETS: QueryPreset[] = [
     format: (d) => `Runs: ${d.count}\nFirst: ${d.first}\nLast: ${d.last}\nElapsed: ${d.hours} hours`,
   },
   {
-    id: 'top10', label: 'Top 10 Discoveries', description: "SELECT name, cjpi, tier, category, module_chain FROM discoveries ORDER BY cjpi DESC LIMIT 10",
+    id: 'top10', label: 'Top 10 Discoveries', description: "SELECT name, cjpi, tier, category FROM discoveries ORDER BY cjpi DESC LIMIT 10",
     run: async () => {
       const { data } = await supabase.from('discoveries').select('name, cjpi, tier, category, module_chain').order('cjpi', { ascending: false }).limit(10);
       return data || [];
@@ -56,7 +56,7 @@ const PRESETS: QueryPreset[] = [
     format: (d) => d.map((r: any, i: number) => `  ${i + 1}. ${r.name} — CJPI ${r.cjpi} [${r.tier === 'cmpsbl-only' ? 'APEX' : r.tier.toUpperCase()}]\n     ${r.category} · ${(r.module_chain || []).join(' → ')}`).join('\n'),
   },
   {
-    id: 'systems', label: 'System Frequency', description: "Analyze which substrate systems appear most frequently in discoveries",
+    id: 'systems', label: 'System Frequency', description: "Analyze which substrate systems appear most frequently",
     run: async () => {
       const { data } = await supabase.rpc('get_discovery_stats');
       const freq = (data as any)?.module_freq ?? {};
@@ -87,12 +87,16 @@ export function VerifyPanel() {
   }
 
   return (
-    <section className="py-16 sm:py-20 md:py-40 px-5 sm:px-6 relative">
+    <section className="py-20 sm:py-24 md:py-40 px-5 sm:px-6 relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.03),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.04),transparent_60%)]" />
       
       <div className="max-w-5xl mx-auto relative">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground font-mono">
               Verify It Yourself
@@ -100,25 +104,26 @@ export function VerifyPanel() {
             {runCount > 0 && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs sm:text-xs font-mono text-muted-foreground">{runCount} queries executed</span>
+                <span className="text-xs font-mono text-muted-foreground">{runCount} queries executed</span>
               </div>
             )}
           </div>
-          <p className="text-muted-foreground/60 text-sm sm:text-sm mb-6 sm:mb-8 max-w-2xl">
-            Don't take our word for it. Every button below runs a live query against the production
-            discovery database. No caching. No mocking.
+          <p className="text-muted-foreground/70 text-sm sm:text-base mb-8 sm:mb-10 max-w-2xl leading-relaxed">
+            Don't take our word for it. Every button below runs a{' '}
+            <span className="text-foreground font-semibold">live query against the production database</span>.
+            The same database the Memory Stream writes to. No caching. No mocking.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-2 mb-4 sm:mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-2.5 mb-5 sm:mb-6">
           {PRESETS.map((preset) => (
             <button
               key={preset.id}
               onClick={() => runQuery(preset)}
               disabled={loading}
-              className={`text-left px-3 sm:px-3 py-2.5 sm:py-2.5 rounded-lg border transition-all text-xs sm:text-xs font-mono min-h-[44px] ${
+              className={`text-left px-3.5 sm:px-4 py-3 sm:py-3 rounded-xl border transition-all text-xs sm:text-sm font-mono min-h-[48px] ${
                 activeQuery === preset.id
-                  ? 'border-primary/50 bg-primary/5 text-foreground'
+                  ? 'border-primary/50 bg-primary/5 text-foreground shadow-md shadow-primary/10'
                   : 'border-border/20 bg-card/30 text-muted-foreground hover:border-border/40 hover:bg-card/50'
               } disabled:opacity-50`}
             >
@@ -127,38 +132,40 @@ export function VerifyPanel() {
           ))}
         </div>
 
-        <div className="bg-card/30 border border-border/20 rounded-lg overflow-hidden backdrop-blur-sm">
-          <div className="flex items-center gap-2 px-4 sm:px-4 py-2.5 border-b border-border/10 bg-muted/5">
+        {/* Terminal */}
+        <div className="bg-card/30 border border-border/20 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg shadow-primary/5">
+          <div className="flex items-center gap-2.5 px-4 sm:px-5 py-3 border-b border-border/10 bg-muted/5">
             <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-destructive/40" />
-              <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
-              <div className="w-2.5 h-2.5 rounded-full bg-primary/40" />
+              <div className="w-3 h-3 rounded-full bg-destructive/40" />
+              <div className="w-3 h-3 rounded-full bg-amber-500/40" />
+              <div className="w-3 h-3 rounded-full bg-primary/40" />
             </div>
-            <span className="text-xs sm:text-xs font-mono text-muted-foreground/50 ml-2">
+            <span className="text-xs sm:text-sm font-mono text-muted-foreground/50 ml-2">
               live query terminal — production database
             </span>
           </div>
-          <div className="p-4 sm:p-4 min-h-[180px] sm:min-h-[200px] max-h-[400px] overflow-auto">
+          <div className="p-4 sm:p-6 min-h-[200px] sm:min-h-[240px] max-h-[400px] overflow-auto">
             {loading ? (
-              <div className="flex items-center gap-2 text-xs sm:text-xs font-mono text-muted-foreground">
+              <div className="flex items-center gap-3 text-xs sm:text-sm font-mono text-muted-foreground">
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  className="w-3 h-3 border border-primary/50 border-t-primary rounded-full" />
+                  className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full" />
                 Querying production database...
               </div>
             ) : result ? (
-              <pre className="text-xs sm:text-xs font-mono text-foreground/80 whitespace-pre-wrap leading-relaxed">{result}</pre>
+              <pre className="text-xs sm:text-sm font-mono text-foreground/80 whitespace-pre-wrap leading-relaxed">{result}</pre>
             ) : (
-              <div className="text-xs sm:text-xs font-mono text-muted-foreground/40 leading-relaxed">
+              <div className="text-xs sm:text-sm font-mono text-muted-foreground/40 leading-relaxed">
                 Select a query above to run it against the live production database.
                 <br /><br />
-                Every result is fetched in real-time. No mocks. No cache. Pure receipts.
+                Every result is fetched in real-time from the same database the autonomous
+                Memory Stream writes to. No mocks. No cache. Pure receipts.
               </div>
             )}
           </div>
         </div>
 
         <div className="mt-5 sm:mt-6 text-center">
-          <p className="text-xs sm:text-xs font-mono text-muted-foreground/40 uppercase tracking-wider leading-relaxed px-2">
+          <p className="text-xs font-mono text-muted-foreground/40 uppercase tracking-wider leading-relaxed px-2">
             All queries execute against the production database · Read-only · RLS enforced
           </p>
         </div>
