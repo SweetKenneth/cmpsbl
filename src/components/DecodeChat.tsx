@@ -98,12 +98,15 @@ export function DecodeChat() {
     }
   }, [mode]);
 
-  // When opened with a pending mode via Support page trigger
-  useEffect(() => {
-    if (isOpen && pendingModeOnOpen && pendingModeOnOpen !== lastModeRef.current) {
-      // Mode change will be handled by the mode effect above
+  // Self-healing connection recovery
+  const attemptRecovery = useCallback(async () => {
+    if (connection.retryCount >= 3) {
+      setConnection(prev => ({ ...prev, status: 'disconnected' }));
+      toast.error('Connection issues', { description: 'Unable to reach DECODE. Please try again later.' });
+      return;
     }
-  }, [isOpen, pendingModeOnOpen]);
+    setConnection(prev => ({ ...prev, retryCount: prev.retryCount + 1, status: 'degraded' }));
+  }, [connection.retryCount]);
 
   // Hide on homepage and decode page
   const hiddenPaths = ['/', '/decode'];
