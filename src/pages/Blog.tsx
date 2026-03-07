@@ -26,56 +26,27 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
-// Blog post images
-import wpBotDefenseImg from "@/assets/blog/wordpress-bot-defense.jpg";
-import topSecurityPluginsImg from "@/assets/blog/top-security-plugins-2025.jpg";
-import aiCybersecurityImg from "@/assets/blog/ai-cybersecurity-evolution-2025.jpg";
-import aiHackersImg from "@/assets/blog/ai-hackers-underground-2025.jpg";
-import howPFWorksImg from "@/assets/blog/how-promptfluid-works-cascade.jpg";
-import cascadeAIImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
-import cascadeAIBrainImg from "@/assets/blog/cascade-ai-adaptive-brain.jpg";
-import pfStudioImg from "@/assets/blog/promptfluid-studio-build-apps.jpg";
-import aiTriadImg from "@/assets/blog/ai-triad-intelligent-routing.jpg";
-import pfBrainImg from "@/assets/blog/promptfluid-brain-learning-core.jpg";
-import pfVisionImg from "@/assets/blog/promptfluid-vision-dashboard.jpg";
-import pfDefenseImg from "@/assets/blog/promptfluid-defense-ai-security.jpg";
-import pfRippleImg from "@/assets/blog/promptfluid-ripple-network.jpg";
-import pfAccessImg from "@/assets/blog/promptfluid-access-identity-billing.jpg";
-import pfNexusImg from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
-import aiComparisonImg from "@/assets/blog/ai-product-comparison-2025.jpg";
-import marketDisruptorImg from "@/assets/blog/promptfluid-market-disruptor.jpg";
-import roadmapImg from "@/assets/blog/product-roadmap-2025.jpg";
-import automationTrendsImg from "@/assets/blog/ai-automation-trends-2025.jpg";
-import businessOpsImg from "@/assets/blog/ai-business-operations-2025.jpg";
-import cmptblMissionImg from "@/assets/blog/cmptbl-mission-accessibility.jpg";
-import wpAccessibilityImg from "@/assets/blog/wordpress-accessibility-guide.jpg";
-import wcag22Img from "@/assets/blog/wcag-2-2-wordpress-changes.jpg";
-import autoAccessibilityImg from "@/assets/blog/automated-accessibility-fixes.jpg";
-import accessibilityFreeImg from "@/assets/blog/accessibility-free-for-all.jpg";
-import evolvingSoftwareImg from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
-import llmsTxtImg from "@/assets/blog/llms-txt-protocol-standard.jpg";
-import aiGovernanceImg from "@/assets/blog/ai-governance-namespace-unified.jpg";
-import ragWithoutInfraImg from "@/assets/blog/rag-without-infrastructure.jpg";
-import agentMemoryAntiPatternsImg from "@/assets/blog/agent-memory-anti-patterns.jpg";
-import langchainMemoryImg from "@/assets/blog/langchain-memory-integration.jpg";
-import whyAgentsForgetImg from "@/assets/blog/why-agents-forget.jpg";
-import buildingAgentsLearnImg from "@/assets/blog/building-agents-that-learn.jpg";
-import protocolStandardsImg from "@/assets/blog/ai-protocol-standards-v9.jpg";
-import governanceComplianceImg from "@/assets/blog/ai-governance-compliance-v9.jpg";
-import threatIntelAdversarialImg from "@/assets/blog/ai-threat-intel-adversarial-v9.jpg";
-import spartaRebuildImg from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
-
-// New pillar/cluster images
-import clocklessSetupImg from "@/assets/blog/clockless-account-setup-artifact-packs.jpg";
-import clocklessDifferentImg from "@/assets/blog/what-makes-clockless-different.jpg";
-import clocklessModulesImg from "@/assets/blog/clockless-modules-deep-dive.jpg";
-
-// Memory Stream series images
-import memoryStreamGuideImg from "@/assets/blog/memory-stream-crystallization-guide.jpg";
-import signalToSiliconImg from "@/assets/blog/signal-to-silicon-narrative.jpg";
-import tierAnatomyImg from "@/assets/blog/memory-stream-tier-anatomy.jpg";
-import vaultMasteryImg from "@/assets/blog/memory-stream-vault-mastery.jpg";
-import discoveryEngineImg from "@/assets/blog/autonomous-discovery-engine.jpg";
+// Blog post images (chronological substrate story)
+import ch01Img from "@/assets/blog/promptfluid-market-disruptor.jpg";
+import ch02Img from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
+import ch03Img from "@/assets/blog/promptfluid-brain-learning-core.jpg";
+import ch04Img from "@/assets/blog/promptfluid-defense-ai-security.jpg";
+import ch05Img from "@/assets/blog/promptfluid-vision-dashboard.jpg";
+import ch06Img from "@/assets/blog/promptfluid-ripple-network.jpg";
+import ch07Img from "@/assets/blog/promptfluid-access-identity-billing.jpg";
+import ch08Img from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import ch09Img from "@/assets/blog/promptfluid-studio-build-apps.jpg";
+import ch10Img from "@/assets/blog/why-agents-forget.jpg";
+import ch11Img from "@/assets/blog/ai-product-comparison-2025.jpg";
+import ch12Img from "@/assets/blog/building-agents-that-learn.jpg";
+import ch13Img from "@/assets/blog/ai-hackers-underground-2025.jpg";
+import ch14Img from "@/assets/blog/ai-cybersecurity-evolution-2025.jpg";
+import ch15Img from "@/assets/blog/cmptbl-mission-accessibility.jpg";
+import ch16Img from "@/assets/blog/ai-governance-compliance-v9.jpg";
+import ch17Img from "@/assets/blog/ai-protocol-standards-v9.jpg";
+import ch18Img from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
+import ch19Img from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
+import ch20Img from "@/assets/blog/signal-to-silicon-narrative.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
@@ -395,370 +366,147 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
   );
 }
 
-// ─── Static human posts ───
+// ─── Static human posts (chronological substrate story) ───
 const HUMAN_POSTS: BlogPost[] = [
-  // ═══ MEMORY STREAM SERIES (FEATURED) ═══
   {
-    id: 'ms-crystallization-guide', title: "Memory Stream: The Complete Crystallization Guide",
-    excerpt: "Everything you need to know about the Memory Stream — crystallization phases, five quality tiers, your personal Vault, and exporting pipelines as production-grade JSON artifacts.",
-    href: "/blog/memory-stream-crystallization-guide", category: "Platform",
-    date: "2026-03-04", readTime: "24 min", image: memoryStreamGuideImg,
-    imageAlt: "Crystalline data pipelines materializing from a flowing digital memory stream",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch20-signal', title: "Signal to Silicon: The Complete Pipeline",
+    excerpt: "From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained.",
+    href: "/blog/signal-to-silicon", category: "Technology",
+    date: "2026-03-04", readTime: "22 min", image: ch20Img,
+    imageAlt: "Signal to Silicon pipeline", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ms-signal-silicon', title: "Signal → Silicon: How Raw Signals Become Crystallized Software",
-    excerpt: "The complete narrative behind CMPSBL's Signal → Silicon pipeline — from behavioral signals through 40-node processing to physical silicon.",
-    href: "/blog/signal-to-silicon-narrative", category: "Research",
-    date: "2026-03-04", readTime: "20 min", image: signalToSiliconImg,
-    imageAlt: "Digital signals flowing through neural pathways and condensing into a silicon microprocessor",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch19-burning', title: "Burning It Down: The Complete Substrate Rebuild",
+    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the substrate from scratch. Here's why, and what we learned.",
+    href: "/blog/burning-it-down", category: "Technology",
+    date: "2026-02-10", readTime: "20 min", image: ch19Img,
+    imageAlt: "Substrate rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ms-tier-anatomy', title: "Anatomy of Memory Stream Tiers: Rarity, Scoring & What Each Tier Means",
-    excerpt: "A deep breakdown of Mint, Prime, Relic, Mythic, and Apex tiers — the weighted rarity system, scoring dimensions, and what makes each tier special.",
-    href: "/blog/memory-stream-tier-anatomy-rarity", category: "Platform",
-    date: "2026-03-04", readTime: "18 min", image: tierAnatomyImg,
-    imageAlt: "Five quality tier crystals in ascending pyramid from green Mint to diamond Apex",
-    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch18-evolving', title: "When Software Starts Evolving",
+    excerpt: "In January 2026, the substrate crossed a threshold: DREAM consolidation cycles started producing improvements we didn't program.",
+    href: "/blog/when-software-starts-evolving", category: "Research",
+    date: "2026-01-15", readTime: "18 min", image: ch18Img,
+    imageAlt: "Software evolution breakthrough", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ms-vault-mastery', title: "Your Vault: Mastering Pipeline Management in the Memory Stream",
-    excerpt: "How to manage, organize, and export your crystallized pipelines — from auto-save mechanics to JSON materialization and tier-based analytics.",
-    href: "/blog/memory-stream-vault-mastery", category: "Platform",
-    date: "2026-03-04", readTime: "16 min", image: vaultMasteryImg,
-    imageAlt: "Digital vault with crystallized software artifacts organized by tier on illuminated shelves",
-    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch17-protocols', title: "Protocols for Machines",
+    excerpt: "We adopted LLMs.txt, built machine-readable documentation, and established protocol standards for autonomous agent communication.",
+    href: "/blog/protocols-for-machines", category: "Protocol",
+    date: "2025-12-05", readTime: "14 min", image: ch17Img,
+    imageAlt: "AI protocol standards", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ms-discovery-engine', title: "Inside the Autonomous Discovery Engine: How CMPSBL Finds Software",
-    excerpt: "A technical deep-dive into the engine that powers the Memory Stream — sampling, scoring across five dimensions, weighted tier selection, and the recursive discovery loop.",
-    href: "/blog/autonomous-discovery-engine-architecture", category: "Technology",
-    date: "2026-03-04", readTime: "22 min", image: discoveryEngineImg,
-    imageAlt: "Autonomous discovery engine with recursive orbital loops around a central processing core",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  // ═══ NEW PILLAR/CLUSTER POSTS ═══
-  {
-    id: 'clockless-setup', title: "Getting Started with Clockless: Account Setup & Artifact Pack Guide",
-    excerpt: "Everything you need to set up your Clockless account and choose the right artifact pack. Understand what composable cognitive infrastructure gives you that no other platform can.",
-    href: "/blog/clockless-account-setup-artifact-packs", category: "Platform",
-    date: "2026-02-27", readTime: "18 min", image: clocklessSetupImg,
-    imageAlt: "Clockless account setup dashboard showing artifact pack selection wizard",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch16-governance', title: "The Governance Question",
+    excerpt: "Enterprise customers asked 'can you prove your AI was operating within bounds?' We couldn't. So we built AUDIT and IDENTITY.",
+    href: "/blog/the-governance-question", category: "Governance",
+    date: "2025-11-10", readTime: "13 min", image: ch16Img,
+    imageAlt: "AI governance and compliance", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'clockless-different', title: "What Makes Clockless Different — And Why People Build on It",
-    excerpt: "There are dozens of AI platforms. Most sell model access. Clockless sells infrastructure that thinks. Here's why that matters.",
-    href: "/blog/clockless-what-makes-it-different", category: "Platform",
-    date: "2026-02-27", readTime: "8 min", image: clocklessDifferentImg,
-    imageAlt: "Composable cognitive infrastructure platform with interconnected systems",
-    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch15-accessibility', title: "Accessibility Is Infrastructure",
+    excerpt: "We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation for every application.",
+    href: "/blog/accessibility-is-infrastructure", category: "Accessibility",
+    date: "2025-10-15", readTime: "10 min", image: ch15Img,
+    imageAlt: "INCLUSIVE node accessibility mission", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'clockless-modules', title: "Inside the Nodes: What Makes Each One Special",
-    excerpt: "A deep dive into every substrate node — from MEMORY's three-tier persistence to EVOLUTION's autonomous self-improvement.",
-    href: "/blog/clockless-modules-deep-dive", category: "Technology",
-    date: "2026-02-27", readTime: "12 min", image: clocklessModulesImg,
-    imageAlt: "Grid of glowing AI substrate nodes with unique identities",
-    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  // ═══ EXISTING POSTS ═══
-  {
-    id: 'sparta-rebuild', title: "Burning It Down to Build It Right: The Full Substrate Rebuild",
-    excerpt: "How we refactored, consolidated, and rebuilt the entire CMPSBL cognitive substrate from the ground up — deleting thousands of lines of dead code and emerging with a production-grade layered kernel.",
-    href: "/blog/sparta-epoch-rebuild-from-scratch", category: "Technology",
-    date: "2026-02-24", readTime: "22 min", image: spartaRebuildImg,
-    imageAlt: "Architectural blueprint showing old structures crumbling and new layered architecture rising",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch14-cybersecurity', title: "Cybersecurity Through Cognition",
+    excerpt: "Traditional security reacts to known threats. DEFENSE predicts unknown ones. How cognitive security fundamentally changes threat detection.",
+    href: "/blog/cybersecurity-through-cognition", category: "Security",
+    date: "2025-09-08", readTime: "12 min", image: ch14Img,
+    imageAlt: "Cognitive security evolution", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'protocol-v9-standards', title: "Machine-to-Machine Protocol Standards in the CMPSBL Substrate",
-    excerpt: "How the RELAY and IDENTITY systems establish a unified protocol layer for autonomous agent communication.",
-    href: "/blog/machine-protocol-standards-architect-epoch", category: "Protocol",
-    date: "2026-02-10", readTime: "16 min", image: protocolStandardsImg,
-    imageAlt: "AI protocol standards visualization",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch13-botwars', title: "The Bot Wars",
+    excerpt: "By August 2025, AI-powered bots were attacking our infrastructure daily. This is what we learned fighting them.",
+    href: "/blog/the-bot-wars", category: "Threat Intel",
+    date: "2025-08-05", readTime: "14 min", image: ch13Img,
+    imageAlt: "Bot attack defense in action", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'governance-compliance-v9', title: "Autonomous AI Governance: From Theory to Runtime Enforcement",
-    excerpt: "The AUDIT and IDENTITY systems bring cryptographic compliance logging and universal actor attribution to autonomous systems.",
-    href: "/blog/autonomous-ai-governance-runtime-enforcement", category: "Governance",
-    date: "2026-02-08", readTime: "14 min", image: governanceComplianceImg,
-    imageAlt: "AI governance compliance framework",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch12-learn', title: "Agents That Actually Learn",
+    excerpt: "After months of building learning agents, these are the architectural patterns that actually improve performance over time.",
+    href: "/blog/agents-that-actually-learn", category: "Development",
+    date: "2025-07-12", readTime: "15 min", image: ch12Img,
+    imageAlt: "Agents learning from experience", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'adversarial-threat-v9', title: "Adversarial AI in 2026: The DEFENSE System's Response",
-    excerpt: "Inside the prompt injection countermeasures, behavioral fingerprinting, and zero-trust mesh that protect the substrate.",
-    href: "/blog/adversarial-ai-defense-module-response-2026", category: "Threat Intel",
-    date: "2026-02-06", readTime: "18 min", image: threatIntelAdversarialImg,
-    imageAlt: "Adversarial AI threat intelligence",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch11-compare', title: "How We Compare",
+    excerpt: "An honest comparison against OpenAI, Anthropic, LangChain, and others. What we do better. What they do better.",
+    href: "/blog/how-we-compare", category: "Research",
+    date: "2025-06-20", readTime: "16 min", image: ch11Img,
+    imageAlt: "AI platform landscape comparison", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'evolving-software', title: "Evolving Software: The Breakthrough",
-    excerpt: "CMPSBL represents a paradigm shift—systems that learn, adapt, and evolve autonomously. Now available via API.",
-    href: "/blog/evolving-software-v6-breakthrough", category: "Technology",
-    date: "2026-01-30", readTime: "22 min", image: evolvingSoftwareImg,
-    imageAlt: "Digital DNA helix representing evolving software systems",
-    source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'rag-infra', title: "RAG Without Infrastructure",
-    excerpt: "Ship retrieval-augmented generation without managing vector databases.",
-    href: "/blog/rag-without-infrastructure", category: "Development",
-    date: "2026-01-28", readTime: "14 min", image: ragWithoutInfraImg,
-    imageAlt: "RAG document network visualization",
-    source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'agent-anti', title: "Agent Memory Anti-Patterns",
-    excerpt: "Common mistakes that cause AI agents to lose context and how to avoid them.",
-    href: "/blog/agent-memory-anti-patterns", category: "Development",
-    date: "2026-01-26", readTime: "12 min", image: agentMemoryAntiPatternsImg,
-    imageAlt: "Memory anti-patterns warning visualization",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'langchain', title: "LangChain Memory Integration",
-    excerpt: "Add persistent memory to your LangChain agents in under an hour.",
-    href: "/blog/langchain-memory-integration", category: "Development",
-    date: "2026-01-24", readTime: "15 min", image: langchainMemoryImg,
-    imageAlt: "LangChain memory integration",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'agents-forget', title: "Why Agents Forget",
-    excerpt: "The technical reasons behind context loss and memory degradation in AI systems.",
+    id: 'ch10-forget', title: "Why Agents Forget",
+    excerpt: "Context loss is the silent killer of AI agents. Here's why it happens, what the industry gets wrong, and what we've learned.",
     href: "/blog/why-agents-forget", category: "Research",
-    date: "2026-01-22", readTime: "11 min", image: whyAgentsForgetImg,
-    imageAlt: "Agent memory fading visualization",
-    source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    date: "2025-06-08", readTime: "11 min", image: ch10Img,
+    imageAlt: "Agent memory fading over time", source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'building-agents', title: "Building Agents That Learn",
-    excerpt: "Architectural patterns for AI systems that improve through experience.",
-    href: "/blog/building-agents-that-learn", category: "Development",
-    date: "2026-01-20", readTime: "18 min", image: buildingAgentsLearnImg,
-    imageAlt: "Agents learning and evolving",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch09-building', title: "Building on the Substrate",
+    excerpt: "Eight nodes and no documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure.",
+    href: "/blog/building-on-the-substrate", category: "Development",
+    date: "2025-05-25", readTime: "11 min", image: ch09Img,
+    imageAlt: "Developer building on the substrate", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'llms-txt', title: "LLMs.txt: The Protocol for AI Context",
-    excerpt: "How we follow the llmstxt.org protocol and why we recommend adoption as a standard for AI-human interaction.",
-    href: "/blog/llms-txt-protocol-ai-context", category: "Protocol",
-    date: "2026-01-30", readTime: "14 min", image: llmsTxtImg,
-    imageAlt: "Visualization of LLMs.txt protocol structure",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch08-dream', title: "What If Software Could Dream",
+    excerpt: "During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
+    href: "/blog/what-if-software-could-dream", category: "Research",
+    date: "2025-05-10", readTime: "13 min", image: ch08Img,
+    imageAlt: "DREAM node autonomous consolidation", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'governance', title: "AI Governance Namespace: Unified Terminology",
-    excerpt: "How we established unified AI governance vocabulary through strategic domain registration.",
-    href: "/blog/ai-governance-namespace-unified-terminology", category: "Governance",
-    date: "2026-01-30", readTime: "12 min", image: aiGovernanceImg,
-    imageAlt: "Network visualization of AI governance terminology",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch07-identity', title: "Identity at Every Layer",
+    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world.",
+    href: "/blog/identity-at-every-layer", category: "Platform",
+    date: "2025-04-15", readTime: "10 min", image: ch07Img,
+    imageAlt: "ACCESS node identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'inclusive', title: "INCLUSIVE Node Mission",
-    excerpt: "How the INCLUSIVE node brings AI-powered accessibility scanning and remediation to every application built on the substrate.",
-    href: "/blog/inclusive-module-accessibility-mission", category: "Accessibility",
-    date: "2025-11-20", readTime: "8 min", image: cmptblMissionImg,
-    imageAlt: "INCLUSIVE node accessibility mission",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch06-nodes-talk', title: "Nodes That Talk",
+    excerpt: "Five nodes needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate.",
+    href: "/blog/nodes-that-talk", category: "Technology",
+    date: "2025-04-02", readTime: "12 min", image: ch06Img,
+    imageAlt: "RIPPLE event bus architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'free-access', title: "Accessibility for Everyone",
-    excerpt: "Why web accessibility matters and how the INCLUSIVE node makes WCAG compliance achievable at scale through AI-powered remediation.",
-    href: "/blog/accessibility-free-for-all", category: "Accessibility",
-    date: "2025-10-18", readTime: "9 min", image: accessibilityFreeImg,
-    imageAlt: "Universal accessibility through the INCLUSIVE node",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch05-seeing', title: "Seeing Everything at Once",
+    excerpt: "When we couldn't debug our own system, we built VISION — real-time observability across every node, every request, every cost.",
+    href: "/blog/seeing-everything-at-once", category: "Platform",
+    date: "2025-03-20", readTime: "11 min", image: ch05Img,
+    imageAlt: "VISION observability dashboard", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'wp-access', title: "Web Accessibility Compliance Guide",
-    excerpt: "Complete guide to achieving WCAG compliance using AI-powered scanning — how the INCLUSIVE node identifies and fixes accessibility gaps automatically.",
-    href: "/blog/wordpress-accessibility-guide", category: "Accessibility",
-    date: "2025-09-15", readTime: "16 min", image: wpAccessibilityImg,
-    imageAlt: "AI accessibility compliance scanning",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch04-bots', title: "When Bots Found Us First",
+    excerpt: "We didn't plan to build a security node. Then automated attacks found our API endpoints before we'd even launched.",
+    href: "/blog/when-bots-found-us-first", category: "Security",
+    date: "2025-03-05", readTime: "14 min", image: ch04Img,
+    imageAlt: "DEFENSE node security architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'wcag', title: "WCAG 2.2: What Changed and Why It Matters",
-    excerpt: "How the latest WCAG 2.2 updates shaped the INCLUSIVE node's scanning engine — new success criteria, focus management, and cognitive accessibility.",
-    href: "/blog/wcag-2-2-wordpress-changes", category: "Accessibility",
-    date: "2025-08-12", readTime: "12 min", image: wcag22Img,
-    imageAlt: "WCAG 2.2 standards evolution",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch03-remember', title: "Teaching Machines to Remember",
+    excerpt: "The hardest problem in AI isn't intelligence — it's continuity. How we built a three-tier memory architecture for persistent recall.",
+    href: "/blog/teaching-machines-to-remember", category: "AI Technology",
+    date: "2025-02-08", readTime: "15 min", image: ch03Img,
+    imageAlt: "BRAIN node memory architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'auto-access', title: "Automated Accessibility Fixes",
-    excerpt: "How AI-powered remediation works inside the INCLUSIVE node — DOM manipulation, ARIA injection, and color contrast correction at runtime.",
-    href: "/blog/automated-accessibility-fixes-wordpress", category: "Accessibility",
-    date: "2025-07-10", readTime: "10 min", image: autoAccessibilityImg,
-    imageAlt: "Automated accessibility remediation engine",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch02-routing', title: "Routing the Unknown",
+    excerpt: "How the NEXUS node evolved from a simple failover function into an intelligent AI routing gateway with cost arbitrage.",
+    href: "/blog/routing-the-unknown", category: "Technology",
+    date: "2025-01-10", readTime: "14 min", image: ch02Img,
+    imageAlt: "NEXUS routing gateway architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ai-dream', title: "Experimental AI Systems That Dream",
-    excerpt: "How the DREAM node enables autonomous consolidation — off-peak pattern analysis, memory synthesis, and self-improving learning cycles.",
-    href: "/blog/ai-systems-that-dream-press-release", category: "Research",
-    date: "2025-12-18", readTime: "6 min", image: cascadeAIImg,
-    imageAlt: "DREAM node autonomous consolidation cycles",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'bot-defense', title: "Bot Defense with the DEFENSE Node",
-    excerpt: "How the DEFENSE node uses behavioral fingerprinting, AI-powered threat analysis, and rate limiting to protect applications from sophisticated bot attacks.",
-    href: "/blog/wordpress-bot-defense", category: "Security",
-    date: "2025-11-15", readTime: "15 min", image: wpBotDefenseImg,
-    imageAlt: "DEFENSE node behavioral bot analysis",
-    source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'sec-plugins', title: "AI-Powered Security: Beyond Traditional Plugins",
-    excerpt: "Why traditional security plugins fall short and how the DEFENSE node's behavioral analysis provides a fundamentally different approach to threat detection.",
-    href: "/blog/top-security-plugins-2025", category: "Security",
-    date: "2025-10-10", readTime: "12 min", image: topSecurityPluginsImg,
-    imageAlt: "DEFENSE node vs traditional security",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'cyber-evo', title: "AI Cybersecurity Evolution",
-    excerpt: "How the DEFENSE node's threat intelligence engine evolved — from static rule-based detection to predictive behavioral fingerprinting powered by the substrate.",
-    href: "/blog/ai-cybersecurity-evolution-2025", category: "AI Security",
-    date: "2025-09-08", readTime: "10 min", image: aiCybersecurityImg,
-    imageAlt: "DEFENSE node cybersecurity evolution",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'hackers', title: "AI Threats and the Substrate's Response",
-    excerpt: "Inside look at how adversarial AI attacks are evolving — and how the DEFENSE node's zero-trust mesh, prompt injection countermeasures, and behavioral analysis respond.",
-    href: "/blog/ai-hackers-underground-2025", category: "Threat Intel",
-    date: "2025-08-05", readTime: "14 min", image: aiHackersImg,
-    imageAlt: "Adversarial AI threat landscape",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'pf-works', title: "How CMPSBL Works",
-    excerpt: "Deep dive into the substrate architecture — how 40 nodes across 12 sectors orchestrate dream cycles, neural memory, and autonomous evolution.",
-    href: "/blog/how-promptfluid-works-cascade-ai-ecosystem", category: "Technology",
-    date: "2025-07-10", readTime: "18 min", image: howPFWorksImg,
-    imageAlt: "CMPSBL substrate architecture overview",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'cascade', title: "Adaptive Intelligence: The BRAIN + DREAM Pipeline",
-    excerpt: "How the BRAIN and DREAM nodes work together — autonomous dream cycles enable continuous memory consolidation, pattern extraction, and self-improvement.",
-    href: "/blog/cascade-ai-adaptive-intelligence-brain", category: "AI Technology",
-    date: "2025-06-08", readTime: "16 min", image: cascadeAIBrainImg,
-    imageAlt: "BRAIN and DREAM node adaptive intelligence pipeline",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'studio', title: "Building on the Substrate",
-    excerpt: "How the ENCODE node powers AI-assisted development — code generation, error pattern recognition, and the DECODE → ENCODE pipeline for production-ready output.",
-    href: "/blog/promptfluid-studio-build-apps-that-think", category: "Development",
-    date: "2025-05-05", readTime: "13 min", image: pfStudioImg,
-    imageAlt: "ENCODE node code intelligence studio",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'triad', title: "Smart AI Routing with NEXUS",
-    excerpt: "How the NEXUS node routes every request to the optimal AI provider — multi-provider fleet management, cost arbitrage, and health-weighted selection.",
-    href: "/blog/ai-triad-intelligent-routing", category: "Technology",
-    date: "2025-04-02", readTime: "11 min", image: aiTriadImg,
-    imageAlt: "NEXUS node AI routing topology",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'brain', title: "The BRAIN Node: Adaptive Learning Core",
-    excerpt: "Inside the BRAIN node — three-tier memory architecture (hot/warm/cold), cognitive recall, knowledge graph density, and the learning engine that powers the substrate.",
-    href: "/blog/promptfluid-brain-adaptive-learning-core", category: "AI Technology",
-    date: "2025-03-28", readTime: "15 min", image: pfBrainImg,
-    imageAlt: "BRAIN node three-tier memory architecture",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'vision', title: "The VISION Node: Unified Observability",
-    excerpt: "How the VISION node provides full observability across the substrate — real-time health scoring, cost tracking, latency monitoring, and anomaly detection.",
-    href: "/blog/promptfluid-vision-unified-dashboard", category: "Platform",
-    date: "2025-03-25", readTime: "12 min", image: pfVisionImg,
-    imageAlt: "VISION node observability dashboard",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'defense', title: "The DEFENSE Node: AI Security Deep Dive",
-    excerpt: "Inside the DEFENSE node — behavioral fingerprinting, prompt injection detection, rate limiting, and the zero-trust security mesh protecting every substrate invocation.",
-    href: "/blog/promptfluid-defense-ai-security", category: "Security",
-    date: "2025-03-22", readTime: "14 min", image: pfDefenseImg,
-    imageAlt: "DEFENSE node security architecture",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'ripple', title: "The RIPPLE Node: Event Bus & Signal Propagation",
-    excerpt: "How the RIPPLE node enables distributed coordination across the substrate — pub/sub patterns, event sourcing, webhook reliability, and inter-node communication.",
-    href: "/blog/promptfluid-ripple-network-integration", category: "Technology",
-    date: "2025-03-20", readTime: "12 min", image: pfRippleImg,
-    imageAlt: "RIPPLE node event bus architecture",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'access', title: "The ACCESS Node: Identity & Entitlements",
-    excerpt: "How the ACCESS node manages authentication, API key lifecycle, rate limiting, and tier-based entitlements across the substrate.",
-    href: "/blog/promptfluid-access-identity-billing", category: "Platform",
-    date: "2025-03-18", readTime: "10 min", image: pfAccessImg,
-    imageAlt: "ACCESS node identity and entitlements",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'nexus', title: "The NEXUS Node: AI Routing Gateway",
-    excerpt: "Inside the NEXUS node — unified API orchestration, cost arbitrage between providers, semantic caching, and health-weighted model selection.",
-    href: "/blog/promptfluid-nexus-api-gateway", category: "Technology",
-    date: "2025-03-15", readTime: "11 min", image: pfNexusImg,
-    imageAlt: "NEXUS node API routing gateway",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'comparison', title: "AI Platform Comparison 2025",
-    excerpt: "How CMPSBL's substrate architecture compares to OpenAI, Anthropic, and other AI platforms — persistent memory, autonomous evolution, and cognitive infrastructure.",
-    href: "/blog/ai-product-comparison-2025", category: "Research",
-    date: "2025-06-12", readTime: "18 min", image: aiComparisonImg,
-    imageAlt: "CMPSBL vs traditional AI platform comparison",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'disruptor', title: "CMPSBL: Cognitive Infrastructure as Market Disruptor",
-    excerpt: "How composable cognitive infrastructure — 40 nodes, persistent memory, and autonomous evolution — is reshaping the AI platform landscape.",
-    href: "/blog/promptfluid-market-disruptor", category: "Research",
-    date: "2025-05-08", readTime: "14 min", image: marketDisruptorImg,
-    imageAlt: "Cognitive infrastructure disrupting AI landscape",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'roadmap', title: "Substrate Roadmap 2025",
-    excerpt: "The vision for scaling from 26 nodes to 40 — expansion zones, mesh overlays, Memory Stream, and the path through SPARTA, IRONCLAD, and MINDGAMES epochs.",
-    href: "/blog/product-roadmap-2025", category: "Platform",
-    date: "2025-04-01", readTime: "10 min", image: roadmapImg,
-    imageAlt: "Substrate roadmap through epoch milestones",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'automation', title: "AI Automation Through the Substrate",
-    excerpt: "How the CORTEX orchestrator, NEXUS routing, and DREAM consolidation nodes enable autonomous workflow automation without human intervention.",
-    href: "/blog/ai-automation-trends-2025", category: "Research",
-    date: "2025-04-06", readTime: "12 min", image: automationTrendsImg,
-    imageAlt: "Substrate-powered autonomous automation",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
-  },
-  {
-    id: 'biz-ops', title: "Enterprise Operations with the Substrate",
-    excerpt: "How the INTEGRATION node connects enterprise systems (SAP, Oracle, Workday) with substrate-powered governance, memory, and autonomous orchestration.",
-    href: "/blog/ai-business-operations-2025", category: "Research",
-    date: "2025-04-04", readTime: "11 min", image: businessOpsImg,
-    imageAlt: "Enterprise substrate integration architecture",
-    source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    id: 'ch01-first', title: "The First Line of Code",
+    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL substrate. This is the honest story of why.",
+    href: "/blog/the-first-line-of-code", category: "Platform",
+    date: "2024-12-15", readTime: "12 min", image: ch01Img,
+    imageAlt: "The beginning of the CMPSBL substrate", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
 ];
 
