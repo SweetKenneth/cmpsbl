@@ -10165,8 +10165,8 @@ async function handleSystem(
       // Full system status with health data - checks ALL 21 MODULES
       const checks: Record<string, boolean> = {};
       
-      // Initialize all 21 modules as false
-      for (const mod of ALL_21_MODULES) {
+      // Initialize all 38 nodes as false
+      for (const mod of ALL_38_NODES) {
         checks[mod] = false;
       }
 
@@ -10289,7 +10289,7 @@ async function handleSystem(
 
       // Calculate healthy count
       const healthyCount = Object.values(checks).filter(v => v).length;
-      const totalModules = ALL_21_MODULES.length;
+      const totalModules = ALL_38_NODES.length;
 
       return jsonResponse({
         success: true,
@@ -10324,14 +10324,14 @@ async function handleSystem(
     case "health": {
       // Comprehensive health diagnostics with circuit breaker status - ALL 13 MODULES
       
-      // Ensure all 21 modules are in state for health check
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state for health check
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      const diagnostics = ALL_21_MODULES.map((module: string) => {
+      const diagnostics = ALL_38_NODES.map((module: string) => {
         const health = substrateState.modules[module];
         return {
           module,
@@ -10377,8 +10377,8 @@ async function handleSystem(
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // ALL 21 MODULES - complete architecture
-      const modulesToHeal = target ? [target] : ALL_21_MODULES;
+      // ALL 38 NODES - complete architecture
+      const modulesToHeal = target ? [target] : ALL_38_NODES;
       
       // PHASE 1: Reset in-memory module health
       for (const mod of modulesToHeal) {
@@ -11064,8 +11064,8 @@ async function handleSystem(
       // v5.5.0: System resilience snapshot surface
       const { role = 'observer' } = data;
       
-      // Ensure all 21 modules are in state
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
@@ -11184,15 +11184,15 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Ensure all 21 modules are in state for diagnostics
-      for (const mod of ALL_21_MODULES) {
+      // Ensure all 38 nodes are in state for diagnostics
+      for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      // Module diagnostics from in-memory state - ALL 21 MODULES
-      const moduleDiagnostics = ALL_21_MODULES.map((name: string) => {
+      // Node diagnostics from in-memory state - ALL 38 NODES
+      const moduleDiagnostics = ALL_38_NODES.map((name: string) => {
         const health = substrateState.modules[name] || initModuleHealth(name);
         return {
           name,
