@@ -534,6 +534,7 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
                 <span className="text-lg font-bold font-mono text-foreground">{stage.count}</span>
               </div>
             </div>
+            <p className="text-[11px] text-muted-foreground mb-2">{stage.description}</p>
 
             <div className="h-3 rounded-full bg-muted/30 overflow-hidden">
               <motion.div
