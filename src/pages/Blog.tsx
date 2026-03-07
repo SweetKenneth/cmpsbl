@@ -47,6 +47,26 @@ import ch17Img from "@/assets/blog/ai-protocol-standards-v9.jpg";
 import ch18Img from "@/assets/blog/evolving-software-v6-breakthrough.jpg";
 import ch19Img from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
 import ch20Img from "@/assets/blog/signal-to-silicon-narrative.jpg";
+import ch21Img from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import ch22Img from "@/assets/blog/clockless-modules-deep-dive.jpg";
+import ch23Img from "@/assets/blog/ai-governance-compliance-v9.jpg";
+import ch24Img from "@/assets/blog/promptfluid-ecosystem.jpg";
+import ch25Img from "@/assets/blog/building-agents-that-learn.jpg";
+import ch26Img from "@/assets/blog/ai-business-operations-2025.jpg";
+import ch27Img from "@/assets/blog/studio-app-builder.jpg";
+import ch28Img from "@/assets/blog/autonomous-discovery-engine.jpg";
+import ch29Img from "@/assets/blog/artifact-pack-capabilities.jpg";
+import ch30Img from "@/assets/blog/clockless-account-setup-artifact-packs.jpg";
+import ch31Img from "@/assets/blog/ai-triad-intelligent-routing.jpg";
+import ch32Img from "@/assets/blog/what-makes-clockless-different.jpg";
+import ch33Img from "@/assets/blog/memory-stream-crystallization-guide.jpg";
+import ch34Img from "@/assets/blog/ai-automation-trends-2025.jpg";
+import ch35Img from "@/assets/blog/cascade-ai-brain-cycles.jpg";
+import ch36Img from "@/assets/blog/cascade-ai-adaptive-brain.jpg";
+import ch37Img from "@/assets/blog/ai-governance-namespace-unified.jpg";
+import ch38Img from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
+import ch39Img from "@/assets/blog/defense-ai-security.jpg";
+import ch40Img from "@/assets/blog/signal-to-silicon-narrative.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
