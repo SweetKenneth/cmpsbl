@@ -215,86 +215,86 @@ function ScrollCarousel({ children, className }: { children: React.ReactNode; cl
 }
 
 // ─── Blog Post Card (carousel-sized, Supreme card style) ───
-function PostCard({ post, onClick }: { post: BlogPost; onClick: () => void }) {
+function PostCard({ post, href }: { post: BlogPost; href: string }) {
   const isHuman = post.source === 'human';
   return (
-    <div
-      className={cn(
-        "snap-start shrink-0 w-[300px] min-h-[340px]",
-        "rounded-xl border bg-gradient-to-br overflow-hidden",
-        "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200 cursor-pointer",
-        "flex flex-col",
-        isHuman
-          ? "border-amber-500/20 from-amber-500/[0.04] to-transparent"
-          : "border-slate-400/20 from-slate-400/[0.04] to-transparent",
-      )}
-      onClick={onClick}
-    >
-      {/* Top accent bar */}
-      <div className={cn(
-        "h-1 w-full",
-        isHuman
-          ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
-          : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
-      )} />
+    <Link to={href} className="snap-start shrink-0 w-[300px] min-h-[340px] block">
+      <div
+        className={cn(
+          "h-full rounded-xl border bg-gradient-to-br overflow-hidden",
+          "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200",
+          "flex flex-col",
+          isHuman
+            ? "border-amber-500/20 from-amber-500/[0.04] to-transparent"
+            : "border-slate-400/20 from-slate-400/[0.04] to-transparent",
+        )}
+      >
+        {/* Top accent bar */}
+        <div className={cn(
+          "h-1 w-full",
+          isHuman
+            ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
+            : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
+        )} />
 
-      {/* Image */}
-      <div className="aspect-[16/10] overflow-hidden relative">
-        <img
-          src={post.image}
-          alt={post.imageAlt}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        {/* Source badge */}
-        <div className="absolute top-2.5 right-2.5">
-          <Badge className={cn(
-            "text-[10px] font-bold backdrop-blur-md border",
-            isHuman
-              ? "bg-amber-500/20 text-amber-200 border-amber-400/40"
-              : "bg-slate-400/20 text-slate-200 border-slate-300/40"
-          )}>
-            {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-            {isHuman ? 'Kenneth' : 'AI'}
-          </Badge>
-        </div>
-        {/* Category badge */}
-        <div className="absolute bottom-2.5 left-2.5">
-          <Badge variant="outline" className="text-[10px] bg-black/40 text-white border-white/20 backdrop-blur-md">
-            {post.category}
-          </Badge>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-bold text-sm leading-snug mb-1.5 line-clamp-2">{post.title}</h3>
-        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{post.excerpt}</p>
-
-        {/* Author & meta footer */}
-        <div className="flex items-center gap-2.5">
-          {isHuman ? (
-            <img src={founderPhoto} alt={post.author} className="w-6 h-6 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
-          ) : (
-            <div className="w-6 h-6 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
-              <Bot className="w-3 h-3 text-slate-400" />
-            </div>
-          )}
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-medium truncate">{post.author}</p>
-            <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
-              <Calendar className="w-2.5 h-2.5" />
-              {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              <span>·</span>
-              <Clock className="w-2.5 h-2.5" />
-              {post.readTime}
-            </div>
+        {/* Image */}
+        <div className="aspect-[16/10] overflow-hidden relative">
+          <img
+            src={post.image}
+            alt={post.imageAlt}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          {/* Source badge */}
+          <div className="absolute top-2.5 right-2.5">
+            <Badge className={cn(
+              "text-[10px] font-bold backdrop-blur-md border",
+              isHuman
+                ? "bg-amber-500/20 text-amber-200 border-amber-400/40"
+                : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+            )}>
+              {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
+              {isHuman ? 'Kenneth' : 'AI'}
+            </Badge>
           </div>
-          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+          {/* Category badge */}
+          <div className="absolute bottom-2.5 left-2.5">
+            <Badge variant="outline" className="text-[10px] bg-black/40 text-white border-white/20 backdrop-blur-md">
+              {post.category}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-4 flex-1 flex flex-col">
+          <h3 className="font-bold text-sm leading-snug mb-1.5 line-clamp-2">{post.title}</h3>
+          <p className="text-xs text-muted-foreground line-clamp-2 mb-3 flex-1">{post.excerpt}</p>
+
+          {/* Author & meta footer */}
+          <div className="flex items-center gap-2.5">
+            {isHuman ? (
+              <img src={founderPhoto} alt={post.author} className="w-6 h-6 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
+            ) : (
+              <div className="w-6 h-6 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
+                <Bot className="w-3 h-3 text-slate-400" />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-medium truncate">{post.author}</p>
+              <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
+                <Calendar className="w-2.5 h-2.5" />
+                {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                <span>·</span>
+                <Clock className="w-2.5 h-2.5" />
+                {post.readTime}
+              </div>
+            </div>
+            <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -925,9 +925,7 @@ export default function Blog() {
                           <PostCard
                             key={post.id}
                             post={post}
-                            onClick={() => {
-                              window.location.href = post.href;
-                            }}
+                            href={post.href}
                           />
                         ))}
                       </ScrollCarousel>
