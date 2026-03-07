@@ -126,6 +126,17 @@ serve(async (req) => {
       }
     }
 
+    // Notify owner of purchase
+    if (resendKey) {
+      await notifyOwnerPurchase({
+        product: `${agentName} Agent`,
+        customerEmail,
+        amount: pricePaid,
+        licenseId: mintId,
+        resendKey,
+      });
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
