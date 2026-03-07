@@ -122,7 +122,6 @@ export default function Foundry() {
             <TierDistribution />
             <div id="verify"><VerifyPanel /></div>
             <FoundryFooter />
-            <MemoryStreamMobileNav />
           </div>
         ) : (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
