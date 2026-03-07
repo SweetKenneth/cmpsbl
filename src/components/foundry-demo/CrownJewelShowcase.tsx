@@ -52,11 +52,9 @@ const APEX_DISCOVERIES: ApexDiscovery[] = [
 ];
 
 export function CrownJewelShowcase() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
+    <section className="py-20 md:py-40 px-4 sm:px-6 relative">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
@@ -74,7 +72,8 @@ export function CrownJewelShowcase() {
             <motion.div
               key={discovery.name}
               initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group bg-card/30 border border-primary/10 rounded-lg p-4 sm:p-5 backdrop-blur-sm hover:border-primary/30 hover:bg-card/50 transition-all duration-300"
             >
@@ -101,7 +100,8 @@ export function CrownJewelShowcase() {
                   <motion.span
                     key={s}
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
                     transition={{ delay: i * 0.1 + j * 0.05 + 0.3 }}
                     className="text-[8px] sm:text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground border border-border/10"
                   >
@@ -122,8 +122,9 @@ export function CrownJewelShowcase() {
         {/* System composition insight */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
           className="mt-10 sm:mt-12 text-center"
         >
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-2.5 sm:py-3">

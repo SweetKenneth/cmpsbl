@@ -31,12 +31,10 @@ const CATEGORIES = [
 ];
 
 export function CategoryBreakdown() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
   const maxCount = Math.max(...CATEGORIES.map(c => c.count));
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
+    <section className="py-20 md:py-40 px-4 sm:px-6 relative">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
@@ -54,7 +52,8 @@ export function CategoryBreakdown() {
             <motion.div
               key={cat.category}
               initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.06 }}
               className="flex items-center gap-2.5 sm:gap-4"
             >
@@ -70,7 +69,8 @@ export function CategoryBreakdown() {
                 <motion.div
                   className="h-full rounded bg-gradient-to-r from-primary/60 to-primary/30"
                   initial={{ width: 0 }}
-                  animate={inView ? { width: `${(cat.count / maxCount) * 100}%` } : {}}
+                  whileInView={{ width: `${(cat.count / maxCount) * 100}%` }}
+                  viewport={{ once: true }}
                   transition={{ duration: 1, delay: i * 0.06 + 0.3, ease: 'easeOut' }}
                 />
                 <div className="absolute inset-0 flex items-center px-2 sm:px-3 justify-between">
@@ -92,8 +92,9 @@ export function CategoryBreakdown() {
         {/* Uniformity insight */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 1 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
           className="mt-8 sm:mt-10 text-center"
         >
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-5 py-2 sm:py-2.5">

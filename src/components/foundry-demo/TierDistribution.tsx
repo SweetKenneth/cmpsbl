@@ -42,12 +42,10 @@ const TIERS: TierData[] = [
 ];
 
 export function TierDistribution() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
   const total = TIERS.reduce((s, t) => s + t.count, 0);
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
+    <section className="py-20 md:py-40 px-4 sm:px-6 relative">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
@@ -67,7 +65,8 @@ export function TierDistribution() {
               className="h-full relative group cursor-default flex items-center justify-center"
               style={{ backgroundColor: t.color }}
               initial={{ width: 0 }}
-              animate={inView ? { width: `${(t.count / total) * 100}%` } : {}}
+              whileInView={{ width: `${(t.count / total) * 100}%` }}
+              viewport={{ once: true }}
               transition={{ duration: 1, delay: i * 0.2, ease: 'easeOut' }}
             >
               <span className="text-[10px] sm:text-xs font-mono font-bold text-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -83,7 +82,8 @@ export function TierDistribution() {
             <motion.div
               key={t.tier}
               initial={{ opacity: 0, y: 15 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.15 + 0.5 }}
               className="flex items-start gap-3"
             >
@@ -103,8 +103,9 @@ export function TierDistribution() {
         {/* Quality floor callout */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 1.2 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
           className="mt-10 sm:mt-12 text-center"
         >
           <div className="inline-flex items-center gap-2 bg-card/50 border border-border/20 rounded-lg px-4 sm:px-5 py-2 sm:py-2.5">

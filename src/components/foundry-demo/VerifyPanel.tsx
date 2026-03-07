@@ -108,8 +108,6 @@ export function VerifyPanel() {
   const [result, setResult] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [runCount, setRunCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
 
   async function runQuery(preset: QueryPreset) {
     setActiveQuery(preset.id);
@@ -126,7 +124,7 @@ export function VerifyPanel() {
   }
 
   return (
-    <section ref={ref} className="py-20 md:py-40 px-4 sm:px-6 relative">
+    <section className="py-20 md:py-40 px-4 sm:px-6 relative">
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.03),transparent_70%)]" />
@@ -134,7 +132,8 @@ export function VerifyPanel() {
       <div className="max-w-5xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -161,7 +160,8 @@ export function VerifyPanel() {
             <motion.button
               key={preset.id}
               initial={{ opacity: 0, y: 10 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
               onClick={() => runQuery(preset)}
               disabled={loading}
@@ -179,7 +179,8 @@ export function VerifyPanel() {
         {/* Result terminal */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
           className="bg-card/30 border border-border/20 rounded-lg overflow-hidden backdrop-blur-sm"
         >
@@ -221,8 +222,9 @@ export function VerifyPanel() {
         {/* Trust note */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
           className="mt-4 sm:mt-6 text-center"
         >
           <p className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/40 uppercase tracking-wider leading-relaxed px-2">

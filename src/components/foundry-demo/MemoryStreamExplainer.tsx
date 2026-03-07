@@ -44,11 +44,9 @@ const JOURNEY_STEPS = [
 ];
 
 export function MemoryStreamExplainer() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section ref={ref} id="how-it-works" className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
+    <section id="how-it-works" className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
       {/* Section divider top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
@@ -57,7 +55,8 @@ export function MemoryStreamExplainer() {
       <div className="max-w-4xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
@@ -82,7 +81,8 @@ export function MemoryStreamExplainer() {
               <motion.div
                 key={step.phase}
                 initial={{ opacity: 0, x: -20 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
                 className="relative pl-12 sm:pl-16 md:pl-20"
               >
@@ -113,8 +113,9 @@ export function MemoryStreamExplainer() {
         {/* Closing insight */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1.2 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
           className="mt-16 sm:mt-20 text-center"
         >
           <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-3 sm:py-4 max-w-lg">
