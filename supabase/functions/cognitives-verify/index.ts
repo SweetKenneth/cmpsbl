@@ -5,6 +5,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { notifyOwnerPurchase } from "../_shared/purchase-alert.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -63,6 +64,26 @@ serve(async (req) => {
     // Update order status
     await supabase.from('cognitive_orders').update({ payment_status: 'paid' })
       .eq('stripe_session_id', sessionId);
+
+    // Notify owner
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (resendKey) {
+      await notifyOwnerPurchase({
+        product: `${sku.toUpperCase()} Cognitive`,
+        customerEmail: session.customer_details?.email || session.customer_email || 'unknown',
+        amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
+        resendKey,
+      });
+    }
+
+    // Insert analytics event
+    await supabase.from('analytics_events').insert({
+      event_type: 'purchase_verified',
+      category: 'conversion',
+      label: `cognitive:${sku}`,
+      value: session.amount_total ? session.amount_total / 100 : null,
+      page: '/composable-cognitives/success',
+    });
 
     return new Response(
       JSON.stringify({

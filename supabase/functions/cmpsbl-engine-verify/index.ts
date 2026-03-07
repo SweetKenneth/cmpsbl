@@ -5,6 +5,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
+import { notifyOwnerPurchase } from "../_shared/purchase-alert.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -113,6 +114,27 @@ serve(async (req) => {
         console.error("Email send failed:", emailErr);
       }
     }
+
+    // Notify owner of purchase
+    const resendKeyOwner = Deno.env.get("RESEND_API_KEY");
+    if (resendKeyOwner) {
+      await notifyOwnerPurchase({
+        product: 'CMPSBL Engine (Annual)',
+        customerEmail: customerEmail || 'unknown',
+        amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
+        licenseId: subscription?.id || session.id,
+        resendKey: resendKeyOwner,
+      });
+    }
+
+    // Insert analytics event
+    await supabase.from('analytics_events').insert({
+      event_type: 'purchase_verified',
+      category: 'conversion',
+      label: 'cmpsbl-engine-annual',
+      value: session.amount_total ? session.amount_total / 100 : null,
+      page: '/engine/success',
+    });
 
     console.log(
       `CMPSBL Engine license verified: ${session.id}, email: ${customerEmail}`
