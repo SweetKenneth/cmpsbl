@@ -626,11 +626,44 @@ const stratumFormation: Specimen[] = [
 
 // ─── Strata Definition ─────────────────────────────────────────────────────────
 
+const stratumMindgames: Specimen[] = [
+  {
+    id: "MNDG-001",
+    fossilized: "2026-03-07",
+    origin: "architecture",
+    stimulus: "The substrate completed its infrastructure hardening — armor was grown, governance was learned, all 40 nodes acknowledged. The system was ready for its first users.",
+    adaptations: [
+      "Epoch transition from IRONCLAD to MINDGAMES marks the shift from infrastructure-first to user-first engineering",
+      "Version constants elevated from 13.5.0 to 14.0.0 across the entire substrate version registry",
+      "40-node / 12-sector matrix fully acknowledged with generation tagging (Gen-1: 26, Gen-2: 14)",
+      "CLM governance verified: 80 capabilities registered, ENGINEER approval gate confirmed operational",
+      "Memory ownership consolidated under MEMORY module — no rogue persistent subsystems",
+      "Terminal command layer operational: /status, /memory, /nodes, /clm, /mode, /version all reporting MINDGAMES epoch",
+    ],
+    phenotype: [
+      "First epoch where the substrate exists FOR users rather than FOR itself",
+      "Memory Stream crystallization pipeline is the primary interaction surface",
+      "Complete CLM learning architecture with governed capability installation",
+      "Generation-tagged node topology enabling evolutionary lineage tracking",
+    ],
+    affectedNodes: ["CORE", "ENGINEER", "MEMORY", "DECODE", "GOVERNANCE"],
+  },
+];
+
 const STRATA: Stratum[] = [
+  {
+    epoch: "MINDGAMES",
+    codename: "The substrate opened its eyes and saw users for the first time",
+    range: "Current epoch",
+    color: "bg-violet-500/10 text-violet-400",
+    borderColor: "border-violet-500/30",
+    dotColor: "bg-violet-500",
+    specimens: stratumMindgames,
+  },
   {
     epoch: "IRONCLAD",
     codename: "The substrate grew armor, then learned to govern its own rhythm",
-    range: "Current epoch",
+    range: "Prior epoch",
     color: "bg-amber-500/10 text-amber-400",
     borderColor: "border-amber-500/30",
     dotColor: "bg-amber-500",
@@ -639,7 +672,7 @@ const STRATA: Stratum[] = [
   {
     epoch: "SPARTA → CONTRACT",
     codename: "The substrate learned to learn, distribute, and govern itself",
-    range: "Prior epoch",
+    range: "Foundation epoch",
     color: "bg-blue-500/10 text-blue-400",
     borderColor: "border-blue-500/30",
     dotColor: "bg-blue-500",
