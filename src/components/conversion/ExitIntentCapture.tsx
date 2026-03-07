@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, Mail } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { LeadCaptureCTA } from './LeadCaptureCTA';
 
 const SHOWN_KEY = 'cmpsbl_exit_intent_shown';
@@ -13,6 +14,8 @@ const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h
 
 export function ExitIntentCapture() {
   const [show, setShow] = useState(false);
+  const { pathname } = useLocation();
+  const shouldDisableOnRoute = pathname.startsWith('/foundry') || pathname.startsWith('/memory-stream');
 
   const wasRecentlyShown = useCallback(() => {
     try {
@@ -27,6 +30,11 @@ export function ExitIntentCapture() {
   }, []);
 
   useEffect(() => {
+    if (shouldDisableOnRoute) {
+      setShow(false);
+      return;
+    }
+
     if (wasRecentlyShown()) return;
 
     // Desktop: exit intent (mouse leaves viewport top)
@@ -53,7 +61,7 @@ export function ExitIntentCapture() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [show, wasRecentlyShown, markShown]);
+  }, [show, wasRecentlyShown, markShown, shouldDisableOnRoute]);
 
   if (!show) return null;
 
