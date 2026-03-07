@@ -134,6 +134,8 @@ const COMMANDS: Record<string, CommandHandler> = {
       `Sectors:       ${summary.sectors.length}`,
       `CLM Caps:      ${summary.totalCapabilities}`,
       `Acknowledged:  ${summary.acknowledged}/${summary.totalNodes}`,
+      `Gen-1 Nodes:   ${summary.generation1Count}`,
+      `Gen-2 Nodes:   ${summary.generation2Count}`,
       '',
       ...sectorLines,
       '',
@@ -168,7 +170,7 @@ const COMMANDS: Record<string, CommandHandler> = {
   version: () => formatBlock('SUBSTRATE', [
     'CMPSBL® Substrate OS',
     'Cognitive Infrastructure Standard',
-    '38-Node · 12-Sector Matrix',
+    '40-Node · 12-Sector Matrix',
   ]),
 };
 
