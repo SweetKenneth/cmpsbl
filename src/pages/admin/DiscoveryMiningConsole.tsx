@@ -4,6 +4,7 @@
  * Includes Auto-Miner for frictionless one-click template generation + discovery.
  */
 import { useEffect, useState, useCallback } from 'react';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useDiscoveryReactor } from '@/hooks/admin/useDiscoveryReactor';
 import { useAutoMiner, type MinerConfig } from '@/hooks/admin/useAutoMiner';
