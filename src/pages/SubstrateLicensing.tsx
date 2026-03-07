@@ -605,6 +605,11 @@ function PricingCard({
           </p>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-5 p-4 sm:p-6 pt-0">
+          {/* Memory Stream limit badge */}
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
+            <Workflow className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span className="text-[11px] sm:text-xs font-semibold text-primary">{MEMORY_STREAM_LIMITS[meta.key]}</span>
+          </div>
           <div>
             <span className="text-2xl sm:text-3xl font-bold">{price}</span>
             {tier.amount !== null && tier.amount > 0 && (
