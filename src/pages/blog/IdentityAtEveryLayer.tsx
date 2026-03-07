@@ -1,22 +1,21 @@
 /**
  * Chapter 7: Identity at Every Layer — April 2025
- * ACCESS and entitlements.
  */
+import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
+import { BlogPostNav } from "@/components/blog/BlogPostNav";
 import heroImg from "@/assets/blog/promptfluid-access-identity-billing.jpg";
+
+const SLUG = "identity-at-every-layer";
 
 export default function IdentityAtEveryLayer() {
   return (
     <>
-      <SEO
-        title="Identity at Every Layer — The ACCESS Node"
-        description="Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world."
-        type="article"
-        publishedTime="2025-04-15"
-        keywords={['API identity management', 'ACCESS node', 'tier-based entitlements', 'API key lifecycle', 'rate limiting AI']}
-      />
+      <SEO title="Identity at Every Layer — The ACCESS Node" description="Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world." type="article" publishedTime="2025-04-15" keywords={["API identity management", "ACCESS node", "tier-based entitlements", "API key lifecycle"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Identity at Every Layer", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+      <BlogArticleJsonLd title="Identity at Every Layer — The ACCESS Node" description="How ACCESS made the substrate safe with identity and entitlements." slug={SLUG} datePublished="2025-04-15" imageUrl={heroImg} keywords={["ACCESS", "identity", "API keys"]} />
       <PublicNav />
       <main className="min-h-screen bg-background">
         <article className="container max-w-3xl mx-auto px-4 py-16">
@@ -27,20 +26,19 @@ export default function IdentityAtEveryLayer() {
             <p className="text-lg leading-relaxed">We were ready to let other people use the substrate. But "other people" meant strangers on the internet hitting our API with requests we couldn't predict. We needed to know who was calling, what they were allowed to do, and how much of it they could do.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">The API Key Problem</h2>
-            <p>API keys seem simple until you need to manage thousands of them. Creation, rotation, revocation, scoping, rate limiting per key, usage tracking per key. We looked at existing solutions — most were bolt-on middleware that didn't integrate with the rest of the infrastructure.</p>
-
-            <p>ACCESS was built to own the entire identity lifecycle. From key generation to usage tracking to automatic expiration. Every API key has scopes (which nodes can it access?), rate limits (how fast?), and quotas (how much per day?).</p>
+            <p>API keys seem simple until you need to manage thousands of them. ACCESS was built to own the entire <a href="https://cheatsheetseries.owasp.org/cheatsheets/API_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">identity lifecycle</a>. From key generation to usage tracking to automatic expiration. Every API key has scopes (which nodes can it access?), rate limits (how fast?), and quotas (how much per day?).</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Tier-Based Entitlements</h2>
-            <p>Not every customer needs every capability. Free tier gets NEXUS routing and basic BRAIN memory. Pro tier gets DEFENSE, VISION, and expanded memory. Enterprise gets everything, including nodes that haven't been released yet.</p>
+            <p>Not every customer needs every capability. Free tier gets <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS</Link> routing and basic <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link> memory. Pro tier gets <Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">DEFENSE</Link>, <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">VISION</Link>, and expanded memory. Enterprise gets everything.</p>
 
-            <p>ACCESS enforces these boundaries at the request level. Before any node processes a request, ACCESS validates the key, checks the tier, verifies the quota, and either passes it through or returns a clear error explaining what's missing.</p>
+            <p>ACCESS enforces these boundaries at the request level. Before any node processes a request, ACCESS validates the key, checks the tier, verifies the quota, and either passes it through or returns a clear error.</p>
 
             <h2 className="text-2xl font-bold text-foreground mt-8">Usage as Data</h2>
-            <p>The unexpected benefit of ACCESS was the data it generated. Every request, tagged by customer, tier, node, cost, and latency. We could see which nodes were most popular, which tiers were hitting their limits, and where pricing needed adjustment — all from ACCESS logs.</p>
+            <p>Every request, tagged by customer, tier, node, cost, and latency. We could see which nodes were most popular. This data later became essential for <Link to="/blog/the-governance-question" className="text-primary hover:underline">AUDIT's cryptographic logging</Link>.</p>
 
-            <p>ACCESS wasn't glamorous. Nobody gets excited about authentication. But it was the node that made the substrate a product instead of a project.</p>
+            <p>ACCESS wasn't glamorous. Nobody gets excited about authentication. But it was the node that made the substrate a product instead of a project. For how we later extended this to <Link to="/blog/building-on-the-substrate" className="text-primary hover:underline">developer experience</Link>, see Chapter 9.</p>
           </div>
+          <BlogPostNav slug={SLUG} />
         </article>
       </main>
       <EnhancedFooter />
