@@ -86,5 +86,8 @@ export * from './defense-hardening';
 // DEFENSE Hardening v3.0.0 "Citadel" — 30 breach-prevention upgrades
 export * from './defense-hardening-v3';
 
+// DEFENSE Hardening v4.0.0 "Bastion" — 25 T4 anomaly-focused upgrades
+export * from './defense-hardening-v4';
+
 // DEFENSE Guardrail Layer — prevents auto-locking and runaway escalation
 export * from './guardrail';
