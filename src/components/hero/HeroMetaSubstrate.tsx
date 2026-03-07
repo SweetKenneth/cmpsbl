@@ -339,7 +339,7 @@ export function HeroMetaSubstrate() {
             </motion.div>
 
             <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
-              <MemoryRiverLazy autoCrystallize />
+              <MemoryRiverLazy autoCrystallize hideTagline />
             </Suspense>
 
             {/* Below River — pulse cards */}
