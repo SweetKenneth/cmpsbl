@@ -456,12 +456,12 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
 // ═══════════════════════════════════════════════════════════════
 
 const FUNNEL_STAGES = [
-  { key: 'landing', label: 'Landing', paths: ['/', '/explore'] },
-  { key: 'engagement', label: 'Engagement', paths: ['/scan', '/decode', '/lab'] },
-  { key: 'onboarding', label: 'Onboarding', paths: ['/start-here'] },
-  { key: 'signup', label: 'Signup', paths: ['/auth', '/register'] },
-  { key: 'conversion', label: 'Conversion', paths: ['/upgrade', '/packs', '/store'] },
-  { key: 'deep_engagement', label: 'Deep Engagement', paths: ['/substrate', '/persistent-memory', '/composable-cognitives'] },
+  { key: 'landing', label: 'Landing', paths: ['/', '/explore'], description: 'First visit — user hit the homepage or explore page' },
+  { key: 'engagement', label: 'Engagement', paths: ['/scan', '/decode', '/lab'], description: 'Tried a tool — ran a scan, used DECODE, or opened the lab' },
+  { key: 'onboarding', label: 'Onboarding', paths: ['/start-here'], description: 'Started guided setup — visited the Start Here flow' },
+  { key: 'signup', label: 'Signup', paths: ['/auth', '/register'], description: 'Created an account — hit auth or registration page' },
+  { key: 'conversion', label: 'Conversion', paths: ['/upgrade', '/packs', '/store'], description: 'Purchase intent — viewed upgrade, packs, or store pages' },
+  { key: 'deep_engagement', label: 'Deep Engagement', paths: ['/substrate', '/persistent-memory', '/composable-cognitives'], description: 'Power usage — accessing substrate OS, MEMORY, or cognitives' },
 ];
 
 function ConversionFunnel({ events }: { events: RawEvent[] }) {
@@ -520,7 +520,7 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.08 }}
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-foreground">{stage.label}</span>
                 <span className="text-[10px] text-muted-foreground font-mono">
@@ -534,6 +534,7 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
                 <span className="text-lg font-bold font-mono text-foreground">{stage.count}</span>
               </div>
             </div>
+            <p className="text-[11px] text-muted-foreground mb-2">{stage.description}</p>
 
             <div className="h-3 rounded-full bg-muted/30 overflow-hidden">
               <motion.div
