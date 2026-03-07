@@ -261,8 +261,9 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
     moatSensitivity: randScore(minScore, maxScore),
   };
 
-  // Description
-  const desc = `${adj} ${category} pipeline combining ${selectedModules.join(', ')} for cross-module ${entryVerb} and ${exitVerb} operations`;
+  // Description — use centralized functional description engine
+  const { getFunctionalDescription } = await import('@/lib/pipeline-descriptions');
+  const desc = getFunctionalDescription(name, selectedModules);
 
   // Rationale
   const rationaleTemplate = pick(RATIONALE_PATTERNS);

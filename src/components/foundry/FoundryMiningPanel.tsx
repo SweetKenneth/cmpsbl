@@ -223,12 +223,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
                     <div className="font-mono text-sm font-bold text-foreground">
                       {result.name}
                     </div>
-                    {result.description && (
-                      <p className="text-xs text-muted-foreground/60 mt-1">
-                        {result.description}
-                      </p>
-                    )}
-                    <p className="text-[10px] text-primary/50 font-mono mt-1.5 leading-relaxed">
+                    <p className="text-xs text-primary/50 font-mono mt-1 leading-relaxed">
                       {getFunctionalDescription(result.name, result.systemChain)}
                     </p>
                     <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">

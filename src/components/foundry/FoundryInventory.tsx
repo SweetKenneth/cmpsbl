@@ -44,7 +44,7 @@ function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundr
     valuationDisplay: item.valuationDisplay,
     category: item.category,
     systemChain: item.systemChain,
-    description: `Crystallized pipeline: ${item.artifactName}`,
+    description: getFunctionalDescription(item.artifactName, item.systemChain ?? []),
     fingerprint: item.pipelineFingerprint || null,
     obtainedAt: item.obtainedAt,
     source: item.source,

@@ -14,6 +14,7 @@ import {
 } from '@/lib/export/universal-adapter';
 import { getUnlockStatus } from '@/lib/export/language-unlock-tiers';
 import { scoreToPublicTier, getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { toast } from 'sonner';
 
 interface ArtifactExportPanelProps {
@@ -53,13 +54,13 @@ export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
         rank: 0,
         cjpi: artifact.score,
         module: artifact.systemChain[0] || 'unknown',
-        description: `Crystallized pipeline: ${artifact.name}`,
+        description: getFunctionalDescription(artifact.name, artifact.systemChain),
         sourceCode: '',
         synthesisContext: {
           name: artifact.name,
           moduleChain: artifact.systemChain,
           cjpi: artifact.score,
-          description: `${artifact.name} — ${artifact.category || 'general'} pipeline`,
+          description: getFunctionalDescription(artifact.name, artifact.systemChain),
           category: artifact.category || 'general',
           entryCapability: 'process',
           exitCapability: 'emit',
