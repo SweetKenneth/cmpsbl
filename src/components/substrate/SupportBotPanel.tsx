@@ -172,6 +172,7 @@ export function SupportBotPanel() {
 
   const [input, setInput] = useState('');
   const [lastResponse, setLastResponse] = useState<SupportResponse | null>(null);
+  const [showEscalationInfo, setShowEscalationInfo] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom on new messages
@@ -208,11 +209,8 @@ export function SupportBotPanel() {
 
   const handleEscalate = async () => {
     await escalate('user_requested');
-    // After escalation, show the human contact info
     setShowEscalationInfo(true);
   };
-
-  const [showEscalationInfo, setShowEscalationInfo] = useState(false);
 
   return (
     <Card className="h-full flex flex-col">
