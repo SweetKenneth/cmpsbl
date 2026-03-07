@@ -26,6 +26,14 @@ import {
 } from "lucide-react";
 
 // ── Tier visual config ──
+// ── Memory Stream daily crystallization limits per tier ──
+const MEMORY_STREAM_LIMITS: Record<string, string> = {
+  free: '3 crystallizations / day',
+  creator: '25 crystallizations / day',
+  architect: '100 crystallizations / day',
+  enterprise: 'Unlimited crystallizations',
+};
+
 const TIERS = [
   {
     key: 'free' as const,
@@ -173,6 +181,11 @@ function TierBenefitCard({ tier }: { tier: typeof TIERS[number] }) {
       <Card className={`h-full relative overflow-hidden ${tier.bgGlow} border-border/50`}>
         <div className={`h-1.5 bg-gradient-to-r ${tier.gradient}`} />
         <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+          {/* Memory Stream limit */}
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
+            <Workflow className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span className="text-[11px] sm:text-xs font-semibold text-primary">{MEMORY_STREAM_LIMITS[tier.key]}</span>
+          </div>
           {/* Header */}
           <div className="flex items-center gap-3">
             <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-r ${tier.gradient} flex items-center justify-center shrink-0`}>
@@ -592,6 +605,11 @@ function PricingCard({
           </p>
         </CardHeader>
         <CardContent className="space-y-4 sm:space-y-5 p-4 sm:p-6 pt-0">
+          {/* Memory Stream limit badge */}
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
+            <Workflow className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span className="text-[11px] sm:text-xs font-semibold text-primary">{MEMORY_STREAM_LIMITS[meta.key]}</span>
+          </div>
           <div>
             <span className="text-2xl sm:text-3xl font-bold">{price}</span>
             {tier.amount !== null && tier.amount > 0 && (

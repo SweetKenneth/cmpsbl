@@ -136,7 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Send welcome email
       if (data) {
-        supabase.functions.invoke('bot-sniper-welcome', {
+        supabase.functions.invoke('welcome-email', {
           body: { 
             email,
             name: displayName || email.split('@')[0]
