@@ -1,6 +1,7 @@
 /**
  * Capability Router — Dynamic routing based on module capabilities
  * Routes requests to the most capable available handler
+ * Includes CLM-priority capabilities for all 38 matrix nodes
  */
 
 interface CapabilityEntry {
@@ -163,3 +164,7 @@ registerCapability('governance', 'policy_enforcement', 90);
 registerCapability('defense', 'threat_analysis', 95);
 registerCapability('defense', 'rate_limiting', 90);
 registerCapability('defense', 'quarantine', 85);
+
+// ─── CLM-Priority Capabilities (38 nodes × 2 = 76 capabilities) ────────────
+import { registerCLMPriorities } from './clm/node-priorities';
+registerCLMPriorities();

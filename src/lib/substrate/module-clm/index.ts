@@ -38,7 +38,26 @@ export type ModuleName =
   | 'audit'
   | 'identity'
   | 'economy'
-  | 'sandbox';
+  | 'sandbox'
+  | 'nerve'
+  | 'medic'
+  | 'sovereign'
+  | 'oracle'
+  | 'conscience'
+  | 'treaty'
+  | 'compass'
+  | 'echo'
+  | 'reflex'
+  | 'forge'
+  | 'lingua'
+  | 'harvest'
+  | 'phantom'
+  | 'evolution'
+  | 'shadow'
+  | 'immunity'
+  | 'intent'
+  | 'governance'
+  | 'engineer';
 
 export interface ModuleLearningConfig {
   moduleId: ModuleName;
@@ -400,6 +419,125 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
     learningTopics: ['Isolation guarantees', 'Execution safety', 'Resource containment'],
     kpis: ['isolation_score', 'block_rate', 'execution_success'],
     selfReflectionPrompt: 'As the SANDBOX module, how can I improve execution safety?',
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // EXPANSION NODES (17 additional nodes to complete 38-node matrix)
+  // ═══════════════════════════════════════════════════════════════════════════════
+
+  nerve: {
+    moduleId: 'nerve', displayName: 'NERVE',
+    learningTopics: ['Signal propagation optimization', 'Consensus repair protocols', 'Backpressure management', 'Topology-aware routing'],
+    kpis: ['signal_latency_ms', 'consensus_success_rate', 'throughput_signals_per_sec'],
+    selfReflectionPrompt: 'As the NERVE module, how can I reduce inter-node signal latency and improve consensus repair?',
+  },
+  medic: {
+    moduleId: 'medic', displayName: 'MEDIC',
+    learningTopics: ['Self-diagnostics depth', 'Predictive failure analysis', 'Health score calibration', 'Recovery playbook automation'],
+    kpis: ['diagnostic_accuracy', 'prediction_lead_time_ms', 'recovery_success_rate'],
+    selfReflectionPrompt: 'As the MEDIC module, how can I anticipate failures earlier and improve diagnostic accuracy?',
+  },
+  sovereign: {
+    moduleId: 'sovereign', displayName: 'SOVEREIGN',
+    learningTopics: ['Data residency enforcement', 'Regulatory adaptation', 'Jurisdiction classification accuracy', 'Cross-border compliance'],
+    kpis: ['compliance_score', 'jurisdiction_accuracy', 'policy_coverage'],
+    selfReflectionPrompt: 'As the SOVEREIGN module, how can I improve jurisdiction classification and regulatory compliance?',
+  },
+  oracle: {
+    moduleId: 'oracle', displayName: 'ORACLE',
+    learningTopics: ['Bayesian model calibration', 'Scenario planning', 'Forecast confidence scoring', 'Trend extrapolation accuracy'],
+    kpis: ['prediction_accuracy', 'calibration_score', 'forecast_horizon_days'],
+    selfReflectionPrompt: 'As the ORACLE module, how can I improve prediction accuracy and scenario simulation fidelity?',
+  },
+  conscience: {
+    moduleId: 'conscience', displayName: 'CONSCIENCE',
+    learningTopics: ['Bias detection training', 'Ethical impact scoring', 'Fairness metric calibration', 'Transparency report quality'],
+    kpis: ['bias_detection_rate', 'fairness_score', 'transparency_coverage'],
+    selfReflectionPrompt: 'As the CONSCIENCE module, how can I detect more subtle biases and improve ethical impact assessments?',
+  },
+  treaty: {
+    moduleId: 'treaty', displayName: 'TREATY',
+    learningTopics: ['Contract lifecycle management', 'Negotiation protocols', 'SLA monitoring accuracy', 'Breach detection speed'],
+    kpis: ['sla_compliance_rate', 'breach_detection_ms', 'contract_throughput'],
+    selfReflectionPrompt: 'As the TREATY module, how can I improve SLA enforcement and reduce breach detection latency?',
+  },
+  compass: {
+    moduleId: 'compass', displayName: 'COMPASS',
+    learningTopics: ['Geospatial intelligence', 'Regional risk mapping', 'Latency-aware routing', 'Spatial anomaly detection'],
+    kpis: ['routing_accuracy', 'latency_improvement_pct', 'anomaly_detection_rate'],
+    selfReflectionPrompt: 'As the COMPASS module, how can I improve geospatial routing and regional risk scoring?',
+  },
+  echo: {
+    moduleId: 'echo', displayName: 'ECHO',
+    learningTopics: ['Digital twin fidelity', 'Scenario replay accuracy', 'State drift detection', 'Twin synchronization latency'],
+    kpis: ['twin_fidelity_score', 'drift_detection_rate', 'sync_latency_ms'],
+    selfReflectionPrompt: 'As the ECHO module, how can I improve digital twin accuracy and reduce state drift?',
+  },
+  reflex: {
+    moduleId: 'reflex', displayName: 'REFLEX',
+    learningTopics: ['Edge orchestration', 'Low-latency decision trees', 'Pre-computed response paths', 'Distributed sync coordination'],
+    kpis: ['decision_latency_ms', 'edge_success_rate', 'sync_accuracy'],
+    selfReflectionPrompt: 'As the REFLEX module, how can I reduce decision latency and improve edge coordination?',
+  },
+  forge: {
+    moduleId: 'forge', displayName: 'FORGE',
+    learningTopics: ['Artifact synthesis quality', 'Template generation from patterns', 'Creative mutation strategies', 'Deployment readiness scoring'],
+    kpis: ['synthesis_quality_score', 'template_reuse_rate', 'deployment_readiness_pct'],
+    selfReflectionPrompt: 'As the FORGE module, how can I improve artifact quality and template reusability?',
+  },
+  lingua: {
+    moduleId: 'lingua', displayName: 'LINGUA',
+    learningTopics: ['Translation accuracy', 'Localization coverage', 'Glossary consistency', 'Context-aware language detection'],
+    kpis: ['translation_accuracy', 'locale_coverage_pct', 'glossary_consistency_score'],
+    selfReflectionPrompt: 'As the LINGUA module, how can I improve translation context-awareness and locale coverage?',
+  },
+  harvest: {
+    moduleId: 'harvest', displayName: 'HARVEST',
+    learningTopics: ['Data acquisition strategies', 'ETL optimization', 'Source quality scoring', 'Deduplication accuracy'],
+    kpis: ['ingestion_throughput', 'dedup_accuracy', 'source_quality_avg'],
+    selfReflectionPrompt: 'As the HARVEST module, how can I improve data acquisition quality and ETL pipeline performance?',
+  },
+  phantom: {
+    moduleId: 'phantom', displayName: 'PHANTOM',
+    learningTopics: ['PII masking accuracy', 'Differential privacy injection', 'Privacy-preserving analytics', 'Consent audit tracking'],
+    kpis: ['pii_detection_rate', 'false_negative_rate', 'privacy_score'],
+    selfReflectionPrompt: 'As the PHANTOM module, how can I improve PII detection accuracy and privacy-preserving analytics?',
+  },
+  evolution: {
+    moduleId: 'evolution', displayName: 'EVOLUTION',
+    learningTopics: ['Shadow validation accuracy', 'Canary deployment safety', 'Regression detection speed', 'Rollback reliability'],
+    kpis: ['shadow_accuracy', 'canary_success_rate', 'regression_catch_rate'],
+    selfReflectionPrompt: 'As the EVOLUTION module, how can I improve shadow validation and reduce regression risk?',
+  },
+  shadow: {
+    moduleId: 'shadow', displayName: 'SHADOW',
+    learningTopics: ['Shadow execution fidelity', 'Divergence analysis', 'Production parity', 'Metric capture accuracy'],
+    kpis: ['execution_fidelity', 'divergence_detection_rate', 'metric_accuracy'],
+    selfReflectionPrompt: 'As the SHADOW module, how can I improve shadow execution fidelity and divergence detection?',
+  },
+  immunity: {
+    moduleId: 'immunity', displayName: 'IMMUNITY',
+    learningTopics: ['Cascade breaking strategy', 'Anomaly signature training', 'Immune memory expansion', 'False positive reduction'],
+    kpis: ['cascade_break_success', 'signature_coverage', 'false_positive_rate'],
+    selfReflectionPrompt: 'As the IMMUNITY module, how can I improve cascade isolation and expand anomaly signature coverage?',
+  },
+  intent: {
+    moduleId: 'intent', displayName: 'INTENT',
+    learningTopics: ['Goal decomposition accuracy', 'Capability mesh routing', 'Intent confidence scoring', 'Multi-turn context tracking'],
+    kpis: ['decomposition_accuracy', 'routing_precision', 'confidence_calibration'],
+    selfReflectionPrompt: 'As the INTENT module, how can I improve goal decomposition and capability-to-node routing?',
+  },
+  governance: {
+    moduleId: 'governance', displayName: 'GOVERNANCE',
+    learningTopics: ['Veto precision', 'Policy lifecycle automation', 'Approval workflow optimization', 'Consent protocol enforcement'],
+    kpis: ['veto_precision', 'policy_coverage', 'approval_throughput'],
+    selfReflectionPrompt: 'As the GOVERNANCE module, how can I reduce false veto triggers and improve policy lifecycle management?',
+  },
+  engineer: {
+    moduleId: 'engineer', displayName: 'ENGINEER',
+    learningTopics: ['Engine health polling', 'CLM cycle coordination', 'Maintenance proposal quality', 'Dependency integrity checks'],
+    kpis: ['fleet_health_score', 'proposal_acceptance_rate', 'dependency_validity'],
+    selfReflectionPrompt: 'As the ENGINEER module, how can I improve engine fleet maintenance and proposal quality?',
   },
 };
 

@@ -4,7 +4,7 @@
  * before LLM routing — saves tokens for simple queries.
  */
 
-import { useDecodeStore } from '@/stores/decodeStore';
+import { NODE_CLM_PRIORITIES, getCLMPrioritySummary, getNodesBySector } from '@/lib/substrate/clm/node-priorities';
 
 export interface CommandResponse {
   handled: boolean;
@@ -75,6 +75,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     '/clear         — clear conversation',
     '/capabilities  — list active capabilities',
     '/nodes         — substrate node count',
+    '/clm           — CLM priority report',
     '/version       — substrate version',
     '',
     'Prefix with /  >  or  :',
@@ -121,16 +122,48 @@ const COMMANDS: Record<string, CommandHandler> = {
       : 'Standard capability set active.',
   ]),
 
-  nodes: () => formatBlock('SUBSTRATE TOPOLOGY', [
-    'Nodes:    38',
-    'Sectors:  12',
-    '',
-    'CORE · SYSTEM · CCR · OCG',
-    'Execution · ESZ · EPZ · EMZ',
-    'CSZ · Fields · Plane · Shell',
-    '',
-    'All nodes operational.',
-  ]),
+  nodes: () => {
+    const summary = getCLMPrioritySummary();
+    const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
+    const sectorLines = sectors.map(s => {
+      const nodes = getNodesBySector(s);
+      return `  ${s.padEnd(12)} ${nodes.map(n => n.displayName).join(' · ')}`;
+    });
+    return formatBlock('SUBSTRATE TOPOLOGY', [
+      `Nodes:         ${summary.totalNodes}`,
+      `Sectors:       ${summary.sectors.length}`,
+      `CLM Caps:      ${summary.totalCapabilities}`,
+      `Acknowledged:  ${summary.acknowledged}/${summary.totalNodes}`,
+      '',
+      ...sectorLines,
+      '',
+      'All nodes acknowledged and operational.',
+    ]);
+  },
+
+  clm: () => {
+    const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
+    const lines: string[] = [];
+    for (const s of sectors) {
+      const nodes = getNodesBySector(s);
+      if (nodes.length === 0) continue;
+      lines.push(`── ${s} ──`);
+      for (const n of nodes) {
+        lines.push(`  ${n.displayName.padEnd(12)} ✓ acknowledged`);
+        for (const p of n.priorities) {
+          lines.push(`    ▸ ${p.capability.replace('clm_', '')} (p=${p.priority})`);
+        }
+      }
+      lines.push('');
+    }
+    const summary = getCLMPrioritySummary();
+    return formatBlock(`CLM PRIORITY REPORT — ${summary.totalNodes} NODES`, [
+      `Total capabilities: ${summary.totalCapabilities}`,
+      `All nodes acknowledged: ${summary.acknowledged === summary.totalNodes ? 'YES' : 'NO'}`,
+      '',
+      ...lines,
+    ]);
+  },
 
   version: () => formatBlock('SUBSTRATE', [
     'CMPSBL® Substrate OS',
