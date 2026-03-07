@@ -29,9 +29,9 @@ import {
 // ── Memory Stream daily crystallization limits per tier ──
 const MEMORY_STREAM_LIMITS: Record<string, string> = {
   free: '3 crystallizations / day',
-  creator: '25 crystallizations / day',
-  architect: '100 crystallizations / day',
-  enterprise: 'Unlimited crystallizations',
+  studio: '6 crystallizations / day',
+  creator: '9 crystallizations / day',
+  architect: '12 crystallizations / day',
 };
 
 const TIERS = [
