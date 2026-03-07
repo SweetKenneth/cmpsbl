@@ -520,7 +520,7 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.08 }}
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-foreground">{stage.label}</span>
                 <span className="text-[10px] text-muted-foreground font-mono">
