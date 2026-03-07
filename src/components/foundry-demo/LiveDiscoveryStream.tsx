@@ -19,6 +19,23 @@ const TIER_STYLES: Record<string, string> = {
   'architect': 'bg-sky-500/10 text-sky-400 border-sky-500/30',
 };
 
+/** Map module chains to a human-readable functional description */
+function getFunctionalDescription(name: string, modules: string[]): string {
+  const moduleSet = new Set(modules.map(m => m.toUpperCase()));
+  if (moduleSet.has('EVOLUTION') && moduleSet.has('VISION')) return 'Explores solution spaces and adapts strategies using visual pattern recognition.';
+  if (moduleSet.has('BRAIN') && moduleSet.has('CORTEX') && moduleSet.has('DREAM')) return 'Combines reasoning, pattern analysis, and speculative simulation for deep inference.';
+  if (moduleSet.has('DEFENSE') && moduleSet.has('GOVERNANCE')) return 'Enforces security constraints and policy compliance across system operations.';
+  if (moduleSet.has('MEMORY') && moduleSet.has('NEXUS')) return 'Routes and stores persistent signals across the substrate network.';
+  if (moduleSet.has('RIPPLE') && moduleSet.has('SYSTEM')) return 'Propagates state changes through interconnected system components.';
+  if (moduleSet.has('CORTEX') && moduleSet.has('EVOLUTION')) return 'Applies pattern recognition to guide evolutionary optimization.';
+  if (moduleSet.has('BRAIN') && moduleSet.has('GOVERNANCE')) return 'Coordinates intelligent decision-making with governance oversight.';
+  if (moduleSet.has('DREAM')) return 'Uses speculative simulation to explore hypothetical system configurations.';
+  if (moduleSet.has('VISION')) return 'Analyzes structural patterns across data and system state.';
+  if (moduleSet.has('EVOLUTION')) return 'Applies adaptive optimization to discover improved configurations.';
+  // Fallback: generic from name
+  return `Autonomous pipeline combining ${modules.length} substrate systems into a unified capability.`;
+}
+
 function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: number }) {
   const tierStyle = TIER_STYLES[discovery.tier] || TIER_STYLES['architect'];
 
@@ -32,29 +49,21 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5">
+          <div className="flex items-center gap-2 mb-1.5 flex-wrap">
             <span className={`text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded-md border ${tierStyle} uppercase tracking-wider font-bold`}>
               {discovery.tier === 'cmpsbl-only' ? 'APEX' : discovery.tier}
             </span>
-            <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider truncate">
+            <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider">
               {discovery.category}
             </span>
           </div>
-          <div className="font-mono text-sm sm:text-base font-bold text-foreground truncate">
+          <div className="font-mono text-sm sm:text-base font-bold text-foreground">
             {discovery.name}
           </div>
-          <div className="flex flex-wrap gap-1.5 mt-2.5">
-            {discovery.module_chain.slice(0, 4).map(m => (
-              <span key={m} className="text-[10px] sm:text-xs font-mono px-1.5 py-0.5 rounded-md bg-muted/30 text-muted-foreground">
-                {m}
-              </span>
-            ))}
-            {discovery.module_chain.length > 4 && (
-              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground/40">
-                +{discovery.module_chain.length - 4}
-              </span>
-            )}
-          </div>
+          {/* Functional description — no truncation */}
+          <p className="text-xs text-muted-foreground/60 leading-relaxed mt-1.5">
+            {getFunctionalDescription(discovery.name, discovery.module_chain)}
+          </p>
         </div>
         <div className="text-right shrink-0">
           <div className={`text-2xl sm:text-3xl font-mono font-black ${
@@ -64,6 +73,9 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
             {discovery.cjpi}
           </div>
           <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">CJPI</div>
+          {discovery.cjpi === 100 && (
+            <div className="text-[9px] sm:text-[10px] text-primary/60 font-mono italic mt-0.5">Perfect</div>
+          )}
         </div>
       </div>
     </motion.div>
@@ -104,21 +116,31 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-center justify-between mb-10 sm:mb-12"
+          className="mb-3 sm:mb-4"
         >
-          <div>
-            <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground font-mono">
-              Discovery Stream
-            </h2>
-            <p className="text-muted-foreground/70 text-sm sm:text-base mt-1">
-              Real pipelines. Real scores. Real systems.
-            </p>
-          </div>
+          <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground font-mono">
+            Live Discovery Feed
+          </h2>
+          <p className="text-muted-foreground/70 text-sm sm:text-base mt-1">
+            New pipelines appear here as the Memory Stream explores system combinations.
+          </p>
+        </motion.div>
+
+        {/* Live status bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex items-center justify-between mb-8 sm:mb-10"
+        >
           <div className="flex items-center gap-2.5">
             <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-sm shadow-primary/30" />
             <span className="text-xs sm:text-sm font-mono text-muted-foreground">
               {discoveries.length} surfaced
             </span>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground/50">
+            <span className="text-primary/70">+1</span> discovery surfaced recently
           </div>
         </motion.div>
 

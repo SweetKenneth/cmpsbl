@@ -108,10 +108,14 @@ export function VerifyPanel() {
               </div>
             )}
           </div>
+          {/* Trust reinforcement */}
+          <p className="text-xs sm:text-sm font-mono text-primary/50 mb-3 leading-relaxed">
+            These controls query the same production database the Memory Stream writes to.
+          </p>
           <p className="text-muted-foreground/70 text-sm sm:text-base mb-8 sm:mb-10 max-w-2xl leading-relaxed">
             Don't take our word for it. Every button below runs a{' '}
             <span className="text-foreground font-semibold">live query against the production database</span>.
-            The same database the Memory Stream writes to. No caching. No mocking.
+            No caching. No mocking.
           </p>
         </motion.div>
 

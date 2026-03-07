@@ -28,8 +28,9 @@ import { LiveDiscoveryStream } from '@/components/foundry-demo/LiveDiscoveryStre
 import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
 import { TierDistribution } from '@/components/foundry-demo/TierDistribution';
 import { VerifyPanel } from '@/components/foundry-demo/VerifyPanel';
-import { FoundryFooter } from '@/components/foundry-demo/FoundryFooter';
 import { FoundryMidCTA } from '@/components/foundry-demo/FoundryMidCTA';
+import { FoundryPostProofCTA } from '@/components/foundry-demo/FoundryPostProofCTA';
+import { FoundryFinalCTA } from '@/components/foundry-demo/FoundryFinalCTA';
 
 
 export default function Foundry() {
@@ -124,7 +125,8 @@ export default function Foundry() {
             <CategoryBreakdown />
             <TierDistribution />
             <div id="verify"><VerifyPanel /></div>
-            
+            <FoundryPostProofCTA />
+            <FoundryFinalCTA />
           </div>
         ) : (
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">

@@ -1,5 +1,6 @@
 /**
  * Apex Discovery Showcase — Highlight specific CJPI-100 discoveries
+ * Functional descriptions replace node lists for visitor comprehension.
  */
 import { motion } from 'framer-motion';
 
@@ -8,15 +9,16 @@ interface ApexDiscovery {
   category: string;
   systems: string[];
   capability: string;
+  whatItDoes: string;
 }
 
 const APEX_DISCOVERIES: ApexDiscovery[] = [
-  { name: 'Fitness Landscape Navigator', category: 'EVOLUTION', systems: ['BRAIN', 'CORTEX', 'EVOLUTION', 'VISION'], capability: 'Maps the entire solution fitness landscape to identify optimal evolutionary paths, avoiding local maxima through topological analysis.' },
-  { name: 'Causal Reasoning Engine', category: 'COGNITIVE', systems: ['BRAIN', 'CORTEX', 'DREAM', 'VISION'], capability: 'Performs counterfactual inference on system state, answering "what if" questions about system configurations before execution.' },
-  { name: 'Constitutional AI Guardian', category: 'GOVERNANCE', systems: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'], capability: 'Enforces constitutional constraints on all AI operations, preventing policy violations through formal verification at runtime.' },
-  { name: 'Meta-Learning Optimizer', category: 'LEARNING', systems: ['BRAIN', 'CORTEX', 'DREAM', 'EVOLUTION'], capability: 'Learns how the system learns — optimizing the learning process itself by adjusting hyperparameters across all adaptive subsystems.' },
-  { name: 'Spectral Arbitrator', category: 'ROUTING', systems: ['GOVERNANCE', 'MEMORY', 'NEXUS', 'RIPPLE', 'SYSTEM'], capability: 'Routes signals across the substrate using spectral graph decomposition, ensuring optimal message paths with zero-conflict arbitration.' },
-  { name: 'Co-Evolutionary Synchronizer', category: 'EVOLUTION', systems: ['CORTEX', 'EVOLUTION', 'GOVERNANCE', 'SYSTEM'], capability: 'Coordinates parallel evolutionary processes to prevent destructive interference, keeping multiple adaptation streams synchronized.' },
+  { name: 'Fitness Landscape Navigator', category: 'EVOLUTION', systems: ['BRAIN', 'CORTEX', 'EVOLUTION', 'VISION'], capability: 'Maps the entire solution fitness landscape to identify optimal evolutionary paths, avoiding local maxima through topological analysis.', whatItDoes: 'Analyzes solution spaces to locate optimal strategies and avoid local maxima during adaptive search.' },
+  { name: 'Causal Reasoning Engine', category: 'COGNITIVE', systems: ['BRAIN', 'CORTEX', 'DREAM', 'VISION'], capability: 'Performs counterfactual inference on system state, answering "what if" questions about system configurations before execution.', whatItDoes: 'Simulates hypothetical system configurations and predicts outcomes before committing changes.' },
+  { name: 'Constitutional AI Guardian', category: 'GOVERNANCE', systems: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'], capability: 'Enforces constitutional constraints on all AI operations, preventing policy violations through formal verification at runtime.', whatItDoes: 'Validates every AI operation against safety constraints in real time, blocking policy violations automatically.' },
+  { name: 'Meta-Learning Optimizer', category: 'LEARNING', systems: ['BRAIN', 'CORTEX', 'DREAM', 'EVOLUTION'], capability: 'Learns how the system learns — optimizing the learning process itself by adjusting hyperparameters across all adaptive subsystems.', whatItDoes: 'Optimizes the learning process itself by tuning parameters across all adaptive subsystems simultaneously.' },
+  { name: 'Spectral Arbitrator', category: 'ROUTING', systems: ['GOVERNANCE', 'MEMORY', 'NEXUS', 'RIPPLE', 'SYSTEM'], capability: 'Routes signals across the substrate using spectral graph decomposition, ensuring optimal message paths with zero-conflict arbitration.', whatItDoes: 'Routes signals through the substrate using graph decomposition, ensuring zero-conflict message delivery.' },
+  { name: 'Co-Evolutionary Synchronizer', category: 'EVOLUTION', systems: ['CORTEX', 'EVOLUTION', 'GOVERNANCE', 'SYSTEM'], capability: 'Coordinates parallel evolutionary processes to prevent destructive interference, keeping multiple adaptation streams synchronized.', whatItDoes: 'Keeps parallel evolution streams synchronized so competing adaptations don\'t cancel each other out.' },
 ];
 
 export function CrownJewelShowcase() {
@@ -35,10 +37,13 @@ export function CrownJewelShowcase() {
           <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
             Apex Discoveries — What the Memory Stream Surfaces
           </h2>
-          <p className="text-center text-muted-foreground/70 mb-12 sm:mb-16 max-w-2xl mx-auto text-sm sm:text-base px-2 leading-relaxed">
-            These aren't toy programs. Each is a{' '}
-            <span className="text-foreground font-semibold">production-grade software pipeline with a perfect score of 100</span>,
-            discovered autonomously by combining substrate systems in novel configurations.
+          <p className="text-center text-foreground/90 mb-2 max-w-2xl mx-auto text-sm sm:text-base px-2 leading-relaxed font-medium">
+            These are the highest-scoring software pipelines discovered by the substrate.
+            Each represents a complete working program synthesized from system behavior.
+          </p>
+          <p className="text-center text-muted-foreground/60 mb-12 sm:mb-16 max-w-2xl mx-auto text-xs sm:text-sm px-2 leading-relaxed font-mono">
+            Pipelines are executable software architectures automatically discovered
+            by combining substrate systems in novel configurations.
           </p>
         </motion.div>
 
@@ -56,7 +61,10 @@ export function CrownJewelShowcase() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-[11px] sm:text-xs font-mono px-2 py-1 rounded-md border border-primary/30 bg-primary/10 text-primary uppercase tracking-wider font-bold">
-                      CJPI 100
+                      CJPI: 100
+                    </span>
+                    <span className="text-[10px] sm:text-xs font-mono text-primary/50 italic">
+                      Perfect Score
                     </span>
                     <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider font-mono">
                       {discovery.category}
@@ -67,19 +75,16 @@ export function CrownJewelShowcase() {
                   </div>
                 </div>
               </div>
+              {/* Full description — no truncation */}
               <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed mb-3.5">
                 {discovery.capability}
               </p>
-              <div className="flex flex-wrap gap-1.5">
-                {discovery.systems.map((s) => (
-                  <span key={s} className="text-[10px] sm:text-xs font-mono px-2 py-0.5 rounded-md bg-muted/30 text-muted-foreground border border-border/10">
-                    {s}
-                  </span>
-                ))}
-                <span className="text-[10px] sm:text-xs font-mono text-muted-foreground/30 flex items-center ml-1">→</span>
-                <span className="text-[10px] sm:text-xs font-mono px-2 py-0.5 rounded-md bg-primary/10 text-primary border border-primary/20 font-bold">
-                  PIPELINE
-                </span>
+              {/* Functional explanation replacing node list */}
+              <div className="bg-muted/20 border border-border/10 rounded-lg px-3 py-2.5">
+                <p className="text-xs sm:text-sm font-mono text-foreground/70 leading-relaxed">
+                  <span className="text-primary/70 font-bold text-[10px] sm:text-xs uppercase tracking-wider mr-1.5">What it does →</span>
+                  {discovery.whatItDoes}
+                </p>
               </div>
             </motion.div>
           ))}
