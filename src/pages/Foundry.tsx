@@ -29,7 +29,7 @@ import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
 import { TierDistribution } from '@/components/foundry-demo/TierDistribution';
 import { VerifyPanel } from '@/components/foundry-demo/VerifyPanel';
 import { FoundryFooter } from '@/components/foundry-demo/FoundryFooter';
-import { MemoryStreamMobileNav } from '@/components/foundry-demo/MemoryStreamMobileNav';
+
 
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
