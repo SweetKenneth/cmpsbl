@@ -68,7 +68,7 @@ export function MemoryStreamExplainer() {
             {JOURNEY_STEPS.map((step, i) => (
               <motion.div
                 key={step.phase}
-                initial={{ opacity: 0, x: -20 }}
+                initial={false}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}

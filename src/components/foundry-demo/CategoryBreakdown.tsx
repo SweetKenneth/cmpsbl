@@ -39,7 +39,7 @@ export function CategoryBreakdown() {
           {CATEGORIES.map((cat, i) => (
             <motion.div
               key={cat.category}
-              initial={{ opacity: 0, x: -30 }}
+              initial={false}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.5, delay: i * 0.04 }}
@@ -54,12 +54,9 @@ export function CategoryBreakdown() {
                 </div>
               </div>
               <div className="flex-1 h-8 sm:h-9 bg-muted/10 rounded overflow-hidden relative">
-                <motion.div
+                <div
                   className="h-full rounded bg-gradient-to-r from-primary/60 to-primary/30"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${(cat.count / maxCount) * 100}%` }}
-                  viewport={{ once: true, margin: '-30px' }}
-                  transition={{ duration: 1, delay: i * 0.04 + 0.2, ease: 'easeOut' }}
+                  style={{ width: `${(cat.count / maxCount) * 100}%` }}
                 />
                 <div className="absolute inset-0 flex items-center px-2 sm:px-3 justify-between">
                   <span className="text-[10px] sm:text-xs font-mono text-foreground/80 font-bold">{cat.count}</span>
