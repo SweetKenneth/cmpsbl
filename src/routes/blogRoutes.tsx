@@ -25,6 +25,26 @@ const ProtocolsForMachines = lazy(() => import("@/pages/blog/ProtocolsForMachine
 const WhenSoftwareStartsEvolving = lazy(() => import("@/pages/blog/WhenSoftwareStartsEvolving"));
 const BurningItDown = lazy(() => import("@/pages/blog/BurningItDown"));
 const SignalToSilicon = lazy(() => import("@/pages/blog/SignalToSilicon"));
+const WhenOneModelIsntEnough = lazy(() => import("@/pages/blog/WhenOneModelIsntEnough"));
+const BreakingProblemsApart = lazy(() => import("@/pages/blog/BreakingProblemsApart"));
+const TrustButVerify = lazy(() => import("@/pages/blog/TrustButVerify"));
+const MappingWhatWeBuilt = lazy(() => import("@/pages/blog/MappingWhatWeBuilt"));
+const TheComposableAgent = lazy(() => import("@/pages/blog/TheComposableAgent"));
+const TeamsOfMachines = lazy(() => import("@/pages/blog/TeamsOfMachines"));
+const InterfacesThatThink = lazy(() => import("@/pages/blog/InterfacesThatThink"));
+const FromThoughtToArtifact = lazy(() => import("@/pages/blog/FromThoughtToArtifact"));
+const TheMarketplace = lazy(() => import("@/pages/blog/TheMarketplace"));
+const PackingIntelligence = lazy(() => import("@/pages/blog/PackingIntelligence"));
+const TheIntentLayer = lazy(() => import("@/pages/blog/TheIntentLayer"));
+const ThirtyEightNodesDeep = lazy(() => import("@/pages/blog/ThirtyEightNodesDeep"));
+const TheMemoryStream = lazy(() => import("@/pages/blog/TheMemoryStream"));
+const TheEconomicsOfIntelligence = lazy(() => import("@/pages/blog/TheEconomicsOfIntelligence"));
+const GamingTheSubstrate = lazy(() => import("@/pages/blog/GamingTheSubstrate"));
+const WhenTheSystemWrites = lazy(() => import("@/pages/blog/WhenTheSystemWrites"));
+const OpenStandards = lazy(() => import("@/pages/blog/OpenStandards"));
+const WhatWeGotWrong = lazy(() => import("@/pages/blog/WhatWeGotWrong"));
+const TheScanner = lazy(() => import("@/pages/blog/TheScanner"));
+const WhereWeAreNow = lazy(() => import("@/pages/blog/WhereWeAreNow"));
 const AutoBlogPost = lazy(() => import("@/pages/blog/AutoBlogPost"));
 
 export const blogRoutes = (
@@ -50,6 +70,26 @@ export const blogRoutes = (
     <Route path="/blog/when-software-starts-evolving" element={<WhenSoftwareStartsEvolving />} />
     <Route path="/blog/burning-it-down" element={<BurningItDown />} />
     <Route path="/blog/signal-to-silicon" element={<SignalToSilicon />} />
+    <Route path="/blog/when-one-model-isnt-enough" element={<WhenOneModelIsntEnough />} />
+    <Route path="/blog/breaking-problems-apart" element={<BreakingProblemsApart />} />
+    <Route path="/blog/trust-but-verify" element={<TrustButVerify />} />
+    <Route path="/blog/mapping-what-we-built" element={<MappingWhatWeBuilt />} />
+    <Route path="/blog/the-composable-agent" element={<TheComposableAgent />} />
+    <Route path="/blog/teams-of-machines" element={<TeamsOfMachines />} />
+    <Route path="/blog/interfaces-that-think" element={<InterfacesThatThink />} />
+    <Route path="/blog/from-thought-to-artifact" element={<FromThoughtToArtifact />} />
+    <Route path="/blog/the-marketplace" element={<TheMarketplace />} />
+    <Route path="/blog/packing-intelligence" element={<PackingIntelligence />} />
+    <Route path="/blog/the-intent-layer" element={<TheIntentLayer />} />
+    <Route path="/blog/thirty-eight-nodes-deep" element={<ThirtyEightNodesDeep />} />
+    <Route path="/blog/the-memory-stream" element={<TheMemoryStream />} />
+    <Route path="/blog/the-economics-of-intelligence" element={<TheEconomicsOfIntelligence />} />
+    <Route path="/blog/gaming-the-substrate" element={<GamingTheSubstrate />} />
+    <Route path="/blog/when-the-system-writes" element={<WhenTheSystemWrites />} />
+    <Route path="/blog/open-standards" element={<OpenStandards />} />
+    <Route path="/blog/what-we-got-wrong" element={<WhatWeGotWrong />} />
+    <Route path="/blog/the-scanner" element={<TheScanner />} />
+    <Route path="/blog/where-we-are-now" element={<WhereWeAreNow />} />
 
     {/* ═══ LEGACY SLUG REDIRECTS ═══ */}
     {/* Memory Stream / Signal series */}
