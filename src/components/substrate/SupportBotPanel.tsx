@@ -229,11 +229,6 @@ export function SupportBotPanel() {
                     Evolving
                   </Badge>
                 )}
-                  <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
-                    <Zap className="w-3 h-3 mr-1" />
-                    Evolving
-                  </Badge>
-                )}
               </CardTitle>
               <p className="text-xs text-muted-foreground">
                 Memory-backed • Governed • Self-improving
