@@ -1,8 +1,8 @@
 /**
  * CMPSBL® Substrate Initialization
- * CONTRACT Epoch — Complete AI Operating System
+ * MINDGAMES Epoch — Complete AI Operating System
  *
- * Architecture: CORE → CCR → OCG (6) → Execution (10) → ESZ/EPZ/EMZ → CSZ → Fields/Plane/Shell
+ * Architecture: CORE → CCR → OCG (6) → Execution (11) → ESZ/EPZ/EMZ → CSZ → Fields/Plane/Shell
  *
  * Performance: Triple-deferred initialization for zero main-thread blocking
  */
@@ -37,15 +37,15 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('─────────────────────────────────────────');
     
     // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
-    const executionModules = [
+    const executionNodes = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
       'medic',
-      'integration', // boots last among execution modules
+      'integration', // boots last among execution nodes
     ] as const;
-    const eszModules = ['sovereign', 'oracle', 'conscience', 'treaty'] as const;
-    const epzModules = ['compass', 'echo', 'reflex'] as const;
-    const emzModules = ['forge', 'lingua', 'harvest'] as const;
-    const cszModules = ['evolution', 'shadow', 'phantom'] as const;
+    const eszNodes = ['sovereign', 'oracle', 'conscience', 'treaty'] as const;
+    const epzNodes = ['compass', 'echo', 'reflex'] as const;
+    const emzNodes = ['forge', 'lingua', 'harvest'] as const;
+    const cszNodes = ['evolution', 'shadow', 'phantom'] as const;
     const meshOverlays = [
       'governance', 'intent', 'immunity', 'defense', // innermost → outermost
     ] as const;
@@ -63,18 +63,18 @@ export async function initializeSubstrate(): Promise<void> {
     
     // 3. OCG (Operational Compliance Grid) — removed as dead layer
     //    All OCG subsystems (identity, access, signal, relay, audit) are
-    //    directly served by substrate modules. No separate boot needed.
+    //    directly served by substrate nodes. No separate boot needed.
     const ocgBooted = true;
     
     if (coreResult.success && ccrBooted && ocgBooted) {
-      console.log('✅ CORE + CCR + OCG active → 38-node matrix online | Health: 100%');
+      console.log('✅ CORE + CCR + OCG active → 40-node matrix online | Health: 100%');
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
-      const allModules = [...executionModules, ...eszModules, ...epzModules, ...emzModules, ...cszModules];
-      for (const module of allModules) {
+      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes];
+      for (const node of allNodes) {
         await yieldToMain();
-        const result = await substrate.invoke({ module, action: 'pulse' });
+        const result = await substrate.invoke({ module: node, action: 'pulse' });
         if (result.success) activeCount++;
       }
       for (const mesh of meshOverlays) {
@@ -83,7 +83,7 @@ export async function initializeSubstrate(): Promise<void> {
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/38 nodes active across 12 sectors`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/40 nodes active across 12 sectors`);
     }
     
     console.log('─────────────────────────────────────────');
