@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { SiteAnalyticsSection } from './SiteAnalyticsSection';
+import { UserBehaviorSection } from './UserBehaviorSection';
 
 interface TelemetryData {
   brainEvents: number;
@@ -41,7 +42,7 @@ export function AnalyticsTab() {
   const [data, setData] = useState<TelemetryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('7d');
-  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate'>('traffic');
+  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate' | 'behavior'>('traffic');
 
   const fetchTelemetry = useCallback(async () => {
     setLoading(true);
@@ -250,10 +251,23 @@ export function AnalyticsTab() {
         >
           <BarChart3 className="w-4 h-4" /> Substrate Telemetry
         </button>
+        <button
+          onClick={() => setActiveSection('behavior')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+            activeSection === 'behavior'
+              ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          <Users className="w-4 h-4" /> User Behavior
+        </button>
       </div>
 
       {activeSection === 'traffic' ? (
         <SiteAnalyticsSection />
+      ) : activeSection === 'behavior' ? (
+        <UserBehaviorSection />
       ) : (
         <>
       {/* Header */}
