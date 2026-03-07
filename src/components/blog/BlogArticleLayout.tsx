@@ -84,37 +84,38 @@ export function BlogArticleLayout({
           transition={{ duration: 0.6 }}
           className="relative"
         >
-          <div className="aspect-[21/9] max-h-[480px] overflow-hidden relative">
+          {/* Hero image — shorter on mobile */}
+          <div className="aspect-[16/9] sm:aspect-[21/9] max-h-[320px] sm:max-h-[480px] overflow-hidden relative">
             <img
               src={heroImage}
               alt={heroAlt}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-background/30 to-transparent" />
           </div>
 
-          {/* Floating header over hero bottom */}
-          <div className="container max-w-3xl mx-auto px-4 relative -mt-32 z-10">
+          {/* Floating header — less aggressive overlap on mobile */}
+          <div className="container max-w-3xl mx-auto px-5 sm:px-6 relative -mt-20 sm:-mt-32 z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {chapter && (
-                <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-primary/10 text-primary border border-primary/20 mb-4">
+                <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest bg-primary/10 text-primary border border-primary/20 mb-3 sm:mb-4">
                   Chapter {chapter}
                 </span>
               )}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[1.1] tracking-tight mb-3">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black leading-[1.1] tracking-tight mb-2 sm:mb-3">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-lg text-muted-foreground/80 font-medium mb-4 max-w-xl">
+                <p className="text-base sm:text-lg text-muted-foreground/80 font-medium mb-3 sm:mb-4 max-w-xl">
                   {subtitle}
                 </p>
               )}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   {date}
@@ -133,7 +134,7 @@ export function BlogArticleLayout({
         </motion.div>
 
         {/* Article body */}
-        <article className="container max-w-3xl mx-auto px-4 pt-10 pb-16">
+        <article className="container max-w-3xl mx-auto px-5 sm:px-6 pt-8 sm:pt-10 pb-12 sm:pb-16">
           {showRewrittenNotice && <RewrittenNotice />}
 
           <motion.div
@@ -143,22 +144,29 @@ export function BlogArticleLayout({
             className={cn(
               "prose prose-invert max-w-none",
               "prose-headings:font-black prose-headings:tracking-tight",
-              "prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-foreground",
-              "prose-h2:border-l-[3px] prose-h2:border-primary prose-h2:pl-4",
-              "prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:text-[15px]",
+              /* H2 — smaller on mobile, proper spacing */
+              "prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-8 sm:prose-h2:mt-12 prose-h2:mb-3 sm:prose-h2:mb-4 prose-h2:text-foreground",
+              "prose-h2:border-l-[3px] prose-h2:border-primary prose-h2:pl-3 sm:prose-h2:pl-4",
+              /* Body text — 16px on mobile for readability, comfortable line height */
+              "prose-p:text-muted-foreground prose-p:leading-[1.75] sm:prose-p:leading-[1.8]",
+              "prose-p:text-[15px] sm:prose-p:text-[16px]",
               "prose-a:text-primary prose-a:no-underline hover:prose-a:underline",
               "prose-strong:text-foreground prose-strong:font-bold",
-              "prose-blockquote:border-l-primary/40 prose-blockquote:bg-card/30 prose-blockquote:rounded-r-lg prose-blockquote:py-1 prose-blockquote:px-4",
+              "prose-blockquote:border-l-primary/40 prose-blockquote:bg-card/30 prose-blockquote:rounded-r-lg prose-blockquote:py-1 prose-blockquote:px-3 sm:prose-blockquote:px-4",
               "prose-img:rounded-xl",
-              "prose-figcaption:text-center prose-figcaption:text-muted-foreground/60 prose-figcaption:text-sm",
-              "space-y-6"
+              "prose-figcaption:text-center prose-figcaption:text-muted-foreground/60 prose-figcaption:text-xs sm:prose-figcaption:text-sm",
+              /* Tighter vertical rhythm on mobile */
+              "space-y-4 sm:space-y-6",
+              /* Lists */
+              "prose-li:text-muted-foreground prose-li:text-[15px] sm:prose-li:text-[16px] prose-li:leading-[1.75]",
+              "prose-ul:pl-4 sm:prose-ul:pl-6 prose-ol:pl-4 sm:prose-ol:pl-6",
             )}
           >
             {children}
           </motion.div>
 
           {/* Separator */}
-          <div className="mt-16 mb-0">
+          <div className="mt-12 sm:mt-16 mb-0">
             <div className="h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
           </div>
 
@@ -170,7 +178,7 @@ export function BlogArticleLayout({
       <motion.button
         onClick={scrollToTop}
         className={cn(
-          "fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full",
+          "fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 w-10 h-10 rounded-full",
           "bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
           "flex items-center justify-center",
           "hover:bg-primary transition-all",
