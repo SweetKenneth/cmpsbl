@@ -53,6 +53,7 @@ const AtlasTab = lazy(() => import('@/components/substrate-os/AtlasTab').then(m 
 const AgencyMintWizard = lazy(() => import('@/components/agency/AgencyMintWizard').then(m => ({ default: m.AgencyMintWizard })));
 const AgencyGallery = lazy(() => import('@/components/agency/AgencyGallery').then(m => ({ default: m.AgencyGallery })));
 const CognitivesPanel = lazy(() => import('@/components/substrate-os/CognitivesPanel').then(m => ({ default: m.CognitivesPanel })));
+const AccountTab = lazy(() => import('@/components/substrate-os/AccountTab').then(m => ({ default: m.AccountTab })));
 
 // ── Loading state ──
 function PanelLoader() {
