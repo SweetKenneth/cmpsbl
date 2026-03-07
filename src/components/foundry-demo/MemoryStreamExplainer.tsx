@@ -48,7 +48,10 @@ export function MemoryStreamExplainer() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section ref={ref} id="how-it-works" className="py-24 md:py-40 px-6 relative overflow-hidden">
+    <section ref={ref} id="how-it-works" className="py-20 md:py-40 px-4 sm:px-6 relative overflow-hidden">
+      {/* Section divider top */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(var(--primary)/0.04),transparent_60%)]" />
 
       <div className="max-w-4xl mx-auto relative">
@@ -57,14 +60,14 @@ export function MemoryStreamExplainer() {
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-sm uppercase tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
+          <h2 className="text-[10px] sm:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
             From Signal to Silicon
           </h2>
-          <p className="text-center text-muted-foreground/70 mb-6 max-w-2xl mx-auto">
+          <p className="text-center text-muted-foreground/70 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base px-2">
             The Memory Stream is not a tool. It is a continuous process that transforms raw system behavior
             into permanent software — and when that software proves exceptional, into physical hardware.
           </p>
-          <p className="text-center text-muted-foreground/40 mb-20 max-w-xl mx-auto text-sm font-mono">
+          <p className="text-center text-muted-foreground/40 mb-16 sm:mb-20 max-w-xl mx-auto text-xs sm:text-sm font-mono px-2">
             Every stage is autonomous. Every output is verifiable. Nothing is simulated.
           </p>
         </motion.div>
@@ -72,33 +75,33 @@ export function MemoryStreamExplainer() {
         {/* Journey timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-border/40 via-primary/20 to-border/40" />
+          <div className="absolute left-5 sm:left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-border/40 via-primary/20 to-border/40" />
 
-          <div className="space-y-12 md:space-y-16">
+          <div className="space-y-10 sm:space-y-12 md:space-y-16">
             {JOURNEY_STEPS.map((step, i) => (
               <motion.div
                 key={step.phase}
                 initial={{ opacity: 0, x: -20 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="relative pl-16 md:pl-20"
+                className="relative pl-12 sm:pl-16 md:pl-20"
               >
                 {/* Node */}
-                <div className="absolute left-3 md:left-5 top-1 w-6 h-6 rounded-full border border-border/30 bg-background flex items-center justify-center">
+                <div className="absolute left-2 sm:left-3 md:left-5 top-1 w-6 h-6 rounded-full border border-border/30 bg-background flex items-center justify-center">
                   <span className="text-xs text-primary font-mono">{step.icon}</span>
                 </div>
 
-                <div className="text-[10px] font-mono text-primary/60 uppercase tracking-[0.3em] mb-1">
+                <div className="text-[9px] sm:text-[10px] font-mono text-primary/60 uppercase tracking-[0.3em] mb-1">
                   Phase {step.phase}
                 </div>
-                <h3 className="text-xl md:text-2xl font-black tracking-tight text-foreground mb-3">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-foreground mb-2 sm:mb-3">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground/70 leading-relaxed mb-3 text-sm md:text-base">
+                <p className="text-muted-foreground/70 leading-relaxed mb-3 text-sm">
                   {step.description}
                 </p>
-                <div className="bg-card/30 border border-border/15 rounded-lg px-4 py-3">
-                  <p className="text-xs font-mono text-muted-foreground/50 leading-relaxed">
+                <div className="bg-card/30 border border-border/15 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3">
+                  <p className="text-[11px] sm:text-xs font-mono text-muted-foreground/50 leading-relaxed">
                     {step.detail}
                   </p>
                 </div>
@@ -112,10 +115,10 @@ export function MemoryStreamExplainer() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 1.2 }}
-          className="mt-20 text-center"
+          className="mt-16 sm:mt-20 text-center"
         >
-          <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-6 py-4 max-w-lg">
-            <p className="text-sm text-muted-foreground/70 leading-relaxed">
+          <div className="inline-block bg-card/50 border border-border/20 rounded-lg px-4 sm:px-6 py-3 sm:py-4 max-w-lg">
+            <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
               The Memory Stream has already produced{' '}
               <span className="text-foreground font-bold">1,143 crystallized pipelines</span> across{' '}
               <span className="text-foreground font-bold">9 capability domains</span> — autonomously,
