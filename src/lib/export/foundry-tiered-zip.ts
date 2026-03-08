@@ -149,6 +149,20 @@ export async function downloadTieredFoundryZip(options: {
       '',
       'Portable runtime included for all exported Foundry artifacts.',
       'Use this runtime to execute generated pipeline bundles without external infrastructure.',
+      '',
+      '## Included Components',
+      '',
+      '- **standalone-runtime.ts** — Core runtime with CJPI scoring, state machine, and pipeline orchestration',
+      '- **standalone-discovery-engine.ts** — Portable discovery reactor for artifact analysis',
+      '',
+      '## Usage',
+      '',
+      'Each exported pipeline file is self-contained and runs independently.',
+      'This runtime provides optional higher-level orchestration for chaining',
+      'multiple pipelines together.',
+      '',
+      '---',
+      '© CMPSBL® — All rights reserved.',
     ].join('\n')
   );
 
