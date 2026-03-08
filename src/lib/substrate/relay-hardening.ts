@@ -70,8 +70,10 @@ const RATE_MAX = 100;
 export function checkRateLimit(target: string): { allowed: boolean; remaining: number } {
   let entry = rateLimits.get(target);
   if (!entry || Date.now() - entry.windowStart > RATE_WINDOW) { entry = { count: 0, windowStart: Date.now() }; rateLimits.set(target, entry); }
-  entry.count++;
-  return { allowed: entry.count <= RATE_MAX, remaining: Math.max(0, RATE_MAX - entry.count) };
+  // Only consume budget if allowed — denied requests should not inflate the counter
+  const allowed = entry.count < RATE_MAX;
+  if (allowed) entry.count++;
+  return { allowed, remaining: Math.max(0, RATE_MAX - entry.count) };
 }
 
 // ─── 10. Webhook Timeout Manager ──────────────────────────────────────────

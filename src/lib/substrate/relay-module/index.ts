@@ -234,6 +234,22 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
   return result;
 }
 
+/**
+ * Mark a delivery as successfully delivered and decrement pending count.
+ */
+export function markDelivered(deliveryId: string): boolean {
+  const delivery = state.deliveries.find(d => d.id === deliveryId);
+  if (!delivery || delivery.status === 'delivered') return false;
+
+  delivery.status = 'delivered';
+  delivery.deliveredAt = Date.now();
+  state.totalDelivered++;
+  state.pendingQueue = Math.max(0, state.pendingQueue - 1);
+
+  emit({ module: 'relay', event_type: 'delivery_confirmed', outcome: 'succeeded', data: { id: deliveryId } });
+  return true;
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // CLM UPGRADE: Adaptive Retry Backoff
 // ═══════════════════════════════════════════════════════════════════
