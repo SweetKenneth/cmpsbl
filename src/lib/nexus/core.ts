@@ -7,6 +7,7 @@ import { routeToBestModel } from './router';
 import { cacheResponse, getCachedResponse } from './cache';
 import { learnFromResult } from './learning';
 import { recordMetric } from './metrics';
+import { canSpend, recordSpend } from './budgetGovernance';
 import { validateStringInput } from '@/lib/system/hardening';
 import { secureGet } from '@/lib/system/secureStorage';
 
