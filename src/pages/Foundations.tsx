@@ -167,7 +167,7 @@ export default function Foundations() {
                   Explore Substrate <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-              <Link to="/namespace" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group">
+              <Link to="/namespace" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift">
                 <Globe className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
                 <h3 className="font-bold mb-2">Governance Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
