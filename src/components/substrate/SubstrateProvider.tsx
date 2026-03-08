@@ -162,6 +162,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!autoInit) return;
     if (!debugMode.allowModulePolling()) return;
     if (initializedRef.current) return;
+    // EMERGENCY: Skip ALL heavy substrate init in editor preview to prevent crashes/reloads
+    if (isEditorPreviewEnv()) return;
     initializedRef.current = true;
     mountedRef.current = true;
 

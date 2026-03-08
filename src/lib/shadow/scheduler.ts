@@ -46,6 +46,12 @@ function handleVisibilityChange() {
 
 export function startShadowScheduler() {
   if (schedulerStarted) return;
+  // Never run shadow probes inside editor preview — causes reload loops
+  try {
+    const host = window.location.hostname;
+    const qs = new URLSearchParams(window.location.search);
+    if (qs.has('__lovable_token') || host.includes('lovableproject.com') || host.startsWith('id-preview--')) return;
+  } catch { /* proceed */ }
   schedulerStarted = true;
 
   // Run immediately on first start so we don't wait 15 min for first probe

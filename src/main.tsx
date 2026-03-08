@@ -7,13 +7,30 @@ import App from "./App.tsx";
 // Loading the full 44KB bundle asynchronously saves ~300ms LCP by not
 // render-blocking on 86% unused CSS. The print→all trick loads it
 // non-blocking then applies it once downloaded.
-import cssUrl from './index.css?url';
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = cssUrl;
-link.media = 'print';
-link.onload = function() { (this as HTMLLinkElement).media = 'all'; };
-document.head.appendChild(link);
+// In editor preview, load CSS synchronously to avoid FOUC/reload loops.
+// In production, defer via print→all trick for better LCP.
+const isEditorPreview = (() => {
+  try {
+    const qs = new URLSearchParams(window.location.search);
+    const host = window.location.hostname;
+    let embedded = false;
+    try { embedded = window.self !== window.top; } catch { embedded = true; }
+    return qs.has('__lovable_token') || host.includes('lovableproject.com') || host.startsWith('id-preview--') || embedded;
+  } catch { return false; }
+})();
+
+if (isEditorPreview) {
+  // Synchronous import — prevents flash/reload in editor iframe
+  import('./index.css');
+} else {
+  const cssUrl = new URL('./index.css', import.meta.url).href;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssUrl;
+  link.media = 'print';
+  link.onload = function() { (this as HTMLLinkElement).media = 'all'; };
+  document.head.appendChild(link);
+}
 
 // Pre-render cache safety: validate persisted Zustand stores before React mounts.
 // If any persisted store has corrupted/stale data, clear it so the app starts fresh.
