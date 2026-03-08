@@ -20,6 +20,7 @@ const graph = new Map<string, ModuleNode>();
 /** Clear all registered modules — essential for test isolation and HMR */
 export function clearGraph(): void {
   graph.clear();
+  dependentsIndex = null;
 }
 
 /** Get current graph size */
