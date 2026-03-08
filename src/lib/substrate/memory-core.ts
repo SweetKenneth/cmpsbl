@@ -719,9 +719,9 @@ class MemoryCoreClient {
           ttl_seconds: 1800,
         },
         long_term: {
-          hot: { capacity: 200, current: hotCount.count || 0 },
-          warm: { capacity: 1000, current: warmCount.count || 0 },
-          cold: { capacity: 5000, current: coldCount.count || 0 },
+          hot: { capacity: 500, current: hotCount.count || 0 },
+          warm: { capacity: 10000, current: warmCount.count || 0 },
+          cold: { capacity: 10000, current: coldCount.count || 0 },
         },
         latent: {
           pending_reflection: 0,
@@ -732,9 +732,9 @@ class MemoryCoreClient {
       return {
         short_term: { capacity: 50, current: 0, ttl_seconds: 1800 },
         long_term: {
-          hot: { capacity: 200, current: 0 },
-          warm: { capacity: 1000, current: 0 },
-          cold: { capacity: 5000, current: 0 },
+          hot: { capacity: 500, current: 0 },
+          warm: { capacity: 10000, current: 0 },
+          cold: { capacity: 10000, current: 0 },
         },
         latent: { pending_reflection: 0, pending_consolidation: 0 },
       };
