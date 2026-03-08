@@ -2606,29 +2606,32 @@ async function handleBrain(
           }
         }
 
-        // STEP 3d: Cold tier capacity enforcement — bulk prune overflow
+        // STEP 3d: Cold tier capacity enforcement — multi-pass bulk prune
         const COLD_CAPACITY = 10000;
         const { count: coldAfterDemote } = await supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true });
-        const coldOverflow = (coldAfterDemote || 0) - COLD_CAPACITY;
-        if (coldOverflow > 0) {
-          // Batch delete: get IDs of lowest-value cold memories, bulk delete
-          const coldBatchSize = Math.min(coldOverflow + 100, isDeep ? 5000 : isAggressive ? 2000 : 500);
+        let coldRemaining = (coldAfterDemote || 0) - COLD_CAPACITY;
+        const maxColdPrunePerTier = isDeep ? 10000 : isAggressive ? 5000 : 1000;
+        let coldPrunedTotal = 0;
+
+        while (coldRemaining > 0 && coldPrunedTotal < maxColdPrunePerTier) {
+          const batchSize = Math.min(1000, coldRemaining + 50, maxColdPrunePerTier - coldPrunedTotal);
           const { data: coldIds } = await supabase
             .from('brain_memory_cold')
             .select('id')
             .order('value_score', { ascending: true, nullsFirst: true })
             .order('archived_at', { ascending: true, nullsFirst: true })
-            .limit(coldBatchSize);
+            .limit(batchSize);
 
-          if (coldIds && coldIds.length > 0) {
-            // Bulk delete in chunks of 500
-            const idList = coldIds.map((r: any) => r.id);
-            for (let i = 0; i < idList.length; i += 500) {
-              const chunk = idList.slice(i, i + 500);
-              await supabase.from('brain_memory_cold').delete().in('id', chunk);
-              stats.pruned += chunk.length;
-            }
+          if (!coldIds || coldIds.length === 0) break;
+
+          const idList = coldIds.map((r: any) => r.id);
+          for (let i = 0; i < idList.length; i += 500) {
+            const chunk = idList.slice(i, i + 500);
+            await supabase.from('brain_memory_cold').delete().in('id', chunk);
           }
+          stats.pruned += idList.length;
+          coldPrunedTotal += idList.length;
+          coldRemaining -= idList.length;
         }
 
         // STEP 3e: Cold tier TTL — bulk prune memories older than 365 days with low value
