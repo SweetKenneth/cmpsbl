@@ -426,7 +426,7 @@ export default function Upgrade() {
                         <Button variant="outline" className="w-full" disabled>Current Plan</Button>
                       ) : (
                         <Button
-                          className={cn("w-full bg-gradient-to-r text-white border-0", t.accent)}
+                          className={cn("w-full bg-gradient-to-r text-white border-0 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                           onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                         >
                           Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />
