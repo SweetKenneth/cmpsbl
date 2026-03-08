@@ -1,17 +1,17 @@
 /**
- * Humans.txt — The people behind CMPSBL®
- * humanstxt.org specification
+ * Humans.txt — The architects behind CMPSBL®
+ * Cinematic reveal with terminal aesthetic
  */
-
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Code, Palette, Brain, Heart, Copy, Check, Terminal } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Users, Code, Palette, Heart, Copy, Check, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 const HUMANS_TXT_CONTENT = `/* HUMANS.TXT — Following humanstxt.org standard */
 
@@ -69,7 +69,7 @@ Dream: Memory consolidation engine
 /* COLOPHON */
 
 CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
-38 Nodes • 12 Sectors • 500+ Terminal Commands
+40 Nodes • 12 Sectors • 500+ Terminal Commands
 675+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
 
 CMPSBL® — Where Machines Learn To Think.
@@ -77,6 +77,58 @@ CMPSBL® — Where Machines Learn To Think.
 /* STANDARD */
 This file follows the humans.txt standard from humanstxt.org
 `;
+
+const sections = [
+  {
+    icon: Users,
+    title: "Team",
+    items: [
+      { label: "Creator", value: "Kenneth E. Sweet Jr." },
+      { label: "Role", value: "Founder & Chief Cognitive Engineer" },
+      { label: "ORCID", value: "0009-0001-4237-1243" },
+      { label: "Location", value: "Abilene, Texas" },
+    ],
+  },
+  {
+    icon: Code,
+    title: "Stack",
+    items: [
+      { label: "Frontend", value: "React · TypeScript · Tailwind" },
+      { label: "Framework", value: "Vite" },
+      { label: "Backend", value: "CMPSBL Cloud (Nexus Fleet)" },
+      { label: "Components", value: "Radix UI · shadcn/ui" },
+    ],
+  },
+  {
+    icon: Palette,
+    title: "Design",
+    items: [
+      { label: "Philosophy", value: "Cognitive-first aesthetics" },
+      { label: "Motion", value: "Framer Motion" },
+      { label: "Theme", value: "Dark-native, terminal-inspired" },
+    ],
+  },
+  {
+    icon: Heart,
+    title: "Values",
+    items: [
+      { label: "AI", value: "Orchestration over automation" },
+      { label: "Conversation", value: "Epistemic humility" },
+      { label: "Trust", value: "Real-time observability" },
+      { label: "Security", value: "Behavioral analysis" },
+    ],
+  },
+];
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export default function HumansTxt() {
   const [copied, setCopied] = useState(false);
@@ -88,137 +140,135 @@ export default function HumansTxt() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const sections = [
-    {
-      title: "Team",
-      icon: Users,
-      items: [
-        { label: "Creator", value: "Kenneth E. Sweet Jr." },
-        { label: "Role", value: "Founder & Chief Cognitive Engineer" },
-        { label: "ORCID", value: "0009-0001-4237-1243" },
-      ]
-    },
-    {
-      title: "Technology Stack",
-      icon: Code,
-      items: [
-        { label: "Frontend", value: "React + TypeScript + Tailwind" },
-        { label: "Framework", value: "Vite" },
-        { label: "Backend", value: "CMPSBL Cloud (Nexus Fleet)" },
-        { label: "State", value: "TanStack Query" },
-        { label: "Components", value: "Radix UI + shadcn/ui" },
-      ]
-    },
-    {
-      title: "Design",
-      icon: Palette,
-      items: [
-        { label: "Philosophy", value: "Cognitive-first aesthetics" },
-        { label: "Motion", value: "Framer Motion" },
-        { label: "Theme", value: "Dark-mode native, terminal-inspired" },
-      ]
-    },
-    {
-      title: "Core Values",
-      icon: Heart,
-      items: [
-        { label: "AI Approach", value: "Cognitive orchestration over automation" },
-        { label: "Conversation", value: "Epistemic humility" },
-        { label: "Trust", value: "Real-time observability" },
-        { label: "Security", value: "Behavioral analysis" },
-      ]
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Humans.txt — Team & Philosophy | CMPSBL"
-        description="The people, philosophy, and technology behind CMPSBL cognitive orchestration substrate. Founded by Kenneth E Sweet Jr in Dallas, TX."
+        description="The people, philosophy, and technology behind CMPSBL cognitive orchestration substrate. Founded by Kenneth E Sweet Jr."
         keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'cognitive AI team']}
-        noindex={true}
+        noindex
       />
 
       <PublicNav />
 
-      <main className="flex-1 container mx-auto px-4 py-12 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Users className="w-4 h-4 text-primary" />
-            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-primary hover:underline">humanstxt.org</a>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">
-            Humans.txt
-          </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            The people, philosophy, and technology behind CMPSBL®. 
-            Every system has its architects. This is ours.
-          </p>
+      <main className="flex-1 relative">
+        {/* Ambient background */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div
+            className="absolute top-20 left-1/3 w-[400px] h-[400px] rounded-full opacity-[0.04]"
+            style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }}
+          />
         </div>
 
-        {/* Section Cards */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {sections.map((section) => (
-            <Card key={section.title} className="border-border/50">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <section.icon className="w-4 h-4 text-primary" />
-                  {section.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {section.items.map((item) => (
-                    <div key={item.label} className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{item.label}</span>
-                      <span className="font-medium text-right max-w-[60%]">{item.value}</span>
+        <div className="container mx-auto px-4 pt-24 pb-16 max-w-4xl relative z-10">
+          {/* Header */}
+          <motion.div
+            className="mb-14"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
+              <Users className="w-3 h-3 text-primary" />
+              <a
+                href="https://humanstxt.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-mono text-primary hover:underline"
+              >
+                humanstxt.org
+              </a>
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
+            <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
+              Every system has its architects. This is the team, philosophy, and technology behind CMPSBL®.
+            </p>
+          </motion.div>
+
+          {/* Section grid */}
+          <motion.div
+            className="grid sm:grid-cols-2 gap-4 mb-12"
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+          >
+            {sections.map((section) => (
+              <motion.div key={section.title} variants={fadeUp}>
+                <Card className="h-full border-border/30 bg-card/40 backdrop-blur-sm glass-edge hover:border-primary/20 transition-colors">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <section.icon className="w-4 h-4 text-primary" />
+                      </div>
+                      <h2 className="text-sm font-bold uppercase tracking-wider text-foreground">{section.title}</h2>
                     </div>
-                  ))}
+                    <div className="space-y-2.5">
+                      {section.items.map((item) => (
+                        <div key={item.label} className="flex justify-between items-baseline text-sm gap-2">
+                          <span className="text-muted-foreground/70 shrink-0">{item.label}</span>
+                          <span className="font-medium text-foreground text-right">{item.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Philosophy quote */}
+          <motion.div
+            className="mb-12 p-6 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <blockquote className="text-xl sm:text-2xl font-light italic text-foreground mb-2">
+              "Building the infrastructure layer for autonomous AI systems."
+            </blockquote>
+            <p className="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest">
+              The substrate mission
+            </p>
+          </motion.div>
+
+          {/* Raw content */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <Card className="border-primary/20 bg-card/40 backdrop-blur-sm">
+              <div className="flex items-center justify-between p-4 sm:p-5 border-b border-border/30">
+                <div className="flex items-center gap-2">
+                  <Terminal className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-bold">Raw humans.txt</span>
                 </div>
-              </CardContent>
+                <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2 h-9">
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span className="text-xs">{copied ? "Copied" : "Copy"}</span>
+                </Button>
+              </div>
+              <div className="p-4 sm:p-5">
+                <pre className="bg-background/60 rounded-xl p-4 overflow-x-auto text-xs font-mono whitespace-pre-wrap text-muted-foreground leading-relaxed max-h-[400px] overflow-y-auto scrollbar-thin">
+                  {HUMANS_TXT_CONTENT}
+                </pre>
+              </div>
             </Card>
-          ))}
-        </div>
+          </motion.div>
 
-        {/* Philosophy Quote */}
-        <div className="mb-12 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20 text-center">
-          <Brain className="w-8 h-8 text-primary mx-auto mb-4" />
-          <blockquote className="text-xl font-light italic mb-2">
-            "Building the infrastructure layer for autonomous AI systems."
-          </blockquote>
-          <p className="text-sm text-muted-foreground">
-            The substrate mission
-          </p>
-        </div>
-
-        {/* Raw Content */}
-        <Card className="border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Terminal className="w-5 h-5 text-primary" />
-              Raw humans.txt
-            </CardTitle>
-            <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2">
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              {copied ? "Copied" : "Copy"}
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <pre className="bg-muted/30 rounded-lg p-4 overflow-x-auto text-sm font-mono whitespace-pre-wrap">
-              {HUMANS_TXT_CONTENT}
-            </pre>
-          </CardContent>
-        </Card>
-
-        {/* Standard Info */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            Humans.txt is a protocol designed by{" "}
-            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">humanstxt.org</a>
-            {" "}to credit the humans behind digital projects.
-            CMPSBL® follows this standard and recommends it for all web designers and system architects.
-          </p>
+          {/* Footer note */}
+          <motion.p
+            className="mt-8 text-center text-xs text-muted-foreground/50"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Following the{" "}
+            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary/70 hover:text-primary hover:underline transition-colors">
+              humanstxt.org
+            </a>{" "}
+            standard for crediting the humans behind digital projects.
+          </motion.p>
         </div>
       </main>
 
