@@ -194,7 +194,7 @@ export function wrapExecutor(
     ): Promise<SynergyResult | null> => {
       if (repairAttemptedFlag) return null;
 
-      // v3.1: Check shared rules FIRST — learned fixes from other executors
+      // Check shared rules FIRST — learned fixes from other executors
       const applicableRules = findApplicableRules(executorName);
       let sharedRuleUsed: string | null = null;
 
