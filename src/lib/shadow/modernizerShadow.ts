@@ -607,8 +607,8 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   }
   
   // Record events
-  appendEvent('PROBE_REPAIRED', 'modernizer:shadow', 'system', 'building',
-    `Modernizer Shadow: ${summary.executorFixed} fixed, ${summary.encodeEscalated} escalated, ${summary.rulesGenerated} rules`,
+  appendEvent('PROBE_REPAIRED', 'shadow:gap-training', 'system', 'building',
+    `Shadow Gap Training: ${summary.executorFixed} fixed, ${summary.encodeEscalated} escalated, ${summary.rulesGenerated} rules`,
     crypto.randomUUID()
   );
   
