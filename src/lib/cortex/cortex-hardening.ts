@@ -886,6 +886,7 @@ export function getOrchestrationTelemetry(): {
   return {
     successRate: total > 0 ? telemetryWindow.successCount / total : 1.0,
     avgLatencyMs: total > 0 ? Math.round(telemetryWindow.totalLatencyMs / total) : 0,
+    maxLatencyMs: telemetryWindow.maxLatencyMs,
     // Real p95: use sorted latency samples
     p95LatencyEstimate: (() => {
       const s = telemetryWindow.latencySamples;
