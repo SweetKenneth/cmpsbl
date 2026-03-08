@@ -366,22 +366,21 @@ class MemoryCoreClient {
     try {
       const tier = entry.tier || 'warm';
 
-      // Prepare data for insertion
-      const insertData = {
-        content: entry.content,
-        memory_type: entry.memory_type || 'general',
-        confidence: entry.confidence || 0.7,
-        importance_score: entry.importance_score || 0.5,
-        access_count: entry.access_count || 0,
-        tags: entry.tags || [],
-        metadata: entry.metadata || {},
-        source: (entry.metadata?.source as string) || 'memory_core',
-      };
-
       // Use type assertion for dynamic table access
       let memoryId: string | undefined;
 
       if (tier === 'hot') {
+        const insertData = {
+          content: entry.content,
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          importance_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          metadata: entry.metadata || {},
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_hot')
           .insert(insertData as any)
@@ -390,6 +389,17 @@ class MemoryCoreClient {
         if (error) throw error;
         memoryId = data?.id;
       } else if (tier === 'warm') {
+        const insertData = {
+          content: entry.content,
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          salience_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          metadata: entry.metadata || {},
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_warm')
           .insert(insertData as any)
@@ -398,6 +408,17 @@ class MemoryCoreClient {
         if (error) throw error;
         memoryId = data?.id;
       } else {
+        // Cold tier uses 'summary' not 'content', 'value_score' not 'confidence', 'source_module' not 'source'
+        const insertData = {
+          summary: entry.content || '',
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          salience_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_cold')
           .insert(insertData as any)
