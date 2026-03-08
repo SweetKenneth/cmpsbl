@@ -149,6 +149,7 @@ export interface SessionContinuity {
 }
 
 const sessions = new Map<string, SessionContinuity>();
+const MAX_SESSIONS = 500;
 
 export function trackSessionTurn(sessionId: string, topic: string): SessionContinuity {
   let session = sessions.get(sessionId);
