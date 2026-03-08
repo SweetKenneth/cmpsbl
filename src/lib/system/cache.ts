@@ -13,6 +13,7 @@ class CacheManager {
   private static instance: CacheManager;
   private cache = new Map<string, CacheEntry<unknown>>();
   private focusedTab = true;
+  private readonly maxSize = 500;
 
   private constructor() {
     // Track tab focus for polling backoff
