@@ -95,7 +95,9 @@ export interface PlaybookExecutionResult {
   actions: Array<{ step: string; action: string; success: boolean; error?: string }>;
 }
 
-// In-memory incident store
+// In-memory incident store — bounded
+const MAX_ACTIVE_INCIDENTS = 500;
+const MAX_TIMELINE_ENTRIES = 100;
 const activeIncidents = new Map<string, Incident>();
 const playbooks = new Map<string, Playbook>();
 const playbookCooldowns = new Map<string, number>();
