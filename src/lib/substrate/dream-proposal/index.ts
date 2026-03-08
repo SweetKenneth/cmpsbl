@@ -71,7 +71,7 @@ const PRIORITY_MAP: Record<string, number> = {
 /**
  * Classify a dream insight and determine if it should become a proposal
  */
-function classifyDream(insight: DreamInsight): {
+function classifyDream(insight: DreamInsight, cfg: PipelineConfig = DEFAULT_CONFIG): {
   shouldConvert: boolean;
   category: string;
   priority: number;
@@ -94,7 +94,7 @@ function classifyDream(insight: DreamInsight): {
     return { shouldConvert: false, category, priority, reason: 'Not actionable enough' };
   }
   
-  if (insight.confidence < DEFAULT_CONFIG.min_confidence) {
+  if (insight.confidence < cfg.min_confidence) {
     return { shouldConvert: false, category, priority, reason: `Confidence too low (${insight.confidence})` };
   }
   

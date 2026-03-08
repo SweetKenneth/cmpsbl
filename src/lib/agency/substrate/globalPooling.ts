@@ -233,11 +233,22 @@ export async function applyGlobalHeuristic(
     return false;
   }
 
-  // Increment adoption count
-  await supabase
-    .from('substrate_brain_improvements')
-    .update({ adoption_count: (global.adoption_count || 0) + 1 })
-    .eq('id', globalHeuristicId);
+  // Increment adoption count atomically via RPC-style (fire-and-forget)
+  supabase.rpc('increment_field', {
+    table_name: 'substrate_brain_improvements',
+    row_id: globalHeuristicId,
+    field_name: 'adoption_count',
+    increment_by: 1,
+  }).then(({ error: rpcErr }) => {
+    // Fallback: if RPC doesn't exist, use direct update (race-prone but acceptable for counters)
+    if (rpcErr) {
+      supabase
+        .from('substrate_brain_improvements')
+        .update({ adoption_count: (global.adoption_count || 0) + 1 })
+        .eq('id', globalHeuristicId)
+        .then(() => {});
+    }
+  });
 
   return true;
 }

@@ -519,19 +519,24 @@ export function getTemperatureHistory(): Array<{ value: number; timestamp: numbe
 }
 
 // ─── 24. Cross-Module Dream Feed ────────────────────────────────────────────
-interface DreamFeedItem { source: string; content: string; priority: number; consumedBy: string[]; timestamp: number; }
+interface DreamFeedItem { source: string; content: string; priority: number; consumedBy: Set<string>; timestamp: number; }
 const dreamFeed: DreamFeedItem[] = [];
 
 export function publishToDreamFeed(source: string, content: string, priority = 5): void {
-  dreamFeed.push({ source, content, priority, consumedBy: [], timestamp: Date.now() });
+  dreamFeed.push({ source, content, priority, consumedBy: new Set(), timestamp: Date.now() });
   dreamFeed.sort((a, b) => b.priority - a.priority);
   if (dreamFeed.length > 200) dreamFeed.splice(200);
 }
 
-export function consumeDreamFeed(consumer: string, limit = 10): DreamFeedItem[] {
-  const available = dreamFeed.filter(f => !f.consumedBy.includes(consumer));
-  const items = available.slice(0, limit);
-  for (const item of items) item.consumedBy.push(consumer);
+export function consumeDreamFeed(consumer: string, limit = 10): Array<{ source: string; content: string; priority: number; timestamp: number }> {
+  const items: Array<{ source: string; content: string; priority: number; timestamp: number }> = [];
+  for (const f of dreamFeed) {
+    if (items.length >= limit) break;
+    if (!f.consumedBy.has(consumer)) {
+      f.consumedBy.add(consumer);
+      items.push({ source: f.source, content: f.content, priority: f.priority, timestamp: f.timestamp });
+    }
+  }
   return items;
 }
 
