@@ -482,8 +482,13 @@ export function replayDreamChain(chainId: string): DreamStep[] | null {
 
 // ─── 22. Novelty Decay Tracker ──────────────────────────────────────────────
 const noveltyScores = new Map<string, { score: number; recordedAt: number; decayRate: number }>();
+const MAX_NOVELTY_ENTRIES = 200;
 
 export function recordNovelty(domain: string, score: number, decayRate = 0.01): void {
+  if (noveltyScores.size >= MAX_NOVELTY_ENTRIES && !noveltyScores.has(domain)) {
+    const oldest = noveltyScores.keys().next().value;
+    if (oldest) noveltyScores.delete(oldest);
+  }
   noveltyScores.set(domain, { score, recordedAt: Date.now(), decayRate });
 }
 
