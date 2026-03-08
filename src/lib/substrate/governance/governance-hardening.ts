@@ -312,6 +312,7 @@ export function createQuorum(
     metadata,
   };
   quorumRequests.set(q.id, q);
+  capMap(quorumRequests, MAX_QUORUMS);
   return q;
 }
 
