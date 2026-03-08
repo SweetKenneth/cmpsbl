@@ -5,7 +5,9 @@
  */
 
 import type { SynthesisContext } from './logic-synthesizer';
-import { generateLicenseHTML } from './elegant-html-docs';
+import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
+import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { getTierFromScore } from '@/lib/pipeline-valuation';
 
 export function generateTypeScriptTest(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
