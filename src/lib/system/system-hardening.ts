@@ -761,6 +761,7 @@ interface RegistrySnapshot {
 }
 
 const registrySnapshots: RegistrySnapshot[] = [];
+const MAX_REGISTRY_SNAPSHOTS = 20;
 
 export function captureRegistrySnapshot(
   modules: Record<string, { version: string; status: string }>
