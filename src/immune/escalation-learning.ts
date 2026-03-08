@@ -173,7 +173,7 @@ export function getSimilarExecutors(executor: string): string[] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 1: Capture Escalation Pattern (v3 — richer signals)
+// Step 1: Capture Escalation Pattern
 // ═══════════════════════════════════════════════════════════════════════════
 
 function createSignature(signal: EscalationSignal): string {
