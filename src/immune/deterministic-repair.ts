@@ -692,11 +692,13 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     if (!applied.includes('PREFERENCES_EMPTY_OBJ')) applied.push('PREFERENCES_EMPTY_OBJ');
   }
 
-  // ── Executor-Specific Repair Rules ──
+  // ── Executor-Specific Shape Injection ──
+  // Only inject executor-specific defaults when DEFAULT_SHAPE was applied,
+  // indicating the input was missing all recognized keys (adversarial/empty).
+  // Without this guard, ALL inputs across all 100+ executors would get these fields.
 
-  // 55) ADAPTIVE_UI_SHAPE — adaptive-ui requires 'viewport', 'colorScheme', 'motionPreference'
-  //     These are commonly missing from adversarial probes. Inject sensible defaults.
-  if ('content' in copy || 'target' in copy) {
+  if (applied.includes('DEFAULT_SHAPE')) {
+    // 55) ADAPTIVE_UI_SHAPE — defaults for UI adaptation executors
     if (!('viewport' in copy) || !copy.viewport) {
       copy.viewport = 'desktop';
       if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
@@ -717,10 +719,8 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
       copy.contrastLevel = 'normal';
       if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
     }
-  }
 
-  // 56) COGNITIVE_LOAD_SHAPE — cognitive-load-optimization requires 'complexity', 'taskType', 'userExperience'
-  if ('content' in copy || 'target' in copy) {
+    // 56) COGNITIVE_LOAD_SHAPE — defaults for cognitive load executors
     if (!('complexity' in copy) || !copy.complexity) {
       copy.complexity = 'medium';
       if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
