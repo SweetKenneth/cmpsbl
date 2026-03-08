@@ -228,6 +228,10 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
   const cycleStart = Date.now();
   let aiCalls = 0;
 
+  let tierState = await getMemoryTierState(supabase);
+  const hotPressureAtStart = tierState.hot / Math.max(1, tierState.hotLimit);
+  const preferWarmForLearning = hotPressureAtStart >= 0.85;
+
   // PHASE 1: Module Self-Analysis (3 modules per cycle, fast rotation)
   const modulesPerCycle = 3;
   const cycleIndex = cycleNumber % CLM_MODULES.length;
@@ -264,7 +268,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
     } catch { /* non-fatal */ }
   });
 
-  // PHASE 2: Learning Topic Study — ALL 10 topics in parallel (this is where the AI calls happen)
+  // PHASE 2: Learning Topic Study — ALL 10 topics in parallel
   const topicPromises = LEARNING_TOPICS.map(async (topic) => {
     try {
       const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
@@ -273,28 +277,37 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
 
       if (!studyError && studyResult?.success) {
         aiCalls++;
-        await Promise.allSettled([
-          supabase.from('brain_events').insert({
-            event_type: 'technical_learning_cycle',
-            module: 'brain',
-            outcome: 'success',
-            data: {
-              title: `CLM Study: ${topic.domain}`,
-              domain: topic.domain,
-              result: studyResult?.analysis?.substring?.(0, 800) || 'completed',
-              source: 'clm_burst_engine',
-              version: CLM_VERSION,
-              cycle: cycleNumber,
-            },
-          }),
-          supabase.from('brain_memory_hot').insert({
-            content: `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`,
-            context: `clm_study:${topic.domain}`,
-            priority: 8,
-            access_count: 0,
-            metadata: { domain: topic.domain, source: 'clm_burst_engine', cycle: cycleNumber },
-          }),
-        ]);
+
+        const memoryContent = `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`;
+        const storedTier = await writeLearningMemory(supabase, tierState, {
+          content: memoryContent,
+          context: `clm_study:${topic.domain}`,
+          priority: 8,
+          valueScore: 0.64,
+          preferWarm: preferWarmForLearning,
+          metadata: {
+            domain: topic.domain,
+            source: 'clm_burst_engine',
+            cycle: cycleNumber,
+          },
+        });
+
+        await supabase.from('brain_events').insert({
+          event_type: 'technical_learning_cycle',
+          module: 'brain',
+          outcome: 'success',
+          data: {
+            title: `CLM Study: ${topic.domain}`,
+            domain: topic.domain,
+            result: studyResult?.analysis?.substring?.(0, 800) || 'completed',
+            source: 'clm_burst_engine',
+            version: CLM_VERSION,
+            cycle: cycleNumber,
+            stored_tier: storedTier,
+            hot_pressure_start: Number(hotPressureAtStart.toFixed(2)),
+          },
+        });
+
         return true;
       }
       return false;
@@ -327,13 +340,19 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
         if (relevantMemories?.length) {
           await Promise.allSettled(
             relevantMemories.map((mem: any) =>
-              supabase.from('brain_memory_hot').insert({
+              writeLearningMemory(supabase, tierState, {
                 content: `[${targetModule.toUpperCase()}_TRANSFER] ${mem.content.substring(0, 400)}`,
                 context: `${targetModule}_transfer:auto`,
                 priority: Math.min(10, Math.round((mem.confidence || 0.7) * 10)),
-                access_count: 0,
-                metadata: { source_memory_id: mem.id, target_module: targetModule, signal, source: 'clm_burst_transfer' },
-              }).catch(() => { /* dedup conflict */ })
+                valueScore: Math.max(0.45, Math.min(0.9, mem.confidence || 0.7)),
+                preferWarm: true,
+                metadata: {
+                  source_memory_id: mem.id,
+                  target_module: targetModule,
+                  signal,
+                  source: 'clm_burst_transfer',
+                },
+              }).catch(() => { /* non-fatal */ })
             )
           );
         }
@@ -344,25 +363,37 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
   // PHASE 4: Memory Consolidation (every 10th cycle)
   if (cycleNumber % 10 === 0) {
     try {
-      // Quick promote high-access warm → hot
-      const { data: warmHighAccess } = await supabase
-        .from('brain_memory_warm')
-        .select('id, content, confidence, access_count, memory_type, metadata')
-        .gte('access_count', 3)
-        .gte('confidence', 0.7)
-        .order('access_count', { ascending: false })
-        .limit(5);
+      tierState = await getMemoryTierState(supabase);
+      const safeHotTarget = Math.max(100, Math.floor(tierState.hotLimit * 0.85));
+      const promoteBudget = Math.max(0, safeHotTarget - tierState.hot);
 
-      for (const mem of warmHighAccess || []) {
-        try {
-          await supabase.from('brain_memory_hot').insert({
-            content: mem.content,
-            context: `promoted:${mem.memory_type || 'general'}`,
-            priority: Math.min(10, Math.round((mem.confidence || 0.7) * 10)),
-            access_count: mem.access_count || 0,
-            metadata: { ...((mem.metadata as any) || {}), promoted_from: 'warm', promoted_at: new Date().toISOString() },
-          });
-        } catch { /* already exists */ }
+      // Promote warm → hot only when HOT has headroom
+      if (promoteBudget > 0) {
+        const { data: warmHighAccess } = await supabase
+          .from('brain_memory_warm')
+          .select('id, content, value_score, access_count, memory_type, metadata')
+          .gte('access_count', 3)
+          .gte('value_score', 0.7)
+          .order('access_count', { ascending: false })
+          .limit(Math.min(5, promoteBudget));
+
+        for (const mem of warmHighAccess || []) {
+          try {
+            const promotedScore = Math.max(0.7, Math.min(0.95, mem.value_score || 0.75));
+            await supabase.from('brain_memory_hot').insert({
+              content: mem.content,
+              context: `promoted:${mem.memory_type || 'general'}`,
+              priority: Math.min(10, Math.round(promotedScore * 10)),
+              access_count: mem.access_count || 0,
+              value_score: promotedScore,
+              importance_score: promotedScore,
+              metadata: { ...((mem.metadata as any) || {}), promoted_from: 'warm', promoted_at: new Date().toISOString() },
+            });
+            await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
+            tierState.hot += 1;
+            tierState.warm = Math.max(0, tierState.warm - 1);
+          } catch { /* already exists or non-fatal */ }
+        }
       }
 
       // Quick prune cold low-confidence
@@ -393,6 +424,14 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       topics_studied: LEARNING_TOPICS.length,
       duration_ms: Date.now() - cycleStart,
       mode: 'burst',
+      memory_tiers: {
+        hot: tierState.hot,
+        warm: tierState.warm,
+        cold: tierState.cold,
+        hot_limit: tierState.hotLimit,
+        warm_limit: tierState.warmLimit,
+        prefer_warm_for_learning: preferWarmForLearning,
+      },
     },
   });
 
