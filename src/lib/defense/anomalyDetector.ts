@@ -296,9 +296,14 @@
    if (metrics.typical_hours) {
      existing.typical_hours = metrics.typical_hours;
    }
-   if (metrics.known_ips) {
-     metrics.known_ips.forEach(ip => existing.known_ips.add(ip));
-   }
+  if (metrics.known_ips) {
+    const MAX_KNOWN_IPS = 500;
+    metrics.known_ips.forEach(ip => {
+      if (existing.known_ips.size < MAX_KNOWN_IPS) {
+        existing.known_ips.add(ip);
+      }
+    });
+  }
    if (metrics.behavioral_score !== undefined) {
      existing.behavioral_score = metrics.behavioral_score;
    }

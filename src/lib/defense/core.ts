@@ -55,12 +55,13 @@ function trackRequestVelocity(ip: string): BehavioralSignals {
   const recentTimestamps = timestamps.filter(t => now - t < VELOCITY_WINDOW_MS);
   recentTimestamps.push(now);
 
-  // Bound tracked IPs
+  // Evict oldest entries using FIFO (first inserted key) instead of O(n log n) sort
   if (velocityTracker.size > MAX_TRACKED_IPS) {
-    const oldest = Array.from(velocityTracker.entries())
-      .sort((a, b) => (a[1][a[1].length - 1] || 0) - (b[1][b[1].length - 1] || 0));
-    for (let i = 0; i < Math.ceil(MAX_TRACKED_IPS * 0.2); i++) {
-      velocityTracker.delete(oldest[i][0]);
+    const iter = velocityTracker.keys();
+    const evictCount = Math.ceil(MAX_TRACKED_IPS * 0.2);
+    for (let i = 0; i < evictCount; i++) {
+      const key = iter.next().value;
+      if (key) velocityTracker.delete(key);
     }
   }
 

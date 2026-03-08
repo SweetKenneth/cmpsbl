@@ -134,15 +134,18 @@ class CircuitBreakerManager {
 
     // Execute operation
     const config = this.configs.get(module)!;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Operation timeout')), config.timeoutMs);
+      timeoutId = setTimeout(() => reject(new Error('Operation timeout')), config.timeoutMs);
     });
 
     try {
       const result = await Promise.race([operation(), timeoutPromise]);
+      clearTimeout(timeoutId);
       this.recordSuccess(module);
       return { success: true, data: result };
     } catch (error) {
+      clearTimeout(timeoutId);
       this.recordFailure(module, error instanceof Error ? error.message : 'Unknown error');
       if (fallback) {
         return { success: true, data: fallback(), circuitOpen: false };

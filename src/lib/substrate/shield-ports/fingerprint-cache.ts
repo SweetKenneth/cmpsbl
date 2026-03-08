@@ -83,15 +83,8 @@ export async function getCachedFingerprint(options?: {
     };
   }
 
-  // 2. Try persistent cache if consent is granted and not forced
-  if (!force && persistCacheEnabled && hasTrackingConsent()) {
-    const persistent = loadPersistentCache();
-    if (persistent && persistent.expires_at > now) {
-      // We have a valid persistent hash — but we still need the full fingerprint
-      // for local analysis. Generate it but only if memory cache is stale.
-      // The persistent cache is mainly useful for cross-session drift comparison.
-    }
-  }
+  // Persistent cache is checked for drift comparison purposes only;
+  // full fingerprint must still be regenerated for local analysis.
 
   // 3. Generate fresh fingerprint
   try {
