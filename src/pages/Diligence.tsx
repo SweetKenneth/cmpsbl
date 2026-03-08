@@ -31,19 +31,19 @@ export default function Diligence() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 max-w-4xl mx-auto space-y-6">
-      <Card>
+    <div className="min-h-screen bg-background p-6 max-w-4xl mx-auto space-y-6 pt-12">
+      <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Diligence Harness</CardTitle>
+          <CardTitle className="text-xl font-black tracking-tight">Diligence Harness</CardTitle>
           <CardDescription>
             Runs a single investor-grade test battery and returns a structured report.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex gap-3">
-          <Button onClick={run} disabled={running}>
+          <Button onClick={run} disabled={running} className="gap-2 shadow-lg shadow-primary/15">
             {running ? 'Running…' : 'Run Tests'}
           </Button>
-          <Button variant="outline" onClick={copy} disabled={!json}>
+          <Button variant="outline" onClick={copy} disabled={!json} className="gap-2">
             Copy JSON
           </Button>
         </CardContent>
@@ -60,19 +60,19 @@ export default function Diligence() {
 
       {report && (
         <div className="grid grid-cols-3 gap-4">
-          <Card className="p-4 text-center">
-            <p className="text-sm text-muted-foreground">Passed</p>
-            <p className="text-3xl font-bold text-primary">{report.summary.passed}</p>
+          <Card className="p-4 text-center border-border/50 bg-card/80">
+            <p className="text-sm text-muted-foreground font-mono uppercase tracking-wider">Passed</p>
+            <p className="text-3xl font-black text-primary tabular-nums">{report.summary.passed}</p>
           </Card>
-          <Card className="p-4 text-center">
-            <p className="text-sm text-muted-foreground">Minor</p>
-            <p className={cn('text-3xl font-bold', report.summary.minor > 0 ? 'text-accent-foreground' : 'text-muted-foreground')}>
+          <Card className="p-4 text-center border-border/50 bg-card/80">
+            <p className="text-sm text-muted-foreground font-mono uppercase tracking-wider">Minor</p>
+            <p className={cn('text-3xl font-black tabular-nums', report.summary.minor > 0 ? 'text-accent-foreground' : 'text-muted-foreground')}>
               {report.summary.minor}
             </p>
           </Card>
-          <Card className="p-4 text-center">
-            <p className="text-sm text-muted-foreground">Critical</p>
-            <p className={cn('text-3xl font-bold', report.summary.critical > 0 ? 'text-destructive' : 'text-muted-foreground')}>
+          <Card className="p-4 text-center border-border/50 bg-card/80">
+            <p className="text-sm text-muted-foreground font-mono uppercase tracking-wider">Critical</p>
+            <p className={cn('text-3xl font-black tabular-nums', report.summary.critical > 0 ? 'text-destructive' : 'text-muted-foreground')}>
               {report.summary.critical}
             </p>
           </Card>
