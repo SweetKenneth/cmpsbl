@@ -80,7 +80,7 @@ export default function ShadowMeshPage() {
       <ShadowMeshAnalytics key={analyticsKey} />
 
       {/* Operational Info */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-warning" />
