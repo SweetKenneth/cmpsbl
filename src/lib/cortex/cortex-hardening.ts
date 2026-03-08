@@ -697,6 +697,17 @@ export function acquireResource(
   }
 
   resourceLocks.set(resource, { orchestrationId, resource, acquiredAt: Date.now() });
+  // Evict stale locks (>5min) if over capacity
+  if (resourceLocks.size > MAX_RESOURCE_LOCKS) {
+    const now = Date.now();
+    for (const [k, v] of resourceLocks) {
+      if (now - v.acquiredAt > 300_000) {
+        resourceLocks.delete(k);
+        waitGraph.delete(v.orchestrationId);
+      }
+      if (resourceLocks.size <= MAX_RESOURCE_LOCKS) break;
+    }
+  }
   return { acquired: true, deadlock: false };
 }
 
