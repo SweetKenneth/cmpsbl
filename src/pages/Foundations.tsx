@@ -100,7 +100,7 @@ export default function Foundations() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
-                  className="p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card"
+                  className="p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card card-lift shimmer-on-hover"
                 >
                   <p.icon className="w-5 h-5 text-primary mb-3" />
                   <h3 className="font-semibold mb-1">{p.title}</h3>
