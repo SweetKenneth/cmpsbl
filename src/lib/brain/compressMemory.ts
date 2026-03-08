@@ -14,11 +14,15 @@ export interface CompressionResult {
 /**
  * Compress multiple similar memories into a single cold memory entry
  */
-export async function compressMemories(memoryIds: string[]): Promise<CompressionResult | null> {
+export async function compressMemories(
+  memoryIds: string[],
+  sourceTier: 'hot' | 'warm' = 'hot'
+): Promise<CompressionResult | null> {
   try {
-    // Fetch memories to compress
+    const table = sourceTier === 'warm' ? 'brain_memory_warm' : 'brain_memory_hot';
+    // Fetch memories from the correct source tier
     const { data: memories, error } = await supabase
-      .from('brain_memory_hot')
+      .from(table)
       .select('*')
       .in('id', memoryIds);
     
@@ -171,13 +175,15 @@ export async function mergeDuplicates(duplicateGroups: string[][]): Promise<numb
     const compressed = await compressMemories(group);
     
     if (compressed) {
-      // Move to cold storage
+      // Move to cold storage with full metadata
       const { error } = await supabase
         .from('brain_memory_cold')
         .insert({
           summary: compressed.summary,
           source_refs: compressed.sourceRefs as any,
           compression_level: compressed.compressionLevel,
+          source_module: 'consolidation',
+          category: 'merged',
           tags: { merged: true, original_count: group.length } as any,
         });
       

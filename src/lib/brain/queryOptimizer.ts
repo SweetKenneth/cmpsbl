@@ -257,9 +257,10 @@
    }
    
    // Generate recommendations
-   if (queryStats.cacheHits / (queryStats.cacheHits + queryStats.cacheMisses) < 0.5) {
-     recommendations.push('Consider increasing cache TTL for frequently accessed data');
-   }
+    const totalCacheOps = queryStats.cacheHits + queryStats.cacheMisses;
+    if (totalCacheOps > 0 && queryStats.cacheHits / totalCacheOps < 0.5) {
+      recommendations.push('Consider increasing cache TTL for frequently accessed data');
+    }
    
    if (queryStats.slowQueries > queryStats.totalQueries * 0.1) {
      recommendations.push('Review slow queries - consider adding indexes');

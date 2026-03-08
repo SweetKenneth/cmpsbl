@@ -150,7 +150,8 @@ async function migrateGroup(
           const batch = group.slice(i, i + 5);
           const batchIds = batch.map(m => m.id);
           
-          const compressed = await compressMemories(batchIds);
+          const sourceTier = sourceTable === 'brain_memory_warm' ? 'warm' : 'hot';
+          const compressed = await compressMemories(batchIds, sourceTier);
           
           if (compressed) {
             const { error: insertError } = await supabase

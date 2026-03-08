@@ -106,34 +106,37 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
   
   try {
     // Parallel fetch from all tiers
-    const hotQuery = tiers.includes('hot')
+    let hotBuilder = tiers.includes('hot')
       ? supabase
           .from('brain_memory_hot')
           .select('id, content, context, value_score, access_count, created_at, last_used')
           .order('value_score', { ascending: false })
           .limit(100)
       : null;
-    
-    const warmQuery = tiers.includes('warm')
+    if (hotBuilder && context) hotBuilder = hotBuilder.eq('context', context);
+
+    let warmBuilder = tiers.includes('warm')
       ? supabase
           .from('brain_memory_warm')
           .select('id, content, context, value_score, access_count, created_at, last_accessed')
           .order('value_score', { ascending: false })
           .limit(100)
       : null;
-    
-    const coldQuery = tiers.includes('cold')
+    if (warmBuilder && context) warmBuilder = warmBuilder.eq('context', context);
+
+    let coldBuilder = tiers.includes('cold')
       ? supabase
           .from('brain_memory_cold')
           .select('id, summary, tags, value_score, access_count, created_at, last_accessed')
           .order('value_score', { ascending: false })
           .limit(100)
       : null;
+    if (coldBuilder && context) coldBuilder = coldBuilder.contains('tags', { context });
     
     const [hotResult, warmResult, coldResult] = await Promise.all([
-      hotQuery ? hotQuery : Promise.resolve({ data: [] }),
-      warmQuery ? warmQuery : Promise.resolve({ data: [] }),
-      coldQuery ? coldQuery : Promise.resolve({ data: [] }),
+      hotBuilder ? hotBuilder : Promise.resolve({ data: [] }),
+      warmBuilder ? warmBuilder : Promise.resolve({ data: [] }),
+      coldBuilder ? coldBuilder : Promise.resolve({ data: [] }),
     ]);
     
     // Process hot tier
