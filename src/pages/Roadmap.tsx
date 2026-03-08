@@ -203,8 +203,17 @@ export default function Roadmap() {
           </h2>
 
           <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-border hidden sm:block" />
+            {/* Vertical line with glow */}
+            <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px hidden sm:block overflow-hidden">
+              <div className="absolute inset-0 bg-border" />
+              <motion.div
+                className="absolute top-0 left-0 w-full bg-gradient-to-b from-primary via-primary/50 to-transparent"
+                initial={{ height: '0%' }}
+                whileInView={{ height: '100%' }}
+                viewport={{ once: true }}
+                transition={{ duration: 2, ease: 'easeOut' }}
+              />
+            </div>
 
             <div className="space-y-8 sm:space-y-12">
               {PHASES.map((phase, i) => (

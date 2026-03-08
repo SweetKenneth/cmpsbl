@@ -249,7 +249,12 @@ export default function Status() {
       />
       <PublicNav />
 
-      <main className="container mx-auto px-4 py-16 sm:py-24 max-w-4xl">
+      {/* Ambient glow */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full animate-hero-orb-2" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
+      </div>
+
+      <main className="container mx-auto px-4 py-16 sm:py-24 max-w-4xl relative z-10">
         {/* Header */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
           <Badge variant="outline" className="mb-4 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
@@ -286,12 +291,17 @@ export default function Status() {
                   <div
                     key={i}
                     className={cn(
-                      "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-110 cursor-default",
+                      "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-125 cursor-default relative group",
                       isToday ? "bg-emerald-500 ring-1 ring-emerald-400 shadow-sm shadow-emerald-500/30" :
                       hasIncident ? "bg-amber-500/80 hover:bg-amber-500" : "bg-emerald-500/70 hover:bg-emerald-500/90"
                     )}
                     title={isToday ? "Today" : `${90 - i} days ago${hasIncident ? " — incident" : ""}`}
-                  />
+                  >
+                    {/* Hover tooltip */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-popover border border-border text-[9px] font-mono text-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-md">
+                      {isToday ? "Today" : `${90 - i}d ago`}{hasIncident ? " · ⚠ incident" : ""}
+                    </div>
+                  </div>
                 );
               })}
             </div>

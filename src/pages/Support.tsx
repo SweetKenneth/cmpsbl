@@ -271,10 +271,12 @@ export default function Support() {
 
               {/* FAQ Accordion grouped by category */}
               {filteredFaqs.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  <Search className="w-8 h-8 mx-auto mb-3 opacity-40" />
-                  <p className="font-medium">No matching questions found</p>
-                  <p className="text-sm mt-1">
+                <div className="text-center py-16 text-muted-foreground">
+                  <div className="w-16 h-16 rounded-2xl bg-muted/50 flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-7 h-7 opacity-40" />
+                  </div>
+                  <p className="font-semibold text-foreground mb-1">No matching questions found</p>
+                  <p className="text-sm">
                     Try a different search term or{" "}
                     <button onClick={handleChatWithSupport} className="text-primary hover:underline font-semibold">
                       ask DECODE
