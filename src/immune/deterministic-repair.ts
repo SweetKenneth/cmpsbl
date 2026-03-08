@@ -1,10 +1,9 @@
 /**
- * Shadow Mesh Phase 2 — Deterministic Repair Module
- * Non-AI, in-scope transformations for pilot executor inputs.
+ * IMMUNITY — Deterministic Repair Module
+ * Non-AI, in-scope transformations for all executor inputs.
  *
  * SAFETY:
  *   - Only used inside the immune wrapper (wrapExecutor.ts)
- *   - Only runs for the 5 pilot executors
  *   - No cross-module writes, no filesystem writes, no recursion
  */
 
