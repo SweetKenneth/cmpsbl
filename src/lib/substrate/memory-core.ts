@@ -987,8 +987,8 @@ class MemoryCoreClient {
       }
     }
 
-    // Calculate average confidence
-    const avgConfidence = memories.reduce((sum, m) => sum + (m.confidence || 0.5), 0) / memories.length;
+    // reflect() now selects value_score, so use that for confidence
+    const avgConfidence = memories.reduce((sum, m) => sum + (m.value_score || 0.5), 0) / memories.length;
     insights.push(`• Average memory confidence: ${(avgConfidence * 100).toFixed(1)}%`);
 
     // Identify high-priority items

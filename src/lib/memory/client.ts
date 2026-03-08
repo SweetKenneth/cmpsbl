@@ -700,7 +700,7 @@ export class MemoryClient {
       if (!this.userId) return null;
       const { data } = await supabase
         .from('brain_memory_meta' as any)
-        .select('*')
+        .select('hot_count, warm_count, cold_count, archive_count, hot_limit, warm_limit, cold_limit, recall_hit_rate, total_stores, total_recalls, retrieval_strategy, recall_accuracy, avg_salience, contradiction_count, compression_ratio, peak_hours')
         .eq('user_id', this.userId)
         .eq('agent_id', this.agentId)
         .single();

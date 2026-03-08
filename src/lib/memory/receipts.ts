@@ -66,9 +66,10 @@ export async function getReceiptsForMemory(memoryId: string): Promise<TierMoveRe
   try {
     const { data, error } = await supabase
       .from('memory_tier_receipts')
-      .select('*')
+      .select('memory_id, reason_code, before_tier, after_tier, before_confidence, after_confidence, rps_score, actor, evidence, created_at')
       .eq('memory_id', memoryId)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(100);
 
     if (error || !data) return [];
 
