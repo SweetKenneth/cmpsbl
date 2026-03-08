@@ -133,7 +133,7 @@ export default function ShadowMeshPage() {
       </Card>
 
       {/* Lifecycle */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base">Immune Lifecycle</CardTitle>
         </CardHeader>
