@@ -22,6 +22,11 @@
    const entry = renderCounts.get(componentName);
    
    if (!entry || now - entry.lastReset > RESET_INTERVAL_MS) {
+     // Evict oldest if at capacity
+     if (!entry && renderCounts.size >= MAX_TRACKED_COMPONENTS) {
+       const oldest = renderCounts.keys().next().value;
+       if (oldest) renderCounts.delete(oldest);
+     }
      renderCounts.set(componentName, { count: 1, lastReset: now });
      return;
    }

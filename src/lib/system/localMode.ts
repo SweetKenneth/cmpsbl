@@ -188,15 +188,25 @@ async function initNexus(): Promise<ModuleState> {
 async function buildDependencyGraph(): Promise<DependencyGraph> {
   const graph: DependencyGraph = {};
 
-  // Initialize modules without dependencies first
-  graph.Brain = await initBrain();
-  graph.PTCHBL = await initPTCHBL();
-  graph.Defense = await initDefense();
+  // Initialize independent modules in parallel
+  const [brain, ptchbl, defense] = await Promise.all([
+    initBrain(),
+    initPTCHBL(),
+    initDefense(),
+  ]);
+  graph.Brain = brain;
+  graph.PTCHBL = ptchbl;
+  graph.Defense = defense;
 
-  // Initialize modules with dependencies
-  graph.Cascade = await initCascade();
-  graph.Nexus = await initNexus();
-  graph.RCKBL = await initRCKBL();
+  // Initialize dependent modules in parallel (all deps are now resolved)
+  const [cascade, nexus, rckbl] = await Promise.all([
+    initCascade(),
+    initNexus(),
+    initRCKBL(),
+  ]);
+  graph.Cascade = cascade;
+  graph.Nexus = nexus;
+  graph.RCKBL = rckbl;
 
   return graph;
 }

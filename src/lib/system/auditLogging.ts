@@ -394,10 +394,14 @@ export function generateComplianceReport(
 export function pruneAuditLog(keepDays: number = 30): number {
   const cutoff = new Date(Date.now() - keepDays * 24 * 60 * 60 * 1000);
   const before = auditLog.length;
-  
-  const toKeep = auditLog.filter(e => new Date(e.timestamp) >= cutoff);
-  auditLog.length = 0;
-  auditLog.push(...toKeep);
-  
+
+  // Find first entry that's within retention (log is append-order)
+  let keepFrom = 0;
+  for (let i = 0; i < auditLog.length; i++) {
+    if (new Date(auditLog[i].timestamp) >= cutoff) { keepFrom = i; break; }
+    if (i === auditLog.length - 1) { keepFrom = auditLog.length; }
+  }
+
+  if (keepFrom > 0) auditLog.splice(0, keepFrom);
   return before - auditLog.length;
 }
