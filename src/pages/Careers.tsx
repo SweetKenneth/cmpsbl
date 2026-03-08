@@ -142,7 +142,7 @@ export default function Careers() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.04 }}
-                className="p-4 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm text-center hover:border-primary/20 transition-colors glass-edge"
+                className="p-4 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm text-center hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 glass-edge"
               >
                 <span className="text-2xl mb-2 block">{perk.emoji}</span>
                 <span className="text-xs font-semibold text-foreground">{perk.label}</span>
