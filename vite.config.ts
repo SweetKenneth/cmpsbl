@@ -80,69 +80,23 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Aggressive code-splitting to reduce unused JS
           if (id.includes('node_modules')) {
-            // React core - essential for initial render (minimal)
-            if (id.includes('react-dom') || id.includes('/react/')) {
+            // React core + router — essential for initial render
+            if (id.includes('react-dom') || id.includes('/react/') || id.includes('react-router')) {
               return 'react-vendor';
             }
-            // React Router - essential for navigation
-            if (id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            // Supabase - split into auth vs realtime vs core for granular loading
+            // Supabase — split realtime (large, rarely needed initially)
             if (id.includes('@supabase/realtime')) {
               return 'supabase-realtime';
-            }
-            if (id.includes('@supabase/auth')) {
-              return 'supabase-auth';
             }
             if (id.includes('@supabase/')) {
               return 'supabase';
             }
-            // Charts: Do NOT assign to manualChunks — let Rollup naturally
-            // place recharts/d3 in the lazy chunk that imports them.
-            // Forcing them into a named chunk creates a static import edge
-            // from the entry bundle, loading 106KB on every page load.
-            // Radix UI - split into micro-chunks by component for tree-shaking
-            // Critical UI (needed immediately)
-            if (id.includes('@radix-ui/react-slot') || id.includes('@radix-ui/react-primitive')) {
-              return 'ui-core';
-            }
-            // Tooltip - separate chunk (often lazy-triggered)
-            if (id.includes('@radix-ui/react-tooltip')) {
-              return 'tooltip';
-            }
-            // Dialog/Modal components - defer (user action triggered)
-            if (id.includes('@radix-ui/react-dialog') || id.includes('@radix-ui/react-alert-dialog')) {
-              return 'ui-dialog';
-            }
-            // Dropdown/Menu components - defer (user action triggered)
-            if (id.includes('@radix-ui/react-dropdown') || id.includes('@radix-ui/react-menu') || id.includes('@radix-ui/react-context-menu')) {
-              return 'ui-menu';
-            }
-            // Form components - defer (not on initial render)
-            if (id.includes('@radix-ui/react-select') || id.includes('@radix-ui/react-checkbox') || id.includes('@radix-ui/react-radio') || id.includes('@radix-ui/react-switch') || id.includes('@radix-ui/react-slider')) {
-              return 'ui-form';
-            }
-            // Navigation components
-            if (id.includes('@radix-ui/react-navigation') || id.includes('@radix-ui/react-tabs') || id.includes('@radix-ui/react-accordion')) {
-              return 'ui-nav';
-            }
-            // Popover/HoverCard - defer (user action triggered)
-            if (id.includes('@radix-ui/react-popover') || id.includes('@radix-ui/react-hover-card')) {
-              return 'ui-popover';
-            }
-            // All other Radix UI
+            // All Radix UI in one chunk to avoid circular init order issues
             if (id.includes('@radix-ui/')) {
-              return 'ui-misc';
+              return 'ui-radix';
             }
-            // Lucide icons & Framer Motion: Do NOT assign to manualChunks.
-            // Named manual chunks create static import edges from the entry bundle,
-            // loading ~103KB (icons 47KB + motion 56KB) on every page even when
-            // only a fraction is used. Let Rollup naturally inline them into the
-            // lazy chunks that import them — each route loads only what it needs.
-            // TanStack Query - essential but separate
+            // TanStack Query
             if (id.includes('@tanstack/react-query')) {
               return 'query';
             }
