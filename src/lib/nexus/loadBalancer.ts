@@ -155,11 +155,11 @@
    ).providerId;
  }
  
- function selectAdaptive(providers: ProviderLoad[], taskType?: string): string {
+  function selectAdaptive(providers: ProviderLoad[], taskType?: string): string {
    // Score each provider based on multiple factors
    const scored = providers.map(p => {
-     const loadScore = 1 - (p.activeRequests / p.maxConcurrency);
-     const latencyScore = 1 / (p.avgResponseTime / 100);
+     const loadScore = 1 - (p.activeRequests / Math.max(p.maxConcurrency, 1));
+     const latencyScore = 100 / Math.max(p.avgResponseTime, 1); // Avoid division by zero
      const reliabilityScore = 1 - p.errorRate;
      
      const total = (loadScore * 0.3) + (latencyScore * 0.3) + (reliabilityScore * 0.4);

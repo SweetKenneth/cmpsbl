@@ -64,6 +64,10 @@ const PROVIDER_PRICING: Record<string, { input: number; output: number }> = {
   cerebras: { input: 0.3, output: 0.6 },
   openrouter: { input: 2.0, output: 4.0 },
   google: { input: 1.0, output: 2.0 },
+  deepseek: { input: 0.5, output: 1.0 },
+  mistral: { input: 0.5, output: 1.5 },
+  cohere: { input: 0.4, output: 1.2 },
+  hyperbolic: { input: 0.3, output: 0.8 },
   sambanova: { input: 0, output: 0 }, // Free tier
   stability: { input: 0, output: 50.0 }, // Per image
   fal: { input: 0, output: 30.0 }, // Per image

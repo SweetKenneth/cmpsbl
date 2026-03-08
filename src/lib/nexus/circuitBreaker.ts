@@ -84,9 +84,9 @@ function getCircuit(provider: string): ProviderCircuit {
        }
        return false;
  
-     case 'half-open':
-       // Allow limited requests in half-open
-       return circuit.successes < config.half_open_requests;
+    case 'half-open':
+       // Allow limited requests in half-open (successes + failures = total attempts)
+       return (circuit.successes + circuit.failures) < config.half_open_requests;
  
      default:
        return true;
