@@ -205,7 +205,7 @@ export default function Workspace() {
                   <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
                   <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
                 </Card>
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all" onClick={() => navigate('/foundry')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
                   <p className="text-xs text-muted-foreground mt-1">Crystallize pipelines. Rare finds on every tier.</p>
