@@ -708,7 +708,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
       validated++;
       if (promoteRule(candidate.id)) {
         promoted++;
-        // v3: Auto-transfer to similar executors
+        // Auto-transfer to similar executors
         if (candidate.crossExecutorApplicable) {
           for (const peer of cluster.applicableExecutors) {
             if (peer !== cluster.executor) {
