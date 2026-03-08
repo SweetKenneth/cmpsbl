@@ -246,7 +246,36 @@ export function getEncryptionStatus(): { atRest: boolean; inTransit: boolean; al
 
 // ─── 19. Audit SLA Monitor ────────────────────────────────────────────────
 const slaTargets = { writeLatencyP95_ms: 50, readLatencyP95_ms: 100, uptimePercent: 99.9 };
-export function getAuditSLA() { return { ...slaTargets, currentUptime: 100, writeLatencyP95: 12, readLatencyP95: 25 }; }
+const writeLatencies: number[] = [];
+const readLatencies: number[] = [];
+const MAX_LATENCY_SAMPLES = 200;
+
+export function recordWriteLatency(ms: number) {
+  writeLatencies.push(ms);
+  if (writeLatencies.length > MAX_LATENCY_SAMPLES) writeLatencies.splice(0, 1);
+}
+export function recordReadLatency(ms: number) {
+  readLatencies.push(ms);
+  if (readLatencies.length > MAX_LATENCY_SAMPLES) readLatencies.splice(0, 1);
+}
+
+function p95(arr: number[]): number {
+  if (arr.length === 0) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const idx = Math.min(Math.floor(sorted.length * 0.95), sorted.length - 1);
+  return sorted[idx];
+}
+
+export function getAuditSLA() {
+  return {
+    ...slaTargets,
+    currentUptime: 100,
+    writeLatencyP95: p95(writeLatencies),
+    readLatencyP95: p95(readLatencies),
+    writeSamples: writeLatencies.length,
+    readSamples: readLatencies.length,
+  };
+}
 
 // ─── 20. Geolocation Stamp ────────────────────────────────────────────────
 export function getGeoStampPolicy(): { enabled: boolean; resolution: string } {
