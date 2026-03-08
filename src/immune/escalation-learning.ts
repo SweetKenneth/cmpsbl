@@ -807,7 +807,7 @@ export function findBestRuleForEscalation(executor: string, errorSummary: string
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Dashboard / Telemetry API (v3 — richer stats)
+// Dashboard / Telemetry API
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function getLearningStats(): {
