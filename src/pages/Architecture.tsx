@@ -166,7 +166,7 @@ export default function Architecture() {
               <p className="text-muted-foreground mb-8">Public-facing cognitive capabilities that boot after CORE and convergence layers are online.</p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {NODES.map((mod) => (
-                  <Card key={mod.name} className="hover:border-primary/30 transition-colors">
+                  <Card key={mod.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
                     <CardContent className="p-5 flex items-start gap-3">
                       <mod.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                       <div>
