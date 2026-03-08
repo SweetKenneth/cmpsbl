@@ -308,7 +308,7 @@ class ProductionPipeline {
     this.loaded = true;
     try {
       const data = secureGet<typeof this.proposals>(STORAGE_KEY);
-      if (data) this.proposals = data;
+      if (data) this.proposals = data.slice(-100); // Cap in-memory too
     } catch { this.proposals = []; }
   }
 

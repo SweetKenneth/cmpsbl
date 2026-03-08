@@ -158,9 +158,14 @@ export function runEncodedGuard(
   
   // INVARIANT 1: Must have read the file first
   if (ENCODED_POLICY.requireFileRead && before === '') {
-    // Allow empty before if creating a new file
-    if (after.trim() !== '') {
+    if (after.trim() === '') {
+      // Both empty — no-op
+    } else if (!filePath) {
+      // No filePath provided — likely a new file, just warn
       warnings.push('Before state is empty — treating as new file creation');
+    } else {
+      // filePath provided but before is empty — suspicious, could be missing read
+      warnings.push('Before state is empty for existing file — ensure file was read before modifying');
     }
   }
   
