@@ -697,7 +697,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     if (!candidate) continue;
     candidatesSynthesized++;
 
-    // v3: Use cluster's sample inputs + strategy-specific inputs
+    // Use cluster's sample inputs + strategy-specific inputs
     const inputs = [
       ...cluster.sampleInputs,
       ...(testInputs ?? generateStrategyTestInputs(candidate.repairStrategy)),
