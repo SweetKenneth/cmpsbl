@@ -364,7 +364,7 @@ export default function DevTools() {
                       <Link
                         key={link.title}
                         to={link.href}
-                        className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all group"
+                        className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-sm"
                       >
                         <div>
                           <div className="flex items-center gap-2">

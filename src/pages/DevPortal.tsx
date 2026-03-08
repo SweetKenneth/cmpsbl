@@ -6011,7 +6011,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 <h2 className="text-xl sm:text-2xl font-bold">Required API Keys</h2>
                 <div className="grid gap-3">
                   {REQUIRED_KEYS.map((key) => (
-                    <Card key={key.name} className="p-3 sm:p-4">
+                    <Card key={key.name} className="p-3 sm:p-4 transition-all duration-300 hover:border-primary/15">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <div className={`w-10 h-10 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 flex items-center justify-center ${
