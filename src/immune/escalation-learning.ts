@@ -284,7 +284,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Adaptive Frequency Threshold
+// Adaptive Frequency Threshold
 // ═══════════════════════════════════════════════════════════════════════════
 
 /** Per-executor maturity tracking */
