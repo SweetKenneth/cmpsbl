@@ -23,6 +23,7 @@ interface PipelineSeal {
   timestamp: number;
 }
 
+const MAX_PIPELINE_SEAL_KEYS = 200;
 const pipelineSeals = new Map<string, PipelineSeal[]>();
 
 export function sealPipelineStep(
@@ -47,6 +48,11 @@ export function sealPipelineStep(
 
   chain.push(seal);
   pipelineSeals.set(pipelineId, boundArray(chain, 200));
+  // Evict oldest pipeline keys if over capacity
+  if (pipelineSeals.size > MAX_PIPELINE_SEAL_KEYS) {
+    const first = pipelineSeals.keys().next().value;
+    if (first !== undefined) pipelineSeals.delete(first);
+  }
   return seal;
 }
 
@@ -262,12 +268,18 @@ interface ReplayEntry {
 
 const replayJournal: ReplayEntry[] = [];
 const MAX_JOURNAL_SIZE = 500;
+let replayHead = 0; // ring buffer cursor
+let replayCount = 0;
 
 export function recordReplayEntry(entry: Omit<ReplayEntry, 'timestamp'>): void {
-  replayJournal.push({ ...entry, timestamp: Date.now() });
-  if (replayJournal.length > MAX_JOURNAL_SIZE) {
-    replayJournal.splice(0, replayJournal.length - MAX_JOURNAL_SIZE);
+  const record = { ...entry, timestamp: Date.now() };
+  if (replayCount < MAX_JOURNAL_SIZE) {
+    replayJournal.push(record);
+    replayCount++;
+  } else {
+    replayJournal[replayHead] = record;
   }
+  replayHead = (replayHead + 1) % MAX_JOURNAL_SIZE;
 }
 
 export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
@@ -276,8 +288,10 @@ export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
 }
 
 export function clearReplayJournal(): number {
-  const count = replayJournal.length;
+  const count = replayCount;
   replayJournal.length = 0;
+  replayHead = 0;
+  replayCount = 0;
   return count;
 }
 
@@ -493,6 +507,7 @@ interface CachedResult {
 }
 
 const stepCache = new Map<number, CachedResult>();
+const stepCacheInsertOrder: number[] = []; // tracks insertion order for O(1) eviction
 const MAX_CACHE_SIZE = 200;
 
 export function cacheStepResult(
@@ -503,19 +518,17 @@ export function cacheStepResult(
   ttlMs = 300_000
 ): void {
   const key = fnv1aHash(`${module}:${action}:${inputHash}`);
+  
+  // If key already exists, just update it
+  if (!stepCache.has(key)) {
+    stepCacheInsertOrder.push(key);
+  }
   stepCache.set(key, { key, output, timestamp: Date.now(), ttlMs, hits: 0 });
 
-  // Evict LRU if over capacity
-  if (stepCache.size > MAX_CACHE_SIZE) {
-    let oldest: number | null = null;
-    let oldestTime = Infinity;
-    for (const [k, v] of stepCache) {
-      if (v.timestamp < oldestTime) {
-        oldestTime = v.timestamp;
-        oldest = k;
-      }
-    }
-    if (oldest !== null) stepCache.delete(oldest);
+  // Evict oldest by insertion order
+  while (stepCache.size > MAX_CACHE_SIZE && stepCacheInsertOrder.length > 0) {
+    const evictKey = stepCacheInsertOrder.shift()!;
+    stepCache.delete(evictKey);
   }
 }
 
@@ -597,6 +610,7 @@ interface WorkflowSnapshot {
   changedFields: string[];
 }
 
+const MAX_WORKFLOW_VERSION_KEYS = 100;
 const workflowVersions = new Map<string, WorkflowSnapshot[]>();
 
 export function snapshotWorkflow(
@@ -614,6 +628,11 @@ export function snapshotWorkflow(
   };
   versions.push(snapshot);
   workflowVersions.set(workflowId, boundArray(versions, 50));
+  // Evict oldest workflow keys if over capacity
+  if (workflowVersions.size > MAX_WORKFLOW_VERSION_KEYS) {
+    const first = workflowVersions.keys().next().value;
+    if (first !== undefined) workflowVersions.delete(first);
+  }
   return snapshot;
 }
 
@@ -627,11 +646,14 @@ export function getWorkflowVersions(workflowId: string): WorkflowSnapshot[] {
 export function calculateModuleAffinity(
   steps: Array<{ id: string; module: string; dependsOn?: string[] }>
 ): Map<string, string[]> {
+  // Build a Map for O(1) step lookup
+  const stepMap = new Map<string, (typeof steps)[number]>();
+  for (const s of steps) stepMap.set(s.id, s);
   const affinity = new Map<string, string[]>();
 
   for (const step of steps) {
     for (const dep of step.dependsOn ?? []) {
-      const depStep = steps.find(s => s.id === dep);
+      const depStep = stepMap.get(dep);
       if (depStep && depStep.module === step.module) {
         const group = affinity.get(step.module) ?? [];
         if (!group.includes(step.id)) group.push(step.id);
@@ -653,6 +675,7 @@ interface ResourceLock {
   acquiredAt: number;
 }
 
+const MAX_RESOURCE_LOCKS = 500;
 const resourceLocks = new Map<string, ResourceLock>();
 const waitGraph = new Map<string, Set<string>>(); // orchId → Set<waitingForOrchId>
 
@@ -677,6 +700,17 @@ export function acquireResource(
   }
 
   resourceLocks.set(resource, { orchestrationId, resource, acquiredAt: Date.now() });
+  // Evict stale locks (>5min) if over capacity
+  if (resourceLocks.size > MAX_RESOURCE_LOCKS) {
+    const now = Date.now();
+    for (const [k, v] of resourceLocks) {
+      if (now - v.acquiredAt > 300_000) {
+        resourceLocks.delete(k);
+        waitGraph.delete(v.orchestrationId);
+      }
+      if (resourceLocks.size <= MAX_RESOURCE_LOCKS) break;
+    }
+  }
   return { acquired: true, deadlock: false };
 }
 

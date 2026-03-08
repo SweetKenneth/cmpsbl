@@ -131,15 +131,19 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
     executions.set(execution.id, execution);
     boundMap(executions, MAX_EXECUTIONS);
     
-    // Execute workflow with timeout
+    // Execute workflow with timeout (clearable to prevent timer leak)
     const timeoutMs = workflow.timeout > 0 ? workflow.timeout : 300_000; // default 5min
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs)
-    );
+    let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutHandle = setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs);
+    });
     Promise.race([
       executeWorkflow(workflow, execution, input),
       timeoutPromise,
-    ]).catch(error => {
+    ]).then(() => {
+      clearTimeout(timeoutHandle);
+    }).catch(error => {
+      clearTimeout(timeoutHandle);
       execution.status = 'failed';
       execution.error = error instanceof Error ? error.message : String(error);
       execution.completedAt = new Date().toISOString();
@@ -206,68 +210,83 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
  /**
   * Execute a single step
   */
- async function executeStep(
-   step: WorkflowStep,
-   context: Record<string, unknown>,
-   retryPolicy: RetryPolicy
- ): Promise<unknown> {
-   // Resolve payload with context
-   const payload = resolvePayload(step.payload, context);
-   
-   let lastError: Error | undefined;
-   
-   for (let attempt = 0; attempt <= retryPolicy.maxRetries; attempt++) {
-     try {
-       // Simulate module invocation (in production, would call substrate.invoke)
-       const result = await simulateModuleCall(step.module, step.action, payload);
-       return result;
-     } catch (error) {
-       lastError = error instanceof Error ? error : new Error(String(error));
-       
-       if (attempt < retryPolicy.maxRetries) {
-         const delay = retryPolicy.backoffMs * Math.pow(retryPolicy.backoffMultiplier, attempt);
-         await new Promise(r => setTimeout(r, delay));
-       }
-     }
-   }
-   
-   throw lastError || new Error('Step failed');
- }
+  async function executeStep(
+    step: WorkflowStep,
+    context: Record<string, unknown>,
+    retryPolicy: RetryPolicy
+  ): Promise<unknown> {
+    // Resolve payload with context
+    const payload = resolvePayload(step.payload, context);
+    
+    let lastError: Error | undefined;
+    // Respect per-step timeout if defined
+    const stepTimeoutMs = step.timeout && step.timeout > 0 ? step.timeout : 0;
+    
+    for (let attempt = 0; attempt <= retryPolicy.maxRetries; attempt++) {
+      try {
+        const callPromise = simulateModuleCall(step.module, step.action, payload);
+        let result: unknown;
+        if (stepTimeoutMs > 0) {
+          let handle: ReturnType<typeof setTimeout> | undefined;
+          const timeout = new Promise<never>((_, rej) => {
+            handle = setTimeout(() => rej(new Error(`Step ${step.id} timed out after ${stepTimeoutMs}ms`)), stepTimeoutMs);
+          });
+          result = await Promise.race([callPromise, timeout]);
+          clearTimeout(handle);
+        } else {
+          result = await callPromise;
+        }
+        return result;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        
+        if (attempt < retryPolicy.maxRetries) {
+          const delay = retryPolicy.backoffMs * Math.pow(retryPolicy.backoffMultiplier, attempt);
+          await new Promise(r => setTimeout(r, delay));
+        }
+      }
+    }
+    
+    throw lastError || new Error('Step failed');
+  }
  
  /**
   * Build execution order respecting dependencies
   */
- function buildExecutionOrder(steps: WorkflowStep[]): string[] {
-   const order: string[] = [];
-   const visited = new Set<string>();
-   const visiting = new Set<string>();
-   
-   function visit(step: WorkflowStep): void {
-     if (visited.has(step.id)) return;
-     if (visiting.has(step.id)) {
-       throw new Error(`Circular dependency detected at step ${step.id}`);
-     }
-     
-     visiting.add(step.id);
-     
-     if (step.dependsOn) {
-       for (const depId of step.dependsOn) {
-         const dep = steps.find(s => s.id === depId);
-         if (dep) visit(dep);
-       }
-     }
-     
-     visiting.delete(step.id);
-     visited.add(step.id);
-     order.push(step.id);
-   }
-   
-   for (const step of steps) {
-     visit(step);
-   }
-   
-   return order;
- }
+  function buildExecutionOrder(steps: WorkflowStep[]): string[] {
+    const order: string[] = [];
+    const visited = new Set<string>();
+    const visiting = new Set<string>();
+    // Build a Map for O(1) step lookup by ID
+    const stepMap = new Map<string, WorkflowStep>();
+    for (const s of steps) stepMap.set(s.id, s);
+    
+    function visit(step: WorkflowStep): void {
+      if (visited.has(step.id)) return;
+      if (visiting.has(step.id)) {
+        throw new Error(`Circular dependency detected at step ${step.id}`);
+      }
+      
+      visiting.add(step.id);
+      
+      if (step.dependsOn) {
+        for (const depId of step.dependsOn) {
+          const dep = stepMap.get(depId);
+          if (dep) visit(dep);
+        }
+      }
+      
+      visiting.delete(step.id);
+      visited.add(step.id);
+      order.push(step.id);
+    }
+    
+    for (const step of steps) {
+      visit(step);
+    }
+    
+    return order;
+  }
  
  /**
   * Evaluate a condition expression
