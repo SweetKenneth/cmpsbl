@@ -10,7 +10,7 @@ export interface SearchResult {
   content: string;
   context: string;
   relevance: number;
-  tier: 'hot' | 'cold';
+  tier: 'hot' | 'warm' | 'cold';
   tags?: Record<string, any>;
 }
 
