@@ -536,7 +536,7 @@ export function recordResolutionFeedback(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Retroactive Learning — Learn from already-resolved escalations
+// Retroactive Learning — Learn from already-resolved escalations
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function learnFromResolution(
