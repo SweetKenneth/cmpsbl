@@ -4,6 +4,7 @@
  */
 
 import JSZip from 'jszip';
+import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 
 export interface BotExportConfig {
   id: string;
@@ -486,6 +487,7 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     'deploy.sh': generateDeploySh(config),
     'version.txt': generateVersionTxt(config),
     'LICENSE.txt': generateLicenseTxt(config),
+    'LICENSE.html': generateLicenseHTML(config.name),
     'README.md': generateReadmeMd(config),
     'package.json': generatePackageJson(config),
     'src/index.ts': generateBotSourceCode(config),

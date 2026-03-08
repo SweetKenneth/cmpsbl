@@ -5,6 +5,7 @@
 
 import JSZip from 'jszip';
 import { BotClass, getClassById, MEMORY_MODES, LEARNING_MODES } from './botClasses';
+import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 
 export interface ExportConfig {
   id: string;
@@ -450,6 +451,7 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   zip.file('README.md', generateReadme(config));
   zip.file('package.json', generatePackageJson(config));
   zip.file('LICENSE', generateLicense());
+  zip.file('LICENSE.html', generateLicenseHTML(config.name));
   
   // Documentation
   const docs = zip.folder('docs');
