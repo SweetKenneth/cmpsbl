@@ -454,7 +454,7 @@ export default function IntentPanel() {
             {AFFINITY_PAIRS.map((pair, i) => (
               <motion.div
                 key={`${pair.a}-${pair.b}`}
-                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20"
+                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
