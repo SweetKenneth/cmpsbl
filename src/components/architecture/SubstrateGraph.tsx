@@ -1,11 +1,11 @@
 /**
  * SubstrateGraph — Interactive 2D concentric ring visualization of the 40-node topology.
- * Uses canvas-free SVG for accessibility + framer-motion for interactions.
- * Click a node → detail panel slides in. Sectors color-coded.
+ * SVG-based for accessibility + framer-motion for interactions.
+ * Click a node → detail panel slides in.
  */
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Zap, Shield, Brain, Eye, Moon, Cpu, Settings, Radio, Key, Fingerprint, Send, FileCheck, Code2, Wand2, Coins, FlaskConical, Accessibility, Plug, HeartPulse, Target, Scale, Dna, Globe, Compass as CompassIcon, RotateCcw, Pickaxe, Languages, Wheat, Ghost, Activity } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ─── Data ────────────────────────────────────────────────────────
@@ -103,15 +103,15 @@ function layoutNodes(size: number): PlacedNode[] {
     if (nodes.length === 0) continue;
     const radius = r === 0 ? 0 : (r / ringCount) * maxR + maxR * 0.12;
     const angleStep = (2 * Math.PI) / Math.max(nodes.length, 1);
-    const offset = r * 0.3; // rotation offset per ring
+    const offset = r * 0.3;
 
     nodes.forEach((n, i) => {
       const angle = offset + i * angleStep - Math.PI / 2;
       const meta = SECTOR_META[n.sector];
       placed.push({
         ...n,
-        x: r === 0 && nodes.length <= 2 ? cx + (i === 0 ? -12 : 12) : cx + Math.cos(angle) * radius,
-        y: r === 0 && nodes.length <= 2 ? cy + (i === 0 ? -8 : 8) : cy + Math.sin(angle) * radius,
+        x: r === 0 && nodes.length <= 2 ? cx + (i === 0 ? -14 : 14) : cx + Math.cos(angle) * radius,
+        y: r === 0 && nodes.length <= 2 ? cy + (i === 0 ? -10 : 10) : cy + Math.sin(angle) * radius,
         color: meta?.color ?? 'hsl(var(--muted-foreground))',
         sectorLabel: meta?.label ?? n.sector,
       });
@@ -134,7 +134,6 @@ export function SubstrateGraph({ className }: { className?: string }) {
     setSelected(prev => prev?.id === node.id ? null : node);
   }, []);
 
-  // Connection lines from CORE to ring-1 nodes
   const coreNode = nodes.find(n => n.id === 'core');
 
   return (
@@ -146,21 +145,32 @@ export function SubstrateGraph({ className }: { className?: string }) {
           role="img"
           aria-label="CMPSBL Substrate 40-node topology"
         >
-          {/* Ring guides */}
-          {[1, 2, 3, 4, 5, 6].map(r => (
-            <circle
-              key={r}
-              cx={SIZE / 2}
-              cy={SIZE / 2}
-              r={(r / 7) * SIZE * 0.42 + SIZE * 0.42 * 0.12}
-              fill="none"
-              stroke="hsl(var(--border) / 0.15)"
-              strokeWidth="1"
-              strokeDasharray="4 4"
-            />
-          ))}
+          <defs>
+            {/* Pulse animation for CORE */}
+            <radialGradient id="core-glow">
+              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+            </radialGradient>
+          </defs>
 
-          {/* Connection lines from core */}
+          {/* Ring guides */}
+          {[1, 2, 3, 4, 5, 6].map(r => {
+            const radius = (r / 7) * SIZE * 0.42 + SIZE * 0.42 * 0.12;
+            return (
+              <circle
+                key={r}
+                cx={SIZE / 2}
+                cy={SIZE / 2}
+                r={radius}
+                fill="none"
+                stroke="hsl(var(--border) / 0.12)"
+                strokeWidth="0.8"
+                strokeDasharray="3 6"
+              />
+            );
+          })}
+
+          {/* Connection lines from core → ring-1/system */}
           {coreNode && nodes.filter(n => n.sector === 'ccr' || n.sector === 'system').map(n => (
             <line
               key={`conn-${n.id}`}
@@ -168,16 +178,28 @@ export function SubstrateGraph({ className }: { className?: string }) {
               y1={coreNode.y}
               x2={n.x}
               y2={n.y}
-              stroke="hsl(var(--primary) / 0.12)"
-              strokeWidth="1"
+              stroke="hsl(var(--primary) / 0.08)"
+              strokeWidth="0.8"
             />
           ))}
+
+          {/* CORE ambient glow */}
+          {coreNode && (
+            <circle
+              cx={coreNode.x}
+              cy={coreNode.y}
+              r="40"
+              fill="url(#core-glow)"
+              className="animate-pulse"
+            />
+          )}
 
           {/* Nodes */}
           {nodes.map(node => {
             const isHovered = hovered === node.id;
             const isSelected = selected?.id === node.id;
-            const nodeR = node.sector === 'core' ? 18 : 13;
+            const isCore = node.sector === 'core';
+            const nodeR = isCore ? 20 : 14;
 
             return (
               <g
@@ -191,36 +213,41 @@ export function SubstrateGraph({ className }: { className?: string }) {
                 tabIndex={0}
                 onKeyDown={(e) => e.key === 'Enter' && handleClick(node)}
               >
-                {/* Glow */}
+                {/* Hover/select glow ring */}
                 {(isHovered || isSelected) && (
                   <circle
                     cx={node.x}
                     cy={node.y}
-                    r={nodeR + 6}
-                    fill={node.color}
-                    opacity={0.15}
+                    r={nodeR + 5}
+                    fill="none"
+                    stroke={node.color}
+                    strokeWidth="1.5"
+                    opacity={0.4}
+                    strokeDasharray={isSelected ? "none" : "2 2"}
                   />
                 )}
-                {/* Circle */}
+                {/* Node circle */}
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r={nodeR}
-                  fill={isSelected ? node.color : `${node.color.replace(')', ' / 0.15)')}`}
+                  fill={isSelected ? node.color : `${node.color.replace(')', ' / 0.12)')}`}
                   stroke={node.color}
-                  strokeWidth={isSelected ? 2.5 : 1.5}
-                  opacity={isHovered || isSelected ? 1 : 0.8}
+                  strokeWidth={isSelected ? 2 : 1}
+                  opacity={isHovered || isSelected ? 1 : 0.75}
+                  className="transition-opacity duration-200"
                 />
                 {/* Label */}
                 <text
                   x={node.x}
-                  y={node.y + 1}
+                  y={node.y + 0.5}
                   textAnchor="middle"
                   dominantBaseline="central"
                   fill={isSelected ? 'hsl(var(--background))' : 'hsl(var(--foreground))'}
-                  fontSize={node.sector === 'core' ? 8 : 6.5}
-                  fontWeight="700"
+                  fontSize={isCore ? 8.5 : 6}
+                  fontWeight="800"
                   fontFamily="system-ui, sans-serif"
+                  letterSpacing="0.3"
                   className="select-none pointer-events-none"
                 >
                   {node.label}
@@ -231,15 +258,15 @@ export function SubstrateGraph({ className }: { className?: string }) {
         </svg>
       </div>
 
-      {/* Detail panel */}
+      {/* ─── Detail panel ─── */}
       <AnimatePresence>
         {selected && (
           <motion.div
             key={selected.id}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, y: 16, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="absolute bottom-0 left-0 right-0 sm:bottom-4 sm:left-4 sm:right-4 p-4 sm:p-5 rounded-t-2xl sm:rounded-2xl bg-card/95 backdrop-blur-md border border-border/40 shadow-2xl z-20"
           >
             <button
@@ -252,25 +279,32 @@ export function SubstrateGraph({ className }: { className?: string }) {
 
             <div className="flex items-center gap-3 mb-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black"
-                style={{ background: `${selected.color.replace(')', ' / 0.15)')}`, color: selected.color }}
+                className="w-11 h-11 rounded-xl flex items-center justify-center text-xs font-black border"
+                style={{
+                  background: `${selected.color.replace(')', ' / 0.1)')}`,
+                  borderColor: `${selected.color.replace(')', ' / 0.25)')}`,
+                  color: selected.color,
+                }}
               >
-                {selected.label.slice(0, 2)}
+                {selected.label.slice(0, 3)}
               </div>
               <div>
                 <h3 className="text-base font-black text-foreground">{selected.label}</h3>
-                <p className="text-[11px] text-muted-foreground font-mono">{selected.sectorLabel} · Weight: {(selected.weight * 100).toFixed(1)}%</p>
+                <p className="text-[11px] text-muted-foreground font-mono">
+                  {selected.sectorLabel} · Weight {(selected.weight * 100).toFixed(1)}%
+                </p>
               </div>
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed">{selected.description}</p>
 
-            <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground/60">
-              <span className="flex items-center gap-1">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+            <div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground/50 font-mono">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Operational
               </span>
               <span>Sector: {selected.sector.toUpperCase()}</span>
+              <span>Ring {SECTOR_META[selected.sector]?.ring ?? '?'}</span>
             </div>
           </motion.div>
         )}

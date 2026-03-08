@@ -82,24 +82,28 @@ export default function Architecture() {
 
       <main>
         {/* Hero with interactive graph */}
-        <section className="relative py-16 md:py-24 overflow-hidden">
+        <section className="relative py-16 md:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.04] pointer-events-none"
+            style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 60%)' }}
+          />
           <div className="container mx-auto max-w-6xl px-4 relative">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
               <motion.div {...fadeUp} className="max-w-xl">
-                <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
-                  <Layers className="w-3 h-3 mr-2" />
+                <Badge variant="outline" className="mb-5 border-primary/30 text-primary gap-1.5">
+                  <Layers className="w-3 h-3" />
                   Production Architecture
                 </Badge>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.05]">
                   How CMPSBL Works
                 </h1>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6">
                   A layered orchestration architecture that boots deterministically, heals autonomously,
                   and evolves without human intervention. 40 nodes across 12 sectors, 675+ capabilities.
                 </p>
-                <p className="text-sm text-muted-foreground/60 font-mono">
-                  ← Click any node to inspect
+                <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
+                  Click any node to inspect
                 </p>
               </motion.div>
 
