@@ -1055,6 +1055,7 @@ export function recordErrorRate(
   }
 
   errorRateBreakers.set(endpoint, state);
+  boundMap(errorRateBreakers, MAX_ERROR_RATE_BREAKERS);
 
   return {
     tripped: state.tripped,
