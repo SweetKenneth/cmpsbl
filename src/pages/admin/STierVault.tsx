@@ -219,7 +219,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
                       style={{ width: `${(count / registryEntries.length) * 100}%` }}
                     />
                   </div>
-                  <span className="font-mono w-6 text-right">{count}</span>
+                  <span className="font-mono tabular-nums w-6 text-right">{count}</span>
                 </div>
               </div>
             ))}
