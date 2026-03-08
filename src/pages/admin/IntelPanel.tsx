@@ -180,7 +180,7 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
   const isExportable = proposal.status === 'draft' || proposal.status === 'reviewed';
 
   return (
-    <Card className="border-l-4 border-l-primary/40">
+    <Card className="border-l-4 border-l-primary/40 hover:shadow-sm transition-all duration-300">
       <CardHeader className="p-3 sm:p-4 pb-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
           <CardTitle className="text-xs sm:text-sm">{proposal.title}</CardTitle>
