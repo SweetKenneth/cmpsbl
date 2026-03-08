@@ -172,7 +172,7 @@ export default function CodeLab() {
               
               <Link 
                 to="/persistent-memory" 
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Brain className="w-8 h-8 text-primary mx-auto mb-2" />
                 <div className="font-semibold">Persistent Memory</div>
