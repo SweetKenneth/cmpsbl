@@ -131,7 +131,7 @@ const resolutionFeedback: Array<{
 }> = [];
 const MAX_FEEDBACK = 200;
 
-/** v3: Historical warm-start flag */
+/** Historical warm-start flag */
 let warmStartComplete = false;
 
 // ═══════════════════════════════════════════════════════════════════════════
