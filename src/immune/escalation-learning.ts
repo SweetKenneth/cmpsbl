@@ -232,7 +232,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
       existing.eligible = existing.count >= threshold;
     }
 
-    // v3: Capture sample inputs for replay
+    // Capture sample inputs for replay
     if (signal.failingInput && existing.sampleInputs.length < MAX_SAMPLE_INPUTS) {
       const inputStr = JSON.stringify(signal.failingInput);
       const hasDupe = existing.sampleInputs.some(s => JSON.stringify(s) === inputStr);
