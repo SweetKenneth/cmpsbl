@@ -228,7 +228,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       </Card>
 
       {/* Top modules */}
-      <Card className="col-span-2 sm:col-span-2 lg:col-span-4 border-border/50">
+      <Card className="col-span-2 sm:col-span-2 lg:col-span-4 border-border/50 hover:border-primary/15 transition-all duration-300">
         <CardContent className="p-3">
           <div className="text-[10px] font-medium text-muted-foreground mb-2">Top Modules</div>
           <div className="flex flex-wrap gap-1.5">
