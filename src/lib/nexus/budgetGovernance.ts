@@ -54,7 +54,7 @@ let budgetConfig = { ...DEFAULT_BUDGET };
 const MAX_SPENDING_ENTRIES = 60;
 const dailySpending = new Map<string, number>();
 const monthlySpending = new Map<string, number>();
-const alerts: BudgetAlert[] = [];
+
  
  /**
   * Get current budget status

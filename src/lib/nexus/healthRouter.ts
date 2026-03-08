@@ -196,8 +196,9 @@ export async function getProviderStats(): Promise<ProviderMetrics[]> {
     
     const { data: usage } = await supabase
       .from('ai_usage_log')
-      .select('*')
-      .gte('created_at', since);
+      .select('provider, success, response_time_ms, tokens_used, cost')
+      .gte('created_at', since)
+      .limit(1000);
     
     return PROVIDERS.map(provider => {
       const logs = usage?.filter(u => u.provider === provider) || [];
