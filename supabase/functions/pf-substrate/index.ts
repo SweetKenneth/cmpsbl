@@ -2275,7 +2275,7 @@ async function handleBrain(
           }
         }
 
-        // STEP 4: Decay old unused memories
+        // STEP 4: Decay old unused memories (hot tier)
         const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         const { data: stale } = await supabase
           .from('brain_memory_hot')
@@ -2291,6 +2291,53 @@ async function handleBrain(
             stats.decayed++;
           } catch {
             stats.errors++;
+          }
+        }
+
+        // STEP 4b: Decay old warm tier memories
+        const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+        const { data: staleWarm } = await supabase
+          .from('brain_memory_warm')
+          .select('id, value_score, last_accessed, created_at')
+          .or(`last_accessed.lt.${twoWeeksAgo},last_accessed.is.null`)
+          .lt('created_at', twoWeeksAgo)
+          .gt('value_score', 0.15)
+          .order('value_score', { ascending: true })
+          .limit(isAggressive ? 200 : 100);
+
+        for (const memory of staleWarm || []) {
+          try {
+            const newScore = Math.max(0.1, (memory.value_score || 0.4) * 0.85);
+            await supabase.from('brain_memory_warm').update({ value_score: newScore }).eq('id', memory.id);
+            stats.decayed++;
+          } catch { stats.errors++; }
+        }
+
+        // STEP 4c: Cold tier capacity enforcement (cap: 10,000)
+        const COLD_CAP = 10000;
+        if ((counts.cold.before + stats.demoted_to_cold) > COLD_CAP) {
+          const coldOverflow = (counts.cold.before + stats.demoted_to_cold) - COLD_CAP;
+          const coldPruneLimit = Math.min(coldOverflow + 50, 500);
+          const { data: coldToPrune } = await supabase
+            .from('brain_memory_cold')
+            .select('id, summary, tags, value_score')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('archived_at', { ascending: true, nullsFirst: true })
+            .limit(coldPruneLimit);
+
+          for (const memory of coldToPrune || []) {
+            try {
+              await supabase.from('brain_memory_pruned').insert({
+                original_memory_id: memory.id,
+                original_tier: 'cold',
+                content_preview: String(memory.summary || '').substring(0, 200),
+                context: (memory.tags as Record<string, unknown>)?.context || 'unknown',
+                value_score: memory.value_score || 0,
+                prune_reason: 'cold_overflow',
+              });
+              await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
+              stats.pruned++;
+            } catch { stats.errors++; }
           }
         }
 
