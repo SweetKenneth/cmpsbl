@@ -486,13 +486,13 @@ export function validateInput(
   const EVENT_HANDLER_INJECT_RE = /\bon\w+\s*=/i;
   for (const val of Object.values(input)) {
     if (typeof val === 'string') {
-      SQL_INJECT_RE.lastIndex = 0;
+      // XSS_RE has global flag — must reset lastIndex before each test
       XSS_RE.lastIndex = 0;
       if (SQL_INJECT_RE.test(val) || XSS_RE.test(val) || EVENT_HANDLER_INJECT_RE.test(val)) {
         hasInjection = true;
+        XSS_RE.lastIndex = 0; // Reset after match for next call
         break;
       }
-      SQL_INJECT_RE.lastIndex = 0;
       XSS_RE.lastIndex = 0;
     }
   }
