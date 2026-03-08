@@ -176,7 +176,7 @@ const monthlySpending = new Map<string, number>();
        return {
          allowed: false,
          reason: `Category ${category} budget exhausted`,
-         remaining_daily: status.daily_remaining_cents,
+         remaining_daily: dailyRemaining,
          remaining_category: categoryRemaining,
        };
      }
