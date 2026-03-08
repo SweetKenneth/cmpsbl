@@ -92,7 +92,7 @@ export function computeDiffStats(before: string, after: string): DiffStats {
   const totalBefore = linesBefore.length;
   const totalAfter = linesAfter.length;
   const changePercent = totalBefore > 0 
-    ? (added + removed + changed) / totalBefore 
+    ? Math.min((added + removed + changed) / totalBefore, 1.0)
     : 1;
   
   return { added, removed, changed, totalBefore, totalAfter, changePercent };
