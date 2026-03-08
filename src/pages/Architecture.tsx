@@ -189,7 +189,7 @@ export default function Architecture() {
               <p className="text-muted-foreground mb-8">Behavioral layers that wrap all nodes, ordered outermost to innermost.</p>
               <div className="space-y-3">
                 {MESHES.map((mesh, i) => (
-                  <Card key={mesh.name} className="hover:border-primary/30 transition-colors">
+                  <Card key={mesh.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
                     <CardContent className="p-5 flex items-center gap-4">
                       <Badge variant="outline" className="shrink-0 w-24 justify-center text-xs">{mesh.position}</Badge>
                       <mesh.icon className="w-5 h-5 text-primary shrink-0" />
