@@ -151,7 +151,7 @@ export default function Workspace() {
                   const isLocked = ['creator', 'studio', 'architect', 'governor'].indexOf(tpl.tier) > ['creator', 'studio', 'architect', 'governor'].indexOf(userTier) && tpl.tier !== 'free';
                   
                   return (
-                    <Card key={tpl.id} className={`p-4 bg-card/50 border-border/50 backdrop-blur-sm transition-all hover:border-primary/30 ${isLocked ? 'opacity-60' : ''}`}>
+                    <Card key={tpl.id} className={`p-4 bg-card/50 border-border/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 card-lift shimmer-on-hover glass-edge ${isLocked ? 'opacity-60' : ''}`}>
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h3 className="font-mono text-sm font-semibold text-foreground">{tpl.name}</h3>
@@ -199,19 +199,19 @@ export default function Workspace() {
 
               {/* Quick Links */}
               <div className="grid gap-3 sm:grid-cols-3 mt-8">
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all" onClick={() => navigate('/persistent-memory')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/persistent-memory')}>
                   <Brain className="w-5 h-5 text-violet-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Persistent Memory</h4>
                   <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
                   <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
                 </Card>
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all" onClick={() => navigate('/foundry')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
                   <p className="text-xs text-muted-foreground mt-1">Crystallize pipelines. Rare finds on every tier.</p>
                   <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
                 </Card>
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all" onClick={() => navigate('/documentation')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/documentation')}>
                   <BookOpen className="w-5 h-5 text-amber-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Documentation</h4>
                   <p className="text-xs text-muted-foreground mt-1">Full API reference and integration guides.</p>
@@ -221,7 +221,7 @@ export default function Workspace() {
 
             {/* ── Terminal Tab ── */}
             <TabsContent value="terminal">
-              <Card className="bg-[hsl(var(--card))]/80 border-border/50 overflow-hidden">
+              <Card className="bg-[hsl(var(--card))]/80 border-border/50 overflow-hidden glass-edge">
                 {/* Terminal Header */}
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30 bg-muted/20">
                   <div className="flex gap-1.5">
@@ -274,7 +274,7 @@ export default function Workspace() {
               {!user && (
                 <div className="text-center mt-6">
                   <p className="text-muted-foreground text-sm mb-3">Sign in to access the terminal — free tier includes 12 commands.</p>
-                  <Button onClick={() => navigate('/auth')} className="font-mono text-sm">
+                  <Button onClick={() => navigate('/auth')} className="font-mono text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Sign In <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
@@ -296,7 +296,7 @@ export default function Workspace() {
                 return (
                   <Card
                     key={tier}
-                    className={`border-border/50 overflow-hidden transition-all ${isAvailable ? 'bg-card/50' : 'bg-muted/20 opacity-70'}`}
+                    className={`border-border/50 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm ${isAvailable ? 'bg-card/50' : 'bg-muted/20 opacity-70'}`}
                   >
                     <button
                       className="w-full px-4 py-3 flex items-center justify-between text-left"
@@ -339,7 +339,7 @@ export default function Workspace() {
               })}
 
               <div className="text-center mt-6">
-                <Button variant="outline" className="font-mono text-sm" onClick={() => navigate('/upgrade')}>
+                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/upgrade')}>
                   <Rocket className="w-4 h-4 mr-2" /> View Plans & Pricing
                 </Button>
               </div>

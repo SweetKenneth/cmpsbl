@@ -167,12 +167,12 @@ console.log(insights);`}
               Free tier includes 10,000 API calls per month. No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/register">
                   Create Account <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
                 <Link to="/upgrade">View Pricing</Link>
               </Button>
             </div>
