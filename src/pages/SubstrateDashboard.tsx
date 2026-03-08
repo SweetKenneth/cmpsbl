@@ -546,7 +546,7 @@ export default function SubstrateDashboard() {
               </Button>
             </Link>
             <Link to="/docs/substrate/capabilities">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 hover:border-primary/30 transition-all duration-200">
                 SDK Docs
                 <ArrowRight className="w-4 h-4" />
               </Button>

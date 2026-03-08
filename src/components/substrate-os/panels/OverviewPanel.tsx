@@ -230,7 +230,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               {SECTORS.map(sector => (
                 <motion.div
                   key={sector.id}
-                  className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-2.5 sm:p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 transition-colors"
+                  className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-2.5 sm:p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 hover:border-primary/15 transition-all duration-300"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
