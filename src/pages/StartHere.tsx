@@ -194,15 +194,15 @@ export default function StartHere() {
                     >
                       <Link
                         to={item.link}
-                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/30 transition-colors group"
+                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/30 transition-all duration-200 group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center shrink-0 mt-0.5 transition-colors">
                           <item.icon className="w-4 h-4 text-primary" />
                         </div>
                         <span className="text-sm sm:text-base text-foreground/80 font-medium group-hover:text-foreground transition-colors">
                           {item.text}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-primary ml-auto mt-1 shrink-0 transition-colors" />
+                        <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 ml-auto mt-1 shrink-0 transition-all" />
                       </Link>
                     </motion.div>
                   ))}
