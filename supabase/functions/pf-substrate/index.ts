@@ -1691,13 +1691,8 @@ async function handleBrain(
         ? Math.floor((now.getTime() - new Date(lastDreamDate).getTime()) / (60 * 60 * 1000))
         : 999;
 
-      // Log status check
-      await supabase.from('brain_events').insert({
-        event_type: 'brain_status_check',
-        module: 'brain',
-        outcome: 'success',
-        data: { health_score: healthScore, success_rate: successRate }
-      });
+      // Status check logging suppressed — high-volume telemetry event
+      // brain_status_check was generating ~17k events/13 days
 
       return jsonResponse({
         success: true,
