@@ -277,7 +277,14 @@ export function recordAuditEntry(
 export function verifyAuditChain(): { valid: boolean; brokenAt: number | null } {
   let prevHash = '0000000000000000';
   for (let i = 0; i < auditLog.length; i++) {
+    // 1. Verify prev-hash linkage
     if (auditLog[i].previousHash !== prevHash) {
+      state.chainValid = false;
+      return { valid: false, brokenAt: i };
+    }
+    // 2. Recompute hash to detect data tampering (not just link breaks)
+    const recomputed = computeHash(auditLog[i]);
+    if (recomputed !== auditLog[i].hash) {
       state.chainValid = false;
       return { valid: false, brokenAt: i };
     }
@@ -345,8 +352,9 @@ function getCachedChainValidity(): boolean {
 }
 
 export function generateComplianceReport(framework: ComplianceFramework, periodDays: number = 30): ComplianceReport {
+  const safePeriod = Math.max(1, Math.min(365, periodDays));
   const now = Date.now();
-  const periodStart = now - (periodDays * 24 * 60 * 60 * 1000);
+  const periodStart = now - (safePeriod * 24 * 60 * 60 * 1000);
   const relevantEntries = auditLog.filter(e => e.timestamp >= periodStart);
 
   const uniqueActors = new Set(relevantEntries.map(e => e.actor.id));
@@ -447,13 +455,22 @@ export function compressAuditEntries(olderThanMs: number = 24 * 60 * 60 * 1000):
     if (entry.timestamp < cutoff && !entry.compressed) {
       const originalSize = JSON.stringify(entry).length;
 
-      // Compress by nullifying verbose state fields for old entries
-      // Keep hash chain intact but reduce payload size
+      // IMPORTANT: Do NOT mutate previousState/newState — they are inputs to computeHash.
+      // Mutating them would cause verifyAuditChain hash recomputation to fail.
+      // Instead, store compressed summaries in metadata (which is NOT part of the hash).
       if (entry.previousState && JSON.stringify(entry.previousState).length > 200) {
-        entry.previousState = { _compressed: true, _summary: `[${typeof entry.previousState} data compressed]` };
+        entry.metadata = {
+          ...entry.metadata,
+          _prevStateSummary: `[${typeof entry.previousState} data, compressed]`,
+        };
+        entry.previousState = null;
       }
       if (entry.newState && JSON.stringify(entry.newState).length > 200) {
-        entry.newState = { _compressed: true, _summary: `[${typeof entry.newState} data compressed]` };
+        entry.metadata = {
+          ...entry.metadata,
+          _newStateSummary: `[${typeof entry.newState} data, compressed]`,
+        };
+        entry.newState = null;
       }
 
       entry.compressed = true;
