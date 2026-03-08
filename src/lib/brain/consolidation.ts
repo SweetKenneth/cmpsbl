@@ -271,6 +271,32 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
     patternCache.set(pattern.id, pattern);
   }
 
+  // Persist patterns as a warm memory for cross-session retrieval
+  if (patterns.length > 0) {
+    const patternSummary = patterns.slice(0, 10).map(p =>
+      `[${p.frequency}x] ${p.pattern.substring(0, 100)}`
+    ).join('\n');
+
+    try {
+      await supabase.from('brain_memory_warm').insert({
+        content: `[Extracted Patterns]\n${patternSummary}`,
+        context: 'pattern_extraction',
+        value_score: 0.6,
+        memory_type: 'pattern',
+        source_module: 'consolidation',
+        category: 'patterns',
+        tags: ['auto_extracted', 'consolidation'],
+        metadata: {
+          pattern_count: patterns.length,
+          top_frequency: patterns[0]?.frequency,
+          extracted_at: new Date().toISOString(),
+        },
+      });
+    } catch {
+      // Non-critical — in-memory cache is still populated
+    }
+  }
+
   // Log pattern extraction
   await supabase.from('brain_events').insert({
     module: 'brain',

@@ -31,9 +31,9 @@ export interface FullPruneResult {
 }
 
 const CAPACITY = {
-  hot: 200,
-  warm: 1000,
-  cold: 5000,
+  hot: 500,
+  warm: 10000,
+  cold: 10000,
 } as const;
 
 /**
@@ -63,10 +63,10 @@ async function pruneHot(capacity: number): Promise<PruneResult> {
   for (const source of clmSources) {
     if (purged >= excess) break;
     try {
-      const { data: ids } = await (supabase as any)
+      const { data: ids } = await supabase
         .from('brain_memory_hot')
         .select('id')
-        .eq('source', source)
+        .eq('source_module', source)
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
@@ -83,7 +83,7 @@ async function pruneHot(capacity: number): Promise<PruneResult> {
       const { data: ids } = await supabase
         .from('brain_memory_hot')
         .select('id')
-        .order('priority' as any, { ascending: true })
+        .order('value_score', { ascending: true })
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
@@ -126,10 +126,10 @@ async function pruneWarm(capacity: number): Promise<PruneResult> {
   for (const source of clmSources) {
     if (purged >= excess) break;
     try {
-      const { data: ids } = await (supabase as any)
+      const { data: ids } = await supabase
         .from('brain_memory_warm')
         .select('id')
-        .eq('source', source)
+        .eq('source_module', source)
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
@@ -146,7 +146,7 @@ async function pruneWarm(capacity: number): Promise<PruneResult> {
       const { data: ids } = await supabase
         .from('brain_memory_warm')
         .select('id')
-        .order('value_score' as any, { ascending: true })
+        .order('value_score', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
       if (!ids || ids.length === 0) break;
@@ -185,7 +185,7 @@ async function pruneCold(capacity: number): Promise<PruneResult> {
       const { data: ids } = await supabase
         .from('brain_memory_cold')
         .select('id')
-        .order('value_score' as any, { ascending: true })
+        .order('value_score', { ascending: true })
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
