@@ -672,7 +672,7 @@ export async function warmStartFromDB(): Promise<{ patternsLoaded: number; rules
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Full Learning Cycle (v3 — with warm start + feedback + cross-executor)
+// Full Learning Cycle
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
