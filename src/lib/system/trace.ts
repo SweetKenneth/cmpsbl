@@ -5,12 +5,7 @@
 
 // Trace ID format: valid UUID v4 (required by brain_events table)
 export function generateTraceId(): string {
-  // Generate RFC4122-compliant UUID v4
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+  return crypto.randomUUID();
 }
 
 export interface TraceContext {
@@ -25,6 +20,7 @@ export interface TraceContext {
 
 // Global trace context store (per-request in async context)
 const traceStore = new Map<string, TraceContext>();
+const MAX_TRACES = 500;
 
 export function createTraceContext(
   module?: string,
@@ -39,6 +35,12 @@ export function createTraceContext(
     action,
     started_at: new Date().toISOString(),
   };
+
+  // Evict oldest if at capacity
+  if (traceStore.size >= MAX_TRACES) {
+    const oldest = traceStore.keys().next().value;
+    if (oldest) traceStore.delete(oldest);
+  }
 
   traceStore.set(context.trace_id, context);
   return context;
