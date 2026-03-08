@@ -517,7 +517,20 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
     },
     {
       filename: 'README.html',
-      content: generateReadmeHTML(ctx.name, ctx.description, ctx.moduleChain),
+      content: generateReadmeHTML({
+        name: ctx.name,
+        description: ctx.description,
+        category: ctx.category,
+        modules: ctx.moduleChain,
+        files: [
+          { name: `${slug}.ts`, purpose: 'Main pipeline implementation (TypeScript)' },
+          { name: 'LICENSE', purpose: 'CMPSBL® Commercial Distribution License' },
+          { name: 'LICENSE.html', purpose: 'Formatted license document' },
+          { name: 'PIPELINE-DETAILS.html', purpose: 'Pipeline certificate with valuation and provenance' },
+          { name: 'Makefile', purpose: 'Build & test commands for all languages' },
+          { name: 'package.json', purpose: 'Node.js package manifest' },
+        ],
+      }),
     },
     {
       filename: 'Makefile',
