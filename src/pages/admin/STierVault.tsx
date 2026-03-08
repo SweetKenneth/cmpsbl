@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getFunctionalDescription, getEnrichedDescription } from '@/lib/pipeline-descriptions';
 import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { Badge } from "@/components/ui/badge";
@@ -342,9 +342,10 @@ function PromotedCard({
           )}
         </div>
         <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{discovery.name}</h3>
-        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">{discovery.description}</p>
-        {/* Functional description */}
-        <p className="text-[10px] text-primary/50 font-mono mb-3 leading-relaxed">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-2 break-words">
+          {getEnrichedDescription(discovery.description, discovery.name, modules)}
+        </p>
+        <p className="text-[10px] text-primary/70 font-mono mb-3 leading-relaxed">
           {getFunctionalDescription(discovery.name, modules)}
         </p>
         <div className="flex items-center gap-2 flex-wrap">

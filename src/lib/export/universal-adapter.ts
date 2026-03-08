@@ -2496,10 +2496,13 @@ export async function downloadBundle(bundle: ExportBundle): Promise<void> {
   }
   folder.file('manifest.json', serializeCmpsblManifest({
     name: bundle.artifact.name,
-    targets: bundle.files.map(f => {
-      const ext = f.filename.split('.').pop() || '';
-      return ext;
-    }).filter((v, i, a) => a.indexOf(v) === i),
+    cjpi: bundle.artifact.cjpi,
+    modules: bundle.artifact.synthesisContext
+      ? bundle.artifact.synthesisContext.moduleChain
+      : [bundle.artifact.module],
+    targets: bundle.files.map(f => f.language).filter((v, i, a) => a.indexOf(v) === i),
+    category: bundle.artifact.synthesisContext?.category || bundle.artifact.module.toLowerCase(),
+    source: 'universal-adapter',
     version: '1.0.0',
   }));
   const blob = await zip.generateAsync({ type: 'blob' });
