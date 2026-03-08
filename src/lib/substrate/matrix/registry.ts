@@ -62,48 +62,10 @@ const snapshots: MatrixSnapshot[] = [];
 const MAX_SNAPSHOTS = 50;
 
 // ═══════════════════════════════════════════════════════════════
-// DEPENDENCY MAP (documented architecture)
+// DEPENDENCY MAP — delegates to the canonical MODULE_DEPENDENCIES in @/lib/core/index.ts
 // ═══════════════════════════════════════════════════════════════
 
-const DEPENDENCY_MAP: Partial<Record<SubstrateModuleName, SubstrateModuleName[]>> = {
-  decode: ['core', 'brain', 'memory'],
-  encode: ['core', 'decode'],
-  dream: ['brain', 'memory'],
-  cortex: ['core', 'brain', 'decode'],
-  nexus: ['core', 'system'],
-  vision: ['core', 'system'],
-  evolution: ['core', 'shadow', 'governance'],
-  shadow: ['core'],
-  defense: ['core', 'identity', 'access'],
-  governance: ['core', 'audit'],
-  immunity: ['core', 'defense'],
-  intent: ['core', 'decode'],
-  relay: ['core', 'ripple'],
-  audit: ['core'],
-  nerve: ['core', 'ripple'],
-  economy: ['core', 'access'],
-  sandbox: ['core'],
-  identity: ['core'],
-  access: ['core', 'identity'],
-  ripple: ['core'],
-  brain: ['core', 'memory'],
-  memory: ['core'],
-  system: ['core'],
-  medic: ['core', 'vision'],
-  integration: ['core', 'system'],
-  inclusive: ['core'],
-  sovereign: ['core', 'governance'],
-  oracle: ['core', 'brain'],
-  conscience: ['core', 'governance'],
-  treaty: ['core', 'governance'],
-  compass: ['core'],
-  echo: ['core', 'memory'],
-  reflex: ['core'],
-  forge: ['core', 'encode'],
-  lingua: ['core', 'brain'],
-  harvest: ['core'],
-  phantom: ['core', 'defense'],
-};
+import { getModuleDependencies } from '@/lib/core/index';
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
