@@ -219,10 +219,10 @@ function identifyImprovements(logs: unknown[]): string[] {
   const warningCount = typeCounts.get('warning') || 0;
   const totalLogs = logs.length;
 
-  if (errorCount / totalLogs > 0.1) {
+  if (totalLogs > 0 && errorCount / totalLogs > 0.1) {
     improvements.push('Improvement: Reduce error rate through better input validation');
   }
-  if (warningCount / totalLogs > 0.2) {
+  if (totalLogs > 0 && warningCount / totalLogs > 0.2) {
     improvements.push('Improvement: Address frequent warnings to improve reliability');
   }
 
