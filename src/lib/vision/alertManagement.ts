@@ -68,7 +68,11 @@
    comment: string;
  }
  
- // In-memory alert state
+ // In-memory alert state (bounded)
+ const MAX_ACTIVE_ALERTS = 500;
+ const MAX_SILENCE_RULES = 200;
+ const MAX_ALERT_RULES = 200;
+ const MAX_ESCALATION_POLICIES = 50;
  const activeAlerts = new Map<string, Alert>();
  const alertRules = new Map<string, AlertRule>();
  const silenceRules: SilenceRule[] = [];
