@@ -234,6 +234,7 @@ export function recordAuditEntry(
     hash: 'fallback', previousHash: lastHash,
   };
 
+  const writeStart = performance.now();
   const { result } = withResilienceSync(
     'audit',
     () => {
@@ -266,6 +267,9 @@ export function recordAuditEntry(
     fallbackEntry,
     'record'
   );
+
+  // Track write latency for SLA monitoring
+  recordWriteLatency(performance.now() - writeStart);
 
   return result;
 }
