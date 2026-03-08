@@ -62,48 +62,10 @@ const snapshots: MatrixSnapshot[] = [];
 const MAX_SNAPSHOTS = 50;
 
 // ═══════════════════════════════════════════════════════════════
-// DEPENDENCY MAP (documented architecture)
+// DEPENDENCY MAP — delegates to the canonical MODULE_DEPENDENCIES in @/lib/core/index.ts
 // ═══════════════════════════════════════════════════════════════
 
-const DEPENDENCY_MAP: Partial<Record<SubstrateModuleName, SubstrateModuleName[]>> = {
-  decode: ['core', 'brain', 'memory'],
-  encode: ['core', 'decode'],
-  dream: ['brain', 'memory'],
-  cortex: ['core', 'brain', 'decode'],
-  nexus: ['core', 'system'],
-  vision: ['core', 'system'],
-  evolution: ['core', 'shadow', 'governance'],
-  shadow: ['core'],
-  defense: ['core', 'identity', 'access'],
-  governance: ['core', 'audit'],
-  immunity: ['core', 'defense'],
-  intent: ['core', 'decode'],
-  relay: ['core', 'ripple'],
-  audit: ['core'],
-  nerve: ['core', 'ripple'],
-  economy: ['core', 'access'],
-  sandbox: ['core'],
-  identity: ['core'],
-  access: ['core', 'identity'],
-  ripple: ['core'],
-  brain: ['core', 'memory'],
-  memory: ['core'],
-  system: ['core'],
-  medic: ['core', 'vision'],
-  integration: ['core', 'system'],
-  inclusive: ['core'],
-  sovereign: ['core', 'governance'],
-  oracle: ['core', 'brain'],
-  conscience: ['core', 'governance'],
-  treaty: ['core', 'governance'],
-  compass: ['core'],
-  echo: ['core', 'memory'],
-  reflex: ['core'],
-  forge: ['core', 'encode'],
-  lingua: ['core', 'brain'],
-  harvest: ['core'],
-  phantom: ['core', 'defense'],
-};
+import { getModuleDependencies } from '@/lib/core/index';
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -119,7 +81,7 @@ function ensureInitialized(): void {
       id,
       health: 100,
       breakerState: 'closed',
-      dependencies: (DEPENDENCY_MAP[id] || []) as SubstrateModuleName[],
+      dependencies: getModuleDependencies(id),
       telemetryChannel: `telemetry.${id}`,
       lastHeartbeat: Date.now(),
       opsCount: 0,
@@ -133,16 +95,21 @@ function ensureInitialized(): void {
 // PUBLIC API
 // ═══════════════════════════════════════════════════════════════
 
-/** Get runtime state for a single node */
+/** Get runtime state for a single node (returns defensive copy) */
 export function getNodeState(id: SubstrateModuleName): RuntimeNodeState | null {
   ensureInitialized();
-  return runtimeStates.get(id) || null;
+  const state = runtimeStates.get(id);
+  return state ? { ...state, dependencies: [...state.dependencies], metadata: { ...state.metadata } } : null;
 }
 
-/** Get all runtime node states */
+/** Get all runtime node states (returns defensive copies) */
 export function getAllNodeStates(): RuntimeNodeState[] {
   ensureInitialized();
-  return Array.from(runtimeStates.values());
+  return Array.from(runtimeStates.values()).map(s => ({
+    ...s,
+    dependencies: [...s.dependencies],
+    metadata: { ...s.metadata },
+  }));
 }
 
 /** Get nodes by sector */
@@ -215,13 +182,13 @@ export function getMatrixIntegrity(): MatrixIntegrityReport {
   return calculateIntegrity(nodes);
 }
 
-/** Take a point-in-time snapshot */
+/** Take a point-in-time snapshot (deep-copies state to prevent mutation) */
 export function takeSnapshot(): MatrixSnapshot {
   ensureInitialized();
   const snapshot: MatrixSnapshot = {
     id: crypto.randomUUID(),
     timestamp: Date.now(),
-    nodes: getAllNodeStates().map(n => ({ ...n })),
+    nodes: getAllNodeStates(), // already returns defensive copies
     integrity: getMatrixIntegrity(),
   };
 
