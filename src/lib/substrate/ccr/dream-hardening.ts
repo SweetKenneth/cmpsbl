@@ -113,8 +113,8 @@ const MAX_PATTERNS = 300;
 
 export function cachePattern(id: string, domain: string, pattern: string): void {
   if (patternCache.size >= MAX_PATTERNS) {
-    let oldest = ''; let oldestTime = Infinity;
-    for (const [k, v] of patternCache) { if (v.lastUsed < oldestTime) { oldestTime = v.lastUsed; oldest = k; } }
+    // FIFO eviction — O(1) via iterator
+    const oldest = patternCache.keys().next().value;
     if (oldest) patternCache.delete(oldest);
   }
   patternCache.set(id, { id, domain, pattern, usageCount: 0, discoveredAt: Date.now(), lastUsed: Date.now() });
