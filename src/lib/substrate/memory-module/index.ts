@@ -283,7 +283,8 @@ export function refreshStaleEmbeddings(): { refreshed: number; skipped: number }
     const entry = vectors.get(id);
     if (entry) {
       entry.embeddingVersion = CURRENT_EMBEDDING_VERSION;
-      entry.createdAt = Date.now();
+      // Preserve original createdAt — track refresh timestamp separately
+      entry.lastAccessedAt = Date.now();
       refreshed++;
     } else {
       skipped++;

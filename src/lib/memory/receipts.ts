@@ -98,7 +98,8 @@ export async function getReceiptStats(): Promise<{
   try {
     const { data, error } = await supabase
       .from('memory_tier_receipts')
-      .select('reason_code, before_tier, after_tier');
+      .select('reason_code, before_tier, after_tier')
+      .limit(1000);
 
     if (error || !data) return { total: 0, by_reason: {}, by_direction: { promotions: 0, demotions: 0 } };
 

@@ -496,7 +496,7 @@ export class MemoryClient {
       for (const memoryId of memoryIds) {
         const { data } = await supabase
           .from('brain_memory_hot' as any)
-          .select('*')
+          .select('id, content, context, memory_type, salience_score, value_score, metadata')
           .eq('id', memoryId)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)

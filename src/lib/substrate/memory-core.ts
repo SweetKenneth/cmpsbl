@@ -519,10 +519,11 @@ class MemoryCoreClient {
       const limitMap = { shallow: 20, standard: 50, deep: 100 };
       const limit = limitMap[depth];
 
+      // Hot tier uses 'value_score' not 'confidence'
       const { data: memories, error } = await supabase
         .from('brain_memory_hot')
-        .select('id, content, context, value_score, confidence, memory_type, tags, created_at')
-        .gte('confidence', minConfidence)
+        .select('id, content, context, value_score, memory_type, tags, created_at, importance_score')
+        .gte('value_score', minConfidence)
         .order('created_at', { ascending: false })
         .limit(limit);
 
