@@ -195,32 +195,33 @@
      throw new Error('Request queue is full');
    }
    
-   return new Promise((resolve, reject) => {
-     const timeout = setTimeout(() => {
-       const idx = requestQueue.findIndex(r => r.id === requestId);
-       if (idx !== -1) requestQueue.splice(idx, 1);
-       reject(new Error('Request timed out waiting for available provider'));
-     }, options?.timeoutMs ?? config.maxWaitMs);
-     
-     const requestId = `req_${Date.now()}`;
-     requestQueue.push({
-       id: requestId,
-       priority: options?.priority ?? 0,
-       timestamp: Date.now(),
-       taskType,
-       resolver: (providerId) => {
-         clearTimeout(timeout);
-         resolve({ providerId, slotId: `slot_${Date.now()}_${providerId}` });
-       },
-       rejecter: (error) => {
-         clearTimeout(timeout);
-         reject(error);
-       },
-     });
-     
-     // Sort by priority
-     requestQueue.sort((a, b) => b.priority - a.priority);
-   });
+  return new Promise((resolve, reject) => {
+    const requestId = `req_${Date.now()}`;
+
+    const timeout = setTimeout(() => {
+      const idx = requestQueue.findIndex(r => r.id === requestId);
+      if (idx !== -1) requestQueue.splice(idx, 1);
+      reject(new Error('Request timed out waiting for available provider'));
+    }, options?.timeoutMs ?? config.maxWaitMs);
+    
+    requestQueue.push({
+      id: requestId,
+      priority: options?.priority ?? 0,
+      timestamp: Date.now(),
+      taskType,
+      resolver: (providerId) => {
+        clearTimeout(timeout);
+        resolve({ providerId, slotId: `slot_${Date.now()}_${providerId}` });
+      },
+      rejecter: (error) => {
+        clearTimeout(timeout);
+        reject(error);
+      },
+    });
+    
+    // Sort by priority
+    requestQueue.sort((a, b) => b.priority - a.priority);
+  });
  }
  
  /**
