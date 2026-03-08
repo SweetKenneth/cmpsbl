@@ -403,7 +403,7 @@ class EvolutionCycleClient {
         plan_id: plan.plan_id,
         short_id: plan.short_id,
         run_id: plan.run_id,
-        message: `Shadow changes applied for plan ${plan.short_id}. Run \`modernizer.evolve production\` to promote.`,
+        message: `Shadow changes applied for plan ${plan.short_id}. Run \`evolution.apply production\` to promote.`,
       };
     } catch (e) {
       return {
