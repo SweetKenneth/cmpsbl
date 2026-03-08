@@ -714,6 +714,8 @@ export default function STierVault() {
       '© CMPSBL® — All rights reserved.',
     ].join('\n'));
 
+    const { serializeCmpsblManifest } = await import('@/lib/export/cmpsbl-manifest');
+
     for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
       const synthCtx = contextFromDiscovery(d);
@@ -723,6 +725,14 @@ export default function STierVault() {
       const folder = root.folder(slug)!;
       folder.file('README.md', bundle.readme);
       for (const file of bundle.files) folder.file(file.filename, file.content);
+      folder.file('manifest.json', serializeCmpsblManifest({
+        name: d.name,
+        cjpi: d.cjpi,
+        modules: d.module_chain || [primaryModule],
+        targets: languages.map(l => l.language),
+        category: d.category,
+        source: 'vault-export',
+      }));
 
       const detailsHTML = generatePipelineDetailsHTML({
         name: d.name,

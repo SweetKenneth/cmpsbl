@@ -444,6 +444,7 @@ SOFTWARE.
 }
 
 export async function createExportBundle(config: ExportConfig): Promise<ExportBundle> {
+  const { serializeCmpsblManifest } = await import('@/lib/export/cmpsbl-manifest');
   const zip = new JSZip();
   
   // Root files
@@ -452,6 +453,12 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   zip.file('package.json', generatePackageJson(config));
   zip.file('LICENSE', generateLicense());
   zip.file('LICENSE.html', generateLicenseHTML(config.name));
+  zip.file('manifest.json', serializeCmpsblManifest({
+    name: config.name,
+    targets: ['typescript'],
+    version: config.version,
+    source: 'forge-cognitive',
+  }));
   
   // Documentation
   const docs = zip.folder('docs');
