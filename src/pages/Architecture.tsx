@@ -228,7 +228,7 @@ export default function Architecture() {
                   <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">OCG — Operational Compliance Grid</h3>
                   <div className="space-y-2">
                     {OCG_ZONES.map((z) => (
-                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
+                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary/20 transition-colors duration-200">
                         <span className="font-mono text-xs font-bold w-16">{z.name}</span>
                         <span className="text-xs text-muted-foreground">{z.desc}</span>
                       </div>
