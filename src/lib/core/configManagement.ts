@@ -133,9 +133,9 @@ export function isFeatureEnabled(key: string, context?: Record<string, unknown>)
     return false;
   }
   
-  // Check rollout percentage (simplified)
+  // Check rollout percentage — hash only the key for deterministic bucketing
   if (flag.rollout_percentage < 100) {
-    const hash = simpleHash(key + JSON.stringify(context || {}));
+    const hash = simpleHash(key);
     if ((hash % 100) >= flag.rollout_percentage) {
       return false;
     }
@@ -357,6 +357,12 @@ export function importConfigs(json: string): { imported: number; errors: string[
         const validKey = validateStringInput(key, { maxLength: 200 });
         if (!validKey) { errors.push(`Invalid config key: ${key}`); continue; }
         try {
+          const cv = value as Record<string, unknown>;
+          // Validate required ConfigValue shape
+          if (!cv || typeof cv !== 'object' || !('key' in cv) || !('value' in cv) || !('type' in cv)) {
+            errors.push(`Config ${validKey}: malformed ConfigValue (missing key/value/type)`);
+            continue;
+          }
           configs.set(validKey, value as ConfigValue);
           imported++;
         } catch (e) {

@@ -236,6 +236,7 @@ export function getDependents(module: SubstrateModuleName): SubstrateModuleName[
  */
 export function resolveLoadOrder(modules: SubstrateModuleName[]): SubstrateModuleName[] {
   const resolved: SubstrateModuleName[] = [];
+  const resolvedSet = new Set<SubstrateModuleName>();
   const pending = new Set(modules);
   
   let maxIterations = modules.length * modules.length; // O(n²) safety bound
@@ -243,10 +244,11 @@ export function resolveLoadOrder(modules: SubstrateModuleName[]): SubstrateModul
     const prevSize = resolved.length;
     for (const module of pending) {
       const deps = getModuleDependencies(module);
-      const depsResolved = deps.every(d => !pending.has(d) || resolved.includes(d));
+      const depsResolved = deps.every(d => !pending.has(d) || resolvedSet.has(d));
       
       if (depsResolved) {
         resolved.push(module);
+        resolvedSet.add(module);
         pending.delete(module);
       }
     }

@@ -4,7 +4,7 @@
   */
  
 import { SUBSTRATE_MODULES, type SubstrateModuleName } from './index';
-import { clampNumber, boundArray } from '@/lib/system/hardening';
+import { clampNumber } from '@/lib/system/hardening';
 
  // Health metric
  export interface HealthMetric {
