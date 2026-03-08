@@ -1,5 +1,5 @@
 /**
- * RELAY Hardening v2.0.0 — "Conduit"
+ * RELAY Hardening — "Conduit"
  * 25 enterprise-grade hardening features for the RELAY OCG zone
  */
 
@@ -53,7 +53,12 @@ const contentHashes = new Set<string>();
 export function isDuplicatePayload(hash: string): boolean {
   if (contentHashes.has(hash)) return true;
   contentHashes.add(hash);
-  if (contentHashes.size > 10000) contentHashes.clear();
+  // Evict oldest half instead of clearing all — prevents brief dedup failure window
+  if (contentHashes.size > 10000) {
+    const arr = Array.from(contentHashes);
+    contentHashes.clear();
+    for (let i = arr.length - 5000; i < arr.length; i++) contentHashes.add(arr[i]);
+  }
   return false;
 }
 export function getDedupStats() { return { trackedHashes: contentHashes.size }; }
@@ -65,8 +70,10 @@ const RATE_MAX = 100;
 export function checkRateLimit(target: string): { allowed: boolean; remaining: number } {
   let entry = rateLimits.get(target);
   if (!entry || Date.now() - entry.windowStart > RATE_WINDOW) { entry = { count: 0, windowStart: Date.now() }; rateLimits.set(target, entry); }
-  entry.count++;
-  return { allowed: entry.count <= RATE_MAX, remaining: Math.max(0, RATE_MAX - entry.count) };
+  // Only consume budget if allowed — denied requests should not inflate the counter
+  const allowed = entry.count < RATE_MAX;
+  if (allowed) entry.count++;
+  return { allowed, remaining: Math.max(0, RATE_MAX - entry.count) };
 }
 
 // ─── 10. Webhook Timeout Manager ──────────────────────────────────────────

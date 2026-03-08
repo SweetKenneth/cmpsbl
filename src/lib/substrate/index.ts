@@ -712,6 +712,7 @@ export {
 export {
   initRelay,
   dispatch as relayDispatch,
+  markDelivered as relayMarkDelivered,
   getRelayState,
   getRelayHealth,
   type DeliveryRecord,

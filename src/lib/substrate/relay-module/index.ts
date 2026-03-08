@@ -1,5 +1,5 @@
 /**
- * CMPSBL® RELAY Module — Outbound Effects Hub
+ * RELAY — Outbound Effects Hub
  * Webhooks, notifications, retry queues, delivery guarantees
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
@@ -234,6 +234,22 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
   return result;
 }
 
+/**
+ * Mark a delivery as successfully delivered and decrement pending count.
+ */
+export function markDelivered(deliveryId: string): boolean {
+  const delivery = state.deliveries.find(d => d.id === deliveryId);
+  if (!delivery || delivery.status === 'delivered') return false;
+
+  delivery.status = 'delivered';
+  delivery.deliveredAt = Date.now();
+  state.totalDelivered++;
+  state.pendingQueue = Math.max(0, state.pendingQueue - 1);
+
+  emit({ module: 'relay', event_type: 'delivery_confirmed', outcome: 'succeeded', data: { id: deliveryId } });
+  return true;
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // CLM UPGRADE: Adaptive Retry Backoff
 // ═══════════════════════════════════════════════════════════════════
@@ -260,7 +276,8 @@ export function scheduleRetry(deliveryId: string): { scheduled: boolean; nextRet
       delivery: { ...delivery },
       exhaustedAt: Date.now(),
       reason: `Exhausted ${delivery.maxRetries} retries. Last error: ${delivery.lastError || 'unknown'}`,
-      retryable: !delivery.lastError?.includes('4xx'),
+      // Non-retryable if last error was a client error (4xx status codes)
+      retryable: !/\b4\d{2}\b/.test(delivery.lastError || ''),
     };
     state.deadLetterQueue = boundArray([...state.deadLetterQueue, dlEntry], MAX_DEAD_LETTER);
 
