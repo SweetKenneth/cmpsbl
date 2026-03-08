@@ -74,7 +74,7 @@ function RunSummaryCard({ result }: { result: ReactorRunResult }) {
           Latest Run Summary
           {result.dryRun && <Badge variant="outline" className="text-xs">DRY RUN</Badge>}
         </CardTitle>
-        <CardDescription>{result.durationMs}ms • {new Date().toLocaleString()}</CardDescription>
+        <CardDescription><span className="font-mono tabular-nums">{result.durationMs}ms</span> • {new Date().toLocaleString()}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3">
