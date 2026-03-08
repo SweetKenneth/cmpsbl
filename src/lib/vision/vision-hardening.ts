@@ -861,10 +861,13 @@ export function calculateVisionHealth(): VisionHealthReport {
   const wd = checkWatchdogAlive();
   const watchdogHealth = wd.alive ? 100 : Math.max(0, 100 - wd.missedBeats * 20);
 
-  // Cardinality health
-  let totalCardinality = 0;
-  for (const labels of cardinalityCounts.values()) totalCardinality += labels.size;
-  const cardinalityHealth = Math.max(0, 100 - (totalCardinality / CARDINALITY_LIMIT) * 100);
+  // Cardinality health (per-metric: avg utilization of cardinality limit)
+  let maxUtilization = 0;
+  for (const labels of cardinalityCounts.values()) {
+    const utilization = labels.size / CARDINALITY_LIMIT;
+    if (utilization > maxUtilization) maxUtilization = utilization;
+  }
+  const cardinalityHealth = Math.max(0, 100 - maxUtilization * 100);
 
   // Alert fatigue
   const fatigue = getAlertFatigueStats();
