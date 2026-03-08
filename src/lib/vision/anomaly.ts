@@ -143,12 +143,7 @@ export async function analyzeWindow(
       }
     }
 
-    // 2. Check for latency spikes with percentile analysis
-    const { data: recentUsage } = await supabase
-      .from('ai_usage_log')
-      .select('provider, response_time_ms')
-      .gte('created_at', since);
-
+    // 2. Check for latency spikes with percentile analysis (recentUsage already fetched)
     const latencyByProvider: Record<string, number[]> = {};
     (recentUsage || []).forEach((u) => {
       if (u.response_time_ms) {
