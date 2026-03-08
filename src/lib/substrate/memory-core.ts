@@ -283,17 +283,19 @@ class MemoryCoreClient {
       // ── Dedup Guard ──────────────────────────────────────────────────────
       // Check for similar content already in hot tier (trigram or prefix match)
       const contentPrefix = content.slice(0, 120);
+      const sanitizedPrefix = contentPrefix.replace(/[%_\\]/g, '');
       const { data: existing } = await supabase
         .from('brain_memory_hot')
-        .select('id')
-        .ilike('content', `${contentPrefix.replace(/[%_]/g, '')}%`)
+        .select('id, access_count')
+        .ilike('content', `${sanitizedPrefix}%`)
         .limit(1);
 
       if (existing && existing.length > 0) {
         // Duplicate found — boost existing instead of inserting
+        const currentCount = (existing[0] as any).access_count ?? 0;
         await supabase
           .from('brain_memory_hot')
-          .update({ access_count: (existing[0] as any).access_count + 1 || 1 })
+          .update({ access_count: currentCount + 1 })
           .eq('id', existing[0].id);
 
         return {
@@ -315,7 +317,7 @@ class MemoryCoreClient {
           .from('brain_memory_hot')
           .select('id', { count: 'exact', head: true });
 
-        const HOT_CAPACITY = 200;
+        const HOT_CAPACITY = 500;
         if ((count ?? 0) >= HOT_CAPACITY * 0.8) {
           // Hot tier at/near capacity — downgrade to warm
           tier = 'warm';
@@ -498,7 +500,7 @@ class MemoryCoreClient {
 
       const { data: memories, error } = await supabase
         .from('brain_memory_hot')
-        .select('*')
+        .select('id, content, context, value_score, confidence, memory_type, tags, created_at')
         .gte('confidence', minConfidence)
         .order('created_at', { ascending: false })
         .limit(limit);
@@ -676,21 +678,25 @@ class MemoryCoreClient {
 
   // Helper for querying specific tables
   private async queryTable(table: string, queryText: string, strategy: 'fulltext' | 'pattern', limit: number): Promise<{ data: any[] | null }> {
+    const cols = 'id, content, context, value_score, access_count, confidence, created_at, memory_type, tags, source_module, category';
+    // Sanitize pattern input to prevent PostgREST injection
+    const sanitized = queryText.replace(/[%_\\]/g, '');
+    
     if (table === 'brain_memory_hot') {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_hot').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_hot').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_hot').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_hot').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else if (table === 'brain_memory_warm') {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_warm').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_warm').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_warm').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_cold').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_cold').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_cold').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_cold').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     }
   }
 
