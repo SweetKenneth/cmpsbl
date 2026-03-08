@@ -321,9 +321,9 @@ export function calculateAuditHealth(): { grade: string; score: number; version:
   if (tamperEvents.length > 0) score -= 20;
   if (tamperEvents.length > 10) score -= 10; // escalation for persistent tampering
 
-  // Rate limiter pressure
-  const budget = checkQueryBudget();
-  if (!budget.allowed) score -= 15;
+  // Rate limiter pressure — use peek to avoid consuming a token
+  const budget = peekQueryBudget();
+  if (budget.remaining === 0) score -= 15;
   else if (budget.remaining < 20) score -= 5;
 
   // WAL capacity pressure
@@ -331,6 +331,11 @@ export function calculateAuditHealth(): { grade: string; score: number; version:
 
   // Replay nonce saturation
   if (replayNonces.length > MAX_REPLAY_NONCES * 0.9) score -= 5;
+
+  // SLA violations
+  const sla = getAuditSLA();
+  if (sla.writeLatencyP95 > sla.writeLatencyP95_ms) score -= 10;
+  if (sla.readLatencyP95 > sla.readLatencyP95_ms) score -= 5;
 
   score = Math.max(0, Math.min(100, score));
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
