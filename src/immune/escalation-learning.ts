@@ -79,19 +79,19 @@ export interface CandidateRule {
     samplesRun: number;
   };
   version: number;
-  /** v3: Confidence from feedback loops */
+  /** Confidence from feedback loops */
   feedbackConfidence: number;
-  /** v3: Times this rule resolved an escalation */
+  /** Times this rule resolved an escalation */
   resolutionCount: number;
-  /** v3: Times this rule failed to resolve */
+  /** Times this rule failed to resolve */
   failureCount: number;
-  /** v3: Applicable to multiple executors */
+  /** Applicable to multiple executors */
   crossExecutorApplicable: boolean;
-  /** v3: Specific repair strategy this rule encodes */
+  /** Specific repair strategy this rule encodes */
   repairStrategy: RepairStrategy;
 }
 
-/** v3: Named repair strategies that rules can encode */
+/** Named repair strategies that rules can encode */
 export type RepairStrategy =
   | 'input_reconstruction'   // Rebuild input from error context
   | 'shape_normalization'    // Fix input shape to match executor schema
