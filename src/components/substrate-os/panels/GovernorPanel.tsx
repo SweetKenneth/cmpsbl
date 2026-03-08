@@ -307,7 +307,7 @@ export default function GovernorPanel() {
         <TabsContent value="audit-feed" className="mt-4 space-y-4">
           {/* Engine Runner Buttons */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
