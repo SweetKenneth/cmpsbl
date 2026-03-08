@@ -456,6 +456,14 @@ export function registerPipelineFingerprint(
     `${name}:${steps.map(s => `${s.module}.${s.action}`).join(',')}`
   );
   activePipelineFingerprints.set(fingerprint, { pipelineId, timestamp: Date.now() });
+  // Evict stale fingerprints
+  if (activePipelineFingerprints.size > MAX_FINGERPRINTS) {
+    const now = Date.now();
+    for (const [k, v] of activePipelineFingerprints) {
+      if (now - v.timestamp > 60_000) activePipelineFingerprints.delete(k);
+      if (activePipelineFingerprints.size <= MAX_FINGERPRINTS) break;
+    }
+  }
 }
 
 export function clearPipelineFingerprint(
