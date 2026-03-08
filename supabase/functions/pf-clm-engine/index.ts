@@ -169,7 +169,7 @@ async function writeLearningMemory(
       context: input.context,
       priority: input.priority ?? 6,
       access_count: 0,
-      value_score: Math.min(0.72, valueScore),
+      value_score: valueScore,
       decay_rate: 0.01,
       metadata: { ...(input.metadata || {}), clm_tiered_write: true, stored_tier: 'warm' },
       demoted_at: new Date().toISOString(),

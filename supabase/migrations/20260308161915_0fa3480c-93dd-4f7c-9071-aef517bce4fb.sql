@@ -1,0 +1,2 @@
+UPDATE brain_tiering_config SET max_entries = 10000, max_age_days = 90, min_value_score = 0.150 WHERE tier_name = 'warm';
+UPDATE brain_tiering_config SET max_age_days = 365, max_entries = 10000 WHERE tier_name = 'cold';

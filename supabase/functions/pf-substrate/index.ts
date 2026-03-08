@@ -2140,7 +2140,11 @@ async function handleBrain(
       const startTime = Date.now();
 
       const BATCH_SIZE = isDeep ? 1000 : isAggressive ? 500 : 200;
-      const limits = { hot: 500, warm: 2000, cold: 10000 };
+      // Read limits from brain_tiering_config
+      const { data: tierCfg } = await supabase.from('brain_tiering_config').select('tier_name, max_entries');
+      const cfgMap: Record<string, number> = {};
+      for (const c of tierCfg || []) { cfgMap[c.tier_name] = c.max_entries; }
+      const limits = { hot: cfgMap['hot'] || 500, warm: cfgMap['warm'] || 10000, cold: cfgMap['cold'] || 10000 };
 
       const stats = {
         demoted_to_warm: 0,
@@ -2709,32 +2713,78 @@ async function handleBrain(
         const slotsAvailable = 500 - newHotCount;
         
         if (slotsAvailable > 10) {
+          // Dynamic threshold: if hot is critically empty (<50), lower bar to seed it
+          const hotCriticallyEmpty = newHotCount < 50;
+          const promotionThreshold = hotCriticallyEmpty ? 0.45 : 0.65;
+          const promotionLimit = hotCriticallyEmpty ? Math.min(200, slotsAvailable) : Math.min(50, slotsAvailable);
+
           const { data: toPromote } = await supabase
             .from('brain_memory_warm')
             .select('*')
-            .gte('value_score', 0.75)
+            .gte('value_score', promotionThreshold)
             .order('value_score', { ascending: false })
-            .limit(Math.min(50, slotsAvailable));
+            .order('access_count', { ascending: false })
+            .limit(promotionLimit);
 
           for (const memory of toPromote || []) {
             try {
+              // Boost value_score slightly on promotion
+              const promotedScore = Math.min(1.0, (memory.value_score || 0.5) + 0.1);
               await supabase.from('brain_memory_hot').insert({
                 content: memory.content,
                 embedding: memory.embedding,
                 context: memory.context,
                 goal_ref: memory.goal_ref,
-                priority: 'high',
-                importance_score: memory.value_score,
-                value_score: memory.value_score,
-                access_count: memory.access_count,
+                priority: Math.min(10, Math.round(promotedScore * 10)),
+                importance_score: promotedScore,
+                value_score: promotedScore,
+                access_count: memory.access_count || 0,
                 decay_rate: 0.02,
                 tags: memory.tags,
-                metadata: { ...memory.metadata, promoted_from: 'warm' },
+                metadata: { ...(memory.metadata || {}), promoted_from: 'warm' },
                 last_used: new Date().toISOString(),
               });
               await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
               stats.promoted_to_hot++;
             } catch { stats.errors++; }
+          }
+        }
+
+        // STEP 6: Pruned table hygiene — expire old pruned records (30-day TTL)
+        const PRUNED_TTL_DAYS = 30;
+        const PRUNED_MAX = 5000;
+        const prunedTtlCutoff = new Date(Date.now() - PRUNED_TTL_DAYS * 24 * 60 * 60 * 1000).toISOString();
+        const { data: expiredPrunedIds } = await supabase
+          .from('brain_memory_pruned')
+          .select('id')
+          .lt('pruned_at', prunedTtlCutoff)
+          .limit(isDeep ? 5000 : 1000);
+
+        if (expiredPrunedIds && expiredPrunedIds.length > 0) {
+          const ids = expiredPrunedIds.map((r: any) => r.id);
+          for (let i = 0; i < ids.length; i += 500) {
+            const chunk = ids.slice(i, i + 500);
+            await supabase.from('brain_memory_pruned').delete().in('id', chunk);
+          }
+        }
+
+        // Cap pruned table total (keep only newest PRUNED_MAX)
+        const { count: prunedCount } = await supabase.from('brain_memory_pruned').select('*', { count: 'exact', head: true });
+        if ((prunedCount || 0) > PRUNED_MAX) {
+          let prunedRemaining = (prunedCount || 0) - PRUNED_MAX;
+          while (prunedRemaining > 0) {
+            const batchSize = Math.min(1000, prunedRemaining);
+            const { data: oldPruned } = await supabase
+              .from('brain_memory_pruned')
+              .select('id')
+              .order('pruned_at', { ascending: true })
+              .limit(batchSize);
+            if (!oldPruned || oldPruned.length === 0) break;
+            const ids = oldPruned.map((r: any) => r.id);
+            for (let i = 0; i < ids.length; i += 500) {
+              await supabase.from('brain_memory_pruned').delete().in('id', ids.slice(i, i + 500));
+            }
+            prunedRemaining -= oldPruned.length;
           }
         }
 
