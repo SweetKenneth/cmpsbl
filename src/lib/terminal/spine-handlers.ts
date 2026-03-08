@@ -310,5 +310,61 @@ export function registerSpineHandlers(): void {
     return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DREAM', layer: 'CCR' } };
   });
 
-  log.info('terminal', 'Spine & CCR handlers registered (CORE, SYSTEM, BRAIN, DREAM)', { count: 52 });
+  // ═══ HELP COMMANDS ═══
+
+  registerHandler('core.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ CORE — Kernel Authority ──────────────────┐',
+      '│  core.status     Kernel status               │',
+      '│  core.pulse      Heartbeat pulse              │',
+      '│  core.boot       Boot sequence                │',
+      '│  core.jobs       Scheduled jobs               │',
+      '│  core.process    Process manager              │',
+      '│  core.config     Kernel configuration         │',
+      '│  core.shutdown   Graceful shutdown             │',
+      '│  core.health     Health score                  │',
+      '│  core.hardening  Hardening status (Foundation) │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('brain.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ BRAIN — Reasoning Engine ─────────────────┐',
+      '│  brain.status          Module status           │',
+      '│  brain.query <q>       Query knowledge         │',
+      '│  brain.remember <c>    Store memory            │',
+      '│  brain.recall <q>      Recall memories         │',
+      '│  brain.reflect         Reflection cycle        │',
+      '│  brain.dream           Dream synthesis         │',
+      '│  brain.synthesize      Pattern synthesis       │',
+      '│  brain.optimize        Optimization cycle      │',
+      '│  brain.patterns        Pattern analysis        │',
+      '│  brain.graph           Knowledge graph         │',
+      '│  brain.curiosity       Curiosity engine        │',
+      '│  brain.forecast <d>    Domain forecasting      │',
+      '│  brain.health          Health score            │',
+      '│  brain.hardening       Hardening (Memoria)     │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('dream.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ DREAM — Synthesis Engine ─────────────────┐',
+      '│  dream.status     Module status               │',
+      '│  dream.cycle      Dream cycle                  │',
+      '│  dream.mood       Mood control                 │',
+      '│  dream.theme <t>  Theme selection              │',
+      '│  dream.heuristics Reflection heuristics        │',
+      '│  dream.health     Health score                 │',
+      '│  dream.hardening  Hardening (Nocturne)         │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  log.info('terminal', 'Spine & CCR handlers registered (CORE, SYSTEM, BRAIN, DREAM)', { count: 55 });
 }
