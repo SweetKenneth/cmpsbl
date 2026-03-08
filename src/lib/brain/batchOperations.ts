@@ -211,36 +211,41 @@ export async function exportMemories(
   const tiers = options.tiers ?? ['hot', 'warm', 'cold'];
 
   // Fetch from each tier
+  // Parallel fetch from all requested tiers
+  const tierFetchers: Promise<void>[] = [];
+
   if (tiers.includes('hot')) {
-    let query = supabase.from('brain_memory_hot').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    if (options.maxAge) {
-      const cutoff = new Date(Date.now() - options.maxAge * 24 * 60 * 60 * 1000).toISOString();
-      query = query.gte('created_at', cutoff);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'hot' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_hot').select('id, content, context, value_score, access_count, tags, metadata, created_at, last_used');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      if (options.maxAge) {
+        const cutoff = new Date(Date.now() - options.maxAge * 24 * 60 * 60 * 1000).toISOString();
+        query = query.gte('created_at', cutoff);
+      }
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'hot' })));
+    })());
   }
 
   if (tiers.includes('warm')) {
-    let query = supabase.from('brain_memory_warm').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'warm' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_warm').select('id, content, context, value_score, access_count, tags, metadata, created_at');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'warm' })));
+    })());
   }
 
   if (tiers.includes('cold')) {
-    let query = supabase.from('brain_memory_cold').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'cold' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_cold').select('id, summary, tags, value_score, access_count, created_at');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'cold' })));
+    })());
   }
+
+  await Promise.all(tierFetchers);
 
   // Format output
   let data: string;
