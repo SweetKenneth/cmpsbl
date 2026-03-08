@@ -197,7 +197,9 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('cluster_id');
+      .select('cluster_id')
+      .not('cluster_id', 'is', null)
+      .limit(5000);
 
     if (error) throw error;
 
