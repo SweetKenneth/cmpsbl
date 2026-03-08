@@ -23,6 +23,7 @@ interface PipelineSeal {
   timestamp: number;
 }
 
+const MAX_PIPELINE_SEAL_KEYS = 200;
 const pipelineSeals = new Map<string, PipelineSeal[]>();
 
 export function sealPipelineStep(
