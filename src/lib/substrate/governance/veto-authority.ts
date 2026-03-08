@@ -156,10 +156,13 @@ class VetoAuthorityEngine {
   }
 
   /**
-   * Get all active vetoes
+   * Get all active vetoes (defensive copies — callers cannot mutate internal state)
    */
   getActiveVetoes(): VetoRequest[] {
-    return Array.from(this.activeVetoes.values());
+    return Array.from(this.activeVetoes.values()).map(v => ({
+      ...v,
+      metadata: v.metadata ? { ...v.metadata } : undefined,
+    }));
   }
 
   /**

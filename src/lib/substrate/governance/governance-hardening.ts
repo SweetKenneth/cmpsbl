@@ -737,9 +737,25 @@ export function tryGovernanceAction(actionType: string): { allowed: boolean; ret
 // ─── #19 Decision Impact Scorer ───────────────────────────────────────────────
 
 const MODULE_CRITICALITY: Record<string, number> = {
-  core: 1.0, governance: 0.95, defense: 0.9, brain: 0.85,
-  evolution: 0.8, nexus: 0.75, decode: 0.7, cortex: 0.65,
-  vision: 0.6, system: 0.55, access: 0.5, memory: 0.5,
+  // Kernel + Plane + Shell + Fields (critical infrastructure)
+  core: 1.0, governance: 0.95, defense: 0.9, immunity: 0.85, intent: 0.80,
+  // CCR (cognitive core)
+  brain: 0.85, memory: 0.80, dream: 0.70,
+  // Execution (high-traffic)
+  decode: 0.75, encode: 0.75, nexus: 0.75, cortex: 0.70, vision: 0.65,
+  medic: 0.60, economy: 0.55, sandbox: 0.50, inclusive: 0.45, integration: 0.45,
+  // System
+  system: 0.60,
+  // OCG (compliance grid)
+  audit: 0.70, nerve: 0.55, access: 0.55, identity: 0.55, relay: 0.50, ripple: 0.50,
+  // ESZ (sovereignty)
+  sovereign: 0.50, oracle: 0.45, conscience: 0.45, treaty: 0.45,
+  // CSZ (covert)
+  evolution: 0.65, shadow: 0.40, phantom: 0.40,
+  // EPZ (perception)
+  compass: 0.35, echo: 0.35, reflex: 0.35,
+  // EMZ (manufacturing)
+  forge: 0.35, lingua: 0.30, harvest: 0.30,
 };
 
 export function assessImpact(

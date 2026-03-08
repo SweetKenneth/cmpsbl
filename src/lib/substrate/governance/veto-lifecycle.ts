@@ -181,17 +181,18 @@ class VetoLifecycleEngine {
   }
 
   /**
-   * Get lifecycle state for a veto
+   * Get lifecycle state for a veto (defensive copy)
    */
   getLifecycle(vetoId: string): VetoLifecycleEntry | undefined {
-    return this.lifecycles.get(vetoId);
+    const entry = this.lifecycles.get(vetoId);
+    return entry ? { ...entry } : undefined;
   }
 
   /**
-   * Get all active lifecycle entries
+   * Get all active lifecycle entries (defensive copies)
    */
   getAll(): VetoLifecycleEntry[] {
-    return Array.from(this.lifecycles.values());
+    return Array.from(this.lifecycles.values()).map(e => ({ ...e }));
   }
 
   private async logTransition(
