@@ -843,23 +843,27 @@ export default function DiscoveryMiningConsole() {
           </div>
 
           {/* Controls — full width on mobile */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Switch id="dry-run" checked={dryRun} onCheckedChange={setDryRun} />
-              <Label htmlFor="dry-run" className="text-xs sm:text-sm">Dry Run</Label>
+          <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Switch id="dry-run" checked={dryRun} onCheckedChange={setDryRun} />
+                <Label htmlFor="dry-run" className="text-xs sm:text-sm">Dry Run</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch id="exploratory" checked={exploratoryMode} onCheckedChange={setExploratoryMode} />
+                <Label htmlFor="exploratory" className="text-xs sm:text-sm">Exploratory</Label>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Switch id="exploratory" checked={exploratoryMode} onCheckedChange={setExploratoryMode} />
-              <Label htmlFor="exploratory" className="text-xs sm:text-sm">Exploratory</Label>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <Button onClick={handleRun} disabled={isRunning} className="gap-2 flex-1 sm:flex-none">
+                {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+                Run Discovery
+              </Button>
+              <Button onClick={backfillLearning} disabled={isBackfilling} variant="outline" className="gap-2 flex-1 sm:flex-none">
+                {isBackfilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
+                Teach Past Runs
+              </Button>
             </div>
-            <Button onClick={handleRun} disabled={isRunning} className="gap-2 ml-auto sm:ml-0">
-              {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-              Run Discovery
-            </Button>
-            <Button onClick={backfillLearning} disabled={isBackfilling} variant="outline" className="gap-2">
-              {isBackfilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
-              Teach Past Runs
-            </Button>
           </div>
         </div>
 
