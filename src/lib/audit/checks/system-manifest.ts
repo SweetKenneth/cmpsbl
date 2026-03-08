@@ -7,7 +7,8 @@ import type { AuditFinding } from '../audit-types';
 import { SYSTEM_MODULES, SYSTEM_ROUTES } from '@/lib/codeagent/encoded/system-manifest';
 import { getNodeDefinitions } from '@/lib/core/matrixNodeRegistry';
 
-const EXPECTED_NODE_COUNT = 38;
+// Derive expected count from the canonical registry instead of hardcoding
+const EXPECTED_NODE_COUNT = getNodeDefinitions().length;
 
 export function checkSystemManifest(): AuditFinding[] {
   const findings: AuditFinding[] = [];

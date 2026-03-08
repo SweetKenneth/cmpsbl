@@ -175,12 +175,16 @@ export function getConnectivityMap(): Record<string, { reachable: string[]; unre
   const allNodes = getAllNodeStates();
   const map: Record<string, { reachable: string[]; unreachable: string[] }> = {};
 
+  // Build a lookup once to avoid N×M getNodeState calls (each returns a defensive copy)
+  const stateIndex = new Map<string, RuntimeNodeState>();
+  for (const node of allNodes) stateIndex.set(node.id, node);
+
   for (const node of allNodes) {
     const reachable: string[] = [];
     const unreachable: string[] = [];
 
     for (const dep of node.dependencies) {
-      const depState = getNodeState(dep);
+      const depState = stateIndex.get(dep);
       if (depState && depState.breakerState !== 'open' && depState.health > 0) {
         reachable.push(dep);
       } else {

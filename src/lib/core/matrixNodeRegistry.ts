@@ -106,7 +106,7 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'audit', label: 'AUDIT', sector: 'ocg', weight: 0.025, description: 'Integrity ledger' },
   { id: 'nerve', label: 'NERVE', sector: 'ocg', weight: 0.025, description: 'Inter-node signaling & consensus repair' },
 
-  // ─── Execution Sector (9 nodes, 0.20 total) ────────────────────
+  // ─── Execution Sector (10 nodes incl. INTEGRATION, 0.22 total) ──
   { id: 'decode', label: 'DECODE', sector: 'execution', weight: 0.023, description: 'Epistemic interpreter' },
   { id: 'encode', label: 'ENCODE', sector: 'execution', weight: 0.023, description: 'Code generation pipeline' },
   { id: 'vision', label: 'VISION', sector: 'execution', weight: 0.023, description: 'Observability & telemetry' },
