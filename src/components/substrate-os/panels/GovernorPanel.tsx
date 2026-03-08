@@ -281,7 +281,7 @@ export default function GovernorPanel() {
                 ],
               },
             ].map((node) => (
-              <Card key={node.module} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <Card key={node.module} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                 <CardContent className="p-3 sm:p-4 space-y-3">
                   <div className="flex items-center gap-2">
                     <node.icon className={cn("w-4 h-4 shrink-0", node.color)} />
