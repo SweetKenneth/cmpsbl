@@ -775,7 +775,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Find Best Rule for Escalation (used by processor)
+// Find Best Rule for Escalation (used by processor)
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function findBestRuleForEscalation(executor: string, errorSummary: string): CandidateRule | null {
