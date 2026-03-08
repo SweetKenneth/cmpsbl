@@ -256,10 +256,10 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08, duration: 0.4 }}
                 className={cn(
-                  "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7",
-                  "transition-all duration-300 card-lift gradient-border-reveal",
+                  "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7 group",
+                  "transition-all duration-300 card-lift gradient-border-reveal shimmer-on-hover",
                   pillar.border,
-                  "hover:border-opacity-60"
+                  "hover:border-opacity-60 hover:shadow-lg hover:shadow-current/5"
                 )}
               >
                 {/* Top accent */}
