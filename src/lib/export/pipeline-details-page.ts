@@ -412,6 +412,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   const exportDate = new Date().toISOString();
   const formattedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const sealSVG = generateSealSVG(input.score, tier);
+  const deepFunctionalContent = getDeepFunctionalExplanation(input.name, input.systemChain);
 
   const tierAccent = tier === 'Apex' ? '#c9a84c' : tier === 'Enterprise' ? '#94a3b8' : tier === 'Architect' ? '#a78bfa' : '#6ee7b7';
   const tierAccentDim = tier === 'Apex' ? 'rgba(201,168,76,0.08)' : tier === 'Enterprise' ? 'rgba(148,163,184,0.08)' : tier === 'Architect' ? 'rgba(167,139,250,0.08)' : 'rgba(110,231,183,0.08)';
@@ -896,6 +897,9 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       ${input.systemChain.map(s => `<span class="module-tag">${escapeHtml(s)}</span>`).join('\n      ')}
     </div>
   </div>
+
+  <!-- ═══════ Deep Functional Explanation ═══════ -->
+  ${deepFunctionalContent}
 
   <!-- ═══════ Use Cases ═══════ -->
   <h2>Applicable Domains</h2>
