@@ -507,6 +507,7 @@ interface CachedResult {
 }
 
 const stepCache = new Map<number, CachedResult>();
+const stepCacheInsertOrder: number[] = []; // tracks insertion order for O(1) eviction
 const MAX_CACHE_SIZE = 200;
 
 export function cacheStepResult(
@@ -517,19 +518,17 @@ export function cacheStepResult(
   ttlMs = 300_000
 ): void {
   const key = fnv1aHash(`${module}:${action}:${inputHash}`);
+  
+  // If key already exists, just update it
+  if (!stepCache.has(key)) {
+    stepCacheInsertOrder.push(key);
+  }
   stepCache.set(key, { key, output, timestamp: Date.now(), ttlMs, hits: 0 });
 
-  // Evict LRU if over capacity
-  if (stepCache.size > MAX_CACHE_SIZE) {
-    let oldest: number | null = null;
-    let oldestTime = Infinity;
-    for (const [k, v] of stepCache) {
-      if (v.timestamp < oldestTime) {
-        oldestTime = v.timestamp;
-        oldest = k;
-      }
-    }
-    if (oldest !== null) stepCache.delete(oldest);
+  // Evict oldest by insertion order
+  while (stepCache.size > MAX_CACHE_SIZE && stepCacheInsertOrder.length > 0) {
+    const evictKey = stepCacheInsertOrder.shift()!;
+    stepCache.delete(evictKey);
   }
 }
 
