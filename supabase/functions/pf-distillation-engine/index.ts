@@ -349,7 +349,7 @@ Token Savings Estimate: <percentage of tokens saved vs full reasoning>`;
             module: event.module,
             teacher_model: TEACHER_MODEL,
             student_model: STUDENT_MODEL,
-            prompt: `${event.event_type}: ${event.summary}`,
+            prompt: `${event.event_type}: ${eventSummary}`,
             teacher_response: parsed.reasoningTrace,
             distilled_pattern: parsed.distilledPattern,
             pattern_confidence: parsed.confidence,
