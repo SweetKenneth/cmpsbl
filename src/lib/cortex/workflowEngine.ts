@@ -94,9 +94,10 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
      createdAt: new Date().toISOString(),
    };
    
-   workflows.set(workflow.id, workflow);
-   return workflow;
- }
+    workflows.set(workflow.id, workflow);
+    boundMap(workflows, MAX_WORKFLOWS);
+    return workflow;
+  }
  
  /**
   * Start a workflow execution
