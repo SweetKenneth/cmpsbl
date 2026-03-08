@@ -124,12 +124,16 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
     }
   }
   
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'index.rebuilt',
-    data: { indexed, edges: edgeCount, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
-    outcome: 'success',
-  });
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'index.rebuilt',
+      data: { indexed, edges: edgeCount, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
+      outcome: 'success',
+    });
+  } catch (logErr) {
+    console.error('Failed to log index rebuild event:', logErr);
+  }
   
   return { indexed, edges: edgeCount, duration: Date.now() - startTime };
 }

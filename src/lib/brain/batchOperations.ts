@@ -460,9 +460,9 @@ export async function getTierDistribution(): Promise<{
   avgValueScores: { hot: number; warm: number; cold: number };
 }> {
   const [hotCount, warmCount, coldCount] = await Promise.all([
-    supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
-    supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
-    supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+    supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
   ]);
 
   return {
