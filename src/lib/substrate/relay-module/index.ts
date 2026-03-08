@@ -259,7 +259,29 @@ export function markDelivered(deliveryId: string): boolean {
   state.pendingQueue = Math.max(0, state.pendingQueue - 1);
 
   emit({ module: 'relay', event_type: 'delivery_confirmed', outcome: 'succeeded', data: { id: deliveryId } });
+
+  // Evict terminal deliveries when array exceeds 80% capacity to prevent unbounded growth
+  evictTerminalDeliveries();
   return true;
+}
+
+/** Remove oldest terminal (delivered/dead_letter/failed) records when near capacity */
+function evictTerminalDeliveries(): void {
+  const EVICTION_THRESHOLD = Math.floor(MAX_DELIVERIES * 0.8);
+  if (state.deliveries.length < EVICTION_THRESHOLD) return;
+
+  const terminal = new Set<string>(['delivered', 'dead_letter', 'failed']);
+  const active: DeliveryRecord[] = [];
+  const done: DeliveryRecord[] = [];
+
+  for (const d of state.deliveries) {
+    if (terminal.has(d.status)) done.push(d);
+    else active.push(d);
+  }
+
+  // Keep all active + most recent terminal entries
+  const keepTerminal = Math.max(0, MAX_DELIVERIES - active.length - 50);
+  state.deliveries = [...active, ...done.slice(-keepTerminal)];
 }
 
 // ═══════════════════════════════════════════════════════════════════
