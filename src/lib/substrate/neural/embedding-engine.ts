@@ -195,12 +195,21 @@ class EmbeddingEngine {
         model_version: MODEL_VERSION,
       }));
 
-      const { error } = await supabase
+      // Use upsert to handle duplicates gracefully (same as encodeAndStore)
+      const { data, error } = await supabase
         .from('brain_embeddings')
-        .insert(rows);
+        .upsert(rows, { onConflict: 'artifact_id,artifact_type' });
 
       if (!error) {
         encoded += rows.length;
+      } else {
+        // Fallback: insert ignoring conflicts
+        for (const row of rows) {
+          const { error: singleErr } = await supabase
+            .from('brain_embeddings')
+            .insert(row);
+          if (!singleErr) encoded++;
+        }
       }
     }
 

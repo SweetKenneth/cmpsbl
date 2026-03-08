@@ -226,32 +226,40 @@ class DriftDetector {
       }
       const avgError = totalError / embeddings.length;
 
-      // Store model
-      await supabase
+      // Store model — insert first, then deactivate old ones on success
+      const { data: newModel, error: insertError } = await supabase
         .from('brain_classifier_models')
-        .update({ is_active: false })
-        .eq('model_type', 'drift_autoencoder')
-        .eq('is_active', true);
+        .insert({
+          model_type: 'drift_autoencoder',
+          weights: {
+            encoder_w1: Array.from(this.encoderW1!),
+            encoder_w2: Array.from(this.encoderW2!),
+            decoder_w1: Array.from(this.decoderW1!),
+            decoder_w2: Array.from(this.decoderW2!),
+            rolling_mean: this.state.rollingMean,
+            rolling_stddev: this.state.rollingStddev,
+          },
+          training_metadata: {
+            samples: embeddings.length,
+            avg_error: avgError,
+            trained_at: new Date().toISOString(),
+          },
+          training_samples: embeddings.length,
+          accuracy: 1 - avgError,
+          is_active: true,
+        })
+        .select('id')
+        .single();
 
-      await supabase.from('brain_classifier_models').insert({
-        model_type: 'drift_autoencoder',
-        weights: {
-          encoder_w1: Array.from(this.encoderW1!),
-          encoder_w2: Array.from(this.encoderW2!),
-          decoder_w1: Array.from(this.decoderW1!),
-          decoder_w2: Array.from(this.decoderW2!),
-          rolling_mean: this.state.rollingMean,
-          rolling_stddev: this.state.rollingStddev,
-        },
-        training_metadata: {
-          samples: embeddings.length,
-          avg_error: avgError,
-          trained_at: new Date().toISOString(),
-        },
-        training_samples: embeddings.length,
-        accuracy: 1 - avgError,
-        is_active: true,
-      });
+      // Only deactivate old models if new one inserted successfully
+      if (!insertError && newModel) {
+        await supabase
+          .from('brain_classifier_models')
+          .update({ is_active: false })
+          .eq('model_type', 'drift_autoencoder')
+          .eq('is_active', true)
+          .neq('id', newModel.id);
+      }
 
       this.state.hasModel = true;
       return { samples: embeddings.length, avgError };
