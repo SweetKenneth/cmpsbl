@@ -289,7 +289,7 @@ async function runTeacherStudent(supabase: any, apiKey: string, batchSize: numbe
     const { data: events } = await supabase
       .from("brain_events")
       .select("id, event_type, module, summary, metadata, created_at")
-      .in("event_type", ["learning_complete", "insight_generated", "pattern_discovered"])
+      .in("event_type", ["technical_learning_cycle", "module_learning_insight", "learning_complete", "insight_generated", "pattern_discovered", "clm_cycle_complete"])
       .order("created_at", { ascending: false })
       .limit(50);
 

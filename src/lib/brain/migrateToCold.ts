@@ -74,6 +74,8 @@ export async function migrateStaleMemories(
               summary: memory.content,
               source_refs: [memory.id],
               compression_level: 2,
+              source_module: memory.source_module || 'general',
+              category: memory.category || 'uncategorized',
               tags: {
                 context: memory.context,
                 archived: true,
