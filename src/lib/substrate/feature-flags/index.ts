@@ -21,8 +21,10 @@ export interface FeatureFlag {
 const flags = new Map<string, FeatureFlag>();
 
 export function createFlag(id: string, name: string, enabled: boolean = false, rolloutPercent: number = 0): FeatureFlag {
+  // Clamp rollout to valid range
+  const clampedRollout = Math.max(0, Math.min(100, rolloutPercent));
   const flag: FeatureFlag = {
-    id, name, enabled, rolloutPercent,
+    id, name, enabled, rolloutPercent: clampedRollout,
     targetTiers: ['free', 'builder', 'pro', 'enterprise'],
     killSwitch: false,
     createdAt: Date.now(), updatedAt: Date.now(), metadata: {},
