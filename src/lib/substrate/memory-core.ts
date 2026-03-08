@@ -657,23 +657,32 @@ class MemoryCoreClient {
         // Metacognition tracking is non-critical
       }
 
-      // Bump access_count on retrieved memories for value score reinforcement
+      // Bump access timestamps on retrieved memories (fire-and-forget with error isolation)
       if (finalResults.length > 0) {
         const hotIds = finalResults.filter(m => m.tier === 'hot').map(m => m.id).filter(Boolean);
         const warmIds = finalResults.filter(m => m.tier === 'warm').map(m => m.id).filter(Boolean);
         
+        const touchPromises: Promise<void>[] = [];
         if (hotIds.length > 0) {
-          supabase.from('brain_memory_hot')
-            .update({ last_used: new Date().toISOString() } as any)
-            .in('id', hotIds)
-            .then(() => {});
+          touchPromises.push(
+            Promise.resolve(
+              supabase.from('brain_memory_hot')
+                .update({ last_used: new Date().toISOString() } as any)
+                .in('id', hotIds)
+            ).then(() => {})
+          );
         }
         if (warmIds.length > 0) {
-          supabase.from('brain_memory_warm')
-            .update({ last_accessed: new Date().toISOString() } as any)
-            .in('id', warmIds)
-            .then(() => {});
+          touchPromises.push(
+            Promise.resolve(
+              supabase.from('brain_memory_warm')
+                .update({ last_accessed: new Date().toISOString() } as any)
+                .in('id', warmIds)
+            ).then(() => {})
+          );
         }
+        // Await in parallel, catch all to prevent recall failure
+        Promise.allSettled(touchPromises).catch(() => {});
       }
 
       return {
@@ -982,8 +991,8 @@ class MemoryCoreClient {
       }
     }
 
-    // Calculate average confidence
-    const avgConfidence = memories.reduce((sum, m) => sum + (m.confidence || 0.5), 0) / memories.length;
+    // reflect() now selects value_score, so use that for confidence
+    const avgConfidence = memories.reduce((sum, m) => sum + (m.value_score || 0.5), 0) / memories.length;
     insights.push(`• Average memory confidence: ${(avgConfidence * 100).toFixed(1)}%`);
 
     // Identify high-priority items
