@@ -421,6 +421,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
       } catch (error) {
         const latencyMs = Date.now() - start;
         recordProviderOutcome(provider.id, false, latencyMs);
+        recordFailure(provider.id);
 
         // Track failed usage
         try {
