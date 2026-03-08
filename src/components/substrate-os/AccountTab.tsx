@@ -361,7 +361,7 @@ export function AccountTab() {
                   { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-orange-400' },
                   { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-cyan-400' },
                 ].map(stat => (
-                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center">
+                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                     <stat.icon className={cn("w-4 h-4 mx-auto", stat.color)} />
                     <p className="text-lg font-bold text-foreground">
                       <AnimatedCounter value={stat.value} duration={800} />
