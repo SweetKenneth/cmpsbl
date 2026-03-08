@@ -142,6 +142,9 @@ const App = () => {
   useEffect(() => {
     loadDeferredCSS();
 
+    // EMERGENCY: Skip all heavy deferred imports in editor preview to prevent crashes
+    if (isPreviewEnv) return;
+
     // Tier 1: Critical safety (immediate)
     Promise.all([
       import("@/lib/defense/site-guard"),
