@@ -5,7 +5,9 @@
  */
 
 import type { SynthesisContext } from './logic-synthesizer';
-import { generateLicenseHTML } from './elegant-html-docs';
+import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
+import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { getTierFromScore } from '@/lib/pipeline-valuation';
 
 export function generateTypeScriptTest(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
@@ -499,6 +501,36 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
     {
       filename: 'LICENSE.html',
       content: generateLicenseHTML(ctx.name),
+    },
+    {
+      filename: 'PIPELINE-DETAILS.html',
+      content: generatePipelineDetailsHTML({
+        name: ctx.name,
+        description: ctx.description,
+        category: ctx.category,
+        score: ctx.cjpi,
+        tier: getTierFromScore(ctx.cjpi),
+        systemChain: ctx.moduleChain,
+        exportLanguages: ctx.moduleChain,
+        source: 'Memory Stream Export',
+      }),
+    },
+    {
+      filename: 'README.html',
+      content: generateReadmeHTML({
+        name: ctx.name,
+        description: ctx.description,
+        category: ctx.category,
+        modules: ctx.moduleChain,
+        files: [
+          { name: `${slug}.ts`, purpose: 'Main pipeline implementation (TypeScript)' },
+          { name: 'LICENSE', purpose: 'CMPSBL® Commercial Distribution License' },
+          { name: 'LICENSE.html', purpose: 'Formatted license document' },
+          { name: 'PIPELINE-DETAILS.html', purpose: 'Pipeline certificate with valuation and provenance' },
+          { name: 'Makefile', purpose: 'Build & test commands for all languages' },
+          { name: 'package.json', purpose: 'Node.js package manifest' },
+        ],
+      }),
     },
     {
       filename: 'Makefile',
