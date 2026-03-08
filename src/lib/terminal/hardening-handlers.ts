@@ -1542,7 +1542,7 @@ export function registerHardeningHandlers(): void {
   registerHandler('audit.hardening.merkle', async () => { const { generateMerkleProof } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: generateMerkleProof(0) }; });
   registerHandler('audit.hardening.attestations', async () => { const { getAttestations } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { attestations: getAttestations() } }; });
   registerHandler('audit.hardening.compaction', async () => { const { getCompactionStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getCompactionStats() }; });
-  registerHandler('audit.hardening.signatures', async () => { const { verifyEntrySignature } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: verifyEntrySignature('latest') }; });
+  registerHandler('audit.hardening.signatures', async () => { const { verifyEntrySignature, getChainLengthViaAccessor } = await import('@/lib/substrate/audit-hardening'); const len = getChainLengthViaAccessor(); return { success: true, data: verifyEntrySignature(Math.max(0, len - 1)) }; });
   registerHandler('audit.hardening.export', async () => { const { exportAuditLog } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: exportAuditLog() }; });
   registerHandler('audit.hardening.throughput', async () => { const { getThroughputStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getThroughputStats() }; });
   registerHandler('audit.hardening.immutability', async () => { const { guardImmutability } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: guardImmutability() }; });
