@@ -1,6 +1,6 @@
 /**
- * ENCODE Command Input — Structured command interface
- * Not a chatbot. Engineering commands only.
+ * ENCODE Command Input — Hybrid conversational + command interface
+ * Supports slash commands AND natural language.
  */
 
 import { useState, useRef, useCallback, type KeyboardEvent } from 'react';
@@ -15,10 +15,16 @@ const ENCODE_COMMANDS = [
   { cmd: '/evolve <pipeline>', desc: 'Evolve a pipeline with learned patterns' },
   { cmd: '/instantiate <artifact>', desc: 'Create artifact from template' },
   { cmd: '/export <artifact>', desc: 'Package artifact for distribution' },
+  { cmd: '/execute <plan_id>', desc: 'Route approved plan to ENCODE' },
+  { cmd: '/resolve <target>', desc: 'Resolve target to architecture nodes' },
+  { cmd: '/recall <query>', desc: 'Query BRAIN memory' },
+  { cmd: '/discuss <plan_id> <msg>', desc: 'Open discussion on a plan' },
+  { cmd: '/plans', desc: 'List all plans' },
   { cmd: '/status', desc: 'ENCODE health & lock state' },
   { cmd: '/audit', desc: 'Run architecture snapshot' },
-  { cmd: '/approve', desc: 'Approve pending execution plan' },
+  { cmd: '/approve', desc: 'Approve pending plan & unlock execution' },
   { cmd: '/reject <reason>', desc: 'Reject pending plan with reason' },
+  { cmd: '/clm', desc: 'Run CLM learning cycle' },
   { cmd: '/clear', desc: 'Reset session' },
   { cmd: '/help', desc: 'Show available commands' },
 ];
@@ -89,7 +95,7 @@ export function EncodeCommandInput({ onSubmit, disabled, isLocked }: EncodeComma
           onKeyDown={handleKeyDown}
           onFocus={() => value.startsWith('/') && setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-          placeholder={isLocked ? 'EXECUTION LOCKED — run /audit first' : 'Enter command (/ for suggestions)'}
+          placeholder={isLocked ? 'Run /audit first to unlock · Natural language or /commands' : 'Tell ENCODE what to build, or use / for commands...'}
           disabled={disabled}
           className="flex-1 bg-transparent border-0 outline-none text-sm font-mono text-foreground placeholder:text-muted-foreground/40"
           autoComplete="off"

@@ -438,13 +438,13 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             <Button
               variant="outline"
               className="justify-between h-auto p-3 sm:p-4 border-border/30 hover:bg-muted/50"
-              onClick={() => navigate('/composable-cognitives')}
+              onClick={() => navigate('/admin/encode-console')}
             >
               <div className="flex items-center gap-3 text-left">
                 <Activity className="w-5 h-5 text-purple-400 shrink-0" />
                 <div>
-                  <p className="text-sm font-medium">ENCODE Agent</p>
-                  <p className="text-[10px] text-muted-foreground">Coding agent · Cognitive store</p>
+                  <p className="text-sm font-medium">ENCODE Console</p>
+                  <p className="text-[10px] text-muted-foreground">Systems engineer · Build · Modify</p>
                 </div>
               </div>
               <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />

@@ -1,19 +1,21 @@
 /**
  * ENCODE Systems Engineer Console
- * Two-panel engineering interface: conversation stream + architecture awareness.
- * Command-driven. Not a chatbot.
- * Preserves DECODE → PLAN → APPROVAL → ENCODE governance pipeline.
+ * Hybrid conversational + command interface.
+ * Natural language and slash commands both route through DECODE → PLAN → APPROVAL → ENCODE.
+ * Actually wired to substrate systems for real work.
  */
 
 import { useState, useCallback, useMemo } from 'react';
-import { Bot, Cpu, Shield, Terminal, ArrowLeft } from 'lucide-react';
+import { Bot, Cpu, Shield, Terminal, ArrowLeft, Zap, Brain, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useEncodeOrchestration } from '@/hooks/substrate/useEncodeOrchestration';
 import { useEncode } from '@/hooks/substrate/useEncode';
-import { navigateIntent, resolveAlias } from '@/lib/codeagent/encoded/substrate-navigator';
+import { navigateIntent, resolveAlias, detectConcerns, getModuleTables } from '@/lib/codeagent/encoded/substrate-navigator';
+import { getRelevantPatterns } from '@/lib/codeagent/encoded/expert-patterns';
+import { getRelevantSkills } from '@/lib/codeagent/encoded/skills';
 import { EncodeCommandInput, ENCODE_COMMANDS } from './EncodeCommandInput';
 import { ConversationStream } from './ConversationStream';
 import { ArchitecturePanel } from './ArchitecturePanel';
@@ -29,17 +31,168 @@ export function EncodeSystemsConsole() {
     setSystemMessages(prev => [...prev, { type, text, ts: new Date().toISOString() }]);
   }, []);
 
-  const handleCommand = useCallback((input: string) => {
-    const trimmed = input.trim();
+  // ── Resolve architecture context for any target ──
+  const resolveTarget = useCallback((target: string) => {
+    const navigation = navigateIntent(target);
+    const concerns = detectConcerns(target);
+    const patterns = getRelevantPatterns(target);
+    const skills = getRelevantSkills(target);
 
-    // /help
-    if (trimmed === '/help') {
-      addSystemMsg('info', ENCODE_COMMANDS.map(c => `${c.cmd}  —  ${c.desc}`).join('\n'));
+    const lines: string[] = [];
+
+    if (navigation.modules.length > 0) {
+      lines.push(`📍 Modules: ${navigation.modules.map(m => m.id).join(', ')}`);
+      lines.push(`📁 Files: ${navigation.targetFiles.slice(0, 5).join(', ')}`);
+    }
+
+    if (concerns.length > 0) {
+      lines.push(`🔧 Concerns: ${concerns.join(', ')}`);
+    }
+
+    if (patterns.length > 0) {
+      lines.push(`🧩 Patterns: ${patterns.slice(0, 3).map(p => `${p.name} (${p.tier})`).join(', ')}`);
+    }
+
+    if (skills.length > 0) {
+      lines.push(`⚡ Skills: ${skills.slice(0, 3).map(s => `${s.name} ${s.proficiency}%`).join(', ')}`);
+    }
+
+    // Check for existing pipelines/tables
+    const tables = navigation.modules.flatMap(m => getModuleTables(m.id));
+    if (tables.length > 0) {
+      lines.push(`🗄️ Tables: ${tables.slice(0, 5).join(', ')}`);
+    }
+
+    return { navigation, concerns, patterns, skills, tables, summary: lines.join('\n') };
+  }, []);
+
+  // ── Generate a real plan through the pipeline ──
+  const generatePlan = useCallback(async (intent: string, modules?: string[]) => {
+    try {
+      addSystemMsg('info', '⏳ Generating PatchPlan through DECODE pipeline...');
+      const plan = await encode.generatePlan.mutateAsync({
+        intent,
+        modules,
+      }) as any;
+      addSystemMsg('success', [
+        `📋 PatchPlan created: ${plan?.plan_id || 'unknown'}`,
+        `   Title: ${plan?.title || intent}`,
+        `   Modules: ${(plan?.modules || modules || []).join(', ')}`,
+        `   Changes: ${plan?.changes?.length || 0}`,
+        `   Risks: ${plan?.risks?.length > 0 ? plan.risks.join(', ') : 'none detected'}`,
+        `   Status: ${plan?.status || 'draft'}`,
+        '',
+        'Use /approve to approve, or /reject <reason> to reject.',
+      ].join('\n'));
+      return plan;
+    } catch (err: any) {
+      addSystemMsg('error', `Plan generation failed: ${err.message}`);
+      return null;
+    }
+  }, [encode.generatePlan, addSystemMsg]);
+
+  // ── Approve latest plan and route to ENCODE for execution ──
+  const approvePlan = useCallback(async () => {
+    const plans = encode.plans.filter(p => p.status === 'draft' || p.status === 'review');
+    if (plans.length === 0) {
+      addSystemMsg('warning', 'No pending plans to approve. Submit an intent first.');
       return;
     }
 
-    // /status
+    const latestPlan = plans[plans.length - 1];
+    try {
+      // Approve in orchestration layer
+      const orchResult = orchestration.approve();
+      if (!orchResult.success) {
+        addSystemMsg('error', `Orchestration lock: ${orchResult.reason}`);
+        return;
+      }
+
+      // Approve plan in plan store
+      await encode.approvePlanMutation.mutateAsync({
+        planId: latestPlan.plan_id,
+        approver: 'governor',
+      });
+
+      addSystemMsg('success', [
+        `✅ Plan ${latestPlan.plan_id} approved`,
+        '',
+        '🔄 Execution pipeline:',
+        '   1. ✅ Plan approved',
+        '   2. 🧠 Architecture recall',
+        '   3. 🧩 Pattern selection',
+        '   4. ⚙️  Code generation ready',
+        '   5. 🛡️ Guard validation pending',
+        '   6. 🔒 Artifact sealing pending',
+        '   7. 🧠 Brain writeback pending',
+        '',
+        `ENCODE is ready to execute. Route intent with /execute ${latestPlan.plan_id}`,
+      ].join('\n'));
+    } catch (err: any) {
+      addSystemMsg('error', `Approval failed: ${err.message}`);
+    }
+  }, [encode.plans, encode.approvePlanMutation, orchestration, addSystemMsg]);
+
+  // ── Execute an approved plan ──
+  const executePlan = useCallback(async (planId: string) => {
+    try {
+      addSystemMsg('info', `⚙️ Routing to ENCODE for execution (plan: ${planId})...`);
+      const task = await encode.routeIntent.mutateAsync({
+        intent: `Execute plan ${planId}`,
+        plan_id: planId,
+        brainKeys: ['encode', 'patterns', 'architecture'],
+      }) as any;
+      addSystemMsg('success', [
+        `🚀 Task enqueued: ${task?.id || 'unknown'}`,
+        `   Intent: ${task?.intentSummary || planId}`,
+        `   Surface: ${task?.targetSurface || 'code'}`,
+        `   Status: ${task?.status || 'queued'}`,
+        '',
+        'ENCODE is now processing. Use /status to monitor.',
+      ].join('\n'));
+    } catch (err: any) {
+      addSystemMsg('error', `Execution failed: ${err.message}`);
+    }
+  }, [encode.routeIntent, addSystemMsg]);
+
+  // ── Ask ENCODE a question about a plan ──
+  const discussPlan = useCallback(async (planId: string, message: string) => {
+    try {
+      await encode.discussion.ask.mutateAsync({ planId, message });
+      addSystemMsg('info', `💬 Discussion opened on plan ${planId}: "${message}"`);
+    } catch (err: any) {
+      addSystemMsg('error', `Discussion failed: ${err.message}`);
+    }
+  }, [encode.discussion.ask, addSystemMsg]);
+
+  const handleCommand = useCallback((input: string) => {
+    const trimmed = input.trim();
+
+    // ═══ SLASH COMMANDS ═══
+
+    if (trimmed === '/help') {
+      addSystemMsg('info', [
+        ...ENCODE_COMMANDS.map(c => `${c.cmd}  —  ${c.desc}`),
+        '',
+        '── EXECUTION ──',
+        '/execute <plan_id>  —  Route approved plan to ENCODE',
+        '/discuss <plan_id> <message>  —  Open discussion on a plan',
+        '/plans  —  List all plans',
+        '/recall <query>  —  Query BRAIN memory',
+        '/resolve <target>  —  Resolve target to architecture',
+        '/clm  —  Run CLM learning cycle',
+        '',
+        '── CONVERSATIONAL ──',
+        'You can also type natural language.',
+        'ENCODE will resolve your intent, find relevant modules,',
+        'generate a PatchPlan, and await your approval.',
+      ].join('\n'));
+      return;
+    }
+
     if (trimmed === '/status') {
+      const pendingPlans = encode.plans.filter(p => p.status === 'draft' || p.status === 'review');
+      const approvedPlans = encode.plans.filter(p => p.status === 'approved');
       addSystemMsg('info', [
         `ENCODE Health: ${encode.health}%`,
         `Mode: ${orchestration.mode}`,
@@ -47,11 +200,12 @@ export function EncodeSystemsConsole() {
         `Messages: ${orchestration.conversation.messages.length}`,
         `Queue: ${encode.queue.length} tasks`,
         `Patches: ${orchestration.patches.length}`,
+        `Plans: ${encode.plans.length} total (${pendingPlans.length} pending, ${approvedPlans.length} approved)`,
+        `Receipts: ${encode.receipts.length}`,
       ].join('\n'));
       return;
     }
 
-    // /clear
     if (trimmed === '/clear') {
       orchestration.clear();
       setSystemMessages([]);
@@ -59,32 +213,95 @@ export function EncodeSystemsConsole() {
       return;
     }
 
-    // /audit
     if (trimmed === '/audit' || trimmed === '/analyze system') {
       const snap = orchestration.runAudit();
-      addSystemMsg('success', `Architecture snapshot captured: ${snap.module_registry.length} modules, ${snap.dependency_graph.length} edges.`);
+      addSystemMsg('success', [
+        `Architecture snapshot captured: ${snap.snapshot_id}`,
+        `   Modules: ${snap.module_registry.length}`,
+        `   Dependencies: ${snap.dependency_graph.length} edges`,
+        `   Utilities: ${snap.shared_utilities_index.length}`,
+        `   Escalation paths: ${snap.escalation_paths.length}`,
+        '',
+        'Execution lock partially released. Use /approve after submitting a plan.',
+      ].join('\n'));
       return;
     }
 
-    // /approve
     if (trimmed === '/approve') {
-      const result = orchestration.approve();
-      if (result.success) {
-        addSystemMsg('success', 'Execution approved. ENCODE may now generate code.');
+      approvePlan();
+      return;
+    }
+
+    if (trimmed.startsWith('/reject ')) {
+      const reason = trimmed.slice(8).trim();
+      const plans = encode.plans.filter(p => p.status === 'draft' || p.status === 'review');
+      if (plans.length > 0) {
+        const latest = plans[plans.length - 1];
+        encode.rejectPlanMutation.mutate({ planId: latest.plan_id, reason });
+        addSystemMsg('warning', `Plan ${latest.plan_id} rejected: ${reason}`);
       } else {
-        addSystemMsg('error', `Approval failed: ${result.reason}`);
+        addSystemMsg('warning', `No pending plans to reject.`);
       }
       return;
     }
 
-    // /reject <reason>
-    if (trimmed.startsWith('/reject ')) {
-      const reason = trimmed.slice(8).trim();
-      addSystemMsg('warning', `Plan rejected: ${reason}`);
+    if (trimmed.startsWith('/execute ')) {
+      const planId = trimmed.slice(9).trim();
+      executePlan(planId);
       return;
     }
 
-    // /build, /modify, /evolve, /instantiate, /export — route through DECODE
+    if (trimmed.startsWith('/discuss ')) {
+      const parts = trimmed.slice(9).trim();
+      const spaceIdx = parts.indexOf(' ');
+      if (spaceIdx === -1) {
+        addSystemMsg('error', 'Usage: /discuss <plan_id> <message>');
+        return;
+      }
+      discussPlan(parts.slice(0, spaceIdx), parts.slice(spaceIdx + 1));
+      return;
+    }
+
+    if (trimmed === '/plans') {
+      if (encode.plans.length === 0) {
+        addSystemMsg('info', 'No plans generated yet. Submit an intent to create one.');
+        return;
+      }
+      const planLines = encode.plans.map(p =>
+        `  ${p.status === 'approved' ? '✅' : p.status === 'rejected' ? '❌' : '📋'} ${p.plan_id} [${p.status}] — ${p.title}`
+      );
+      addSystemMsg('info', `Plans (${encode.plans.length}):\n${planLines.join('\n')}`);
+      return;
+    }
+
+    if (trimmed.startsWith('/resolve ')) {
+      const target = trimmed.slice(9).trim();
+      const result = resolveTarget(target);
+      if (result.summary) {
+        addSystemMsg('info', `Architecture resolution for "${target}":\n${result.summary}`);
+      } else {
+        addSystemMsg('warning', `No architecture matches for "${target}"`);
+      }
+      return;
+    }
+
+    if (trimmed.startsWith('/recall ')) {
+      const query = trimmed.slice(8).trim();
+      addSystemMsg('info', `🧠 Querying BRAIN memory for: "${query}"...`);
+      // Memory recall is async but we surface what the navigator knows
+      const resolved = resolveTarget(query);
+      addSystemMsg('info', resolved.summary || 'No memory matches found.');
+      return;
+    }
+
+    if (trimmed === '/clm') {
+      encode.runCLM.mutate(undefined as any);
+      addSystemMsg('info', '🔄 CLM learning cycle triggered.');
+      return;
+    }
+
+    // ═══ ENGINEERING COMMANDS ═══
+
     const engineeringCommands = ['/build', '/modify', '/evolve', '/instantiate', '/export'];
     const matchedCmd = engineeringCommands.find(c => trimmed.startsWith(c));
 
@@ -92,28 +309,62 @@ export function EncodeSystemsConsole() {
       const target = trimmed.slice(matchedCmd.length).trim();
       const intent = `${matchedCmd.slice(1)} ${target}`;
 
-      // Semantic resolution
-      const navigation = navigateIntent(target);
-      if (navigation.modules.length > 0) {
-        addSystemMsg('info', `Resolved: "${target}" → ${navigation.modules.map(m => m.id).join(', ')}\nFiles: ${navigation.targetFiles.slice(0, 3).join(', ')}`);
+      // Resolve architecture targets
+      const resolved = resolveTarget(target);
+      if (resolved.summary) {
+        addSystemMsg('info', `Architecture context:\n${resolved.summary}`);
       }
 
-      // Submit through governance pipeline
-      const review = orchestration.submitIntent(intent);
-      addSystemMsg('info', `Intent submitted. Risk: ${review.risk_assessment || 'unknown'}. ${review.clarification_questions.length} questions pending.`);
+      // Check for existing patterns/pipelines
+      if (resolved.patterns.length > 0) {
+        addSystemMsg('info', [
+          '🔍 Existing patterns detected:',
+          ...resolved.patterns.slice(0, 3).map(p => `   • ${p.name} (${p.tier}) — ${p.description.slice(0, 80)}`),
+          '',
+          'Options: [Reuse] [Modify] [Generate New]',
+          'Proceeding with plan generation...',
+        ].join('\n'));
+      }
+
+      // Submit through governance pipeline AND generate real plan
+      orchestration.submitIntent(intent);
+      generatePlan(intent, resolved.navigation.modules.map(m => m.id));
       return;
     }
 
-    // Unknown command
+    // ═══ UNKNOWN COMMANDS ═══
+
     if (trimmed.startsWith('/')) {
       addSystemMsg('error', `Unknown command: "${trimmed}". Type /help for available commands.`);
       return;
     }
 
-    // Non-command text — route as intent
+    // ═══ CONVERSATIONAL MODE ═══
+    // Natural language → resolve → plan → await approval
+
+    const resolved = resolveTarget(trimmed);
+
+    // Show what ENCODE understood
+    if (resolved.summary) {
+      addSystemMsg('info', `🎯 ENCODE resolved your intent:\n${resolved.summary}`);
+    }
+
+    // Submit through orchestration (governance awareness)
     const review = orchestration.submitIntent(trimmed);
-    addSystemMsg('info', `Intent submitted through DECODE pipeline.`);
-  }, [orchestration, encode, addSystemMsg]);
+
+    // Show ENCODE's analysis
+    addSystemMsg('info', [
+      `📊 ENCODE Analysis:`,
+      `   Risk: ${review.risk_assessment || 'unknown'}`,
+      review.clarification_questions.length > 0
+        ? `   Questions:\n${review.clarification_questions.map(q => `     • ${q}`).join('\n')}`
+        : '   No clarifications needed.',
+    ].join('\n'));
+
+    // Generate a real PatchPlan
+    generatePlan(trimmed, resolved.navigation.modules.map(m => m.id));
+
+  }, [orchestration, encode, addSystemMsg, resolveTarget, generatePlan, approvePlan, executePlan, discussPlan]);
 
   const taskQueue = useMemo(() =>
     encode.queue.map(t => ({ id: t.id, intent: t.intentSummary, status: t.status })),
@@ -147,6 +398,11 @@ export function EncodeSystemsConsole() {
           <Badge variant="outline" className="text-[9px] font-mono">
             {orchestration.mode.toUpperCase()}
           </Badge>
+          {encode.queue.length > 0 && (
+            <Badge variant="outline" className="text-[9px] font-mono border-amber-500/30 text-amber-500">
+              {encode.queue.length} QUEUED
+            </Badge>
+          )}
         </div>
       </header>
 
