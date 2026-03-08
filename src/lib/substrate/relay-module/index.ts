@@ -260,7 +260,8 @@ export function scheduleRetry(deliveryId: string): { scheduled: boolean; nextRet
       delivery: { ...delivery },
       exhaustedAt: Date.now(),
       reason: `Exhausted ${delivery.maxRetries} retries. Last error: ${delivery.lastError || 'unknown'}`,
-      retryable: !delivery.lastError?.includes('4xx'),
+      // Non-retryable if last error was a client error (4xx status codes)
+      retryable: !/\b4\d{2}\b/.test(delivery.lastError || ''),
     };
     state.deadLetterQueue = boundArray([...state.deadLetterQueue, dlEntry], MAX_DEAD_LETTER);
 
