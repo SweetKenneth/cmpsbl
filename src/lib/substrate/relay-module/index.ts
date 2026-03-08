@@ -142,7 +142,7 @@ export function initRelay(): void {
 const MAX_DELIVERIES = 500;
 const MAX_TARGET_LENGTH = 2048;
 const MAX_DEAD_LETTER = 200;
-const DEDUP_WINDOW_MS = 300_000; // 5 minutes
+const DEDUP_MAX_SIZE = 5000;
 
 // ═══════════════════════════════════════════════════════════════════
 // CLM#12: Content-Hash Deduplication
