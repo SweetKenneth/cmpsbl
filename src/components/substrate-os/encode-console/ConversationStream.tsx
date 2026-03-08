@@ -4,8 +4,9 @@
  */
 
 import { useRef, useEffect } from 'react';
-import { Bot, User, Cpu, Shield, CheckCircle2, XCircle, Clock, Layers } from 'lucide-react';
+import { Bot, User, Cpu, Shield, CheckCircle2, XCircle, Clock, Layers, Zap, Brain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { ConversationMessage } from '@/lib/substrate/encode-module/orchestration';
@@ -39,16 +40,30 @@ export function ConversationStream({ messages, plans, systemMessages }: Conversa
   if (combined.length === 0) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="text-center space-y-3 max-w-xs">
+        <div className="text-center space-y-3 max-w-sm">
           <Bot className="w-10 h-10 text-primary/20 mx-auto" />
-          <p className="text-sm font-mono text-muted-foreground/40">ENCODE Systems Engineer Console</p>
+          <p className="text-sm font-mono text-muted-foreground/40">ENCODE Systems Engineer</p>
           <p className="text-[11px] text-muted-foreground/30">
-            Type <code className="text-primary/60">/help</code> to see available commands
+            Tell ENCODE what to build in natural language, or use <code className="text-primary/60">/help</code> for commands.
           </p>
+          <div className="space-y-2 pt-3 text-left">
+            <p className="text-[10px] text-muted-foreground/25 uppercase tracking-wider text-center">Try saying</p>
+            {[
+              '"Build a rate limiter for the API gateway"',
+              '"Modify the DEFENSE module to add IP blocking"',
+              '"Create a new webhook handler for Stripe events"',
+              '/build authentication flow',
+              '/resolve rate limiting',
+            ].map((ex, i) => (
+              <p key={i} className="text-[10px] text-muted-foreground/40 font-mono px-3 py-1.5 rounded bg-muted/20">
+                {ex}
+              </p>
+            ))}
+          </div>
           <div className="space-y-1 pt-2">
             <p className="text-[10px] text-muted-foreground/25 uppercase tracking-wider">Pipeline</p>
             <p className="text-[10px] text-muted-foreground/30 font-mono">
-              COMMAND → DECODE → PLAN → APPROVAL → ENCODE
+              INTENT → DECODE → PLAN → APPROVAL → ENCODE → BRAIN
             </p>
           </div>
         </div>
@@ -96,13 +111,24 @@ export function ConversationStream({ messages, plans, systemMessages }: Conversa
 
           // System message
           const sys = item.data as { type: string; text: string; ts: string };
+          const iconMap: Record<string, React.ElementType> = {
+            success: CheckCircle2,
+            error: XCircle,
+            warning: Clock,
+            info: Layers,
+          };
+          const colorMap: Record<string, string> = {
+            success: 'text-green-500',
+            error: 'text-destructive',
+            warning: 'text-yellow-500',
+            info: 'text-muted-foreground',
+          };
+          const SysIcon = iconMap[sys.type] || Layers;
+
           return (
-            <div key={`sys-${i}`} className="flex items-start gap-2 px-2 py-1">
-              {sys.type === 'success' && <CheckCircle2 className="w-3 h-3 text-green-500 mt-0.5 shrink-0" />}
-              {sys.type === 'error' && <XCircle className="w-3 h-3 text-destructive mt-0.5 shrink-0" />}
-              {sys.type === 'warning' && <Clock className="w-3 h-3 text-yellow-500 mt-0.5 shrink-0" />}
-              {sys.type === 'info' && <Layers className="w-3 h-3 text-muted-foreground mt-0.5 shrink-0" />}
-              <span className="text-[11px] text-muted-foreground/60 font-mono">{sys.text}</span>
+            <div key={`sys-${i}`} className="flex items-start gap-2 px-2 py-1.5">
+              <SysIcon className={cn("w-3 h-3 mt-0.5 shrink-0", colorMap[sys.type])} />
+              <span className="text-[11px] text-muted-foreground/70 font-mono whitespace-pre-wrap">{sys.text}</span>
             </div>
           );
         })}
@@ -161,7 +187,11 @@ function PlanCard({ plan }: { plan: PatchPlan }) {
       <div className="flex items-center gap-2">
         <Layers className="w-3.5 h-3.5 text-primary" />
         <span className="text-[11px] font-bold text-primary uppercase tracking-wider">Patch Plan</span>
-        <Badge variant="outline" className="text-[9px] ml-auto">
+        <Badge variant="outline" className={cn(
+          "text-[9px] ml-auto",
+          plan.status === 'approved' && 'border-green-500/30 text-green-500',
+          plan.status === 'rejected' && 'border-destructive/30 text-destructive',
+        )}>
           {plan.status}
         </Badge>
       </div>
@@ -188,6 +218,12 @@ function PlanCard({ plan }: { plan: PatchPlan }) {
           ))}
         </div>
       )}
+
+      <div className="flex gap-2 pt-1">
+        <p className="text-[9px] text-muted-foreground/40 font-mono">
+          {plan.plan_id} · Use /approve or /reject
+        </p>
+      </div>
     </div>
   );
 }
