@@ -550,7 +550,8 @@ export function checkDreamGovernance(dreamId: string, domains: string[], riskSco
 }
 
 export function getGovernanceStats(): { total: number; allowed: number; blocked: number; blockRate: number } {
-  const blocked = governanceChecks.filter(c => !c.allowed).length;
+  let blocked = 0;
+  for (const c of governanceChecks) if (!c.allowed) blocked++;
   return { total: governanceChecks.length, allowed: governanceChecks.length - blocked, blocked, blockRate: governanceChecks.length > 0 ? blocked / governanceChecks.length : 0 };
 }
 
