@@ -152,7 +152,7 @@ export default function CodeLab() {
               
               <Link 
                 to="/explore" 
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Zap className="w-8 h-8 text-violet-500 mx-auto mb-2" />
                 <div className="font-semibold">{capabilitiesCount}+ Capabilities</div>
