@@ -122,6 +122,12 @@ export function checkQueryBudget(): { allowed: boolean; remaining: number } {
   if (allowed) queryBudget.used++;
   return { allowed, remaining: Math.max(0, queryBudget.maxPerMinute - queryBudget.used) };
 }
+/** Peek at budget without consuming a token (for health checks) */
+export function peekQueryBudget(): { remaining: number; maxPerMinute: number } {
+  const now = Date.now();
+  const used = (now - queryBudget.windowStart > 60_000) ? 0 : queryBudget.used;
+  return { remaining: Math.max(0, queryBudget.maxPerMinute - used), maxPerMinute: queryBudget.maxPerMinute };
+}
 
 // ─── 8. Merkle Proof Generator ─────────────────────────────────────────────
 export function generateMerkleProof(entryIndex: number): { index: number; proof: string[]; root: string } {
