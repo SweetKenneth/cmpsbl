@@ -886,8 +886,13 @@ export function getOrchestrationTelemetry(): {
   return {
     successRate: total > 0 ? telemetryWindow.successCount / total : 1.0,
     avgLatencyMs: total > 0 ? Math.round(telemetryWindow.totalLatencyMs / total) : 0,
-    maxLatencyMs: telemetryWindow.maxLatencyMs,
-    p95LatencyEstimate: Math.round(telemetryWindow.maxLatencyMs * 0.85),
+    // Real p95: use sorted latency samples
+    p95LatencyEstimate: (() => {
+      const s = telemetryWindow.latencySamples;
+      if (s.length === 0) return 0;
+      const idx = Math.min(Math.floor(s.length * 0.95), s.length - 1);
+      return s[idx];
+    })(),
     avgStepsPerOrchestration: telemetryWindow.stepCounts.length > 0
       ? Math.round(telemetryWindow.stepCounts.reduce((a, b) => a + b, 0) / telemetryWindow.stepCounts.length)
       : 0,
