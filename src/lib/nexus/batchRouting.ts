@@ -68,8 +68,8 @@ const providerHealth = new Map<SupportedProvider, {
   avgLatency: number;
 }>();
 
-// Initialize health tracking
-const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'deepseek', 'sambanova'];
+// Initialize health tracking — include ALL providers that appear in failover chains
+const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'deepseek', 'sambanova', 'fal', 'stability', 'mistral', 'cohere', 'hyperbolic'];
 providers.forEach(p => {
   providerHealth.set(p, {
     healthy: true,
