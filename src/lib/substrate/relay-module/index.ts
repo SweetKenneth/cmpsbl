@@ -483,7 +483,7 @@ export function verifyWebhookSignature(target: string, payload: string, signatur
   if (!config) return { valid: false, reason: 'No signature config registered for target' };
 
   const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
-  if (!parsed.ok) return parsed.result;
+  if (!parsed.ok) return (parsed as { ok: false; result: SignatureVerificationResult }).result;
 
   const expectedSig = simpleHmac(config.secret, `${parsed.timestamp}.${payload}`);
   const valid = constantTimeEqual(parsed.receivedSig, expectedSig);
