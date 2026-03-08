@@ -198,7 +198,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
                 <span className="text-xs text-muted-foreground">Kernel</span>
                 <Badge variant="outline" className={cn("text-[10px]", stateColor(state?.state || 'unknown'))}>
                   {state?.state || 'unknown'}
