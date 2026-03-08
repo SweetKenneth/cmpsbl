@@ -555,6 +555,7 @@ export function rebalancePriorities(
 // ─── 13. Pipeline Abort Controller ────────────────────────────────────────────
 // Centralized abort signal management for pipeline cancellation
 
+const MAX_ABORT_CONTROLLERS = 200;
 const abortControllers = new Map<string, AbortController>();
 
 export function createPipelineAbort(pipelineId: string): AbortSignal {
