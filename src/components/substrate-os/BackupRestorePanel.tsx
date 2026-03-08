@@ -455,7 +455,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             <p className="text-2xl font-mono font-bold tabular-nums text-emerald-400">{backups?.length || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-cyan-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Latest</p>
             <p className="text-sm font-mono text-cyan-400">
