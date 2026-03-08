@@ -177,7 +177,7 @@ export function getSimilarExecutors(executor: string): string[] {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function createSignature(signal: EscalationSignal): string {
-  // v3: More granular signature — includes archetype + failure category
+  // Granular signature — includes archetype + failure category
   const failureCategory = categorizeFailure(signal.failureReason);
   return `${signal.executor}::${signal.archetype}::${failureCategory}::${signal.inputShape}`;
 }
