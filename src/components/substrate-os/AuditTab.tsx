@@ -164,7 +164,7 @@ function TestSuiteRunner() {
 
           return (
             <Card key={def.id} className={cn(
-              'border transition-colors',
+              'border transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm',
               result && result.failed === 0 && 'border-emerald-500/20',
               result && result.failed > 0 && 'border-red-500/20',
             )}>
