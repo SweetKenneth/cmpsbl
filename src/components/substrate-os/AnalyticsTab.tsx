@@ -353,7 +353,7 @@ export function AnalyticsTab() {
               return (
                 <motion.div
                   key={card.label}
-                  className={cn("p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl", card.border, card.bg)}
+                  className={cn("p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm", card.border, card.bg)}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
