@@ -77,6 +77,119 @@ interface BudgetState {
   remainingHourly: number;
 }
 
+type MemoryTier = 'hot' | 'warm' | 'cold';
+
+interface MemoryTierState {
+  hot: number;
+  warm: number;
+  cold: number;
+  hotLimit: number;
+  warmLimit: number;
+  coldLimit: number;
+}
+
+async function getMemoryTierState(supabase: any): Promise<MemoryTierState> {
+  const [hotRes, warmRes, coldRes, configRes] = await Promise.all([
+    supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_tiering_config').select('tier_name, max_entries').in('tier_name', ['hot', 'warm', 'cold']),
+  ]);
+
+  const configRows: Array<{ tier_name: string; max_entries: number | null }> = configRes.data || [];
+  const hotLimit = configRows.find((r) => r.tier_name === 'hot')?.max_entries || 500;
+  const warmLimit = configRows.find((r) => r.tier_name === 'warm')?.max_entries || 2000;
+  const coldLimit = configRows.find((r) => r.tier_name === 'cold')?.max_entries || 10000;
+
+  return {
+    hot: hotRes.count || 0,
+    warm: warmRes.count || 0,
+    cold: coldRes.count || 0,
+    hotLimit,
+    warmLimit,
+    coldLimit,
+  };
+}
+
+function selectLearningTier(
+  tiers: MemoryTierState,
+  options?: { preferWarm?: boolean; forceCold?: boolean }
+): MemoryTier {
+  if (options?.forceCold) return 'cold';
+
+  const hotPressure = tiers.hot / Math.max(1, tiers.hotLimit);
+  const warmPressure = tiers.warm / Math.max(1, tiers.warmLimit);
+
+  if (options?.preferWarm || hotPressure >= 0.9) {
+    return warmPressure >= 1.25 ? 'cold' : 'warm';
+  }
+
+  if (hotPressure >= 1) {
+    return warmPressure >= 1.25 ? 'cold' : 'warm';
+  }
+
+  return 'hot';
+}
+
+async function writeLearningMemory(
+  supabase: any,
+  tiers: MemoryTierState,
+  input: {
+    content: string;
+    context: string;
+    priority?: number;
+    valueScore?: number;
+    metadata?: Record<string, unknown>;
+    preferWarm?: boolean;
+  }
+): Promise<MemoryTier> {
+  const content = input.content.trim().substring(0, 1000);
+  const coreSummary = content.substring(0, 220);
+  const tier = selectLearningTier(tiers, { preferWarm: input.preferWarm });
+  const valueScore = Math.max(0.15, Math.min(0.95, input.valueScore ?? 0.62));
+
+  if (tier === 'hot') {
+    await supabase.from('brain_memory_hot').insert({
+      content,
+      context: input.context,
+      priority: input.priority ?? 7,
+      access_count: 0,
+      value_score: valueScore,
+      importance_score: valueScore,
+      metadata: { ...(input.metadata || {}), clm_tiered_write: true, stored_tier: 'hot' },
+    });
+    tiers.hot += 1;
+    return 'hot';
+  }
+
+  if (tier === 'warm') {
+    await supabase.from('brain_memory_warm').insert({
+      content,
+      core_summary: coreSummary,
+      context: input.context,
+      priority: input.priority ?? 6,
+      access_count: 0,
+      value_score: Math.min(0.72, valueScore),
+      decay_rate: 0.01,
+      metadata: { ...(input.metadata || {}), clm_tiered_write: true, stored_tier: 'warm' },
+      demoted_at: new Date().toISOString(),
+    });
+    tiers.warm += 1;
+    return 'warm';
+  }
+
+  await supabase.from('brain_memory_cold').insert({
+    summary: content,
+    core_summary: coreSummary,
+    value_score: Math.min(0.45, valueScore),
+    memory_type: 'clm_learning',
+    tags: { context: input.context, source: 'clm_engine', clm_tiered_write: true, stored_tier: 'cold' },
+    archived_at: new Date().toISOString(),
+  });
+  tiers.cold += 1;
+  return 'cold';
+}
+
 async function getBudgetState(supabase: any): Promise<BudgetState> {
   const now = new Date();
   const todayKey = now.toISOString().split('T')[0];
