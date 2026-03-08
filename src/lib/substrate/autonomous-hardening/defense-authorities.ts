@@ -54,9 +54,33 @@ interface ThreatAction {
 }
 
 const activeActions: ThreatAction[] = [];
+const MAX_ACTIVE_ACTIONS = 500;
 const blockedIPs = new Set<string>();
+const MAX_BLOCKED_IPS = 1000;
 const quarantinedModules = new Set<string>();
 const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }>();
+
+/** Push action with cap enforcement */
+function pushAction(action: ThreatAction): void {
+  activeActions.push(action);
+  if (activeActions.length > MAX_ACTIVE_ACTIONS) {
+    activeActions.splice(0, activeActions.length - MAX_ACTIVE_ACTIONS);
+  }
+}
+
+/** Remove expired/reversed actions and their associated state */
+function cleanupExpiredActions(): void {
+  const now = Date.now();
+  for (let i = activeActions.length - 1; i >= 0; i--) {
+    const a = activeActions[i];
+    if (a.reversed || (a.expiresAt && now > a.expiresAt)) {
+      if (a.type === 'block_ip') blockedIPs.delete(a.target);
+      if (a.type === 'quarantine_module') quarantinedModules.delete(a.target);
+      if (a.type === 'rate_limit') rateLimitedEntities.delete(a.target);
+      a.reversed = true;
+    }
+  }
+}
 
 /**
  * Auto-block an IP address exhibiting malicious behavior.
@@ -64,6 +88,12 @@ const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }
  */
 export function autoBlockIP(ip: string, reason: string, ttlMs = 3600_000): ThreatAction | null {
   if (!canEscalate('block')) return null;
+  
+  // Cap blocked IPs to prevent unbounded growth
+  if (blockedIPs.size >= MAX_BLOCKED_IPS && !blockedIPs.has(ip)) {
+    // Evict oldest by clearing expired actions first
+    cleanupExpiredActions();
+  }
   
   blockedIPs.add(ip);
   const action: ThreatAction = {
@@ -76,7 +106,7 @@ export function autoBlockIP(ip: string, reason: string, ttlMs = 3600_000): Threa
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'block_ip', reason, 'success', { ip, ttlMs });
   
   // Auto-expire
@@ -102,7 +132,7 @@ export function autoQuarantineModule(module: string, reason: string, ttlMs = 300
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'quarantine_module', reason, 'success', { module, ttlMs });
   
   setTimeout(() => { quarantinedModules.delete(module); action.reversed = true; }, ttlMs);
@@ -126,7 +156,7 @@ export function autoRateLimit(entity: string, limit: number, reason: string, ttl
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'rate_limit', reason, 'success', { entity, limit, ttlMs });
   
   setTimeout(() => { rateLimitedEntities.delete(entity); action.reversed = true; }, ttlMs);
@@ -149,7 +179,7 @@ export function autoPostureShift(newPosture: 'relaxed' | 'standard' | 'elevated'
     reversible: true,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'posture_shift', reason, 'success', { newPosture });
   currentAuthority.level = newPosture === 'critical' ? 'isolate' : newPosture === 'elevated' ? 'block' : 'observe';
   return action;
@@ -171,7 +201,7 @@ export function autoCircuitBreak(module: string, reason: string, ttlMs = 120_000
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'circuit_break', reason, 'success', { module, ttlMs });
   return action;
 }

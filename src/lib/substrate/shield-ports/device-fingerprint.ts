@@ -53,9 +53,8 @@ export class DeviceFingerprint {
       canvas.width = 200;
       canvas.height = 50;
 
-      ctx.textBaseline = 'top';
-      ctx.font = '14px "Arial"';
       ctx.textBaseline = 'alphabetic';
+      ctx.font = '14px "Arial"';
       ctx.fillStyle = '#f60';
       ctx.fillRect(125, 1, 62, 20);
       ctx.fillStyle = '#069';
@@ -109,7 +108,10 @@ export class DeviceFingerprint {
       osc.start(0);
 
       return new Promise((resolve) => {
+        let resolved = false;
         const cleanup = () => {
+          if (resolved) return;
+          resolved = true;
           sp.disconnect();
           osc.disconnect();
           analyser.disconnect();
@@ -124,6 +126,7 @@ export class DeviceFingerprint {
         }, 2000);
 
         sp.onaudioprocess = (event) => {
+          if (resolved) return; // Guard against multiple fires
           clearTimeout(timeout);
           const output = event.outputBuffer.getChannelData(0);
           const hash = Array.from(output.slice(0, 30))
