@@ -30,6 +30,7 @@ export interface CodeAgentBoundaries {
   maxFileSize: number;          // Max lines of code to generate
   allowedModules: string[];     // Modules agent can modify
   forbiddenPatterns: string[];  // Patterns agent must never generate
+  forbiddenRegexPatterns: readonly RegExp[];  // Regex patterns for complex checks
   requiredPatterns: string[];   // Patterns that must be included
   complexityThreshold: number;  // Max complexity before requiring approval
 }
