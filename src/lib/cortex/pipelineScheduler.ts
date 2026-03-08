@@ -48,10 +48,14 @@
    dependency_timeout_ms: 300000, // 5 minutes
  };
  
- // Pipeline queue and state
- const pipelineQueue: ScheduledPipeline[] = [];
- const runningPipelines = new Map<string, ScheduledPipeline>();
- const completedPipelines: ScheduledPipeline[] = [];
+  // Pipeline queue and state (bounded)
+  const MAX_QUEUE_SIZE = 200;
+  const MAX_COMPLETED = 100;
+  const pipelineQueue: ScheduledPipeline[] = [];
+  const runningPipelines = new Map<string, ScheduledPipeline>();
+  const completedPipelines: ScheduledPipeline[] = [];
+  // Fast lookup set for completed pipeline IDs (avoids O(n) scans)
+  const completedIdSet = new Set<string>();
  
  /**
   * Generate pipeline ID
