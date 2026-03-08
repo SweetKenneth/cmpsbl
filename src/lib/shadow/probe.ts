@@ -42,26 +42,7 @@ export interface ShadowProbeReport {
  * so new executors are probed automatically as they are added.
  */
 export function getProbeableExecutors(): string[] {
-  // Start with all known pilot executors
-  const executorSet = new Set<string>(PILOT_EXECUTORS);
-
-  // Dynamically discover any additional executors that have been registered
-  try {
-    // Use synchronous require for registry discovery (already loaded module)
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const registry = require('@/lib/capabilities/synergies/registry');
-    if (typeof registry.listRegisteredExecutorIds === 'function') {
-      const allIds: string[] = registry.listRegisteredExecutorIds();
-      for (const id of allIds) {
-        executorSet.add(id);
-      }
-    }
-  } catch {
-    // Fallback: only probe pilot executors if dynamic discovery unavailable
-    log.warn('shadow', 'Dynamic executor discovery unavailable, using pilot list only');
-  }
-
-  return Array.from(executorSet);
+  return [...PILOT_EXECUTORS];
 }
 
 /**
