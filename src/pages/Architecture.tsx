@@ -252,7 +252,7 @@ export default function Architecture() {
                   { title: "Autonomous Evolution", desc: "The EVOLUTION overlay continuously improves system behavior" },
                   { title: "Shadow Training", desc: "Executors practice on real system gaps in shadow mode before production" },
                 ].map((prop) => (
-                  <Card key={prop.title}>
+                  <Card key={prop.title} className="hover:border-primary/20 transition-all duration-300 card-lift">
                     <CardContent className="p-5">
                       <h3 className="font-semibold mb-1">{prop.title}</h3>
                       <p className="text-sm text-muted-foreground">{prop.desc}</p>
