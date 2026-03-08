@@ -240,7 +240,7 @@ function RunHistoryList({ runs, loading }: { runs: any[]; loading: boolean }) {
   return (
     <div className="space-y-2">
       {runs.map(run => (
-        <Card key={run.id} className="border-border/50">
+        <Card key={run.id} className="border-border/50 hover:border-primary/15 transition-all duration-300">
           <CardContent className="p-3">
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="text-xs font-mono text-muted-foreground">

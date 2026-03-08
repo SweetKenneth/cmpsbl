@@ -105,7 +105,7 @@ function EmptyState({ icon: Icon, title, description }: {
   description: string;
 }) {
   return (
-    <Card className="p-6 sm:p-8 text-center space-y-3">
+    <Card className="p-6 sm:p-8 text-center space-y-3 hover:border-primary/15 transition-all duration-300">
       <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center mx-auto">
         <Icon className="w-6 h-6 text-muted-foreground" />
       </div>
