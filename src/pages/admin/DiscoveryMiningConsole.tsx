@@ -67,7 +67,7 @@ function CategoryBadge({ category }: { category: string }) {
 
 function RunSummaryCard({ result }: { result: ReactorRunResult }) {
   return (
-    <Card className="border-primary/20">
+    <Card className="border-primary/20 hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2 flex-wrap">
           <Target className="w-5 h-5 text-primary shrink-0" />
