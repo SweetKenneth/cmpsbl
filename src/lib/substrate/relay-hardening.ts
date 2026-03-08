@@ -1,5 +1,5 @@
 /**
- * RELAY Hardening v2.0.0 — "Conduit"
+ * RELAY Hardening — "Conduit"
  * 25 enterprise-grade hardening features for the RELAY OCG zone
  */
 
