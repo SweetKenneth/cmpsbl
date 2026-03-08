@@ -476,7 +476,7 @@ const temperatureHistory: Array<{ value: number; timestamp: number }> = [];
 export function setDreamTemperature(t: number): void {
   temperature = Math.max(0, Math.min(1, t));
   temperatureHistory.push({ value: temperature, timestamp: Date.now() });
-  if (temperatureHistory.length > 100) temperatureHistory.shift();
+  if (temperatureHistory.length > 100) temperatureHistory.splice(0, temperatureHistory.length - 100);
 }
 
 export function getDreamTemperature(): number { return temperature; }
