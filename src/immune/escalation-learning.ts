@@ -362,7 +362,7 @@ export function shadowValidateRule(
   const candidate = candidateRules.get(candidateId);
   if (!candidate) return { passed: false, metrics: undefined };
 
-  // v3: Use cluster sample inputs if available, augmented with defaults
+  // Use cluster sample inputs if available, augmented with defaults
   const cluster = patternClusters.get(candidate.originSignature);
   const clusterInputs = cluster?.sampleInputs ?? [];
   const inputs = [
