@@ -500,7 +500,7 @@ export async function verifyWebhookSignatureAsync(target: string, payload: strin
   if (!config) return { valid: false, reason: 'No signature config registered for target' };
 
   const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
-  if (!parsed.ok) return parsed.result;
+  if (!parsed.ok) return (parsed as { ok: false; result: SignatureVerificationResult }).result;
 
   const expectedSig = await cryptoHmacSha256(config.secret, `${parsed.timestamp}.${payload}`);
   const valid = constantTimeEqual(parsed.receivedSig, expectedSig);

@@ -59,7 +59,7 @@ export function checkPayloadSize(bytes: number): { allowed: boolean; warning: bo
 export function getPayloadLimits() { return { ...payloadLimits }; }
 
 // ─── 8. Content Hash Deduplication (delegates to relay-module dedup) ──────
-import { isKnownHash } from './relay-module/index';
+import { isKnownHash, getRelayState } from './relay-module/index';
 export function isDuplicatePayload(hash: string): boolean {
   return isKnownHash(hash);
 }
