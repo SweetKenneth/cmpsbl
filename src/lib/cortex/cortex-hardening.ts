@@ -628,6 +628,11 @@ export function snapshotWorkflow(
   };
   versions.push(snapshot);
   workflowVersions.set(workflowId, boundArray(versions, 50));
+  // Evict oldest workflow keys if over capacity
+  if (workflowVersions.size > MAX_WORKFLOW_VERSION_KEYS) {
+    const first = workflowVersions.keys().next().value;
+    if (first !== undefined) workflowVersions.delete(first);
+  }
   return snapshot;
 }
 
