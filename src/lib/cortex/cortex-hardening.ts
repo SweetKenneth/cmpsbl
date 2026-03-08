@@ -305,6 +305,8 @@ export function calculateStepTimeout(
   totalSteps: number,
   remainingBudgetMs: number
 ): number {
+  // Guard: avoid division by zero
+  if (totalSteps <= 0) return Math.max(baseTimeoutMs, 1000);
   // Later steps get tighter timeouts to prevent pipeline stall
   const positionFactor = 1 - (stepIndex / totalSteps) * 0.3;
   const adjustedTimeout = Math.min(
