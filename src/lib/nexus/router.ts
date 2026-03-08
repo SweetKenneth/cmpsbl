@@ -341,10 +341,10 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
     execute: async (prompt: string, context?: Record<string, any>) => {
       recordUsage(provider.id);
       const start = Date.now();
+      const { supabase: client } = await import('@/integrations/supabase/client');
 
       try {
         // Call pf-nexus-router edge function for real AI completion
-        const { supabase: client } = await import('@/integrations/supabase/client');
         const { data, error } = await client.functions.invoke('pf-nexus-router', {
           body: {
             prompt,
@@ -405,10 +405,9 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
         recordProviderOutcome(provider.id, false, latencyMs);
         recordFailure(provider.id);
 
-        // Track failed usage
+        // Track failed usage — reuse the same client import
         try {
-          const { supabase } = await import('@/integrations/supabase/client');
-          await supabase.from('ai_usage_log').insert({
+          await client.from('ai_usage_log').insert({
             provider: provider.id,
             model: provider.model,
             category: 'nexus_fleet',
