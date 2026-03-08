@@ -733,6 +733,13 @@ export function checkPipelineQuota(source: string, limit = 100, windowMs = 3_600
   if (!bucket || now - bucket.windowStart > bucket.windowMs) {
     bucket = { source, limit, used: 0, windowMs, windowStart: now };
     quotaBuckets.set(source, bucket);
+    // Evict expired buckets if over capacity
+    if (quotaBuckets.size > MAX_QUOTA_BUCKETS) {
+      for (const [k, v] of quotaBuckets) {
+        if (now - v.windowStart > v.windowMs) quotaBuckets.delete(k);
+        if (quotaBuckets.size <= MAX_QUOTA_BUCKETS) break;
+      }
+    }
   }
 
   if (bucket.used >= bucket.limit) return false;
