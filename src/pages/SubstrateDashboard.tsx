@@ -590,7 +590,7 @@ export default function SubstrateDashboard() {
               <div className="flex items-center gap-3 md:gap-4">
                 <Brain className="w-6 h-6 md:w-8 md:h-8 text-purple-500 shrink-0" />
                 <div>
-                  <p className="text-xl md:text-2xl font-bold">{metrics.brain_memories.toLocaleString()}</p>
+                  <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.brain_memories.toLocaleString()}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Brain Memories</p>
                 </div>
               </div>
