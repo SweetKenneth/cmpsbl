@@ -90,7 +90,7 @@ export function getRealtimeMetrics(
     limit?: number;
   }
 ): MetricPoint[] {
-  let results = [...metricBuffer];
+  let results = getBufferContents();
   
   if (options?.module) {
     results = results.filter(m => m.module === options.module);
