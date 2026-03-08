@@ -31,9 +31,9 @@ export interface FullPruneResult {
 }
 
 const CAPACITY = {
-  hot: 200,
-  warm: 1000,
-  cold: 5000,
+  hot: 500,
+  warm: 10000,
+  cold: 10000,
 } as const;
 
 /**
