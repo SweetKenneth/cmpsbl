@@ -94,6 +94,7 @@ class MaintenanceManager {
       ['brain_warm_compression', 4 * 60 * 60 * 1000, true],       // Every 4 hours
       ['brain_metacognition', 2 * 60 * 60 * 1000, true],          // Every 2 hours
       ['brain_stale_embedding_cleanup', 24 * 60 * 60 * 1000, true], // Daily
+      ['brain_events_prune', 6 * 60 * 60 * 1000, true],            // Every 6 hours
     ];
 
     for (const [name, interval, enabled] of taskDefs) {
