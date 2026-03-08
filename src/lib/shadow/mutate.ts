@@ -1,7 +1,7 @@
 /**
  * Shadow Mesh — Adversarial Input Mutation (v4)
  * 
- * v4: Per-executor seed inputs for balanced, fair probing across all 20 executors.
+ * v4: Per-executor seed inputs for balanced, fair probing across all pilot executors.
  * Each executor category gets domain-specific seed inputs so probing is
  * even and representative, not biased toward INCLUSIVE-shaped inputs.
  */

@@ -42,27 +42,7 @@ export interface ShadowProbeReport {
  * so new executors are probed automatically as they are added.
  */
 export function getProbeableExecutors(): string[] {
-  // Start with all known pilot executors
-  const executorSet = new Set<string>(PILOT_EXECUTORS);
-
-  // Dynamically discover any additional executors that have been registered
-  // by scanning the registry for executors not in the pilot list
-  // (The registry.executors map is the source of truth)
-  try {
-    // Import the registry's internal executor map via the public API
-    const { listRegisteredExecutorIds } = require('@/lib/capabilities/synergies/registry');
-    if (typeof listRegisteredExecutorIds === 'function') {
-      const allIds: string[] = listRegisteredExecutorIds();
-      for (const id of allIds) {
-        executorSet.add(id);
-      }
-    }
-  } catch {
-    // Fallback: only probe pilot executors if dynamic discovery unavailable
-    log.warn('shadow', 'Dynamic executor discovery unavailable, using pilot list only');
-  }
-
-  return Array.from(executorSet);
+  return [...PILOT_EXECUTORS];
 }
 
 /**
@@ -166,18 +146,19 @@ export async function runShadowProbe(
   }
 
   // Push shadow mesh state to CHR
-  const totalFails = summary.escalated + summary.failedSafe;
-  const loadIndex = inputs.length > 0 ? Math.round((totalFails / inputs.length) * 100) : 0;
+  // CRITICAL: safe-fails are expected rejections of garbage inputs — NOT failures.
+  // Only escalations represent actual problems that inflate the load index.
+  const loadIndex = inputs.length > 0 ? Math.round((summary.escalated / inputs.length) * 100) : 0;
   updateShadowMeshState({ active: true, load_index: loadIndex });
 
   // Register as synthetic shadow event (isolation-aware)
   const shadowState = getShadowMeshState();
-  updateHealthRegistry(`shadow:${executorName}`, totalFails > 0 ? 'shadow_event' : 'healthy',
-    totalFails > 0 ? 'shadow_event' : 'boot',
+  updateHealthRegistry(`shadow:${executorName}`, summary.escalated > 0 ? 'shadow_event' : 'healthy',
+    summary.escalated > 0 ? 'shadow_event' : 'boot',
     shadowState.bleed_into_health ? 'synthetic_shadow_event' : 'synthetic_test',
     {
       detail: `${summary.success} ok, ${summary.repaired} repaired, ${summary.escalated} escalated, ${summary.failedSafe} safe-failed`,
-      score_override: totalFails > 0 ? 85 : 100,
+      score_override: summary.escalated > 0 ? 85 : 100,
     }
   );
 

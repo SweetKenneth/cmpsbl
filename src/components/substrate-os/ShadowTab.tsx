@@ -5,15 +5,13 @@
  */
 
 import { lazy, Suspense, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Ghost, Activity, Shield, Zap, Eye, RefreshCw, Play } from 'lucide-react';
+import { Loader2, Ghost, Activity, Shield, Zap, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -81,17 +79,17 @@ export function ShadowTab() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 border border-purple-500/30 flex items-center justify-center">
-            <Ghost className="w-5 h-5 text-purple-400" />
+          <div className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center">
+            <Ghost className="w-5 h-5 text-accent-foreground" />
           </div>
           <div>
-            <h2 className="text-lg font-bold">SHADOW</h2>
+            <h2 className="text-lg font-bold text-foreground">SHADOW</h2>
             <p className="text-xs text-muted-foreground font-mono">
               Adversarial probes · Divergence detection · TSAC
             </p>
           </div>
         </div>
-        <Badge variant="outline" className="text-[10px] border-purple-500/30 text-purple-400 font-mono">
+        <Badge variant="outline" className="text-[10px] border-accent/30 text-accent-foreground font-mono">
           CSZ · COVERT
         </Badge>
       </div>
@@ -99,12 +97,12 @@ export function ShadowTab() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: 'Total Probes', value: probeStats?.totalRuns ?? 0, icon: Activity, color: 'text-purple-400' },
-          { label: 'Auto-Repairs', value: probeStats?.totalRepairs ?? 0, icon: Zap, color: 'text-emerald-400' },
-          { label: 'Escalations', value: probeStats?.totalEscalations ?? 0, icon: Shield, color: probeStats?.totalEscalations ? 'text-red-400' : 'text-muted-foreground' },
-          { label: 'Executors', value: probeStats?.executorCount ?? 0, icon: Eye, color: 'text-cyan-400' },
+          { label: 'Total Probes', value: probeStats?.totalRuns ?? 0, icon: Activity, color: 'text-primary' },
+          { label: 'Auto-Repairs', value: probeStats?.totalRepairs ?? 0, icon: Zap, color: 'text-primary' },
+          { label: 'Escalations', value: probeStats?.totalEscalations ?? 0, icon: Shield, color: probeStats?.totalEscalations ? 'text-destructive' : 'text-muted-foreground' },
+          { label: 'Executors', value: probeStats?.executorCount ?? 0, icon: Eye, color: 'text-primary' },
         ].map(stat => (
-          <Card key={stat.label} className="border-border/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
+          <Card key={stat.label} className="border-border/20 bg-card/50 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
                 <stat.icon className={cn("w-3 h-3", stat.color)} />
@@ -156,21 +154,21 @@ export function ShadowTab() {
                     className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20 transition-all duration-200 hover:bg-muted/40 hover:border-border/30"
                   >
                     <div className={cn("w-2 h-2 rounded-full shrink-0",
-                      esc.severity === 'critical' ? 'bg-red-500' :
-                      esc.severity === 'high' ? 'bg-orange-500' :
-                      esc.severity === 'medium' ? 'bg-amber-500' : 'bg-emerald-500'
+                      esc.severity === 'critical' ? 'bg-destructive' :
+                      esc.severity === 'high' ? 'bg-destructive/70' :
+                      esc.severity === 'medium' ? 'bg-primary/70' : 'bg-primary'
                     )} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium truncate">{esc.executor}</span>
+                        <span className="text-sm font-medium text-foreground truncate">{esc.executor}</span>
                         <Badge variant="outline" className={cn("text-[10px]",
-                          esc.severity === 'critical' ? 'border-red-500/30 text-red-400' :
-                          esc.severity === 'high' ? 'border-orange-500/30 text-orange-400' :
-                          'border-amber-500/30 text-amber-400'
+                          esc.severity === 'critical' ? 'border-destructive/30 text-destructive' :
+                          esc.severity === 'high' ? 'border-destructive/30 text-destructive/80' :
+                          'border-primary/30 text-primary'
                         )}>
                           {esc.severity}
                         </Badge>
-                        <Badge variant="outline" className="text-[10px] border-border/30">
+                        <Badge variant="outline" className="text-[10px] border-border/30 text-muted-foreground">
                           {esc.status}
                         </Badge>
                       </div>

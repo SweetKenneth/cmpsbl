@@ -1,5 +1,5 @@
 /**
- * Modernizer Shadow Mode — Gap-Driven Training Engine (v1.0)
+ * SHADOW Gap-Driven Training Engine
  * 
  * Flow:
  * 1. Modernizer scan → finds real system gaps (missing capabilities, anomalies, proposals)

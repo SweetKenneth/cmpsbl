@@ -79,7 +79,7 @@ export function ShadowMeshToggle() {
         <Shield className={`w-5 h-5 ${enabled ? "text-destructive" : "text-muted-foreground"}`} />
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Immunity Mesh</span>
+            <span className="text-sm font-medium text-foreground">Immunity Mesh</span>
             <Badge variant={enabled ? "destructive" : "secondary"} className="text-xs">
               {enabled ? "ACTIVE" : "OFF"}
             </Badge>
