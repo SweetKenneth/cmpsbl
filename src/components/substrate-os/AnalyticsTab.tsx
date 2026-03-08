@@ -385,7 +385,7 @@ export function AnalyticsTab() {
                 </div>
                 <span className="text-[10px] text-muted-foreground font-mono uppercase">Immune Runs</span>
               </div>
-              <p className="text-2xl font-bold font-mono text-foreground">{fmt(data.immuneRuns)}</p>
+              <p className="text-2xl font-bold font-mono tabular-nums text-foreground">{fmt(data.immuneRuns)}</p>
               <p className="text-[10px] text-muted-foreground mt-1">Last 6h probes</p>
             </motion.div>
 
