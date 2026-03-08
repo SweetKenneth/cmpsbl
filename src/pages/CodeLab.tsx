@@ -142,7 +142,7 @@ export default function CodeLab() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
               <Link 
                 to="/explore"
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Package className="w-8 h-8 text-cyan-500 mx-auto mb-2" />
                 <div className="font-semibold">{FREE_TEMPLATES.length}+ Templates</div>
