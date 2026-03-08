@@ -372,10 +372,14 @@ export async function searchNodes(
   }
 ): Promise<GraphNode[]> {
   try {
+    // Sanitize query to prevent PostgREST filter injection
+    const sanitized = query.replace(/[%_\\,().'";]/g, '');
+    if (!sanitized) return [];
+
     let q = supabase
       .from('brain_graph_nodes')
       .select('*')
-      .or(`label.ilike.%${query}%,description.ilike.%${query}%`)
+      .or(`label.ilike.%${sanitized}%,description.ilike.%${sanitized}%`)
       .order('weight', { ascending: false })
       .limit(options?.limit || 20);
 
