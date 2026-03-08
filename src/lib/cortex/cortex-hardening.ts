@@ -177,9 +177,10 @@ export function validateStepDependencies(
     path.push(node);
 
     for (const dep of adj.get(node) ?? []) {
-      dfs(dep, [...path]);
+      dfs(dep, path); // shared path — no copy needed, push/pop handles it
     }
 
+    path.pop();
     inStack.delete(node);
     visited.add(node);
     order.push(node);
