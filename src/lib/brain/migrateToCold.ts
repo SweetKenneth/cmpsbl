@@ -138,9 +138,9 @@ async function migrateGroup(
   for (const [context, group] of Object.entries(groupedByContext)) {
     try {
       if (context === 'code') {
-        // Code: preserve raw
+        // Code: preserve raw — pass sourceTable so delete targets correct tier
         for (const memory of group) {
-          const success = await migrateSingleMemory(memory, 0);
+          const success = await migrateSingleMemory(memory, 0, sourceTable);
           if (success) stats.migrated++;
           else stats.errors++;
         }
