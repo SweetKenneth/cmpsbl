@@ -254,7 +254,7 @@ function extractTrendInsights(patterns: DreamPatternInput[]): DreamInsight[] {
       
       if (avgFrequency > 2) {
         insights.push({
-          id: `insight-trend-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+          id: `insight-trend-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           type: 'trend',
           title: `Increasing activity in ${module} module`,
           description: `${modulePatterns.length} patterns detected with average frequency of ${avgFrequency.toFixed(1)}`,
