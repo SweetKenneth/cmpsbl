@@ -204,6 +204,8 @@ async function migrateSingleMemory(
         source_refs: [memory.id],
         embedding: memory.embedding ? memory.embedding.slice(0, 512) : null,
         compression_level: compressionLevel,
+        source_module: memory.source_module || 'general',
+        category: memory.category || 'uncategorized',
         tags: {
           ...memory.tags,
           context: memory.context,
