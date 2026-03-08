@@ -57,6 +57,7 @@
  
  // In-memory state — bounded
  const MAX_PROFILES = 5000;
+ const MAX_RECENT_EVENTS_KEYS = 5000;
  const behaviorProfiles = new Map<string, BehaviorProfile>();
  const recentEvents = new Map<string, BehaviorEvent[]>();
  const anomalies: BehavioralAnomaly[] = [];
