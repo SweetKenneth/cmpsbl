@@ -3400,6 +3400,7 @@ export type Database = {
           access_count: number | null
           agent_id: string | null
           archived_at: string | null
+          category: string | null
           compression_level: number | null
           compression_ratio: number | null
           core_summary: string | null
@@ -3415,6 +3416,7 @@ export type Database = {
           provenance: Json | null
           salience_score: number | null
           source_events: Json | null
+          source_module: string | null
           source_refs: string[] | null
           summary: string
           tags: Json | null
@@ -3425,6 +3427,7 @@ export type Database = {
           access_count?: number | null
           agent_id?: string | null
           archived_at?: string | null
+          category?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
           core_summary?: string | null
@@ -3440,6 +3443,7 @@ export type Database = {
           provenance?: Json | null
           salience_score?: number | null
           source_events?: Json | null
+          source_module?: string | null
           source_refs?: string[] | null
           summary: string
           tags?: Json | null
@@ -3450,6 +3454,7 @@ export type Database = {
           access_count?: number | null
           agent_id?: string | null
           archived_at?: string | null
+          category?: string | null
           compression_level?: number | null
           compression_ratio?: number | null
           core_summary?: string | null
@@ -3465,6 +3470,7 @@ export type Database = {
           provenance?: Json | null
           salience_score?: number | null
           source_events?: Json | null
+          source_module?: string | null
           source_refs?: string[] | null
           summary?: string
           tags?: Json | null
@@ -3528,6 +3534,7 @@ export type Database = {
         Row: {
           access_count: number | null
           agent_id: string | null
+          category: string | null
           content: string
           context: string | null
           created_at: string | null
@@ -3551,6 +3558,7 @@ export type Database = {
           review_count: number | null
           salience_score: number | null
           source_events: Json | null
+          source_module: string | null
           tags: Json | null
           updated_at: string | null
           user_id: string | null
@@ -3559,6 +3567,7 @@ export type Database = {
         Insert: {
           access_count?: number | null
           agent_id?: string | null
+          category?: string | null
           content: string
           context?: string | null
           created_at?: string | null
@@ -3582,6 +3591,7 @@ export type Database = {
           review_count?: number | null
           salience_score?: number | null
           source_events?: Json | null
+          source_module?: string | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
@@ -3590,6 +3600,7 @@ export type Database = {
         Update: {
           access_count?: number | null
           agent_id?: string | null
+          category?: string | null
           content?: string
           context?: string | null
           created_at?: string | null
@@ -3613,6 +3624,7 @@ export type Database = {
           review_count?: number | null
           salience_score?: number | null
           source_events?: Json | null
+          source_module?: string | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
@@ -3753,6 +3765,7 @@ export type Database = {
         Row: {
           access_count: number | null
           agent_id: string | null
+          category: string | null
           compressed_summary: string | null
           compression_ratio: number | null
           content: string
@@ -3781,6 +3794,7 @@ export type Database = {
           salience_score: number | null
           source_events: Json | null
           source_memory_id: string | null
+          source_module: string | null
           tags: Json | null
           updated_at: string | null
           user_id: string | null
@@ -3789,6 +3803,7 @@ export type Database = {
         Insert: {
           access_count?: number | null
           agent_id?: string | null
+          category?: string | null
           compressed_summary?: string | null
           compression_ratio?: number | null
           content: string
@@ -3817,6 +3832,7 @@ export type Database = {
           salience_score?: number | null
           source_events?: Json | null
           source_memory_id?: string | null
+          source_module?: string | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
@@ -3825,6 +3841,7 @@ export type Database = {
         Update: {
           access_count?: number | null
           agent_id?: string | null
+          category?: string | null
           compressed_summary?: string | null
           compression_ratio?: number | null
           content?: string
@@ -3853,6 +3870,7 @@ export type Database = {
           salience_score?: number | null
           source_events?: Json | null
           source_memory_id?: string | null
+          source_module?: string | null
           tags?: Json | null
           updated_at?: string | null
           user_id?: string | null
