@@ -54,7 +54,9 @@ interface ThreatAction {
 }
 
 const activeActions: ThreatAction[] = [];
+const MAX_ACTIVE_ACTIONS = 500;
 const blockedIPs = new Set<string>();
+const MAX_BLOCKED_IPS = 1000;
 const quarantinedModules = new Set<string>();
 const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }>();
 
