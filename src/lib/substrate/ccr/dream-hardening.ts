@@ -118,7 +118,9 @@ export function checkHallucination(outputId: string, groundedFacts: number, tota
 
 export function getHallucinationRate(): number {
   if (hallucinationLog.length === 0) return 0;
-  return hallucinationLog.filter(h => h.flagged).length / hallucinationLog.length;
+  let flagged = 0;
+  for (const h of hallucinationLog) if (h.flagged) flagged++;
+  return flagged / hallucinationLog.length;
 }
 
 // ─── 6. Latent Pattern Cache ────────────────────────────────────────────────
