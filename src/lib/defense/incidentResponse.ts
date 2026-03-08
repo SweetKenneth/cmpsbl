@@ -95,7 +95,9 @@ export interface PlaybookExecutionResult {
   actions: Array<{ step: string; action: string; success: boolean; error?: string }>;
 }
 
-// In-memory incident store
+// In-memory incident store — bounded
+const MAX_ACTIVE_INCIDENTS = 500;
+const MAX_TIMELINE_ENTRIES = 100;
 const activeIncidents = new Map<string, Incident>();
 const playbooks = new Map<string, Playbook>();
 const playbookCooldowns = new Map<string, number>();
@@ -136,6 +138,20 @@ export async function createIncident(params: {
   };
 
   activeIncidents.set(id, incident);
+  // Bound incidents — evict oldest resolved/closed first
+  if (activeIncidents.size > MAX_ACTIVE_INCIDENTS) {
+    for (const [key, inc] of activeIncidents) {
+      if (inc.status === 'closed' || inc.status === 'resolved') {
+        activeIncidents.delete(key);
+        break;
+      }
+    }
+    // If still over, evict oldest
+    if (activeIncidents.size > MAX_ACTIVE_INCIDENTS) {
+      const oldest = activeIncidents.keys().next().value;
+      if (oldest) activeIncidents.delete(oldest);
+    }
+  }
 
   // Log to database
   await supabase.from('brain_events').insert({
@@ -183,6 +199,10 @@ export async function updateIncidentStatus(
     incident.resolvedAt = new Date().toISOString();
   }
 
+  // Bound timeline entries
+  if (incident.timeline.length >= MAX_TIMELINE_ENTRIES) {
+    incident.timeline = incident.timeline.slice(-MAX_TIMELINE_ENTRIES + 1);
+  }
   incident.timeline.push({
     timestamp: new Date().toISOString(),
     action: `Status changed to ${status}`,

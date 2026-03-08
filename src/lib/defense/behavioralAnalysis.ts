@@ -57,6 +57,7 @@
  
  // In-memory state — bounded
  const MAX_PROFILES = 5000;
+ const MAX_RECENT_EVENTS_KEYS = 5000;
  const behaviorProfiles = new Map<string, BehaviorProfile>();
  const recentEvents = new Map<string, BehaviorEvent[]>();
  const anomalies: BehavioralAnomaly[] = [];
@@ -74,6 +75,11 @@
    if (!events) {
      events = [];
      recentEvents.set(key, events);
+     // Bound the map itself
+     if (recentEvents.size > MAX_RECENT_EVENTS_KEYS) {
+       const oldest = recentEvents.keys().next().value;
+       if (oldest) recentEvents.delete(oldest);
+     }
    }
    
    events.push(event);

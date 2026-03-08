@@ -417,6 +417,10 @@ export function correlateShadowIdentity(
   profile.fingerprints.add(fingerprint);
   profile.ips.add(ip);
   profile.userAgents.add(userAgent);
+  // Bound inner Sets to prevent per-profile memory growth
+  if (profile.fingerprints.size > 100) { const first = profile.fingerprints.values().next().value; if (first) profile.fingerprints.delete(first); }
+  if (profile.ips.size > 200) { const first = profile.ips.values().next().value; if (first) profile.ips.delete(first); }
+  if (profile.userAgents.size > 50) { const first = profile.userAgents.values().next().value; if (first) profile.userAgents.delete(first); }
   profile.lastSeen = Date.now();
   profile.requestCount++;
   identityProfiles.set(identityId, profile);

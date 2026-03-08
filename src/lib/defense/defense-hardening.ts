@@ -307,12 +307,14 @@ export interface CanaryToken {
 }
 
 const canaryTokens = new Map<string, CanaryToken>();
+const MAX_CANARY_TOKENS = 500;
 
 export function plantCanary(type: CanaryToken['type']): CanaryToken {
   const id = `canary_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const value = `cny_${Math.random().toString(36).slice(2, 18)}`;
   const token: CanaryToken = { id, type, value, createdAt: new Date().toISOString(), tripped: false };
   canaryTokens.set(value, token);
+  boundMap(canaryTokens, MAX_CANARY_TOKENS);
   return token;
 }
 

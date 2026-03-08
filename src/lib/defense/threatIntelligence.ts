@@ -71,7 +71,10 @@ export interface ThreatReport {
   mitigationActions: number;
 }
 
-// In-memory threat intelligence cache
+// In-memory threat intelligence cache — bounded
+const MAX_IP_REPUTATION_CACHE = 5000;
+const MAX_THREAT_INDICATORS = 2000;
+const MAX_RECENT_REQUESTS = 5000;
 const ipReputationCache = new Map<string, IPReputation>();
 const threatIndicators = new Map<string, ThreatIndicator>();
 const recentRequests = new Map<string, Array<{ timestamp: number; path: string }>>();
@@ -298,6 +301,11 @@ export async function getIPReputation(ip: string): Promise<IPReputation> {
   };
   
   ipReputationCache.set(ip, rep);
+  // Bound cache
+  if (ipReputationCache.size > MAX_IP_REPUTATION_CACHE) {
+    const oldest = ipReputationCache.keys().next().value;
+    if (oldest) ipReputationCache.delete(oldest);
+  }
   return rep;
 }
 
@@ -468,6 +476,12 @@ function recordRequest(ip: string, path: string): void {
   const cutoff = Date.now() - 5 * 60 * 1000;
   const filtered = requests.filter(r => r.timestamp > cutoff);
   recentRequests.set(ip, filtered);
+
+  // Bound the map
+  if (recentRequests.size > MAX_RECENT_REQUESTS) {
+    const oldest = recentRequests.keys().next().value;
+    if (oldest) recentRequests.delete(oldest);
+  }
 }
 
 function detectInjection(body: string): { detected: boolean; type: string } {
