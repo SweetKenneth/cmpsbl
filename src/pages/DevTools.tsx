@@ -302,7 +302,7 @@ export default function DevTools() {
                   {MODULES.map((mod) => {
                     const Icon = mod.icon;
                     return (
-                      <Card key={mod.id} className="hover:border-primary/50 transition-colors">
+                      <Card key={mod.id} className="hover:border-primary/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3 mb-2">
                             <Icon className={`w-5 h-5 ${mod.color}`} />
