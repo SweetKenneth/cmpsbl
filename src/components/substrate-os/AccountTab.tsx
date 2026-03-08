@@ -339,8 +339,54 @@ export function AccountTab() {
         </Card>
       </motion.div>
 
+      {/* Discovery Stats */}
+      {discoveryStats && (
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08 }}>
+          <Card className="border-border/30 bg-gradient-to-br from-card via-card to-primary/[0.03] overflow-hidden relative">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Pickaxe className="w-4 h-4 text-primary" />
+                Discovery Activity
+                <span className="text-[10px] text-muted-foreground/50 font-mono ml-auto">live from your foundry</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[
+                  { label: 'Pipelines Found', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-amber-400' },
+                  { label: 'Total Mines', value: discoveryStats.totalMines, icon: Pickaxe, color: 'text-blue-400' },
+                  { label: 'Avg Score', value: discoveryStats.avgScore, icon: TrendingUp, color: 'text-emerald-400' },
+                  { label: 'Highest Score', value: discoveryStats.highestScore, icon: Trophy, color: 'text-yellow-400' },
+                  { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-orange-400' },
+                  { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-cyan-400' },
+                ].map(stat => (
+                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center">
+                    <stat.icon className={cn("w-4 h-4 mx-auto", stat.color)} />
+                    <p className="text-lg font-bold text-foreground">
+                      <AnimatedCounter value={stat.value} duration={800} />
+                    </p>
+                    <p className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-wider leading-tight">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+              {discoveryStats.highestName !== '—' && (
+                <div className="mt-3 p-2.5 rounded-md bg-primary/5 border border-primary/10 flex items-center gap-2">
+                  <Trophy className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="text-xs text-muted-foreground">Top discovery:</span>
+                  <span className="text-xs font-semibold text-foreground truncate">{discoveryStats.highestName}</span>
+                  <Badge variant="outline" className="text-[9px] font-mono border-primary/20 text-primary ml-auto shrink-0">
+                    CJPI {discoveryStats.highestScore}
+                  </Badge>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
       {/* Quick Links */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.15 }}>
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-1">
             <Compass className="w-4 h-4 text-primary" />
