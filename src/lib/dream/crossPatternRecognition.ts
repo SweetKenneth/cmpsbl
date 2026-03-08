@@ -268,8 +268,8 @@ export async function analyzeCrossDreamPatterns(
       ? `Found ${allPatterns.length} patterns across ${cycles.length} dream cycles: ${recurring.length} recurring, ${emergent.length} emergent, ${correlative.length} correlative`
       : 'No significant patterns detected in recent dream cycles';
     
-    // Store analysis results
-    await supabase.from('brain_cross_insights').insert({
+    // Store analysis results (fire-and-forget)
+    supabase.from('brain_cross_insights').insert({
       insight_text: summary,
       domains: ['dream', 'pattern'],
       confidence: clusters.length > 0 ? clusters[0].strength : 0,
@@ -278,6 +278,8 @@ export async function analyzeCrossDreamPatterns(
         clusters: clusters.map(c => c.category),
         analyzed_cycles: cycles.length,
       },
+    }).then(({ error: insertErr }) => {
+      if (insertErr) console.error('Failed to store cross-dream analysis:', insertErr);
     });
     
     return { patterns: allPatterns, clusters, summary };

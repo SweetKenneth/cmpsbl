@@ -511,11 +511,13 @@ export function getInsightStats(): {
   const byType: Record<string, number> = {};
   const byStatus: Record<string, number> = {};
   let totalConfidence = 0;
+  let pendingCount = 0;
 
   for (const insight of insights) {
     byType[insight.type] = (byType[insight.type] || 0) + 1;
     byStatus[insight.status] = (byStatus[insight.status] || 0) + 1;
     totalConfidence += insight.confidence;
+    if (insight.status === 'pending') pendingCount++;
   }
 
   return {
@@ -523,7 +525,7 @@ export function getInsightStats(): {
     byType,
     byStatus,
     avgConfidence: insights.length > 0 ? totalConfidence / insights.length : 0,
-    pendingCount: insights.filter(i => i.status === 'pending').length,
+    pendingCount,
   };
 }
 

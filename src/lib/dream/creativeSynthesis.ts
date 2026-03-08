@@ -81,11 +81,11 @@
      timestamp: new Date().toISOString(),
    };
    
-   // Store in history
-   synthesisHistory.push(output);
-   if (synthesisHistory.length > MAX_HISTORY) {
-     synthesisHistory.shift();
-   }
+    // Store in history
+    synthesisHistory.push(output);
+    if (synthesisHistory.length > MAX_HISTORY) {
+      synthesisHistory.splice(0, synthesisHistory.length - MAX_HISTORY);
+    }
    
    // Log to database
    await logSynthesis(output);

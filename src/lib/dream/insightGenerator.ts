@@ -211,13 +211,12 @@
      }
  
      // Store in cache
-     for (const insight of insights.slice(0, config.max_insights_per_run)) {
-       insightsCache.push(insight);
-       if (insightsCache.length > 100) {
-         insightsCache.shift();
-       }
-     }
- 
+      const toStore = insights.slice(0, config.max_insights_per_run);
+      insightsCache.push(...toStore);
+      if (insightsCache.length > 100) {
+        insightsCache.splice(0, insightsCache.length - 100);
+      }
+
      return insights.slice(0, config.max_insights_per_run);
    } catch (error) {
      console.error('Insight generation error:', error);
