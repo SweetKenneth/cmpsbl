@@ -241,31 +241,24 @@ export function buildMatrixNodes(healthData: Record<string, boolean | number>): 
 }
 
 export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
-  const operational = Math.round(
-    nodes.reduce((sum, n) => sum + n.health * n.weight, 0)
-  );
+  let operationalSum = 0;
+  let closedBreakers = 0;
+  let weightSum = 0;
 
-  const closedBreakers = nodes.filter(n => n.breakerState === 'closed').length;
-  const breakerCoherence = Math.round((closedBreakers / nodes.length) * 100);
-  const weightSum = nodes.reduce((s, n) => s + n.weight, 0);
-  const weightCoherence = Math.abs(weightSum - 1.0) < 0.01 ? 100 : Math.max(0, 100 - Math.abs(weightSum - 1.0) * 1000);
-  const structural = Math.round((breakerCoherence * 0.7 + weightCoherence * 0.3));
-
-  const coreNode = nodes.find(n => n.id === 'core');
-  const isCritical = operational < 40 || coreNode?.breakerState === 'open';
-
-  const status: MatrixIntegrityReport['status'] = isCritical
-    ? 'CRITICAL'
-    : operational < 80
-      ? 'MATRIX DEGRADED'
-      : 'MATRIX STABLE';
-
-  // Build sector lookup in a single pass instead of filtering per sector
+  // Build sector lookup and accumulate stats in a single pass
   const sectorMap = new Map<MatrixSector, MatrixNode[]>();
   for (const node of nodes) {
+    operationalSum += node.health * node.weight;
+    weightSum += node.weight;
+    if (node.breakerState === 'closed') closedBreakers++;
     const list = sectorMap.get(node.sector);
     if (list) { list.push(node); } else { sectorMap.set(node.sector, [node]); }
   }
+
+  const operational = Math.round(operationalSum);
+  const breakerCoherence = Math.round((closedBreakers / nodes.length) * 100);
+  const weightCoherence = Math.abs(weightSum - 1.0) < 0.01 ? 100 : Math.max(0, 100 - Math.abs(weightSum - 1.0) * 1000);
+  const structural = Math.round((breakerCoherence * 0.7 + weightCoherence * 0.3));
 
   const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
