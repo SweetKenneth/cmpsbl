@@ -235,10 +235,11 @@
    // Check running
    const running = runningPipelines.get(pipelineId);
    if (running) {
-     running.status = 'cancelled';
-     running.completed_at = new Date().toISOString();
-     runningPipelines.delete(pipelineId);
-     completedPipelines.push(running);
+    running.status = 'cancelled';
+      running.completed_at = new Date().toISOString();
+      runningPipelines.delete(pipelineId);
+      completedPipelines.push(running);
+      // cancelled pipelines don't go into completedIdSet
      return true;
    }
  

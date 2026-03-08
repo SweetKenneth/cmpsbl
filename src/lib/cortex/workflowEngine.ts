@@ -272,31 +272,37 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
  /**
   * Evaluate a condition expression
   */
- function evaluateCondition(
-   condition: string,
-   context: Record<string, unknown>
- ): boolean {
-   // Simple condition evaluation
-   // Format: "stepId.field operator value"
-   const match = condition.match(/(\w+)\.(\w+)\s*(==|!=|>|<)\s*(.+)/);
-   if (!match) return true;
-   
-   const [, stepId, field, operator, value] = match;
-   const stepOutput = context[stepId] as Record<string, unknown>;
-   
-   if (!stepOutput) return false;
-   
-   const actual = stepOutput[field];
-   const expected = JSON.parse(value);
-   
-   switch (operator) {
-     case '==': return actual === expected;
-     case '!=': return actual !== expected;
-     case '>': return (actual as number) > expected;
-     case '<': return (actual as number) < expected;
-     default: return true;
-   }
- }
+  function evaluateCondition(
+    condition: string,
+    context: Record<string, unknown>
+  ): boolean {
+    // Simple condition evaluation
+    // Format: "stepId.field operator value"
+    const match = condition.match(/(\w+)\.(\w+)\s*(==|!=|>|<)\s*(.+)/);
+    if (!match) return true;
+    
+    const [, stepId, field, operator, value] = match;
+    const stepOutput = context[stepId] as Record<string, unknown>;
+    
+    if (!stepOutput) return false;
+    
+    const actual = stepOutput[field];
+    let expected: unknown;
+    try {
+      expected = JSON.parse(value);
+    } catch {
+      // Treat unparseable value as a raw string comparison
+      expected = value.trim();
+    }
+    
+    switch (operator) {
+      case '==': return actual === expected;
+      case '!=': return actual !== expected;
+      case '>': return (actual as number) > (expected as number);
+      case '<': return (actual as number) < (expected as number);
+      default: return true;
+    }
+  }
  
  /**
   * Resolve payload template with context values

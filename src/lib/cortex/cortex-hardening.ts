@@ -950,6 +950,10 @@ export function recordOrchestrationResult(
   if (!breaker) {
     breaker = { name, failures: 0, successes: 0, state: 'closed', lastFailure: 0, openedAt: 0, cooldownMs };
     orchestrationBreakers.set(name, breaker);
+    if (orchestrationBreakers.size > MAX_BREAKERS) {
+      const first = orchestrationBreakers.keys().next().value;
+      if (first !== undefined) orchestrationBreakers.delete(first);
+    }
   }
 
   if (success) {
