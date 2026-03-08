@@ -82,6 +82,7 @@ function cleanupExpiredActions(): void {
   }
 }
 
+/**
  * Auto-block an IP address exhibiting malicious behavior.
  * Block expires after TTL. Fully reversible.
  */
