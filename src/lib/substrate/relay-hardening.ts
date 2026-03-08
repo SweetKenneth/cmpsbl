@@ -68,7 +68,7 @@ import { isKnownHash, getRelayState } from './relay-module/index';
 export function isDuplicatePayload(hash: string): boolean {
   return isKnownHash(hash);
 }
-export function getDedupStats() { return { trackedHashes: getRelayState().deduplicationHashes.size }; }
+export function getDedupStats() { return { trackedHashes: getRelayState().totalDeduplicated }; }
 
 // ─── 9. Rate Limiter (per target) ─────────────────────────────────────────
 const rateLimits = new Map<string, { count: number; windowStart: number }>();
