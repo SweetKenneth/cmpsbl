@@ -37,11 +37,6 @@ export function AdminHeader() {
           
           <AdminBreadcrumb />
         </div>
-        <div className="flex items-center gap-4 flex-1">
-          <SidebarTrigger />
-          
-          <AdminBreadcrumb />
-        </div>
 
         {/* Center Section - Cascade Status */}
         <div className="hidden xl:flex flex-1 justify-center">
