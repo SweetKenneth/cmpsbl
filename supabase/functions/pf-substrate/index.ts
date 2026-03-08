@@ -2270,6 +2270,8 @@ async function handleBrain(
                 embedding: memory.embedding,
                 compression_level: 3,
                 source_refs: [memory.id],
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: { ...(memory.tags as object || {}), context: memory.context },
                 value_score: memory.value_score,
                 archived_at: new Date().toISOString(),
