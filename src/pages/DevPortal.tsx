@@ -5300,7 +5300,7 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
   };
 
   return (
-    <Card className="group active:scale-[0.98] transition-all duration-200 touch-manipulation">
+    <Card className="group active:scale-[0.98] transition-all duration-300 touch-manipulation hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
       <CardHeader className="p-4 sm:p-6 pb-3">
         <div className="flex items-start gap-3">
           <div className={`w-12 h-12 sm:w-10 sm:h-10 rounded-xl sm:rounded-lg flex-shrink-0 flex items-center justify-center ${categoryColors[template.category]}`}>
