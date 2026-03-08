@@ -155,7 +155,12 @@ export function getFailoverConfig(): { enabled: boolean; providers: number; stra
 }
 
 // ─── 22. Outbound Audit Trail ────────────────────────────────────────────
+const MAX_AUDIT = 500;
 const outboundAudit: Array<{ ts: number; target: string; status: string; hash: string }> = [];
+export function recordOutboundAudit(entry: { target: string; status: string; hash: string }) {
+  outboundAudit.push({ ...entry, ts: Date.now() });
+  if (outboundAudit.length > MAX_AUDIT) outboundAudit.splice(0, outboundAudit.length - MAX_AUDIT);
+}
 export function getOutboundAuditTrail(n = 20) { return outboundAudit.slice(-n); }
 
 // ─── 23. Compression Engine ──────────────────────────────────────────────
