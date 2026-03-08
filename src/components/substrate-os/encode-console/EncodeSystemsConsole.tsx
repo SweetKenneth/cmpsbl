@@ -2,7 +2,7 @@
  * ENCODE Systems Engineer Console
  * Hybrid conversational + command interface.
  * Natural language and slash commands both route through DECODE → PLAN → APPROVAL → ENCODE.
- * Actually wired to substrate systems for real work.
+ * Includes SHADOW A/B testing before execution to pick optimal implementation.
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -16,9 +16,15 @@ import { useEncode } from '@/hooks/substrate/useEncode';
 import { navigateIntent, resolveAlias, detectConcerns, getModuleTables } from '@/lib/codeagent/encoded/substrate-navigator';
 import { getRelevantPatterns } from '@/lib/codeagent/encoded/expert-patterns';
 import { getRelevantSkills } from '@/lib/codeagent/encoded/skills';
+import {
+  createShadowAB, runShadowAB, evaluateShadowAB, cancelShadowAB,
+  getWinningTemplate, listExperiments as listShadowExperiments,
+  type ShadowABExperiment,
+} from '@/lib/substrate/shadow-ab-engine';
 import { EncodeCommandInput, ENCODE_COMMANDS } from './EncodeCommandInput';
 import { ConversationStream } from './ConversationStream';
 import { ArchitecturePanel } from './ArchitecturePanel';
+import type { ShadowABExperiment as PanelExperiment } from './ShadowABPanel';
 
 type SystemMessage = { type: 'info' | 'warning' | 'error' | 'success'; text: string; ts: string };
 
@@ -26,10 +32,88 @@ export function EncodeSystemsConsole() {
   const orchestration = useEncodeOrchestration();
   const encode = useEncode();
   const [systemMessages, setSystemMessages] = useState<SystemMessage[]>([]);
+  const [shadowExperiments, setShadowExperiments] = useState<ShadowABExperiment[]>([]);
+
+  const refreshShadowExperiments = useCallback(() => {
+    setShadowExperiments([...listShadowExperiments()]);
+  }, []);
 
   const addSystemMsg = useCallback((type: SystemMessage['type'], text: string) => {
     setSystemMessages(prev => [...prev, { type, text, ts: new Date().toISOString() }]);
   }, []);
+
+  // ── SHADOW A/B helpers ──
+  const handleShadowCreate = useCallback(async (planId: string, nameOrIntent: string, module: string) => {
+    const exp = createShadowAB(
+      planId,
+      `Shadow test: ${nameOrIntent}`,
+      module,
+      { approach: 'Conservative — minimal changes, proven patterns', description: `Apply established patterns for ${nameOrIntent} with minimal blast radius` },
+      { approach: 'Aggressive — optimized architecture, new patterns', description: `Redesign ${nameOrIntent} with cutting-edge patterns for maximum throughput` },
+    );
+    addSystemMsg('success', [
+      `🔬 SHADOW A/B experiment created: ${exp.id}`,
+      `   Variant A: Conservative (proven patterns)`,
+      `   Variant B: Aggressive (optimized architecture)`,
+      `   Plan: ${planId}`,
+      '',
+      `Running shadow probes now...`,
+    ].join('\n'));
+
+    // Run both variants through SHADOW
+    try {
+      const result = await runShadowAB(exp.id);
+      refreshShadowExperiments();
+
+      const mA = result.variantA.metrics;
+      const mB = result.variantB.metrics;
+      addSystemMsg('info', [
+        `📊 SHADOW probes complete:`,
+        `   Variant A: quality ${mA ? (mA.quality_score * 100).toFixed(0) + '%' : 'FAIL'}, divergence ${mA ? (mA.divergence * 100).toFixed(1) + '%' : '—'}`,
+        `   Variant B: quality ${mB ? (mB.quality_score * 100).toFixed(0) + '%' : 'FAIL'}, divergence ${mB ? (mB.divergence * 100).toFixed(1) + '%' : '—'}`,
+        '',
+        `Auto-evaluating winner...`,
+      ].join('\n'));
+
+      // Auto-evaluate
+      const decided = evaluateShadowAB(exp.id);
+      refreshShadowExperiments();
+
+      if (decided.winner) {
+        const template = getWinningTemplate(exp.id);
+        addSystemMsg('success', [
+          `🏆 Winner: Variant ${decided.winner}`,
+          `   ${decided.winnerReason}`,
+          '',
+          `Template locked: "${template?.approach}"`,
+          `Use /execute with this plan to implement the winning variant.`,
+        ].join('\n'));
+      } else {
+        addSystemMsg('warning', `Both variants failed. ${decided.winnerReason}`);
+      }
+    } catch (err: any) {
+      addSystemMsg('error', `Shadow A/B run failed: ${err.message}`);
+    }
+  }, [addSystemMsg, refreshShadowExperiments]);
+
+  const handleSelectWinner = useCallback((experimentId: string, winner: 'A' | 'B') => {
+    const decided = evaluateShadowAB(experimentId, winner);
+    refreshShadowExperiments();
+    const template = getWinningTemplate(experimentId);
+    addSystemMsg('success', [
+      `🏆 Manually selected Variant ${winner} as template`,
+      `   Approach: ${template?.approach}`,
+      `   Quality: ${template?.metrics.quality_score ? (template.metrics.quality_score * 100).toFixed(0) + '%' : '—'}`,
+      '',
+      `This variant will be used as the implementation blueprint.`,
+    ].join('\n'));
+  }, [addSystemMsg, refreshShadowExperiments]);
+
+  const handleCancelExperiment = useCallback((experimentId: string) => {
+    cancelShadowAB(experimentId);
+    refreshShadowExperiments();
+    addSystemMsg('warning', `Shadow A/B experiment ${experimentId} cancelled.`);
+  }, [addSystemMsg, refreshShadowExperiments]);
 
   // ── Resolve architecture context for any target ──
   const resolveTarget = useCallback((target: string) => {
@@ -133,9 +217,33 @@ export function EncodeSystemsConsole() {
     }
   }, [encode.plans, encode.approvePlanMutation, orchestration, addSystemMsg]);
 
-  // ── Execute an approved plan ──
+  // ── Execute an approved plan (uses shadow winner as template if available) ──
   const executePlan = useCallback(async (planId: string) => {
     try {
+      // Check if a shadow A/B experiment decided a winner for this plan
+      const allExps = listShadowExperiments();
+      const relatedExp = allExps.find(e => e.planId === planId && e.status === 'decided' && e.winner);
+      let templateNote = '';
+
+      if (relatedExp) {
+        const template = getWinningTemplate(relatedExp.id);
+        if (template) {
+          templateNote = `\n   🧬 Template: Variant ${template.label} — "${template.approach}"`;
+          addSystemMsg('info', [
+            `🔬 Using SHADOW A/B winner as implementation template:`,
+            `   Variant ${template.label}: ${template.approach}`,
+            `   Quality: ${(template.metrics.quality_score * 100).toFixed(0)}%`,
+            `   Divergence: ${(template.metrics.divergence * 100).toFixed(1)}%`,
+          ].join('\n'));
+        }
+      } else {
+        addSystemMsg('warning', [
+          '⚠️ No SHADOW A/B test found for this plan.',
+          '   Consider running /shadow ' + planId + ' first for optimal results.',
+          '   Proceeding with direct execution...',
+        ].join('\n'));
+      }
+
       addSystemMsg('info', `⚙️ Routing to ENCODE for execution (plan: ${planId})...`);
       const task = await encode.routeIntent.mutateAsync({
         intent: `Execute plan ${planId}`,
@@ -147,6 +255,7 @@ export function EncodeSystemsConsole() {
         `   Intent: ${task?.intentSummary || planId}`,
         `   Surface: ${task?.targetSurface || 'code'}`,
         `   Status: ${task?.status || 'queued'}`,
+        templateNote,
         '',
         'ENCODE is now processing. Use /status to monitor.',
       ].join('\n'));
@@ -181,6 +290,11 @@ export function EncodeSystemsConsole() {
         '/recall <query>  —  Query BRAIN memory',
         '/resolve <target>  —  Resolve target to architecture',
         '/clm  —  Run CLM learning cycle',
+        '',
+        '── SHADOW A/B ──',
+        '/shadow <plan_id>  —  Run A/B shadow test before execution',
+        '/shadow list  —  List all shadow experiments',
+        '/shadow pick <exp_id> <A|B>  —  Manually pick winner',
         '',
         '── CONVERSATIONAL ──',
         'You can also type natural language.',
@@ -224,6 +338,43 @@ export function EncodeSystemsConsole() {
         '',
         'Execution lock partially released. Use /approve after submitting a plan.',
       ].join('\n'));
+      return;
+    }
+
+    // ═══ SHADOW A/B COMMANDS ═══
+
+    if (trimmed === '/shadow list') {
+      const exps = listShadowExperiments();
+      if (exps.length === 0) {
+        addSystemMsg('info', 'No shadow A/B experiments. Use /shadow <plan_id> to start one.');
+      } else {
+        const lines = exps.map(e =>
+          `  ${e.status === 'decided' ? '🏆' : e.status === 'shadowing' ? '⏳' : '📋'} ${e.id} [${e.status}] — ${e.name}${e.winner ? ` → Winner: ${e.winner}` : ''}`
+        );
+        addSystemMsg('info', `Shadow A/B Experiments (${exps.length}):\n${lines.join('\n')}`);
+      }
+      return;
+    }
+
+    if (trimmed.startsWith('/shadow pick ')) {
+      const parts = trimmed.slice(13).trim().split(/\s+/);
+      if (parts.length < 2 || !['A', 'B'].includes(parts[1].toUpperCase())) {
+        addSystemMsg('error', 'Usage: /shadow pick <experiment_id> <A|B>');
+        return;
+      }
+      handleSelectWinner(parts[0], parts[1].toUpperCase() as 'A' | 'B');
+      return;
+    }
+
+    if (trimmed.startsWith('/shadow ')) {
+      const planId = trimmed.slice(8).trim();
+      const plan = encode.plans.find(p => p.plan_id === planId);
+      if (!plan) {
+        addSystemMsg('warning', `Plan ${planId} not found. Use /plans to list available plans.`);
+        return;
+      }
+      const modules = (plan as any).modules || [];
+      handleShadowCreate(planId, plan.title, modules[0] || 'system');
       return;
     }
 
@@ -431,6 +582,9 @@ export function EncodeSystemsConsole() {
             orchestration={orchestration}
             encodeHealth={encode.health}
             taskQueue={taskQueue}
+            shadowExperiments={shadowExperiments as any}
+            onSelectWinner={handleSelectWinner}
+            onCancelExperiment={handleCancelExperiment}
           />
         </div>
       </div>
