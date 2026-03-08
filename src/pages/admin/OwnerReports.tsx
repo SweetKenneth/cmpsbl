@@ -209,7 +209,7 @@ export default function OwnerReports() {
 
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{formatTime(report.created_at)}</p>
-                      <p className="text-[11px] text-muted-foreground truncate">
+                      <p className="text-[11px] text-muted-foreground truncate font-mono tabular-nums">
                         {report.metrics?.system?.ai_calls_3h || 0} AI calls ·{" "}
                         {report.metrics?.learning?.total_events_3h || 0} CLM ·{" "}
                         {report.metrics?.security?.events_3h || 0} defense
