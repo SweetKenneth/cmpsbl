@@ -48,6 +48,11 @@ export function sealPipelineStep(
 
   chain.push(seal);
   pipelineSeals.set(pipelineId, boundArray(chain, 200));
+  // Evict oldest pipeline keys if over capacity
+  if (pipelineSeals.size > MAX_PIPELINE_SEAL_KEYS) {
+    const first = pipelineSeals.keys().next().value;
+    if (first !== undefined) pipelineSeals.delete(first);
+  }
   return seal;
 }
 
