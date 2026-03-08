@@ -496,6 +496,10 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
 `,
     },
     {
+      filename: 'LICENSE.html',
+      content: generateLicenseHTML(ctx.name),
+    },
+    {
       filename: 'Makefile',
       content: `# CMPSBL® Crown Jewel — ${ctx.name}
 # Auto-generated build system
