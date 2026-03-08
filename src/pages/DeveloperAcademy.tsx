@@ -140,7 +140,7 @@ const DeveloperAcademy = () => {
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
+                  <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
                     <Link to="/documentation">Read Documentation</Link>
                   </Button>
                 </div>

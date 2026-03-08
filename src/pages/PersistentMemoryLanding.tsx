@@ -470,7 +470,7 @@ const prompt = userMessage + context.contextString;`,
                     Start with the free tier. Upgrade when you need advanced features.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button asChild size="lg" className="text-lg px-8 h-14">
+                    <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/docs/persistent-memory">
                         Get Started (FREE)
                         <ArrowRight className="w-5 h-5 ml-2" />
