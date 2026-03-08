@@ -390,8 +390,8 @@ export function queryKnowledge(query: {
   if (query.domain) {
     results = results.filter(f => f.domain === query.domain);
   }
-  if (query.minStrength) {
-    results = results.filter(f => f.strength >= query.minStrength);
+  if (query.minStrength !== undefined) {
+    results = results.filter(f => f.strength >= query.minStrength!);
   }
 
   results.sort((a, b) => b.strength - a.strength);
