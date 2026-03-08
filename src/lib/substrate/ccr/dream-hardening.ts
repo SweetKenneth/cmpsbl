@@ -89,6 +89,7 @@ export function scoreDreamOutput(params: {
 // ─── 5. Hallucination Guard ─────────────────────────────────────────────────
 interface HallucinationCheck { outputId: string; groundedFacts: number; ungroundedClaims: number; confidence: number; flagged: boolean; }
 const hallucinationLog: HallucinationCheck[] = [];
+const MAX_HALLUCINATION_LOG = 500;
 
 export function checkHallucination(outputId: string, groundedFacts: number, totalClaims: number): HallucinationCheck {
   const ungrounded = totalClaims - groundedFacts;
@@ -96,7 +97,7 @@ export function checkHallucination(outputId: string, groundedFacts: number, tota
   const flagged = confidence < 0.5 || ungrounded > 3;
   const result: HallucinationCheck = { outputId, groundedFacts, ungroundedClaims: ungrounded, confidence, flagged };
   hallucinationLog.push(result);
-  if (hallucinationLog.length > 500) hallucinationLog.shift();
+  if (hallucinationLog.length > MAX_HALLUCINATION_LOG) hallucinationLog.splice(0, hallucinationLog.length - MAX_HALLUCINATION_LOG);
   return result;
 }
 
