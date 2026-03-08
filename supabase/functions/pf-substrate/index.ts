@@ -2612,58 +2612,48 @@ async function handleBrain(
           }
         }
 
-        // STEP 3d: Cold tier capacity enforcement — prune overflow to archive
+        // STEP 3d: Cold tier capacity enforcement — bulk prune overflow
         const COLD_CAPACITY = 10000;
         const { count: coldAfterDemote } = await supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true });
         const coldOverflow = (coldAfterDemote || 0) - COLD_CAPACITY;
         if (coldOverflow > 0) {
-          const coldOverflowLimit = Math.min(coldOverflow + 50, isDeep ? 2000 : 500);
-          const { data: coldOverflowBatch } = await supabase
+          // Batch delete: get IDs of lowest-value cold memories, bulk delete
+          const coldBatchSize = Math.min(coldOverflow + 100, isDeep ? 5000 : isAggressive ? 2000 : 500);
+          const { data: coldIds } = await supabase
             .from('brain_memory_cold')
-            .select('id, summary, tags, value_score')
+            .select('id')
             .order('value_score', { ascending: true, nullsFirst: true })
             .order('archived_at', { ascending: true, nullsFirst: true })
-            .limit(coldOverflowLimit);
+            .limit(coldBatchSize);
 
-          for (const memory of coldOverflowBatch || []) {
-            try {
-              await supabase.from('brain_memory_pruned').insert({
-                original_memory_id: memory.id,
-                original_tier: 'cold',
-                content_preview: String(memory.summary || '').substring(0, 200),
-                context: (memory.tags as Record<string, unknown>)?.context || 'unknown',
-                value_score: memory.value_score || 0,
-                prune_reason: 'cold_overflow',
-              });
-              await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
-              stats.pruned++;
-            } catch { stats.errors++; }
+          if (coldIds && coldIds.length > 0) {
+            // Bulk delete in chunks of 500
+            const idList = coldIds.map((r: any) => r.id);
+            for (let i = 0; i < idList.length; i += 500) {
+              const chunk = idList.slice(i, i + 500);
+              await supabase.from('brain_memory_cold').delete().in('id', chunk);
+              stats.pruned += chunk.length;
+            }
           }
         }
 
-        // STEP 3e: Cold tier TTL — prune memories older than 365 days
+        // STEP 3e: Cold tier TTL — bulk prune memories older than 365 days with low value
         const COLD_TTL_DAYS = 365;
         const coldTtlCutoff = new Date(Date.now() - COLD_TTL_DAYS * 24 * 60 * 60 * 1000).toISOString();
-        const { data: expiredCold } = await supabase
+        const { data: expiredColdIds } = await supabase
           .from('brain_memory_cold')
-          .select('id, summary, tags, value_score')
+          .select('id')
           .lt('archived_at', coldTtlCutoff)
           .lt('value_score', 0.5)
-          .limit(isDeep ? 500 : 100);
+          .limit(isDeep ? 2000 : 500);
 
-        for (const memory of expiredCold || []) {
-          try {
-            await supabase.from('brain_memory_pruned').insert({
-              original_memory_id: memory.id,
-              original_tier: 'cold',
-              content_preview: String(memory.summary || '').substring(0, 200),
-              context: (memory.tags as Record<string, unknown>)?.context || 'unknown',
-              value_score: memory.value_score || 0,
-              prune_reason: 'cold_ttl_expired',
-            });
-            await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
-            stats.pruned++;
-          } catch { stats.errors++; }
+        if (expiredColdIds && expiredColdIds.length > 0) {
+          const expiredIds = expiredColdIds.map((r: any) => r.id);
+          for (let i = 0; i < expiredIds.length; i += 500) {
+            const chunk = expiredIds.slice(i, i + 500);
+            await supabase.from('brain_memory_cold').delete().in('id', chunk);
+            stats.pruned += chunk.length;
+          }
         }
 
         // STEP 4: Prune noise patterns (deep/aggressive only)
