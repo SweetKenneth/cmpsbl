@@ -428,7 +428,7 @@ export default function ComposableCognitives() {
             self-healing, and security. Elite agents drop from $159 → $95. Professional from $129 → $77.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
               <a href="/engines">
                 <Zap className="w-4 h-4" />
                 Browse 20 Engines
