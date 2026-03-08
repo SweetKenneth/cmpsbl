@@ -688,3 +688,187 @@ export function useInclusiveReportOS() {
       inclusive.report(params.target, params.format),
   });
 }
+
+// ═══════════════════════════════════════════════════════════════
+// EXPANSION NODE STATUS HOOKS — All 18 remaining nodes
+// ═══════════════════════════════════════════════════════════════
+
+export function useSovereignStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'sovereign', 'status'],
+    queryFn: withGracefulFallback(() => sovereignMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useOracleStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'oracle', 'status'],
+    queryFn: withGracefulFallback(() => oracleMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useConscienceStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'conscience', 'status'],
+    queryFn: withGracefulFallback(() => conscienceMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useTreatyStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'treaty', 'status'],
+    queryFn: withGracefulFallback(() => treatyMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useCompassStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'compass', 'status'],
+    queryFn: withGracefulFallback(() => compassMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useEchoStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'echo', 'status'],
+    queryFn: withGracefulFallback(() => echoMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useReflexStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'reflex', 'status'],
+    queryFn: withGracefulFallback(() => reflexMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useForgeStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'forge', 'status'],
+    queryFn: withGracefulFallback(() => forgeMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useLinguaStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'lingua', 'status'],
+    queryFn: withGracefulFallback(() => linguaMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useHarvestStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'harvest', 'status'],
+    queryFn: withGracefulFallback(() => harvestMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useEvolutionStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'evolution', 'status'],
+    queryFn: withGracefulFallback(() => evolutionMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useShadowStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'shadow', 'status'],
+    queryFn: withGracefulFallback(() => shadowMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function usePhantomStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'phantom', 'status'],
+    queryFn: withGracefulFallback(() => phantomMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useImmunityStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'immunity', 'status'],
+    queryFn: withGracefulFallback(() => immunityMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useIntentStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'intent', 'status'],
+    queryFn: withGracefulFallback(() => intentMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useGovernanceStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'governance', 'status'],
+    queryFn: withGracefulFallback(() => governanceMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useMedicStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'medic', 'status'],
+    queryFn: withGracefulFallback(() => medicMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
+
+export function useNerveStatusOS() {
+  const pollingEnabled = debugMode.allowModulePolling();
+  return useQuery({
+    queryKey: ['substrate', 'nerve', 'status'],
+    queryFn: withGracefulFallback(() => nerveMod.status()),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
+  });
+}
