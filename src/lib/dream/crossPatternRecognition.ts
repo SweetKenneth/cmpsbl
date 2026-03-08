@@ -148,42 +148,39 @@ function detectEmergentPatterns(cycles: DreamCycleData[]): DreamPattern[] {
  */
 function detectCorrelativePatterns(cycles: DreamCycleData[]): DreamPattern[] {
   const patterns: DreamPattern[] = [];
-  const coOccurrence = new Map<string, Map<string, number>>();
+  // Track co-occurrence by sorted pair key
+  const coOccurrence = new Map<string, number>();
   
   cycles.forEach(cycle => {
     const tokens = cycle.improvements.flatMap(tokenize);
     const uniqueTokens = [...new Set(tokens)];
     
-    // Count co-occurrences
+    // Count co-occurrences using canonical pair keys
     for (let i = 0; i < uniqueTokens.length; i++) {
       for (let j = i + 1; j < uniqueTokens.length; j++) {
         const key = [uniqueTokens[i], uniqueTokens[j]].sort().join('|');
-        if (!coOccurrence.has(uniqueTokens[i])) {
-          coOccurrence.set(uniqueTokens[i], new Map());
-        }
-        const map = coOccurrence.get(uniqueTokens[i])!;
-        map.set(uniqueTokens[j], (map.get(uniqueTokens[j]) || 0) + 1);
+        coOccurrence.set(key, (coOccurrence.get(key) || 0) + 1);
       }
     }
   });
   
   // Find strong correlations
-  coOccurrence.forEach((innerMap, term1) => {
-    innerMap.forEach((count, term2) => {
-      if (count >= 3) {
-        patterns.push({
-          id: crypto.randomUUID(),
-          patternType: 'correlative',
-          description: `"${term1}" frequently improves alongside "${term2}"`,
-          frequency: count,
-          confidence: Math.min(0.9, 0.4 + count * 0.15),
-          relatedCycles: [],
-          insights: [`Consider unified improvement strategy for ${term1} and ${term2}`],
-          detectedAt: new Date().toISOString(),
-        });
-      }
-    });
-  });
+  for (const [pairKey, count] of coOccurrence) {
+    if (count >= 3) {
+      const [term1, term2] = pairKey.split('|');
+      
+      patterns.push({
+        id: crypto.randomUUID(),
+        patternType: 'correlative',
+        description: `"${term1}" frequently improves alongside "${term2}"`,
+        frequency: count,
+        confidence: Math.min(0.9, 0.4 + count * 0.15),
+        relatedCycles: [],
+        insights: [`Consider unified improvement strategy for ${term1} and ${term2}`],
+        detectedAt: new Date().toISOString(),
+      });
+    }
+  }
   
   return patterns.slice(0, 10); // Limit results
 }
@@ -240,20 +237,27 @@ export async function analyzeCrossDreamPatterns(
     }
     
     // Transform to analysis format
-    const cycles: DreamCycleData[] = dreamLogs.map(log => ({
-      id: log.id,
-      improvements: Array.isArray(log.improvements_generated) 
-        ? log.improvements_generated.map(String) 
-        : [],
-      templates: Array.isArray(log.templates_created)
-        ? log.templates_created.map(String)
-        : [],
-      heuristics: Array.isArray(log.heuristics_learned)
-        ? log.heuristics_learned.map(String)
-        : [],
-      artifacts: log.artifacts_processed || 0,
-      timestamp: log.started_at,
-    }));
+    const cycles: DreamCycleData[] = dreamLogs.map(log => {
+      // improvements_generated, templates_created, heuristics_learned are integers in DB
+      // Extract text from metadata if available, else create placeholder strings
+      const meta = (log.metadata as Record<string, any>) || {};
+      return {
+        id: log.id,
+        improvements: Array.isArray(meta.improvements)
+          ? meta.improvements.map(String)
+          : Array.isArray(meta.reasoning_shortcuts)
+            ? meta.reasoning_shortcuts.map(String)
+            : [],
+        templates: Array.isArray(meta.templates)
+          ? meta.templates.map(String)
+          : [],
+        heuristics: Array.isArray(meta.heuristics)
+          ? meta.heuristics.map(String)
+          : [],
+        artifacts: log.artifacts_processed || 0,
+        timestamp: log.started_at,
+      };
+    });
     
     // Run pattern detection
     const recurring = detectRecurringPatterns(cycles);

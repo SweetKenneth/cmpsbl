@@ -260,9 +260,9 @@
   * Mark insight as acted upon
   */
  export function acknowledgeInsight(insightId: string): boolean {
-   const insight = insightsCache.find(i => i.id === insightId);
-   if (insight) {
-     insight.actionable = false;
+   const idx = insightsCache.findIndex(i => i.id === insightId);
+   if (idx !== -1) {
+     insightsCache[idx].actionable = false;
      return true;
    }
    return false;

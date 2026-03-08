@@ -30,40 +30,41 @@ export async function getSystemLoad(): Promise<SystemLoadMetrics> {
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 3600000);
     
-    // Get recent request count
-    const { count: requestCount } = await supabase
-      .from('brain_events')
-      .select('*', { count: 'exact', head: true })
-      .gte('created_at', oneHourAgo.toISOString());
+    // Parallel fetch all 3 queries
+    const [requestResult, usageResult, hotResult] = await Promise.all([
+      supabase
+        .from('brain_events')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneHourAgo.toISOString()),
+      supabase
+        .from('ai_usage_log')
+        .select('response_time_ms')
+        .gte('created_at', oneHourAgo.toISOString())
+        .limit(100),
+      supabase
+        .from('brain_memory_hot')
+        .select('*', { count: 'exact', head: true }),
+    ]);
     
-    // Get average response times from AI usage
-    const { data: usageData } = await supabase
-      .from('ai_usage_log')
-      .select('response_time_ms')
-      .gte('created_at', oneHourAgo.toISOString())
-      .limit(100);
+    const requestCount = requestResult.count || 0;
     
+    const usageData = usageResult.data;
     const avgResponseTime = usageData?.length
       ? usageData.reduce((sum, u) => sum + (u.response_time_ms || 0), 0) / usageData.length
       : 0;
     
-    // Estimate memory pressure from tier stats
-    const { count: hotCount } = await supabase
-      .from('brain_memory_hot')
-      .select('*', { count: 'exact', head: true });
-    
-    const memoryPressure = Math.min(100, (hotCount || 0) / 50);
+    const memoryPressure = Math.min(100, (hotResult.count || 0) / 50);
     
     // Calculate if it's low activity period
     const hourOfDay = now.getHours();
     const isNightTime = hourOfDay >= 2 && hourOfDay <= 6;
-    const isLowRequests = (requestCount || 0) < 10;
+    const isLowRequests = requestCount < 10;
     
     return {
-      activeRequests: requestCount || 0,
+      activeRequests: requestCount,
       avgResponseTime,
       memoryPressure,
-      cpuLoad: avgResponseTime / 10, // Estimate based on response time
+      cpuLoad: avgResponseTime / 10,
       isLowActivity: isNightTime || isLowRequests,
     };
   } catch (error) {
@@ -311,9 +312,16 @@ export async function executePendingDreams(): Promise<{
       } catch (error) {
         console.error(`Dream execution error:`, error);
         
+        // Increment retry count; fail permanently after 3 retries
+        const retryCount = ((dream.payload as any)?.retry_count ?? 0) + 1;
+        const newStatus = retryCount >= 3 ? 'failed' : 'pending';
+        
         await supabase
           .from('brain_actions_queue')
-          .update({ status: 'pending' }) // Retry later
+          .update({ 
+            status: newStatus,
+            payload: { ...(dream.payload as any), retry_count: retryCount },
+          })
           .eq('id', dream.id);
         
         skipped++;
