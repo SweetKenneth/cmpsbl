@@ -138,7 +138,7 @@ async function migrateGroup(
       if (context === 'code') {
         // Code: preserve raw
         for (const memory of group) {
-          const success = await migrateSingleMemory(memory, sourceTable, 0);
+          const success = await migrateSingleMemory(memory, 0);
           if (success) stats.migrated++;
           else stats.errors++;
         }
