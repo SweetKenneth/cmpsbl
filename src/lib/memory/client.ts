@@ -93,7 +93,7 @@ export class MemoryClient {
   }
   
   private generateSessionId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
   }
 
   /** Set user context for per-user memory isolation */
@@ -177,14 +177,12 @@ export class MemoryClient {
       // FIX #4: Run fingerprint + stores in parallel
       await Promise.allSettled([fingerprintPromise, ...factPromises, contentPromise]);
       
-      // FIX #2: Increment total_stores properly via RPC, not broken upsert
-      await this.incrementMetaStores();
-      
-      // #11: Track hourly activity for workload-aware tiering
-      await this.trackHourlyActivity();
-      
-      // Run tiering if we might be near capacity
-      await this.maybeRunTiering();
+      // FIX R5: Run post-store bookkeeping in parallel (was sequential)
+      await Promise.allSettled([
+        this.incrementMetaStores(),
+        this.trackHourlyActivity(),
+        this.maybeRunTiering(),
+      ]);
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
@@ -276,8 +274,8 @@ export class MemoryClient {
       const strategy = meta?.retrieval_strategy || 'balanced';
       const effectiveLimit = strategy === 'exploration' ? limit * 2 : limit;
       
-      // FIX #4: Run all tier queries in parallel
-      const [dueForReviewResult, hotResult, substrateResult] = await Promise.allSettled([
+      // FIX R5: Run ALL tier queries in parallel (warm was previously sequential)
+      const [dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
         // #3: Contextual pre-fetch — boost memories due for review (#2 spaced repetition)
         supabase
           .from('brain_memory_hot' as any)
@@ -290,6 +288,14 @@ export class MemoryClient {
         // 1. Search hot tier
         supabase
           .from('brain_memory_hot' as any)
+          .select('id, content, created_at, value_score, memory_type, provenance')
+          .eq('user_id', userId)
+          .eq('agent_id', this.agentId)
+          .order('value_score', { ascending: false })
+          .limit(effectiveLimit),
+        // 2. Search warm tier (moved into parallel batch)
+        supabase
+          .from('brain_memory_warm' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
@@ -353,32 +359,22 @@ export class MemoryClient {
         }
       }
 
-      // 2. Search warm if hot didn't fill limit
-      if (allMemories.length < effectiveLimit) {
-        try {
-          const { data: warmDataRaw } = await supabase
-            .from('brain_memory_warm' as any)
-            .select('id, content, created_at, value_score, memory_type, provenance')
-            .eq('user_id', userId)
-            .eq('agent_id', this.agentId)
-            .order('value_score', { ascending: false })
-            .limit(effectiveLimit - allMemories.length);
-          
-          const warmData = (warmDataRaw || []) as unknown as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-          if (warmData.length > 0) {
-            tiersSearched.push('warm');
-            for (const m of warmData) {
-              if (!allMemories.some(e => e.id === m.id)) {
-                allMemories.push({
-                  id: m.id, content: m.content,
-                  timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
-                  tier: 'warm', memory_type: m.memory_type,
-                  provenance: m.provenance,
-                });
-              }
+      // Process warm tier results (now from parallel batch instead of sequential waterfall)
+      if (warmResult.status === 'fulfilled') {
+        const warmData = ((warmResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        if (warmData.length > 0) {
+          tiersSearched.push('warm');
+          for (const m of warmData) {
+            if (!allMemories.some(e => e.id === m.id)) {
+              allMemories.push({
+                id: m.id, content: m.content,
+                timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
+                tier: 'warm', memory_type: m.memory_type,
+                provenance: m.provenance,
+              });
             }
           }
-        } catch { /* warm tier is best-effort */ }
+        }
       }
 
       // Process substrate vector results
