@@ -136,7 +136,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Job Queue */}
-        <Card className="lg:col-span-2 border-orange-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="lg:col-span-2 border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Clock className="w-4 h-4 text-orange-400" />
