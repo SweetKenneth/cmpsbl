@@ -59,10 +59,11 @@
      ? mutations.filter(m => meetsConstraints(m, constraints))
      : mutations;
    
-   // Select best mutation
-   const best = viable.reduce((a, b) => 
-     a.viability > b.viability ? a : b
-   , viable[0] || { type: 'combine' as MutationType, original: '', mutated: '', viability: 0 });
+   // Select best mutation (guard against empty viable array)
+   const fallback: PatternMutation = { type: 'combine', original: '', mutated: '', viability: 0 };
+   const best = viable.length > 0
+     ? viable.reduce((a, b) => a.viability > b.viability ? a : b)
+     : fallback;
    
    // Build synthesis output
    const output: SynthesisOutput = {
