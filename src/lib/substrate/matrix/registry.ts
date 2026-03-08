@@ -182,13 +182,13 @@ export function getMatrixIntegrity(): MatrixIntegrityReport {
   return calculateIntegrity(nodes);
 }
 
-/** Take a point-in-time snapshot */
+/** Take a point-in-time snapshot (deep-copies state to prevent mutation) */
 export function takeSnapshot(): MatrixSnapshot {
   ensureInitialized();
   const snapshot: MatrixSnapshot = {
     id: crypto.randomUUID(),
     timestamp: Date.now(),
-    nodes: getAllNodeStates().map(n => ({ ...n })),
+    nodes: getAllNodeStates(), // already returns defensive copies
     integrity: getMatrixIntegrity(),
   };
 

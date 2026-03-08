@@ -49,12 +49,19 @@ export function checkModuleHealth(): AuditFinding[] {
 
   // Matrix Node count
   const nodeDefs = getNodeDefinitions();
+  const sectorCounts = new Map<string, number>();
+  for (const n of nodeDefs) {
+    sectorCounts.set(n.sector, (sectorCounts.get(n.sector) || 0) + 1);
+  }
+  const sectorBreakdown = Array.from(sectorCounts.entries())
+    .map(([s, c]) => `${s.toUpperCase()}(${c})`)
+    .join(' + ');
   findings.push({
     id: 'matrix_node_count',
     category: 'matrix',
     severity: 'info',
     title: `${nodeDefs.length} Matrix Nodes registered`,
-    detail: `12 sectors × 38 nodes: CORE(1) + SYSTEM(1) + CCR(3) + OCG(6) + Execution(9) + ESZ(4) + EPZ(3) + EMZ(3) + CSZ(3) + Fields(2) + Plane(1) + Shell(1) = ${nodeDefs.length} nodes.`,
+    detail: `${sectorCounts.size} sectors × ${nodeDefs.length} nodes: ${sectorBreakdown}.`,
   });
 
   // Integrity snapshot
