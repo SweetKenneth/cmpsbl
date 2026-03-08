@@ -47,6 +47,19 @@ const STRING_FIELDS = new Set([
   'channel', 'source', 'seed', 'traceId', 'standard', 'riskLevel', 'severity',
 ]);
 
+/** Known object-expected fields — must NOT be stringified */
+const OBJECT_FIELDS = new Set([
+  'constraints', 'context', 'feedback', 'payload', 'preferences',
+  'impactMetrics', 'metadata', 'steps', 'dependencies', 'modules',
+]);
+
+/** Known number-expected fields — must NOT be coerced to string */
+const NUMBER_FIELDS = new Set([
+  'depth', 'priority', 'tokens', 'computeMs', 'costMillicents',
+  'creativity', 'reinforcement', 'threshold', 'windowSize', 'limit',
+  'windowMs', 'minCorrelation', 'baseline', 'window', 'confidence',
+]);
+
 /** Valid wcagLevel values */
 const VALID_WCAG_LEVELS = new Set(['A', 'AA', 'AAA']);
 
@@ -160,8 +173,10 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 8) COERCE_TYPE — cast booleans and numbers to strings for string-expected fields
+  // 8) COERCE_TYPE — cast booleans and numbers to strings ONLY for string-expected fields.
+  //    Number fields (depth, priority, tokens, etc.) must remain as numbers.
   for (const key of Object.keys(copy)) {
+    if (!STRING_FIELDS.has(key)) continue; // Only coerce fields that should be strings
     const val = copy[key];
     if (typeof val === 'boolean' || typeof val === 'number') {
       copy[key] = String(val);
@@ -170,9 +185,11 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   }
 
   // 9) STRIP_EMPTY_OBJECTS — replace empty object values {} with empty string
+  //    Skip known object-expected fields (constraints, context, etc.) — empty {} is valid for those.
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length === 0) {
+    if (val && typeof val === 'object' && !Array.isArray(val)
+        && Object.keys(val).length === 0 && !OBJECT_FIELDS.has(key)) {
       copy[key] = '';
       if (!applied.includes('STRIP_EMPTY_OBJECTS')) applied.push('STRIP_EMPTY_OBJECTS');
     }
@@ -234,10 +251,11 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 14) DEEP_TYPE_COERCE — for non-string-field objects/arrays, stringify them
+  // 14) DEEP_TYPE_COERCE — for non-string, non-object-expected fields, stringify remaining objects
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val && typeof val === 'object' && !Array.isArray(val) && !STRING_FIELDS.has(key)) {
+    if (val && typeof val === 'object' && !Array.isArray(val)
+        && !STRING_FIELDS.has(key) && !OBJECT_FIELDS.has(key)) {
       try {
         copy[key] = JSON.stringify(val);
       } catch {
@@ -392,10 +410,10 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 25) OBJECT_VALUE_STRINGIFY — any remaining non-primitive values get stringified as last resort
+  // 25) OBJECT_VALUE_STRINGIFY — stringify remaining non-primitive values (skip protected object fields)
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val !== null && typeof val === 'object') {
+    if (val !== null && typeof val === 'object' && !OBJECT_FIELDS.has(key)) {
       try { copy[key] = JSON.stringify(val); } catch { copy[key] = ''; }
       if (!applied.includes('OBJECT_VALUE_STRINGIFY')) applied.push('OBJECT_VALUE_STRINGIFY');
     }
@@ -676,11 +694,13 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     if (!applied.includes('PREFERENCES_EMPTY_OBJ')) applied.push('PREFERENCES_EMPTY_OBJ');
   }
 
-  // ── Executor-Specific Repair Rules ──
+  // ── Executor-Specific Shape Injection ──
+  // Only inject executor-specific defaults when DEFAULT_SHAPE was applied,
+  // indicating the input was missing all recognized keys (adversarial/empty).
+  // Without this guard, ALL inputs across all 100+ executors would get these fields.
 
-  // 55) ADAPTIVE_UI_SHAPE — adaptive-ui requires 'viewport', 'colorScheme', 'motionPreference'
-  //     These are commonly missing from adversarial probes. Inject sensible defaults.
-  if ('content' in copy || 'target' in copy) {
+  if (applied.includes('DEFAULT_SHAPE')) {
+    // 55) ADAPTIVE_UI_SHAPE — defaults for UI adaptation executors
     if (!('viewport' in copy) || !copy.viewport) {
       copy.viewport = 'desktop';
       if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
@@ -701,10 +721,8 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
       copy.contrastLevel = 'normal';
       if (!applied.includes('ADAPTIVE_UI_SHAPE')) applied.push('ADAPTIVE_UI_SHAPE');
     }
-  }
 
-  // 56) COGNITIVE_LOAD_SHAPE — cognitive-load-optimization requires 'complexity', 'taskType', 'userExperience'
-  if ('content' in copy || 'target' in copy) {
+    // 56) COGNITIVE_LOAD_SHAPE — defaults for cognitive load executors
     if (!('complexity' in copy) || !copy.complexity) {
       copy.complexity = 'medium';
       if (!applied.includes('COGNITIVE_LOAD_SHAPE')) applied.push('COGNITIVE_LOAD_SHAPE');
