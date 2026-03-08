@@ -629,8 +629,12 @@ export default function STierVault() {
 
   const handleExportPromoted = (d: PromotedDiscovery) => {
     const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-    const synthCtx = contextFromDiscovery(d);
-    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '', synthesisContext: synthCtx });
+    const modules = d.module_chain || [primaryModule];
+    const synthCtx = contextFromDiscovery({
+      ...d,
+      description: getEnrichedDescription(d.description, d.name, modules),
+    });
+    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: getEnrichedDescription(d.description, d.name, modules), code: '', synthesisContext: synthCtx });
   };
 
   const handlePromoteToRegistry = async (d: PromotedDiscovery) => {
