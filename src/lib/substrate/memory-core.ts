@@ -634,11 +634,25 @@ class MemoryCoreClient {
       // Filter by confidence threshold
       filtered = filtered.filter(r => r.confidence >= threshold);
 
-      // Sort by importance and recency
+      // Sort using unified salience scorer for consistency
       filtered.sort((a, b) => {
-        const scoreA = (a.importance_score || 0) * 0.6 + (a.access_count || 0) * 0.1 + a.confidence * 0.3;
-        const scoreB = (b.importance_score || 0) * 0.6 + (b.access_count || 0) * 0.1 + b.confidence * 0.3;
-        return scoreB - scoreA;
+        const salienceA = calculateSalience({
+          confidence: a.confidence,
+          access_count: a.access_count,
+          created_at: a.created_at || new Date().toISOString(),
+          memory_type: a.memory_type,
+          content: a.content,
+          query_context: queryText,
+        });
+        const salienceB = calculateSalience({
+          confidence: b.confidence,
+          access_count: b.access_count,
+          created_at: b.created_at || new Date().toISOString(),
+          memory_type: b.memory_type,
+          content: b.content,
+          query_context: queryText,
+        });
+        return salienceB.score - salienceA.score;
       });
 
       // Limit results
