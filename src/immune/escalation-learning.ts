@@ -227,7 +227,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
     } else {
       existing.count++;
       existing.lastSeen = now;
-      // v3: Adaptive threshold based on executor maturity
+      // Adaptive threshold based on executor maturity
       const threshold = getAdaptiveThreshold(signal.executor);
       existing.eligible = existing.count >= threshold;
     }
