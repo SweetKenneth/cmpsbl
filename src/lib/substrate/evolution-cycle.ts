@@ -439,7 +439,7 @@ class EvolutionCycleClient {
         phase: plan.phase,
         plan_id: plan.plan_id,
         short_id: plan.short_id,
-        message: `Cannot apply to production: plan must be in 'shadow_applied' phase (current: ${plan.phase}). Run \`modernizer.evolve shadow\` first.`,
+        message: `Cannot apply to production: plan must be in 'shadow_applied' phase (current: ${plan.phase}). Run \`evolution.apply shadow\` first.`,
       };
     }
 
