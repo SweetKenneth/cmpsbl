@@ -182,27 +182,43 @@ export default function LlmsTxt() {
 
       <PublicNav />
 
-      <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl">
+      <main className="flex-1 container mx-auto px-4 py-12 max-w-5xl relative">
+        {/* Ambient */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute top-32 right-1/3 w-[350px] h-[350px] rounded-full animate-hero-orb-2" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12 relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Terminal className="w-4 h-4 text-primary" />
             <span className="text-sm font-mono text-primary">
               <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="hover:underline">llmstxt.org</a>
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">
-            LLMS.txt
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+            <span style={{
+              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--foreground)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+              LLMS.txt
+            </span>
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
             A machine-readable context format for AI systems, designed by{" "}
             <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>. 
             We follow this protocol and recommend it for web designers, SaaS builders, and system architects.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Part of the <strong>SPARTA Three-Surface Standard Stack</strong>: Substrate · Governance · Machine Context
+          <p className="text-xs font-mono text-muted-foreground/60 uppercase tracking-widest">
+            SPARTA Three-Surface Standard Stack · Substrate · Governance · Machine Context
           </p>
-        </div>
+        </motion.div>
 
         {/* Standard Claim */}
         <Card className="mb-8 border-primary/20 bg-primary/5">
