@@ -63,9 +63,12 @@ export const CODEAGENT_BOUNDARIES: CodeAgentBoundaries = {
     'child_process',
     'fs.rmSync',
     'DROP TABLE',
-    'DELETE FROM .* WHERE 1=1',
     'TRUNCATE',
   ],
+  /** Regex patterns for more complex forbidden checks */
+  forbiddenRegexPatterns: [
+    /DELETE\s+FROM\s+\S+\s+WHERE\s+1\s*=\s*1/i,
+  ] as readonly RegExp[],
   requiredPatterns: [
     'corsHeaders',  // Edge functions need CORS
     'try {',        // Error handling required
