@@ -447,9 +447,8 @@ export function wrapExecutor(
           emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (retryErr) {
-          // v3.2: Failed repair+retry → safe-fail instead of escalate.
-          // The repair was attempted and failed — escalating just creates noise.
-          // Only mine the pattern for future learning, don't flood the escalation queue.
+          // Failed repair+retry → safe-fail instead of escalate.
+          // Mine the pattern for future learning, don't flood the escalation queue.
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);
           safeFailFlag = true;
