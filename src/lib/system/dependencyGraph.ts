@@ -215,18 +215,20 @@
      }
    }
    
-   // Trace back from deepest
-   const path: SubstrateModuleName[] = [deepestModule];
+   // Trace back from deepest — build forward to avoid O(n²) unshift
+   const path: SubstrateModuleName[] = [];
    let current = nodes.get(deepestModule)!;
+   path.push(deepestModule);
    
    while (current.dependencies.length > 0) {
      const deepestDep = current.dependencies.reduce((a, b) => 
        nodes.get(a)!.depth > nodes.get(b)!.depth ? a : b
      );
-     path.unshift(deepestDep);
+     path.push(deepestDep);
      current = nodes.get(deepestDep)!;
    }
    
+   path.reverse();
    return path;
  }
  
