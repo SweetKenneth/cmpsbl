@@ -103,8 +103,12 @@
    existing.slope = calculateSlope(existing.values);
    existing.acceleration = existing.slope - previousSlope;
  
-   metricTrends.set(metric, existing);
-   return existing;
+  if (!metricTrends.has(metric) && metricTrends.size >= MAX_METRIC_TRENDS) {
+    const oldest = metricTrends.keys().next().value;
+    if (oldest) metricTrends.delete(oldest);
+  }
+  metricTrends.set(metric, existing);
+  return existing;
  }
  
  /**

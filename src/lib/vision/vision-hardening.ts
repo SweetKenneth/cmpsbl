@@ -135,6 +135,7 @@ export interface WindowBucket {
   avg: number;
 }
 
+const MAX_WINDOW_STREAMS = 100;
 const windowBuffers = new Map<string, Array<{ value: number; ts: number }>>();
 
 export function pushToWindow(stream: string, value: number): void {
