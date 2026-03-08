@@ -167,39 +167,39 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{registryEntries.length}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{registryEntries.length}</div>
           <div className="text-[10px] text-muted-foreground">Registry Artifacts</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-amber-400">{promoted.length}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-amber-400">{promoted.length}</div>
           <div className="text-[10px] text-muted-foreground">Discovered</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
           <div className="text-[10px] text-muted-foreground">Total Est. Value</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.avgCjpi}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.avgCjpi}</div>
           <div className="text-[10px] text-muted-foreground">Avg CJPI</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
           <div className="text-[10px] text-muted-foreground">Module Coverage</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.codeReady}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.codeReady}</div>
           <div className="text-[10px] text-muted-foreground">Code Ready</div>
         </CardContent>
       </Card>
