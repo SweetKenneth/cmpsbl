@@ -587,12 +587,12 @@ export function getModulesByLayer(layer: ModuleEntry['layer']): ModuleEntry[] {
   return Object.values(SYSTEM_MODULES).filter(m => m.layer === layer);
 }
 
-export function getDependencyChain(moduleId: string, visited = new Set<string>()): string[] {
-  if (visited.has(moduleId)) return [];
+export function getDependencyChain(moduleId: string, visited = new Set<string>(), depth = 0): string[] {
+  if (visited.has(moduleId) || depth > 20) return [];
   visited.add(moduleId);
   const mod = SYSTEM_MODULES[moduleId];
   if (!mod) return [moduleId];
-  const deps = mod.dependencies.flatMap(d => getDependencyChain(d, visited));
+  const deps = mod.dependencies.flatMap(d => getDependencyChain(d, visited, depth + 1));
   return [...deps, moduleId];
 }
 

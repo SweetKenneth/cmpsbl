@@ -304,9 +304,10 @@ export function navigateIntent(intentText: string): NavigationResult {
   // ── Step 1: Resolve target modules ──────────────────────────
   const moduleIds = new Set<string>();
 
-  // Direct module name match
+  // Direct module name match — use word boundary to avoid "ai" matching inside "brain"
   for (const [id] of Object.entries(SYSTEM_MODULES)) {
-    if (lower.includes(id)) moduleIds.add(id);
+    const boundary = new RegExp(`\\b${id}\\b`);
+    if (boundary.test(lower)) moduleIds.add(id);
   }
 
   // Semantic alias match
