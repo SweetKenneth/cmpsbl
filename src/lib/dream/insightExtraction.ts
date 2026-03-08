@@ -200,7 +200,7 @@ function extractAnomalyInsights(patterns: DreamPatternInput[]): DreamInsight[] {
 
   for (const pattern of anomalyPatterns) {
     insights.push({
-      id: `insight-anom-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      id: `insight-anom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       type: 'anomaly',
       title: `Anomalous pattern: ${pattern.name}`,
       description: `Unusual pattern detected with low confidence (${(pattern.confidence * 100).toFixed(1)}%)`,
