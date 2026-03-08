@@ -34,15 +34,16 @@ export async function learnFromResult(data: LearningData): Promise<void> {
         model: data.model,
         success: data.success,
         input_data: {
-          prompt: data.request.prompt,
+          prompt_preview: data.request.prompt.slice(0, 500),
+          prompt_length: data.request.prompt.length,
           type: data.request.type || null,
           priority: data.request.priority || null,
-          context: (data.request.context || null) as Record<string, string> | null,
         },
         output_data: {
           model: data.model,
           latency: data.latency,
-          response: data.response,
+          response_preview: data.response?.slice(0, 500) || '',
+          response_length: data.response?.length || 0,
           success: data.success,
         },
         metadata: {

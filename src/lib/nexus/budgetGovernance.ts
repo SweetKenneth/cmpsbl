@@ -54,7 +54,7 @@ let budgetConfig = { ...DEFAULT_BUDGET };
 const MAX_SPENDING_ENTRIES = 60;
 const dailySpending = new Map<string, number>();
 const monthlySpending = new Map<string, number>();
-const alerts: BudgetAlert[] = [];
+
  
  /**
   * Get current budget status
@@ -132,29 +132,36 @@ const alerts: BudgetAlert[] = [];
  /**
   * Check if a request is allowed within budget
   */
- export async function canSpend(estimatedCostCents: number, category?: string): Promise<{
+  export async function canSpend(estimatedCostCents: number, category?: string): Promise<{
    allowed: boolean;
    reason?: string;
    remaining_daily: number;
    remaining_category?: number;
  }> {
-   const status = await getBudgetStatus();
+   // Use in-memory tracker for fast pre-flight checks (avoid DB round-trip per request)
+   const today = new Date().toISOString().split('T')[0];
+   const month = today.substring(0, 7);
+   const dailySpent = dailySpending.get(today) || 0;
+   const monthlySpent = monthlySpending.get(month) || 0;
+   const dailyRemaining = Math.max(0, budgetConfig.daily_limit_cents - dailySpent);
+   const monthlyRemaining = Math.max(0, budgetConfig.monthly_limit_cents - monthlySpent);
    
-   // Check global throttle
-   if (status.is_throttled) {
-     return {
-       allowed: false,
-       reason: status.throttle_reason,
-       remaining_daily: status.daily_remaining_cents,
-     };
+   // Check hard stop
+   if (budgetConfig.hard_stop_enabled) {
+     if (dailySpent >= budgetConfig.daily_limit_cents) {
+       return { allowed: false, reason: 'Daily budget exhausted', remaining_daily: 0 };
+     }
+     if (monthlySpent >= budgetConfig.monthly_limit_cents) {
+       return { allowed: false, reason: 'Monthly budget exhausted', remaining_daily: dailyRemaining };
+     }
    }
    
    // Check if this spend would exceed daily limit
-   if (estimatedCostCents > status.daily_remaining_cents) {
+   if (estimatedCostCents > dailyRemaining) {
      return {
        allowed: false,
-       reason: `Insufficient daily budget (need ${estimatedCostCents}¢, have ${status.daily_remaining_cents}¢)`,
-       remaining_daily: status.daily_remaining_cents,
+       reason: `Insufficient daily budget (need ${estimatedCostCents}¢, have ${dailyRemaining}¢)`,
+       remaining_daily: dailyRemaining,
      };
    }
    
@@ -169,7 +176,7 @@ const alerts: BudgetAlert[] = [];
        return {
          allowed: false,
          reason: `Category ${category} budget exhausted`,
-         remaining_daily: status.daily_remaining_cents,
+         remaining_daily: dailyRemaining,
          remaining_category: categoryRemaining,
        };
      }
@@ -177,7 +184,7 @@ const alerts: BudgetAlert[] = [];
    
    return {
      allowed: true,
-     remaining_daily: status.daily_remaining_cents - estimatedCostCents,
+     remaining_daily: dailyRemaining - estimatedCostCents,
    };
  }
  
