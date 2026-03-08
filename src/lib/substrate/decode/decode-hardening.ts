@@ -307,8 +307,13 @@ export interface ContextBudget {
 }
 
 const contextBudgets = new Map<string, { maxTokens: number; usedTokens: number }>();
+const MAX_CONTEXT_BUDGETS = 500;
 
 export function initContextBudget(sessionId: string, maxTokens = 128_000): void {
+  if (contextBudgets.size >= MAX_CONTEXT_BUDGETS && !contextBudgets.has(sessionId)) {
+    const oldest = contextBudgets.keys().next().value;
+    if (oldest) contextBudgets.delete(oldest);
+  }
   contextBudgets.set(sessionId, { maxTokens, usedTokens: 0 });
 }
 
