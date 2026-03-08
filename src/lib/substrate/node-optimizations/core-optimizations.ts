@@ -57,7 +57,9 @@ export function recordBootCheckpoint(
   durationMs: number,
   metadata?: Record<string, unknown>,
 ): void {
-  journal.checkpoints.push({ phase, status, durationMs, timestamp: Date.now(), metadata });
+  // Guard against negative or absurd durations
+  const safeDuration = Math.max(0, Math.min(durationMs, 600_000)); // cap at 10 min
+  journal.checkpoints.push({ phase, status, durationMs: safeDuration, timestamp: Date.now(), metadata });
   if (status === 'completed') journal.lastHealthyPhase = phase;
 }
 
@@ -81,7 +83,11 @@ export function getLastHealthyBootPhase(): string | null {
  * Get boot journal history.
  */
 export function getBootJournals(limit: number = 20): BootJournal[] {
-  return bootJournals.slice(-limit);
+  const clamped = Math.max(1, Math.min(limit, MAX_JOURNALS));
+  return bootJournals.slice(-clamped).map(j => ({
+    ...j,
+    checkpoints: [...j.checkpoints],
+  }));
 }
 
 /**
