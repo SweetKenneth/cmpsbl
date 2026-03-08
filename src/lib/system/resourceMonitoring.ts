@@ -233,25 +233,33 @@ async function collectConnectionMetrics(): Promise<ConnectionMetrics> {
 
 async function collectEdgeFunctionMetrics(): Promise<EdgeFunctionMetrics> {
   try {
-    // Count recent edge function invocations from events
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
     
-    const { count, data } = await supabase
-      .from('brain_events')
-      .select('*', { count: 'exact' })
-      .gte('created_at', yesterday.toISOString())
-      .like('event_type', '%invoke%')
-      .limit(100);
+    // Use head:true for count to avoid fetching full rows
+    const [totalResult, errorResult] = await Promise.all([
+      supabase
+        .from('brain_events')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', yesterday.toISOString())
+        .like('event_type', '%invoke%'),
+      supabase
+        .from('brain_events')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', yesterday.toISOString())
+        .like('event_type', '%invoke%')
+        .eq('outcome', 'error'),
+    ]);
     
-    const errors = data?.filter(e => e.outcome === 'error') || [];
-    const errorRate = data?.length ? (errors.length / data.length) * 100 : 0;
+    const total = totalResult.count || 0;
+    const errors = errorResult.count || 0;
+    const errorRate = total > 0 ? (errors / total) * 100 : 0;
     
     return {
-      total_invocations_24h: count || 0,
+      total_invocations_24h: total,
       avg_response_time_ms: 150 + Math.random() * 100,
       error_rate_percent: errorRate,
       active_functions: 15,
-      cold_starts_24h: Math.floor(count ? count * 0.05 : 0),
+      cold_starts_24h: Math.floor(total * 0.05),
     };
   } catch {
     return {
