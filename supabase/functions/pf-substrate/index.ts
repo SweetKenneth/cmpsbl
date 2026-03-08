@@ -1342,6 +1342,8 @@ async function handleBrain(
           content: String(content).trim().substring(0, 2000),
           context: String(memory_type),
           priority: Math.round((confidence as number) * 10),
+          source_module: String(metadata?.source_module || metadata?.module || 'BRAIN'),
+          category: String(metadata?.category || metadata?.domain || memory_type),
           tags: { type: memory_type, source: 'remember' },
           metadata: { memory_id: memory?.id, ...metadata },
         });
