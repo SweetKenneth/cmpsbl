@@ -528,7 +528,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
             `gap_fix_${task.gapType}`,
             task.difficulty,
             result.confidence ?? 0.75,
-            `Modernizer shadow: fixed ${task.title} (${task.gapType})`,
+            `Shadow gap training: fixed ${task.title} (${task.gapType})`,
           );
           summary.rulesGenerated++;
         }
