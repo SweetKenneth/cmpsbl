@@ -154,6 +154,11 @@ const MAX_SESSIONS = 500;
 export function trackSessionTurn(sessionId: string, topic: string): SessionContinuity {
   let session = sessions.get(sessionId);
   if (!session) {
+    // Evict oldest session if at capacity
+    if (sessions.size >= MAX_SESSIONS) {
+      const oldestKey = sessions.keys().next().value;
+      if (oldestKey) sessions.delete(oldestKey);
+    }
     session = {
       sessionId,
       turnCount: 0,
