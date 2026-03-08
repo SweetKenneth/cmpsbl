@@ -436,8 +436,13 @@ export function getInsightStats(): { total: number; promoted: number; promotionR
 // ─── 20. Dream Sandbox Isolation ────────────────────────────────────────────
 interface DreamSandbox { id: string; isolationLevel: 'strict' | 'permissive'; allowedDomains: string[]; memoryLimit: number; timeoutMs: number; }
 const sandboxes = new Map<string, DreamSandbox>();
+const MAX_SANDBOXES = 50;
 
 export function createDreamSandbox(id: string, config?: Partial<DreamSandbox>): DreamSandbox {
+  if (sandboxes.size >= MAX_SANDBOXES && !sandboxes.has(id)) {
+    const oldest = sandboxes.keys().next().value;
+    if (oldest) sandboxes.delete(oldest);
+  }
   const sandbox: DreamSandbox = {
     id, isolationLevel: 'strict', allowedDomains: [], memoryLimit: 50_000, timeoutMs: 10_000,
     ...config,
