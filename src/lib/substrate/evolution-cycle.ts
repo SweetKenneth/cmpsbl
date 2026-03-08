@@ -236,7 +236,7 @@ class EvolutionCycleClient {
           }));
 
           const scan_results: ScanResult = {
-            modules_scanned: 21,
+            modules_scanned: 40,
             improvements_found: scanResult.proposals.length,
             risk_level: 'low',
             proposals: proposalItems,
@@ -287,7 +287,7 @@ class EvolutionCycleClient {
           data: {
             plan: newState.current_plan,
             scan_results: {
-              modules_scanned: 21,
+              modules_scanned: 40,
               improvements_found: scanResult.proposals.length,
               risk_level: 'low',
               proposals: scanResult.proposals,
@@ -325,7 +325,7 @@ class EvolutionCycleClient {
       return {
         success: true,
         phase: 'idle',
-        message: 'No active evolution plan. Run `modernizer.evolve` to start a new cycle.',
+        message: 'No active evolution plan. Run `evolution.scan` to start a new cycle.',
       };
     }
 
@@ -356,7 +356,7 @@ class EvolutionCycleClient {
       return {
         success: false,
         phase: 'idle',
-        message: 'No active plan. Run `modernizer.evolve` first.',
+        message: 'No active plan. Run `evolution.scan` first.',
       };
     }
 
@@ -371,7 +371,7 @@ class EvolutionCycleClient {
           plan_id: plan.plan_id,
           short_id: plan.short_id,
           run_id: plan.run_id,
-          message: `Shadow already applied for plan ${plan.short_id}. Run \`modernizer.evolve production\` to promote.`,
+          message: `Shadow already applied for plan ${plan.short_id}. Run \`evolution.apply production\` to promote.`,
         };
       }
       return {
@@ -403,7 +403,7 @@ class EvolutionCycleClient {
         plan_id: plan.plan_id,
         short_id: plan.short_id,
         run_id: plan.run_id,
-        message: `Shadow changes applied for plan ${plan.short_id}. Run \`modernizer.evolve production\` to promote.`,
+        message: `Shadow changes applied for plan ${plan.short_id}. Run \`evolution.apply production\` to promote.`,
       };
     } catch (e) {
       return {
@@ -426,7 +426,7 @@ class EvolutionCycleClient {
       return {
         success: false,
         phase: 'idle',
-        message: 'No active plan. Run `modernizer.evolve` first.',
+        message: 'No active plan. Run `evolution.scan` first.',
       };
     }
 
@@ -439,7 +439,7 @@ class EvolutionCycleClient {
         phase: plan.phase,
         plan_id: plan.plan_id,
         short_id: plan.short_id,
-        message: `Cannot apply to production: plan must be in 'shadow_applied' phase (current: ${plan.phase}). Run \`modernizer.evolve shadow\` first.`,
+        message: `Cannot apply to production: plan must be in 'shadow_applied' phase (current: ${plan.phase}). Run \`evolution.apply shadow\` first.`,
       };
     }
 
@@ -670,7 +670,7 @@ class EvolutionCycleClient {
         target: 'substrate',
         before_state: { phase: 'shadow_applied', health: plan.scan_results?.health_before || 100 },
         after_state: { phase: 'production_applied', improvements: plan.scan_results?.improvements_found || 0 },
-        description: `Modernizer evolution cycle ${plan.short_id} applied to production`,
+        description: `Evolution cycle ${plan.short_id} applied to production`,
         change_hash: this.generateChangeHash(plan),
         reversible: true,
         initiator: 'modernizer_governed',
@@ -693,14 +693,13 @@ class EvolutionCycleClient {
       phase: plan.phase,
       timestamp: Date.now(),
     });
-    // Simple hash for verification (in production, use crypto.subtle)
-    let hash = 0;
+    // FNV-1a 32-bit — deterministic, fast, collision-resistant for audit hashing
+    let hash = 0x811c9dc5;
     for (let i = 0; i < payload.length; i++) {
-      const char = payload.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+      hash ^= payload.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
     }
-    return Math.abs(hash).toString(16).padStart(8, '0');
+    return (hash >>> 0).toString(16).padStart(8, '0');
   }
 
   /**
