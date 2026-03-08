@@ -152,7 +152,9 @@ export async function enforceDailyBudget(category: QueryCategory): Promise<boole
       return true;
     }
     
-    return data.calls_used < data.calls_budget;
+    const used = data.calls_used ?? 0;
+    const budget = data.calls_budget ?? 0;
+    return budget === 0 || used < budget;
   } catch (err) {
     console.error('Error checking daily budget:', err);
     return true; // Allow on error
