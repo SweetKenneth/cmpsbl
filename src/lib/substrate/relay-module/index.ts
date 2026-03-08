@@ -130,7 +130,7 @@ export function initRelay(): void {
   emitStarted('relay', 'init', {});
   try {
     initCircuitBreaker('relay', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('relay', '10.6.0');
+    moduleEngine = activateModuleEngine('relay');
     state.initialized = true;
     emitSucceeded('relay', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
