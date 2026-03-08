@@ -75,12 +75,12 @@ export interface MatrixIntegrityReport {
  *   SYSTEM (Standalone)  = 0.040 (4%)
  *   CCR (3 zones)        = 0.120 (12%)  — BRAIN, MEMORY, DREAM
  *   OCG (6 zones)        = 0.150 (15%)  — RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
- *   Execution (9 nodes)  = 0.200 (20%)  — DECODE..INTEGRATION (NERVE moved to OCG)
+ *   Execution (10 nodes) = 0.220 (22%)  — DECODE..MEDIC + INTEGRATION
  *   ESZ (4 nodes)        = 0.080 (8%)   — SOVEREIGN, ORACLE, CONSCIENCE, TREATY
  *   EPZ (3 nodes)        = 0.060 (6%)   — COMPASS, ECHO, REFLEX
  *   EMZ (3 nodes)        = 0.045 (4.5%) — FORGE, LINGUA, HARVEST
  *   CSZ (3 nodes)        = 0.055 (5.5%) — EVOLUTION, SHADOW, PHANTOM
- *   Fields (2 nodes)     = 0.040 (4%)   — IMMUNITY, INTENT
+ *   Fields (2 nodes)     = 0.060 (6%)   — IMMUNITY, INTENT
  *   Plane (1 node)       = 0.030 (3%)
  *   Shell (1 node)       = 0.030 (3%)
  *   ─────────────────────────────────
