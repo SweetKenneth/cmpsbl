@@ -193,13 +193,21 @@ export interface ImpactAssessment {
 }
 
 // ─── Internal State ───────────────────────────────────────────────────────────
-// All arrays are capped to prevent unbounded memory growth.
+// All collections are capped to prevent unbounded memory growth.
 
 const MAX_POLICY_VERSIONS = 100;
 const MAX_DECISION_CHAIN = 2000;
 const MAX_DELEGATIONS = 500;
 const MAX_OVERRIDES = 200;
 const MAX_TIMESTAMPS = 2000;
+const MAX_QUORUMS = 200;
+const MAX_SESSIONS = 100;
+const MAX_ESCALATIONS = 200;
+const MAX_CONSENT_LOG = 200;
+const MAX_COOLDOWNS = 200;
+const MAX_RATE_LIMIT_BUCKETS = 100;
+const MAX_POLICY_EXPIRIES = 500;
+const MAX_CHECKPOINTS = 200;
 
 const policyVersions: PolicySnapshot[] = [];
 const decisionChain: DecisionRecord[] = [];
@@ -214,6 +222,25 @@ const decisionTimestamps: number[] = [];
 const policyExpiries = new Map<string, number>(); // ruleId → expiry
 const rateLimitBuckets = new Map<string, { tokens: number; lastRefill: number }>();
 const anomalyBaseline = { mean: 0, stddev: 0, sampleCount: 0 };
+
+let lastChainHash = '0'.repeat(64);
+
+/** Trim an array to a max length, keeping the most recent entries */
+function capArray<T>(arr: T[], max: number): void {
+  if (arr.length > max) arr.splice(0, arr.length - max);
+}
+
+/** Trim a Map to a max size, evicting oldest entries (by insertion order) */
+function capMap<K, V>(map: Map<K, V>, max: number): void {
+  if (map.size <= max) return;
+  const excess = map.size - max;
+  const iter = map.keys();
+  for (let i = 0; i < excess; i++) {
+    const { value, done } = iter.next();
+    if (done) break;
+    map.delete(value);
+  }
+}
 
 let lastChainHash = '0'.repeat(64);
 
