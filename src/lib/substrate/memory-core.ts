@@ -678,21 +678,25 @@ class MemoryCoreClient {
 
   // Helper for querying specific tables
   private async queryTable(table: string, queryText: string, strategy: 'fulltext' | 'pattern', limit: number): Promise<{ data: any[] | null }> {
+    const cols = 'id, content, context, value_score, access_count, confidence, created_at, memory_type, tags, source_module, category';
+    // Sanitize pattern input to prevent PostgREST injection
+    const sanitized = queryText.replace(/[%_\\]/g, '');
+    
     if (table === 'brain_memory_hot') {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_hot').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_hot').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_hot').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_hot').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else if (table === 'brain_memory_warm') {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_warm').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_warm').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_warm').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_cold').select('*').textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_cold').select(cols).textSearch('content', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_cold').select('*').ilike('content', `%${queryText}%`).limit(limit);
+      return supabase.from('brain_memory_cold').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     }
   }
 
