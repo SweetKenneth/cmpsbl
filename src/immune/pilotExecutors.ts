@@ -1,13 +1,9 @@
 /**
- * Executor Immune Pilot — Universal Immunity Mesh (v6.0)
+ * IMMUNITY — Universal Executor Registry & Immune Wrapping
  * 
- * v6.0: Universal wrapping — ALL executors are immune-wrapped, not just pilots.
- * The createImmuneAwareRegister now wraps every executor that passes through it,
- * using explicit metadata for known executors and inferExecutorMeta() for new ones.
- * This eliminates the "pilot" concept — every executor is protected by default.
- * 
- * Auto-inference for module metadata ensures new executors added to
- * the registry are automatically categorized without manual mapping.
+ * ALL executors are immune-wrapped via createImmuneAwareRegister().
+ * Known executors use explicit metadata, unknown ones use inferExecutorMeta().
+ * This ensures every executor is protected by the Immunity Mesh by default.
  */
 
 import type { SynergyExecutor } from '@/lib/capabilities/synergies/types';
