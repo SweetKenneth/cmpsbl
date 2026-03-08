@@ -317,7 +317,7 @@ class MemoryCoreClient {
           .from('brain_memory_hot')
           .select('id', { count: 'exact', head: true });
 
-        const HOT_CAPACITY = 200;
+        const HOT_CAPACITY = 500;
         if ((count ?? 0) >= HOT_CAPACITY * 0.8) {
           // Hot tier at/near capacity — downgrade to warm
           tier = 'warm';
