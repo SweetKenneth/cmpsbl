@@ -87,8 +87,8 @@
       synthesisHistory.splice(0, synthesisHistory.length - MAX_HISTORY);
     }
    
-   // Log to database
-   await logSynthesis(output);
+   // Log to database (fire-and-forget — don't block caller)
+   logSynthesis(output);
    
    return output;
  }
