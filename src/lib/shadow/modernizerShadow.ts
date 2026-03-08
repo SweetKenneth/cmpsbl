@@ -437,7 +437,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   
   log.info('shadow-gap-training', 'Starting gap-driven shadow training scan...');
   
-  // Step 1: Run Modernizer scan to find real gaps
+  // Step 1: Run evolution scan to find real gaps
   const scanResult = await modernizerScan({ dry_run: true });
   const scanId = scanResult.scan_id;
   
