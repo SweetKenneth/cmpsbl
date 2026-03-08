@@ -1,6 +1,5 @@
 /**
- * Improvement #8: Post-Execution Outcome Tracking
- * Improvement #9: Dream Cycle Integration (hooks for learning)
+ * IMMUNITY — Post-Execution Outcome Tracking & Dream Cycle Integration
  *
  * Tracks repair outcomes with full context so the system can learn
  * which repairs work for which input patterns.

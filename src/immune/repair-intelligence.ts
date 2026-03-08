@@ -1,5 +1,5 @@
 /**
- * Improvement #1: Context-Aware Rule Selection
+ * IMMUNITY — Intelligent Repair Pipeline
  * Improvement #2: Compositional Repair Chains
  * Improvement #3: Confidence-Scored Repairs
  * Improvement #4: Learned Prioritization (from immune_metrics history)

@@ -1,5 +1,5 @@
 /**
- * Phase 3 — ENCODE Closed-Loop Escalation Learning System (v3.0)
+ * IMMUNITY — Closed-Loop Escalation Learning System
  * 
  * Major overhaul for real repair intelligence:
  * - Retroactive learning from DB-resolved escalations

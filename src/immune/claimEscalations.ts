@@ -1,8 +1,6 @@
 /**
- * ENCODE Escalation Handoff — Placeholder
+ * IMMUNITY → ENCODE Escalation Handoff
  * Reads open immune escalations and formats them as a work queue for ENCODE.
- * 
- * NO auto-apply in this patch. Just proves we can capture → persist → surface.
  */
 
 import { supabase } from '@/integrations/supabase/client';
