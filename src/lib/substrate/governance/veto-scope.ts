@@ -32,7 +32,7 @@ export const SCOPE_MATRIX: Record<VetoScope, ScopeDefinition> = {
   healing_actions: {
     scope: 'healing_actions',
     description: 'Self-healing and auto-recovery operations',
-    affected_modules: ['system', 'cortex', 'modernizer'],
+    affected_modules: ['system', 'cortex', 'medic'],
     risk_level: 'low',
   },
   routing_changes: {

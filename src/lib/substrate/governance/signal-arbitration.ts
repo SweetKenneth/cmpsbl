@@ -37,11 +37,29 @@ export interface ArbitrationResult {
 }
 
 // Modules that can only emit signals (advisory)
+// All 40 nodes except the 3 veto authorities (audit, defense, system)
 const ADVISORY_MODULES = new Set([
-  'brain', 'dream', 'decode', 'encode', 'vision',
-  'nexus', 'modernizer', 'inclusive', 'atlas',
-  'memory', 'relay', 'identity', 'economy', 'sandbox',
-  'integration', 'cortex', 'ripple', 'access',
+  // CCR
+  'brain', 'memory', 'dream',
+  // OCG
+  'ripple', 'access', 'identity', 'relay', 'nerve',
+  // Execution
+  'decode', 'encode', 'vision', 'cortex', 'nexus',
+  'economy', 'sandbox', 'inclusive', 'medic', 'integration',
+  // Fields
+  'immunity', 'intent',
+  // Plane
+  'governance',
+  // Kernel
+  'core',
+  // ESZ
+  'sovereign', 'oracle', 'conscience', 'treaty',
+  // EPZ
+  'compass', 'echo', 'reflex',
+  // EMZ
+  'forge', 'lingua', 'harvest',
+  // CSZ
+  'evolution', 'shadow', 'phantom',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
