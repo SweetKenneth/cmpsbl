@@ -393,11 +393,19 @@ export async function getRelevantPatterns(
   limit: number = 5
 ): Promise<ExtractedPattern[]> {
   try {
-    // Query learning_patterns for relevant entries
+    // Sanitize inputs to prevent injection via .or() ilike
+    const safeModule = module.replace(/[%_'"\\]/g, '').slice(0, 50);
+    const safeChangeType = changeType.replace(/[%_'"\\]/g, '').slice(0, 50);
+    if (!safeModule && !safeChangeType) return [];
+
+    const filters: string[] = [];
+    if (safeModule) filters.push(`pattern_name.ilike.%${safeModule}%`);
+    if (safeChangeType) filters.push(`pattern_name.ilike.%${safeChangeType}%`);
+
     const { data } = await supabase
       .from('learning_patterns')
       .select('*')
-      .or(`pattern_name.ilike.%${module}%,pattern_name.ilike.%${changeType}%`)
+      .or(filters.join(','))
       .order('confidence', { ascending: false })
       .limit(limit);
     
