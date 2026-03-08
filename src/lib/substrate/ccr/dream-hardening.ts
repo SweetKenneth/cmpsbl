@@ -32,11 +32,13 @@ export function validateDreamChain(chainId: string): { valid: boolean; avgCohere
 // ─── 2. Synthesis Convergence Detector ──────────────────────────────────────
 interface ConvergencePoint { iteration: number; divergence: number; timestamp: number; }
 const convergenceHistory = new Map<string, ConvergencePoint[]>();
+const MAX_CONVERGENCE_HISTORY = 50;
 
 export function recordConvergence(chainId: string, iteration: number, divergence: number): boolean {
   if (!convergenceHistory.has(chainId)) convergenceHistory.set(chainId, []);
   const history = convergenceHistory.get(chainId)!;
   history.push({ iteration, divergence, timestamp: Date.now() });
+  if (history.length > MAX_CONVERGENCE_HISTORY) history.splice(0, history.length - MAX_CONVERGENCE_HISTORY);
   // Converged if divergence below threshold for 3+ consecutive
   const recent = history.slice(-3);
   return recent.length >= 3 && recent.every(p => p.divergence < 0.05);
@@ -89,6 +91,7 @@ export function scoreDreamOutput(params: {
 // ─── 5. Hallucination Guard ─────────────────────────────────────────────────
 interface HallucinationCheck { outputId: string; groundedFacts: number; ungroundedClaims: number; confidence: number; flagged: boolean; }
 const hallucinationLog: HallucinationCheck[] = [];
+const MAX_HALLUCINATION_LOG = 500;
 
 export function checkHallucination(outputId: string, groundedFacts: number, totalClaims: number): HallucinationCheck {
   const ungrounded = totalClaims - groundedFacts;
@@ -96,7 +99,7 @@ export function checkHallucination(outputId: string, groundedFacts: number, tota
   const flagged = confidence < 0.5 || ungrounded > 3;
   const result: HallucinationCheck = { outputId, groundedFacts, ungroundedClaims: ungrounded, confidence, flagged };
   hallucinationLog.push(result);
-  if (hallucinationLog.length > 500) hallucinationLog.shift();
+  if (hallucinationLog.length > MAX_HALLUCINATION_LOG) hallucinationLog.splice(0, hallucinationLog.length - MAX_HALLUCINATION_LOG);
   return result;
 }
 
@@ -112,8 +115,8 @@ const MAX_PATTERNS = 300;
 
 export function cachePattern(id: string, domain: string, pattern: string): void {
   if (patternCache.size >= MAX_PATTERNS) {
-    let oldest = ''; let oldestTime = Infinity;
-    for (const [k, v] of patternCache) { if (v.lastUsed < oldestTime) { oldestTime = v.lastUsed; oldest = k; } }
+    // FIFO eviction — O(1) via iterator
+    const oldest = patternCache.keys().next().value;
     if (oldest) patternCache.delete(oldest);
   }
   patternCache.set(id, { id, domain, pattern, usageCount: 0, discoveredAt: Date.now(), lastUsed: Date.now() });
@@ -137,6 +140,7 @@ export function getPatternStats(): { total: number; avgUsage: number; topPattern
 // ─── 7. Dream Cycle Scheduler ───────────────────────────────────────────────
 interface ScheduledDream { id: string; priority: number; seeds: string[]; scheduledAt: number; status: 'pending' | 'running' | 'completed' | 'failed'; }
 const dreamQueue: ScheduledDream[] = [];
+const MAX_DREAM_QUEUE = 200;
 let activeDreamCount = 0;
 const MAX_CONCURRENT_DREAMS = 3;
 
@@ -144,6 +148,14 @@ export function scheduleDream(seeds: string[], priority = 5): string {
   const id = `dream_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`;
   dreamQueue.push({ id, priority, seeds, scheduledAt: Date.now(), status: 'pending' });
   dreamQueue.sort((a, b) => b.priority - a.priority);
+  // Evict oldest completed/failed entries when over capacity
+  if (dreamQueue.length > MAX_DREAM_QUEUE) {
+    for (let i = dreamQueue.length - 1; i >= 0 && dreamQueue.length > MAX_DREAM_QUEUE; i--) {
+      if (dreamQueue[i].status === 'completed' || dreamQueue[i].status === 'failed') {
+        dreamQueue.splice(i, 1);
+      }
+    }
+  }
   return id;
 }
 
@@ -160,12 +172,16 @@ export function completeDream(id: string, success: boolean): void {
 }
 
 export function getDreamQueueStats(): { pending: number; running: number; completed: number; failed: number } {
-  return {
-    pending: dreamQueue.filter(d => d.status === 'pending').length,
-    running: dreamQueue.filter(d => d.status === 'running').length,
-    completed: dreamQueue.filter(d => d.status === 'completed').length,
-    failed: dreamQueue.filter(d => d.status === 'failed').length,
-  };
+  let pending = 0, running = 0, completed = 0, failed = 0;
+  for (const d of dreamQueue) {
+    switch (d.status) {
+      case 'pending': pending++; break;
+      case 'running': running++; break;
+      case 'completed': completed++; break;
+      case 'failed': failed++; break;
+    }
+  }
+  return { pending, running, completed, failed };
 }
 
 // ─── 8. Cross-Domain Fusion Validator ───────────────────────────────────────
@@ -256,7 +272,7 @@ const coherenceScores: number[] = [];
 
 export function recordCoherence(score: number): void {
   coherenceScores.push(score);
-  if (coherenceScores.length > 100) coherenceScores.shift();
+  if (coherenceScores.length > 100) coherenceScores.splice(0, coherenceScores.length - 100);
 }
 
 export function getCoherenceTrend(): { avg: number; trend: 'improving' | 'stable' | 'degrading'; recent: number } {
@@ -318,11 +334,12 @@ export function getIdleStats(): { isIdle: boolean; currentIdleMs: number; totalI
 // ─── 16. Dream Result Archiver ──────────────────────────────────────────────
 interface ArchivedDream { id: string; chainId: string; result: unknown; quality: number; archivedAt: number; tags: string[]; }
 const dreamArchive: ArchivedDream[] = [];
+const MAX_ARCHIVE = 200;
 
 export function archiveDream(chainId: string, result: unknown, quality: number, tags: string[]): string {
   const id = `arch_${Date.now()}`;
   dreamArchive.push({ id, chainId, result, quality, archivedAt: Date.now(), tags });
-  if (dreamArchive.length > 200) dreamArchive.shift();
+  if (dreamArchive.length > MAX_ARCHIVE) dreamArchive.splice(0, dreamArchive.length - MAX_ARCHIVE);
   return id;
 }
 
@@ -382,7 +399,7 @@ const insightPipeline: InsightCandidate[] = [];
 export function submitInsight(content: string, quality: number): string {
   const id = `ins_${Date.now()}`;
   insightPipeline.push({ id, content, quality, promoted: false });
-  if (insightPipeline.length > 100) insightPipeline.shift();
+  if (insightPipeline.length > 100) insightPipeline.splice(0, insightPipeline.length - 100);
   return id;
 }
 
@@ -461,7 +478,7 @@ const temperatureHistory: Array<{ value: number; timestamp: number }> = [];
 export function setDreamTemperature(t: number): void {
   temperature = Math.max(0, Math.min(1, t));
   temperatureHistory.push({ value: temperature, timestamp: Date.now() });
-  if (temperatureHistory.length > 100) temperatureHistory.shift();
+  if (temperatureHistory.length > 100) temperatureHistory.splice(0, temperatureHistory.length - 100);
 }
 
 export function getDreamTemperature(): number { return temperature; }
@@ -497,7 +514,7 @@ export function checkDreamGovernance(dreamId: string, domains: string[], riskSco
   if (domains.length > 5) { allowed = false; reason = 'too_many_domains'; }
   const check: GovernanceCheck = { dreamId, allowed, reason, checkedAt: Date.now() };
   governanceChecks.push(check);
-  if (governanceChecks.length > 200) governanceChecks.shift();
+  if (governanceChecks.length > 200) governanceChecks.splice(0, governanceChecks.length - 200);
   return check;
 }
 

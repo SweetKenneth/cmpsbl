@@ -198,8 +198,8 @@ export async function convertDreamToProposal(
 
     if (error) throw error;
 
-    // Log the conversion
-    await supabase.from('brain_events').insert({
+    // Log the conversion (fire-and-forget — don't block pipeline)
+    supabase.from('brain_events').insert({
       module: 'dream',
       event_type: 'dream_to_proposal',
       data: {
@@ -210,6 +210,8 @@ export async function convertDreamToProposal(
         confidence: insight.confidence,
       },
       outcome: 'success',
+    }).then(({ error }) => {
+      if (error) console.error('Failed to log dream conversion:', error);
     });
 
     return {
