@@ -137,7 +137,7 @@ export function CCRTab() {
                 { tier: 'Archive', count: memory.archive, color: 'bg-slate-500', desc: 'Permanent — never deleted', pct: totalMemories > 0 ? (memory.archive / totalMemories) * 100 : 0 },
               ].map((t, i) => (
                 <motion.div key={t.tier} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
-                  className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                  className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <div className={cn("w-2.5 h-2.5 rounded-full", t.color)} />
