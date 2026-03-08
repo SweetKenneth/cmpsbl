@@ -66,6 +66,9 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
     const result = await execute(safePrompt, request.context);
     
     const latency = Date.now() - startTime;
+
+    // Record spend for budget tracking (0 for free tier, actual cost for paid)
+    recordSpend(0, request.type);
     
     if (result.success) {
       // Cache and learn in parallel — both are independent post-processing
