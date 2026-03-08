@@ -131,15 +131,19 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
     executions.set(execution.id, execution);
     boundMap(executions, MAX_EXECUTIONS);
     
-    // Execute workflow with timeout
+    // Execute workflow with timeout (clearable to prevent timer leak)
     const timeoutMs = workflow.timeout > 0 ? workflow.timeout : 300_000; // default 5min
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs)
-    );
+    let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutHandle = setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs);
+    });
     Promise.race([
       executeWorkflow(workflow, execution, input),
       timeoutPromise,
-    ]).catch(error => {
+    ]).then(() => {
+      clearTimeout(timeoutHandle);
+    }).catch(error => {
+      clearTimeout(timeoutHandle);
       execution.status = 'failed';
       execution.error = error instanceof Error ? error.message : String(error);
       execution.completedAt = new Date().toISOString();
