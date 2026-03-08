@@ -362,13 +362,13 @@ export default function Upgrade() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
                   className={cn(
-                    "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0",
+                    "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0 group",
                     "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
-                    "hover:shadow-lg transition-all duration-300 card-lift",
+                    "hover:shadow-xl transition-all duration-300 card-lift",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
                       : t.popular
-                      ? "border-violet-500/40 ring-1 ring-violet-500/10"
+                      ? "border-violet-500/40 ring-1 ring-violet-500/10 hover:shadow-violet-500/10"
                       : "border-border/50 hover:border-primary/20",
                   )}
                 >
