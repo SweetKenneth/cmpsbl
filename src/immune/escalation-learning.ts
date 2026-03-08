@@ -106,7 +106,7 @@ export type RepairStrategy =
 // State
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** v3: Adaptive threshold — starts low, rises with pattern maturity */
+/** Adaptive threshold — starts low, rises with pattern maturity */
 const BASE_FREQUENCY_THRESHOLD = 2;
 const MAX_FREQUENCY_THRESHOLD = 8;
 const TIME_WINDOW_MS = 60 * 60 * 1000; // 1 hour (was 30 min)
