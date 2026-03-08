@@ -188,9 +188,7 @@ export function wrapExecutor(
 
     // Telemetry is now recorded at batch level (runBatch.ts) — no per-execution DB writes
 
-    /**
-     * v2.0: Intelligent repair + single retry.
-     */
+    /** Intelligent repair + single retry. */
     const tryIntelligentRepairAndRetry = async (
       failingInput: Record<string, unknown>,
     ): Promise<SynergyResult | null> => {
