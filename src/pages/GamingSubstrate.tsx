@@ -77,7 +77,7 @@ function FeatureCard({
     >
       <Card className={cn(
         "h-full border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden",
-        "hover:border-current/30 hover:shadow-xl transition-all duration-500",
+        "hover:border-current/30 hover:shadow-xl transition-all duration-500 card-lift shimmer-on-hover",
         color
       )}>
         <div className={cn("h-1 w-full bg-gradient-to-r", gradient)} />
@@ -779,7 +779,7 @@ await cmpsbl.dream.cycle({
                     onClick={handlePurchaseWorldEngine}
                     disabled={purchasing}
                     size="lg" 
-                    className="h-12 sm:h-14 px-6 sm:px-8 bg-white text-purple-600 hover:bg-white/90 font-bold shadow-lg text-base"
+                    className="h-12 sm:h-14 px-6 sm:px-8 bg-white text-purple-600 hover:bg-white/90 font-bold shadow-lg text-base hover:scale-[1.02] active:scale-[0.98] transition-all"
                   >
                     <Crown className="w-5 h-5 mr-2" />
                     World Engine — $2,995

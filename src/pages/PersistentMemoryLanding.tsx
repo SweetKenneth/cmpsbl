@@ -98,7 +98,7 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Button asChild size="lg" className="text-lg px-8 h-14">
+                <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/docs/persistent-memory">
                     Get Started (FREE)
                     <ArrowRight className="w-5 h-5 ml-2" />
@@ -434,7 +434,7 @@ const prompt = userMessage + context.contextString;`,
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <Card>
+                    <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <CardContent className="pt-6 flex items-start gap-4">
                         <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0">
                           <item.icon className="w-5 h-5 text-emerald-500" />
@@ -470,7 +470,7 @@ const prompt = userMessage + context.contextString;`,
                     Start with the free tier. Upgrade when you need advanced features.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button asChild size="lg" className="text-lg px-8 h-14">
+                    <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/docs/persistent-memory">
                         Get Started (FREE)
                         <ArrowRight className="w-5 h-5 ml-2" />
