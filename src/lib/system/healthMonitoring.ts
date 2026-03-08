@@ -73,6 +73,8 @@ const DEFAULT_ALERT_CONFIGS: AlertConfig[] = [
   { module: 'governance', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
 ];
 
+const MAX_ACTIVE_ALERTS = 200;
+
 // In-memory alert state
 const alertState: MonitoringState = {
   isRunning: false,
@@ -192,16 +194,19 @@ export async function runHealthCheck(
   
   alertState.lastCheck = new Date().toISOString();
   
-  // Persist alerts to database
+  // Persist alerts to database (fire-and-forget — don't block the check cycle)
   if (newAlerts.length > 0) {
-    await persistAlerts(newAlerts);
+    persistAlerts(newAlerts).catch(() => {});
   }
   
-  // Clean up old resolved alerts
+  // Clean up old resolved alerts and enforce cap
   alertState.activeAlerts = alertState.activeAlerts.filter(
     a => a.status === 'active' || 
     (a.resolvedAt && Date.now() - new Date(a.resolvedAt).getTime() < 3600000)
   );
+  if (alertState.activeAlerts.length > MAX_ACTIVE_ALERTS) {
+    alertState.activeAlerts = alertState.activeAlerts.slice(-MAX_ACTIVE_ALERTS);
+  }
   
   return {
     timestamp: alertState.lastCheck,

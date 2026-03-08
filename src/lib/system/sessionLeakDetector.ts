@@ -25,8 +25,6 @@ const SESSION_START = Date.now();
 
 // Track timer registrations
 let activeTimerCount = 0;
-const originalSetInterval = typeof window !== 'undefined' ? window.setInterval : undefined;
-const originalClearInterval = typeof window !== 'undefined' ? window.clearInterval : undefined;
 
 let instrumented = false;
 

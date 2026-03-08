@@ -200,11 +200,11 @@
      grade,
    };
  
-   // Store in history
-   profileHistory.push(result);
-   if (profileHistory.length > 50) {
-     profileHistory.shift();
-   }
+  // Store in history (batch splice instead of per-entry shift)
+  profileHistory.push(result);
+  if (profileHistory.length > 100) {
+    profileHistory.splice(0, profileHistory.length - 50);
+  }
  
    return result;
  }

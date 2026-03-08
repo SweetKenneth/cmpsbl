@@ -215,18 +215,20 @@
      }
    }
    
-   // Trace back from deepest
-   const path: SubstrateModuleName[] = [deepestModule];
+   // Trace back from deepest — build forward to avoid O(n²) unshift
+   const path: SubstrateModuleName[] = [];
    let current = nodes.get(deepestModule)!;
+   path.push(deepestModule);
    
    while (current.dependencies.length > 0) {
      const deepestDep = current.dependencies.reduce((a, b) => 
        nodes.get(a)!.depth > nodes.get(b)!.depth ? a : b
      );
-     path.unshift(deepestDep);
+     path.push(deepestDep);
      current = nodes.get(deepestDep)!;
    }
    
+   path.reverse();
    return path;
  }
  
@@ -252,16 +254,19 @@
    
    // Transitive impact = all modules that depend transitively
    const transitiveImpact = new Set<SubstrateModuleName>();
-   const queue = [...directImpact];
+   const queue: SubstrateModuleName[] = [...directImpact];
+   let qi = 0; // cursor-based BFS — avoids O(n²) shift()
    
-   while (queue.length > 0) {
-     const current = queue.shift()!;
+   while (qi < queue.length) {
+     const current = queue[qi++];
      if (transitiveImpact.has(current)) continue;
      transitiveImpact.add(current);
      
      const currentNode = graph.nodes.get(current);
      if (currentNode) {
-       queue.push(...currentNode.dependents);
+       for (const dep of currentNode.dependents) {
+         if (!transitiveImpact.has(dep)) queue.push(dep);
+       }
      }
    }
    
