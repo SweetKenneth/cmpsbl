@@ -434,7 +434,7 @@ const prompt = userMessage + context.contextString;`,
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <Card>
+                    <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <CardContent className="pt-6 flex items-start gap-4">
                         <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0">
                           <item.icon className="w-5 h-5 text-emerald-500" />
