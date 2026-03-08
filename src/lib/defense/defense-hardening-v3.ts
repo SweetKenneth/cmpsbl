@@ -123,6 +123,7 @@ interface KeyRotationRecord {
 }
 
 const keyRotations = new Map<string, KeyRotationRecord>();
+const MAX_KEY_ROTATIONS = 500;
 
 export function registerApiKey(keyPrefix: string, maxAgeDays = 90): void {
   const now = Date.now();
@@ -133,6 +134,7 @@ export function registerApiKey(keyPrefix: string, maxAgeDays = 90): void {
     lastRotatedAt: now,
     rotationCount: 0,
   });
+  boundMap(keyRotations, MAX_KEY_ROTATIONS);
 }
 
 export function checkKeyRotation(keyPrefix: string): {
@@ -1018,6 +1020,7 @@ interface ErrorRateState {
 }
 
 const errorRateBreakers = new Map<string, ErrorRateState>();
+const MAX_ERROR_RATE_BREAKERS = 500;
 const ERROR_RATE_WINDOW_MS = 60_000; // 1 minute
 const ERROR_RATE_THRESHOLD = 0.5; // 50% error rate
 const MIN_REQUESTS_TO_TRIP = 10;
@@ -1052,6 +1055,7 @@ export function recordErrorRate(
   }
 
   errorRateBreakers.set(endpoint, state);
+  boundMap(errorRateBreakers, MAX_ERROR_RATE_BREAKERS);
 
   return {
     tripped: state.tripped,
@@ -1124,6 +1128,11 @@ export function detectDistributedAttack(
   }
 
   signal.ips.add(ip);
+  // Cap per-signal IP set to prevent memory growth from distributed floods
+  if (signal.ips.size > 200) {
+    const oldest = signal.ips.values().next().value;
+    if (oldest) signal.ips.delete(oldest);
+  }
   signal.requestCount++;
 
   // Expire old signals (> 10 min)
@@ -1143,10 +1152,12 @@ export function detectDistributedAttack(
 // #53  MEMORY SCRAPING SHIELD
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const sensitiveDataRegistry = new Map<string, { clearedAt: number }>();
+const sensitiveDataRegistry = new Map<string, { registeredAt: number; clearedAt: number }>();
+const MAX_SENSITIVE_REGISTRY = 1000;
 
 export function registerSensitiveData(dataId: string): void {
-  sensitiveDataRegistry.set(dataId, { clearedAt: 0 });
+  sensitiveDataRegistry.set(dataId, { registeredAt: Date.now(), clearedAt: 0 });
+  boundMap(sensitiveDataRegistry, MAX_SENSITIVE_REGISTRY);
 }
 
 export function clearSensitiveData(dataId: string): boolean {
@@ -1171,7 +1182,7 @@ export function auditSensitiveDataLifecycle(): {
   for (const [id, entry] of sensitiveDataRegistry) {
     if (entry.clearedAt > 0) {
       cleared++;
-    } else if (now - (sensitiveDataRegistry.get(id)?.clearedAt || 0) > 3_600_000) {
+    } else if (now - entry.registeredAt > 3_600_000) {
       stale.push(id);
     }
   }
