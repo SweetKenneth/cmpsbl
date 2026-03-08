@@ -542,7 +542,7 @@ export class MemoryClient {
                 lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
               },
               metadata: { ...entry.metadata, shared_from_agent: this.agentId },
-              tags: { source: 'cross_agent_share' },
+              tags: ['cross_agent_share'],
             });
           }
           shared++;
