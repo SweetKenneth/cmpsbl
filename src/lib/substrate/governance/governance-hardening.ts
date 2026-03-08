@@ -736,6 +736,7 @@ export function createGovernanceCheckpoint(metadata: Record<string, unknown> = {
     metadata,
   };
   checkpoints.push(cp);
+  capArray(checkpoints, MAX_CHECKPOINTS);
   return cp;
 }
 
