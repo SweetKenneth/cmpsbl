@@ -13,6 +13,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback,
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
+import { isEditorPreviewEnv } from '@/lib/system/isLovableEditorPreviewEnv';
 
 interface ModuleStatus {
   active: boolean;
@@ -161,6 +162,8 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!autoInit) return;
     if (!debugMode.allowModulePolling()) return;
     if (initializedRef.current) return;
+    // EMERGENCY: Skip ALL heavy substrate init in editor preview to prevent crashes/reloads
+    if (isEditorPreviewEnv()) return;
     initializedRef.current = true;
     mountedRef.current = true;
 

@@ -68,6 +68,11 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    // Force single React instance — prevents context/hook crashes from duplicate bundles
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "three", "@react-three/fiber", "@react-three/drei"],
+  },
+  optimizeDeps: {
+    include: ["@tanstack/react-query"],
   },
   build: {
     // Disable automatic modulepreload to prevent eager loading of lazy chunks (charts, motion)
