@@ -7,7 +7,12 @@ export const RELAY_HARDENING_VERSION = '2.0.0';
 export const RELAY_HARDENING_CODENAME = 'Conduit';
 
 // ─── 1. Delivery Guarantee Engine ─────────────────────────────────────────
+const MAX_LOG = 500;
 const deliveryLog: Array<{ id: string; ts: number; status: string; target: string; attempts: number }> = [];
+export function logDelivery(entry: { id: string; status: string; target: string; attempts: number }) {
+  deliveryLog.push({ ...entry, ts: Date.now() });
+  if (deliveryLog.length > MAX_LOG) deliveryLog.splice(0, deliveryLog.length - MAX_LOG);
+}
 export function getDeliveryLog(n = 20) { return deliveryLog.slice(-n); }
 export function getDeliveryStats(): { total: number; succeeded: number; failed: number; pending: number } {
   const s = deliveryLog.filter(d => d.status === 'succeeded').length;
