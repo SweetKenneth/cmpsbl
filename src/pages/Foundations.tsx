@@ -100,7 +100,7 @@ export default function Foundations() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
-                  className="p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card"
+                  className="p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card card-lift shimmer-on-hover"
                 >
                   <p.icon className="w-5 h-5 text-primary mb-3" />
                   <h3 className="font-semibold mb-1">{p.title}</h3>
@@ -127,7 +127,7 @@ export default function Foundations() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
-                  className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all bg-card"
+                  className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card card-lift"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -157,7 +157,7 @@ export default function Foundations() {
               Three interconnected standards form the substrate's public surface — architecture, governance, and machine context.
             </p>
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="p-6 rounded-xl bg-primary/5 border-2 border-primary/20">
+              <div className="p-6 rounded-xl bg-primary/5 border-2 border-primary/20 shimmer-on-hover">
                 <Layers className="w-6 h-6 text-primary mb-3" />
                 <h3 className="font-bold mb-2">Substrate Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -167,7 +167,7 @@ export default function Foundations() {
                   Explore Substrate <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-              <Link to="/namespace" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group">
+              <Link to="/namespace" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift">
                 <Globe className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
                 <h3 className="font-bold mb-2">Governance Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -177,7 +177,7 @@ export default function Foundations() {
                   View Namespace <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </Link>
-              <Link to="/llms-txt" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group">
+              <Link to="/llms-txt" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift">
                 <Terminal className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
                 <h3 className="font-bold mb-2">Machine Context</h3>
                 <p className="text-sm text-muted-foreground mb-4">
@@ -209,7 +209,7 @@ export default function Foundations() {
                   href={archive.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group"
+                  className="flex items-center gap-4 p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift"
                 >
                   <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                   <div>

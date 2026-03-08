@@ -166,7 +166,7 @@ export default function Architecture() {
               <p className="text-muted-foreground mb-8">Public-facing cognitive capabilities that boot after CORE and convergence layers are online.</p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {NODES.map((mod) => (
-                  <Card key={mod.name} className="hover:border-primary/30 transition-colors">
+                  <Card key={mod.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
                     <CardContent className="p-5 flex items-start gap-3">
                       <mod.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                       <div>
@@ -189,7 +189,7 @@ export default function Architecture() {
               <p className="text-muted-foreground mb-8">Behavioral layers that wrap all nodes, ordered outermost to innermost.</p>
               <div className="space-y-3">
                 {MESHES.map((mesh, i) => (
-                  <Card key={mesh.name} className="hover:border-primary/30 transition-colors">
+                  <Card key={mesh.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
                     <CardContent className="p-5 flex items-center gap-4">
                       <Badge variant="outline" className="shrink-0 w-24 justify-center text-xs">{mesh.position}</Badge>
                       <mesh.icon className="w-5 h-5 text-primary shrink-0" />
@@ -217,7 +217,7 @@ export default function Architecture() {
                   <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">CCR — Layer 0 (Cognitive Reality)</h3>
                   <div className="space-y-2">
                     {CCR_ZONES.map((z) => (
-                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
+                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary/20 transition-colors duration-200">
                         <span className="font-mono text-xs font-bold w-16">{z.name}</span>
                         <span className="text-xs text-muted-foreground">{z.desc}</span>
                       </div>
@@ -228,7 +228,7 @@ export default function Architecture() {
                   <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">OCG — Operational Compliance Grid</h3>
                   <div className="space-y-2">
                     {OCG_ZONES.map((z) => (
-                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border">
+                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary/20 transition-colors duration-200">
                         <span className="font-mono text-xs font-bold w-16">{z.name}</span>
                         <span className="text-xs text-muted-foreground">{z.desc}</span>
                       </div>
@@ -252,7 +252,7 @@ export default function Architecture() {
                   { title: "Autonomous Evolution", desc: "The EVOLUTION overlay continuously improves system behavior" },
                   { title: "Shadow Training", desc: "Executors practice on real system gaps in shadow mode before production" },
                 ].map((prop) => (
-                  <Card key={prop.title}>
+                  <Card key={prop.title} className="hover:border-primary/20 transition-all duration-300 card-lift">
                     <CardContent className="p-5">
                       <h3 className="font-semibold mb-1">{prop.title}</h3>
                       <p className="text-sm text-muted-foreground">{prop.desc}</p>
@@ -273,15 +273,15 @@ export default function Architecture() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/modules">
-                <Button className="gap-2">
+                <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                   All Nodes <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">
-                <Button variant="outline">Documentation</Button>
+                <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
               <Link to="/substrate">
-                <Button variant="outline">Live Dashboard</Button>
+                <Button variant="outline" className="hover:border-primary/30 transition-colors">Live Dashboard</Button>
               </Link>
             </div>
           </div>
