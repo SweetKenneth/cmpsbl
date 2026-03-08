@@ -397,6 +397,42 @@ class MaintenanceManager {
     return { cleaned: toDelete.length, checked: orphaned.length };
   }
 
+  private async pruneStaleEvents(): Promise<Record<string, any>> {
+    const highVolumeTypes = ['deep_think', 'technical_learning_cycle', 'module_learning_insight', 'brain_status_check', 'clm_server_cycle'];
+    const telemetryCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+    const standardCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    let totalPruned = 0;
+
+    // Phase 1: High-volume telemetry — 3-day retention
+    for (let batch = 0; batch < 10; batch++) {
+      const { data: ids } = await supabase
+        .from('brain_events')
+        .select('id')
+        .in('event_type', highVolumeTypes)
+        .lt('created_at', telemetryCutoff)
+        .limit(1000);
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_events').delete().in('id', ids.map((r: any) => r.id));
+      totalPruned += ids.length;
+    }
+
+    // Phase 2: Standard events — 7-day retention
+    for (let batch = 0; batch < 5; batch++) {
+      const { data: ids } = await supabase
+        .from('brain_events')
+        .select('id')
+        .lt('created_at', standardCutoff)
+        .limit(1000);
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_events').delete().in('id', ids.map((r: any) => r.id));
+      totalPruned += ids.length;
+    }
+
+    return { pruned: totalPruned };
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // Status & Diagnostics
   // ═══════════════════════════════════════════════════════════════
