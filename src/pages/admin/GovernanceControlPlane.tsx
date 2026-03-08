@@ -302,7 +302,7 @@ export default function GovernanceControlPlane() {
               ) : (
                 <div className="space-y-3">
                   {auditLog.map((entry) => (
-                    <div key={entry.id} className="flex items-start gap-3 text-sm border-b border-border/50 pb-3">
+                    <div key={entry.id} className="flex items-start gap-3 text-sm border-b border-border/50 pb-3 hover:bg-muted/30 rounded-lg px-2 -mx-2 transition-colors duration-200">
                       <div className="flex-shrink-0 mt-0.5">
                         {entry.auto_reverted ? (
                           <Badge variant="outline" className="text-[10px]">AUTO</Badge>
