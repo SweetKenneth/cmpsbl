@@ -158,6 +158,9 @@ if (Math.abs(TOTAL_WEIGHT - 1.0) > 0.01) {
   console.warn(`[MatrixNodeRegistry] Weight sum is ${TOTAL_WEIGHT.toFixed(4)}, expected 1.0`);
 }
 
+// Precomputed lookup map for O(1) node-by-id access
+const NODE_BY_ID = new Map(NODE_DEFINITIONS.map(n => [n.id, n]));
+
 // In-memory breaker states (read from substrate, never mutated directly)
 const breakerStates = new Map<SubstrateModuleName, { state: BreakerState; failures: number; lastRecovery: string | null }>();
 
