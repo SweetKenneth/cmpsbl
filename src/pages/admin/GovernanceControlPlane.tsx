@@ -163,7 +163,7 @@ export default function GovernanceControlPlane() {
                 { label: 'Canary Required', active: subsystems.canaryRequired },
                 { label: 'Auto-Rollback', active: subsystems.autoRollback },
               ].map(({ label, active }) => (
-                <div key={label} className="flex items-center gap-2 text-sm">
+                <div key={label} className="flex items-center gap-2 text-sm p-2 rounded-lg border border-transparent hover:border-border/50 transition-all duration-200">
                   {active ? (
                     <CheckCircle className="w-4 h-4 text-green-500" />
                   ) : (
@@ -194,12 +194,12 @@ export default function GovernanceControlPlane() {
                     key={mode}
                     onClick={() => !isActive && setSelectedMode(mode)}
                     disabled={isActive}
-                    className={`p-3 rounded-lg border-2 text-left transition-all ${
+                    className={`p-3 rounded-lg border-2 text-left transition-all duration-300 ${
                       isActive
                         ? 'border-primary/50 bg-primary/10 opacity-60 cursor-not-allowed'
                         : isSelected
-                        ? 'border-primary bg-primary/5 ring-2 ring-primary/30'
-                        : 'border-border hover:border-primary/30 cursor-pointer'
+                        ? 'border-primary bg-primary/5 ring-2 ring-primary/30 -translate-y-0.5 shadow-sm'
+                        : 'border-border hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-1">
@@ -302,7 +302,7 @@ export default function GovernanceControlPlane() {
               ) : (
                 <div className="space-y-3">
                   {auditLog.map((entry) => (
-                    <div key={entry.id} className="flex items-start gap-3 text-sm border-b border-border/50 pb-3">
+                    <div key={entry.id} className="flex items-start gap-3 text-sm border-b border-border/50 pb-3 hover:bg-muted/30 rounded-lg px-2 -mx-2 transition-colors duration-200">
                       <div className="flex-shrink-0 mt-0.5">
                         {entry.auto_reverted ? (
                           <Badge variant="outline" className="text-[10px]">AUTO</Badge>
@@ -312,9 +312,9 @@ export default function GovernanceControlPlane() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs">{entry.previous_mode}</span>
+                          <span className="font-mono tabular-nums text-xs">{entry.previous_mode}</span>
                           <span className="text-muted-foreground">→</span>
-                          <span className="font-mono text-xs font-bold">{entry.new_mode}</span>
+                          <span className="font-mono tabular-nums text-xs font-bold">{entry.new_mode}</span>
                           {entry.ttl_minutes && (
                             <span className="text-xs text-muted-foreground">(TTL: {entry.ttl_minutes}m)</span>
                           )}

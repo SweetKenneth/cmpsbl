@@ -63,7 +63,7 @@ function AssetRow({ asset, onUpdate, onDelete }: {
   return (
     <div className={cn(
       "group flex items-center gap-3 px-4 py-3 rounded-lg border transition-all",
-      editing ? "border-primary/50 bg-primary/5" : "border-border/50 hover:border-border bg-card/50"
+      editing ? "border-primary/50 bg-primary/5" : "border-border/50 hover:border-primary/15 hover:bg-card/80 bg-card/50"
     )}>
       <Icon className="w-4 h-4 text-muted-foreground shrink-0" />
       <div className="flex-1 min-w-0">
@@ -76,7 +76,7 @@ function AssetRow({ asset, onUpdate, onDelete }: {
       </div>
 
       {/* Score */}
-      <div className="text-xs text-muted-foreground w-12 text-right shrink-0">
+      <div className="text-xs text-muted-foreground w-12 text-right shrink-0 font-mono tabular-nums">
         {(score * 100).toFixed(0)}%
       </div>
 
@@ -168,8 +168,8 @@ export default function QuarryDashboard() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {Object.entries(TIER_LABELS).map(([k, v]) => (
-              <div key={k} className={cn("rounded-lg border p-3", (TIER_COLORS[k as QuarryTier] ?? '').replace('text-', 'border-').split(' ')[2])}>
-                <div className="text-2xl font-bold">{stats.byTier[k] ?? 0}</div>
+              <div key={k} className={cn("rounded-lg border p-3 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300", (TIER_COLORS[k as QuarryTier] ?? '').replace('text-', 'border-').split(' ')[2])}>
+                <div className="text-2xl font-bold font-mono tabular-nums">{stats.byTier[k] ?? 0}</div>
                 <div className="text-xs text-muted-foreground">{v}</div>
               </div>
             ))}

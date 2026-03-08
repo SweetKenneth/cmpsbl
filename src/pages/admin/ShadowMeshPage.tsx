@@ -80,7 +80,7 @@ export default function ShadowMeshPage() {
       <ShadowMeshAnalytics key={analyticsKey} />
 
       {/* Operational Info */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-warning" />
@@ -96,11 +96,11 @@ export default function ShadowMeshPage() {
       </Card>
 
       {/* Pilot Executors — Dynamic */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
-            Probed Executors ({executorList.length})
+            Probed Executors (<span className="font-mono tabular-nums">{executorList.length}</span>)
           </CardTitle>
           <CardDescription>
             All executors wrapped by the immune layer — grouped by module
@@ -117,7 +117,7 @@ export default function ShadowMeshPage() {
                   {executors.map((exec) => (
                     <div
                       key={exec.id}
-                      className="flex items-center justify-between p-2.5 rounded-md border border-border/50 bg-muted/30"
+                      className="flex items-center justify-between p-2.5 rounded-md border border-border/50 bg-muted/30 hover:border-primary/15 hover:bg-muted/50 transition-all duration-200"
                     >
                       <code className="text-xs font-mono bg-background px-2 py-0.5 rounded">
                         {exec.id}
@@ -133,7 +133,7 @@ export default function ShadowMeshPage() {
       </Card>
 
       {/* Lifecycle */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base">Immune Lifecycle</CardTitle>
         </CardHeader>

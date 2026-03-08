@@ -201,7 +201,7 @@ export default function OwnerReports() {
               return (
                 <Card
                   key={report.id}
-                  className="cursor-pointer hover:bg-accent/30 transition-colors"
+                  className="cursor-pointer hover:bg-accent/30 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                   onClick={() => setSelectedReport(report)}
                 >
                   <CardContent className="py-3 px-4 flex items-center gap-3">
@@ -209,7 +209,7 @@ export default function OwnerReports() {
 
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{formatTime(report.created_at)}</p>
-                      <p className="text-[11px] text-muted-foreground truncate">
+                      <p className="text-[11px] text-muted-foreground truncate font-mono tabular-nums">
                         {report.metrics?.system?.ai_calls_3h || 0} AI calls ·{" "}
                         {report.metrics?.learning?.total_events_3h || 0} CLM ·{" "}
                         {report.metrics?.security?.events_3h || 0} defense
@@ -220,7 +220,7 @@ export default function OwnerReports() {
                       {report.system_status}
                     </Badge>
 
-                    <span className="text-[10px] text-muted-foreground shrink-0">
+                    <span className="text-[10px] text-muted-foreground shrink-0 font-mono tabular-nums">
                       {report.generation_time_ms}ms
                     </span>
 
