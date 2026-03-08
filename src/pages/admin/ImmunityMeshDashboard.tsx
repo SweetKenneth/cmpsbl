@@ -1252,11 +1252,11 @@ function ModernizerShadowPanel() {
     <div className="space-y-5">
       {/* Header / Scan Button */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
-        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-transparent">
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
           <CardContent className="pt-5 pb-4">
             <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex-shrink-0">
-                <Target className="w-5 h-5 text-amber-500" />
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <Target className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-base mb-1">EVOLUTION Shadow Mode</h3>
