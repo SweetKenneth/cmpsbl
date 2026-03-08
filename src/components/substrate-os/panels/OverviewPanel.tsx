@@ -157,7 +157,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
                 transition={{ delay: 0.2 + i * 0.08 }}
               >
                 <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-[0.15em] block mb-0.5">{kpi.label}</span>
-                <span className={cn("text-base sm:text-lg lg:text-xl font-bold font-mono block leading-tight", kpi.color)}>{kpi.value}</span>
+                <span className={cn("text-base sm:text-lg lg:text-xl font-bold font-mono tabular-nums block leading-tight", kpi.color)}>{kpi.value}</span>
                 <span className="text-[10px] text-muted-foreground/40 leading-tight">{kpi.sub}</span>
               </motion.div>
             ))}
