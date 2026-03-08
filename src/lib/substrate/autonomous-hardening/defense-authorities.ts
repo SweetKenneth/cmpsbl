@@ -134,7 +134,7 @@ export function autoRateLimit(entity: string, limit: number, reason: string, ttl
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'rate_limit', reason, 'success', { entity, limit, ttlMs });
   
   setTimeout(() => { rateLimitedEntities.delete(entity); action.reversed = true; }, ttlMs);
