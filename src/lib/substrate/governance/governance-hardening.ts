@@ -770,6 +770,7 @@ export function tryGovernanceAction(actionType: string): { allowed: boolean; ret
   if (!bucket) {
     bucket = { tokens: GOV_RATE_LIMIT.maxTokens, lastRefill: now };
     rateLimitBuckets.set(actionType, bucket);
+    capMap(rateLimitBuckets, MAX_RATE_LIMIT_BUCKETS);
   }
 
   const elapsed = now - bucket.lastRefill;
