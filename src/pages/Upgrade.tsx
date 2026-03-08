@@ -597,7 +597,7 @@ export default function Upgrade() {
               { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
-              <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/20 transition-colors">
+              <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
                 <h3 className="font-semibold">{faq.q}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
               </div>
