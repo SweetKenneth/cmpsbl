@@ -578,7 +578,7 @@ export default function Upgrade() {
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto leading-relaxed">
               Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
             </p>
-            <Button variant="outline" className="mt-6 gap-2" asChild>
+            <Button variant="outline" className="mt-6 gap-2 hover:border-amber-500/30 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200" asChild>
               <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4" /></a>
             </Button>
           </div>
