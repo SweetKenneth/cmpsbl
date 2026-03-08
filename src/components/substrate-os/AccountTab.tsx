@@ -404,7 +404,7 @@ export function AccountTab() {
               >
                 <Link to={link.href} className="block group">
                   <Card className={cn(
-                    "h-full border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5",
+                    "h-full border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20",
                     "bg-gradient-to-br",
                     link.color
                   )}>
