@@ -144,6 +144,11 @@ export function registerChainAccessors(
   chainLengthAccessor = lengthFn;
 }
 
+/** Expose chain length for terminal handlers */
+export function getChainLengthViaAccessor(): number {
+  return chainLengthAccessor ? chainLengthAccessor() : 0;
+}
+
 export function generateMerkleProof(entryIndex: number): { index: number; proof: string[]; root: string; verified: boolean } {
   if (!chainHashAccessor || !chainLengthAccessor) {
     return { index: entryIndex, proof: [], root: 'unavailable', verified: false };
