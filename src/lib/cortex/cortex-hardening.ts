@@ -842,6 +842,7 @@ export function recordOrchestrationTelemetry(
       maxLatencyMs: 0,
       minLatencyMs: Infinity,
       stepCounts: [],
+      latencySamples: [],
       windowStart: now,
     };
   }
