@@ -755,13 +755,14 @@ export default function STierVault() {
       folder.file('README.md', bundle.readme);
       for (const file of bundle.files) folder.file(file.filename, file.content);
 
-      // Include the Pipeline Details page in every discovery folder
       const detailsHTML = generatePipelineDetailsHTML({
         name: d.name,
-        cjpi: d.cjpi,
+        score: d.cjpi,
+        tier: d.cjpi >= 90 ? 'Apex' : d.cjpi >= 75 ? 'Enterprise' : d.cjpi >= 55 ? 'Architect' : 'Creator',
         category: d.category,
-        modules: d.module_chain || [],
+        systemChain: d.module_chain || [],
         description: d.description,
+        exportLanguages: languages.map(l => l.language),
         source: 'vault-export',
       });
       folder.file('PIPELINE-DETAILS.html', detailsHTML);
