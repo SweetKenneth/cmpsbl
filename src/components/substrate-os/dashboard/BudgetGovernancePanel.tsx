@@ -165,7 +165,7 @@ export function BudgetGovernancePanel({ className }: { className?: string }) {
         <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider block mb-2">Category Caps (daily)</span>
         <div className="grid grid-cols-4 gap-1.5">
           {Object.entries(config.category_limits).map(([cat, limit]) => (
-            <div key={cat} className="rounded-lg bg-muted/10 border border-border/10 px-2 py-1.5 text-center">
+            <div key={cat} className="rounded-lg bg-muted/10 border border-border/10 px-2 py-1.5 text-center transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
               <div className="text-[10px] font-bold font-mono text-foreground">{formatCents(limit)}</div>
               <div className="text-[7px] text-muted-foreground/40 uppercase">{cat}</div>
             </div>
