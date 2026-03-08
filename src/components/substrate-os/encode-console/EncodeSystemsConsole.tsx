@@ -73,14 +73,14 @@ export function EncodeSystemsConsole() {
       const plan = await encode.generatePlan.mutateAsync({
         intent,
         modules,
-      });
+      }) as any;
       addSystemMsg('success', [
-        `📋 PatchPlan created: ${plan.plan_id}`,
-        `   Title: ${plan.title}`,
-        `   Modules: ${plan.modules.join(', ')}`,
-        `   Changes: ${plan.changes.length}`,
-        `   Risks: ${plan.risks.length > 0 ? plan.risks.join(', ') : 'none detected'}`,
-        `   Status: ${plan.status}`,
+        `📋 PatchPlan created: ${plan?.plan_id || 'unknown'}`,
+        `   Title: ${plan?.title || intent}`,
+        `   Modules: ${(plan?.modules || modules || []).join(', ')}`,
+        `   Changes: ${plan?.changes?.length || 0}`,
+        `   Risks: ${plan?.risks?.length > 0 ? plan.risks.join(', ') : 'none detected'}`,
+        `   Status: ${plan?.status || 'draft'}`,
         '',
         'Use /approve to approve, or /reject <reason> to reject.',
       ].join('\n'));
@@ -141,12 +141,12 @@ export function EncodeSystemsConsole() {
         intent: `Execute plan ${planId}`,
         plan_id: planId,
         brainKeys: ['encode', 'patterns', 'architecture'],
-      });
+      }) as any;
       addSystemMsg('success', [
-        `🚀 Task enqueued: ${task.id}`,
-        `   Intent: ${task.intentSummary}`,
-        `   Surface: ${task.targetSurface}`,
-        `   Status: ${task.status}`,
+        `🚀 Task enqueued: ${task?.id || 'unknown'}`,
+        `   Intent: ${task?.intentSummary || planId}`,
+        `   Surface: ${task?.targetSurface || 'code'}`,
+        `   Status: ${task?.status || 'queued'}`,
         '',
         'ENCODE is now processing. Use /status to monitor.',
       ].join('\n'));
@@ -295,7 +295,7 @@ export function EncodeSystemsConsole() {
     }
 
     if (trimmed === '/clm') {
-      encode.runCLM.mutate();
+      encode.runCLM.mutate(undefined as any);
       addSystemMsg('info', '🔄 CLM learning cycle triggered.');
       return;
     }
