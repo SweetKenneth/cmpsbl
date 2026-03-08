@@ -24,21 +24,29 @@ const REPLAY_EVICT_BATCH = 2000;
 // ─── 1. Chain Integrity Validator ──────────────────────────────────────────
 const chainIntegrity = { lastCheck: 0, valid: true, brokenAt: -1, checksRun: 0 };
 
+// Callback injection — set by audit-module/index.ts at init to avoid circular require()
+let chainVerifier: (() => { valid: boolean; brokenAt: number | null }) | null = null;
+
+/** Register the chain verifier callback (called by audit-module at init) */
+export function registerChainVerifier(fn: () => { valid: boolean; brokenAt: number | null }): void {
+  chainVerifier = fn;
+}
+
 /**
- * Validate chain integrity by delegating to the core module's verifyAuditChain.
- * Falls back to cached state if core is unavailable.
+ * Validate chain integrity via injected callback.
+ * Falls back to cached state if verifier not yet registered.
  */
 export function validateChainIntegrity(): { valid: boolean; brokenAt: number; checksRun: number } {
   chainIntegrity.lastCheck = Date.now();
   chainIntegrity.checksRun++;
-  try {
-    // Dynamic import to avoid circular — use cached result if unavailable
-    const { verifyAuditChain } = require('./audit-module/index');
-    const result = verifyAuditChain();
-    chainIntegrity.valid = result.valid;
-    chainIntegrity.brokenAt = result.brokenAt ?? -1;
-  } catch {
-    // Keep cached state on failure
+  if (chainVerifier) {
+    try {
+      const result = chainVerifier();
+      chainIntegrity.valid = result.valid;
+      chainIntegrity.brokenAt = result.brokenAt ?? -1;
+    } catch {
+      // Keep cached state on failure
+    }
   }
   return { ...chainIntegrity };
 }
