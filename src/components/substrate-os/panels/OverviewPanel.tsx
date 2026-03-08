@@ -180,7 +180,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               <Button
                 key={action.id}
                 variant="outline"
-                className="justify-start h-auto py-3 px-3 sm:px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 w-full text-left"
+                className="justify-start h-auto py-3 px-3 sm:px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 hover:border-primary/15 w-full text-left transition-all duration-200"
                 onClick={action.onClick}
                 disabled={action.pending || !isOperator}
               >
