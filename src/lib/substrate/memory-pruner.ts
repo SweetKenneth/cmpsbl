@@ -185,7 +185,7 @@ async function pruneCold(capacity: number): Promise<PruneResult> {
       const { data: ids } = await supabase
         .from('brain_memory_cold')
         .select('id')
-        .order('value_score' as any, { ascending: true })
+        .order('value_score', { ascending: true })
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
