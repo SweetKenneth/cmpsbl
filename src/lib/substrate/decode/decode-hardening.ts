@@ -149,10 +149,16 @@ export interface SessionContinuity {
 }
 
 const sessions = new Map<string, SessionContinuity>();
+const MAX_SESSIONS = 500;
 
 export function trackSessionTurn(sessionId: string, topic: string): SessionContinuity {
   let session = sessions.get(sessionId);
   if (!session) {
+    // Evict oldest session if at capacity
+    if (sessions.size >= MAX_SESSIONS) {
+      const oldestKey = sessions.keys().next().value;
+      if (oldestKey) sessions.delete(oldestKey);
+    }
     session = {
       sessionId,
       turnCount: 0,
@@ -263,7 +269,8 @@ export function verifyRoutingChain(): { valid: boolean; brokenAt?: number } {
   return { valid: true };
 }
 
-export function getRoutingAuditChain(): RoutingAuditEntry[] {
+export function getRoutingAuditChain(limit?: number): RoutingAuditEntry[] {
+  if (limit) return routingAuditChain.slice(-limit);
   return [...routingAuditChain];
 }
 
@@ -566,9 +573,11 @@ export function redactSensitiveData(text: string): { redacted: string; redaction
   let result = text;
   const applied: string[] = [];
   for (const { name, pattern, replacement } of REDACTION_PATTERNS) {
-    if (pattern.test(result)) {
-      result = result.replace(pattern, replacement);
+    // Use replace directly — avoid .test() + .replace() on /g regex (stateful lastIndex)
+    const replaced = result.replace(pattern, replacement);
+    if (replaced !== result) {
       applied.push(name);
+      result = replaced;
     }
   }
   return { redacted: result, redactionsApplied: applied };
