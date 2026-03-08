@@ -228,11 +228,12 @@ export function setModuleConfigOverride(
  * Create config snapshot
  */
 export function createSnapshot(description?: string): ConfigSnapshot {
+  // Deep-clone configs and flags to prevent mutation after snapshot
   const snapshot: ConfigSnapshot = {
     id: `snap_${Date.now()}`,
     timestamp: new Date().toISOString(),
-    configs: Object.fromEntries(configs),
-    flags: Object.fromEntries(featureFlags),
+    configs: JSON.parse(JSON.stringify(Object.fromEntries(configs))),
+    flags: JSON.parse(JSON.stringify(Object.fromEntries(featureFlags))),
     description,
   };
   
