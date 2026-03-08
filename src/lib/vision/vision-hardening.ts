@@ -385,6 +385,7 @@ export function getCanaryHealth(): { total: number; successful: number; avgLaten
 // 10. Metric Cardinality Guard
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_CARDINALITY_METRICS = 200;
 const cardinalityCounts = new Map<string, Set<string>>();
 const CARDINALITY_LIMIT = 500;
 
@@ -392,9 +393,18 @@ export function checkCardinality(
   metricName: string,
   labelSignature: string
 ): { allowed: boolean; currentCardinality: number; limit: number } {
-  if (!cardinalityCounts.has(metricName)) cardinalityCounts.set(metricName, new Set());
+  if (!cardinalityCounts.has(metricName)) {
+    // Cap total tracked metrics
+    if (cardinalityCounts.size >= MAX_CARDINALITY_METRICS) {
+      const oldest = cardinalityCounts.keys().next().value;
+      if (oldest) cardinalityCounts.delete(oldest);
+    }
+    cardinalityCounts.set(metricName, new Set());
+  }
   const labels = cardinalityCounts.get(metricName)!;
-  labels.add(labelSignature);
+  if (labels.size < CARDINALITY_LIMIT) {
+    labels.add(labelSignature);
+  }
   return {
     allowed: labels.size <= CARDINALITY_LIMIT,
     currentCardinality: labels.size,
