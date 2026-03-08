@@ -227,7 +227,7 @@ export default function Scanner() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
               >
-                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-md transition-all duration-300`}>
+                <Card className={`border ${phase.border} overflow-hidden group hover:shadow-md hover:shadow-primary/[0.04] transition-all duration-300`}>
                   <CardContent className="p-0">
                     <div className="flex flex-col sm:flex-row items-stretch">
                       {/* Phase number + icon */}
