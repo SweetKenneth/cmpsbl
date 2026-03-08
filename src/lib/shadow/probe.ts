@@ -46,11 +46,12 @@ export function getProbeableExecutors(): string[] {
   const executorSet = new Set<string>(PILOT_EXECUTORS);
 
   // Dynamically discover any additional executors that have been registered
-  // by scanning the registry for executors not in the pilot list
   try {
-    const { listRegisteredExecutorIds } = await import('@/lib/capabilities/synergies/registry');
-    if (typeof listRegisteredExecutorIds === 'function') {
-      const allIds: string[] = listRegisteredExecutorIds();
+    // Use synchronous require for registry discovery (already loaded module)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const registry = require('@/lib/capabilities/synergies/registry');
+    if (typeof registry.listRegisteredExecutorIds === 'function') {
+      const allIds: string[] = registry.listRegisteredExecutorIds();
       for (const id of allIds) {
         executorSet.add(id);
       }
