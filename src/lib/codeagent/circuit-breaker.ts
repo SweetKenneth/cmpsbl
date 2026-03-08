@@ -55,6 +55,11 @@ const config = { ...DEFAULT_CONFIG };
 // ═══════════════════════════════════════════════════════════════
 
 function initServiceHealth(name: string): ServiceHealth {
+  // Evict oldest if at capacity
+  if (circuitBreakers.size >= MAX_CIRCUIT_BREAKERS && !circuitBreakers.has(name)) {
+    const oldest = circuitBreakers.keys().next().value;
+    if (oldest) circuitBreakers.delete(oldest);
+  }
   return {
     name,
     state: 'closed',
