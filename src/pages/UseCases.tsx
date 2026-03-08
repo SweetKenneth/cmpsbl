@@ -79,8 +79,8 @@ function IndustryCard({
       )}>
         <CardHeader>
           <div className="flex items-start justify-between mb-4">
-            <div className="w-14 h-14 rounded-xl bg-current/10 flex items-center justify-center">
-              <Icon className="w-7 h-7" />
+            <div className="w-14 h-14 rounded-xl bg-current/10 group-hover:bg-current/15 flex items-center justify-center transition-colors">
+              <Icon className="w-7 h-7 group-hover:scale-110 transition-transform duration-300" />
             </div>
             {link && (
               <Button asChild variant="ghost" size="sm" className="text-current">
