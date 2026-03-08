@@ -269,7 +269,7 @@ export function wrapExecutor(
         }
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
-        // v3.1: Record failure against shared rule (degrades confidence, may trigger rollback)
+        // Record failure against shared rule (degrades confidence, may trigger rollback)
         if (sharedRuleUsed) {
           recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
         }
