@@ -385,6 +385,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
         const latencyMs = Date.now() - start;
 
         recordProviderOutcome(provider.id, true, latencyMs);
+        recordSuccess(provider.id);
 
         // Track usage in ai_usage_log
         try {
