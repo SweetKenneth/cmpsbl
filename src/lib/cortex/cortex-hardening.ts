@@ -723,6 +723,7 @@ interface QuotaBucket {
   windowStart: number;
 }
 
+const MAX_QUOTA_BUCKETS = 200;
 const quotaBuckets = new Map<string, QuotaBucket>();
 
 export function checkPipelineQuota(source: string, limit = 100, windowMs = 3_600_000): boolean {
