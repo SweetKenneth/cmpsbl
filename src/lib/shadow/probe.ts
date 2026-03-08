@@ -164,8 +164,9 @@ export async function runShadowProbe(
   }
 
   // Push shadow mesh state to CHR
-  const totalFails = summary.escalated + summary.failedSafe;
-  const loadIndex = inputs.length > 0 ? Math.round((totalFails / inputs.length) * 100) : 0;
+  // CRITICAL: safe-fails are expected rejections of garbage inputs — NOT failures.
+  // Only escalations represent actual problems that inflate the load index.
+  const loadIndex = inputs.length > 0 ? Math.round((summary.escalated / inputs.length) * 100) : 0;
   updateShadowMeshState({ active: true, load_index: loadIndex });
 
   // Register as synthetic shadow event (isolation-aware)
