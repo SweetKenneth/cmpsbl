@@ -31,19 +31,19 @@ export default function Diligence() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 max-w-4xl mx-auto space-y-6">
-      <Card>
+    <div className="min-h-screen bg-background p-6 max-w-4xl mx-auto space-y-6 pt-12">
+      <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Diligence Harness</CardTitle>
+          <CardTitle className="text-xl font-black tracking-tight">Diligence Harness</CardTitle>
           <CardDescription>
             Runs a single investor-grade test battery and returns a structured report.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex gap-3">
-          <Button onClick={run} disabled={running}>
+          <Button onClick={run} disabled={running} className="gap-2 shadow-lg shadow-primary/15">
             {running ? 'Running…' : 'Run Tests'}
           </Button>
-          <Button variant="outline" onClick={copy} disabled={!json}>
+          <Button variant="outline" onClick={copy} disabled={!json} className="gap-2">
             Copy JSON
           </Button>
         </CardContent>
