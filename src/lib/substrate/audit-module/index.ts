@@ -108,7 +108,11 @@ let lastHash = '0000000000000000';
 // Two independent FNV-1a hashes with different offsets for collision resistance
 // ═══════════════════════════════════════════════════════════════════
 function computeHash(entry: Omit<AuditEntry, 'hash'>): string {
-  const data = `${entry.previousHash}:${entry.timestamp}:${entry.actor.id}:${entry.actor.type}:${entry.action}:${entry.module}:${entry.resource}:${entry.resourceId}`;
+  // Include all identity + action fields AND state data in hash input
+  // This ensures both chain linkage AND payload integrity are tamper-evident
+  const stateStr = entry.previousState != null ? JSON.stringify(entry.previousState) : '';
+  const newStateStr = entry.newState != null ? JSON.stringify(entry.newState) : '';
+  const data = `${entry.previousHash}:${entry.timestamp}:${entry.actor.id}:${entry.actor.type}:${entry.action}:${entry.module}:${entry.resource}:${entry.resourceId}:${stateStr}:${newStateStr}`;
   let h1 = 0x811c9dc5;
   let h2 = 0x01000193;
   for (let i = 0; i < data.length; i++) {
