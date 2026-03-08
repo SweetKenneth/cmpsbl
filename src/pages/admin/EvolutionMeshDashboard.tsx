@@ -572,7 +572,7 @@ export default function EvolutionMeshDashboard() {
         {proposals.length > 0 && <PipelineStatsBar proposals={proposals} />}
 
         {/* Feature Flags */}
-        <Card className="p-3 sm:p-4">
+        <Card className="p-3 sm:p-4 hover:border-primary/15 transition-all duration-300">
           <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" /> MPE Controls
           </h3>
