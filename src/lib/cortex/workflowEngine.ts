@@ -128,14 +128,22 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
      });
    }
    
-   executions.set(execution.id, execution);
-   
-   // Execute workflow
-   executeWorkflow(workflow, execution, input).catch(error => {
-     execution.status = 'failed';
-     execution.error = error instanceof Error ? error.message : String(error);
-     execution.completedAt = new Date().toISOString();
-   });
+    executions.set(execution.id, execution);
+    boundMap(executions, MAX_EXECUTIONS);
+    
+    // Execute workflow with timeout
+    const timeoutMs = workflow.timeout > 0 ? workflow.timeout : 300_000; // default 5min
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs)
+    );
+    Promise.race([
+      executeWorkflow(workflow, execution, input),
+      timeoutPromise,
+    ]).catch(error => {
+      execution.status = 'failed';
+      execution.error = error instanceof Error ? error.message : String(error);
+      execution.completedAt = new Date().toISOString();
+    });
    
    return execution;
  }
