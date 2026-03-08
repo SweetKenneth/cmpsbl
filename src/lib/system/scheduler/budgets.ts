@@ -25,14 +25,26 @@ function initClass(cls: PriorityClass): void {
 // Initialize all on load
 for (const cls of PRIORITY_ORDER) initClass(cls);
 
-/** Reset window if minute has elapsed */
+/** Track daily cost reset separately */
+let lastCostResetDay = new Date().toDateString();
+
+/** Reset window if minute has elapsed; reset cost if day has changed */
 function maybeResetWindow(cls: PriorityClass): void {
   const s = state.get(cls)!;
-  if (Date.now() - s.window_start >= 60_000) {
+  const now = Date.now();
+  if (now - s.window_start >= 60_000) {
     s.tokens_used = 0;
     s.ms_used = 0;
-    s.window_start = Date.now();
-    // cost resets daily, not per minute — tracked separately
+    s.window_start = now;
+  }
+  // Daily cost reset
+  const today = new Date().toDateString();
+  if (today !== lastCostResetDay) {
+    lastCostResetDay = today;
+    for (const c of PRIORITY_ORDER) {
+      const st = state.get(c);
+      if (st) st.cost_used_cents = 0;
+    }
   }
 }
 

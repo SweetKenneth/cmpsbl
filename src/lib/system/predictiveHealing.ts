@@ -311,9 +311,14 @@ export async function executePendingHealing(): Promise<{
         results.push({ module: payload.module, success: true });
         
       } catch (error) {
+        // Increment retry count; mark failed after 3 attempts
+        const retries = ((action as any).retry_count ?? 0) + 1;
         await supabase
           .from('brain_actions_queue')
-          .update({ status: 'pending' })
+          .update({
+            status: retries >= 3 ? 'failed' : 'pending',
+            retry_count: retries,
+          })
           .eq('id', action.id);
         
         failed++;

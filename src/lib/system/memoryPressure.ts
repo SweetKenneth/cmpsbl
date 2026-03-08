@@ -65,8 +65,9 @@ export function detectMemoryPressure(): MemoryPressureReport {
 function getMaxDOMDepth(node: Element | null, current = 0): number {
   if (!node) return current;
   let max = current;
-  for (const child of Array.from(node.children)) {
-    max = Math.max(max, getMaxDOMDepth(child, current + 1));
+  const children = node.children;
+  for (let i = 0; i < children.length; i++) {
+    max = Math.max(max, getMaxDOMDepth(children[i], current + 1));
   }
   return max;
 }

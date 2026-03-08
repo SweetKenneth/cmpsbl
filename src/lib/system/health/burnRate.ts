@@ -19,18 +19,33 @@ export function recordError(module: string): void {
   if (errorLog.length > MAX_ERROR_LOG) errorLog.splice(0, errorLog.length - MAX_ERROR_LOG);
 }
 
-/** Compute burn rate for a module across all windows */
+/** Compute burn rate for a module across all windows (single-pass) */
 export function computeBurnRates(
   module: string,
   totalBudget: number,       // total allowed errors in the SLO window
   sloWindowHours: number      // e.g. 720 hours (30 days)
 ): BurnRateSpec {
   const now = Date.now();
-  const windows: BurnRateWindow[] = [];
+  const sortedWindows = [...BURN_RATE_WINDOWS_MINUTES].sort((a, b) => a - b);
+  const cutoffs = sortedWindows.map(w => now - w * 60_000);
+  const counts = new Array(sortedWindows.length).fill(0);
 
-  for (const windowMin of BURN_RATE_WINDOWS_MINUTES) {
-    const cutoff = now - windowMin * 60_000;
-    const errorsInWindow = errorLog.filter(e => e.module === module && e.timestamp >= cutoff).length;
+  // Single pass: for each event, increment all windows it falls within
+  for (let i = errorLog.length - 1; i >= 0; i--) {
+    const e = errorLog[i];
+    if (e.module !== module) continue;
+    if (e.timestamp < cutoffs[cutoffs.length - 1]) break; // older than largest window
+    for (let w = 0; w < cutoffs.length; w++) {
+      if (e.timestamp >= cutoffs[w]) { counts[w]++; break; }
+    }
+  }
+  // Accumulate: each larger window includes all smaller windows
+  for (let w = 1; w < counts.length; w++) counts[w] += counts[w - 1];
+
+  const windows: BurnRateWindow[] = [];
+  for (let w = 0; w < sortedWindows.length; w++) {
+    const windowMin = sortedWindows[w];
+    const errorsInWindow = counts[w];
 
     // What fraction of the SLO window does this window represent?
     const windowFraction = (windowMin / 60) / sloWindowHours;

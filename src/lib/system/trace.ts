@@ -36,6 +36,12 @@ export function createTraceContext(
     started_at: new Date().toISOString(),
   };
 
+  // Evict oldest if at capacity
+  if (traceStore.size >= MAX_TRACES) {
+    const oldest = traceStore.keys().next().value;
+    if (oldest) traceStore.delete(oldest);
+  }
+
   traceStore.set(context.trace_id, context);
   return context;
 }

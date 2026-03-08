@@ -200,8 +200,11 @@ export async function getState(module: string): Promise<{ state: BreakerState; t
 
 /** Force reset a breaker */
 export async function forceReset(module: string): Promise<void> {
-  await supabase.from('circuit_breaker_state').delete().eq('module', module);
-  await supabase.from('circuit_breaker_failures').delete().eq('module', module);
+  await Promise.all([
+    supabase.from('circuit_breaker_state').delete().eq('module', module),
+    supabase.from('circuit_breaker_failures').delete().eq('module', module),
+  ]);
+  ensuredModules.delete(module);
   clearTrip(module);
 }
 

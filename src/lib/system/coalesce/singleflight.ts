@@ -42,10 +42,18 @@ export async function singleFlightFetch(
     pending.delete(key);
   }
 
-  const promise = fetch(url, init).finally(() => {
-    // Clean up after a short delay to catch rapid duplicates
-    setTimeout(() => pending.delete(key), 100);
-  });
+  const promise = fetch(url, init).then(
+    (response) => {
+      // Keep entry briefly for rapid duplicate coalescing
+      setTimeout(() => pending.delete(key), 100);
+      return response;
+    },
+    (err) => {
+      // Clear immediately on error so retries aren't blocked
+      pending.delete(key);
+      throw err;
+    }
+  );
 
   pending.set(key, { promise, cached_at: Date.now() });
   return promise;
