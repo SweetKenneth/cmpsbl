@@ -211,7 +211,7 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
   emitStarted('relay', 'dispatch', { target: resolvedTarget });
 
   const fallbackRecord: DeliveryRecord = {
-    id: `dlv-fallback-${Date.now()}`, target: validTarget, payload,
+    id: uniqueDeliveryId('dlv-fallback'), target: resolvedTarget, payload,
     status: 'failed', attempts: 0, maxRetries: 0,
     createdAt: Date.now(), deliveredAt: null,
     lastError: 'Circuit breaker active — dispatch queued for retry',
@@ -222,7 +222,7 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     'relay',
     () => {
       const record: DeliveryRecord = {
-        id: `dlv-${Date.now()}`, target: validTarget, payload,
+        id: uniqueDeliveryId(), target: resolvedTarget, payload,
         status: 'pending', attempts: 0,
         maxRetries: retries,
         createdAt: Date.now(), deliveredAt: null,
