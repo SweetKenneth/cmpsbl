@@ -178,7 +178,7 @@ export function CCRTab() {
               { label: 'Applied', value: dream.heuristics, icon: Zap, color: 'text-emerald-500' },
               { label: 'Avg Confidence', value: `${dream.avgConfidence}%`, icon: TrendingUp, color: 'text-cyan-500' },
             ].map(stat => (
-              <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                 <CardContent className="p-3 text-center">
                   <stat.icon className={cn("w-4 h-4 mx-auto mb-1.5", stat.color)} />
                   <p className="text-lg font-bold font-mono">{stat.value}</p>
