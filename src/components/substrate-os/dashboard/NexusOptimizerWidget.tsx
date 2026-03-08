@@ -153,7 +153,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
           { label: 'Reserved', value: (snapshot.reserved_for_substrate + snapshot.reserved_for_chatbots + snapshot.reserved_for_active_devs).toLocaleString(), icon: Server, color: 'text-orange-400' },
           { label: 'Confirmed', value: `${confirmedCount}/${totalProviders}`, icon: Shield, color: 'text-fuchsia-400' },
         ].map(stat => (
-          <div key={stat.label} className="bg-card/20 px-3 py-2.5 text-center">
+          <div key={stat.label} className="bg-card/20 px-3 py-2.5 text-center transition-all duration-300 hover:bg-card/40">
             <stat.icon className={cn('w-3 h-3 mx-auto mb-1', stat.color)} />
             <div className="text-sm font-bold font-mono text-foreground">{stat.value}</div>
             <div className="text-[7px] text-muted-foreground/40 uppercase tracking-wider">{stat.label}</div>
