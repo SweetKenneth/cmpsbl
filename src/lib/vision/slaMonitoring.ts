@@ -174,9 +174,9 @@ export function recordRequest(
     success,
   });
 
-  // Trim buffer
+  // Trim buffer — drop oldest 10% when over limit to avoid frequent shifts
   if (metricsBuffer.length > MAX_BUFFER) {
-    metricsBuffer.shift();
+    metricsBuffer.splice(0, Math.floor(MAX_BUFFER * 0.1));
   }
 }
 
