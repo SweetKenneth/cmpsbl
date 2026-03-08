@@ -1128,6 +1128,11 @@ export function detectDistributedAttack(
   }
 
   signal.ips.add(ip);
+  // Cap per-signal IP set to prevent memory growth from distributed floods
+  if (signal.ips.size > 200) {
+    const oldest = signal.ips.values().next().value;
+    if (oldest) signal.ips.delete(oldest);
+  }
   signal.requestCount++;
 
   // Expire old signals (> 10 min)
