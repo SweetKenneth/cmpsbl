@@ -612,7 +612,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
     crypto.randomUUID()
   );
   
-  updateHealthRegistry('modernizer:shadow',
+  updateHealthRegistry('shadow:gap-training',
     summary.executorFailed > tasksToProcess.length / 2 ? 'shadow_event' : 'healthy',
     summary.executorFailed > tasksToProcess.length / 2 ? 'shadow_event' : 'boot',
     'synthetic_shadow_event',
@@ -622,7 +622,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
     }
   );
   
-  log.info('modernizer-shadow', `Complete: ${summary.executorFixed} executor-fixed, ${summary.encodeEscalated} escalated (${summary.encodeFixed} ENCODE-fixed), ${summary.rulesGenerated} rules generated`);
+  log.info('shadow-gap-training', `Complete: ${summary.executorFixed} executor-fixed, ${summary.encodeEscalated} escalated (${summary.encodeFixed} ENCODE-fixed), ${summary.rulesGenerated} rules generated`);
   
   return {
     scanId,

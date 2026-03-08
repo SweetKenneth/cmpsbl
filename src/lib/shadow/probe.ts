@@ -1,9 +1,7 @@
 /**
- * Shadow Mesh — Probe Runner (v3.0 — Dynamic Discovery)
+ * Shadow Mesh — Probe Runner
  * 
- * Probes ALL registered executors dynamically rather than a hardcoded list.
- * New executors are automatically discovered and probed as they register.
- * 
+ * Probes ALL registered pilot executors via adversarial inputs.
  * Admin-only. Zero impact when disabled.
  */
 
