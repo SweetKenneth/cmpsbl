@@ -377,7 +377,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05, duration: 0.35 }}
-                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal"
+                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal group"
               >
                 <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
                   <sys.icon className="w-4 h-4 text-primary" />
