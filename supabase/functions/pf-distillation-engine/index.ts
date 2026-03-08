@@ -315,12 +315,17 @@ async function runTeacherStudent(supabase: any, apiKey: string, batchSize: numbe
     const batch = undistilled.slice(0, batchSize);
 
     for (const event of batch) {
+      // Extract summary from data column (brain_events uses 'data' not 'summary')
+      const eventData = event.data || {};
+      const eventSummary = eventData.title || eventData.content || eventData.result || JSON.stringify(eventData).slice(0, 300);
+      const eventMetadata = eventData;
+
       const prompt = `You are a knowledge distillation teacher. A learning system produced this insight:
 
 MODULE: ${event.module}
 TYPE: ${event.event_type}
-SUMMARY: ${event.summary}
-METADATA: ${JSON.stringify(event.metadata || {}).slice(0, 500)}
+SUMMARY: ${eventSummary}
+METADATA: ${JSON.stringify(eventMetadata).slice(0, 500)}
 
 TASK: Generate a reasoning trace that captures the decision-making pattern behind this insight. Then distill it into a compact, reusable pattern that a smaller/faster model can apply without re-deriving the reasoning.
 
