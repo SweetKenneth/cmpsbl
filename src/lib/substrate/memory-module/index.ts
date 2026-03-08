@@ -229,9 +229,14 @@ export async function semanticSearch(query: string, options?: { limit?: number; 
         .sort((a, b) => b.relevanceScore - a.relevanceScore)
         .slice(0, limit);
 
+      // Update access metadata on copies returned, then apply to originals
+      // This avoids mutating during the read path causing inconsistent state
       for (const entry of results) {
-        entry.accessCount++;
-        entry.lastAccessedAt = Date.now();
+        const original = vectors.get(entry.id);
+        if (original) {
+          original.accessCount++;
+          original.lastAccessedAt = Date.now();
+        }
       }
 
       return results;
@@ -251,11 +256,19 @@ export function detectStaleEmbeddings(): StalenessReport {
     (e.embeddingVersion !== CURRENT_EMBEDDING_VERSION)
   );
 
+  // Use reduce instead of Math.min(...) to avoid stack overflow on large arrays
+  let oldestCreatedAt: number | null = null;
+  for (const e of entries) {
+    if (oldestCreatedAt === null || e.createdAt < oldestCreatedAt) {
+      oldestCreatedAt = e.createdAt;
+    }
+  }
+
   const report: StalenessReport = {
     totalEntries: entries.length,
     staleCount: staleEntries.length,
     stalePercentage: entries.length > 0 ? Math.round((staleEntries.length / entries.length) * 100) : 0,
-    oldestEmbedding: entries.length > 0 ? Math.min(...entries.map(e => e.createdAt)) : null,
+    oldestEmbedding: oldestCreatedAt,
     currentEmbeddingVersion: CURRENT_EMBEDDING_VERSION,
     staleEntryIds: staleEntries.map(e => e.id),
   };

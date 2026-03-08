@@ -153,24 +153,33 @@ export class LocalTierCache<T = unknown> {
     let demoted = 0;
     let evicted = 0;
 
-    // Demote stale hot → warm
+    // Collect keys to demote first to avoid mutating Map during iteration
+    const hotDemotions: string[] = [];
     for (const [key, entry] of this.hot) {
       if (now - entry.lastAccess > this.hotTtlMs) {
-        this.hot.delete(key);
-        this.ensureWarmCapacity();
-        this.warm.set(key, entry);
-        demoted++;
-        this.stats.demotions++;
+        hotDemotions.push(key);
       }
     }
+    for (const key of hotDemotions) {
+      const entry = this.hot.get(key)!;
+      this.hot.delete(key);
+      this.ensureWarmCapacity();
+      this.warm.set(key, entry);
+      demoted++;
+      this.stats.demotions++;
+    }
 
-    // Evict stale warm entries (they fall back to central MEMORY on next access)
+    // Collect stale warm keys before deleting
+    const warmEvictions: string[] = [];
     for (const [key, entry] of this.warm) {
       if (now - entry.lastAccess > this.warmTtlMs) {
-        this.warm.delete(key);
-        evicted++;
-        this.stats.evictions++;
+        warmEvictions.push(key);
       }
+    }
+    for (const key of warmEvictions) {
+      this.warm.delete(key);
+      evicted++;
+      this.stats.evictions++;
     }
 
     return { demoted, evicted };

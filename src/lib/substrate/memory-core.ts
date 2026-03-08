@@ -1010,18 +1010,24 @@ class MemoryCoreClient {
    */
   async purgeBySource(source: string): Promise<{ success: boolean; purged: number }> {
     try {
-      let totalPurged = 0;
+      const tiers = ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'] as const;
 
-      // All tiers use 'source_module' column, not 'source'
-      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'] as const) {
-        const { count } = await (supabase as any)
-          .from(tier)
-          .select('id', { count: 'exact', head: true })
-          .eq('source_module', source);
+      // Count and delete across all tiers in parallel
+      const results = await Promise.allSettled(
+        tiers.map(async (tier) => {
+          const { count } = await (supabase as any)
+            .from(tier)
+            .select('id', { count: 'exact', head: true })
+            .eq('source_module', source);
 
-        await (supabase as any).from(tier).delete().eq('source_module', source);
-        totalPurged += count ?? 0;
-      }
+          await (supabase as any).from(tier).delete().eq('source_module', source);
+          return count ?? 0;
+        })
+      );
+
+      const totalPurged = results.reduce(
+        (sum, r) => sum + (r.status === 'fulfilled' ? r.value : 0), 0
+      );
 
       console.log(`[MemoryCore] Purged ${totalPurged} memories from source_module: ${source}`);
       return { success: true, purged: totalPurged };
