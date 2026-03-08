@@ -13,6 +13,7 @@ import { getAllLiveMetrics } from '../metrics/metricsRegistry';
 import { getLatestSnapshot } from '../metrics/snapshotEngine';
 import { runIntegrityCheck, shouldBlockDecodeForModule } from '../metrics/integrityValidator';
 import { getCachedIntegrity, cacheIntegrity } from './integrityCache';
+import { validateTone, enforceTone } from './voiceProfile';
 import type { ModuleLiveMetrics } from '../metrics/metricsSchema';
 import type { MetricSnapshot } from '../metrics/snapshotEngine';
 import type { IntegrityReport } from '../metrics/integrityValidator';
