@@ -327,10 +327,11 @@ export async function addEdge(
  */
 export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
   try {
-    // Calculate connection counts
+    // Calculate connection counts — limit edge fetch to prevent unbounded reads
     const { data: edges } = await supabase
       .from('brain_graph_edges')
-      .select('source_id, target_id');
+      .select('source_id, target_id')
+      .limit(5000);
 
     const connectionCounts = new Map<string, number>();
     for (const edge of edges || []) {
@@ -354,7 +355,7 @@ export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
 
     const { data: nodes } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .in('id', topIds);
 
     // Sort by connection count and map to GraphNode
