@@ -334,11 +334,13 @@ export async function restoreMemory(prunedId: string): Promise<boolean> {
     const { error: insertError } = await supabase
       .from('brain_memory_warm')
       .insert({
-        content: pruned.content_preview, // Limited content from preview
+        content: pruned.content_preview,
         context: pruned.context,
         value_score: Math.max(0.35, (pruned.value_score || 0) + 0.1),
         tags: { restored: true, original_tier: pruned.original_tier },
         metadata: { restored_at: new Date().toISOString() },
+        source_module: 'general',
+        category: pruned.context || 'uncategorized',
       });
 
     if (insertError) throw insertError;
