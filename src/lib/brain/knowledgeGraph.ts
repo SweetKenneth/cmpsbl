@@ -177,7 +177,7 @@ export async function getClusterNodes(
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .eq('cluster_id', clusterId)
       .order('weight', { ascending: false })
       .limit(limit);

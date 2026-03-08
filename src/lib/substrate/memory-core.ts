@@ -792,8 +792,8 @@ class MemoryCoreClient {
 
       for (const mem of stale as any[]) {
         try {
-          // Insert into cold with decayed scores
-          await supabase.from('brain_memory_cold').insert({
+          // Insert into cold with decayed scores — only delete from warm on success
+          const { error: insertErr } = await supabase.from('brain_memory_cold').insert({
             content: mem.content,
             memory_type: mem.memory_type || 'general',
             confidence: Math.max(0.1, ((mem.salience_score as number) || 0.5) * 0.8),
@@ -803,7 +803,12 @@ class MemoryCoreClient {
             source: 'auto_degradation',
           } as any);
 
-          // Delete from warm
+          if (insertErr) {
+            errors++;
+            continue; // Do NOT delete from warm if cold insert failed
+          }
+
+          // Safe to delete from warm now
           await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
           demoted++;
         } catch {
