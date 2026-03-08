@@ -22,13 +22,15 @@ const DEFAULT_CONFIG: BreakerConfig = {
 };
 
 const configs = new Map<string, BreakerConfig>();
+const ensuredModules = new Set<string>();
 
 function getConfig(module: string): BreakerConfig {
   return configs.get(module) ?? { ...DEFAULT_CONFIG };
 }
 
-/** Ensure a breaker row exists in DB */
+/** Ensure a breaker row exists in DB (cached — only upserts once per session) */
 async function ensureRow(module: string): Promise<void> {
+  if (ensuredModules.has(module)) return;
   await supabase
     .from('circuit_breaker_state')
     .upsert({
@@ -37,6 +39,7 @@ async function ensureRow(module: string): Promise<void> {
       countable_failures: 0,
       half_open_attempts: 0,
     }, { onConflict: 'module', ignoreDuplicates: true });
+  ensuredModules.add(module);
 }
 
 /** Read breaker state from DB */
