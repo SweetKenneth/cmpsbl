@@ -402,7 +402,7 @@ export function wrapExecutor(
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
 
-      // ── #13: ARCHETYPE-GATED REPAIR ──
+      // ── ARCHETYPE-GATED REPAIR ──
       // Classify the input BEFORE attempting repair. If the input is garbage
       // (empty_shell, shape_alien, injection_attempt, oversized), safe-fail
       // immediately. Only repairable archetypes get repair attempts.
