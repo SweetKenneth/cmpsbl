@@ -803,6 +803,10 @@ export function recordOrchestrationTelemetry(
   telemetryWindow.maxLatencyMs = Math.max(telemetryWindow.maxLatencyMs, latencyMs);
   telemetryWindow.minLatencyMs = Math.min(telemetryWindow.minLatencyMs, latencyMs);
   telemetryWindow.stepCounts.push(stepCount);
+  // Cap stepCounts within window
+  if (telemetryWindow.stepCounts.length > 1000) {
+    telemetryWindow.stepCounts = telemetryWindow.stepCounts.slice(-500);
+  }
 }
 
 export function getOrchestrationTelemetry(): {
