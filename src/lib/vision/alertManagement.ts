@@ -261,15 +261,19 @@
      
      if (now < startsAt || now > endsAt) continue;
      
-     const matches = silence.matchers.every(matcher => {
-       const value = labels[matcher.label];
-       if (!value) return false;
-       
-       if (matcher.regex) {
-         return new RegExp(matcher.value).test(value);
-       }
-       return value === matcher.value;
-     });
+      const matches = silence.matchers.every(matcher => {
+        const value = labels[matcher.label];
+        if (!value) return false;
+        
+        if (matcher.regex) {
+          try {
+            return new RegExp(matcher.value).test(value);
+          } catch {
+            return false; // Malformed regex — skip matcher safely
+          }
+        }
+        return value === matcher.value;
+      });
      
      if (matches) return true;
    }
@@ -280,14 +284,18 @@
  /**
   * Add an alert rule
   */
- export function addAlertRule(rule: Omit<AlertRule, 'id'>): AlertRule {
-   const newRule: AlertRule = {
-     id: `rule_${Date.now()}`,
-     ...rule,
-   };
-   alertRules.set(newRule.id, newRule);
-   return newRule;
- }
+ export function addAlertRule(rule: Omit<AlertRule, 'id'>): AlertRule | null {
+    if (alertRules.size >= MAX_ALERT_RULES) {
+      console.warn('[VISION Alert] Max alert rules reached');
+      return null;
+    }
+    const newRule: AlertRule = {
+      id: `rule_${Date.now()}`,
+      ...rule,
+    };
+    alertRules.set(newRule.id, newRule);
+    return newRule;
+  }
  
  /**
   * Get all alert rules
@@ -300,15 +308,19 @@
   * Add an escalation policy
   */
  export function addEscalationPolicy(
-   policy: Omit<EscalationPolicy, 'id'>
- ): EscalationPolicy {
-   const newPolicy: EscalationPolicy = {
-     id: `escalation_${Date.now()}`,
-     ...policy,
-   };
-   escalationPolicies.set(newPolicy.id, newPolicy);
-   return newPolicy;
- }
+    policy: Omit<EscalationPolicy, 'id'>
+  ): EscalationPolicy | null {
+    if (escalationPolicies.size >= MAX_ESCALATION_POLICIES) {
+      console.warn('[VISION Alert] Max escalation policies reached');
+      return null;
+    }
+    const newPolicy: EscalationPolicy = {
+      id: `escalation_${Date.now()}`,
+      ...policy,
+    };
+    escalationPolicies.set(newPolicy.id, newPolicy);
+    return newPolicy;
+  }
  
  /**
   * Get alert summary

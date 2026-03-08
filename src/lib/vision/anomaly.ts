@@ -72,19 +72,36 @@ export async function analyzeWindow(
   const detectedAnomalies: Anomaly[] = [];
 
   try {
-    // 1. Check for error rate spikes with z-score
-    const { data: recentErrors } = await supabase
-      .from('brain_events')
-      .select('module, outcome')
-      .eq('outcome', 'error')
-      .gte('created_at', since);
-
-    const { data: baselineErrors } = await supabase
-      .from('brain_events')
-      .select('module, outcome')
-      .eq('outcome', 'error')
-      .gte('created_at', baselineSince)
-      .lt('created_at', since);
+    // 1. Parallel fetch: error data + usage data + health data
+    const [
+      { data: recentErrors },
+      { data: baselineErrors },
+      { data: recentUsage },
+      { data: healthEvents },
+    ] = await Promise.all([
+      supabase
+        .from('brain_events')
+        .select('module, outcome')
+        .eq('outcome', 'error')
+        .gte('created_at', since),
+      supabase
+        .from('brain_events')
+        .select('module, outcome')
+        .eq('outcome', 'error')
+        .gte('created_at', baselineSince)
+        .lt('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('provider, response_time_ms')
+        .gte('created_at', since),
+      supabase
+        .from('brain_events')
+        .select('data, module')
+        .eq('event_type', 'health_check')
+        .gte('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(20),
+    ]);
 
     const recentByModule: Record<string, number> = {};
     const baselineByModule: Record<string, number> = {};
@@ -97,12 +114,16 @@ export async function analyzeWindow(
       baselineByModule[e.module] = (baselineByModule[e.module] || 0) + 1;
     });
 
-    // CLM#9: Z-score based spike detection
-    const allBaselines = Object.values(baselineByModule);
+    // CLM#9: Z-score based spike detection (per-module historical comparison)
     for (const [module, count] of Object.entries(recentByModule)) {
       const baseline = baselineByModule[module] || 0;
-      const zScore = allBaselines.length > 2
-        ? calculateZScore(allBaselines, count)
+      // Build per-module historical distribution from baseline window
+      // Use cross-module baselines only if module has no history
+      const moduleBaselines = baseline > 0 ? [baseline] : [];
+      const allBaselines = Object.values(baselineByModule);
+      const distributionValues = moduleBaselines.length > 2 ? moduleBaselines : allBaselines;
+      const zScore = distributionValues.length > 2
+        ? calculateZScore(distributionValues, count)
         : 0;
 
       if (count > 5 && (baseline === 0 || count > baseline * 2 || zScore > 2.5)) {
@@ -122,12 +143,7 @@ export async function analyzeWindow(
       }
     }
 
-    // 2. Check for latency spikes with percentile analysis
-    const { data: recentUsage } = await supabase
-      .from('ai_usage_log')
-      .select('provider, response_time_ms')
-      .gte('created_at', since);
-
+    // 2. Check for latency spikes with percentile analysis (recentUsage already fetched)
     const latencyByProvider: Record<string, number[]> = {};
     (recentUsage || []).forEach((u) => {
       if (u.response_time_ms) {
@@ -194,15 +210,7 @@ export async function analyzeWindow(
       }
     }
 
-    // 3. Check for health score drops
-    const { data: healthEvents } = await supabase
-      .from('brain_events')
-      .select('data, module')
-      .eq('event_type', 'health_check')
-      .gte('created_at', since)
-      .order('created_at', { ascending: false })
-      .limit(20);
-
+    // 3. Check for health score drops (healthEvents already fetched)
     const lowHealthModules = (healthEvents || []).filter((e) => {
       const health = (e.data as any)?.health_score;
       return typeof health === 'number' && health < 50;

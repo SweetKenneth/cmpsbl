@@ -320,6 +320,7 @@ export function getMetricTimeSeries(
  * Flush metrics buffer to database
  */
 let flushInProgress = false;
+let lastFlushedHead = 0; // Track what's been flushed to avoid re-flushing
 
 export async function flushMetricsToDatabase(): Promise<{
   flushed: number;
@@ -328,7 +329,16 @@ export async function flushMetricsToDatabase(): Promise<{
   // Guard against concurrent flushes causing duplicate writes
   if (flushInProgress) return { flushed: 0, errors: 0 };
   
-  const toFlush = getBufferContents().slice(0, 100);
+  // Only flush metrics added since last successful flush
+  const contents = getBufferContents();
+  if (contents.length === 0) return { flushed: 0, errors: 0 };
+  
+  // Calculate how many new metrics exist since last flush
+  const newCount = ringCount > lastFlushedHead ? ringCount - lastFlushedHead : 0;
+  if (newCount === 0) return { flushed: 0, errors: 0 };
+  
+  // Take at most 100 newest un-flushed metrics
+  const toFlush = contents.slice(-Math.min(newCount, 100));
   if (toFlush.length === 0) return { flushed: 0, errors: 0 };
   
   flushInProgress = true;
@@ -350,7 +360,9 @@ export async function flushMetricsToDatabase(): Promise<{
     
     if (error) {
       errors = toFlush.length;
-      // Don't try to re-insert — ring buffer still has them for next flush
+    } else {
+      // Mark as flushed
+      lastFlushedHead = ringCount;
     }
   } catch {
     errors = toFlush.length;

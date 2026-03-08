@@ -48,8 +48,9 @@ export async function getVisionMode(): Promise<{ mode: VisionMode; source: 'env'
       .maybeSingle();
 
     if (data?.value) {
-      const mode = typeof data.value === 'string' ? data.value : JSON.parse(JSON.stringify(data.value));
-      const cleanMode = mode.replace(/"/g, '');
+      // Handle both raw string and JSON-wrapped string values
+      const raw = data.value;
+      const cleanMode = (typeof raw === 'string' ? raw : String(raw)).replace(/^"|"$/g, '').trim();
       if (['passive', 'advisory', 'operative'].includes(cleanMode)) {
         return { mode: cleanMode as VisionMode, source: 'config' };
       }

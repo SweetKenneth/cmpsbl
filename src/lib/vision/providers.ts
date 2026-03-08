@@ -40,11 +40,13 @@ export async function getProviderStats(
   };
 
   try {
-    // Query ai_usage_log for provider stats
+    // Query ai_usage_log for provider stats (explicit limit to avoid silent 1000-row cap)
     const { data: usageLogs } = await supabase
       .from('ai_usage_log')
       .select('provider, tokens_used, cost, response_time_ms, success')
-      .gte('created_at', since);
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(1000);
 
     if (usageLogs) {
       const latencyAccum: Record<string, { total: number; count: number }> = {};
@@ -88,12 +90,14 @@ export async function getProviderStats(
       }
     }
 
-    // Query brain_events for routing events
+    // Query brain_events for routing events (explicit limit)
     const { data: routeEvents } = await supabase
       .from('brain_events')
       .select('data')
       .in('event_type', ['nexus_route', 'ai_generation', 'text_generation'])
-      .gte('created_at', since);
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(1000);
 
     if (routeEvents) {
       for (const event of routeEvents) {
