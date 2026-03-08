@@ -391,6 +391,7 @@ export interface SurgicalPatch {
   version: number;
 }
 
+const MAX_PATCH_HISTORY = 200;
 const patchHistory: SurgicalPatch[] = [];
 
 export function createSurgicalPatch(params: {
