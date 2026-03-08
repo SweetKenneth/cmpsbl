@@ -133,8 +133,8 @@ export interface WrapConfig {
 }
 
 /**
- * Wrap a synergy executor with immune defense+repair (v3.0)
- * v3.0: Archetype-gated repair — only repairable archetypes trigger repair.
+ * Wrap a synergy executor with immune defense+repair.
+ * Archetype-gated: only repairable archetypes trigger repair.
  * Garbage inputs safe-fail immediately, producing honest <2% repair rates.
  */
 export function wrapExecutor(
