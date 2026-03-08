@@ -130,7 +130,7 @@ export function initRelay(): void {
   emitStarted('relay', 'init', {});
   try {
     initCircuitBreaker('relay', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('relay', '10.6.0');
+    moduleEngine = activateModuleEngine('relay', '1.0.0');
     state.initialized = true;
     emitSucceeded('relay', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
@@ -142,7 +142,7 @@ export function initRelay(): void {
 const MAX_DELIVERIES = 500;
 const MAX_TARGET_LENGTH = 2048;
 const MAX_DEAD_LETTER = 200;
-const DEDUP_WINDOW_MS = 300_000; // 5 minutes
+const DEDUP_MAX_SIZE = 5000;
 
 // ═══════════════════════════════════════════════════════════════════
 // CLM#12: Content-Hash Deduplication
@@ -166,18 +166,23 @@ function isDuplicate(hash: string): boolean {
   }
   state.deduplicationHashes.add(hash);
   // Prune old hashes periodically (keep set bounded)
-  if (state.deduplicationHashes.size > 5000) {
+  if (state.deduplicationHashes.size > DEDUP_MAX_SIZE) {
     const arr = Array.from(state.deduplicationHashes);
-    state.deduplicationHashes = new Set(arr.slice(arr.length - 2500));
+    state.deduplicationHashes = new Set(arr.slice(arr.length - Math.floor(DEDUP_MAX_SIZE / 2)));
   }
   return false;
+}
+
+/** Unique ID with entropy to prevent collisions under concurrent dispatch */
+function uniqueDeliveryId(prefix = 'dlv'): string {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
 export async function dispatch(target: string, payload: unknown, options?: { retries?: number; timeout?: number; deduplicate?: boolean }): Promise<DeliveryRecord> {
   const validTarget = validateStringInput(target, { maxLength: MAX_TARGET_LENGTH, minLength: 1, label: 'relay.target' });
   if (!validTarget) {
     const rejected: DeliveryRecord = {
-      id: `dlv-rejected-${Date.now()}`, target: String(target).slice(0, 100), payload: null,
+      id: uniqueDeliveryId('dlv-rejected'), target: String(target).slice(0, 100), payload: null,
       status: 'failed', attempts: 0, maxRetries: 0,
       createdAt: Date.now(), deliveredAt: null,
       lastError: `Invalid target (must be 1-${MAX_TARGET_LENGTH} chars)`, hash: 'rejected',
@@ -186,12 +191,15 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     return rejected;
   }
 
+  // CLM#20: Resolve failover target before dispatch
+  const resolvedTarget = resolveTarget(validTarget);
+
   // CLM#12: Deduplication check
   const deduplicate = options?.deduplicate !== false;
-  const contentHash = generateContentHash(validTarget, payload);
+  const contentHash = generateContentHash(resolvedTarget, payload);
   if (deduplicate && isDuplicate(contentHash)) {
     return {
-      id: `dlv-dedup-${Date.now()}`, target: validTarget, payload,
+      id: uniqueDeliveryId('dlv-dedup'), target: resolvedTarget, payload,
       status: 'delivered', attempts: 0, maxRetries: 0,
       createdAt: Date.now(), deliveredAt: Date.now(),
       lastError: null, hash: contentHash,
@@ -200,10 +208,10 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
 
   const retries = clampNumber(options?.retries, 0, 10, state.retryPolicy.maxRetries);
 
-  emitStarted('relay', 'dispatch', { target: validTarget });
+  emitStarted('relay', 'dispatch', { target: resolvedTarget });
 
   const fallbackRecord: DeliveryRecord = {
-    id: `dlv-fallback-${Date.now()}`, target: validTarget, payload,
+    id: uniqueDeliveryId('dlv-fallback'), target: resolvedTarget, payload,
     status: 'failed', attempts: 0, maxRetries: 0,
     createdAt: Date.now(), deliveredAt: null,
     lastError: 'Circuit breaker active — dispatch queued for retry',
@@ -214,7 +222,7 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     'relay',
     () => {
       const record: DeliveryRecord = {
-        id: `dlv-${Date.now()}`, target: validTarget, payload,
+        id: uniqueDeliveryId(), target: resolvedTarget, payload,
         status: 'pending', attempts: 0,
         maxRetries: retries,
         createdAt: Date.now(), deliveredAt: null,
@@ -381,7 +389,7 @@ export function replayDeadLetter(deliveryId: string): DeliveryRecord | null {
   const entry = state.deadLetterQueue.splice(idx, 1)[0];
   const record: DeliveryRecord = {
     ...entry.delivery,
-    id: `dlv-replay-${Date.now()}`,
+    id: uniqueDeliveryId('dlv-replay'),
     status: 'pending',
     attempts: 0,
     lastError: null,
@@ -465,10 +473,11 @@ function simpleHmac(key: string, message: string): string {
 }
 
 function constantTimeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  // Pad shorter string to prevent length-based timing leaks
+  const maxLen = Math.max(a.length, b.length);
+  let result = a.length ^ b.length; // Non-zero if different lengths
+  for (let i = 0; i < maxLen; i++) {
+    result |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   }
   return result === 0;
 }
