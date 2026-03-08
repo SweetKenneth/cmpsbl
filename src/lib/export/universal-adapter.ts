@@ -79,7 +79,7 @@ export interface ExportedFile {
 }
 
 export interface ExportBundle {
-  artifact: { id: string; name: string; rank: number };
+  artifact: { id: string; name: string; rank: number; cjpi?: number; module?: string; synthesisContext?: SynthesisContext };
   files: ExportedFile[];
   readme: string;
   generatedAt: string;
