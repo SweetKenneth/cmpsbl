@@ -454,13 +454,22 @@ export function compressAuditEntries(olderThanMs: number = 24 * 60 * 60 * 1000):
     if (entry.timestamp < cutoff && !entry.compressed) {
       const originalSize = JSON.stringify(entry).length;
 
-      // Compress by nullifying verbose state fields for old entries
-      // Keep hash chain intact but reduce payload size
+      // IMPORTANT: Do NOT mutate previousState/newState — they are inputs to computeHash.
+      // Mutating them would cause verifyAuditChain hash recomputation to fail.
+      // Instead, store compressed summaries in metadata (which is NOT part of the hash).
       if (entry.previousState && JSON.stringify(entry.previousState).length > 200) {
-        entry.previousState = { _compressed: true, _summary: `[${typeof entry.previousState} data compressed]` };
+        entry.metadata = {
+          ...entry.metadata,
+          _prevStateSummary: `[${typeof entry.previousState} data, compressed]`,
+        };
+        entry.previousState = null;
       }
       if (entry.newState && JSON.stringify(entry.newState).length > 200) {
-        entry.newState = { _compressed: true, _summary: `[${typeof entry.newState} data compressed]` };
+        entry.metadata = {
+          ...entry.metadata,
+          _newStateSummary: `[${typeof entry.newState} data, compressed]`,
+        };
+        entry.newState = null;
       }
 
       entry.compressed = true;
