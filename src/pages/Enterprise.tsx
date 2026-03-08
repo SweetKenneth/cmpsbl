@@ -121,7 +121,7 @@ export default function Enterprise() {
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Custom slot capacity, dedicated instances, SOC2 compliance, DREAM cycle configuration, and white-glove onboarding — tailored to your organization.
             </p>
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/contact">
                 Schedule a Consultation <ArrowRight className="w-4 h-4" />
               </Link>

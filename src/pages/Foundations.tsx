@@ -209,7 +209,7 @@ export default function Foundations() {
                   href={archive.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group"
+                  className="flex items-center gap-4 p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift"
                 >
                   <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                   <div>
