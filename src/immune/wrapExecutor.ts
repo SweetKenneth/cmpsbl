@@ -236,7 +236,7 @@ export function wrapExecutor(
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
           recordRepairOutcome(executorName, repairTypeFlag, true);
-          // v3.1: Record success against shared rule (reinforces the rule for this executor)
+          // Record success against shared rule (reinforces the rule for this executor)
           if (sharedRuleUsed) {
             recordSharedRuleOutcome(sharedRuleUsed, executorName, true);
           }
