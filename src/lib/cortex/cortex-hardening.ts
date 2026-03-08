@@ -561,6 +561,11 @@ const abortControllers = new Map<string, AbortController>();
 export function createPipelineAbort(pipelineId: string): AbortSignal {
   const controller = new AbortController();
   abortControllers.set(pipelineId, controller);
+  // Evict FIFO if over capacity
+  if (abortControllers.size > MAX_ABORT_CONTROLLERS) {
+    const first = abortControllers.keys().next().value;
+    if (first !== undefined) abortControllers.delete(first);
+  }
   return controller.signal;
 }
 
