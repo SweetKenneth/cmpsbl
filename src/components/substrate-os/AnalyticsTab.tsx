@@ -390,7 +390,7 @@ export function AnalyticsTab() {
             </motion.div>
 
             <motion.div
-              className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 backdrop-blur-xl"
+              className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
