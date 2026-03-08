@@ -173,8 +173,10 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 8) COERCE_TYPE — cast booleans and numbers to strings for string-expected fields
+  // 8) COERCE_TYPE — cast booleans and numbers to strings ONLY for string-expected fields.
+  //    Number fields (depth, priority, tokens, etc.) must remain as numbers.
   for (const key of Object.keys(copy)) {
+    if (!STRING_FIELDS.has(key)) continue; // Only coerce fields that should be strings
     const val = copy[key];
     if (typeof val === 'boolean' || typeof val === 'number') {
       copy[key] = String(val);
