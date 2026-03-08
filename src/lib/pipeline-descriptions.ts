@@ -36,6 +36,16 @@ const MODULE_CAPABILITIES: Record<string, { verb: string; noun: string; domain: 
   ECHO: { verb: 'replays', noun: 'event histories', domain: 'events' },
   LINGUA: { verb: 'translates', noun: 'language constructs', domain: 'translation' },
   TREATY: { verb: 'negotiates', noun: 'inter-system agreements', domain: 'governance' },
+  ENCODE: { verb: 'generates', noun: 'code artifacts', domain: 'generation' },
+  ENGINEER: { verb: 'maintains', noun: 'engine health', domain: 'maintenance' },
+  ATLAS: { verb: 'maps', noun: 'governance topology', domain: 'governance' },
+  ECONOMY: { verb: 'attributes', noun: 'cost streams', domain: 'economics' },
+  SANDBOX: { verb: 'isolates', noun: 'speculative executions', domain: 'simulation' },
+  NERVE: { verb: 'signals', noun: 'inter-node consensus', domain: 'coordination' },
+  SENTINEL: { verb: 'monitors', noun: 'perimeter threats', domain: 'security' },
+  WITNESS: { verb: 'attests', noun: 'immutable proofs', domain: 'compliance' },
+  HARMONY: { verb: 'balances', noun: 'resource equilibria', domain: 'optimization' },
+  IMMUNITY: { verb: 'neutralizes', noun: 'systemic threats', domain: 'resilience' },
 };
 
 /** Known combo patterns for richer descriptions */
