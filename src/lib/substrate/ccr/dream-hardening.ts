@@ -512,7 +512,7 @@ export function checkDreamGovernance(dreamId: string, domains: string[], riskSco
   if (domains.length > 5) { allowed = false; reason = 'too_many_domains'; }
   const check: GovernanceCheck = { dreamId, allowed, reason, checkedAt: Date.now() };
   governanceChecks.push(check);
-  if (governanceChecks.length > 200) governanceChecks.shift();
+  if (governanceChecks.length > 200) governanceChecks.splice(0, governanceChecks.length - 200);
   return check;
 }
 
