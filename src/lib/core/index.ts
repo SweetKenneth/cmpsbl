@@ -355,11 +355,12 @@ export function canModuleBoot(module: SubstrateModuleName): boolean {
 }
 
 export function getModuleStatuses(): ModuleStatus[] {
-  return Array.from(moduleStatuses.values());
+  return Array.from(moduleStatuses.values()).map(s => ({ ...s, dependencies: [...s.dependencies] }));
 }
 
 export function getModuleStatus(module: SubstrateModuleName): ModuleStatus | null {
-  return moduleStatuses.get(module) || null;
+  const s = moduleStatuses.get(module);
+  return s ? { ...s, dependencies: [...s.dependencies] } : null;
 }
 
 export function updateModuleHealth(module: SubstrateModuleName, health: number): void {
