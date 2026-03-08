@@ -1020,6 +1020,7 @@ interface ErrorRateState {
 }
 
 const errorRateBreakers = new Map<string, ErrorRateState>();
+const MAX_ERROR_RATE_BREAKERS = 500;
 const ERROR_RATE_WINDOW_MS = 60_000; // 1 minute
 const ERROR_RATE_THRESHOLD = 0.5; // 50% error rate
 const MIN_REQUESTS_TO_TRIP = 10;
