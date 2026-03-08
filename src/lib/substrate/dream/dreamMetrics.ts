@@ -40,5 +40,18 @@ export async function fetchDreamMetrics(): Promise<DreamMetrics[]> {
     byNode[nodeId].contradictions_resolved += row.contradictions_found ?? 0;
   }
 
-  return Object.values(byNode);
+  // Calculate avg_generation_depth per node (dreams_last_24h as proxy for depth pressure)
+  const nodes = Object.values(byNode);
+  for (const node of nodes) {
+    // Generation depth approximation: more dreams = deeper consolidation
+    node.avg_generation_depth = node.dreams_last_24h > 0
+      ? Math.min(3, node.dreams_last_24h / 3)
+      : 0;
+    // Flag drift if contradictions outpace heuristics
+    if (node.contradictions_resolved > node.heuristics_generated * 2) {
+      node.drift_alerts += 1;
+    }
+  }
+
+  return nodes;
 }

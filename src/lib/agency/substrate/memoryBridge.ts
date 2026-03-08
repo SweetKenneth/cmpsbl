@@ -213,17 +213,19 @@ export async function bridgeTaskToSubstrate(
     if (stored) results.templates++;
   }
 
-  // Store heuristics learned
+  // Store heuristics learned (parallel)
   if (verification.heuristics && verification.heuristics.length > 0) {
-    for (const h of verification.heuristics) {
-      const stored = await storeHeuristic(
-        { type: 'learned', category: 'execution', title: h, payload: {} },
-        task.agency_id,
-        task.id,
-        verification.matchScore
-      );
-      if (stored) results.heuristics++;
-    }
+    const heuristicResults = await Promise.all(
+      verification.heuristics.map(h =>
+        storeHeuristic(
+          { type: 'learned', category: 'execution', title: h, payload: {} },
+          task.agency_id,
+          task.id,
+          verification.matchScore
+        )
+      )
+    );
+    results.heuristics = heuristicResults.filter(Boolean).length;
   }
 
   // Store insight from successful task output

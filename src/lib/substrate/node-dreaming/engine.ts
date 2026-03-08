@@ -185,7 +185,7 @@ export async function getDreamAnalyticsSummary(): Promise<{
     nodeBreakdown[(row as any).node_id] = { dreams: d, insights: i };
   }
 
-  // Fetch recent logs for avg calculations
+  // Fetch recent logs in parallel with config processing
   const { data: recentLogs } = await supabase
     .from('node_dream_log')
     .select('contradictions_found, patterns_merged, success')

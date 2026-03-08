@@ -122,6 +122,8 @@ export async function proposeDreamChain(chain: DreamChain): Promise<string[]> {
       total_steps: chain.steps.length,
     } as any,
     outcome: 'success',
+  }).then(({ error }) => {
+    if (error) console.error('[Dream-Chains] Failed to log proposal event:', error);
   });
   
   console.log(`[Dream-Chains] Proposed ${proposalIds.length}/${chain.steps.length} steps`);

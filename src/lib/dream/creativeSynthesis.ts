@@ -187,11 +187,21 @@
  /**
   * Derive applicability domains
   */
- function deriveApplicability(concept: string, context: string): string[] {
+  function deriveApplicability(concept: string, context: string): string[] {
    const domains = ['strategy', 'optimization', 'pattern', 'architecture', 'behavior'];
+   const lower = `${concept} ${context}`.toLowerCase();
    
-   // Simple heuristic based on context
-   return domains.filter(() => Math.random() > 0.5);
+   // Keyword-based heuristic instead of pure randomness
+   return domains.filter(d => {
+     switch (d) {
+       case 'strategy': return lower.includes('strateg') || lower.includes('plan') || lower.includes('approach');
+       case 'optimization': return lower.includes('optim') || lower.includes('improv') || lower.includes('performance');
+       case 'pattern': return lower.includes('pattern') || lower.includes('recur') || lower.includes('template');
+       case 'architecture': return lower.includes('architect') || lower.includes('structur') || lower.includes('design');
+       case 'behavior': return lower.includes('behav') || lower.includes('action') || lower.includes('response');
+       default: return false;
+     }
+   });
  }
  
  /**

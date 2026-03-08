@@ -26,6 +26,10 @@ export function createHeuristic(
   parents: { lineage: MemoryLineage }[]
 ): DreamHeuristic | null {
   // Block heuristic generation from over-derived memories
+  if (parents.length === 0) {
+    console.warn('[DREAM] Refused heuristic: no parent memories provided.');
+    return null;
+  }
   const maxGen = Math.max(...parents.map((p) => p.lineage.generation));
   if (maxGen >= MAX_GENERATION) {
     console.warn(
