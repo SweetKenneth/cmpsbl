@@ -157,8 +157,8 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
                       key={job.id}
                       onClick={() => setSelectedJob(job)}
                       className={cn(
-                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all",
-                        "bg-white/5 hover:bg-white/10 border border-transparent",
+                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300",
+                        "bg-white/5 hover:bg-white/10 border border-transparent hover:border-primary/15",
                         selectedJob?.id === job.id && "border-orange-500/40 bg-orange-500/10"
                       )}
                     >
