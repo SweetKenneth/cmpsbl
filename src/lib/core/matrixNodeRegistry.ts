@@ -171,7 +171,7 @@ export function getNodeDefinitions() {
 }
 
 export function getNodeDefinition(id: SubstrateModuleName) {
-  return NODE_DEFINITIONS.find(n => n.id === id) || null;
+  return NODE_BY_ID.get(id) || null;
 }
 
 export function getNodesBySector(sector: MatrixSector) {
