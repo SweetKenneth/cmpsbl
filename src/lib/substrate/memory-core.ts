@@ -283,17 +283,19 @@ class MemoryCoreClient {
       // ── Dedup Guard ──────────────────────────────────────────────────────
       // Check for similar content already in hot tier (trigram or prefix match)
       const contentPrefix = content.slice(0, 120);
+      const sanitizedPrefix = contentPrefix.replace(/[%_\\]/g, '');
       const { data: existing } = await supabase
         .from('brain_memory_hot')
-        .select('id')
-        .ilike('content', `${contentPrefix.replace(/[%_]/g, '')}%`)
+        .select('id, access_count')
+        .ilike('content', `${sanitizedPrefix}%`)
         .limit(1);
 
       if (existing && existing.length > 0) {
         // Duplicate found — boost existing instead of inserting
+        const currentCount = (existing[0] as any).access_count ?? 0;
         await supabase
           .from('brain_memory_hot')
-          .update({ access_count: (existing[0] as any).access_count + 1 || 1 })
+          .update({ access_count: currentCount + 1 })
           .eq('id', existing[0].id);
 
         return {
