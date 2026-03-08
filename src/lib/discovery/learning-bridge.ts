@@ -228,3 +228,103 @@ export function feedDiscoveriesToLearning(
 
   return result;
 }
+
+// ── Backfill: Retroactive Learning from Existing Runs ─────────────
+
+export interface BackfillResult {
+  totalDiscoveries: number;
+  batchesProcessed: number;
+  aggregate: DiscoveryLearningResult;
+}
+
+/**
+ * Retroactively feed ALL existing discoveries from the database into
+ * the learning systems. Safe to run multiple times — domain mastery
+ * and rules accumulate naturally without duplication issues.
+ */
+export async function backfillLearningFromExistingRuns(): Promise<BackfillResult> {
+  const { supabase } = await import('@/integrations/supabase/client');
+
+  const aggregate: DiscoveryLearningResult = {
+    candidatesProcessed: 0,
+    domainLearnings: 0,
+    rulesContributed: 0,
+    synergyOutcomesRecorded: 0,
+    skipped: 0,
+  };
+
+  let totalDiscoveries = 0;
+  let batchesProcessed = 0;
+  const batchSize = 200;
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data, error } = await supabase
+      .from('discoveries')
+      .select('id, name, description, category, tier, cjpi, synergy_multiplier, module_chain, error_strategy, max_execution_ms, discovered_by, rationale, run_id')
+      .order('cjpi', { ascending: false })
+      .range(offset, offset + batchSize - 1);
+
+    if (error) {
+      log.error('discovery-learning', `Backfill query failed at offset ${offset}`, { error: error.message });
+      break;
+    }
+
+    if (!data || data.length === 0) {
+      hasMore = false;
+      break;
+    }
+
+    // Convert DB rows to ReactorCandidate shape
+    const candidates: ReactorCandidate[] = data.map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      description: row.description || '',
+      category: row.category,
+      moduleChain: Array.isArray(row.module_chain) ? row.module_chain : [],
+      entryCapability: '',
+      exitCapability: '',
+      errorStrategy: row.error_strategy || 'abort',
+      maxExecutionMs: row.max_execution_ms || 5000,
+      cjpiBreakdown: {} as any,
+      cjpi: row.cjpi || 0,
+      tier: row.tier || null,
+      synergyMultiplier: row.synergy_multiplier || 1,
+      discoveredBy: row.discovered_by || 'unknown',
+      rationale: row.rationale || '',
+    }));
+
+    const batchResult = feedDiscoveriesToLearning(candidates, row_run_id(data), false);
+
+    aggregate.candidatesProcessed += batchResult.candidatesProcessed;
+    aggregate.domainLearnings += batchResult.domainLearnings;
+    aggregate.rulesContributed += batchResult.rulesContributed;
+    aggregate.synergyOutcomesRecorded += batchResult.synergyOutcomesRecorded;
+    aggregate.skipped += batchResult.skipped;
+
+    totalDiscoveries += data.length;
+    batchesProcessed++;
+    offset += batchSize;
+
+    if (data.length < batchSize) {
+      hasMore = false;
+    }
+  }
+
+  emit({
+    module: 'MEMORY',
+    event_type: 'discovery.backfill_complete',
+    outcome: 'succeeded',
+    data: { totalDiscoveries, batchesProcessed, ...aggregate },
+  });
+
+  log.info('discovery-learning', `Backfill complete: ${totalDiscoveries} discoveries → ${aggregate.domainLearnings} domain learnings, ${aggregate.rulesContributed} rules, ${aggregate.synergyOutcomesRecorded} synergy outcomes`);
+
+  return { totalDiscoveries, batchesProcessed, aggregate };
+}
+
+/** Helper: extract a representative run_id from the batch */
+function row_run_id(data: any[]): string {
+  return data[0]?.run_id || 'backfill';
+}

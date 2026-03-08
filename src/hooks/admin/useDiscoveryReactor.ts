@@ -4,6 +4,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { runReactor, type ReactorConfig, type ReactorRunResult } from '@/lib/discovery/reactor';
+import { backfillLearningFromExistingRuns, type BackfillResult } from '@/lib/discovery/learning-bridge';
 import { toast } from 'sonner';
 
 interface DiscoveryRun {
@@ -25,6 +26,7 @@ export function useDiscoveryReactor() {
   const [latestResult, setLatestResult] = useState<ReactorRunResult | null>(null);
   const [runs, setRuns] = useState<DiscoveryRun[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isBackfilling, setIsBackfilling] = useState(false);
 
   const fetchRuns = useCallback(async () => {
     setLoading(true);
@@ -86,8 +88,26 @@ export function useDiscoveryReactor() {
     return data ?? [];
   }, []);
 
+  const backfillLearning = useCallback(async (): Promise<BackfillResult | null> => {
+    setIsBackfilling(true);
+    try {
+      toast.info('Backfilling learning from all existing discovery runs...');
+      const result = await backfillLearningFromExistingRuns();
+      toast.success(
+        `Learning backfill complete: ${result.totalDiscoveries} discoveries processed → ${result.aggregate.domainLearnings} domain learnings, ${result.aggregate.rulesContributed} rules, ${result.aggregate.synergyOutcomesRecorded} synergy outcomes`
+      );
+      return result;
+    } catch (err: any) {
+      toast.error(`Backfill error: ${err.message}`);
+      return null;
+    } finally {
+      setIsBackfilling(false);
+    }
+  }, []);
+
   return {
     isRunning,
+    isBackfilling,
     latestResult,
     runs,
     loading,
@@ -95,5 +115,6 @@ export function useDiscoveryReactor() {
     executeRun,
     markEngineCandidate,
     fetchDiscoveriesForRun,
+    backfillLearning,
   };
 }
