@@ -261,15 +261,19 @@
      
      if (now < startsAt || now > endsAt) continue;
      
-     const matches = silence.matchers.every(matcher => {
-       const value = labels[matcher.label];
-       if (!value) return false;
-       
-       if (matcher.regex) {
-         return new RegExp(matcher.value).test(value);
-       }
-       return value === matcher.value;
-     });
+      const matches = silence.matchers.every(matcher => {
+        const value = labels[matcher.label];
+        if (!value) return false;
+        
+        if (matcher.regex) {
+          try {
+            return new RegExp(matcher.value).test(value);
+          } catch {
+            return false; // Malformed regex — skip matcher safely
+          }
+        }
+        return value === matcher.value;
+      });
      
      if (matches) return true;
    }
