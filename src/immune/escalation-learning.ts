@@ -17,6 +17,7 @@ import { log } from '@/lib/system/log';
 import { deterministicRepair } from './deterministic-repair';
 import { validateInput, type InputArchetype } from './schema-validator';
 import { PILOT_EXECUTORS } from './pilotExecutors';
+import { contributeRule, autoPropagateRules } from './shared-rule-registry';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Types
