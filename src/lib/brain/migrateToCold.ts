@@ -34,7 +34,7 @@ export async function migrateStaleMemories(
     // ═══ Phase 1: Hot → Cold (stale hot memories) ═══
     const { data: staleHot, error: hotError } = await supabase
       .from('brain_memory_hot')
-      .select('*')
+      .select('id, content, context, value_score, access_count, created_at, last_used, source_module, category, tags, embedding, goal_ref')
       .lt('last_used', cutoffDate.toISOString())
       .order('last_used', { ascending: true })
       .limit(1000);
