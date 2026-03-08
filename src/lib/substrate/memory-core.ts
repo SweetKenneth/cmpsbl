@@ -940,20 +940,23 @@ class MemoryCoreClient {
       return 'cold';
     };
 
+    const tier = tierFromTable(table);
+    const isCold = tier === 'cold';
+
     return data.map(d => ({
       id: d.id,
-      content: d.content,
+      content: isCold ? (d.summary || '') : (d.content || ''),
       memory_type: d.memory_type || 'general',
-      tier: tierFromTable(table),
-      state: d.state || this.determineState(tierFromTable(table)),
-      confidence: d.confidence || 0.5,
+      tier,
+      state: d.state || this.determineState(tier),
+      confidence: d.value_score || d.confidence || 0.5,
       access_count: d.access_count || 0,
-      importance_score: d.importance_score || 0.5,
+      importance_score: d.importance_score || d.salience_score || 0.5,
       tags: d.tags || [],
       metadata: d.metadata || {},
       created_at: d.created_at,
       last_accessed: d.last_accessed || d.last_used,
-      source: d.source,
+      source: d.source_module,
     }));
   }
 
