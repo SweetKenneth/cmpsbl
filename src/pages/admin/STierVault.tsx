@@ -253,7 +253,7 @@ function ArtifactCard({
   loadingCode: boolean; expanded: boolean; onToggle: () => void;
 }) {
   return (
-    <Card className="border-border/50 hover:border-border transition-colors">
+    <Card className="border-border/50 hover:border-border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <span className="font-mono text-sm font-bold text-muted-foreground">#{entry.rank}</span>
