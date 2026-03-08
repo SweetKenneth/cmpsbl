@@ -266,7 +266,7 @@ export default function About() {
                 <div className={cn("absolute top-0 left-5 right-5 h-px bg-gradient-to-r opacity-40", pillar.gradient)} />
 
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", pillar.bg)}>
+                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110", pillar.bg)}>
                     <pillar.icon className={cn("w-5 h-5", pillar.color)} />
                   </div>
                   <div>
