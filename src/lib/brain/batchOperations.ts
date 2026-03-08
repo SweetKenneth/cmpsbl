@@ -374,6 +374,8 @@ export async function runTierMigration(): Promise<MigrationResult> {
           value_score: memory.value_score,
           tags: memory.tags,
           metadata: memory.metadata,
+          source_module: memory.source_module || 'general',
+          category: memory.category || memory.context || 'uncategorized',
         });
 
       if (!insertError) {
