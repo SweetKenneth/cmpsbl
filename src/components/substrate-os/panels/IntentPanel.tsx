@@ -395,7 +395,7 @@ export default function IntentPanel() {
                 transition={{ delay: i * 0.06 }}
               >
                 <stat.icon className={cn("w-4 h-4 mb-1.5 sm:mb-2", stat.color)} />
-                <div className="text-lg sm:text-xl font-bold font-mono leading-tight">{stat.value}</div>
+                <div className="text-lg sm:text-xl font-bold font-mono tabular-nums leading-tight">{stat.value}</div>
                 <div className="text-[9px] sm:text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">{stat.sub}</div>
                 <div className="text-[8px] sm:text-[9px] text-muted-foreground/35 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
               </motion.div>
