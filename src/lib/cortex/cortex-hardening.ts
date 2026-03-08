@@ -811,6 +811,7 @@ interface TelemetryWindow {
   maxLatencyMs: number;
   minLatencyMs: number;
   stepCounts: number[];
+  latencySamples: number[]; // sorted samples for percentile estimation
   windowStart: number;
 }
 
@@ -821,6 +822,7 @@ let telemetryWindow: TelemetryWindow = {
   maxLatencyMs: 0,
   minLatencyMs: Infinity,
   stepCounts: [],
+  latencySamples: [],
   windowStart: Date.now(),
 };
 
