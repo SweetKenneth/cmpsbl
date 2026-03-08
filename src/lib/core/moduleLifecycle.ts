@@ -4,7 +4,19 @@
  */
 
 import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, markModuleBooted, markModuleFailed } from './index';
-import { withTimeout, boundArray } from '@/lib/system/hardening';
+import { withTimeout } from '@/lib/system/hardening';
+
+// Precomputed reverse dependency map — built once at module load
+const DEPENDENTS_MAP: ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleName[]> = (() => {
+  const map = new Map<SubstrateModuleName, SubstrateModuleName[]>();
+  for (const m of SUBSTRATE_MODULES) map.set(m, []);
+  for (const m of SUBSTRATE_MODULES) {
+    for (const dep of getModuleDependencies(m)) {
+      map.get(dep)?.push(m);
+    }
+  }
+  return map;
+})();
 
 // ============ Types ============
 
