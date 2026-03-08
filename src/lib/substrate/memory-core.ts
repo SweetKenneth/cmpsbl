@@ -662,21 +662,23 @@ class MemoryCoreClient {
         const hotIds = finalResults.filter(m => m.tier === 'hot').map(m => m.id).filter(Boolean);
         const warmIds = finalResults.filter(m => m.tier === 'warm').map(m => m.id).filter(Boolean);
         
-        const touchPromises: Promise<unknown>[] = [];
+        const touchPromises: Promise<void>[] = [];
         if (hotIds.length > 0) {
           touchPromises.push(
-            supabase.from('brain_memory_hot')
-              .update({ last_used: new Date().toISOString() } as any)
-              .in('id', hotIds)
-              .then(() => {})
+            Promise.resolve(
+              supabase.from('brain_memory_hot')
+                .update({ last_used: new Date().toISOString() } as any)
+                .in('id', hotIds)
+            ).then(() => {})
           );
         }
         if (warmIds.length > 0) {
           touchPromises.push(
-            supabase.from('brain_memory_warm')
-              .update({ last_accessed: new Date().toISOString() } as any)
-              .in('id', warmIds)
-              .then(() => {})
+            Promise.resolve(
+              supabase.from('brain_memory_warm')
+                .update({ last_accessed: new Date().toISOString() } as any)
+                .in('id', warmIds)
+            ).then(() => {})
           );
         }
         // Await in parallel, catch all to prevent recall failure
