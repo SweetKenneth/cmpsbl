@@ -14,7 +14,8 @@ import { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from "@/lib/shad
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-function pct(n: number): string {
+function pct(n: number | null | undefined): string {
+  if (n == null) return '—';
   return `${(n * 100).toFixed(1)}%`;
 }
 
