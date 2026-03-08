@@ -284,14 +284,18 @@
  /**
   * Add an alert rule
   */
- export function addAlertRule(rule: Omit<AlertRule, 'id'>): AlertRule {
-   const newRule: AlertRule = {
-     id: `rule_${Date.now()}`,
-     ...rule,
-   };
-   alertRules.set(newRule.id, newRule);
-   return newRule;
- }
+ export function addAlertRule(rule: Omit<AlertRule, 'id'>): AlertRule | null {
+    if (alertRules.size >= MAX_ALERT_RULES) {
+      console.warn('[VISION Alert] Max alert rules reached');
+      return null;
+    }
+    const newRule: AlertRule = {
+      id: `rule_${Date.now()}`,
+      ...rule,
+    };
+    alertRules.set(newRule.id, newRule);
+    return newRule;
+  }
  
  /**
   * Get all alert rules
