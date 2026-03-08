@@ -71,7 +71,10 @@ export interface ThreatReport {
   mitigationActions: number;
 }
 
-// In-memory threat intelligence cache
+// In-memory threat intelligence cache — bounded
+const MAX_IP_REPUTATION_CACHE = 5000;
+const MAX_THREAT_INDICATORS = 2000;
+const MAX_RECENT_REQUESTS = 5000;
 const ipReputationCache = new Map<string, IPReputation>();
 const threatIndicators = new Map<string, ThreatIndicator>();
 const recentRequests = new Map<string, Array<{ timestamp: number; path: string }>>();
