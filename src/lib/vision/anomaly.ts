@@ -114,12 +114,16 @@ export async function analyzeWindow(
       baselineByModule[e.module] = (baselineByModule[e.module] || 0) + 1;
     });
 
-    // CLM#9: Z-score based spike detection
-    const allBaselines = Object.values(baselineByModule);
+    // CLM#9: Z-score based spike detection (per-module historical comparison)
     for (const [module, count] of Object.entries(recentByModule)) {
       const baseline = baselineByModule[module] || 0;
-      const zScore = allBaselines.length > 2
-        ? calculateZScore(allBaselines, count)
+      // Build per-module historical distribution from baseline window
+      // Use cross-module baselines only if module has no history
+      const moduleBaselines = baseline > 0 ? [baseline] : [];
+      const allBaselines = Object.values(baselineByModule);
+      const distributionValues = moduleBaselines.length > 2 ? moduleBaselines : allBaselines;
+      const zScore = distributionValues.length > 2
+        ? calculateZScore(distributionValues, count)
         : 0;
 
       if (count > 5 && (baseline === 0 || count > baseline * 2 || zScore > 2.5)) {
