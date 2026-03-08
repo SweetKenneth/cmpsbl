@@ -131,7 +131,15 @@ const NotFound = () => {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
+              transition={{ delay: 0.4 }}
+              className="text-xs font-mono text-muted-foreground/30 mb-2"
+            >
+              {location.pathname}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
               className="text-xs font-mono text-muted-foreground/40 mb-8"
             >
               Quality floor: 68 · Only stable systems survive

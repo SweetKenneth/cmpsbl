@@ -114,17 +114,27 @@ export default function ClearCache() {
                 />
               </div>
 
-              {/* Step indicators */}
-              <div className="flex justify-center gap-2">
-                {STEPS.map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      i <= step ? 'bg-primary' : 'bg-muted/40'
-                    }`}
-                    animate={i === step ? { scale: [1, 1.3, 1] } : {}}
-                    transition={{ duration: 0.6, repeat: Infinity }}
-                  />
+              {/* Step indicators with labels */}
+              <div className="flex justify-center gap-3">
+                {STEPS.map((label, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5">
+                    <motion.div
+                      className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                        i < step ? 'bg-primary' : i === step ? 'bg-primary' : 'bg-muted/40'
+                      }`}
+                      animate={i === step ? { scale: [1, 1.3, 1] } : i < step ? { scale: 1 } : {}}
+                      transition={{ duration: 0.6, repeat: i === step ? Infinity : 0 }}
+                    />
+                    {i <= step && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[9px] font-mono text-muted-foreground/50 max-w-[60px] text-center leading-tight"
+                      >
+                        {i < step ? '✓' : '…'}
+                      </motion.span>
+                    )}
+                  </div>
                 ))}
               </div>
             </motion.div>

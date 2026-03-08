@@ -120,6 +120,37 @@ export default function Careers() {
           </div>
         </section>
 
+        {/* Perks */}
+        <section className="container mx-auto max-w-5xl px-4 mb-20 relative z-10">
+          <motion.div {...fadeUp} className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">Why CMPSBL</h2>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { emoji: "🌍", label: "Fully Remote" },
+              { emoji: "⏰", label: "Async-First" },
+              { emoji: "🧠", label: "AI Stipend" },
+              { emoji: "📚", label: "Learning Budget" },
+              { emoji: "🏖️", label: "Unlimited PTO" },
+              { emoji: "💰", label: "Equity Options" },
+              { emoji: "🛡️", label: "Full Benefits" },
+              { emoji: "🚀", label: "Ship Daily" },
+            ].map((perk, i) => (
+              <motion.div
+                key={perk.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.04 }}
+                className="p-4 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm text-center hover:border-primary/20 transition-colors glass-edge"
+              >
+                <span className="text-2xl mb-2 block">{perk.emoji}</span>
+                <span className="text-xs font-semibold text-foreground">{perk.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
         {/* Open Roles */}
         <section className="container mx-auto max-w-3xl px-4 mb-20 relative z-10">
           <motion.div {...fadeUp} className="relative p-8 rounded-2xl border border-border/40 bg-gradient-to-br from-card/40 via-card/30 to-card/40 backdrop-blur-sm text-center overflow-hidden glass-edge">
