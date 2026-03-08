@@ -177,18 +177,22 @@ export async function batchIngest(
   result.success = result.failed === 0;
   result.duration = Date.now() - startTime;
 
-  // Log batch ingest event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'batch.ingest',
-    data: {
-      totalProcessed: result.totalProcessed,
-      inserted: result.inserted,
-      failed: result.failed,
-      duration: result.duration,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  // Log batch ingest event (non-critical)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'batch.ingest',
+      data: {
+        totalProcessed: result.totalProcessed,
+        inserted: result.inserted,
+        failed: result.failed,
+        duration: result.duration,
+      } as unknown as Record<string, never>,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch (logErr) {
+    console.error('Failed to log batch ingest event:', logErr);
+  }
 
   return result;
 }
@@ -207,36 +211,41 @@ export async function exportMemories(
   const tiers = options.tiers ?? ['hot', 'warm', 'cold'];
 
   // Fetch from each tier
+  // Parallel fetch from all requested tiers
+  const tierFetchers: Promise<void>[] = [];
+
   if (tiers.includes('hot')) {
-    let query = supabase.from('brain_memory_hot').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    if (options.maxAge) {
-      const cutoff = new Date(Date.now() - options.maxAge * 24 * 60 * 60 * 1000).toISOString();
-      query = query.gte('created_at', cutoff);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'hot' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_hot').select('id, content, context, value_score, access_count, tags, metadata, created_at, last_used');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      if (options.maxAge) {
+        const cutoff = new Date(Date.now() - options.maxAge * 24 * 60 * 60 * 1000).toISOString();
+        query = query.gte('created_at', cutoff);
+      }
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'hot' })));
+    })());
   }
 
   if (tiers.includes('warm')) {
-    let query = supabase.from('brain_memory_warm').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'warm' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_warm').select('id, content, context, value_score, access_count, tags, metadata, created_at');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'warm' })));
+    })());
   }
 
   if (tiers.includes('cold')) {
-    let query = supabase.from('brain_memory_cold').select('*');
-    if (options.minValueScore) {
-      query = query.gte('value_score', options.minValueScore);
-    }
-    const { data } = await query.limit(5000);
-    memories.push(...(data || []).map(m => ({ ...m, tier: 'cold' })));
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_cold').select('id, summary, tags, value_score, access_count, created_at');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'cold' })));
+    })());
   }
+
+  await Promise.all(tierFetchers);
 
   // Format output
   let data: string;
@@ -360,7 +369,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
     // Move frequently accessed warm memories to hot
     const { data: warmCandidates } = await supabase
       .from('brain_memory_warm')
-      .select('*')
+      .select('id, content, context, value_score, tags, metadata, source_module, category')
       .gte('access_count', 10)
       .gte('value_score', 0.7)
       .limit(50);
@@ -390,7 +399,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
     const staleCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const { data: hotCandidates } = await supabase
       .from('brain_memory_hot')
-      .select('*')
+      .select('id, content, context, value_score, tags, metadata, source_module, category')
       .lt('last_used', staleCutoff)
       .lt('value_score', 0.5)
       .limit(50);
@@ -421,17 +430,21 @@ export async function runTierMigration(): Promise<MigrationResult> {
     result.errors.push(error instanceof Error ? error.message : 'Migration failed');
   }
 
-  // Log migration event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'tier.migration',
-    data: {
-      movedUp: result.movedUp,
-      movedDown: result.movedDown,
-      errors: result.errors.length,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'failed',
-  });
+  // Log migration event (non-critical)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'tier.migration',
+      data: {
+        movedUp: result.movedUp,
+        movedDown: result.movedDown,
+        errors: result.errors.length,
+      } as unknown as Record<string, never>,
+      outcome: result.success ? 'success' : 'failed',
+    });
+  } catch (logErr) {
+    console.error('Failed to log migration event:', logErr);
+  }
 
   return result;
 }
@@ -447,9 +460,9 @@ export async function getTierDistribution(): Promise<{
   avgValueScores: { hot: number; warm: number; cold: number };
 }> {
   const [hotCount, warmCount, coldCount] = await Promise.all([
-    supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
-    supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
-    supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+    supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
   ]);
 
   return {

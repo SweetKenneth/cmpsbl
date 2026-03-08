@@ -189,7 +189,7 @@ export async function getRecentReflections(days: number = 7): Promise<any[]> {
   try {
     const { data, error } = await supabase
       .from('brain_reflections')
-      .select('*')
+      .select('id, reflection_date, summary, lessons')
       .order('reflection_date', { ascending: false })
       .limit(days);
     
@@ -213,7 +213,8 @@ export async function getAllLessons(): Promise<ReflectionInsight[]> {
     const { data, error } = await supabase
       .from('brain_reflections')
       .select('lessons')
-      .order('reflection_date', { ascending: false });
+      .order('reflection_date', { ascending: false })
+      .limit(365);
     
     if (error) {
       console.error('Error fetching lessons:', error);

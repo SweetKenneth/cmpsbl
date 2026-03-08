@@ -189,14 +189,13 @@
    let warmed = 0;
    let failed = 0;
    
-   for (const query of queries) {
-     try {
-       await executeOptimizedQuery(query.fn, query.key);
-       warmed++;
-     } catch {
-       failed++;
-     }
-   }
+  const results = await Promise.allSettled(
+    queries.map(query => executeOptimizedQuery(query.fn, query.key))
+  );
+  for (const r of results) {
+    if (r.status === 'fulfilled') warmed++;
+    else failed++;
+  }
    
    return { warmed, failed };
  }
