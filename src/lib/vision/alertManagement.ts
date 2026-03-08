@@ -141,13 +141,19 @@
      repeatCount: 0,
    };
    
-   activeAlerts.set(fingerprint, alert);
-   
-   // Log to database
-   logAlert(alert);
-   
-   return alert;
- }
+    activeAlerts.set(fingerprint, alert);
+    
+    // Evict oldest if over capacity
+    if (activeAlerts.size > MAX_ACTIVE_ALERTS) {
+      const oldest = activeAlerts.keys().next().value;
+      if (oldest) activeAlerts.delete(oldest);
+    }
+    
+    // Log to database
+    logAlert(alert);
+    
+    return alert;
+  }
  
  /**
   * Acknowledge an alert
