@@ -6,6 +6,7 @@ import {
   type ExportTarget,
   type ExportableArtifact,
 } from './universal-adapter';
+import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
@@ -216,6 +217,17 @@ export async function downloadTieredFoundryZip(options: {
         2,
       ),
     );
+
+    // Per-artifact CMPSBL manifest
+    artifactFolder.file('manifest.json', serializeCmpsblManifest({
+      name: item.name,
+      cjpi: item.score,
+      modules: item.systemChain || ['SYSTEM'],
+      targets: unlockedLanguages,
+      category: item.category || undefined,
+      fingerprint: item.fingerprint || undefined,
+      source: item.source || options.sourceLabel,
+    }));
 
     for (const file of bundle.files) {
       artifactFolder.file(file.filename, file.content);
