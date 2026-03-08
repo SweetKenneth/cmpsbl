@@ -294,8 +294,8 @@ export async function generateCode(request: CodeRequest): Promise<CodeResult> {
       ...requiredCheck.missing,
     ];
     
-    // Step 8: Record the change for potential rollback
-    if (patternCheck.safe && allIssues.length === 0) {
+    // Step 8: Record the change for potential rollback (always record when safe)
+    if (patternCheck.safe) {
       recordChange({
         changeType: 'code',
         module: request.module,
