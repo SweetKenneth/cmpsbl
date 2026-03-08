@@ -617,13 +617,13 @@ export default function UseCases() {
                   </Badge>
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="gap-2">
+                  <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     <Link to="/explore">
                       <Play className="w-4 h-4" />
                       Browse Artifacts
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="gap-2">
+                  <Button asChild variant="outline" size="lg" className="gap-2 hover:border-primary/30 transition-colors">
                     <Link to="/documentation">
                       <BookOpen className="w-4 h-4" />
                       View Docs
