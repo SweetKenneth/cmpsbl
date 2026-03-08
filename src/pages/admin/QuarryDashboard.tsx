@@ -76,7 +76,7 @@ function AssetRow({ asset, onUpdate, onDelete }: {
       </div>
 
       {/* Score */}
-      <div className="text-xs text-muted-foreground w-12 text-right shrink-0">
+      <div className="text-xs text-muted-foreground w-12 text-right shrink-0 font-mono tabular-nums">
         {(score * 100).toFixed(0)}%
       </div>
 

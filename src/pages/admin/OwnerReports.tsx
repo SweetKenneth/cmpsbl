@@ -220,7 +220,7 @@ export default function OwnerReports() {
                       {report.system_status}
                     </Badge>
 
-                    <span className="text-[10px] text-muted-foreground shrink-0">
+                    <span className="text-[10px] text-muted-foreground shrink-0 font-mono tabular-nums">
                       {report.generation_time_ms}ms
                     </span>
 

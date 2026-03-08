@@ -312,9 +312,9 @@ export default function GovernanceControlPlane() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs">{entry.previous_mode}</span>
+                          <span className="font-mono tabular-nums text-xs">{entry.previous_mode}</span>
                           <span className="text-muted-foreground">→</span>
-                          <span className="font-mono text-xs font-bold">{entry.new_mode}</span>
+                          <span className="font-mono tabular-nums text-xs font-bold">{entry.new_mode}</span>
                           {entry.ttl_minutes && (
                             <span className="text-xs text-muted-foreground">(TTL: {entry.ttl_minutes}m)</span>
                           )}
