@@ -163,7 +163,7 @@ export function wrapExecutor(
     let repairTypeFlag: string | null = null;
     let retryAttemptedFlag = false;
     let repairConfidence = 0;
-    // v2.1: Track escalation and safe-failure correctly
+    // Track escalation and safe-failure correctly
     let escalatedFlag = false;
     let safeFailFlag = false;
     const startTime = performance.now();
