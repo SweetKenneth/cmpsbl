@@ -40,8 +40,13 @@ let config = { ...DEFAULT_CONFIG };
  /**
   * Get or create circuit for provider
   */
- function getCircuit(provider: string): ProviderCircuit {
+function getCircuit(provider: string): ProviderCircuit {
    if (!circuits.has(provider)) {
+     // Evict oldest circuit if at capacity
+     if (circuits.size >= MAX_CIRCUITS) {
+       const oldest = circuits.keys().next().value;
+       if (oldest) circuits.delete(oldest);
+     }
      circuits.set(provider, {
        provider,
        state: 'closed',
