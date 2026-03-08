@@ -672,6 +672,7 @@ interface ResourceLock {
   acquiredAt: number;
 }
 
+const MAX_RESOURCE_LOCKS = 500;
 const resourceLocks = new Map<string, ResourceLock>();
 const waitGraph = new Map<string, Set<string>>(); // orchId → Set<waitingForOrchId>
 
