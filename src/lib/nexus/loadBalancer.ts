@@ -60,24 +60,29 @@
  /**
   * Register a provider with the load balancer
   */
- export function registerProvider(
-   providerId: string,
-   options?: {
-     weight?: number;
-     maxConcurrency?: number;
-   }
- ): void {
-   providerLoads.set(providerId, {
-     providerId,
-     activeRequests: 0,
-     queuedRequests: 0,
-     avgResponseTime: 100,
-     errorRate: 0,
-     lastHealthCheck: new Date().toISOString(),
-     weight: options?.weight ?? 1,
-     maxConcurrency: options?.maxConcurrency ?? 10,
-   });
- }
+  export function registerProvider(
+    providerId: string,
+    options?: {
+      weight?: number;
+      maxConcurrency?: number;
+    }
+  ): void {
+    // Cap registered providers
+    if (providerLoads.size >= MAX_PROVIDER_LOADS && !providerLoads.has(providerId)) {
+      console.warn(`[NEXUS LB] Max providers (${MAX_PROVIDER_LOADS}) reached, ignoring: ${providerId}`);
+      return;
+    }
+    providerLoads.set(providerId, {
+      providerId,
+      activeRequests: 0,
+      queuedRequests: 0,
+      avgResponseTime: 100,
+      errorRate: 0,
+      lastHealthCheck: new Date().toISOString(),
+      weight: options?.weight ?? 1,
+      maxConcurrency: options?.maxConcurrency ?? 10,
+    });
+  }
  
  /**
   * Unregister a provider

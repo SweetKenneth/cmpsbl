@@ -138,12 +138,12 @@ export async function getNexusStatus() {
     else if (m.name === 'ai_request_completed') completed++;
     else if (m.name === 'ai_request_failed') failed++;
   }
-  const total = completed;
+  const total = completed + failed;
   
   return {
     active: true,
     models: ['groq', 'cerebras', 'google-ai-studio', 'together', 'deepseek', 'hyperbolic'],
-    uptime: total > 0 ? ((total - failed) / total * 100) : 100,
+    uptime: total > 0 ? (completed / total * 100) : 100,
     cached_responses: cached,
     total_requests: total,
   };

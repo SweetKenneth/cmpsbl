@@ -73,23 +73,24 @@ function getCircuit(provider: string): ProviderCircuit {
      case 'closed':
        return true;
  
-     case 'open':
-       // Check if cooldown has passed
-       if (circuit.cooldown_until && now >= new Date(circuit.cooldown_until).getTime()) {
-         // Transition to half-open
-         circuit.state = 'half-open';
-         circuit.half_open_at = new Date().toISOString();
-         circuit.successes = 0;
-         return true;
-       }
-       return false;
- 
-    case 'half-open':
-       // Allow limited requests in half-open (successes + failures = total attempts)
-       return (circuit.successes + circuit.failures) < config.half_open_requests;
- 
-     default:
-       return true;
+      case 'open':
+        // Check if cooldown has passed
+        if (circuit.cooldown_until && now >= new Date(circuit.cooldown_until).getTime()) {
+          // Transition to half-open — reset BOTH counters for clean half-open window
+          circuit.state = 'half-open';
+          circuit.half_open_at = new Date().toISOString();
+          circuit.successes = 0;
+          circuit.failures = 0;
+          return true;
+        }
+        return false;
+
+     case 'half-open':
+        // Allow limited requests in half-open
+        return (circuit.successes + circuit.failures) < config.half_open_requests;
+
+      default:
+        return true;
    }
  }
  

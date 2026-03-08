@@ -342,7 +342,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
       recordUsage(provider.id);
       const start = Date.now();
       const { supabase: client } = await import('@/integrations/supabase/client');
-
+      // Note: dynamic import is cached by the module system after first call
       try {
         // Call pf-nexus-router edge function for real AI completion
         const { data, error } = await client.functions.invoke('pf-nexus-router', {
