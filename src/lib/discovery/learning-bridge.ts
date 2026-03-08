@@ -208,7 +208,7 @@ export function feedDiscoveriesToLearning(
         result.synergyOutcomesRecorded++;
       }
     } catch (err) {
-      log('warn', 'discovery-learning', `Failed to learn from candidate ${candidate.name}`, { error: String(err) });
+      log.warn('discovery-learning', `Failed to learn from candidate ${candidate.name}`, { error: String(err) });
       result.skipped++;
     }
   }
@@ -224,7 +224,7 @@ export function feedDiscoveriesToLearning(
     },
   });
 
-  log('info', 'discovery-learning', `Post-discovery learning: ${result.domainLearnings} domain learnings, ${result.rulesContributed} rules, ${result.synergyOutcomesRecorded} synergy outcomes`);
+  log.info('discovery-learning', `Post-discovery learning: ${result.domainLearnings} domain learnings, ${result.rulesContributed} rules, ${result.synergyOutcomesRecorded} synergy outcomes`);
 
   return result;
 }
