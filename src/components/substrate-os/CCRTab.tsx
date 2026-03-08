@@ -101,7 +101,7 @@ export function CCRTab() {
                 <stat.icon className={cn("w-3.5 h-3.5", stat.color)} />
                 <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-mono uppercase truncate">{stat.label}</span>
               </div>
-              <span className="text-lg sm:text-xl font-bold font-mono">{stat.value}</span>
+              <span className="text-lg sm:text-xl font-bold font-mono tabular-nums">{stat.value}</span>
             </CardContent>
           </Card>
         ))}
