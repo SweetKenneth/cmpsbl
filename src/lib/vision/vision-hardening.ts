@@ -249,6 +249,7 @@ export function getCorrelationGraph(): CorrelationEdge[] {
 // 6. Provider Drift Detector
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_PROVIDER_LATENCY_ENTRIES = 50;
 const providerLatencyHistory = new Map<string, number[]>();
 
 export function recordProviderLatency(provider: string, latencyMs: number): void {
