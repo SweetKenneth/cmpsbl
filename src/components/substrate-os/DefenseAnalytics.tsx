@@ -313,7 +313,7 @@ export function DefenseAnalytics() {
         <TabsContent value="threats" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Action Distribution */}
-            <Card className="p-6">
+            <Card className="p-6 transition-all duration-300 hover:border-primary/15">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Action Distribution
