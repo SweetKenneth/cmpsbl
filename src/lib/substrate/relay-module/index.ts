@@ -12,7 +12,7 @@
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
-import { initCircuitBreaker, withResilience, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
 
 export interface DeliveryRecord {
