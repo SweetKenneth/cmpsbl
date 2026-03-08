@@ -7,10 +7,28 @@
 
 import { emit } from '../events';
 import { getAuditState, getAuditResilience, getCompressionStats, getTotalRecorded } from './index';
-import { calculateAuditHealth, getDedupStats, getWALLength, getThroughputStats } from '../audit-hardening';
+import { calculateAuditHealth, getDedupStats, getWALLength, getThroughputStats, getAuditSLA } from '../audit-hardening';
 import type { CLMReport } from '../encode-module/clm';
 
 export async function runAuditCLMCycle(): Promise<CLMReport> {
+  const cycleId = `clm-audit-${Date.now()}`;
+  try {
+    return await runCLMCycleInner(cycleId);
+  } catch (err) {
+    emit({ module: 'audit', event_type: 'clm_cycle', outcome: 'failed', data: { cycleId, error: err instanceof Error ? err.message : String(err) } });
+    return {
+      module: 'audit',
+      cycleId,
+      learnings: [`CLM cycle crashed: ${err instanceof Error ? err.message : String(err)}`],
+      proposedUpgrades: [],
+      risks: ['CRITICAL: CLM cycle failed — audit observability degraded'],
+      confidence: 0.1,
+      timestamp: new Date().toISOString(),
+    };
+  }
+}
+
+async function runCLMCycleInner(cycleId: string): Promise<CLMReport> {
   const state = getAuditState();
   const resilience = getAuditResilience();
   const compression = getCompressionStats();
@@ -19,7 +37,7 @@ export async function runAuditCLMCycle(): Promise<CLMReport> {
   const walLength = getWALLength();
   const throughput = getThroughputStats();
   const totalRecorded = getTotalRecorded();
-  const cycleId = `clm-audit-${Date.now()}`;
+  const sla = getAuditSLA();
 
   const learnings = [
     `Total audit entries in-memory: ${state.totalEntries}, total ever recorded: ${totalRecorded}`,
