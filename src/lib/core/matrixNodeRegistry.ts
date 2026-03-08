@@ -260,6 +260,14 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
   const weightCoherence = Math.abs(weightSum - 1.0) < 0.01 ? 100 : Math.max(0, 100 - Math.abs(weightSum - 1.0) * 1000);
   const structural = Math.round((breakerCoherence * 0.7 + weightCoherence * 0.3));
 
+  const coreNode = nodes.find(n => n.id === 'core');
+  const isCritical = operational < 40 || coreNode?.breakerState === 'open';
+  const status: MatrixIntegrityReport['status'] = isCritical
+    ? 'CRITICAL'
+    : operational < 80
+      ? 'MATRIX DEGRADED'
+      : 'MATRIX STABLE';
+
   const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
   for (const sector of allSectors) {
