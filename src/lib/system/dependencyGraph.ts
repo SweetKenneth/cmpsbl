@@ -254,16 +254,19 @@
    
    // Transitive impact = all modules that depend transitively
    const transitiveImpact = new Set<SubstrateModuleName>();
-   const queue = [...directImpact];
+   const queue: SubstrateModuleName[] = [...directImpact];
+   let qi = 0; // cursor-based BFS — avoids O(n²) shift()
    
-   while (queue.length > 0) {
-     const current = queue.shift()!;
+   while (qi < queue.length) {
+     const current = queue[qi++];
      if (transitiveImpact.has(current)) continue;
      transitiveImpact.add(current);
      
      const currentNode = graph.nodes.get(current);
      if (currentNode) {
-       queue.push(...currentNode.dependents);
+       for (const dep of currentNode.dependents) {
+         if (!transitiveImpact.has(dep)) queue.push(dep);
+       }
      }
    }
    

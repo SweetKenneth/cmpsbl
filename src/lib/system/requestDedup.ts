@@ -19,9 +19,23 @@ export async function dedupFetch(url: string, init?: RequestInit): Promise<Respo
   if (!key) return fetch(url, init); // Non-GET: pass through
 
   const existing = pending.get(key);
-  if (existing) return existing.then(r => r.clone());
+  if (existing) {
+    // Clone on success; re-throw on error — each caller gets its own rejection
+    return existing.then(r => r.clone());
+  }
 
-  const promise = fetch(url, init).finally(() => pending.delete(key));
+  const promise = fetch(url, init)
+    .then(response => {
+      // Only keep successful responses in the dedup map
+      pending.delete(key);
+      return response;
+    })
+    .catch(err => {
+      // Remove from map so future retries aren't blocked
+      pending.delete(key);
+      throw err;
+    });
+
   pending.set(key, promise);
   return promise;
 }

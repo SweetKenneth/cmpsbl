@@ -348,9 +348,9 @@ function createAlert(
   
   resourceAlerts.push(alert);
   
-  // Keep last 100 alerts
-  if (resourceAlerts.length > 100) {
-    resourceAlerts.shift();
+  // Keep last 100 alerts (batch splice instead of per-entry shift)
+  if (resourceAlerts.length > 200) {
+    resourceAlerts.splice(0, resourceAlerts.length - 100);
   }
 }
 
