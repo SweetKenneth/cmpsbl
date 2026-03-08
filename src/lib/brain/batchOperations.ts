@@ -103,12 +103,16 @@ export async function batchIngest(
 
     chunk.forEach((item, idx) => {
       const importance = item.importance ?? 0.5;
+      const sourceModule = item.context === 'code' ? 'engineering' : item.context === 'architecture' ? 'architecture' : 'general';
+      const category = item.context || 'uncategorized';
       const record = {
         content: item.content,
         context: item.context,
         value_score: importance,
         tags: item.tags || [],
         metadata: item.metadata || {},
+        source_module: sourceModule,
+        category,
       };
 
       if (importance >= 0.8) {
@@ -118,6 +122,8 @@ export async function batchIngest(
           summary: item.content,
           tags: { context: item.context, user_tags: item.tags || [] },
           value_score: importance,
+          source_module: sourceModule,
+          category,
         });
       } else {
         warmItems.push(record);
