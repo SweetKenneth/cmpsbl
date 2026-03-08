@@ -5,6 +5,7 @@
  */
 
 import type { SynthesisContext } from './logic-synthesizer';
+import { generateLicenseHTML } from './elegant-html-docs';
 
 export function generateTypeScriptTest(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
