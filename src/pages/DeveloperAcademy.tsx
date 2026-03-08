@@ -134,7 +134,7 @@ const DeveloperAcademy = () => {
                   and start building production-ready agents.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3">
-                  <Button asChild size="lg">
+                  <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     <Link to="/devtools">
                       Get API Key
                       <ArrowRight className="w-4 h-4 ml-2" />
