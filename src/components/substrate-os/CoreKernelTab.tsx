@@ -190,7 +190,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
         {/* System State + Quick Actions */}
         <div className="space-y-4">
-          <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl">
+          <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-orange-400" />
