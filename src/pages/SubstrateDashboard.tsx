@@ -608,7 +608,7 @@ export default function SubstrateDashboard() {
               <div className="flex items-center gap-3 md:gap-4">
                 <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-blue-500 shrink-0" />
                 <div>
-                  <p className="text-xl md:text-2xl font-bold">{metrics.decode_conversations?.toLocaleString() || 0}</p>
+                  <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.decode_conversations?.toLocaleString() || 0}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Conversations</p>
                 </div>
               </div>
