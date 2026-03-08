@@ -5543,6 +5543,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         registerExpansionHandlers();
         const { registerSystemAuditHandlers } = await import('@/lib/terminal/system-audit-handlers');
         registerSystemAuditHandlers();
+        const { registerInfraHandlers } = await import('@/lib/terminal/infra-handlers');
+        registerInfraHandlers();
         const { getHandler } = await import('@/lib/terminal/validate-registry');
         const handler = getHandler(base);
         

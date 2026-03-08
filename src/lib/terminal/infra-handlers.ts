@@ -213,7 +213,7 @@ export function registerInfraHandlers(): void {
     return { success: results.every(r => r.ok), data: results };
   });
 
-  registerHandler('stream.status', async () => {
+  registerHandler('eventstream.status', async () => {
     const { getStreamStats } = await import('@/lib/substrate/module-bus/eventStream');
     const stats = getStreamStats();
     return {
