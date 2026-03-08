@@ -485,7 +485,7 @@ export function rollbackRule(candidateId: string): boolean {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Feedback Loop — Record what actually worked
+// Feedback Loop — Record what actually worked
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function recordResolutionFeedback(
