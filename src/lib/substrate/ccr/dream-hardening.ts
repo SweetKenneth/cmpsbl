@@ -431,7 +431,8 @@ export function promoteTopInsights(threshold = 0.7): InsightCandidate[] {
 }
 
 export function getInsightStats(): { total: number; promoted: number; promotionRate: number } {
-  const promoted = insightPipeline.filter(i => i.promoted).length;
+  let promoted = 0;
+  for (const i of insightPipeline) if (i.promoted) promoted++;
   return { total: insightPipeline.length, promoted, promotionRate: insightPipeline.length > 0 ? promoted / insightPipeline.length : 0 };
 }
 
