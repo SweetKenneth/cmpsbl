@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getFunctionalDescription, getEnrichedDescription } from '@/lib/pipeline-descriptions';
 import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { Badge } from "@/components/ui/badge";
@@ -342,9 +342,10 @@ function PromotedCard({
           )}
         </div>
         <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{discovery.name}</h3>
-        <p className="text-xs sm:text-sm text-muted-foreground mb-3 break-words">{discovery.description}</p>
-        {/* Functional description */}
-        <p className="text-[10px] text-primary/50 font-mono mb-3 leading-relaxed">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-2 break-words">
+          {getEnrichedDescription(discovery.description, discovery.name, modules)}
+        </p>
+        <p className="text-[10px] text-primary/70 font-mono mb-3 leading-relaxed">
           {getFunctionalDescription(discovery.name, modules)}
         </p>
         <div className="flex items-center gap-2 flex-wrap">
@@ -628,8 +629,12 @@ export default function STierVault() {
 
   const handleExportPromoted = (d: PromotedDiscovery) => {
     const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-    const synthCtx = contextFromDiscovery(d);
-    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, code: '', synthesisContext: synthCtx });
+    const modules = d.module_chain || [primaryModule];
+    const synthCtx = contextFromDiscovery({
+      ...d,
+      description: getEnrichedDescription(d.description, d.name, modules),
+    });
+    setExportingEntry({ id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: getEnrichedDescription(d.description, d.name, modules), code: '', synthesisContext: synthCtx });
   };
 
   const handlePromoteToRegistry = async (d: PromotedDiscovery) => {
@@ -718,8 +723,10 @@ export default function STierVault() {
 
     for (const d of discoveries) {
       const primaryModule = (d.module_chain && d.module_chain[0]) || d.category.toUpperCase();
-      const synthCtx = contextFromDiscovery(d);
-      const artifact: ExportableArtifact = { id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: d.description, sourceCode: '', synthesisContext: synthCtx };
+      const modules = d.module_chain || [primaryModule];
+      const enrichedDesc = getEnrichedDescription(d.description, d.name, modules);
+      const synthCtx = contextFromDiscovery({ ...d, description: enrichedDesc });
+      const artifact: ExportableArtifact = { id: d.discovery_id, name: d.name, rank: 0, cjpi: d.cjpi, module: primaryModule, description: enrichedDesc, sourceCode: '', synthesisContext: synthCtx };
       const bundle = generateExportBundle(artifact, languages);
       const slug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
       const folder = root.folder(slug)!;

@@ -79,7 +79,7 @@ export interface ExportedFile {
 }
 
 export interface ExportBundle {
-  artifact: { id: string; name: string; rank: number };
+  artifact: { id: string; name: string; rank: number; cjpi?: number; module?: string; synthesisContext?: SynthesisContext };
   files: ExportedFile[];
   readme: string;
   generatedAt: string;
@@ -202,7 +202,7 @@ export function generateExportBundle(
   const readme = generateReadme(artifact, targets, files);
 
   return {
-    artifact: { id: artifact.id, name: artifact.name, rank: artifact.rank },
+    artifact: { id: artifact.id, name: artifact.name, rank: artifact.rank, cjpi: artifact.cjpi, module: artifact.module, synthesisContext: artifact.synthesisContext },
     files,
     readme,
     generatedAt: new Date().toISOString(),
@@ -2496,10 +2496,13 @@ export async function downloadBundle(bundle: ExportBundle): Promise<void> {
   }
   folder.file('manifest.json', serializeCmpsblManifest({
     name: bundle.artifact.name,
-    targets: bundle.files.map(f => {
-      const ext = f.filename.split('.').pop() || '';
-      return ext;
-    }).filter((v, i, a) => a.indexOf(v) === i),
+    cjpi: bundle.artifact.cjpi,
+    modules: bundle.artifact.synthesisContext
+      ? bundle.artifact.synthesisContext.moduleChain
+      : [bundle.artifact.module],
+    targets: bundle.files.map(f => f.language).filter((v, i, a) => a.indexOf(v) === i),
+    category: bundle.artifact.synthesisContext?.category || bundle.artifact.module.toLowerCase(),
+    source: 'universal-adapter',
     version: '1.0.0',
   }));
   const blob = await zip.generateAsync({ type: 'blob' });
