@@ -317,6 +317,10 @@ export function escalateSeverity(
 ): Severity {
   const entry = escalationTracker.get(fingerprint);
   if (!entry) {
+    if (escalationTracker.size >= MAX_ESCALATION_ENTRIES) {
+      const oldest = escalationTracker.keys().next().value;
+      if (oldest) escalationTracker.delete(oldest);
+    }
     escalationTracker.set(fingerprint, { count: 1, currentSeverity: baseSeverity });
     return baseSeverity;
   }

@@ -319,15 +319,19 @@ export function getMetricTimeSeries(
 /**
  * Flush metrics buffer to database
  */
+let flushInProgress = false;
+
 export async function flushMetricsToDatabase(): Promise<{
   flushed: number;
   errors: number;
 }> {
-  if (metricBuffer.length === 0) {
-    return { flushed: 0, errors: 0 };
-  }
+  // Guard against concurrent flushes causing duplicate writes
+  if (flushInProgress) return { flushed: 0, errors: 0 };
   
-  const toFlush = metricBuffer.splice(0, Math.min(100, metricBuffer.length));
+  const toFlush = getBufferContents().slice(0, 100);
+  if (toFlush.length === 0) return { flushed: 0, errors: 0 };
+  
+  flushInProgress = true;
   let errors = 0;
   
   try {
@@ -346,12 +350,12 @@ export async function flushMetricsToDatabase(): Promise<{
     
     if (error) {
       errors = toFlush.length;
-      // Put back in buffer on error
-      metricBuffer.unshift(...toFlush);
+      // Don't try to re-insert — ring buffer still has them for next flush
     }
-  } catch (error) {
+  } catch {
     errors = toFlush.length;
-    metricBuffer.unshift(...toFlush);
+  } finally {
+    flushInProgress = false;
   }
   
   return { flushed: toFlush.length - errors, errors };

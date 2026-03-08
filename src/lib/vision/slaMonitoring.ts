@@ -271,8 +271,19 @@ export async function evaluateSLA(slaId: string): Promise<SLAMetrics | null> {
     status = 'at_risk';
   }
 
-  // Store breaches
+  // Store breaches (evict oldest resolved if at capacity)
   for (const breach of breaches) {
+    if (activeBreaches.size >= MAX_BREACHES) {
+      // Evict oldest resolved first, then oldest overall
+      let evicted = false;
+      for (const [id, b] of activeBreaches) {
+        if (b.resolved) { activeBreaches.delete(id); evicted = true; break; }
+      }
+      if (!evicted) {
+        const oldest = activeBreaches.keys().next().value;
+        if (oldest) activeBreaches.delete(oldest);
+      }
+    }
     activeBreaches.set(breach.id, breach);
   }
 

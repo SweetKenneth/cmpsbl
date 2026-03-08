@@ -218,13 +218,24 @@
   * Add a silence rule
   */
  export function addSilence(silence: Omit<SilenceRule, 'id'>): SilenceRule {
-   const rule: SilenceRule = {
-     id: `silence_${Date.now()}`,
-     ...silence,
-   };
-   silenceRules.push(rule);
-   return rule;
- }
+    // Evict expired silences before adding
+    const now = Date.now();
+    for (let i = silenceRules.length - 1; i >= 0; i--) {
+      if (new Date(silenceRules[i].endsAt).getTime() < now) {
+        silenceRules.splice(i, 1);
+      }
+    }
+    // Cap total
+    if (silenceRules.length >= MAX_SILENCE_RULES) {
+      silenceRules.shift();
+    }
+    const rule: SilenceRule = {
+      id: `silence_${Date.now()}`,
+      ...silence,
+    };
+    silenceRules.push(rule);
+    return rule;
+  }
  
  /**
   * Remove a silence rule
