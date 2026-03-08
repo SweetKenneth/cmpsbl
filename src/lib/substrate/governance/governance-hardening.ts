@@ -193,21 +193,13 @@ export interface ImpactAssessment {
 }
 
 // ─── Internal State ───────────────────────────────────────────────────────────
-// All collections are capped to prevent unbounded memory growth.
+// All arrays are capped to prevent unbounded memory growth.
 
 const MAX_POLICY_VERSIONS = 100;
 const MAX_DECISION_CHAIN = 2000;
 const MAX_DELEGATIONS = 500;
 const MAX_OVERRIDES = 200;
 const MAX_TIMESTAMPS = 2000;
-const MAX_QUORUMS = 200;
-const MAX_SESSIONS = 100;
-const MAX_ESCALATIONS = 200;
-const MAX_CONSENT_LOG = 200;
-const MAX_COOLDOWNS = 200;
-const MAX_RATE_LIMIT_BUCKETS = 100;
-const MAX_POLICY_EXPIRIES = 500;
-const MAX_CHECKPOINTS = 200;
 
 const policyVersions: PolicySnapshot[] = [];
 const decisionChain: DecisionRecord[] = [];
@@ -229,19 +221,6 @@ let lastChainHash = '0'.repeat(64);
 function capArray<T>(arr: T[], max: number): void {
   if (arr.length > max) arr.splice(0, arr.length - max);
 }
-
-/** Trim a Map to a max size, evicting oldest entries (by insertion order) */
-function capMap<K, V>(map: Map<K, V>, max: number): void {
-  if (map.size <= max) return;
-  const excess = map.size - max;
-  const iter = map.keys();
-  for (let i = 0; i < excess; i++) {
-    const { value, done } = iter.next();
-    if (done) break;
-    map.delete(value);
-  }
-}
-
 
 // ─── #1 Policy Version Control ────────────────────────────────────────────────
 
@@ -306,7 +285,6 @@ export function createQuorum(
     metadata,
   };
   quorumRequests.set(q.id, q);
-  capMap(quorumRequests, MAX_QUORUMS);
   return q;
 }
 
@@ -454,7 +432,6 @@ const escalationState = new Map<string, { tier: number; createdAt: number; escal
 
 export function initiateEscalation(actionId: string): { tier: number; name: string } {
   escalationState.set(actionId, { tier: 1, createdAt: Date.now(), escalatedAt: Date.now() });
-  capMap(escalationState, MAX_ESCALATIONS);
   return { tier: 1, name: ESCALATION_TIERS[0].name };
 }
 
@@ -491,7 +468,6 @@ export function openGovernanceSession(scope: string, authorities: string[], ttlM
     status: 'active',
   };
   sessions.set(session.id, session);
-  capMap(sessions, MAX_SESSIONS);
   return session;
 }
 
@@ -543,7 +519,6 @@ const consentLog = new Map<string, { parties: Set<string>; required: string[]; t
 
 export function requireConsent(actionId: string, requiredParties: string[]): void {
   consentLog.set(actionId, { parties: new Set(), required: requiredParties, timestamp: Date.now() });
-  capMap(consentLog, MAX_CONSENT_LOG);
 }
 
 export function grantConsent(actionId: string, party: string): boolean {
@@ -640,7 +615,6 @@ export function enforceCooldown(action: string, customMs?: number): { allowed: b
 
   const duration = customMs ?? COOLDOWN_DEFAULTS[action] ?? 10_000;
   cooldowns.set(action, now + duration);
-  capMap(cooldowns, MAX_COOLDOWNS);
   return { allowed: true, remainingMs: 0 };
 }
 
@@ -698,7 +672,6 @@ export function measureDecisionEntropy(windowMs: number = 300_000): {
 
 export function setPolicyExpiry(ruleId: string, expiresAt: number): void {
   policyExpiries.set(ruleId, expiresAt);
-  capMap(policyExpiries, MAX_POLICY_EXPIRIES);
 }
 
 export function getExpiredPolicies(): string[] {
@@ -730,7 +703,6 @@ export function createGovernanceCheckpoint(metadata: Record<string, unknown> = {
     metadata,
   };
   checkpoints.push(cp);
-  capArray(checkpoints, MAX_CHECKPOINTS);
   return cp;
 }
 
@@ -764,7 +736,6 @@ export function tryGovernanceAction(actionType: string): { allowed: boolean; ret
   if (!bucket) {
     bucket = { tokens: GOV_RATE_LIMIT.maxTokens, lastRefill: now };
     rateLimitBuckets.set(actionType, bucket);
-    capMap(rateLimitBuckets, MAX_RATE_LIMIT_BUCKETS);
   }
 
   const elapsed = now - bucket.lastRefill;
