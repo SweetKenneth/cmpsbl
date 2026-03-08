@@ -66,6 +66,10 @@ const depthLimits = new Map<string, DepthLimit>();
 const MAX_DEPTH_LIMITS = 100;
 
 export function configureDreamDepth(chainId: string, maxDepth = 20, softLimit = 15): void {
+  if (depthLimits.size >= MAX_DEPTH_LIMITS && !depthLimits.has(chainId)) {
+    const oldest = depthLimits.keys().next().value;
+    if (oldest) depthLimits.delete(oldest);
+  }
   depthLimits.set(chainId, { maxDepth, currentDepth: 0, softLimit, aborted: 0 });
 }
 
