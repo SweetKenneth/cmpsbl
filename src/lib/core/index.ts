@@ -291,60 +291,51 @@ export function getBootSequence(): BootSequence | null {
 
 // ============ Module Registry ============
 
+// Static dependency map — allocated once, read many
+const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly SubstrateModuleName[]>> = {
+  core: [],
+  system: ['core'],
+  brain: ['core', 'system'],
+  memory: ['core', 'system'],
+  dream: ['core', 'system'],
+  ripple: ['core'],
+  access: ['core'],
+  identity: ['core'],
+  relay: ['core'],
+  audit: ['core'],
+  modernizer: ['core'],
+  decode: ['core'],
+  encode: ['core', 'decode'],
+  vision: ['core'],
+  cortex: ['core'],
+  nexus: ['core'],
+  economy: ['core'],
+  sandbox: ['core'],
+  inclusive: ['core'],
+  medic: ['core', 'system', 'vision'],
+  nerve: ['core', 'ripple', 'system'],
+  evolution: ['core'],
+  immunity: ['core', 'defense'],
+  intent: ['core'],
+  governance: ['core'],
+  defense: ['core'],
+  integration: ['core'],
+  sovereign: ['core', 'defense', 'access'],
+  oracle: ['core', 'brain', 'vision'],
+  conscience: ['core', 'defense'],
+  phantom: ['core', 'defense', 'identity'],
+  forge: ['core', 'encode'],
+  lingua: ['core', 'decode', 'nexus'],
+  compass: ['core', 'vision', 'brain'],
+  echo: ['core', 'memory'],
+  treaty: ['core', 'access'],
+  harvest: ['core', 'memory', 'economy'],
+  reflex: ['core', 'nexus', 'vision'],
+  shadow: ['core', 'defense'],
+};
+
 export function getModuleDependencies(module: SubstrateModuleName): SubstrateModuleName[] {
-  const deps: Record<SubstrateModuleName, SubstrateModuleName[]> = {
-    core: [],
-    // SYSTEM depends on CORE only
-    system: ['core'],
-    // CCR zones depend on CORE and SYSTEM
-    brain: ['core', 'system'],
-    memory: ['core', 'system'],
-    dream: ['core', 'system'],
-    // OCG zones depend on CORE
-    ripple: ['core'],
-    access: ['core'],
-    identity: ['core'],
-    relay: ['core'],
-    audit: ['core'],
-    // Absorbed
-    modernizer: ['core'],
-    // 10 Modules
-    decode: ['core'],
-    encode: ['core', 'decode'],
-    vision: ['core'],
-    cortex: ['core'],
-    nexus: ['core'],
-    economy: ['core'],
-    sandbox: ['core'],
-    inclusive: ['core'],
-    medic: ['core', 'system', 'vision'],
-    nerve: ['core', 'ripple', 'system'],
-    // Fields
-    evolution: ['core'],
-    immunity: ['core', 'defense'],
-    intent: ['core'],
-    // Plane
-    governance: ['core'],
-    // Shell
-    defense: ['core'],
-    // Standalone
-    integration: ['core'],
-    // Expansion Modules (38-Node Architecture)
-    sovereign: ['core', 'defense', 'access'],
-    oracle: ['core', 'brain', 'vision'],
-    conscience: ['core', 'defense'],
-    phantom: ['core', 'defense', 'identity'],
-    forge: ['core', 'encode'],
-    lingua: ['core', 'decode', 'nexus'],
-    compass: ['core', 'vision', 'brain'],
-    echo: ['core', 'memory'],
-    treaty: ['core', 'access'],
-    harvest: ['core', 'memory', 'economy'],
-    reflex: ['core', 'nexus', 'vision'],
-    shadow: ['core', 'defense'],
-  };
-  
-  return deps[module] || [];
+  return [...(MODULE_DEPENDENCIES[module] || [])];
 }
 
 export function canModuleBoot(module: SubstrateModuleName): boolean {

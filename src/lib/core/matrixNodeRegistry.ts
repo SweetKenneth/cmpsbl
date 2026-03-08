@@ -257,10 +257,17 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
       ? 'MATRIX DEGRADED'
       : 'MATRIX STABLE';
 
+  // Build sector lookup in a single pass instead of filtering per sector
+  const sectorMap = new Map<MatrixSector, MatrixNode[]>();
+  for (const node of nodes) {
+    const list = sectorMap.get(node.sector);
+    if (list) { list.push(node); } else { sectorMap.set(node.sector, [node]); }
+  }
+
   const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
   for (const sector of allSectors) {
-    const sectorNodes = nodes.filter(n => n.sector === sector);
+    const sectorNodes = sectorMap.get(sector) || [];
     const sectorWeight = sectorNodes.reduce((s, n) => s + n.weight, 0);
     const sectorHealth = sectorNodes.length > 0
       ? Math.round(sectorNodes.reduce((s, n) => s + n.health, 0) / sectorNodes.length)

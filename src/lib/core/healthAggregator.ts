@@ -220,10 +220,10 @@ export function updateModuleHealth(
    
   healthAlerts.push(alert);
     
-    // Bound alert history to prevent unbounded growth
-    const bounded = boundArray(healthAlerts, 200);
-    healthAlerts.length = 0;
-    healthAlerts.push(...bounded);
+    // Cap alert history to prevent unbounded growth (keep newest 200)
+    if (healthAlerts.length > 200) {
+      healthAlerts.splice(0, healthAlerts.length - 200);
+    }
    
    return alert;
  }

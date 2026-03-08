@@ -296,16 +296,18 @@ export async function loadConfigsFromDatabase(): Promise<number> {
     
     if (!result) return 0;
     
+    let loaded = 0;
     result.forEach(row => {
       if (row.metadata && typeof row.metadata === 'object') {
         const meta = row.metadata as Record<string, unknown>;
         if ('configValue' in meta) {
           setConfig(row.key, meta.configValue, { source: 'database' });
+          loaded++;
         }
       }
     });
     
-    return result.length;
+    return loaded;
   } catch (error) {
     console.error('[ConfigManagement] Failed to load configs from database:', error);
     return 0;

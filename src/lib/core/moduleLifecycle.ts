@@ -178,7 +178,6 @@ export async function hotReloadModule(module: SubstrateModuleName): Promise<{ su
   const startTime = Date.now();
   
   const lifecycle = lifecycles.get(module);
-  const wasReady = lifecycle?.phase === 'ready';
   
   // Mark as degraded during reload
   if (lifecycle) {
@@ -191,9 +190,9 @@ export async function hotReloadModule(module: SubstrateModuleName): Promise<{ su
   
   const downtime = Date.now() - startTime;
   
-  if (!result.success && wasReady) {
-    // Attempt recovery
-    recordEvent(module, 'recover');
+  if (!result.success && lifecycle) {
+    // Reload failed — mark as error (don't log misleading 'recover')
+    recordEvent(module, 'error', downtime, `Hot reload failed: ${result.error}`);
   }
   
   return { success: result.success, downtime_ms: downtime };
