@@ -369,7 +369,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
     // Move frequently accessed warm memories to hot
     const { data: warmCandidates } = await supabase
       .from('brain_memory_warm')
-      .select('*')
+      .select('id, content, context, value_score, tags, metadata, source_module, category')
       .gte('access_count', 10)
       .gte('value_score', 0.7)
       .limit(50);
