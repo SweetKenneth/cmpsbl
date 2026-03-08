@@ -277,7 +277,14 @@ export function recordAuditEntry(
 export function verifyAuditChain(): { valid: boolean; brokenAt: number | null } {
   let prevHash = '0000000000000000';
   for (let i = 0; i < auditLog.length; i++) {
+    // 1. Verify prev-hash linkage
     if (auditLog[i].previousHash !== prevHash) {
+      state.chainValid = false;
+      return { valid: false, brokenAt: i };
+    }
+    // 2. Recompute hash to detect data tampering (not just link breaks)
+    const recomputed = computeHash(auditLog[i]);
+    if (recomputed !== auditLog[i].hash) {
       state.chainValid = false;
       return { valid: false, brokenAt: i };
     }
