@@ -1,5 +1,5 @@
 /**
- * Account Tab — Personalized profile hub with quick links navigation.
+ * Account Tab — Personalized profile hub with discovery stats & quick links.
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -18,11 +18,12 @@ import { Link } from 'react-router-dom';
 import {
   Camera, Save, User, Mail, Calendar, Sparkles, ExternalLink,
   Flame, BookOpen, Code2, FileText, Map, Crown, Shield, Compass,
-  Loader2, Check, Pencil,
+  Loader2, Check, Pencil, Brain, TrendingUp, Pickaxe, Trophy, Zap,
 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { formatDistanceToNow } from 'date-fns';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 interface ProfileData {
   display_name: string | null;
@@ -30,6 +31,16 @@ interface ProfileData {
   avatar_url: string | null;
   email: string | null;
   created_at: string;
+}
+
+interface DiscoveryStats {
+  totalDiscovered: number;
+  highestScore: number;
+  highestName: string;
+  totalMines: number;
+  streakDays: number;
+  avgScore: number;
+  categoryCounts: Record<string, number>;
 }
 
 const QUICK_LINKS = [
@@ -40,7 +51,7 @@ const QUICK_LINKS = [
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
   { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
   { label: 'System Integrity', href: '/integrity', icon: Shield, description: 'Health checks & circuit breakers', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
-  { label: 'Investors', href: '/investors', icon: Compass, description: 'Traction, metrics & vision', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
+  { label: 'Memories', href: '/blog/the-first-line-of-code', icon: Brain, description: 'Read the origin story & build log', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
 ];
 
 export function AccountTab() {
@@ -58,6 +69,8 @@ export function AccountTab() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
 
+  const [discoveryStats, setDiscoveryStats] = useState<DiscoveryStats | null>(null);
+
   // Fetch profile
   useEffect(() => {
     if (!user) return;
@@ -70,7 +83,6 @@ export function AccountTab() {
 
       if (error) {
         console.error('Profile fetch error:', error);
-        // Fallback
         setProfile({
           display_name: null,
           bio: null,
@@ -83,7 +95,6 @@ export function AccountTab() {
         setDisplayName(data.display_name ?? '');
         setBio((data as any).bio ?? '');
       } else {
-        // No profile row yet — create one
         const { data: created } = await supabase
           .from('profiles')
           .insert({ user_id: user.id, email: user.email })
@@ -96,6 +107,38 @@ export function AccountTab() {
         }
       }
       setLoading(false);
+    })();
+  }, [user]);
+
+  // Fetch discovery stats from foundry_inventory + foundry_user_state
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [invRes, stateRes] = await Promise.allSettled([
+        supabase.from('foundry_inventory').select('artifact_name, score, category, obtained_at').eq('user_id', user.id),
+        supabase.from('foundry_user_state').select('total_mines, streak_days').eq('user_id', user.id).maybeSingle(),
+      ]);
+
+      const items = invRes.status === 'fulfilled' ? (invRes.value.data ?? []) : [];
+      const state = stateRes.status === 'fulfilled' ? stateRes.value.data : null;
+
+      const scores = items.map((i: any) => i.score ?? 0);
+      const highestIdx = scores.length > 0 ? scores.indexOf(Math.max(...scores)) : -1;
+      const categoryCounts: Record<string, number> = {};
+      items.forEach((i: any) => {
+        const cat = i.category || 'uncategorized';
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      });
+
+      setDiscoveryStats({
+        totalDiscovered: items.length,
+        highestScore: highestIdx >= 0 ? scores[highestIdx] : 0,
+        highestName: highestIdx >= 0 ? (items[highestIdx] as any).artifact_name : '—',
+        totalMines: (state as any)?.total_mines ?? 0,
+        streakDays: (state as any)?.streak_days ?? 0,
+        avgScore: scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : 0,
+        categoryCounts,
+      });
     })();
   }, [user]);
 
@@ -296,8 +339,54 @@ export function AccountTab() {
         </Card>
       </motion.div>
 
+      {/* Discovery Stats */}
+      {discoveryStats && (
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08 }}>
+          <Card className="border-border/30 bg-gradient-to-br from-card via-card to-primary/[0.03] overflow-hidden relative">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Pickaxe className="w-4 h-4 text-primary" />
+                Discovery Activity
+                <span className="text-[10px] text-muted-foreground/50 font-mono ml-auto">live from your foundry</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[
+                  { label: 'Pipelines Found', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-amber-400' },
+                  { label: 'Total Mines', value: discoveryStats.totalMines, icon: Pickaxe, color: 'text-blue-400' },
+                  { label: 'Avg Score', value: discoveryStats.avgScore, icon: TrendingUp, color: 'text-emerald-400' },
+                  { label: 'Highest Score', value: discoveryStats.highestScore, icon: Trophy, color: 'text-yellow-400' },
+                  { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-orange-400' },
+                  { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-cyan-400' },
+                ].map(stat => (
+                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center">
+                    <stat.icon className={cn("w-4 h-4 mx-auto", stat.color)} />
+                    <p className="text-lg font-bold text-foreground">
+                      <AnimatedCounter value={stat.value} duration={800} />
+                    </p>
+                    <p className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-wider leading-tight">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+              {discoveryStats.highestName !== '—' && (
+                <div className="mt-3 p-2.5 rounded-md bg-primary/5 border border-primary/10 flex items-center gap-2">
+                  <Trophy className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span className="text-xs text-muted-foreground">Top discovery:</span>
+                  <span className="text-xs font-semibold text-foreground truncate">{discoveryStats.highestName}</span>
+                  <Badge variant="outline" className="text-[9px] font-mono border-primary/20 text-primary ml-auto shrink-0">
+                    CJPI {discoveryStats.highestScore}
+                  </Badge>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
       {/* Quick Links */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.15 }}>
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-1">
             <Compass className="w-4 h-4 text-primary" />
