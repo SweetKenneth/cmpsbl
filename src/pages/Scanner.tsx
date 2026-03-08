@@ -288,7 +288,7 @@ export default function Scanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <Card className="bg-card/80 border-border/60 overflow-hidden">
+            <Card className="bg-card/80 border-border/60 overflow-hidden shadow-lg shadow-primary/[0.03]">
               <div className="bg-muted/40 px-4 py-2.5 border-b border-border/50 flex items-center gap-2">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
@@ -300,14 +300,20 @@ export default function Scanner() {
               </div>
               <CardContent className="p-0">
                 {TERMINAL_EXAMPLES.map((ex, i) => (
-                  <div key={i} className="px-4 py-3 border-b border-border/30 last:border-b-0 flex items-start gap-3 hover:bg-muted/20 transition-colors">
-                    <span className="text-primary font-mono text-sm shrink-0">$</span>
+                  <div key={i} className="px-4 py-3 border-b border-border/30 last:border-b-0 flex items-start gap-3 hover:bg-muted/20 transition-colors group">
+                    <span className="text-primary font-mono text-sm shrink-0 group-hover:text-emerald-400 transition-colors">$</span>
                     <div className="min-w-0">
-                      <code className="text-sm font-mono text-foreground">{ex.command}</code>
+                      <code className="text-sm font-mono text-foreground group-hover:text-primary transition-colors">{ex.command}</code>
                       <p className="text-xs text-muted-foreground mt-0.5">{ex.description}</p>
                     </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/0 group-hover:text-muted-foreground/50 transition-all ml-auto mt-1 shrink-0" />
                   </div>
                 ))}
+                {/* Blinking cursor line */}
+                <div className="px-4 py-3 flex items-center gap-3">
+                  <span className="text-primary font-mono text-sm">$</span>
+                  <span className="w-2 h-4 bg-primary/70 animate-pulse rounded-sm" />
+                </div>
               </CardContent>
             </Card>
           </motion.div>
