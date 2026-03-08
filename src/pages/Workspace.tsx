@@ -221,7 +221,7 @@ export default function Workspace() {
 
             {/* ── Terminal Tab ── */}
             <TabsContent value="terminal">
-              <Card className="bg-[hsl(var(--card))]/80 border-border/50 overflow-hidden">
+              <Card className="bg-[hsl(var(--card))]/80 border-border/50 overflow-hidden glass-edge">
                 {/* Terminal Header */}
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30 bg-muted/20">
                   <div className="flex gap-1.5">
