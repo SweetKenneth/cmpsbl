@@ -201,7 +201,7 @@ export default function OwnerReports() {
               return (
                 <Card
                   key={report.id}
-                  className="cursor-pointer hover:bg-accent/30 transition-colors"
+                  className="cursor-pointer hover:bg-accent/30 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                   onClick={() => setSelectedReport(report)}
                 >
                   <CardContent className="py-3 px-4 flex items-center gap-3">
