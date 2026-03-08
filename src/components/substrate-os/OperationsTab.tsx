@@ -187,7 +187,7 @@ export function OperationsTab() {
                   {mod.stats.map(s => (
                     <div key={s.label} className="flex items-center justify-between text-[10px]">
                       <span className="text-muted-foreground/50 font-mono">{s.label}</span>
-                      <span className="font-medium font-mono">{s.value}</span>
+                      <span className="font-medium font-mono tabular-nums">{s.value}</span>
                     </div>
                   ))}
                 </div>
