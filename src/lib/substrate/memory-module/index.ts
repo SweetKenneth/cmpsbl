@@ -168,7 +168,8 @@ export function initMemoryModule(): void {
       autoRecovery: true,
     });
   } catch (err) {
-    state.initialized = true;
+    // FIX R5: Don't report initialized=true on failure — downstream checks depend on this flag
+    state.initialized = false;
     emitFailed('memory', 'init', err instanceof Error ? err.message : String(err));
   }
 }
