@@ -148,6 +148,10 @@ async function writeLearningMemory(
   const tier = selectLearningTier(tiers, { preferWarm: input.preferWarm });
   const valueScore = Math.max(0.15, Math.min(0.95, input.valueScore ?? 0.62));
 
+  // Extract source_module and category from metadata for distillation clustering
+  const sourceModule = String(input.metadata?.source_module || input.metadata?.module || 'CLM');
+  const category = String(input.metadata?.domain || input.metadata?.category || input.context?.split(':')?.[1] || 'uncategorized');
+
   if (tier === 'hot') {
     await supabase.from('brain_memory_hot').insert({
       content,
@@ -156,6 +160,8 @@ async function writeLearningMemory(
       access_count: 0,
       value_score: valueScore,
       importance_score: valueScore,
+      source_module: sourceModule,
+      category,
       metadata: { ...(input.metadata || {}), clm_tiered_write: true, stored_tier: 'hot' },
     });
     tiers.hot += 1;
@@ -171,6 +177,8 @@ async function writeLearningMemory(
       access_count: 0,
       value_score: valueScore,
       decay_rate: 0.01,
+      source_module: sourceModule,
+      category,
       metadata: { ...(input.metadata || {}), clm_tiered_write: true, stored_tier: 'warm' },
       demoted_at: new Date().toISOString(),
     });
@@ -183,6 +191,8 @@ async function writeLearningMemory(
     core_summary: coreSummary,
     value_score: Math.min(0.45, valueScore),
     memory_type: 'clm_learning',
+    source_module: sourceModule,
+    category,
     tags: { context: input.context, source: 'clm_engine', clm_tiered_write: true, stored_tier: 'cold' },
     archived_at: new Date().toISOString(),
   });
@@ -371,7 +381,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       if (promoteBudget > 0) {
         const { data: warmHighAccess } = await supabase
           .from('brain_memory_warm')
-          .select('id, content, value_score, access_count, memory_type, metadata')
+          .select('id, content, value_score, access_count, memory_type, metadata, source_module, category')
           .gte('access_count', 3)
           .gte('value_score', 0.7)
           .order('access_count', { ascending: false })
@@ -387,6 +397,8 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
               access_count: mem.access_count || 0,
               value_score: promotedScore,
               importance_score: promotedScore,
+              source_module: mem.source_module || 'CLM',
+              category: mem.category || 'uncategorized',
               metadata: { ...((mem.metadata as any) || {}), promoted_from: 'warm', promoted_at: new Date().toISOString() },
             });
             await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
