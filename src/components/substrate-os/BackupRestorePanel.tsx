@@ -463,10 +463,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </p>
           </CardContent>
         </Card>
-        <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-purple-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Records</p>
-            <p className="text-2xl font-mono font-bold text-purple-400">{totalRecords.toLocaleString()}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-purple-400">{totalRecords.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02]">
