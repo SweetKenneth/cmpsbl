@@ -82,6 +82,254 @@ function getUseCases(category: string, name: string, systemChain: string[]): str
   return [...new Set(base)];
 }
 
+/** ═══════ Deep Functional Explanation Generator ═══════ */
+
+interface ModuleCapability {
+  name: string;
+  role: string;
+  whatItDoes: string;
+  inputsAccepted: string;
+  outputProduced: string;
+  behaviourDetail: string;
+}
+
+const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
+  BRAIN: {
+    name: 'BRAIN',
+    role: 'Reasoning & Decision Engine',
+    whatItDoes: 'Performs multi-step logical reasoning over structured and unstructured inputs. It evaluates conditions, weighs trade-offs, and produces actionable decisions with confidence scores.',
+    inputsAccepted: 'Structured data objects, natural-language prompts, constraint sets, and prior decision history.',
+    outputProduced: 'Ranked decision trees, confidence-weighted recommendations, and reasoning traces.',
+    behaviourDetail: 'BRAIN operates as the pipeline\'s central decision-maker. When invoked, it decomposes a problem into sub-goals, evaluates each against available evidence, and converges on a recommended action. It maintains a reasoning trace that downstream modules can audit or override.',
+  },
+  CORTEX: {
+    name: 'CORTEX',
+    role: 'Pattern Analysis & Recognition',
+    whatItDoes: 'Identifies recurring patterns, anomalies, and structural relationships within data streams. It builds internal pattern maps and classifies inputs based on learned signatures.',
+    inputsAccepted: 'Time-series data, event logs, structured records, and raw telemetry streams.',
+    outputProduced: 'Pattern classifications, anomaly flags with severity scores, correlation matrices, and trend projections.',
+    behaviourDetail: 'CORTEX scans incoming data for known pattern signatures and novel formations. When paired with BRAIN, it provides the evidence layer that reasoning depends on. Standalone, it functions as a high-throughput classifier.',
+  },
+  DREAM: {
+    name: 'DREAM',
+    role: 'Speculative Simulation Engine',
+    whatItDoes: 'Runs hypothetical "what-if" scenarios by simulating system states that don\'t yet exist. It explores configuration spaces, tests edge cases, and surfaces non-obvious strategies.',
+    inputsAccepted: 'Current system state snapshots, constraint boundaries, optimization targets, and scenario parameters.',
+    outputProduced: 'Simulated outcome distributions, risk-scored strategy proposals, and configuration recommendations.',
+    behaviourDetail: 'DREAM doesn\'t operate on real data — it imagines possibilities. It takes the current state, mutates variables within defined boundaries, and evaluates simulated outcomes. This makes it invaluable for strategy exploration without production risk.',
+  },
+  EVOLUTION: {
+    name: 'EVOLUTION',
+    role: 'Adaptive Optimization',
+    whatItDoes: 'Applies evolutionary algorithms to iteratively improve configurations, parameters, and strategies. Each generation retains successful traits and discards underperformers.',
+    inputsAccepted: 'Fitness functions, population parameters, mutation rates, and initial configuration seeds.',
+    outputProduced: 'Optimized configurations ranked by fitness, convergence metrics, and generation-over-generation improvement charts.',
+    behaviourDetail: 'EVOLUTION runs a population of candidate solutions through selection, crossover, and mutation cycles. After convergence, it outputs the fittest configurations. When combined with DREAM, it can evolve strategies in simulated environments before applying them to production.',
+  },
+  VISION: {
+    name: 'VISION',
+    role: 'Structural & Visual Pattern Analysis',
+    whatItDoes: 'Analyzes architectural patterns, data structures, and system topology. It identifies structural weaknesses, optimization opportunities, and design anomalies.',
+    inputsAccepted: 'System architecture graphs, dependency trees, data schemas, and topology maps.',
+    outputProduced: 'Structural health reports, optimization recommendations, dependency risk maps, and refactoring suggestions.',
+    behaviourDetail: 'VISION treats your system as a graph and applies structural analysis to identify bottlenecks, circular dependencies, and over-coupled components. It provides actionable refactoring paths with estimated impact scores.',
+  },
+  DEFENSE: {
+    name: 'DEFENSE',
+    role: 'Security Boundary Enforcement',
+    whatItDoes: 'Monitors data flow and system operations for security violations. It enforces access policies, detects anomalous behavior, and blocks unauthorized operations in real-time.',
+    inputsAccepted: 'Operation requests, access tokens, data flow graphs, and security policy definitions.',
+    outputProduced: 'Allow/deny decisions, threat severity scores, violation reports, and remediation recommendations.',
+    behaviourDetail: 'DEFENSE acts as a security gate within the pipeline. Every operation passes through its policy engine before execution. It maintains a threat model that adapts based on observed attack patterns and can quarantine suspicious operations without blocking the entire pipeline.',
+  },
+  GOVERNANCE: {
+    name: 'GOVERNANCE',
+    role: 'Policy Compliance & Oversight',
+    whatItDoes: 'Ensures all pipeline operations comply with defined policies, regulations, and operational constraints. It audits decisions and flags non-compliant outputs before they reach production.',
+    inputsAccepted: 'Policy rule sets, operational constraints, audit requirements, and decision logs.',
+    outputProduced: 'Compliance reports, policy violation alerts, audit trails, and remediation workflows.',
+    behaviourDetail: 'GOVERNANCE wraps the pipeline in a compliance layer. It intercepts outputs, checks them against rule sets, and either approves, flags for review, or blocks non-compliant results. It generates immutable audit trails for regulatory evidence.',
+  },
+  MEMORY: {
+    name: 'MEMORY',
+    role: 'Persistent State & Recall',
+    whatItDoes: 'Stores, indexes, and retrieves information across pipeline executions. It provides long-term recall that allows the pipeline to learn from its own history and avoid repeating mistakes.',
+    inputsAccepted: 'Key-value pairs, structured records, execution results, and contextual embeddings.',
+    outputProduced: 'Retrieved records with relevance scores, historical trend data, and cross-session context.',
+    behaviourDetail: 'MEMORY gives the pipeline a persistent identity. Without it, each execution is stateless. With it, the pipeline can recall previous inputs, results, and errors — enabling progressive improvement and contextual awareness across sessions.',
+  },
+  NEXUS: {
+    name: 'NEXUS',
+    role: 'Signal Routing & Coordination',
+    whatItDoes: 'Routes data between pipeline stages, external APIs, and downstream consumers. It handles load balancing, retry logic, and protocol translation between heterogeneous systems.',
+    inputsAccepted: 'Routable signals, routing tables, priority queues, and destination registries.',
+    outputProduced: 'Delivered payloads with delivery receipts, routing metrics, and fallback reports.',
+    behaviourDetail: 'NEXUS is the pipeline\'s nervous system. It ensures that data reaches the right module at the right time, handles failures gracefully with retry and fallback strategies, and provides delivery guarantees across unreliable networks.',
+  },
+  RIPPLE: {
+    name: 'RIPPLE',
+    role: 'State Change Propagation',
+    whatItDoes: 'When one part of the system changes, RIPPLE propagates that change to all dependent components. It manages cascading updates, ensures consistency, and prevents stale state.',
+    inputsAccepted: 'State change events, dependency graphs, propagation rules, and update priorities.',
+    outputProduced: 'Propagation confirmations, consistency reports, and cascade impact assessments.',
+    behaviourDetail: 'RIPPLE ensures that a change in one module doesn\'t leave the rest of the system out of sync. It traverses the dependency graph, updates affected components in topological order, and reports any propagation failures for manual resolution.',
+  },
+  SYSTEM: {
+    name: 'SYSTEM',
+    role: 'Core Orchestration & Lifecycle',
+    whatItDoes: 'Manages the pipeline\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all modules working in concert.',
+    inputsAccepted: 'Pipeline configuration, execution schedules, health thresholds, and recovery policies.',
+    outputProduced: 'Execution status reports, health dashboards, lifecycle events, and recovery logs.',
+    behaviourDetail: 'SYSTEM is the pipeline\'s operating system. It boots modules in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
+  },
+};
+
+function getDeepFunctionalExplanation(name: string, systemChain: string[]): string {
+  const modules = systemChain.map(s => s.toUpperCase());
+  const caps = modules.map(m => MODULE_CAPABILITIES[m]).filter(Boolean);
+  if (caps.length === 0) return '';
+
+  let html = '';
+
+  // --- What This Software Does (detailed) ---
+  html += `<h2>What This Software Does</h2>`;
+  html += `<div class="section-card">`;
+  html += `<p class="description-lead">`;
+  html += `<strong>${escapeHtml(name)}</strong> is a ${caps.length}-stage autonomous pipeline that `;
+
+  if (caps.length === 1) {
+    html += `${caps[0].whatItDoes.charAt(0).toLowerCase()}${caps[0].whatItDoes.slice(1)}`;
+  } else {
+    const verbs = caps.map(c => c.role.toLowerCase());
+    html += `combines ${verbs.slice(0, -1).join(', ')}${verbs.length > 1 ? ` and ${verbs[verbs.length - 1]}` : ''} into a single executable unit.`;
+  }
+  html += `</p>`;
+
+  // Per-module breakdown
+  html += `<div style="margin-top: 1.5rem;">`;
+  html += `<h3>Stage-by-Stage Breakdown</h3>`;
+  caps.forEach((cap, i) => {
+    html += `<div style="margin: 1rem 0; padding: 1rem 1.25rem; background: white; border: 1px solid var(--rule); border-radius: 4px;">`;
+    html += `<div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem;">`;
+    html += `<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em;">Stage ${i + 1}</span>`;
+    html += `<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.1rem; font-weight: 600; color: var(--ink);">${escapeHtml(cap.name)}</span>`;
+    html += `<span style="font-size: 0.75rem; color: var(--ink-muted);">— ${escapeHtml(cap.role)}</span>`;
+    html += `</div>`;
+    html += `<p style="font-size: 0.88rem; margin-bottom: 0.5rem;">${escapeHtml(cap.whatItDoes)}</p>`;
+    html += `<p style="font-size: 0.82rem; color: var(--ink-muted); margin-bottom: 0;">${escapeHtml(cap.behaviourDetail)}</p>`;
+    html += `</div>`;
+  });
+  html += `</div></div>`;
+
+  // --- How the Stages Work Together ---
+  if (caps.length > 1) {
+    html += `<h2>How the Pipeline Executes</h2>`;
+    html += `<div class="section-card">`;
+    html += `<p>When invoked, ${escapeHtml(name)} executes its modules in sequence. Each stage transforms or enriches the data before passing it to the next:</p>`;
+    html += `<div style="margin: 1.25rem 0;">`;
+    caps.forEach((cap, i) => {
+      const isLast = i === caps.length - 1;
+      html += `<div style="display: flex; gap: 1rem; align-items: stretch; margin-bottom: ${isLast ? '0' : '0.25rem'};">`;
+      html += `<div style="display: flex; flex-direction: column; align-items: center; min-width: 24px;">`;
+      html += `<div style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--accent); flex-shrink: 0; margin-top: 6px;"></div>`;
+      if (!isLast) html += `<div style="width: 1px; flex: 1; background: var(--rule-strong); margin: 2px 0;"></div>`;
+      html += `</div>`;
+      html += `<div style="padding-bottom: ${isLast ? '0' : '1rem'};">`;
+      html += `<div style="font-weight: 600; font-size: 0.85rem; color: var(--ink);">${escapeHtml(cap.name)} receives ${i === 0 ? 'your input' : 'output from ' + escapeHtml(caps[i - 1].name)}</div>`;
+      html += `<div style="font-size: 0.82rem; color: var(--ink-muted); margin-top: 0.2rem;">${escapeHtml(cap.inputsAccepted)}</div>`;
+      html += `<div style="font-size: 0.82rem; color: var(--ink-light); margin-top: 0.35rem;">→ Produces: ${escapeHtml(cap.outputProduced)}</div>`;
+      html += `</div></div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // --- How to Use It ---
+  html += `<h2>How to Use This Software</h2>`;
+  html += `<div class="section-card">`;
+  html += `<h3>Integration Pattern</h3>`;
+  html += `<p>This pipeline is distributed as a self-contained module. To integrate it into your application:</p>`;
+  html += `<div style="background: var(--cream-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.8; white-space: pre-wrap; color: var(--ink-light);">`;
+  html += `// 1. Import the pipeline\nimport { createPipeline } from './${toSlug(name)}';\n\n`;
+  html += `// 2. Initialize with your configuration\nconst pipeline = createPipeline({\n`;
+  caps.forEach(cap => {
+    html += `  ${cap.name.toLowerCase()}: { /* ${cap.role} config */ },\n`;
+  });
+  html += `});\n\n`;
+  html += `// 3. Execute with your data\nconst result = await pipeline.execute(inputData);\n\n`;
+  html += `// 4. Handle the output\nconsole.log(result.status);    // 'success' | 'partial' | 'failed'\nconsole.log(result.output);    // Pipeline output data\nconsole.log(result.trace);     // Stage-by-stage execution trace`;
+  html += `</div>`;
+
+  html += `<h3 style="margin-top: 1.5rem;">Input Requirements</h3>`;
+  html += `<p>The pipeline expects the following inputs to function correctly:</p>`;
+  html += `<ul class="use-case-list">`;
+  caps.forEach(cap => {
+    html += `<li><strong>${escapeHtml(cap.name)}:</strong> ${escapeHtml(cap.inputsAccepted)}</li>`;
+  });
+  html += `</ul>`;
+  html += `</div>`;
+
+  // --- Expected Results ---
+  html += `<h2>Expected Results</h2>`;
+  html += `<div class="section-card">`;
+  html += `<p class="description-lead">When executed successfully, this pipeline produces the following outputs:</p>`;
+  html += `<div style="margin-top: 1rem;">`;
+  caps.forEach((cap, i) => {
+    html += `<div style="display: flex; gap: 0.75rem; padding: 0.75rem 0; ${i < caps.length - 1 ? 'border-bottom: 1px solid var(--rule);' : ''}">`;
+    html += `<span class="module-tag" style="flex-shrink: 0; align-self: flex-start; margin-top: 2px;">${escapeHtml(cap.name)}</span>`;
+    html += `<span style="font-size: 0.88rem; color: var(--ink-light);">${escapeHtml(cap.outputProduced)}</span>`;
+    html += `</div>`;
+  });
+  html += `</div>`;
+
+  // Final composite output description
+  html += `<div style="margin-top: 1.5rem; padding: 1.25rem; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 4px;">`;
+  html += `<h3 style="color: var(--accent); margin-bottom: 0.5rem;">Composite Output</h3>`;
+  html += `<p style="font-size: 0.88rem; margin-bottom: 0;">`;
+  html += `The final output combines all stage results into a single response object. `;
+  if (modules.includes('BRAIN') || modules.includes('CORTEX')) {
+    html += `Decision and analysis data includes confidence scores and reasoning traces for full auditability. `;
+  }
+  if (modules.includes('DEFENSE') || modules.includes('GOVERNANCE')) {
+    html += `All outputs include compliance attestations and security audit records. `;
+  }
+  if (modules.includes('MEMORY')) {
+    html += `Results are automatically persisted to long-term memory for cross-session recall. `;
+  }
+  if (modules.includes('EVOLUTION') || modules.includes('DREAM')) {
+    html += `Optimization and simulation data includes convergence metrics and scenario comparisons. `;
+  }
+  html += `Each execution also generates a full trace log that records per-stage timing, input/output snapshots, and any errors encountered.`;
+  html += `</p></div>`;
+  html += `</div>`;
+
+  // --- Operational Characteristics ---
+  html += `<h2>Operational Characteristics</h2>`;
+  html += `<div class="quality-grid">`;
+  html += `<div class="quality-card">`;
+  html += `<h3>Execution Mode</h3>`;
+  html += `<p style="font-size: 0.88rem;">This pipeline runs <strong>${caps.length <= 2 ? 'sequentially' : 'in adaptive mode'}</strong> — ${caps.length <= 2 ? 'each stage completes before the next begins, ensuring deterministic output ordering.' : 'stages may execute in parallel where dependencies allow, with the orchestrator managing data flow between them.'}</p>`;
+  html += `</div>`;
+  html += `<div class="quality-card">`;
+  html += `<h3>Error Handling</h3>`;
+  html += `<p style="font-size: 0.88rem;">If any stage fails, the pipeline returns a <code>partial</code> result containing all successful stage outputs plus detailed error information for the failed stage. Critical failures (e.g., ${modules.includes('DEFENSE') ? 'security violations' : 'orchestration errors'}) halt execution immediately.</p>`;
+  html += `</div>`;
+  html += `<div class="quality-card">`;
+  html += `<h3>Idempotency</h3>`;
+  html += `<p style="font-size: 0.88rem;">${modules.includes('MEMORY') || modules.includes('EVOLUTION') ? 'This pipeline is <strong>not idempotent</strong> — repeated executions with identical inputs may produce different results as MEMORY accumulates context and EVOLUTION refines strategies.' : 'This pipeline is <strong>idempotent</strong> — given identical inputs and configuration, it produces identical outputs. Safe to retry on failure.'}</p>`;
+  html += `</div>`;
+  html += `<div class="quality-card">`;
+  html += `<h3>Scalability</h3>`;
+  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-node routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
+  html += `</div>`;
+  html += `</div>`;
+
+  return html;
+}
+
+function toSlug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 function getValuationBreakdown(score: number, category: string, moduleChainLength: number) {
   const normalized = Math.max(0, score - 60) / 40;
   const baseValue = 5000 + Math.pow(normalized, 2.5) * 495000;
