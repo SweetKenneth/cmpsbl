@@ -193,6 +193,13 @@ export interface ImpactAssessment {
 }
 
 // ─── Internal State ───────────────────────────────────────────────────────────
+// All arrays are capped to prevent unbounded memory growth.
+
+const MAX_POLICY_VERSIONS = 100;
+const MAX_DECISION_CHAIN = 2000;
+const MAX_DELEGATIONS = 500;
+const MAX_OVERRIDES = 200;
+const MAX_TIMESTAMPS = 2000;
 
 const policyVersions: PolicySnapshot[] = [];
 const decisionChain: DecisionRecord[] = [];
@@ -209,6 +216,11 @@ const rateLimitBuckets = new Map<string, { tokens: number; lastRefill: number }>
 const anomalyBaseline = { mean: 0, stddev: 0, sampleCount: 0 };
 
 let lastChainHash = '0'.repeat(64);
+
+/** Trim an array to a max length, keeping the most recent entries */
+function capArray<T>(arr: T[], max: number): void {
+  if (arr.length > max) arr.splice(0, arr.length - max);
+}
 
 // ─── #1 Policy Version Control ────────────────────────────────────────────────
 
