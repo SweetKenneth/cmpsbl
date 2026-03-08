@@ -45,6 +45,7 @@ This library is the single source of truth for all internal knowledge required t
 | 35 | [Mutation & Evolution Deep Dive](./35-mutation-evolution-deep-dive.md) | Complete pipeline execution, shadow delegation, receipt chain, dual executor, entropy |
 | 36 | [Memory Persistence Deep Dive](./36-memory-persistence-deep-dive.md) | 3-tier lifecycle, salience scoring, neural substrate, auto-tiering, recall feedback |
 | 37 | [Orchestration Layer Deep Dive](./37-orchestration-layer-deep-dive.md) | Module Bus, Matrix Communication Bus, Orchestrator Engine, control planes, signal flow |
+| 38 | [ENCODE Deep Dive](./38-encode-deep-dive.md) | ENCODE architecture, DECODE+ENCODE pipeline, 25-point hardening, 31 skills, 150+ patterns, escalation cascade, trade secrets |
 
 ## Classification Policy
 
