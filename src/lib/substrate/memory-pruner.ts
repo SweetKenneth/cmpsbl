@@ -63,10 +63,10 @@ async function pruneHot(capacity: number): Promise<PruneResult> {
   for (const source of clmSources) {
     if (purged >= excess) break;
     try {
-      const { data: ids } = await (supabase as any)
+      const { data: ids } = await supabase
         .from('brain_memory_hot')
         .select('id')
-        .eq('source', source)
+        .eq('source_module', source)
         .order('created_at', { ascending: true })
         .limit(Math.min(500, excess - purged));
 
