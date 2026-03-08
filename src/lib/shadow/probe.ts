@@ -47,10 +47,8 @@ export function getProbeableExecutors(): string[] {
 
   // Dynamically discover any additional executors that have been registered
   // by scanning the registry for executors not in the pilot list
-  // (The registry.executors map is the source of truth)
   try {
-    // Import the registry's internal executor map via the public API
-    const { listRegisteredExecutorIds } = require('@/lib/capabilities/synergies/registry');
+    const { listRegisteredExecutorIds } = await import('@/lib/capabilities/synergies/registry');
     if (typeof listRegisteredExecutorIds === 'function') {
       const allIds: string[] = listRegisteredExecutorIds();
       for (const id of allIds) {
