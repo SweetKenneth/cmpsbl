@@ -84,7 +84,7 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue }: Ar
                 <InfoRow label="Modules" value={`${snapshot.module_registry.length}`} />
                 <InfoRow label="Dependencies" value={`${snapshot.dependency_graph.length} edges`} />
                 <InfoRow label="Utilities" value={`${snapshot.shared_utilities_index.length}`} />
-                <InfoRow label="Timestamp" value={new Date(snapshot.timestamp).toLocaleTimeString()} />
+                <InfoRow label="Timestamp" value={new Date(snapshot.created_at).toLocaleTimeString()} />
               </div>
             ) : (
               <p className="text-[11px] text-muted-foreground/50 font-mono">
@@ -135,9 +135,9 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue }: Ar
                   <div key={p.id} className="flex items-center gap-2 text-[11px]">
                     <span className={cn(
                       "w-1.5 h-1.5 rounded-full shrink-0",
-                      p.status === 'applied' ? 'bg-green-500' : p.status === 'pending' ? 'bg-yellow-500' : 'bg-muted-foreground'
+                      p.applied ? 'bg-green-500' : 'bg-muted-foreground'
                     )} />
-                    <span className="text-muted-foreground truncate font-mono">{p.description}</span>
+                    <span className="text-muted-foreground truncate font-mono">{p.rationale}</span>
                   </div>
                 ))}
               </div>
