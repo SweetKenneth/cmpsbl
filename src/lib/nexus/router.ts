@@ -341,10 +341,10 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
     execute: async (prompt: string, context?: Record<string, any>) => {
       recordUsage(provider.id);
       const start = Date.now();
+      const { supabase: client } = await import('@/integrations/supabase/client');
 
       try {
         // Call pf-nexus-router edge function for real AI completion
-        const { supabase: client } = await import('@/integrations/supabase/client');
         const { data, error } = await client.functions.invoke('pf-nexus-router', {
           body: {
             prompt,
