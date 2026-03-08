@@ -673,7 +673,7 @@ class EvolutionCycleClient {
         description: `Evolution cycle ${plan.short_id} applied to production`,
         change_hash: this.generateChangeHash(plan),
         reversible: true,
-        initiator: 'modernizer_governed',
+        initiator: 'evolution_governed',
       });
 
       console.log(`[EvolutionCycle] ✅ Created stamp ${stampId} for plan ${plan.short_id}`);
