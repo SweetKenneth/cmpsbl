@@ -307,6 +307,7 @@ export function decayWeightedAverage(
 type Severity = 'low' | 'medium' | 'high' | 'critical';
 const SEVERITY_ORDER: Severity[] = ['low', 'medium', 'high', 'critical'];
 
+const MAX_ESCALATION_ENTRIES = 500;
 const escalationTracker = new Map<string, { count: number; currentSeverity: Severity }>();
 
 export function escalateSeverity(
@@ -316,6 +317,10 @@ export function escalateSeverity(
 ): Severity {
   const entry = escalationTracker.get(fingerprint);
   if (!entry) {
+    if (escalationTracker.size >= MAX_ESCALATION_ENTRIES) {
+      const oldest = escalationTracker.keys().next().value;
+      if (oldest) escalationTracker.delete(oldest);
+    }
     escalationTracker.set(fingerprint, { count: 1, currentSeverity: baseSeverity });
     return baseSeverity;
   }
@@ -385,6 +390,7 @@ export function getCanaryHealth(): { total: number; successful: number; avgLaten
 // 10. Metric Cardinality Guard
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_CARDINALITY_METRICS = 200;
 const cardinalityCounts = new Map<string, Set<string>>();
 const CARDINALITY_LIMIT = 500;
 
@@ -392,9 +398,18 @@ export function checkCardinality(
   metricName: string,
   labelSignature: string
 ): { allowed: boolean; currentCardinality: number; limit: number } {
-  if (!cardinalityCounts.has(metricName)) cardinalityCounts.set(metricName, new Set());
+  if (!cardinalityCounts.has(metricName)) {
+    // Cap total tracked metrics
+    if (cardinalityCounts.size >= MAX_CARDINALITY_METRICS) {
+      const oldest = cardinalityCounts.keys().next().value;
+      if (oldest) cardinalityCounts.delete(oldest);
+    }
+    cardinalityCounts.set(metricName, new Set());
+  }
   const labels = cardinalityCounts.get(metricName)!;
-  labels.add(labelSignature);
+  if (labels.size < CARDINALITY_LIMIT) {
+    labels.add(labelSignature);
+  }
   return {
     allowed: labels.size <= CARDINALITY_LIMIT,
     currentCardinality: labels.size,
@@ -493,6 +508,7 @@ interface AlertRecord {
   suppressed: number;
 }
 
+const MAX_ALERT_HISTORY = 500;
 const alertHistory = new Map<string, AlertRecord>();
 const ALERT_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -501,6 +517,10 @@ export function shouldFireAlert(alertKey: string): { fire: boolean; coalescedCou
   const record = alertHistory.get(alertKey);
 
   if (!record) {
+    if (alertHistory.size >= MAX_ALERT_HISTORY) {
+      const oldest = alertHistory.keys().next().value;
+      if (oldest) alertHistory.delete(oldest);
+    }
     alertHistory.set(alertKey, {
       key: alertKey,
       count: 1,
@@ -851,10 +871,13 @@ export function calculateVisionHealth(): VisionHealthReport {
   const wd = checkWatchdogAlive();
   const watchdogHealth = wd.alive ? 100 : Math.max(0, 100 - wd.missedBeats * 20);
 
-  // Cardinality health
-  let totalCardinality = 0;
-  for (const labels of cardinalityCounts.values()) totalCardinality += labels.size;
-  const cardinalityHealth = Math.max(0, 100 - (totalCardinality / CARDINALITY_LIMIT) * 100);
+  // Cardinality health (per-metric: avg utilization of cardinality limit)
+  let maxUtilization = 0;
+  for (const labels of cardinalityCounts.values()) {
+    const utilization = labels.size / CARDINALITY_LIMIT;
+    if (utilization > maxUtilization) maxUtilization = utilization;
+  }
+  const cardinalityHealth = Math.max(0, 100 - maxUtilization * 100);
 
   // Alert fatigue
   const fatigue = getAlertFatigueStats();

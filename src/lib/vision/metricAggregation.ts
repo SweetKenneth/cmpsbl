@@ -38,12 +38,27 @@ export interface MetricAlert {
   message: string;
 }
 
-// In-memory buffer for real-time metrics
-const metricBuffer: MetricPoint[] = [];
+// In-memory ring buffer for real-time metrics (avoids O(n) shift)
 const MAX_BUFFER_SIZE = 1000;
+const metricRing: (MetricPoint | null)[] = new Array(MAX_BUFFER_SIZE).fill(null);
+let ringHead = 0;
+let ringCount = 0;
+
+/** Get buffer contents as ordered array (oldest → newest) */
+function getBufferContents(): MetricPoint[] {
+  if (ringCount === 0) return [];
+  const result: MetricPoint[] = [];
+  const start = ringCount < MAX_BUFFER_SIZE ? 0 : ringHead;
+  const len = Math.min(ringCount, MAX_BUFFER_SIZE);
+  for (let i = 0; i < len; i++) {
+    const idx = (start + i) % MAX_BUFFER_SIZE;
+    if (metricRing[idx]) result.push(metricRing[idx]!);
+  }
+  return result;
+}
 
 /**
- * Record a metric point
+ * Record a metric point (O(1) insertion via ring buffer)
  */
 export function recordMetric(
   module: SubstrateModule,
@@ -59,12 +74,9 @@ export function recordMetric(
     tags,
   };
   
-  metricBuffer.push(point);
-  
-  // Trim buffer if too large
-  if (metricBuffer.length > MAX_BUFFER_SIZE) {
-    metricBuffer.shift();
-  }
+  metricRing[ringHead] = point;
+  ringHead = (ringHead + 1) % MAX_BUFFER_SIZE;
+  ringCount++;
 }
 
 /**
@@ -78,7 +90,7 @@ export function getRealtimeMetrics(
     limit?: number;
   }
 ): MetricPoint[] {
-  let results = [...metricBuffer];
+  let results = getBufferContents();
   
   if (options?.module) {
     results = results.filter(m => m.module === options.module);
@@ -307,15 +319,19 @@ export function getMetricTimeSeries(
 /**
  * Flush metrics buffer to database
  */
+let flushInProgress = false;
+
 export async function flushMetricsToDatabase(): Promise<{
   flushed: number;
   errors: number;
 }> {
-  if (metricBuffer.length === 0) {
-    return { flushed: 0, errors: 0 };
-  }
+  // Guard against concurrent flushes causing duplicate writes
+  if (flushInProgress) return { flushed: 0, errors: 0 };
   
-  const toFlush = metricBuffer.splice(0, Math.min(100, metricBuffer.length));
+  const toFlush = getBufferContents().slice(0, 100);
+  if (toFlush.length === 0) return { flushed: 0, errors: 0 };
+  
+  flushInProgress = true;
   let errors = 0;
   
   try {
@@ -334,12 +350,12 @@ export async function flushMetricsToDatabase(): Promise<{
     
     if (error) {
       errors = toFlush.length;
-      // Put back in buffer on error
-      metricBuffer.unshift(...toFlush);
+      // Don't try to re-insert — ring buffer still has them for next flush
     }
-  } catch (error) {
+  } catch {
     errors = toFlush.length;
-    metricBuffer.unshift(...toFlush);
+  } finally {
+    flushInProgress = false;
   }
   
   return { flushed: toFlush.length - errors, errors };

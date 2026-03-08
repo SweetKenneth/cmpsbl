@@ -95,7 +95,9 @@ export interface CapacityForecast {
   recommendations: string[];
 }
 
-// In-memory stores
+// In-memory stores (bounded)
+const MAX_SLA_DEFS = 100;
+const MAX_BREACHES = 1000;
 const slaDefinitions = new Map<string, SLADefinition>();
 const activeBreaches = new Map<string, SLABreach>();
 const metricsBuffer: Array<{
@@ -114,6 +116,10 @@ const MAX_BUFFER = 10000;
  * Register an SLA definition
  */
 export function registerSLA(sla: SLADefinition): void {
+  if (slaDefinitions.size >= MAX_SLA_DEFS && !slaDefinitions.has(sla.id)) {
+    console.warn(`[VISION SLA] Max SLA definitions (${MAX_SLA_DEFS}) reached`);
+    return;
+  }
   slaDefinitions.set(sla.id, sla);
 }
 
@@ -168,9 +174,9 @@ export function recordRequest(
     success,
   });
 
-  // Trim buffer
+  // Trim buffer — drop oldest 10% when over limit to avoid frequent shifts
   if (metricsBuffer.length > MAX_BUFFER) {
-    metricsBuffer.shift();
+    metricsBuffer.splice(0, Math.floor(MAX_BUFFER * 0.1));
   }
 }
 
@@ -265,8 +271,19 @@ export async function evaluateSLA(slaId: string): Promise<SLAMetrics | null> {
     status = 'at_risk';
   }
 
-  // Store breaches
+  // Store breaches (evict oldest resolved if at capacity)
   for (const breach of breaches) {
+    if (activeBreaches.size >= MAX_BREACHES) {
+      // Evict oldest resolved first, then oldest overall
+      let evicted = false;
+      for (const [id, b] of activeBreaches) {
+        if (b.resolved) { activeBreaches.delete(id); evicted = true; break; }
+      }
+      if (!evicted) {
+        const oldest = activeBreaches.keys().next().value;
+        if (oldest) activeBreaches.delete(oldest);
+      }
+    }
     activeBreaches.set(breach.id, breach);
   }
 

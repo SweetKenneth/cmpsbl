@@ -68,7 +68,11 @@
    comment: string;
  }
  
- // In-memory alert state
+ // In-memory alert state (bounded)
+ const MAX_ACTIVE_ALERTS = 500;
+ const MAX_SILENCE_RULES = 200;
+ const MAX_ALERT_RULES = 200;
+ const MAX_ESCALATION_POLICIES = 50;
  const activeAlerts = new Map<string, Alert>();
  const alertRules = new Map<string, AlertRule>();
  const silenceRules: SilenceRule[] = [];
@@ -137,13 +141,19 @@
      repeatCount: 0,
    };
    
-   activeAlerts.set(fingerprint, alert);
-   
-   // Log to database
-   logAlert(alert);
-   
-   return alert;
- }
+    activeAlerts.set(fingerprint, alert);
+    
+    // Evict oldest if over capacity
+    if (activeAlerts.size > MAX_ACTIVE_ALERTS) {
+      const oldest = activeAlerts.keys().next().value;
+      if (oldest) activeAlerts.delete(oldest);
+    }
+    
+    // Log to database
+    logAlert(alert);
+    
+    return alert;
+  }
  
  /**
   * Acknowledge an alert
@@ -208,13 +218,24 @@
   * Add a silence rule
   */
  export function addSilence(silence: Omit<SilenceRule, 'id'>): SilenceRule {
-   const rule: SilenceRule = {
-     id: `silence_${Date.now()}`,
-     ...silence,
-   };
-   silenceRules.push(rule);
-   return rule;
- }
+    // Evict expired silences before adding
+    const now = Date.now();
+    for (let i = silenceRules.length - 1; i >= 0; i--) {
+      if (new Date(silenceRules[i].endsAt).getTime() < now) {
+        silenceRules.splice(i, 1);
+      }
+    }
+    // Cap total
+    if (silenceRules.length >= MAX_SILENCE_RULES) {
+      silenceRules.shift();
+    }
+    const rule: SilenceRule = {
+      id: `silence_${Date.now()}`,
+      ...silence,
+    };
+    silenceRules.push(rule);
+    return rule;
+  }
  
  /**
   * Remove a silence rule

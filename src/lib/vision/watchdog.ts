@@ -21,8 +21,9 @@ export interface WatchdogResult {
   timestamp: string;
 }
 
-// In-memory cooldown tracker (module -> last heal timestamp)
-const healCooldowns: Record<string, number> = {};
+// In-memory cooldown tracker (module -> last heal timestamp, bounded)
+const MAX_COOLDOWN_ENTRIES = 200;
+const healCooldowns = new Map<string, number>();
 const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
 /**
@@ -65,16 +66,25 @@ export async function getVisionMode(): Promise<{ mode: VisionMode; source: 'env'
  * Check if module is on cooldown for auto-heal
  */
 function isOnCooldown(module: string): boolean {
-  const lastHeal = healCooldowns[module];
+  const lastHeal = healCooldowns.get(module);
   if (!lastHeal) return false;
-  return Date.now() - lastHeal < COOLDOWN_MS;
+  if (Date.now() - lastHeal >= COOLDOWN_MS) {
+    healCooldowns.delete(module); // evict expired
+    return false;
+  }
+  return true;
 }
 
 /**
  * Record a heal action for cooldown tracking
  */
 function recordHealAction(module: string): void {
-  healCooldowns[module] = Date.now();
+  // Evict oldest if at capacity
+  if (healCooldowns.size >= MAX_COOLDOWN_ENTRIES && !healCooldowns.has(module)) {
+    const oldest = healCooldowns.keys().next().value;
+    if (oldest) healCooldowns.delete(oldest);
+  }
+  healCooldowns.set(module, Date.now());
 }
 
 /**

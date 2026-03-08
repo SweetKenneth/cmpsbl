@@ -227,20 +227,19 @@ export async function analyzeWindow(
     // CLM#29: Cross-module correlation
     const correlationClusters = detectCorrelations(detectedAnomalies);
 
-    // Persist detected anomalies
+    // Persist detected anomalies (batched insert instead of N+1)
     if (detectedAnomalies.length > 0) {
-      for (const a of detectedAnomalies) {
-        await supabase.from('vision_anomalies').insert([{
-          module: a.module,
-          anomaly_type: a.anomaly_type,
-          severity: a.severity,
-          details: JSON.parse(JSON.stringify(a.details)),
-          baseline_value: a.baseline_value,
-          detected_value: a.detected_value,
-          deviation_percent: a.deviation_percent,
-          detected_at: a.detected_at,
-        }]);
-      }
+      const rows = detectedAnomalies.map(a => ({
+        module: a.module,
+        anomaly_type: a.anomaly_type,
+        severity: a.severity,
+        details: JSON.parse(JSON.stringify(a.details)),
+        baseline_value: a.baseline_value,
+        detected_value: a.detected_value,
+        deviation_percent: a.deviation_percent,
+        detected_at: a.detected_at,
+      }));
+      await supabase.from('vision_anomalies').insert(rows);
     }
 
     return {
