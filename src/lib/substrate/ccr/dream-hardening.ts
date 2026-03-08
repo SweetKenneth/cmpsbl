@@ -332,11 +332,12 @@ export function getIdleStats(): { isIdle: boolean; currentIdleMs: number; totalI
 // ─── 16. Dream Result Archiver ──────────────────────────────────────────────
 interface ArchivedDream { id: string; chainId: string; result: unknown; quality: number; archivedAt: number; tags: string[]; }
 const dreamArchive: ArchivedDream[] = [];
+const MAX_ARCHIVE = 200;
 
 export function archiveDream(chainId: string, result: unknown, quality: number, tags: string[]): string {
   const id = `arch_${Date.now()}`;
   dreamArchive.push({ id, chainId, result, quality, archivedAt: Date.now(), tags });
-  if (dreamArchive.length > 200) dreamArchive.shift();
+  if (dreamArchive.length > MAX_ARCHIVE) dreamArchive.splice(0, dreamArchive.length - MAX_ARCHIVE);
   return id;
 }
 
