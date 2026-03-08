@@ -905,6 +905,7 @@ export function issueEmergencyOverride(
     revoked: false,
   };
   overrides.push(override);
+  capArray(overrides, MAX_OVERRIDES);
   emitGovernanceTelemetry('emergency_override', 'issue', 'governance', authority, 'active');
   return override;
 }
