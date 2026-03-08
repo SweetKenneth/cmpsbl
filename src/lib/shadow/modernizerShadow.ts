@@ -2,7 +2,7 @@
  * SHADOW Gap-Driven Training Engine
  * 
  * Flow:
- * 1. Modernizer scan → finds real system gaps (missing capabilities, anomalies, proposals)
+ * 1. Evolution scan → finds real system gaps (missing capabilities, anomalies, proposals)
  * 2. Gaps converted to shadow training tasks with success criteria
  * 3. Executors attempt to fix each gap in shadow mode (no real changes)
  * 4. Failures escalate to ENCODE's 7-strategy cascade
@@ -435,15 +435,15 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   const startTime = Date.now();
   const timestamp = new Date().toISOString();
   
-  log.info('modernizer-shadow', 'Starting Modernizer Shadow Mode scan...');
+  log.info('shadow-gap-training', 'Starting gap-driven shadow training scan...');
   
-  // Step 1: Run Modernizer scan to find real gaps
+  // Step 1: Run evolution scan to find real gaps
   const scanResult = await modernizerScan({ dry_run: true });
   const scanId = scanResult.scan_id;
   
   // Step 2: Extract gap tasks
   const gapTasks = extractGapTasks(scanResult);
-  log.info('modernizer-shadow', `Found ${gapTasks.length} gaps from scan ${scanId}`);
+  log.info('shadow-gap-training', `Found ${gapTasks.length} gaps from scan ${scanId}`);
   
   if (gapTasks.length === 0) {
     return {
@@ -498,9 +498,9 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
         successCriteria: task.successCriteria,
         affectedModules: task.affectedModules,
         severity: task.severity,
-        _modernizer_shadow: true,
+        _shadow_gap_training: true,
       },
-      caller: 'modernizer.shadow',
+      caller: 'shadow.gap_training',
       traceId: task.id,
       dryRun: true,
     };
@@ -528,7 +528,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
             `gap_fix_${task.gapType}`,
             task.difficulty,
             result.confidence ?? 0.75,
-            `Modernizer shadow: fixed ${task.title} (${task.gapType})`,
+            `Shadow gap training: fixed ${task.title} (${task.gapType})`,
           );
           summary.rulesGenerated++;
         }
@@ -607,12 +607,12 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   }
   
   // Record events
-  appendEvent('PROBE_REPAIRED', 'modernizer:shadow', 'system', 'building',
-    `Modernizer Shadow: ${summary.executorFixed} fixed, ${summary.encodeEscalated} escalated, ${summary.rulesGenerated} rules`,
+  appendEvent('PROBE_REPAIRED', 'shadow:gap-training', 'system', 'building',
+    `Shadow Gap Training: ${summary.executorFixed} fixed, ${summary.encodeEscalated} escalated, ${summary.rulesGenerated} rules`,
     crypto.randomUUID()
   );
   
-  updateHealthRegistry('modernizer:shadow',
+  updateHealthRegistry('shadow:gap-training',
     summary.executorFailed > tasksToProcess.length / 2 ? 'shadow_event' : 'healthy',
     summary.executorFailed > tasksToProcess.length / 2 ? 'shadow_event' : 'boot',
     'synthetic_shadow_event',
@@ -622,7 +622,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
     }
   );
   
-  log.info('modernizer-shadow', `Complete: ${summary.executorFixed} executor-fixed, ${summary.encodeEscalated} escalated (${summary.encodeFixed} ENCODE-fixed), ${summary.rulesGenerated} rules generated`);
+  log.info('shadow-gap-training', `Complete: ${summary.executorFixed} executor-fixed, ${summary.encodeEscalated} escalated (${summary.encodeFixed} ENCODE-fixed), ${summary.rulesGenerated} rules generated`);
   
   return {
     scanId,

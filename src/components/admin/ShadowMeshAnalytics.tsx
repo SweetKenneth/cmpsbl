@@ -14,7 +14,8 @@ import { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from "@/lib/shad
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-function pct(n: number): string {
+function pct(n: number | null | undefined): string {
+  if (n == null) return '—';
   return `${(n * 100).toFixed(1)}%`;
 }
 
@@ -238,10 +239,12 @@ export function ShadowMeshAnalytics() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.metrics.map((m) => {
-              const repairDenom = m.repairs + m.escalations + m.safe_fails;
-              const honestRepairRate = repairDenom > 0
-                ? Math.round((m.repairs / repairDenom) * 100)
-                : 0;
+              // LOCKED formula: repair success rate = repairs / (repairs + escalations)
+              // safe_fails are expected rejections — NOT repair failures.
+              const repairAttempts = m.repairs + m.escalations;
+              const honestRepairRate = repairAttempts > 0
+                ? Math.round((m.repairs / repairAttempts) * 100)
+                : 100; // No repair attempts means no failures — 100% healthy
               const execRepairSuccessRate = m.repair_attempts > 0 ? m.repair_successes / m.repair_attempts : 0;
               const isHealthy = honestRepairRate >= 60 && m.escalations <= 2;
 

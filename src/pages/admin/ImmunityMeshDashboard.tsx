@@ -463,7 +463,7 @@ export default function ImmunityMeshDashboard() {
           <ShadowBuildPanel />
         </TabsContent>
 
-        {/* ══════════════════ MODERNIZER SHADOW ══════════════════ */}
+        {/* ══════════════════ EVOLUTION SHADOW ══════════════════ */}
         <TabsContent value="modernizer" className="space-y-5">
           <ModernizerShadowPanel />
         </TabsContent>
@@ -1204,7 +1204,7 @@ function ShadowBuildPanel() {
 }
 
 // ============================================================================
-// MODERNIZER SHADOW PANEL
+// EVOLUTION SHADOW PANEL
 // ============================================================================
 
 function ModernizerShadowPanel() {
@@ -1240,23 +1240,23 @@ function ModernizerShadowPanel() {
   };
 
   const gapCategoryColors: Record<string, string> = {
-    security: 'text-red-400 border-red-400/30 bg-red-400/5',
-    resilience: 'text-amber-400 border-amber-400/30 bg-amber-400/5',
-    performance: 'text-blue-400 border-blue-400/30 bg-blue-400/5',
-    config: 'text-violet-400 border-violet-400/30 bg-violet-400/5',
-    cleanup: 'text-gray-400 border-gray-400/30 bg-gray-400/5',
-    observability: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/5',
+    security: 'text-destructive border-destructive/30 bg-destructive/5',
+    resilience: 'text-primary border-primary/30 bg-primary/5',
+    performance: 'text-accent-foreground border-accent/30 bg-accent/5',
+    config: 'text-secondary-foreground border-secondary/30 bg-secondary/5',
+    cleanup: 'text-muted-foreground border-border/30 bg-muted/5',
+    observability: 'text-primary border-primary/30 bg-primary/5',
   };
 
   return (
     <div className="space-y-5">
       {/* Header / Scan Button */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
-        <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-transparent">
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
           <CardContent className="pt-5 pb-4">
             <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 flex-shrink-0">
-                <Target className="w-5 h-5 text-amber-500" />
+              <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 flex-shrink-0">
+                <Target className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-base mb-1">EVOLUTION Shadow Mode</h3>
