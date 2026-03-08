@@ -47,6 +47,7 @@ const driftWindow: DriftWindow = {
 };
 
 const WINDOW_SIZE = 30;
+const MAX_TRACKED_SUBSYSTEMS = 50;
 
 /** Record a mutation event (call from mutation hooks) */
 export function recordMutation(): void {
