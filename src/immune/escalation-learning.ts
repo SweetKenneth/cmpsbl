@@ -116,7 +116,7 @@ const patternClusters = new Map<string, PatternCluster>();
 const candidateRules = new Map<string, CandidateRule>();
 const promotionLog: Array<{ ruleId: string; timestamp: number; metrics: CandidateRule['validationMetrics'] }> = [];
 
-/** v3: Cross-executor knowledge transfer map */
+/** Cross-executor knowledge transfer map */
 const executorSimilarity = new Map<string, Set<string>>();
 initExecutorSimilarity();
 
