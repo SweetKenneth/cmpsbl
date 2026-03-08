@@ -157,7 +157,7 @@ export default function Foundations() {
               Three interconnected standards form the substrate's public surface — architecture, governance, and machine context.
             </p>
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="p-6 rounded-xl bg-primary/5 border-2 border-primary/20">
+              <div className="p-6 rounded-xl bg-primary/5 border-2 border-primary/20 shimmer-on-hover">
                 <Layers className="w-6 h-6 text-primary mb-3" />
                 <h3 className="font-bold mb-2">Substrate Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
