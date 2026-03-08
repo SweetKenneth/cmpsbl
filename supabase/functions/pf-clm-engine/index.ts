@@ -591,6 +591,25 @@ serve(async (req) => {
 
     const totalDuration = Date.now() - startTime;
 
+    const memory = await getMemoryTierState(supabase);
+    const hotOverflow = Math.max(0, memory.hot - memory.hotLimit);
+    const tierReliefQueued = hotOverflow > 0;
+
+    if (tierReliefQueued) {
+      supabase.functions.invoke('pf-substrate', {
+        body: {
+          module: 'brain',
+          action: 'tier',
+          payload: {
+            mode: hotOverflow > 200 ? 'deep' : 'aggressive',
+            trigger: 'clm_auto_relief',
+          },
+        },
+      }).catch((error: unknown) => {
+        console.warn('⚠️ CLM auto-relief tier trigger failed', error);
+      });
+    }
+
     return new Response(JSON.stringify({
       success: true,
       version: CLM_VERSION,
@@ -608,6 +627,15 @@ serve(async (req) => {
       velocity: {
         est_daily_at_current_rate: Math.round((budget.todayCycles + cycleResults.length) * 10),
         target: 25000,
+      },
+      memory: {
+        hot: { count: memory.hot, limit: memory.hotLimit, overflow: hotOverflow },
+        warm: { count: memory.warm, limit: memory.warmLimit },
+        cold: { count: memory.cold, limit: memory.coldLimit },
+      },
+      safeguards: {
+        clm_write_policy: memory.hot >= Math.floor(memory.hotLimit * 0.85) ? 'prefer_warm' : 'allow_hot',
+        tier_relief_queued: tierReliefQueued,
       },
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
