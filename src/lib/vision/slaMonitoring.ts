@@ -95,7 +95,9 @@ export interface CapacityForecast {
   recommendations: string[];
 }
 
-// In-memory stores
+// In-memory stores (bounded)
+const MAX_SLA_DEFS = 100;
+const MAX_BREACHES = 1000;
 const slaDefinitions = new Map<string, SLADefinition>();
 const activeBreaches = new Map<string, SLABreach>();
 const metricsBuffer: Array<{
