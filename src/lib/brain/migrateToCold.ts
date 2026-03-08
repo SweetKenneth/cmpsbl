@@ -167,7 +167,7 @@ async function migrateGroup(
               });
             
             if (!insertError) {
-              await supabase.from(sourceTable).delete().in('id', batchIds);
+              await supabase.from(sourceTable as any).delete().in('id', batchIds);
               stats.migrated += batch.length;
               stats.compressed++;
             } else {
