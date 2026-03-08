@@ -963,6 +963,127 @@ serve(async (req) => {
               { headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
+
+          // ═══ ESZ — Expansion Sovereignty Zone ═══
+          case "sovereign":
+          case "oracle":
+          case "conscience":
+          case "treaty": {
+            const eszState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "esz",
+                zone: "sovereignty",
+                action,
+                status: eszState.status,
+                health: eszState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // ═══ EPZ — Expansion Perception Zone ═══
+          case "compass":
+          case "echo":
+          case "reflex": {
+            const epzState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "epz",
+                zone: "perception",
+                action,
+                status: epzState.status,
+                health: epzState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // ═══ EMZ — Expansion Manufacturing Zone ═══
+          case "forge":
+          case "lingua":
+          case "harvest": {
+            const emzState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "emz",
+                zone: "manufacturing",
+                action,
+                status: emzState.status,
+                health: emzState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // ═══ CSZ — Covert/Shadow Zone ═══
+          case "shadow":
+          case "phantom": {
+            const cszState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "csz",
+                zone: "covert",
+                action,
+                status: cszState.status,
+                health: cszState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // ═══ Execution additions — MEDIC & NERVE ═══
+          case "medic":
+          case "nerve": {
+            const execState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module,
+                type: "execution",
+                action,
+                status: execState.status,
+                health: execState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+
+          // ═══ ENGINEER — Maintenance Node ═══
+          case "engineer": {
+            const engState = state.modules[module] || { healthScore: 100, status: 'healthy' };
+            return new Response(
+              JSON.stringify({
+                success: true,
+                module: "engineer",
+                type: "maintenance",
+                action,
+                status: engState.status,
+                health: engState.healthScore,
+                version: SUBSTRATE_VERSION,
+                timestamp: new Date().toISOString(),
+              }),
+              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
           
           case "status":
             return new Response(
@@ -975,9 +1096,15 @@ serve(async (req) => {
                   entities: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
                   mesh: ["defense", "immunity", "evolution", "intent", "governance"],
                   zones_ccr: ["system", "brain", "memory", "dream"],
-                  zones_ccl: ["ripple", "access", "identity", "relay", "audit"],
+                  zones_ccl: ["ripple", "access", "identity", "relay", "audit", "nerve"],
+                  zones_esz: ["sovereign", "oracle", "conscience", "treaty"],
+                  zones_epz: ["compass", "echo", "reflex"],
+                  zones_emz: ["forge", "lingua", "harvest"],
+                  zones_csz: ["evolution", "shadow", "phantom"],
+                  execution: ["medic", "nerve"],
+                  maintenance: ["engineer"],
                 },
-                modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration"],
+                modules: ["core", "decode", "encode", "vision", "cortex", "nexus", "economy", "sandbox", "inclusive", "integration", "sovereign", "oracle", "conscience", "treaty", "compass", "echo", "reflex", "forge", "lingua", "harvest", "medic", "nerve", "engineer"],
                 status: "operational",
                 health: Object.fromEntries(
                   Object.entries(state.modules).map(([k, v]) => [k, { score: v.healthScore, status: v.status }])
