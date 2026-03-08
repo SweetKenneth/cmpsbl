@@ -73,8 +73,8 @@ function IndustryCard({
       transition={{ duration: 0.5, delay }}
     >
       <Card className={cn(
-        "h-full border-border/50 bg-card/50 backdrop-blur-sm",
-        "hover:border-current/30 transition-all duration-300",
+        "h-full border-border/50 bg-card/50 backdrop-blur-sm group",
+        "hover:border-current/30 hover:shadow-lg hover:shadow-current/5 transition-all duration-500 card-lift",
         color
       )}>
         <CardHeader>
