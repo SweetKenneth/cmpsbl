@@ -103,8 +103,8 @@ export function ArtifactPacksSection() {
         >
           <div className="grid grid-cols-3 gap-4 mb-8">
             {tiers.map((tier) => (
-              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
-                <div className={cn("text-3xl sm:text-4xl font-black bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
+              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
+                <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
                   {tier.slots}
                 </div>
                 <div className="text-sm font-bold mt-1">{tier.name}</div>

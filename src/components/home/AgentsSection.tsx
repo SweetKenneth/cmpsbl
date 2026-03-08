@@ -293,14 +293,14 @@ export function AgentsSection() {
                   "from-slate-500/20 to-zinc-500/20 border-slate-500/30",
                 ];
                 return (
-                  <div key={tier.name} className={cn("rounded-xl border p-4 bg-gradient-to-br", tierColors[i])}>
+                  <div key={tier.name} className={cn("rounded-xl border p-4 bg-gradient-to-br hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300", tierColors[i])}>
                     <div className="flex items-center gap-2 mb-2">
                       <TierIcon className="w-4 h-4 text-foreground/70" />
                       <span className="text-[10px] font-black tracking-widest text-foreground/80">{tier.name}</span>
                     </div>
                     <h4 className="text-xs font-bold text-foreground mb-1">{tier.label}</h4>
                     <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">{tier.description}</p>
-                    <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground/60">
+                    <div className="flex items-center gap-3 text-[9px] font-mono tabular-nums text-muted-foreground/60">
                       <span>Latency: {tier.latency}</span>
                       <span>·</span>
                       <span>{tier.retention}</span>

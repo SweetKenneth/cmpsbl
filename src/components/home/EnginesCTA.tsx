@@ -126,7 +126,7 @@ export function EnginesCTA() {
               ].map((stat) => (
                 <div key={stat.label} className="text-center group/stat hover:-translate-y-0.5 transition-transform duration-300">
                   <stat.icon className="w-5 h-5 text-primary mx-auto mb-1.5 group-hover/stat:scale-110 transition-transform duration-300" />
-                  <div className="text-xl sm:text-2xl font-black text-foreground">{stat.value}</div>
+                  <div className="text-xl sm:text-2xl font-black font-mono tabular-nums text-foreground">{stat.value}</div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">{stat.label}</div>
                 </div>
               ))}

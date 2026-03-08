@@ -171,7 +171,7 @@ export function IndustryShowcase() {
           <Button 
             asChild 
             size="lg" 
-            className="gap-2 h-12 px-8 font-semibold shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+            className="gap-2 h-12 px-8 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
           >
             <Link to="/use-cases">
               Explore All Use Cases
