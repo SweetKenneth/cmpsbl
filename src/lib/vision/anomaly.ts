@@ -72,19 +72,36 @@ export async function analyzeWindow(
   const detectedAnomalies: Anomaly[] = [];
 
   try {
-    // 1. Check for error rate spikes with z-score
-    const { data: recentErrors } = await supabase
-      .from('brain_events')
-      .select('module, outcome')
-      .eq('outcome', 'error')
-      .gte('created_at', since);
-
-    const { data: baselineErrors } = await supabase
-      .from('brain_events')
-      .select('module, outcome')
-      .eq('outcome', 'error')
-      .gte('created_at', baselineSince)
-      .lt('created_at', since);
+    // 1. Parallel fetch: error data + usage data + health data
+    const [
+      { data: recentErrors },
+      { data: baselineErrors },
+      { data: recentUsage },
+      { data: healthEvents },
+    ] = await Promise.all([
+      supabase
+        .from('brain_events')
+        .select('module, outcome')
+        .eq('outcome', 'error')
+        .gte('created_at', since),
+      supabase
+        .from('brain_events')
+        .select('module, outcome')
+        .eq('outcome', 'error')
+        .gte('created_at', baselineSince)
+        .lt('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('provider, response_time_ms')
+        .gte('created_at', since),
+      supabase
+        .from('brain_events')
+        .select('data, module')
+        .eq('event_type', 'health_check')
+        .gte('created_at', since)
+        .order('created_at', { ascending: false })
+        .limit(20),
+    ]);
 
     const recentByModule: Record<string, number> = {};
     const baselineByModule: Record<string, number> = {};
