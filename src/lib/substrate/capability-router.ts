@@ -1,7 +1,7 @@
 /**
  * Capability Router — Dynamic routing based on module capabilities
  * Routes requests to the most capable available handler
- * Includes CLM-priority capabilities for all 38 matrix nodes
+ * Includes CLM-priority capabilities for all 40 matrix nodes
  */
 
 interface CapabilityEntry {
@@ -145,14 +145,18 @@ registerCapability('forge', 'artifact_synthesis', 85);
 registerCapability('forge', 'template_generation', 80);
 registerCapability('lingua', 'translation', 85);
 registerCapability('lingua', 'localization', 80);
-registerCapability('phantom', 'privacy_protection', 90);
-registerCapability('phantom', 'pii_masking', 85);
 registerCapability('harvest', 'data_acquisition', 85);
 registerCapability('harvest', 'etl_orchestration', 80);
 
-// ─── Pre-register: Fields ───────────────────────────────────────────────────
+// ─── Pre-register: CSZ — Cognitive Shadow Zone ──────────────────────────────
 registerCapability('evolution', 'shadow_validation', 85);
 registerCapability('evolution', 'canary_deployment', 80);
+registerCapability('shadow', 'shadow_execution', 90);
+registerCapability('shadow', 'divergence_scoring', 85);
+registerCapability('phantom', 'privacy_protection', 90);
+registerCapability('phantom', 'pii_masking', 85);
+
+// ─── Pre-register: Fields ───────────────────────────────────────────────────
 registerCapability('immunity', 'cascade_breaking', 90);
 registerCapability('immunity', 'anomaly_signatures', 85);
 registerCapability('intent', 'goal_decomposition', 85);
@@ -169,6 +173,6 @@ registerCapability('defense', 'quarantine', 85);
 registerCapability('modernizer', 'legacy_migration', 85);
 registerCapability('modernizer', 'api_versioning', 80);
 
-// ─── CLM-Priority Capabilities (38 nodes × 2 = 76 capabilities) ────────────
+// ─── CLM-Priority Capabilities (40 nodes × 2 = 80 capabilities) ────────────
 import { registerCLMPriorities } from './clm/node-priorities';
 registerCLMPriorities(registerCapability);
