@@ -93,10 +93,17 @@
      metadata: params.metadata ?? {},
    };
  
-   // Add to queue with priority ordering
-   insertByPriority(pipeline);
- 
-   return pipeline;
+    // Reject if queue is full
+    if (pipelineQueue.length >= MAX_QUEUE_SIZE) {
+      pipeline.status = 'cancelled';
+      pipeline.error = `Queue full (max ${MAX_QUEUE_SIZE})`;
+      return pipeline;
+    }
+
+    // Add to queue with priority ordering
+    insertByPriority(pipeline);
+  
+    return pipeline;
  }
  
  /**
