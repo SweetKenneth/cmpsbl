@@ -202,16 +202,18 @@ export default function Contact() {
 
               <motion.div {...stagger(0.2)} className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 transition-all duration-300 card-lift">
                 <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
-                <div className="space-y-2">
-                  <a href="https://x.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
-                    Twitter/X
-                  </a>
-                  <a href="https://www.linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
-                    LinkedIn
-                  </a>
-                  <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
-                    GitHub
-                  </a>
+                <div className="space-y-3">
+                  {[
+                    { href: "https://x.com/cmpsbl", label: "Twitter / X", icon: "𝕏" },
+                    { href: "https://www.linkedin.com/company/cmpsbl", label: "LinkedIn", icon: "in" },
+                    { href: "https://github.com/cmpsbl", label: "GitHub", icon: "⌘" },
+                  ].map((link) => (
+                    <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group">
+                      <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-xs font-bold text-primary group-hover:bg-primary/20 transition-colors">{link.icon}</span>
+                      {link.label}
+                      <ArrowRight className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  ))}
                 </div>
               </motion.div>
             </div>
@@ -251,7 +253,7 @@ export default function Contact() {
                   <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">Message *</label>
                   <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Tell us about your needs..." className="w-full min-h-[150px]" />
                 </div>
-                <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90">
+                <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90 h-12 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                   {isSubmitting ? "Sending..." : (<>Send Message<Send className="w-4 h-4 ml-2" /></>)}
                 </Button>
               </form>
