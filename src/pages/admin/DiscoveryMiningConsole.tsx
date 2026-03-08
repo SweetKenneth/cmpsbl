@@ -144,7 +144,7 @@ function DiscoveryCard({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Card className="border-border/50">
+    <Card className="border-border/50 hover:border-primary/15 transition-all duration-300">
       <CardContent className="p-3 sm:p-4">
         {/* Top badges */}
         <div className="flex items-center gap-2 flex-wrap mb-2">
