@@ -218,7 +218,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
   const existing = patternClusters.get(sig);
   if (existing) {
     if (now - existing.firstSeen > TIME_WINDOW_MS) {
-      // v3: Don't fully reset — carry forward confidence and fix history
+      // Don't fully reset — carry forward confidence and fix history
       existing.count = 1;
       existing.firstSeen = now;
       existing.lastSeen = now;
