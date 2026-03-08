@@ -182,15 +182,12 @@ export async function getQuotaStatus(category: QueryCategory): Promise<{
       return { used: 0, budget: 0, remaining: 0, percentage: 0 };
     }
     
-    const remaining = data.calls_budget - data.calls_used;
-    const percentage = (data.calls_used / data.calls_budget) * 100;
+    const used = data.calls_used ?? 0;
+    const budget = data.calls_budget ?? 0;
+    const remaining = Math.max(0, budget - used);
+    const percentage = budget > 0 ? (used / budget) * 100 : 0;
     
-    return {
-      used: data.calls_used,
-      budget: data.calls_budget,
-      remaining,
-      percentage
-    };
+    return { used, budget, remaining, percentage };
   } catch (err) {
     console.error('Error getting quota status:', err);
     return { used: 0, budget: 0, remaining: 0, percentage: 0 };
