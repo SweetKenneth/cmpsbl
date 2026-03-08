@@ -357,7 +357,7 @@ export function synthesizeKnowledge(insights: DreamInsight[]): KnowledgeFragment
   for (const insight of insights) {
     if (insight.confidence >= 0.7 && insight.status !== 'dismissed') {
       const fragment: KnowledgeFragment = {
-        id: `kf-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        id: `kf-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         domain: insight.category,
         content: `${insight.title}: ${insight.description}`,
         connections: insight.evidence.map(e => e.source),

@@ -51,7 +51,7 @@
   * Generate insight ID
   */
  function generateInsightId(): string {
-   return `insight_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+   return `insight_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
  }
  
  /**

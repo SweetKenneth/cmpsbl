@@ -246,24 +246,24 @@ export async function runDreamPipeline(
 }> {
   const cfg = { ...DEFAULT_CONFIG, ...config };
 
-  // Fetch recent dream insights from brain_events
-  const { data: dreamEvents } = await supabase
-    .from('brain_events')
-    .select('id, data, created_at')
-    .eq('module', 'dream')
-    .in('event_type', ['insight', 'synthesis', 'dream_insight', 'pattern_synthesis'])
-    .gte('created_at', new Date(Date.now() - 24 * 3600000).toISOString())
-    .order('created_at', { ascending: false })
-    .limit(20);
-
-  // Also check dream_memory for agencies
-  const { data: dreamMemories } = await supabase
-    .from('agency_dream_memory')
-    .select('id, title, payload, confidence, improvement_type, created_at')
-    .eq('applied', false)
-    .gte('confidence', cfg.min_confidence)
-    .order('created_at', { ascending: false })
-    .limit(10);
+  // Fetch recent dream insights from brain_events + agency dream memory in parallel
+  const [{ data: dreamEvents }, { data: dreamMemories }] = await Promise.all([
+    supabase
+      .from('brain_events')
+      .select('id, data, created_at')
+      .eq('module', 'dream')
+      .in('event_type', ['insight', 'synthesis', 'dream_insight', 'pattern_synthesis'])
+      .gte('created_at', new Date(Date.now() - 24 * 3600000).toISOString())
+      .order('created_at', { ascending: false })
+      .limit(20),
+    supabase
+      .from('agency_dream_memory')
+      .select('id, title, payload, confidence, improvement_type, created_at')
+      .eq('applied', false)
+      .gte('confidence', cfg.min_confidence)
+      .order('created_at', { ascending: false })
+      .limit(10),
+  ]);
 
   const insights: DreamInsight[] = [];
 

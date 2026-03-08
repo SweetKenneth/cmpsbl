@@ -153,7 +153,8 @@ function detectCorrelativePatterns(cycles: DreamCycleData[]): DreamPattern[] {
   
   cycles.forEach(cycle => {
     const tokens = cycle.improvements.flatMap(tokenize);
-    const uniqueTokens = [...new Set(tokens)];
+    // Cap to top 50 unique tokens to prevent O(n²) blowup on large inputs
+    const uniqueTokens = [...new Set(tokens)].slice(0, 50);
     
     // Count co-occurrences using canonical pair keys
     for (let i = 0; i < uniqueTokens.length; i++) {
