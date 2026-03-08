@@ -325,7 +325,7 @@ function PromotedCard({
 }) {
   const modules = discovery.module_chain || [];
   return (
-    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-colors bg-amber-500/5">
+    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm bg-amber-500/5">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">

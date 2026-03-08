@@ -238,7 +238,7 @@ function ProposalExportCard({ proposal }: { proposal: EngineerProposal }) {
 
 function GovernanceReceipts({ governance }: { governance: UnifiedProposal['governance'] }) {
   return (
-    <Card className="border-l-4 border-l-primary/30">
+    <Card className="border-l-4 border-l-primary/30 hover:shadow-sm transition-all duration-300">
       <CardHeader className="p-3 sm:p-4 pb-2">
         <div className="flex items-center gap-2">
           <Hash className="w-4 h-4 text-primary" />

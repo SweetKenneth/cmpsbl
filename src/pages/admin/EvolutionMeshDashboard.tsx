@@ -585,7 +585,7 @@ export default function EvolutionMeshDashboard() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {MPE_FLAG_CONFIG.map((flag) => (
-                <div key={flag.key} className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/30">
+                <div key={flag.key} className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/30 hover:border-primary/15 transition-all duration-200">
                   <div className="min-w-0">
                     <div className="text-xs font-medium flex items-center gap-1.5">
                       <span className="truncate">{flag.label}</span>
