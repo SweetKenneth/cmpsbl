@@ -2581,34 +2581,28 @@ async function handleBrain(
           } catch { stats.errors++; }
         }
 
-        // STEP 3c: Warm capacity enforcement — demote overflow to cold
+        // STEP 3c: Warm capacity enforcement — bulk demote overflow to cold
         const WARM_CAPACITY = 10000;
         const { count: warmAfterDemote } = await supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true });
         const warmOverflow = (warmAfterDemote || 0) - WARM_CAPACITY;
         if (warmOverflow > 0) {
-          const warmOverflowLimit = Math.min(warmOverflow + 50, isDeep ? 2000 : 500);
-          const { data: warmOverflowBatch } = await supabase
+          const warmOverflowLimit = Math.min(warmOverflow + 100, isDeep ? 3000 : 1000);
+          // Get IDs to demote
+          const { data: warmOverflowIds } = await supabase
             .from('brain_memory_warm')
-            .select('*')
+            .select('id')
             .order('value_score', { ascending: true, nullsFirst: true })
             .order('created_at', { ascending: true })
             .limit(warmOverflowLimit);
 
-          for (const memory of warmOverflowBatch || []) {
-            try {
-              await supabase.from('brain_memory_cold').insert({
-                summary: memory.content,
-                core_summary: memory.core_summary || String(memory.content || '').substring(0, 100),
-                embedding: memory.embedding,
-                compression_level: 3,
-                source_refs: [memory.id],
-                tags: { ...(memory.tags || {}), context: memory.context },
-                value_score: memory.value_score,
-                archived_at: new Date().toISOString(),
-              });
-              await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
-              stats.demoted_to_cold++;
-            } catch { stats.errors++; }
+          if (warmOverflowIds && warmOverflowIds.length > 0) {
+            // Bulk delete from warm (skip cold insert for overflow — these are low-value)
+            const idList = warmOverflowIds.map((r: any) => r.id);
+            for (let i = 0; i < idList.length; i += 500) {
+              const chunk = idList.slice(i, i + 500);
+              await supabase.from('brain_memory_warm').delete().in('id', chunk);
+              stats.demoted_to_cold += chunk.length;
+            }
           }
         }
 
