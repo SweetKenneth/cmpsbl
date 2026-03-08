@@ -1,7 +1,7 @@
 /**
  * BlogArticleLayout — Shared wrapper for all blog chapter pages.
  * Provides a polished reading experience with progress bar, refined typography,
- * and consistent structure across all 40 chapters.
+ * social sharing, and consistent structure across all 40 chapters.
  */
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import { Calendar, Clock, ArrowUp, Users } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { BlogPostNav } from "@/components/blog/BlogPostNav";
+import { BlogShareBar } from "@/components/blog/BlogShareBar";
 import { RewrittenNotice } from "@/components/blog/RewrittenNotice";
 import { cn } from "@/lib/utils";
 
@@ -43,6 +44,7 @@ export function BlogArticleLayout({
 }: BlogArticleLayoutProps) {
   const [progress, setProgress] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showShareBar, setShowShareBar] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export function BlogArticleLayout({
       const pct = Math.min(100, (scrolled / total) * 100);
       setProgress(pct);
       setShowScrollTop(scrolled > 400);
+      setShowShareBar(scrolled > 200);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -75,6 +78,14 @@ export function BlogArticleLayout({
       </div>
 
       <PublicNav />
+
+      {/* Social share bar */}
+      <BlogShareBar
+        title={title}
+        slug={slug}
+        progress={progress}
+        visible={showShareBar}
+      />
 
       <main className="min-h-screen bg-background" ref={articleRef}>
         {/* Hero */}
@@ -172,13 +183,16 @@ export function BlogArticleLayout({
 
           <BlogPostNav slug={slug} />
         </article>
+
+        {/* Bottom spacer for mobile share bar */}
+        <div className="h-14 lg:h-0" />
       </main>
 
-      {/* Scroll to top FAB */}
+      {/* Scroll to top FAB — offset for mobile share bar */}
       <motion.button
         onClick={scrollToTop}
         className={cn(
-          "fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 w-10 h-10 rounded-full",
+          "fixed bottom-16 lg:bottom-6 right-5 sm:right-6 z-50 w-10 h-10 rounded-full",
           "bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
           "flex items-center justify-center",
           "hover:bg-primary transition-all",

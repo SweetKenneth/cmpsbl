@@ -16,6 +16,7 @@ const InvestorsPublic = lazy(() => import("@/pages/InvestorsPublic"));
 const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
+const TryIt = lazy(() => import("@/pages/TryIt"));
 const FoundryDemo = lazy(() => import("@/pages/FoundryDemo"));
 const Foundry = lazy(() => import("@/pages/Foundry"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
@@ -105,6 +106,7 @@ export const publicRoutes = (
     <Route path="/substrate" element={<SubstrateDashboard />} />
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<SubstrateDemo />} />
+    <Route path="/try" element={<TryIt />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />

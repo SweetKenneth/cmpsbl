@@ -13,6 +13,7 @@ import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SubstrateGraph } from "@/components/architecture/SubstrateGraph";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -80,23 +81,36 @@ export default function Architecture() {
       <PublicNav />
 
       <main>
-        {/* Hero */}
-        <section className="relative py-20 md:py-28 overflow-hidden">
+        {/* Hero with interactive graph */}
+        <section className="relative py-16 md:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-          <div className="container mx-auto max-w-5xl px-4 relative">
-            <motion.div {...fadeUp} className="max-w-3xl">
-        <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
-                <Layers className="w-3 h-3 mr-2" />
-                Production Architecture
-              </Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                How CMPSBL Works
-              </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed">
-                A layered orchestration architecture that boots deterministically, heals autonomously, 
-                and evolves without human intervention. 40 nodes across 12 sectors, 675+ capabilities.
-              </p>
-            </motion.div>
+          <div className="container mx-auto max-w-6xl px-4 relative">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <motion.div {...fadeUp} className="max-w-xl">
+                <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+                  <Layers className="w-3 h-3 mr-2" />
+                  Production Architecture
+                </Badge>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                  How CMPSBL Works
+                </h1>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                  A layered orchestration architecture that boots deterministically, heals autonomously,
+                  and evolves without human intervention. 40 nodes across 12 sectors, 675+ capabilities.
+                </p>
+                <p className="text-sm text-muted-foreground/60 font-mono">
+                  ← Click any node to inspect
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <SubstrateGraph />
+              </motion.div>
+            </div>
           </div>
         </section>
 
