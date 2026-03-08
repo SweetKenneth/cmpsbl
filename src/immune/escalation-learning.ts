@@ -444,7 +444,7 @@ function generateStrategyTestInputs(strategy: RepairStrategy): Record<string, un
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 5: Controlled Promotion (v3 — with feedback confidence)
+// Step 5: Controlled Promotion
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function promoteRule(candidateId: string): boolean {
