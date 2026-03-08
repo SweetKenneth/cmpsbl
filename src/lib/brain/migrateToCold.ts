@@ -28,107 +28,76 @@ export async function migrateStaleMemories(
   };
   
   try {
-    // Calculate cutoff date
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - inactiveDays);
     
-    // Find stale memories
-    const { data: staleMemories, error: fetchError } = await supabase
+    // ═══ Phase 1: Hot → Cold (stale hot memories) ═══
+    const { data: staleHot, error: hotError } = await supabase
       .from('brain_memory_hot')
       .select('*')
       .lt('last_used', cutoffDate.toISOString())
       .order('last_used', { ascending: true })
       .limit(1000);
     
-    if (fetchError) {
-      console.error('Error fetching stale memories:', fetchError);
+    if (hotError) {
+      console.error('Error fetching stale hot memories:', hotError);
       stats.errors++;
-      return stats;
+    } else if (staleHot && staleHot.length > 0) {
+      stats.checked += staleHot.length;
+      await migrateGroup(staleHot, 'brain_memory_hot', stats);
     }
+
+    // ═══ Phase 2: Warm → Cold (stale warm memories — 60-day threshold) ═══
+    const warmCutoff = new Date();
+    warmCutoff.setDate(warmCutoff.getDate() - Math.max(60, inactiveDays - 30));
     
-    if (!staleMemories || staleMemories.length === 0) {
-      console.log('No stale memories to migrate');
-      return stats;
-    }
-    
-    stats.checked = staleMemories.length;
-    console.log(`Found ${stats.checked} stale memories to migrate`);
-    
-    // Group by context for compression
-    const groupedByContext: Record<string, typeof staleMemories> = {};
-    
-    for (const memory of staleMemories) {
-      if (!groupedByContext[memory.context]) {
-        groupedByContext[memory.context] = [];
-      }
-      groupedByContext[memory.context].push(memory);
-    }
-    
-    // Migrate each group
-    for (const [context, memories] of Object.entries(groupedByContext)) {
-      try {
-        // Code context: preserve raw, no compression
-        if (context === 'code') {
-          for (const memory of memories) {
-            const success = await migrateSingleMemory(memory, 0);
-            if (success) {
-              stats.migrated++;
-            } else {
-              stats.errors++;
-            }
+    const { data: staleWarm, error: warmError } = await supabase
+      .from('brain_memory_warm')
+      .select('*')
+      .or(`last_accessed.lt.${warmCutoff.toISOString()},last_accessed.is.null`)
+      .lt('created_at', warmCutoff.toISOString())
+      .lt('value_score', 0.3)
+      .order('value_score', { ascending: true })
+      .limit(500);
+
+    if (warmError) {
+      console.error('Error fetching stale warm memories:', warmError);
+      stats.errors++;
+    } else if (staleWarm && staleWarm.length > 0) {
+      stats.checked += staleWarm.length;
+      
+      for (const memory of staleWarm) {
+        try {
+          const { error: insertError } = await supabase
+            .from('brain_memory_cold')
+            .insert({
+              summary: memory.content,
+              source_refs: [memory.id],
+              compression_level: 2,
+              tags: {
+                context: memory.context,
+                archived: true,
+                migrated_from: 'warm',
+                migrated_at: new Date().toISOString(),
+              },
+              value_score: memory.value_score,
+            });
+          
+          if (!insertError) {
+            await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
+            stats.migrated++;
+          } else {
+            stats.errors++;
           }
-        } else {
-          // Other contexts: compress in batches of 5
-          for (let i = 0; i < memories.length; i += 5) {
-            const batch = memories.slice(i, i + 5);
-            const batchIds = batch.map(m => m.id);
-            
-            // Compress batch
-            const compressed = await compressMemories(batchIds);
-            
-            if (compressed) {
-              // Store compressed version in cold
-              const { error: insertError } = await supabase
-                .from('brain_memory_cold')
-                .insert({
-                  summary: compressed.summary,
-                  source_refs: compressed.sourceRefs as any,
-                  compression_level: compressed.compressionLevel,
-                  tags: {
-                    context,
-                    archived: true,
-                    original_count: batch.length,
-                    migrated_at: new Date().toISOString(),
-                  } as any,
-                });
-              
-              if (!insertError) {
-                // Delete from hot
-                await supabase
-                  .from('brain_memory_hot')
-                  .delete()
-                  .in('id', batchIds);
-                
-                stats.migrated += batch.length;
-                stats.compressed++;
-              } else {
-                console.error('Error inserting compressed memory:', insertError);
-                stats.errors++;
-              }
-            } else {
-              stats.errors++;
-            }
-          }
+        } catch {
+          stats.errors++;
         }
-      } catch (err) {
-        console.error(`Error migrating ${context} memories:`, err);
-        stats.errors++;
       }
     }
-    
+
     console.log('Migration complete:', stats);
     
-    // Log migration event to brain_events if table exists
+    // Log migration event
     try {
       await supabase.from('brain_events').insert({
         module: 'brain',
@@ -145,6 +114,74 @@ export async function migrateStaleMemories(
     console.error('Migration error:', err);
     stats.errors++;
     return stats;
+  }
+}
+
+/**
+ * Migrate a group of memories from source tier to cold
+ */
+async function migrateGroup(
+  memories: any[],
+  sourceTable: string,
+  stats: MigrationStats
+): Promise<void> {
+  // Group by context for compression
+  const groupedByContext: Record<string, typeof memories> = {};
+  for (const memory of memories) {
+    const ctx = memory.context || 'general';
+    if (!groupedByContext[ctx]) groupedByContext[ctx] = [];
+    groupedByContext[ctx].push(memory);
+  }
+  
+  for (const [context, group] of Object.entries(groupedByContext)) {
+    try {
+      if (context === 'code') {
+        // Code: preserve raw
+        for (const memory of group) {
+          const success = await migrateSingleMemory(memory, sourceTable, 0);
+          if (success) stats.migrated++;
+          else stats.errors++;
+        }
+      } else {
+        // Compress in batches of 5
+        for (let i = 0; i < group.length; i += 5) {
+          const batch = group.slice(i, i + 5);
+          const batchIds = batch.map(m => m.id);
+          
+          const compressed = await compressMemories(batchIds);
+          
+          if (compressed) {
+            const { error: insertError } = await supabase
+              .from('brain_memory_cold')
+              .insert({
+                summary: compressed.summary,
+                source_refs: compressed.sourceRefs as any,
+                compression_level: compressed.compressionLevel,
+                tags: {
+                  context,
+                  archived: true,
+                  original_count: batch.length,
+                  migrated_from: sourceTable.replace('brain_memory_', ''),
+                  migrated_at: new Date().toISOString(),
+                } as any,
+              });
+            
+            if (!insertError) {
+              await supabase.from(sourceTable).delete().in('id', batchIds);
+              stats.migrated += batch.length;
+              stats.compressed++;
+            } else {
+              stats.errors++;
+            }
+          } else {
+            stats.errors++;
+          }
+        }
+      }
+    } catch (err) {
+      console.error(`Error migrating ${context} memories:`, err);
+      stats.errors++;
+    }
   }
 }
 
