@@ -163,7 +163,7 @@ export default function DevTools() {
                 <InteractivePlayground />
                 <div className="space-y-6">
                   <DeveloperSignupForm />
-                  <Card className="border-border/50">
+                  <Card className="border-border/50 transition-all duration-300 hover:border-primary/15">
                     <CardContent className="pt-6">
                       <h3 className="font-semibold mb-3 flex items-center gap-2">
                         <Zap className="w-4 h-4 text-primary" />
