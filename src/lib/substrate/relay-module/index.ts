@@ -428,6 +428,7 @@ export function replayDeadLetter(deliveryId: string): DeliveryRecord | null {
   };
 
   state.deliveries = boundArray([...state.deliveries, record], MAX_DELIVERIES);
+  state.totalDispatched++;
   state.pendingQueue++;
   emit({ module: 'relay', event_type: 'dead_letter_replayed', outcome: 'succeeded', data: { originalId: deliveryId, newId: record.id } });
   return record;
