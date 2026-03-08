@@ -181,7 +181,7 @@ export default function GovernorPanel() {
                 <stat.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", stat.color)} />
                 <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-mono uppercase truncate">{stat.label}</span>
               </div>
-              {telLoading ? <Skeleton className="h-5 sm:h-6 w-12 sm:w-16" /> : <span className="text-lg sm:text-xl font-bold font-mono">{stat.value}</span>}
+              {telLoading ? <Skeleton className="h-5 sm:h-6 w-12 sm:w-16" /> : <span className="text-lg sm:text-xl font-bold font-mono tabular-nums">{stat.value}</span>}
             </CardContent>
           </Card>
         ))}
