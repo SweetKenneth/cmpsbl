@@ -117,7 +117,7 @@ export default function ShadowMeshPage() {
                   {executors.map((exec) => (
                     <div
                       key={exec.id}
-                      className="flex items-center justify-between p-2.5 rounded-md border border-border/50 bg-muted/30"
+                      className="flex items-center justify-between p-2.5 rounded-md border border-border/50 bg-muted/30 hover:border-primary/15 hover:bg-muted/50 transition-all duration-200"
                     >
                       <code className="text-xs font-mono bg-background px-2 py-0.5 rounded">
                         {exec.id}
