@@ -17,6 +17,7 @@ interface RateLimitBucket {
 class RateLimiter {
   private static instance: RateLimiter;
   private buckets = new Map<string, RateLimitBucket>();
+  private readonly maxBuckets = 500;
 
   private constructor() {}
 
