@@ -500,7 +500,7 @@ class MemoryCoreClient {
 
       const { data: memories, error } = await supabase
         .from('brain_memory_hot')
-        .select('*')
+        .select('id, content, context, value_score, confidence, memory_type, tags, created_at')
         .gte('confidence', minConfidence)
         .order('created_at', { ascending: false })
         .limit(limit);

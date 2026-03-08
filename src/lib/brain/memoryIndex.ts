@@ -82,9 +82,7 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
   let indexed = 0;
   
   const buildQuery = (table: string) => {
-    let q = supabase.from(table as any).select('id, content, context, value_score, access_count, created_at, user_id, agent_id, memory_type, decay_curve');
-    if (userId) q = q.eq('user_id', userId);
-    if (agentId) q = q.eq('agent_id', agentId);
+    let q = supabase.from(table as any).select('id, content, context, value_score, access_count, created_at');
     return q.order('value_score', { ascending: false });
   };
 
