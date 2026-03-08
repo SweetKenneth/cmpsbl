@@ -311,31 +311,33 @@ export function getEntriesByPeriod(
   periodType: 'hour' | 'day' | 'week',
   periods: number = 24
 ): { period: string; count: number }[] {
-  const now = new Date();
-  const results: { period: string; count: number }[] = [];
-  
+  const now = Date.now();
   const msPerPeriod: Record<string, number> = {
     hour: 60 * 60 * 1000,
     day: 24 * 60 * 60 * 1000,
     week: 7 * 24 * 60 * 60 * 1000,
   };
-  
-  for (let i = 0; i < periods; i++) {
-    const periodEnd = new Date(now.getTime() - i * msPerPeriod[periodType]);
-    const periodStart = new Date(periodEnd.getTime() - msPerPeriod[periodType]);
-    
-    const count = auditLog.filter(e => {
-      const ts = new Date(e.timestamp);
-      return ts >= periodStart && ts < periodEnd;
-    }).length;
-    
+  const interval = msPerPeriod[periodType];
+  const cutoff = now - periods * interval;
+
+  // Single-pass bucketing
+  const counts = new Array(periods).fill(0);
+  for (const e of auditLog) {
+    const ts = new Date(e.timestamp).getTime();
+    if (ts < cutoff || ts > now) continue;
+    const bucket = Math.floor((now - ts) / interval);
+    if (bucket >= 0 && bucket < periods) counts[bucket]++;
+  }
+
+  // Build results (oldest first)
+  const results: { period: string; count: number }[] = [];
+  for (let i = periods - 1; i >= 0; i--) {
     results.push({
-      period: periodStart.toISOString(),
-      count,
+      period: new Date(now - (i + 1) * interval).toISOString(),
+      count: counts[i],
     });
   }
-  
-  return results.reverse();
+  return results;
 }
 
 // ============ Compliance ============
