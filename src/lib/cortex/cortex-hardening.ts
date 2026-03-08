@@ -932,20 +932,26 @@ export function dryRunPipeline(
   const groups: string[][] = [];
   const placed = new Set<string>();
 
+  // Build step map + dep group sets for O(1) lookups
+  const stepMap = new Map<string, (typeof steps)[number]>();
+  for (const s of steps) stepMap.set(s.id, s);
+  // Track which group each step was placed into
+  const stepGroupIdx = new Map<string, number>();
+
   for (const stepId of depValidation.executionOrder) {
-    const step = steps.find(s => s.id === stepId)!;
+    const step = stepMap.get(stepId)!;
     const deps = step.dependsOn ?? [];
 
     // Find first group where all deps are in previous groups
     let groupIdx = 0;
     for (const dep of deps) {
-      for (let g = 0; g < groups.length; g++) {
-        if (groups[g].includes(dep)) groupIdx = Math.max(groupIdx, g + 1);
-      }
+      const depGroup = stepGroupIdx.get(dep);
+      if (depGroup !== undefined) groupIdx = Math.max(groupIdx, depGroup + 1);
     }
 
     if (!groups[groupIdx]) groups[groupIdx] = [];
     groups[groupIdx].push(stepId);
+    stepGroupIdx.set(stepId, groupIdx);
     placed.add(stepId);
   }
 
