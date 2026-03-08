@@ -53,9 +53,8 @@ export class DeviceFingerprint {
       canvas.width = 200;
       canvas.height = 50;
 
-      ctx.textBaseline = 'top';
-      ctx.font = '14px "Arial"';
       ctx.textBaseline = 'alphabetic';
+      ctx.font = '14px "Arial"';
       ctx.fillStyle = '#f60';
       ctx.fillRect(125, 1, 62, 20);
       ctx.fillStyle = '#069';
