@@ -2744,6 +2744,8 @@ async function handleBrain(
                 value_score: promotedScore,
                 access_count: memory.access_count || 0,
                 decay_rate: 0.02,
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: memory.tags,
                 metadata: { ...(memory.metadata || {}), promoted_from: 'warm' },
                 last_used: new Date().toISOString(),
