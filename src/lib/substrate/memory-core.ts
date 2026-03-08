@@ -366,22 +366,21 @@ class MemoryCoreClient {
     try {
       const tier = entry.tier || 'warm';
 
-      // Prepare data for insertion
-      const insertData = {
-        content: entry.content,
-        memory_type: entry.memory_type || 'general',
-        confidence: entry.confidence || 0.7,
-        importance_score: entry.importance_score || 0.5,
-        access_count: entry.access_count || 0,
-        tags: entry.tags || [],
-        metadata: entry.metadata || {},
-        source: (entry.metadata?.source as string) || 'memory_core',
-      };
-
       // Use type assertion for dynamic table access
       let memoryId: string | undefined;
 
       if (tier === 'hot') {
+        const insertData = {
+          content: entry.content,
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          importance_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          metadata: entry.metadata || {},
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_hot')
           .insert(insertData as any)
@@ -390,6 +389,17 @@ class MemoryCoreClient {
         if (error) throw error;
         memoryId = data?.id;
       } else if (tier === 'warm') {
+        const insertData = {
+          content: entry.content,
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          salience_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          metadata: entry.metadata || {},
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_warm')
           .insert(insertData as any)
@@ -398,6 +408,17 @@ class MemoryCoreClient {
         if (error) throw error;
         memoryId = data?.id;
       } else {
+        // Cold tier uses 'summary' not 'content', 'value_score' not 'confidence', 'source_module' not 'source'
+        const insertData = {
+          summary: entry.content || '',
+          memory_type: entry.memory_type || 'general',
+          value_score: entry.confidence || 0.7,
+          salience_score: entry.importance_score || 0.5,
+          access_count: entry.access_count || 0,
+          tags: entry.tags || [],
+          source_module: (entry.metadata?.source as string) || 'memory_core',
+          category: (entry.metadata?.category as string) || 'general',
+        };
         const { data, error } = await supabase
           .from('brain_memory_cold')
           .insert(insertData as any)
@@ -572,34 +593,34 @@ class MemoryCoreClient {
         ? [this.getTableForTier(tier)] 
         : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'];
 
-      // Strategy 1: Full-text search (PostgreSQL websearch)
-      if (strategy === 'fulltext' || strategy === 'hybrid') {
+      // Build all query promises in parallel
+      const strategies: ('fulltext' | 'pattern')[] = 
+        strategy === 'hybrid' ? ['fulltext', 'pattern'] : [strategy === 'fulltext' ? 'fulltext' : 'pattern'];
+
+      const queryPromises: Promise<{ data: any[] | null; table: string }>[] = [];
+      for (const strat of strategies) {
         for (const table of tablesToSearch) {
-          try {
-            const { data } = await this.queryTable(table, queryText, 'fulltext', Math.ceil(limit / tablesToSearch.length));
-            if (data) results.push(...this.mapToMemoryEntry(data, table));
-          } catch {
-            // Continue with other tables
-          }
+          const perTableLimit = strat === 'fulltext' 
+            ? Math.ceil(limit / tablesToSearch.length) 
+            : limit;
+          queryPromises.push(
+            this.queryTable(table, queryText, strat, perTableLimit)
+              .then(r => ({ data: r.data, table }))
+              .catch(() => ({ data: null, table }))
+          );
         }
       }
 
-      // Strategy 2: Pattern matching (ILIKE)
-      if (strategy === 'pattern' || strategy === 'hybrid') {
-        for (const table of tablesToSearch) {
-          try {
-            const { data } = await this.queryTable(table, queryText, 'pattern', limit);
-            if (data) {
-              const mapped = this.mapToMemoryEntry(data, table);
-              // Avoid duplicates
-              for (const entry of mapped) {
-                if (!results.find(r => r.id === entry.id)) {
-                  results.push(entry);
-                }
-              }
-            }
-          } catch {
-            // Continue with other tables
+      const queryResults = await Promise.all(queryPromises);
+      const seenIds = new Set<string>();
+
+      for (const { data, table } of queryResults) {
+        if (!data) continue;
+        const mapped = this.mapToMemoryEntry(data, table);
+        for (const entry of mapped) {
+          if (!seenIds.has(entry.id!)) {
+            seenIds.add(entry.id!);
+            results.push(entry);
           }
         }
       }
@@ -678,25 +699,28 @@ class MemoryCoreClient {
 
   // Helper for querying specific tables
   private async queryTable(table: string, queryText: string, strategy: 'fulltext' | 'pattern', limit: number): Promise<{ data: any[] | null }> {
-    const cols = 'id, content, context, value_score, access_count, confidence, created_at, memory_type, tags, source_module, category';
     // Sanitize pattern input to prevent PostgREST injection
     const sanitized = queryText.replace(/[%_\\]/g, '');
     
     if (table === 'brain_memory_hot') {
+      const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, importance_score';
       if (strategy === 'fulltext') {
         return supabase.from('brain_memory_hot').select(cols).textSearch('content', queryText).limit(limit);
       }
       return supabase.from('brain_memory_hot').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else if (table === 'brain_memory_warm') {
+      const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, salience_score';
       if (strategy === 'fulltext') {
         return supabase.from('brain_memory_warm').select(cols).textSearch('content', queryText).limit(limit);
       }
       return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
+      // Cold tier uses 'summary' column, not 'content'
+      const cols = 'id, summary, tags, value_score, access_count, created_at, memory_type, source_module, category, salience_score';
       if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_cold').select(cols).textSearch('content', queryText).limit(limit);
+        return supabase.from('brain_memory_cold').select(cols).textSearch('summary', queryText).limit(limit);
       }
-      return supabase.from('brain_memory_cold').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
+      return supabase.from('brain_memory_cold').select(cols).ilike('summary', `%${sanitized}%`).limit(limit);
     }
   }
 
@@ -916,20 +940,23 @@ class MemoryCoreClient {
       return 'cold';
     };
 
+    const tier = tierFromTable(table);
+    const isCold = tier === 'cold';
+
     return data.map(d => ({
       id: d.id,
-      content: d.content,
+      content: isCold ? (d.summary || '') : (d.content || ''),
       memory_type: d.memory_type || 'general',
-      tier: tierFromTable(table),
-      state: d.state || this.determineState(tierFromTable(table)),
-      confidence: d.confidence || 0.5,
+      tier,
+      state: d.state || this.determineState(tier),
+      confidence: d.value_score || d.confidence || 0.5,
       access_count: d.access_count || 0,
-      importance_score: d.importance_score || 0.5,
+      importance_score: d.importance_score || d.salience_score || 0.5,
       tags: d.tags || [],
       metadata: d.metadata || {},
       created_at: d.created_at,
       last_accessed: d.last_accessed || d.last_used,
-      source: d.source,
+      source: d.source_module,
     }));
   }
 
@@ -974,18 +1001,18 @@ class MemoryCoreClient {
     try {
       let totalPurged = 0;
 
-      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
-        // Use type assertion to avoid TS2589 with deeply nested Supabase types
+      // All tiers use 'source_module' column, not 'source'
+      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'] as const) {
         const { count } = await (supabase as any)
           .from(tier)
           .select('id', { count: 'exact', head: true })
-          .eq('source', source);
+          .eq('source_module', source);
 
-        await (supabase as any).from(tier).delete().eq('source', source);
+        await (supabase as any).from(tier).delete().eq('source_module', source);
         totalPurged += count ?? 0;
       }
 
-      console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
+      console.log(`[MemoryCore] Purged ${totalPurged} memories from source_module: ${source}`);
       return { success: true, purged: totalPurged };
     } catch (err) {
       console.error('[MemoryCore] Purge failed:', err);
