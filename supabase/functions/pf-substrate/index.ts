@@ -1342,6 +1342,8 @@ async function handleBrain(
           content: String(content).trim().substring(0, 2000),
           context: String(memory_type),
           priority: Math.round((confidence as number) * 10),
+          source_module: String(metadata?.source_module || metadata?.module || 'BRAIN'),
+          category: String(metadata?.category || metadata?.domain || memory_type),
           tags: { type: memory_type, source: 'remember' },
           metadata: { memory_id: memory?.id, ...metadata },
         });
@@ -1689,13 +1691,8 @@ async function handleBrain(
         ? Math.floor((now.getTime() - new Date(lastDreamDate).getTime()) / (60 * 60 * 1000))
         : 999;
 
-      // Log status check
-      await supabase.from('brain_events').insert({
-        event_type: 'brain_status_check',
-        module: 'brain',
-        outcome: 'success',
-        data: { health_score: healthScore, success_rate: successRate }
-      });
+      // Status check logging suppressed — high-volume telemetry event
+      // brain_status_check was generating ~17k events/13 days
 
       return jsonResponse({
         success: true,
@@ -2230,6 +2227,8 @@ async function handleBrain(
                 access_count: memory.access_count || 0,
                 decay_rate: 0.01,
                 source_memory_id: memory.id,
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: memory.tags,
                 metadata: memory.metadata,
                 demoted_at: new Date().toISOString(),
@@ -2266,6 +2265,8 @@ async function handleBrain(
                 embedding: memory.embedding,
                 compression_level: 3,
                 source_refs: [memory.id],
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: { ...(memory.tags as object || {}), context: memory.context },
                 value_score: memory.value_score,
                 archived_at: new Date().toISOString(),
@@ -2526,6 +2527,8 @@ async function handleBrain(
               access_count: memory.access_count || 0,
               decay_rate: 0.01,
               source_memory_id: memory.id,
+              source_module: memory.source_module || 'general',
+              category: memory.category || 'uncategorized',
               tags: memory.tags,
               metadata: { ...memory.metadata, demoted_from: 'hot' },
               demoted_at: new Date().toISOString(),
@@ -2553,6 +2556,8 @@ async function handleBrain(
               embedding: memory.embedding,
               compression_level: 3,
               source_refs: [memory.id],
+              source_module: memory.source_module || 'general',
+              category: memory.category || 'uncategorized',
               tags: { ...(memory.tags || {}), context: memory.context },
               value_score: memory.value_score,
               archived_at: new Date().toISOString(),
@@ -2740,6 +2745,8 @@ async function handleBrain(
                 value_score: promotedScore,
                 access_count: memory.access_count || 0,
                 decay_rate: 0.02,
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: memory.tags,
                 metadata: { ...(memory.metadata || {}), promoted_from: 'warm' },
                 last_used: new Date().toISOString(),
