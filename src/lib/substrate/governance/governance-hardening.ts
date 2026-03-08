@@ -460,6 +460,7 @@ const escalationState = new Map<string, { tier: number; createdAt: number; escal
 
 export function initiateEscalation(actionId: string): { tier: number; name: string } {
   escalationState.set(actionId, { tier: 1, createdAt: Date.now(), escalatedAt: Date.now() });
+  capMap(escalationState, MAX_ESCALATIONS);
   return { tier: 1, name: ESCALATION_TIERS[0].name };
 }
 
