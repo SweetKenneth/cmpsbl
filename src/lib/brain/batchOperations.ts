@@ -399,7 +399,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
     const staleCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const { data: hotCandidates } = await supabase
       .from('brain_memory_hot')
-      .select('*')
+      .select('id, content, context, value_score, tags, metadata, source_module, category')
       .lt('last_used', staleCutoff)
       .lt('value_score', 0.5)
       .limit(50);
