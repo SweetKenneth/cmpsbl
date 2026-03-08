@@ -133,10 +133,10 @@ export async function stopModule(module: SubstrateModuleName): Promise<{ success
   recordEvent(module, 'stop');
   
   try {
-    // Run cleanup if registered
+    // Run cleanup if registered (with 30s timeout to prevent hung shutdowns)
     const cleanup = moduleCleanups.get(module);
     if (cleanup) {
-      await cleanup();
+      await withTimeout(cleanup, 30_000, `cleanup(${module})`);
     }
     
     lifecycle.phase = 'stopped';
