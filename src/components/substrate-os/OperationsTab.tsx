@@ -210,7 +210,7 @@ export function OperationsTab() {
           <ScrollArea className="h-[200px]">
             <div className="space-y-1.5">
               {ops.decode.recentLogs.map((log: any, i: number) => (
-                <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10">
+                <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10 transition-colors duration-200 hover:bg-muted/20">
                   <Badge variant="outline" className={cn("text-[8px] h-4 px-1.5 shrink-0",
                     log.success ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20'
                   )}>
