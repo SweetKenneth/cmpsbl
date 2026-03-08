@@ -61,16 +61,17 @@ function similarity(a: Set<string>, b: Set<string>): number {
   return intersection / (a.size + b.size - intersection);
 }
 
-/** Scan and identify duplicate memories */
+/** Scan and identify duplicate memories in the hot tier */
 export async function scanDuplicates(
   config: Partial<DedupConfig> = {}
 ): Promise<DedupResult> {
   const cfg = { ...DEFAULT_CONFIG, ...config };
   const start = Date.now();
 
+  // FIX: Query actual tier table (brain_memory_hot) instead of non-existent brain_memories
   const { data: memories, error } = await supabase
-    .from('brain_memories')
-    .select('id, content, confidence, metadata')
+    .from('brain_memory_hot')
+    .select('id, content, value_score, metadata')
     .order('created_at', { ascending: false })
     .limit(cfg.maxScanBatch);
 
@@ -81,9 +82,9 @@ export async function scanDuplicates(
   // Build n-gram index
   const indexed = memories.map(m => ({
     id: m.id,
-    content: m.content || '',
-    confidence: m.confidence ?? 0,
-    grams: ngrams(m.content || '', 3),
+    content: (m as any).content || '',
+    confidence: (m as any).value_score ?? 0,
+    grams: ngrams((m as any).content || '', 3),
   }));
 
   const candidates: DedupCandidate[] = [];
