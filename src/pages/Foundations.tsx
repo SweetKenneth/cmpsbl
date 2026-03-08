@@ -127,7 +127,7 @@ export default function Foundations() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
-                  className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all bg-card"
+                  className="group p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card card-lift"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
