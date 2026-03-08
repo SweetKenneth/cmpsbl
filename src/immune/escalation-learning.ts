@@ -182,7 +182,7 @@ function createSignature(signal: EscalationSignal): string {
   return `${signal.executor}::${signal.archetype}::${failureCategory}::${signal.inputShape}`;
 }
 
-/** v3: Categorize failure reasons into buckets for better clustering */
+/** Categorize failure reasons into buckets for better clustering */
 function categorizeFailure(reason: string): string {
   const r = reason.toLowerCase();
   if (r.includes('transient') || r.includes('rare') || r.includes('timeout')) return 'transient';
