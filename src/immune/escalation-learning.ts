@@ -245,7 +245,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
     return existing;
   }
 
-  // v3: Check cross-executor patterns — if similar executor had this pattern, inherit knowledge
+  // Check cross-executor patterns — if similar executor had this pattern, inherit knowledge
   const similarExecutors = getSimilarExecutors(signal.executor);
   let inheritedConfidence = 0;
   let inheritedMethod: string | undefined;
