@@ -210,33 +210,45 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
  /**
   * Execute a single step
   */
- async function executeStep(
-   step: WorkflowStep,
-   context: Record<string, unknown>,
-   retryPolicy: RetryPolicy
- ): Promise<unknown> {
-   // Resolve payload with context
-   const payload = resolvePayload(step.payload, context);
-   
-   let lastError: Error | undefined;
-   
-   for (let attempt = 0; attempt <= retryPolicy.maxRetries; attempt++) {
-     try {
-       // Simulate module invocation (in production, would call substrate.invoke)
-       const result = await simulateModuleCall(step.module, step.action, payload);
-       return result;
-     } catch (error) {
-       lastError = error instanceof Error ? error : new Error(String(error));
-       
-       if (attempt < retryPolicy.maxRetries) {
-         const delay = retryPolicy.backoffMs * Math.pow(retryPolicy.backoffMultiplier, attempt);
-         await new Promise(r => setTimeout(r, delay));
-       }
-     }
-   }
-   
-   throw lastError || new Error('Step failed');
- }
+  async function executeStep(
+    step: WorkflowStep,
+    context: Record<string, unknown>,
+    retryPolicy: RetryPolicy
+  ): Promise<unknown> {
+    // Resolve payload with context
+    const payload = resolvePayload(step.payload, context);
+    
+    let lastError: Error | undefined;
+    // Respect per-step timeout if defined
+    const stepTimeoutMs = step.timeout && step.timeout > 0 ? step.timeout : 0;
+    
+    for (let attempt = 0; attempt <= retryPolicy.maxRetries; attempt++) {
+      try {
+        const callPromise = simulateModuleCall(step.module, step.action, payload);
+        let result: unknown;
+        if (stepTimeoutMs > 0) {
+          let handle: ReturnType<typeof setTimeout> | undefined;
+          const timeout = new Promise<never>((_, rej) => {
+            handle = setTimeout(() => rej(new Error(`Step ${step.id} timed out after ${stepTimeoutMs}ms`)), stepTimeoutMs);
+          });
+          result = await Promise.race([callPromise, timeout]);
+          clearTimeout(handle);
+        } else {
+          result = await callPromise;
+        }
+        return result;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        
+        if (attempt < retryPolicy.maxRetries) {
+          const delay = retryPolicy.backoffMs * Math.pow(retryPolicy.backoffMultiplier, attempt);
+          await new Promise(r => setTimeout(r, delay));
+        }
+      }
+    }
+    
+    throw lastError || new Error('Step failed');
+  }
  
  /**
   * Build execution order respecting dependencies
