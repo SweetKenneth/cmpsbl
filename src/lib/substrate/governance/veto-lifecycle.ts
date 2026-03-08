@@ -65,6 +65,8 @@ const DECAY_RULES: Record<string, {
 // LIFECYCLE ENGINE
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_LIFECYCLE_ENTRIES = 500;
+
 class VetoLifecycleEngine {
   private static instance: VetoLifecycleEngine;
   private lifecycles: Map<string, VetoLifecycleEntry> = new Map();
