@@ -116,6 +116,10 @@ const MAX_BUFFER = 10000;
  * Register an SLA definition
  */
 export function registerSLA(sla: SLADefinition): void {
+  if (slaDefinitions.size >= MAX_SLA_DEFS && !slaDefinitions.has(sla.id)) {
+    console.warn(`[VISION SLA] Max SLA definitions (${MAX_SLA_DEFS}) reached`);
+    return;
+  }
   slaDefinitions.set(sla.id, sla);
 }
 
