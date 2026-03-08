@@ -210,7 +210,7 @@ function TestSuiteRunner() {
                           <span className={cn('font-medium', t.passed ? 'text-foreground' : 'text-red-400')}>
                             {t.name}
                           </span>
-                          <span className="text-muted-foreground/50 ml-1.5">{t.durationMs}ms</span>
+                          <span className="text-muted-foreground/50 ml-1.5 font-mono tabular-nums">{t.durationMs}ms</span>
                           {t.error && (
                             <p className="text-red-400/80 text-[10px] mt-0.5 font-mono truncate">{t.error}</p>
                           )}

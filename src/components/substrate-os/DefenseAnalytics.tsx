@@ -346,7 +346,7 @@ export function DefenseAnalytics() {
             </Card>
 
             {/* Risk Score Distribution */}
-            <Card className="p-6">
+            <Card className="p-6 transition-all duration-300 hover:border-primary/15">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 Risk Breakdown

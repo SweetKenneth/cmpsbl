@@ -476,8 +476,8 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           </CardContent>
         </Card>
         <Card className={cn(
-          "border bg-white/5 dark:bg-white/[0.02]",
-          hasFailsafe ? "border-green-500/20" : "border-red-500/20"
+          "border bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm",
+          hasFailsafe ? "border-green-500/20 hover:border-green-500/30" : "border-red-500/20 hover:border-red-500/30"
         )}>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Failsafe</p>

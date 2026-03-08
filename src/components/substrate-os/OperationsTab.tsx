@@ -217,8 +217,8 @@ export function OperationsTab() {
                     {log.success ? '✓' : '✗'}
                   </Badge>
                   <span className="text-[10px] font-mono text-muted-foreground/60 truncate flex-1">{log.model || log.provider}</span>
-                  <span className="text-[9px] font-mono text-muted-foreground/40 shrink-0">{log.tokens_used || 0} tok</span>
-                  <span className="text-[9px] font-mono text-muted-foreground/40 shrink-0">{log.response_time_ms || 0}ms</span>
+                  <span className="text-[9px] font-mono tabular-nums text-muted-foreground/40 shrink-0">{log.tokens_used || 0} tok</span>
+                  <span className="text-[9px] font-mono tabular-nums text-muted-foreground/40 shrink-0">{log.response_time_ms || 0}ms</span>
                 </div>
               ))}
               {ops.decode.recentLogs.length === 0 && (

@@ -153,7 +153,7 @@ export function ShadowTab() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20 transition-all duration-200 hover:bg-muted/40 hover:border-border/30"
                   >
                     <div className={cn("w-2 h-2 rounded-full shrink-0",
                       esc.severity === 'critical' ? 'bg-red-500' :
