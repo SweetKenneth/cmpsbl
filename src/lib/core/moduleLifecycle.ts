@@ -234,7 +234,7 @@ export function getDependencyGraph(module: SubstrateModuleName): DependencyGraph
  * Get all modules that depend on this one
  */
 export function getDependents(module: SubstrateModuleName): SubstrateModuleName[] {
-  return [...(DEPENDENTS_MAP.get(module) || [])];
+  return [...(getDependentsMap().get(module) || [])];
 }
 
 /**
