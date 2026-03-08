@@ -72,9 +72,11 @@ export interface KnowledgeFragment {
   lastReinforced: string;
 }
 
-// In-memory insight store
+// In-memory insight store (capped to prevent unbounded growth)
 const insightStore = new Map<string, DreamInsight>();
+const MAX_INSIGHT_STORE = 500;
 const knowledgeGraph = new Map<string, KnowledgeFragment>();
+const MAX_KNOWLEDGE_GRAPH = 500;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // INSIGHT EXTRACTION
