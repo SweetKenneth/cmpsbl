@@ -103,8 +103,8 @@ export function ArtifactPacksSection() {
         >
           <div className="grid grid-cols-3 gap-4 mb-8">
             {tiers.map((tier) => (
-              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
-                <div className={cn("text-3xl sm:text-4xl font-black bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
+              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
+                <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
                   {tier.slots}
                 </div>
                 <div className="text-sm font-bold mt-1">{tier.name}</div>
@@ -115,14 +115,14 @@ export function ArtifactPacksSection() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base">
+            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/auth">
                 <Sparkles className="w-4 h-4" />
                 Start Free — 3 Slots
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base">
+            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base hover:border-primary/30 transition-all duration-200">
               <Link to="/packs">
                 <Package className="w-4 h-4" />
                 Explore All Packs

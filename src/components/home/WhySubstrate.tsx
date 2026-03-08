@@ -235,7 +235,7 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
           {/* Stat */}
           <div className="text-right">
             <div className={cn(
-              "text-lg sm:text-xl font-black bg-gradient-to-r bg-clip-text text-transparent",
+              "text-lg sm:text-xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent",
               item.color
             )}>
               {item.stat}
