@@ -195,7 +195,8 @@ function generalizeHeuristics(heuristics: unknown[]): string[] {
   );
 
   for (const h of highConfidence) {
-    generalized.push(`Generalized: ${h.title} (${(h.success_rate * 100).toFixed(0)}% success)`);
+    const rate = ((h.success_rate ?? 0) * 100).toFixed(0);
+    generalized.push(`Generalized: ${h.title} (${rate}% success)`);
   }
 
   return generalized;

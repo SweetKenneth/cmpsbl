@@ -32,11 +32,13 @@ export function validateDreamChain(chainId: string): { valid: boolean; avgCohere
 // ─── 2. Synthesis Convergence Detector ──────────────────────────────────────
 interface ConvergencePoint { iteration: number; divergence: number; timestamp: number; }
 const convergenceHistory = new Map<string, ConvergencePoint[]>();
+const MAX_CONVERGENCE_HISTORY = 50;
 
 export function recordConvergence(chainId: string, iteration: number, divergence: number): boolean {
   if (!convergenceHistory.has(chainId)) convergenceHistory.set(chainId, []);
   const history = convergenceHistory.get(chainId)!;
   history.push({ iteration, divergence, timestamp: Date.now() });
+  if (history.length > MAX_CONVERGENCE_HISTORY) history.splice(0, history.length - MAX_CONVERGENCE_HISTORY);
   // Converged if divergence below threshold for 3+ consecutive
   const recent = history.slice(-3);
   return recent.length >= 3 && recent.every(p => p.divergence < 0.05);
