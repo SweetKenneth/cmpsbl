@@ -78,20 +78,20 @@ function RunSummaryCard({ result }: { result: ReactorRunResult }) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3">
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.totalCandidates}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{result.totalCandidates}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Candidates</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-primary">{result.acceptedCount}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-primary">{result.acceptedCount}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Accepted (80+)</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.topFind?.cjpi ?? '—'}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{result.topFind?.cjpi ?? '—'}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Top CJPI</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{Object.keys(result.byCategory).length}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{Object.keys(result.byCategory).length}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Categories</div>
           </div>
         </div>
