@@ -1,22 +1,21 @@
 /**
  * IMMUNITY — Executor Wrapper
  * 
- * v3.0 Fix: Archetype-gated repair. Garbage inputs (empty_shell, shape_alien,
- * injection_attempt, oversized) now safe-fail IMMEDIATELY without any repair
- * attempt. Only repairable archetypes (partial_valid, type_mismatch,
- * missing_required) trigger the repair pipeline. This fixes the inflated
- * repair attempt rate (~40-50% → expected <2%).
+ * Archetype-gated repair: Garbage inputs (empty_shell, shape_alien,
+ * injection_attempt, oversized) safe-fail IMMEDIATELY without repair.
+ * Only repairable archetypes (missing_required) trigger the repair pipeline,
+ * keeping the repair attempt rate honest (<2%).
  *
- * Improvements integrated:
- * #1 Context-Aware Rule Selection
- * #2 Compositional Repair Chains
- * #3 Confidence-Scored Repairs
- * #4 Learned Prioritization
- * #7 Pre-Execution Normalization
- * #8 Post-Execution Outcome Tracking
- * #10 Escalation Pattern Mining
- * #11 Parallel Repair Branching
- * #13 Archetype-Gated Repair (NEW)
+ * Integrated capabilities:
+ * - Context-Aware Rule Selection
+ * - Compositional Repair Chains
+ * - Confidence-Scored Repairs
+ * - Learned Prioritization
+ * - Pre-Execution Normalization
+ * - Post-Execution Outcome Tracking
+ * - Escalation Pattern Mining
+ * - Parallel Repair Branching
+ * - Archetype-Gated Repair
  *
  * SAFETY: 1 repair max, 1 retry max, no recursion, no cross-module writes.
  */
@@ -134,8 +133,8 @@ export interface WrapConfig {
 }
 
 /**
- * Wrap a synergy executor with immune defense+repair (v3.0)
- * v3.0: Archetype-gated repair — only repairable archetypes trigger repair.
+ * Wrap a synergy executor with immune defense+repair.
+ * Archetype-gated: only repairable archetypes trigger repair.
  * Garbage inputs safe-fail immediately, producing honest <2% repair rates.
  */
 export function wrapExecutor(
@@ -164,7 +163,7 @@ export function wrapExecutor(
     let repairTypeFlag: string | null = null;
     let retryAttemptedFlag = false;
     let repairConfidence = 0;
-    // v2.1: Track escalation and safe-failure correctly
+    // Track escalation and safe-failure correctly
     let escalatedFlag = false;
     let safeFailFlag = false;
     const startTime = performance.now();
@@ -189,15 +188,13 @@ export function wrapExecutor(
 
     // Telemetry is now recorded at batch level (runBatch.ts) — no per-execution DB writes
 
-    /**
-     * v2.0: Intelligent repair + single retry.
-     */
+    /** Intelligent repair + single retry. */
     const tryIntelligentRepairAndRetry = async (
       failingInput: Record<string, unknown>,
     ): Promise<SynergyResult | null> => {
       if (repairAttemptedFlag) return null;
 
-      // v3.1: Check shared rules FIRST — learned fixes from other executors
+      // Check shared rules FIRST — learned fixes from other executors
       const applicableRules = findApplicableRules(executorName);
       let sharedRuleUsed: string | null = null;
 
@@ -239,7 +236,7 @@ export function wrapExecutor(
         if (post.valid && retryResult.success) {
           repairSuccessFlag = true;
           recordRepairOutcome(executorName, repairTypeFlag, true);
-          // v3.1: Record success against shared rule (reinforces the rule for this executor)
+          // Record success against shared rule (reinforces the rule for this executor)
           if (sharedRuleUsed) {
             recordSharedRuleOutcome(sharedRuleUsed, executorName, true);
           }
@@ -272,7 +269,7 @@ export function wrapExecutor(
         }
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
-        // v3.1: Record failure against shared rule (degrades confidence, may trigger rollback)
+        // Record failure against shared rule (degrades confidence, may trigger rollback)
         if (sharedRuleUsed) {
           recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
         }
@@ -293,7 +290,7 @@ export function wrapExecutor(
       } catch {
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
-        // v3.1: Record failure against shared rule
+        // Record failure against shared rule
         if (sharedRuleUsed) {
           recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
         }
@@ -347,7 +344,7 @@ export function wrapExecutor(
           emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (err) {
-          // v3.2: Failed preflight repair+retry → safe-fail instead of escalate
+          // Failed preflight repair+retry → safe-fail instead of escalate
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
           safeFailFlag = true;
@@ -405,7 +402,7 @@ export function wrapExecutor(
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'unknown execution error';
 
-      // ── #13: ARCHETYPE-GATED REPAIR ──
+      // ── ARCHETYPE-GATED REPAIR ──
       // Classify the input BEFORE attempting repair. If the input is garbage
       // (empty_shell, shape_alien, injection_attempt, oversized), safe-fail
       // immediately. Only repairable archetypes get repair attempts.
@@ -450,9 +447,8 @@ export function wrapExecutor(
           emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (retryErr) {
-          // v3.2: Failed repair+retry → safe-fail instead of escalate.
-          // The repair was attempted and failed — escalating just creates noise.
-          // Only mine the pattern for future learning, don't flood the escalation queue.
+          // Failed repair+retry → safe-fail instead of escalate.
+          // Mine the pattern for future learning, don't flood the escalation queue.
           const retryMsg = retryErr instanceof Error ? retryErr.message : 'unknown';
           mineEscalationPattern(executorName, retryMsg, repairResult.repairedInput);
           safeFailFlag = true;
@@ -474,9 +470,8 @@ export function wrapExecutor(
           return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after repair retry: ${retryMsg}`);
         }
       } else {
-        // Repairable archetype but no strategy — safe-fail (not escalate)
-        // v3.2: No repair strategy found is NOT worth escalating — it's expected
-        // for adversarial inputs that happen to have a repairable archetype.
+        // Repairable archetype but no strategy — safe-fail (not escalate).
+        // No repair strategy found is expected for adversarial inputs.
         safeFailFlag = true;
         recordOutcome('failed_safe');
         trackOutcome({

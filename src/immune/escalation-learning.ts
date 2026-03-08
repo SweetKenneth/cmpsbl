@@ -1,7 +1,7 @@
 /**
  * IMMUNITY — Closed-Loop Escalation Learning System
  * 
- * Major overhaul for real repair intelligence:
+ * Capabilities:
  * - Retroactive learning from DB-resolved escalations
  * - Adaptive frequency thresholds per executor
  * - Cross-executor pattern transfer
@@ -17,6 +17,7 @@ import { log } from '@/lib/system/log';
 import { deterministicRepair } from './deterministic-repair';
 import { validateInput, type InputArchetype } from './schema-validator';
 import { PILOT_EXECUTORS } from './pilotExecutors';
+import { contributeRule, autoPropagateRules } from './shared-rule-registry';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Types
@@ -30,7 +31,7 @@ export interface EscalationSignal {
   deterministicApplied: string | null;
   legacyApplied: boolean;
   timestamp: number;
-  /** v3: The actual failing input for replay-based learning */
+  /** The actual failing input for replay-based learning */
   failingInput?: Record<string, unknown>;
 }
 
@@ -46,17 +47,17 @@ export interface PatternCluster {
   eligible: boolean;
   candidateGenerated: boolean;
   promoted: boolean;
-  /** v3: Cross-executor applicability */
+  /** Cross-executor applicability */
   applicableExecutors: string[];
-  /** v3: Confidence score based on feedback (0-1) */
+  /** Confidence score based on feedback (0-1) */
   confidence: number;
-  /** v3: Sample failing inputs for replay */
+  /** Sample failing inputs for replay */
   sampleInputs: Record<string, unknown>[];
-  /** v3: How many times a fix for this pattern succeeded */
+  /** How many times a fix for this pattern succeeded */
   fixSuccesses: number;
-  /** v3: How many times a fix for this pattern failed */
+  /** How many times a fix for this pattern failed */
   fixFailures: number;
-  /** v3: Resolution method that worked (if any) */
+  /** Resolution method that worked (if any) */
   effectiveMethod?: string;
 }
 
@@ -78,19 +79,19 @@ export interface CandidateRule {
     samplesRun: number;
   };
   version: number;
-  /** v3: Confidence from feedback loops */
+  /** Confidence from feedback loops */
   feedbackConfidence: number;
-  /** v3: Times this rule resolved an escalation */
+  /** Times this rule resolved an escalation */
   resolutionCount: number;
-  /** v3: Times this rule failed to resolve */
+  /** Times this rule failed to resolve */
   failureCount: number;
-  /** v3: Applicable to multiple executors */
+  /** Applicable to multiple executors */
   crossExecutorApplicable: boolean;
-  /** v3: Specific repair strategy this rule encodes */
+  /** Specific repair strategy this rule encodes */
   repairStrategy: RepairStrategy;
 }
 
-/** v3: Named repair strategies that rules can encode */
+/** Named repair strategies that rules can encode */
 export type RepairStrategy =
   | 'input_reconstruction'   // Rebuild input from error context
   | 'shape_normalization'    // Fix input shape to match executor schema
@@ -105,7 +106,7 @@ export type RepairStrategy =
 // State
 // ═══════════════════════════════════════════════════════════════════════════
 
-/** v3: Adaptive threshold — starts low, rises with pattern maturity */
+/** Adaptive threshold — starts low, rises with pattern maturity */
 const BASE_FREQUENCY_THRESHOLD = 2;
 const MAX_FREQUENCY_THRESHOLD = 8;
 const TIME_WINDOW_MS = 60 * 60 * 1000; // 1 hour (was 30 min)
@@ -115,11 +116,11 @@ const patternClusters = new Map<string, PatternCluster>();
 const candidateRules = new Map<string, CandidateRule>();
 const promotionLog: Array<{ ruleId: string; timestamp: number; metrics: CandidateRule['validationMetrics'] }> = [];
 
-/** v3: Cross-executor knowledge transfer map */
+/** Cross-executor knowledge transfer map */
 const executorSimilarity = new Map<string, Set<string>>();
 initExecutorSimilarity();
 
-/** v3: Resolution feedback buffer — records what actually worked */
+/** Resolution feedback buffer — records what actually worked */
 const resolutionFeedback: Array<{
   executor: string;
   errorSignature: string;
@@ -130,16 +131,15 @@ const resolutionFeedback: Array<{
 }> = [];
 const MAX_FEEDBACK = 200;
 
-/** v3: Historical warm-start flag */
+/** Historical warm-start flag */
 let warmStartComplete = false;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Cross-Executor Similarity
+// Cross-Executor Similarity
 // ═══════════════════════════════════════════════════════════════════════════
 
 function initExecutorSimilarity() {
   // Group executors by functional similarity for pattern transfer
-  // v2: Expanded to cover all 13 pilot executors across 4 modules
   const groups: string[][] = [
     // UI adaptation cluster
     ['adaptive-ui', 'personalized-accessibility-engine'],
@@ -173,16 +173,16 @@ export function getSimilarExecutors(executor: string): string[] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 1: Capture Escalation Pattern (v3 — richer signals)
+// Step 1: Capture Escalation Pattern
 // ═══════════════════════════════════════════════════════════════════════════
 
 function createSignature(signal: EscalationSignal): string {
-  // v3: More granular signature — includes archetype + failure category
+  // Granular signature — includes archetype + failure category
   const failureCategory = categorizeFailure(signal.failureReason);
   return `${signal.executor}::${signal.archetype}::${failureCategory}::${signal.inputShape}`;
 }
 
-/** v3: Categorize failure reasons into buckets for better clustering */
+/** Categorize failure reasons into buckets for better clustering */
 function categorizeFailure(reason: string): string {
   const r = reason.toLowerCase();
   if (r.includes('transient') || r.includes('rare') || r.includes('timeout')) return 'transient';
@@ -196,7 +196,7 @@ function categorizeFailure(reason: string): string {
   return 'unknown';
 }
 
-/** v3: Determine repair strategy from failure category */
+/** Determine repair strategy from failure category */
 function strategyFromCategory(category: string): RepairStrategy {
   switch (category) {
     case 'transient': return 'pattern_match_resolve';
@@ -218,7 +218,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
   const existing = patternClusters.get(sig);
   if (existing) {
     if (now - existing.firstSeen > TIME_WINDOW_MS) {
-      // v3: Don't fully reset — carry forward confidence and fix history
+      // Don't fully reset — carry forward confidence and fix history
       existing.count = 1;
       existing.firstSeen = now;
       existing.lastSeen = now;
@@ -227,12 +227,12 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
     } else {
       existing.count++;
       existing.lastSeen = now;
-      // v3: Adaptive threshold based on executor maturity
+      // Adaptive threshold based on executor maturity
       const threshold = getAdaptiveThreshold(signal.executor);
       existing.eligible = existing.count >= threshold;
     }
 
-    // v3: Capture sample inputs for replay
+    // Capture sample inputs for replay
     if (signal.failingInput && existing.sampleInputs.length < MAX_SAMPLE_INPUTS) {
       const inputStr = JSON.stringify(signal.failingInput);
       const hasDupe = existing.sampleInputs.some(s => JSON.stringify(s) === inputStr);
@@ -245,7 +245,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
     return existing;
   }
 
-  // v3: Check cross-executor patterns — if similar executor had this pattern, inherit knowledge
+  // Check cross-executor patterns — if similar executor had this pattern, inherit knowledge
   const similarExecutors = getSimilarExecutors(signal.executor);
   let inheritedConfidence = 0;
   let inheritedMethod: string | undefined;
@@ -284,7 +284,7 @@ export function captureEscalation(signal: EscalationSignal): PatternCluster {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Adaptive Frequency Threshold
+// Adaptive Frequency Threshold
 // ═══════════════════════════════════════════════════════════════════════════
 
 /** Per-executor maturity tracking */
@@ -310,14 +310,14 @@ export function getEligiblePatterns(): PatternCluster[] {
   return Array.from(patternClusters.values())
     .filter(p => p.eligible && !p.candidateGenerated)
     .sort((a, b) => {
-      // v3: Sort by confidence (inherited fixes first), then by count
+      // Sort by confidence (inherited fixes first), then by count
       if (b.confidence !== a.confidence) return b.confidence - a.confidence;
       return b.count - a.count;
     });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 3: Synthesize Candidate Rule (v3 — strategy-aware)
+// Step 3: Synthesize Candidate Rule
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function synthesizeCandidateRule(cluster: PatternCluster): CandidateRule | null {
@@ -352,7 +352,7 @@ export function synthesizeCandidateRule(cluster: PatternCluster): CandidateRule 
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 4: Shadow Validation (v3 — uses sample inputs from cluster)
+// Step 4: Shadow Validation
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function shadowValidateRule(
@@ -362,7 +362,7 @@ export function shadowValidateRule(
   const candidate = candidateRules.get(candidateId);
   if (!candidate) return { passed: false, metrics: undefined };
 
-  // v3: Use cluster sample inputs if available, augmented with defaults
+  // Use cluster sample inputs if available, augmented with defaults
   const cluster = patternClusters.get(candidate.originSignature);
   const clusterInputs = cluster?.sampleInputs ?? [];
   const inputs = [
@@ -403,7 +403,7 @@ export function shadowValidateRule(
     samplesRun: inputs.length,
   };
 
-  // v3: More lenient validation for high-confidence inherited rules
+  // More lenient validation for high-confidence inherited rules
   const confidenceBonus = candidate.feedbackConfidence > 0.5;
   const passed = metrics.repairSuccessDelta >= (confidenceBonus ? -0.05 : 0)
     && metrics.escalationDelta <= (confidenceBonus ? 0.05 : 0)
@@ -444,7 +444,7 @@ function generateStrategyTestInputs(strategy: RepairStrategy): Record<string, un
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 5: Controlled Promotion (v3 — with feedback confidence)
+// Step 5: Controlled Promotion
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function promoteRule(candidateId: string): boolean {
@@ -485,7 +485,7 @@ export function rollbackRule(candidateId: string): boolean {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Feedback Loop — Record what actually worked
+// Feedback Loop — Record what actually worked
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function recordResolutionFeedback(
@@ -536,7 +536,7 @@ export function recordResolutionFeedback(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Retroactive Learning — Learn from already-resolved escalations
+// Retroactive Learning — Learn from already-resolved escalations
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function learnFromResolution(
@@ -606,7 +606,7 @@ export function learnFromResolution(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Warm Start — Initialize from historical data
+// Warm Start — Initialize from historical data
 // ═══════════════════════════════════════════════════════════════════════════
 
 export async function warmStartFromDB(): Promise<{ patternsLoaded: number; rulesSeeded: number }> {
@@ -672,7 +672,7 @@ export async function warmStartFromDB(): Promise<{ patternsLoaded: number; rules
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Full Learning Cycle (v3 — with warm start + feedback + cross-executor)
+// Full Learning Cycle
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
@@ -697,7 +697,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     if (!candidate) continue;
     candidatesSynthesized++;
 
-    // v3: Use cluster's sample inputs + strategy-specific inputs
+    // Use cluster's sample inputs + strategy-specific inputs
     const inputs = [
       ...cluster.sampleInputs,
       ...(testInputs ?? generateStrategyTestInputs(candidate.repairStrategy)),
@@ -708,7 +708,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
       validated++;
       if (promoteRule(candidate.id)) {
         promoted++;
-        // v3: Auto-transfer to similar executors
+        // Auto-transfer to similar executors
         if (candidate.crossExecutorApplicable) {
           for (const peer of cluster.applicableExecutors) {
             if (peer !== cluster.executor) {
@@ -718,9 +718,8 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
           }
         }
 
-        // v4: Contribute to shared rule registry for central learning
+        // Contribute to shared rule registry for central cross-executor learning
         try {
-          const { contributeRule } = require('./shared-rule-registry');
           contributeRule(
             candidate.executor,
             candidate.repairStrategy,
@@ -728,14 +727,14 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
             candidate.feedbackConfidence,
             candidate.description,
           );
-        } catch { /* shared registry not available */ }
+        } catch { /* non-critical */ }
       }
     } else {
       rejected++;
     }
   }
 
-  // v3: Also process high-confidence patterns that aren't yet eligible
+  // Also process high-confidence patterns that aren't yet eligible
   const highConfidence = Array.from(patternClusters.values())
     .filter(p => !p.candidateGenerated && p.confidence >= 0.7 && !p.promoted);
   
@@ -754,12 +753,11 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     }
   }
 
-  // v4: Auto-propagate shared rules to compatible executors
+  // Auto-propagate shared rules to compatible executors
   try {
-    const { autoPropagateRules } = require('./shared-rule-registry');
     const propagation = autoPropagateRules();
     sharedRulesPropagated = propagation.adopted;
-  } catch { /* shared registry not available */ }
+  } catch { /* non-critical */ }
 
   if (candidatesSynthesized > 0 || sharedRulesPropagated > 0) {
     log.info('encode', `Learning cycle: ${eligible.length}+${highConfidence.length} patterns → ${candidatesSynthesized} candidates → ${validated} validated → ${promoted} promoted, ${rejected} rejected, ${crossExecutorTransfers} transfers, ${sharedRulesPropagated} shared rules propagated`);
@@ -777,7 +775,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Find Best Rule for Escalation (used by processor)
+// Find Best Rule for Escalation (used by processor)
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function findBestRuleForEscalation(executor: string, errorSummary: string): CandidateRule | null {
@@ -809,7 +807,7 @@ export function findBestRuleForEscalation(executor: string, errorSummary: string
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Dashboard / Telemetry API (v3 — richer stats)
+// Dashboard / Telemetry API
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function getLearningStats(): {

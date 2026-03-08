@@ -129,13 +129,7 @@ export function preNormalize(
     }
   }
 
-  // Ensure userId is trimmed and non-empty
-  if ('userId' in copy && typeof copy.userId === 'string' && copy.userId.trim() === '') {
-    copy.userId = 'anonymous';
-    changed = true;
-  }
-
-  // #13: Structural completeness — only normalize EXISTING locator + identity fields.
+  // Normalize EXISTING locator + identity fields (not injection — that's repair).
   // CRITICAL: Do NOT inject missing fields here — that's a repair action, not normalization.
   // Adding target/userId to adversarial inputs was masking real failures in shadow probes.
   if (typeof copy.target === 'string' && copy.target.trim() === '') {
