@@ -296,7 +296,7 @@ export default function Workspace() {
                 return (
                   <Card
                     key={tier}
-                    className={`border-border/50 overflow-hidden transition-all ${isAvailable ? 'bg-card/50' : 'bg-muted/20 opacity-70'}`}
+                    className={`border-border/50 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm ${isAvailable ? 'bg-card/50' : 'bg-muted/20 opacity-70'}`}
                   >
                     <button
                       className="w-full px-4 py-3 flex items-center justify-between text-left"
