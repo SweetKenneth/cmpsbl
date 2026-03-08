@@ -67,31 +67,31 @@ function CategoryBadge({ category }: { category: string }) {
 
 function RunSummaryCard({ result }: { result: ReactorRunResult }) {
   return (
-    <Card className="border-primary/20">
+    <Card className="border-primary/20 hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-base sm:text-lg flex items-center gap-2 flex-wrap">
           <Target className="w-5 h-5 text-primary shrink-0" />
           Latest Run Summary
           {result.dryRun && <Badge variant="outline" className="text-xs">DRY RUN</Badge>}
         </CardTitle>
-        <CardDescription>{result.durationMs}ms • {new Date().toLocaleString()}</CardDescription>
+        <CardDescription><span className="font-mono tabular-nums">{result.durationMs}ms</span> • {new Date().toLocaleString()}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3">
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.totalCandidates}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{result.totalCandidates}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Candidates</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-primary">{result.acceptedCount}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-primary">{result.acceptedCount}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Accepted (80+)</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{result.topFind?.cjpi ?? '—'}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{result.topFind?.cjpi ?? '—'}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Top CJPI</div>
           </div>
-          <div className="text-center p-3 rounded-lg bg-muted/50">
-            <div className="text-xl sm:text-2xl font-bold text-foreground">{Object.keys(result.byCategory).length}</div>
+          <div className="text-center p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors duration-200">
+            <div className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-foreground">{Object.keys(result.byCategory).length}</div>
             <div className="text-[10px] sm:text-xs text-muted-foreground">Categories</div>
           </div>
         </div>
@@ -144,7 +144,7 @@ function DiscoveryCard({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Card className="border-border/50">
+    <Card className="border-border/50 hover:border-primary/15 transition-all duration-300">
       <CardContent className="p-3 sm:p-4">
         {/* Top badges */}
         <div className="flex items-center gap-2 flex-wrap mb-2">
@@ -240,7 +240,7 @@ function RunHistoryList({ runs, loading }: { runs: any[]; loading: boolean }) {
   return (
     <div className="space-y-2">
       {runs.map(run => (
-        <Card key={run.id} className="border-border/50">
+        <Card key={run.id} className="border-border/50 hover:border-primary/15 transition-all duration-300">
           <CardContent className="p-3">
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="text-xs font-mono text-muted-foreground">

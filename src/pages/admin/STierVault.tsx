@@ -167,45 +167,45 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{registryEntries.length}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{registryEntries.length}</div>
           <div className="text-[10px] text-muted-foreground">Registry Artifacts</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-amber-400">{promoted.length}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-amber-400">{promoted.length}</div>
           <div className="text-[10px] text-muted-foreground">Discovered</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
           <div className="text-[10px] text-muted-foreground">Total Est. Value</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.avgCjpi}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.avgCjpi}</div>
           <div className="text-[10px] text-muted-foreground">Avg CJPI</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
           <div className="text-[10px] text-muted-foreground">Module Coverage</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50">
+      <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{stats.codeReady}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.codeReady}</div>
           <div className="text-[10px] text-muted-foreground">Code Ready</div>
         </CardContent>
       </Card>
 
       {/* Tier breakdown */}
-      <Card className="col-span-2 border-border/50">
+      <Card className="col-span-2 border-border/50 hover:border-primary/15 transition-all duration-300">
         <CardContent className="p-3">
           <div className="text-[10px] font-medium text-muted-foreground mb-2">Tier Breakdown</div>
           <div className="space-y-1">
@@ -219,7 +219,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
                       style={{ width: `${(count / registryEntries.length) * 100}%` }}
                     />
                   </div>
-                  <span className="font-mono w-6 text-right">{count}</span>
+                  <span className="font-mono tabular-nums w-6 text-right">{count}</span>
                 </div>
               </div>
             ))}
@@ -228,7 +228,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       </Card>
 
       {/* Top modules */}
-      <Card className="col-span-2 sm:col-span-2 lg:col-span-4 border-border/50">
+      <Card className="col-span-2 sm:col-span-2 lg:col-span-4 border-border/50 hover:border-primary/15 transition-all duration-300">
         <CardContent className="p-3">
           <div className="text-[10px] font-medium text-muted-foreground mb-2">Top Modules</div>
           <div className="flex flex-wrap gap-1.5">
@@ -253,7 +253,7 @@ function ArtifactCard({
   loadingCode: boolean; expanded: boolean; onToggle: () => void;
 }) {
   return (
-    <Card className="border-border/50 hover:border-border transition-colors">
+    <Card className="border-border/50 hover:border-border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <span className="font-mono text-sm font-bold text-muted-foreground">#{entry.rank}</span>
@@ -325,7 +325,7 @@ function PromotedCard({
 }) {
   const modules = discovery.module_chain || [];
   return (
-    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-colors bg-amber-500/5">
+    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm bg-amber-500/5">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">

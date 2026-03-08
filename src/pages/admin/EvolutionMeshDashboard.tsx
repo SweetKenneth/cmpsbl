@@ -105,7 +105,7 @@ function EmptyState({ icon: Icon, title, description }: {
   description: string;
 }) {
   return (
-    <Card className="p-6 sm:p-8 text-center space-y-3">
+    <Card className="p-6 sm:p-8 text-center space-y-3 hover:border-primary/15 transition-all duration-300">
       <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center mx-auto">
         <Icon className="w-6 h-6 text-muted-foreground" />
       </div>
@@ -572,7 +572,7 @@ export default function EvolutionMeshDashboard() {
         {proposals.length > 0 && <PipelineStatsBar proposals={proposals} />}
 
         {/* Feature Flags */}
-        <Card className="p-3 sm:p-4">
+        <Card className="p-3 sm:p-4 hover:border-primary/15 transition-all duration-300">
           <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" /> MPE Controls
           </h3>
@@ -585,7 +585,7 @@ export default function EvolutionMeshDashboard() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {MPE_FLAG_CONFIG.map((flag) => (
-                <div key={flag.key} className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/30">
+                <div key={flag.key} className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-muted/30 border border-border/30 hover:border-primary/15 transition-all duration-200">
                   <div className="min-w-0">
                     <div className="text-xs font-medium flex items-center gap-1.5">
                       <span className="truncate">{flag.label}</span>
