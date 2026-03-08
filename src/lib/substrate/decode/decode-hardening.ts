@@ -269,7 +269,8 @@ export function verifyRoutingChain(): { valid: boolean; brokenAt?: number } {
   return { valid: true };
 }
 
-export function getRoutingAuditChain(): RoutingAuditEntry[] {
+export function getRoutingAuditChain(limit?: number): RoutingAuditEntry[] {
+  if (limit) return routingAuditChain.slice(-limit);
   return [...routingAuditChain];
 }
 
