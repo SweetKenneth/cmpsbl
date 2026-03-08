@@ -640,7 +640,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (38 nodes across 12 sectors)
+  // Quick access module aliases (40 nodes across 12 sectors)
   core,
   brain,
   decode,
@@ -664,6 +664,29 @@ export {
   economyMod,
   sandboxMod,
   encodeMod,
+  // ESZ — Expansion Sovereignty Zone
+  sovereignMod,
+  oracleMod,
+  conscienceMod,
+  treatyMod,
+  // EPZ — Expansion Perception Zone
+  compassMod,
+  echoMod,
+  reflexMod,
+  // EMZ — Expansion Manufacturing Zone
+  forgeMod,
+  linguaMod,
+  harvestMod,
+  // CSZ — Covert/Shadow Zone
+  evolutionMod,
+  shadowMod,
+  phantomMod,
+  // Fields + Plane + Execution additions
+  immunityMod,
+  intentMod,
+  governanceMod,
+  medicMod,
+  nerveMod,
   type SubstrateModule, 
   type SubstrateRequest, 
   type SubstrateResponse 
