@@ -610,6 +610,7 @@ interface WorkflowSnapshot {
   changedFields: string[];
 }
 
+const MAX_WORKFLOW_VERSION_KEYS = 100;
 const workflowVersions = new Map<string, WorkflowSnapshot[]>();
 
 export function snapshotWorkflow(
