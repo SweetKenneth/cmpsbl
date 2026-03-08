@@ -470,28 +470,62 @@ export async function generateWebhookSignatureAsync(target: string, payload: str
   return `t=${timestamp},v1=${signature}`;
 }
 
+/**
+ * Synchronous webhook signature verification (uses djb2 fallback).
+ * For security-critical paths, prefer verifyWebhookSignatureAsync.
+ */
 export function verifyWebhookSignature(target: string, payload: string, signatureHeader: string): SignatureVerificationResult {
   const config = signatureConfigs.get(target);
   if (!config) return { valid: false, reason: 'No signature config registered for target' };
 
+  const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
+  if (!parsed.ok) return parsed.result;
+
+  const expectedSig = simpleHmac(config.secret, `${parsed.timestamp}.${payload}`);
+  const valid = constantTimeEqual(parsed.receivedSig, expectedSig);
+
+  return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: parsed.ageSeconds };
+}
+
+/**
+ * Async webhook signature verification using real HMAC-SHA256.
+ * Prefer this for security-critical verification paths.
+ */
+export async function verifyWebhookSignatureAsync(target: string, payload: string, signatureHeader: string): Promise<SignatureVerificationResult> {
+  const config = signatureConfigs.get(target);
+  if (!config) return { valid: false, reason: 'No signature config registered for target' };
+
+  const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
+  if (!parsed.ok) return parsed.result;
+
+  const expectedSig = await cryptoHmacSha256(config.secret, `${parsed.timestamp}.${payload}`);
+  const valid = constantTimeEqual(parsed.receivedSig, expectedSig);
+
+  return { valid, reason: valid ? 'Signature verified (SHA-256)' : 'Signature mismatch', timestampAge: parsed.ageSeconds };
+}
+
+/** Shared header parsing logic for sync/async verify paths */
+function parseSignatureHeader(
+  signatureHeader: string,
+  timestampTolerance: number,
+): { ok: true; timestamp: number; receivedSig: string; ageSeconds: number } | { ok: false; result: SignatureVerificationResult } {
   const parts = signatureHeader.split(',');
   const timestampPart = parts.find(p => p.startsWith('t='));
   const sigPart = parts.find(p => p.startsWith('v1='));
 
-  if (!timestampPart || !sigPart) return { valid: false, reason: 'Invalid signature format' };
+  if (!timestampPart || !sigPart) return { ok: false, result: { valid: false, reason: 'Invalid signature format' } };
 
-  const timestamp = parseInt(timestampPart.slice(2));
+  const timestamp = parseInt(timestampPart.slice(2), 10);
+  if (Number.isNaN(timestamp)) return { ok: false, result: { valid: false, reason: 'Invalid timestamp in signature' } };
+
   const receivedSig = sigPart.slice(3);
-
   const ageSeconds = Math.abs(Date.now() / 1000 - timestamp);
-  if (ageSeconds > config.timestampTolerance) {
-    return { valid: false, reason: `Timestamp too old (${Math.round(ageSeconds)}s)`, timestampAge: ageSeconds };
+
+  if (ageSeconds > timestampTolerance) {
+    return { ok: false, result: { valid: false, reason: `Timestamp too old (${Math.round(ageSeconds)}s)`, timestampAge: ageSeconds } };
   }
 
-  const expectedSig = simpleHmac(config.secret, `${timestamp}.${payload}`);
-  const valid = constantTimeEqual(receivedSig, expectedSig);
-
-  return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: ageSeconds };
+  return { ok: true, timestamp, receivedSig, ageSeconds };
 }
 
 /**
