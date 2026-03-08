@@ -339,7 +339,7 @@ export default function Workspace() {
               })}
 
               <div className="text-center mt-6">
-                <Button variant="outline" className="font-mono text-sm" onClick={() => navigate('/upgrade')}>
+                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/upgrade')}>
                   <Rocket className="w-4 h-4 mr-2" /> View Plans & Pricing
                 </Button>
               </div>
