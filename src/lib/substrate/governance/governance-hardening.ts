@@ -704,6 +704,7 @@ export function measureDecisionEntropy(windowMs: number = 300_000): {
 
 export function setPolicyExpiry(ruleId: string, expiresAt: number): void {
   policyExpiries.set(ruleId, expiresAt);
+  capMap(policyExpiries, MAX_POLICY_EXPIRIES);
 }
 
 export function getExpiredPolicies(): string[] {
