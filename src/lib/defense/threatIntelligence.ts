@@ -471,6 +471,12 @@ function recordRequest(ip: string, path: string): void {
   const cutoff = Date.now() - 5 * 60 * 1000;
   const filtered = requests.filter(r => r.timestamp > cutoff);
   recentRequests.set(ip, filtered);
+
+  // Bound the map
+  if (recentRequests.size > MAX_RECENT_REQUESTS) {
+    const oldest = recentRequests.keys().next().value;
+    if (oldest) recentRequests.delete(oldest);
+  }
 }
 
 function detectInjection(body: string): { detected: boolean; type: string } {
