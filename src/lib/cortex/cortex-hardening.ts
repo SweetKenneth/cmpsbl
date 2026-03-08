@@ -854,9 +854,21 @@ export function recordOrchestrationTelemetry(
   telemetryWindow.maxLatencyMs = Math.max(telemetryWindow.maxLatencyMs, latencyMs);
   telemetryWindow.minLatencyMs = Math.min(telemetryWindow.minLatencyMs, latencyMs);
   telemetryWindow.stepCounts.push(stepCount);
-  // Cap stepCounts within window
+  // Insert latency sample in sorted order for percentile calculation
+  const samples = telemetryWindow.latencySamples;
+  let lo = 0, hi = samples.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (samples[mid] < latencyMs) lo = mid + 1; else hi = mid;
+  }
+  samples.splice(lo, 0, latencyMs);
+  // Cap both arrays within window
   if (telemetryWindow.stepCounts.length > 1000) {
     telemetryWindow.stepCounts = telemetryWindow.stepCounts.slice(-500);
+  }
+  if (samples.length > 1000) {
+    // Downsample: keep every other element to preserve distribution shape
+    telemetryWindow.latencySamples = samples.filter((_, i) => i % 2 === 0);
   }
 }
 
