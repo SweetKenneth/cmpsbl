@@ -453,7 +453,7 @@ export default function ComposableCognitives() {
           </div>
           <div className="space-y-2">
             {FAQ_ITEMS.map((faq, i) => (
-              <div key={i} className="border border-border/50 rounded-xl overflow-hidden">
+              <div key={i} className="border border-border/50 rounded-xl overflow-hidden hover:border-primary/15 transition-colors duration-200">
                 <button
                   onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                   className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/20 transition-colors"
