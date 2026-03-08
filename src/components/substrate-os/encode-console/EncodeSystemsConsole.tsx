@@ -2,7 +2,7 @@
  * ENCODE Systems Engineer Console
  * Hybrid conversational + command interface.
  * Natural language and slash commands both route through DECODE → PLAN → APPROVAL → ENCODE.
- * Actually wired to substrate systems for real work.
+ * Includes SHADOW A/B testing before execution to pick optimal implementation.
  */
 
 import { useState, useCallback, useMemo } from 'react';
@@ -16,9 +16,15 @@ import { useEncode } from '@/hooks/substrate/useEncode';
 import { navigateIntent, resolveAlias, detectConcerns, getModuleTables } from '@/lib/codeagent/encoded/substrate-navigator';
 import { getRelevantPatterns } from '@/lib/codeagent/encoded/expert-patterns';
 import { getRelevantSkills } from '@/lib/codeagent/encoded/skills';
+import {
+  createShadowAB, runShadowAB, evaluateShadowAB, cancelShadowAB,
+  getWinningTemplate, listExperiments as listShadowExperiments,
+  type ShadowABExperiment,
+} from '@/lib/substrate/shadow-ab-engine';
 import { EncodeCommandInput, ENCODE_COMMANDS } from './EncodeCommandInput';
 import { ConversationStream } from './ConversationStream';
 import { ArchitecturePanel } from './ArchitecturePanel';
+import type { ShadowABExperiment as PanelExperiment } from './ShadowABPanel';
 
 type SystemMessage = { type: 'info' | 'warning' | 'error' | 'success'; text: string; ts: string };
 
