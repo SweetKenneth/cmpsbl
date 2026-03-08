@@ -150,18 +150,24 @@ async function demoteStaleHot(cfg: DecayConfig): Promise<number> {
     for (const entry of stale) {
       // Insert into warm
       const { error: insertErr } = await supabase.from('brain_memory_warm').insert({
-        content: entry.content,
-        context: entry.context,
-        tags: entry.tags,
-        value_score: (entry.priority || 5) / 10,
-        access_count: entry.access_count || 0,
+        content: (entry as any).content,
+        context: (entry as any).context,
+        tags: (entry as any).tags,
+        value_score: ((entry as any).priority || 5) / 10,
+        access_count: (entry as any).access_count || 0,
+        source_module: 'memory_gc',
         metadata: { demoted_from: 'hot', demoted_at: new Date().toISOString() },
-      });
+      } as any);
 
       if (!insertErr) {
-        await supabase.from('brain_memory_hot').delete().eq('id', entry.id);
         demoted++;
       }
+    }
+
+    // Batch-delete demoted entries from hot
+    if (demoted > 0) {
+      const demotedIds = stale.slice(0, demoted).map(e => e.id);
+      await supabase.from('brain_memory_hot').delete().in('id', demotedIds);
     }
     return demoted;
   } catch { return 0; }
@@ -209,16 +215,25 @@ async function demoteStaleWarm(cfg: DecayConfig): Promise<number> {
 
     let demoted = 0;
     for (const entry of stale) {
+      // FIX: tags on brain_memory_cold is string[] not object
+      const existingTags = Array.isArray(entry.tags) ? (entry.tags as string[]) : [];
       const { error: insertErr } = await supabase.from('brain_memory_cold').insert({
-        summary: (entry.content || '').slice(0, 500),
-        tags: { ...(entry.tags as any || {}), context: entry.context, demoted_from: 'warm' },
-        value_score: entry.value_score || 0,
-      });
+        summary: ((entry as any).content || '').slice(0, 500),
+        tags: [...existingTags, 'demoted_from_warm'],
+        value_score: (entry as any).value_score || 0,
+        source_module: 'memory_gc',
+        category: (entry as any).context || 'general',
+      } as any);
 
       if (!insertErr) {
-        await supabase.from('brain_memory_warm').delete().eq('id', entry.id);
         demoted++;
       }
+    }
+
+    // Batch-delete demoted entries from warm
+    if (demoted > 0) {
+      const demotedIds = stale.slice(0, demoted).map(e => e.id);
+      await supabase.from('brain_memory_warm').delete().in('id', demotedIds);
     }
     return demoted;
   } catch { return 0; }
