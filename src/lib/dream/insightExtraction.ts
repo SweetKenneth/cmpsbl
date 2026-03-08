@@ -366,6 +366,10 @@ export function synthesizeKnowledge(insights: DreamInsight[]): KnowledgeFragment
       };
 
       fragments.push(fragment);
+      if (knowledgeGraph.size >= MAX_KNOWLEDGE_GRAPH) {
+        const oldest = knowledgeGraph.keys().next().value;
+        if (oldest) knowledgeGraph.delete(oldest);
+      }
       knowledgeGraph.set(fragment.id, fragment);
     }
   }
