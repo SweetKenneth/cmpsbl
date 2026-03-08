@@ -272,6 +272,7 @@ const VALID_TRANSITIONS: Record<LifecyclePhase, LifecyclePhase[]> = {
 
 let currentPhase: LifecyclePhase = 'uninitialized';
 const phaseHistory: Array<{ from: LifecyclePhase; to: LifecyclePhase; timestamp: string }> = [];
+const MAX_PHASE_HISTORY = 200;
 
 export function transitionPhase(to: LifecyclePhase): { success: boolean; error?: string } {
   const allowed = VALID_TRANSITIONS[currentPhase];
@@ -279,6 +280,7 @@ export function transitionPhase(to: LifecyclePhase): { success: boolean; error?:
     return { success: false, error: `Invalid transition: ${currentPhase} → ${to}` };
   }
   phaseHistory.push({ from: currentPhase, to, timestamp: new Date().toISOString() });
+  if (phaseHistory.length > MAX_PHASE_HISTORY) phaseHistory.splice(0, phaseHistory.length - MAX_PHASE_HISTORY);
   currentPhase = to;
   return { success: true };
 }
