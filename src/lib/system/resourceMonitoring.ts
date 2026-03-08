@@ -115,8 +115,8 @@ export async function collectMetrics(): Promise<ResourceMetrics> {
   
   // Store in history
   metricsHistory.push(metrics);
-  if (metricsHistory.length > 1000) {
-    metricsHistory.shift();
+  if (metricsHistory.length > 2000) {
+    metricsHistory.splice(0, metricsHistory.length - 1000);
   }
   
   // Check thresholds
