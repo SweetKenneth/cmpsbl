@@ -139,7 +139,13 @@ const MAX_WINDOW_STREAMS = 100;
 const windowBuffers = new Map<string, Array<{ value: number; ts: number }>>();
 
 export function pushToWindow(stream: string, value: number): void {
-  if (!windowBuffers.has(stream)) windowBuffers.set(stream, []);
+  if (!windowBuffers.has(stream)) {
+    if (windowBuffers.size >= MAX_WINDOW_STREAMS) {
+      const oldest = windowBuffers.keys().next().value;
+      if (oldest) windowBuffers.delete(oldest);
+    }
+    windowBuffers.set(stream, []);
+  }
   const buf = windowBuffers.get(stream)!;
   buf.push({ value, ts: Date.now() });
   // Evict entries older than 1 hour
