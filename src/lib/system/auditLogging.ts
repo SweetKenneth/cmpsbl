@@ -88,10 +88,10 @@ export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Pro
     ...entry,
   };
   
-  // Store in memory
+  // Store in memory (bounded)
   auditLog.push(auditEntry);
   if (auditLog.length > MAX_IN_MEMORY) {
-    auditLog.shift();
+    auditLog.splice(0, auditLog.length - MAX_IN_MEMORY);
   }
   
   // Persist to database
