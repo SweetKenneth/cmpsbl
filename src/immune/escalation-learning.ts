@@ -403,7 +403,7 @@ export function shadowValidateRule(
     samplesRun: inputs.length,
   };
 
-  // v3: More lenient validation for high-confidence inherited rules
+  // More lenient validation for high-confidence inherited rules
   const confidenceBonus = candidate.feedbackConfidence > 0.5;
   const passed = metrics.repairSuccessDelta >= (confidenceBonus ? -0.05 : 0)
     && metrics.escalationDelta <= (confidenceBonus ? 0.05 : 0)
