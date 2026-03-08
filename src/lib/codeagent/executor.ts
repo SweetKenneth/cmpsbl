@@ -107,8 +107,8 @@ function getCoderFallback(request: CodeRequest): CodeResult {
 
 function getSandboxFallback(): ValidationResult {
   return {
-    valid: true, // Assume valid when sandbox is down to avoid blocking
-    issues: ['Validation service unavailable - code not verified'],
+    valid: false, // Do NOT assume valid when sandbox is down
+    issues: ['Validation service unavailable — code not verified'],
     complexity: 'medium',
   };
 }

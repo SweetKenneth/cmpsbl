@@ -393,11 +393,19 @@ export async function getRelevantPatterns(
   limit: number = 5
 ): Promise<ExtractedPattern[]> {
   try {
-    // Query learning_patterns for relevant entries
+    // Sanitize inputs to prevent injection via .or() ilike
+    const safeModule = module.replace(/[%_'"\\]/g, '').slice(0, 50);
+    const safeChangeType = changeType.replace(/[%_'"\\]/g, '').slice(0, 50);
+    if (!safeModule && !safeChangeType) return [];
+
+    const filters: string[] = [];
+    if (safeModule) filters.push(`pattern_name.ilike.%${safeModule}%`);
+    if (safeChangeType) filters.push(`pattern_name.ilike.%${safeChangeType}%`);
+
     const { data } = await supabase
       .from('learning_patterns')
       .select('*')
-      .or(`pattern_name.ilike.%${module}%,pattern_name.ilike.%${changeType}%`)
+      .or(filters.join(','))
       .order('confidence', { ascending: false })
       .limit(limit);
     
@@ -492,40 +500,60 @@ export async function runLearningCycle(): Promise<{
   let patternsConsolidated = 0;
   let newInsights = 0;
   
-  if (recentEvents && recentEvents.length > 0) {
-    // Group by outcome to find patterns
-    const successEvents = recentEvents.filter(e => e.outcome === 'success');
-    const failureEvents = recentEvents.filter(e => e.outcome === 'failure');
-    
-    // Generate insights from successes
-    if (successEvents.length >= 3) {
-      newInsights++;
-      await supabase.from('brain_memory_hot').insert({
-        content: `CodeAgent success pattern: ${successEvents.length} successful actions in last 6 hours`,
-        context: 'codeagent_insight',
-        priority: 8,
-        tags: ['codeagent', 'insight', 'success_pattern'],
-        metadata: {
-          event_count: successEvents.length,
-          generated_at: new Date().toISOString(),
-        },
-      });
-    }
-    
-    // Generate insights from failures
-    if (failureEvents.length >= 2) {
-      newInsights++;
-      await supabase.from('brain_memory_hot').insert({
-        content: `CodeAgent attention needed: ${failureEvents.length} failures detected in last 6 hours`,
-        context: 'codeagent_insight',
-        priority: 9,
-        tags: ['codeagent', 'insight', 'failure_pattern'],
-        metadata: {
-          event_count: failureEvents.length,
-          generated_at: new Date().toISOString(),
-        },
-      });
-    }
+    if (recentEvents && recentEvents.length > 0) {
+      // Group by outcome to find patterns
+      const successEvents = recentEvents.filter(e => e.outcome === 'success');
+      const failureEvents = recentEvents.filter(e => e.outcome === 'failure');
+      
+      // Generate insights from successes — check for recent duplicate first
+      if (successEvents.length >= 3) {
+        const { data: existing } = await supabase
+          .from('brain_memory_hot')
+          .select('id')
+          .eq('context', 'codeagent_insight')
+          .contains('tags', ['success_pattern'])
+          .gte('created_at', new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString())
+          .limit(1);
+
+        if (!existing || existing.length === 0) {
+          newInsights++;
+          await supabase.from('brain_memory_hot').insert({
+            content: `CodeAgent success pattern: ${successEvents.length} successful actions in last 6 hours`,
+            context: 'codeagent_insight',
+            priority: 8,
+            tags: ['codeagent', 'insight', 'success_pattern'],
+            metadata: {
+              event_count: successEvents.length,
+              generated_at: new Date().toISOString(),
+            },
+          });
+        }
+      }
+      
+      // Generate insights from failures — check for recent duplicate first
+      if (failureEvents.length >= 2) {
+        const { data: existing } = await supabase
+          .from('brain_memory_hot')
+          .select('id')
+          .eq('context', 'codeagent_insight')
+          .contains('tags', ['failure_pattern'])
+          .gte('created_at', new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString())
+          .limit(1);
+
+        if (!existing || existing.length === 0) {
+          newInsights++;
+          await supabase.from('brain_memory_hot').insert({
+            content: `CodeAgent attention needed: ${failureEvents.length} failures detected in last 6 hours`,
+            context: 'codeagent_insight',
+            priority: 9,
+            tags: ['codeagent', 'insight', 'failure_pattern'],
+            metadata: {
+              event_count: failureEvents.length,
+              generated_at: new Date().toISOString(),
+            },
+          });
+        }
+      }
     
     // Consolidate patterns in learning_patterns
     const { data: existingPatterns } = await supabase
