@@ -245,18 +245,18 @@ export class MemoryClient {
       await supabase.functions.invoke('pf-substrate', { body: basePayload });
     } else if (salience >= 0.3) {
       await supabase.from('brain_memory_warm' as any).insert({
-        content,
-        context: memoryType,
-        user_id: this.userId,
-        agent_id: this.agentId,
-        memory_type: memoryType,
-        salience_score: salience,
-        value_score: salience * 0.8,
-        decay_curve: decayCurve,
-        provenance,
-        metadata: basePayload.metadata,
-        tags: { source: 'memory_sdk' },
-      });
+            content,
+            context: memoryType,
+            user_id: this.userId,
+            agent_id: this.agentId,
+            memory_type: memoryType,
+            salience_score: salience,
+            value_score: salience * 0.8,
+            decay_curve: decayCurve,
+            provenance,
+            metadata: basePayload.metadata,
+            tags: ['memory_sdk'],
+          });
     }
     // salience < 0.3 → don't store (noise)
   }
@@ -496,7 +496,7 @@ export class MemoryClient {
       for (const memoryId of memoryIds) {
         const { data } = await supabase
           .from('brain_memory_hot' as any)
-          .select('*')
+          .select('id, content, context, memory_type, salience_score, value_score, metadata')
           .eq('id', memoryId)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
@@ -542,7 +542,7 @@ export class MemoryClient {
                 lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
               },
               metadata: { ...entry.metadata, shared_from_agent: this.agentId },
-              tags: { source: 'cross_agent_share' },
+              tags: ['cross_agent_share'],
             });
           }
           shared++;

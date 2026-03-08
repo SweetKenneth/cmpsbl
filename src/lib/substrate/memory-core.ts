@@ -519,10 +519,11 @@ class MemoryCoreClient {
       const limitMap = { shallow: 20, standard: 50, deep: 100 };
       const limit = limitMap[depth];
 
+      // Hot tier uses 'value_score' not 'confidence'
       const { data: memories, error } = await supabase
         .from('brain_memory_hot')
-        .select('id, content, context, value_score, confidence, memory_type, tags, created_at')
-        .gte('confidence', minConfidence)
+        .select('id, content, context, value_score, memory_type, tags, created_at, importance_score')
+        .gte('value_score', minConfidence)
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -817,14 +818,15 @@ class MemoryCoreClient {
       for (const mem of stale as any[]) {
         try {
           // Insert into cold with decayed scores — only delete from warm on success
+          // Cold tier uses 'summary' not 'content', 'value_score' not 'confidence', 'source_module' not 'source'
           const { error: insertErr } = await supabase.from('brain_memory_cold').insert({
-            content: mem.content,
+            summary: mem.content,
             memory_type: mem.memory_type || 'general',
-            confidence: Math.max(0.1, ((mem.salience_score as number) || 0.5) * 0.8),
-            importance_score: Math.max(0.1, ((mem.value_score as number) || 0.3) * 0.7),
+            value_score: Math.max(0.1, ((mem.salience_score as number) || 0.5) * 0.8),
+            salience_score: Math.max(0.1, ((mem.value_score as number) || 0.3) * 0.7),
             tags: [...((mem.tags as string[]) || []), 'auto_demoted'],
-            metadata: { ...((mem.metadata as any) || {}), demoted_from: 'warm', demoted_at: new Date().toISOString() },
-            source: 'auto_degradation',
+            source_module: 'auto_degradation',
+            category: (mem.metadata as any)?.category || 'general',
           } as any);
 
           if (insertErr) {
