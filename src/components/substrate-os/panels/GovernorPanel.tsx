@@ -175,7 +175,7 @@ export default function GovernorPanel() {
           { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'text-emerald-500' },
           { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'text-red-500' : 'text-emerald-500' },
         ].map(stat => (
-          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
                 <stat.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", stat.color)} />
