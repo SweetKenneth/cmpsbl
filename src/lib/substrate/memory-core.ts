@@ -998,18 +998,18 @@ class MemoryCoreClient {
     try {
       let totalPurged = 0;
 
-      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
-        // Use type assertion to avoid TS2589 with deeply nested Supabase types
+      // All tiers use 'source_module' column, not 'source'
+      for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'] as const) {
         const { count } = await (supabase as any)
           .from(tier)
           .select('id', { count: 'exact', head: true })
-          .eq('source', source);
+          .eq('source_module', source);
 
-        await (supabase as any).from(tier).delete().eq('source', source);
+        await (supabase as any).from(tier).delete().eq('source_module', source);
         totalPurged += count ?? 0;
       }
 
-      console.log(`[MemoryCore] Purged ${totalPurged} memories from source: ${source}`);
+      console.log(`[MemoryCore] Purged ${totalPurged} memories from source_module: ${source}`);
       return { success: true, purged: totalPurged };
     } catch (err) {
       console.error('[MemoryCore] Purge failed:', err);
