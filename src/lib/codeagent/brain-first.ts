@@ -73,11 +73,13 @@ export async function checkBrainFirst(
       }
     }
     
-    // 2. Check learning_patterns for heuristics
+    // 2. Check learning_patterns for heuristics (sanitize inputs for query)
+    const safeModule = module.replace(/[%_'"\\]/g, '');
+    const safeChangeType = changeType.replace(/[%_'"\\]/g, '');
     const { data: heuristics } = await supabase
       .from('learning_patterns')
       .select('id, pattern_name, description, confidence, success_rate')
-      .or(`pattern_name.ilike.%${module}%,pattern_name.ilike.%${changeType}%`)
+      .or(`pattern_name.ilike.%${safeModule}%,pattern_name.ilike.%${safeChangeType}%`)
       .gte('confidence', 0.5)
       .limit(5);
     

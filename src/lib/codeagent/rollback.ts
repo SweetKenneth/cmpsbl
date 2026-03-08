@@ -233,10 +233,12 @@ export async function loadPersistedChanges(): Promise<ChangeRecord[]> {
       return {
         ...parsed,
         timestamp: new Date(parsed.timestamp),
+        // Mark as 'applied' but flag that full state is not available
         status: 'applied' as const,
-        beforeState: '',
-        afterState: '',
-        appliedBy: 'agent' as const
+        beforeState: parsed.beforeState_preview || '',
+        afterState: parsed.afterState_preview || '',
+        appliedBy: 'agent' as const,
+        _persisted: true,  // Flag: loaded from DB, partial state only
       };
     });
   } catch {

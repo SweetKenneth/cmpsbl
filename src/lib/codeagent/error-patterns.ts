@@ -62,6 +62,11 @@ export async function recordError(
       firstSeen: new Date(),
       confidence: 0.5
     };
+    // Evict oldest if at capacity
+    if (errorPatternCache.size >= MAX_ERROR_PATTERNS) {
+      const oldest = errorPatternCache.keys().next().value;
+      if (oldest) errorPatternCache.delete(oldest);
+    }
     errorPatternCache.set(signature, pattern);
   }
   

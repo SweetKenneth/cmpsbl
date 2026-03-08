@@ -324,6 +324,15 @@ export function checkForbiddenPatterns(code: string): { safe: boolean; violation
       violations.push(`Forbidden pattern detected: ${pattern}`);
     }
   }
+
+  // Check regex-based forbidden patterns
+  if ('forbiddenRegexPatterns' in CODEAGENT_BOUNDARIES) {
+    for (const regex of (CODEAGENT_BOUNDARIES as any).forbiddenRegexPatterns as RegExp[]) {
+      if (regex.test(code)) {
+        violations.push(`Forbidden pattern detected: ${regex.source}`);
+      }
+    }
+  }
   
   return {
     safe: violations.length === 0,
