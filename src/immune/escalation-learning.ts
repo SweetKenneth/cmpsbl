@@ -606,7 +606,7 @@ export function learnFromResolution(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Warm Start — Initialize from historical data
+// Warm Start — Initialize from historical data
 // ═══════════════════════════════════════════════════════════════════════════
 
 export async function warmStartFromDB(): Promise<{ patternsLoaded: number; rulesSeeded: number }> {
