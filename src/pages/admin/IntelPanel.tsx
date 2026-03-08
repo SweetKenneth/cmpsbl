@@ -68,7 +68,7 @@ function IntelCardView({ card }: { card: IntelCard }) {
   const Icon = severityIcons[card.severity] ?? CheckCircle;
   
   return (
-    <Card className={`border-l-4 ${severityStyles[card.severity] ?? ''} print:break-inside-avoid`}>
+    <Card className={`border-l-4 ${severityStyles[card.severity] ?? ''} print:break-inside-avoid hover:shadow-sm transition-all duration-300`}>
       <CardHeader className="p-3 sm:p-4 pb-2">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1.5 sm:gap-2">
           <div className="flex items-center gap-2 min-w-0">
