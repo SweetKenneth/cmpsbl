@@ -16,6 +16,7 @@ const InvestorsPublic = lazy(() => import("@/pages/InvestorsPublic"));
 const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
+const TryIt = lazy(() => import("@/pages/TryIt"));
 const FoundryDemo = lazy(() => import("@/pages/FoundryDemo"));
 const Foundry = lazy(() => import("@/pages/Foundry"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
