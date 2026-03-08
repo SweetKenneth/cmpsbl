@@ -93,12 +93,12 @@ export default function ApiAccess() {
               Programmatic access to every cognitive module. Authenticate, call, and orchestrate — all through a unified API surface.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/documentation">
                   Read the Docs <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
                 <Link to="/start-here">Get Started</Link>
               </Button>
             </div>
