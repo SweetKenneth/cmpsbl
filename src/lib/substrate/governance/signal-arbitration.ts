@@ -195,7 +195,7 @@ class SignalArbitrationEngine {
    * Get recent signal history
    */
   getHistory(limit = 50): ModuleSignal[] {
-    return this.signalHistory.slice(-limit);
+    return this.signalHistory.slice(-limit).map(s => ({ ...s }));
   }
 
   private async logArbitration(signalId: string, module: string, decision: string, reason: string): Promise<void> {

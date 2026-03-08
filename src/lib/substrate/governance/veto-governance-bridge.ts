@@ -95,12 +95,31 @@ export function evaluateVetoEscalation(currentMode: GovernanceMode): VetoGoverna
 
   // 1 defense veto → OBSERVE if currently ACTIVE or EVOLVE
   if (defenseVetoes.length === 1 && (currentMode === 'ACTIVE' || currentMode === 'EVOLVE')) {
-    return {
+    const escalation: VetoGovernanceEscalation = {
       shouldEscalate: true,
       targetMode: 'OBSERVE',
       reason: `Defense veto active — downgrading to OBSERVE for safety`,
       triggeringVetoes: defenseVetoes.map(v => v.id),
     };
+
+    emit({
+      module: 'GOVERNANCE',
+      event_type: 'governance.veto_escalation',
+      outcome: 'succeeded',
+      data: { from: currentMode, to: 'OBSERVE', trigger: 'defense_veto_single', vetoCount: 1 },
+    });
+
+    recordAudit(
+      'veto-governance-bridge',
+      'governance.escalation.defense_observe',
+      'governance_mode',
+      currentMode,
+      currentMode,
+      'OBSERVE',
+      { defenseCount: '1' }
+    );
+
+    return escalation;
   }
 
   return null;
