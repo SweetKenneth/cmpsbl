@@ -211,9 +211,9 @@ export default function About() {
             ].map((s) => (
               <div
                 key={s.sub}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card/60 border border-border/50 backdrop-blur-sm"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card/60 border border-border/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all duration-300"
               >
-                <span className="text-sm sm:text-base font-black text-foreground">{s.label}</span>
+                <span className="text-sm sm:text-base font-black text-foreground font-mono tabular-nums">{s.label}</span>
                 <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">{s.sub}</span>
               </div>
             ))}
@@ -256,17 +256,17 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08, duration: 0.4 }}
                 className={cn(
-                  "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7",
-                  "transition-all duration-300 card-lift gradient-border-reveal",
+                  "relative rounded-2xl border bg-card/50 backdrop-blur-sm p-5 sm:p-7 group",
+                  "transition-all duration-300 card-lift gradient-border-reveal shimmer-on-hover",
                   pillar.border,
-                  "hover:border-opacity-60"
+                  "hover:border-opacity-60 hover:shadow-lg hover:shadow-current/5"
                 )}
               >
                 {/* Top accent */}
                 <div className={cn("absolute top-0 left-5 right-5 h-px bg-gradient-to-r opacity-40", pillar.gradient)} />
 
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", pillar.bg)}>
+                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110", pillar.bg)}>
                     <pillar.icon className={cn("w-5 h-5", pillar.color)} />
                   </div>
                   <div>
@@ -329,7 +329,7 @@ export default function About() {
             {/* The Memory Stream */}
             <motion.div
               {...stagger(0.15)}
-              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden"
+              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden card-lift gradient-border-reveal"
             >
               <div className="h-1 w-full bg-gradient-to-r from-primary via-cyan-500 to-primary" />
               <div className="p-5 sm:p-8">
@@ -377,9 +377,9 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05, duration: 0.35 }}
-                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal"
+                className="rounded-xl border border-border/50 bg-card/50 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md transition-all duration-300 shimmer-on-hover card-lift gradient-border-reveal group"
               >
-                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110">
                   <sys.icon className="w-4 h-4 text-primary" />
                 </div>
                 <h3 className="text-xs sm:text-sm font-bold text-foreground mb-0.5">{sys.name}</h3>
@@ -481,14 +481,14 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.04, duration: 0.35 }}
-                className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <h3 className="text-sm sm:text-base font-bold text-foreground mb-1">{dept.name}</h3>
                 <p className="text-[10px] sm:text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
                 <div className="space-y-1.5 pt-3 border-t border-border/30">
                   <a
                     href={`mailto:${dept.email}`}
-                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline min-h-[36px] sm:min-h-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline min-h-[36px] sm:min-h-0 group-hover:translate-x-0.5 transition-transform duration-200"
                   >
                     <Mail className="w-3.5 h-3.5 shrink-0" />
                     {dept.email}
@@ -545,7 +545,7 @@ export default function About() {
                   <Button
                     asChild
                     size="lg"
-                    className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] transition-all"
+                    className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                   >
                     <Link to="/start-here">
                       <Sparkles className="w-4 h-4 mr-2" />

@@ -362,13 +362,13 @@ export default function Upgrade() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
                   className={cn(
-                    "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0",
+                    "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0 group",
                     "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
-                    "hover:shadow-lg transition-all duration-300 card-lift",
+                    "hover:shadow-xl transition-all duration-300 card-lift",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
                       : t.popular
-                      ? "border-violet-500/40 ring-1 ring-violet-500/10"
+                      ? "border-violet-500/40 ring-1 ring-violet-500/10 hover:shadow-violet-500/10"
                       : "border-border/50 hover:border-primary/20",
                   )}
                 >
@@ -397,12 +397,12 @@ export default function Upgrade() {
 
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
-                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5">
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300">
                       <div className="flex items-center gap-2 mb-2">
                         <Package className="w-4 h-4 text-primary" />
                         <span className="text-sm font-semibold">Artifact Capacity</span>
                       </div>
-                      <div className="text-2xl font-bold text-primary">{tierConfig.slots} Slots</div>
+                      <div className="text-2xl font-bold text-primary font-mono tabular-nums">{tierConfig.slots} Slots</div>
                       <p className="text-xs text-muted-foreground mt-1">{t.description}</p>
                     </div>
 
@@ -426,7 +426,7 @@ export default function Upgrade() {
                         <Button variant="outline" className="w-full" disabled>Current Plan</Button>
                       ) : (
                         <Button
-                          className={cn("w-full bg-gradient-to-r text-white border-0", t.accent)}
+                          className={cn("w-full bg-gradient-to-r text-white border-0 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                           onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                         >
                           Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />
@@ -570,7 +570,7 @@ export default function Upgrade() {
 
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">
-          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover">
+          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover hover:border-amber-500/20 transition-all duration-300">
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-5">
               <Building2 className="w-7 h-7 text-amber-500" />
             </div>
@@ -578,7 +578,7 @@ export default function Upgrade() {
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto leading-relaxed">
               Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
             </p>
-            <Button variant="outline" className="mt-6 gap-2" asChild>
+            <Button variant="outline" className="mt-6 gap-2 hover:border-amber-500/30 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200" asChild>
               <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4" /></a>
             </Button>
           </div>
@@ -597,7 +597,7 @@ export default function Upgrade() {
               { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
-              <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/20 transition-colors">
+              <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
                 <h3 className="font-semibold">{faq.q}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
               </div>
