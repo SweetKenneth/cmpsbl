@@ -73,6 +73,13 @@ const NotFound = () => {
           style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 50%)' }}
         />
         <div className="absolute inset-0 substrate-grid-bg opacity-[0.06]" />
+        {/* Animated scan line */}
+        <motion.div
+          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
+          initial={{ top: '20%' }}
+          animate={{ top: ['20%', '80%', '20%'] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </div>
 
       <AnimatePresence>
