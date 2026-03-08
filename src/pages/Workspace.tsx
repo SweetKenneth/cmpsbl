@@ -151,7 +151,7 @@ export default function Workspace() {
                   const isLocked = ['creator', 'studio', 'architect', 'governor'].indexOf(tpl.tier) > ['creator', 'studio', 'architect', 'governor'].indexOf(userTier) && tpl.tier !== 'free';
                   
                   return (
-                    <Card key={tpl.id} className={`p-4 bg-card/50 border-border/50 backdrop-blur-sm transition-all hover:border-primary/30 ${isLocked ? 'opacity-60' : ''}`}>
+                    <Card key={tpl.id} className={`p-4 bg-card/50 border-border/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 card-lift shimmer-on-hover glass-edge ${isLocked ? 'opacity-60' : ''}`}>
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <h3 className="font-mono text-sm font-semibold text-foreground">{tpl.name}</h3>
