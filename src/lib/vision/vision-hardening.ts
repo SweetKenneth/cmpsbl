@@ -253,7 +253,13 @@ const MAX_PROVIDER_LATENCY_ENTRIES = 50;
 const providerLatencyHistory = new Map<string, number[]>();
 
 export function recordProviderLatency(provider: string, latencyMs: number): void {
-  if (!providerLatencyHistory.has(provider)) providerLatencyHistory.set(provider, []);
+  if (!providerLatencyHistory.has(provider)) {
+    if (providerLatencyHistory.size >= MAX_PROVIDER_LATENCY_ENTRIES) {
+      const oldest = providerLatencyHistory.keys().next().value;
+      if (oldest) providerLatencyHistory.delete(oldest);
+    }
+    providerLatencyHistory.set(provider, []);
+  }
   const hist = providerLatencyHistory.get(provider)!;
   hist.push(latencyMs);
   if (hist.length > 500) hist.shift();
