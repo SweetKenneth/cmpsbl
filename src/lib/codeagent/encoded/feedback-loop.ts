@@ -265,11 +265,15 @@ function extractLesson(reason: string): string {
  * Boost a successful pattern's confidence in brain memory
  */
 async function boostPatternConfidence(patternId: string): Promise<void> {
+  // Sanitize patternId for safe query interpolation
+  const safeId = patternId.replace(/[%_'"\\]/g, '').slice(0, 50);
+  if (!safeId) return;
+
   // Find and boost in brain_memory_hot
   const { data } = await supabase
     .from('brain_memory_hot')
     .select('id, access_count, priority')
-    .or(`metadata->>pattern_id.eq.${patternId},content.ilike.%${patternId.slice(0, 20)}%`)
+    .or(`metadata->>pattern_id.eq.${safeId},content.ilike.%${safeId.slice(0, 20)}%`)
     .limit(1);
 
   if (data?.[0]) {
