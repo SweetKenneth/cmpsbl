@@ -156,7 +156,7 @@ function extractOptimizationInsights(patterns: DreamPatternInput[]): DreamInsigh
   for (const pattern of performancePatterns) {
     if ((pattern.frequency || 0) >= 3) {
       insights.push({
-        id: `insight-opt-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        id: `insight-opt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         type: 'optimization',
         title: `Performance pattern detected: ${pattern.name}`,
         description: `Recurring performance pattern observed ${pattern.frequency} times across ${pattern.modules.join(', ')}`,
@@ -200,7 +200,7 @@ function extractAnomalyInsights(patterns: DreamPatternInput[]): DreamInsight[] {
 
   for (const pattern of anomalyPatterns) {
     insights.push({
-      id: `insight-anom-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+      id: `insight-anom-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       type: 'anomaly',
       title: `Anomalous pattern: ${pattern.name}`,
       description: `Unusual pattern detected with low confidence (${(pattern.confidence * 100).toFixed(1)}%)`,
@@ -254,7 +254,7 @@ function extractTrendInsights(patterns: DreamPatternInput[]): DreamInsight[] {
       
       if (avgFrequency > 2) {
         insights.push({
-          id: `insight-trend-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+          id: `insight-trend-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           type: 'trend',
           title: `Increasing activity in ${module} module`,
           description: `${modulePatterns.length} patterns detected with average frequency of ${avgFrequency.toFixed(1)}`,
@@ -313,7 +313,7 @@ function extractCorrelationInsights(patterns: DreamPatternInput[]): DreamInsight
         const [module1, module2] = pair.split(':');
         
         insights.push({
-          id: `insight-corr-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+          id: `insight-corr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           type: 'correlation',
           title: `Strong correlation: ${module1} ↔ ${module2}`,
           description: `${count} patterns show correlation between these modules`,
@@ -357,7 +357,7 @@ export function synthesizeKnowledge(insights: DreamInsight[]): KnowledgeFragment
   for (const insight of insights) {
     if (insight.confidence >= 0.7 && insight.status !== 'dismissed') {
       const fragment: KnowledgeFragment = {
-        id: `kf-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        id: `kf-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         domain: insight.category,
         content: `${insight.title}: ${insight.description}`,
         connections: insight.evidence.map(e => e.source),
@@ -390,8 +390,8 @@ export function queryKnowledge(query: {
   if (query.domain) {
     results = results.filter(f => f.domain === query.domain);
   }
-  if (query.minStrength) {
-    results = results.filter(f => f.strength >= query.minStrength);
+  if (query.minStrength !== undefined) {
+    results = results.filter(f => f.strength >= query.minStrength!);
   }
 
   results.sort((a, b) => b.strength - a.strength);

@@ -129,13 +129,14 @@ export async function findOptimalDreamWindow(): Promise<{
     
     const avgActivity = events.length / 24;
     const windowActivity = minSum / 4;
-    const confidence = Math.min(0.95, Math.max(0.3, 1 - windowActivity / avgActivity));
+    const reductionRatio = avgActivity > 0 ? Math.max(0, 1 - windowActivity / avgActivity) : 0;
+    const confidence = Math.min(0.95, Math.max(0.3, reductionRatio));
     
     return {
       startHour: bestStart,
       endHour: (bestStart + 4) % 24,
       confidence,
-      reason: `${(100 * (1 - windowActivity / avgActivity)).toFixed(0)}% less activity than average`,
+      reason: `${(reductionRatio * 100).toFixed(0)}% less activity than average`,
     };
   } catch (error) {
     console.error('Error finding optimal window:', error);
