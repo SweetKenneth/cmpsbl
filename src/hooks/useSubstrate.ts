@@ -147,6 +147,7 @@ export function useMemoryState() {
     queryKey: ['memory-core', 'state'],
     queryFn: () => memoryCore.getState(),
     refetchInterval: 30000,
+    staleTime: 15000,
   });
 }
 

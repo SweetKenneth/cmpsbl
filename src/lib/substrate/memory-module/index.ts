@@ -229,9 +229,14 @@ export async function semanticSearch(query: string, options?: { limit?: number; 
         .sort((a, b) => b.relevanceScore - a.relevanceScore)
         .slice(0, limit);
 
+      // Update access metadata on copies returned, then apply to originals
+      // This avoids mutating during the read path causing inconsistent state
       for (const entry of results) {
-        entry.accessCount++;
-        entry.lastAccessedAt = Date.now();
+        const original = vectors.get(entry.id);
+        if (original) {
+          original.accessCount++;
+          original.lastAccessedAt = Date.now();
+        }
       }
 
       return results;

@@ -4,7 +4,7 @@
  * track finding lifecycle, and prevent redundant analysis on already-resolved issues.
  */
 
-import { MemoryClient, type MemoryEntry } from '@/lib/memory/client';
+import type { MemoryEntry } from '@/lib/memory/client';
 
 export interface FindingMemoryEntry {
   findingId: string;
