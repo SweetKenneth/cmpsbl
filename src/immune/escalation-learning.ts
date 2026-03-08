@@ -1,7 +1,7 @@
 /**
  * IMMUNITY — Closed-Loop Escalation Learning System
  * 
- * Major overhaul for real repair intelligence:
+ * Capabilities:
  * - Retroactive learning from DB-resolved escalations
  * - Adaptive frequency thresholds per executor
  * - Cross-executor pattern transfer

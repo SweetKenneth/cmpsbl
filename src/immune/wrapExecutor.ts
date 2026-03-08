@@ -470,9 +470,8 @@ export function wrapExecutor(
           return createSafeFailure(ctx.synergyId, `[immune] Safe-fail after repair retry: ${retryMsg}`);
         }
       } else {
-        // Repairable archetype but no strategy — safe-fail (not escalate)
-        // v3.2: No repair strategy found is NOT worth escalating — it's expected
-        // for adversarial inputs that happen to have a repairable archetype.
+        // Repairable archetype but no strategy — safe-fail (not escalate).
+        // No repair strategy found is expected for adversarial inputs.
         safeFailFlag = true;
         recordOutcome('failed_safe');
         trackOutcome({

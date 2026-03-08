@@ -348,9 +348,8 @@ const wrappedCache = new Map<string, SynergyExecutor>();
 
 /**
  * Intercept registration: wrap ALL executors with immune layer.
- * v6.0: Universal wrapping — no executor bypasses the Immunity Mesh.
+ * Universal wrapping — no executor bypasses the Immunity Mesh.
  * Known executors use explicit metadata, unknown ones use inferExecutorMeta().
- * This ensures future executors are automatically protected without manual mapping.
  */
 export function createImmuneAwareRegister(
   originalRegisterFn: (id: string, executor: SynergyExecutor) => void,
