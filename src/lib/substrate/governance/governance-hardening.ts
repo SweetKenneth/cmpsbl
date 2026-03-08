@@ -251,6 +251,7 @@ export function createPolicyVersion(
     description,
   };
   policyVersions.push(snapshot);
+  capArray(policyVersions, MAX_POLICY_VERSIONS);
   emitGovernanceTelemetry('policy_version', 'create', 'governance', author, 'created');
   return snapshot;
 }

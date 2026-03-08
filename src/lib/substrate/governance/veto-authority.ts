@@ -71,6 +71,19 @@ class VetoAuthorityEngine {
   }
 
   /**
+   * Prune expired vetoes from the active set.
+   * Called automatically before reads to ensure no stale entries are returned.
+   */
+  private pruneExpired(): void {
+    const now = new Date().toISOString();
+    for (const [id, veto] of this.activeVetoes) {
+      if (veto.expires_at && veto.expires_at < now) {
+        this.activeVetoes.delete(id);
+      }
+    }
+  }
+
+  /**
    * Submit a veto request. Non-authority modules are downgraded to advisory.
    */
   async submitVeto(request: Omit<VetoRequest, 'id' | 'created_at'>): Promise<VetoResolution> {
@@ -90,6 +103,9 @@ class VetoAuthorityEngine {
 
     const authority = request.authority as VetoAuthority;
     const scope = request.scope || 'healing_actions';
+
+    // Prune expired before conflict check
+    this.pruneExpired();
 
     // Check for conflicts with higher-precedence active vetoes
     const conflict = this.findConflict(authority, scope, request.target);
@@ -156,9 +172,10 @@ class VetoAuthorityEngine {
   }
 
   /**
-   * Get all active vetoes (defensive copies — callers cannot mutate internal state)
+   * Get all active vetoes (defensive copies, expired entries pruned)
    */
   getActiveVetoes(): VetoRequest[] {
+    this.pruneExpired();
     return Array.from(this.activeVetoes.values()).map(v => ({
       ...v,
       metadata: v.metadata ? { ...v.metadata } : undefined,
@@ -183,11 +200,14 @@ class VetoAuthorityEngine {
   }
 
   /**
-   * Check if a target+scope is currently vetoed
+   * Check if a target+scope is currently vetoed (defensive copy, expired entries pruned)
    */
   isVetoed(target: string, scope: VetoScope): VetoRequest | null {
+    this.pruneExpired();
     for (const [, veto] of this.activeVetoes) {
-      if (veto.target === target && veto.scope === scope) return veto;
+      if (veto.target === target && veto.scope === scope) {
+        return { ...veto, metadata: veto.metadata ? { ...veto.metadata } : undefined };
+      }
     }
     return null;
   }

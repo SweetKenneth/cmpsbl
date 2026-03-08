@@ -103,8 +103,9 @@ class VetoLifecycleEngine {
   }
 
   /**
-   * Evaluate all active vetoes against current entropy
-   * Returns list of vetoes that should be expired or reevaluated
+   * Evaluate all active vetoes against current entropy.
+   * Auto-prunes terminal entries (expired/revoked) beyond retention limit.
+   * Returns list of vetoes that should be expired or reevaluated.
    */
   async evaluate(currentEntropy: EntropySnapshot): Promise<{
     expired: string[];
@@ -162,7 +163,30 @@ class VetoLifecycleEngine {
       else active.push(id);
     }
 
+    // Auto-prune terminal entries if map exceeds retention limit
+    this.pruneTerminalEntries();
+
     return { expired, reevaluating, active };
+  }
+
+  /**
+   * Remove expired/revoked entries when map exceeds MAX_LIFECYCLE_ENTRIES.
+   * Keeps the most recent terminal entries up to half the limit.
+   */
+  private pruneTerminalEntries(): void {
+    if (this.lifecycles.size <= MAX_LIFECYCLE_ENTRIES) return;
+
+    const terminalIds: string[] = [];
+    for (const [id, entry] of this.lifecycles) {
+      if (entry.state === 'expired' || entry.state === 'revoked') {
+        terminalIds.push(id);
+      }
+    }
+    // Remove oldest terminal entries (Map preserves insertion order)
+    const toRemove = terminalIds.slice(0, terminalIds.length - Math.floor(MAX_LIFECYCLE_ENTRIES / 4));
+    for (const id of toRemove) {
+      this.lifecycles.delete(id);
+    }
   }
 
   /**
