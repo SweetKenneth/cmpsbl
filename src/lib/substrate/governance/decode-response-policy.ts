@@ -183,5 +183,7 @@ export function tagClaim(text: string, tag: ProvenanceTag): string {
  * Strip provenance tags for clean display (when not needed)
  */
 export function stripTags(text: string): string {
-  return text.replace(PROVENANCE_TAG_REGEX, '').replace(/\s{2,}/g, ' ').trim();
+  // Create fresh regex to avoid lastIndex issues with the module-level /g regex
+  const tagPattern = /\[(MEASURED|INFERRED|DESIGN_INTENT|REPRESENTATIVE_EXAMPLE)\]/g;
+  return text.replace(tagPattern, '').replace(/\s{2,}/g, ' ').trim();
 }
