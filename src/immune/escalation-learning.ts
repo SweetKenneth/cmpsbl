@@ -352,7 +352,7 @@ export function synthesizeCandidateRule(cluster: PatternCluster): CandidateRule 
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 4: Shadow Validation (v3 — uses sample inputs from cluster)
+// Step 4: Shadow Validation
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function shadowValidateRule(
