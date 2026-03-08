@@ -754,6 +754,17 @@ export default function STierVault() {
       const folder = root.folder(slug)!;
       folder.file('README.md', bundle.readme);
       for (const file of bundle.files) folder.file(file.filename, file.content);
+
+      // Include the Pipeline Details page in every discovery folder
+      const detailsHTML = generatePipelineDetailsHTML({
+        name: d.name,
+        cjpi: d.cjpi,
+        category: d.category,
+        modules: d.module_chain || [],
+        description: d.description,
+        source: 'vault-export',
+      });
+      folder.file('PIPELINE-DETAILS.html', detailsHTML);
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
