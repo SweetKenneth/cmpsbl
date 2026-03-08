@@ -271,27 +271,50 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
     patternCache.set(pattern.id, pattern);
   }
 
-  // Persist patterns as a warm memory for cross-session retrieval
+  // Persist patterns — update existing pattern memory or create new one
   if (patterns.length > 0) {
     const patternSummary = patterns.slice(0, 10).map(p =>
       `[${p.frequency}x] ${p.pattern.substring(0, 100)}`
     ).join('\n');
 
     try {
-      await supabase.from('brain_memory_warm').insert({
-        content: `[Extracted Patterns]\n${patternSummary}`,
-        context: 'pattern_extraction',
-        value_score: 0.6,
-        memory_type: 'pattern',
-        source_module: 'consolidation',
-        category: 'patterns',
-        tags: ['auto_extracted', 'consolidation'],
-        metadata: {
-          pattern_count: patterns.length,
-          top_frequency: patterns[0]?.frequency,
-          extracted_at: new Date().toISOString(),
-        },
-      });
+      // Check for existing pattern extraction memory to avoid duplicates
+      const { data: existing } = await supabase
+        .from('brain_memory_warm')
+        .select('id')
+        .eq('context', 'pattern_extraction')
+        .eq('memory_type', 'pattern')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existing) {
+        // Update existing pattern memory instead of creating duplicates
+        await supabase.from('brain_memory_warm').update({
+          content: `[Extracted Patterns]\n${patternSummary}`,
+          value_score: 0.6,
+          metadata: {
+            pattern_count: patterns.length,
+            top_frequency: patterns[0]?.frequency,
+            extracted_at: new Date().toISOString(),
+          },
+        }).eq('id', existing.id);
+      } else {
+        await supabase.from('brain_memory_warm').insert({
+          content: `[Extracted Patterns]\n${patternSummary}`,
+          context: 'pattern_extraction',
+          value_score: 0.6,
+          memory_type: 'pattern',
+          source_module: 'consolidation',
+          category: 'patterns',
+          tags: ['auto_extracted', 'consolidation'],
+          metadata: {
+            pattern_count: patterns.length,
+            top_frequency: patterns[0]?.frequency,
+            extracted_at: new Date().toISOString(),
+          },
+        });
+      }
     } catch {
       // Non-critical — in-memory cache is still populated
     }

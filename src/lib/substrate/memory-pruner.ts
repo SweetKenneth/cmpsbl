@@ -5,9 +5,9 @@
  * Keeps highest-value entries, purges noise and CLM spam.
  * 
  * Capacity targets:
- *   HOT:  200 entries (down from 500 — tighter is better)
- *   WARM: 1000 entries (down from 2000)
- *   COLD: 5000 entries (down from 10000)
+ *   HOT:  500 entries
+ *   WARM: 10,000 entries
+ *   COLD: 10,000 entries
  */
 
 import { supabase } from '@/integrations/supabase/client';
