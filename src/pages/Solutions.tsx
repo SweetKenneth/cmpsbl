@@ -117,17 +117,17 @@ export default function Solutions() {
       </section>
 
       {/* Solutions Grid */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 relative z-10">
         <div className="container mx-auto max-w-6xl">
           <div className="space-y-8">
             {solutions.map((solution, index) => (
               <div 
                 key={solution.name}
-                className="bg-card border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
+                className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-5 sm:p-8 md:p-10 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal group"
               >
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors">
                       <solution.icon className="w-7 h-7 text-primary" />
                     </div>
                      <h2 className="text-xl sm:text-2xl font-black mb-2 text-foreground">{solution.name}</h2>
@@ -137,15 +137,15 @@ export default function Solutions() {
                     </p>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {solution.metrics.map((metric) => (
-                        <Badge key={metric} variant="outline" className="text-xs">
+                        <Badge key={metric} variant="outline" className="text-xs font-mono">
                           {metric}
                         </Badge>
                       ))}
                     </div>
                     <Link to={solution.link}>
-                      <Button className="bg-primary hover:bg-primary/90 min-h-[44px]">
+                      <Button className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all">
                         Learn More
-                        <ArrowRight className="w-4 h-4 ml-2" />
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </Button>
                     </Link>
                   </div>
