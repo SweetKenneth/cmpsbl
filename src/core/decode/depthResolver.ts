@@ -72,10 +72,14 @@ export function trackSessionContinuity(
     };
     sessionContinuityMap.set(sessionId, entry);
 
-    // Bound map size
+    // Bound map size — evict oldest entries efficiently
     if (sessionContinuityMap.size > 1000) {
-      const oldest = Array.from(sessionContinuityMap.keys()).slice(0, 200);
-      oldest.forEach(k => sessionContinuityMap.delete(k));
+      let evicted = 0;
+      for (const key of sessionContinuityMap.keys()) {
+        if (evicted >= 200) break;
+        sessionContinuityMap.delete(key);
+        evicted++;
+      }
     }
 
     return entry;

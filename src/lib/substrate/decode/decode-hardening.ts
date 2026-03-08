@@ -307,8 +307,13 @@ export interface ContextBudget {
 }
 
 const contextBudgets = new Map<string, { maxTokens: number; usedTokens: number }>();
+const MAX_CONTEXT_BUDGETS = 500;
 
 export function initContextBudget(sessionId: string, maxTokens = 128_000): void {
+  if (contextBudgets.size >= MAX_CONTEXT_BUDGETS && !contextBudgets.has(sessionId)) {
+    const oldest = contextBudgets.keys().next().value;
+    if (oldest) contextBudgets.delete(oldest);
+  }
   contextBudgets.set(sessionId, { maxTokens, usedTokens: 0 });
 }
 
@@ -742,9 +747,12 @@ export function enforceTerminology(text: string): { corrected: string; correctio
   let result = text;
   const corrections: string[] = [];
   for (const { incorrect, correct } of TERMINOLOGY_CORRECTIONS) {
-    if (incorrect.test(result)) {
-      corrections.push(`"${result.match(incorrect)?.[0]}" → "${correct}"`);
-      result = result.replace(incorrect, correct);
+    // Create fresh regex to avoid /g lastIndex statefulness across test→match→replace
+    const fresh = new RegExp(incorrect.source, incorrect.flags);
+    const match = result.match(fresh);
+    if (match) {
+      corrections.push(`"${match[0]}" → "${correct}"`);
+      result = result.replace(new RegExp(incorrect.source, incorrect.flags), correct);
     }
   }
   return { corrected: result, corrections };

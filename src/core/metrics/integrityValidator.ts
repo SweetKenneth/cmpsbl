@@ -158,12 +158,22 @@ export async function runIntegrityCheck(): Promise<IntegrityReport> {
 
 /**
  * Check if DECODE should be blocked from reporting a specific module's data.
+ * Uses cached integrity when available to avoid running a full check on every call.
  */
 export async function shouldBlockDecodeForModule(moduleId: string): Promise<{
   blocked: boolean;
   reason?: string;
 }> {
-  const report = await runIntegrityCheck();
+  // Attempt to use cached report first (imported lazily to avoid circular deps)
+  let report: IntegrityReport;
+  try {
+    const { getCachedIntegrity } = await import('../../core/decode/integrityCache');
+    const cached = getCachedIntegrity();
+    report = cached ?? await runIntegrityCheck();
+  } catch {
+    report = await runIntegrityCheck();
+  }
+
   const moduleIssues = report.discrepancies.filter(
     d => d.moduleA === moduleId || d.moduleB === moduleId
   );
