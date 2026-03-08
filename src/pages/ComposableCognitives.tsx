@@ -281,7 +281,7 @@ export default function ComposableCognitives() {
               { tier: 'professional' as const, powers: '5', agents: '9', highlight: 'Full stack' },
               { tier: 'elite' as const, powers: '5', agents: '3', highlight: 'Maximum power' },
             ]).map(({ tier, powers, agents, highlight }) => (
-              <div key={tier} className="rounded-xl border border-border/50 bg-card/50 p-4 text-center space-y-2">
+              <div key={tier} className="rounded-xl border border-border/50 bg-card/50 p-4 text-center space-y-2 hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                 <div className={cn("w-3 h-3 rounded-full mx-auto", TIER_ACCENT[tier])} />
                 <div className={cn("text-sm font-black", TIER_CONFIG[tier].color)}>{TIER_CONFIG[tier].label}</div>
                 <div className="text-2xl font-black">{TIER_CONFIG[tier].price}</div>
@@ -428,13 +428,13 @@ export default function ComposableCognitives() {
             self-healing, and security. Elite agents drop from $159 → $95. Professional from $129 → $77.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
               <a href="/engines">
                 <Zap className="w-4 h-4" />
                 Browse 20 Engines
               </a>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button asChild variant="outline" size="lg" className="gap-2 hover:border-primary/30 transition-colors">
               <a href="/cmpsbl-engine">
                 <Star className="w-4 h-4" />
                 ARCHITECT Engine — $999/yr
@@ -453,7 +453,7 @@ export default function ComposableCognitives() {
           </div>
           <div className="space-y-2">
             {FAQ_ITEMS.map((faq, i) => (
-              <div key={i} className="border border-border/50 rounded-xl overflow-hidden">
+              <div key={i} className="border border-border/50 rounded-xl overflow-hidden hover:border-primary/15 transition-colors duration-200">
                 <button
                   onClick={() => setFaqOpen(faqOpen === i ? null : i)}
                   className="w-full flex items-center justify-between p-4 text-left hover:bg-muted/20 transition-colors"

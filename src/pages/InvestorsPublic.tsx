@@ -139,7 +139,7 @@ export default function InvestorsPublic() {
               size="lg"
               onClick={handleDownloadDeck}
               disabled={downloading}
-              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90"
+              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
@@ -171,7 +171,7 @@ export default function InvestorsPublic() {
             {metrics.map((metric, index) => (
               <div key={index} className="text-center">
                 <metric.icon className={`w-8 h-8 mx-auto mb-3 ${metric.color}`} />
-                <div className="text-3xl font-bold mb-1 text-foreground">{metric.value}</div>
+                <div className="text-3xl font-bold mb-1 text-foreground font-mono tabular-nums">{metric.value}</div>
                 <div className="text-sm text-muted-foreground">{metric.label}</div>
               </div>
             ))}
@@ -191,7 +191,7 @@ export default function InvestorsPublic() {
 
         <div className="grid md:grid-cols-2 gap-4">
           {WORLD_FIRSTS.map((wf, i) => (
-            <Card key={i} className="p-5 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 transition-all group">
+            <Card key={i} className="p-5 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 group">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -238,7 +238,7 @@ export default function InvestorsPublic() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, index) => (
-            <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 transition-all">
+            <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                 <product.icon className="w-6 h-6 text-primary" />
               </div>
@@ -256,7 +256,7 @@ export default function InvestorsPublic() {
           <h2 className="text-3xl font-semibold text-center mb-12 text-foreground">Investment Highlights</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {highlights.map((highlight, index) => (
-              <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50">
+              <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                   <highlight.icon className="w-6 h-6 text-primary" />
                 </div>
@@ -302,7 +302,7 @@ export default function InvestorsPublic() {
               size="lg"
               onClick={handleDownloadDeck}
               disabled={downloading}
-              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90"
+              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
