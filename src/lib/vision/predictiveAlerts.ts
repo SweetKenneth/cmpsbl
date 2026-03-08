@@ -47,10 +47,12 @@
    quota_exhaustion: { type: 'quota_exhaustion', threshold: 90, window_minutes: 60, sensitivity: 0.9 },
  };
  
- // Active predictions
+ // Active predictions (bounded)
+ const MAX_ACTIVE_PREDICTIONS = 200;
  const activePredictions = new Map<string, PredictedAlert>();
  
- // Historical trends per metric
+ // Historical trends per metric (bounded)
+ const MAX_METRIC_TRENDS = 100;
  const metricTrends = new Map<string, TrendData>();
  
  /**
