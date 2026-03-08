@@ -2713,27 +2713,35 @@ async function handleBrain(
         const slotsAvailable = 500 - newHotCount;
         
         if (slotsAvailable > 10) {
+          // Dynamic threshold: if hot is critically empty (<50), lower bar to seed it
+          const hotCriticallyEmpty = newHotCount < 50;
+          const promotionThreshold = hotCriticallyEmpty ? 0.45 : 0.65;
+          const promotionLimit = hotCriticallyEmpty ? Math.min(200, slotsAvailable) : Math.min(50, slotsAvailable);
+
           const { data: toPromote } = await supabase
             .from('brain_memory_warm')
             .select('*')
-            .gte('value_score', 0.75)
+            .gte('value_score', promotionThreshold)
             .order('value_score', { ascending: false })
-            .limit(Math.min(50, slotsAvailable));
+            .order('access_count', { ascending: false })
+            .limit(promotionLimit);
 
           for (const memory of toPromote || []) {
             try {
+              // Boost value_score slightly on promotion
+              const promotedScore = Math.min(1.0, (memory.value_score || 0.5) + 0.1);
               await supabase.from('brain_memory_hot').insert({
                 content: memory.content,
                 embedding: memory.embedding,
                 context: memory.context,
                 goal_ref: memory.goal_ref,
                 priority: 'high',
-                importance_score: memory.value_score,
-                value_score: memory.value_score,
-                access_count: memory.access_count,
+                importance_score: promotedScore,
+                value_score: promotedScore,
+                access_count: memory.access_count || 0,
                 decay_rate: 0.02,
                 tags: memory.tags,
-                metadata: { ...memory.metadata, promoted_from: 'warm' },
+                metadata: { ...(memory.metadata || {}), promoted_from: 'warm' },
                 last_used: new Date().toISOString(),
               });
               await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
