@@ -22,6 +22,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, boundArray } from '@/lib/system/hardening';
+import { registerChainVerifier, registerChainAccessors, recordWriteLatency } from '../audit-hardening';
 
 export interface AuditEntry {
   id: string;
