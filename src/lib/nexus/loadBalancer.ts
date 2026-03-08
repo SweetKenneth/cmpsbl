@@ -43,8 +43,9 @@
  }
  
  // Provider state tracking
- const providerLoads = new Map<string, ProviderLoad>();
- const requestQueue: QueuedRequest[] = [];
+  const MAX_PROVIDER_LOADS = 100;
+  const providerLoads = new Map<string, ProviderLoad>();
+  const requestQueue: QueuedRequest[] = [];
  let roundRobinIndex = 0;
  
  // Default configuration
