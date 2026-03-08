@@ -429,22 +429,6 @@ class PersonalityEngineClient {
     return Math.max(-1, Math.min(1, score));
   }
 
-  /**
-   * Detect repetition patterns
-   */
-  private hasRepetition(text: string): boolean {
-    const words = text.split(/\s+/);
-    const wordCounts: Record<string, number> = {};
-    
-    for (const word of words) {
-      if (word.length > 3) {
-        wordCounts[word] = (wordCounts[word] || 0) + 1;
-        if (wordCounts[word] >= 2) return true;
-      }
-    }
-    
-    return false;
-  }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // INTERPRETATION (v9.1.0 - Trait-based)

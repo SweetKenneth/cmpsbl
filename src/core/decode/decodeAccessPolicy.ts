@@ -167,9 +167,6 @@ export function formatDecodeResponse(
   narrative: string,
   metricsResponse: DecodeMetricsResponse
 ): string {
-  // Import inline to avoid circular deps at module level
-  const { validateTone, enforceTone } = require('./voiceProfile');
-
   if (!metricsResponse.allowed) {
     return metricsResponse.blockReason ?? 'No telemetry available.';
   }
