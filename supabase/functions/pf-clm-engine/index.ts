@@ -381,7 +381,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       if (promoteBudget > 0) {
         const { data: warmHighAccess } = await supabase
           .from('brain_memory_warm')
-          .select('id, content, value_score, access_count, memory_type, metadata')
+          .select('id, content, value_score, access_count, memory_type, metadata, source_module, category')
           .gte('access_count', 3)
           .gte('value_score', 0.7)
           .order('access_count', { ascending: false })
@@ -397,6 +397,8 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
               access_count: mem.access_count || 0,
               value_score: promotedScore,
               importance_score: promotedScore,
+              source_module: mem.source_module || 'CLM',
+              category: mem.category || 'uncategorized',
               metadata: { ...((mem.metadata as any) || {}), promoted_from: 'warm', promoted_at: new Date().toISOString() },
             });
             await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
