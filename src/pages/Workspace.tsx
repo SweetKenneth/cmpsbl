@@ -274,7 +274,7 @@ export default function Workspace() {
               {!user && (
                 <div className="text-center mt-6">
                   <p className="text-muted-foreground text-sm mb-3">Sign in to access the terminal — free tier includes 12 commands.</p>
-                  <Button onClick={() => navigate('/auth')} className="font-mono text-sm">
+                  <Button onClick={() => navigate('/auth')} className="font-mono text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Sign In <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
