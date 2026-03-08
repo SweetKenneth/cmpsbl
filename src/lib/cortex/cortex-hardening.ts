@@ -268,12 +268,18 @@ interface ReplayEntry {
 
 const replayJournal: ReplayEntry[] = [];
 const MAX_JOURNAL_SIZE = 500;
+let replayHead = 0; // ring buffer cursor
+let replayCount = 0;
 
 export function recordReplayEntry(entry: Omit<ReplayEntry, 'timestamp'>): void {
-  replayJournal.push({ ...entry, timestamp: Date.now() });
-  if (replayJournal.length > MAX_JOURNAL_SIZE) {
-    replayJournal.splice(0, replayJournal.length - MAX_JOURNAL_SIZE);
+  const record = { ...entry, timestamp: Date.now() };
+  if (replayCount < MAX_JOURNAL_SIZE) {
+    replayJournal.push(record);
+    replayCount++;
+  } else {
+    replayJournal[replayHead] = record;
   }
+  replayHead = (replayHead + 1) % MAX_JOURNAL_SIZE;
 }
 
 export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
