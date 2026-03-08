@@ -225,8 +225,13 @@ export function recordThroughputSample(entriesPerSecond: number) {
 }
 export function getThroughputStats(): { avg: number; peak: number; samples: number } {
   if (throughputSamples.length === 0) return { avg: 0, peak: 0, samples: 0 };
-  const sum = throughputSamples.reduce((a, b) => a + b, 0);
-  return { avg: Math.round(sum / throughputSamples.length), peak: Math.max(...throughputSamples), samples: throughputSamples.length };
+  let sum = 0;
+  let peak = 0;
+  for (let i = 0; i < throughputSamples.length; i++) {
+    sum += throughputSamples[i];
+    if (throughputSamples[i] > peak) peak = throughputSamples[i];
+  }
+  return { avg: Math.round(sum / throughputSamples.length), peak, samples: throughputSamples.length };
 }
 
 // ─── 15. Immutability Guard ────────────────────────────────────────────────
