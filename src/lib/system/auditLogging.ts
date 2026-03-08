@@ -94,23 +94,21 @@ export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Pro
     auditLog.splice(0, auditLog.length - MAX_IN_MEMORY);
   }
   
-  // Persist to database
-  try {
-    await supabase.from('audit_logs').insert([{
-      action: auditEntry.action.name,
-      entity_type: auditEntry.resource.type,
-      entity_id: auditEntry.resource.id,
-      performed_by: auditEntry.actor.id,
-      details: {
-        actor_id: auditEntry.actor.id,
-        actor_type: auditEntry.actor.type,
-        action_type: auditEntry.action.type,
-        outcome: auditEntry.outcome,
-      } as Record<string, string>,
-    }]);
-  } catch (error) {
-    console.error('Failed to persist audit entry:', error);
-  }
+  // Persist to database (fire-and-forget — don't block caller)
+  supabase.from('audit_logs').insert([{
+    action: auditEntry.action.name,
+    entity_type: auditEntry.resource.type,
+    entity_id: auditEntry.resource.id,
+    performed_by: auditEntry.actor.id,
+    details: {
+      actor_id: auditEntry.actor.id,
+      actor_type: auditEntry.actor.type,
+      action_type: auditEntry.action.type,
+      outcome: auditEntry.outcome,
+    } as Record<string, string>,
+  }]).then(({ error }) => {
+    if (error) console.error('Failed to persist audit entry:', error);
+  });
   
   return auditEntry.id;
 }
