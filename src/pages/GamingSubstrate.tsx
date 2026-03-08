@@ -77,7 +77,7 @@ function FeatureCard({
     >
       <Card className={cn(
         "h-full border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden",
-        "hover:border-current/30 hover:shadow-xl transition-all duration-500",
+        "hover:border-current/30 hover:shadow-xl transition-all duration-500 card-lift shimmer-on-hover",
         color
       )}>
         <div className={cn("h-1 w-full bg-gradient-to-r", gradient)} />
