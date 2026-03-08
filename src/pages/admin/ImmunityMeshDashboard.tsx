@@ -1204,7 +1204,7 @@ function ShadowBuildPanel() {
 }
 
 // ============================================================================
-// MODERNIZER SHADOW PANEL
+// EVOLUTION SHADOW PANEL
 // ============================================================================
 
 function ModernizerShadowPanel() {
