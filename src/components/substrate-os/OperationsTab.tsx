@@ -198,7 +198,7 @@ export function OperationsTab() {
       </div>
 
       {/* DECODE Recent Activity */}
-      <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+      <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
         <CardHeader className="pb-2 px-4 sm:px-6">
           <CardTitle className="text-sm flex items-center gap-2">
             <FileSearch className="w-4 h-4 text-indigo-500 shrink-0" />
