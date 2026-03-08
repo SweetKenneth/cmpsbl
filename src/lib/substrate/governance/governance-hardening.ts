@@ -646,6 +646,7 @@ export function enforceCooldown(action: string, customMs?: number): { allowed: b
 
   const duration = customMs ?? COOLDOWN_DEFAULTS[action] ?? 10_000;
   cooldowns.set(action, now + duration);
+  capMap(cooldowns, MAX_COOLDOWNS);
   return { allowed: true, remainingMs: 0 };
 }
 
