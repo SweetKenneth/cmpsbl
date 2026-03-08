@@ -540,7 +540,7 @@ export default function SubstrateDashboard() {
           
           <div className="flex gap-3">
             <Link to="/investors">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 hover:border-primary/30 transition-all duration-200">
                 Acquisition Info
                 <ArrowRight className="w-4 h-4" />
               </Button>
