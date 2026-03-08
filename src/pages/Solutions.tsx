@@ -188,7 +188,7 @@ export default function Solutions() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 bg-gradient-to-b from-muted/20 via-muted/30 to-muted/20">
+      <section className="py-16 px-4 bg-gradient-to-b from-muted/20 via-muted/30 to-muted/20 relative z-10">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Start Building Today</h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-6 sm:mb-8">
@@ -196,13 +196,13 @@ export default function Solutions() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/start-here">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 min-h-[44px]">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 Get Started Free
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
             <Link to="/upgrade">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
                 View Plans
               </Button>
             </Link>
