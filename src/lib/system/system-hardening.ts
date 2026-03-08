@@ -304,8 +304,13 @@ interface ShutdownTask {
 }
 
 const shutdownTasks: ShutdownTask[] = [];
+const MAX_SHUTDOWN_TASKS = 100;
 
 export function registerShutdownTask(task: ShutdownTask): void {
+  if (shutdownTasks.length >= MAX_SHUTDOWN_TASKS) {
+    // Drop lowest-priority (highest number) to make room
+    shutdownTasks.pop();
+  }
   shutdownTasks.push(task);
   shutdownTasks.sort((a, b) => a.priority - b.priority);
 }
