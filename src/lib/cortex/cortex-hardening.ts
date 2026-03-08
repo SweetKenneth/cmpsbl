@@ -689,17 +689,24 @@ export function releaseResource(resource: string): void {
 }
 
 function detectCycle(startId: string): boolean {
+  // BFS: check if any path from startId's wait targets leads back to startId
   const visited = new Set<string>();
-  const stack = [startId];
+  const queue: string[] = [];
 
-  while (stack.length > 0) {
-    const current = stack.pop()!;
-    if (visited.has(current)) return true;
+  // Seed with what startId is waiting on
+  const initial = waitGraph.get(startId);
+  if (!initial) return false;
+  for (const n of initial) queue.push(n);
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    if (current === startId) return true; // cycle back to origin
+    if (visited.has(current)) continue;
     visited.add(current);
 
     const neighbors = waitGraph.get(current);
     if (neighbors) {
-      for (const n of neighbors) stack.push(n);
+      for (const n of neighbors) queue.push(n);
     }
   }
   return false;
