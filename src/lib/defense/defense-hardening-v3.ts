@@ -1182,7 +1182,7 @@ export function auditSensitiveDataLifecycle(): {
   for (const [id, entry] of sensitiveDataRegistry) {
     if (entry.clearedAt > 0) {
       cleared++;
-    } else if (now - (sensitiveDataRegistry.get(id)?.clearedAt || 0) > 3_600_000) {
+    } else if (now - entry.registeredAt > 3_600_000) {
       stale.push(id);
     }
   }
