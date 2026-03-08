@@ -154,7 +154,7 @@ export async function getNodesByType(
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .eq('node_type', type)
       .order('weight', { ascending: false })
       .limit(limit);
