@@ -2275,7 +2275,7 @@ async function handleBrain(
           }
         }
 
-        // STEP 4: Decay old unused memories
+        // STEP 4: Decay old unused memories (hot tier)
         const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         const { data: stale } = await supabase
           .from('brain_memory_hot')
@@ -2291,6 +2291,53 @@ async function handleBrain(
             stats.decayed++;
           } catch {
             stats.errors++;
+          }
+        }
+
+        // STEP 4b: Decay old warm tier memories
+        const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+        const { data: staleWarm } = await supabase
+          .from('brain_memory_warm')
+          .select('id, value_score, last_accessed, created_at')
+          .or(`last_accessed.lt.${twoWeeksAgo},last_accessed.is.null`)
+          .lt('created_at', twoWeeksAgo)
+          .gt('value_score', 0.15)
+          .order('value_score', { ascending: true })
+          .limit(isAggressive ? 200 : 100);
+
+        for (const memory of staleWarm || []) {
+          try {
+            const newScore = Math.max(0.1, (memory.value_score || 0.4) * 0.85);
+            await supabase.from('brain_memory_warm').update({ value_score: newScore }).eq('id', memory.id);
+            stats.decayed++;
+          } catch { stats.errors++; }
+        }
+
+        // STEP 4c: Cold tier capacity enforcement (cap: 10,000)
+        const COLD_CAP = 10000;
+        if ((counts.cold.before + stats.demoted_to_cold) > COLD_CAP) {
+          const coldOverflow = (counts.cold.before + stats.demoted_to_cold) - COLD_CAP;
+          const coldPruneLimit = Math.min(coldOverflow + 50, 500);
+          const { data: coldToPrune } = await supabase
+            .from('brain_memory_cold')
+            .select('id, summary, tags, value_score')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('archived_at', { ascending: true, nullsFirst: true })
+            .limit(coldPruneLimit);
+
+          for (const memory of coldToPrune || []) {
+            try {
+              await supabase.from('brain_memory_pruned').insert({
+                original_memory_id: memory.id,
+                original_tier: 'cold',
+                content_preview: String(memory.summary || '').substring(0, 200),
+                context: (memory.tags as Record<string, unknown>)?.context || 'unknown',
+                value_score: memory.value_score || 0,
+                prune_reason: 'cold_overflow',
+              });
+              await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
+              stats.pruned++;
+            } catch { stats.errors++; }
           }
         }
 
@@ -2513,6 +2560,99 @@ async function handleBrain(
           }
         }
 
+        // STEP 3b: Warm tier decay — reduce value_score for stale warm memories
+        const WARM_DECAY_DAYS = 14;
+        const warmDecayCutoff = new Date(Date.now() - WARM_DECAY_DAYS * 24 * 60 * 60 * 1000).toISOString();
+        const WARM_DECAY_LIMIT = isDeep ? 500 : isAggressive ? 200 : 100;
+        const { data: staleWarm } = await supabase
+          .from('brain_memory_warm')
+          .select('id, value_score, last_accessed, created_at')
+          .or(`last_accessed.lt.${warmDecayCutoff},last_accessed.is.null`)
+          .lt('created_at', warmDecayCutoff)
+          .gt('value_score', 0.15)
+          .order('value_score', { ascending: true })
+          .limit(WARM_DECAY_LIMIT);
+
+        for (const memory of staleWarm || []) {
+          try {
+            const newScore = Math.max(0.1, (memory.value_score || 0.4) * 0.85);
+            await supabase.from('brain_memory_warm').update({ value_score: newScore }).eq('id', memory.id);
+            stats.scored++;
+          } catch { stats.errors++; }
+        }
+
+        // STEP 3c: Warm capacity enforcement — bulk demote overflow to cold
+        const WARM_CAPACITY = 10000;
+        const { count: warmAfterDemote } = await supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true });
+        const warmOverflow = (warmAfterDemote || 0) - WARM_CAPACITY;
+        if (warmOverflow > 0) {
+          const warmOverflowLimit = Math.min(warmOverflow + 100, isDeep ? 3000 : 1000);
+          // Get IDs to demote
+          const { data: warmOverflowIds } = await supabase
+            .from('brain_memory_warm')
+            .select('id')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('created_at', { ascending: true })
+            .limit(warmOverflowLimit);
+
+          if (warmOverflowIds && warmOverflowIds.length > 0) {
+            // Bulk delete from warm (skip cold insert for overflow — these are low-value)
+            const idList = warmOverflowIds.map((r: any) => r.id);
+            for (let i = 0; i < idList.length; i += 500) {
+              const chunk = idList.slice(i, i + 500);
+              await supabase.from('brain_memory_warm').delete().in('id', chunk);
+              stats.demoted_to_cold += chunk.length;
+            }
+          }
+        }
+
+        // STEP 3d: Cold tier capacity enforcement — multi-pass bulk prune
+        const COLD_CAPACITY = 10000;
+        const { count: coldAfterDemote } = await supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true });
+        let coldRemaining = (coldAfterDemote || 0) - COLD_CAPACITY;
+        const maxColdPrunePerTier = isDeep ? 10000 : isAggressive ? 5000 : 1000;
+        let coldPrunedTotal = 0;
+
+        while (coldRemaining > 0 && coldPrunedTotal < maxColdPrunePerTier) {
+          const batchSize = Math.min(1000, coldRemaining + 50, maxColdPrunePerTier - coldPrunedTotal);
+          const { data: coldIds } = await supabase
+            .from('brain_memory_cold')
+            .select('id')
+            .order('value_score', { ascending: true, nullsFirst: true })
+            .order('archived_at', { ascending: true, nullsFirst: true })
+            .limit(batchSize);
+
+          if (!coldIds || coldIds.length === 0) break;
+
+          const idList = coldIds.map((r: any) => r.id);
+          for (let i = 0; i < idList.length; i += 500) {
+            const chunk = idList.slice(i, i + 500);
+            await supabase.from('brain_memory_cold').delete().in('id', chunk);
+          }
+          stats.pruned += idList.length;
+          coldPrunedTotal += idList.length;
+          coldRemaining -= idList.length;
+        }
+
+        // STEP 3e: Cold tier TTL — bulk prune memories older than 365 days with low value
+        const COLD_TTL_DAYS = 365;
+        const coldTtlCutoff = new Date(Date.now() - COLD_TTL_DAYS * 24 * 60 * 60 * 1000).toISOString();
+        const { data: expiredColdIds } = await supabase
+          .from('brain_memory_cold')
+          .select('id')
+          .lt('archived_at', coldTtlCutoff)
+          .lt('value_score', 0.5)
+          .limit(isDeep ? 2000 : 500);
+
+        if (expiredColdIds && expiredColdIds.length > 0) {
+          const expiredIds = expiredColdIds.map((r: any) => r.id);
+          for (let i = 0; i < expiredIds.length; i += 500) {
+            const chunk = expiredIds.slice(i, i + 500);
+            await supabase.from('brain_memory_cold').delete().in('id', chunk);
+            stats.pruned += chunk.length;
+          }
+        }
+
         // STEP 4: Prune noise patterns (deep/aggressive only)
         if (isDeep || isAggressive) {
           const noisePatterns = ['%diagnostic%', '%test cycle%', '%heartbeat%', '%ping%', '%health check%'];
@@ -2534,6 +2674,30 @@ async function handleBrain(
                   prune_reason: 'noise_pattern',
                 });
                 await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+                stats.pruned++;
+              } catch { stats.errors++; }
+            }
+          }
+
+          // Also prune noise from warm tier
+          for (const pattern of noisePatterns) {
+            const { data: warmNoise } = await supabase
+              .from('brain_memory_warm')
+              .select('id, content, context, value_score')
+              .ilike('content', pattern)
+              .limit(50);
+
+            for (const memory of warmNoise || []) {
+              try {
+                await supabase.from('brain_memory_pruned').insert({
+                  original_memory_id: memory.id,
+                  original_tier: 'warm',
+                  content_preview: (memory.content || '').substring(0, 200),
+                  context: memory.context,
+                  value_score: memory.value_score || 0.1,
+                  prune_reason: 'noise_pattern',
+                });
+                await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
                 stats.pruned++;
               } catch { stats.errors++; }
             }
