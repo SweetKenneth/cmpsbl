@@ -7,6 +7,7 @@
   */
  
  const renderCounts = new Map<string, { count: number; lastReset: number }>();
+ const MAX_TRACKED_COMPONENTS = 200;
  const THRESHOLD = 50; // Warn after this many renders
  const RESET_INTERVAL_MS = 5000; // Reset counter every 5 seconds
  
