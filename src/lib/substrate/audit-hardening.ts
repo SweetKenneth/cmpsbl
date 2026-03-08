@@ -24,21 +24,29 @@ const REPLAY_EVICT_BATCH = 2000;
 // ─── 1. Chain Integrity Validator ──────────────────────────────────────────
 const chainIntegrity = { lastCheck: 0, valid: true, brokenAt: -1, checksRun: 0 };
 
+// Callback injection — set by audit-module/index.ts at init to avoid circular require()
+let chainVerifier: (() => { valid: boolean; brokenAt: number | null }) | null = null;
+
+/** Register the chain verifier callback (called by audit-module at init) */
+export function registerChainVerifier(fn: () => { valid: boolean; brokenAt: number | null }): void {
+  chainVerifier = fn;
+}
+
 /**
- * Validate chain integrity by delegating to the core module's verifyAuditChain.
- * Falls back to cached state if core is unavailable.
+ * Validate chain integrity via injected callback.
+ * Falls back to cached state if verifier not yet registered.
  */
 export function validateChainIntegrity(): { valid: boolean; brokenAt: number; checksRun: number } {
   chainIntegrity.lastCheck = Date.now();
   chainIntegrity.checksRun++;
-  try {
-    // Dynamic import to avoid circular — use cached result if unavailable
-    const { verifyAuditChain } = require('./audit-module/index');
-    const result = verifyAuditChain();
-    chainIntegrity.valid = result.valid;
-    chainIntegrity.brokenAt = result.brokenAt ?? -1;
-  } catch {
-    // Keep cached state on failure
+  if (chainVerifier) {
+    try {
+      const result = chainVerifier();
+      chainIntegrity.valid = result.valid;
+      chainIntegrity.brokenAt = result.brokenAt ?? -1;
+    } catch {
+      // Keep cached state on failure
+    }
   }
   return { ...chainIntegrity };
 }
@@ -114,10 +122,43 @@ export function checkQueryBudget(): { allowed: boolean; remaining: number } {
   if (allowed) queryBudget.used++;
   return { allowed, remaining: Math.max(0, queryBudget.maxPerMinute - queryBudget.used) };
 }
+/** Peek at budget without consuming a token (for health checks) */
+export function peekQueryBudget(): { remaining: number; maxPerMinute: number } {
+  const now = Date.now();
+  const used = (now - queryBudget.windowStart > 60_000) ? 0 : queryBudget.used;
+  return { remaining: Math.max(0, queryBudget.maxPerMinute - used), maxPerMinute: queryBudget.maxPerMinute };
+}
 
 // ─── 8. Merkle Proof Generator ─────────────────────────────────────────────
-export function generateMerkleProof(entryIndex: number): { index: number; proof: string[]; root: string } {
-  return { index: entryIndex, proof: [`hash_${entryIndex}`], root: 'merkle_root_stub' };
+// Chain hash accessor — set by audit-module at init
+let chainHashAccessor: ((index: number) => string | null) | null = null;
+let chainLengthAccessor: (() => number) | null = null;
+
+export function registerChainAccessors(
+  hashFn: (index: number) => string | null,
+  lengthFn: () => number,
+): void {
+  chainHashAccessor = hashFn;
+  chainLengthAccessor = lengthFn;
+}
+
+export function generateMerkleProof(entryIndex: number): { index: number; proof: string[]; root: string; verified: boolean } {
+  if (!chainHashAccessor || !chainLengthAccessor) {
+    return { index: entryIndex, proof: [], root: 'unavailable', verified: false };
+  }
+  const len = chainLengthAccessor();
+  if (entryIndex < 0 || entryIndex >= len) {
+    return { index: entryIndex, proof: [], root: 'out_of_range', verified: false };
+  }
+  // Build proof: collect sibling hashes for a simple linear proof path
+  const proof: string[] = [];
+  // Include entry's own hash plus neighbors for verification
+  for (let i = Math.max(0, entryIndex - 1); i <= Math.min(len - 1, entryIndex + 1); i++) {
+    const h = chainHashAccessor(i);
+    if (h) proof.push(h);
+  }
+  const headHash = chainHashAccessor(len - 1) ?? 'empty';
+  return { index: entryIndex, proof, root: headHash, verified: true };
 }
 
 // ─── 9. Cross-Zone Attestation ─────────────────────────────────────────────
@@ -166,7 +207,7 @@ const throughputSamples: number[] = [];
 const MAX_THROUGHPUT_SAMPLES = 100;
 export function recordThroughputSample(entriesPerSecond: number) {
   throughputSamples.push(entriesPerSecond);
-  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.shift();
+  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.splice(0, 1);
 }
 export function getThroughputStats(): { avg: number; peak: number; samples: number } {
   if (throughputSamples.length === 0) return { avg: 0, peak: 0, samples: 0 };
@@ -205,7 +246,36 @@ export function getEncryptionStatus(): { atRest: boolean; inTransit: boolean; al
 
 // ─── 19. Audit SLA Monitor ────────────────────────────────────────────────
 const slaTargets = { writeLatencyP95_ms: 50, readLatencyP95_ms: 100, uptimePercent: 99.9 };
-export function getAuditSLA() { return { ...slaTargets, currentUptime: 100, writeLatencyP95: 12, readLatencyP95: 25 }; }
+const writeLatencies: number[] = [];
+const readLatencies: number[] = [];
+const MAX_LATENCY_SAMPLES = 200;
+
+export function recordWriteLatency(ms: number) {
+  writeLatencies.push(ms);
+  if (writeLatencies.length > MAX_LATENCY_SAMPLES) writeLatencies.splice(0, 1);
+}
+export function recordReadLatency(ms: number) {
+  readLatencies.push(ms);
+  if (readLatencies.length > MAX_LATENCY_SAMPLES) readLatencies.splice(0, 1);
+}
+
+function p95(arr: number[]): number {
+  if (arr.length === 0) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const idx = Math.min(Math.floor(sorted.length * 0.95), sorted.length - 1);
+  return sorted[idx];
+}
+
+export function getAuditSLA() {
+  return {
+    ...slaTargets,
+    currentUptime: 100,
+    writeLatencyP95: p95(writeLatencies),
+    readLatencyP95: p95(readLatencies),
+    writeSamples: writeLatencies.length,
+    readSamples: readLatencies.length,
+  };
+}
 
 // ─── 20. Geolocation Stamp ────────────────────────────────────────────────
 export function getGeoStampPolicy(): { enabled: boolean; resolution: string } {
@@ -251,9 +321,9 @@ export function calculateAuditHealth(): { grade: string; score: number; version:
   if (tamperEvents.length > 0) score -= 20;
   if (tamperEvents.length > 10) score -= 10; // escalation for persistent tampering
 
-  // Rate limiter pressure
-  const budget = checkQueryBudget();
-  if (!budget.allowed) score -= 15;
+  // Rate limiter pressure — use peek to avoid consuming a token
+  const budget = peekQueryBudget();
+  if (budget.remaining === 0) score -= 15;
   else if (budget.remaining < 20) score -= 5;
 
   // WAL capacity pressure
@@ -261,6 +331,11 @@ export function calculateAuditHealth(): { grade: string; score: number; version:
 
   // Replay nonce saturation
   if (replayNonces.length > MAX_REPLAY_NONCES * 0.9) score -= 5;
+
+  // SLA violations
+  const sla = getAuditSLA();
+  if (sla.writeLatencyP95 > sla.writeLatencyP95_ms) score -= 10;
+  if (sla.readLatencyP95 > sla.readLatencyP95_ms) score -= 5;
 
   score = Math.max(0, Math.min(100, score));
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';

@@ -22,6 +22,7 @@
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, boundArray } from '@/lib/system/hardening';
+import { registerChainVerifier, registerChainAccessors, recordWriteLatency } from '../audit-hardening';
 
 export interface AuditEntry {
   id: string;
@@ -178,10 +179,24 @@ export function initAudit(): void {
     moduleEngine = activateModuleEngine('audit', '10.5.1');
     state.initialized = true;
     state.modulesMonitored = [...ALL_MONITORED_MODULES];
+
+    // Register hardening callbacks to avoid circular require()
+    registerChainVerifier(verifyAuditChain);
+    registerChainAccessors(
+      (index: number) => auditLog[index]?.hash ?? null,
+      () => auditLog.length,
+    );
+
     emitSucceeded('audit', 'init', { monitored: state.modulesMonitored.length, engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
     state.modulesMonitored = [...ALL_MONITORED_MODULES];
+    // Still register verifier even on partial init
+    registerChainVerifier(verifyAuditChain);
+    registerChainAccessors(
+      (index: number) => auditLog[index]?.hash ?? null,
+      () => auditLog.length,
+    );
     emitFailed('audit', 'init', err instanceof Error ? err.message : String(err));
   }
 }
@@ -219,6 +234,7 @@ export function recordAuditEntry(
     hash: 'fallback', previousHash: lastHash,
   };
 
+  const writeStart = performance.now();
   const { result } = withResilienceSync(
     'audit',
     () => {
@@ -251,6 +267,9 @@ export function recordAuditEntry(
     fallbackEntry,
     'record'
   );
+
+  // Track write latency for SLA monitoring
+  recordWriteLatency(performance.now() - writeStart);
 
   return result;
 }
