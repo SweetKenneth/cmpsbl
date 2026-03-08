@@ -18,7 +18,14 @@ export type SkillCategory =
   | 'substrate'
   | 'security'
   | 'state_management'
-  | 'navigation';
+  | 'navigation'
+  | 'architecture'
+  | 'resilience'
+  | 'observability'
+  | 'data_engineering'
+  | 'api_design'
+  | 'devops'
+  | 'performance';
 
 /**
  * Individual skill definition
