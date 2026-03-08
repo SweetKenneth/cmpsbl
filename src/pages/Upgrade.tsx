@@ -397,12 +397,12 @@ export default function Upgrade() {
 
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
-                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5">
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300">
                       <div className="flex items-center gap-2 mb-2">
                         <Package className="w-4 h-4 text-primary" />
                         <span className="text-sm font-semibold">Artifact Capacity</span>
                       </div>
-                      <div className="text-2xl font-bold text-primary">{tierConfig.slots} Slots</div>
+                      <div className="text-2xl font-bold text-primary font-mono tabular-nums">{tierConfig.slots} Slots</div>
                       <p className="text-xs text-muted-foreground mt-1">{t.description}</p>
                     </div>
 
