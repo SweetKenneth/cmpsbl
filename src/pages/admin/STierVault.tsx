@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -753,6 +754,18 @@ export default function STierVault() {
       const folder = root.folder(slug)!;
       folder.file('README.md', bundle.readme);
       for (const file of bundle.files) folder.file(file.filename, file.content);
+
+      const detailsHTML = generatePipelineDetailsHTML({
+        name: d.name,
+        score: d.cjpi,
+        tier: d.cjpi >= 90 ? 'Apex' : d.cjpi >= 75 ? 'Enterprise' : d.cjpi >= 55 ? 'Architect' : 'Creator',
+        category: d.category,
+        systemChain: d.module_chain || [],
+        description: d.description,
+        exportLanguages: languages.map(l => l.language),
+        source: 'vault-export',
+      });
+      folder.file('PIPELINE-DETAILS.html', detailsHTML);
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
