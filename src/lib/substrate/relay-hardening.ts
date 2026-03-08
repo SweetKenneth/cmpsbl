@@ -176,12 +176,34 @@ export function getRelaySLA(): { deliveryP95_ms: number; successRate: number; up
 // ─── 25. Health Composite ────────────────────────────────────────────────
 export function calculateRelayHealth(): { grade: string; score: number; version: string; codename: string } {
   const dlqDepth = getDLQDepth();
+  const stats = getDeliveryStats();
+  const latency = getLatencyStats();
+
   let score = 100;
+
+  // DLQ depth penalties
   if (dlqDepth > 50) score -= 20;
   else if (dlqDepth > 10) score -= 5;
+
+  // Payload rejections
   if (payloadLimits.rejectedCount > 10) score -= 10;
+
+  // Retry budget pressure
   replenishBudget();
   if (retryBudget.budgetRemaining < 20) score -= 10;
+
+  // Delivery success rate
+  if (stats.total > 10) {
+    const failRate = stats.failed / stats.total;
+    if (failRate > 0.2) score -= 15;
+    else if (failRate > 0.1) score -= 5;
+  }
+
+  // Latency degradation (p95 > 5s is concerning)
+  if (latency.p95 > 5000) score -= 10;
+  else if (latency.p95 > 2000) score -= 5;
+
+  score = Math.max(0, Math.min(100, score));
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
   return { grade, score, version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME };
 }

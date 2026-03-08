@@ -603,7 +603,7 @@ export function getRelayState(): RelayModuleState {
     ...state,
     signatureConfigs: new Map(signatureConfigs),
     failoverRoutes: new Map(state.failoverRoutes),
-    deduplicationHashes: new Set(state.deduplicationHashes), // Expose copy for hardening facade reads
+    deduplicationHashes: new Set(), // Use isKnownHash() for membership checks
   };
 }
 
