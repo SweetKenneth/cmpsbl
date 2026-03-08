@@ -31,7 +31,7 @@ export interface EscalationSignal {
   deterministicApplied: string | null;
   legacyApplied: boolean;
   timestamp: number;
-  /** v3: The actual failing input for replay-based learning */
+  /** The actual failing input for replay-based learning */
   failingInput?: Record<string, unknown>;
 }
 
