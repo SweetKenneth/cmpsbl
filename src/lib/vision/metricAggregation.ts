@@ -38,12 +38,27 @@ export interface MetricAlert {
   message: string;
 }
 
-// In-memory buffer for real-time metrics
-const metricBuffer: MetricPoint[] = [];
+// In-memory ring buffer for real-time metrics (avoids O(n) shift)
 const MAX_BUFFER_SIZE = 1000;
+const metricRing: (MetricPoint | null)[] = new Array(MAX_BUFFER_SIZE).fill(null);
+let ringHead = 0;
+let ringCount = 0;
+
+/** Get buffer contents as ordered array (oldest → newest) */
+function getBufferContents(): MetricPoint[] {
+  if (ringCount === 0) return [];
+  const result: MetricPoint[] = [];
+  const start = ringCount < MAX_BUFFER_SIZE ? 0 : ringHead;
+  const len = Math.min(ringCount, MAX_BUFFER_SIZE);
+  for (let i = 0; i < len; i++) {
+    const idx = (start + i) % MAX_BUFFER_SIZE;
+    if (metricRing[idx]) result.push(metricRing[idx]!);
+  }
+  return result;
+}
 
 /**
- * Record a metric point
+ * Record a metric point (O(1) insertion via ring buffer)
  */
 export function recordMetric(
   module: SubstrateModule,
@@ -59,12 +74,9 @@ export function recordMetric(
     tags,
   };
   
-  metricBuffer.push(point);
-  
-  // Trim buffer if too large
-  if (metricBuffer.length > MAX_BUFFER_SIZE) {
-    metricBuffer.shift();
-  }
+  metricRing[ringHead] = point;
+  ringHead = (ringHead + 1) % MAX_BUFFER_SIZE;
+  ringCount++;
 }
 
 /**
