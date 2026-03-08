@@ -65,16 +65,18 @@ export function clearCache(): void {
 
 /**
  * Generate cache key from prompt (normalized)
+ * Uses FNV-1a 32-bit hash + length discriminator to reduce collisions
  */
 function generateCacheKey(prompt: string): string {
   const normalized = prompt.toLowerCase().trim().replace(/\s+/g, ' ');
-  let hash = 0;
+  // FNV-1a 32-bit — better distribution than djb2
+  let hash = 0x811c9dc5;
   for (let i = 0; i < normalized.length; i++) {
-    const char = normalized.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+    hash ^= normalized.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
   }
-  return `nc-${Math.abs(hash).toString(36)}`;
+  // Include length to disambiguate collisions
+  return `nc-${(hash >>> 0).toString(36)}-${normalized.length}`;
 }
 
 /**

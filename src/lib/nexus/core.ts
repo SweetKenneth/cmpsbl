@@ -61,27 +61,44 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
     const latency = Date.now() - startTime;
     
     if (result.success) {
-      await cacheResponse(safePrompt, {
-        content: result.content,
-        model,
-        timestamp: Date.now(),
-      });
+      // Cache and learn in parallel — both are independent post-processing
+      await Promise.allSettled([
+        cacheResponse(safePrompt, {
+          content: result.content,
+          model,
+          timestamp: Date.now(),
+        }),
+        learnFromResult({
+          request,
+          response: result.content,
+          model,
+          latency,
+          success: result.success,
+        }),
+        recordMetric('ai_request_completed', {
+          model,
+          latency,
+          type: request.type,
+          cached: false,
+        }),
+      ]);
+    } else {
+      await Promise.allSettled([
+        learnFromResult({
+          request,
+          response: result.content,
+          model,
+          latency,
+          success: result.success,
+        }),
+        recordMetric('ai_request_completed', {
+          model,
+          latency,
+          type: request.type,
+          cached: false,
+        }),
+      ]);
     }
-
-    await learnFromResult({
-      request,
-      response: result.content,
-      model,
-      latency,
-      success: result.success,
-    });
-
-    await recordMetric('ai_request_completed', {
-      model,
-      latency,
-      type: request.type,
-      cached: false,
-    });
 
     return {
       content: result.content,

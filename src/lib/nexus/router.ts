@@ -405,10 +405,9 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
         recordProviderOutcome(provider.id, false, latencyMs);
         recordFailure(provider.id);
 
-        // Track failed usage
+        // Track failed usage — reuse the same client import
         try {
-          const { supabase } = await import('@/integrations/supabase/client');
-          await supabase.from('ai_usage_log').insert({
+          await client.from('ai_usage_log').insert({
             provider: provider.id,
             model: provider.model,
             category: 'nexus_fleet',
