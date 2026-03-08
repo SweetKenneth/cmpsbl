@@ -634,11 +634,25 @@ class MemoryCoreClient {
       // Filter by confidence threshold
       filtered = filtered.filter(r => r.confidence >= threshold);
 
-      // Sort by importance and recency
+      // Sort using unified salience scorer for consistency
       filtered.sort((a, b) => {
-        const scoreA = (a.importance_score || 0) * 0.6 + (a.access_count || 0) * 0.1 + a.confidence * 0.3;
-        const scoreB = (b.importance_score || 0) * 0.6 + (b.access_count || 0) * 0.1 + b.confidence * 0.3;
-        return scoreB - scoreA;
+        const salienceA = calculateSalience({
+          confidence: a.confidence,
+          access_count: a.access_count,
+          created_at: a.created_at || new Date().toISOString(),
+          memory_type: a.memory_type,
+          content: a.content,
+          query_context: queryText,
+        });
+        const salienceB = calculateSalience({
+          confidence: b.confidence,
+          access_count: b.access_count,
+          created_at: b.created_at || new Date().toISOString(),
+          memory_type: b.memory_type,
+          content: b.content,
+          query_context: queryText,
+        });
+        return salienceB.score - salienceA.score;
       });
 
       // Limit results
@@ -711,24 +725,26 @@ class MemoryCoreClient {
   private async queryTable(table: string, queryText: string, strategy: 'fulltext' | 'pattern', limit: number): Promise<{ data: any[] | null }> {
     // Sanitize pattern input to prevent PostgREST injection
     const sanitized = queryText.replace(/[%_\\]/g, '');
+    // Sanitize full-text search input — strip tsquery special chars
+    const sanitizedFts = queryText.replace(/[!&|:*()\\<>'"]/g, ' ').trim();
     
     if (table === 'brain_memory_hot') {
       const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, importance_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_hot').select(cols).textSearch('content', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_hot').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_hot').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else if (table === 'brain_memory_warm') {
       const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, salience_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_warm').select(cols).textSearch('content', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_warm').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       // Cold tier uses 'summary' column, not 'content'
       const cols = 'id, summary, tags, value_score, access_count, created_at, memory_type, source_module, category, salience_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_cold').select(cols).textSearch('summary', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_cold').select(cols).textSearch('summary', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_cold').select(cols).ilike('summary', `%${sanitized}%`).limit(limit);
     }
@@ -838,16 +854,24 @@ class MemoryCoreClient {
             category: (mem.metadata as any)?.category || 'general',
           } as any);
 
-          if (insertErr) {
+          if (!insertErr) {
+            demoted++;
+          } else {
             errors++;
-            continue; // Do NOT delete from warm if cold insert failed
           }
-
-          // Safe to delete from warm now
-          await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
-          demoted++;
         } catch {
           errors++;
+        }
+      }
+
+      // Batch-delete successfully demoted entries from warm in one call
+      if (demoted > 0) {
+        const demotedIds = (stale as any[]).slice(0, demoted).map((m: any) => m.id);
+        try {
+          await supabase.from('brain_memory_warm').delete().in('id', demotedIds);
+        } catch {
+          // If batch delete fails, entries remain in warm (safe — cold has copies)
+          console.warn('[MemoryCore] Batch warm cleanup failed — entries may be duplicated');
         }
       }
 
