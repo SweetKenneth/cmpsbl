@@ -389,13 +389,13 @@ export default function IntentPanel() {
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20"
+                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}
               >
                 <stat.icon className={cn("w-4 h-4 mb-1.5 sm:mb-2", stat.color)} />
-                <div className="text-lg sm:text-xl font-bold font-mono leading-tight">{stat.value}</div>
+                <div className="text-lg sm:text-xl font-bold font-mono tabular-nums leading-tight">{stat.value}</div>
                 <div className="text-[9px] sm:text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">{stat.sub}</div>
                 <div className="text-[8px] sm:text-[9px] text-muted-foreground/35 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
               </motion.div>
@@ -454,7 +454,7 @@ export default function IntentPanel() {
             {AFFINITY_PAIRS.map((pair, i) => (
               <motion.div
                 key={`${pair.a}-${pair.b}`}
-                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20"
+                className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-3 sm:p-4 bg-card/50 dark:bg-card/20 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
@@ -467,7 +467,7 @@ export default function IntentPanel() {
                   </div>
                   <span className={cn(
                     "text-sm font-bold font-mono shrink-0 ml-2",
-                    pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400"
+                    pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400", "tabular-nums"
                   )}>
                     {Math.round(pair.score * 100)}%
                   </span>
@@ -488,7 +488,7 @@ export default function IntentPanel() {
             {INTENT_TYPES.map((intent, i) => (
               <motion.div
                 key={intent.type}
-                className={cn("rounded-lg sm:rounded-xl border p-3 sm:p-4", intent.color)}
+                className={cn("rounded-lg sm:rounded-xl border p-3 sm:p-4 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300", intent.color)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}

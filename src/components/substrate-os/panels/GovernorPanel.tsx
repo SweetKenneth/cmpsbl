@@ -175,13 +175,13 @@ export default function GovernorPanel() {
           { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'text-emerald-500' },
           { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'text-red-500' : 'text-emerald-500' },
         ].map(stat => (
-          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
                 <stat.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", stat.color)} />
                 <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-mono uppercase truncate">{stat.label}</span>
               </div>
-              {telLoading ? <Skeleton className="h-5 sm:h-6 w-12 sm:w-16" /> : <span className="text-lg sm:text-xl font-bold font-mono">{stat.value}</span>}
+              {telLoading ? <Skeleton className="h-5 sm:h-6 w-12 sm:w-16" /> : <span className="text-lg sm:text-xl font-bold font-mono tabular-nums">{stat.value}</span>}
             </CardContent>
           </Card>
         ))}
@@ -227,7 +227,7 @@ export default function GovernorPanel() {
                   { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
                   { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-emerald-500', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
                 ].map(sw => (
-                  <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px]">
+                  <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px] transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <sw.icon className={cn("w-4 h-4 shrink-0", sw.color)} />
                       <div className="min-w-0">
@@ -281,7 +281,7 @@ export default function GovernorPanel() {
                 ],
               },
             ].map((node) => (
-              <Card key={node.module} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <Card key={node.module} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                 <CardContent className="p-3 sm:p-4 space-y-3">
                   <div className="flex items-center gap-2">
                     <node.icon className={cn("w-4 h-4 shrink-0", node.color)} />
@@ -307,7 +307,7 @@ export default function GovernorPanel() {
         <TabsContent value="audit-feed" className="mt-4 space-y-4">
           {/* Engine Runner Buttons */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -344,7 +344,7 @@ export default function GovernorPanel() {
               </CardContent>
             </Card>
 
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+             <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -436,7 +436,7 @@ export default function GovernorPanel() {
               <motion.div key={surface.path} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
                 <Button
                   variant="outline"
-                  className="justify-between h-auto p-3 sm:p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20 min-h-[56px]"
+                  className="justify-between h-auto p-3 sm:p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20 hover:border-primary/15 min-h-[56px] transition-all duration-300"
                   onClick={() => navigate(surface.path)}
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3 text-left min-w-0 flex-1">
