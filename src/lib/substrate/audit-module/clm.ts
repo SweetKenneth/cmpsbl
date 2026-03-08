@@ -50,6 +50,7 @@ async function runCLMCycleInner(cycleId: string): Promise<CLMReport> {
     `Compression: ${compression.compressedEntries} entries, ratio: ${(compression.compressionRatio * 100).toFixed(0)}%`,
     `WAL depth: ${walLength}, Dedup window: ${dedup.windowSize}`,
     `Throughput: avg ${throughput.avg}/s, peak ${throughput.peak}/s (${throughput.samples} samples)`,
+    `SLA: write p95=${sla.writeLatencyP95.toFixed(1)}ms (target ${sla.writeLatencyP95_ms}ms), read p95=${sla.readLatencyP95.toFixed(1)}ms (target ${sla.readLatencyP95_ms}ms)`,
   ];
 
   const proposedUpgrades = [

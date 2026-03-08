@@ -352,8 +352,9 @@ function getCachedChainValidity(): boolean {
 }
 
 export function generateComplianceReport(framework: ComplianceFramework, periodDays: number = 30): ComplianceReport {
+  const safePeriod = Math.max(1, Math.min(365, periodDays));
   const now = Date.now();
-  const periodStart = now - (periodDays * 24 * 60 * 60 * 1000);
+  const periodStart = now - (safePeriod * 24 * 60 * 60 * 1000);
   const relevantEntries = auditLog.filter(e => e.timestamp >= periodStart);
 
   const uniqueActors = new Set(relevantEntries.map(e => e.actor.id));
