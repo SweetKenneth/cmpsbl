@@ -1039,7 +1039,11 @@ export function recordOrchestrationResult(
   } else {
     breaker.failures++;
     breaker.lastFailure = Date.now();
-    if (breaker.failures >= failThreshold && breaker.state === 'closed') {
+    if (breaker.state === 'half_open') {
+      // Single failure in half_open → re-open immediately
+      breaker.state = 'open';
+      breaker.openedAt = Date.now();
+    } else if (breaker.failures >= failThreshold && breaker.state === 'closed') {
       breaker.state = 'open';
       breaker.openedAt = Date.now();
     }
