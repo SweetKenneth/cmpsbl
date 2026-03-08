@@ -803,13 +803,15 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
 export const shadowPractice = ShadowPracticeEngine.getInstance();
 
-// Auto-start if enabled
-if (typeof window !== 'undefined') {
-  setTimeout(() => {
-    const state = shadowPractice.getState();
-    if (state.enabled) {
-      console.log('[Shadow Practice] 🎯 Auto-resuming shadow practice...');
-      shadowPractice.start(state.cycleIntervalMs);
-    }
-  }, 8000); // Start after other systems
+/**
+ * Explicitly initialize shadow practice auto-resume.
+ * Call this from your app bootstrap — NOT as a module side effect.
+ */
+export function initShadowPractice(): void {
+  if (typeof window === 'undefined') return;
+  const state = shadowPractice.getState();
+  if (state.enabled) {
+    console.log('[Shadow Practice] 🎯 Auto-resuming shadow practice...');
+    shadowPractice.start(state.cycleIntervalMs);
+  }
 }

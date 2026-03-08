@@ -123,9 +123,9 @@ export const ENCODED_POLICY = {
     /note that (?:this|the)/i,
     /please (?:note|remember)/i,
     /i(?:'m| am) not sure/i,
-    /might (?:be|have|need)/i,
-    /could (?:be|have|need)/i,
-    /perhaps (?:we|you|this)/i,
+    /^might (?:be|have|need)/i,
+    /^could (?:be|have|need)/i,
+    /^perhaps (?:we|you|this)/i,
   ] as readonly RegExp[],
 
   // ═══════════════════════════════════════════════════════════════

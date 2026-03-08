@@ -1367,14 +1367,29 @@ export function getPatternSummary(): {
 /**
  * Get patterns most relevant to a task description
  */
+/** Common words that shouldn't contribute to relevance scoring */
+const STOP_WORDS = new Set([
+  'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+  'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+  'should', 'may', 'might', 'can', 'shall', 'to', 'of', 'in', 'for',
+  'on', 'with', 'at', 'by', 'from', 'no', 'not', 'or', 'and', 'but',
+  'if', 'then', 'that', 'this', 'it', 'its', 'any', 'all', 'each',
+  'using', 'without', 'about', 'into', 'when', 'where', 'how',
+]);
+
 export function getRelevantPatterns(taskDescription: string, maxResults = 5): ExpertPattern[] {
   const lower = taskDescription.toLowerCase();
+  const queryWords = lower.split(/\s+/).filter(w => w.length > 2 && !STOP_WORDS.has(w));
+  if (queryWords.length === 0) return [];
   
   const scored = EXPERT_PATTERNS.map(p => {
     let score = 0;
     const fields = [p.name, p.description, p.whenToUse, p.category, ...p.antiPatterns];
     for (const field of fields) {
-      if (field.toLowerCase().split(/\s+/).some(w => lower.includes(w))) score++;
+      const fieldLower = field.toLowerCase();
+      for (const word of queryWords) {
+        if (fieldLower.includes(word)) score++;
+      }
     }
     return { pattern: p, score };
   });

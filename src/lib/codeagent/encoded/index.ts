@@ -145,6 +145,7 @@ export {
 // Shadow Practice Engine
 export {
   shadowPractice,
+  initShadowPractice,
   type PracticeTask,
   type PracticeTaskType,
   type PracticeResult,
