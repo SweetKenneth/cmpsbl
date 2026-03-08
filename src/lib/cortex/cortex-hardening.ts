@@ -427,6 +427,7 @@ export function getSLACompliance(windowMs = 3_600_000): {
 // ─── 10. Cross-Pipeline Deduplication ─────────────────────────────────────────
 // Detect and coalesce identical pipeline submissions
 
+const MAX_FINGERPRINTS = 500;
 const activePipelineFingerprints = new Map<number, { pipelineId: string; timestamp: number }>();
 
 export function deduplicatePipeline(
