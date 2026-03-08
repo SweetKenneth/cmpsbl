@@ -927,6 +927,7 @@ interface OrchestrationType {
   cooldownMs: number;
 }
 
+const MAX_BREAKERS = 100;
 const orchestrationBreakers = new Map<string, OrchestrationType>();
 
 export function getOrchestrationBreakerState(name: string): OrchestrationType['state'] {
