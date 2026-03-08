@@ -90,7 +90,9 @@ export function useCore(): UseCoreReturn {
     },
   });
   
-  const jobs = (jobStatus?: string, limit?: number) => useQuery({
+  // NOTE: `jobs` returns a query config object — consumers should call useQuery(core.jobs(...))
+  // rather than invoking this inside a callback (which violates Rules of Hooks).
+  const jobs = (jobStatus?: string, limit?: number) => ({
     queryKey: ['substrate', 'core', 'jobs', jobStatus, limit],
     queryFn: () => core.jobs(jobStatus as any, limit),
     staleTime: 15000,
