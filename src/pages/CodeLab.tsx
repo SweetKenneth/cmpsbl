@@ -662,7 +662,7 @@ const response = await substrate.nexus.text(
                 Advanced patterns like Drift Prevention Engine, Self-Healing Chatbots, 
                 and the AI Template Generator are available in the Explore section.
               </p>
-              <Button asChild>
+              <Button asChild className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/explore">
                   Browse Artifacts <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
