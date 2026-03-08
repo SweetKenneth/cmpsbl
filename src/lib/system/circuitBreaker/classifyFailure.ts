@@ -17,7 +17,7 @@ export function classifyFailure(error: unknown): ClassifiedFailure {
   const lower = msg.toLowerCase();
 
   // Timeouts → countable
-  if (lower.includes('timeout') || lower.includes('timed out') || lower.includes('TIMEOUT')) {
+  if (lower.includes('timeout') || lower.includes('timed out')) {
     return { class: 'countable', category: 'timeout', message: msg };
   }
 

@@ -7,6 +7,7 @@
   */
  
  const renderCounts = new Map<string, { count: number; lastReset: number }>();
+ const MAX_TRACKED_COMPONENTS = 200;
  const THRESHOLD = 50; // Warn after this many renders
  const RESET_INTERVAL_MS = 5000; // Reset counter every 5 seconds
  
@@ -21,6 +22,11 @@
    const entry = renderCounts.get(componentName);
    
    if (!entry || now - entry.lastReset > RESET_INTERVAL_MS) {
+     // Evict oldest if at capacity
+     if (!entry && renderCounts.size >= MAX_TRACKED_COMPONENTS) {
+       const oldest = renderCounts.keys().next().value;
+       if (oldest) renderCounts.delete(oldest);
+     }
      renderCounts.set(componentName, { count: 1, lastReset: now });
      return;
    }

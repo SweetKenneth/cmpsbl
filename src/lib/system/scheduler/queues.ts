@@ -127,7 +127,7 @@ export async function checkBackpressure(): Promise<BackpressureSignal[]> {
 
 /** Flush all queues */
 export async function flushAll(): Promise<void> {
-  await supabase.from('substrate_scheduler_queue').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await supabase.from('substrate_scheduler_queue').delete().gte('created_at', '1970-01-01T00:00:00Z');
 }
 
 /** Get total pending count */

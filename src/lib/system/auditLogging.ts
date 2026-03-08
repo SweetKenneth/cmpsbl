@@ -88,29 +88,27 @@ export async function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp'>): Pro
     ...entry,
   };
   
-  // Store in memory
+  // Store in memory (bounded)
   auditLog.push(auditEntry);
   if (auditLog.length > MAX_IN_MEMORY) {
-    auditLog.shift();
+    auditLog.splice(0, auditLog.length - MAX_IN_MEMORY);
   }
   
-  // Persist to database
-  try {
-    await supabase.from('audit_logs').insert([{
-      action: auditEntry.action.name,
-      entity_type: auditEntry.resource.type,
-      entity_id: auditEntry.resource.id,
-      performed_by: auditEntry.actor.id,
-      details: {
-        actor_id: auditEntry.actor.id,
-        actor_type: auditEntry.actor.type,
-        action_type: auditEntry.action.type,
-        outcome: auditEntry.outcome,
-      } as Record<string, string>,
-    }]);
-  } catch (error) {
-    console.error('Failed to persist audit entry:', error);
-  }
+  // Persist to database (fire-and-forget — don't block caller)
+  supabase.from('audit_logs').insert([{
+    action: auditEntry.action.name,
+    entity_type: auditEntry.resource.type,
+    entity_id: auditEntry.resource.id,
+    performed_by: auditEntry.actor.id,
+    details: {
+      actor_id: auditEntry.actor.id,
+      actor_type: auditEntry.actor.type,
+      action_type: auditEntry.action.type,
+      outcome: auditEntry.outcome,
+    } as Record<string, string>,
+  }]).then(({ error }) => {
+    if (error) console.error('Failed to persist audit entry:', error);
+  });
   
   return auditEntry.id;
 }
@@ -202,53 +200,29 @@ export async function logDataChange(
  * Query audit log
  */
 export async function queryAuditLog(query: AuditQuery): Promise<AuditEntry[]> {
-  let results = [...auditLog];
-  
-  if (query.actor_id) {
-    results = results.filter(e => e.actor.id === query.actor_id);
-  }
-  
-  if (query.actor_type) {
-    results = results.filter(e => e.actor.type === query.actor_type);
-  }
-  
-  if (query.action_type) {
-    results = results.filter(e => e.action.type === query.action_type);
-  }
-  
-  if (query.action_category) {
-    results = results.filter(e => e.action.category === query.action_category);
-  }
-  
-  if (query.resource_type) {
-    results = results.filter(e => e.resource.type === query.resource_type);
-  }
-  
-  if (query.resource_id) {
-    results = results.filter(e => e.resource.id === query.resource_id);
-  }
-  
-  if (query.outcome) {
-    results = results.filter(e => e.outcome === query.outcome);
-  }
-  
-  if (query.from_date) {
-    const fromDate = new Date(query.from_date);
-    results = results.filter(e => new Date(e.timestamp) >= fromDate);
-  }
-  
-  if (query.to_date) {
-    const toDate = new Date(query.to_date);
-    results = results.filter(e => new Date(e.timestamp) <= toDate);
-  }
-  
+  const fromDate = query.from_date ? new Date(query.from_date) : null;
+  const toDate = query.to_date ? new Date(query.to_date) : null;
+
+  // Single-pass filter instead of sequential intermediate arrays
+  const results = auditLog.filter(e =>
+    (!query.actor_id || e.actor.id === query.actor_id) &&
+    (!query.actor_type || e.actor.type === query.actor_type) &&
+    (!query.action_type || e.action.type === query.action_type) &&
+    (!query.action_category || e.action.category === query.action_category) &&
+    (!query.resource_type || e.resource.type === query.resource_type) &&
+    (!query.resource_id || e.resource.id === query.resource_id) &&
+    (!query.outcome || e.outcome === query.outcome) &&
+    (!fromDate || new Date(e.timestamp) >= fromDate) &&
+    (!toDate || new Date(e.timestamp) <= toDate)
+  );
+
   // Sort by timestamp descending
   results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  
+
   // Apply pagination
   const offset = query.offset || 0;
   const limit = query.limit || 100;
-  
+
   return results.slice(offset, offset + limit);
 }
 
@@ -337,31 +311,33 @@ export function getEntriesByPeriod(
   periodType: 'hour' | 'day' | 'week',
   periods: number = 24
 ): { period: string; count: number }[] {
-  const now = new Date();
-  const results: { period: string; count: number }[] = [];
-  
+  const now = Date.now();
   const msPerPeriod: Record<string, number> = {
     hour: 60 * 60 * 1000,
     day: 24 * 60 * 60 * 1000,
     week: 7 * 24 * 60 * 60 * 1000,
   };
-  
-  for (let i = 0; i < periods; i++) {
-    const periodEnd = new Date(now.getTime() - i * msPerPeriod[periodType]);
-    const periodStart = new Date(periodEnd.getTime() - msPerPeriod[periodType]);
-    
-    const count = auditLog.filter(e => {
-      const ts = new Date(e.timestamp);
-      return ts >= periodStart && ts < periodEnd;
-    }).length;
-    
+  const interval = msPerPeriod[periodType];
+  const cutoff = now - periods * interval;
+
+  // Single-pass bucketing
+  const counts = new Array(periods).fill(0);
+  for (const e of auditLog) {
+    const ts = new Date(e.timestamp).getTime();
+    if (ts < cutoff || ts > now) continue;
+    const bucket = Math.floor((now - ts) / interval);
+    if (bucket >= 0 && bucket < periods) counts[bucket]++;
+  }
+
+  // Build results (oldest first)
+  const results: { period: string; count: number }[] = [];
+  for (let i = periods - 1; i >= 0; i--) {
     results.push({
-      period: periodStart.toISOString(),
-      count,
+      period: new Date(now - (i + 1) * interval).toISOString(),
+      count: counts[i],
     });
   }
-  
-  return results.reverse();
+  return results;
 }
 
 // ============ Compliance ============
@@ -418,10 +394,14 @@ export function generateComplianceReport(
 export function pruneAuditLog(keepDays: number = 30): number {
   const cutoff = new Date(Date.now() - keepDays * 24 * 60 * 60 * 1000);
   const before = auditLog.length;
-  
-  const toKeep = auditLog.filter(e => new Date(e.timestamp) >= cutoff);
-  auditLog.length = 0;
-  auditLog.push(...toKeep);
-  
+
+  // Find first entry that's within retention (log is append-order)
+  let keepFrom = 0;
+  for (let i = 0; i < auditLog.length; i++) {
+    if (new Date(auditLog[i].timestamp) >= cutoff) { keepFrom = i; break; }
+    if (i === auditLog.length - 1) { keepFrom = auditLog.length; }
+  }
+
+  if (keepFrom > 0) auditLog.splice(0, keepFrom);
   return before - auditLog.length;
 }
