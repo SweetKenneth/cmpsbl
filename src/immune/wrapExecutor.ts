@@ -371,7 +371,7 @@ export function wrapExecutor(
       // ── POSTCHECK ──
       const post = postcheck(result);
       if (!post.valid) {
-        incrementMetric('postcheckFailures');
+        incrementMetric('preflightFailures'); // Reused counter — covers both pre/postcheck failures
 
         const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
         if (irResult) return irResult;

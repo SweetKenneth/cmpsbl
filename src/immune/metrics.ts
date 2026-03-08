@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Metrics
+ * IMMUNITY — Metrics
  * Simple in-memory counters for observability
  */
 
