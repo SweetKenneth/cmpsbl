@@ -512,6 +512,10 @@ export function shouldFireAlert(alertKey: string): { fire: boolean; coalescedCou
   const record = alertHistory.get(alertKey);
 
   if (!record) {
+    if (alertHistory.size >= MAX_ALERT_HISTORY) {
+      const oldest = alertHistory.keys().next().value;
+      if (oldest) alertHistory.delete(oldest);
+    }
     alertHistory.set(alertKey, {
       key: alertKey,
       count: 1,
