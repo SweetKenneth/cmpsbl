@@ -12,7 +12,7 @@
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
-import { initCircuitBreaker, withResilience, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
+import { initCircuitBreaker, withResilience, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { validateStringInput, clampNumber, boundArray } from '@/lib/system/hardening';
 
 export interface DeliveryRecord {
@@ -345,7 +345,15 @@ export function scheduleRetry(deliveryId: string): { scheduled: boolean; nextRet
 }
 
 export function setRetryPolicy(policy: Partial<RetryPolicy>): void {
-  Object.assign(state.retryPolicy, policy);
+  if (policy.baseDelayMs !== undefined) state.retryPolicy.baseDelayMs = clampNumber(policy.baseDelayMs, 100, 30000, DEFAULT_RETRY_POLICY.baseDelayMs);
+  if (policy.maxDelayMs !== undefined) state.retryPolicy.maxDelayMs = clampNumber(policy.maxDelayMs, 1000, 300000, DEFAULT_RETRY_POLICY.maxDelayMs);
+  if (policy.multiplier !== undefined) state.retryPolicy.multiplier = clampNumber(policy.multiplier, 1, 10, DEFAULT_RETRY_POLICY.multiplier);
+  if (policy.jitterFactor !== undefined) state.retryPolicy.jitterFactor = clampNumber(policy.jitterFactor, 0, 1, DEFAULT_RETRY_POLICY.jitterFactor);
+  if (policy.maxRetries !== undefined) state.retryPolicy.maxRetries = clampNumber(policy.maxRetries, 0, 20, DEFAULT_RETRY_POLICY.maxRetries);
+  // Ensure baseDelayMs ≤ maxDelayMs invariant
+  if (state.retryPolicy.baseDelayMs > state.retryPolicy.maxDelayMs) {
+    state.retryPolicy.baseDelayMs = state.retryPolicy.maxDelayMs;
+  }
   emit({ module: 'relay', event_type: 'retry_policy_updated', outcome: 'succeeded', data: { ...state.retryPolicy } });
 }
 
@@ -428,6 +436,7 @@ export function replayDeadLetter(deliveryId: string): DeliveryRecord | null {
   };
 
   state.deliveries = boundArray([...state.deliveries, record], MAX_DELIVERIES);
+  state.totalDispatched++;
   state.pendingQueue++;
   emit({ module: 'relay', event_type: 'dead_letter_replayed', outcome: 'succeeded', data: { originalId: deliveryId, newId: record.id } });
   return record;
@@ -594,7 +603,7 @@ export function getRelayState(): RelayModuleState {
     ...state,
     signatureConfigs: new Map(signatureConfigs),
     failoverRoutes: new Map(state.failoverRoutes),
-    deduplicationHashes: new Set(state.deduplicationHashes), // Expose copy for hardening facade reads
+    deduplicationHashes: new Set(), // Use isKnownHash() for membership checks
   };
 }
 

@@ -7,7 +7,12 @@ export const RELAY_HARDENING_VERSION = '2.0.0';
 export const RELAY_HARDENING_CODENAME = 'Conduit';
 
 // ─── 1. Delivery Guarantee Engine ─────────────────────────────────────────
+const MAX_LOG = 500;
 const deliveryLog: Array<{ id: string; ts: number; status: string; target: string; attempts: number }> = [];
+export function logDelivery(entry: { id: string; status: string; target: string; attempts: number }) {
+  deliveryLog.push({ ...entry, ts: Date.now() });
+  if (deliveryLog.length > MAX_LOG) deliveryLog.splice(0, deliveryLog.length - MAX_LOG);
+}
 export function getDeliveryLog(n = 20) { return deliveryLog.slice(-n); }
 export function getDeliveryStats(): { total: number; succeeded: number; failed: number; pending: number } {
   const s = deliveryLog.filter(d => d.status === 'succeeded').length;
@@ -63,7 +68,7 @@ import { isKnownHash, getRelayState } from './relay-module/index';
 export function isDuplicatePayload(hash: string): boolean {
   return isKnownHash(hash);
 }
-export function getDedupStats() { return { trackedHashes: getRelayState().deduplicationHashes.size }; }
+export function getDedupStats() { return { trackedHashes: getRelayState().totalDeduplicated }; }
 
 // ─── 9. Rate Limiter (per target) ─────────────────────────────────────────
 const rateLimits = new Map<string, { count: number; windowStart: number }>();
@@ -131,7 +136,12 @@ export function checkEgressFilter(domain: string): boolean { return !blockedDoma
 export function getEgressFilterStats() { return { blockedDomains: blockedDomains.size }; }
 
 // ─── 19. Delivery Receipt Tracker ────────────────────────────────────────
+const MAX_RECEIPTS = 500;
 const receipts: Array<{ id: string; ts: number; acknowledged: boolean }> = [];
+export function recordReceipt(id: string, acknowledged: boolean) {
+  receipts.push({ id, ts: Date.now(), acknowledged });
+  if (receipts.length > MAX_RECEIPTS) receipts.splice(0, receipts.length - MAX_RECEIPTS);
+}
 export function getReceiptStats() { return { total: receipts.length, acknowledged: receipts.filter(r => r.acknowledged).length }; }
 
 // ─── 20. Webhook Replay Engine ───────────────────────────────────────────
@@ -145,7 +155,12 @@ export function getFailoverConfig(): { enabled: boolean; providers: number; stra
 }
 
 // ─── 22. Outbound Audit Trail ────────────────────────────────────────────
+const MAX_AUDIT = 500;
 const outboundAudit: Array<{ ts: number; target: string; status: string; hash: string }> = [];
+export function recordOutboundAudit(entry: { target: string; status: string; hash: string }) {
+  outboundAudit.push({ ...entry, ts: Date.now() });
+  if (outboundAudit.length > MAX_AUDIT) outboundAudit.splice(0, outboundAudit.length - MAX_AUDIT);
+}
 export function getOutboundAuditTrail(n = 20) { return outboundAudit.slice(-n); }
 
 // ─── 23. Compression Engine ──────────────────────────────────────────────
@@ -161,12 +176,34 @@ export function getRelaySLA(): { deliveryP95_ms: number; successRate: number; up
 // ─── 25. Health Composite ────────────────────────────────────────────────
 export function calculateRelayHealth(): { grade: string; score: number; version: string; codename: string } {
   const dlqDepth = getDLQDepth();
+  const stats = getDeliveryStats();
+  const latency = getLatencyStats();
+
   let score = 100;
+
+  // DLQ depth penalties
   if (dlqDepth > 50) score -= 20;
   else if (dlqDepth > 10) score -= 5;
+
+  // Payload rejections
   if (payloadLimits.rejectedCount > 10) score -= 10;
+
+  // Retry budget pressure
   replenishBudget();
   if (retryBudget.budgetRemaining < 20) score -= 10;
+
+  // Delivery success rate
+  if (stats.total > 10) {
+    const failRate = stats.failed / stats.total;
+    if (failRate > 0.2) score -= 15;
+    else if (failRate > 0.1) score -= 5;
+  }
+
+  // Latency degradation (p95 > 5s is concerning)
+  if (latency.p95 > 5000) score -= 10;
+  else if (latency.p95 > 2000) score -= 5;
+
+  score = Math.max(0, Math.min(100, score));
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
   return { grade, score, version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME };
 }
