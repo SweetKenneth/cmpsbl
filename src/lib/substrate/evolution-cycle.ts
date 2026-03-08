@@ -325,7 +325,7 @@ class EvolutionCycleClient {
       return {
         success: true,
         phase: 'idle',
-        message: 'No active evolution plan. Run `modernizer.evolve` to start a new cycle.',
+        message: 'No active evolution plan. Run `evolution.scan` to start a new cycle.',
       };
     }
 
