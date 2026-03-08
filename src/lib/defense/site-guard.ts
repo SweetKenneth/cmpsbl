@@ -192,7 +192,6 @@ function getSessionId(): string {
 let mouseMovements = 0;
 let keyPresses = 0;
 let scrollEvents = 0;
-let lastCheckTime = 0;
 
 function trackBehavior(): void {
   const handler = () => { mouseMovements++; };

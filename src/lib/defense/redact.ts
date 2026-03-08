@@ -78,10 +78,13 @@ function maskValue(value: string, showPartial = false): string {
   return `${prefix}...${suffix}`;
 }
 
-export function redactSecrets<T>(data: T, showPartial = false): T {
+export function redactSecrets<T>(data: T, showPartial = false, _depth = 0, _seen?: WeakSet<object>): T {
   if (data === null || data === undefined) {
     return data;
   }
+
+  // Guard against infinite recursion (circular refs or extreme nesting)
+  if (_depth > 20) return REDACTED as T;
 
   if (typeof data === 'string') {
     if (isSecretValue(data)) {
@@ -90,31 +93,34 @@ export function redactSecrets<T>(data: T, showPartial = false): T {
     return data;
   }
 
+  if (typeof data !== 'object') return data;
+
+  // Circular reference guard
+  const seen = _seen ?? new WeakSet<object>();
+  if (seen.has(data as object)) return REDACTED as T;
+  seen.add(data as object);
+
   if (Array.isArray(data)) {
-    return data.map(item => redactSecrets(item, showPartial)) as T;
+    return data.map(item => redactSecrets(item, showPartial, _depth + 1, seen)) as T;
   }
 
-  if (typeof data === 'object') {
-    const result: Record<string, unknown> = {};
-    
-    for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
-      if (isSecretKey(key)) {
-        if (typeof value === 'string') {
-          result[key] = maskValue(value, showPartial);
-        } else {
-          result[key] = REDACTED;
-        }
-      } else if (typeof value === 'string' && isSecretValue(value)) {
+  const result: Record<string, unknown> = {};
+  
+  for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+    if (isSecretKey(key)) {
+      if (typeof value === 'string') {
         result[key] = maskValue(value, showPartial);
       } else {
-        result[key] = redactSecrets(value, showPartial);
+        result[key] = REDACTED;
       }
+    } else if (typeof value === 'string' && isSecretValue(value)) {
+      result[key] = maskValue(value, showPartial);
+    } else {
+      result[key] = redactSecrets(value, showPartial, _depth + 1, seen);
     }
-    
-    return result as T;
   }
-
-  return data;
+  
+  return result as T;
 }
 
 export function redactHeaders(headers: Record<string, string>): Record<string, string> {
