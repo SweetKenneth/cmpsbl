@@ -283,7 +283,8 @@ export function completeBootSequence(): BootSequence | null {
   
   bootSequence.completed_at = new Date().toISOString();
   bootSequence.current_phase = 'complete';
-  bootSequence.success = bootSequence.modules_failed.length === 0;
+  // Success requires zero failures AND at least the kernel booted
+  bootSequence.success = bootSequence.modules_failed.length === 0 && bootSequence.modules_booted.includes('core');
   
   return bootSequence;
 }
