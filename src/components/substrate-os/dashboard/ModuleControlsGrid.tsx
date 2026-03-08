@@ -63,6 +63,25 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const economyStatus = useEconomyModStatusOS();
   const sandboxStatus = useSandboxModStatusOS();
   const encodeStatus = useEncodeModStatusOS();
+  // Expansion nodes
+  const sovereignStatus = useSovereignStatusOS();
+  const oracleStatus = useOracleStatusOS();
+  const conscienceStatus = useConscienceStatusOS();
+  const treatyStatus = useTreatyStatusOS();
+  const compassStatus = useCompassStatusOS();
+  const echoStatus = useEchoStatusOS();
+  const reflexStatus = useReflexStatusOS();
+  const forgeStatus = useForgeStatusOS();
+  const linguaStatus = useLinguaStatusOS();
+  const harvestStatus = useHarvestStatusOS();
+  const evolutionStatus = useEvolutionStatusOS();
+  const shadowStatus = useShadowStatusOS();
+  const phantomStatus = usePhantomStatusOS();
+  const immunityStatus = useImmunityStatusOS();
+  const intentStatus = useIntentStatusOS();
+  const governanceStatus = useGovernanceStatusOS();
+  const medicStatus = useMedicStatusOS();
+  const nerveStatus = useNerveStatusOS();
 
   // Action mutations
   const brainReflect = useBrainReflectOS();
