@@ -27,9 +27,18 @@ const signingConfig = { algorithm: 'SHA-256', headerName: 'X-Relay-Signature', r
 export function getSigningConfig() { return { ...signingConfig }; }
 
 // ─── 4. Retry Budget Manager ──────────────────────────────────────────────
-const retryBudget = { maxRetries: 5, backoffBase: 1000, backoffMultiplier: 2, jitterEnabled: true, budgetRemaining: 100 };
-export function getRetryBudget() { return { ...retryBudget }; }
-export function consumeRetryToken(): boolean { if (retryBudget.budgetRemaining <= 0) return false; retryBudget.budgetRemaining--; return true; }
+const BUDGET_WINDOW_MS = 60_000;
+const BUDGET_CAPACITY = 100;
+const retryBudget = { maxRetries: 5, backoffBase: 1000, backoffMultiplier: 2, jitterEnabled: true, budgetRemaining: BUDGET_CAPACITY, windowStart: Date.now() };
+export function getRetryBudget() { replenishBudget(); return { ...retryBudget }; }
+/** Replenish budget on window rollover */
+function replenishBudget(): void {
+  if (Date.now() - retryBudget.windowStart >= BUDGET_WINDOW_MS) {
+    retryBudget.budgetRemaining = BUDGET_CAPACITY;
+    retryBudget.windowStart = Date.now();
+  }
+}
+export function consumeRetryToken(): boolean { replenishBudget(); if (retryBudget.budgetRemaining <= 0) return false; retryBudget.budgetRemaining--; return true; }
 
 // ─── 5. Target Health Monitor ─────────────────────────────────────────────
 const targetHealth = new Map<string, { healthy: boolean; lastCheck: number; failRate: number; latencyMs: number }>();
