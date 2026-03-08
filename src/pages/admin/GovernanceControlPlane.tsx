@@ -163,7 +163,7 @@ export default function GovernanceControlPlane() {
                 { label: 'Canary Required', active: subsystems.canaryRequired },
                 { label: 'Auto-Rollback', active: subsystems.autoRollback },
               ].map(({ label, active }) => (
-                <div key={label} className="flex items-center gap-2 text-sm">
+                <div key={label} className="flex items-center gap-2 text-sm p-2 rounded-lg border border-transparent hover:border-border/50 transition-all duration-200">
                   {active ? (
                     <CheckCircle className="w-4 h-4 text-green-500" />
                   ) : (
