@@ -140,17 +140,41 @@ export function getOverallMastery(): number {
  */
 async function persistMasteryScores(): Promise<void> {
   const scores = Object.fromEntries(masteryCache.entries());
-  await supabase.from('brain_memories').upsert({
-    content: `[ENCODED_MASTERY] ${JSON.stringify(scores)}`,
-    memory_type: 'state',
-    source: 'encoded_feedback_loop',
-    confidence: 1.0,
-    metadata: {
-      type: MASTERY_STORE_KEY,
-      updated_at: new Date().toISOString(),
-      overall_mastery: getOverallMastery(),
-    },
-  });
+  const content = `[ENCODED_MASTERY] ${JSON.stringify(scores)}`;
+  
+  // Check if we already have a mastery record to avoid duplicates
+  const { data: existing } = await supabase
+    .from('brain_memories')
+    .select('id')
+    .eq('source', 'encoded_feedback_loop')
+    .eq('memory_type', 'state')
+    .limit(1);
+
+  if (existing?.[0]) {
+    // Update existing record
+    await supabase.from('brain_memories').update({
+      content,
+      confidence: 1.0,
+      metadata: {
+        type: MASTERY_STORE_KEY,
+        updated_at: new Date().toISOString(),
+        overall_mastery: getOverallMastery(),
+      },
+    }).eq('id', existing[0].id);
+  } else {
+    // Create new record
+    await supabase.from('brain_memories').insert({
+      content,
+      memory_type: 'state',
+      source: 'encoded_feedback_loop',
+      confidence: 1.0,
+      metadata: {
+        type: MASTERY_STORE_KEY,
+        updated_at: new Date().toISOString(),
+        overall_mastery: getOverallMastery(),
+      },
+    });
+  }
 }
 
 /**
@@ -241,11 +265,15 @@ function extractLesson(reason: string): string {
  * Boost a successful pattern's confidence in brain memory
  */
 async function boostPatternConfidence(patternId: string): Promise<void> {
+  // Sanitize patternId for safe query interpolation
+  const safeId = patternId.replace(/[%_'"\\]/g, '').slice(0, 50);
+  if (!safeId) return;
+
   // Find and boost in brain_memory_hot
   const { data } = await supabase
     .from('brain_memory_hot')
     .select('id, access_count, priority')
-    .or(`metadata->>pattern_id.eq.${patternId},content.ilike.%${patternId.slice(0, 20)}%`)
+    .or(`metadata->>pattern_id.eq.${safeId},content.ilike.%${safeId.slice(0, 20)}%`)
     .limit(1);
 
   if (data?.[0]) {

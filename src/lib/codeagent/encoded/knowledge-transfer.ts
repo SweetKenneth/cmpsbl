@@ -164,11 +164,12 @@ export async function transferToEncoded(
 
   for (const pattern of patterns) {
     try {
-      // Check if pattern already exists in brain_memory_hot
+      // Check if pattern already exists in brain_memory_hot using a safe prefix match
+      const safePrefix = pattern.content.slice(0, 50).replace(/[%_'"\\]/g, '');
       const { data: existing } = await supabase
         .from('brain_memory_hot')
         .select('id, access_count')
-        .ilike('content', `%${pattern.content.slice(0, 50)}%`)
+        .ilike('content', `%${safePrefix}%`)
         .limit(1);
 
       if (existing && existing.length > 0) {
@@ -245,47 +246,47 @@ export async function ingestExpertPatterns(): Promise<{
   let skipped = 0;
   let errors = 0;
 
-  // Process in batches of 10
+  // Process in batches of 10 — use idempotent pattern_id check to avoid duplicates
   for (let i = 0; i < EXPERT_PATTERNS.length; i += 10) {
     const batch = EXPERT_PATTERNS.slice(i, i + 10);
     
-    const memories = batch.map(p => ({
-      content: formatPatternForMemory(p),
-      memory_type: 'heuristic' as const,
-      source: 'expert_pattern_library',
-      confidence: 0.95, // High confidence — these are curated
-      metadata: {
-        pattern_id: p.id,
-        category: p.category,
-        tier: p.tier,
-        complexity: p.complexity,
-        ingested_at: new Date().toISOString(),
-      },
-    }));
-
-    try {
-      const { data, error } = await supabase
-        .from('brain_memories')
-        .upsert(memories, { onConflict: 'content' })
-        .select();
-
-      if (error) {
-        // If upsert fails (no unique constraint on content), try insert
-        const { data: inserted, error: insertErr } = await supabase
+    for (const p of batch) {
+      try {
+        // Check if already ingested by pattern_id in metadata
+        const { data: existing } = await supabase
           .from('brain_memories')
-          .insert(memories)
-          .select();
-        
-        if (insertErr) {
-          errors += batch.length;
-        } else {
-          ingested += inserted?.length || 0;
+          .select('id')
+          .eq('source', 'expert_pattern_library')
+          .contains('metadata', { pattern_id: p.id })
+          .limit(1);
+
+        if (existing && existing.length > 0) {
+          skipped++;
+          continue;
         }
-      } else {
-        ingested += data?.length || 0;
+
+        const { error } = await supabase.from('brain_memories').insert({
+          content: formatPatternForMemory(p),
+          memory_type: 'heuristic' as const,
+          source: 'expert_pattern_library',
+          confidence: 0.95,
+          metadata: {
+            pattern_id: p.id,
+            category: p.category,
+            tier: p.tier,
+            complexity: p.complexity,
+            ingested_at: new Date().toISOString(),
+          },
+        });
+
+        if (error) {
+          errors++;
+        } else {
+          ingested++;
+        }
+      } catch {
+        errors++;
       }
-    } catch {
-      errors += batch.length;
     }
   }
 

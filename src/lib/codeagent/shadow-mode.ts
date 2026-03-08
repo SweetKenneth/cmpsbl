@@ -987,7 +987,7 @@ export async function shadowGenerate(
   // Update shadow state
   shadowState.generatedCount++;
   shadowState.lastGeneration = new Date();
-  if (!shadowState.patterns.includes(request.changeType)) {
+  if (!shadowState.patterns.includes(request.changeType) && shadowState.patterns.length < 50) {
     shadowState.patterns.push(request.changeType);
   }
   

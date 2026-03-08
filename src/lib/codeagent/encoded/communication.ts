@@ -20,8 +20,8 @@ const STATUS_SYMBOLS: Record<StatusLevel, string> = {
 };
 
 const STATUS_COLORS: Record<StatusLevel, string> = {
-  success: 'text-emerald-400',
-  warning: 'text-amber-400',
+  success: 'text-green-500 dark:text-green-400',
+  warning: 'text-yellow-500 dark:text-yellow-400',
   error: 'text-destructive',
   info: 'text-primary',
   pending: 'text-muted-foreground',
