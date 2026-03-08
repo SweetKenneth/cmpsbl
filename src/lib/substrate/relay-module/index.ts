@@ -173,11 +173,16 @@ function isDuplicate(hash: string): boolean {
   return false;
 }
 
+/** Unique ID with entropy to prevent collisions under concurrent dispatch */
+function uniqueDeliveryId(prefix = 'dlv'): string {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
 export async function dispatch(target: string, payload: unknown, options?: { retries?: number; timeout?: number; deduplicate?: boolean }): Promise<DeliveryRecord> {
   const validTarget = validateStringInput(target, { maxLength: MAX_TARGET_LENGTH, minLength: 1, label: 'relay.target' });
   if (!validTarget) {
     const rejected: DeliveryRecord = {
-      id: `dlv-rejected-${Date.now()}`, target: String(target).slice(0, 100), payload: null,
+      id: uniqueDeliveryId('dlv-rejected'), target: String(target).slice(0, 100), payload: null,
       status: 'failed', attempts: 0, maxRetries: 0,
       createdAt: Date.now(), deliveredAt: null,
       lastError: `Invalid target (must be 1-${MAX_TARGET_LENGTH} chars)`, hash: 'rejected',
@@ -186,12 +191,15 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     return rejected;
   }
 
+  // CLM#20: Resolve failover target before dispatch
+  const resolvedTarget = resolveTarget(validTarget);
+
   // CLM#12: Deduplication check
   const deduplicate = options?.deduplicate !== false;
-  const contentHash = generateContentHash(validTarget, payload);
+  const contentHash = generateContentHash(resolvedTarget, payload);
   if (deduplicate && isDuplicate(contentHash)) {
     return {
-      id: `dlv-dedup-${Date.now()}`, target: validTarget, payload,
+      id: uniqueDeliveryId('dlv-dedup'), target: resolvedTarget, payload,
       status: 'delivered', attempts: 0, maxRetries: 0,
       createdAt: Date.now(), deliveredAt: Date.now(),
       lastError: null, hash: contentHash,
@@ -200,7 +208,7 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
 
   const retries = clampNumber(options?.retries, 0, 10, state.retryPolicy.maxRetries);
 
-  emitStarted('relay', 'dispatch', { target: validTarget });
+  emitStarted('relay', 'dispatch', { target: resolvedTarget });
 
   const fallbackRecord: DeliveryRecord = {
     id: `dlv-fallback-${Date.now()}`, target: validTarget, payload,
