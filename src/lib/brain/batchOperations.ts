@@ -177,18 +177,22 @@ export async function batchIngest(
   result.success = result.failed === 0;
   result.duration = Date.now() - startTime;
 
-  // Log batch ingest event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'batch.ingest',
-    data: {
-      totalProcessed: result.totalProcessed,
-      inserted: result.inserted,
-      failed: result.failed,
-      duration: result.duration,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  // Log batch ingest event (non-critical)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'batch.ingest',
+      data: {
+        totalProcessed: result.totalProcessed,
+        inserted: result.inserted,
+        failed: result.failed,
+        duration: result.duration,
+      } as unknown as Record<string, never>,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch (logErr) {
+    console.error('Failed to log batch ingest event:', logErr);
+  }
 
   return result;
 }
