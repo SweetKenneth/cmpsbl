@@ -161,13 +161,17 @@
          last_used: new Date().toISOString(),
        };
        
-       patterns.push(pattern);
-       patternCache.set(pattern.id, pattern);
-     }
-   }
-   
-   return patterns;
- }
+        patterns.push(pattern);
+        if (patternCache.size >= MAX_PATTERN_CACHE) {
+          const oldest = patternCache.keys().next().value;
+          if (oldest) patternCache.delete(oldest);
+        }
+        patternCache.set(pattern.id, pattern);
+      }
+    }
+    
+    return patterns;
+  }
  
  /**
   * Combine two pattern contents
