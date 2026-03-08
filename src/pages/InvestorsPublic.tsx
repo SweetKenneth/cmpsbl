@@ -139,7 +139,7 @@ export default function InvestorsPublic() {
               size="lg"
               onClick={handleDownloadDeck}
               disabled={downloading}
-              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90"
+              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
