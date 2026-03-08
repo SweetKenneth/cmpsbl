@@ -54,6 +54,12 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
       }
     }
 
+    // Pre-flight budget check — blocks requests if daily/monthly budget is exhausted
+    const budgetCheck = await canSpend(1, request.type); // 1 cent estimate for free-tier
+    if (!budgetCheck.allowed) {
+      throw new Error(`[NEXUS] Budget exceeded: ${budgetCheck.reason}`);
+    }
+
     const hardenedRequest = { ...request, prompt: safePrompt };
     const { model, execute } = await routeToBestModel(hardenedRequest);
     
