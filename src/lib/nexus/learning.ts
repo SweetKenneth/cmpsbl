@@ -129,8 +129,8 @@ export async function getLearningInsights() {
 interface LearningEntry {
   model: string;
   model_name?: string;
-  output_data?: { latency?: number } | null;
-  metadata?: { success?: boolean } | null;
+  output_data?: Record<string, any> | null;
+  metadata?: Record<string, any> | null;
 }
 
 function analyzeModelPerformance(data: LearningEntry[]) {
