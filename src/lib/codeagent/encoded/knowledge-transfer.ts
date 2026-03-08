@@ -164,11 +164,12 @@ export async function transferToEncoded(
 
   for (const pattern of patterns) {
     try {
-      // Check if pattern already exists in brain_memory_hot
+      // Check if pattern already exists in brain_memory_hot using a safe prefix match
+      const safePrefix = pattern.content.slice(0, 50).replace(/[%_'"\\]/g, '');
       const { data: existing } = await supabase
         .from('brain_memory_hot')
         .select('id, access_count')
-        .ilike('content', `%${pattern.content.slice(0, 50)}%`)
+        .ilike('content', `%${safePrefix}%`)
         .limit(1);
 
       if (existing && existing.length > 0) {
