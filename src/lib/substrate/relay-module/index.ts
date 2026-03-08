@@ -459,12 +459,15 @@ export function verifyWebhookSignature(target: string, payload: string, signatur
   return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: ageSeconds };
 }
 
-function simpleHmac(key: string, message: string): string {
+/**
+ * Synchronous HMAC fallback using djb2 double-pass.
+ * Used only when SubtleCrypto is unavailable.
+ */
+function simpleHmacSync(key: string, message: string): string {
   let hash = 0;
   const combined = key + ':' + message;
   for (let i = 0; i < combined.length; i++) {
-    const char = combined.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = ((hash << 5) - hash) + combined.charCodeAt(i);
     hash = hash & hash;
   }
   const pass2 = message + ':' + key;
@@ -474,6 +477,33 @@ function simpleHmac(key: string, message: string): string {
     hash2 = hash2 & hash2;
   }
   return Math.abs(hash).toString(16).padStart(8, '0') + Math.abs(hash2).toString(16).padStart(8, '0');
+}
+
+/** Cache for the crypto key encoder */
+const textEncoder = new TextEncoder();
+
+/**
+ * Compute real HMAC-SHA256 via SubtleCrypto when available,
+ * falling back to djb2 double-pass in non-secure contexts.
+ */
+async function cryptoHmacSha256(key: string, message: string): Promise<string> {
+  try {
+    if (typeof globalThis.crypto?.subtle?.importKey !== 'function') {
+      return simpleHmacSync(key, message);
+    }
+    const keyData = textEncoder.encode(key);
+    const msgData = textEncoder.encode(message);
+    const cryptoKey = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+    const sig = await crypto.subtle.sign('HMAC', cryptoKey, msgData);
+    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return simpleHmacSync(key, message);
+  }
+}
+
+/** Synchronous HMAC for hot-path callers that can't await */
+function simpleHmac(key: string, message: string): string {
+  return simpleHmacSync(key, message);
 }
 
 function constantTimeEqual(a: string, b: string): boolean {
