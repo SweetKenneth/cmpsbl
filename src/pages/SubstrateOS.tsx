@@ -536,9 +536,11 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'operations' && (
-              <PanelContainer id="operations">
-                <Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense>
-              </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Operations" description="System operations center. Governor-restricted operational controls, batch actions, and infrastructure management.">
+                <PanelContainer id="operations">
+                  <Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
             )}
 
             {activeTab === 'oracle' && (
