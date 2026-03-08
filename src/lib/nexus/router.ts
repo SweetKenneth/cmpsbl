@@ -8,9 +8,11 @@
  * - Fleet-level RPM/RPD governance at 80% safety margin
  * - Task-type → model affinity mapping
  * - Automatic provider rotation on quota exhaustion
+ * - Circuit breaker integration for provider isolation
  */
 
 import type { AIRequest } from './core';
+import { isProviderAvailable, recordSuccess, recordFailure } from './circuitBreaker';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -134,24 +136,6 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     latencyClass: 'standard',
     affinities: ['reasoning', 'research', 'code'],
     priority: 10,
-    costPerMToken: 0,
-  },
-  {
-    id: 'mistral',
-    model: 'mistral/mistral-small-latest',
-    rpm: 24, rpd: 530, tpm: 25000,
-    latencyClass: 'fast',
-    affinities: ['reasoning', 'code', 'refinement'],
-    priority: 11,
-    costPerMToken: 0,
-  },
-  {
-    id: 'cohere',
-    model: 'cohere/command-r-plus',
-    rpm: 10, rpd: 26, tpm: 10000,
-    latencyClass: 'standard',
-    affinities: ['research', 'generation', 'analysis'],
-    priority: 12,
     costPerMToken: 0,
   },
   {
@@ -305,10 +289,11 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
   const taskType = mapRequestType(request.type);
   const priority = request.priority || 'medium';
 
-  // Score all providers
+  // Score all providers — filter by rate limits, health, AND circuit breaker
   const scored = FLEET_REGISTRY
     .filter(p => canUseProvider(p))
-    .filter(p => getHealthState(p.id).score > 10) // Skip very unhealthy
+    .filter(p => getHealthState(p.id).score > 10)
+    .filter(p => isProviderAvailable(p.id))
     .map(p => {
       const health = getHealthState(p.id);
       let score = health.score;
@@ -320,8 +305,8 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
       if (priority === 'high' && p.latencyClass === 'ultra') score += 20;
       if (priority === 'high' && p.latencyClass === 'fast') score += 10;
 
-      // Priority weight (lower priority number = higher score)
-      score += (8 - p.priority) * 5;
+      // Priority weight — clamped so high-numbered providers don't go negative
+      score += Math.max(0, (15 - p.priority)) * 3;
 
       // Recency penalty (if failed in last 30s, reduce by 20)
       if (health.lastFailureAt > Date.now() - 30000) score -= 20;
@@ -359,15 +344,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
 
       try {
         // Call pf-nexus-router edge function for real AI completion
-        const { createClient } = await import('@supabase/supabase-js');
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-        const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-        
-        if (!supabaseUrl || !supabaseKey) {
-          throw new Error('Supabase not configured');
-        }
-
-        const client = createClient(supabaseUrl, supabaseKey);
+        const { supabase: client } = await import('@/integrations/supabase/client');
         const { data, error } = await client.functions.invoke('pf-nexus-router', {
           body: {
             prompt,
@@ -390,6 +367,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
         const latencyMs = Date.now() - start;
 
         recordProviderOutcome(provider.id, true, latencyMs);
+        recordSuccess(provider.id);
 
         // Track usage in ai_usage_log
         try {
@@ -425,6 +403,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
       } catch (error) {
         const latencyMs = Date.now() - start;
         recordProviderOutcome(provider.id, false, latencyMs);
+        recordFailure(provider.id);
 
         // Track failed usage
         try {

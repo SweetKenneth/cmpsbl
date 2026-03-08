@@ -115,8 +115,8 @@ export async function getLearningInsights() {
 
     const insights = {
       total_learning_cycles: data?.length || 0,
-      model_performance: analyzeModelPerformance(data || []),
-      optimization_suggestions: generateOptimizations(data || []),
+      model_performance: analyzeModelPerformance((data || []) as any[]),
+      optimization_suggestions: generateOptimizations((data || []) as any[]),
     };
 
     return insights;
@@ -127,24 +127,30 @@ export async function getLearningInsights() {
 }
 
 interface LearningEntry {
-  model_name: string;
-  prediction?: { latency?: number };
+  model: string;
+  model_name?: string;
+  output_data?: Record<string, any> | null;
+  metadata?: Record<string, any> | null;
 }
 
 function analyzeModelPerformance(data: LearningEntry[]) {
   const performance: Record<string, { calls: number; avg_latency: number }> = {};
   
   data.forEach((entry) => {
-    const model = entry.model_name;
+    // FIX: Use 'model' column (not 'model_name') and 'output_data.latency' (not 'prediction.latency')
+    const model = entry.model || entry.model_name || 'unknown';
     if (!performance[model]) {
       performance[model] = { calls: 0, avg_latency: 0 };
     }
     performance[model].calls++;
-    performance[model].avg_latency += entry.prediction?.latency || 0;
+    const latency = (entry.output_data as any)?.latency || 0;
+    performance[model].avg_latency += latency;
   });
 
   Object.keys(performance).forEach((model) => {
-    performance[model].avg_latency /= performance[model].calls;
+    if (performance[model].calls > 0) {
+      performance[model].avg_latency /= performance[model].calls;
+    }
   });
 
   return performance;
