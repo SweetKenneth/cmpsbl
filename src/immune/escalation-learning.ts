@@ -135,12 +135,11 @@ const MAX_FEEDBACK = 200;
 let warmStartComplete = false;
 
 // ═══════════════════════════════════════════════════════════════════════════
-// v3: Cross-Executor Similarity
+// Cross-Executor Similarity
 // ═══════════════════════════════════════════════════════════════════════════
 
 function initExecutorSimilarity() {
   // Group executors by functional similarity for pattern transfer
-  // v2: Expanded to cover all 13 pilot executors across 4 modules
   const groups: string[][] = [
     // UI adaptation cluster
     ['adaptive-ui', 'personalized-accessibility-engine'],
