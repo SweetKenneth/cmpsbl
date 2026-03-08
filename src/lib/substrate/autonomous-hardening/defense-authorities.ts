@@ -60,7 +60,28 @@ const MAX_BLOCKED_IPS = 1000;
 const quarantinedModules = new Set<string>();
 const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }>();
 
-/**
+/** Push action with cap enforcement */
+function pushAction(action: ThreatAction): void {
+  activeActions.push(action);
+  if (activeActions.length > MAX_ACTIVE_ACTIONS) {
+    activeActions.splice(0, activeActions.length - MAX_ACTIVE_ACTIONS);
+  }
+}
+
+/** Remove expired/reversed actions and their associated state */
+function cleanupExpiredActions(): void {
+  const now = Date.now();
+  for (let i = activeActions.length - 1; i >= 0; i--) {
+    const a = activeActions[i];
+    if (a.reversed || (a.expiresAt && now > a.expiresAt)) {
+      if (a.type === 'block_ip') blockedIPs.delete(a.target);
+      if (a.type === 'quarantine_module') quarantinedModules.delete(a.target);
+      if (a.type === 'rate_limit') rateLimitedEntities.delete(a.target);
+      a.reversed = true;
+    }
+  }
+}
+
  * Auto-block an IP address exhibiting malicious behavior.
  * Block expires after TTL. Fully reversible.
  */

@@ -108,7 +108,10 @@ export class DeviceFingerprint {
       osc.start(0);
 
       return new Promise((resolve) => {
+        let resolved = false;
         const cleanup = () => {
+          if (resolved) return;
+          resolved = true;
           sp.disconnect();
           osc.disconnect();
           analyser.disconnect();
@@ -123,6 +126,7 @@ export class DeviceFingerprint {
         }, 2000);
 
         sp.onaudioprocess = (event) => {
+          if (resolved) return; // Guard against multiple fires
           clearTimeout(timeout);
           const output = event.outputBuffer.getChannelData(0);
           const hash = Array.from(output.slice(0, 30))
