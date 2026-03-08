@@ -148,14 +148,18 @@ const DEDUP_MAX_SIZE = 5000;
 // CLM#12: Content-Hash Deduplication
 // ═══════════════════════════════════════════════════════════════════
 function generateContentHash(target: string, payload: unknown): string {
-  const content = `${target}::${JSON.stringify(payload)}`;
-  let hash = 0;
+  // Use a longer seed and FNV-1a-inspired mixing for better collision resistance
+  const content = `relay:${target}::${JSON.stringify(payload)}::${typeof payload}`;
+  let h1 = 0x811c9dc5; // FNV offset basis
+  let h2 = 0;
   for (let i = 0; i < content.length; i++) {
     const char = content.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+    h1 ^= char;
+    h1 = Math.imul(h1, 0x01000193); // FNV prime
+    h2 = ((h2 << 5) - h2) + char;
+    h2 = h2 & h2;
   }
-  return `dhash-${Math.abs(hash).toString(36)}`;
+  return `dhash-${(h1 >>> 0).toString(36)}-${Math.abs(h2).toString(36)}`;
 }
 
 function isDuplicate(hash: string): boolean {
