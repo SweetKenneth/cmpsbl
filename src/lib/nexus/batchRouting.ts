@@ -68,8 +68,8 @@ const providerHealth = new Map<SupportedProvider, {
   avgLatency: number;
 }>();
 
-// Initialize health tracking
-const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'deepseek', 'sambanova'];
+// Initialize health tracking — include ALL providers that appear in failover chains
+const providers: SupportedProvider[] = ['groq', 'together', 'cerebras', 'openrouter', 'google', 'deepseek', 'sambanova', 'fal', 'stability', 'mistral', 'cohere', 'hyperbolic'];
 providers.forEach(p => {
   providerHealth.set(p, {
     healthy: true,
@@ -151,14 +151,15 @@ export async function processBatch(
   const totalLatency = results.reduce((sum, r) => sum + r.latency, 0);
   const totalCost = results.reduce((sum, r) => sum + r.cost, 0);
 
-  const providerBreakdown: Record<string, { count: number; avgLatency: number }> = {};
+  const providerBreakdown: Record<string, { count: number; avgLatency: number; totalLatency: number }> = {};
   for (const result of results.filter(r => r.success)) {
     if (!providerBreakdown[result.provider]) {
-      providerBreakdown[result.provider] = { count: 0, avgLatency: 0 };
+      providerBreakdown[result.provider] = { count: 0, avgLatency: 0, totalLatency: 0 };
     }
     providerBreakdown[result.provider].count++;
+    providerBreakdown[result.provider].totalLatency += result.latency;
     providerBreakdown[result.provider].avgLatency = 
-      (providerBreakdown[result.provider].avgLatency + result.latency) / 2;
+      providerBreakdown[result.provider].totalLatency / providerBreakdown[result.provider].count;
   }
 
   // Log batch processing

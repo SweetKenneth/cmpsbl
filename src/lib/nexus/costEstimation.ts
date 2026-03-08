@@ -318,14 +318,15 @@ export async function generateCostReport(
       break;
   }
 
-  // Query cost events
+  // Query only needed columns instead of SELECT *
   const { data: events } = await supabase
     .from('brain_events')
-    .select('*')
+    .select('data, created_at')
     .eq('module', 'nexus')
     .eq('event_type', 'cost.recorded')
     .gte('created_at', startDate.toISOString())
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(1000);
 
   const byProvider: Record<string, number> = {};
   const byModel: Record<string, number> = {};

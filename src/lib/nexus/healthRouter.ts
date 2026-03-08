@@ -33,15 +33,22 @@ export interface ProviderMetrics {
   estimatedCost: number;
 }
 
-const PROVIDERS = ['groq', 'together', 'cerebras', 'openrouter', 'stability', 'fal'];
+// All fleet providers — must match FLEET_REGISTRY
+const PROVIDERS = ['groq', 'together', 'cerebras', 'openrouter', 'stability', 'fal', 'google', 'deepseek', 'sambanova', 'mistral', 'cohere', 'hyperbolic'];
 
 const PROVIDER_CAPABILITIES: Record<string, { types: string[]; priority: number; costFactor: number }> = {
-  groq: { types: ['text', 'reasoning', 'generation'], priority: 1, costFactor: 0.8 },
-  together: { types: ['text', 'research', 'reasoning'], priority: 2, costFactor: 1.0 },
-  cerebras: { types: ['text', 'refinement', 'reasoning'], priority: 3, costFactor: 0.9 },
-  openrouter: { types: ['text', 'research', 'generation'], priority: 4, costFactor: 1.2 },
+  groq: { types: ['text', 'reasoning', 'generation', 'code'], priority: 1, costFactor: 0.8 },
+  together: { types: ['text', 'research', 'reasoning', 'generation'], priority: 2, costFactor: 1.0 },
+  cerebras: { types: ['text', 'refinement', 'reasoning', 'code'], priority: 3, costFactor: 0.9 },
+  openrouter: { types: ['text', 'research', 'generation', 'reasoning'], priority: 4, costFactor: 1.2 },
   stability: { types: ['image', 'generation'], priority: 1, costFactor: 1.0 },
   fal: { types: ['image', 'video', 'generation'], priority: 2, costFactor: 1.1 },
+  google: { types: ['text', 'image', 'multimodal', 'code', 'reasoning'], priority: 2, costFactor: 1.0 },
+  deepseek: { types: ['text', 'reasoning', 'code', 'research'], priority: 3, costFactor: 0.7 },
+  sambanova: { types: ['text', 'reasoning'], priority: 4, costFactor: 0.0 },
+  mistral: { types: ['text', 'reasoning', 'code', 'refinement'], priority: 5, costFactor: 0.9 },
+  cohere: { types: ['text', 'research', 'generation', 'analysis'], priority: 6, costFactor: 1.0 },
+  hyperbolic: { types: ['text', 'reasoning', 'generation'], priority: 7, costFactor: 0.8 },
 };
 
 /**
