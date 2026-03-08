@@ -73,6 +73,8 @@ const DEFAULT_ALERT_CONFIGS: AlertConfig[] = [
   { module: 'governance', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 10 },
 ];
 
+const MAX_ACTIVE_ALERTS = 200;
+
 // In-memory alert state
 const alertState: MonitoringState = {
   isRunning: false,
