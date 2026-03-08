@@ -154,7 +154,7 @@ export async function getNodesByType(
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .eq('node_type', type)
       .order('weight', { ascending: false })
       .limit(limit);
@@ -177,7 +177,7 @@ export async function getClusterNodes(
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .eq('cluster_id', clusterId)
       .order('weight', { ascending: false })
       .limit(limit);
@@ -197,7 +197,9 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
   try {
     const { data, error } = await supabase
       .from('brain_graph_nodes')
-      .select('cluster_id');
+      .select('cluster_id')
+      .not('cluster_id', 'is', null)
+      .limit(5000);
 
     if (error) throw error;
 
@@ -325,10 +327,11 @@ export async function addEdge(
  */
 export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
   try {
-    // Calculate connection counts
+    // Calculate connection counts — limit edge fetch to prevent unbounded reads
     const { data: edges } = await supabase
       .from('brain_graph_edges')
-      .select('source_id, target_id');
+      .select('source_id, target_id')
+      .limit(5000);
 
     const connectionCounts = new Map<string, number>();
     for (const edge of edges || []) {
@@ -352,7 +355,7 @@ export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
 
     const { data: nodes } = await supabase
       .from('brain_graph_nodes')
-      .select('*')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .in('id', topIds);
 
     // Sort by connection count and map to GraphNode

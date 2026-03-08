@@ -719,9 +719,9 @@ class MemoryCoreClient {
           ttl_seconds: 1800,
         },
         long_term: {
-          hot: { capacity: 200, current: hotCount.count || 0 },
-          warm: { capacity: 1000, current: warmCount.count || 0 },
-          cold: { capacity: 5000, current: coldCount.count || 0 },
+          hot: { capacity: 500, current: hotCount.count || 0 },
+          warm: { capacity: 10000, current: warmCount.count || 0 },
+          cold: { capacity: 10000, current: coldCount.count || 0 },
         },
         latent: {
           pending_reflection: 0,
@@ -732,9 +732,9 @@ class MemoryCoreClient {
       return {
         short_term: { capacity: 50, current: 0, ttl_seconds: 1800 },
         long_term: {
-          hot: { capacity: 200, current: 0 },
-          warm: { capacity: 1000, current: 0 },
-          cold: { capacity: 5000, current: 0 },
+          hot: { capacity: 500, current: 0 },
+          warm: { capacity: 10000, current: 0 },
+          cold: { capacity: 10000, current: 0 },
         },
         latent: { pending_reflection: 0, pending_consolidation: 0 },
       };
@@ -792,8 +792,8 @@ class MemoryCoreClient {
 
       for (const mem of stale as any[]) {
         try {
-          // Insert into cold with decayed scores
-          await supabase.from('brain_memory_cold').insert({
+          // Insert into cold with decayed scores — only delete from warm on success
+          const { error: insertErr } = await supabase.from('brain_memory_cold').insert({
             content: mem.content,
             memory_type: mem.memory_type || 'general',
             confidence: Math.max(0.1, ((mem.salience_score as number) || 0.5) * 0.8),
@@ -803,7 +803,12 @@ class MemoryCoreClient {
             source: 'auto_degradation',
           } as any);
 
-          // Delete from warm
+          if (insertErr) {
+            errors++;
+            continue; // Do NOT delete from warm if cold insert failed
+          }
+
+          // Safe to delete from warm now
           await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
           demoted++;
         } catch {
