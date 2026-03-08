@@ -194,12 +194,12 @@ export default function GovernanceControlPlane() {
                     key={mode}
                     onClick={() => !isActive && setSelectedMode(mode)}
                     disabled={isActive}
-                    className={`p-3 rounded-lg border-2 text-left transition-all ${
+                    className={`p-3 rounded-lg border-2 text-left transition-all duration-300 ${
                       isActive
                         ? 'border-primary/50 bg-primary/10 opacity-60 cursor-not-allowed'
                         : isSelected
-                        ? 'border-primary bg-primary/5 ring-2 ring-primary/30'
-                        : 'border-border hover:border-primary/30 cursor-pointer'
+                        ? 'border-primary bg-primary/5 ring-2 ring-primary/30 -translate-y-0.5 shadow-sm'
+                        : 'border-border hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-1">
