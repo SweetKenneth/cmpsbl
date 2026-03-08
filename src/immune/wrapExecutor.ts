@@ -290,7 +290,7 @@ export function wrapExecutor(
       } catch {
         repairSuccessFlag = false;
         recordRepairOutcome(executorName, repairTypeFlag, false);
-        // v3.1: Record failure against shared rule
+        // Record failure against shared rule
         if (sharedRuleUsed) {
           recordSharedRuleOutcome(sharedRuleUsed, executorName, false);
         }
