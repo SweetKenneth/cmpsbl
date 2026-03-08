@@ -452,6 +452,7 @@ interface BudgetEntry {
   estimatedCostMicros: number; // cost in microdollars
 }
 
+const MAX_BUDGET_STREAMS = 200;
 const budgetEntries = new Map<string, BudgetEntry>();
 
 export function recordObservabilityCost(stream: string, points: number, costPerPointMicros = 1): void {
