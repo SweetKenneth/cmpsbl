@@ -603,11 +603,10 @@ async function stageFinalize(
       id: changeRecord.id,
       actionType: 'generate',
       module: request.module,
+      changeType: request.changeType,
       description: request.description,
       code: generated.code,
-      filePath: generated.filePath,
-      success: true,
-      confidence: generated.confidence,
+      outcome: 'success',
       duration: Date.now() - currentWorkflow.startedAt.getTime(),
     });
   } catch { /* Non-critical — don't block finalization */ }
