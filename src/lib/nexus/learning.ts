@@ -107,7 +107,7 @@ export async function getLearningInsights() {
   try {
     const { data, error } = await supabase
       .from('ai_learning_data')
-      .select('*')
+      .select('model, model_name, output_data, metadata')
       .order('created_at', { ascending: false })
       .limit(100);
 

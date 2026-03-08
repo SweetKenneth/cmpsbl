@@ -32,15 +32,21 @@
    half_open_requests: 2,
  };
  
- // Circuit state per provider
- const circuits = new Map<string, ProviderCircuit>();
- let config = { ...DEFAULT_CONFIG };
+// Circuit state per provider — capped to prevent unbounded growth
+const MAX_CIRCUITS = 50;
+const circuits = new Map<string, ProviderCircuit>();
+let config = { ...DEFAULT_CONFIG };
  
  /**
   * Get or create circuit for provider
   */
- function getCircuit(provider: string): ProviderCircuit {
+function getCircuit(provider: string): ProviderCircuit {
    if (!circuits.has(provider)) {
+     // Evict oldest circuit if at capacity
+     if (circuits.size >= MAX_CIRCUITS) {
+       const oldest = circuits.keys().next().value;
+       if (oldest) circuits.delete(oldest);
+     }
      circuits.set(provider, {
        provider,
        state: 'closed',
@@ -78,9 +84,9 @@
        }
        return false;
  
-     case 'half-open':
-       // Allow limited requests in half-open
-       return circuit.successes < config.half_open_requests;
+    case 'half-open':
+       // Allow limited requests in half-open (successes + failures = total attempts)
+       return (circuit.successes + circuit.failures) < config.half_open_requests;
  
      default:
        return true;
