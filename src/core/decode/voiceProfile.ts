@@ -149,6 +149,21 @@ export function enforceTone(response: string): string {
   // Remove enthusiasm emojis
   result = result.replace(/[🎉🎊🙌👏✨🎯💪🤩😄🥳]/g, '');
 
+  // Dampen enthusiasm modifiers that break sovereign tone
+  const enthusiasmReplacements: [RegExp, string][] = [
+    [/\babsolutely\b/gi, 'yes'],
+    [/\bdefinitely\b/gi, 'confirmed'],
+    [/\btotally\b/gi, ''],
+    [/\bsuper\b(?!\w)/gi, ''],
+    [/\bfantastic\b/gi, 'sound'],
+    [/\bwonderful\b/gi, 'noted'],
+    [/\bbrilliant\b/gi, 'solid'],
+    [/\bincredible\b/gi, 'notable'],
+  ];
+  for (const [pattern, replacement] of enthusiasmReplacements) {
+    result = result.replace(pattern, replacement);
+  }
+
   // Replace assistant phrases with sovereign equivalents
   const replacements: [RegExp, string][] = [
     [/\bhappy to help\b/gi, 'noted'],

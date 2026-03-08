@@ -191,12 +191,18 @@ export async function processDecodeInput(input: DecodeInput): Promise<DecodeResp
     }
   };
   
-  // Optionally invoke substrate modules
+  // Optionally invoke substrate modules (with timeout protection)
   if (input.invokeSubstrate) {
-    // Query all modules in parallel for full substrate awareness
     const moduleRoutes = Object.entries(authority) as [string, (i: string) => Promise<unknown>][];
+    const ROUTE_TIMEOUT_MS = 5000;
     const results = await Promise.allSettled(
-      moduleRoutes.map(async ([key, fn]) => ({ key: key.replace('to', '').toLowerCase(), data: await fn(raw) }))
+      moduleRoutes.map(async ([key, fn]) => {
+        const result = await Promise.race([
+          fn(raw),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ROUTE_TIMEOUT_MS)),
+        ]);
+        return { key: key.replace('to', '').toLowerCase(), data: result };
+      })
     );
     response.substrate = {};
     for (const r of results) {
