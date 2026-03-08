@@ -447,6 +447,17 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       }
     }
 
+    // 10. POST-DISCOVERY LEARNING — feed accepted discoveries into substrate learning systems
+    if (!config.dryRun && accepted.length > 0) {
+      try {
+        const { feedDiscoveriesToLearning } = await import('./learning-bridge');
+        const learningResult = feedDiscoveriesToLearning(accepted, run.id, config.dryRun);
+        console.log(`[Reactor] Learning bridge: ${learningResult.domainLearnings} domain learnings, ${learningResult.rulesContributed} rules contributed, ${learningResult.synergyOutcomesRecorded} synergy outcomes`);
+      } catch (err) {
+        console.warn('[Reactor] Learning bridge failed (non-critical):', err);
+      }
+    }
+
     return {
       runId: run.id,
       status: 'completed',
