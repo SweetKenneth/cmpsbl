@@ -99,7 +99,53 @@ async function searchHotTier(
     if (error || !data) {
       console.error('Hot tier search error:', error);
       return [];
+}
+
+/**
+ * Search warm memory tier
+ */
+async function searchWarmTier(
+  query: string,
+  options: {
+    limit: number;
+    minRelevance: number;
+    context?: string;
+  }
+): Promise<SearchResult[]> {
+  try {
+    let queryBuilder = supabase
+      .from('brain_memory_warm')
+      .select('id, content, context, tags, priority')
+      .order('value_score', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(options.limit);
+    
+    if (options.context) {
+      queryBuilder = queryBuilder.eq('context', options.context);
     }
+    
+    const { data, error } = await queryBuilder;
+    
+    if (error || !data) {
+      console.error('Warm tier search error:', error);
+      return [];
+    }
+    
+    return data
+      .map(memory => ({
+        id: memory.id,
+        content: memory.content,
+        context: memory.context,
+        relevance: calculateRelevance(query, memory.content),
+        tier: 'warm' as const,
+        tags: memory.tags as Record<string, any>,
+      }))
+      .filter(r => r.relevance >= options.minRelevance);
+  } catch (err) {
+    console.error('Error searching warm tier:', err);
+    return [];
+  }
+}
     
     // Simple text matching - can be enhanced with vector similarity
     return data

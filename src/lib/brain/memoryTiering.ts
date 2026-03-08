@@ -43,13 +43,10 @@ export interface TieringResult {
  */
 export async function getTierStats(): Promise<TierStats> {
   try {
-    const [hotCount, warmCount, coldCount, hotAvg, warmAvg, coldAvg] = await Promise.all([
+    const [hotCount, warmCount, coldCount] = await Promise.all([
       supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
       supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
       supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
-      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_hot' }).then(r => r.data).catch(() => null),
-      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_warm' }).then(r => r.data).catch(() => null),
-      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_cold' }).then(r => r.data).catch(() => null),
     ]);
 
     const hc = hotCount.count ?? 0;
@@ -57,9 +54,9 @@ export async function getTierStats(): Promise<TierStats> {
     const cc = coldCount.count ?? 0;
 
     return {
-      hot: { count: hc, avgValueScore: Number(hotAvg) || 0 },
-      warm: { count: wc, avgValueScore: Number(warmAvg) || 0 },
-      cold: { count: cc, avgValueScore: Number(coldAvg) || 0 },
+      hot: { count: hc, avgValueScore: 0 },
+      warm: { count: wc, avgValueScore: 0 },
+      cold: { count: cc, avgValueScore: 0 },
       total: hc + wc + cc,
     };
   } catch (error) {
