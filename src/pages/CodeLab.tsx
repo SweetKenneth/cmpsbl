@@ -185,7 +185,7 @@ export default function CodeLab() {
             <div className="flex flex-wrap justify-center gap-3">
               <Button 
                 size="lg" 
-                className="gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700"
+                className="gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 onClick={() => setActiveTab("templates")}
               >
                 <Package className="w-5 h-5" />
