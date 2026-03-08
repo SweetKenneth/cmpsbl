@@ -570,7 +570,7 @@ export default function Upgrade() {
 
         {/* ═══ ENTERPRISE CTA ═══ */}
         <section className="container mx-auto px-4 mt-24">
-          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover">
+          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover hover:border-amber-500/20 transition-all duration-300">
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-5">
               <Building2 className="w-7 h-7 text-amber-500" />
             </div>
