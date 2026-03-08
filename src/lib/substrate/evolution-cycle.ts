@@ -670,7 +670,7 @@ class EvolutionCycleClient {
         target: 'substrate',
         before_state: { phase: 'shadow_applied', health: plan.scan_results?.health_before || 100 },
         after_state: { phase: 'production_applied', improvements: plan.scan_results?.improvements_found || 0 },
-        description: `Modernizer evolution cycle ${plan.short_id} applied to production`,
+        description: `Evolution cycle ${plan.short_id} applied to production`,
         change_hash: this.generateChangeHash(plan),
         reversible: true,
         initiator: 'modernizer_governed',
