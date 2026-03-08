@@ -200,53 +200,29 @@ export async function logDataChange(
  * Query audit log
  */
 export async function queryAuditLog(query: AuditQuery): Promise<AuditEntry[]> {
-  let results = [...auditLog];
-  
-  if (query.actor_id) {
-    results = results.filter(e => e.actor.id === query.actor_id);
-  }
-  
-  if (query.actor_type) {
-    results = results.filter(e => e.actor.type === query.actor_type);
-  }
-  
-  if (query.action_type) {
-    results = results.filter(e => e.action.type === query.action_type);
-  }
-  
-  if (query.action_category) {
-    results = results.filter(e => e.action.category === query.action_category);
-  }
-  
-  if (query.resource_type) {
-    results = results.filter(e => e.resource.type === query.resource_type);
-  }
-  
-  if (query.resource_id) {
-    results = results.filter(e => e.resource.id === query.resource_id);
-  }
-  
-  if (query.outcome) {
-    results = results.filter(e => e.outcome === query.outcome);
-  }
-  
-  if (query.from_date) {
-    const fromDate = new Date(query.from_date);
-    results = results.filter(e => new Date(e.timestamp) >= fromDate);
-  }
-  
-  if (query.to_date) {
-    const toDate = new Date(query.to_date);
-    results = results.filter(e => new Date(e.timestamp) <= toDate);
-  }
-  
+  const fromDate = query.from_date ? new Date(query.from_date) : null;
+  const toDate = query.to_date ? new Date(query.to_date) : null;
+
+  // Single-pass filter instead of sequential intermediate arrays
+  const results = auditLog.filter(e =>
+    (!query.actor_id || e.actor.id === query.actor_id) &&
+    (!query.actor_type || e.actor.type === query.actor_type) &&
+    (!query.action_type || e.action.type === query.action_type) &&
+    (!query.action_category || e.action.category === query.action_category) &&
+    (!query.resource_type || e.resource.type === query.resource_type) &&
+    (!query.resource_id || e.resource.id === query.resource_id) &&
+    (!query.outcome || e.outcome === query.outcome) &&
+    (!fromDate || new Date(e.timestamp) >= fromDate) &&
+    (!toDate || new Date(e.timestamp) <= toDate)
+  );
+
   // Sort by timestamp descending
   results.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  
+
   // Apply pagination
   const offset = query.offset || 0;
   const limit = query.limit || 100;
-  
+
   return results.slice(offset, offset + limit);
 }
 
