@@ -176,22 +176,7 @@ async function extractPatterns(action: CodeAction): Promise<ExtractedPattern[]> 
       confidence: 0.8,
       codeSnippet: action.code.substring(0, 200),
     });
-    
-    // Store success pattern in brain_memories directly
-    try {
-      await supabase.from('brain_memories').insert({
-        content: `Success pattern: ${action.changeType} in ${action.module}`,
-        memory_type: 'codeagent_pattern',
-        confidence: 0.75,
-        metadata: {
-          module: action.module,
-          changeType: action.changeType,
-          codeSnippet: action.code.substring(0, 300),
-        },
-      });
-    } catch {
-      // Non-blocking
-    }
+    // Note: brain_memories insert happens in persistLearning() — no duplicate here
   }
   
   // 2. Error patterns
