@@ -307,6 +307,7 @@ export function decayWeightedAverage(
 type Severity = 'low' | 'medium' | 'high' | 'critical';
 const SEVERITY_ORDER: Severity[] = ['low', 'medium', 'high', 'critical'];
 
+const MAX_ESCALATION_ENTRIES = 500;
 const escalationTracker = new Map<string, { count: number; currentSeverity: Severity }>();
 
 export function escalateSeverity(
