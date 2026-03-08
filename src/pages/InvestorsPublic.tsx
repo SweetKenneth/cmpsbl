@@ -171,7 +171,7 @@ export default function InvestorsPublic() {
             {metrics.map((metric, index) => (
               <div key={index} className="text-center">
                 <metric.icon className={`w-8 h-8 mx-auto mb-3 ${metric.color}`} />
-                <div className="text-3xl font-bold mb-1 text-foreground">{metric.value}</div>
+                <div className="text-3xl font-bold mb-1 text-foreground font-mono tabular-nums">{metric.value}</div>
                 <div className="text-sm text-muted-foreground">{metric.label}</div>
               </div>
             ))}
