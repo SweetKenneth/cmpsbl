@@ -41,8 +41,10 @@
  };
  
  // Pattern cache
- const patternCache = new Map<string, Pattern>();
- const mutationHistory: MutatedPattern[] = [];
+  const patternCache = new Map<string, Pattern>();
+  const MAX_PATTERN_CACHE = 500;
+  const mutationHistory: MutatedPattern[] = [];
+  const MAX_MUTATION_HISTORY = 200;
  
  /**
   * Mutate patterns to generate novel ideas
