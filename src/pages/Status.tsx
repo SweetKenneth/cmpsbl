@@ -249,7 +249,12 @@ export default function Status() {
       />
       <PublicNav />
 
-      <main className="container mx-auto px-4 py-16 sm:py-24 max-w-4xl">
+      {/* Ambient glow */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full animate-hero-orb-2" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
+      </div>
+
+      <main className="container mx-auto px-4 py-16 sm:py-24 max-w-4xl relative z-10">
         {/* Header */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
           <Badge variant="outline" className="mb-4 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
