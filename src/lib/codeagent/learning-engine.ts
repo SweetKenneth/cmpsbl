@@ -176,22 +176,7 @@ async function extractPatterns(action: CodeAction): Promise<ExtractedPattern[]> 
       confidence: 0.8,
       codeSnippet: action.code.substring(0, 200),
     });
-    
-    // Store success pattern in brain_memories directly
-    try {
-      await supabase.from('brain_memories').insert({
-        content: `Success pattern: ${action.changeType} in ${action.module}`,
-        memory_type: 'codeagent_pattern',
-        confidence: 0.75,
-        metadata: {
-          module: action.module,
-          changeType: action.changeType,
-          codeSnippet: action.code.substring(0, 300),
-        },
-      });
-    } catch {
-      // Non-blocking
-    }
+    // Note: brain_memories insert happens in persistLearning() — no duplicate here
   }
   
   // 2. Error patterns
@@ -326,14 +311,30 @@ async function persistLearning(
     });
     
     // 3. Update learning_patterns for each extracted pattern
+    // Use RPC or raw SQL to properly increment frequency instead of resetting it
     for (const pattern of patterns) {
+      const { data: existing } = await supabase
+        .from('learning_patterns')
+        .select('frequency, success_rate')
+        .eq('pattern_name', pattern.name)
+        .maybeSingle();
+
+      const newFrequency = (existing?.frequency ?? 0) + 1;
+      const oldRate = existing?.success_rate ?? 0;
+      const oldFreq = existing?.frequency ?? 0;
+      // Weighted running average for success_rate
+      const outcomeVal = action.outcome === 'success' ? 1.0 : 0.0;
+      const newSuccessRate = oldFreq > 0
+        ? (oldRate * oldFreq + outcomeVal) / newFrequency
+        : outcomeVal;
+
       await supabase.from('learning_patterns').upsert({
         pattern_name: pattern.name,
         pattern_type: pattern.type,
         description: pattern.description,
         confidence: pattern.confidence,
-        frequency: 1,
-        success_rate: action.outcome === 'success' ? 1.0 : 0.0,
+        frequency: newFrequency,
+        success_rate: Math.round(newSuccessRate * 1000) / 1000,
         recommendations: [pattern.description],
         metadata: {
           last_seen: new Date().toISOString(),

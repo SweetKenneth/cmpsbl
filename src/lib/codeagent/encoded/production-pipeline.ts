@@ -293,12 +293,14 @@ class ProductionPipeline {
 
   private expireOldProposals(): void {
     const cutoff = Date.now() - (this.config.proposalTTLHours * 3600_000);
+    let changed = false;
     for (const p of this.proposals) {
       if (p.status === 'pending_review' && new Date(p.created_at).getTime() < cutoff) {
         p.status = 'expired';
+        changed = true;
       }
     }
-    this.persist();
+    if (changed) this.persist();
   }
 
   private ensureLoaded(): void {

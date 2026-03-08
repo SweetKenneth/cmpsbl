@@ -92,7 +92,7 @@ export function computeDiffStats(before: string, after: string): DiffStats {
   const totalBefore = linesBefore.length;
   const totalAfter = linesAfter.length;
   const changePercent = totalBefore > 0 
-    ? (added + removed + changed) / totalBefore 
+    ? Math.min((added + removed + changed) / totalBefore, 1.0)
     : 1;
   
   return { added, removed, changed, totalBefore, totalAfter, changePercent };
@@ -292,11 +292,25 @@ export function summarizeGuardResult(result: GuardResult): string {
 /**
  * Detect dangerous or unapproved import patterns in generated code
  */
+/** Known-safe package prefixes for import allowlisting */
+const SAFE_PACKAGE_PREFIXES = [
+  '.', '@/', '@supabase', '@radix-ui', '@tanstack', '@hookform', '@react-three',
+  'react', 'lucide', 'sonner', 'zod', 'zustand', 'framer',
+  'class-variance', 'clsx', 'tailwind', 'date-fns', 'recharts', 'three',
+  'cmdk', 'vaul', 'next-themes', 'embla', 'input-otp', 'remark',
+  'jszip', 'vitest', 'jsdom',
+] as const;
+
 function detectDangerousImports(code: string): string[] {
   const dangerous: string[] = [];
   const lines = code.split('\n');
   
   for (const line of lines) {
+    // Check ALL lines for eval/Function (not just import lines)
+    if (/\beval\s*\(|\bnew\s+Function\s*\(/i.test(line)) {
+      dangerous.push('eval() or new Function() — code injection risk');
+    }
+
     const importMatch = line.match(/import\s+.*from\s+['"]([^'"]+)['"]/);
     if (!importMatch) continue;
     const source = importMatch[1];
@@ -311,24 +325,11 @@ function detectDangerousImports(code: string): string[] {
       dangerous.push(`Non-VITE env access in: ${source}`);
     }
     
-    // Flag eval/Function constructor usage
-    if (/\beval\s*\(|\bnew\s+Function\s*\(/i.test(line)) {
-      dangerous.push('eval() or new Function() — code injection risk');
-    }
-    
     // Flag unknown npm packages (not in known safe list)
-    if (!source.startsWith('.') && !source.startsWith('@/') && !source.startsWith('@supabase') && 
-        !source.startsWith('@radix-ui') && !source.startsWith('@tanstack') && !source.startsWith('@hookform') &&
-        !source.startsWith('react') && !source.startsWith('lucide') && !source.startsWith('sonner') &&
-        !source.startsWith('zod') && !source.startsWith('zustand') && !source.startsWith('framer') &&
-        !source.startsWith('class-variance') && !source.startsWith('clsx') && !source.startsWith('tailwind') &&
-        !source.startsWith('date-fns') && !source.startsWith('recharts') && !source.startsWith('three') &&
-        !source.startsWith('cmdk') && !source.startsWith('vaul') && !source.startsWith('next-themes') &&
-        !source.startsWith('embla') && !source.startsWith('input-otp') && !source.startsWith('remark') &&
-        !source.startsWith('react-')) {
+    if (!SAFE_PACKAGE_PREFIXES.some(prefix => source.startsWith(prefix))) {
       dangerous.push(`Unknown package: ${source} — requires approval`);
     }
   }
   
-  return dangerous;
+  return [...new Set(dangerous)]; // Deduplicate
 }
