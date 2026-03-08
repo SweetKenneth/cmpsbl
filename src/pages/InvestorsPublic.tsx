@@ -238,7 +238,7 @@ export default function InvestorsPublic() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, index) => (
-            <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 transition-all">
+            <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                 <product.icon className="w-6 h-6 text-primary" />
               </div>
