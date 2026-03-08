@@ -453,7 +453,20 @@ export function generateWebhookSignature(target: string, payload: string, timest
   const config = signatureConfigs.get(target);
   if (!config) return null;
   const message = `${timestamp}.${payload}`;
+  // Synchronous path for hot callers
   const signature = simpleHmac(config.secret, message);
+  return `t=${timestamp},v1=${signature}`;
+}
+
+/**
+ * Async variant using real HMAC-SHA256 via SubtleCrypto when available.
+ * Prefer this for security-critical webhook signing.
+ */
+export async function generateWebhookSignatureAsync(target: string, payload: string, timestamp: number): Promise<string | null> {
+  const config = signatureConfigs.get(target);
+  if (!config) return null;
+  const message = `${timestamp}.${payload}`;
+  const signature = await cryptoHmacSha256(config.secret, message);
   return `t=${timestamp},v1=${signature}`;
 }
 

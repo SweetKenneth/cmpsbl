@@ -164,10 +164,13 @@ export function getRelaySLA(): { deliveryP95_ms: number; successRate: number; up
 
 // ─── 25. Health Composite ────────────────────────────────────────────────
 export function calculateRelayHealth(): { grade: string; score: number; version: string; codename: string } {
+  const dlqDepth = getDLQDepth();
   let score = 100;
-  if (dlq.length > 50) score -= 20;
-  if (dlq.length > 10) score -= 5;
+  if (dlqDepth > 50) score -= 20;
+  else if (dlqDepth > 10) score -= 5;
   if (payloadLimits.rejectedCount > 10) score -= 10;
+  replenishBudget();
+  if (retryBudget.budgetRemaining < 20) score -= 10;
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
   return { grade, score, version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME };
 }
