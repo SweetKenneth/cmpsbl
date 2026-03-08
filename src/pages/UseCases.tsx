@@ -129,7 +129,7 @@ function CapabilityPill({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-200">
+    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5 text-primary" />
       </div>
@@ -617,13 +617,13 @@ export default function UseCases() {
                   </Badge>
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="gap-2">
+                  <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     <Link to="/explore">
                       <Play className="w-4 h-4" />
                       Browse Artifacts
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="gap-2">
+                  <Button asChild variant="outline" size="lg" className="gap-2 hover:border-primary/30 transition-colors">
                     <Link to="/documentation">
                       <BookOpen className="w-4 h-4" />
                       View Docs

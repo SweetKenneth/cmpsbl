@@ -142,7 +142,7 @@ export default function CodeLab() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-8">
               <Link 
                 to="/explore"
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Package className="w-8 h-8 text-cyan-500 mx-auto mb-2" />
                 <div className="font-semibold">{FREE_TEMPLATES.length}+ Templates</div>
@@ -152,7 +152,7 @@ export default function CodeLab() {
               
               <Link 
                 to="/explore" 
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-violet-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Zap className="w-8 h-8 text-violet-500 mx-auto mb-2" />
                 <div className="font-semibold">{capabilitiesCount}+ Capabilities</div>
@@ -162,7 +162,7 @@ export default function CodeLab() {
               
               <Link 
                 to="/explore" 
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-amber-500/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Layers className="w-8 h-8 text-amber-500 mx-auto mb-2" />
                 <div className="font-semibold">{pipelinesCount} Pipelines</div>
@@ -172,7 +172,7 @@ export default function CodeLab() {
               
               <Link 
                 to="/persistent-memory" 
-                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all"
+                className="group p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <Brain className="w-8 h-8 text-primary mx-auto mb-2" />
                 <div className="font-semibold">Persistent Memory</div>
@@ -185,7 +185,7 @@ export default function CodeLab() {
             <div className="flex flex-wrap justify-center gap-3">
               <Button 
                 size="lg" 
-                className="gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700"
+                className="gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 onClick={() => setActiveTab("templates")}
               >
                 <Package className="w-5 h-5" />
@@ -662,7 +662,7 @@ const response = await substrate.nexus.text(
                 Advanced patterns like Drift Prevention Engine, Self-Healing Chatbots, 
                 and the AI Template Generator are available in the Explore section.
               </p>
-              <Button asChild>
+              <Button asChild className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/explore">
                   Browse Artifacts <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
