@@ -9,9 +9,17 @@ export const DREAM_HARDENING_VERSION = '2.0.0';
 // ─── 1. Dream Chain Integrity Validator ─────────────────────────────────────
 interface DreamStep { id: string; depth: number; input: string; output: string; coherence: number; timestamp: number; }
 const dreamChains = new Map<string, DreamStep[]>();
+const MAX_DREAM_CHAINS = 100;
 
 export function appendDreamStep(chainId: string, step: DreamStep): void {
-  if (!dreamChains.has(chainId)) dreamChains.set(chainId, []);
+  if (!dreamChains.has(chainId)) {
+    // Evict oldest chain if at capacity
+    if (dreamChains.size >= MAX_DREAM_CHAINS) {
+      const oldest = dreamChains.keys().next().value;
+      if (oldest) dreamChains.delete(oldest);
+    }
+    dreamChains.set(chainId, []);
+  }
   const chain = dreamChains.get(chainId)!;
   chain.push(step);
   if (chain.length > 200) chain.splice(0, chain.length - 200);
