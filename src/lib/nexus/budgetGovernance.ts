@@ -184,25 +184,36 @@ const alerts: BudgetAlert[] = [];
  /**
   * Record a spend
   */
- export function recordSpend(costCents: number, category?: string): void {
-   const today = new Date().toISOString().split('T')[0];
-   const month = today.substring(0, 7);
-   
-   // Update daily tracking
-   const currentDaily = dailySpending.get(today) || 0;
-   dailySpending.set(today, currentDaily + costCents);
-   
-   // Update monthly tracking
-   const currentMonthly = monthlySpending.get(month) || 0;
-   monthlySpending.set(month, currentMonthly + costCents);
-   
-   // Update category tracking
-   if (category) {
-     const categoryKey = `${today}_${category}`;
-     const currentCategory = dailySpending.get(categoryKey) || 0;
-     dailySpending.set(categoryKey, currentCategory + costCents);
-   }
- }
+export function recordSpend(costCents: number, category?: string): void {
+  const today = new Date().toISOString().split('T')[0];
+  const month = today.substring(0, 7);
+  
+  // Update daily tracking
+  const currentDaily = dailySpending.get(today) || 0;
+  dailySpending.set(today, currentDaily + costCents);
+  
+  // Update monthly tracking
+  const currentMonthly = monthlySpending.get(month) || 0;
+  monthlySpending.set(month, currentMonthly + costCents);
+  
+  // Update category tracking
+  if (category) {
+    const categoryKey = `${today}_${category}`;
+    const currentCategory = dailySpending.get(categoryKey) || 0;
+    dailySpending.set(categoryKey, currentCategory + costCents);
+  }
+
+  // Prune old entries to prevent unbounded growth
+  pruneMap(dailySpending, MAX_SPENDING_ENTRIES);
+  pruneMap(monthlySpending, MAX_SPENDING_ENTRIES);
+}
+
+function pruneMap(map: Map<string, number>, maxEntries: number): void {
+  if (map.size <= maxEntries) return;
+  const sorted = [...map.keys()].sort();
+  const toRemove = sorted.slice(0, map.size - maxEntries);
+  toRemove.forEach(k => map.delete(k));
+}
  
  /**
   * Update budget configuration

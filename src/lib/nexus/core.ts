@@ -101,13 +101,22 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
 }
 
 export async function getNexusStatus() {
-  const cached = getCachedResponseCount();
-  const total = getTotalRequests();
+  // Single parse of metrics — avoid 3 separate scans
+  const allMetrics = getMetricsFromStorage();
+  let cached = 0;
+  let completed = 0;
+  let failed = 0;
+  for (const m of allMetrics) {
+    if (m.name === 'cache_hit') cached++;
+    else if (m.name === 'ai_request_completed') completed++;
+    else if (m.name === 'ai_request_failed') failed++;
+  }
+  const total = completed;
   
   return {
-    active: cached >= 0 && total >= 0,
+    active: true,
     models: ['groq', 'cerebras', 'google-ai-studio', 'together', 'deepseek', 'hyperbolic'],
-    uptime: total > 0 ? ((total - getFailedRequests()) / total * 100) : 100,
+    uptime: total > 0 ? ((total - failed) / total * 100) : 100,
     cached_responses: cached,
     total_requests: total,
   };
@@ -115,16 +124,4 @@ export async function getNexusStatus() {
 
 function getMetricsFromStorage(): MetricEntry[] {
   return secureGet<MetricEntry[]>('nexus_metrics') || [];
-}
-
-function getCachedResponseCount(): number {
-  return getMetricsFromStorage().filter(m => m.name === 'cache_hit').length;
-}
-
-function getTotalRequests(): number {
-  return getMetricsFromStorage().filter(m => m.name === 'ai_request_completed').length;
-}
-
-function getFailedRequests(): number {
-  return getMetricsFromStorage().filter(m => m.name === 'ai_request_failed').length;
 }
