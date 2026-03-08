@@ -112,13 +112,17 @@ export async function runConsolidation(
 
   result.duration = Date.now() - startTime;
   
-  // Log consolidation event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'consolidation.completed',
-    data: result as unknown as Record<string, never>,
-    outcome: 'success',
-  });
+  // Log consolidation event (non-critical — wrap in try/catch)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'consolidation.completed',
+      data: result as unknown as Record<string, never>,
+      outcome: 'success',
+    });
+  } catch {
+    // Event logging is non-critical
+  }
 
   return result;
 }
@@ -132,37 +136,55 @@ export async function findDuplicateClusters(
   const clusters: DuplicateCluster[] = [];
   
   // Fetch recent memories from hot and warm tiers (only needed columns)
-  const { data: hotMemories } = await supabase
-    .from('brain_memory_hot')
-    .select('id, content, context, value_score, created_at')
-    .order('created_at', { ascending: false })
-    .limit(500);
-
-  const { data: warmMemories } = await supabase
-    .from('brain_memory_warm')
-    .select('id, content, context, value_score, created_at')
-    .order('created_at', { ascending: false })
-    .limit(500);
+  const [{ data: hotMemories }, { data: warmMemories }] = await Promise.all([
+    supabase
+      .from('brain_memory_hot')
+      .select('id, content, context, value_score, created_at')
+      .order('created_at', { ascending: false })
+      .limit(500),
+    supabase
+      .from('brain_memory_warm')
+      .select('id, content, context, value_score, created_at')
+      .order('created_at', { ascending: false })
+      .limit(500),
+  ]);
 
   const allMemories = [
     ...(hotMemories || []).map(m => ({ ...m, tier: 'hot' as const })),
     ...(warmMemories || []).map(m => ({ ...m, tier: 'warm' as const })),
   ];
 
-  // Simple content-based similarity clustering
+  // Pre-tokenize all memories once to avoid O(n²) repeated tokenization
+  const tokenized = allMemories.map(m => ({
+    ...m,
+    tokens: new Set(tokenize(m.content)),
+  }));
+
+  // Content-based similarity clustering with pre-computed tokens
   const processed = new Set<string>();
   
-  for (const memory of allMemories) {
+  for (let i = 0; i < tokenized.length; i++) {
+    const memory = tokenized[i];
     if (processed.has(memory.id)) continue;
+    if (memory.tokens.size === 0) continue;
     
-    const similar = allMemories.filter(m => {
-      if (m.id === memory.id || processed.has(m.id)) return false;
-      const sim = calculateContentSimilarity(memory.content, m.content);
-      return sim >= threshold;
-    });
+    const similar = [];
+    for (let j = i + 1; j < tokenized.length; j++) {
+      const other = tokenized[j];
+      if (processed.has(other.id)) continue;
+      if (other.tokens.size === 0) continue;
+      
+      // Fast Jaccard with pre-computed token sets
+      const intersection = [...memory.tokens].filter(t => other.tokens.has(t)).length;
+      const union = new Set([...memory.tokens, ...other.tokens]).size;
+      const sim = union > 0 ? intersection / union : 0;
+      
+      if (sim >= threshold) {
+        similar.push(other);
+      }
+    }
 
     if (similar.length > 0) {
-      // Pick highest value score as canonical
       const allInCluster = [memory, ...similar];
       allInCluster.sort((a, b) => (b.value_score ?? 0) - (a.value_score ?? 0));
       
