@@ -133,9 +133,9 @@ export function isFeatureEnabled(key: string, context?: Record<string, unknown>)
     return false;
   }
   
-  // Check rollout percentage (simplified)
+  // Check rollout percentage — hash only the key for deterministic bucketing
   if (flag.rollout_percentage < 100) {
-    const hash = simpleHash(key + JSON.stringify(context || {}));
+    const hash = simpleHash(key);
     if ((hash % 100) >= flag.rollout_percentage) {
       return false;
     }
