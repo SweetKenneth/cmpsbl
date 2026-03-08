@@ -389,7 +389,7 @@ export function replayDeadLetter(deliveryId: string): DeliveryRecord | null {
   const entry = state.deadLetterQueue.splice(idx, 1)[0];
   const record: DeliveryRecord = {
     ...entry.delivery,
-    id: `dlv-replay-${Date.now()}`,
+    id: uniqueDeliveryId('dlv-replay'),
     status: 'pending',
     attempts: 0,
     lastError: null,
