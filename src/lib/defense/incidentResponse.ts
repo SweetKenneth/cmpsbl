@@ -138,6 +138,20 @@ export async function createIncident(params: {
   };
 
   activeIncidents.set(id, incident);
+  // Bound incidents — evict oldest resolved/closed first
+  if (activeIncidents.size > MAX_ACTIVE_INCIDENTS) {
+    for (const [key, inc] of activeIncidents) {
+      if (inc.status === 'closed' || inc.status === 'resolved') {
+        activeIncidents.delete(key);
+        break;
+      }
+    }
+    // If still over, evict oldest
+    if (activeIncidents.size > MAX_ACTIVE_INCIDENTS) {
+      const oldest = activeIncidents.keys().next().value;
+      if (oldest) activeIncidents.delete(oldest);
+    }
+  }
 
   // Log to database
   await supabase.from('brain_events').insert({
