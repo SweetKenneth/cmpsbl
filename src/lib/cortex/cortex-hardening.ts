@@ -288,8 +288,10 @@ export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
 }
 
 export function clearReplayJournal(): number {
-  const count = replayJournal.length;
+  const count = replayCount;
   replayJournal.length = 0;
+  replayHead = 0;
+  replayCount = 0;
   return count;
 }
 
