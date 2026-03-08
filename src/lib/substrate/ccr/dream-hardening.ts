@@ -9,9 +9,17 @@ export const DREAM_HARDENING_VERSION = '2.0.0';
 // ─── 1. Dream Chain Integrity Validator ─────────────────────────────────────
 interface DreamStep { id: string; depth: number; input: string; output: string; coherence: number; timestamp: number; }
 const dreamChains = new Map<string, DreamStep[]>();
+const MAX_DREAM_CHAINS = 100;
 
 export function appendDreamStep(chainId: string, step: DreamStep): void {
-  if (!dreamChains.has(chainId)) dreamChains.set(chainId, []);
+  if (!dreamChains.has(chainId)) {
+    // Evict oldest chain if at capacity
+    if (dreamChains.size >= MAX_DREAM_CHAINS) {
+      const oldest = dreamChains.keys().next().value;
+      if (oldest) dreamChains.delete(oldest);
+    }
+    dreamChains.set(chainId, []);
+  }
   const chain = dreamChains.get(chainId)!;
   chain.push(step);
   if (chain.length > 200) chain.splice(0, chain.length - 200);
@@ -55,8 +63,13 @@ export function getConvergenceRate(chainId: string): number {
 // ─── 3. Dream Depth Limiter ────────────────────────────────────────────────
 interface DepthLimit { maxDepth: number; currentDepth: number; softLimit: number; aborted: number; }
 const depthLimits = new Map<string, DepthLimit>();
+const MAX_DEPTH_LIMITS = 100;
 
 export function configureDreamDepth(chainId: string, maxDepth = 20, softLimit = 15): void {
+  if (depthLimits.size >= MAX_DEPTH_LIMITS && !depthLimits.has(chainId)) {
+    const oldest = depthLimits.keys().next().value;
+    if (oldest) depthLimits.delete(oldest);
+  }
   depthLimits.set(chainId, { maxDepth, currentDepth: 0, softLimit, aborted: 0 });
 }
 
@@ -105,7 +118,9 @@ export function checkHallucination(outputId: string, groundedFacts: number, tota
 
 export function getHallucinationRate(): number {
   if (hallucinationLog.length === 0) return 0;
-  return hallucinationLog.filter(h => h.flagged).length / hallucinationLog.length;
+  let flagged = 0;
+  for (const h of hallucinationLog) if (h.flagged) flagged++;
+  return flagged / hallucinationLog.length;
 }
 
 // ─── 6. Latent Pattern Cache ────────────────────────────────────────────────
@@ -416,15 +431,21 @@ export function promoteTopInsights(threshold = 0.7): InsightCandidate[] {
 }
 
 export function getInsightStats(): { total: number; promoted: number; promotionRate: number } {
-  const promoted = insightPipeline.filter(i => i.promoted).length;
+  let promoted = 0;
+  for (const i of insightPipeline) if (i.promoted) promoted++;
   return { total: insightPipeline.length, promoted, promotionRate: insightPipeline.length > 0 ? promoted / insightPipeline.length : 0 };
 }
 
 // ─── 20. Dream Sandbox Isolation ────────────────────────────────────────────
 interface DreamSandbox { id: string; isolationLevel: 'strict' | 'permissive'; allowedDomains: string[]; memoryLimit: number; timeoutMs: number; }
 const sandboxes = new Map<string, DreamSandbox>();
+const MAX_SANDBOXES = 50;
 
 export function createDreamSandbox(id: string, config?: Partial<DreamSandbox>): DreamSandbox {
+  if (sandboxes.size >= MAX_SANDBOXES && !sandboxes.has(id)) {
+    const oldest = sandboxes.keys().next().value;
+    if (oldest) sandboxes.delete(oldest);
+  }
   const sandbox: DreamSandbox = {
     id, isolationLevel: 'strict', allowedDomains: [], memoryLimit: 50_000, timeoutMs: 10_000,
     ...config,
@@ -443,10 +464,15 @@ export function validateSandboxAccess(sandboxId: string, domain: string): boolea
 // ─── 21. Dream Replay Engine ────────────────────────────────────────────────
 interface ReplayableChain { chainId: string; steps: DreamStep[]; originalQuality: number; replayCount: number; }
 const replayRegistry = new Map<string, ReplayableChain>();
+const MAX_REPLAYS = 50;
 
 export function markForReplay(chainId: string, quality: number): void {
   const chain = dreamChains.get(chainId);
   if (!chain) return;
+  if (replayRegistry.size >= MAX_REPLAYS && !replayRegistry.has(chainId)) {
+    const oldest = replayRegistry.keys().next().value;
+    if (oldest) replayRegistry.delete(oldest);
+  }
   replayRegistry.set(chainId, { chainId, steps: [...chain], originalQuality: quality, replayCount: 0 });
 }
 
@@ -459,8 +485,13 @@ export function replayDreamChain(chainId: string): DreamStep[] | null {
 
 // ─── 22. Novelty Decay Tracker ──────────────────────────────────────────────
 const noveltyScores = new Map<string, { score: number; recordedAt: number; decayRate: number }>();
+const MAX_NOVELTY_ENTRIES = 200;
 
 export function recordNovelty(domain: string, score: number, decayRate = 0.01): void {
+  if (noveltyScores.size >= MAX_NOVELTY_ENTRIES && !noveltyScores.has(domain)) {
+    const oldest = noveltyScores.keys().next().value;
+    if (oldest) noveltyScores.delete(oldest);
+  }
   noveltyScores.set(domain, { score, recordedAt: Date.now(), decayRate });
 }
 
@@ -488,19 +519,24 @@ export function getTemperatureHistory(): Array<{ value: number; timestamp: numbe
 }
 
 // ─── 24. Cross-Module Dream Feed ────────────────────────────────────────────
-interface DreamFeedItem { source: string; content: string; priority: number; consumedBy: string[]; timestamp: number; }
+interface DreamFeedItem { source: string; content: string; priority: number; consumedBy: Set<string>; timestamp: number; }
 const dreamFeed: DreamFeedItem[] = [];
 
 export function publishToDreamFeed(source: string, content: string, priority = 5): void {
-  dreamFeed.push({ source, content, priority, consumedBy: [], timestamp: Date.now() });
+  dreamFeed.push({ source, content, priority, consumedBy: new Set(), timestamp: Date.now() });
   dreamFeed.sort((a, b) => b.priority - a.priority);
   if (dreamFeed.length > 200) dreamFeed.splice(200);
 }
 
-export function consumeDreamFeed(consumer: string, limit = 10): DreamFeedItem[] {
-  const available = dreamFeed.filter(f => !f.consumedBy.includes(consumer));
-  const items = available.slice(0, limit);
-  for (const item of items) item.consumedBy.push(consumer);
+export function consumeDreamFeed(consumer: string, limit = 10): Array<{ source: string; content: string; priority: number; timestamp: number }> {
+  const items: Array<{ source: string; content: string; priority: number; timestamp: number }> = [];
+  for (const f of dreamFeed) {
+    if (items.length >= limit) break;
+    if (!f.consumedBy.has(consumer)) {
+      f.consumedBy.add(consumer);
+      items.push({ source: f.source, content: f.content, priority: f.priority, timestamp: f.timestamp });
+    }
+  }
   return items;
 }
 
@@ -519,7 +555,8 @@ export function checkDreamGovernance(dreamId: string, domains: string[], riskSco
 }
 
 export function getGovernanceStats(): { total: number; allowed: number; blocked: number; blockRate: number } {
-  const blocked = governanceChecks.filter(c => !c.allowed).length;
+  let blocked = 0;
+  for (const c of governanceChecks) if (!c.allowed) blocked++;
   return { total: governanceChecks.length, allowed: governanceChecks.length - blocked, blocked, blockRate: governanceChecks.length > 0 ? blocked / governanceChecks.length : 0 };
 }
 

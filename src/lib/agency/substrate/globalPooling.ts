@@ -233,11 +233,14 @@ export async function applyGlobalHeuristic(
     return false;
   }
 
-  // Increment adoption count
-  await supabase
+  // Increment adoption count (fire-and-forget, non-blocking)
+  supabase
     .from('substrate_brain_improvements')
     .update({ adoption_count: (global.adoption_count || 0) + 1 })
-    .eq('id', globalHeuristicId);
+    .eq('id', globalHeuristicId)
+    .then(({ error: updateErr }) => {
+      if (updateErr) console.error('Failed to increment adoption count:', updateErr);
+    });
 
   return true;
 }
