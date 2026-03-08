@@ -122,18 +122,21 @@ export async function scanDuplicates(
   let bytesRecovered = 0;
 
   if (!cfg.dryRun && candidates.length > 0) {
-    for (const candidate of candidates) {
-      const victimId = candidate.survivorId === candidate.idA ? candidate.idB : candidate.idA;
-      const victimContent = candidate.survivorId === candidate.idA ? candidate.contentB : candidate.contentA;
+    // Batch delete all victims in one call instead of sequential deletes
+    const victimIds = candidates.map(c => 
+      c.survivorId === c.idA ? c.idB : c.idA
+    );
 
-      const { error: delError } = await supabase
-        .from('brain_memories')
-        .delete()
-        .eq('id', victimId);
+    const { error: delError } = await supabase
+      .from('brain_memory_hot')
+      .delete()
+      .in('id', victimIds);
 
-      if (!delError) {
-        candidate.merged = true;
-        mergedCount++;
+    if (!delError) {
+      mergedCount = candidates.length;
+      for (const c of candidates) {
+        c.merged = true;
+        const victimContent = c.survivorId === c.idA ? c.contentB : c.contentA;
         bytesRecovered += new TextEncoder().encode(victimContent).length;
       }
     }
