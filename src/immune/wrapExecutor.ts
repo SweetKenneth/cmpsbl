@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Wrapper (v3.0)
+ * IMMUNITY — Executor Wrapper
  * 
  * v3.0 Fix: Archetype-gated repair. Garbage inputs (empty_shell, shape_alien,
  * injection_attempt, oversized) now safe-fail IMMEDIATELY without any repair
