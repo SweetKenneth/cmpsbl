@@ -711,24 +711,26 @@ class MemoryCoreClient {
   private async queryTable(table: string, queryText: string, strategy: 'fulltext' | 'pattern', limit: number): Promise<{ data: any[] | null }> {
     // Sanitize pattern input to prevent PostgREST injection
     const sanitized = queryText.replace(/[%_\\]/g, '');
+    // Sanitize full-text search input — strip tsquery special chars
+    const sanitizedFts = queryText.replace(/[!&|:*()\\<>'"]/g, ' ').trim();
     
     if (table === 'brain_memory_hot') {
       const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, importance_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_hot').select(cols).textSearch('content', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_hot').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_hot').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else if (table === 'brain_memory_warm') {
       const cols = 'id, content, context, value_score, access_count, created_at, memory_type, tags, source_module, category, salience_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_warm').select(cols).textSearch('content', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_warm').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       // Cold tier uses 'summary' column, not 'content'
       const cols = 'id, summary, tags, value_score, access_count, created_at, memory_type, source_module, category, salience_score';
-      if (strategy === 'fulltext') {
-        return supabase.from('brain_memory_cold').select(cols).textSearch('summary', queryText).limit(limit);
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_cold').select(cols).textSearch('summary', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_cold').select(cols).ilike('summary', `%${sanitized}%`).limit(limit);
     }
