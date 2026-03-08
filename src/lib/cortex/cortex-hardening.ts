@@ -177,9 +177,10 @@ export function validateStepDependencies(
     path.push(node);
 
     for (const dep of adj.get(node) ?? []) {
-      dfs(dep, [...path]);
+      dfs(dep, path); // shared path — no copy needed, push/pop handles it
     }
 
+    path.pop();
     inStack.delete(node);
     visited.add(node);
     order.push(node);
@@ -283,8 +284,19 @@ export function recordReplayEntry(entry: Omit<ReplayEntry, 'timestamp'>): void {
 }
 
 export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
-  if (!orchestrationId) return [...replayJournal];
-  return replayJournal.filter(e => e.orchestrationId === orchestrationId);
+  // Ring buffer read: produce entries in chronological order
+  let ordered: ReplayEntry[];
+  if (replayCount < MAX_JOURNAL_SIZE) {
+    ordered = replayJournal.slice(0, replayCount);
+  } else {
+    // Buffer is full and has wrapped — read from head to end, then start to head
+    ordered = [
+      ...replayJournal.slice(replayHead),
+      ...replayJournal.slice(0, replayHead),
+    ];
+  }
+  if (!orchestrationId) return ordered;
+  return ordered.filter(e => e.orchestrationId === orchestrationId);
 }
 
 export function clearReplayJournal(): number {
@@ -304,6 +316,8 @@ export function calculateStepTimeout(
   totalSteps: number,
   remainingBudgetMs: number
 ): number {
+  // Guard: avoid division by zero
+  if (totalSteps <= 0) return Math.max(baseTimeoutMs, 1000);
   // Later steps get tighter timeouts to prevent pipeline stall
   const positionFactor = 1 - (stepIndex / totalSteps) * 0.3;
   const adjustedTimeout = Math.min(
@@ -797,6 +811,7 @@ interface TelemetryWindow {
   maxLatencyMs: number;
   minLatencyMs: number;
   stepCounts: number[];
+  latencySamples: number[]; // sorted samples for percentile estimation
   windowStart: number;
 }
 
@@ -807,6 +822,7 @@ let telemetryWindow: TelemetryWindow = {
   maxLatencyMs: 0,
   minLatencyMs: Infinity,
   stepCounts: [],
+  latencySamples: [],
   windowStart: Date.now(),
 };
 
@@ -826,6 +842,7 @@ export function recordOrchestrationTelemetry(
       maxLatencyMs: 0,
       minLatencyMs: Infinity,
       stepCounts: [],
+      latencySamples: [],
       windowStart: now,
     };
   }
@@ -837,9 +854,21 @@ export function recordOrchestrationTelemetry(
   telemetryWindow.maxLatencyMs = Math.max(telemetryWindow.maxLatencyMs, latencyMs);
   telemetryWindow.minLatencyMs = Math.min(telemetryWindow.minLatencyMs, latencyMs);
   telemetryWindow.stepCounts.push(stepCount);
-  // Cap stepCounts within window
+  // Insert latency sample in sorted order for percentile calculation
+  const samples = telemetryWindow.latencySamples;
+  let lo = 0, hi = samples.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (samples[mid] < latencyMs) lo = mid + 1; else hi = mid;
+  }
+  samples.splice(lo, 0, latencyMs);
+  // Cap both arrays within window
   if (telemetryWindow.stepCounts.length > 1000) {
     telemetryWindow.stepCounts = telemetryWindow.stepCounts.slice(-500);
+  }
+  if (samples.length > 1000) {
+    // Downsample: keep every other element to preserve distribution shape
+    telemetryWindow.latencySamples = samples.filter((_, i) => i % 2 === 0);
   }
 }
 
@@ -858,7 +887,13 @@ export function getOrchestrationTelemetry(): {
     successRate: total > 0 ? telemetryWindow.successCount / total : 1.0,
     avgLatencyMs: total > 0 ? Math.round(telemetryWindow.totalLatencyMs / total) : 0,
     maxLatencyMs: telemetryWindow.maxLatencyMs,
-    p95LatencyEstimate: Math.round(telemetryWindow.maxLatencyMs * 0.85),
+    // Real p95: use sorted latency samples
+    p95LatencyEstimate: (() => {
+      const s = telemetryWindow.latencySamples;
+      if (s.length === 0) return 0;
+      const idx = Math.min(Math.floor(s.length * 0.95), s.length - 1);
+      return s[idx];
+    })(),
     avgStepsPerOrchestration: telemetryWindow.stepCounts.length > 0
       ? Math.round(telemetryWindow.stepCounts.reduce((a, b) => a + b, 0) / telemetryWindow.stepCounts.length)
       : 0,
@@ -898,20 +933,26 @@ export function dryRunPipeline(
   const groups: string[][] = [];
   const placed = new Set<string>();
 
+  // Build step map + dep group sets for O(1) lookups
+  const stepMap = new Map<string, (typeof steps)[number]>();
+  for (const s of steps) stepMap.set(s.id, s);
+  // Track which group each step was placed into
+  const stepGroupIdx = new Map<string, number>();
+
   for (const stepId of depValidation.executionOrder) {
-    const step = steps.find(s => s.id === stepId)!;
+    const step = stepMap.get(stepId)!;
     const deps = step.dependsOn ?? [];
 
     // Find first group where all deps are in previous groups
     let groupIdx = 0;
     for (const dep of deps) {
-      for (let g = 0; g < groups.length; g++) {
-        if (groups[g].includes(dep)) groupIdx = Math.max(groupIdx, g + 1);
-      }
+      const depGroup = stepGroupIdx.get(dep);
+      if (depGroup !== undefined) groupIdx = Math.max(groupIdx, depGroup + 1);
     }
 
     if (!groups[groupIdx]) groups[groupIdx] = [];
     groups[groupIdx].push(stepId);
+    stepGroupIdx.set(stepId, groupIdx);
     placed.add(stepId);
   }
 
@@ -999,7 +1040,11 @@ export function recordOrchestrationResult(
   } else {
     breaker.failures++;
     breaker.lastFailure = Date.now();
-    if (breaker.failures >= failThreshold && breaker.state === 'closed') {
+    if (breaker.state === 'half_open') {
+      // Single failure in half_open → re-open immediately
+      breaker.state = 'open';
+      breaker.openedAt = Date.now();
+    } else if (breaker.failures >= failThreshold && breaker.state === 'closed') {
       breaker.state = 'open';
       breaker.openedAt = Date.now();
     }
