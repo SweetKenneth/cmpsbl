@@ -173,7 +173,7 @@ const NotFound = () => {
                 >
                   <Link
                     to={s.href}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-card/80 transition-all group border border-transparent hover:border-border/40"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-card/80 transition-all group border border-transparent hover:border-border/40 hover:shadow-sm hover:shadow-primary/5"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{s.name}</div>
