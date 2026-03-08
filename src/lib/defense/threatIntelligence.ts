@@ -301,6 +301,11 @@ export async function getIPReputation(ip: string): Promise<IPReputation> {
   };
   
   ipReputationCache.set(ip, rep);
+  // Bound cache
+  if (ipReputationCache.size > MAX_IP_REPUTATION_CACHE) {
+    const oldest = ipReputationCache.keys().next().value;
+    if (oldest) ipReputationCache.delete(oldest);
+  }
   return rep;
 }
 

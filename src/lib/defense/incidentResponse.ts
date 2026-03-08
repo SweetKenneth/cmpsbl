@@ -199,6 +199,10 @@ export async function updateIncidentStatus(
     incident.resolvedAt = new Date().toISOString();
   }
 
+  // Bound timeline entries
+  if (incident.timeline.length >= MAX_TIMELINE_ENTRIES) {
+    incident.timeline = incident.timeline.slice(-MAX_TIMELINE_ENTRIES + 1);
+  }
   incident.timeline.push({
     timestamp: new Date().toISOString(),
     action: `Status changed to ${status}`,

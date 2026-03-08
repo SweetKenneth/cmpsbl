@@ -75,6 +75,11 @@
    if (!events) {
      events = [];
      recentEvents.set(key, events);
+     // Bound the map itself
+     if (recentEvents.size > MAX_RECENT_EVENTS_KEYS) {
+       const oldest = recentEvents.keys().next().value;
+       if (oldest) recentEvents.delete(oldest);
+     }
    }
    
    events.push(event);
