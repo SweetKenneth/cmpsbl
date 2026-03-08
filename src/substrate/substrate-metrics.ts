@@ -17,6 +17,7 @@ interface ModuleMetrics {
 
 const MAX_LATENCY_SAMPLES = 100;
 const IDLE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
+const MAX_TRACKED_MODULES = 100; // Cap to prevent unbounded growth from dynamic IDs
 
 const store = new Map<string, ModuleMetrics>();
 
@@ -24,6 +25,22 @@ function ensureModule(moduleId: string): ModuleMetrics {
   const id = moduleId.toUpperCase();
   let m = store.get(id);
   if (!m) {
+    // Reject registration if store is at capacity with an unknown module
+    if (store.size >= MAX_TRACKED_MODULES) {
+      // Evict oldest dormant module, or reject
+      let oldestDormantKey: string | null = null;
+      let oldestTime = Infinity;
+      for (const [key, metrics] of store) {
+        if (Date.now() - metrics.lastActivityAt > IDLE_THRESHOLD_MS && metrics.lastActivityAt < oldestTime) {
+          oldestTime = metrics.lastActivityAt;
+          oldestDormantKey = key;
+        }
+      }
+      if (oldestDormantKey) {
+        store.delete(oldestDormantKey);
+      }
+      // If still at capacity (no dormant to evict), allow but log
+    }
     m = {
       opsCount: 0,
       errorCount: 0,

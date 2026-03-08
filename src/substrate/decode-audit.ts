@@ -73,8 +73,13 @@ export function logRefusal(message: string, metadata?: Record<string, unknown>):
 
 /** Get audit log entries (most recent first) */
 export function getAuditLog(limit?: number): DecodeAuditEntry[] {
-  const entries = [...auditEntries].reverse();
-  return limit ? entries.slice(0, limit) : entries;
+  // Avoid copying + reversing the full array when only a small slice is needed
+  const count = limit ? Math.min(limit, auditEntries.length) : auditEntries.length;
+  const result: DecodeAuditEntry[] = [];
+  for (let i = auditEntries.length - 1; i >= 0 && result.length < count; i--) {
+    result.push(auditEntries[i]);
+  }
+  return result;
 }
 
 /** Get count of entries by type */

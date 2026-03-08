@@ -82,8 +82,9 @@ export function applyVoiceGuardrails(rawOutput: string): VoiceGuardrailResult {
   const taggedSentences = sentences.map(sentence => {
     // Check for example indicators without existing tags
     for (const pattern of EXAMPLE_INDICATORS) {
-      pattern.lastIndex = 0;
-      if (pattern.test(sentence) && !sentence.includes('[REPRESENTATIVE_EXAMPLE]')) {
+      // Must create fresh regex per test — /g regexes are stateful across calls
+      const fresh = new RegExp(pattern.source, pattern.flags);
+      if (fresh.test(sentence) && !sentence.includes('[REPRESENTATIVE_EXAMPLE]')) {
         clarifications.push(`Example content tagged: "${sentence.substring(0, 50)}..."`);
         return sentence.trimEnd() + EXAMPLE_CLARIFICATION;
       }
@@ -97,15 +98,15 @@ export function applyVoiceGuardrails(rawOutput: string): VoiceGuardrailResult {
   const clarifiedParagraphs = paragraphs.map(para => {
     let hasInference = false;
     for (const pattern of INFERENCE_INDICATORS) {
-      pattern.lastIndex = 0;
-      if (pattern.test(para) && !para.includes('[INFERRED]') && !para.includes('[MEASURED]')) {
+      // Fresh regex to avoid /g statefulness
+      const fresh = new RegExp(pattern.source, pattern.flags);
+      if (fresh.test(para) && !para.includes('[INFERRED]') && !para.includes('[MEASURED]')) {
         hasInference = true;
         break;
       }
     }
     if (hasInference) {
       clarifications.push(`Inference clarification added to paragraph`);
-      // Add clarification at end of paragraph, not inline (preserves tone)
       return para.trimEnd() + INFERENCE_CLARIFICATION;
     }
     return para;
