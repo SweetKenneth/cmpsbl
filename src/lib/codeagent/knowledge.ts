@@ -327,11 +327,9 @@ export function checkForbiddenPatterns(code: string): { safe: boolean; violation
   }
 
   // Check regex-based forbidden patterns
-  if ('forbiddenRegexPatterns' in CODEAGENT_BOUNDARIES) {
-    for (const regex of (CODEAGENT_BOUNDARIES as any).forbiddenRegexPatterns as RegExp[]) {
-      if (regex.test(code)) {
-        violations.push(`Forbidden pattern detected: ${regex.source}`);
-      }
+  for (const regex of CODEAGENT_BOUNDARIES.forbiddenRegexPatterns) {
+    if (regex.test(code)) {
+      violations.push(`Forbidden pattern detected: ${regex.source}`);
     }
   }
   
