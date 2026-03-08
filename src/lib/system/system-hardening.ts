@@ -385,9 +385,11 @@ export function detectDependencyCycles(): string[][] {
     if (visited.has(node)) return;
     visited.add(node);
     stack.add(node);
+    path.push(node);
     for (const dep of moduleDeps.get(node) || []) {
-      dfs(dep, [...path, node]);
+      dfs(dep, path);
     }
+    path.pop();
     stack.delete(node);
   }
 
