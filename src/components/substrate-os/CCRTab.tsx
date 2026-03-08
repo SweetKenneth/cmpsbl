@@ -143,7 +143,7 @@ export function CCRTab() {
                       <div className={cn("w-2.5 h-2.5 rounded-full", t.color)} />
                       <span className="text-xs sm:text-sm font-medium">{t.tier}</span>
                     </div>
-                    <span className="text-sm font-bold font-mono">{t.count.toLocaleString()}</span>
+                    <span className="text-sm font-bold font-mono tabular-nums">{t.count.toLocaleString()}</span>
                   </div>
                   <p className="text-[9px] sm:text-[10px] text-muted-foreground/50 mb-1.5">{t.desc}</p>
                   <Progress value={t.pct} className="h-1" />
