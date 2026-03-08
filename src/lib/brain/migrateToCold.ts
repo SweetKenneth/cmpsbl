@@ -159,6 +159,8 @@ async function migrateGroup(
                 summary: compressed.summary,
                 source_refs: compressed.sourceRefs as any,
                 compression_level: compressed.compressionLevel,
+                source_module: batch[0]?.source_module || 'general',
+                category: batch[0]?.category || context,
                 tags: {
                   context,
                   archived: true,
