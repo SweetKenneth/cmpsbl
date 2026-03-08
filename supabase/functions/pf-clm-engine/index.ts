@@ -499,7 +499,10 @@ serve(async (req) => {
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
-      const budget = await getBudgetState(supabase);
+      const [budget, memory] = await Promise.all([
+        getBudgetState(supabase),
+        getMemoryTierState(supabase),
+      ]);
       const velocity = budget.todayCycles > 0
         ? Math.round((budget.todayCycles * 10) / Math.max(1, new Date().getUTCHours())) // est AI calls/hour
         : 0;
@@ -516,6 +519,12 @@ serve(async (req) => {
           est_ai_calls_per_hour: velocity,
           target_daily: 25000,
           pct_of_target: Math.round((budget.todayCycles * 10 / 25000) * 100),
+        },
+        memory: {
+          hot: { count: memory.hot, limit: memory.hotLimit, pressure: Number((memory.hot / Math.max(1, memory.hotLimit)).toFixed(2)) },
+          warm: { count: memory.warm, limit: memory.warmLimit, pressure: Number((memory.warm / Math.max(1, memory.warmLimit)).toFixed(2)) },
+          cold: { count: memory.cold, limit: memory.coldLimit, pressure: Number((memory.cold / Math.max(1, memory.coldLimit)).toFixed(2)) },
+          write_policy: memory.hot >= Math.floor(memory.hotLimit * 0.85) ? 'prefer_warm' : 'allow_hot',
         },
         config: {
           burst_size: DEFAULT_BURST_SIZE,
