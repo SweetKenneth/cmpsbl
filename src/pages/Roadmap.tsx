@@ -372,9 +372,9 @@ export default function Roadmap() {
                 { phase: "DREAMING", revenue: "Simulation", arpu: "$140/mo" },
                 { phase: "EVOLUTION", revenue: "Autonomy", arpu: "$220/mo" },
               ].map((item, i) => (
-                <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60">
+                <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60 hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
                   <div className="text-xs font-mono text-muted-foreground tracking-wider mb-2">{item.phase}</div>
-                  <div className="text-lg font-black text-foreground">{item.arpu}</div>
+                  <div className="text-lg font-black font-mono tabular-nums text-foreground">{item.arpu}</div>
                   <div className="text-xs text-primary font-medium mt-1">{item.revenue}</div>
                 </div>
               ))}
