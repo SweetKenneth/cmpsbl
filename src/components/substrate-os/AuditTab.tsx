@@ -164,7 +164,7 @@ function TestSuiteRunner() {
 
           return (
             <Card key={def.id} className={cn(
-              'border transition-colors',
+              'border transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm',
               result && result.failed === 0 && 'border-emerald-500/20',
               result && result.failed > 0 && 'border-red-500/20',
             )}>
@@ -210,7 +210,7 @@ function TestSuiteRunner() {
                           <span className={cn('font-medium', t.passed ? 'text-foreground' : 'text-red-400')}>
                             {t.name}
                           </span>
-                          <span className="text-muted-foreground/50 ml-1.5">{t.durationMs}ms</span>
+                          <span className="text-muted-foreground/50 ml-1.5 font-mono tabular-nums">{t.durationMs}ms</span>
                           {t.error && (
                             <p className="text-red-400/80 text-[10px] mt-0.5 font-mono truncate">{t.error}</p>
                           )}
@@ -313,9 +313,9 @@ export function AuditTab() {
                 const config = SEVERITY_CONFIG[sev];
                 const count = report.summary[sev];
                 return (
-                  <Card key={sev} className={cn('cursor-pointer transition-colors', config.border, filter === sev && config.bg)} onClick={() => setFilter(filter === sev ? 'all' : sev)}>
+                  <Card key={sev} className={cn('cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm', config.border, filter === sev && config.bg)} onClick={() => setFilter(filter === sev ? 'all' : sev)}>
                     <CardContent className="p-3 text-center">
-                      <div className={cn('text-lg font-bold', config.color)}>{count}</div>
+                      <div className={cn('text-lg font-bold font-mono tabular-nums', config.color)}>{count}</div>
                       <div className="text-[10px] text-muted-foreground uppercase">{sev}</div>
                     </CardContent>
                   </Card>

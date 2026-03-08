@@ -175,7 +175,7 @@ export function OperationsTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
         {modules.map((mod, i) => (
           <motion.div key={mod.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 h-full">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 h-full transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <mod.icon className={cn("w-4 h-4 shrink-0", mod.color)} />
@@ -187,7 +187,7 @@ export function OperationsTab() {
                   {mod.stats.map(s => (
                     <div key={s.label} className="flex items-center justify-between text-[10px]">
                       <span className="text-muted-foreground/50 font-mono">{s.label}</span>
-                      <span className="font-medium font-mono">{s.value}</span>
+                      <span className="font-medium font-mono tabular-nums">{s.value}</span>
                     </div>
                   ))}
                 </div>
@@ -198,7 +198,7 @@ export function OperationsTab() {
       </div>
 
       {/* DECODE Recent Activity */}
-      <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+      <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
         <CardHeader className="pb-2 px-4 sm:px-6">
           <CardTitle className="text-sm flex items-center gap-2">
             <FileSearch className="w-4 h-4 text-indigo-500 shrink-0" />
@@ -210,15 +210,15 @@ export function OperationsTab() {
           <ScrollArea className="h-[200px]">
             <div className="space-y-1.5">
               {ops.decode.recentLogs.map((log: any, i: number) => (
-                <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10">
+                <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10 transition-colors duration-200 hover:bg-muted/20">
                   <Badge variant="outline" className={cn("text-[8px] h-4 px-1.5 shrink-0",
                     log.success ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20'
                   )}>
                     {log.success ? '✓' : '✗'}
                   </Badge>
                   <span className="text-[10px] font-mono text-muted-foreground/60 truncate flex-1">{log.model || log.provider}</span>
-                  <span className="text-[9px] font-mono text-muted-foreground/40 shrink-0">{log.tokens_used || 0} tok</span>
-                  <span className="text-[9px] font-mono text-muted-foreground/40 shrink-0">{log.response_time_ms || 0}ms</span>
+                  <span className="text-[9px] font-mono tabular-nums text-muted-foreground/40 shrink-0">{log.tokens_used || 0} tok</span>
+                  <span className="text-[9px] font-mono tabular-nums text-muted-foreground/40 shrink-0">{log.response_time_ms || 0}ms</span>
                 </div>
               ))}
               {ops.decode.recentLogs.length === 0 && (

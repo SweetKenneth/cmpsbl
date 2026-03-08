@@ -194,31 +194,31 @@ export function DefenseAnalytics() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{stats?.total || 0}</p>
+        <Card className="p-4 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold font-mono tabular-nums">{stats?.total || 0}</p>
           <p className="text-xs text-muted-foreground">Total Events</p>
         </Card>
-        <Card className="p-4 text-center border-red-500/20">
-          <p className="text-2xl font-bold text-red-500">{stats?.blocked || 0}</p>
+        <Card className="p-4 text-center border-red-500/20 transition-all duration-300 hover:border-red-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-red-500 font-mono tabular-nums">{stats?.blocked || 0}</p>
           <p className="text-xs text-muted-foreground">Blocked</p>
         </Card>
-        <Card className="p-4 text-center border-amber-500/20">
-          <p className="text-2xl font-bold text-amber-500">{stats?.challenged || 0}</p>
+        <Card className="p-4 text-center border-amber-500/20 transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-amber-500 font-mono tabular-nums">{stats?.challenged || 0}</p>
           <p className="text-xs text-muted-foreground">Challenged</p>
         </Card>
-        <Card className="p-4 text-center border-blue-500/20">
-          <p className="text-2xl font-bold text-blue-500">{stats?.monitored || 0}</p>
+        <Card className="p-4 text-center border-blue-500/20 transition-all duration-300 hover:border-blue-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-blue-500 font-mono tabular-nums">{stats?.monitored || 0}</p>
           <p className="text-xs text-muted-foreground">Monitored</p>
         </Card>
-        <Card className="p-4 text-center">
-          <p className={`text-2xl font-bold ${riskColor(stats?.avgRisk || 0)}`}>{stats?.avgRisk || 0}</p>
+        <Card className="p-4 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className={`text-2xl font-bold font-mono tabular-nums ${riskColor(stats?.avgRisk || 0)}`}>{stats?.avgRisk || 0}</p>
           <p className="text-xs text-muted-foreground">Avg Risk Score</p>
         </Card>
       </div>
 
       {/* Trend Indicator */}
       {stats && (
-        <Card className="p-4 flex items-center gap-3">
+        <Card className="p-4 flex items-center gap-3 transition-all duration-300 hover:border-primary/15">
           <TrendingUp className={`w-5 h-5 ${
             stats.recentTrend === 'rising' ? 'text-red-500' : 
             stats.recentTrend === 'declining' ? 'text-emerald-500' : 'text-muted-foreground'
@@ -313,7 +313,7 @@ export function DefenseAnalytics() {
         <TabsContent value="threats" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Action Distribution */}
-            <Card className="p-6">
+            <Card className="p-6 transition-all duration-300 hover:border-primary/15">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <BarChart3 className="w-4 h-4" />
                 Action Distribution
@@ -331,7 +331,7 @@ export function DefenseAnalytics() {
                           <Icon className={`w-3.5 h-3.5 ${config.color}`} />
                           {config.label}
                         </span>
-                        <span className="font-mono text-xs">{count} ({pct}%)</span>
+                        <span className="font-mono tabular-nums text-xs">{count} ({pct}%)</span>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <div
@@ -346,7 +346,7 @@ export function DefenseAnalytics() {
             </Card>
 
             {/* Risk Score Distribution */}
-            <Card className="p-6">
+            <Card className="p-6 transition-all duration-300 hover:border-primary/15">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 Risk Breakdown

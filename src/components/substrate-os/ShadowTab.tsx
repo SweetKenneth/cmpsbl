@@ -104,13 +104,13 @@ export function ShadowTab() {
           { label: 'Escalations', value: probeStats?.totalEscalations ?? 0, icon: Shield, color: probeStats?.totalEscalations ? 'text-red-400' : 'text-muted-foreground' },
           { label: 'Executors', value: probeStats?.executorCount ?? 0, icon: Eye, color: 'text-cyan-400' },
         ].map(stat => (
-          <Card key={stat.label} className="border-border/20">
+          <Card key={stat.label} className="border-border/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
                 <stat.icon className={cn("w-3 h-3", stat.color)} />
                 {stat.label}
               </div>
-              <div className={cn("text-2xl font-bold", stat.color)}>
+              <div className={cn("text-2xl font-bold font-mono tabular-nums", stat.color)}>
                 {isLoading ? '—' : stat.value}
               </div>
             </CardContent>
@@ -153,7 +153,7 @@ export function ShadowTab() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20 transition-all duration-200 hover:bg-muted/40 hover:border-border/30"
                   >
                     <div className={cn("w-2 h-2 rounded-full shrink-0",
                       esc.severity === 'critical' ? 'bg-red-500' :

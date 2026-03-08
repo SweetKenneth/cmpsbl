@@ -449,13 +449,13 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-emerald-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
-            <p className="text-2xl font-mono font-bold text-emerald-400">{backups?.length || 0}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-emerald-400">{backups?.length || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-cyan-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Latest</p>
             <p className="text-sm font-mono text-cyan-400">
@@ -463,21 +463,21 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </p>
           </CardContent>
         </Card>
-        <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-purple-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Records</p>
-            <p className="text-2xl font-mono font-bold text-purple-400">{totalRecords.toLocaleString()}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-purple-400">{totalRecords.toLocaleString()}</p>
           </CardContent>
         </Card>
-        <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02]">
+        <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Permanent</p>
-            <p className="text-2xl font-mono font-bold text-amber-400">{permanentBackups.length}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-amber-400">{permanentBackups.length}</p>
           </CardContent>
         </Card>
         <Card className={cn(
-          "border bg-white/5 dark:bg-white/[0.02]",
-          hasFailsafe ? "border-green-500/20" : "border-red-500/20"
+          "border bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm",
+          hasFailsafe ? "border-green-500/20 hover:border-green-500/30" : "border-red-500/20 hover:border-red-500/30"
         )}>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Failsafe</p>
