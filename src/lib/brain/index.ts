@@ -132,6 +132,10 @@ export async function storeMemory(
     }
 
     // Use the appropriate table based on tier
+    // Infer source_module from context
+    const sourceModule = context === 'code' ? 'engineering' : context === 'architecture' ? 'architecture' : 'general';
+    const category = context || 'uncategorized';
+
     if (tier === 'hot') {
       const { data, error } = await supabase
         .from('brain_memory_hot')
@@ -141,6 +145,8 @@ export async function storeMemory(
           value_score: importance,
           tags: options?.tags || [],
           metadata: { ttl_days: options?.ttl_days },
+          source_module: sourceModule,
+          category,
         })
         .select('id')
         .single();
@@ -156,6 +162,8 @@ export async function storeMemory(
           value_score: importance,
           tags: options?.tags || [],
           metadata: { ttl_days: options?.ttl_days },
+          source_module: sourceModule,
+          category,
         })
         .select('id')
         .single();
@@ -169,6 +177,8 @@ export async function storeMemory(
           summary: content,
           tags: { context, user_tags: options?.tags || [] },
           value_score: importance,
+          source_module: sourceModule,
+          category,
         })
         .select('id')
         .single();

@@ -208,6 +208,8 @@ export async function runBatchCompression(
             summary: compressed.summary,
             source_refs: compressed.originalIds,
             compression_level: Math.round(compressed.compressionRatio),
+            source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',
+            category: batch[0]?.context || 'uncategorized',
             tags: {
               semantic_hash: compressed.semanticHash,
               cluster_tags: compressed.clusterTags,

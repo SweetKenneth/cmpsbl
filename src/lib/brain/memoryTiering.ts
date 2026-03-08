@@ -43,33 +43,21 @@ export interface TieringResult {
  */
 export async function getTierStats(): Promise<TierStats> {
   try {
-    const [hotResult, warmResult, coldResult] = await Promise.all([
-      supabase
-        .from('brain_memory_hot')
-        .select('value_score'),
-      supabase
-        .from('brain_memory_warm')
-        .select('value_score'),
-      supabase
-        .from('brain_memory_cold')
-        .select('value_score'),
+    const [hotCount, warmCount, coldCount] = await Promise.all([
+      supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
     ]);
 
-    const calcAvg = (data: any[]) => {
-      if (!data || data.length === 0) return 0;
-      const sum = data.reduce((acc, d) => acc + (d.value_score || 0), 0);
-      return sum / data.length;
-    };
-
-    const hotData = hotResult.data || [];
-    const warmData = warmResult.data || [];
-    const coldData = coldResult.data || [];
+    const hc = hotCount.count ?? 0;
+    const wc = warmCount.count ?? 0;
+    const cc = coldCount.count ?? 0;
 
     return {
-      hot: { count: hotData.length, avgValueScore: calcAvg(hotData) },
-      warm: { count: warmData.length, avgValueScore: calcAvg(warmData) },
-      cold: { count: coldData.length, avgValueScore: calcAvg(coldData) },
-      total: hotData.length + warmData.length + coldData.length,
+      hot: { count: hc, avgValueScore: 0 },
+      warm: { count: wc, avgValueScore: 0 },
+      cold: { count: cc, avgValueScore: 0 },
+      total: hc + wc + cc,
     };
   } catch (error) {
     console.error('Error getting tier stats:', error);
@@ -346,11 +334,13 @@ export async function restoreMemory(prunedId: string): Promise<boolean> {
     const { error: insertError } = await supabase
       .from('brain_memory_warm')
       .insert({
-        content: pruned.content_preview, // Limited content from preview
+        content: pruned.content_preview,
         context: pruned.context,
         value_score: Math.max(0.35, (pruned.value_score || 0) + 0.1),
         tags: { restored: true, original_tier: pruned.original_tier },
         metadata: { restored_at: new Date().toISOString() },
+        source_module: 'general',
+        category: pruned.context || 'uncategorized',
       });
 
     if (insertError) throw insertError;

@@ -264,12 +264,57 @@ class DriftDetector {
   }
 
   private forward(input: Float32Array): Float32Array {
-    // Simplified forward pass (identity approximation for initial model)
-    // Real implementation would do matrix multiplications through encoder-decoder
-    const output = new Float32Array(EMBEDDING_DIM);
-    for (let i = 0; i < EMBEDDING_DIM; i++) {
-      output[i] = input[i] * 0.95 + 0.05 * Math.random(); // slight noise
+    if (!this.encoderW1 || !this.encoderW2 || !this.decoderW1 || !this.decoderW2) {
+      // No trained weights — identity approximation with deterministic perturbation
+      const output = new Float32Array(EMBEDDING_DIM);
+      for (let i = 0; i < EMBEDDING_DIM; i++) {
+        // Deterministic noise based on input value and position
+        const noise = Math.sin(input[i] * 1000 + i) * 0.05;
+        output[i] = input[i] * 0.95 + noise;
+      }
+      return output;
     }
+
+    // Encoder: input(384) → hidden1(128) via matrix multiply + ReLU
+    const hidden1 = new Float32Array(HIDDEN_DIM_1);
+    for (let j = 0; j < HIDDEN_DIM_1; j++) {
+      let sum = 0;
+      for (let i = 0; i < EMBEDDING_DIM; i++) {
+        sum += input[i] * this.encoderW1[i * HIDDEN_DIM_1 + j];
+      }
+      hidden1[j] = Math.max(0, sum); // ReLU
+    }
+
+    // Encoder: hidden1(128) → hidden2(64)
+    const hidden2 = new Float32Array(HIDDEN_DIM_2);
+    for (let j = 0; j < HIDDEN_DIM_2; j++) {
+      let sum = 0;
+      for (let i = 0; i < HIDDEN_DIM_1; i++) {
+        sum += hidden1[i] * this.encoderW2[i * HIDDEN_DIM_2 + j];
+      }
+      hidden2[j] = Math.max(0, sum);
+    }
+
+    // Decoder: hidden2(64) → hidden3(128)
+    const hidden3 = new Float32Array(HIDDEN_DIM_1);
+    for (let j = 0; j < HIDDEN_DIM_1; j++) {
+      let sum = 0;
+      for (let i = 0; i < HIDDEN_DIM_2; i++) {
+        sum += hidden2[i] * this.decoderW1[i * HIDDEN_DIM_1 + j];
+      }
+      hidden3[j] = Math.max(0, sum);
+    }
+
+    // Decoder: hidden3(128) → output(384)
+    const output = new Float32Array(EMBEDDING_DIM);
+    for (let j = 0; j < EMBEDDING_DIM; j++) {
+      let sum = 0;
+      for (let i = 0; i < HIDDEN_DIM_1; i++) {
+        sum += hidden3[i] * this.decoderW2[i * EMBEDDING_DIM + j];
+      }
+      output[j] = sum; // Linear output layer
+    }
+
     return output;
   }
 
