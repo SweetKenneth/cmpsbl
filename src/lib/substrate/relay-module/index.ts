@@ -148,14 +148,18 @@ const DEDUP_MAX_SIZE = 5000;
 // CLM#12: Content-Hash Deduplication
 // ═══════════════════════════════════════════════════════════════════
 function generateContentHash(target: string, payload: unknown): string {
-  const content = `${target}::${JSON.stringify(payload)}`;
-  let hash = 0;
+  // Use a longer seed and FNV-1a-inspired mixing for better collision resistance
+  const content = `relay:${target}::${JSON.stringify(payload)}::${typeof payload}`;
+  let h1 = 0x811c9dc5; // FNV offset basis
+  let h2 = 0;
   for (let i = 0; i < content.length; i++) {
     const char = content.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+    h1 ^= char;
+    h1 = Math.imul(h1, 0x01000193); // FNV prime
+    h2 = ((h2 << 5) - h2) + char;
+    h2 = h2 & h2;
   }
-  return `dhash-${Math.abs(hash).toString(36)}`;
+  return `dhash-${(h1 >>> 0).toString(36)}-${Math.abs(h2).toString(36)}`;
 }
 
 function isDuplicate(hash: string): boolean {
@@ -470,28 +474,62 @@ export async function generateWebhookSignatureAsync(target: string, payload: str
   return `t=${timestamp},v1=${signature}`;
 }
 
+/**
+ * Synchronous webhook signature verification (uses djb2 fallback).
+ * For security-critical paths, prefer verifyWebhookSignatureAsync.
+ */
 export function verifyWebhookSignature(target: string, payload: string, signatureHeader: string): SignatureVerificationResult {
   const config = signatureConfigs.get(target);
   if (!config) return { valid: false, reason: 'No signature config registered for target' };
 
+  const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
+  if (!parsed.ok) return (parsed as { ok: false; result: SignatureVerificationResult }).result;
+
+  const expectedSig = simpleHmac(config.secret, `${parsed.timestamp}.${payload}`);
+  const valid = constantTimeEqual(parsed.receivedSig, expectedSig);
+
+  return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: parsed.ageSeconds };
+}
+
+/**
+ * Async webhook signature verification using real HMAC-SHA256.
+ * Prefer this for security-critical verification paths.
+ */
+export async function verifyWebhookSignatureAsync(target: string, payload: string, signatureHeader: string): Promise<SignatureVerificationResult> {
+  const config = signatureConfigs.get(target);
+  if (!config) return { valid: false, reason: 'No signature config registered for target' };
+
+  const parsed = parseSignatureHeader(signatureHeader, config.timestampTolerance);
+  if (!parsed.ok) return (parsed as { ok: false; result: SignatureVerificationResult }).result;
+
+  const expectedSig = await cryptoHmacSha256(config.secret, `${parsed.timestamp}.${payload}`);
+  const valid = constantTimeEqual(parsed.receivedSig, expectedSig);
+
+  return { valid, reason: valid ? 'Signature verified (SHA-256)' : 'Signature mismatch', timestampAge: parsed.ageSeconds };
+}
+
+/** Shared header parsing logic for sync/async verify paths */
+function parseSignatureHeader(
+  signatureHeader: string,
+  timestampTolerance: number,
+): { ok: true; timestamp: number; receivedSig: string; ageSeconds: number } | { ok: false; result: SignatureVerificationResult } {
   const parts = signatureHeader.split(',');
   const timestampPart = parts.find(p => p.startsWith('t='));
   const sigPart = parts.find(p => p.startsWith('v1='));
 
-  if (!timestampPart || !sigPart) return { valid: false, reason: 'Invalid signature format' };
+  if (!timestampPart || !sigPart) return { ok: false, result: { valid: false, reason: 'Invalid signature format' } };
 
-  const timestamp = parseInt(timestampPart.slice(2));
+  const timestamp = parseInt(timestampPart.slice(2), 10);
+  if (Number.isNaN(timestamp)) return { ok: false, result: { valid: false, reason: 'Invalid timestamp in signature' } };
+
   const receivedSig = sigPart.slice(3);
-
   const ageSeconds = Math.abs(Date.now() / 1000 - timestamp);
-  if (ageSeconds > config.timestampTolerance) {
-    return { valid: false, reason: `Timestamp too old (${Math.round(ageSeconds)}s)`, timestampAge: ageSeconds };
+
+  if (ageSeconds > timestampTolerance) {
+    return { ok: false, result: { valid: false, reason: `Timestamp too old (${Math.round(ageSeconds)}s)`, timestampAge: ageSeconds } };
   }
 
-  const expectedSig = simpleHmac(config.secret, `${timestamp}.${payload}`);
-  const valid = constantTimeEqual(receivedSig, expectedSig);
-
-  return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: ageSeconds };
+  return { ok: true, timestamp, receivedSig, ageSeconds };
 }
 
 /**
@@ -556,8 +594,13 @@ export function getRelayState(): RelayModuleState {
     ...state,
     signatureConfigs: new Map(signatureConfigs),
     failoverRoutes: new Map(state.failoverRoutes),
-    deduplicationHashes: new Set(), // Don't expose internal hashes
+    deduplicationHashes: new Set(state.deduplicationHashes), // Expose copy for hardening facade reads
   };
+}
+
+/** Check dedup membership without side-effects (for hardening facade) */
+export function isKnownHash(hash: string): boolean {
+  return state.deduplicationHashes.has(hash);
 }
 
 export function getRelayHealth(): number {
