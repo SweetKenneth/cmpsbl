@@ -447,7 +447,7 @@ export function AccountTab() {
                 { label: 'Email', value: user?.email?.split('@')[0] ?? '—', icon: Mail },
                 { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—', icon: Calendar },
               ].map(stat => (
-                <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1">
+                <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1 transition-all duration-300 hover:border-primary/15 hover:bg-muted/40">
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 font-mono uppercase tracking-wider">
                     <stat.icon className="w-3 h-3" />
                     {stat.label}
