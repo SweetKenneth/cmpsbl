@@ -288,8 +288,8 @@ async function runTeacherStudent(supabase: any, apiKey: string, batchSize: numbe
     // Find recent brain events with learning completions that haven't been distilled
     const { data: events } = await supabase
       .from("brain_events")
-      .select("id, event_type, module, summary, metadata, created_at")
-      .in("event_type", ["learning_complete", "insight_generated", "pattern_discovered"])
+      .select("id, event_type, module, data, outcome, created_at")
+      .in("event_type", ["technical_learning_cycle", "module_learning_insight", "learning_complete", "insight_generated", "pattern_discovered", "clm_cycle_complete"])
       .order("created_at", { ascending: false })
       .limit(50);
 
@@ -315,12 +315,17 @@ async function runTeacherStudent(supabase: any, apiKey: string, batchSize: numbe
     const batch = undistilled.slice(0, batchSize);
 
     for (const event of batch) {
+      // Extract summary from data column (brain_events uses 'data' not 'summary')
+      const eventData = event.data || {};
+      const eventSummary = eventData.title || eventData.content || eventData.result || JSON.stringify(eventData).slice(0, 300);
+      const eventMetadata = eventData;
+
       const prompt = `You are a knowledge distillation teacher. A learning system produced this insight:
 
 MODULE: ${event.module}
 TYPE: ${event.event_type}
-SUMMARY: ${event.summary}
-METADATA: ${JSON.stringify(event.metadata || {}).slice(0, 500)}
+SUMMARY: ${eventSummary}
+METADATA: ${JSON.stringify(eventMetadata).slice(0, 500)}
 
 TASK: Generate a reasoning trace that captures the decision-making pattern behind this insight. Then distill it into a compact, reusable pattern that a smaller/faster model can apply without re-deriving the reasoning.
 
@@ -344,7 +349,7 @@ Token Savings Estimate: <percentage of tokens saved vs full reasoning>`;
             module: event.module,
             teacher_model: TEACHER_MODEL,
             student_model: STUDENT_MODEL,
-            prompt: `${event.event_type}: ${event.summary}`,
+            prompt: `${event.event_type}: ${eventSummary}`,
             teacher_response: parsed.reasoningTrace,
             distilled_pattern: parsed.distilledPattern,
             pattern_confidence: parsed.confidence,

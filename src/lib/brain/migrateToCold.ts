@@ -74,6 +74,8 @@ export async function migrateStaleMemories(
               summary: memory.content,
               source_refs: [memory.id],
               compression_level: 2,
+              source_module: memory.source_module || 'general',
+              category: memory.category || 'uncategorized',
               tags: {
                 context: memory.context,
                 archived: true,
@@ -157,6 +159,8 @@ async function migrateGroup(
                 summary: compressed.summary,
                 source_refs: compressed.sourceRefs as any,
                 compression_level: compressed.compressionLevel,
+                source_module: batch[0]?.source_module || 'general',
+                category: batch[0]?.category || context,
                 tags: {
                   context,
                   archived: true,
@@ -200,6 +204,8 @@ async function migrateSingleMemory(
         source_refs: [memory.id],
         embedding: memory.embedding ? memory.embedding.slice(0, 512) : null,
         compression_level: compressionLevel,
+        source_module: memory.source_module || 'general',
+        category: memory.category || 'uncategorized',
         tags: {
           ...memory.tags,
           context: memory.context,

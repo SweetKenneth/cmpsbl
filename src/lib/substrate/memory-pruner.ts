@@ -203,18 +203,41 @@ async function pruneCold(capacity: number): Promise<PruneResult> {
 }
 
 /**
- * Purge stale brain_events older than 7 days.
+ * Purge stale brain_events — tiered retention:
+ *   High-volume CLM telemetry: 3 days
+ *   Standard events: 7 days
  */
 async function purgeStaleBrainEvents(): Promise<number> {
-  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
   let totalPurged = 0;
+
+  // Phase 1: High-volume telemetry events — 3-day retention
+  const telemetryCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+  const highVolumeTypes = ['deep_think', 'technical_learning_cycle', 'module_learning_insight', 'brain_status_check', 'clm_server_cycle'];
 
   for (let batch = 0; batch < 20; batch++) {
     try {
       const { data: ids } = await supabase
         .from('brain_events')
         .select('id')
-        .lt('created_at', cutoff)
+        .in('event_type', highVolumeTypes)
+        .lt('created_at', telemetryCutoff)
+        .limit(1000);
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_events').delete().in('id', ids.map(r => r.id));
+      totalPurged += ids.length;
+    } catch { break; }
+  }
+
+  // Phase 2: All other events — 7-day retention
+  const standardCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  for (let batch = 0; batch < 10; batch++) {
+    try {
+      const { data: ids } = await supabase
+        .from('brain_events')
+        .select('id')
+        .lt('created_at', standardCutoff)
         .limit(1000);
 
       if (!ids || ids.length === 0) break;
