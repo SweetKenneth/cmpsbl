@@ -43,7 +43,9 @@ const DEFAULT_CONFIG: CircuitBreakerConfig = {
   healthPenaltyRate: 25,
 };
 
-// In-memory state for circuit breakers
+// In-memory state for circuit breakers (bounded)
+const MAX_CIRCUIT_BREAKERS = 50;
+const MAX_HEALING_ACTIONS = 100;
 const circuitBreakers: Map<string, ServiceHealth> = new Map();
 const healingActions: SelfHealAction[] = [];
 const config = { ...DEFAULT_CONFIG };
