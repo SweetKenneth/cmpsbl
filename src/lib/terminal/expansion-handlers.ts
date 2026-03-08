@@ -97,7 +97,7 @@ const DOMAIN_COMMANDS: Record<string, Record<string, DomainCmd>> = {
     audit: { desc: 'Ethics audit trail', resolve: (s) => ({ evaluations: ((s.evaluations as any[]) ?? []).slice(-20), totalEvaluations: s.totalEvaluations ?? 0 }) },
     framework: { desc: 'Active ethical frameworks', resolve: () => ({ frameworks: ['utilitarian', 'deontological', 'virtue_ethics', 'care_ethics', 'rights_based', 'justice_theory'], active: true }) },
     overrides: { desc: 'Override log', resolve: (s) => ({ blockedActions: s.blockedActions ?? 0 }) },
-    score: { desc: 'Composite ethics score', resolve: (s) => ({ score: s.avgEthicalScore ?? 100, grade: (s.avgEthicalScore ?? 100) >= 80 ? 'A' : (s.avgEthicalScore ?? 100) >= 60 ? 'B' : 'C' }) },
+    score: { desc: 'Composite ethics score', resolve: (s) => { const avg = (s.avgEthicalScore as number) ?? 100; return { score: avg, grade: avg >= 80 ? 'A' : avg >= 60 ? 'B' : 'C' }; } },
   },
   phantom: {
     anonymize: { desc: 'Anonymization engine', resolve: (s) => ({ totalAnonymizations: s.totalAnonymizations ?? 0, methods: ['k-anonymity', 'differential-privacy', 'data-masking', 'tokenization'] }) },
