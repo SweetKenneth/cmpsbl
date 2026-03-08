@@ -286,7 +286,12 @@ export function completeBootSequence(): BootSequence | null {
 }
 
 export function getBootSequence(): BootSequence | null {
-  return bootSequence ? { ...bootSequence } : null;
+  if (!bootSequence) return null;
+  return {
+    ...bootSequence,
+    modules_booted: [...bootSequence.modules_booted],
+    modules_failed: [...bootSequence.modules_failed],
+  };
 }
 
 // ============ Module Registry ============
