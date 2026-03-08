@@ -13,6 +13,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useCallback,
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
+import { isEditorPreviewEnv } from '@/lib/system/isLovableEditorPreviewEnv';
 
 interface ModuleStatus {
   active: boolean;
