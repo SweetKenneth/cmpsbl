@@ -481,7 +481,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.04, duration: 0.35 }}
-                className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <h3 className="text-sm sm:text-base font-bold text-foreground mb-1">{dept.name}</h3>
                 <p className="text-[10px] sm:text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
