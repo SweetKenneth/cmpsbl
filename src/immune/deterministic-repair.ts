@@ -47,6 +47,19 @@ const STRING_FIELDS = new Set([
   'channel', 'source', 'seed', 'traceId', 'standard', 'riskLevel', 'severity',
 ]);
 
+/** Known object-expected fields — must NOT be stringified */
+const OBJECT_FIELDS = new Set([
+  'constraints', 'context', 'feedback', 'payload', 'preferences',
+  'impactMetrics', 'metadata', 'steps', 'dependencies', 'modules',
+]);
+
+/** Known number-expected fields — must NOT be coerced to string */
+const NUMBER_FIELDS = new Set([
+  'depth', 'priority', 'tokens', 'computeMs', 'costMillicents',
+  'creativity', 'reinforcement', 'threshold', 'windowSize', 'limit',
+  'windowMs', 'minCorrelation', 'baseline', 'window', 'confidence',
+]);
+
 /** Valid wcagLevel values */
 const VALID_WCAG_LEVELS = new Set(['A', 'AA', 'AAA']);
 
