@@ -1,5 +1,5 @@
 /**
- * Account Tab — Personalized profile hub with quick links navigation.
+ * Account Tab — Personalized profile hub with discovery stats & quick links.
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -18,11 +18,12 @@ import { Link } from 'react-router-dom';
 import {
   Camera, Save, User, Mail, Calendar, Sparkles, ExternalLink,
   Flame, BookOpen, Code2, FileText, Map, Crown, Shield, Compass,
-  Loader2, Check, Pencil,
+  Loader2, Check, Pencil, Brain, TrendingUp, Pickaxe, Trophy, Zap,
 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { formatDistanceToNow } from 'date-fns';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 interface ProfileData {
   display_name: string | null;
@@ -30,6 +31,16 @@ interface ProfileData {
   avatar_url: string | null;
   email: string | null;
   created_at: string;
+}
+
+interface DiscoveryStats {
+  totalDiscovered: number;
+  highestScore: number;
+  highestName: string;
+  totalMines: number;
+  streakDays: number;
+  avgScore: number;
+  categoryCounts: Record<string, number>;
 }
 
 const QUICK_LINKS = [
@@ -40,7 +51,7 @@ const QUICK_LINKS = [
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
   { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
   { label: 'System Integrity', href: '/integrity', icon: Shield, description: 'Health checks & circuit breakers', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
-  { label: 'Investors', href: '/investors', icon: Compass, description: 'Traction, metrics & vision', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
+  { label: 'Memories', href: '/blog/the-first-line-of-code', icon: Brain, description: 'Read the origin story & build log', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
 ];
 
 export function AccountTab() {
