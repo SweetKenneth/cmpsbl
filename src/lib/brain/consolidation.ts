@@ -420,8 +420,8 @@ function calculateContentSimilarity(a: string, b: string): number {
 function tokenize(text: string): string[] {
   return text
     .toLowerCase()
-    .replace(/[^\\w\\s]/g, ' ')
-    .split(/\\s+/)
+    .replace(/[^\w\s]/g, ' ')
+    .split(/\s+/)
     .filter(t => t.length > 2);
 }
 
