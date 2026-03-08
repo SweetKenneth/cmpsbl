@@ -413,10 +413,11 @@ export async function safeExecute<T>(
   module: SubstrateModuleName,
   operation: string,
   fn: () => Promise<T>,
-  fallback?: T
+  fallback?: T,
+  timeoutMs: number = coreConfig.default_timeout_ms
 ): Promise<{ success: boolean; data?: T; error?: string }> {
   try {
-    const data = await fn();
+    const data = await withTimeout(fn, timeoutMs, `${module}.${operation}`);
     return { success: true, data };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
