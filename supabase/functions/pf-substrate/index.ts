@@ -2232,6 +2232,8 @@ async function handleBrain(
                 access_count: memory.access_count || 0,
                 decay_rate: 0.01,
                 source_memory_id: memory.id,
+                source_module: memory.source_module || 'general',
+                category: memory.category || 'uncategorized',
                 tags: memory.tags,
                 metadata: memory.metadata,
                 demoted_at: new Date().toISOString(),
