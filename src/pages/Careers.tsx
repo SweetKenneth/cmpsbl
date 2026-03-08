@@ -160,7 +160,7 @@ export default function Careers() {
             <p className="text-sm sm:text-base text-muted-foreground mb-6 leading-relaxed">
               We're always looking for exceptional people. Even if you don't see a listed role, reach out — we'd love to hear from you.
             </p>
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/contact">
                 Send Us Your Story <ArrowRight className="w-4 h-4" />
               </Link>
