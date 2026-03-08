@@ -345,7 +345,15 @@ export function scheduleRetry(deliveryId: string): { scheduled: boolean; nextRet
 }
 
 export function setRetryPolicy(policy: Partial<RetryPolicy>): void {
-  Object.assign(state.retryPolicy, policy);
+  if (policy.baseDelayMs !== undefined) state.retryPolicy.baseDelayMs = clampNumber(policy.baseDelayMs, 100, 30000, DEFAULT_RETRY_POLICY.baseDelayMs);
+  if (policy.maxDelayMs !== undefined) state.retryPolicy.maxDelayMs = clampNumber(policy.maxDelayMs, 1000, 300000, DEFAULT_RETRY_POLICY.maxDelayMs);
+  if (policy.multiplier !== undefined) state.retryPolicy.multiplier = clampNumber(policy.multiplier, 1, 10, DEFAULT_RETRY_POLICY.multiplier);
+  if (policy.jitterFactor !== undefined) state.retryPolicy.jitterFactor = clampNumber(policy.jitterFactor, 0, 1, DEFAULT_RETRY_POLICY.jitterFactor);
+  if (policy.maxRetries !== undefined) state.retryPolicy.maxRetries = clampNumber(policy.maxRetries, 0, 20, DEFAULT_RETRY_POLICY.maxRetries);
+  // Ensure baseDelayMs ≤ maxDelayMs invariant
+  if (state.retryPolicy.baseDelayMs > state.retryPolicy.maxDelayMs) {
+    state.retryPolicy.baseDelayMs = state.retryPolicy.maxDelayMs;
+  }
   emit({ module: 'relay', event_type: 'retry_policy_updated', outcome: 'succeeded', data: { ...state.retryPolicy } });
 }
 
