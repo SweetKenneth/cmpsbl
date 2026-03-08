@@ -165,22 +165,22 @@ function detectCorrelativePatterns(cycles: DreamCycleData[]): DreamPattern[] {
   });
   
   // Find strong correlations
-  coOccurrence.forEach((innerMap, term1) => {
-    innerMap.forEach((count, term2) => {
-      if (count >= 3) {
-        patterns.push({
-          id: crypto.randomUUID(),
-          patternType: 'correlative',
-          description: `"${term1}" frequently improves alongside "${term2}"`,
-          frequency: count,
-          confidence: Math.min(0.9, 0.4 + count * 0.15),
-          relatedCycles: [],
-          insights: [`Consider unified improvement strategy for ${term1} and ${term2}`],
-          detectedAt: new Date().toISOString(),
-        });
-      }
-    });
-  });
+  for (const [pairKey, count] of coOccurrence) {
+    if (count >= 3) {
+      const [term1, term2] = pairKey.split('|');
+      
+      patterns.push({
+        id: crypto.randomUUID(),
+        patternType: 'correlative',
+        description: `"${term1}" frequently improves alongside "${term2}"`,
+        frequency: count,
+        confidence: Math.min(0.9, 0.4 + count * 0.15),
+        relatedCycles: [],
+        insights: [`Consider unified improvement strategy for ${term1} and ${term2}`],
+        detectedAt: new Date().toISOString(),
+      });
+    }
+  }
   
   return patterns.slice(0, 10); // Limit results
 }

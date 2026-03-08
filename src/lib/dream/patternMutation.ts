@@ -113,9 +113,9 @@
       mutationHistory.splice(0, mutationHistory.length - MAX_MUTATION_HISTORY);
     }
    
-   // Log mutation event
+   // Log mutation event (fire-and-forget)
    if (mutations.length > 0) {
-     await supabase.from('brain_events').insert({
+     supabase.from('brain_events').insert({
        module: 'dream',
        event_type: 'patterns.mutated',
        data: {
@@ -123,6 +123,8 @@
          avg_novelty: mutations.reduce((sum, m) => sum + m.novelty_score, 0) / mutations.length,
        } as unknown as Record<string, never>,
        outcome: 'success',
+     }).then(({ error }) => {
+       if (error) console.error('Failed to log mutation event:', error);
      });
    }
    

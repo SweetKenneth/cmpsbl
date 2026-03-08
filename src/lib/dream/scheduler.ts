@@ -312,9 +312,16 @@ export async function executePendingDreams(): Promise<{
       } catch (error) {
         console.error(`Dream execution error:`, error);
         
+        // Increment retry count; fail permanently after 3 retries
+        const retryCount = ((dream.payload as any)?.retry_count ?? 0) + 1;
+        const newStatus = retryCount >= 3 ? 'failed' : 'pending';
+        
         await supabase
           .from('brain_actions_queue')
-          .update({ status: 'pending' }) // Retry later
+          .update({ 
+            status: newStatus,
+            payload: { ...(dream.payload as any), retry_count: retryCount },
+          })
           .eq('id', dream.id);
         
         skipped++;
