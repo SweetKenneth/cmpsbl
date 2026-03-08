@@ -1701,6 +1701,152 @@ class SubstrateClient {
       return sebaAgent.handleCommand('thresholds', updates);
     },
   };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ESZ — Expansion Sovereignty Zone
+  // ═══════════════════════════════════════════════════════════════
+
+  sovereign = {
+    status: () => this.invoke({ module: 'sovereign', action: 'status' }),
+    pulse: () => this.invoke({ module: 'sovereign', action: 'pulse' }),
+    jurisdictions: () => this.invoke({ module: 'sovereign', action: 'jurisdictions' }),
+    classify: (subject: string) => this.invoke({ module: 'sovereign', action: 'classify', payload: { subject } }),
+  };
+
+  oracle = {
+    status: () => this.invoke({ module: 'oracle', action: 'status' }),
+    pulse: () => this.invoke({ module: 'oracle', action: 'pulse' }),
+    predict: (query: string, options?: Record<string, unknown>) => this.invoke({ module: 'oracle', action: 'predict', payload: { query, ...options } }),
+    forecast: (metric: string, horizon?: string) => this.invoke({ module: 'oracle', action: 'forecast', payload: { metric, horizon } }),
+  };
+
+  conscience = {
+    status: () => this.invoke({ module: 'conscience', action: 'status' }),
+    pulse: () => this.invoke({ module: 'conscience', action: 'pulse' }),
+    evaluate: (content: string) => this.invoke({ module: 'conscience', action: 'evaluate', payload: { content } }),
+    biasCheck: (content: string) => this.invoke({ module: 'conscience', action: 'bias_check', payload: { content } }),
+  };
+
+  treaty = {
+    status: () => this.invoke({ module: 'treaty', action: 'status' }),
+    pulse: () => this.invoke({ module: 'treaty', action: 'pulse' }),
+    contracts: () => this.invoke({ module: 'treaty', action: 'contracts' }),
+    verify: (contractId: string) => this.invoke({ module: 'treaty', action: 'verify', payload: { contract_id: contractId } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // EPZ — Expansion Perception Zone
+  // ═══════════════════════════════════════════════════════════════
+
+  compass = {
+    status: () => this.invoke({ module: 'compass', action: 'status' }),
+    pulse: () => this.invoke({ module: 'compass', action: 'pulse' }),
+    bearing: () => this.invoke({ module: 'compass', action: 'bearing' }),
+    scan: (horizon?: string) => this.invoke({ module: 'compass', action: 'scan', payload: { horizon } }),
+  };
+
+  echoMod = {
+    status: () => this.invoke({ module: 'echo', action: 'status' }),
+    pulse: () => this.invoke({ module: 'echo', action: 'pulse' }),
+    simulate: (scenario: string) => this.invoke({ module: 'echo', action: 'simulate', payload: { scenario } }),
+    replay: (eventId: string) => this.invoke({ module: 'echo', action: 'replay', payload: { event_id: eventId } }),
+  };
+
+  reflex = {
+    status: () => this.invoke({ module: 'reflex', action: 'status' }),
+    pulse: () => this.invoke({ module: 'reflex', action: 'pulse' }),
+    latency: () => this.invoke({ module: 'reflex', action: 'latency' }),
+    trigger: (signal: string) => this.invoke({ module: 'reflex', action: 'trigger', payload: { signal } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // EMZ — Expansion Manufacturing Zone
+  // ═══════════════════════════════════════════════════════════════
+
+  forge = {
+    status: () => this.invoke({ module: 'forge', action: 'status' }),
+    pulse: () => this.invoke({ module: 'forge', action: 'pulse' }),
+    generate: (template: string, params?: Record<string, unknown>) => this.invoke({ module: 'forge', action: 'generate', payload: { template, ...params } }),
+    templates: () => this.invoke({ module: 'forge', action: 'templates' }),
+  };
+
+  lingua = {
+    status: () => this.invoke({ module: 'lingua', action: 'status' }),
+    pulse: () => this.invoke({ module: 'lingua', action: 'pulse' }),
+    translate: (text: string, targetLang: string) => this.invoke({ module: 'lingua', action: 'translate', payload: { text, target_lang: targetLang } }),
+    detect: (text: string) => this.invoke({ module: 'lingua', action: 'detect', payload: { text } }),
+  };
+
+  harvest = {
+    status: () => this.invoke({ module: 'harvest', action: 'status' }),
+    pulse: () => this.invoke({ module: 'harvest', action: 'pulse' }),
+    ingest: (source: string, format?: string) => this.invoke({ module: 'harvest', action: 'ingest', payload: { source, format } }),
+    pipelines: () => this.invoke({ module: 'harvest', action: 'pipelines' }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // CSZ — Covert/Shadow Zone
+  // ═══════════════════════════════════════════════════════════════
+
+  evolutionMod = {
+    status: () => this.invoke({ module: 'evolution', action: 'status' }),
+    pulse: () => this.invoke({ module: 'evolution', action: 'pulse' }),
+    mutations: () => this.invoke({ module: 'evolution', action: 'mutations' }),
+    shadowRun: (proposalId: string) => this.invoke({ module: 'evolution', action: 'shadow_run', payload: { proposal_id: proposalId } }),
+  };
+
+  shadowMod = {
+    status: () => this.invoke({ module: 'shadow', action: 'status' }),
+    pulse: () => this.invoke({ module: 'shadow', action: 'pulse' }),
+    validate: (target: string) => this.invoke({ module: 'shadow', action: 'validate', payload: { target } }),
+    compare: (variantA: string, variantB: string) => this.invoke({ module: 'shadow', action: 'compare', payload: { variant_a: variantA, variant_b: variantB } }),
+  };
+
+  phantom = {
+    status: () => this.invoke({ module: 'phantom', action: 'status' }),
+    pulse: () => this.invoke({ module: 'phantom', action: 'pulse' }),
+    anonymize: (data: Record<string, unknown>) => this.invoke({ module: 'phantom', action: 'anonymize', payload: data }),
+    piiScan: (content: string) => this.invoke({ module: 'phantom', action: 'pii_scan', payload: { content } }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // Fields, Plane & Execution Additions
+  // ═══════════════════════════════════════════════════════════════
+
+  immunityMod = {
+    status: () => this.invoke({ module: 'immunity', action: 'status' }),
+    pulse: () => this.invoke({ module: 'immunity', action: 'pulse' }),
+    threats: () => this.invoke({ module: 'immunity', action: 'threats' }),
+    heal: (nodeId: string) => this.invoke({ module: 'immunity', action: 'heal', payload: { node_id: nodeId } }),
+  };
+
+  intentMod = {
+    status: () => this.invoke({ module: 'intent', action: 'status' }),
+    pulse: () => this.invoke({ module: 'intent', action: 'pulse' }),
+    classify: (message: string) => this.invoke({ module: 'intent', action: 'classify', payload: { message } }),
+    routes: () => this.invoke({ module: 'intent', action: 'routes' }),
+  };
+
+  governanceMod = {
+    status: () => this.invoke({ module: 'governance', action: 'status' }),
+    pulse: () => this.invoke({ module: 'governance', action: 'pulse' }),
+    policies: () => this.invoke({ module: 'governance', action: 'policies' }),
+    veto: (proposalId: string, reason: string) => this.invoke({ module: 'governance', action: 'veto', payload: { proposal_id: proposalId, reason } }),
+  };
+
+  medic = {
+    status: () => this.invoke({ module: 'medic', action: 'status' }),
+    pulse: () => this.invoke({ module: 'medic', action: 'pulse' }),
+    diagnose: (nodeId?: string) => this.invoke({ module: 'medic', action: 'diagnose', payload: { node_id: nodeId } }),
+    repair: (nodeId: string) => this.invoke({ module: 'medic', action: 'repair', payload: { node_id: nodeId } }),
+  };
+
+  nerve = {
+    status: () => this.invoke({ module: 'nerve', action: 'status' }),
+    pulse: () => this.invoke({ module: 'nerve', action: 'pulse' }),
+    signals: () => this.invoke({ module: 'nerve', action: 'signals' }),
+    broadcast: (signal: string, payload?: Record<string, unknown>) => this.invoke({ module: 'nerve', action: 'broadcast', payload: { signal, ...payload } }),
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
@@ -1738,7 +1884,7 @@ export const matrix = {
   },
 };
 
-// Quick access — 38 nodes across 12 sectors
+// Quick access — 40 nodes across 12 sectors
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;
@@ -1754,7 +1900,7 @@ export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
 export const seba = substrate.seba;
-// Zone + module aliases
+// Infrastructure Six + Encode
 export const memoryMod = substrate.memory;
 export const relayMod = substrate.relay;
 export const auditMod = substrate.audit;
@@ -1762,3 +1908,26 @@ export const identityMod = substrate.identity;
 export const economyMod = substrate.economy;
 export const sandboxMod = substrate.sandboxMod;
 export const encodeMod = substrate.encode;
+// ESZ — Expansion Sovereignty Zone
+export const sovereignMod = substrate.sovereign;
+export const oracleMod = substrate.oracle;
+export const conscienceMod = substrate.conscience;
+export const treatyMod = substrate.treaty;
+// EPZ — Expansion Perception Zone
+export const compassMod = substrate.compass;
+export const echoMod = substrate.echoMod;
+export const reflexMod = substrate.reflex;
+// EMZ — Expansion Manufacturing Zone
+export const forgeMod = substrate.forge;
+export const linguaMod = substrate.lingua;
+export const harvestMod = substrate.harvest;
+// CSZ — Covert/Shadow Zone
+export const evolutionMod = substrate.evolutionMod;
+export const shadowMod = substrate.shadowMod;
+export const phantomMod = substrate.phantom;
+// Fields + Plane + Execution additions
+export const immunityMod = substrate.immunityMod;
+export const intentMod = substrate.intentMod;
+export const governanceMod = substrate.governanceMod;
+export const medicMod = substrate.medic;
+export const nerveMod = substrate.nerve;

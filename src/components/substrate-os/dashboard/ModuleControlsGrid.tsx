@@ -17,7 +17,14 @@ import {
   useCortexStatusOS, useInclusiveStatusOS,
   useMemoryModStatusOS, useRelayModStatusOS, useAuditModStatusOS,
   useIdentityModStatusOS, useEconomyModStatusOS, useSandboxModStatusOS,
-  useEncodeModStatusOS
+  useEncodeModStatusOS,
+  // Expansion nodes
+  useSovereignStatusOS, useOracleStatusOS, useConscienceStatusOS, useTreatyStatusOS,
+  useCompassStatusOS, useEchoStatusOS, useReflexStatusOS,
+  useForgeStatusOS, useLinguaStatusOS, useHarvestStatusOS,
+  useEvolutionStatusOS, useShadowStatusOS, usePhantomStatusOS,
+  useImmunityStatusOS, useIntentStatusOS, useGovernanceStatusOS,
+  useMedicStatusOS, useNerveStatusOS,
 } from '@/hooks/useSubstrateOS';
 import { 
   useBrainReflectOS, useBrainDreamOS, useDreamCycleOS 
@@ -27,7 +34,7 @@ import {
 } from '@/hooks/useSubstrateOSEnhanced';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
+import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
 
 interface ModuleControlsGridProps {
   enabled: boolean;
@@ -56,6 +63,25 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const economyStatus = useEconomyModStatusOS();
   const sandboxStatus = useSandboxModStatusOS();
   const encodeStatus = useEncodeModStatusOS();
+  // Expansion nodes
+  const sovereignStatus = useSovereignStatusOS();
+  const oracleStatus = useOracleStatusOS();
+  const conscienceStatus = useConscienceStatusOS();
+  const treatyStatus = useTreatyStatusOS();
+  const compassStatus = useCompassStatusOS();
+  const echoStatus = useEchoStatusOS();
+  const reflexStatus = useReflexStatusOS();
+  const forgeStatus = useForgeStatusOS();
+  const linguaStatus = useLinguaStatusOS();
+  const harvestStatus = useHarvestStatusOS();
+  const evolutionStatus = useEvolutionStatusOS();
+  const shadowStatus = useShadowStatusOS();
+  const phantomStatus = usePhantomStatusOS();
+  const immunityStatus = useImmunityStatusOS();
+  const intentStatus = useIntentStatusOS();
+  const governanceStatus = useGovernanceStatusOS();
+  const medicStatus = useMedicStatusOS();
+  const nerveStatus = useNerveStatusOS();
 
   // Action mutations
   const brainReflect = useBrainReflectOS();
@@ -293,158 +319,167 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       id: 'sovereign', name: 'SOVEREIGN', layer: 'infrastructure' as const, icon: Globe,
       description: 'Jurisdiction classification & compliance',
       gradient: 'bg-gradient-to-r from-orange-400 to-amber-500', accentColor: 'bg-orange-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Zone', value: 'Active' }],
+      status: sovereignStatus,
+      metrics: [{ label: 'Zone', value: sovereignStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Sovereign: Jurisdiction classifier online'); },
+      onAction: async () => { const r = await sovereignMod.status(); toast.info(`Sovereign: ${r.success ? 'Classifier online' : 'Check failed'}`); },
     },
     {
       id: 'oracle', name: 'ORACLE', layer: 'infrastructure' as const, icon: Eye,
       description: 'Predictive analytics & forecasting',
       gradient: 'bg-gradient-to-r from-amber-400 to-yellow-500', accentColor: 'bg-amber-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Engine', value: 'Ready' }],
+      status: oracleStatus,
+      metrics: [{ label: 'Engine', value: oracleStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Oracle: Prediction engine online'); },
+      onAction: async () => { const r = await oracleMod.status(); toast.info(`Oracle: ${r.success ? 'Engine online' : 'Check failed'}`); },
     },
     {
       id: 'conscience', name: 'CONSCIENCE', layer: 'infrastructure' as const, icon: Brain,
       description: 'Ethical framework & bias detection',
       gradient: 'bg-gradient-to-r from-rose-400 to-pink-500', accentColor: 'bg-rose-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Ethics', value: 'Active' }],
+      status: conscienceStatus,
+      metrics: [{ label: 'Ethics', value: conscienceStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Conscience: Ethical framework online'); },
+      onAction: async () => { const r = await conscienceMod.status(); toast.info(`Conscience: ${r.success ? 'Framework online' : 'Check failed'}`); },
     },
     {
       id: 'treaty', name: 'TREATY', layer: 'infrastructure' as const, icon: ClipboardCheck,
       description: 'Contract engine & SLA compliance',
       gradient: 'bg-gradient-to-r from-emerald-400 to-green-500', accentColor: 'bg-emerald-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Contracts', value: 'Active' }],
+      status: treatyStatus,
+      metrics: [{ label: 'Contracts', value: treatyStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Treaty: Contract engine online'); },
+      onAction: async () => { const r = await treatyMod.status(); toast.info(`Treaty: ${r.success ? 'Engine online' : 'Check failed'}`); },
     },
     // ═══ EPZ — Expansion Perception Zone ═══
     {
       id: 'compass', name: 'COMPASS', layer: 'infrastructure' as const, icon: Globe,
       description: 'Strategic compass & horizon scanning',
       gradient: 'bg-gradient-to-r from-sky-400 to-blue-500', accentColor: 'bg-sky-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Bearing', value: 'Aligned' }],
+      status: compassStatus,
+      metrics: [{ label: 'Bearing', value: compassStatus.data?.success ? 'Aligned' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Compass: Strategic bearing aligned'); },
+      onAction: async () => { const r = await compassMod.status(); toast.info(`Compass: ${r.success ? 'Bearing aligned' : 'Check failed'}`); },
     },
     {
       id: 'echo', name: 'ECHO', layer: 'infrastructure' as const, icon: Radio,
       description: 'What-if simulation & replay',
       gradient: 'bg-gradient-to-r from-indigo-400 to-violet-500', accentColor: 'bg-indigo-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Simulator', value: 'Ready' }],
+      status: echoStatus,
+      metrics: [{ label: 'Simulator', value: echoStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Echo: Simulation engine ready'); },
+      onAction: async () => { const r = await echoMod.status(); toast.info(`Echo: ${r.success ? 'Simulator ready' : 'Check failed'}`); },
     },
     {
       id: 'reflex', name: 'REFLEX', layer: 'infrastructure' as const, icon: Zap,
       description: 'Edge compute & low-latency response',
       gradient: 'bg-gradient-to-r from-pink-400 to-rose-500', accentColor: 'bg-pink-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Edge', value: 'Active' }],
+      status: reflexStatus,
+      metrics: [{ label: 'Edge', value: reflexStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Reflex: Edge compute active'); },
+      onAction: async () => { const r = await reflexMod.status(); toast.info(`Reflex: ${r.success ? 'Edge active' : 'Check failed'}`); },
     },
     // ═══ EMZ — Expansion Manufacturing Zone ═══
     {
       id: 'forge', name: 'FORGE', layer: 'infrastructure' as const, icon: Cpu,
       description: 'Asset generation & templates',
       gradient: 'bg-gradient-to-r from-orange-500 to-red-500', accentColor: 'bg-orange-500',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Forge', value: 'Ready' }],
+      status: forgeStatus,
+      metrics: [{ label: 'Forge', value: forgeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Forge: Asset generation ready'); },
+      onAction: async () => { const r = await forgeMod.status(); toast.info(`Forge: ${r.success ? 'Ready' : 'Check failed'}`); },
     },
     {
       id: 'lingua', name: 'LINGUA', layer: 'infrastructure' as const, icon: Globe,
       description: 'Translation & localization engine',
       gradient: 'bg-gradient-to-r from-teal-400 to-cyan-500', accentColor: 'bg-teal-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Engine', value: 'Ready' }],
+      status: linguaStatus,
+      metrics: [{ label: 'Engine', value: linguaStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Lingua: Translation engine online'); },
+      onAction: async () => { const r = await linguaMod.status(); toast.info(`Lingua: ${r.success ? 'Engine online' : 'Check failed'}`); },
     },
     {
       id: 'phantom', name: 'PHANTOM', layer: 'infrastructure' as const, icon: Shield,
       description: 'Privacy engine & data anonymization',
       gradient: 'bg-gradient-to-r from-slate-500 to-zinc-600', accentColor: 'bg-slate-500',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Privacy', value: 'Active' }],
+      status: phantomStatus,
+      metrics: [{ label: 'Privacy', value: phantomStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Phantom: Privacy engine active'); },
+      onAction: async () => { const r = await phantomMod.status(); toast.info(`Phantom: ${r.success ? 'Privacy active' : 'Check failed'}`); },
     },
     {
       id: 'harvest', name: 'HARVEST', layer: 'infrastructure' as const, icon: Database,
       description: 'Data pipeline & ingestion',
       gradient: 'bg-gradient-to-r from-lime-400 to-green-500', accentColor: 'bg-lime-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Pipeline', value: 'Active' }],
+      status: harvestStatus,
+      metrics: [{ label: 'Pipeline', value: harvestStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Harvest: Data pipeline active'); },
+      onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Pipeline active' : 'Check failed'}`); },
     },
     // ═══ Execution: MEDIC & NERVE ═══
     {
       id: 'medic', name: 'MEDIC', layer: 'operational' as const, icon: Activity,
       description: 'Autonomous diagnostics & self-repair',
       gradient: 'bg-gradient-to-r from-rose-400 to-pink-500', accentColor: 'bg-rose-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Diagnostics', value: 'Active' }],
+      status: medicStatus,
+      metrics: [{ label: 'Diagnostics', value: medicStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Medic: Diagnostics engine active'); },
+      onAction: async () => { const r = await medicMod.status(); toast.info(`Medic: ${r.success ? 'Diagnostics active' : 'Check failed'}`); },
     },
     {
       id: 'nerve', name: 'NERVE', layer: 'operational' as const, icon: Zap,
       description: 'Inter-node signaling & consensus',
       gradient: 'bg-gradient-to-r from-sky-400 to-blue-500', accentColor: 'bg-sky-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Signals', value: 'Active' }],
+      status: nerveStatus,
+      metrics: [{ label: 'Signals', value: nerveStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Nerve: Signal mesh active'); },
+      onAction: async () => { const r = await nerveMod.status(); toast.info(`Nerve: ${r.success ? 'Mesh active' : 'Check failed'}`); },
     },
-    // ═══ Mesh Overlays ═══
+    // ═══ Mesh Overlays + CSZ ═══
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'orchestrator' as const, icon: Sparkles,
       description: 'Mutation pipeline & shadow runs',
       gradient: 'bg-gradient-to-r from-rose-500 to-pink-600', accentColor: 'bg-rose-500',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Field', value: 'Active' }],
+      status: evolutionStatus,
+      metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Evolution: Mutation pipeline ready'); },
+      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Pipeline ready' : 'Check failed'}`); },
+    },
+    {
+      id: 'shadow', name: 'SHADOW', layer: 'orchestrator' as const, icon: Eye,
+      description: 'Shadow validation & A/B testing',
+      gradient: 'bg-gradient-to-r from-slate-500 to-gray-600', accentColor: 'bg-slate-500',
+      status: shadowStatus,
+      metrics: [{ label: 'Validator', value: shadowStatus.data?.success ? 'Ready' : 'Checking' }],
+      actions: [{ id: 'status', label: 'Status', icon: Activity }],
+      onAction: async () => { const r = await shadowMod.status(); toast.info(`Shadow: ${r.success ? 'Validator ready' : 'Check failed'}`); },
     },
     {
       id: 'immunity', name: 'IMMUNITY', layer: 'orchestrator' as const, icon: Shield,
       description: 'Self-healing mesh & threat correlation',
       gradient: 'bg-gradient-to-r from-rose-400 to-red-500', accentColor: 'bg-rose-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Field', value: 'Active' }],
+      status: immunityStatus,
+      metrics: [{ label: 'Field', value: immunityStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Immunity: Self-healing mesh active'); },
+      onAction: async () => { const r = await immunityMod.status(); toast.info(`Immunity: ${r.success ? 'Mesh active' : 'Check failed'}`); },
     },
     {
       id: 'intent', name: 'INTENT', layer: 'orchestrator' as const, icon: Brain,
       description: 'User intent classification & routing',
       gradient: 'bg-gradient-to-r from-amber-400 to-orange-500', accentColor: 'bg-amber-400',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Field', value: 'Active' }],
+      status: intentStatus,
+      metrics: [{ label: 'Field', value: intentStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Intent: Classification engine active'); },
+      onAction: async () => { const r = await intentMod.status(); toast.info(`Intent: ${r.success ? 'Classifier active' : 'Check failed'}`); },
     },
     {
       id: 'governance', name: 'GOVERNANCE', layer: 'orchestrator' as const, icon: Globe,
       description: 'Policy enforcement & veto authority',
       gradient: 'bg-gradient-to-r from-sky-500 to-blue-600', accentColor: 'bg-sky-500',
-      status: { data: { success: true }, isLoading: false, refetch: () => {} } as any,
-      metrics: [{ label: 'Plane', value: 'Active' }],
+      status: governanceStatus,
+      metrics: [{ label: 'Plane', value: governanceStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { toast.info('Governance: Policy enforcement active'); },
+      onAction: async () => { const r = await governanceMod.status(); toast.info(`Governance: ${r.success ? 'Enforcement active' : 'Check failed'}`); },
     },
   ];
 
