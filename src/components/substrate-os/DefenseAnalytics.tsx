@@ -194,24 +194,24 @@ export function DefenseAnalytics() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Card className="p-4 text-center">
-          <p className="text-2xl font-bold">{stats?.total || 0}</p>
+        <Card className="p-4 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold font-mono tabular-nums">{stats?.total || 0}</p>
           <p className="text-xs text-muted-foreground">Total Events</p>
         </Card>
-        <Card className="p-4 text-center border-red-500/20">
-          <p className="text-2xl font-bold text-red-500">{stats?.blocked || 0}</p>
+        <Card className="p-4 text-center border-red-500/20 transition-all duration-300 hover:border-red-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-red-500 font-mono tabular-nums">{stats?.blocked || 0}</p>
           <p className="text-xs text-muted-foreground">Blocked</p>
         </Card>
-        <Card className="p-4 text-center border-amber-500/20">
-          <p className="text-2xl font-bold text-amber-500">{stats?.challenged || 0}</p>
+        <Card className="p-4 text-center border-amber-500/20 transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-amber-500 font-mono tabular-nums">{stats?.challenged || 0}</p>
           <p className="text-xs text-muted-foreground">Challenged</p>
         </Card>
-        <Card className="p-4 text-center border-blue-500/20">
-          <p className="text-2xl font-bold text-blue-500">{stats?.monitored || 0}</p>
+        <Card className="p-4 text-center border-blue-500/20 transition-all duration-300 hover:border-blue-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-blue-500 font-mono tabular-nums">{stats?.monitored || 0}</p>
           <p className="text-xs text-muted-foreground">Monitored</p>
         </Card>
-        <Card className="p-4 text-center">
-          <p className={`text-2xl font-bold ${riskColor(stats?.avgRisk || 0)}`}>{stats?.avgRisk || 0}</p>
+        <Card className="p-4 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className={`text-2xl font-bold font-mono tabular-nums ${riskColor(stats?.avgRisk || 0)}`}>{stats?.avgRisk || 0}</p>
           <p className="text-xs text-muted-foreground">Avg Risk Score</p>
         </Card>
       </div>
