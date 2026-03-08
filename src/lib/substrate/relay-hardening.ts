@@ -58,20 +58,16 @@ export function checkPayloadSize(bytes: number): { allowed: boolean; warning: bo
 }
 export function getPayloadLimits() { return { ...payloadLimits }; }
 
-// ─── 8. Content Hash Deduplication ────────────────────────────────────────
-const contentHashes = new Set<string>();
+// ─── 8. Content Hash Deduplication (delegates to relay-module dedup) ──────
+// Canonical dedup lives in relay-module/index.ts. This is a thin facade.
+import { getRelayState } from './relay-module/index';
 export function isDuplicatePayload(hash: string): boolean {
-  if (contentHashes.has(hash)) return true;
-  contentHashes.add(hash);
-  // Evict oldest half instead of clearing all — prevents brief dedup failure window
-  if (contentHashes.size > 10000) {
-    const arr = Array.from(contentHashes);
-    contentHashes.clear();
-    for (let i = arr.length - 5000; i < arr.length; i++) contentHashes.add(arr[i]);
-  }
-  return false;
+  // Defer to the module-level isDuplicate via dispatch flow
+  // This hardening-layer check is kept for direct callers outside dispatch()
+  const s = getRelayState();
+  return s.deduplicationHashes.has(hash);
 }
-export function getDedupStats() { return { trackedHashes: contentHashes.size }; }
+export function getDedupStats() { return { trackedHashes: getRelayState().totalDeduplicated }; }
 
 // ─── 9. Rate Limiter (per target) ─────────────────────────────────────────
 const rateLimits = new Map<string, { count: number; windowStart: number }>();
