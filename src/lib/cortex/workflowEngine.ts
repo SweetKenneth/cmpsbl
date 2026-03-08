@@ -66,9 +66,21 @@
    retries: number;
  }
  
- // Workflow registry
- const workflows = new Map<string, WorkflowDefinition>();
- const executions = new Map<string, WorkflowExecution>();
+// Workflow registry (bounded)
+const MAX_WORKFLOWS = 100;
+const MAX_EXECUTIONS = 200;
+const workflows = new Map<string, WorkflowDefinition>();
+const executions = new Map<string, WorkflowExecution>();
+
+function boundMap<K, V>(map: Map<K, V>, max: number): void {
+  if (map.size <= max) return;
+  const excess = map.size - max;
+  const iter = map.keys();
+  for (let i = 0; i < excess; i++) {
+    const key = iter.next().value;
+    if (key !== undefined) map.delete(key);
+  }
+}
  
  /**
   * Register a workflow definition
