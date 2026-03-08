@@ -343,7 +343,9 @@ export function recordDecision(
   const record: DecisionRecord = { ...partial, hash: hashDecision(partial) };
   lastChainHash = record.hash;
   decisionChain.push(record);
+  capArray(decisionChain, MAX_DECISION_CHAIN);
   decisionTimestamps.push(record.timestamp);
+  capArray(decisionTimestamps, MAX_TIMESTAMPS);
   emitGovernanceTelemetry('decision', action, 'governance', authority, outcome);
   return record;
 }
