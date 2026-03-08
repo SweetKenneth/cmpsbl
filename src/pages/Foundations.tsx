@@ -177,7 +177,7 @@ export default function Foundations() {
                   View Namespace <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </Link>
-              <Link to="/llms-txt" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-colors bg-card group">
+              <Link to="/llms-txt" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift">
                 <Terminal className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors mb-3" />
                 <h3 className="font-bold mb-2">Machine Context</h3>
                 <p className="text-sm text-muted-foreground mb-4">
