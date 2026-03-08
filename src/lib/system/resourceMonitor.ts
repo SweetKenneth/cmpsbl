@@ -85,10 +85,10 @@
      storage: getStorageMetrics(),
    };
    
-   // Add to history
+   // Add to history — splice instead of shift() for O(1) amortized
    metricsHistory.push(metrics);
-   if (metricsHistory.length > MAX_HISTORY) {
-     metricsHistory.shift();
+   if (metricsHistory.length > MAX_HISTORY * 2) {
+     metricsHistory.splice(0, metricsHistory.length - MAX_HISTORY);
    }
    
    return metrics;

@@ -23,6 +23,7 @@ interface BootSeal {
 }
 
 const bootChain: BootSeal[] = [];
+const MAX_BOOT_CHAIN = 200;
 
 export function sealBootStep(step: string, durationMs: number): BootSeal {
   const prevHash = bootChain.length > 0 ? bootChain[bootChain.length - 1].hash : 0;
@@ -34,6 +35,7 @@ export function sealBootStep(step: string, durationMs: number): BootSeal {
     timestamp: new Date().toISOString(),
   };
   bootChain.push(seal);
+  if (bootChain.length > MAX_BOOT_CHAIN) bootChain.splice(0, bootChain.length - MAX_BOOT_CHAIN);
   return seal;
 }
 
@@ -270,6 +272,7 @@ const VALID_TRANSITIONS: Record<LifecyclePhase, LifecyclePhase[]> = {
 
 let currentPhase: LifecyclePhase = 'uninitialized';
 const phaseHistory: Array<{ from: LifecyclePhase; to: LifecyclePhase; timestamp: string }> = [];
+const MAX_PHASE_HISTORY = 200;
 
 export function transitionPhase(to: LifecyclePhase): { success: boolean; error?: string } {
   const allowed = VALID_TRANSITIONS[currentPhase];
@@ -277,6 +280,7 @@ export function transitionPhase(to: LifecyclePhase): { success: boolean; error?:
     return { success: false, error: `Invalid transition: ${currentPhase} → ${to}` };
   }
   phaseHistory.push({ from: currentPhase, to, timestamp: new Date().toISOString() });
+  if (phaseHistory.length > MAX_PHASE_HISTORY) phaseHistory.splice(0, phaseHistory.length - MAX_PHASE_HISTORY);
   currentPhase = to;
   return { success: true };
 }
@@ -300,8 +304,13 @@ interface ShutdownTask {
 }
 
 const shutdownTasks: ShutdownTask[] = [];
+const MAX_SHUTDOWN_TASKS = 100;
 
 export function registerShutdownTask(task: ShutdownTask): void {
+  if (shutdownTasks.length >= MAX_SHUTDOWN_TASKS) {
+    // Drop lowest-priority (highest number) to make room
+    shutdownTasks.pop();
+  }
   shutdownTasks.push(task);
   shutdownTasks.sort((a, b) => a.priority - b.priority);
 }
@@ -376,9 +385,11 @@ export function detectDependencyCycles(): string[][] {
     if (visited.has(node)) return;
     visited.add(node);
     stack.add(node);
+    path.push(node);
     for (const dep of moduleDeps.get(node) || []) {
-      dfs(dep, [...path, node]);
+      dfs(dep, path);
     }
+    path.pop();
     stack.delete(node);
   }
 
@@ -512,6 +523,7 @@ interface MaintenanceWindow {
 }
 
 const maintenanceWindows: MaintenanceWindow[] = [];
+const MAX_MAINTENANCE_WINDOWS = 50;
 
 export function scheduleMaintenanceWindow(
   reason: string,
@@ -527,6 +539,13 @@ export function scheduleMaintenanceWindow(
     affectedModules,
   };
   maintenanceWindows.push(window);
+  // Evict expired windows to prevent unbounded growth
+  if (maintenanceWindows.length > MAX_MAINTENANCE_WINDOWS) {
+    const now = new Date();
+    const keep = maintenanceWindows.filter(w => new Date(w.endsAt) >= now);
+    maintenanceWindows.length = 0;
+    maintenanceWindows.push(...keep.slice(-MAX_MAINTENANCE_WINDOWS));
+  }
   return window;
 }
 
@@ -750,6 +769,7 @@ interface RegistrySnapshot {
 }
 
 const registrySnapshots: RegistrySnapshot[] = [];
+const MAX_REGISTRY_SNAPSHOTS = 20;
 
 export function captureRegistrySnapshot(
   modules: Record<string, { version: string; status: string }>
@@ -760,6 +780,7 @@ export function captureRegistrySnapshot(
     hash: fnv1aHash(JSON.stringify(modules)),
   };
   registrySnapshots.push(snapshot);
+  if (registrySnapshots.length > MAX_REGISTRY_SNAPSHOTS) registrySnapshots.splice(0, registrySnapshots.length - MAX_REGISTRY_SNAPSHOTS);
   return snapshot;
 }
 

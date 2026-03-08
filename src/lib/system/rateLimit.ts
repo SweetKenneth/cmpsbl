@@ -17,6 +17,7 @@ interface RateLimitBucket {
 class RateLimiter {
   private static instance: RateLimiter;
   private buckets = new Map<string, RateLimitBucket>();
+  private readonly maxBuckets = 500;
 
   private constructor() {}
 
@@ -32,6 +33,11 @@ class RateLimiter {
     let bucket = this.buckets.get(key);
 
     if (!bucket) {
+      // Evict oldest bucket if at capacity
+      if (this.buckets.size >= this.maxBuckets) {
+        const oldest = this.buckets.keys().next().value;
+        if (oldest !== undefined) this.buckets.delete(oldest);
+      }
       bucket = { timestamps: [], blocked: false };
       this.buckets.set(key, bucket);
     }
