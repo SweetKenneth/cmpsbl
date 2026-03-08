@@ -94,8 +94,8 @@ export function EncodeSystemsConsole() {
 
       // Semantic resolution
       const navigation = navigateIntent(target);
-      if (navigation.resolved) {
-        addSystemMsg('info', `Resolved: "${target}" → ${navigation.nodeId} (${navigation.surface})\nFiles: ${navigation.files.slice(0, 3).join(', ')}`);
+      if (navigation.modules.length > 0) {
+        addSystemMsg('info', `Resolved: "${target}" → ${navigation.modules.map(m => m.id).join(', ')}\nFiles: ${navigation.targetFiles.slice(0, 3).join(', ')}`);
       }
 
       // Submit through governance pipeline
@@ -116,7 +116,7 @@ export function EncodeSystemsConsole() {
   }, [orchestration, encode, addSystemMsg]);
 
   const taskQueue = useMemo(() =>
-    encode.queue.map(t => ({ id: t.id, intent: t.intent, status: t.status })),
+    encode.queue.map(t => ({ id: t.id, intent: t.intentSummary, status: t.status })),
     [encode.queue]
   );
 
