@@ -15,11 +15,12 @@ export function getDeliveryStats(): { total: number; succeeded: number; failed: 
   return { total: deliveryLog.length, succeeded: s, failed: f, pending: deliveryLog.length - s - f };
 }
 
-// ─── 2. Dead Letter Queue ─────────────────────────────────────────────────
-const dlq: Array<{ id: string; ts: number; target: string; error: string; attempts: number }> = [];
-export function getDLQ(n = 20) { return dlq.slice(-n); }
-export function getDLQDepth() { return dlq.length; }
-export function replayDLQEntry(id: string): boolean { const idx = dlq.findIndex(e => e.id === id); if (idx >= 0) { dlq.splice(idx, 1); return true; } return false; }
+// ─── 2. Dead Letter Queue (delegates to relay-module DLQ) ─────────────────
+// The canonical DLQ lives in relay-module/index.ts. These are thin facades.
+import { getDeadLetterQueue, replayDeadLetter as moduleReplayDL, purgeDeadLetters } from './relay-module/index';
+export function getDLQ(n = 20) { return getDeadLetterQueue().slice(0, n); }
+export function getDLQDepth() { return getDeadLetterQueue().length; }
+export function replayDLQEntry(id: string): boolean { return moduleReplayDL(id) !== null; }
 
 // ─── 3. HMAC Signing Engine ───────────────────────────────────────────────
 const signingConfig = { algorithm: 'SHA-256', headerName: 'X-Relay-Signature', rotationIntervalHours: 24 };
