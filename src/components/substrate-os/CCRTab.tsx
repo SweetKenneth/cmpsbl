@@ -160,7 +160,7 @@ export function CCRTab() {
                 <p className="text-[9px] text-muted-foreground/50 font-mono">TOTAL RECALLS</p>
               </CardContent>
             </Card>
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 text-center">
                 <Archive className="w-4 h-4 mx-auto mb-1.5 text-violet-500" />
                 <p className="text-lg font-bold font-mono">{memory.contradictions}</p>
