@@ -854,16 +854,24 @@ class MemoryCoreClient {
             category: (mem.metadata as any)?.category || 'general',
           } as any);
 
-          if (insertErr) {
+          if (!insertErr) {
+            demoted++;
+          } else {
             errors++;
-            continue; // Do NOT delete from warm if cold insert failed
           }
-
-          // Safe to delete from warm now
-          await supabase.from('brain_memory_warm').delete().eq('id', mem.id);
-          demoted++;
         } catch {
           errors++;
+        }
+      }
+
+      // Batch-delete successfully demoted entries from warm in one call
+      if (demoted > 0) {
+        const demotedIds = (stale as any[]).slice(0, demoted).map((m: any) => m.id);
+        try {
+          await supabase.from('brain_memory_warm').delete().in('id', demotedIds);
+        } catch {
+          // If batch delete fails, entries remain in warm (safe — cold has copies)
+          console.warn('[MemoryCore] Batch warm cleanup failed — entries may be duplicated');
         }
       }
 
