@@ -467,7 +467,7 @@ export default function IntentPanel() {
                   </div>
                   <span className={cn(
                     "text-sm font-bold font-mono shrink-0 ml-2",
-                    pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400"
+                    pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400", "tabular-nums"
                   )}>
                     {Math.round(pair.score * 100)}%
                   </span>
