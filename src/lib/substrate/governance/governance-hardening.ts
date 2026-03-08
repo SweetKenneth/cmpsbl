@@ -583,6 +583,7 @@ export function createDelegation(
     expiresAt: Date.now() + ttlMs,
   };
   delegations.push(entry);
+  capArray(delegations, MAX_DELEGATIONS);
   return entry;
 }
 
