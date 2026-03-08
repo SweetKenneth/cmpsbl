@@ -90,8 +90,15 @@ function createFreshSession(): ConversationState {
   };
 }
 
-/** Append message — never mutate prior messages */
+/** Append message — never mutate prior messages. Caps buffer at 500 messages. */
+const MAX_CONVERSATION_MESSAGES = 500;
+
 export function appendMessage(role: ConversationRole, content: string, metadata?: Record<string, unknown>): ConversationMessage {
+  // Cap conversation buffer
+  if (conversationState.messages.length >= MAX_CONVERSATION_MESSAGES) {
+    conversationState.messages = conversationState.messages.slice(-Math.ceil(MAX_CONVERSATION_MESSAGES * 0.8));
+  }
+
   const msg: ConversationMessage = {
     id: `msg-${Date.now()}-${conversationState.version_counter}`,
     role,
@@ -384,6 +391,7 @@ export interface SurgicalPatch {
   version: number;
 }
 
+const MAX_PATCH_HISTORY = 200;
 const patchHistory: SurgicalPatch[] = [];
 
 export function createSurgicalPatch(params: {
@@ -424,6 +432,10 @@ export function createSurgicalPatch(params: {
     version: conversationState.version_counter,
   };
 
+  // Cap patch history
+  if (patchHistory.length >= MAX_PATCH_HISTORY) {
+    patchHistory.splice(0, patchHistory.length - Math.ceil(MAX_PATCH_HISTORY * 0.8));
+  }
   patchHistory.push(patch);
   appendMessage('encode', `[PATCH] Created ${patch.id}: ${params.operation} on ${params.file}${params.function_name ? `::${params.function_name}` : ''}`, { patchId: patch.id });
 

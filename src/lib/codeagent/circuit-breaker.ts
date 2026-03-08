@@ -43,7 +43,9 @@ const DEFAULT_CONFIG: CircuitBreakerConfig = {
   healthPenaltyRate: 25,
 };
 
-// In-memory state for circuit breakers
+// In-memory state for circuit breakers (bounded)
+const MAX_CIRCUIT_BREAKERS = 50;
+const MAX_HEALING_ACTIONS = 100;
 const circuitBreakers: Map<string, ServiceHealth> = new Map();
 const healingActions: SelfHealAction[] = [];
 const config = { ...DEFAULT_CONFIG };
@@ -53,6 +55,11 @@ const config = { ...DEFAULT_CONFIG };
 // ═══════════════════════════════════════════════════════════════
 
 function initServiceHealth(name: string): ServiceHealth {
+  // Evict oldest if at capacity
+  if (circuitBreakers.size >= MAX_CIRCUIT_BREAKERS && !circuitBreakers.has(name)) {
+    const oldest = circuitBreakers.keys().next().value;
+    if (oldest) circuitBreakers.delete(oldest);
+  }
   return {
     name,
     state: 'closed',
@@ -153,8 +160,10 @@ async function triggerSelfHeal(service: string, error: string): Promise<void> {
   };
   
   healingActions.push(action);
-  
-  // Attempt recovery based on error type
+  // Cap healing actions history
+  if (healingActions.length > MAX_HEALING_ACTIONS) {
+    healingActions.splice(0, healingActions.length - MAX_HEALING_ACTIONS);
+  }
   try {
     if (error.includes('rate limit') || error.includes('429')) {
       // Wait and retry for rate limits

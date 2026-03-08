@@ -168,9 +168,6 @@ export async function routeFromDecode(
   if (!verification.valid) {
     throw new Error(`[ENCODE] Plan verification failed: ${verification.errors.join('; ')}`);
   }
-  if (!verification.valid) {
-    throw new Error(`[ENCODE] Plan verification failed: ${verification.errors.join('; ')}`);
-  }
 
   const brainKeys = context.brainKeys || [];
   const brainContext = await recallForEncode(brainKeys, intentText);
