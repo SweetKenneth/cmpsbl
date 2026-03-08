@@ -218,7 +218,7 @@ export function DefenseAnalytics() {
 
       {/* Trend Indicator */}
       {stats && (
-        <Card className="p-4 flex items-center gap-3">
+        <Card className="p-4 flex items-center gap-3 transition-all duration-300 hover:border-primary/15">
           <TrendingUp className={`w-5 h-5 ${
             stats.recentTrend === 'rising' ? 'text-red-500' : 
             stats.recentTrend === 'declining' ? 'text-emerald-500' : 'text-muted-foreground'
