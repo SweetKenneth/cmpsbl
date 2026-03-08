@@ -204,7 +204,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
                   {state?.state || 'unknown'}
                 </Badge>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
                 <span className="text-xs text-muted-foreground">Last Heartbeat</span>
                 <span className="font-mono text-[10px] text-foreground">
                   {state?.last_heartbeat 

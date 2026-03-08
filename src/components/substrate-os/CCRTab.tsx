@@ -200,7 +200,7 @@ export function CCRTab() {
                 <div className="space-y-2">
                   {dream.recentDreams.map((d: any, i: number) => (
                     <motion.div key={d.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
-                      className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                      className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <p className="text-xs sm:text-sm font-medium truncate">{d.title}</p>

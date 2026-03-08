@@ -452,7 +452,7 @@ export function AccountTab() {
                     <stat.icon className="w-3 h-3" />
                     {stat.label}
                   </div>
-                  <p className="text-sm font-semibold text-foreground truncate">{stat.value}</p>
+                  <p className="text-sm font-semibold font-mono text-foreground truncate">{stat.value}</p>
                 </div>
               ))}
             </div>
