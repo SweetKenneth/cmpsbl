@@ -2140,7 +2140,11 @@ async function handleBrain(
       const startTime = Date.now();
 
       const BATCH_SIZE = isDeep ? 1000 : isAggressive ? 500 : 200;
-      const limits = { hot: 500, warm: 2000, cold: 10000 };
+      // Read limits from brain_tiering_config
+      const { data: tierCfg } = await supabase.from('brain_tiering_config').select('tier_name, max_entries');
+      const cfgMap: Record<string, number> = {};
+      for (const c of tierCfg || []) { cfgMap[c.tier_name] = c.max_entries; }
+      const limits = { hot: cfgMap['hot'] || 500, warm: cfgMap['warm'] || 10000, cold: cfgMap['cold'] || 10000 };
 
       const stats = {
         demoted_to_warm: 0,
