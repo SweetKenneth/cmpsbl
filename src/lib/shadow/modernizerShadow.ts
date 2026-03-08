@@ -498,9 +498,9 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
         successCriteria: task.successCriteria,
         affectedModules: task.affectedModules,
         severity: task.severity,
-        _modernizer_shadow: true,
+        _shadow_gap_training: true,
       },
-      caller: 'modernizer.shadow',
+      caller: 'shadow.gap_training',
       traceId: task.id,
       dryRun: true,
     };
