@@ -339,6 +339,7 @@ interface Checkpoint {
   sequenceNumber: number;
 }
 
+const MAX_CHECKPOINTS = 200;
 const checkpoints = new Map<string, Checkpoint>();
 
 export function saveCheckpoint(
