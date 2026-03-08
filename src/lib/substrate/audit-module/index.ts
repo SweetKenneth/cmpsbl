@@ -108,7 +108,11 @@ let lastHash = '0000000000000000';
 // Two independent FNV-1a hashes with different offsets for collision resistance
 // ═══════════════════════════════════════════════════════════════════
 function computeHash(entry: Omit<AuditEntry, 'hash'>): string {
-  const data = `${entry.previousHash}:${entry.timestamp}:${entry.actor.id}:${entry.actor.type}:${entry.action}:${entry.module}:${entry.resource}:${entry.resourceId}`;
+  // Include all identity + action fields AND state data in hash input
+  // This ensures both chain linkage AND payload integrity are tamper-evident
+  const stateStr = entry.previousState != null ? JSON.stringify(entry.previousState) : '';
+  const newStateStr = entry.newState != null ? JSON.stringify(entry.newState) : '';
+  const data = `${entry.previousHash}:${entry.timestamp}:${entry.actor.id}:${entry.actor.type}:${entry.action}:${entry.module}:${entry.resource}:${entry.resourceId}:${stateStr}:${newStateStr}`;
   let h1 = 0x811c9dc5;
   let h2 = 0x01000193;
   for (let i = 0; i < data.length; i++) {
@@ -455,27 +459,27 @@ export function compressAuditEntries(olderThanMs: number = 24 * 60 * 60 * 1000):
     if (entry.timestamp < cutoff && !entry.compressed) {
       const originalSize = JSON.stringify(entry).length;
 
-      // IMPORTANT: Do NOT mutate previousState/newState — they are inputs to computeHash.
-      // Mutating them would cause verifyAuditChain hash recomputation to fail.
-      // Instead, store compressed summaries in metadata (which is NOT part of the hash).
-      if (entry.previousState && JSON.stringify(entry.previousState).length > 200) {
-        entry.metadata = {
-          ...entry.metadata,
-          _prevStateSummary: `[${typeof entry.previousState} data, compressed]`,
-        };
-        entry.previousState = null;
+      // CRITICAL: previousState and newState are inputs to computeHash.
+      // Mutating them would break verifyAuditChain hash recomputation.
+      // Only strip metadata keys (not part of hash) for size reduction.
+      // For deep compression, keep a hash of the state and discard the body.
+      // We store a lightweight marker but preserve the hash-critical null representation:
+      // computeHash uses JSON.stringify(null) = '' for null, so we CAN null states
+      // ONLY if they were null at write time. For non-null states, we must keep them.
+      //
+      // Strategy: trim metadata (unhashed) aggressively. Mark as compressed.
+      const trimmedMeta: Record<string, string> = {};
+      // Keep only essential metadata keys
+      for (const [k, v] of Object.entries(entry.metadata)) {
+        if (k === 'outcome' || k === 'reason' || k === 'method' || k.startsWith('_')) {
+          trimmedMeta[k] = v;
+        }
       }
-      if (entry.newState && JSON.stringify(entry.newState).length > 200) {
-        entry.metadata = {
-          ...entry.metadata,
-          _newStateSummary: `[${typeof entry.newState} data, compressed]`,
-        };
-        entry.newState = null;
-      }
-
+      entry.metadata = trimmedMeta;
       entry.compressed = true;
+
       const compressedSize = JSON.stringify(entry).length;
-      savedBytes += (originalSize - compressedSize);
+      savedBytes += Math.max(0, originalSize - compressedSize);
       compressed++;
     }
   }

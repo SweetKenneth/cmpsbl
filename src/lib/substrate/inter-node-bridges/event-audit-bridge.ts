@@ -3,14 +3,16 @@
  * 
  * Critical substrate events (governance changes, security incidents,
  * capability failures) automatically get persisted to the immutable
- * audit trail. Without this, the event bus is fire-and-forget and
- * the audit trail only captures explicit recordAudit() calls.
+ * audit trail.
  *
- * EVENT BUS (RIPPLE) → [THIS BRIDGE] → AUDIT TRAIL + audit_logs DB table
+ * Round 4 Fix: Routes to hardened audit-module (FNV-1a chain) instead of
+ * legacy audit-trail, ensuring all auditable events are tamper-evident.
+ *
+ * EVENT BUS (RIPPLE) → [THIS BRIDGE] → AUDIT MODULE (hardened) + audit_logs DB table
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { recordAudit } from '@/lib/substrate/audit-trail';
+import { recordAuditEntry } from '@/lib/substrate/audit-module';
 import { log } from '@/lib/system/log';
 import type { SubstrateEvent } from '@/lib/substrate/events';
 import type { Json } from '@/integrations/supabase/types';
@@ -41,14 +43,16 @@ function isAuditable(event: SubstrateEvent): boolean {
 /** In-memory dedup window to prevent audit spam */
 const recentAudits = new Map<string, number>();
 const DEDUP_WINDOW_MS = 5_000;
+const MAX_DEDUP_ENTRIES = 200;
 
 function isDuplicate(key: string): boolean {
+  const now = Date.now();
   const last = recentAudits.get(key);
-  if (last && Date.now() - last < DEDUP_WINDOW_MS) return true;
-  recentAudits.set(key, Date.now());
+  if (last && now - last < DEDUP_WINDOW_MS) return true;
+  recentAudits.set(key, now);
   // Prune old entries
-  if (recentAudits.size > 200) {
-    const cutoff = Date.now() - DEDUP_WINDOW_MS;
+  if (recentAudits.size > MAX_DEDUP_ENTRIES) {
+    const cutoff = now - DEDUP_WINDOW_MS;
     for (const [k, v] of recentAudits) {
       if (v < cutoff) recentAudits.delete(k);
     }
@@ -66,8 +70,9 @@ export function bridgeEventToAudit(event: SubstrateEvent): boolean {
   const dedupKey = `${event.module}:${event.event_type}:${event.outcome}`;
   if (isDuplicate(dedupKey)) return false;
 
-  // Write to in-memory audit chain
-  recordAudit(
+  // Write to hardened audit-module chain (FNV-1a hash chain)
+  recordAuditEntry(
+    { id: event.module, type: 'system' },
     event.module,
     event.event_type,
     'substrate_event',
