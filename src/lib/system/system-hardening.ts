@@ -539,6 +539,13 @@ export function scheduleMaintenanceWindow(
     affectedModules,
   };
   maintenanceWindows.push(window);
+  // Evict expired windows to prevent unbounded growth
+  if (maintenanceWindows.length > MAX_MAINTENANCE_WINDOWS) {
+    const now = new Date();
+    const keep = maintenanceWindows.filter(w => new Date(w.endsAt) >= now);
+    maintenanceWindows.length = 0;
+    maintenanceWindows.push(...keep.slice(-MAX_MAINTENANCE_WINDOWS));
+  }
   return window;
 }
 
