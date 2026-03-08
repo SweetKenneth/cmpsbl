@@ -2750,6 +2750,44 @@ async function handleBrain(
           }
         }
 
+        // STEP 6: Pruned table hygiene — expire old pruned records (30-day TTL)
+        const PRUNED_TTL_DAYS = 30;
+        const PRUNED_MAX = 5000;
+        const prunedTtlCutoff = new Date(Date.now() - PRUNED_TTL_DAYS * 24 * 60 * 60 * 1000).toISOString();
+        const { data: expiredPrunedIds } = await supabase
+          .from('brain_memory_pruned')
+          .select('id')
+          .lt('pruned_at', prunedTtlCutoff)
+          .limit(isDeep ? 5000 : 1000);
+
+        if (expiredPrunedIds && expiredPrunedIds.length > 0) {
+          const ids = expiredPrunedIds.map((r: any) => r.id);
+          for (let i = 0; i < ids.length; i += 500) {
+            const chunk = ids.slice(i, i + 500);
+            await supabase.from('brain_memory_pruned').delete().in('id', chunk);
+          }
+        }
+
+        // Cap pruned table total (keep only newest PRUNED_MAX)
+        const { count: prunedCount } = await supabase.from('brain_memory_pruned').select('*', { count: 'exact', head: true });
+        if ((prunedCount || 0) > PRUNED_MAX) {
+          let prunedRemaining = (prunedCount || 0) - PRUNED_MAX;
+          while (prunedRemaining > 0) {
+            const batchSize = Math.min(1000, prunedRemaining);
+            const { data: oldPruned } = await supabase
+              .from('brain_memory_pruned')
+              .select('id')
+              .order('pruned_at', { ascending: true })
+              .limit(batchSize);
+            if (!oldPruned || oldPruned.length === 0) break;
+            const ids = oldPruned.map((r: any) => r.id);
+            for (let i = 0; i < ids.length; i += 500) {
+              await supabase.from('brain_memory_pruned').delete().in('id', ids.slice(i, i + 500));
+            }
+            prunedRemaining -= oldPruned.length;
+          }
+        }
+
         // Log tiering event
         const duration = Date.now() - startTime;
         await supabase.from('brain_events').insert({
