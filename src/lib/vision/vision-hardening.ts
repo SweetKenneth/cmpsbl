@@ -224,7 +224,10 @@ export function recordCorrelation(fromNode: string, toNode: string): void {
   const existing = correlationEdges.get(key);
   if (existing) {
     existing.count++;
-    existing.weight = Math.min(1, existing.weight + 0.05);
+    // Weight increases but with diminishing returns and natural decay based on age
+    const ageMs = Date.now() - new Date(existing.lastSeen).getTime();
+    const decayedWeight = existing.weight * Math.pow(0.5, ageMs / 3_600_000); // 1hr half-life
+    existing.weight = Math.min(1, decayedWeight + 0.05);
     existing.lastSeen = new Date().toISOString();
   } else {
     correlationEdges.set(key, {
@@ -236,8 +239,16 @@ export function recordCorrelation(fromNode: string, toNode: string): void {
     });
   }
   if (correlationEdges.size > 1000) {
-    const oldest = correlationEdges.keys().next().value;
-    if (oldest) correlationEdges.delete(oldest);
+    // Evict lowest-weight edge instead of oldest (FIFO)
+    let lowestKey = '';
+    let lowestWeight = Infinity;
+    for (const [k, e] of correlationEdges) {
+      if (e.weight < lowestWeight) {
+        lowestWeight = e.weight;
+        lowestKey = k;
+      }
+    }
+    if (lowestKey) correlationEdges.delete(lowestKey);
   }
 }
 
