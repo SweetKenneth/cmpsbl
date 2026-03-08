@@ -20,6 +20,7 @@ export interface TraceContext {
 
 // Global trace context store (per-request in async context)
 const traceStore = new Map<string, TraceContext>();
+const MAX_TRACES = 500;
 
 export function createTraceContext(
   module?: string,
