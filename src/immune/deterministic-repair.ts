@@ -249,10 +249,11 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 14) DEEP_TYPE_COERCE — for non-string-field objects/arrays, stringify them
+  // 14) DEEP_TYPE_COERCE — for non-string, non-object-expected fields, stringify remaining objects
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val && typeof val === 'object' && !Array.isArray(val) && !STRING_FIELDS.has(key)) {
+    if (val && typeof val === 'object' && !Array.isArray(val)
+        && !STRING_FIELDS.has(key) && !OBJECT_FIELDS.has(key)) {
       try {
         copy[key] = JSON.stringify(val);
       } catch {
