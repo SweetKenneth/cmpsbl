@@ -195,4 +195,40 @@ export function registerGovernanceHandlers(): void {
       status: drift.drifting || vetoes.length > 0 ? 'warning' as const : 'success' as const,
     };
   });
+
+  // ═══ governance.status — Alias for gov.summary ═══
+  registerHandler('governance.status', async () => {
+    const currentMode = await readCurrentMode();
+    const { vetoAuthority } = await import('@/lib/substrate/governance');
+    const vetoes = vetoAuthority.getActiveVetoes();
+    return {
+      success: true,
+      data: { mode: currentMode, activeVetoes: vetoes.length, module: 'GOVERNANCE', layer: 'Control Plane' },
+    };
+  });
+
+  registerHandler('governance.health', async () => {
+    const { getComplianceScoreAvg } = await import('@/lib/substrate/governance/compliance-auditor');
+    const score = getComplianceScoreAvg();
+    return { success: true, data: { health: score, module: 'GOVERNANCE', layer: 'Control Plane' } };
+  });
+
+  registerHandler('gov.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ GOVERNANCE — Control Plane ───────────────┐',
+      '│  gov.mode         Current mode & subsystems    │',
+      '│  gov.vetoes       Active vetoes                │',
+      '│  gov.compliance   Compliance audit             │',
+      '│  gov.drift        Drift analysis               │',
+      '│  gov.transitions  Available transitions        │',
+      '│  gov.signals      Signal arbitration history   │',
+      '│  gov.lifecycle    Veto lifecycle states        │',
+      '│  gov.summary      Full posture overview        │',
+      '│  governance.status  Quick status               │',
+      '│  governance.health  Health score               │',
+      '│  governance.hardening  Hardening (Magistrate)  │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
 }

@@ -240,5 +240,61 @@ export function registerOCGHandlers(): void {
     return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DEFENSE', layer: 'Shell' } };
   });
 
-  log.info('terminal', 'OCG & Shell handlers registered (RIPPLE, ACCESS, DEFENSE)', { count: 37 });
+  // ═══ HELP COMMANDS ═══
+
+  registerHandler('ripple.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ RIPPLE — Signal Bus ──────────────────────┐',
+      '│  ripple.status     Module status               │',
+      '│  ripple.pulse      Heartbeat                   │',
+      '│  ripple.topics     Active topics                │',
+      '│  ripple.events     Event log                    │',
+      '│  ripple.publish    Publish event                │',
+      '│  ripple.dead_letter Dead letter queue           │',
+      '│  ripple.metrics    Bus metrics                  │',
+      '│  ripple.jobs       Job queue                    │',
+      '│  ripple.circuits   Circuit breaker states       │',
+      '│  ripple.health     Health score                 │',
+      '│  ripple.hardening  Hardening (Tsunami)          │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('access.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ ACCESS — API & Entitlements ──────────────┐',
+      '│  access.status       Module status              │',
+      '│  access.pulse        Heartbeat                  │',
+      '│  access.list_keys    List API keys              │',
+      '│  access.usage        Usage metrics              │',
+      '│  access.subscription Subscription info          │',
+      '│  access.developer    Developer profile          │',
+      '│  access.entitlements Active entitlements        │',
+      '│  access.products     Product catalog            │',
+      '│  access.health       Health score               │',
+      '│  access.hardening    Hardening status           │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('defense.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ DEFENSE — Outer Shell ────────────────────┐',
+      '│  defense.status      Module status              │',
+      '│  defense.analyze     Fingerprint analysis       │',
+      '│  defense.audit       Security audit             │',
+      '│  defense.scan        Threat scan                │',
+      '│  defense.threats     Active threats             │',
+      '│  defense.posture     Security posture           │',
+      '│  defense.rates       Rate limit status          │',
+      '│  defense.health      Health score               │',
+      '│  defense.hardening   Hardening (Fortress)       │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  log.info('terminal', 'OCG & Shell handlers registered (RIPPLE, ACCESS, DEFENSE)', { count: 40 });
 }

@@ -264,5 +264,110 @@ export function registerExecutionHandlers(): void {
     return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'MODERNIZER', layer: 'Execution' } };
   });
 
-  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)', { count: 43 });
+  // ═══ HELP COMMANDS ═══
+
+  registerHandler('decode.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ DECODE — Intent Translator ───────────────┐',
+      '│  decode.status           Module status          │',
+      '│  decode.interpret <t>    Parse intent           │',
+      '│  decode.personality      Current personality    │',
+      '│  decode.personality_set  Set personality        │',
+      '│  decode.inbox            CLM inbox              │',
+      '│  decode.health           Health score           │',
+      '│  decode.hardening        Hardening (Cipher)     │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('nexus.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ NEXUS — AI Router ────────────────────────┐',
+      '│  nexus.status     Module status                │',
+      '│  nexus.query <p>  Route AI query               │',
+      '│  nexus.routes     Route statistics             │',
+      '│  nexus.budget     Budget status                │',
+      '│  nexus.providers  Provider fleet               │',
+      '│  nexus.health     Health score                 │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('vision.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ VISION — Perception Engine ───────────────┐',
+      '│  vision.status          Module status           │',
+      '│  vision.scan <url>      Scan URL               │',
+      '│  vision.screenshot      Screenshot URL         │',
+      '│  vision.accessibility   A11y scan              │',
+      '│  vision.health          Health score           │',
+      '│  vision.hardening       Hardening (Sentinel)   │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('cortex.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ CORTEX — Orchestrator ────────────────────┐',
+      '│  cortex.status     Module status               │',
+      '│  cortex.pipeline   Pipeline details            │',
+      '│  cortex.pipelines  List all pipelines          │',
+      '│  cortex.cognitive  Cognitive cycle             │',
+      '│  cortex.health     Health score                │',
+      '│  cortex.hardening  Hardening (Conductor)       │',
+      '│  cortex.synergy.*  200 synergy pipelines       │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('inclusive.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ INCLUSIVE — Accessibility ─────────────────┐',
+      '│  inclusive.status   Module status               │',
+      '│  inclusive.scan     Accessibility scan          │',
+      '│  inclusive.report   Latest report               │',
+      '│  inclusive.health   Health score                │',
+      '│  inclusive.hardening Hardening (Clarity)        │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('integration.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ INTEGRATION — Enterprise Adapters ────────┐',
+      '│  integration.status      Module status          │',
+      '│  integration.pulse       Heartbeat              │',
+      '│  integration.adapters    Adapter registry       │',
+      '│  integration.connections Active connections     │',
+      '│  integration.discovered  Discovered services    │',
+      '│  integration.policies    Policies               │',
+      '│  integration.audit_log   Audit trail            │',
+      '│  integration.health      Health score           │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  registerHandler('modernizer.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ MODERNIZER — Evolution Engine ────────────┐',
+      '│  modernizer.status    Module status             │',
+      '│  modernizer.scan      Scan for upgrades         │',
+      '│  modernizer.propose   Propose evolution         │',
+      '│  modernizer.apply     Apply evolution           │',
+      '│  modernizer.verify    Verify run                │',
+      '│  modernizer.plans     List plans                │',
+      '│  modernizer.runs      Execution history         │',
+      '│  modernizer.health    Health score              │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)', { count: 50 });
 }
