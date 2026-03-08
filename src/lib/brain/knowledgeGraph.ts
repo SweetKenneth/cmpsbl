@@ -229,7 +229,22 @@ export async function findPath(
   maxDepth: number = 5
 ): Promise<string[] | null> {
   try {
-    // BFS to find shortest path
+    // Batch-load all edges once to avoid N+1 queries
+    const { data: allEdges } = await supabase
+      .from('brain_graph_edges')
+      .select('source_id, target_id')
+      .limit(5000);
+
+    if (!allEdges || allEdges.length === 0) return null;
+
+    // Build adjacency list
+    const adjacency = new Map<string, string[]>();
+    for (const edge of allEdges) {
+      if (!adjacency.has(edge.source_id)) adjacency.set(edge.source_id, []);
+      adjacency.get(edge.source_id)!.push(edge.target_id);
+    }
+
+    // BFS using in-memory adjacency
     const queue: Array<{ id: string; path: string[] }> = [
       { id: sourceId, path: [sourceId] },
     ];
@@ -237,22 +252,13 @@ export async function findPath(
 
     while (queue.length > 0) {
       const current = queue.shift()!;
-
       if (current.path.length > maxDepth) continue;
       if (current.id === targetId) return current.path;
 
-      const { data: edges } = await supabase
-        .from('brain_graph_edges')
-        .select('target_id')
-        .eq('source_id', current.id);
-
-      for (const edge of edges || []) {
-        if (!visited.has(edge.target_id)) {
-          visited.add(edge.target_id);
-          queue.push({
-            id: edge.target_id,
-            path: [...current.path, edge.target_id],
-          });
+      for (const neighbor of adjacency.get(current.id) || []) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          queue.push({ id: neighbor, path: [...current.path, neighbor] });
         }
       }
     }

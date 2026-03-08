@@ -134,9 +134,9 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
     if (coldBuilder && context) coldBuilder = coldBuilder.contains('tags', { context });
     
     const [hotResult, warmResult, coldResult] = await Promise.all([
-      hotQuery ? hotQuery : Promise.resolve({ data: [] }),
-      warmQuery ? warmQuery : Promise.resolve({ data: [] }),
-      coldQuery ? coldQuery : Promise.resolve({ data: [] }),
+      hotBuilder ? hotBuilder : Promise.resolve({ data: [] }),
+      warmBuilder ? warmBuilder : Promise.resolve({ data: [] }),
+      coldBuilder ? coldBuilder : Promise.resolve({ data: [] }),
     ]);
     
     // Process hot tier
