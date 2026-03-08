@@ -300,12 +300,21 @@ export function DownloadableTemplates({ className }: { className?: string }) {
     setDownloading(template.id);
     
     try {
+      const { serializeCmpsblManifest } = await import('@/lib/export/cmpsbl-manifest');
       const zip = new JSZip();
       
       // Add all files to the ZIP
       Object.entries(template.files).forEach(([path, content]) => {
         zip.file(path, content);
       });
+
+      // Add CMPSBL manifest
+      zip.file('manifest.json', serializeCmpsblManifest({
+        name: template.id,
+        targets: ['typescript'],
+        version: '1.0.0',
+        source: 'developer-template',
+      }));
       
       // Generate the ZIP blob
       const blob = await zip.generateAsync({ type: 'blob' });

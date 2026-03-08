@@ -2496,8 +2496,6 @@ export async function downloadBundle(bundle: ExportBundle): Promise<void> {
   }
   folder.file('manifest.json', serializeCmpsblManifest({
     name: bundle.artifact.name,
-    cjpi: bundle.artifact.cjpi,
-    modules: [bundle.artifact.module],
     targets: bundle.files.map(f => {
       const ext = f.filename.split('.').pop() || '';
       return ext;

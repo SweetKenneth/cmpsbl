@@ -513,6 +513,14 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     files['CHANGELOG.md'] = `# Changelog\n\n## v${config.version}\n\n${config.changelog}`;
   }
 
+  // Add CMPSBL manifest
+  files['manifest.json'] = serializeCmpsblManifest({
+    name: config.name,
+    targets: ['typescript'],
+    version: config.version,
+    source: 'cognitive-export',
+  });
+
   // Add all files to zip
   Object.entries(files).forEach(([path, content]) => {
     zip.file(path, content);
