@@ -53,8 +53,8 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   evolution: { module: 'evolution', layer: 'mesh', bootOrder: 23, dependencies: ['core'] },
   intent: { module: 'intent', layer: 'mesh', bootOrder: 24, dependencies: ['core'] },
   governance: { module: 'governance', layer: 'mesh', bootOrder: 25, dependencies: ['core'] },
-  medic: { module: 'medic', layer: 'operational', bootOrder: 23, dependencies: ['core', 'system', 'vision'] },
-  nerve: { module: 'nerve', layer: 'infrastructure', bootOrder: 24, dependencies: ['core', 'ripple'] },
+  medic: { module: 'medic', layer: 'operational', bootOrder: 38, dependencies: ['core', 'system', 'vision'] },
+  nerve: { module: 'nerve', layer: 'infrastructure', bootOrder: 39, dependencies: ['core', 'ripple'] },
   // Expansion Modules (38-Node Architecture)
   sovereign: { module: 'sovereign', layer: 'mesh', bootOrder: 26, dependencies: ['core', 'defense', 'access'] },
   oracle: { module: 'oracle', layer: 'cognitive', bootOrder: 27, dependencies: ['core', 'brain', 'vision'] },
@@ -296,9 +296,11 @@ export async function broadcastEvent(event: {
     
     if (error) throw error;
     
-    return { success: true, delivered: 14, failed: 0 };
+    const moduleCount = Object.keys(MODULE_REGISTRY).length;
+    return { success: true, delivered: moduleCount, failed: 0 };
   } catch {
-    return { success: false, delivered: 0, failed: 14 };
+    const moduleCount = Object.keys(MODULE_REGISTRY).length;
+    return { success: false, delivered: 0, failed: moduleCount };
   }
 }
 
@@ -328,7 +330,7 @@ export function getWorldModelSummary(): {
   return {
     version: cortexState.worldModelVersion,
     layers,
-    totalModules: 16,
+    totalModules: Object.keys(MODULE_REGISTRY).length,
     governanceMode: cortexState.governanceMode,
   };
 }

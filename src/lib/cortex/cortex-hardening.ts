@@ -339,6 +339,7 @@ interface Checkpoint {
   sequenceNumber: number;
 }
 
+const MAX_CHECKPOINTS = 200;
 const checkpoints = new Map<string, Checkpoint>();
 
 export function saveCheckpoint(
@@ -357,6 +358,10 @@ export function saveCheckpoint(
     sequenceNumber: (existing?.sequenceNumber ?? 0) + 1,
   };
   checkpoints.set(executionId, checkpoint);
+  if (checkpoints.size > MAX_CHECKPOINTS) {
+    const first = checkpoints.keys().next().value;
+    if (first !== undefined) checkpoints.delete(first);
+  }
   return checkpoint;
 }
 
@@ -427,6 +432,7 @@ export function getSLACompliance(windowMs = 3_600_000): {
 // ─── 10. Cross-Pipeline Deduplication ─────────────────────────────────────────
 // Detect and coalesce identical pipeline submissions
 
+const MAX_FINGERPRINTS = 500;
 const activePipelineFingerprints = new Map<number, { pipelineId: string; timestamp: number }>();
 
 export function deduplicatePipeline(
@@ -455,6 +461,14 @@ export function registerPipelineFingerprint(
     `${name}:${steps.map(s => `${s.module}.${s.action}`).join(',')}`
   );
   activePipelineFingerprints.set(fingerprint, { pipelineId, timestamp: Date.now() });
+  // Evict stale fingerprints
+  if (activePipelineFingerprints.size > MAX_FINGERPRINTS) {
+    const now = Date.now();
+    for (const [k, v] of activePipelineFingerprints) {
+      if (now - v.timestamp > 60_000) activePipelineFingerprints.delete(k);
+      if (activePipelineFingerprints.size <= MAX_FINGERPRINTS) break;
+    }
+  }
 }
 
 export function clearPipelineFingerprint(
@@ -546,11 +560,17 @@ export function rebalancePriorities(
 // ─── 13. Pipeline Abort Controller ────────────────────────────────────────────
 // Centralized abort signal management for pipeline cancellation
 
+const MAX_ABORT_CONTROLLERS = 200;
 const abortControllers = new Map<string, AbortController>();
 
 export function createPipelineAbort(pipelineId: string): AbortSignal {
   const controller = new AbortController();
   abortControllers.set(pipelineId, controller);
+  // Evict FIFO if over capacity
+  if (abortControllers.size > MAX_ABORT_CONTROLLERS) {
+    const first = abortControllers.keys().next().value;
+    if (first !== undefined) abortControllers.delete(first);
+  }
   return controller.signal;
 }
 
@@ -669,17 +689,24 @@ export function releaseResource(resource: string): void {
 }
 
 function detectCycle(startId: string): boolean {
+  // BFS: check if any path from startId's wait targets leads back to startId
   const visited = new Set<string>();
-  const stack = [startId];
+  const queue: string[] = [];
 
-  while (stack.length > 0) {
-    const current = stack.pop()!;
-    if (visited.has(current)) return true;
+  // Seed with what startId is waiting on
+  const initial = waitGraph.get(startId);
+  if (!initial) return false;
+  for (const n of initial) queue.push(n);
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    if (current === startId) return true; // cycle back to origin
+    if (visited.has(current)) continue;
     visited.add(current);
 
     const neighbors = waitGraph.get(current);
     if (neighbors) {
-      for (const n of neighbors) stack.push(n);
+      for (const n of neighbors) queue.push(n);
     }
   }
   return false;
@@ -696,6 +723,7 @@ interface QuotaBucket {
   windowStart: number;
 }
 
+const MAX_QUOTA_BUCKETS = 200;
 const quotaBuckets = new Map<string, QuotaBucket>();
 
 export function checkPipelineQuota(source: string, limit = 100, windowMs = 3_600_000): boolean {
@@ -705,6 +733,13 @@ export function checkPipelineQuota(source: string, limit = 100, windowMs = 3_600
   if (!bucket || now - bucket.windowStart > bucket.windowMs) {
     bucket = { source, limit, used: 0, windowMs, windowStart: now };
     quotaBuckets.set(source, bucket);
+    // Evict expired buckets if over capacity
+    if (quotaBuckets.size > MAX_QUOTA_BUCKETS) {
+      for (const [k, v] of quotaBuckets) {
+        if (now - v.windowStart > v.windowMs) quotaBuckets.delete(k);
+        if (quotaBuckets.size <= MAX_QUOTA_BUCKETS) break;
+      }
+    }
   }
 
   if (bucket.used >= bucket.limit) return false;
@@ -768,6 +803,10 @@ export function recordOrchestrationTelemetry(
   telemetryWindow.maxLatencyMs = Math.max(telemetryWindow.maxLatencyMs, latencyMs);
   telemetryWindow.minLatencyMs = Math.min(telemetryWindow.minLatencyMs, latencyMs);
   telemetryWindow.stepCounts.push(stepCount);
+  // Cap stepCounts within window
+  if (telemetryWindow.stepCounts.length > 1000) {
+    telemetryWindow.stepCounts = telemetryWindow.stepCounts.slice(-500);
+  }
 }
 
 export function getOrchestrationTelemetry(): {
@@ -888,6 +927,7 @@ interface OrchestrationType {
   cooldownMs: number;
 }
 
+const MAX_BREAKERS = 100;
 const orchestrationBreakers = new Map<string, OrchestrationType>();
 
 export function getOrchestrationBreakerState(name: string): OrchestrationType['state'] {
@@ -910,6 +950,10 @@ export function recordOrchestrationResult(
   if (!breaker) {
     breaker = { name, failures: 0, successes: 0, state: 'closed', lastFailure: 0, openedAt: 0, cooldownMs };
     orchestrationBreakers.set(name, breaker);
+    if (orchestrationBreakers.size > MAX_BREAKERS) {
+      const first = orchestrationBreakers.keys().next().value;
+      if (first !== undefined) orchestrationBreakers.delete(first);
+    }
   }
 
   if (success) {

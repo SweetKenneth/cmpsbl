@@ -48,10 +48,14 @@
    dependency_timeout_ms: 300000, // 5 minutes
  };
  
- // Pipeline queue and state
- const pipelineQueue: ScheduledPipeline[] = [];
- const runningPipelines = new Map<string, ScheduledPipeline>();
- const completedPipelines: ScheduledPipeline[] = [];
+  // Pipeline queue and state (bounded)
+  const MAX_QUEUE_SIZE = 200;
+  const MAX_COMPLETED = 100;
+  const pipelineQueue: ScheduledPipeline[] = [];
+  const runningPipelines = new Map<string, ScheduledPipeline>();
+  const completedPipelines: ScheduledPipeline[] = [];
+  // Fast lookup set for completed pipeline IDs (avoids O(n) scans)
+  const completedIdSet = new Set<string>();
  
  /**
   * Generate pipeline ID
@@ -89,10 +93,17 @@
      metadata: params.metadata ?? {},
    };
  
-   // Add to queue with priority ordering
-   insertByPriority(pipeline);
- 
-   return pipeline;
+    // Reject if queue is full
+    if (pipelineQueue.length >= MAX_QUEUE_SIZE) {
+      pipeline.status = 'cancelled';
+      pipeline.error = `Queue full (max ${MAX_QUEUE_SIZE})`;
+      return pipeline;
+    }
+
+    // Add to queue with priority ordering
+    insertByPriority(pipeline);
+  
+    return pipeline;
  }
  
  /**
@@ -117,13 +128,12 @@
  /**
   * Check if all dependencies are satisfied
   */
- function areDependenciesSatisfied(pipeline: ScheduledPipeline): boolean {
-   for (const depId of pipeline.dependencies) {
-     const completed = completedPipelines.find(p => p.id === depId && p.status === 'completed');
-     if (!completed) return false;
-   }
-   return true;
- }
+  function areDependenciesSatisfied(pipeline: ScheduledPipeline): boolean {
+    for (const depId of pipeline.dependencies) {
+      if (!completedIdSet.has(depId)) return false;
+    }
+    return true;
+  }
  
  /**
   * Process the queue - start next eligible pipelines
@@ -195,13 +205,15 @@
      pipeline.started_at = null;
      pipeline.completed_at = null;
      setTimeout(() => insertByPriority(pipeline), config.retry_delay_ms);
-   } else {
-     completedPipelines.push(pipeline);
-     // Keep only last 100 completed
-     if (completedPipelines.length > 100) {
-       completedPipelines.shift();
-     }
-   }
+    } else {
+      completedPipelines.push(pipeline);
+      if (pipeline.status === 'completed') completedIdSet.add(pipeline.id);
+      // Keep only last MAX_COMPLETED — batch trim to avoid frequent splices
+      if (completedPipelines.length > MAX_COMPLETED * 1.5) {
+        const removed = completedPipelines.splice(0, completedPipelines.length - MAX_COMPLETED);
+        for (const r of removed) completedIdSet.delete(r.id);
+      }
+    }
  
    return pipeline;
  }
@@ -214,18 +226,20 @@
    const queueIdx = pipelineQueue.findIndex(p => p.id === pipelineId);
    if (queueIdx >= 0) {
      const [cancelled] = pipelineQueue.splice(queueIdx, 1);
-     cancelled.status = 'cancelled';
-     completedPipelines.push(cancelled);
+    cancelled.status = 'cancelled';
+      completedPipelines.push(cancelled);
+      // cancelled pipelines don't go into completedIdSet (they didn't succeed)
      return true;
    }
  
    // Check running
    const running = runningPipelines.get(pipelineId);
    if (running) {
-     running.status = 'cancelled';
-     running.completed_at = new Date().toISOString();
-     runningPipelines.delete(pipelineId);
-     completedPipelines.push(running);
+    running.status = 'cancelled';
+      running.completed_at = new Date().toISOString();
+      runningPipelines.delete(pipelineId);
+      completedPipelines.push(running);
+      // cancelled pipelines don't go into completedIdSet
      return true;
    }
  

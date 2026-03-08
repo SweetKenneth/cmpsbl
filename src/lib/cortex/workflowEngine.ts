@@ -66,9 +66,21 @@
    retries: number;
  }
  
- // Workflow registry
- const workflows = new Map<string, WorkflowDefinition>();
- const executions = new Map<string, WorkflowExecution>();
+// Workflow registry (bounded)
+const MAX_WORKFLOWS = 100;
+const MAX_EXECUTIONS = 200;
+const workflows = new Map<string, WorkflowDefinition>();
+const executions = new Map<string, WorkflowExecution>();
+
+function boundMap<K, V>(map: Map<K, V>, max: number): void {
+  if (map.size <= max) return;
+  const excess = map.size - max;
+  const iter = map.keys();
+  for (let i = 0; i < excess; i++) {
+    const key = iter.next().value;
+    if (key !== undefined) map.delete(key);
+  }
+}
  
  /**
   * Register a workflow definition
@@ -82,9 +94,10 @@
      createdAt: new Date().toISOString(),
    };
    
-   workflows.set(workflow.id, workflow);
-   return workflow;
- }
+    workflows.set(workflow.id, workflow);
+    boundMap(workflows, MAX_WORKFLOWS);
+    return workflow;
+  }
  
  /**
   * Start a workflow execution
@@ -115,14 +128,22 @@
      });
    }
    
-   executions.set(execution.id, execution);
-   
-   // Execute workflow
-   executeWorkflow(workflow, execution, input).catch(error => {
-     execution.status = 'failed';
-     execution.error = error instanceof Error ? error.message : String(error);
-     execution.completedAt = new Date().toISOString();
-   });
+    executions.set(execution.id, execution);
+    boundMap(executions, MAX_EXECUTIONS);
+    
+    // Execute workflow with timeout
+    const timeoutMs = workflow.timeout > 0 ? workflow.timeout : 300_000; // default 5min
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`Workflow timed out after ${timeoutMs}ms`)), timeoutMs)
+    );
+    Promise.race([
+      executeWorkflow(workflow, execution, input),
+      timeoutPromise,
+    ]).catch(error => {
+      execution.status = 'failed';
+      execution.error = error instanceof Error ? error.message : String(error);
+      execution.completedAt = new Date().toISOString();
+    });
    
    return execution;
  }
@@ -251,31 +272,37 @@
  /**
   * Evaluate a condition expression
   */
- function evaluateCondition(
-   condition: string,
-   context: Record<string, unknown>
- ): boolean {
-   // Simple condition evaluation
-   // Format: "stepId.field operator value"
-   const match = condition.match(/(\w+)\.(\w+)\s*(==|!=|>|<)\s*(.+)/);
-   if (!match) return true;
-   
-   const [, stepId, field, operator, value] = match;
-   const stepOutput = context[stepId] as Record<string, unknown>;
-   
-   if (!stepOutput) return false;
-   
-   const actual = stepOutput[field];
-   const expected = JSON.parse(value);
-   
-   switch (operator) {
-     case '==': return actual === expected;
-     case '!=': return actual !== expected;
-     case '>': return (actual as number) > expected;
-     case '<': return (actual as number) < expected;
-     default: return true;
-   }
- }
+  function evaluateCondition(
+    condition: string,
+    context: Record<string, unknown>
+  ): boolean {
+    // Simple condition evaluation
+    // Format: "stepId.field operator value"
+    const match = condition.match(/(\w+)\.(\w+)\s*(==|!=|>|<)\s*(.+)/);
+    if (!match) return true;
+    
+    const [, stepId, field, operator, value] = match;
+    const stepOutput = context[stepId] as Record<string, unknown>;
+    
+    if (!stepOutput) return false;
+    
+    const actual = stepOutput[field];
+    let expected: unknown;
+    try {
+      expected = JSON.parse(value);
+    } catch {
+      // Treat unparseable value as a raw string comparison
+      expected = value.trim();
+    }
+    
+    switch (operator) {
+      case '==': return actual === expected;
+      case '!=': return actual !== expected;
+      case '>': return (actual as number) > (expected as number);
+      case '<': return (actual as number) < (expected as number);
+      default: return true;
+    }
+  }
  
  /**
   * Resolve payload template with context values
