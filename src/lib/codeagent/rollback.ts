@@ -188,7 +188,11 @@ export async function persistChanges(): Promise<boolean> {
           module: change.module,
           description: change.description,
           timestamp: change.timestamp,
-          rollbackSql: change.rollbackSql
+          rollbackSql: change.rollbackSql,
+          beforeState_preview: change.beforeState.slice(0, 500),
+          afterState_preview: change.afterState.slice(0, 500),
+          beforeState_length: change.beforeState.length,
+          afterState_length: change.afterState.length,
         }),
         memory_type: 'change_record',
         source: 'code_agent',
