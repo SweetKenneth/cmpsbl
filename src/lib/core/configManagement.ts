@@ -257,12 +257,14 @@ export function restoreSnapshot(snapshotId: string): boolean {
   // Clear current
   configs.clear();
   featureFlags.clear();
+  moduleConfigs.clear();
   
-  // Restore
+  // Restore configs
   Object.entries(snapshot.configs).forEach(([key, value]) => {
     configs.set(key, value);
   });
   
+  // Restore flags
   Object.entries(snapshot.flags).forEach(([key, value]) => {
     featureFlags.set(key, value);
   });

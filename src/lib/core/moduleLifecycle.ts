@@ -4,7 +4,19 @@
  */
 
 import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, markModuleBooted, markModuleFailed } from './index';
-import { withTimeout, boundArray } from '@/lib/system/hardening';
+import { withTimeout } from '@/lib/system/hardening';
+
+// Precomputed reverse dependency map — built once at module load
+const DEPENDENTS_MAP: ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleName[]> = (() => {
+  const map = new Map<SubstrateModuleName, SubstrateModuleName[]>();
+  for (const m of SUBSTRATE_MODULES) map.set(m, []);
+  for (const m of SUBSTRATE_MODULES) {
+    for (const dep of getModuleDependencies(m)) {
+      map.get(dep)?.push(m);
+    }
+  }
+  return map;
+})();
 
 // ============ Types ============
 
@@ -216,7 +228,7 @@ export function getDependencyGraph(module: SubstrateModuleName): DependencyGraph
  * Get all modules that depend on this one
  */
 export function getDependents(module: SubstrateModuleName): SubstrateModuleName[] {
-  return SUBSTRATE_MODULES.filter(m => getModuleDependencies(m).includes(module));
+  return [...(DEPENDENTS_MAP.get(module) || [])];
 }
 
 /**
@@ -415,8 +427,8 @@ function recordEvent(
     details,
   });
   
-  // Bound event history to prevent unbounded memory growth
-  const bounded = boundArray(lifecycleEvents, 1000);
-  lifecycleEvents.length = 0;
-  lifecycleEvents.push(...bounded);
+  // Trim oldest events when exceeding cap — O(1) amortized via threshold check
+  if (lifecycleEvents.length > 1200) {
+    lifecycleEvents.splice(0, lifecycleEvents.length - 1000);
+  }
 }
