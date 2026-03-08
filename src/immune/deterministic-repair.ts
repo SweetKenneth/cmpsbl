@@ -408,10 +408,10 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
     }
   }
 
-  // 25) OBJECT_VALUE_STRINGIFY — any remaining non-primitive values get stringified as last resort
+  // 25) OBJECT_VALUE_STRINGIFY — stringify remaining non-primitive values (skip protected object fields)
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val !== null && typeof val === 'object') {
+    if (val !== null && typeof val === 'object' && !OBJECT_FIELDS.has(key)) {
       try { copy[key] = JSON.stringify(val); } catch { copy[key] = ''; }
       if (!applied.includes('OBJECT_VALUE_STRINGIFY')) applied.push('OBJECT_VALUE_STRINGIFY');
     }
