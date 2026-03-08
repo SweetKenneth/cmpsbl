@@ -459,27 +459,27 @@ export function compressAuditEntries(olderThanMs: number = 24 * 60 * 60 * 1000):
     if (entry.timestamp < cutoff && !entry.compressed) {
       const originalSize = JSON.stringify(entry).length;
 
-      // IMPORTANT: Do NOT mutate previousState/newState — they are inputs to computeHash.
-      // Mutating them would cause verifyAuditChain hash recomputation to fail.
-      // Instead, store compressed summaries in metadata (which is NOT part of the hash).
-      if (entry.previousState && JSON.stringify(entry.previousState).length > 200) {
-        entry.metadata = {
-          ...entry.metadata,
-          _prevStateSummary: `[${typeof entry.previousState} data, compressed]`,
-        };
-        entry.previousState = null;
+      // CRITICAL: previousState and newState are inputs to computeHash.
+      // Mutating them would break verifyAuditChain hash recomputation.
+      // Only strip metadata keys (not part of hash) for size reduction.
+      // For deep compression, keep a hash of the state and discard the body.
+      // We store a lightweight marker but preserve the hash-critical null representation:
+      // computeHash uses JSON.stringify(null) = '' for null, so we CAN null states
+      // ONLY if they were null at write time. For non-null states, we must keep them.
+      //
+      // Strategy: trim metadata (unhashed) aggressively. Mark as compressed.
+      const trimmedMeta: Record<string, string> = {};
+      // Keep only essential metadata keys
+      for (const [k, v] of Object.entries(entry.metadata)) {
+        if (k === 'outcome' || k === 'reason' || k === 'method' || k.startsWith('_')) {
+          trimmedMeta[k] = v;
+        }
       }
-      if (entry.newState && JSON.stringify(entry.newState).length > 200) {
-        entry.metadata = {
-          ...entry.metadata,
-          _newStateSummary: `[${typeof entry.newState} data, compressed]`,
-        };
-        entry.newState = null;
-      }
-
+      entry.metadata = trimmedMeta;
       entry.compressed = true;
+
       const compressedSize = JSON.stringify(entry).length;
-      savedBytes += (originalSize - compressedSize);
+      savedBytes += Math.max(0, originalSize - compressedSize);
       compressed++;
     }
   }
