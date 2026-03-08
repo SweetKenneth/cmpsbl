@@ -23,6 +23,7 @@
 // ============ Constants ============
 
 import { SUBSTRATE_VERSION as _SV, SUBSTRATE_CODENAME as _SC } from '@/lib/substrate/versions';
+import { withTimeout } from '@/lib/system/hardening';
 export const SUBSTRATE_VERSION = _SV;
 export const SUBSTRATE_CODENAME = _SC;
 export { MODULE_VERSIONS } from '@/lib/substrate/versions';
@@ -283,7 +284,8 @@ export function completeBootSequence(): BootSequence | null {
   
   bootSequence.completed_at = new Date().toISOString();
   bootSequence.current_phase = 'complete';
-  bootSequence.success = bootSequence.modules_failed.length === 0;
+  // Success requires zero failures AND at least the kernel booted
+  bootSequence.success = bootSequence.modules_failed.length === 0 && bootSequence.modules_booted.includes('core');
   
   return bootSequence;
 }
@@ -355,11 +357,12 @@ export function canModuleBoot(module: SubstrateModuleName): boolean {
 }
 
 export function getModuleStatuses(): ModuleStatus[] {
-  return Array.from(moduleStatuses.values());
+  return Array.from(moduleStatuses.values()).map(s => ({ ...s, dependencies: [...s.dependencies] }));
 }
 
 export function getModuleStatus(module: SubstrateModuleName): ModuleStatus | null {
-  return moduleStatuses.get(module) || null;
+  const s = moduleStatuses.get(module);
+  return s ? { ...s, dependencies: [...s.dependencies] } : null;
 }
 
 export function updateModuleHealth(module: SubstrateModuleName, health: number): void {
@@ -411,10 +414,11 @@ export async function safeExecute<T>(
   module: SubstrateModuleName,
   operation: string,
   fn: () => Promise<T>,
-  fallback?: T
+  fallback?: T,
+  timeoutMs: number = coreConfig.default_timeout_ms
 ): Promise<{ success: boolean; data?: T; error?: string }> {
   try {
-    const data = await fn();
+    const data = await withTimeout(fn, timeoutMs, `${module}.${operation}`);
     return { success: true, data };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

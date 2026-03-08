@@ -268,9 +268,14 @@ export function updateModuleHealth(
  
  /**
   * Start automatic health monitoring
+  * Safe to call multiple times — idempotent. Cleans up previous interval on re-entry (HMR safe).
   */
  export function startHealthMonitoring(): void {
-   if (healthCheckInterval) return;
+   // Guard against HMR timer leaks: clear any stale interval before starting
+   if (healthCheckInterval) {
+     clearInterval(healthCheckInterval);
+     healthCheckInterval = null;
+   }
    
    // Initialize all modules
    SUBSTRATE_MODULES.forEach(initModuleHealth);
