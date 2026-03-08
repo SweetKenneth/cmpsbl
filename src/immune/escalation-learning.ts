@@ -317,7 +317,7 @@ export function getEligiblePatterns(): PatternCluster[] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Step 3: Synthesize Candidate Rule (v3 — strategy-aware)
+// Step 3: Synthesize Candidate Rule
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function synthesizeCandidateRule(cluster: PatternCluster): CandidateRule | null {
