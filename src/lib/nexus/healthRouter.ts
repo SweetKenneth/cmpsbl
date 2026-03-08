@@ -62,8 +62,9 @@ export async function getProviderHealthMetrics(): Promise<ProviderHealth[]> {
     
     const { data: usage } = await supabase
       .from('ai_usage_log')
-      .select('*')
-      .gte('created_at', since);
+      .select('provider, success, response_time_ms, created_at')
+      .gte('created_at', since)
+      .limit(1000);
     
     for (const provider of PROVIDERS) {
       const providerLogs = usage?.filter(u => u.provider === provider) || [];
