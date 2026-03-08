@@ -110,7 +110,7 @@ export function autoQuarantineModule(module: string, reason: string, ttlMs = 300
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'quarantine_module', reason, 'success', { module, ttlMs });
   
   setTimeout(() => { quarantinedModules.delete(module); action.reversed = true; }, ttlMs);
