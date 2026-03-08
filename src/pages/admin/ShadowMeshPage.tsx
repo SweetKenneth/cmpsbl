@@ -96,11 +96,11 @@ export default function ShadowMeshPage() {
       </Card>
 
       {/* Pilot Executors — Dynamic */}
-      <Card>
+      <Card className="hover:border-primary/15 transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
-            Probed Executors ({executorList.length})
+            Probed Executors (<span className="font-mono tabular-nums">{executorList.length}</span>)
           </CardTitle>
           <CardDescription>
             All executors wrapped by the immune layer — grouped by module
