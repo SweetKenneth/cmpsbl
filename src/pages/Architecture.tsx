@@ -273,15 +273,15 @@ export default function Architecture() {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/modules">
-                <Button className="gap-2">
+                <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                   All Nodes <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">
-                <Button variant="outline">Documentation</Button>
+                <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
               <Link to="/substrate">
-                <Button variant="outline">Live Dashboard</Button>
+                <Button variant="outline" className="hover:border-primary/30 transition-colors">Live Dashboard</Button>
               </Link>
             </div>
           </div>
