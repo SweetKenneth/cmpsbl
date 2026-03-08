@@ -2482,7 +2482,11 @@ export function downloadFile(file: ExportedFile): void {
  * Download a full bundle as a ZIP (requires JSZip)
  */
 export async function downloadBundle(bundle: ExportBundle): Promise<void> {
-  const JSZip = (await import('jszip')).default;
+  const [JSZipMod, { serializeCmpsblManifest }] = await Promise.all([
+    import('jszip'),
+    import('./cmpsbl-manifest'),
+  ]);
+  const JSZip = JSZipMod.default;
   const zip = new JSZip();
   const folderName = bundle.artifact.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const folder = zip.folder(folderName)!;
@@ -2490,6 +2494,14 @@ export async function downloadBundle(bundle: ExportBundle): Promise<void> {
   for (const file of bundle.files) {
     folder.file(file.filename, file.content);
   }
+  folder.file('manifest.json', serializeCmpsblManifest({
+    name: bundle.artifact.name,
+    targets: bundle.files.map(f => {
+      const ext = f.filename.split('.').pop() || '';
+      return ext;
+    }).filter((v, i, a) => a.indexOf(v) === i),
+    version: '1.0.0',
+  }));
   const blob = await zip.generateAsync({ type: 'blob' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

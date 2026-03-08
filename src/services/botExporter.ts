@@ -477,6 +477,7 @@ function generatePackageJson(config: BotExportConfig): string {
  * Create complete export bundle as ZIP
  */
 export async function createExportBundle(config: BotExportConfig): Promise<ExportBundle> {
+  const { serializeCmpsblManifest } = await import('@/lib/export/cmpsbl-manifest');
   const zip = new JSZip();
   
   const files: Record<string, string> = {
@@ -511,6 +512,14 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
   if (config.changelog) {
     files['CHANGELOG.md'] = `# Changelog\n\n## v${config.version}\n\n${config.changelog}`;
   }
+
+  // Add CMPSBL manifest
+  files['manifest.json'] = serializeCmpsblManifest({
+    name: config.name,
+    targets: ['typescript'],
+    version: config.version,
+    source: 'cognitive-export',
+  });
 
   // Add all files to zip
   Object.entries(files).forEach(([path, content]) => {
