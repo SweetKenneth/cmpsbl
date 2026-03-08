@@ -549,6 +549,7 @@ const consentLog = new Map<string, { parties: Set<string>; required: string[]; t
 
 export function requireConsent(actionId: string, requiredParties: string[]): void {
   consentLog.set(actionId, { parties: new Set(), required: requiredParties, timestamp: Date.now() });
+  capMap(consentLog, MAX_CONSENT_LOG);
 }
 
 export function grantConsent(actionId: string, party: string): boolean {
