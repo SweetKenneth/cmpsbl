@@ -372,9 +372,9 @@ export default function Roadmap() {
                 { phase: "DREAMING", revenue: "Simulation", arpu: "$140/mo" },
                 { phase: "EVOLUTION", revenue: "Autonomy", arpu: "$220/mo" },
               ].map((item, i) => (
-                <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60">
+                <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60 hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
                   <div className="text-xs font-mono text-muted-foreground tracking-wider mb-2">{item.phase}</div>
-                  <div className="text-lg font-black text-foreground">{item.arpu}</div>
+                  <div className="text-lg font-black font-mono tabular-nums text-foreground">{item.arpu}</div>
                   <div className="text-xs text-primary font-medium mt-1">{item.revenue}</div>
                 </div>
               ))}
@@ -398,13 +398,13 @@ export default function Roadmap() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth">
-              <Button size="lg" className="min-h-[48px] px-8 font-semibold shadow-md shadow-primary/15">
+              <Button size="lg" className="min-h-[48px] px-8 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                 Start Building
                 <Rocket className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/foundry">
-              <Button size="lg" variant="outline" className="min-h-[48px] px-8">
+              <Button size="lg" variant="outline" className="min-h-[48px] px-8 font-semibold hover:border-primary/30 transition-all duration-200">
                 Explore Memory Stream
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
