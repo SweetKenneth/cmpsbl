@@ -197,6 +197,9 @@ class MaintenanceManager {
         case 'brain_stale_embedding_cleanup':
           details = await this.cleanupStaleEmbeddings();
           break;
+        case 'brain_events_prune':
+          details = await this.pruneStaleEvents();
+          break;
         default:
           return;
       }
