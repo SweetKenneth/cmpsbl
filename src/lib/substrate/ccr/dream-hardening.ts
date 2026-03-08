@@ -270,7 +270,7 @@ const coherenceScores: number[] = [];
 
 export function recordCoherence(score: number): void {
   coherenceScores.push(score);
-  if (coherenceScores.length > 100) coherenceScores.shift();
+  if (coherenceScores.length > 100) coherenceScores.splice(0, coherenceScores.length - 100);
 }
 
 export function getCoherenceTrend(): { avg: number; trend: 'improving' | 'stable' | 'degrading'; recent: number } {
