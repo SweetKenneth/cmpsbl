@@ -15,14 +15,18 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { ArchitectureSnapshot } from '@/lib/substrate/encode-module/orchestration';
 import type { UseEncodeOrchestrationReturn } from '@/hooks/substrate/useEncodeOrchestration';
+import { ShadowABPanel, type ShadowABExperiment } from './ShadowABPanel';
 
 interface ArchitecturePanelProps {
   orchestration: UseEncodeOrchestrationReturn;
   encodeHealth: number;
   taskQueue: Array<{ id: string; intent: string; status: string }>;
+  shadowExperiments?: ShadowABExperiment[];
+  onSelectWinner?: (experimentId: string, winner: 'A' | 'B') => void;
+  onCancelExperiment?: (experimentId: string) => void;
 }
 
-export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue }: ArchitecturePanelProps) {
+export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shadowExperiments = [], onSelectWinner, onCancelExperiment }: ArchitecturePanelProps) {
   const { snapshot, mode, isLocked, lockReason, conversation, patches } = orchestration;
 
   const healthColor = encodeHealth >= 80 ? 'text-green-500' : encodeHealth >= 50 ? 'text-yellow-500' : 'text-destructive';
@@ -146,6 +150,15 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue }: Ar
             )}
           </CardContent>
         </Card>
+
+        {/* SHADOW A/B Tests */}
+        {shadowExperiments.length > 0 && onSelectWinner && onCancelExperiment && (
+          <ShadowABPanel
+            experiments={shadowExperiments}
+            onSelectWinner={onSelectWinner}
+            onCancel={onCancelExperiment}
+          />
+        )}
 
         {/* Execution Pipeline */}
         <Card className="border-border/20">
