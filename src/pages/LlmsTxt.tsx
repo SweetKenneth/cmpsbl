@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Download, FileText, ExternalLink, Code, Globe, Layers } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
 
 const LLMS_TXT_CONTENT = `# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
 # Machine-Readable Context Standard for AI Systems
