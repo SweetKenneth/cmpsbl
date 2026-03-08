@@ -38,6 +38,83 @@ export function EncodeSystemsConsole() {
     setShadowExperiments([...listShadowExperiments()]);
   }, []);
 
+  const addSystemMsg = useCallback((type: SystemMessage['type'], text: string) => {
+    setSystemMessages(prev => [...prev, { type, text, ts: new Date().toISOString() }]);
+  }, []);
+
+  // ── SHADOW A/B helpers ──
+  const handleShadowCreate = useCallback(async (planId: string, nameOrIntent: string, module: string) => {
+    const exp = createShadowAB(
+      planId,
+      `Shadow test: ${nameOrIntent}`,
+      module,
+      { approach: 'Conservative — minimal changes, proven patterns', description: `Apply established patterns for ${nameOrIntent} with minimal blast radius` },
+      { approach: 'Aggressive — optimized architecture, new patterns', description: `Redesign ${nameOrIntent} with cutting-edge patterns for maximum throughput` },
+    );
+    addSystemMsg('success', [
+      `🔬 SHADOW A/B experiment created: ${exp.id}`,
+      `   Variant A: Conservative (proven patterns)`,
+      `   Variant B: Aggressive (optimized architecture)`,
+      `   Plan: ${planId}`,
+      '',
+      `Running shadow probes now...`,
+    ].join('\n'));
+
+    // Run both variants through SHADOW
+    try {
+      const result = await runShadowAB(exp.id);
+      refreshShadowExperiments();
+
+      const mA = result.variantA.metrics;
+      const mB = result.variantB.metrics;
+      addSystemMsg('info', [
+        `📊 SHADOW probes complete:`,
+        `   Variant A: quality ${mA ? (mA.quality_score * 100).toFixed(0) + '%' : 'FAIL'}, divergence ${mA ? (mA.divergence * 100).toFixed(1) + '%' : '—'}`,
+        `   Variant B: quality ${mB ? (mB.quality_score * 100).toFixed(0) + '%' : 'FAIL'}, divergence ${mB ? (mB.divergence * 100).toFixed(1) + '%' : '—'}`,
+        '',
+        `Auto-evaluating winner...`,
+      ].join('\n'));
+
+      // Auto-evaluate
+      const decided = evaluateShadowAB(exp.id);
+      refreshShadowExperiments();
+
+      if (decided.winner) {
+        const template = getWinningTemplate(exp.id);
+        addSystemMsg('success', [
+          `🏆 Winner: Variant ${decided.winner}`,
+          `   ${decided.winnerReason}`,
+          '',
+          `Template locked: "${template?.approach}"`,
+          `Use /execute with this plan to implement the winning variant.`,
+        ].join('\n'));
+      } else {
+        addSystemMsg('warning', `Both variants failed. ${decided.winnerReason}`);
+      }
+    } catch (err: any) {
+      addSystemMsg('error', `Shadow A/B run failed: ${err.message}`);
+    }
+  }, [addSystemMsg, refreshShadowExperiments]);
+
+  const handleSelectWinner = useCallback((experimentId: string, winner: 'A' | 'B') => {
+    const decided = evaluateShadowAB(experimentId, winner);
+    refreshShadowExperiments();
+    const template = getWinningTemplate(experimentId);
+    addSystemMsg('success', [
+      `🏆 Manually selected Variant ${winner} as template`,
+      `   Approach: ${template?.approach}`,
+      `   Quality: ${template?.metrics.quality_score ? (template.metrics.quality_score * 100).toFixed(0) + '%' : '—'}`,
+      '',
+      `This variant will be used as the implementation blueprint.`,
+    ].join('\n'));
+  }, [addSystemMsg, refreshShadowExperiments]);
+
+  const handleCancelExperiment = useCallback((experimentId: string) => {
+    cancelShadowAB(experimentId);
+    refreshShadowExperiments();
+    addSystemMsg('warning', `Shadow A/B experiment ${experimentId} cancelled.`);
+  }, [addSystemMsg, refreshShadowExperiments]);
+
   // ── Resolve architecture context for any target ──
   const resolveTarget = useCallback((target: string) => {
     const navigation = navigateIntent(target);
