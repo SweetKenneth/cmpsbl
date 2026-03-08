@@ -503,6 +503,7 @@ interface AlertRecord {
   suppressed: number;
 }
 
+const MAX_ALERT_HISTORY = 500;
 const alertHistory = new Map<string, AlertRecord>();
 const ALERT_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
 
