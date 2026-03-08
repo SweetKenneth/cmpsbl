@@ -115,7 +115,7 @@ export default function ApiAccess() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="group p-6 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm card-lift shimmer-on-hover glass-edge"
+                className="group p-6 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm card-lift shimmer-on-hover glass-edge hover:border-primary/20 transition-all duration-300">
               >
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${feat.gradient} flex items-center justify-center mb-4 shadow-md`}>
                   <feat.icon className="w-5 h-5 text-white" />

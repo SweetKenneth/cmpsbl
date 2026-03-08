@@ -205,9 +205,9 @@ export default function Insights() {
               Join the observer list to receive updates on CMPSBL documentation releases,
               standards publications, and research materials.
             </p>
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
               <Link to="/register">
-                Register Now <ArrowRight className="w-4 h-4 ml-2" />
+                Register Now <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
           </motion.section>
