@@ -594,8 +594,13 @@ export function getRelayState(): RelayModuleState {
     ...state,
     signatureConfigs: new Map(signatureConfigs),
     failoverRoutes: new Map(state.failoverRoutes),
-    deduplicationHashes: new Set(), // Don't expose internal hashes
+    deduplicationHashes: new Set(state.deduplicationHashes), // Expose copy for hardening facade reads
   };
+}
+
+/** Check dedup membership without side-effects (for hardening facade) */
+export function isKnownHash(hash: string): boolean {
+  return state.deduplicationHashes.has(hash);
 }
 
 export function getRelayHealth(): number {
