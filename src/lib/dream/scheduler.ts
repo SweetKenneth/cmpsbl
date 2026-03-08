@@ -48,11 +48,11 @@ export async function getSystemLoad(): Promise<SystemLoadMetrics> {
       : 0;
     
     // Estimate memory pressure from tier stats
-    const { data: hotMemories } = await supabase
+    const { count: hotCount } = await supabase
       .from('brain_memory_hot')
-      .select('id', { count: 'exact', head: true });
+      .select('*', { count: 'exact', head: true });
     
-    const memoryPressure = Math.min(100, ((hotMemories as any)?.length || 0) / 50);
+    const memoryPressure = Math.min(100, (hotCount || 0) / 50);
     
     // Calculate if it's low activity period
     const hourOfDay = now.getHours();
