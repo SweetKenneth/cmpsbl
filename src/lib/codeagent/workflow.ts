@@ -597,6 +597,21 @@ async function stageFinalize(
     appliedBy: 'agent',
   });
   
+  // Record learning from this code action
+  try {
+    await learnFromCodeAction({
+      id: changeRecord.id,
+      actionType: 'generate',
+      module: request.module,
+      description: request.description,
+      code: generated.code,
+      filePath: generated.filePath,
+      success: true,
+      confidence: generated.confidence,
+      duration: Date.now() - currentWorkflow.startedAt.getTime(),
+    });
+  } catch { /* Non-critical — don't block finalization */ }
+  
   currentWorkflow.currentStageProgress = 100;
   emitProgress('complete', 'Code generation complete!', `Rollback ID: ${changeRecord.id.slice(0, 8)}`);
   currentWorkflow.completedStages.push('finalizing');
