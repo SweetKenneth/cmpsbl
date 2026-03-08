@@ -754,12 +754,11 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     }
   }
 
-  // v4: Auto-propagate shared rules to compatible executors
+  // Auto-propagate shared rules to compatible executors
   try {
-    const { autoPropagateRules } = require('./shared-rule-registry');
     const propagation = autoPropagateRules();
     sharedRulesPropagated = propagation.adopted;
-  } catch { /* shared registry not available */ }
+  } catch { /* non-critical */ }
 
   if (candidatesSynthesized > 0 || sharedRulesPropagated > 0) {
     log.info('encode', `Learning cycle: ${eligible.length}+${highConfidence.length} patterns → ${candidatesSynthesized} candidates → ${validated} validated → ${promoted} promoted, ${rejected} rejected, ${crossExecutorTransfers} transfers, ${sharedRulesPropagated} shared rules propagated`);
