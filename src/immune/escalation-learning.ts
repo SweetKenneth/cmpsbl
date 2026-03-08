@@ -734,7 +734,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
     }
   }
 
-  // v3: Also process high-confidence patterns that aren't yet eligible
+  // Also process high-confidence patterns that aren't yet eligible
   const highConfidence = Array.from(patternClusters.values())
     .filter(p => !p.candidateGenerated && p.confidence >= 0.7 && !p.promoted);
   
