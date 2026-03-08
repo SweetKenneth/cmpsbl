@@ -67,6 +67,12 @@ const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }
 export function autoBlockIP(ip: string, reason: string, ttlMs = 3600_000): ThreatAction | null {
   if (!canEscalate('block')) return null;
   
+  // Cap blocked IPs to prevent unbounded growth
+  if (blockedIPs.size >= MAX_BLOCKED_IPS && !blockedIPs.has(ip)) {
+    // Evict oldest by clearing expired actions first
+    cleanupExpiredActions();
+  }
+  
   blockedIPs.add(ip);
   const action: ThreatAction = {
     id: `def_${Date.now().toString(36)}`,
@@ -78,7 +84,7 @@ export function autoBlockIP(ip: string, reason: string, ttlMs = 3600_000): Threa
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'block_ip', reason, 'success', { ip, ttlMs });
   
   // Auto-expire
