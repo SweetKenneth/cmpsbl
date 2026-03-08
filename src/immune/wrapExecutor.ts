@@ -1,22 +1,21 @@
 /**
  * IMMUNITY — Executor Wrapper
  * 
- * v3.0 Fix: Archetype-gated repair. Garbage inputs (empty_shell, shape_alien,
- * injection_attempt, oversized) now safe-fail IMMEDIATELY without any repair
- * attempt. Only repairable archetypes (partial_valid, type_mismatch,
- * missing_required) trigger the repair pipeline. This fixes the inflated
- * repair attempt rate (~40-50% → expected <2%).
+ * Archetype-gated repair: Garbage inputs (empty_shell, shape_alien,
+ * injection_attempt, oversized) safe-fail IMMEDIATELY without repair.
+ * Only repairable archetypes (missing_required) trigger the repair pipeline,
+ * keeping the repair attempt rate honest (<2%).
  *
- * Improvements integrated:
- * #1 Context-Aware Rule Selection
- * #2 Compositional Repair Chains
- * #3 Confidence-Scored Repairs
- * #4 Learned Prioritization
- * #7 Pre-Execution Normalization
- * #8 Post-Execution Outcome Tracking
- * #10 Escalation Pattern Mining
- * #11 Parallel Repair Branching
- * #13 Archetype-Gated Repair (NEW)
+ * Integrated capabilities:
+ * - Context-Aware Rule Selection
+ * - Compositional Repair Chains
+ * - Confidence-Scored Repairs
+ * - Learned Prioritization
+ * - Pre-Execution Normalization
+ * - Post-Execution Outcome Tracking
+ * - Escalation Pattern Mining
+ * - Parallel Repair Branching
+ * - Archetype-Gated Repair
  *
  * SAFETY: 1 repair max, 1 retry max, no recursion, no cross-module writes.
  */
