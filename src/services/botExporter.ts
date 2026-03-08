@@ -4,6 +4,7 @@
  */
 
 import JSZip from 'jszip';
+import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 
 export interface BotExportConfig {
   id: string;
