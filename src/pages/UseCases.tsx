@@ -73,14 +73,14 @@ function IndustryCard({
       transition={{ duration: 0.5, delay }}
     >
       <Card className={cn(
-        "h-full border-border/50 bg-card/50 backdrop-blur-sm",
-        "hover:border-current/30 transition-all duration-300",
+        "h-full border-border/50 bg-card/50 backdrop-blur-sm group",
+        "hover:border-current/30 hover:shadow-lg hover:shadow-current/5 transition-all duration-500 card-lift",
         color
       )}>
         <CardHeader>
           <div className="flex items-start justify-between mb-4">
-            <div className="w-14 h-14 rounded-xl bg-current/10 flex items-center justify-center">
-              <Icon className="w-7 h-7" />
+            <div className="w-14 h-14 rounded-xl bg-current/10 group-hover:bg-current/15 flex items-center justify-center transition-colors">
+              <Icon className="w-7 h-7 group-hover:scale-110 transition-transform duration-300" />
             </div>
             {link && (
               <Button asChild variant="ghost" size="sm" className="text-current">
@@ -129,7 +129,7 @@ function CapabilityPill({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
+    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-200">
       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5 text-primary" />
       </div>
