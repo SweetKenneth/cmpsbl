@@ -362,15 +362,7 @@ function createExecutor(provider: FleetProvider): ModelExecutor {
 
       try {
         // Call pf-nexus-router edge function for real AI completion
-        const { createClient } = await import('@supabase/supabase-js');
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-        const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-        
-        if (!supabaseUrl || !supabaseKey) {
-          throw new Error('Supabase not configured');
-        }
-
-        const client = createClient(supabaseUrl, supabaseKey);
+        const { supabase: client } = await import('@/integrations/supabase/client');
         const { data, error } = await client.functions.invoke('pf-nexus-router', {
           body: {
             prompt,
