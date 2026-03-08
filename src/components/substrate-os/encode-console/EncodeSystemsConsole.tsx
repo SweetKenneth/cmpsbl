@@ -32,9 +32,10 @@ export function EncodeSystemsConsole() {
   const orchestration = useEncodeOrchestration();
   const encode = useEncode();
   const [systemMessages, setSystemMessages] = useState<SystemMessage[]>([]);
+  const [shadowExperiments, setShadowExperiments] = useState<ShadowABExperiment[]>([]);
 
-  const addSystemMsg = useCallback((type: SystemMessage['type'], text: string) => {
-    setSystemMessages(prev => [...prev, { type, text, ts: new Date().toISOString() }]);
+  const refreshShadowExperiments = useCallback(() => {
+    setShadowExperiments([...listShadowExperiments()]);
   }, []);
 
   // ── Resolve architecture context for any target ──
