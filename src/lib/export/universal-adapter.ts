@@ -202,7 +202,7 @@ export function generateExportBundle(
   const readme = generateReadme(artifact, targets, files);
 
   return {
-    artifact: { id: artifact.id, name: artifact.name, rank: artifact.rank },
+    artifact: { id: artifact.id, name: artifact.name, rank: artifact.rank, cjpi: artifact.cjpi, module: artifact.module, synthesisContext: artifact.synthesisContext },
     files,
     readme,
     generatedAt: new Date().toISOString(),
