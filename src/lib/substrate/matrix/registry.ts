@@ -95,16 +95,21 @@ function ensureInitialized(): void {
 // PUBLIC API
 // ═══════════════════════════════════════════════════════════════
 
-/** Get runtime state for a single node */
+/** Get runtime state for a single node (returns defensive copy) */
 export function getNodeState(id: SubstrateModuleName): RuntimeNodeState | null {
   ensureInitialized();
-  return runtimeStates.get(id) || null;
+  const state = runtimeStates.get(id);
+  return state ? { ...state, dependencies: [...state.dependencies], metadata: { ...state.metadata } } : null;
 }
 
-/** Get all runtime node states */
+/** Get all runtime node states (returns defensive copies) */
 export function getAllNodeStates(): RuntimeNodeState[] {
   ensureInitialized();
-  return Array.from(runtimeStates.values());
+  return Array.from(runtimeStates.values()).map(s => ({
+    ...s,
+    dependencies: [...s.dependencies],
+    metadata: { ...s.metadata },
+  }));
 }
 
 /** Get nodes by sector */
