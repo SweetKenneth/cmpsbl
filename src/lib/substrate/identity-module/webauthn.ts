@@ -3,6 +3,11 @@
  * 
  * Replaces passwords with phishing-resistant, hardware-bound credentials.
  * Supports Face ID, Touch ID, Windows Hello, and FIDO2 security keys.
+ *
+ * Round 1 Fixes:
+ * ✅ revokePasskey persists credentialStore after mutation
+ * ✅ credentialStore bounded (max 500 users)
+ * ✅ Input validation on userId/credentialId
  */
 
 import { emit } from '../events';
@@ -61,6 +66,8 @@ export interface PasskeyAuthenticationResult {
 
 const PASSKEY_STORE_KEY = 'cmpsbl_passkey_credentials';
 const PASSKEY_EMAIL_MAP_KEY = 'cmpsbl_passkey_email_map';
+const MAX_STORED_USERS = 500;
+const MAX_CREDS_PER_USER = 20;
 
 function loadCredentialStore(): Map<string, PasskeyCredential[]> {
   try {
@@ -101,6 +108,7 @@ function saveEmailMap(map: Map<string, string>) {
 
 /** Register a passkey-to-email mapping so Face ID can auto-login */
 export function linkPasskeyToEmail(credentialId: string, email: string) {
+  if (!credentialId || !email) return;
   const map = loadEmailMap();
   map.set(credentialId, email);
   saveEmailMap(map);
@@ -108,6 +116,7 @@ export function linkPasskeyToEmail(credentialId: string, email: string) {
 
 /** Look up the email associated with a passkey credential */
 export function getEmailForPasskey(credentialId: string): string | null {
+  if (!credentialId) return null;
   return loadEmailMap().get(credentialId) || null;
 }
 
@@ -214,6 +223,10 @@ export async function registerPasskey(
     return { success: false, credential: null, error: 'WebAuthn not supported on this device' };
   }
 
+  if (!userId || typeof userId !== 'string') {
+    return { success: false, credential: null, error: 'Invalid userId' };
+  }
+
   try {
     const options = generateRegistrationOptions(userId, displayName, existingCredentialIds);
 
@@ -257,8 +270,24 @@ export async function registerPasskey(
       aaguid: '', // Extracted from attestation if needed
     };
 
-    // Store locally and persist
+    // Enforce per-user credential cap
     const userCreds = credentialStore.get(userId) || [];
+    if (userCreds.length >= MAX_CREDS_PER_USER) {
+      return { success: false, credential: null, error: `Max ${MAX_CREDS_PER_USER} passkeys per user` };
+    }
+
+    // Enforce store-wide user cap
+    if (!credentialStore.has(userId) && credentialStore.size >= MAX_STORED_USERS) {
+      // Evict least-recently-used user
+      let oldestUser = '';
+      let oldestTime = Infinity;
+      for (const [uid, creds] of credentialStore) {
+        const latest = Math.max(...creds.map(c => c.lastUsedAt));
+        if (latest < oldestTime) { oldestTime = latest; oldestUser = uid; }
+      }
+      if (oldestUser) credentialStore.delete(oldestUser);
+    }
+
     userCreds.push(passkey);
     credentialStore.set(userId, userCreds);
     saveCredentialStore(credentialStore);
@@ -351,7 +380,7 @@ export async function authenticateWithPasskey(
     };
 
     // Update last used timestamp in store and persist
-    for (const [uid, creds] of credentialStore) {
+    for (const [, creds] of credentialStore) {
       const cred = creds.find(c => c.credentialId === result.credentialId);
       if (cred) {
         cred.lastUsedAt = Date.now();
@@ -398,6 +427,15 @@ export function revokePasskey(userId: string, credentialId: string): boolean {
   const filtered = creds.filter(c => c.credentialId !== credentialId);
   if (filtered.length === creds.length) return false;
   credentialStore.set(userId, filtered);
+  // Persist after mutation — previously missing
+  saveCredentialStore(credentialStore);
+
+  // Also clean up email mapping
+  const emailMap = loadEmailMap();
+  if (emailMap.has(credentialId)) {
+    emailMap.delete(credentialId);
+    saveEmailMap(emailMap);
+  }
 
   emit({
     module: 'identity',

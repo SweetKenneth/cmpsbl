@@ -51,7 +51,7 @@ export function useIdentity(): UseIdentityReturn {
   ): Promise<identityModule.PasskeyRegistrationResult> => {
     setPasskeyLoading(true);
     try {
-      const existingIds = identityModule.getActorPasskeys(userId);
+      const existingIds = Array.from(identityModule.getActorPasskeys(userId));
       const result = await identityModule.registerPasskey(userId, displayName, existingIds);
 
       if (result.success && result.credential) {
