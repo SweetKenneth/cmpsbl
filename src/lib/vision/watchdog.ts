@@ -21,8 +21,9 @@ export interface WatchdogResult {
   timestamp: string;
 }
 
-// In-memory cooldown tracker (module -> last heal timestamp)
-const healCooldowns: Record<string, number> = {};
+// In-memory cooldown tracker (module -> last heal timestamp, bounded)
+const MAX_COOLDOWN_ENTRIES = 200;
+const healCooldowns = new Map<string, number>();
 const COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
 
 /**
