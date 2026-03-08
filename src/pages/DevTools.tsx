@@ -163,7 +163,7 @@ export default function DevTools() {
                 <InteractivePlayground />
                 <div className="space-y-6">
                   <DeveloperSignupForm />
-                  <Card className="border-border/50">
+                  <Card className="border-border/50 transition-all duration-300 hover:border-primary/15">
                     <CardContent className="pt-6">
                       <h3 className="font-semibold mb-3 flex items-center gap-2">
                         <Zap className="w-4 h-4 text-primary" />
@@ -302,7 +302,7 @@ export default function DevTools() {
                   {MODULES.map((mod) => {
                     const Icon = mod.icon;
                     return (
-                      <Card key={mod.id} className="hover:border-primary/50 transition-colors">
+                      <Card key={mod.id} className="hover:border-primary/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3 mb-2">
                             <Icon className={`w-5 h-5 ${mod.color}`} />
@@ -364,7 +364,7 @@ export default function DevTools() {
                       <Link
                         key={link.title}
                         to={link.href}
-                        className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all group"
+                        className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:border-primary/50 hover:bg-muted/50 transition-all duration-300 group hover:-translate-y-0.5 hover:shadow-sm"
                       >
                         <div>
                           <div className="flex items-center gap-2">

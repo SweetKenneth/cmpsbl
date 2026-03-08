@@ -5300,7 +5300,7 @@ function TemplateCard({ template }: { template: typeof TEMPLATES[0] }) {
   };
 
   return (
-    <Card className="group active:scale-[0.98] transition-all duration-200 touch-manipulation">
+    <Card className="group active:scale-[0.98] transition-all duration-300 touch-manipulation hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
       <CardHeader className="p-4 sm:p-6 pb-3">
         <div className="flex items-start gap-3">
           <div className={`w-12 h-12 sm:w-10 sm:h-10 rounded-xl sm:rounded-lg flex-shrink-0 flex items-center justify-center ${categoryColors[template.category]}`}>
@@ -5722,9 +5722,9 @@ export default function DevPortal() {
                   { label: 'Providers', value: '10+', icon: Server },
                   { label: 'Agent Patterns', value: '5', icon: Bot },
                 ].map((stat) => (
-                  <Card key={stat.label} className="text-center py-4 sm:py-6">
+                  <Card key={stat.label} className="text-center py-4 sm:py-6 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                     <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 text-primary" />
-                    <p className="text-2xl sm:text-3xl font-bold">{stat.value}</p>
+                    <p className="text-2xl sm:text-3xl font-bold font-mono tabular-nums">{stat.value}</p>
                     <p className="text-xs sm:text-sm text-muted-foreground">{stat.label}</p>
                   </Card>
                 ))}
@@ -5735,7 +5735,7 @@ export default function DevPortal() {
                 <h2 className="text-xl sm:text-2xl font-bold">Substrate Modules</h2>
                 <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 sm:overflow-visible scrollbar-hide">
                   {MODULES.map((mod) => (
-                    <Card key={mod.name} className="p-4 min-w-[260px] sm:min-w-0 flex-shrink-0 sm:flex-shrink active:scale-[0.98] transition-all touch-manipulation">
+                    <Card key={mod.name} className="p-4 min-w-[260px] sm:min-w-0 flex-shrink-0 sm:flex-shrink active:scale-[0.98] transition-all duration-300 touch-manipulation hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`w-11 h-11 sm:w-10 sm:h-10 rounded-xl sm:rounded-lg bg-${mod.color}-500/20 flex items-center justify-center flex-shrink-0`}>
                           <mod.icon className={`w-5 h-5 text-${mod.color}-400`} />
@@ -6011,7 +6011,7 @@ const response = await substrate.nexus.route('Explain quantum computing');`}
                 <h2 className="text-xl sm:text-2xl font-bold">Required API Keys</h2>
                 <div className="grid gap-3">
                   {REQUIRED_KEYS.map((key) => (
-                    <Card key={key.name} className="p-3 sm:p-4">
+                    <Card key={key.name} className="p-3 sm:p-4 transition-all duration-300 hover:border-primary/15">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                         <div className="flex items-center gap-3 flex-1 min-w-0">
                           <div className={`w-10 h-10 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 flex items-center justify-center ${
