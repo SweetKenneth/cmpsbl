@@ -364,7 +364,7 @@ export function AnalyticsTab() {
                     </div>
                     <span className="text-[10px] text-muted-foreground font-mono uppercase">{card.label}</span>
                   </div>
-                  <p className="text-2xl font-bold font-mono text-foreground">{card.value}</p>
+                  <p className="text-2xl font-bold font-mono tabular-nums text-foreground">{card.value}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">{card.sub}</p>
                 </motion.div>
               );
