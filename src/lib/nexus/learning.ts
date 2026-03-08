@@ -115,8 +115,8 @@ export async function getLearningInsights() {
 
     const insights = {
       total_learning_cycles: data?.length || 0,
-      model_performance: analyzeModelPerformance(data || []),
-      optimization_suggestions: generateOptimizations(data || []),
+      model_performance: analyzeModelPerformance((data || []) as any[]),
+      optimization_suggestions: generateOptimizations((data || []) as any[]),
     };
 
     return insights;
