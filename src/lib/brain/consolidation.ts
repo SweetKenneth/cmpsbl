@@ -112,13 +112,17 @@ export async function runConsolidation(
 
   result.duration = Date.now() - startTime;
   
-  // Log consolidation event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'consolidation.completed',
-    data: result as unknown as Record<string, never>,
-    outcome: 'success',
-  });
+  // Log consolidation event (non-critical — wrap in try/catch)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'consolidation.completed',
+      data: result as unknown as Record<string, never>,
+      outcome: 'success',
+    });
+  } catch {
+    // Event logging is non-critical
+  }
 
   return result;
 }
