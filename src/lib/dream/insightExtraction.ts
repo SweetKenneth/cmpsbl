@@ -108,16 +108,20 @@ export async function extractInsights(
   const correlations = extractCorrelationInsights(patterns);
   insights.push(...correlations);
 
-  // Store insights
+  // Store insights (with cap enforcement)
   for (const insight of insights) {
+    if (insightStore.size >= MAX_INSIGHT_STORE) {
+      const oldest = insightStore.keys().next().value;
+      if (oldest) insightStore.delete(oldest);
+    }
     insightStore.set(insight.id, insight);
   }
 
   // Calculate synthesis score based on quality and coverage
   const synthesisScore = calculateSynthesisScore(insights);
 
-  // Log synthesis event
-  await supabase.from('brain_events').insert({
+  // Log synthesis event (fire-and-forget)
+  supabase.from('brain_events').insert({
     module: 'dream',
     event_type: 'insights.synthesized',
     data: {
@@ -127,7 +131,7 @@ export async function extractInsights(
       types: insights.map(i => i.type),
     } as unknown as Record<string, never>,
     outcome: 'success',
-  });
+  }).then(({ error }) => { if (error) console.error('Failed to log synthesis event:', error); });
 
   return {
     dreamCycleId,
