@@ -205,13 +205,15 @@
      pipeline.started_at = null;
      pipeline.completed_at = null;
      setTimeout(() => insertByPriority(pipeline), config.retry_delay_ms);
-   } else {
-     completedPipelines.push(pipeline);
-     // Keep only last 100 completed
-     if (completedPipelines.length > 100) {
-       completedPipelines.shift();
-     }
-   }
+    } else {
+      completedPipelines.push(pipeline);
+      if (pipeline.status === 'completed') completedIdSet.add(pipeline.id);
+      // Keep only last MAX_COMPLETED — batch trim to avoid frequent splices
+      if (completedPipelines.length > MAX_COMPLETED * 1.5) {
+        const removed = completedPipelines.splice(0, completedPipelines.length - MAX_COMPLETED);
+        for (const r of removed) completedIdSet.delete(r.id);
+      }
+    }
  
    return pipeline;
  }
