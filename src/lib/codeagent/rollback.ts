@@ -188,7 +188,11 @@ export async function persistChanges(): Promise<boolean> {
           module: change.module,
           description: change.description,
           timestamp: change.timestamp,
-          rollbackSql: change.rollbackSql
+          rollbackSql: change.rollbackSql,
+          beforeState_preview: change.beforeState.slice(0, 500),
+          afterState_preview: change.afterState.slice(0, 500),
+          beforeState_length: change.beforeState.length,
+          afterState_length: change.afterState.length,
         }),
         memory_type: 'change_record',
         source: 'code_agent',
@@ -229,10 +233,12 @@ export async function loadPersistedChanges(): Promise<ChangeRecord[]> {
       return {
         ...parsed,
         timestamp: new Date(parsed.timestamp),
+        // Mark as 'applied' but flag that full state is not available
         status: 'applied' as const,
-        beforeState: '',
-        afterState: '',
-        appliedBy: 'agent' as const
+        beforeState: parsed.beforeState_preview || '',
+        afterState: parsed.afterState_preview || '',
+        appliedBy: 'agent' as const,
+        _persisted: true,  // Flag: loaded from DB, partial state only
       };
     });
   } catch {

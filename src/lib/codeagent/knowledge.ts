@@ -30,6 +30,7 @@ export interface CodeAgentBoundaries {
   maxFileSize: number;          // Max lines of code to generate
   allowedModules: string[];     // Modules agent can modify
   forbiddenPatterns: string[];  // Patterns agent must never generate
+  forbiddenRegexPatterns: readonly RegExp[];  // Regex patterns for complex checks
   requiredPatterns: string[];   // Patterns that must be included
   complexityThreshold: number;  // Max complexity before requiring approval
 }
@@ -63,9 +64,12 @@ export const CODEAGENT_BOUNDARIES: CodeAgentBoundaries = {
     'child_process',
     'fs.rmSync',
     'DROP TABLE',
-    'DELETE FROM .* WHERE 1=1',
     'TRUNCATE',
   ],
+  /** Regex patterns for more complex forbidden checks */
+  forbiddenRegexPatterns: [
+    /DELETE\s+FROM\s+\S+\s+WHERE\s+1\s*=\s*1/i,
+  ] as readonly RegExp[],
   requiredPatterns: [
     'corsHeaders',  // Edge functions need CORS
     'try {',        // Error handling required
@@ -319,6 +323,13 @@ export function checkForbiddenPatterns(code: string): { safe: boolean; violation
       }
     } else if (code.includes(pattern)) {
       violations.push(`Forbidden pattern detected: ${pattern}`);
+    }
+  }
+
+  // Check regex-based forbidden patterns
+  for (const regex of CODEAGENT_BOUNDARIES.forbiddenRegexPatterns) {
+    if (regex.test(code)) {
+      violations.push(`Forbidden pattern detected: ${regex.source}`);
     }
   }
   

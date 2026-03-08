@@ -113,7 +113,7 @@ export const {{module}}Config = {
   features: {
     autoRecovery: true,
     telemetry: true,
-    debugMode: process.env.NODE_ENV === 'development',
+    debugMode: import.meta.env.DEV,
     caching: {
       enabled: true,
       ttl: 300000 // 5 minutes
