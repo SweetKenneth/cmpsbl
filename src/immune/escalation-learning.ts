@@ -310,7 +310,7 @@ export function getEligiblePatterns(): PatternCluster[] {
   return Array.from(patternClusters.values())
     .filter(p => p.eligible && !p.candidateGenerated)
     .sort((a, b) => {
-      // v3: Sort by confidence (inherited fixes first), then by count
+      // Sort by confidence (inherited fixes first), then by count
       if (b.confidence !== a.confidence) return b.confidence - a.confidence;
       return b.count - a.count;
     });
