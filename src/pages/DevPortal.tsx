@@ -5722,9 +5722,9 @@ export default function DevPortal() {
                   { label: 'Providers', value: '10+', icon: Server },
                   { label: 'Agent Patterns', value: '5', icon: Bot },
                 ].map((stat) => (
-                  <Card key={stat.label} className="text-center py-4 sm:py-6">
+                  <Card key={stat.label} className="text-center py-4 sm:py-6 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                     <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 text-primary" />
-                    <p className="text-2xl sm:text-3xl font-bold">{stat.value}</p>
+                    <p className="text-2xl sm:text-3xl font-bold font-mono tabular-nums">{stat.value}</p>
                     <p className="text-xs sm:text-sm text-muted-foreground">{stat.label}</p>
                   </Card>
                 ))}
