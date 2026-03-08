@@ -196,7 +196,7 @@ function categorizeFailure(reason: string): string {
   return 'unknown';
 }
 
-/** v3: Determine repair strategy from failure category */
+/** Determine repair strategy from failure category */
 function strategyFromCategory(category: string): RepairStrategy {
   switch (category) {
     case 'transient': return 'pattern_match_resolve';
