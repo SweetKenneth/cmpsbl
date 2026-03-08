@@ -122,6 +122,7 @@ export function updateModuleHealth(
   const updated: HealthMetric = {
     ...current,
     ...metrics,
+    // Re-apply clamped values AFTER spread to prevent raw metrics overriding clamped bounds
     health,
     latency,
     errorRate,

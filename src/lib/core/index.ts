@@ -236,11 +236,14 @@ export function markModuleBooted(module: SubstrateModuleName): void {
     bootSequence.modules_booted.push(module);
     
     const entityType = MODULE_LAYERS[module];
-    if (entityType === 'system-layer' && bootSequence.current_phase !== 'complete') {
+    if (entityType === 'system-layer' && bootSequence.current_phase === 'kernel') {
       bootSequence.current_phase = 'system';
-    }
-    if ((entityType === 'zone-ccr' || entityType === 'zone-ocg') && bootSequence.current_phase !== 'complete') {
+    } else if (entityType === 'zone-ccr' && ['kernel', 'system'].includes(bootSequence.current_phase)) {
+      bootSequence.current_phase = 'cognitive';
+    } else if (entityType === 'zone-ocg' && ['kernel', 'system', 'cognitive'].includes(bootSequence.current_phase)) {
       bootSequence.current_phase = 'administrative';
+    } else if (entityType === 'module' && ['kernel', 'system', 'cognitive', 'administrative'].includes(bootSequence.current_phase)) {
+      bootSequence.current_phase = 'operational';
     }
   }
   

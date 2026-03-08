@@ -415,8 +415,8 @@ function recordEvent(
     details,
   });
   
-  // Bound event history to prevent unbounded memory growth
-  const bounded = boundArray(lifecycleEvents, 1000);
-  lifecycleEvents.length = 0;
-  lifecycleEvents.push(...bounded);
+  // Trim oldest events when exceeding cap — O(1) amortized via threshold check
+  if (lifecycleEvents.length > 1200) {
+    lifecycleEvents.splice(0, lifecycleEvents.length - 1000);
+  }
 }
