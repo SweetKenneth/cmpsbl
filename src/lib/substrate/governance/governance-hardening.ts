@@ -496,6 +496,7 @@ export function openGovernanceSession(scope: string, authorities: string[], ttlM
     status: 'active',
   };
   sessions.set(session.id, session);
+  capMap(sessions, MAX_SESSIONS);
   return session;
 }
 
