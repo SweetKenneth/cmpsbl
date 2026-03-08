@@ -1,7 +1,7 @@
 /**
  * Matrix Node Optimizations — Barrel Export
- * 48 optimizations across 24 Matrix Nodes (2 per node)
- * Organized by sector: CORE, CCR, CCL, Execution, Overlay
+ * Optimizations across Matrix Nodes (2 per sector group)
+ * Organized by sector: CORE, CCR, OCG, Execution, Overlay
  */
 
 export * from './core-optimizations';
