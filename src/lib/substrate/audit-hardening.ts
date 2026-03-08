@@ -207,7 +207,7 @@ const throughputSamples: number[] = [];
 const MAX_THROUGHPUT_SAMPLES = 100;
 export function recordThroughputSample(entriesPerSecond: number) {
   throughputSamples.push(entriesPerSecond);
-  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.shift();
+  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.splice(0, 1);
 }
 export function getThroughputStats(): { avg: number; peak: number; samples: number } {
   if (throughputSamples.length === 0) return { avg: 0, peak: 0, samples: 0 };
