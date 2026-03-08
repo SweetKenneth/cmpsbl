@@ -90,8 +90,15 @@ function createFreshSession(): ConversationState {
   };
 }
 
-/** Append message — never mutate prior messages */
+/** Append message — never mutate prior messages. Caps buffer at 500 messages. */
+const MAX_CONVERSATION_MESSAGES = 500;
+
 export function appendMessage(role: ConversationRole, content: string, metadata?: Record<string, unknown>): ConversationMessage {
+  // Cap conversation buffer
+  if (conversationState.messages.length >= MAX_CONVERSATION_MESSAGES) {
+    conversationState.messages = conversationState.messages.slice(-Math.ceil(MAX_CONVERSATION_MESSAGES * 0.8));
+  }
+
   const msg: ConversationMessage = {
     id: `msg-${Date.now()}-${conversationState.version_counter}`,
     role,
