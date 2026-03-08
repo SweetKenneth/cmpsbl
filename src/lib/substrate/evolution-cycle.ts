@@ -693,14 +693,13 @@ class EvolutionCycleClient {
       phase: plan.phase,
       timestamp: Date.now(),
     });
-    // Simple hash for verification (in production, use crypto.subtle)
-    let hash = 0;
+    // FNV-1a 32-bit — deterministic, fast, collision-resistant for audit hashing
+    let hash = 0x811c9dc5;
     for (let i = 0; i < payload.length; i++) {
-      const char = payload.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+      hash ^= payload.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
     }
-    return Math.abs(hash).toString(16).padStart(8, '0');
+    return (hash >>> 0).toString(16).padStart(8, '0');
   }
 
   /**
