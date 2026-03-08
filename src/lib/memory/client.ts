@@ -245,18 +245,18 @@ export class MemoryClient {
       await supabase.functions.invoke('pf-substrate', { body: basePayload });
     } else if (salience >= 0.3) {
       await supabase.from('brain_memory_warm' as any).insert({
-        content,
-        context: memoryType,
-        user_id: this.userId,
-        agent_id: this.agentId,
-        memory_type: memoryType,
-        salience_score: salience,
-        value_score: salience * 0.8,
-        decay_curve: decayCurve,
-        provenance,
-        metadata: basePayload.metadata,
-        tags: { source: 'memory_sdk' },
-      });
+            content,
+            context: memoryType,
+            user_id: this.userId,
+            agent_id: this.agentId,
+            memory_type: memoryType,
+            salience_score: salience,
+            value_score: salience * 0.8,
+            decay_curve: decayCurve,
+            provenance,
+            metadata: basePayload.metadata,
+            tags: ['memory_sdk'],
+          });
     }
     // salience < 0.3 → don't store (noise)
   }
