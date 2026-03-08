@@ -307,10 +307,11 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
   const taskType = mapRequestType(request.type);
   const priority = request.priority || 'medium';
 
-  // Score all providers
+  // Score all providers — filter by rate limits, health, AND circuit breaker
   const scored = FLEET_REGISTRY
     .filter(p => canUseProvider(p))
-    .filter(p => getHealthState(p.id).score > 10) // Skip very unhealthy
+    .filter(p => getHealthState(p.id).score > 10)
+    .filter(p => isProviderAvailable(p.id))
     .map(p => {
       const health = getHealthState(p.id);
       let score = health.score;
@@ -322,8 +323,8 @@ export async function routeToBestModel(request: AIRequest): Promise<ModelExecuto
       if (priority === 'high' && p.latencyClass === 'ultra') score += 20;
       if (priority === 'high' && p.latencyClass === 'fast') score += 10;
 
-      // Priority weight (lower priority number = higher score)
-      score += (8 - p.priority) * 5;
+      // Priority weight — clamped so high-numbered providers don't go negative
+      score += Math.max(0, (15 - p.priority)) * 3;
 
       // Recency penalty (if failed in last 30s, reduce by 20)
       if (health.lastFailureAt > Date.now() - 30000) score -= 20;
