@@ -1537,7 +1537,7 @@ export function registerHardeningHandlers(): void {
   registerHandler('audit.hardening.retention', async () => { const { getRetentionPolicy } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getRetentionPolicy() }; });
   registerHandler('audit.hardening.dedup', async () => { const { getDedupStats } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getDedupStats() }; });
   registerHandler('audit.hardening.wal', async () => { const { getWALTail, getWALLength } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { length: getWALLength(), tail: getWALTail() } }; });
-  registerHandler('audit.hardening.compliance', async () => { const { generateComplianceReport } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: generateComplianceReport() }; });
+  registerHandler('audit.hardening.compliance', async () => { const { getComplianceSummary } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: getComplianceSummary() }; });
   registerHandler('audit.hardening.budget', async () => { const { checkQueryBudget } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: checkQueryBudget() }; });
   registerHandler('audit.hardening.merkle', async () => { const { generateMerkleProof } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: generateMerkleProof(0) }; });
   registerHandler('audit.hardening.attestations', async () => { const { getAttestations } = await import('@/lib/substrate/audit-hardening'); return { success: true, data: { attestations: getAttestations() } }; });
