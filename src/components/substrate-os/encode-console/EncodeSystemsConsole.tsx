@@ -266,6 +266,11 @@ export function EncodeSystemsConsole() {
         '/resolve <target>  —  Resolve target to architecture',
         '/clm  —  Run CLM learning cycle',
         '',
+        '── SHADOW A/B ──',
+        '/shadow <plan_id>  —  Run A/B shadow test before execution',
+        '/shadow list  —  List all shadow experiments',
+        '/shadow pick <exp_id> <A|B>  —  Manually pick winner',
+        '',
         '── CONVERSATIONAL ──',
         'You can also type natural language.',
         'ENCODE will resolve your intent, find relevant modules,',
@@ -308,6 +313,43 @@ export function EncodeSystemsConsole() {
         '',
         'Execution lock partially released. Use /approve after submitting a plan.',
       ].join('\n'));
+      return;
+    }
+
+    // ═══ SHADOW A/B COMMANDS ═══
+
+    if (trimmed === '/shadow list') {
+      const exps = listShadowExperiments();
+      if (exps.length === 0) {
+        addSystemMsg('info', 'No shadow A/B experiments. Use /shadow <plan_id> to start one.');
+      } else {
+        const lines = exps.map(e =>
+          `  ${e.status === 'decided' ? '🏆' : e.status === 'shadowing' ? '⏳' : '📋'} ${e.id} [${e.status}] — ${e.name}${e.winner ? ` → Winner: ${e.winner}` : ''}`
+        );
+        addSystemMsg('info', `Shadow A/B Experiments (${exps.length}):\n${lines.join('\n')}`);
+      }
+      return;
+    }
+
+    if (trimmed.startsWith('/shadow pick ')) {
+      const parts = trimmed.slice(13).trim().split(/\s+/);
+      if (parts.length < 2 || !['A', 'B'].includes(parts[1].toUpperCase())) {
+        addSystemMsg('error', 'Usage: /shadow pick <experiment_id> <A|B>');
+        return;
+      }
+      handleSelectWinner(parts[0], parts[1].toUpperCase() as 'A' | 'B');
+      return;
+    }
+
+    if (trimmed.startsWith('/shadow ')) {
+      const planId = trimmed.slice(8).trim();
+      const plan = encode.plans.find(p => p.plan_id === planId);
+      if (!plan) {
+        addSystemMsg('warning', `Plan ${planId} not found. Use /plans to list available plans.`);
+        return;
+      }
+      const modules = (plan as any).modules || [];
+      handleShadowCreate(planId, plan.title, modules[0] || 'system');
       return;
     }
 
@@ -515,6 +557,9 @@ export function EncodeSystemsConsole() {
             orchestration={orchestration}
             encodeHealth={encode.health}
             taskQueue={taskQueue}
+            shadowExperiments={shadowExperiments as any}
+            onSelectWinner={handleSelectWinner}
+            onCancelExperiment={handleCancelExperiment}
           />
         </div>
       </div>
