@@ -274,18 +274,19 @@ export function updateModuleHealth(
    // Initialize all modules
    SUBSTRATE_MODULES.forEach(initModuleHealth);
    
-   healthCheckInterval = setInterval(() => {
-     // Simulate health checks (in production, this would ping each module)
-     for (const module of SUBSTRATE_MODULES) {
-       const current = healthMetrics.get(module);
-       if (current) {
-         // Add small random variation to simulate real metrics
-         const variation = (Math.random() - 0.5) * 5;
-         const newHealth = Math.max(0, Math.min(100, current.health + variation));
-         updateModuleHealth(module, { health: newHealth });
-       }
-     }
-   }, config.intervalMs);
+    healthCheckInterval = setInterval(() => {
+      // Simulate health checks with mean-reverting random walk
+      // Prevents unbounded drift toward 0 or 100 that causes spurious alerts
+      for (const module of SUBSTRATE_MODULES) {
+        const current = healthMetrics.get(module);
+        if (current) {
+          const meanReversion = (100 - current.health) * 0.02; // Pull toward 100
+          const noise = (Math.random() - 0.5) * 5;
+          const newHealth = Math.max(0, Math.min(100, current.health + meanReversion + noise));
+          updateModuleHealth(module, { health: newHealth });
+        }
+      }
+    }, config.intervalMs);
  }
  
  /**
