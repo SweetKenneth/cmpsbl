@@ -47,17 +47,17 @@ export interface PatternCluster {
   eligible: boolean;
   candidateGenerated: boolean;
   promoted: boolean;
-  /** v3: Cross-executor applicability */
+  /** Cross-executor applicability */
   applicableExecutors: string[];
-  /** v3: Confidence score based on feedback (0-1) */
+  /** Confidence score based on feedback (0-1) */
   confidence: number;
-  /** v3: Sample failing inputs for replay */
+  /** Sample failing inputs for replay */
   sampleInputs: Record<string, unknown>[];
-  /** v3: How many times a fix for this pattern succeeded */
+  /** How many times a fix for this pattern succeeded */
   fixSuccesses: number;
-  /** v3: How many times a fix for this pattern failed */
+  /** How many times a fix for this pattern failed */
   fixFailures: number;
-  /** v3: Resolution method that worked (if any) */
+  /** Resolution method that worked (if any) */
   effectiveMethod?: string;
 }
 
