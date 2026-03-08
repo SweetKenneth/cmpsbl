@@ -331,7 +331,7 @@ export function DefenseAnalytics() {
                           <Icon className={`w-3.5 h-3.5 ${config.color}`} />
                           {config.label}
                         </span>
-                        <span className="font-mono text-xs">{count} ({pct}%)</span>
+                        <span className="font-mono tabular-nums text-xs">{count} ({pct}%)</span>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <div
