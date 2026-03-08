@@ -96,33 +96,23 @@ export async function runProbeMini(
 
     try {
       const result = await wrappedFn(ctx);
-
-      if (result.success) {
-        // Check if it was a repair (error field contains [immune])
-        outcomes.success++;
-      } else if (result.error?.includes('[immune]')) {
-        // Safe failure from immune wrapper
-        if (result.error.includes('Repair failed') || result.error.includes('Preflight failed') || result.error.includes('Executor failed')) {
-          outcomes.escalated++;
-        } else {
-          outcomes.failed_safe++;
-        }
-      } else {
+      // Only track safe failures here — metrics counters are more accurate
+      // for success/repair/escalation since wrapExecutor records them directly.
+      if (!result.success) {
         outcomes.failed_safe++;
       }
     } catch {
-      // If we still get an uncaught exception, that's a failed_safe
+      // Uncaught exception = safe failure (wrapper should prevent this)
       outcomes.failed_safe++;
     }
   }
 
-  // Reconcile with actual metrics
+  // Reconcile with metrics counters (authoritative source from wrapExecutor)
   const metrics = getMetrics();
-  // Override outcomes with metric-based counts which are more accurate
   outcomes.repaired_success = metrics.repairSuccesses;
   outcomes.escalated = metrics.escalations;
-  outcomes.success = count - metrics.repairSuccesses - metrics.escalations - outcomes.failed_safe;
-  if (outcomes.success < 0) outcomes.success = 0;
+  outcomes.failed_safe = Math.max(0, outcomes.failed_safe - metrics.escalations);
+  outcomes.success = Math.max(0, count - outcomes.repaired_success - outcomes.escalated - outcomes.failed_safe);
 
   const summary = [
     `── Probe Mini: ${executorName} (${count} runs) ──`,

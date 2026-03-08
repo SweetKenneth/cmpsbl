@@ -461,6 +461,7 @@ export function validateInput(
       if (spec.maxLength && val.length > spec.maxLength) {
         issues.push({ field, issue: 'too_long', expected: `<=${spec.maxLength}` });
       }
+      // Case-insensitive enum matching — inputs like 'aa' match schema enum 'AA'
       if (spec.enum && !spec.enum.includes(val.toUpperCase())) {
         issues.push({ field, issue: 'invalid_enum', expected: spec.enum.join('|'), got: val });
       }
