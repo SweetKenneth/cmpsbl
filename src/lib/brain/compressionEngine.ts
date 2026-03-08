@@ -223,16 +223,23 @@ export async function runBatchCompression(
           });
         
         if (!insertError) {
-          // Remove from hot
-          await supabase
+          // Remove from hot — verify delete succeeded before counting
+          const { error: deleteError } = await supabase
             .from('brain_memory_hot')
             .delete()
             .in('id', compressed.originalIds);
           
-          totalCompressed += batch.length;
-          totalRatio += compressed.compressionRatio;
-          totalSaved += originalSize - compressedSize;
-          clustersProcessed++;
+          if (!deleteError) {
+            totalCompressed += batch.length;
+            totalRatio += compressed.compressionRatio;
+            totalSaved += originalSize - compressedSize;
+            clustersProcessed++;
+          } else {
+            console.error('[CompressionEngine] Delete failed after cold insert:', deleteError);
+            // Cold insert succeeded but delete failed — log but don't count as error
+            // Data is safe in cold; duplicates will be cleaned by dedup engine
+            clustersProcessed++;
+          }
         }
       }
     }

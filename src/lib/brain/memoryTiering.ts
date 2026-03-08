@@ -44,9 +44,9 @@ export interface TieringResult {
 export async function getTierStats(): Promise<TierStats> {
   try {
     const [hotCount, warmCount, coldCount] = await Promise.all([
-      supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
-      supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
-      supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
+      supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
+      supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
     ]);
 
     const hc = hotCount.count ?? 0;

@@ -195,7 +195,8 @@ async function migrateGroup(
  */
 async function migrateSingleMemory(
   memory: any,
-  compressionLevel: number
+  compressionLevel: number,
+  sourceTable: string = 'brain_memory_hot'
 ): Promise<boolean> {
   try {
     const { error: insertError } = await supabase
@@ -221,14 +222,14 @@ async function migrateSingleMemory(
       return false;
     }
     
-    // Delete from hot
+    // Delete from source tier (not hardcoded to hot)
     const { error: deleteError } = await supabase
-      .from('brain_memory_hot')
+      .from(sourceTable as any)
       .delete()
       .eq('id', memory.id);
     
     if (deleteError) {
-      console.error('Error deleting hot memory:', deleteError);
+      console.error('Error deleting source memory:', deleteError);
       return false;
     }
     
