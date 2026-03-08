@@ -157,7 +157,7 @@ export function autoPostureShift(newPosture: 'relaxed' | 'standard' | 'elevated'
     reversible: true,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'posture_shift', reason, 'success', { newPosture });
   currentAuthority.level = newPosture === 'critical' ? 'isolate' : newPosture === 'elevated' ? 'block' : 'observe';
   return action;
