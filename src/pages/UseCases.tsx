@@ -129,7 +129,7 @@ function CapabilityPill({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-200">
+    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5 text-primary" />
       </div>
