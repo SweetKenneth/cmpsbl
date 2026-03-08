@@ -62,8 +62,8 @@ export function useDecodePersonality(): UseDecodePersonalityReturn {
   }, []);
 
   const setProfile = useCallback((profile: PersonalityProfile) => {
-    personalityEngine.set(profile);
-    refreshState();
+    // set() is async (syncs to server) — fire-and-forget is intentional but refresh state after local update
+    personalityEngine.set(profile).then(refreshState).catch(() => refreshState());
   }, [refreshState]);
 
   const enableAuto = useCallback(() => {
@@ -82,8 +82,7 @@ export function useDecodePersonality(): UseDecodePersonalityReturn {
   }, [refreshState]);
 
   const reset = useCallback(() => {
-    personalityEngine.reset();
-    refreshState();
+    personalityEngine.reset().then(refreshState).catch(() => refreshState());
   }, [refreshState]);
 
   const detect = useCallback((input: string): PersonalityDetectionResult => {

@@ -13,6 +13,7 @@ import { getAllLiveMetrics } from '../metrics/metricsRegistry';
 import { getLatestSnapshot } from '../metrics/snapshotEngine';
 import { runIntegrityCheck, shouldBlockDecodeForModule } from '../metrics/integrityValidator';
 import { getCachedIntegrity, cacheIntegrity } from './integrityCache';
+import { validateTone, enforceTone } from './voiceProfile';
 import type { ModuleLiveMetrics } from '../metrics/metricsSchema';
 import type { MetricSnapshot } from '../metrics/snapshotEngine';
 import type { IntegrityReport } from '../metrics/integrityValidator';
@@ -166,9 +167,6 @@ export function formatDecodeResponse(
   narrative: string,
   metricsResponse: DecodeMetricsResponse
 ): string {
-  // Import inline to avoid circular deps at module level
-  const { validateTone, enforceTone } = require('./voiceProfile');
-
   if (!metricsResponse.allowed) {
     return metricsResponse.blockReason ?? 'No telemetry available.';
   }
