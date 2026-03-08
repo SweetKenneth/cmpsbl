@@ -90,12 +90,14 @@ export async function getProviderStats(
       }
     }
 
-    // Query brain_events for routing events
+    // Query brain_events for routing events (explicit limit)
     const { data: routeEvents } = await supabase
       .from('brain_events')
       .select('data')
       .in('event_type', ['nexus_route', 'ai_generation', 'text_generation'])
-      .gte('created_at', since);
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(1000);
 
     if (routeEvents) {
       for (const event of routeEvents) {

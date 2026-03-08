@@ -210,15 +210,7 @@ export async function analyzeWindow(
       }
     }
 
-    // 3. Check for health score drops
-    const { data: healthEvents } = await supabase
-      .from('brain_events')
-      .select('data, module')
-      .eq('event_type', 'health_check')
-      .gte('created_at', since)
-      .order('created_at', { ascending: false })
-      .limit(20);
-
+    // 3. Check for health score drops (healthEvents already fetched)
     const lowHealthModules = (healthEvents || []).filter((e) => {
       const health = (e.data as any)?.health_score;
       return typeof health === 'number' && health < 50;

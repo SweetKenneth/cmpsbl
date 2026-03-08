@@ -308,15 +308,19 @@
   * Add an escalation policy
   */
  export function addEscalationPolicy(
-   policy: Omit<EscalationPolicy, 'id'>
- ): EscalationPolicy {
-   const newPolicy: EscalationPolicy = {
-     id: `escalation_${Date.now()}`,
-     ...policy,
-   };
-   escalationPolicies.set(newPolicy.id, newPolicy);
-   return newPolicy;
- }
+    policy: Omit<EscalationPolicy, 'id'>
+  ): EscalationPolicy | null {
+    if (escalationPolicies.size >= MAX_ESCALATION_POLICIES) {
+      console.warn('[VISION Alert] Max escalation policies reached');
+      return null;
+    }
+    const newPolicy: EscalationPolicy = {
+      id: `escalation_${Date.now()}`,
+      ...policy,
+    };
+    escalationPolicies.set(newPolicy.id, newPolicy);
+    return newPolicy;
+  }
  
  /**
   * Get alert summary
