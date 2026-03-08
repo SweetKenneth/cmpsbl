@@ -199,7 +199,7 @@ export default function Workspace() {
 
               {/* Quick Links */}
               <div className="grid gap-3 sm:grid-cols-3 mt-8">
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all" onClick={() => navigate('/persistent-memory')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/persistent-memory')}>
                   <Brain className="w-5 h-5 text-violet-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Persistent Memory</h4>
                   <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
