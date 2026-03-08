@@ -1,7 +1,7 @@
 /**
  * Capability Router — Dynamic routing based on module capabilities
  * Routes requests to the most capable available handler
- * Includes CLM-priority capabilities for all 38 matrix nodes
+ * Includes CLM-priority capabilities for all 40 matrix nodes
  */
 
 interface CapabilityEntry {
