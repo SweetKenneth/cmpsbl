@@ -151,7 +151,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}
-                className="rounded-lg sm:rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10"
+                className="rounded-lg sm:rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10 hover:border-primary/15 hover:bg-muted/10 transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.08 }}
