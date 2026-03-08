@@ -589,6 +589,7 @@ export function getAlertFatigueStats(): { totalAlerts: number; totalSuppressed: 
 // 15. Baseline Auto-Calibrator
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_BASELINE_ENTRIES = 300;
 const baselineStore = new Map<string, { values: number[]; baseline: number; lastCalibrated: string }>();
 
 export function calibrateBaseline(metric: string, newValue: number, maxHistory = 100): number {
@@ -603,6 +604,10 @@ export function calibrateBaseline(metric: string, newValue: number, maxHistory =
   entry.baseline = trimmed.length > 0 ? trimmed.reduce((a, b) => a + b, 0) / trimmed.length : newValue;
   entry.lastCalibrated = new Date().toISOString();
 
+  if (!baselineStore.has(metric) && baselineStore.size >= MAX_BASELINE_ENTRIES) {
+    const oldest = baselineStore.keys().next().value;
+    if (oldest) baselineStore.delete(oldest);
+  }
   baselineStore.set(metric, entry);
   return entry.baseline;
 }
