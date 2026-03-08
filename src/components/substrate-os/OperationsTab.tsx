@@ -175,7 +175,7 @@ export function OperationsTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
         {modules.map((mod, i) => (
           <motion.div key={mod.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 h-full">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 h-full transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 sm:p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <mod.icon className={cn("w-4 h-4 shrink-0", mod.color)} />
