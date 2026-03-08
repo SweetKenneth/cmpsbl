@@ -803,8 +803,8 @@ function AutoMinerTab() {
 
 export default function DiscoveryMiningConsole() {
   const {
-    isRunning, latestResult, runs, loading,
-    fetchRuns, executeRun, markEngineCandidate,
+    isRunning, isBackfilling, latestResult, runs, loading,
+    fetchRuns, executeRun, markEngineCandidate, backfillLearning,
   } = useDiscoveryReactor();
 
   const [dryRun, setDryRun] = useState(true);
@@ -855,6 +855,10 @@ export default function DiscoveryMiningConsole() {
             <Button onClick={handleRun} disabled={isRunning} className="gap-2 ml-auto sm:ml-0">
               {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
               Run Discovery
+            </Button>
+            <Button onClick={backfillLearning} disabled={isBackfilling} variant="outline" className="gap-2">
+              {isBackfilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
+              Teach Past Runs
             </Button>
           </div>
         </div>
