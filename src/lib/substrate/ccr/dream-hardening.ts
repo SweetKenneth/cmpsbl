@@ -397,7 +397,7 @@ const insightPipeline: InsightCandidate[] = [];
 export function submitInsight(content: string, quality: number): string {
   const id = `ins_${Date.now()}`;
   insightPipeline.push({ id, content, quality, promoted: false });
-  if (insightPipeline.length > 100) insightPipeline.shift();
+  if (insightPipeline.length > 100) insightPipeline.splice(0, insightPipeline.length - 100);
   return id;
 }
 
