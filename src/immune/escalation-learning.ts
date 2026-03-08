@@ -120,7 +120,7 @@ const promotionLog: Array<{ ruleId: string; timestamp: number; metrics: Candidat
 const executorSimilarity = new Map<string, Set<string>>();
 initExecutorSimilarity();
 
-/** v3: Resolution feedback buffer — records what actually worked */
+/** Resolution feedback buffer — records what actually worked */
 const resolutionFeedback: Array<{
   executor: string;
   errorSignature: string;
