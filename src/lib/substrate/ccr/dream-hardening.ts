@@ -461,10 +461,15 @@ export function validateSandboxAccess(sandboxId: string, domain: string): boolea
 // ─── 21. Dream Replay Engine ────────────────────────────────────────────────
 interface ReplayableChain { chainId: string; steps: DreamStep[]; originalQuality: number; replayCount: number; }
 const replayRegistry = new Map<string, ReplayableChain>();
+const MAX_REPLAYS = 50;
 
 export function markForReplay(chainId: string, quality: number): void {
   const chain = dreamChains.get(chainId);
   if (!chain) return;
+  if (replayRegistry.size >= MAX_REPLAYS && !replayRegistry.has(chainId)) {
+    const oldest = replayRegistry.keys().next().value;
+    if (oldest) replayRegistry.delete(oldest);
+  }
   replayRegistry.set(chainId, { chainId, steps: [...chain], originalQuality: quality, replayCount: 0 });
 }
 
