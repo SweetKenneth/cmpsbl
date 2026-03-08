@@ -157,11 +157,11 @@ const alerts: BudgetAlert[] = [];
    }
    
    // Check if this spend would exceed daily limit
-   if (estimatedCostCents > status.daily_remaining_cents) {
+   if (estimatedCostCents > dailyRemaining) {
      return {
        allowed: false,
-       reason: `Insufficient daily budget (need ${estimatedCostCents}¢, have ${status.daily_remaining_cents}¢)`,
-       remaining_daily: status.daily_remaining_cents,
+       reason: `Insufficient daily budget (need ${estimatedCostCents}¢, have ${dailyRemaining}¢)`,
+       remaining_daily: dailyRemaining,
      };
    }
    
