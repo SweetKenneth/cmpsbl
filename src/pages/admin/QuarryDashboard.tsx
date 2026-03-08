@@ -63,7 +63,7 @@ function AssetRow({ asset, onUpdate, onDelete }: {
   return (
     <div className={cn(
       "group flex items-center gap-3 px-4 py-3 rounded-lg border transition-all",
-      editing ? "border-primary/50 bg-primary/5" : "border-border/50 hover:border-border bg-card/50"
+      editing ? "border-primary/50 bg-primary/5" : "border-border/50 hover:border-primary/15 hover:bg-card/80 bg-card/50"
     )}>
       <Icon className="w-4 h-4 text-muted-foreground shrink-0" />
       <div className="flex-1 min-w-0">
