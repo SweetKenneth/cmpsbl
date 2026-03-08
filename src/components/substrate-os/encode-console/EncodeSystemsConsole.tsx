@@ -217,9 +217,33 @@ export function EncodeSystemsConsole() {
     }
   }, [encode.plans, encode.approvePlanMutation, orchestration, addSystemMsg]);
 
-  // ── Execute an approved plan ──
+  // ── Execute an approved plan (uses shadow winner as template if available) ──
   const executePlan = useCallback(async (planId: string) => {
     try {
+      // Check if a shadow A/B experiment decided a winner for this plan
+      const allExps = listShadowExperiments();
+      const relatedExp = allExps.find(e => e.planId === planId && e.status === 'decided' && e.winner);
+      let templateNote = '';
+
+      if (relatedExp) {
+        const template = getWinningTemplate(relatedExp.id);
+        if (template) {
+          templateNote = `\n   🧬 Template: Variant ${template.label} — "${template.approach}"`;
+          addSystemMsg('info', [
+            `🔬 Using SHADOW A/B winner as implementation template:`,
+            `   Variant ${template.label}: ${template.approach}`,
+            `   Quality: ${(template.metrics.quality_score * 100).toFixed(0)}%`,
+            `   Divergence: ${(template.metrics.divergence * 100).toFixed(1)}%`,
+          ].join('\n'));
+        }
+      } else {
+        addSystemMsg('warning', [
+          '⚠️ No SHADOW A/B test found for this plan.',
+          '   Consider running /shadow ' + planId + ' first for optimal results.',
+          '   Proceeding with direct execution...',
+        ].join('\n'));
+      }
+
       addSystemMsg('info', `⚙️ Routing to ENCODE for execution (plan: ${planId})...`);
       const task = await encode.routeIntent.mutateAsync({
         intent: `Execute plan ${planId}`,
@@ -231,6 +255,7 @@ export function EncodeSystemsConsole() {
         `   Intent: ${task?.intentSummary || planId}`,
         `   Surface: ${task?.targetSurface || 'code'}`,
         `   Status: ${task?.status || 'queued'}`,
+        templateNote,
         '',
         'ENCODE is now processing. Use /status to monitor.',
       ].join('\n'));
