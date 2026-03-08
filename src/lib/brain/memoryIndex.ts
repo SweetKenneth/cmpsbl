@@ -88,15 +88,16 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
 
   type MemoryRow = { id: string; content: string; context: string; value_score?: number; access_count?: number; created_at: string; user_id?: string; agent_id?: string; memory_type?: string; decay_curve?: string };
 
-  // Index hot memories
-  const { data: hotRaw } = await buildQuery('brain_memory_hot').limit(500);
+  // Parallel fetch hot + warm memories
+  const [{ data: hotRaw }, { data: warmRaw }] = await Promise.all([
+    buildQuery('brain_memory_hot').limit(500),
+    buildQuery('brain_memory_warm').limit(1000),
+  ]);
+
   for (const memory of (hotRaw || []) as unknown as MemoryRow[]) {
     indexMemory(memory, 'hot', idx);
     indexed++;
   }
-  
-  // Index warm memories
-  const { data: warmRaw } = await buildQuery('brain_memory_warm').limit(1000);
   for (const memory of (warmRaw || []) as unknown as MemoryRow[]) {
     indexMemory(memory, 'warm', idx);
     indexed++;
