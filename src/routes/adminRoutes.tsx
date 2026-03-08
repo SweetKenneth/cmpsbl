@@ -17,6 +17,7 @@ const STierVault = lazy(() => import("@/pages/admin/STierVault"));
 const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningConsole"));
 const Diligence = lazy(() => import("@/pages/Diligence"));
 const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
+const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
 
 export const adminRoutes = (
   <>
@@ -34,5 +35,6 @@ export const adminRoutes = (
     <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
     <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
+    <Route path="/admin/encode-console" element={<AdminRoute><EncodeConsolePage /></AdminRoute>} />
   </>
 );
