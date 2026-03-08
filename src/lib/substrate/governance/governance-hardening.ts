@@ -193,6 +193,13 @@ export interface ImpactAssessment {
 }
 
 // ─── Internal State ───────────────────────────────────────────────────────────
+// All arrays are capped to prevent unbounded memory growth.
+
+const MAX_POLICY_VERSIONS = 100;
+const MAX_DECISION_CHAIN = 2000;
+const MAX_DELEGATIONS = 500;
+const MAX_OVERRIDES = 200;
+const MAX_TIMESTAMPS = 2000;
 
 const policyVersions: PolicySnapshot[] = [];
 const decisionChain: DecisionRecord[] = [];
@@ -209,6 +216,11 @@ const rateLimitBuckets = new Map<string, { tokens: number; lastRefill: number }>
 const anomalyBaseline = { mean: 0, stddev: 0, sampleCount: 0 };
 
 let lastChainHash = '0'.repeat(64);
+
+/** Trim an array to a max length, keeping the most recent entries */
+function capArray<T>(arr: T[], max: number): void {
+  if (arr.length > max) arr.splice(0, arr.length - max);
+}
 
 // ─── #1 Policy Version Control ────────────────────────────────────────────────
 
@@ -239,6 +251,7 @@ export function createPolicyVersion(
     description,
   };
   policyVersions.push(snapshot);
+  capArray(policyVersions, MAX_POLICY_VERSIONS);
   emitGovernanceTelemetry('policy_version', 'create', 'governance', author, 'created');
   return snapshot;
 }
@@ -330,7 +343,9 @@ export function recordDecision(
   const record: DecisionRecord = { ...partial, hash: hashDecision(partial) };
   lastChainHash = record.hash;
   decisionChain.push(record);
+  capArray(decisionChain, MAX_DECISION_CHAIN);
   decisionTimestamps.push(record.timestamp);
+  capArray(decisionTimestamps, MAX_TIMESTAMPS);
   emitGovernanceTelemetry('decision', action, 'governance', authority, outcome);
   return record;
 }
@@ -568,6 +583,7 @@ export function createDelegation(
     expiresAt: Date.now() + ttlMs,
   };
   delegations.push(entry);
+  capArray(delegations, MAX_DELEGATIONS);
   return entry;
 }
 
@@ -889,6 +905,7 @@ export function issueEmergencyOverride(
     revoked: false,
   };
   overrides.push(override);
+  capArray(overrides, MAX_OVERRIDES);
   emitGovernanceTelemetry('emergency_override', 'issue', 'governance', authority, 'active');
   return override;
 }

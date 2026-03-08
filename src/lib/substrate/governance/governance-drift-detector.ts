@@ -47,6 +47,7 @@ const driftWindow: DriftWindow = {
 };
 
 const WINDOW_SIZE = 30;
+const MAX_TRACKED_SUBSYSTEMS = 50;
 
 /** Record a mutation event (call from mutation hooks) */
 export function recordMutation(): void {
@@ -69,6 +70,8 @@ export function recordVetoEvent(): void {
 /** Record a subsystem activation */
 export function recordActivation(subsystem: string): void {
   if (!driftWindow.activations.has(subsystem)) {
+    // Cap tracked subsystems to prevent unbounded Map growth
+    if (driftWindow.activations.size >= MAX_TRACKED_SUBSYSTEMS) return;
     driftWindow.activations.set(subsystem, [0]);
   }
   const arr = driftWindow.activations.get(subsystem)!;
