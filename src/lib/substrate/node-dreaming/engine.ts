@@ -158,11 +158,19 @@ export async function getDreamAnalyticsSummary(): Promise<{
   successRate: number;
   nodeBreakdown: Record<string, { dreams: number; insights: number }>;
 }> {
-  const { data, error } = await supabase
-    .from('node_dream_config')
-    .select('node_id, total_dreams, total_insights');
+  // Parallel fetch: configs + recent logs
+  const [configResult, logsResult] = await Promise.all([
+    supabase
+      .from('node_dream_config')
+      .select('node_id, total_dreams, total_insights'),
+    supabase
+      .from('node_dream_log')
+      .select('contradictions_found, patterns_merged, success')
+      .order('dreamt_at', { ascending: false })
+      .limit(100),
+  ]);
 
-  if (error || !data) {
+  if (configResult.error || !configResult.data) {
     return {
       totalDreams: 0,
       totalInsights: 0,
@@ -177,7 +185,7 @@ export async function getDreamAnalyticsSummary(): Promise<{
   let totalDreams = 0;
   let totalInsights = 0;
 
-  for (const row of data) {
+  for (const row of configResult.data) {
     const d = (row as any).total_dreams ?? 0;
     const i = (row as any).total_insights ?? 0;
     totalDreams += d;
@@ -185,30 +193,23 @@ export async function getDreamAnalyticsSummary(): Promise<{
     nodeBreakdown[(row as any).node_id] = { dreams: d, insights: i };
   }
 
-  // Fetch recent logs for avg calculations
-  const { data: recentLogs } = await supabase
-    .from('node_dream_log')
-    .select('contradictions_found, patterns_merged, success')
-    .order('dreamt_at', { ascending: false })
-    .limit(100);
+  const logs = logsResult.data || [];
+  let contradictionsSum = 0;
+  let patternsMergedSum = 0;
+  let successCount = 0;
 
-  const logs = recentLogs || [];
-  const avgContradictions = logs.length > 0
-    ? logs.reduce((s, l: any) => s + (l.contradictions_found || 0), 0) / logs.length
-    : 0;
-  const avgPatternsMerged = logs.length > 0
-    ? logs.reduce((s, l: any) => s + (l.patterns_merged || 0), 0) / logs.length
-    : 0;
-  const successRate = logs.length > 0
-    ? logs.filter((l: any) => l.success).length / logs.length
-    : 1;
+  for (const l of logs as any[]) {
+    contradictionsSum += l.contradictions_found || 0;
+    patternsMergedSum += l.patterns_merged || 0;
+    if (l.success) successCount++;
+  }
 
   return {
     totalDreams,
     totalInsights,
-    avgContradictions,
-    avgPatternsMerged,
-    successRate,
+    avgContradictions: logs.length > 0 ? contradictionsSum / logs.length : 0,
+    avgPatternsMerged: logs.length > 0 ? patternsMergedSum / logs.length : 0,
+    successRate: logs.length > 0 ? successCount / logs.length : 1,
     nodeBreakdown,
   };
 }

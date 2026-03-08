@@ -59,10 +59,11 @@
      ? mutations.filter(m => meetsConstraints(m, constraints))
      : mutations;
    
-   // Select best mutation
-   const best = viable.reduce((a, b) => 
-     a.viability > b.viability ? a : b
-   , viable[0] || { type: 'combine' as MutationType, original: '', mutated: '', viability: 0 });
+   // Select best mutation (guard against empty viable array)
+   const fallback: PatternMutation = { type: 'combine', original: '', mutated: '', viability: 0 };
+   const best = viable.length > 0
+     ? viable.reduce((a, b) => a.viability > b.viability ? a : b)
+     : fallback;
    
    // Build synthesis output
    const output: SynthesisOutput = {
@@ -87,8 +88,8 @@
       synthesisHistory.splice(0, synthesisHistory.length - MAX_HISTORY);
     }
    
-   // Log to database
-   await logSynthesis(output);
+   // Log to database (fire-and-forget — don't block caller)
+   logSynthesis(output);
    
    return output;
  }
@@ -186,11 +187,21 @@
  /**
   * Derive applicability domains
   */
- function deriveApplicability(concept: string, context: string): string[] {
+  function deriveApplicability(concept: string, context: string): string[] {
    const domains = ['strategy', 'optimization', 'pattern', 'architecture', 'behavior'];
+   const lower = `${concept} ${context}`.toLowerCase();
    
-   // Simple heuristic based on context
-   return domains.filter(() => Math.random() > 0.5);
+   // Keyword-based heuristic instead of pure randomness
+   return domains.filter(d => {
+     switch (d) {
+       case 'strategy': return lower.includes('strateg') || lower.includes('plan') || lower.includes('approach');
+       case 'optimization': return lower.includes('optim') || lower.includes('improv') || lower.includes('performance');
+       case 'pattern': return lower.includes('pattern') || lower.includes('recur') || lower.includes('template');
+       case 'architecture': return lower.includes('architect') || lower.includes('structur') || lower.includes('design');
+       case 'behavior': return lower.includes('behav') || lower.includes('action') || lower.includes('response');
+       default: return false;
+     }
+   });
  }
  
  /**

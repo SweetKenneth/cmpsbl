@@ -293,7 +293,8 @@ export function recordCoherence(score: number): void {
 export function getCoherenceTrend(): { avg: number; trend: 'improving' | 'stable' | 'degrading'; recent: number } {
   if (coherenceScores.length < 2) return { avg: 1, trend: 'stable', recent: 1 };
   const avg = coherenceScores.reduce((a, b) => a + b, 0) / coherenceScores.length;
-  const recentAvg = coherenceScores.slice(-10).reduce((a, b) => a + b, 0) / Math.min(10, coherenceScores.length);
+  const recentSlice = coherenceScores.slice(-10);
+  const recentAvg = recentSlice.reduce((a, b) => a + b, 0) / recentSlice.length;
   const trend = recentAvg > avg * 1.05 ? 'improving' : recentAvg < avg * 0.95 ? 'degrading' : 'stable';
   return { avg, trend, recent: recentAvg };
 }
