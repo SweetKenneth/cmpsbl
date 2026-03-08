@@ -149,19 +149,25 @@ export async function runSystemAudit(): Promise<AuditReport> {
   const startedAt = Date.now();
 
   // Run async checks in parallel, sync checks inline
-  const [cpResult, chainResult, planResult, discussionResult] = await Promise.all([
+  const [cpResult, chainResult, planResult, discussionResult] = await Promise.allSettled([
     testCPStorage(),
     testReceiptChain(),
     testPlans(),
     testDiscussion(),
   ]);
 
+  // Safely unwrap settled results — treat rejected promises as failures
+  const unwrap = (r: PromiseSettledResult<AuditResult>, fallbackModule: string): AuditResult =>
+    r.status === 'fulfilled'
+      ? r.value
+      : { ok: false, module: fallbackModule, detail: r.reason?.message || 'check threw' };
+
   const results: AuditResult[] = [
-    cpResult,
-    chainResult,
+    unwrap(cpResult, 'control_plane'),
+    unwrap(chainResult, 'mutation_chain'),
     testEventStream(),
-    planResult,
-    discussionResult,
+    unwrap(planResult, 'plan_store'),
+    unwrap(discussionResult, 'discussion'),
     testIronclad(),
   ];
 

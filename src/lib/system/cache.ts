@@ -44,6 +44,11 @@ class CacheManager {
   }
 
   set<T>(key: string, data: T, ttlMs: number = 5000): void {
+    // Evict oldest entry if at capacity (insertion-order Map)
+    if (!this.cache.has(key) && this.cache.size >= this.maxSize) {
+      const oldest = this.cache.keys().next().value;
+      if (oldest !== undefined) this.cache.delete(oldest);
+    }
     this.cache.set(key, {
       data,
       fetchedAt: Date.now(),

@@ -115,10 +115,29 @@ export async function repairDiscoveryEngine(): Promise<RepairResult> {
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════
 
+/**
+ * Fallback repair: re-probe CP health (used for subsystems with no specialised strategy).
+ */
+async function repairGeneric(moduleName: string): Promise<RepairResult> {
+  try {
+    const healthy = await recheckHealth();
+    return {
+      repaired: healthy,
+      module: moduleName,
+      message: healthy ? `${moduleName} recovered via CP recheck` : `${moduleName} still degraded`,
+    };
+  } catch (err: any) {
+    return { repaired: false, module: moduleName, message: err?.message || 'repair failed' };
+  }
+}
+
 export const RepairStrategies: Record<string, () => Promise<RepairResult>> = {
   control_plane: repairControlPlane,
   event_stream: repairEventStream,
   plan_store: repairPlanStore,
   discussion: repairDiscussion,
   discovery_engine: repairDiscoveryEngine,
+  // Previously missing — audit detects these but had no repair path
+  mutation_chain: () => repairGeneric('mutation_chain'),
+  ironclad: () => repairGeneric('ironclad'),
 };

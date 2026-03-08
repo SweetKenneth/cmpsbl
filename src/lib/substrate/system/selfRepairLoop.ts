@@ -20,6 +20,7 @@ export async function runSelfRepair(maxAttempts = 3): Promise<RepairCycleReport>
   const allRepairs: RepairResult[] = [];
   let attempt = 0;
   let lastAudit: AuditReport | null = null;
+  let prevFailureKey = '';
 
   while (attempt < maxAttempts) {
     attempt++;
@@ -33,6 +34,14 @@ export async function runSelfRepair(maxAttempts = 3): Promise<RepairCycleReport>
       break;
     }
 
+    // Detect stuck loop: if the exact same modules are failing, stop early
+    const failureKey = failures.map(f => f.module).sort().join(',');
+    if (failureKey === prevFailureKey) {
+      log.warn('self-repair', `Same failures persisted after repair — aborting loop (${failureKey})`);
+      break;
+    }
+    prevFailureKey = failureKey;
+
     log.warn('self-repair', `Attempt ${attempt}/${maxAttempts}: ${failures.length} failure(s) detected`);
 
     for (const f of failures) {
@@ -42,9 +51,17 @@ export async function runSelfRepair(maxAttempts = 3): Promise<RepairCycleReport>
         continue;
       }
 
-      const result = await strategy();
-      allRepairs.push(result);
-      log.info('self-repair', `${result.module}: ${result.message}`);
+      try {
+        const result = await strategy();
+        allRepairs.push(result);
+        log.info('self-repair', `${result.module}: ${result.message}`);
+      } catch (err) {
+        allRepairs.push({
+          repaired: false,
+          module: f.module,
+          message: err instanceof Error ? err.message : 'strategy threw',
+        });
+      }
     }
   }
 
