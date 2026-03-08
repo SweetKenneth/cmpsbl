@@ -377,6 +377,12 @@ export function importConfigs(json: string): { imported: number; errors: string[
         const validKey = validateStringInput(key, { maxLength: 200 });
         if (!validKey) { errors.push(`Invalid flag key: ${key}`); continue; }
         try {
+          const fv = value as Record<string, unknown>;
+          // Validate required FeatureFlag shape
+          if (!fv || typeof fv !== 'object' || !('key' in fv) || typeof fv.enabled !== 'boolean' || typeof fv.rollout_percentage !== 'number') {
+            errors.push(`Flag ${validKey}: malformed FeatureFlag (missing key/enabled/rollout_percentage)`);
+            continue;
+          }
           featureFlags.set(validKey, value as FeatureFlag);
           imported++;
         } catch (e) {

@@ -364,7 +364,10 @@ export async function loadAllModules(): Promise<{
   const loaded: SubstrateModuleName[] = [];
   const failed: SubstrateModuleName[] = [];
   
-  for (const module of SUBSTRATE_MODULES) {
+  // Use dependency-aware ordering instead of raw SUBSTRATE_MODULES order
+  const ordered = resolveLoadOrder([...SUBSTRATE_MODULES]);
+  
+  for (const module of ordered) {
     const result = await loadModule(module);
     if (result.success) {
       loaded.push(module);

@@ -23,6 +23,7 @@
 // ============ Constants ============
 
 import { SUBSTRATE_VERSION as _SV, SUBSTRATE_CODENAME as _SC } from '@/lib/substrate/versions';
+import { withTimeout } from '@/lib/system/hardening';
 export const SUBSTRATE_VERSION = _SV;
 export const SUBSTRATE_CODENAME = _SC;
 export { MODULE_VERSIONS } from '@/lib/substrate/versions';
