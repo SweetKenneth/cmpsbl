@@ -284,8 +284,19 @@ export function recordReplayEntry(entry: Omit<ReplayEntry, 'timestamp'>): void {
 }
 
 export function getReplayJournal(orchestrationId?: string): ReplayEntry[] {
-  if (!orchestrationId) return [...replayJournal];
-  return replayJournal.filter(e => e.orchestrationId === orchestrationId);
+  // Ring buffer read: produce entries in chronological order
+  let ordered: ReplayEntry[];
+  if (replayCount < MAX_JOURNAL_SIZE) {
+    ordered = replayJournal.slice(0, replayCount);
+  } else {
+    // Buffer is full and has wrapped — read from head to end, then start to head
+    ordered = [
+      ...replayJournal.slice(replayHead),
+      ...replayJournal.slice(0, replayHead),
+    ];
+  }
+  if (!orchestrationId) return ordered;
+  return ordered.filter(e => e.orchestrationId === orchestrationId);
 }
 
 export function clearReplayJournal(): number {
