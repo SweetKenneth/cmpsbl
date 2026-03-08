@@ -463,7 +463,7 @@ export default function ImmunityMeshDashboard() {
           <ShadowBuildPanel />
         </TabsContent>
 
-        {/* ══════════════════ MODERNIZER SHADOW ══════════════════ */}
+        {/* ══════════════════ EVOLUTION SHADOW ══════════════════ */}
         <TabsContent value="modernizer" className="space-y-5">
           <ModernizerShadowPanel />
         </TabsContent>
