@@ -238,7 +238,11 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     'dispatch'
   );
 
-  emitSucceeded('relay', 'dispatch', { id: result.id });
+  if (result.status === 'failed') {
+    emitFailed('relay', 'dispatch', result.lastError || 'Circuit breaker fallback');
+  } else {
+    emitSucceeded('relay', 'dispatch', { id: result.id });
+  }
   return result;
 }
 
