@@ -291,12 +291,17 @@ export default function Status() {
                   <div
                     key={i}
                     className={cn(
-                      "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-110 cursor-default",
+                      "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-125 cursor-default relative group",
                       isToday ? "bg-emerald-500 ring-1 ring-emerald-400 shadow-sm shadow-emerald-500/30" :
                       hasIncident ? "bg-amber-500/80 hover:bg-amber-500" : "bg-emerald-500/70 hover:bg-emerald-500/90"
                     )}
                     title={isToday ? "Today" : `${90 - i} days ago${hasIncident ? " — incident" : ""}`}
-                  />
+                  >
+                    {/* Hover tooltip */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-popover border border-border text-[9px] font-mono text-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-md">
+                      {isToday ? "Today" : `${90 - i}d ago`}{hasIncident ? " · ⚠ incident" : ""}
+                    </div>
+                  </div>
                 );
               })}
             </div>
