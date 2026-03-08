@@ -177,14 +177,12 @@ export class MemoryClient {
       // FIX #4: Run fingerprint + stores in parallel
       await Promise.allSettled([fingerprintPromise, ...factPromises, contentPromise]);
       
-      // FIX #2: Increment total_stores properly via RPC, not broken upsert
-      await this.incrementMetaStores();
-      
-      // #11: Track hourly activity for workload-aware tiering
-      await this.trackHourlyActivity();
-      
-      // Run tiering if we might be near capacity
-      await this.maybeRunTiering();
+      // FIX R5: Run post-store bookkeeping in parallel (was sequential)
+      await Promise.allSettled([
+        this.incrementMetaStores(),
+        this.trackHourlyActivity(),
+        this.maybeRunTiering(),
+      ]);
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
