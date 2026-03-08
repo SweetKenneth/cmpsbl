@@ -2,7 +2,7 @@
  * SHADOW Gap-Driven Training Engine
  * 
  * Flow:
- * 1. Modernizer scan → finds real system gaps (missing capabilities, anomalies, proposals)
+ * 1. Evolution scan → finds real system gaps (missing capabilities, anomalies, proposals)
  * 2. Gaps converted to shadow training tasks with success criteria
  * 3. Executors attempt to fix each gap in shadow mode (no real changes)
  * 4. Failures escalate to ENCODE's 7-strategy cascade
