@@ -211,9 +211,9 @@ export default function About() {
             ].map((s) => (
               <div
                 key={s.sub}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card/60 border border-border/50 backdrop-blur-sm"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card/60 border border-border/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all duration-300"
               >
-                <span className="text-sm sm:text-base font-black text-foreground">{s.label}</span>
+                <span className="text-sm sm:text-base font-black text-foreground font-mono tabular-nums">{s.label}</span>
                 <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">{s.sub}</span>
               </div>
             ))}
