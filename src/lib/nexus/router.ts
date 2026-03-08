@@ -137,6 +137,7 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     affinities: ['reasoning', 'research', 'code'],
     priority: 10,
     costPerMToken: 0,
+  },
   {
     id: 'openrouter-grok',
     model: 'openrouter/grok-3-mini-beta:free',
