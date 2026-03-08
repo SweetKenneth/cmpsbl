@@ -1240,12 +1240,12 @@ function ModernizerShadowPanel() {
   };
 
   const gapCategoryColors: Record<string, string> = {
-    security: 'text-red-400 border-red-400/30 bg-red-400/5',
-    resilience: 'text-amber-400 border-amber-400/30 bg-amber-400/5',
-    performance: 'text-blue-400 border-blue-400/30 bg-blue-400/5',
-    config: 'text-violet-400 border-violet-400/30 bg-violet-400/5',
-    cleanup: 'text-gray-400 border-gray-400/30 bg-gray-400/5',
-    observability: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/5',
+    security: 'text-destructive border-destructive/30 bg-destructive/5',
+    resilience: 'text-primary border-primary/30 bg-primary/5',
+    performance: 'text-accent-foreground border-accent/30 bg-accent/5',
+    config: 'text-secondary-foreground border-secondary/30 bg-secondary/5',
+    cleanup: 'text-muted-foreground border-border/30 bg-muted/5',
+    observability: 'text-primary border-primary/30 bg-primary/5',
   };
 
   return (
