@@ -240,20 +240,27 @@ export async function analyzeCrossDreamPatterns(
     }
     
     // Transform to analysis format
-    const cycles: DreamCycleData[] = dreamLogs.map(log => ({
-      id: log.id,
-      improvements: Array.isArray(log.improvements_generated) 
-        ? log.improvements_generated.map(String) 
-        : [],
-      templates: Array.isArray(log.templates_created)
-        ? log.templates_created.map(String)
-        : [],
-      heuristics: Array.isArray(log.heuristics_learned)
-        ? log.heuristics_learned.map(String)
-        : [],
-      artifacts: log.artifacts_processed || 0,
-      timestamp: log.started_at,
-    }));
+    const cycles: DreamCycleData[] = dreamLogs.map(log => {
+      // improvements_generated, templates_created, heuristics_learned are integers in DB
+      // Extract text from metadata if available, else create placeholder strings
+      const meta = (log.metadata as Record<string, any>) || {};
+      return {
+        id: log.id,
+        improvements: Array.isArray(meta.improvements)
+          ? meta.improvements.map(String)
+          : Array.isArray(meta.reasoning_shortcuts)
+            ? meta.reasoning_shortcuts.map(String)
+            : [],
+        templates: Array.isArray(meta.templates)
+          ? meta.templates.map(String)
+          : [],
+        heuristics: Array.isArray(meta.heuristics)
+          ? meta.heuristics.map(String)
+          : [],
+        artifacts: log.artifacts_processed || 0,
+        timestamp: log.started_at,
+      };
+    });
     
     // Run pattern detection
     const recurring = detectRecurringPatterns(cycles);
