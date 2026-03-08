@@ -436,7 +436,7 @@ export default function GovernorPanel() {
               <motion.div key={surface.path} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
                 <Button
                   variant="outline"
-                  className="justify-between h-auto p-3 sm:p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20 min-h-[56px]"
+                  className="justify-between h-auto p-3 sm:p-4 w-full border-border/15 dark:border-border/10 hover:bg-muted/20 hover:border-primary/15 min-h-[56px] transition-all duration-300"
                   onClick={() => navigate(surface.path)}
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3 text-left min-w-0 flex-1">

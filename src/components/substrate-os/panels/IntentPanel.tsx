@@ -488,7 +488,7 @@ export default function IntentPanel() {
             {INTENT_TYPES.map((intent, i) => (
               <motion.div
                 key={intent.type}
-                className={cn("rounded-lg sm:rounded-xl border p-3 sm:p-4", intent.color)}
+                className={cn("rounded-lg sm:rounded-xl border p-3 sm:p-4 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300", intent.color)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}
