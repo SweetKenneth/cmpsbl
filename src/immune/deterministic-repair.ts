@@ -185,9 +185,11 @@ export function deterministicRepair(input: any): DeterministicRepairResult {
   }
 
   // 9) STRIP_EMPTY_OBJECTS — replace empty object values {} with empty string
+  //    Skip known object-expected fields (constraints, context, etc.) — empty {} is valid for those.
   for (const key of Object.keys(copy)) {
     const val = copy[key];
-    if (val && typeof val === 'object' && !Array.isArray(val) && Object.keys(val).length === 0) {
+    if (val && typeof val === 'object' && !Array.isArray(val)
+        && Object.keys(val).length === 0 && !OBJECT_FIELDS.has(key)) {
       copy[key] = '';
       if (!applied.includes('STRIP_EMPTY_OBJECTS')) applied.push('STRIP_EMPTY_OBJECTS');
     }
