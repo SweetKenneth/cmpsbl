@@ -15,20 +15,30 @@ export function getDeliveryStats(): { total: number; succeeded: number; failed: 
   return { total: deliveryLog.length, succeeded: s, failed: f, pending: deliveryLog.length - s - f };
 }
 
-// ─── 2. Dead Letter Queue ─────────────────────────────────────────────────
-const dlq: Array<{ id: string; ts: number; target: string; error: string; attempts: number }> = [];
-export function getDLQ(n = 20) { return dlq.slice(-n); }
-export function getDLQDepth() { return dlq.length; }
-export function replayDLQEntry(id: string): boolean { const idx = dlq.findIndex(e => e.id === id); if (idx >= 0) { dlq.splice(idx, 1); return true; } return false; }
+// ─── 2. Dead Letter Queue (delegates to relay-module DLQ) ─────────────────
+// The canonical DLQ lives in relay-module/index.ts. These are thin facades.
+import { getDeadLetterQueue, replayDeadLetter as moduleReplayDL, purgeDeadLetters } from './relay-module/index';
+export function getDLQ(n = 20) { return getDeadLetterQueue().slice(0, n); }
+export function getDLQDepth() { return getDeadLetterQueue().length; }
+export function replayDLQEntry(id: string): boolean { return moduleReplayDL(id) !== null; }
 
 // ─── 3. HMAC Signing Engine ───────────────────────────────────────────────
 const signingConfig = { algorithm: 'SHA-256', headerName: 'X-Relay-Signature', rotationIntervalHours: 24 };
 export function getSigningConfig() { return { ...signingConfig }; }
 
 // ─── 4. Retry Budget Manager ──────────────────────────────────────────────
-const retryBudget = { maxRetries: 5, backoffBase: 1000, backoffMultiplier: 2, jitterEnabled: true, budgetRemaining: 100 };
-export function getRetryBudget() { return { ...retryBudget }; }
-export function consumeRetryToken(): boolean { if (retryBudget.budgetRemaining <= 0) return false; retryBudget.budgetRemaining--; return true; }
+const BUDGET_WINDOW_MS = 60_000;
+const BUDGET_CAPACITY = 100;
+const retryBudget = { maxRetries: 5, backoffBase: 1000, backoffMultiplier: 2, jitterEnabled: true, budgetRemaining: BUDGET_CAPACITY, windowStart: Date.now() };
+export function getRetryBudget() { replenishBudget(); return { ...retryBudget }; }
+/** Replenish budget on window rollover */
+function replenishBudget(): void {
+  if (Date.now() - retryBudget.windowStart >= BUDGET_WINDOW_MS) {
+    retryBudget.budgetRemaining = BUDGET_CAPACITY;
+    retryBudget.windowStart = Date.now();
+  }
+}
+export function consumeRetryToken(): boolean { replenishBudget(); if (retryBudget.budgetRemaining <= 0) return false; retryBudget.budgetRemaining--; return true; }
 
 // ─── 5. Target Health Monitor ─────────────────────────────────────────────
 const targetHealth = new Map<string, { healthy: boolean; lastCheck: number; failRate: number; latencyMs: number }>();
@@ -48,20 +58,16 @@ export function checkPayloadSize(bytes: number): { allowed: boolean; warning: bo
 }
 export function getPayloadLimits() { return { ...payloadLimits }; }
 
-// ─── 8. Content Hash Deduplication ────────────────────────────────────────
-const contentHashes = new Set<string>();
+// ─── 8. Content Hash Deduplication (delegates to relay-module dedup) ──────
+// Canonical dedup lives in relay-module/index.ts. This is a thin facade.
+import { getRelayState } from './relay-module/index';
 export function isDuplicatePayload(hash: string): boolean {
-  if (contentHashes.has(hash)) return true;
-  contentHashes.add(hash);
-  // Evict oldest half instead of clearing all — prevents brief dedup failure window
-  if (contentHashes.size > 10000) {
-    const arr = Array.from(contentHashes);
-    contentHashes.clear();
-    for (let i = arr.length - 5000; i < arr.length; i++) contentHashes.add(arr[i]);
-  }
-  return false;
+  // Defer to the module-level isDuplicate via dispatch flow
+  // This hardening-layer check is kept for direct callers outside dispatch()
+  const s = getRelayState();
+  return s.deduplicationHashes.has(hash);
 }
-export function getDedupStats() { return { trackedHashes: contentHashes.size }; }
+export function getDedupStats() { return { trackedHashes: getRelayState().totalDeduplicated }; }
 
 // ─── 9. Rate Limiter (per target) ─────────────────────────────────────────
 const rateLimits = new Map<string, { count: number; windowStart: number }>();
@@ -158,10 +164,13 @@ export function getRelaySLA(): { deliveryP95_ms: number; successRate: number; up
 
 // ─── 25. Health Composite ────────────────────────────────────────────────
 export function calculateRelayHealth(): { grade: string; score: number; version: string; codename: string } {
+  const dlqDepth = getDLQDepth();
   let score = 100;
-  if (dlq.length > 50) score -= 20;
-  if (dlq.length > 10) score -= 5;
+  if (dlqDepth > 50) score -= 20;
+  else if (dlqDepth > 10) score -= 5;
   if (payloadLimits.rejectedCount > 10) score -= 10;
+  replenishBudget();
+  if (retryBudget.budgetRemaining < 20) score -= 10;
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
   return { grade, score, version: RELAY_HARDENING_VERSION, codename: RELAY_HARDENING_CODENAME };
 }

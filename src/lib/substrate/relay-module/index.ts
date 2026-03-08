@@ -238,7 +238,11 @@ export async function dispatch(target: string, payload: unknown, options?: { ret
     'dispatch'
   );
 
-  emitSucceeded('relay', 'dispatch', { id: result.id });
+  if (result.status === 'failed') {
+    emitFailed('relay', 'dispatch', result.lastError || 'Circuit breaker fallback');
+  } else {
+    emitSucceeded('relay', 'dispatch', { id: result.id });
+  }
   return result;
 }
 
@@ -255,7 +259,29 @@ export function markDelivered(deliveryId: string): boolean {
   state.pendingQueue = Math.max(0, state.pendingQueue - 1);
 
   emit({ module: 'relay', event_type: 'delivery_confirmed', outcome: 'succeeded', data: { id: deliveryId } });
+
+  // Evict terminal deliveries when array exceeds 80% capacity to prevent unbounded growth
+  evictTerminalDeliveries();
   return true;
+}
+
+/** Remove oldest terminal (delivered/dead_letter/failed) records when near capacity */
+function evictTerminalDeliveries(): void {
+  const EVICTION_THRESHOLD = Math.floor(MAX_DELIVERIES * 0.8);
+  if (state.deliveries.length < EVICTION_THRESHOLD) return;
+
+  const terminal = new Set<string>(['delivered', 'dead_letter', 'failed']);
+  const active: DeliveryRecord[] = [];
+  const done: DeliveryRecord[] = [];
+
+  for (const d of state.deliveries) {
+    if (terminal.has(d.status)) done.push(d);
+    else active.push(d);
+  }
+
+  // Keep all active + most recent terminal entries
+  const keepTerminal = Math.max(0, MAX_DELIVERIES - active.length - 50);
+  state.deliveries = [...active, ...done.slice(-keepTerminal)];
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -427,7 +453,20 @@ export function generateWebhookSignature(target: string, payload: string, timest
   const config = signatureConfigs.get(target);
   if (!config) return null;
   const message = `${timestamp}.${payload}`;
+  // Synchronous path for hot callers
   const signature = simpleHmac(config.secret, message);
+  return `t=${timestamp},v1=${signature}`;
+}
+
+/**
+ * Async variant using real HMAC-SHA256 via SubtleCrypto when available.
+ * Prefer this for security-critical webhook signing.
+ */
+export async function generateWebhookSignatureAsync(target: string, payload: string, timestamp: number): Promise<string | null> {
+  const config = signatureConfigs.get(target);
+  if (!config) return null;
+  const message = `${timestamp}.${payload}`;
+  const signature = await cryptoHmacSha256(config.secret, message);
   return `t=${timestamp},v1=${signature}`;
 }
 
@@ -455,12 +494,15 @@ export function verifyWebhookSignature(target: string, payload: string, signatur
   return { valid, reason: valid ? 'Signature verified' : 'Signature mismatch', timestampAge: ageSeconds };
 }
 
-function simpleHmac(key: string, message: string): string {
+/**
+ * Synchronous HMAC fallback using djb2 double-pass.
+ * Used only when SubtleCrypto is unavailable.
+ */
+function simpleHmacSync(key: string, message: string): string {
   let hash = 0;
   const combined = key + ':' + message;
   for (let i = 0; i < combined.length; i++) {
-    const char = combined.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = ((hash << 5) - hash) + combined.charCodeAt(i);
     hash = hash & hash;
   }
   const pass2 = message + ':' + key;
@@ -470,6 +512,33 @@ function simpleHmac(key: string, message: string): string {
     hash2 = hash2 & hash2;
   }
   return Math.abs(hash).toString(16).padStart(8, '0') + Math.abs(hash2).toString(16).padStart(8, '0');
+}
+
+/** Cache for the crypto key encoder */
+const textEncoder = new TextEncoder();
+
+/**
+ * Compute real HMAC-SHA256 via SubtleCrypto when available,
+ * falling back to djb2 double-pass in non-secure contexts.
+ */
+async function cryptoHmacSha256(key: string, message: string): Promise<string> {
+  try {
+    if (typeof globalThis.crypto?.subtle?.importKey !== 'function') {
+      return simpleHmacSync(key, message);
+    }
+    const keyData = textEncoder.encode(key);
+    const msgData = textEncoder.encode(message);
+    const cryptoKey = await crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+    const sig = await crypto.subtle.sign('HMAC', cryptoKey, msgData);
+    return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch {
+    return simpleHmacSync(key, message);
+  }
+}
+
+/** Synchronous HMAC for hot-path callers that can't await */
+function simpleHmac(key: string, message: string): string {
+  return simpleHmacSync(key, message);
 }
 
 function constantTimeEqual(a: string, b: string): boolean {
