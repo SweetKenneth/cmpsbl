@@ -344,7 +344,7 @@ export function wrapExecutor(
           emitIntel('repaired_success');
           return { ...result, error: '[immune] Repair succeeded' };
         } catch (err) {
-          // v3.2: Failed preflight repair+retry → safe-fail instead of escalate
+          // Failed preflight repair+retry → safe-fail instead of escalate
           const errorMsg = err instanceof Error ? err.message : 'unknown error after repair';
           mineEscalationPattern(executorName, errorMsg, input as Record<string, unknown>);
           safeFailFlag = true;
