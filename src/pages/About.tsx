@@ -329,7 +329,7 @@ export default function About() {
             {/* The Memory Stream */}
             <motion.div
               {...stagger(0.15)}
-              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden"
+              className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden card-lift gradient-border-reveal"
             >
               <div className="h-1 w-full bg-gradient-to-r from-primary via-cyan-500 to-primary" />
               <div className="p-5 sm:p-8">
