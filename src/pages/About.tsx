@@ -488,7 +488,7 @@ export default function About() {
                 <div className="space-y-1.5 pt-3 border-t border-border/30">
                   <a
                     href={`mailto:${dept.email}`}
-                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline min-h-[36px] sm:min-h-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm text-primary hover:underline min-h-[36px] sm:min-h-0 group-hover:translate-x-0.5 transition-transform duration-200"
                   >
                     <Mail className="w-3.5 h-3.5 shrink-0" />
                     {dept.email}
