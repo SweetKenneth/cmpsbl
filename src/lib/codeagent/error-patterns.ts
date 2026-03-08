@@ -27,7 +27,8 @@ export interface ErrorResolution {
   successRate: number;
 }
 
-// In-memory pattern cache
+// In-memory pattern cache (bounded)
+const MAX_ERROR_PATTERNS = 200;
 const errorPatternCache = new Map<string, ErrorPattern>();
 
 /**
