@@ -115,14 +115,14 @@ export function ArtifactPacksSection() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base">
+            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/auth">
                 <Sparkles className="w-4 h-4" />
                 Start Free — 3 Slots
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base">
+            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base hover:border-primary/30 transition-all duration-200">
               <Link to="/packs">
                 <Package className="w-4 h-4" />
                 Explore All Packs
