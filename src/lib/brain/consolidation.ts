@@ -436,7 +436,7 @@ function extractPhrases(text: string): string[] {
   phrases.push(...sentences.map(s => s.trim()));
   
   // Extract noun phrases (simplified)
-  const words = text.split(/\\s+/);
+  const words = text.split(/\s+/);
   for (let i = 0; i < words.length - 2; i++) {
     const trigram = words.slice(i, i + 3).join(' ');
     if (trigram.length >= 10) {

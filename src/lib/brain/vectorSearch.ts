@@ -43,6 +43,16 @@ export async function searchMemory(
   });
   
   results.push(...hotResults);
+
+  // Search warm tier
+  if (results.length < limit) {
+    const warmResults = await searchWarmTier(query, {
+      limit: limit - results.length,
+      minRelevance: minRelevance * 0.9,
+      context,
+    });
+    results.push(...warmResults);
+  }
   
   // If we need more results, search cold tier
   if (includeCold && results.length < limit) {

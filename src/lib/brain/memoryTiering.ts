@@ -43,33 +43,24 @@ export interface TieringResult {
  */
 export async function getTierStats(): Promise<TierStats> {
   try {
-    const [hotResult, warmResult, coldResult] = await Promise.all([
-      supabase
-        .from('brain_memory_hot')
-        .select('value_score'),
-      supabase
-        .from('brain_memory_warm')
-        .select('value_score'),
-      supabase
-        .from('brain_memory_cold')
-        .select('value_score'),
+    const [hotCount, warmCount, coldCount, hotAvg, warmAvg, coldAvg] = await Promise.all([
+      supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_hot' }).then(r => r.data).catch(() => null),
+      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_warm' }).then(r => r.data).catch(() => null),
+      supabase.rpc('brain_avg_value_score', { p_table: 'brain_memory_cold' }).then(r => r.data).catch(() => null),
     ]);
 
-    const calcAvg = (data: any[]) => {
-      if (!data || data.length === 0) return 0;
-      const sum = data.reduce((acc, d) => acc + (d.value_score || 0), 0);
-      return sum / data.length;
-    };
-
-    const hotData = hotResult.data || [];
-    const warmData = warmResult.data || [];
-    const coldData = coldResult.data || [];
+    const hc = hotCount.count ?? 0;
+    const wc = warmCount.count ?? 0;
+    const cc = coldCount.count ?? 0;
 
     return {
-      hot: { count: hotData.length, avgValueScore: calcAvg(hotData) },
-      warm: { count: warmData.length, avgValueScore: calcAvg(warmData) },
-      cold: { count: coldData.length, avgValueScore: calcAvg(coldData) },
-      total: hotData.length + warmData.length + coldData.length,
+      hot: { count: hc, avgValueScore: Number(hotAvg) || 0 },
+      warm: { count: wc, avgValueScore: Number(warmAvg) || 0 },
+      cold: { count: cc, avgValueScore: Number(coldAvg) || 0 },
+      total: hc + wc + cc,
     };
   } catch (error) {
     console.error('Error getting tier stats:', error);
