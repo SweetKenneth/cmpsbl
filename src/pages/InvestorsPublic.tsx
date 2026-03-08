@@ -191,7 +191,7 @@ export default function InvestorsPublic() {
 
         <div className="grid md:grid-cols-2 gap-4">
           {WORLD_FIRSTS.map((wf, i) => (
-            <Card key={i} className="p-5 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 transition-all group">
+            <Card key={i} className="p-5 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 group">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
