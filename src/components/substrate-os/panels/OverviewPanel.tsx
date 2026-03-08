@@ -151,13 +151,13 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}
-                className="rounded-lg sm:rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10"
+                className="rounded-lg sm:rounded-xl border border-border/20 dark:border-border/10 p-3 sm:p-4 bg-muted/5 dark:bg-muted/10 hover:border-primary/15 hover:bg-muted/10 transition-all duration-300"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.08 }}
               >
                 <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-[0.15em] block mb-0.5">{kpi.label}</span>
-                <span className={cn("text-base sm:text-lg lg:text-xl font-bold font-mono block leading-tight", kpi.color)}>{kpi.value}</span>
+                <span className={cn("text-base sm:text-lg lg:text-xl font-bold font-mono tabular-nums block leading-tight", kpi.color)}>{kpi.value}</span>
                 <span className="text-[10px] text-muted-foreground/40 leading-tight">{kpi.sub}</span>
               </motion.div>
             ))}
@@ -180,7 +180,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               <Button
                 key={action.id}
                 variant="outline"
-                className="justify-start h-auto py-3 px-3 sm:px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 w-full text-left"
+                className="justify-start h-auto py-3 px-3 sm:px-4 border-border/20 dark:border-border/10 hover:bg-muted/30 dark:hover:bg-muted/20 hover:border-primary/15 w-full text-left transition-all duration-200"
                 onClick={action.onClick}
                 disabled={action.pending || !isOperator}
               >
@@ -230,7 +230,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               {SECTORS.map(sector => (
                 <motion.div
                   key={sector.id}
-                  className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-2.5 sm:p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 transition-colors"
+                  className="rounded-lg sm:rounded-xl border border-border/15 dark:border-border/10 p-2.5 sm:p-3 bg-card/50 dark:bg-card/20 hover:bg-card/80 dark:hover:bg-card/30 hover:border-primary/15 transition-all duration-300"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}

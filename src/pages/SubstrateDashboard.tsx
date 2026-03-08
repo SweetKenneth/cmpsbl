@@ -540,13 +540,13 @@ export default function SubstrateDashboard() {
           
           <div className="flex gap-3">
             <Link to="/investors">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 hover:border-primary/30 transition-all duration-200">
                 Acquisition Info
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
             <Link to="/docs/substrate/capabilities">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 hover:border-primary/30 transition-all duration-200">
                 SDK Docs
                 <ArrowRight className="w-4 h-4" />
               </Button>
@@ -586,29 +586,29 @@ export default function SubstrateDashboard() {
         {/* Metrics */}
         {metrics && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
-            <Card className="p-4 md:p-6">
+            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
                 <Brain className="w-6 h-6 md:w-8 md:h-8 text-purple-500 shrink-0" />
                 <div>
-                  <p className="text-xl md:text-2xl font-bold">{metrics.brain_memories.toLocaleString()}</p>
+                  <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.brain_memories.toLocaleString()}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Brain Memories</p>
                 </div>
               </div>
             </Card>
-            <Card className="p-4 md:p-6">
+            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
                 <Shield className="w-6 h-6 md:w-8 md:h-8 text-red-500 shrink-0" />
                 <div>
-                  <p className="text-xl md:text-2xl font-bold">{metrics.defense_events.toLocaleString()}</p>
+                  <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.defense_events.toLocaleString()}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Defense Events</p>
                 </div>
               </div>
             </Card>
-            <Card className="p-4 md:p-6">
+            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
                 <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-blue-500 shrink-0" />
                 <div>
-                  <p className="text-xl md:text-2xl font-bold">{metrics.decode_conversations?.toLocaleString() || 0}</p>
+                  <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.decode_conversations?.toLocaleString() || 0}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Conversations</p>
                 </div>
               </div>
@@ -665,7 +665,7 @@ export default function SubstrateDashboard() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {modules.map((module) => (
-                      <Card key={module.id} className="p-4 md:p-6 hover:border-primary/50 transition-colors">
+                      <Card key={module.id} className="p-4 md:p-6 hover:border-primary/30 transition-all duration-300 card-lift">
                         <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
                           <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
                             <module.icon className={`w-5 h-5 md:w-6 md:h-6 ${module.color}`} />
@@ -710,7 +710,7 @@ export default function SubstrateDashboard() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {modules.map((module) => (
-                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/50 transition-colors">
+                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/30 transition-all duration-300 card-lift">
                           <div className="flex items-start gap-3 mb-3">
                             <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
                               <module.icon className={`w-5 h-5 ${module.color}`} />
@@ -749,7 +749,7 @@ export default function SubstrateDashboard() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {modules.map((module) => (
-                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/50 transition-colors">
+                        <Card key={module.id} className="p-4 md:p-6 hover:border-primary/30 transition-all duration-300 card-lift">
                           <div className="flex items-start gap-3 mb-3">
                             <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
                               <module.icon className={`w-5 h-5 ${module.color}`} />
@@ -781,7 +781,7 @@ export default function SubstrateDashboard() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {modulesByLayer.mesh.map((module) => (
-                <Card key={module.id} className="p-5 hover:border-primary/50 transition-colors">
+                <Card key={module.id} className="p-5 hover:border-primary/30 transition-all duration-300 card-lift">
                   <div className="flex items-start gap-3 mb-3">
                     <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
                       <module.icon className={`w-5 h-5 ${module.color}`} />
