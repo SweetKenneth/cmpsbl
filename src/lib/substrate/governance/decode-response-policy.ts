@@ -41,6 +41,7 @@ export interface PolicyResult {
 // PATTERNS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// NOTE: These regexes use /g flag. Always reset lastIndex before .test() or .exec()
 const PROVENANCE_TAG_REGEX = /\[(MEASURED|INFERRED|DESIGN_INTENT|REPRESENTATIVE_EXAMPLE)\]/g;
 const PERCENTAGE_REGEX = /(\d+(?:\.\d+)?)\s*%/g;
 const PRECISE_NUMBER_REGEX = /\b(\d{2,}(?:\.\d+)?)\s*(ms|seconds?|minutes?|hours?|calls?|requests?|users?|events?|operations?)\b/gi;
