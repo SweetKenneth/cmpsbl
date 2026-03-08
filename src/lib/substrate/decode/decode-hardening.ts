@@ -573,9 +573,11 @@ export function redactSensitiveData(text: string): { redacted: string; redaction
   let result = text;
   const applied: string[] = [];
   for (const { name, pattern, replacement } of REDACTION_PATTERNS) {
-    if (pattern.test(result)) {
-      result = result.replace(pattern, replacement);
+    // Use replace directly — avoid .test() + .replace() on /g regex (stateful lastIndex)
+    const replaced = result.replace(pattern, replacement);
+    if (replaced !== result) {
       applied.push(name);
+      result = replaced;
     }
   }
   return { redacted: result, redactionsApplied: applied };

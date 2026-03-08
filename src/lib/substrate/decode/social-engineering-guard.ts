@@ -227,9 +227,20 @@ export function detectSocialEngineering(
       lastAttemptAt: Date.now(),
     };
     tracker.sensitiveRequestCount++;
-    tracker.patterns.push(...detectedPatterns);
+    // Cap tracked patterns per session to prevent unbounded growth
+    if (tracker.patterns.length < 200) {
+      tracker.patterns.push(...detectedPatterns);
+    }
     tracker.lastAttemptAt = Date.now();
     escalationTracker.set(sessionId, tracker);
+
+    // Evict stale sessions (>1 hour old) to prevent map growth
+    if (escalationTracker.size > 1000) {
+      const cutoff = Date.now() - 3600_000;
+      for (const [sid, t] of escalationTracker) {
+        if (t.lastAttemptAt < cutoff) escalationTracker.delete(sid);
+      }
+    }
 
     // Escalation amplification — repeated attempts increase threat score
     if (tracker.sensitiveRequestCount >= 3) {
