@@ -184,7 +184,7 @@ const alerts: BudgetAlert[] = [];
    
    return {
      allowed: true,
-     remaining_daily: status.daily_remaining_cents - estimatedCostCents,
+     remaining_daily: dailyRemaining - estimatedCostCents,
    };
  }
  
