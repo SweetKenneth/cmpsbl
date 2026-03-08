@@ -593,34 +593,34 @@ class MemoryCoreClient {
         ? [this.getTableForTier(tier)] 
         : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'];
 
-      // Strategy 1: Full-text search (PostgreSQL websearch)
-      if (strategy === 'fulltext' || strategy === 'hybrid') {
+      // Build all query promises in parallel
+      const strategies: ('fulltext' | 'pattern')[] = 
+        strategy === 'hybrid' ? ['fulltext', 'pattern'] : [strategy === 'fulltext' ? 'fulltext' : 'pattern'];
+
+      const queryPromises: Promise<{ data: any[] | null; table: string }>[] = [];
+      for (const strat of strategies) {
         for (const table of tablesToSearch) {
-          try {
-            const { data } = await this.queryTable(table, queryText, 'fulltext', Math.ceil(limit / tablesToSearch.length));
-            if (data) results.push(...this.mapToMemoryEntry(data, table));
-          } catch {
-            // Continue with other tables
-          }
+          const perTableLimit = strat === 'fulltext' 
+            ? Math.ceil(limit / tablesToSearch.length) 
+            : limit;
+          queryPromises.push(
+            this.queryTable(table, queryText, strat, perTableLimit)
+              .then(r => ({ data: r.data, table }))
+              .catch(() => ({ data: null, table }))
+          );
         }
       }
 
-      // Strategy 2: Pattern matching (ILIKE)
-      if (strategy === 'pattern' || strategy === 'hybrid') {
-        for (const table of tablesToSearch) {
-          try {
-            const { data } = await this.queryTable(table, queryText, 'pattern', limit);
-            if (data) {
-              const mapped = this.mapToMemoryEntry(data, table);
-              // Avoid duplicates
-              for (const entry of mapped) {
-                if (!results.find(r => r.id === entry.id)) {
-                  results.push(entry);
-                }
-              }
-            }
-          } catch {
-            // Continue with other tables
+      const queryResults = await Promise.all(queryPromises);
+      const seenIds = new Set<string>();
+
+      for (const { data, table } of queryResults) {
+        if (!data) continue;
+        const mapped = this.mapToMemoryEntry(data, table);
+        for (const entry of mapped) {
+          if (!seenIds.has(entry.id!)) {
+            seenIds.add(entry.id!);
+            results.push(entry);
           }
         }
       }
