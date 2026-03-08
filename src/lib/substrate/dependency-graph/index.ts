@@ -97,8 +97,25 @@ export function computeBootOrder(): { order: string[]; cycles: string[][] } {
   return { order, cycles };
 }
 
+// Precomputed reverse-dependency index; rebuilt on each computeBootOrder call
+let dependentsIndex: Map<string, string[]> | null = null;
+
+function ensureDependentsIndex(): Map<string, string[]> {
+  if (dependentsIndex) return dependentsIndex;
+  const idx = new Map<string, string[]>();
+  for (const [id] of graph) idx.set(id, []);
+  for (const [id, node] of graph) {
+    for (const dep of node.dependencies) {
+      idx.get(dep)?.push(id);
+    }
+  }
+  dependentsIndex = idx;
+  return idx;
+}
+
 export function getDependents(moduleId: string): string[] {
-  return Array.from(graph.values()).filter(n => n.dependencies.includes(moduleId)).map(n => n.id);
+  const idx = ensureDependentsIndex();
+  return [...(idx.get(moduleId) || [])];
 }
 
 export function getTransitiveDependencies(moduleId: string): string[] {
