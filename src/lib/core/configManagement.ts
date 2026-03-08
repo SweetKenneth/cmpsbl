@@ -228,11 +228,12 @@ export function setModuleConfigOverride(
  * Create config snapshot
  */
 export function createSnapshot(description?: string): ConfigSnapshot {
+  // Deep-clone configs and flags to prevent mutation after snapshot
   const snapshot: ConfigSnapshot = {
     id: `snap_${Date.now()}`,
     timestamp: new Date().toISOString(),
-    configs: Object.fromEntries(configs),
-    flags: Object.fromEntries(featureFlags),
+    configs: JSON.parse(JSON.stringify(Object.fromEntries(configs))),
+    flags: JSON.parse(JSON.stringify(Object.fromEntries(featureFlags))),
     description,
   };
   
@@ -295,16 +296,18 @@ export async function loadConfigsFromDatabase(): Promise<number> {
     
     if (!result) return 0;
     
+    let loaded = 0;
     result.forEach(row => {
       if (row.metadata && typeof row.metadata === 'object') {
         const meta = row.metadata as Record<string, unknown>;
         if ('configValue' in meta) {
           setConfig(row.key, meta.configValue, { source: 'database' });
+          loaded++;
         }
       }
     });
     
-    return result.length;
+    return loaded;
   } catch (error) {
     console.error('[ConfigManagement] Failed to load configs from database:', error);
     return 0;

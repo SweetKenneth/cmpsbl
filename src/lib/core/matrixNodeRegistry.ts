@@ -75,12 +75,12 @@ export interface MatrixIntegrityReport {
  *   SYSTEM (Standalone)  = 0.040 (4%)
  *   CCR (3 zones)        = 0.120 (12%)  — BRAIN, MEMORY, DREAM
  *   OCG (6 zones)        = 0.150 (15%)  — RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE
- *   Execution (9 nodes)  = 0.200 (20%)  — DECODE..INTEGRATION (NERVE moved to OCG)
+ *   Execution (10 nodes) = 0.220 (22%)  — DECODE..MEDIC + INTEGRATION
  *   ESZ (4 nodes)        = 0.080 (8%)   — SOVEREIGN, ORACLE, CONSCIENCE, TREATY
  *   EPZ (3 nodes)        = 0.060 (6%)   — COMPASS, ECHO, REFLEX
  *   EMZ (3 nodes)        = 0.045 (4.5%) — FORGE, LINGUA, HARVEST
  *   CSZ (3 nodes)        = 0.055 (5.5%) — EVOLUTION, SHADOW, PHANTOM
- *   Fields (2 nodes)     = 0.040 (4%)   — IMMUNITY, INTENT
+ *   Fields (2 nodes)     = 0.060 (6%)   — IMMUNITY, INTENT
  *   Plane (1 node)       = 0.030 (3%)
  *   Shell (1 node)       = 0.030 (3%)
  *   ─────────────────────────────────
@@ -257,10 +257,17 @@ export function calculateIntegrity(nodes: MatrixNode[]): MatrixIntegrityReport {
       ? 'MATRIX DEGRADED'
       : 'MATRIX STABLE';
 
+  // Build sector lookup in a single pass instead of filtering per sector
+  const sectorMap = new Map<MatrixSector, MatrixNode[]>();
+  for (const node of nodes) {
+    const list = sectorMap.get(node.sector);
+    if (list) { list.push(node); } else { sectorMap.set(node.sector, [node]); }
+  }
+
   const allSectors: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
   const sectors = {} as Record<MatrixSector, { health: number; nodeCount: number; weight: number }>;
   for (const sector of allSectors) {
-    const sectorNodes = nodes.filter(n => n.sector === sector);
+    const sectorNodes = sectorMap.get(sector) || [];
     const sectorWeight = sectorNodes.reduce((s, n) => s + n.weight, 0);
     const sectorHealth = sectorNodes.length > 0
       ? Math.round(sectorNodes.reduce((s, n) => s + n.health, 0) / sectorNodes.length)
