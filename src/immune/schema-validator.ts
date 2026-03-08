@@ -397,7 +397,8 @@ const SCHEMAS: Record<string, ExecutorSchema> = {
   },
 };
 
-const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
+/** Matches SQL keywords followed by whitespace or special chars — catches "SELECT*", "DROP\nTABLE", etc. */
+const SQL_INJECT_RE = /\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b[\s*(/;,]/i;
 const XSS_RE = /<script[\s\S]*?<\/script>/gi;
 
 /**
@@ -460,6 +461,7 @@ export function validateInput(
       if (spec.maxLength && val.length > spec.maxLength) {
         issues.push({ field, issue: 'too_long', expected: `<=${spec.maxLength}` });
       }
+      // Case-insensitive enum matching — inputs like 'aa' match schema enum 'AA'
       if (spec.enum && !spec.enum.includes(val.toUpperCase())) {
         issues.push({ field, issue: 'invalid_enum', expected: spec.enum.join('|'), got: val });
       }
@@ -485,13 +487,13 @@ export function validateInput(
   const EVENT_HANDLER_INJECT_RE = /\bon\w+\s*=/i;
   for (const val of Object.values(input)) {
     if (typeof val === 'string') {
-      SQL_INJECT_RE.lastIndex = 0;
+      // XSS_RE has global flag — must reset lastIndex before each test
       XSS_RE.lastIndex = 0;
       if (SQL_INJECT_RE.test(val) || XSS_RE.test(val) || EVENT_HANDLER_INJECT_RE.test(val)) {
         hasInjection = true;
+        XSS_RE.lastIndex = 0; // Reset after match for next call
         break;
       }
-      SQL_INJECT_RE.lastIndex = 0;
       XSS_RE.lastIndex = 0;
     }
   }
