@@ -107,8 +107,11 @@
      }
    }
    
-   // Store mutations
-   mutationHistory.push(...mutations);
+    // Store mutations (capped)
+    mutationHistory.push(...mutations);
+    if (mutationHistory.length > MAX_MUTATION_HISTORY) {
+      mutationHistory.splice(0, mutationHistory.length - MAX_MUTATION_HISTORY);
+    }
    
    // Log mutation event
    if (mutations.length > 0) {
