@@ -171,8 +171,8 @@ export async function runShadowProbe(
 
   // Register as synthetic shadow event (isolation-aware)
   const shadowState = getShadowMeshState();
-  updateHealthRegistry(`shadow:${executorName}`, totalFails > 0 ? 'shadow_event' : 'healthy',
-    totalFails > 0 ? 'shadow_event' : 'boot',
+  updateHealthRegistry(`shadow:${executorName}`, summary.escalated > 0 ? 'shadow_event' : 'healthy',
+    summary.escalated > 0 ? 'shadow_event' : 'boot',
     shadowState.bleed_into_health ? 'synthetic_shadow_event' : 'synthetic_test',
     {
       detail: `${summary.success} ok, ${summary.repaired} repaired, ${summary.escalated} escalated, ${summary.failedSafe} safe-failed`,
