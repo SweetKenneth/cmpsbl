@@ -772,6 +772,7 @@ export function captureRegistrySnapshot(
     hash: fnv1aHash(JSON.stringify(modules)),
   };
   registrySnapshots.push(snapshot);
+  if (registrySnapshots.length > MAX_REGISTRY_SNAPSHOTS) registrySnapshots.splice(0, registrySnapshots.length - MAX_REGISTRY_SNAPSHOTS);
   return snapshot;
 }
 
