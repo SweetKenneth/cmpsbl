@@ -205,7 +205,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       </Card>
 
       {/* Tier breakdown */}
-      <Card className="col-span-2 border-border/50">
+      <Card className="col-span-2 border-border/50 hover:border-primary/15 transition-all duration-300">
         <CardContent className="p-3">
           <div className="text-[10px] font-medium text-muted-foreground mb-2">Tier Breakdown</div>
           <div className="space-y-1">
