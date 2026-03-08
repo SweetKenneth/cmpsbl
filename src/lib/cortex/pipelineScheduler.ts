@@ -226,8 +226,9 @@
    const queueIdx = pipelineQueue.findIndex(p => p.id === pipelineId);
    if (queueIdx >= 0) {
      const [cancelled] = pipelineQueue.splice(queueIdx, 1);
-     cancelled.status = 'cancelled';
-     completedPipelines.push(cancelled);
+    cancelled.status = 'cancelled';
+      completedPipelines.push(cancelled);
+      // cancelled pipelines don't go into completedIdSet (they didn't succeed)
      return true;
    }
  
