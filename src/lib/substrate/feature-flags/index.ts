@@ -47,6 +47,10 @@ export function isEnabled(flagId: string, userTier?: string, userId?: string): b
 export function updateFlag(flagId: string, updates: Partial<Pick<FeatureFlag, 'enabled' | 'rolloutPercent' | 'targetTiers' | 'killSwitch'>>): FeatureFlag | null {
   const flag = flags.get(flagId);
   if (!flag) return null;
+  // Clamp rollout if provided
+  if (updates.rolloutPercent !== undefined) {
+    updates = { ...updates, rolloutPercent: Math.max(0, Math.min(100, updates.rolloutPercent)) };
+  }
   Object.assign(flag, updates, { updatedAt: Date.now() });
   return flag;
 }

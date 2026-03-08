@@ -22,8 +22,13 @@ export interface UseCoreReturn {
   shutdown: ReturnType<typeof useMutation>;
   config: ReturnType<typeof useMutation>;
   
-  // Query helpers
-  jobs: (status?: string, limit?: number) => ReturnType<typeof useQuery>;
+  // Query config factory — use with useQuery(core.jobs(...))
+  jobs: (status?: string, limit?: number) => {
+    queryKey: unknown[];
+    queryFn: () => unknown;
+    staleTime: number;
+    enabled: boolean;
+  };
 }
 
 export function useCore(): UseCoreReturn {

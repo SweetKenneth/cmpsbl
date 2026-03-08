@@ -37,6 +37,8 @@ export function registerModule(id: string, name: string, dependencies: string[] 
   }
   const node: ModuleNode = { id, name, dependencies, bootOrder: null, status: 'unloaded', loadTimeMs: null };
   graph.set(id, node);
+  // Invalidate reverse-dependency cache when graph changes
+  dependentsIndex = null;
   return node;
 }
 
