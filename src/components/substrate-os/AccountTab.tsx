@@ -69,6 +69,8 @@ export function AccountTab() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
 
+  const [discoveryStats, setDiscoveryStats] = useState<DiscoveryStats | null>(null);
+
   // Fetch profile
   useEffect(() => {
     if (!user) return;
@@ -81,7 +83,6 @@ export function AccountTab() {
 
       if (error) {
         console.error('Profile fetch error:', error);
-        // Fallback
         setProfile({
           display_name: null,
           bio: null,
@@ -94,7 +95,6 @@ export function AccountTab() {
         setDisplayName(data.display_name ?? '');
         setBio((data as any).bio ?? '');
       } else {
-        // No profile row yet — create one
         const { data: created } = await supabase
           .from('profiles')
           .insert({ user_id: user.id, email: user.email })
@@ -107,6 +107,38 @@ export function AccountTab() {
         }
       }
       setLoading(false);
+    })();
+  }, [user]);
+
+  // Fetch discovery stats from foundry_inventory + foundry_user_state
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const [invRes, stateRes] = await Promise.allSettled([
+        supabase.from('foundry_inventory').select('artifact_name, score, category, obtained_at').eq('user_id', user.id),
+        supabase.from('foundry_user_state').select('total_mines, streak_days').eq('user_id', user.id).maybeSingle(),
+      ]);
+
+      const items = invRes.status === 'fulfilled' ? (invRes.value.data ?? []) : [];
+      const state = stateRes.status === 'fulfilled' ? stateRes.value.data : null;
+
+      const scores = items.map((i: any) => i.score ?? 0);
+      const highestIdx = scores.length > 0 ? scores.indexOf(Math.max(...scores)) : -1;
+      const categoryCounts: Record<string, number> = {};
+      items.forEach((i: any) => {
+        const cat = i.category || 'uncategorized';
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      });
+
+      setDiscoveryStats({
+        totalDiscovered: items.length,
+        highestScore: highestIdx >= 0 ? scores[highestIdx] : 0,
+        highestName: highestIdx >= 0 ? (items[highestIdx] as any).artifact_name : '—',
+        totalMines: (state as any)?.total_mines ?? 0,
+        streakDays: (state as any)?.streak_days ?? 0,
+        avgScore: scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : 0,
+        categoryCounts,
+      });
     })();
   }, [user]);
 
