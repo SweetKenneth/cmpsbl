@@ -443,7 +443,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   
   // Step 2: Extract gap tasks
   const gapTasks = extractGapTasks(scanResult);
-  log.info('modernizer-shadow', `Found ${gapTasks.length} gaps from scan ${scanId}`);
+  log.info('shadow-gap-training', `Found ${gapTasks.length} gaps from scan ${scanId}`);
   
   if (gapTasks.length === 0) {
     return {
