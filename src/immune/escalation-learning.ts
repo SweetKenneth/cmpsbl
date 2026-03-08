@@ -719,9 +719,8 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
           }
         }
 
-        // v4: Contribute to shared rule registry for central learning
+        // Contribute to shared rule registry for central cross-executor learning
         try {
-          const { contributeRule } = require('./shared-rule-registry');
           contributeRule(
             candidate.executor,
             candidate.repairStrategy,
@@ -729,7 +728,7 @@ export function runLearningCycle(testInputs?: Record<string, unknown>[]): {
             candidate.feedbackConfidence,
             candidate.description,
           );
-        } catch { /* shared registry not available */ }
+        } catch { /* non-critical */ }
       }
     } else {
       rejected++;
