@@ -138,6 +138,7 @@ export function getPatternStats(): { total: number; avgUsage: number; topPattern
 // ─── 7. Dream Cycle Scheduler ───────────────────────────────────────────────
 interface ScheduledDream { id: string; priority: number; seeds: string[]; scheduledAt: number; status: 'pending' | 'running' | 'completed' | 'failed'; }
 const dreamQueue: ScheduledDream[] = [];
+const MAX_DREAM_QUEUE = 200;
 let activeDreamCount = 0;
 const MAX_CONCURRENT_DREAMS = 3;
 
@@ -145,6 +146,14 @@ export function scheduleDream(seeds: string[], priority = 5): string {
   const id = `dream_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`;
   dreamQueue.push({ id, priority, seeds, scheduledAt: Date.now(), status: 'pending' });
   dreamQueue.sort((a, b) => b.priority - a.priority);
+  // Evict oldest completed/failed entries when over capacity
+  if (dreamQueue.length > MAX_DREAM_QUEUE) {
+    for (let i = dreamQueue.length - 1; i >= 0 && dreamQueue.length > MAX_DREAM_QUEUE; i--) {
+      if (dreamQueue[i].status === 'completed' || dreamQueue[i].status === 'failed') {
+        dreamQueue.splice(i, 1);
+      }
+    }
+  }
   return id;
 }
 
@@ -161,12 +170,16 @@ export function completeDream(id: string, success: boolean): void {
 }
 
 export function getDreamQueueStats(): { pending: number; running: number; completed: number; failed: number } {
-  return {
-    pending: dreamQueue.filter(d => d.status === 'pending').length,
-    running: dreamQueue.filter(d => d.status === 'running').length,
-    completed: dreamQueue.filter(d => d.status === 'completed').length,
-    failed: dreamQueue.filter(d => d.status === 'failed').length,
-  };
+  let pending = 0, running = 0, completed = 0, failed = 0;
+  for (const d of dreamQueue) {
+    switch (d.status) {
+      case 'pending': pending++; break;
+      case 'running': running++; break;
+      case 'completed': completed++; break;
+      case 'failed': failed++; break;
+    }
+  }
+  return { pending, running, completed, failed };
 }
 
 // ─── 8. Cross-Domain Fusion Validator ───────────────────────────────────────
