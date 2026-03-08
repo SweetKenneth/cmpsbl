@@ -1152,10 +1152,12 @@ export function detectDistributedAttack(
 // #53  MEMORY SCRAPING SHIELD
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const sensitiveDataRegistry = new Map<string, { clearedAt: number }>();
+const sensitiveDataRegistry = new Map<string, { registeredAt: number; clearedAt: number }>();
+const MAX_SENSITIVE_REGISTRY = 1000;
 
 export function registerSensitiveData(dataId: string): void {
-  sensitiveDataRegistry.set(dataId, { clearedAt: 0 });
+  sensitiveDataRegistry.set(dataId, { registeredAt: Date.now(), clearedAt: 0 });
+  boundMap(sensitiveDataRegistry, MAX_SENSITIVE_REGISTRY);
 }
 
 export function clearSensitiveData(dataId: string): boolean {
