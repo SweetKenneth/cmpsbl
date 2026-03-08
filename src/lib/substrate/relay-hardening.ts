@@ -136,7 +136,12 @@ export function checkEgressFilter(domain: string): boolean { return !blockedDoma
 export function getEgressFilterStats() { return { blockedDomains: blockedDomains.size }; }
 
 // ─── 19. Delivery Receipt Tracker ────────────────────────────────────────
+const MAX_RECEIPTS = 500;
 const receipts: Array<{ id: string; ts: number; acknowledged: boolean }> = [];
+export function recordReceipt(id: string, acknowledged: boolean) {
+  receipts.push({ id, ts: Date.now(), acknowledged });
+  if (receipts.length > MAX_RECEIPTS) receipts.splice(0, receipts.length - MAX_RECEIPTS);
+}
 export function getReceiptStats() { return { total: receipts.length, acknowledged: receipts.filter(r => r.acknowledged).length }; }
 
 // ─── 20. Webhook Replay Engine ───────────────────────────────────────────
