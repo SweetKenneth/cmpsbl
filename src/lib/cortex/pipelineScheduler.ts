@@ -128,13 +128,12 @@
  /**
   * Check if all dependencies are satisfied
   */
- function areDependenciesSatisfied(pipeline: ScheduledPipeline): boolean {
-   for (const depId of pipeline.dependencies) {
-     const completed = completedPipelines.find(p => p.id === depId && p.status === 'completed');
-     if (!completed) return false;
-   }
-   return true;
- }
+  function areDependenciesSatisfied(pipeline: ScheduledPipeline): boolean {
+    for (const depId of pipeline.dependencies) {
+      if (!completedIdSet.has(depId)) return false;
+    }
+    return true;
+  }
  
  /**
   * Process the queue - start next eligible pipelines
