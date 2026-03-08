@@ -63,6 +63,7 @@ export function getConvergenceRate(chainId: string): number {
 // ─── 3. Dream Depth Limiter ────────────────────────────────────────────────
 interface DepthLimit { maxDepth: number; currentDepth: number; softLimit: number; aborted: number; }
 const depthLimits = new Map<string, DepthLimit>();
+const MAX_DEPTH_LIMITS = 100;
 
 export function configureDreamDepth(chainId: string, maxDepth = 20, softLimit = 15): void {
   depthLimits.set(chainId, { maxDepth, currentDepth: 0, softLimit, aborted: 0 });
