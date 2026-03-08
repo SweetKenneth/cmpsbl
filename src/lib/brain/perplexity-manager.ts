@@ -74,11 +74,13 @@ export async function updateUsageLog(entry: UsageLogEntry): Promise<void> {
         .maybeSingle();
       
       if (currentQuota) {
+        const currentCalls = currentQuota.calls_used ?? 0;
+        const currentTokens = currentQuota.tokens_used ?? 0;
         await supabase
           .from('ai_daily_quota')
           .update({ 
-            calls_used: currentQuota.calls_used + 1,
-            tokens_used: currentQuota.tokens_used + (entry.tokens_used || 0)
+            calls_used: currentCalls + 1,
+            tokens_used: currentTokens + (entry.tokens_used || 0)
           })
           .eq('provider', entry.provider)
           .eq('date', today);

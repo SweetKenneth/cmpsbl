@@ -201,11 +201,15 @@ export async function runBatchCompression(
         const originalSize = batch.reduce((sum, m) => sum + m.content.length, 0);
         const compressedSize = compressed.summary.length + compressed.preservedCode.join('').length;
         
-        // Store compressed version
+        // Store compressed version (include preserved code in summary)
+        const fullContent = compressed.preservedCode.length > 0
+          ? `${compressed.summary}\n\n--- Preserved Code ---\n${compressed.preservedCode.join('\n\n')}`
+          : compressed.summary;
+
         const { error: insertError } = await supabase
           .from('brain_memory_cold')
           .insert({
-            summary: compressed.summary,
+            summary: fullContent,
             source_refs: compressed.originalIds,
             compression_level: Math.round(compressed.compressionRatio),
             source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',

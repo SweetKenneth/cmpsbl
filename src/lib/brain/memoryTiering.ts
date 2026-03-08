@@ -143,13 +143,17 @@ export async function searchMemories(
   const results: Memory[] = [];
 
   try {
+    // Sanitize query to prevent PostgREST filter injection
+    const sanitized = query.replace(/[%_\\]/g, '');
+    if (!sanitized) return [];
+
     const queries = [];
 
     if (tiers.includes('hot')) {
       let q = supabase
         .from('brain_memory_hot')
         .select('id, content, context, value_score, access_count, created_at, last_used')
-        .ilike('content', `%${query}%`)
+        .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
         .limit(limit);
@@ -164,7 +168,7 @@ export async function searchMemories(
       let q = supabase
         .from('brain_memory_warm')
         .select('id, content, context, value_score, access_count, created_at, last_accessed')
-        .ilike('content', `%${query}%`)
+        .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
         .limit(limit);
@@ -179,7 +183,7 @@ export async function searchMemories(
       let q = supabase
         .from('brain_memory_cold')
         .select('id, summary, tags, value_score, access_count, created_at, last_accessed')
-        .ilike('summary', `%${query}%`)
+        .ilike('summary', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
         .limit(limit);

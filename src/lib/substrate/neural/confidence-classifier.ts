@@ -189,25 +189,33 @@ class ConfidenceClassifier {
 
       const accuracy = correct / traces.length;
 
-      // Store model
-      const { error: storeError } = await supabase
+      // Store model — insert first, then deactivate old ones on success
+      const { data: newModel, error: insertError } = await supabase
         .from('brain_classifier_models')
-        .update({ is_active: false })
-        .eq('model_type', 'confidence')
-        .eq('is_active', true);
-
-      await supabase.from('brain_classifier_models').insert({
-        model_type: 'confidence',
-        weights: { weights: Array.from(weights), bias },
-        training_metadata: {
-          samples: traces.length,
+        .insert({
+          model_type: 'confidence',
+          weights: { weights: Array.from(weights), bias },
+          training_metadata: {
+            samples: traces.length,
+            accuracy,
+            trained_at: new Date().toISOString(),
+          },
+          training_samples: traces.length,
           accuracy,
-          trained_at: new Date().toISOString(),
-        },
-        training_samples: traces.length,
-        accuracy,
-        is_active: true,
-      });
+          is_active: true,
+        })
+        .select('id')
+        .single();
+
+      // Only deactivate old models if the new one inserted successfully
+      if (!insertError && newModel) {
+        await supabase
+          .from('brain_classifier_models')
+          .update({ is_active: false })
+          .eq('model_type', 'confidence')
+          .eq('is_active', true)
+          .neq('id', newModel.id);
+      }
 
       // Update local state
       this.weights = weights;
