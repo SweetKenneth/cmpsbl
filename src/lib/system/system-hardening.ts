@@ -523,6 +523,7 @@ interface MaintenanceWindow {
 }
 
 const maintenanceWindows: MaintenanceWindow[] = [];
+const MAX_MAINTENANCE_WINDOWS = 50;
 
 export function scheduleMaintenanceWindow(
   reason: string,
