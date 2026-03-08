@@ -23,7 +23,7 @@ export async function compressMemories(
     // Fetch memories from the correct source tier
     const { data: memories, error } = await supabase
       .from(table)
-      .select('*')
+      .select('id, content, context')
       .in('id', memoryIds);
     
     if (error || !memories || memories.length === 0) {

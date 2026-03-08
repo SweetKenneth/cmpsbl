@@ -34,7 +34,7 @@ export async function migrateStaleMemories(
     // ═══ Phase 1: Hot → Cold (stale hot memories) ═══
     const { data: staleHot, error: hotError } = await supabase
       .from('brain_memory_hot')
-      .select('*')
+      .select('id, content, context, value_score, access_count, created_at, last_used, source_module, category, tags, embedding, goal_ref')
       .lt('last_used', cutoffDate.toISOString())
       .order('last_used', { ascending: true })
       .limit(1000);
@@ -138,9 +138,9 @@ async function migrateGroup(
   for (const [context, group] of Object.entries(groupedByContext)) {
     try {
       if (context === 'code') {
-        // Code: preserve raw
+        // Code: preserve raw — pass sourceTable so delete targets correct tier
         for (const memory of group) {
-          const success = await migrateSingleMemory(memory, 0);
+          const success = await migrateSingleMemory(memory, 0, sourceTable);
           if (success) stats.migrated++;
           else stats.errors++;
         }
@@ -195,7 +195,8 @@ async function migrateGroup(
  */
 async function migrateSingleMemory(
   memory: any,
-  compressionLevel: number
+  compressionLevel: number,
+  sourceTable: string = 'brain_memory_hot'
 ): Promise<boolean> {
   try {
     const { error: insertError } = await supabase
@@ -221,14 +222,14 @@ async function migrateSingleMemory(
       return false;
     }
     
-    // Delete from hot
+    // Delete from source tier (not hardcoded to hot)
     const { error: deleteError } = await supabase
-      .from('brain_memory_hot')
+      .from(sourceTable as any)
       .delete()
       .eq('id', memory.id);
     
     if (deleteError) {
-      console.error('Error deleting hot memory:', deleteError);
+      console.error('Error deleting source memory:', deleteError);
       return false;
     }
     
