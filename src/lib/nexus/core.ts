@@ -7,6 +7,7 @@ import { routeToBestModel } from './router';
 import { cacheResponse, getCachedResponse } from './cache';
 import { learnFromResult } from './learning';
 import { recordMetric } from './metrics';
+import { canSpend, recordSpend } from './budgetGovernance';
 import { validateStringInput } from '@/lib/system/hardening';
 import { secureGet } from '@/lib/system/secureStorage';
 
@@ -53,12 +54,21 @@ export async function processAIRequest(request: AIRequest): Promise<AIResponse> 
       }
     }
 
+    // Pre-flight budget check — blocks requests if daily/monthly budget is exhausted
+    const budgetCheck = await canSpend(1, request.type); // 1 cent estimate for free-tier
+    if (!budgetCheck.allowed) {
+      throw new Error(`[NEXUS] Budget exceeded: ${budgetCheck.reason}`);
+    }
+
     const hardenedRequest = { ...request, prompt: safePrompt };
     const { model, execute } = await routeToBestModel(hardenedRequest);
     
     const result = await execute(safePrompt, request.context);
     
     const latency = Date.now() - startTime;
+
+    // Record spend for budget tracking (0 for free tier, actual cost for paid)
+    recordSpend(0, request.type);
     
     if (result.success) {
       // Cache and learn in parallel — both are independent post-processing

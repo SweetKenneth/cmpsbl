@@ -172,6 +172,7 @@ export function handleScanSuccess(
   state: ScanFailoverState,
   taskId: string,
   result: unknown,
+  taskDurationMs?: number,
 ): void {
   const task = state.tasks.find(t => t.id === taskId);
   if (!task) return;
@@ -181,7 +182,9 @@ export function handleScanSuccess(
   task.error = null;
 
   if (task.provider) {
-    recordProviderOutcome(task.provider, true, Date.now() - state.startedAt);
+    // FIX: Use actual task duration, not session elapsed time
+    const latency = taskDurationMs ?? 0;
+    recordProviderOutcome(task.provider, true, latency);
     recordSuccess(task.provider);
   }
 }
