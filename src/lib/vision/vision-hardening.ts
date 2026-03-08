@@ -135,10 +135,17 @@ export interface WindowBucket {
   avg: number;
 }
 
+const MAX_WINDOW_STREAMS = 100;
 const windowBuffers = new Map<string, Array<{ value: number; ts: number }>>();
 
 export function pushToWindow(stream: string, value: number): void {
-  if (!windowBuffers.has(stream)) windowBuffers.set(stream, []);
+  if (!windowBuffers.has(stream)) {
+    if (windowBuffers.size >= MAX_WINDOW_STREAMS) {
+      const oldest = windowBuffers.keys().next().value;
+      if (oldest) windowBuffers.delete(oldest);
+    }
+    windowBuffers.set(stream, []);
+  }
   const buf = windowBuffers.get(stream)!;
   buf.push({ value, ts: Date.now() });
   // Evict entries older than 1 hour
@@ -217,7 +224,10 @@ export function recordCorrelation(fromNode: string, toNode: string): void {
   const existing = correlationEdges.get(key);
   if (existing) {
     existing.count++;
-    existing.weight = Math.min(1, existing.weight + 0.05);
+    // Weight increases but with diminishing returns and natural decay based on age
+    const ageMs = Date.now() - new Date(existing.lastSeen).getTime();
+    const decayedWeight = existing.weight * Math.pow(0.5, ageMs / 3_600_000); // 1hr half-life
+    existing.weight = Math.min(1, decayedWeight + 0.05);
     existing.lastSeen = new Date().toISOString();
   } else {
     correlationEdges.set(key, {
@@ -229,8 +239,16 @@ export function recordCorrelation(fromNode: string, toNode: string): void {
     });
   }
   if (correlationEdges.size > 1000) {
-    const oldest = correlationEdges.keys().next().value;
-    if (oldest) correlationEdges.delete(oldest);
+    // Evict lowest-weight edge instead of oldest (FIFO)
+    let lowestKey = '';
+    let lowestWeight = Infinity;
+    for (const [k, e] of correlationEdges) {
+      if (e.weight < lowestWeight) {
+        lowestWeight = e.weight;
+        lowestKey = k;
+      }
+    }
+    if (lowestKey) correlationEdges.delete(lowestKey);
   }
 }
 
@@ -242,10 +260,17 @@ export function getCorrelationGraph(): CorrelationEdge[] {
 // 6. Provider Drift Detector
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_PROVIDER_LATENCY_ENTRIES = 50;
 const providerLatencyHistory = new Map<string, number[]>();
 
 export function recordProviderLatency(provider: string, latencyMs: number): void {
-  if (!providerLatencyHistory.has(provider)) providerLatencyHistory.set(provider, []);
+  if (!providerLatencyHistory.has(provider)) {
+    if (providerLatencyHistory.size >= MAX_PROVIDER_LATENCY_ENTRIES) {
+      const oldest = providerLatencyHistory.keys().next().value;
+      if (oldest) providerLatencyHistory.delete(oldest);
+    }
+    providerLatencyHistory.set(provider, []);
+  }
   const hist = providerLatencyHistory.get(provider)!;
   hist.push(latencyMs);
   if (hist.length > 500) hist.shift();
@@ -427,12 +452,17 @@ interface BudgetEntry {
   estimatedCostMicros: number; // cost in microdollars
 }
 
+const MAX_BUDGET_STREAMS = 200;
 const budgetEntries = new Map<string, BudgetEntry>();
 
 export function recordObservabilityCost(stream: string, points: number, costPerPointMicros = 1): void {
   const entry = budgetEntries.get(stream) || { stream, pointsIngested: 0, estimatedCostMicros: 0 };
   entry.pointsIngested += points;
   entry.estimatedCostMicros += points * costPerPointMicros;
+  if (!budgetEntries.has(stream) && budgetEntries.size >= MAX_BUDGET_STREAMS) {
+    const oldest = budgetEntries.keys().next().value;
+    if (oldest) budgetEntries.delete(oldest);
+  }
   budgetEntries.set(stream, entry);
 }
 
@@ -559,6 +589,7 @@ export function getAlertFatigueStats(): { totalAlerts: number; totalSuppressed: 
 // 15. Baseline Auto-Calibrator
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_BASELINE_ENTRIES = 300;
 const baselineStore = new Map<string, { values: number[]; baseline: number; lastCalibrated: string }>();
 
 export function calibrateBaseline(metric: string, newValue: number, maxHistory = 100): number {
@@ -573,6 +604,10 @@ export function calibrateBaseline(metric: string, newValue: number, maxHistory =
   entry.baseline = trimmed.length > 0 ? trimmed.reduce((a, b) => a + b, 0) / trimmed.length : newValue;
   entry.lastCalibrated = new Date().toISOString();
 
+  if (!baselineStore.has(metric) && baselineStore.size >= MAX_BASELINE_ENTRIES) {
+    const oldest = baselineStore.keys().next().value;
+    if (oldest) baselineStore.delete(oldest);
+  }
   baselineStore.set(metric, entry);
   return entry.baseline;
 }
@@ -691,6 +726,7 @@ interface ProviderSLARecord {
   breached: boolean;
 }
 
+const MAX_SLA_PROVIDER_RECORDS = 100;
 const slaRecords = new Map<string, ProviderSLARecord>();
 
 export function recordProviderCheck(provider: string, success: boolean, declaredSLA = 99.9): void {
@@ -699,6 +735,10 @@ export function recordProviderCheck(provider: string, success: boolean, declared
   if (success) rec.successChecks++;
   rec.uptimePercent = (rec.successChecks / rec.totalChecks) * 100;
   rec.breached = rec.uptimePercent < declaredSLA;
+  if (!slaRecords.has(provider) && slaRecords.size >= MAX_SLA_PROVIDER_RECORDS) {
+    const oldest = slaRecords.keys().next().value;
+    if (oldest) slaRecords.delete(oldest);
+  }
   slaRecords.set(provider, rec);
 }
 

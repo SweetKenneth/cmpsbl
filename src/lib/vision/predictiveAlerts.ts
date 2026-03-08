@@ -47,10 +47,12 @@
    quota_exhaustion: { type: 'quota_exhaustion', threshold: 90, window_minutes: 60, sensitivity: 0.9 },
  };
  
- // Active predictions
+ // Active predictions (bounded)
+ const MAX_ACTIVE_PREDICTIONS = 200;
  const activePredictions = new Map<string, PredictedAlert>();
  
- // Historical trends per metric
+ // Historical trends per metric (bounded)
+ const MAX_METRIC_TRENDS = 100;
  const metricTrends = new Map<string, TrendData>();
  
  /**
@@ -101,8 +103,12 @@
    existing.slope = calculateSlope(existing.values);
    existing.acceleration = existing.slope - previousSlope;
  
-   metricTrends.set(metric, existing);
-   return existing;
+  if (!metricTrends.has(metric) && metricTrends.size >= MAX_METRIC_TRENDS) {
+    const oldest = metricTrends.keys().next().value;
+    if (oldest) metricTrends.delete(oldest);
+  }
+  metricTrends.set(metric, existing);
+  return existing;
  }
  
  /**
@@ -166,8 +172,12 @@
          recommendations: ['Clear caches', 'Reduce batch sizes', 'Scale resources'],
          prevented: false,
        };
-       predictions.push(alert);
-       activePredictions.set(alert.id, alert);
+        predictions.push(alert);
+        if (activePredictions.size >= MAX_ACTIVE_PREDICTIONS) {
+          const oldest = activePredictions.keys().next().value;
+          if (oldest) activePredictions.delete(oldest);
+        }
+        activePredictions.set(alert.id, alert);
      }
    }
  
@@ -190,8 +200,12 @@
          recommendations: ['Check service health', 'Review recent deployments', 'Enable circuit breakers'],
          prevented: false,
        };
-       predictions.push(alert);
-       activePredictions.set(alert.id, alert);
+        predictions.push(alert);
+        if (activePredictions.size >= MAX_ACTIVE_PREDICTIONS) {
+          const oldest = activePredictions.keys().next().value;
+          if (oldest) activePredictions.delete(oldest);
+        }
+        activePredictions.set(alert.id, alert);
      }
    }
  
@@ -214,8 +228,12 @@
          recommendations: ['Add caching layer', 'Optimize queries', 'Scale horizontally'],
          prevented: false,
        };
-       predictions.push(alert);
-       activePredictions.set(alert.id, alert);
+        predictions.push(alert);
+        if (activePredictions.size >= MAX_ACTIVE_PREDICTIONS) {
+          const oldest = activePredictions.keys().next().value;
+          if (oldest) activePredictions.delete(oldest);
+        }
+        activePredictions.set(alert.id, alert);
      }
    }
  

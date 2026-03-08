@@ -534,9 +534,23 @@ function createBreach(
   actual: number
 ): SLABreach {
   const sla = slaDefinitions.get(slaId);
-  const severity = sla && actual < target * (sla.alertThresholds.critical / 100)
-    ? 'critical'
-    : 'warning';
+  
+  // Severity depends on metric direction:
+  // - availability: lower actual = worse (actual < target * critical%)
+  // - latency: higher actual = worse (actual > target * (1 + (1 - critical%)))
+  // - error_rate: higher actual = worse (actual > target * (1 + (1 - critical%)))
+  let severity: 'warning' | 'critical' = 'warning';
+  if (sla) {
+    const criticalRatio = sla.alertThresholds.critical / 100;
+    if (metric === 'availability') {
+      // For availability, critical if actual < target * criticalRatio (e.g., <89.55% when target 99.5%, critical 90%)
+      severity = actual < target * criticalRatio ? 'critical' : 'warning';
+    } else {
+      // For latency/error_rate, critical if actual exceeds target by more than (1 - criticalRatio) factor
+      const overageRatio = actual / Math.max(0.001, target);
+      severity = overageRatio > (2 - criticalRatio) ? 'critical' : 'warning';
+    }
+  }
 
   return {
     id: `breach-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
