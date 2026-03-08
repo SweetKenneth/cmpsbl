@@ -35,24 +35,34 @@ export async function compressMemories(
     const codeMemories = memories.filter(m => m.context === 'code');
     const otherMemories = memories.filter(m => m.context !== 'code');
     
+    // Process both types and merge results
+    const parts: string[] = [];
+    const sourceRefs: string[] = [];
+    let totalOriginalLength = 0;
+    
     // Code is preserved raw - no compression
     if (codeMemories.length > 0) {
       const codeSummary = codeMemories.map(m => m.content).join('\n\n---\n\n');
-      return {
-        summary: codeSummary,
-        sourceRefs: codeMemories.map(m => m.id),
-        compressionLevel: 0, // No compression for code
-      };
+      parts.push(codeSummary);
+      sourceRefs.push(...codeMemories.map(m => m.id));
+      totalOriginalLength += codeSummary.length;
     }
     
-    // Compress other content
-    const combinedContent = otherMemories.map(m => m.content).join(' ');
-    const summary = await generateSummary(combinedContent, otherMemories[0].context);
+    // Compress non-code content
+    if (otherMemories.length > 0) {
+      const combinedContent = otherMemories.map(m => m.content).join(' ');
+      totalOriginalLength += combinedContent.length;
+      const summary = await generateSummary(combinedContent, otherMemories[0].context);
+      parts.push(summary);
+      sourceRefs.push(...otherMemories.map(m => m.id));
+    }
+    
+    const finalSummary = parts.join('\n\n');
     
     return {
-      summary,
-      sourceRefs: otherMemories.map(m => m.id),
-      compressionLevel: Math.ceil(combinedContent.length / summary.length),
+      summary: finalSummary,
+      sourceRefs,
+      compressionLevel: totalOriginalLength > 0 ? Math.ceil(totalOriginalLength / finalSummary.length) : 1,
     };
   } catch (err) {
     console.error('Error compressing memories:', err);
