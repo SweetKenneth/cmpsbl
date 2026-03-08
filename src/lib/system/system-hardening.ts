@@ -23,6 +23,7 @@ interface BootSeal {
 }
 
 const bootChain: BootSeal[] = [];
+const MAX_BOOT_CHAIN = 200;
 
 export function sealBootStep(step: string, durationMs: number): BootSeal {
   const prevHash = bootChain.length > 0 ? bootChain[bootChain.length - 1].hash : 0;
@@ -34,6 +35,7 @@ export function sealBootStep(step: string, durationMs: number): BootSeal {
     timestamp: new Date().toISOString(),
   };
   bootChain.push(seal);
+  if (bootChain.length > MAX_BOOT_CHAIN) bootChain.splice(0, bootChain.length - MAX_BOOT_CHAIN);
   return seal;
 }
 
