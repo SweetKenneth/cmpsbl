@@ -93,7 +93,7 @@ export class MemoryClient {
   }
   
   private generateSessionId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
   }
 
   /** Set user context for per-user memory isolation */
