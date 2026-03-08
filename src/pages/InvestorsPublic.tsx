@@ -256,7 +256,7 @@ export default function InvestorsPublic() {
           <h2 className="text-3xl font-semibold text-center mb-12 text-foreground">Investment Highlights</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {highlights.map((highlight, index) => (
-              <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50">
+              <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                   <highlight.icon className="w-6 h-6 text-primary" />
                 </div>
