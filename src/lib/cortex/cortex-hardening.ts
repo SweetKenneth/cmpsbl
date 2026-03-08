@@ -646,11 +646,14 @@ export function getWorkflowVersions(workflowId: string): WorkflowSnapshot[] {
 export function calculateModuleAffinity(
   steps: Array<{ id: string; module: string; dependsOn?: string[] }>
 ): Map<string, string[]> {
+  // Build a Map for O(1) step lookup
+  const stepMap = new Map<string, (typeof steps)[number]>();
+  for (const s of steps) stepMap.set(s.id, s);
   const affinity = new Map<string, string[]>();
 
   for (const step of steps) {
     for (const dep of step.dependsOn ?? []) {
-      const depStep = steps.find(s => s.id === dep);
+      const depStep = stepMap.get(dep);
       if (depStep && depStep.module === step.module) {
         const group = affinity.get(step.module) ?? [];
         if (!group.includes(step.id)) group.push(step.id);

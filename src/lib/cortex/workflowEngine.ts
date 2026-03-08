@@ -253,37 +253,40 @@ function boundMap<K, V>(map: Map<K, V>, max: number): void {
  /**
   * Build execution order respecting dependencies
   */
- function buildExecutionOrder(steps: WorkflowStep[]): string[] {
-   const order: string[] = [];
-   const visited = new Set<string>();
-   const visiting = new Set<string>();
-   
-   function visit(step: WorkflowStep): void {
-     if (visited.has(step.id)) return;
-     if (visiting.has(step.id)) {
-       throw new Error(`Circular dependency detected at step ${step.id}`);
-     }
-     
-     visiting.add(step.id);
-     
-     if (step.dependsOn) {
-       for (const depId of step.dependsOn) {
-         const dep = steps.find(s => s.id === depId);
-         if (dep) visit(dep);
-       }
-     }
-     
-     visiting.delete(step.id);
-     visited.add(step.id);
-     order.push(step.id);
-   }
-   
-   for (const step of steps) {
-     visit(step);
-   }
-   
-   return order;
- }
+  function buildExecutionOrder(steps: WorkflowStep[]): string[] {
+    const order: string[] = [];
+    const visited = new Set<string>();
+    const visiting = new Set<string>();
+    // Build a Map for O(1) step lookup by ID
+    const stepMap = new Map<string, WorkflowStep>();
+    for (const s of steps) stepMap.set(s.id, s);
+    
+    function visit(step: WorkflowStep): void {
+      if (visited.has(step.id)) return;
+      if (visiting.has(step.id)) {
+        throw new Error(`Circular dependency detected at step ${step.id}`);
+      }
+      
+      visiting.add(step.id);
+      
+      if (step.dependsOn) {
+        for (const depId of step.dependsOn) {
+          const dep = stepMap.get(depId);
+          if (dep) visit(dep);
+        }
+      }
+      
+      visiting.delete(step.id);
+      visited.add(step.id);
+      order.push(step.id);
+    }
+    
+    for (const step of steps) {
+      visit(step);
+    }
+    
+    return order;
+  }
  
  /**
   * Evaluate a condition expression
