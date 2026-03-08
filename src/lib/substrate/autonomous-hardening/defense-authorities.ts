@@ -179,7 +179,7 @@ export function autoCircuitBreak(module: string, reason: string, ttlMs = 120_000
     expiresAt: Date.now() + ttlMs,
     reversed: false,
   };
-  activeActions.push(action);
+  pushAction(action);
   journalAction('DEFENSE', 'circuit_break', reason, 'success', { module, ttlMs });
   return action;
 }
