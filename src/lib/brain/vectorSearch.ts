@@ -1,6 +1,6 @@
 /**
  * CMPSBL® BRAIN — Vector Search
- * Semantic retrieval across hot & cold memory tiers
+ * Semantic retrieval across hot, warm & cold memory tiers
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -15,7 +15,7 @@ export interface SearchResult {
 }
 
 /**
- * Search across both hot and cold memory tiers
+ * Search across hot, warm and cold memory tiers
  */
 export async function searchMemory(
   query: string,
@@ -36,17 +36,16 @@ export async function searchMemory(
   const results: SearchResult[] = [];
   
   // Search hot tier first (primary)
-  const hotResults = await searchHotTier(query, {
+  const hotResults = await searchTier('brain_memory_hot', 'hot', query, {
     limit,
     minRelevance,
     context,
   });
-  
   results.push(...hotResults);
 
   // Search warm tier
   if (results.length < limit) {
-    const warmResults = await searchWarmTier(query, {
+    const warmResults = await searchTier('brain_memory_warm', 'warm', query, {
       limit: limit - results.length,
       minRelevance: minRelevance * 0.9,
       context,
@@ -58,10 +57,9 @@ export async function searchMemory(
   if (includeCold && results.length < limit) {
     const coldResults = await searchColdTier(query, {
       limit: limit - results.length,
-      minRelevance: minRelevance * 0.8, // Lower threshold for cold
+      minRelevance: minRelevance * 0.8,
       context,
     });
-    
     results.push(...coldResults);
   }
   
@@ -72,9 +70,11 @@ export async function searchMemory(
 }
 
 /**
- * Search hot memory tier
+ * Search hot or warm memory tier
  */
-async function searchHotTier(
+async function searchTier(
+  table: 'brain_memory_hot' | 'brain_memory_warm',
+  tier: 'hot' | 'warm',
   query: string,
   options: {
     limit: number;
@@ -83,11 +83,12 @@ async function searchHotTier(
   }
 ): Promise<SearchResult[]> {
   try {
+    const orderField = table === 'brain_memory_hot' ? 'last_used' : 'created_at';
     let queryBuilder = supabase
-      .from('brain_memory_hot')
+      .from(table)
       .select('id, content, context, tags, priority')
       .order('priority', { ascending: false })
-      .order('last_used', { ascending: false })
+      .order(orderField, { ascending: false })
       .limit(options.limit);
     
     if (options.context) {
@@ -97,37 +98,7 @@ async function searchHotTier(
     const { data, error } = await queryBuilder;
     
     if (error || !data) {
-      console.error('Hot tier search error:', error);
-      return [];
-}
-
-/**
- * Search warm memory tier
- */
-async function searchWarmTier(
-  query: string,
-  options: {
-    limit: number;
-    minRelevance: number;
-    context?: string;
-  }
-): Promise<SearchResult[]> {
-  try {
-    let queryBuilder = supabase
-      .from('brain_memory_warm')
-      .select('id, content, context, tags, priority')
-      .order('value_score', { ascending: false })
-      .order('created_at', { ascending: false })
-      .limit(options.limit);
-    
-    if (options.context) {
-      queryBuilder = queryBuilder.eq('context', options.context);
-    }
-    
-    const { data, error } = await queryBuilder;
-    
-    if (error || !data) {
-      console.error('Warm tier search error:', error);
+      console.error(`${tier} tier search error:`, error);
       return [];
     }
     
@@ -137,29 +108,12 @@ async function searchWarmTier(
         content: memory.content,
         context: memory.context,
         relevance: calculateRelevance(query, memory.content),
-        tier: 'warm' as const,
+        tier,
         tags: memory.tags as Record<string, any>,
       }))
       .filter(r => r.relevance >= options.minRelevance);
   } catch (err) {
-    console.error('Error searching warm tier:', err);
-    return [];
-  }
-}
-    
-    // Simple text matching - can be enhanced with vector similarity
-    return data
-      .map(memory => ({
-        id: memory.id,
-        content: memory.content,
-        context: memory.context,
-        relevance: calculateRelevance(query, memory.content),
-        tier: 'hot' as const,
-        tags: memory.tags as Record<string, any>,
-      }))
-      .filter(r => r.relevance >= options.minRelevance);
-  } catch (err) {
-    console.error('Error searching hot tier:', err);
+    console.error(`Error searching ${tier} tier:`, err);
     return [];
   }
 }
@@ -180,7 +134,7 @@ async function searchColdTier(
       .from('brain_memory_cold')
       .select('id, summary, tags')
       .order('created_at', { ascending: false })
-      .limit(options.limit * 2); // Get more to account for filtering
+      .limit(options.limit * 2);
     
     if (options.context) {
       queryBuilder = queryBuilder.contains('tags', { context: options.context });
@@ -226,7 +180,6 @@ function calculateRelevance(query: string, content: string): number {
     if (contentLower.includes(word)) {
       matchCount++;
       
-      // Bonus for exact phrase match
       if (contentLower.includes(query.toLowerCase())) {
         exactMatchBonus = 0.2;
       }
