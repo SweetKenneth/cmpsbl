@@ -432,6 +432,10 @@ export function createSurgicalPatch(params: {
     version: conversationState.version_counter,
   };
 
+  // Cap patch history
+  if (patchHistory.length >= MAX_PATCH_HISTORY) {
+    patchHistory.splice(0, patchHistory.length - Math.ceil(MAX_PATCH_HISTORY * 0.8));
+  }
   patchHistory.push(patch);
   appendMessage('encode', `[PATCH] Created ${patch.id}: ${params.operation} on ${params.file}${params.function_name ? `::${params.function_name}` : ''}`, { patchId: patch.id });
 

@@ -160,8 +160,10 @@ async function triggerSelfHeal(service: string, error: string): Promise<void> {
   };
   
   healingActions.push(action);
-  
-  // Attempt recovery based on error type
+  // Cap healing actions history
+  if (healingActions.length > MAX_HEALING_ACTIONS) {
+    healingActions.splice(0, healingActions.length - MAX_HEALING_ACTIONS);
+  }
   try {
     if (error.includes('rate limit') || error.includes('429')) {
       // Wait and retry for rate limits
