@@ -726,6 +726,7 @@ interface ProviderSLARecord {
   breached: boolean;
 }
 
+const MAX_SLA_PROVIDER_RECORDS = 100;
 const slaRecords = new Map<string, ProviderSLARecord>();
 
 export function recordProviderCheck(provider: string, success: boolean, declaredSLA = 99.9): void {
@@ -734,6 +735,10 @@ export function recordProviderCheck(provider: string, success: boolean, declared
   if (success) rec.successChecks++;
   rec.uptimePercent = (rec.successChecks / rec.totalChecks) * 100;
   rec.breached = rec.uptimePercent < declaredSLA;
+  if (!slaRecords.has(provider) && slaRecords.size >= MAX_SLA_PROVIDER_RECORDS) {
+    const oldest = slaRecords.keys().next().value;
+    if (oldest) slaRecords.delete(oldest);
+  }
   slaRecords.set(provider, rec);
 }
 

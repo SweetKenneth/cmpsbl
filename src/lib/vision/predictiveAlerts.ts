@@ -228,8 +228,12 @@
          recommendations: ['Add caching layer', 'Optimize queries', 'Scale horizontally'],
          prevented: false,
        };
-       predictions.push(alert);
-       activePredictions.set(alert.id, alert);
+        predictions.push(alert);
+        if (activePredictions.size >= MAX_ACTIVE_PREDICTIONS) {
+          const oldest = activePredictions.keys().next().value;
+          if (oldest) activePredictions.delete(oldest);
+        }
+        activePredictions.set(alert.id, alert);
      }
    }
  
