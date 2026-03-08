@@ -136,7 +136,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Job Queue */}
-        <Card className="lg:col-span-2 border-orange-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="lg:col-span-2 border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Clock className="w-4 h-4 text-orange-400" />
@@ -157,8 +157,8 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
                       key={job.id}
                       onClick={() => setSelectedJob(job)}
                       className={cn(
-                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all",
-                        "bg-white/5 hover:bg-white/10 border border-transparent",
+                        "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300",
+                        "bg-white/5 hover:bg-white/10 border border-transparent hover:border-primary/15",
                         selectedJob?.id === job.id && "border-orange-500/40 bg-orange-500/10"
                       )}
                     >
@@ -190,7 +190,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
         {/* System State + Quick Actions */}
         <div className="space-y-4">
-          <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl">
+          <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-orange-400" />
@@ -198,13 +198,13 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
                 <span className="text-xs text-muted-foreground">Kernel</span>
                 <Badge variant="outline" className={cn("text-[10px]", stateColor(state?.state || 'unknown'))}>
                   {state?.state || 'unknown'}
                 </Badge>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
                 <span className="text-xs text-muted-foreground">Last Heartbeat</span>
                 <span className="font-mono text-[10px] text-foreground">
                   {state?.last_heartbeat 

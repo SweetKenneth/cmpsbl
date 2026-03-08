@@ -361,7 +361,7 @@ export function AccountTab() {
                   { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-orange-400' },
                   { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-cyan-400' },
                 ].map(stat => (
-                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center">
+                  <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                     <stat.icon className={cn("w-4 h-4 mx-auto", stat.color)} />
                     <p className="text-lg font-bold text-foreground">
                       <AnimatedCounter value={stat.value} duration={800} />
@@ -404,7 +404,7 @@ export function AccountTab() {
               >
                 <Link to={link.href} className="block group">
                   <Card className={cn(
-                    "h-full border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5",
+                    "h-full border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/20",
                     "bg-gradient-to-br",
                     link.color
                   )}>
@@ -447,12 +447,12 @@ export function AccountTab() {
                 { label: 'Email', value: user?.email?.split('@')[0] ?? '—', icon: Mail },
                 { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—', icon: Calendar },
               ].map(stat => (
-                <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1">
+                <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1 transition-all duration-300 hover:border-primary/15 hover:bg-muted/40">
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 font-mono uppercase tracking-wider">
                     <stat.icon className="w-3 h-3" />
                     {stat.label}
                   </div>
-                  <p className="text-sm font-semibold text-foreground truncate">{stat.value}</p>
+                  <p className="text-sm font-semibold font-mono text-foreground truncate">{stat.value}</p>
                 </div>
               ))}
             </div>

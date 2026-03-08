@@ -95,13 +95,13 @@ export function CCRTab() {
           { label: 'Recall Rate', value: `${memory.recallRate}%`, icon: TrendingUp, color: 'text-emerald-500' },
           { label: 'Contradictions', value: memory.contradictions.toString(), icon: Zap, color: memory.contradictions > 0 ? 'text-amber-500' : 'text-emerald-500' },
         ].map(stat => (
-          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+          <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
                 <stat.icon className={cn("w-3.5 h-3.5", stat.color)} />
                 <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-mono uppercase truncate">{stat.label}</span>
               </div>
-              <span className="text-lg sm:text-xl font-bold font-mono">{stat.value}</span>
+              <span className="text-lg sm:text-xl font-bold font-mono tabular-nums">{stat.value}</span>
             </CardContent>
           </Card>
         ))}
@@ -137,13 +137,13 @@ export function CCRTab() {
                 { tier: 'Archive', count: memory.archive, color: 'bg-slate-500', desc: 'Permanent — never deleted', pct: totalMemories > 0 ? (memory.archive / totalMemories) * 100 : 0 },
               ].map((t, i) => (
                 <motion.div key={t.tier} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
-                  className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                  className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <div className={cn("w-2.5 h-2.5 rounded-full", t.color)} />
                       <span className="text-xs sm:text-sm font-medium">{t.tier}</span>
                     </div>
-                    <span className="text-sm font-bold font-mono">{t.count.toLocaleString()}</span>
+                    <span className="text-sm font-bold font-mono tabular-nums">{t.count.toLocaleString()}</span>
                   </div>
                   <p className="text-[9px] sm:text-[10px] text-muted-foreground/50 mb-1.5">{t.desc}</p>
                   <Progress value={t.pct} className="h-1" />
@@ -153,17 +153,17 @@ export function CCRTab() {
           </Card>
 
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 text-center">
                 <BarChart3 className="w-4 h-4 mx-auto mb-1.5 text-cyan-500" />
-                <p className="text-lg font-bold font-mono">{memory.totalRecalls.toLocaleString()}</p>
+                <p className="text-lg font-bold font-mono tabular-nums">{memory.totalRecalls.toLocaleString()}</p>
                 <p className="text-[9px] text-muted-foreground/50 font-mono">TOTAL RECALLS</p>
               </CardContent>
             </Card>
-            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 text-center">
                 <Archive className="w-4 h-4 mx-auto mb-1.5 text-violet-500" />
-                <p className="text-lg font-bold font-mono">{memory.contradictions}</p>
+                <p className="text-lg font-bold font-mono tabular-nums">{memory.contradictions}</p>
                 <p className="text-[9px] text-muted-foreground/50 font-mono">CONTRADICTIONS</p>
               </CardContent>
             </Card>
@@ -178,10 +178,10 @@ export function CCRTab() {
               { label: 'Applied', value: dream.heuristics, icon: Zap, color: 'text-emerald-500' },
               { label: 'Avg Confidence', value: `${dream.avgConfidence}%`, icon: TrendingUp, color: 'text-cyan-500' },
             ].map(stat => (
-              <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+              <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                 <CardContent className="p-3 text-center">
                   <stat.icon className={cn("w-4 h-4 mx-auto mb-1.5", stat.color)} />
-                  <p className="text-lg font-bold font-mono">{stat.value}</p>
+                  <p className="text-lg font-bold font-mono tabular-nums">{stat.value}</p>
                   <p className="text-[9px] text-muted-foreground/50 font-mono uppercase">{stat.label}</p>
                 </CardContent>
               </Card>
@@ -200,7 +200,7 @@ export function CCRTab() {
                 <div className="space-y-2">
                   {dream.recentDreams.map((d: any, i: number) => (
                     <motion.div key={d.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
-                      className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                      className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <p className="text-xs sm:text-sm font-medium truncate">{d.title}</p>

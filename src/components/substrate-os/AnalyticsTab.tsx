@@ -353,7 +353,7 @@ export function AnalyticsTab() {
               return (
                 <motion.div
                   key={card.label}
-                  className={cn("p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl", card.border, card.bg)}
+                  className={cn("p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm", card.border, card.bg)}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
@@ -364,7 +364,7 @@ export function AnalyticsTab() {
                     </div>
                     <span className="text-[10px] text-muted-foreground font-mono uppercase">{card.label}</span>
                   </div>
-                  <p className="text-2xl font-bold font-mono text-foreground">{card.value}</p>
+                  <p className="text-2xl font-bold font-mono tabular-nums text-foreground">{card.value}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">{card.sub}</p>
                 </motion.div>
               );
@@ -374,7 +374,7 @@ export function AnalyticsTab() {
           {/* Immune & ENCODE Telemetry */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <motion.div
-              className="p-5 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-500/5 backdrop-blur-xl"
+              className="p-5 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-500/5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -385,12 +385,12 @@ export function AnalyticsTab() {
                 </div>
                 <span className="text-[10px] text-muted-foreground font-mono uppercase">Immune Runs</span>
               </div>
-              <p className="text-2xl font-bold font-mono text-foreground">{fmt(data.immuneRuns)}</p>
+              <p className="text-2xl font-bold font-mono tabular-nums text-foreground">{fmt(data.immuneRuns)}</p>
               <p className="text-[10px] text-muted-foreground mt-1">Last 6h probes</p>
             </motion.div>
 
             <motion.div
-              className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 backdrop-blur-xl"
+              className="p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
