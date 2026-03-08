@@ -169,6 +169,6 @@ registerCapability('defense', 'quarantine', 85);
 registerCapability('modernizer', 'legacy_migration', 85);
 registerCapability('modernizer', 'api_versioning', 80);
 
-// ─── CLM-Priority Capabilities (38 nodes × 2 = 76 capabilities) ────────────
+// ─── CLM-Priority Capabilities (40 nodes × 2 = 80 capabilities) ────────────
 import { registerCLMPriorities } from './clm/node-priorities';
 registerCLMPriorities(registerCapability);
