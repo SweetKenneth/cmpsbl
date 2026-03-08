@@ -8,9 +8,11 @@
  * - Fleet-level RPM/RPD governance at 80% safety margin
  * - Task-type → model affinity mapping
  * - Automatic provider rotation on quota exhaustion
+ * - Circuit breaker integration for provider isolation
  */
 
 import type { AIRequest } from './core';
+import { isProviderAvailable, recordSuccess, recordFailure } from './circuitBreaker';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
