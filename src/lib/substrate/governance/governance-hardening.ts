@@ -242,12 +242,6 @@ function capMap<K, V>(map: Map<K, V>, max: number): void {
   }
 }
 
-let lastChainHash = '0'.repeat(64);
-
-/** Trim an array to a max length, keeping the most recent entries */
-function capArray<T>(arr: T[], max: number): void {
-  if (arr.length > max) arr.splice(0, arr.length - max);
-}
 
 // ─── #1 Policy Version Control ────────────────────────────────────────────────
 
