@@ -6,8 +6,13 @@
 import { SUBSTRATE_MODULES, type SubstrateModuleName, getModuleDependencies, markModuleBooted, markModuleFailed } from './index';
 import { withTimeout } from '@/lib/system/hardening';
 
-// Precomputed reverse dependency map — built once at module load
-const DEPENDENTS_MAP: ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleName[]> = (() => {
+// Lazy-initialized reverse dependency map — avoids circular-import TDZ crash
+// (moduleLifecycle.ts imports SUBSTRATE_MODULES from ./index, which re-exports
+// from moduleLifecycle — at module-evaluation time the array isn't ready yet).
+let _dependentsMap: ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleName[]> | null = null;
+
+function getDependentsMap(): ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleName[]> {
+  if (_dependentsMap) return _dependentsMap;
   const map = new Map<SubstrateModuleName, SubstrateModuleName[]>();
   for (const m of SUBSTRATE_MODULES) map.set(m, []);
   for (const m of SUBSTRATE_MODULES) {
@@ -15,8 +20,9 @@ const DEPENDENTS_MAP: ReadonlyMap<SubstrateModuleName, readonly SubstrateModuleN
       map.get(dep)?.push(m);
     }
   }
-  return map;
-})();
+  _dependentsMap = map;
+  return _dependentsMap;
+}
 
 // ============ Types ============
 
