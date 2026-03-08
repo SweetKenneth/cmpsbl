@@ -1,5 +1,5 @@
 /**
- * CMPSBL® RELAY Module — Outbound Effects Hub
+ * RELAY — Outbound Effects Hub
  * Webhooks, notifications, retry queues, delivery guarantees
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
