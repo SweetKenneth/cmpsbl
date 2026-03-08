@@ -20,9 +20,10 @@ const MAX_STRING_LEN = 5000;
 const MAX_ARRAY_LEN = 1000;
 
 /**
- * Minimum expected keys for pilot executor inputs.
+ * Minimum expected keys for executor inputs.
  * If an input is missing ALL of these, DEFAULT_SHAPE fills them in.
- * v2: Expanded to cover all 13 pilot executors across 4 modules.
+ * Covers all module categories: INCLUSIVE, COGNITIVE, OPERATIONAL,
+ * ORCHESTRATOR, INFRASTRUCTURE, and INTELLIGENCE.
  */
 const EXPECTED_KEYS = [
   // INCLUSIVE

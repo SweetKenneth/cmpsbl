@@ -1,7 +1,7 @@
 /**
- * Executor Immune Pilot — Repair Registry
- * Scope-safe repairs for INCLUSIVE pilot executors
- * 
+ * IMMUNITY — Repair Registry
+ * Scope-safe repairs for all executor categories
+ * (INCLUSIVE, COGNITIVE, OPERATIONAL, ORCHESTRATOR, INFRASTRUCTURE, INTELLIGENCE)
  * HARD RULE: If repair would require calling other modules
  * or modifying DB schema => return null and escalate.
  */

@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Escalation Queue
+ * IMMUNITY — Escalation Queue
  * Persists escalations to DB for ENCODE to claim later
  */
 
