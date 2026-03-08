@@ -313,7 +313,7 @@ function extractCorrelationInsights(patterns: DreamPatternInput[]): DreamInsight
         const [module1, module2] = pair.split(':');
         
         insights.push({
-          id: `insight-corr-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+          id: `insight-corr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           type: 'correlation',
           title: `Strong correlation: ${module1} ↔ ${module2}`,
           description: `${count} patterns show correlation between these modules`,
