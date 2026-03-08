@@ -81,7 +81,7 @@ function ensureInitialized(): void {
       id,
       health: 100,
       breakerState: 'closed',
-      dependencies: (DEPENDENCY_MAP[id] || []) as SubstrateModuleName[],
+      dependencies: getModuleDependencies(id),
       telemetryChannel: `telemetry.${id}`,
       lastHeartbeat: Date.now(),
       opsCount: 0,
