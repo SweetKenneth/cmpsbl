@@ -281,7 +281,7 @@ export default function ComposableCognitives() {
               { tier: 'professional' as const, powers: '5', agents: '9', highlight: 'Full stack' },
               { tier: 'elite' as const, powers: '5', agents: '3', highlight: 'Maximum power' },
             ]).map(({ tier, powers, agents, highlight }) => (
-              <div key={tier} className="rounded-xl border border-border/50 bg-card/50 p-4 text-center space-y-2">
+              <div key={tier} className="rounded-xl border border-border/50 bg-card/50 p-4 text-center space-y-2 hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                 <div className={cn("w-3 h-3 rounded-full mx-auto", TIER_ACCENT[tier])} />
                 <div className={cn("text-sm font-black", TIER_CONFIG[tier].color)}>{TIER_CONFIG[tier].label}</div>
                 <div className="text-2xl font-black">{TIER_CONFIG[tier].price}</div>
