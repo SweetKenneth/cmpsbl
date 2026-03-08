@@ -123,6 +123,7 @@ interface KeyRotationRecord {
 }
 
 const keyRotations = new Map<string, KeyRotationRecord>();
+const MAX_KEY_ROTATIONS = 500;
 
 export function registerApiKey(keyPrefix: string, maxAgeDays = 90): void {
   const now = Date.now();
@@ -133,6 +134,7 @@ export function registerApiKey(keyPrefix: string, maxAgeDays = 90): void {
     lastRotatedAt: now,
     rotationCount: 0,
   });
+  boundMap(keyRotations, MAX_KEY_ROTATIONS);
 }
 
 export function checkKeyRotation(keyPrefix: string): {
