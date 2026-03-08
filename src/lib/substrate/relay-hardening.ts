@@ -53,7 +53,12 @@ const contentHashes = new Set<string>();
 export function isDuplicatePayload(hash: string): boolean {
   if (contentHashes.has(hash)) return true;
   contentHashes.add(hash);
-  if (contentHashes.size > 10000) contentHashes.clear();
+  // Evict oldest half instead of clearing all — prevents brief dedup failure window
+  if (contentHashes.size > 10000) {
+    const arr = Array.from(contentHashes);
+    contentHashes.clear();
+    for (let i = arr.length - 5000; i < arr.length; i++) contentHashes.add(arr[i]);
+  }
   return false;
 }
 export function getDedupStats() { return { trackedHashes: contentHashes.size }; }
