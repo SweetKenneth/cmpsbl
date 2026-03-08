@@ -156,7 +156,7 @@ function extractOptimizationInsights(patterns: DreamPatternInput[]): DreamInsigh
   for (const pattern of performancePatterns) {
     if ((pattern.frequency || 0) >= 3) {
       insights.push({
-        id: `insight-opt-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        id: `insight-opt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         type: 'optimization',
         title: `Performance pattern detected: ${pattern.name}`,
         description: `Recurring performance pattern observed ${pattern.frequency} times across ${pattern.modules.join(', ')}`,
