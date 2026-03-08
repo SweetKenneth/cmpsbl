@@ -176,7 +176,7 @@ export async function runShadowProbe(
     shadowState.bleed_into_health ? 'synthetic_shadow_event' : 'synthetic_test',
     {
       detail: `${summary.success} ok, ${summary.repaired} repaired, ${summary.escalated} escalated, ${summary.failedSafe} safe-failed`,
-      score_override: totalFails > 0 ? 85 : 100,
+      score_override: summary.escalated > 0 ? 85 : 100,
     }
   );
 

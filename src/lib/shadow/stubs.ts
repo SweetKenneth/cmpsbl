@@ -157,7 +157,7 @@ function createStubExecutor(executorName: string) {
 let stubsRegistered = false;
 
 /**
- * Register shadow stub executors for all 5 pilot synergies.
+ * Register shadow stub executors for all pilot executors.
  * Safe to call multiple times — only registers once.
  */
 export function registerShadowStubs(): void {

@@ -399,7 +399,7 @@ export async function runShadowBuild(executorName: string): Promise<ShadowBuildR
 export async function runAllShadowBuilds(): Promise<ShadowBuildReport[]> {
   if (!(await isShadowMeshEnabled())) return [];
   
-  const executors = PILOT_EXECUTORS.slice(0, 35); // Focus on original pilots for build training
+  const executors = [...PILOT_EXECUTORS]; // Build-train all registered pilot executors
   log.info('shadow', `Shadow build sweep: ${executors.length} executors`);
 
   const reports: ShadowBuildReport[] = [];
