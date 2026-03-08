@@ -503,6 +503,23 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
       content: generateLicenseHTML(ctx.name),
     },
     {
+      filename: 'PIPELINE-DETAILS.html',
+      content: generatePipelineDetailsHTML({
+        name: ctx.name,
+        description: ctx.description,
+        category: ctx.category,
+        score: ctx.cjpi,
+        tier: getTierFromScore(ctx.cjpi),
+        systemChain: ctx.moduleChain,
+        exportLanguages: ctx.moduleChain,
+        source: 'Memory Stream Export',
+      }),
+    },
+    {
+      filename: 'README.html',
+      content: generateReadmeHTML(ctx.name, ctx.description, ctx.moduleChain),
+    },
+    {
       filename: 'Makefile',
       content: `# CMPSBL® Crown Jewel — ${ctx.name}
 # Auto-generated build system
