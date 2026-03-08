@@ -459,6 +459,10 @@ export function recordObservabilityCost(stream: string, points: number, costPerP
   const entry = budgetEntries.get(stream) || { stream, pointsIngested: 0, estimatedCostMicros: 0 };
   entry.pointsIngested += points;
   entry.estimatedCostMicros += points * costPerPointMicros;
+  if (!budgetEntries.has(stream) && budgetEntries.size >= MAX_BUDGET_STREAMS) {
+    const oldest = budgetEntries.keys().next().value;
+    if (oldest) budgetEntries.delete(oldest);
+  }
   budgetEntries.set(stream, entry);
 }
 
