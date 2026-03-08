@@ -97,7 +97,7 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     // ── Free tier ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
     { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
-    { id: 'operations', label: 'Operations', icon: Layers, group: 'Cognitive', description: 'DECODE · VISION · ECONOMY + 5' },
+    { id: 'operations', label: 'Operations', icon: Layers, group: 'Govern', description: 'DECODE · VISION · ECONOMY + 5', governorOnly: true, minTier: 'governor' },
     // ── Creator tier ──
     { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
     { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
