@@ -48,11 +48,11 @@ export async function getSystemLoad(): Promise<SystemLoadMetrics> {
       : 0;
     
     // Estimate memory pressure from tier stats
-    const { data: hotMemories } = await supabase
+    const { count: hotCount } = await supabase
       .from('brain_memory_hot')
-      .select('id', { count: 'exact', head: true });
+      .select('*', { count: 'exact', head: true });
     
-    const memoryPressure = Math.min(100, ((hotMemories as any)?.length || 0) / 50);
+    const memoryPressure = Math.min(100, (hotCount || 0) / 50);
     
     // Calculate if it's low activity period
     const hourOfDay = now.getHours();
@@ -342,7 +342,8 @@ export async function getDreamScheduleStatus(): Promise<{
   optimalWindow: { start: number; end: number };
 }> {
   try {
-    const [pendingResult, completedResult, window] = await Promise.all([
+    // Parallelize all 4 queries
+    const [pendingResult, completedResult, window, nextDreamResult] = await Promise.all([
       supabase
         .from('brain_actions_queue')
         .select('*', { count: 'exact', head: true })
@@ -354,21 +355,20 @@ export async function getDreamScheduleStatus(): Promise<{
         .like('action_type', 'dream_%')
         .eq('status', 'completed'),
       findOptimalDreamWindow(),
+      supabase
+        .from('brain_actions_queue')
+        .select('scheduled_at')
+        .like('action_type', 'dream_%')
+        .eq('status', 'pending')
+        .order('scheduled_at', { ascending: true })
+        .limit(1)
+        .single(),
     ]);
     
-    const { data: nextDream } = await supabase
-      .from('brain_actions_queue')
-      .select('scheduled_at')
-      .like('action_type', 'dream_%')
-      .eq('status', 'pending')
-      .order('scheduled_at', { ascending: true })
-      .limit(1)
-      .single();
-    
     return {
-      pending: (pendingResult as any).count || 0,
-      completed: (completedResult as any).count || 0,
-      nextScheduled: nextDream?.scheduled_at || null,
+      pending: pendingResult.count || 0,
+      completed: completedResult.count || 0,
+      nextScheduled: nextDreamResult.data?.scheduled_at || null,
       optimalWindow: { start: window.startHour, end: window.endHour },
     };
   } catch (error) {

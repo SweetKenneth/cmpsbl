@@ -72,9 +72,11 @@ export interface KnowledgeFragment {
   lastReinforced: string;
 }
 
-// In-memory insight store
+// In-memory insight store (capped to prevent unbounded growth)
 const insightStore = new Map<string, DreamInsight>();
+const MAX_INSIGHT_STORE = 500;
 const knowledgeGraph = new Map<string, KnowledgeFragment>();
+const MAX_KNOWLEDGE_GRAPH = 500;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // INSIGHT EXTRACTION
@@ -106,16 +108,20 @@ export async function extractInsights(
   const correlations = extractCorrelationInsights(patterns);
   insights.push(...correlations);
 
-  // Store insights
+  // Store insights (with cap enforcement)
   for (const insight of insights) {
+    if (insightStore.size >= MAX_INSIGHT_STORE) {
+      const oldest = insightStore.keys().next().value;
+      if (oldest) insightStore.delete(oldest);
+    }
     insightStore.set(insight.id, insight);
   }
 
   // Calculate synthesis score based on quality and coverage
   const synthesisScore = calculateSynthesisScore(insights);
 
-  // Log synthesis event
-  await supabase.from('brain_events').insert({
+  // Log synthesis event (fire-and-forget)
+  supabase.from('brain_events').insert({
     module: 'dream',
     event_type: 'insights.synthesized',
     data: {
@@ -125,7 +131,7 @@ export async function extractInsights(
       types: insights.map(i => i.type),
     } as unknown as Record<string, never>,
     outcome: 'success',
-  });
+  }).then(({ error }) => { if (error) console.error('Failed to log synthesis event:', error); });
 
   return {
     dreamCycleId,
@@ -360,6 +366,10 @@ export function synthesizeKnowledge(insights: DreamInsight[]): KnowledgeFragment
       };
 
       fragments.push(fragment);
+      if (knowledgeGraph.size >= MAX_KNOWLEDGE_GRAPH) {
+        const oldest = knowledgeGraph.keys().next().value;
+        if (oldest) knowledgeGraph.delete(oldest);
+      }
       knowledgeGraph.set(fragment.id, fragment);
     }
   }
@@ -501,11 +511,13 @@ export function getInsightStats(): {
   const byType: Record<string, number> = {};
   const byStatus: Record<string, number> = {};
   let totalConfidence = 0;
+  let pendingCount = 0;
 
   for (const insight of insights) {
     byType[insight.type] = (byType[insight.type] || 0) + 1;
     byStatus[insight.status] = (byStatus[insight.status] || 0) + 1;
     totalConfidence += insight.confidence;
+    if (insight.status === 'pending') pendingCount++;
   }
 
   return {
@@ -513,7 +525,7 @@ export function getInsightStats(): {
     byType,
     byStatus,
     avgConfidence: insights.length > 0 ? totalConfidence / insights.length : 0,
-    pendingCount: insights.filter(i => i.status === 'pending').length,
+    pendingCount,
   };
 }
 

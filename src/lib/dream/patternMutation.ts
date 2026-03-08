@@ -41,8 +41,10 @@
  };
  
  // Pattern cache
- const patternCache = new Map<string, Pattern>();
- const mutationHistory: MutatedPattern[] = [];
+  const patternCache = new Map<string, Pattern>();
+  const MAX_PATTERN_CACHE = 500;
+  const mutationHistory: MutatedPattern[] = [];
+  const MAX_MUTATION_HISTORY = 200;
  
  /**
   * Mutate patterns to generate novel ideas
@@ -105,8 +107,11 @@
      }
    }
    
-   // Store mutations
-   mutationHistory.push(...mutations);
+    // Store mutations (capped)
+    mutationHistory.push(...mutations);
+    if (mutationHistory.length > MAX_MUTATION_HISTORY) {
+      mutationHistory.splice(0, mutationHistory.length - MAX_MUTATION_HISTORY);
+    }
    
    // Log mutation event
    if (mutations.length > 0) {
@@ -156,13 +161,17 @@
          last_used: new Date().toISOString(),
        };
        
-       patterns.push(pattern);
-       patternCache.set(pattern.id, pattern);
-     }
-   }
-   
-   return patterns;
- }
+        patterns.push(pattern);
+        if (patternCache.size >= MAX_PATTERN_CACHE) {
+          const oldest = patternCache.keys().next().value;
+          if (oldest) patternCache.delete(oldest);
+        }
+        patternCache.set(pattern.id, pattern);
+      }
+    }
+    
+    return patterns;
+  }
  
  /**
   * Combine two pattern contents
@@ -211,26 +220,26 @@
  /**
   * Calculate novelty score for a mutation
   */
- function calculateNovelty(mutation: string, existingPatterns: Pattern[]): number {
-   // Calculate how different this is from existing patterns
-   const mutationWords = new Set(mutation.toLowerCase().split(/\s+/));
-   
-   let minSimilarity = 1.0;
-   
-   for (const pattern of existingPatterns) {
-     const patternWords = new Set(pattern.content.toLowerCase().split(/\s+/));
-     
-     // Jaccard similarity
-     const intersection = new Set([...mutationWords].filter(w => patternWords.has(w)));
-     const union = new Set([...mutationWords, ...patternWords]);
-     const similarity = intersection.size / union.size;
-     
-     minSimilarity = Math.min(minSimilarity, similarity);
-   }
-   
-   // Novelty is inverse of max similarity
-   return 1 - minSimilarity;
- }
+  function calculateNovelty(mutation: string, existingPatterns: Pattern[]): number {
+    // Calculate how different this is from existing patterns
+    const mutationWords = new Set(mutation.toLowerCase().split(/\s+/));
+    
+    let maxSimilarity = 0;
+    
+    for (const pattern of existingPatterns) {
+      const patternWords = new Set(pattern.content.toLowerCase().split(/\s+/));
+      
+      // Jaccard similarity
+      const intersection = new Set([...mutationWords].filter(w => patternWords.has(w)));
+      const union = new Set([...mutationWords, ...patternWords]);
+      const similarity = union.size > 0 ? intersection.size / union.size : 0;
+      
+      if (similarity > maxSimilarity) maxSimilarity = similarity;
+    }
+    
+    // Novelty is inverse of max similarity (most similar = least novel)
+    return 1 - maxSimilarity;
+  }
  
  /**
   * Get mutation history
