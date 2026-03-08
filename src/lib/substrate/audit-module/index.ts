@@ -179,10 +179,24 @@ export function initAudit(): void {
     moduleEngine = activateModuleEngine('audit', '10.5.1');
     state.initialized = true;
     state.modulesMonitored = [...ALL_MONITORED_MODULES];
+
+    // Register hardening callbacks to avoid circular require()
+    registerChainVerifier(verifyAuditChain);
+    registerChainAccessors(
+      (index: number) => auditLog[index]?.hash ?? null,
+      () => auditLog.length,
+    );
+
     emitSucceeded('audit', 'init', { monitored: state.modulesMonitored.length, engineId: moduleEngine.instance.id });
   } catch (err) {
     state.initialized = true;
     state.modulesMonitored = [...ALL_MONITORED_MODULES];
+    // Still register verifier even on partial init
+    registerChainVerifier(verifyAuditChain);
+    registerChainAccessors(
+      (index: number) => auditLog[index]?.hash ?? null,
+      () => auditLog.length,
+    );
     emitFailed('audit', 'init', err instanceof Error ? err.message : String(err));
   }
 }
