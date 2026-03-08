@@ -296,9 +296,11 @@ export async function broadcastEvent(event: {
     
     if (error) throw error;
     
-    return { success: true, delivered: 14, failed: 0 };
+    const moduleCount = Object.keys(MODULE_REGISTRY).length;
+    return { success: true, delivered: moduleCount, failed: 0 };
   } catch {
-    return { success: false, delivered: 0, failed: 14 };
+    const moduleCount = Object.keys(MODULE_REGISTRY).length;
+    return { success: false, delivered: 0, failed: moduleCount };
   }
 }
 
