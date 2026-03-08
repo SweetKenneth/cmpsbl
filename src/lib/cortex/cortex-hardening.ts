@@ -358,6 +358,10 @@ export function saveCheckpoint(
     sequenceNumber: (existing?.sequenceNumber ?? 0) + 1,
   };
   checkpoints.set(executionId, checkpoint);
+  if (checkpoints.size > MAX_CHECKPOINTS) {
+    const first = checkpoints.keys().next().value;
+    if (first !== undefined) checkpoints.delete(first);
+  }
   return checkpoint;
 }
 
