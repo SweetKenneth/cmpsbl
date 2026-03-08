@@ -434,7 +434,7 @@ export default function ComposableCognitives() {
                 Browse 20 Engines
               </a>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button asChild variant="outline" size="lg" className="gap-2 hover:border-primary/30 transition-colors">
               <a href="/cmpsbl-engine">
                 <Star className="w-4 h-4" />
                 ARCHITECT Engine — $999/yr
