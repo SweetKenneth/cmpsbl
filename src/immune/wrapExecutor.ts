@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Wrapper (v3.0)
+ * IMMUNITY — Executor Wrapper
  * 
  * v3.0 Fix: Archetype-gated repair. Garbage inputs (empty_shell, shape_alien,
  * injection_attempt, oversized) now safe-fail IMMEDIATELY without any repair
@@ -371,7 +371,7 @@ export function wrapExecutor(
       // ── POSTCHECK ──
       const post = postcheck(result);
       if (!post.valid) {
-        incrementMetric('preflightFailures');
+        incrementMetric('preflightFailures'); // Reused counter — covers both pre/postcheck failures
 
         const irResult = await tryIntelligentRepairAndRetry(input as Record<string, unknown>);
         if (irResult) return irResult;

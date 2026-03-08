@@ -1,5 +1,5 @@
 /**
- * Immune — Central Shared Rule Registry (v1.0)
+ * IMMUNITY — Central Shared Rule Registry
  * 
  * A single source of truth for learned repair rules that ALL executors
  * can read from and contribute to. When one executor discovers a successful

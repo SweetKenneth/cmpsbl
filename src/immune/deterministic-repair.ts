@@ -1,10 +1,9 @@
 /**
- * Shadow Mesh Phase 2 — Deterministic Repair Module
- * Non-AI, in-scope transformations for pilot executor inputs.
+ * IMMUNITY — Deterministic Repair Module
+ * Non-AI, in-scope transformations for all executor inputs.
  *
  * SAFETY:
  *   - Only used inside the immune wrapper (wrapExecutor.ts)
- *   - Only runs for the 5 pilot executors
  *   - No cross-module writes, no filesystem writes, no recursion
  */
 
@@ -21,9 +20,10 @@ const MAX_STRING_LEN = 5000;
 const MAX_ARRAY_LEN = 1000;
 
 /**
- * Minimum expected keys for pilot executor inputs.
+ * Minimum expected keys for executor inputs.
  * If an input is missing ALL of these, DEFAULT_SHAPE fills them in.
- * v2: Expanded to cover all 13 pilot executors across 4 modules.
+ * Covers all module categories: INCLUSIVE, COGNITIVE, OPERATIONAL,
+ * ORCHESTRATOR, INFRASTRUCTURE, and INTELLIGENCE.
  */
 const EXPECTED_KEYS = [
   // INCLUSIVE

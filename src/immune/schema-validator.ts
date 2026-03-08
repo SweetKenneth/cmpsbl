@@ -1,10 +1,8 @@
 /**
- * Improvement #5: Schema-Driven Validation
- * Improvement #6: Input Archetypes (malformed input clustering)
+ * IMMUNITY — Schema-Driven Validation & Input Archetypes
  * 
- * Per-executor input schemas replace the generic isInputWellFormed check.
- * Each pilot executor declares its expected shape, and validation produces
- * a structured report of what's wrong — enabling smarter repair selection.
+ * Per-executor input schemas with structured validation reports
+ * and archetype classification for targeted repair selection.
  */
 
 export interface FieldSchema {

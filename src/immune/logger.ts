@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Logger
+ * IMMUNITY — Logger
  * Writes immune events to the system log with secret redaction
  */
 

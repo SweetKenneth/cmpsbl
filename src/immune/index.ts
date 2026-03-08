@@ -1,7 +1,7 @@
 /**
- * Executor Immune Pilot — Module Exports (v2.0)
- * Immune wrapper layer with intelligent repair, schema validation,
- * outcome tracking, and escalation pattern mining.
+ * IMMUNITY — Module Exports
+ * Universal immune wrapper layer with intelligent repair, schema validation,
+ * outcome tracking, escalation pattern mining, and cross-executor learning.
  */
 
 // Types

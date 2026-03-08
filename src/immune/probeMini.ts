@@ -1,5 +1,5 @@
 /**
- * Executor Immune Pilot — Probe Mini Test Harness
+ * IMMUNITY — Probe Mini Test Harness
  * Generates adversarial inputs and runs them through wrapped executors
  *
  * Dev-only: immune.probeMini(executorName, count)

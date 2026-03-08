@@ -1,8 +1,6 @@
 /**
- * Executor Immune Pilot — Type Definitions
- * Thin immune wrapper for executor defense, repair, and escalation
- *
- * Gated behind feature flag: EXECUTOR_IMMUNE_PILOT
+ * IMMUNITY — Type Definitions
+ * Immune wrapper types for executor defense, repair, and escalation
  */
 
 export type ImmuneSeverity = 'low' | 'medium' | 'high' | 'critical';
