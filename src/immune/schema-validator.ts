@@ -397,7 +397,8 @@ const SCHEMAS: Record<string, ExecutorSchema> = {
   },
 };
 
-const SQL_INJECT_RE = /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b\s)/i;
+/** Matches SQL keywords followed by whitespace or special chars — catches "SELECT*", "DROP\nTABLE", etc. */
+const SQL_INJECT_RE = /\b(SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|UNION|CREATE|EXEC)\b[\s*(/;,]/i;
 const XSS_RE = /<script[\s\S]*?<\/script>/gi;
 
 /**
