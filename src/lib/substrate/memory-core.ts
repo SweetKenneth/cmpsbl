@@ -668,6 +668,7 @@ class MemoryCoreClient {
             supabase.from('brain_memory_hot')
               .update({ last_used: new Date().toISOString() } as any)
               .in('id', hotIds)
+              .then(() => {})
           );
         }
         if (warmIds.length > 0) {
@@ -675,6 +676,7 @@ class MemoryCoreClient {
             supabase.from('brain_memory_warm')
               .update({ last_accessed: new Date().toISOString() } as any)
               .in('id', warmIds)
+              .then(() => {})
           );
         }
         // Await in parallel, catch all to prevent recall failure
