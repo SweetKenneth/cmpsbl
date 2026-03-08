@@ -73,6 +73,13 @@ const NotFound = () => {
           style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.2) 0%, transparent 50%)' }}
         />
         <div className="absolute inset-0 substrate-grid-bg opacity-[0.06]" />
+        {/* Animated scan line */}
+        <motion.div
+          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
+          initial={{ top: '20%' }}
+          animate={{ top: ['20%', '80%', '20%'] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
       </div>
 
       <AnimatePresence>
@@ -124,7 +131,15 @@ const NotFound = () => {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
+              transition={{ delay: 0.4 }}
+              className="text-xs font-mono text-muted-foreground/30 mb-2"
+            >
+              {location.pathname}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
               className="text-xs font-mono text-muted-foreground/40 mb-8"
             >
               Quality floor: 68 · Only stable systems survive
@@ -166,7 +181,7 @@ const NotFound = () => {
                 >
                   <Link
                     to={s.href}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-card/80 transition-all group border border-transparent hover:border-border/40"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-card/80 transition-all group border border-transparent hover:border-border/40 hover:shadow-sm hover:shadow-primary/5"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{s.name}</div>
