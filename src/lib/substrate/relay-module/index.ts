@@ -166,9 +166,9 @@ function isDuplicate(hash: string): boolean {
   }
   state.deduplicationHashes.add(hash);
   // Prune old hashes periodically (keep set bounded)
-  if (state.deduplicationHashes.size > 5000) {
+  if (state.deduplicationHashes.size > DEDUP_MAX_SIZE) {
     const arr = Array.from(state.deduplicationHashes);
-    state.deduplicationHashes = new Set(arr.slice(arr.length - 2500));
+    state.deduplicationHashes = new Set(arr.slice(arr.length - Math.floor(DEDUP_MAX_SIZE / 2)));
   }
   return false;
 }
