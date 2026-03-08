@@ -81,7 +81,11 @@ export function getLastHealthyBootPhase(): string | null {
  * Get boot journal history.
  */
 export function getBootJournals(limit: number = 20): BootJournal[] {
-  return bootJournals.slice(-limit);
+  const clamped = Math.max(1, Math.min(limit, MAX_JOURNALS));
+  return bootJournals.slice(-clamped).map(j => ({
+    ...j,
+    checkpoints: [...j.checkpoints],
+  }));
 }
 
 /**
