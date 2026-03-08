@@ -430,17 +430,21 @@ export async function runTierMigration(): Promise<MigrationResult> {
     result.errors.push(error instanceof Error ? error.message : 'Migration failed');
   }
 
-  // Log migration event
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'tier.migration',
-    data: {
-      movedUp: result.movedUp,
-      movedDown: result.movedDown,
-      errors: result.errors.length,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'failed',
-  });
+  // Log migration event (non-critical)
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'brain',
+      event_type: 'tier.migration',
+      data: {
+        movedUp: result.movedUp,
+        movedDown: result.movedDown,
+        errors: result.errors.length,
+      } as unknown as Record<string, never>,
+      outcome: result.success ? 'success' : 'failed',
+    });
+  } catch (logErr) {
+    console.error('Failed to log migration event:', logErr);
+  }
 
   return result;
 }
