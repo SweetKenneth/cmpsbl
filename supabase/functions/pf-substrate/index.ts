@@ -2735,7 +2735,7 @@ async function handleBrain(
                 embedding: memory.embedding,
                 context: memory.context,
                 goal_ref: memory.goal_ref,
-                priority: 'high',
+                priority: Math.min(10, Math.round(promotedScore * 10)),
                 importance_score: promotedScore,
                 value_score: promotedScore,
                 access_count: memory.access_count || 0,
