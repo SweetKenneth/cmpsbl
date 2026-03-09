@@ -417,9 +417,9 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── 7. DEFENSE — security posture + anomaly detection ───
   const securityData = await runDefenseScan();
   
-  // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
+  // ─── 8. EVOLUTION SCAN — 4-phase cognitive systems scan ───
   let rawModernizerResult: ScanResultExtended | null = null;
-  let modernizerData: UnifiedProposal['modernizer_scan'];
+  let evolutionData: UnifiedProposal['evolution_scan'];
   try {
     rawModernizerResult = await modernizerScan({ dry_run: true });
     modernizerData = {
