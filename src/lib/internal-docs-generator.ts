@@ -569,7 +569,7 @@ export function generateFoundryDoc(): string {
 
   <h3>What the Foundry Does</h3>
   <ul class="checklist">
-    <li><strong>Discovers</strong> latent capabilities by combinatorially exploring the 38-node topology</li>
+    <li><strong>Discovers</strong> latent capabilities by combinatorially exploring the 40-node topology</li>
     <li><strong>Scores</strong> each discovered capability using CJPI (Crown Jewel Pipeline Index)</li>
     <li><strong>Tiers</strong> discoveries into Apex / Mythic / Relic / Prime / Mint quality bands</li>
     <li><strong>Ranks</strong> discoveries within each tier by composite score</li>
