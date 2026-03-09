@@ -80,7 +80,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-   ║              CMPSBL® OS — 38-Node Matrix                ║
+   ║              CMPSBL® OS — 40-Node Matrix                ║
    ║             12-Sector Cognitive Topology                  ║
    ╠═══════════════════════════════════════════════════════════╣
    ║                                                           ║
