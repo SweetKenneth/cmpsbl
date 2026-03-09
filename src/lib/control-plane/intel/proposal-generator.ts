@@ -418,28 +418,28 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   const securityData = await runDefenseScan();
   
   // ─── 8. EVOLUTION SCAN — 4-phase cognitive systems scan ───
-  let rawModernizerResult: ScanResultExtended | null = null;
+  let rawEvolutionResult: ScanResultExtended | null = null;
   let evolutionData: UnifiedProposal['evolution_scan'];
   try {
-    rawModernizerResult = await modernizerScan({ dry_run: true });
+    rawEvolutionResult = await modernizerScan({ dry_run: true });
     evolutionData = {
       scan_completed: true,
-      proposals_found: rawModernizerResult.proposals.length,
-      plan_ready: rawModernizerResult.plan_ready,
-      plan_status: (rawModernizerResult as any).plan?.status ?? 'none',
-      modules_active: rawModernizerResult.system_snapshot.modules_active,
-      health_overall: rawModernizerResult.system_snapshot.health_overall,
-      edge_risk_flags: rawModernizerResult.edge_analysis.risk_flags.length,
-      anomalies_detected: rawModernizerResult.system_state.detected_anomalies.length,
-      recommended_action: rawModernizerResult.recommended_next_action,
-      scan_duration_ms: rawModernizerResult.scan_duration_ms,
+      proposals_found: rawEvolutionResult.proposals.length,
+      plan_ready: rawEvolutionResult.plan_ready,
+      plan_status: (rawEvolutionResult as any).plan?.status ?? 'none',
+      modules_active: rawEvolutionResult.system_snapshot.modules_active,
+      health_overall: rawEvolutionResult.system_snapshot.health_overall,
+      edge_risk_flags: rawEvolutionResult.edge_analysis.risk_flags.length,
+      anomalies_detected: rawEvolutionResult.system_state.detected_anomalies.length,
+      recommended_action: rawEvolutionResult.recommended_next_action,
+      scan_duration_ms: rawEvolutionResult.scan_duration_ms,
     };
   } catch (e) {
     console.warn('[Proposal] EVOLUTION cognitive scan failed (canary safe):', e);
     evolutionData = {
       scan_completed: false, proposals_found: 0, plan_ready: false, plan_status: 'error',
       modules_active: 0, health_overall: 0, edge_risk_flags: 0, anomalies_detected: 0,
-      recommended_action: 'Modernizer scan failed — investigate errors', scan_duration_ms: 0,
+      recommended_action: 'Evolution scan failed — investigate errors', scan_duration_ms: 0,
     };
   }
   
