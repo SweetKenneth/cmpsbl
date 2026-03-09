@@ -22,6 +22,7 @@ import { MemoryRiver } from '@/components/hero/MemoryRiver';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { FoundryHero } from '@/components/foundry-demo/FoundryHero';
+import { FoundryDemoVideo } from '@/components/foundry-demo/FoundryDemoVideo';
 import { MemoryStreamExplainer } from '@/components/foundry-demo/MemoryStreamExplainer';
 import { ProofNumbers } from '@/components/foundry-demo/ProofNumbers';
 import { RecursiveLoop } from '@/components/foundry-demo/RecursiveLoop';
@@ -133,6 +134,8 @@ export default function Foundry() {
         </div>
         {!user ? (
           <div className="min-h-screen bg-background text-foreground relative z-10">
+            {/* Demo video — above hero, below stats */}
+            <FoundryDemoVideo />
             <div id="hero"><FoundryHero /></div>
             <MemoryStreamExplainer />
             <div id="proof"><ProofNumbers /></div>
