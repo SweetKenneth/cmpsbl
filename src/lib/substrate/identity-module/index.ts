@@ -105,6 +105,22 @@ function generateSignature(actorId: string): string {
   return `sig-${(h1 >>> 0).toString(16).padStart(8, '0')}${(h2 >>> 0).toString(16).padStart(8, '0')}`;
 }
 
+/**
+ * Deep clone ActorIdentity to prevent external state mutation
+ */
+function cloneActor(actor: ActorIdentity): ActorIdentity {
+  return {
+    ...actor,
+    passkeys: [...actor.passkeys],
+    reputation: { ...actor.reputation },
+    metadata: actor.metadata ? { ...actor.metadata } : undefined,
+    portableIdentity: actor.portableIdentity ? {
+      ...actor.portableIdentity,
+      linkedAgencies: [...actor.portableIdentity.linkedAgencies],
+    } : undefined,
+  };
+}
+
 function createDefaultReputation(): ActorReputation {
   return {
     trustScore: 50,
