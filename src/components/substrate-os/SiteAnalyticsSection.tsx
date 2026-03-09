@@ -106,7 +106,7 @@ async function fetchSiteAnalytics(rangeKey: DateRangeKey): Promise<SiteAnalytics
   // Build daily time series — fill gaps
   const dailyRaw: { day: string; views: number; sessions: number; visitors: number }[] = raw.daily || [];
   const dailyMap = new Map(dailyRaw.map(d => [d.day, d]));
-  const days = rangeKey === 'today' ? 1 : rangeKey === 'yesterday' ? 1 : rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : 90;
+  const days = rangeKey === 'today' ? 1 : rangeKey === 'yesterday' ? 1 : rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : rangeKey === '90d' ? 90 : rangeKey === '365d' ? 365 : 90;
   const dailyViews: SiteAnalyticsData['dailyViews'] = [];
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(end.getTime() - i * 86400000).toISOString().split('T')[0];
