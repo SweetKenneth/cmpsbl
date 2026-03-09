@@ -17,8 +17,8 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 38 active nodes across 12 sectors */
-export const NODES_COUNT = 38;
+/** 40 active nodes across 12 sectors */
+export const NODES_COUNT = 40;
 
 /** 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
 export const SECTORS_COUNT = 12;
