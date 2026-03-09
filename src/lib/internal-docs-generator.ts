@@ -1233,7 +1233,7 @@ export function generateTradeSecretsDoc(): string {
     <tr><th>Secret</th><th>Description</th><th>Strategic Value</th></tr>
     <tr><td>Clockless execution</td><td>Event-driven, demand-pulled, no timers</td><td>Eliminates idle compute, prevents false health signals</td></tr>
     <tr><td>3-Lane Integrity</td><td>Availability × Correctness × Performance</td><td>Mathematically deterministic system health</td></tr>
-    <tr><td>38-node topology</td><td>12-sector architecture with field permeation</td><td>No competitor has this topological completeness</td></tr>
+    <tr><td>40-node topology</td><td>12-sector architecture with field permeation</td><td>No competitor has this topological completeness</td></tr>
     <tr><td>Governance-gated evolution</td><td>SEBA with 7-gate promotion + two-man rule</td><td>Autonomous improvement with safety guarantees</td></tr>
     <tr><td>Autonomous Foundry</td><td>Recursive capability discovery reactor</td><td>Self-manufacturing software — DOI published</td></tr>
   </table>

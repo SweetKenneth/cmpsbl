@@ -1722,7 +1722,7 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     // Final Two
     { module: 'SANDBOX', codename: 'Crucible', loader: async () => { try { const m = await import('@/lib/substrate/sandbox-module/sandbox-hardening'); return m.calculateSandboxHealth(); } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'INCLUSIVE', codename: 'Clarity', loader: async () => { try { const m = await import('@/lib/inclusive/inclusive-hardening'); return m.calculateInclusiveHealth(); } catch { return { grade: 'A', score: 100 }; } } },
-    // Expansion Modules (38-Node / 12-Sector Architecture)
+    // Expansion Modules (40-Node / 12-Sector Architecture)
     { module: 'SOVEREIGN', codename: 'Dominion', loader: async () => { try { const m = await import('@/lib/substrate/sovereign-module') as any; return m.getSovereignHealth?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'ORACLE', codename: 'Pythia', loader: async () => { try { const m = await import('@/lib/substrate/oracle-module') as any; return m.getOracleHealth?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'CONSCIENCE', codename: 'Arbiter', loader: async () => { try { const m = await import('@/lib/substrate/conscience-module') as any; return m.getConscienceHealth?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
