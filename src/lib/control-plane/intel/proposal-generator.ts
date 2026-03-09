@@ -1419,9 +1419,9 @@ function buildActionPlan(
     });
   }
   
-  // ─── SOURCE 10: MODERNIZER proposals (cognitive scan findings) ───
-  if (modernizerResult) {
-    for (const proposal of modernizerResult.proposals) {
+  // ─── SOURCE 10: EVOLUTION proposals (cognitive scan findings) ───
+  if (evolutionResult) {
+    for (const proposal of evolutionResult.proposals) {
       const riskScore = proposal.risk_level === 'high' ? 70 : proposal.risk_level === 'medium' ? 55 : 40;
       candidates.push({
         value: riskScore * 0.8,
@@ -1429,7 +1429,7 @@ function buildActionPlan(
         step: {
           order: 0,
           category: 'tech-debt',
-          title: `Modernizer: ${proposal.title}`,
+          title: `Evolution: ${proposal.title}`,
           description: proposal.description,
           risk: proposal.risk_level === 'high' ? 'medium' : 'low',
           instructions: [
