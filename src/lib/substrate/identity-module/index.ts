@@ -196,7 +196,7 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
 }
 
 export function whoami(): ActorIdentity | null {
-  return state.currentActor;
+  return state.currentActor ? cloneActor(state.currentActor) : null;
 }
 
 export function setCurrentActor(id: string): ActorIdentity | null {
