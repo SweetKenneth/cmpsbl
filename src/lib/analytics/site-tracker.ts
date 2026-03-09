@@ -345,17 +345,25 @@ export function initSiteAnalytics() {
     }
   });
 
-  // SPA navigation
+  // SPA navigation — track on any route change (push, replace, popstate)
+  let lastTrackedPath = window.location.pathname;
+
+  function onRouteChange() {
+    const newPath = window.location.pathname;
+    if (newPath === lastTrackedPath) return; // Deduplicate
+    lastTrackedPath = newPath;
+    setTimeout(trackPageView, 50);
+  }
+
   const origPush = history.pushState.bind(history);
   const origReplace = history.replaceState.bind(history);
   history.pushState = function (...args) {
     origPush(...args);
-    setTimeout(trackPageView, 50);
+    onRouteChange();
   };
   history.replaceState = function (...args) {
     origReplace(...args);
+    onRouteChange();
   };
-  window.addEventListener('popstate', () => {
-    setTimeout(trackPageView, 50);
-  });
+  window.addEventListener('popstate', () => onRouteChange());
 }
