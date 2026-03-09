@@ -166,3 +166,197 @@ export function calculateRippleHealth(): { grade: string; score: number; version
   const grade = score >= 90 ? 'A' : score >= 75 ? 'B' : score >= 60 ? 'C' : score >= 40 ? 'D' : 'F';
   return { grade, score, version: RIPPLE_HARDENING_VERSION, codename: RIPPLE_HARDENING_CODENAME };
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v3.0.0 TEMPEST HARDENING ADDITIONS (Features 26-35)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─── 26. Persistent Store Health Monitor ───────────────────────────────────
+const persistentStoreMetrics = { writes: 0, reads: 0, errors: 0, lastWriteAt: 0 };
+export function recordPersistentWrite(success: boolean) {
+  persistentStoreMetrics.writes++;
+  if (!success) persistentStoreMetrics.errors++;
+  persistentStoreMetrics.lastWriteAt = Date.now();
+}
+export function getPersistentStoreHealth(): { healthy: boolean; writeRate: number; errorRate: number } {
+  const errorRate = persistentStoreMetrics.writes > 0 
+    ? persistentStoreMetrics.errors / persistentStoreMetrics.writes 
+    : 0;
+  return {
+    healthy: errorRate < 0.05 && (Date.now() - persistentStoreMetrics.lastWriteAt) < 300000,
+    writeRate: persistentStoreMetrics.writes,
+    errorRate: Math.round(errorRate * 100),
+  };
+}
+
+// ─── 27. Exactly-Once Delivery Tracker ─────────────────────────────────────
+const exactlyOnceDeliveries = { attempted: 0, duplicatesBlocked: 0, confirmed: 0 };
+export function recordExactlyOnceAttempt(duplicate: boolean) {
+  exactlyOnceDeliveries.attempted++;
+  if (duplicate) exactlyOnceDeliveries.duplicatesBlocked++;
+  else exactlyOnceDeliveries.confirmed++;
+}
+export function getExactlyOnceStats() {
+  return {
+    ...exactlyOnceDeliveries,
+    deduplicationRate: exactlyOnceDeliveries.attempted > 0
+      ? Math.round((exactlyOnceDeliveries.duplicatesBlocked / exactlyOnceDeliveries.attempted) * 100)
+      : 0,
+  };
+}
+
+// ─── 28. Cross-Node Propagation Monitor ────────────────────────────────────
+const propagationMetrics = { sent: 0, delivered: 0, failed: 0, avgLatencyMs: 0, latencySamples: 0 };
+export function recordPropagation(delivered: boolean, latencyMs: number) {
+  propagationMetrics.sent++;
+  if (delivered) {
+    propagationMetrics.delivered++;
+    propagationMetrics.avgLatencyMs = 
+      (propagationMetrics.avgLatencyMs * propagationMetrics.latencySamples + latencyMs) / 
+      (propagationMetrics.latencySamples + 1);
+    propagationMetrics.latencySamples++;
+  } else {
+    propagationMetrics.failed++;
+  }
+}
+export function getPropagationMetrics() {
+  return {
+    sent: propagationMetrics.sent,
+    delivered: propagationMetrics.delivered,
+    failed: propagationMetrics.failed,
+    deliveryRate: propagationMetrics.sent > 0
+      ? Math.round((propagationMetrics.delivered / propagationMetrics.sent) * 100)
+      : 100,
+    avgLatencyMs: Math.round(propagationMetrics.avgLatencyMs),
+  };
+}
+
+// ─── 29. Causal Order Violation Detector ───────────────────────────────────
+const causalViolations: Array<{ eventId: string; ts: number; reason: string }> = [];
+export function recordCausalViolation(eventId: string, reason: string) {
+  causalViolations.push({ eventId, ts: Date.now(), reason });
+  if (causalViolations.length > 100) causalViolations.shift();
+}
+export function getCausalViolations(n = 20) { return causalViolations.slice(-n); }
+export function getCausalViolationCount() { return causalViolations.length; }
+
+// ─── 30. Replay Session Monitor ────────────────────────────────────────────
+const replayMetrics = { sessionsStarted: 0, sessionsCompleted: 0, eventsReplayed: 0, errors: 0 };
+export function recordReplaySession(completed: boolean, eventsReplayed: number, errors: number) {
+  replayMetrics.sessionsStarted++;
+  if (completed) replayMetrics.sessionsCompleted++;
+  replayMetrics.eventsReplayed += eventsReplayed;
+  replayMetrics.errors += errors;
+}
+export function getReplayMetrics() { return { ...replayMetrics }; }
+
+// ─── 31. Partition Health Monitor ──────────────────────────────────────────
+const partitionHealth = new Map<string, { events: number; lag: number; lastActivity: number }>();
+export function recordPartitionActivity(partitionKey: string, lag: number) {
+  const existing = partitionHealth.get(partitionKey) || { events: 0, lag: 0, lastActivity: 0 };
+  existing.events++;
+  existing.lag = lag;
+  existing.lastActivity = Date.now();
+  partitionHealth.set(partitionKey, existing);
+}
+export function getPartitionHealth(): Array<{ partition: string; events: number; lag: number; stale: boolean }> {
+  const now = Date.now();
+  return Array.from(partitionHealth.entries()).map(([partition, data]) => ({
+    partition,
+    events: data.events,
+    lag: data.lag,
+    stale: now - data.lastActivity > 300000,
+  }));
+}
+
+// ─── 32. Consumer Lag Alert ────────────────────────────────────────────────
+const consumerLagAlerts: Array<{ consumerId: string; lag: number; ts: number }> = [];
+const LAG_THRESHOLD = 1000;
+export function checkConsumerLag(consumerId: string, lag: number): boolean {
+  if (lag > LAG_THRESHOLD) {
+    consumerLagAlerts.push({ consumerId, lag, ts: Date.now() });
+    if (consumerLagAlerts.length > 50) consumerLagAlerts.shift();
+    return true;
+  }
+  return false;
+}
+export function getConsumerLagAlerts(n = 20) { return consumerLagAlerts.slice(-n); }
+
+// ─── 33. Event Compaction Monitor ──────────────────────────────────────────
+const compactionStats = { runs: 0, eventsCompacted: 0, lastRunAt: 0, avgRunTimeMs: 0 };
+export function recordCompaction(eventsCompacted: number, runTimeMs: number) {
+  compactionStats.runs++;
+  compactionStats.eventsCompacted += eventsCompacted;
+  compactionStats.lastRunAt = Date.now();
+  compactionStats.avgRunTimeMs = 
+    (compactionStats.avgRunTimeMs * (compactionStats.runs - 1) + runTimeMs) / compactionStats.runs;
+}
+export function getCompactionStats() { return { ...compactionStats }; }
+
+// ─── 34. Sector Broadcast Monitor ──────────────────────────────────────────
+const sectorBroadcasts = new Map<string, { count: number; delivered: number; lastAt: number }>();
+export function recordSectorBroadcast(sector: string, delivered: number) {
+  const existing = sectorBroadcasts.get(sector) || { count: 0, delivered: 0, lastAt: 0 };
+  existing.count++;
+  existing.delivered += delivered;
+  existing.lastAt = Date.now();
+  sectorBroadcasts.set(sector, existing);
+}
+export function getSectorBroadcastStats(): Array<{ sector: string; broadcasts: number; totalDelivered: number }> {
+  return Array.from(sectorBroadcasts.entries()).map(([sector, data]) => ({
+    sector,
+    broadcasts: data.count,
+    totalDelivered: data.delivered,
+  }));
+}
+
+// ─── 35. Tempest Composite Health ──────────────────────────────────────────
+export function calculateTempestHealth(): {
+  grade: string;
+  score: number;
+  version: string;
+  codename: string;
+  components: Record<string, { healthy: boolean; score: number }>;
+} {
+  const components: Record<string, { healthy: boolean; score: number }> = {};
+  let totalScore = 0;
+
+  // Base RIPPLE health
+  const baseHealth = calculateRippleHealth();
+  components.base = { healthy: baseHealth.score >= 70, score: baseHealth.score };
+  totalScore += baseHealth.score;
+
+  // Persistent store health
+  const storeHealth = getPersistentStoreHealth();
+  const storeScore = storeHealth.healthy ? 100 : 50;
+  components.persistentStore = { healthy: storeHealth.healthy, score: storeScore };
+  totalScore += storeScore;
+
+  // Propagation health
+  const propMetrics = getPropagationMetrics();
+  const propScore = propMetrics.deliveryRate >= 95 ? 100 : propMetrics.deliveryRate >= 80 ? 75 : 50;
+  components.propagation = { healthy: propMetrics.deliveryRate >= 80, score: propScore };
+  totalScore += propScore;
+
+  // Causal ordering health
+  const causalScore = causalViolations.length === 0 ? 100 : causalViolations.length < 10 ? 75 : 50;
+  components.causalOrdering = { healthy: causalViolations.length < 10, score: causalScore };
+  totalScore += causalScore;
+
+  // Consumer lag health
+  const recentLagAlerts = consumerLagAlerts.filter(a => Date.now() - a.ts < 300000).length;
+  const lagScore = recentLagAlerts === 0 ? 100 : recentLagAlerts < 5 ? 75 : 50;
+  components.consumerLag = { healthy: recentLagAlerts < 5, score: lagScore };
+  totalScore += lagScore;
+
+  const avgScore = Math.round(totalScore / 5);
+  const grade = avgScore >= 90 ? 'A' : avgScore >= 75 ? 'B' : avgScore >= 60 ? 'C' : avgScore >= 40 ? 'D' : 'F';
+
+  return {
+    grade,
+    score: avgScore,
+    version: RIPPLE_HARDENING_VERSION,
+    codename: RIPPLE_HARDENING_CODENAME,
+    components,
+  };
+}
