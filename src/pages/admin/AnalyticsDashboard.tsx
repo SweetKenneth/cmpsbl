@@ -1131,7 +1131,7 @@ function ExclusionsView() {
                   )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-foreground truncate max-w-[200px]">
+                      <span className="text-xs font-mono text-foreground truncate max-w-[140px] sm:max-w-[200px]">
                         {ex.fingerprint.slice(0, 20)}…
                       </span>
                       <Badge variant="outline" className="text-[9px] font-mono shrink-0">
