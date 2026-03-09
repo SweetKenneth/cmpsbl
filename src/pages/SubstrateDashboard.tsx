@@ -777,7 +777,7 @@ export default function SubstrateDashboard() {
           <TabsContent value="mesh" className="mt-6">
             <div className="mb-6">
               <Badge variant="outline" className={layerLabels.mesh.color}>MESH OVERLAYS</Badge>
-              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 38 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
+              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 40 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {modulesByLayer.mesh.map((module) => (
