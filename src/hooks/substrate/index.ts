@@ -61,6 +61,7 @@ export { useLingua, type UseLinguaReturn } from './useLingua';
 export { useHarvest, type UseHarvestReturn } from './useHarvest';
 
 // CSZ — Covert Systems Zone (EVOLUTION, SHADOW, PHANTOM)
+export { useEvolution, type UseEvolutionReturn } from './useEvolution';
 export { usePhantom, type UsePhantomReturn } from './usePhantom';
 export { useShadow, type UseShadowReturn } from './useShadow';
 

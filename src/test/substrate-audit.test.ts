@@ -53,7 +53,7 @@ describe('§1 — Matrix Node Registry', () => {
 
   it('builds matrix nodes with health data', () => {
     const nodes = buildMatrixNodes({ core: 100, brain: 80, defense: false });
-    expect(nodes.length).toBe(38);
+    expect(nodes.length).toBe(40);
     const core = nodes.find(n => n.id === 'core');
     expect(core?.health).toBe(100);
     const brain = nodes.find(n => n.id === 'brain');
@@ -83,7 +83,7 @@ describe('§1 — Matrix Node Registry', () => {
   it('calculates integrity report correctly', () => {
     const nodes = buildMatrixNodes({});
     const report = calculateIntegrity(nodes);
-    expect(report.nodeCount).toBe(38);
+    expect(report.nodeCount).toBe(40);
     expect(report.totalWeight).toBe(1);
     expect(report.status).toBe('MATRIX STABLE');
     expect(report.isCritical).toBe(false);
