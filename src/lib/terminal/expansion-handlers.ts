@@ -29,28 +29,49 @@ const EXPANSION_MODULES = [
 
 // ═══ Helpers ═══
 
-async function getModuleState(modId: string): Promise<Record<string, unknown>> {
-  try {
-    const m = await import(`@/lib/substrate/${modId}-module`) as any;
-    const capName = modId.charAt(0).toUpperCase() + modId.slice(1);
-    const stateFn = m[`get${capName}State`];
-    return stateFn?.() ?? {};
-  } catch {
-    return {};
+const moduleLoadCache = new Map<string, Promise<any | null>>();
+
+async function loadRuntimeModule(modId: string): Promise<any | null> {
+  if (!moduleLoadCache.has(modId)) {
+    moduleLoadCache.set(modId, (async () => {
+      const candidates = [
+        `@/lib/substrate/${modId}-module`,
+        `@/lib/substrate/${modId}`,
+      ];
+
+      for (const path of candidates) {
+        try {
+          return await import(path) as any;
+        } catch {
+          // continue trying candidates
+        }
+      }
+
+      return null;
+    })());
   }
+
+  return moduleLoadCache.get(modId)!;
+}
+
+async function getModuleState(modId: string): Promise<Record<string, unknown>> {
+  const m = await loadRuntimeModule(modId);
+  if (!m) return {};
+
+  const capName = modId.charAt(0).toUpperCase() + modId.slice(1);
+  const stateFn = m[`get${capName}State`];
+  return stateFn?.() ?? {};
 }
 
 async function getModuleHealth(modId: string, modName: string): Promise<{ grade: string; score: number }> {
-  try {
-    const m = await import(`@/lib/substrate/${modId}-module`) as any;
-    const capName = modName.charAt(0) + modName.slice(1).toLowerCase();
-    const fn = m[`get${capName}Health`];
-    const score = fn?.() ?? 100;
-    const numScore = typeof score === 'number' ? score : (score?.score ?? 100);
-    return { grade: numScore >= 90 ? 'A' : numScore >= 75 ? 'B' : numScore >= 60 ? 'C' : 'D', score: numScore };
-  } catch {
-    return { grade: 'A', score: 100 };
-  }
+  const m = await loadRuntimeModule(modId);
+  if (!m) return { grade: 'A', score: 100 };
+
+  const capName = modName.charAt(0) + modName.slice(1).toLowerCase();
+  const fn = m[`get${capName}Health`];
+  const score = fn?.() ?? 100;
+  const numScore = typeof score === 'number' ? score : (score?.score ?? 100);
+  return { grade: numScore >= 90 ? 'A' : numScore >= 75 ? 'B' : numScore >= 60 ? 'C' : 'D', score: numScore };
 }
 
 // ═══ Domain command definitions per module ═══
@@ -237,26 +258,26 @@ export function registerExpansionHandlers(): void {
 
     // <module>.hardening
     registerHandler(`${lower}.hardening`, async () => {
-      try {
-        const m = await import(`@/lib/substrate/${lower}-module`) as any;
-        const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
-        const fn = m[`get${capName}Hardening`];
-        return { success: true, data: fn?.() ?? { features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
-      } catch {
+      const m = await loadRuntimeModule(lower);
+      if (!m) {
         return { success: true, data: { module: mod.name, features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
       }
+
+      const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
+      const fn = m[`get${capName}Hardening`];
+      return { success: true, data: fn?.() ?? { features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
     });
 
     // <module>.resilience
     registerHandler(`${lower}.resilience`, async () => {
-      try {
-        const m = await import(`@/lib/substrate/${lower}-module`) as any;
-        const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
-        const fn = m[`get${capName}Resilience`];
-        return { success: true, data: fn?.() ?? { module: mod.name, status: 'nominal' } };
-      } catch {
+      const m = await loadRuntimeModule(lower);
+      if (!m) {
         return { success: true, data: { module: mod.name, status: 'nominal' } };
       }
+
+      const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
+      const fn = m[`get${capName}Resilience`];
+      return { success: true, data: fn?.() ?? { module: mod.name, status: 'nominal' } };
     });
 
     // ═══ Domain-specific commands ═══

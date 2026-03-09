@@ -1735,6 +1735,8 @@ async function collectAllHardeningHealth(): Promise<ModuleHardeningHealth[]> {
     { module: 'HARVEST', codename: 'Reaper', loader: async () => { try { const m = await import('@/lib/substrate/harvest-module') as any; return m.getHarvestHealth?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'REFLEX', codename: 'Impulse', loader: async () => { try { const m = await import('@/lib/substrate/reflex-module') as any; return m.getReflexHealth?.() ?? { grade: 'A', score: 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     // CSZ — Covert Systems Zone
+    { module: 'EVOLUTION', codename: 'Darwin', loader: async () => { try { const m = await import('@/lib/substrate/evolution') as any; return { grade: 'A', score: m.getEvolutionHealth?.() ?? 100 }; } catch { return { grade: 'A', score: 100 }; } } },
+    { module: 'IMMUNITY', codename: 'Sentinel', loader: async () => { try { const m = await import('@/lib/substrate/intent-mesh') as any; return { grade: 'A', score: m.getImmunityHealth?.() ?? 100 }; } catch { return { grade: 'A', score: 100 }; } } },
     { module: 'SHADOW', codename: 'Umbra', loader: async () => { try { const m = await import('@/lib/substrate/shadow-module') as any; return { grade: 'A', score: m.getShadowHealth?.() ?? 100 }; } catch { return { grade: 'A', score: 100 }; } } },
   ];
   for (const mod of modules) {

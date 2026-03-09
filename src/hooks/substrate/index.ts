@@ -86,3 +86,7 @@ export { useMatrixResilience, type UseMatrixResilienceReturn } from './useMatrix
 // Nodes 39-40 — Plane additions (Engine & Governance Authority)
 export { useEngineer, type UseEngineerReturn } from './useEngineer';
 export { useAtlas, type UseAtlasReturn } from './useAtlas';
+
+// Field-level Specialist Hooks
+export { useNodeDreaming } from './useNodeDreaming';
+export { useCognitiveCapabilities } from './useCognitiveCapabilities';
