@@ -20,7 +20,7 @@ export type ModuleName =
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'nerve'   // OCG — inter-node signaling
   | 'shadow'  // CSZ — shadow mesh operations
-  // Expansion Modules (38-Node Architecture)
+  // Expansion Modules (40-Node Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 

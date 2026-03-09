@@ -422,7 +422,7 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
   },
 
   // ═══════════════════════════════════════════════════════════════════════════════
-  // EXPANSION NODES (17 additional nodes to complete 38-node matrix)
+  // EXPANSION NODES (17 additional nodes to complete 40-node matrix)
   // ═══════════════════════════════════════════════════════════════════════════════
 
   nerve: {
