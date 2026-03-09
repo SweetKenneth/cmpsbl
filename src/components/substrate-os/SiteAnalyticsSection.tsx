@@ -53,7 +53,7 @@ interface SiteAnalyticsData {
   connectionTypes: { type: string; count: number }[];
 }
 
-type DateRangeKey = 'today' | 'yesterday' | '7d' | '30d' | '90d';
+type DateRangeKey = 'today' | 'yesterday' | '7d' | '30d' | '90d' | '365d' | 'all';
 
 function getDateRange(key: DateRangeKey): { start: Date; end: Date } {
   const now = new Date();
@@ -72,6 +72,10 @@ function getDateRange(key: DateRangeKey): { start: Date; end: Date } {
       return { start: new Date(Date.now() - 30 * 86400000), end: now };
     case '90d':
       return { start: new Date(Date.now() - 90 * 86400000), end: now };
+    case '365d':
+      return { start: new Date(Date.now() - 365 * 86400000), end: now };
+    case 'all':
+      return { start: new Date('2020-01-01'), end: now };
   }
 }
 
