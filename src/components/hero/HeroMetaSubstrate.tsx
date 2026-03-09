@@ -250,10 +250,10 @@ export function HeroMetaSubstrate() {
             >
               Signals enter the{' '}
                <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
-               the system discovers and packages reusable software capabilities called{' '}
+               the system discovers and packages exportable software capabilities called{' '}
                <span className="text-foreground/90 font-medium">pipelines</span>,{' '}
                and in rare cases —{' '}
-               <span className="text-primary font-medium">silicon</span>.{' '}
+               <span className="text-primary font-medium">silicon computer chips</span>.{' '}
                CMPSBL sits between AI models and applications — acting as the operating system that manages intelligence.
             </motion.p>
             
