@@ -210,7 +210,7 @@ export async function propagate(
   await deliverToNodes(event, sectorNodes);
 
   // Phase 2: Propagate to adjacent sectors
-  if (config.enableCrossSetor && event.ttl > 0) {
+  if (config.enableCrossSector && event.ttl > 0) {
     const adjacentSectors = SECTOR_ADJACENCY[sourceSector] || [];
     for (const sector of adjacentSectors) {
       if (config.sectorPriority.includes(sector)) {
