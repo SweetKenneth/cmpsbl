@@ -83,7 +83,7 @@ describe('§1 — Matrix Node Registry', () => {
   it('calculates integrity report correctly', () => {
     const nodes = buildMatrixNodes({});
     const report = calculateIntegrity(nodes);
-    expect(report.nodeCount).toBe(38);
+    expect(report.nodeCount).toBe(40);
     expect(report.totalWeight).toBe(1);
     expect(report.status).toBe('MATRIX STABLE');
     expect(report.isCritical).toBe(false);
