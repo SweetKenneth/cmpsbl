@@ -172,7 +172,7 @@ export const TERMINAL = {
   
   // Boot header
   bootHeader: 'CMPSBL® MEMORY STREAM',
-  bootSubtitle: '38-NODE MATRIX — Signal → Silicon',
+  bootSubtitle: '40-NODE MATRIX — Signal → Silicon',
   
   // Status messages
   messages: {
