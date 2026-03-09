@@ -317,57 +317,31 @@ export function getEconomyEngine() {
 export {
   ECONOMY_HARDENING_VERSION,
   ECONOMY_HARDENING_CODENAME,
-  // 1. Transaction Integrity Seal
   sealTransaction, verifyTransactionSeal,
-  // 2. Budget Breach Circuit Breaker
   checkBudgetCircuit, recordBudgetBreach, resetBudgetCircuit,
-  // 3. Cost Record Tamper Detection
   hashCostRecord, verifyRecordIntegrity,
-  // 4. Spend Velocity Limiter
   configureSpendVelocity, checkSpendVelocity,
-  // 5. Attribution Confidence Scorer
   scoreAttribution,
-  // 6. Forecast Drift Detector
   detectForecastDrift,
-  // 7. Budget Envelope Guard
   checkEnvelope,
-  // 8. Cost Anomaly Detector
   detectCostAnomaly,
-  // 9. Audit Trail Hash Chain
   appendAuditEntry, verifyAuditChain, getAuditChain,
-  // 10. Currency Precision Guard
   enforcePrecision, validateMillicents,
-  // 11. Runaway Prevention Gate
   checkRunawaySpend,
-  // 12. Cost Allocation Validator
   validateAllocations,
-  // 13. Budget Rollover Engine
   calculateRollover,
-  // 14. Spend Pattern Fingerprinter
   fingerprintSpendPattern,
-  // 15. Reconciliation Engine
   reconcileRecords,
-  // 16. Cost Ceiling Enforcer
   setCostCeiling, checkCostCeiling,
-  // 17. Attribution Lineage Tracker
   trackLineage, getLineageChain,
-  // 18. Forecast Accuracy Scorer
   recordForecastOutcome, getForecastAccuracy,
-  // 19. Budget Alert Deduplicator
   shouldFireBudgetAlert,
-  // 20. Cost Replay Protector
   isReplayedTransaction,
-  // 21. Multi-Currency Normalizer
   normalizeToUSD,
-  // 22. Spend Quota Partitioner
   partitionQuotas,
-  // 23. Economy Warmup Validator
   checkEconomyReadiness,
-  // 24. Telemetry Cost Tracker
   recordTelemetryCost, getTelemetryCostSummary,
-  // 25. Health Composite
   calculateEconomyHealth,
-  // Types
   type TransactionSeal, type BudgetCircuitState, type TamperCheckResult,
   type AttributionConfidence, type ForecastDrift, type EnvelopeStatus,
   type CostAnomaly, type EconomyAuditEntry, type LineageNode,
@@ -375,3 +349,63 @@ export {
   type RolloverResult, type SpendFingerprint, type QuotaPartition,
   type EconomyReadiness, type EconomyHealthReport,
 } from './economy-hardening';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v11.0.0 TREASURY ENHANCEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Persistent Cost Ledger (double-entry bookkeeping)
+export {
+  recordDebit,
+  recordCredit,
+  allocateBudget as allocateLedgerBudget,
+  getBalance,
+  getAllBalances,
+  getRecentEntries,
+  getPeriodSummary,
+  getCostBreakdownFromDB,
+  getLedgerStats,
+  resetLedger,
+  type LedgerEntry,
+  type PeriodSummary,
+  type LedgerBalance,
+  type LedgerStats,
+} from './persistentCostLedger';
+
+// ROI & Chargeback Engine
+export {
+  recordROI,
+  getModuleROI,
+  getGlobalROI,
+  allocateChargeback,
+  getTenantChargeback,
+  recordValueAttribution,
+  getModuleValueAttributions,
+  calculateEfficiency,
+  getAllEfficiencyScores,
+  getROIStats,
+  resetROIEngine,
+  type ROIRecord,
+  type ChargebackAllocation,
+  type ValueAttribution,
+  type EfficiencyScore,
+  type ChargebackSummary,
+  type EconomyROIStats,
+} from './roiChargebackEngine';
+
+// Spend Intelligence (pattern analysis, optimization)
+export {
+  recordSpendSample,
+  analyzeSpendPattern,
+  generateRecommendations,
+  getRecommendations,
+  simulateBudgetChange,
+  findCostCorrelations,
+  getSpendIntelligenceStats,
+  resetSpendIntelligence,
+  type SpendPattern,
+  type OptimizationRecommendation,
+  type BudgetSimulation,
+  type CostCorrelation,
+  type SpendIntelligenceStats,
+} from './spendIntelligence';
