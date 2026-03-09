@@ -119,8 +119,8 @@ class TelemetryEngineClient {
       'engine_dispatch_start', 'engine_dispatch_end', 'engine_dispatch_error',
       'governance_block', 'governance_override',
       'inclusive_scan', 'inclusive_repair', 'inclusive_validate',
-      'modernizer_scan', 'modernizer_apply_shadow', 'modernizer_apply_production',
-      'modernizer_verify', 'modernizer_rollback',
+      'evolution_scan', 'evolution_apply_shadow', 'evolution_apply_production',
+      'evolution_verify', 'evolution_rollback',
       'state_read', 'state_write', 'state_validation_warning', 'custom'
     ];
     for (const type of types) {
