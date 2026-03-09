@@ -1413,7 +1413,11 @@ export function nexusStreamRoute(
             if (!line.startsWith('data: ')) continue;
             const data = line.slice(6);
             if (data === '[DONE]') {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, provider: provider.id })}\n\n`));
+              if (opts.openaiCompat) {
+                controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
+              } else {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, provider: provider.id })}\n\n`));
+              }
               continue;
             }
 
@@ -1421,7 +1425,12 @@ export function nexusStreamRoute(
               const chunk = JSON.parse(data);
               const delta = chunk.choices?.[0]?.delta?.content;
               if (delta) {
-                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: delta, provider: provider.id })}\n\n`));
+                if (opts.openaiCompat) {
+                  // Pass through OpenAI-compatible SSE format
+                  controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+                } else {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: delta, provider: provider.id })}\n\n`));
+                }
               }
             } catch { /* skip malformed chunks */ }
           }
