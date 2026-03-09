@@ -347,12 +347,11 @@ export function unthrottle(developerId: string, apiKeyId?: string): void {
 // ============ DEFENSE Communication ============
 
 function emitToDefense(eventType: string, data: unknown): void {
-  // Emit event for DEFENSE module to pick up
   try {
     supabase.from('brain_events').insert([{
       module: 'access',
       event_type: `defense:${eventType}`,
-      data: data as Record<string, unknown>,
+      data: JSON.parse(JSON.stringify(data)) as Json,
       outcome: 'pending',
     }]).then(() => {});
   } catch (error) {
