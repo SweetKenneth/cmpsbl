@@ -31,7 +31,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the architecture library covering all 38 nodes across 12 sectors.",
+    description: "Full access to the architecture library covering all 40 nodes across 12 sectors.",
     gradient: "from-violet-500 to-purple-600",
   },
   {
