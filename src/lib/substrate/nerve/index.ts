@@ -20,7 +20,6 @@ import {
   publish,
   subscribe,
   unsubscribe,
-  getSignalHistory,
   type ModuleName,
   type ModuleSignal,
   type SignalPriority,
