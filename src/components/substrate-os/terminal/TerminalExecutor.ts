@@ -2041,7 +2041,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (38 node status calls)          ║
+║    2: + module-status-polling (40 node status calls)          ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (backend channels)            ║
 ║                                                              ║
