@@ -17331,7 +17331,17 @@ export type Database = {
           warm_limit: number
         }[]
       }
+      get_churn_risk_scores: { Args: { p_limit?: number }; Returns: Json }
+      get_cohort_retention: {
+        Args: { p_cohort_window_days?: number; p_granularity?: string }
+        Returns: Json
+      }
       get_discovery_stats: { Args: never; Returns: Json }
+      get_feature_adoption: { Args: { p_start_date?: string }; Returns: Json }
+      get_journey_flows: {
+        Args: { p_min_count?: number; p_start_date?: string }
+        Returns: Json
+      }
       get_public_live_stats: { Args: never; Returns: Json }
       get_random_discoveries: {
         Args: { max_count: number; max_score?: number; min_score: number }
@@ -17346,6 +17356,7 @@ export type Database = {
           pipeline_steps: Json
         }[]
       }
+      get_realtime_pulse: { Args: never; Returns: Json }
       get_site_analytics_aggregated: {
         Args: { p_end_date?: string; p_start_date: string }
         Returns: Json
