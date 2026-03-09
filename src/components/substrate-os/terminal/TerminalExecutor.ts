@@ -1713,7 +1713,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
           const { resetBreaker } = await import('@/lib/substrate/circuit-breaker');
           
-          // 1. Reset all 38 node circuit breakers
+          // 1. Reset all 40 node circuit breakers
           const breakerResets: string[] = [];
           for (const mod of ALL_EXECUTION_SURFACES) {
             try {
