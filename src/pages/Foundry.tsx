@@ -37,9 +37,11 @@ import { FoundryFinalCTA } from '@/components/foundry-demo/FoundryFinalCTA';
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
   const foundry = useFoundryState();
+  const { tier: subscriptionTier } = useEngineSubscription();
   const [activeTab, setActiveTab] = useState<'mine' | 'inventory'>('mine');
   const [crystallizing, setCrystallizing] = useState(false);
   const [discoveries, setDiscoveries] = useState<any[]>([]);
+  const [pullsToday, setPullsToday] = useState(0);
 
   // Load discoveries for anonymous view
   useEffect(() => {
