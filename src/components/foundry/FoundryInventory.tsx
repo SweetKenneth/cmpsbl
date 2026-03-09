@@ -1,10 +1,9 @@
 /**
- * FoundryInventory — User's vault of crystallized pipelines with export
- * v13.3: structural pipeline identity with capability-level steps.
+ * FoundryInventory — User's vault of crystallized pipelines with export & removal
  */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Fingerprint, Loader2 } from 'lucide-react';
+import { Download, Fingerprint, Loader2, Trash2 } from 'lucide-react';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
@@ -15,6 +14,16 @@ import {
   type TieredFoundryExportArtifact,
 } from '@/lib/export/foundry-tiered-zip';
 import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface InventoryItem {
   id: string;
@@ -33,6 +42,7 @@ interface InventoryItem {
 
 interface Props {
   inventory: InventoryItem[];
+  onRemove?: (id: string) => Promise<boolean>;
 }
 
 function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundryExportArtifact[] {
@@ -51,13 +61,28 @@ function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundr
   }));
 }
 
-export function FoundryInventory({ inventory }: Props) {
+export function FoundryInventory({ inventory, onRemove }: Props) {
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
     fingerprint?: string;
   } | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [confirmRemove, setConfirmRemove] = useState<InventoryItem | null>(null);
+
+  const handleRemove = useCallback(async () => {
+    if (!confirmRemove || !onRemove) return;
+    setRemoving(confirmRemove.id);
+    const ok = await onRemove(confirmRemove.id);
+    setRemoving(null);
+    if (ok) {
+      toast.success(`${confirmRemove.artifactName} removed from vault`);
+    } else {
+      toast.error('Failed to remove pipeline');
+    }
+    setConfirmRemove(null);
+  }, [confirmRemove, onRemove]);
 
   if (inventory.length === 0) {
     return (
@@ -124,67 +149,112 @@ export function FoundryInventory({ inventory }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.03 }}
-            onClick={() => setProvenancePipeline({
-              name: item.artifactName,
-              score: item.score,
-              systemChain: item.systemChain ?? [],
-              pipelineSteps: item.pipelineSteps ?? undefined,
-              fingerprint: item.pipelineFingerprint ?? undefined,
-            })}
-            className="bg-card/30 border border-border/20 rounded-xl p-4 backdrop-blur-sm cursor-pointer result-card-hover"
+            className="group relative bg-card/30 border border-border/20 rounded-xl p-4 backdrop-blur-sm cursor-pointer result-card-hover"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${getTierBadgeClass(item.publicTier as PublicTier)} uppercase tracking-wider`}>
-                    {item.publicTier}
-                  </span>
-                  {item.category && (
-                    <span className="text-[10px] text-muted-foreground/50 uppercase tracking-wider">
-                      {item.category}
+            {/* Card body — opens provenance */}
+            <div
+              onClick={() => setProvenancePipeline({
+                name: item.artifactName,
+                score: item.score,
+                systemChain: item.systemChain ?? [],
+                pipelineSteps: item.pipelineSteps ?? undefined,
+                fingerprint: item.pipelineFingerprint ?? undefined,
+              })}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${getTierBadgeClass(item.publicTier as PublicTier)} uppercase tracking-wider`}>
+                      {item.publicTier}
                     </span>
-                  )}
-                  <span className="text-[9px] text-muted-foreground/30 ml-auto">
-                    {item.source}
-                  </span>
-                </div>
-                <div className="font-mono text-sm font-bold text-foreground">
-                  {item.artifactName}
-                </div>
-                {item.systemChain && item.systemChain.length > 0 && (
-                  <p className="text-[10px] text-primary/50 font-mono mt-1 leading-relaxed">
-                    {getFunctionalDescription(item.artifactName, item.systemChain)}
-                  </p>
-                )}
-                <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
-                  {MEMORY_STREAM_PROVENANCE}
-                </div>
-                {item.pipelineFingerprint && (
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
-                    <span className="text-[8px] font-mono text-muted-foreground/40">
-                      {truncateFingerprint(item.pipelineFingerprint)}
+                    {item.category && (
+                      <span className="text-[10px] text-muted-foreground/50 uppercase tracking-wider">
+                        {item.category}
+                      </span>
+                    )}
+                    <span className="text-[9px] text-muted-foreground/30 ml-auto">
+                      {item.source}
                     </span>
                   </div>
-                )}
-              </div>
-              <div className="text-right shrink-0">
-                <div className={`text-xl font-mono font-black ${
-                  item.score >= 100 ? 'text-primary' :
-                  item.score >= 94 ? 'text-purple-400' :
-                  item.score >= 90 ? 'text-amber-400' :
-                  item.score >= 80 ? 'text-sky-400' : 'text-emerald-400'
-                }`}>
-                  {item.score}
+                  <div className="font-mono text-sm font-bold text-foreground">
+                    {item.artifactName}
+                  </div>
+                  {item.systemChain && item.systemChain.length > 0 && (
+                    <p className="text-[10px] text-primary/50 font-mono mt-1 leading-relaxed">
+                      {getFunctionalDescription(item.artifactName, item.systemChain)}
+                    </p>
+                  )}
+                  <div className="text-[9px] font-mono text-muted-foreground/40 mt-0.5">
+                    {MEMORY_STREAM_PROVENANCE}
+                  </div>
+                  {item.pipelineFingerprint && (
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
+                      <span className="text-[8px] font-mono text-muted-foreground/40">
+                        {truncateFingerprint(item.pipelineFingerprint)}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="text-[9px] text-muted-foreground">
-                  {formatValuation(item.valuationDisplay)}
+                <div className="text-right shrink-0">
+                  <div className={`text-xl font-mono font-black ${
+                    item.score >= 100 ? 'text-primary' :
+                    item.score >= 94 ? 'text-neon-purple' :
+                    item.score >= 90 ? 'text-neon-amber' :
+                    item.score >= 80 ? 'text-neon-cyan' : 'text-neon-green'
+                  }`}>
+                    {item.score}
+                  </div>
+                  <div className="text-[9px] text-muted-foreground">
+                    {formatValuation(item.valuationDisplay)}
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Remove button — visible on hover / always on mobile */}
+            {onRemove && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setConfirmRemove(item);
+                }}
+                disabled={removing === item.id}
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100 max-sm:opacity-60 transition-opacity p-1.5 rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive/60 hover:text-destructive border border-destructive/10 hover:border-destructive/20 min-h-[36px] min-w-[36px] flex items-center justify-center"
+                aria-label={`Remove ${item.artifactName} from vault`}
+              >
+                {removing === item.id ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="w-3.5 h-3.5" />
+                )}
+              </button>
+            )}
           </motion.div>
         ))}
       </div>
+
+      {/* Confirm removal dialog */}
+      <AlertDialog open={!!confirmRemove} onOpenChange={(open) => !open && setConfirmRemove(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove from Vault?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <strong className="text-foreground">{confirmRemove?.artifactName}</strong> will be permanently
+              removed from your vault. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRemove}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remove
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Provenance overlay */}
       <PipelineProvenance
