@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network, Users } from 'lucide-react';
+import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network, Users, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
