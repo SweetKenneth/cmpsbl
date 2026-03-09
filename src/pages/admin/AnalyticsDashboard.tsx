@@ -246,8 +246,8 @@ export default function AnalyticsDashboard() {
           </Button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex gap-1.5 p-1.5 rounded-xl bg-muted/20 border border-border/30 overflow-x-auto">
+        {/* Tab Navigation — scrollable on mobile with 44px touch targets */}
+        <div className="flex gap-1.5 p-1.5 rounded-xl bg-muted/20 border border-border/30 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-1.5">
           {tabs.map(t => {
             const Icon = t.icon;
             const isActive = tab === t.key;
@@ -256,13 +256,15 @@ export default function AnalyticsDashboard() {
                 key={t.key}
                 onClick={() => setTab(t.key)}
                 className={cn(
-                  "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap",
+                  "px-3 sm:px-4 py-2.5 min-h-[44px] rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap shrink-0",
                   isActive
                     ? TAB_STYLES[t.color]
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
                 )}
               >
-                <Icon className="w-4 h-4" /> {t.label}
+                <Icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{t.label}</span>
+                <span className="sm:hidden">{t.label.split(' ')[0]}</span>
               </button>
             );
           })}
@@ -1129,7 +1131,7 @@ function ExclusionsView() {
                   )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-foreground truncate max-w-[200px]">
+                      <span className="text-xs font-mono text-foreground truncate max-w-[140px] sm:max-w-[200px]">
                         {ex.fingerprint.slice(0, 20)}…
                       </span>
                       <Badge variant="outline" className="text-[9px] font-mono shrink-0">
