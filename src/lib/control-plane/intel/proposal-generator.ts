@@ -1444,7 +1444,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 11: Edge function risk flags ───
-    for (const flag of modernizerResult.edge_analysis.risk_flags) {
+    for (const flag of evolutionResult.edge_analysis.risk_flags) {
       candidates.push({
         value: severityValue(flag.severity) * categoryMultiplier.security * 0.7,
         dedup_key: `edge_risk_${flag.function_name}_${flag.risk_type}`,
