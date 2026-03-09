@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as harvestModule from '@/lib/substrate/harvest-module';
+import * as harvestModule from '@/lib/substrate/harvest';
 
 export interface UseHarvestReturn {
   state: ReturnType<typeof useQuery>;
