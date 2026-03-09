@@ -501,37 +501,19 @@ Confidence: <0.0-1.0>
 // HELPERS
 // ════════════════════════════════════════════════════════════════════
 
-async function callTeacher(apiKey: string, prompt: string): Promise<string> {
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: TEACHER_MODEL,
-      messages: [
-        {
-          role: "system",
-          content: "You are a knowledge distillation engine for the CMPSBL cognitive substrate. Your outputs must be precise, dense, and structured exactly as requested. No filler, no pleasantries.",
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 2000,
-    }),
+async function callTeacher(_apiKey: string, prompt: string): Promise<string> {
+  // Route through NEXUS fleet intelligence — no direct gateway calls
+  const { nexusRoute } = await import("../_shared/nexus-route.ts");
+
+  const result = await nexusRoute(prompt, {
+    systemPrompt: "You are a knowledge distillation engine for the CMPSBL cognitive substrate. Your outputs must be precise, dense, and structured exactly as requested. No filler, no pleasantries.",
+    taskType: "reasoning",
+    temperature: 0.3,
+    maxTokens: 2000,
+    priority: "normal",
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    console.error(`[distillation] Teacher call failed: ${response.status}`, errText);
-    if (response.status === 429) throw new Error("rate_limited");
-    if (response.status === 402) throw new Error("budget_exceeded");
-    throw new Error(`teacher_error_${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.choices?.[0]?.message?.content || "";
+  return result.content;
 }
 
 function parseCrystalResponse(response: string) {

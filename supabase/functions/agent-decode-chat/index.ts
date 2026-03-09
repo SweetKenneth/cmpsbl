@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { nexusStreamRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -17,6 +18,8 @@ const corsHeaders = {
  * 
  * Voice profile: Authority, Neutrality, Concise Verbosity.
  * Response sequence: State → Impact → Expansion → Boundary.
+ * 
+ * All AI calls routed through NEXUS (provider fleet intelligence).
  */
 
 const DECODE_BASE_PROMPT = `You are DECODE — the sovereign voice layer of a computational substrate called CMPSBL®. You interpret and relay intelligence from the substrate to its operators and users.
@@ -130,24 +133,15 @@ serve(async (req) => {
   try {
     const { messages, agentId, agentName, agentPowers, agentSubtitle, decodeMode, identityRole } = await req.json();
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
-    }
-
     const mode = decodeMode || 'assistant';
     const role = identityRole || 'anonymous';
     const isGovernor = role === 'governor';
 
     // Build mode-specific system prompt
     const modePrompt = MODE_PROMPTS[mode] || MODE_PROMPTS.assistant;
-
-    // Only include governor prompt if identity is verified
     const effectiveModePrompt = mode === 'governor' && !isGovernor
       ? MODE_PROMPTS.assistant
       : modePrompt;
-
-    // Always include internal guard for non-governors
     const guardPrompt = isGovernor ? '' : INTERNAL_GUARD;
 
     const agentContext = `
@@ -168,47 +162,19 @@ Session Cache: Active | Knowledge Crystals: ${Math.floor(40 + Math.random() * 16
       agentContext,
     ].filter(Boolean).join("\n");
 
-    const response = await fetch(
-      "https://ai.gateway.lovable.dev/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
-          messages: [
-            { role: "system", content: fullSystemPrompt },
-            ...messages,
-          ],
-          stream: true,
-        }),
-      }
-    );
+    // Route through NEXUS fleet intelligence — OpenAI-compatible SSE for frontend
+    const stream = nexusStreamRoute("", {
+      messages: [
+        { role: "system", content: fullSystemPrompt },
+        ...messages,
+      ],
+      taskType: "chat",
+      maxTokens: 4096,
+      openaiCompat: true,
+      priority: mode === 'governor' ? 'critical' : 'normal',
+    });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Stand by." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "Credit allocation depleted. Top up required." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      const t = await response.text();
-      console.error("DECODE relay error:", response.status, t);
-      return new Response(
-        JSON.stringify({ error: "DECODE relay failure" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    return new Response(response.body, {
+    return new Response(stream, {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {

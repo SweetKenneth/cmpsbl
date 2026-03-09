@@ -49,6 +49,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 export interface NexusRouteOptions {
   systemPrompt?: string;
+  messages?: Array<{ role: string; content: string }>;  // v3.1: full message array (overrides prompt+systemPrompt)
   taskType?: string;
   temperature?: number;
   maxTokens?: number;
@@ -65,6 +66,7 @@ export interface NexusRouteOptions {
   costCeiling?: number;            // v3: max cost in USD for this request
   compressPrompt?: boolean;        // v3: auto-compress if over context
   consensusCount?: number;         // v3: how many models to use for consensus
+  openaiCompat?: boolean;          // v3.1: emit OpenAI-compatible SSE format for streaming
 }
 
 export interface NexusRouteResult {
@@ -1050,12 +1052,17 @@ async function callProvider(
     headers["Authorization"] = `Bearer ${apiKey}`;
     if (p.extraHeaders) Object.assign(headers, p.extraHeaders);
 
+    // v3.1: Use explicit messages array if provided, otherwise build from prompt
+    const callMessages = opts.messages
+      ? opts.messages
+      : [
+          { role: "system", content: opts.systemPrompt || "You are an expert AI assistant. Be concise and accurate." },
+          { role: "user", content: prompt },
+        ];
+
     body = {
       model: p.model,
-      messages: [
-        { role: "system", content: opts.systemPrompt || "You are an expert AI assistant. Be concise and accurate." },
-        { role: "user", content: prompt },
-      ],
+      messages: callMessages,
       max_tokens: opts.maxTokens ?? 2048,
       temperature,
     };
@@ -1345,7 +1352,12 @@ export function nexusStreamRoute(
         if (ranked.length === 0) {
           // Fallback: non-streaming full response
           const result = await nexusRoute(prompt, opts);
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: result.content, provider: result.provider, done: true })}\n\n`));
+          if (opts.openaiCompat) {
+            const fakeChunk = { choices: [{ delta: { content: result.content } }] };
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(fakeChunk)}\n\ndata: [DONE]\n\n`));
+          } else {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: result.content, provider: result.provider, done: true })}\n\n`));
+          }
           controller.close();
           return;
         }
@@ -1361,12 +1373,17 @@ export function nexusStreamRoute(
         };
         if (provider.extraHeaders) Object.assign(headers, provider.extraHeaders);
 
+        // v3.1: Use explicit messages array if provided
+        const callMessages = opts.messages
+          ? opts.messages
+          : [
+              { role: "system", content: opts.systemPrompt || "You are an expert AI assistant." },
+              { role: "user", content: prompt },
+            ];
+
         const body = {
           model: provider.model,
-          messages: [
-            { role: "system", content: opts.systemPrompt || "You are an expert AI assistant." },
-            { role: "user", content: prompt },
-          ],
+          messages: callMessages,
           max_tokens: opts.maxTokens ?? 2048,
           temperature,
           stream: true,
@@ -1380,7 +1397,12 @@ export function nexusStreamRoute(
 
         if (!resp.ok || !resp.body) {
           const fallbackResult = await nexusRoute(prompt, opts);
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: fallbackResult.content, provider: fallbackResult.provider, done: true })}\n\n`));
+          if (opts.openaiCompat) {
+            const fakeChunk = { choices: [{ delta: { content: fallbackResult.content } }] };
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(fakeChunk)}\n\ndata: [DONE]\n\n`));
+          } else {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: fallbackResult.content, provider: fallbackResult.provider, done: true })}\n\n`));
+          }
           controller.close();
           return;
         }
@@ -1401,7 +1423,11 @@ export function nexusStreamRoute(
             if (!line.startsWith('data: ')) continue;
             const data = line.slice(6);
             if (data === '[DONE]') {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, provider: provider.id })}\n\n`));
+              if (opts.openaiCompat) {
+                controller.enqueue(encoder.encode(`data: [DONE]\n\n`));
+              } else {
+                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true, provider: provider.id })}\n\n`));
+              }
               continue;
             }
 
@@ -1409,7 +1435,12 @@ export function nexusStreamRoute(
               const chunk = JSON.parse(data);
               const delta = chunk.choices?.[0]?.delta?.content;
               if (delta) {
-                controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: delta, provider: provider.id })}\n\n`));
+                if (opts.openaiCompat) {
+                  // Pass through OpenAI-compatible SSE format
+                  controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+                } else {
+                  controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: delta, provider: provider.id })}\n\n`));
+                }
               }
             } catch { /* skip malformed chunks */ }
           }
