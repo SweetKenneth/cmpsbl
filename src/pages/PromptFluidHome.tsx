@@ -54,7 +54,7 @@ const milestones = [
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
   { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
-  { icon: Layers, title: "Zone Architecture", description: "38 nodes across 12 sectors with 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ) and circuit-breaker isolation." },
+  { icon: Layers, title: "Zone Architecture", description: "40 nodes across 12 sectors with 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ) and circuit-breaker isolation." },
   { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
   { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, synergy pipelines, and a capabilities depot — all orchestrated through a unified terminal." },
   { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },

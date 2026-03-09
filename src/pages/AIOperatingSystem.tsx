@@ -252,7 +252,7 @@ export default function AIOperatingSystem() {
                 <Link to="/start-here">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
-                <Link to="/modules">Explore All 38 Nodes</Link>
+                <Link to="/modules">Explore All 40 Nodes</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
                 <Link to="/gaming">Gaming AI <Gamepad2 className="w-4 h-4 ml-2" /></Link>

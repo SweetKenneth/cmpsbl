@@ -460,7 +460,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'intent' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="INTENT" description="Module mesh governance hub. Monitor inter-module communication, approve actions, and manage intent routing across the 38-node matrix.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="INTENT" description="Module mesh governance hub. Monitor inter-module communication, approve actions, and manage intent routing across the 40-node matrix.">
                 <PanelContainer id="intent">
                   <ModuleErrorBoundary moduleName="INTENT">
                     <Suspense fallback={<PanelLoader />}>
