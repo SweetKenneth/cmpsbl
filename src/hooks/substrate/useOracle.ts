@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as oracleModule from '@/lib/substrate/oracle-module';
+import * as oracleModule from '@/lib/substrate/oracle';
 
 export interface UseOracleReturn {
   state: ReturnType<typeof useQuery>;
