@@ -1397,7 +1397,12 @@ export function nexusStreamRoute(
 
         if (!resp.ok || !resp.body) {
           const fallbackResult = await nexusRoute(prompt, opts);
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: fallbackResult.content, provider: fallbackResult.provider, done: true })}\n\n`));
+          if (opts.openaiCompat) {
+            const fakeChunk = { choices: [{ delta: { content: fallbackResult.content } }] };
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify(fakeChunk)}\n\ndata: [DONE]\n\n`));
+          } else {
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: fallbackResult.content, provider: fallbackResult.provider, done: true })}\n\n`));
+          }
           controller.close();
           return;
         }
