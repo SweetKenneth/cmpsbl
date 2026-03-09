@@ -31,7 +31,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the architecture library covering all 38 nodes across 12 sectors.",
+    description: "Full access to the architecture library covering all 40 nodes across 12 sectors.",
     gradient: "from-violet-500 to-purple-600",
   },
   {
@@ -49,7 +49,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the layered kernel architecture — 38 nodes across 12 sectors.",
+    description: "Understand the layered kernel architecture — 40 nodes across 12 sectors.",
     gradient: "from-blue-500 to-indigo-600",
   },
 ];
@@ -104,7 +104,7 @@ export default function Insights() {
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="outline" className="border-primary/20">Production</Badge>
-              <Badge variant="outline" className="border-primary/20">38 Nodes</Badge>
+              <Badge variant="outline" className="border-primary/20">40 Nodes</Badge>
               <Badge variant="outline" className="border-primary/20">Read-Only</Badge>
             </div>
           </motion.div>

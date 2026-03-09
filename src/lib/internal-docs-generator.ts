@@ -532,7 +532,7 @@ export function generateFoundryDoc(): string {
   <h1>Autonomous Software<br/><span class="gradient">Foundry</span></h1>
   <p class="cover-subtitle">
     The substrate's recursive capability discovery and manufacturing system.
-    A closed-loop reactor that crystallizes latent capabilities from the 38-node topology
+    A closed-loop reactor that crystallizes latent capabilities from the 40-node topology
     into scored, tiered, deduplicated software discoveries.
   </p>
   <p class="meta-line">
@@ -569,7 +569,7 @@ export function generateFoundryDoc(): string {
 
   <h3>What the Foundry Does</h3>
   <ul class="checklist">
-    <li><strong>Discovers</strong> latent capabilities by combinatorially exploring the 38-node topology</li>
+    <li><strong>Discovers</strong> latent capabilities by combinatorially exploring the 40-node topology</li>
     <li><strong>Scores</strong> each discovered capability using CJPI (Crown Jewel Pipeline Index)</li>
     <li><strong>Tiers</strong> discoveries into Apex / Mythic / Relic / Prime / Mint quality bands</li>
     <li><strong>Ranks</strong> discoveries within each tier by composite score</li>
@@ -594,7 +594,7 @@ export function generateFoundryDoc(): string {
   <h3>Key Parameters</h3>
   <table>
     <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
-    <tr><td>Exploration breadth</td><td>38 nodes × combinatorial chains</td><td>Full topology coverage</td></tr>
+    <tr><td>Exploration breadth</td><td>40 nodes × combinatorial chains</td><td>Full topology coverage</td></tr>
     <tr><td>Scoring</td><td>CJPI (4-factor composite)</td><td>Novelty, utility, complexity, composability</td></tr>
     <tr><td>Deduplication</td><td>Cosine &gt; 0.92 = duplicate</td><td>Semantic similarity threshold</td></tr>
     <tr><td>Time budget</td><td>8–12 hours (full sweep)</td><td>Configurable per reactor run</td></tr>
@@ -602,7 +602,7 @@ export function generateFoundryDoc(): string {
 
   <h3>Candidate Generation Strategy</h3>
   <div class="card">
-    <p><strong>Depth 2:</strong> All pairwise module combinations (38 × 37 = 1,406 pairs)</p>
+    <p><strong>Depth 2:</strong> All pairwise module combinations (40 × 39 = 1,560 pairs)</p>
     <p><strong>Depth 3:</strong> Filtered triples — high-affinity pairs extended by one hop</p>
     <p><strong>Depth 4–5:</strong> Only extends from top-scoring depth-3 chains</p>
     <p style="margin-top:12px;font-size:13px;color:var(--text-dim);">
@@ -760,7 +760,7 @@ export function generateDiscoveryEngineDoc(): string {
 
   <h2 id="reactor">1. Reactor Architecture</h2>
   <h3>Core Loop</h3>
-  <pre><code>Input:  38-node topology graph
+  <pre><code>Input:  40-node topology graph
 Output: Scored, tiered, deduplicated capability manifest
 
 1. Generate candidate pool from module combinations (depth 2–5)
@@ -1233,7 +1233,7 @@ export function generateTradeSecretsDoc(): string {
     <tr><th>Secret</th><th>Description</th><th>Strategic Value</th></tr>
     <tr><td>Clockless execution</td><td>Event-driven, demand-pulled, no timers</td><td>Eliminates idle compute, prevents false health signals</td></tr>
     <tr><td>3-Lane Integrity</td><td>Availability × Correctness × Performance</td><td>Mathematically deterministic system health</td></tr>
-    <tr><td>38-node topology</td><td>12-sector architecture with field permeation</td><td>No competitor has this topological completeness</td></tr>
+    <tr><td>40-node topology</td><td>12-sector architecture with field permeation</td><td>No competitor has this topological completeness</td></tr>
     <tr><td>Governance-gated evolution</td><td>SEBA with 7-gate promotion + two-man rule</td><td>Autonomous improvement with safety guarantees</td></tr>
     <tr><td>Autonomous Foundry</td><td>Recursive capability discovery reactor</td><td>Self-manufacturing software — DOI published</td></tr>
   </table>

@@ -19,7 +19,7 @@ const PHASES = [
     capabilities: [
       "Crystallization engine with quality floor (68+)",
       "Pipeline scoring & provenance tracking",
-      "38-node topology with 12 sector coverage",
+      "40-node topology with 12 sector coverage",
       "Artifact packs & slot-based activation",
     ],
     icon: Sparkles,

@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * All 38 nodes at full parity
+ * All 40 nodes at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */

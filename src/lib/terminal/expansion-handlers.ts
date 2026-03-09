@@ -189,7 +189,7 @@ export function registerExpansionHandlers(): void {
   // ═══ Overview command ═══
   registerHandler('expansion.status', async () => {
     const lines = [
-      '┌─ EXPANSION MODULES — 38-Node / 12-Sector Architecture ──────┐',
+      '┌─ EXPANSION MODULES — 40-Node / 12-Sector Architecture ──────┐',
       '│                                                             │',
     ];
     for (const mod of EXPANSION_MODULES) {

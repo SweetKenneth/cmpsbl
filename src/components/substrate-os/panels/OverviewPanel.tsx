@@ -147,7 +147,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
               { label: 'Status', value: statusLabel, sub: `Memory Stream Active`, color: statusColor },
               { label: 'Matrix Nodes', value: `${healthScore.activeCount}/${healthScore.totalModules}`, sub: `${integrity.operational}% integrity`, color: 'text-primary' },
               { label: 'Structural', value: `${integrity.structural}%`, sub: (integrity.status ?? '').replace('MATRIX ', ''), color: 'text-foreground' },
-              { label: 'Sectors', value: '12', sub: '38 nodes · Signal → Silicon', color: 'text-foreground' },
+              { label: 'Sectors', value: '12', sub: '40 nodes · Signal → Silicon', color: 'text-foreground' },
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}

@@ -58,7 +58,7 @@ function WhatIs() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">What is CMPSBL?</h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-            CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 38-node intelligence architecture 
+            CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 40-node intelligence architecture 
             that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
             It's an always-running system that <em>discovers</em> software the way a research lab discovers compounds.
           </p>

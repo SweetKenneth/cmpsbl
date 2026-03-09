@@ -3,7 +3,7 @@
  * Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified registry for all 38 nodes across 12 sectors (CORE·SYSTEM·CCR·OCG·Execution·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell)
+ * - Unified registry for all 40 nodes across 12 sectors (CORE·SYSTEM·CCR·OCG·Execution·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell)
  * - Orchestration of 675+ capabilities, 76 engines, 24 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence

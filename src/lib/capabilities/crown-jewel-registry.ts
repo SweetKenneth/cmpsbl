@@ -1712,7 +1712,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'cj2-core-homeostatic-regulator', name: 'Homeostatic Regulator',
     artifactType: 'capability', modules: ['CORE', 'SYSTEM', 'VISION', 'DEFENSE'],
     classification: 'architecture',
-    reason: 'Maintains system equilibrium across all 38 nodes autonomously',
+    reason: 'Maintains system equilibrium across all 40 nodes autonomously',
     enables: 'Self-balancing substrate that maintains optimal operating conditions',
     composesWith: ['cj-core-cascade-prevention', 'self_governance'],
     dangerIfExposed: 'Homeostatic parameters reveal system stability boundaries',

@@ -1,7 +1,7 @@
 /**
  * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * 38 nodes across 12 sectors
+ * 40 nodes across 12 sectors
  */
 
 import { useState, useEffect, useMemo } from "react";
@@ -641,7 +641,7 @@ export function TechShowcase() {
           </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">38 Nodes • 12 Sectors • 675+ Capabilities</span>
+            <span className="text-xs">40 Nodes • 12 Sectors • 675+ Capabilities</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
