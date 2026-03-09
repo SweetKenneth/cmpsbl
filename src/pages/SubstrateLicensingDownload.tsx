@@ -28,7 +28,7 @@ const LICENSE_TIERS = [
     popular: false,
     comingSoon: false,
     features: [
-      "3 Artifact Slots",
+      "3 Artifact Slots · 5 Vault · 3 Pulls/day",
       "Full baseline runtime",
       "30 free templates",
       "Persistent Memory (project-scoped)",
@@ -48,9 +48,9 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Builder",
-      "6 Artifact Slots",
+      "6 Artifact Slots · 25 Vault · 6 Pulls/day",
       "Expanded memory depth",
-      "Executable capabilities",
+      "Executable capabilities + artifact export",
       "Priority routing",
       "Email support",
     ],
@@ -68,10 +68,10 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Creator",
-      "12 Artifact Slots",
+      "12 Artifact Slots · Unlimited Vault · 12 Pulls/day",
       "Dedicated memory partitions",
       "Self-hosted deployment (LNCHBL)",
-      "Full governance authority",
+      "Full governance authority + custom pipeline slots",
       "Compliance & audit exports",
       "Organization workspaces",
       "Dedicated support channel",

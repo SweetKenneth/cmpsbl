@@ -55,16 +55,19 @@ Think of it as the infrastructure layer that makes any AI provider more capable.
 How it works:
 1. The Memory Stream continuously generates and evaluates pipelines
 2. Each pipeline is scored for quality (minimum floor: 68+)
-3. You can "crystallize" a pipeline — pulling it from the stream into your workspace
-4. Every pull is real, production-grade software
+3. You can "crystallize" a pipeline — pulling it from the stream
+4. After crystallization, choose Keep (store in vault) or Discard
+5. Every pull is real, production-grade software
 
 Daily crystallization limits depend on your tier:
-• Builder (Free): 3 pulls / day
-• Studio ($29/mo): 6 pulls / day
-• Creator ($49/mo): 9 pulls / day
-• Architect ($79/mo): 12 pulls / day`,
+• Builder (Free): 3 pulls / day — 5 vault capacity
+• Studio ($29/mo): 6 pulls / day — 25 vault capacity
+• Creator ($49/mo): 9 pulls / day — 75 vault capacity
+• Architect ($79/mo): 12 pulls / day — Unlimited vault
+
+Rare discoveries (Relic, Mythic, Apex) trigger special alerts. Mythic discoveries prompt vault upgrade if full. Artifact export is available for paid tiers only.`,
     category: 'question',
-    keywords: ['memory stream', 'crystallize', 'pipeline', 'pulls', 'stream'],
+    keywords: ['memory stream', 'crystallize', 'pipeline', 'pulls', 'stream', 'vault', 'keep', 'discard'],
     confidence: 0.95,
     verified: true,
     priority: 'critical',
@@ -224,14 +227,14 @@ No credit card required. Create an account and start immediately. You can upgrad
     question_pattern: 'How many crystallizations do I get per day?',
     answer: `Daily Memory Stream crystallization limits by tier:
 
-• Builder (Free): 3 per day
-• Studio ($29/mo): 6 per day
-• Creator ($49/mo): 9 per day
-• Architect ($79/mo): 12 per day
+• Builder (Free): 3 per day — vault stores up to 5 pipelines
+• Studio ($29/mo): 6 per day — vault stores up to 25 pipelines
+• Creator ($49/mo): 9 per day — vault stores up to 75 pipelines
+• Architect ($79/mo): 12 per day — unlimited vault storage
 
-Each crystallization pulls a real, scored pipeline (quality floor: 68+) from the Memory Stream into your workspace. Limits reset daily.`,
+Each crystallization reveals a pipeline. You choose to Keep (store in vault) or Discard. Limits reset daily. Artifact export available for paid tiers only. Creator+ can equip custom pipeline slots.`,
     category: 'question',
-    keywords: ['crystallizations', 'pulls', 'daily', 'limit', 'how many'],
+    keywords: ['crystallizations', 'pulls', 'daily', 'limit', 'how many', 'vault'],
     confidence: 0.95,
     verified: true,
     priority: 'high',
@@ -283,9 +286,9 @@ export const GETTING_STARTED_KNOWLEDGE: KnowledgeEntry[] = [
 1. **Create an account** — Sign up for free at /auth. No credit card required.
 2. **Explore the Memory Stream** — Visit /memory-stream to see crystallized pipelines
 3. **Activate Pipeline Packs** — Choose capabilities that match your workload from 24 available packs across 6 strategic domains
-4. **Start crystallizing** — Pull real, scored pipelines from the Memory Stream (3 free pulls per day)
+4. **Start crystallizing** — Pull pipelines from the Memory Stream (3 free pulls per day), then Keep or Discard each discovery
 
-Your free Builder tier gives you 3 pipeline slots immediately. Upgrade anytime for more slots and daily crystallizations.`,
+Your free Builder tier gives you 3 pipeline slots, 5 vault capacity, and 3 daily pulls. Upgrade anytime for more slots, vault space, and artifact export.`,
     category: 'how_to',
     keywords: ['get started', 'begin', 'start', 'new user', 'sign up', 'onboarding'],
     confidence: 0.94,

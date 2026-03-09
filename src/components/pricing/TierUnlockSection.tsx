@@ -6,12 +6,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier } from "@/lib/quarry/types";
+import { VAULT_TIER_LIMITS } from "@/lib/substrate/vault-limits";
 import { Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TIER_DISPLAY: { key: ProductTier; label: string; gradient: string }[] = [
   { key: 'builder', label: 'Builder', gradient: 'from-emerald-500 to-emerald-600' },
   { key: 'operator', label: 'Studio', gradient: 'from-violet-500 to-purple-500' },
+  { key: 'studio', label: 'Creator', gradient: 'from-blue-500 to-indigo-500' },
   { key: 'architect', label: 'Architect', gradient: 'from-amber-500 to-orange-500' },
 ];
 
@@ -42,7 +44,7 @@ export function TierUnlockSection() {
                   </div>
                   <div className="text-sm font-medium mt-1">{td.label}</div>
                   <div className="text-xs text-muted-foreground mt-1">
-                    Any {config.slots} of 24 packs
+                    {config.slots} slots · {VAULT_TIER_LIMITS[td.key].vaultCapacity === -1 ? '∞' : VAULT_TIER_LIMITS[td.key].vaultCapacity} vault · {VAULT_TIER_LIMITS[td.key].pullsPerDay}/day
                   </div>
                 </CardContent>
               </Card>

@@ -75,7 +75,7 @@ const FAQ_ITEMS = [
   {
     category: "Pipelines & Foundry",
     question: "How does the Memory Stream work?",
-    answer: "The Memory Stream is a four-tier persistent memory system: Hot (active recall, 7-day window), Warm (recent context, 30 days), Cold (permanent archive), and Legacy (unlimited historical). Daily crystallization limits are tier-based: Builder (3), Creator (6), Architect (9), Governor (12).",
+    answer: "The Memory Stream continuously generates scored pipelines. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each pipeline. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
   },
   {
     category: "Pipelines & Foundry",
