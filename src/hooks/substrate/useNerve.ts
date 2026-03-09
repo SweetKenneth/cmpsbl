@@ -5,7 +5,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { debugMode } from '@/lib/substrate/debug-mode';
+import { debugMode } from '@/lib/debug-mode';
 import {
   getNerveStats,
   getHeartbeats,
