@@ -174,7 +174,7 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent." },
   ];
   if (mode === 'governor') return [
-    { icon: "📡", title: "Node Status", prompt: "Report full 38-node health status across all 12 sectors." },
+    { icon: "📡", title: "Node Status", prompt: "Report full 40-node health status across all 12 sectors." },
     { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and circuit breaker states." },
     { icon: "🩺", title: "System Heal", prompt: "Run a diagnostic and heal any degraded nodes." },
     { icon: "📊", title: "Pipeline Metrics", prompt: "Show pipeline scoring and foundry reactor metrics." },

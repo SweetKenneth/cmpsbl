@@ -35,7 +35,7 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
 
 const DEFAULT_LINKS = [
   { icon: Brain, label: 'AI Operating System', href: '/ai-operating-system', description: 'The definitive guide to cognitive infrastructure' },
-  { icon: Layers, label: 'Platform Overview', href: '/modules', description: 'Explore the 38-node substrate' },
+  { icon: Layers, label: 'Platform Overview', href: '/modules', description: 'Explore the 40-node substrate' },
 ];
 
 export function ExperienceMarkers({ category }: ExperienceMarkersProps) {
