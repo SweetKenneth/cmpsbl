@@ -37,5 +37,6 @@ export const adminRoutes = (
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
     <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
     <Route path="/admin/encode-console" element={<AdminRoute><EncodeConsolePage /></AdminRoute>} />
+    <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
   </>
 );
