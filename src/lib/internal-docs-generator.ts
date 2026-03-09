@@ -532,7 +532,7 @@ export function generateFoundryDoc(): string {
   <h1>Autonomous Software<br/><span class="gradient">Foundry</span></h1>
   <p class="cover-subtitle">
     The substrate's recursive capability discovery and manufacturing system.
-    A closed-loop reactor that crystallizes latent capabilities from the 38-node topology
+    A closed-loop reactor that crystallizes latent capabilities from the 40-node topology
     into scored, tiered, deduplicated software discoveries.
   </p>
   <p class="meta-line">
