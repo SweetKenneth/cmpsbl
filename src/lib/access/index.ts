@@ -481,13 +481,34 @@ export async function getUserRoles(): Promise<string[]> {
 
 // ============ Module Metadata ============
 
+export const ACCESS_VERSION = '8.0.0';
+export const ACCESS_CODENAME = 'Citadel';
+
+// ============ Module Exports ============
+
 // Permission optimizer
 export * from './permissionOptimizer';
 
-// Note: sessionManager exports omitted to avoid conflicts with sessionManagement
+// Permission graph (RBAC)
+export * from './permissionGraph';
+ 
+// Quota enforcement (in-memory)
+export * from './quotaEnforcement';
 
-export const ACCESS_VERSION = '7.5.0';
-export const ACCESS_CODENAME = 'Gatekeeper';
+// Session management
+export * from './sessionManagement';
+
+// v8.0 Hardening: Persistent quota store (DB-backed)
+export * from './persistentQuotaStore';
+
+// v8.0 Hardening: API key lifecycle management
+export * from './apiKeyLifecycle';
+
+// v8.0 Hardening: ABAC engine
+export * from './abacEngine';
+
+// v8.0 Hardening: DEFENSE integration
+export * from './defenseIntegration';
 
 export interface AccessModuleStatus {
   authenticated: boolean;
@@ -528,12 +549,3 @@ export async function getAccessStatus(): Promise<AccessModuleStatus> {
     roles,
   };
 }
- 
- // Permission graph
- export * from './permissionGraph';
- 
- // Quota enforcement
- export * from './quotaEnforcement';
- 
- // Session management
- export * from './sessionManagement';
