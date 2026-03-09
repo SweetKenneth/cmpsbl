@@ -245,7 +245,7 @@ export function computeConduitHealth(): ConduitHealthReport {
     category: 'webhook',
     name: 'Exponential Backoff Retry',
     status: 'active',
-    detail: `${MAX_RETRY_ATTEMPTS} attempts with jitter, max 5min`,
+    detail: '5 attempts with jitter, max 5min',
   });
 
   features.push({
