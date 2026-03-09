@@ -2,20 +2,20 @@
  * FoundryMiningPanel — The "CRYSTALLIZE" button + Keep/Discard flow
  * Enforces daily pull limits and vault capacity.
  * Includes rarity messaging and Mythic upgrade trigger.
+ * 
+ * Mobile-first: 44px touch targets, responsive spacing, safe-area aware
  */
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pickaxe, Loader2, Fingerprint } from 'lucide-react';
-import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { Pickaxe, Loader2 } from 'lucide-react';
 import { MEMORY_STREAM_QUALITY_NOTE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { KeepDiscardPanel } from './KeepDiscardPanel';
 import { VaultUsageIndicator } from './VaultUsageIndicator';
 import { VaultCapacityModal, DailyLimitModal, MythicDiscoveryModal } from './VaultUpgradeModals';
-import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
+import { type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse, MineResult } from '@/lib/foundry/public-mining-engine';
 import { isPullLimitReached, isVaultFull, getVaultLimits } from '@/lib/substrate/vault-limits';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
@@ -42,36 +42,28 @@ export function FoundryMiningPanel({
     fingerprint?: string; discoveryCount?: number;
   } | null>(null);
 
-  // Keep/Discard state
   const [decisions, setDecisions] = useState<Record<string, 'kept' | 'discarded'>>({});
-
-  // Modal states
   const [dailyLimitOpen, setDailyLimitOpen] = useState(false);
   const [vaultCapacityOpen, setVaultCapacityOpen] = useState(false);
   const [mythicModalOpen, setMythicModalOpen] = useState(false);
   const [pendingMythic, setPendingMythic] = useState<MineResult | null>(null);
 
   const limits = getVaultLimits(subscriptionTier);
+  const pullsRemaining = Math.max(0, limits.pullsPerDay - pullsToday);
+  const atPullLimit = pullsRemaining === 0;
 
   const handleCrystallize = () => {
-    // Check daily pull limit
     if (isPullLimitReached(pullsToday, subscriptionTier)) {
       setDailyLimitOpen(true);
       return;
     }
-
-    // Reset decisions for new crystallization
     setDecisions({});
     setPendingMythic(null);
-
     onCrystallizing?.(true);
     setPhase('sampling');
     setTimeout(() => setPhase('condensing'), 700);
     setTimeout(() => setPhase('crystallizing'), 1400);
-    setTimeout(() => {
-      setPhase(null);
-      onCrystallizing?.(false);
-    }, 2200);
+    setTimeout(() => { setPhase(null); onCrystallizing?.(false); }, 2200);
     onMine();
   };
 
@@ -90,7 +82,6 @@ export function FoundryMiningPanel({
       return;
     }
 
-    // Mark as kept
     setDecisions(prev => ({ ...prev, [result.id]: 'kept' }));
     toast.success(`${result.name} stored in Vault`);
     onVaultChange?.();
@@ -109,28 +100,35 @@ export function FoundryMiningPanel({
   }, [pendingMythic]);
 
   return (
-    <div className="space-y-6">
-      {/* Vault usage + pull counter */}
-      <div className="flex flex-wrap items-center gap-4 justify-between">
+    <div className="space-y-5 sm:space-y-6">
+      {/* ── Status bar: vault + pulls ── */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm px-4 py-3">
         <VaultUsageIndicator currentCount={vaultCount} subscriptionTier={subscriptionTier} />
-        <div className="text-xs font-mono text-muted-foreground">
-          Pulls today: {pullsToday} / {limits.pullsPerDay}
+        <div className={`text-xs font-mono tabular-nums flex items-center gap-1.5 ${
+          atPullLimit ? 'text-amber-400' : 'text-muted-foreground'
+        }`}>
+          <span>{pullsToday}</span>
+          <span className="text-muted-foreground/30">/</span>
+          <span>{limits.pullsPerDay}</span>
+          <span className="text-muted-foreground/50 ml-1 hidden sm:inline">pulls today</span>
+          <span className="text-muted-foreground/50 ml-1 sm:hidden">pulls</span>
         </div>
       </div>
 
-      {/* Crystallize button */}
+      {/* ── Crystallize button ── */}
       <div className="flex flex-col items-center">
         <motion.button
           onClick={handleCrystallize}
           disabled={isMining}
-          whileHover={!isMining ? { scale: 1.03 } : {}}
+          whileHover={!isMining ? { scale: 1.02 } : {}}
           whileTap={!isMining ? { scale: 0.97 } : {}}
           className={`
-            relative w-full max-w-md py-6 rounded-2xl font-mono text-lg font-black uppercase tracking-wider
-            transition-all border-2
+            relative w-full max-w-md min-h-[56px] sm:min-h-[64px] py-4 sm:py-6 rounded-2xl font-mono
+            text-base sm:text-lg font-black uppercase tracking-wider
+            transition-all duration-200 border-2
             ${isMining
               ? 'bg-muted/20 border-border/20 text-muted-foreground cursor-wait'
-              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50 crystallize-glow'
+              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 crystallize-glow'
             }
           `}
         >
@@ -143,17 +141,18 @@ export function FoundryMiningPanel({
             {isMining ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Crystallizing...
+                <span>Crystallizing...</span>
               </>
             ) : (
               <>
                 <Pickaxe className="w-5 h-5" />
-                Crystallize
+                <span>Crystallize</span>
               </>
             )}
           </div>
         </motion.button>
-        <div className="text-[10px] font-mono text-muted-foreground/50 mt-3">
+
+        <div className="text-[10px] font-mono text-muted-foreground/40 mt-2.5 text-center px-4">
           {MEMORY_STREAM_QUALITY_NOTE}
         </div>
 
@@ -191,6 +190,7 @@ export function FoundryMiningPanel({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
+            transition={{ type: 'spring', damping: 20 }}
           >
             <KeepDiscardPanel
               results={lastResult.results}
@@ -206,7 +206,7 @@ export function FoundryMiningPanel({
             key="empty"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-8"
+            className="text-center py-8 sm:py-12"
           >
             <div className="text-muted-foreground/60 font-mono text-sm mb-2">
               No new pipelines discovered this cycle.
