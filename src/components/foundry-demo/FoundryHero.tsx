@@ -2,7 +2,9 @@
  * Memory Stream Hero — Cinematic opening for the flagship product page
  * All metrics are real production data from the substrate.
  */
+import { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { Volume2, VolumeX } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
