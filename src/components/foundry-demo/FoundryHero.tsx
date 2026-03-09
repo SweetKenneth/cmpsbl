@@ -10,6 +10,15 @@ import { MemoryRiver } from '@/components/hero/MemoryRiver';
 
 export function FoundryHero() {
   const navigate = useNavigate();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleMute = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setMuted(videoRef.current.muted);
+    }
+  }, []);
 
   return (
     <section className="relative flex flex-col items-center justify-start px-5 sm:px-6 pt-20 sm:pt-28 md:pt-32 pb-16 sm:pb-20 overflow-hidden min-h-[90vh] sm:min-h-0">
