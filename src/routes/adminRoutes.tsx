@@ -5,7 +5,6 @@ import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 import { AdminRoute } from "@/components/admin/AdminRoute";
 
-const AdminPatches = lazy(() => import("@/pages/AdminPatches"));
 const ShadowMeshPage = lazy(() => import("@/pages/admin/ShadowMeshPage"));
 const ImmunityMeshDashboard = lazy(() => import("@/pages/admin/ImmunityMeshDashboard"));
 const OwnerReports = lazy(() => import("@/pages/admin/OwnerReports"));
@@ -15,14 +14,13 @@ const QuarryDashboard = lazy(() => import("@/pages/admin/QuarryDashboard"));
 const IntelPanel = lazy(() => import("@/pages/admin/IntelPanel"));
 const STierVault = lazy(() => import("@/pages/admin/STierVault"));
 const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningConsole"));
-const Diligence = lazy(() => import("@/pages/Diligence"));
 const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
 const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
 const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
 
 export const adminRoutes = (
   <>
-    <Route path="/admin/patches" element={<AdminRoute><AdminPatches /></AdminRoute>} />
+    <Route path="/admin/patches" element={<Navigate to="/" replace />} />
     <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
     <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
     <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
@@ -35,7 +33,7 @@ export const adminRoutes = (
     <Route path="/admin/gate" element={<AdminRoute><GateEngineDashboard /></AdminRoute>} />
     <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
-    <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
+    <Route path="/diligence" element={<Navigate to="/" replace />} />
     <Route path="/admin/encode-console" element={<AdminRoute><EncodeConsolePage /></AdminRoute>} />
     <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
   </>
