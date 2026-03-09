@@ -106,7 +106,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
 // =============================================================================
 
 /**
- * Total terminal commands across all 38 nodes
+ * Total terminal commands across all 40 nodes
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
 export const TERMINAL_COMMANDS_COUNT = 500;
