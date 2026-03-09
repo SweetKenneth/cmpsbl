@@ -94,6 +94,9 @@
     harvest: ['core', 'memory', 'economy'],
     reflex: ['core', 'nexus', 'vision'],
     shadow: ['core', 'defense'],
+    // Nodes 39-40
+    engineer: ['core', 'system'],
+    atlas: ['core', 'governance'],
   };
  
  // Build and cache the graph
