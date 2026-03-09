@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate — Command Center
- * Mobile-first, rebuilt for 38-node matrix with 675+ capabilities.
+ * Mobile-first, rebuilt for 40-node matrix with 675+ capabilities.
  * Enterprise in light mode, Neon Dreams in dark.
  */
 
