@@ -1368,12 +1368,17 @@ export function nexusStreamRoute(
         };
         if (provider.extraHeaders) Object.assign(headers, provider.extraHeaders);
 
+        // v3.1: Use explicit messages array if provided
+        const callMessages = opts.messages
+          ? opts.messages
+          : [
+              { role: "system", content: opts.systemPrompt || "You are an expert AI assistant." },
+              { role: "user", content: prompt },
+            ];
+
         const body = {
           model: provider.model,
-          messages: [
-            { role: "system", content: opts.systemPrompt || "You are an expert AI assistant." },
-            { role: "user", content: prompt },
-          ],
+          messages: callMessages,
           max_tokens: opts.maxTokens ?? 2048,
           temperature,
           stream: true,
