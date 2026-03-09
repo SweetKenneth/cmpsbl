@@ -1,65 +1,69 @@
 /**
- * FoundryMiningPanel — The "CRYSTALLIZE" button + last result display
- * Includes save-to-vault action for each result.
- * v13.3: structural pipeline identity with capability-level steps.
+ * FoundryMiningPanel — The "CRYSTALLIZE" button + Keep/Discard flow
+ * Enforces daily pull limits and vault capacity.
+ * Includes rarity messaging and Mythic upgrade trigger.
  */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pickaxe, Loader2, Download, Check, Fingerprint } from 'lucide-react';
-import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { MEMORY_STREAM_EMPTY, MEMORY_STREAM_QUALITY_NOTE, MEMORY_STREAM_PROVENANCE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
+import { Pickaxe, Loader2, Fingerprint } from 'lucide-react';
+import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { MEMORY_STREAM_QUALITY_NOTE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
+import { KeepDiscardPanel } from './KeepDiscardPanel';
+import { VaultUsageIndicator } from './VaultUsageIndicator';
+import { VaultCapacityModal, DailyLimitModal, MythicDiscoveryModal } from './VaultUpgradeModals';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
-import type { MineResponse } from '@/lib/foundry/public-mining-engine';
-import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
-import {
-  downloadTieredFoundryZip,
-  type TieredFoundryExportArtifact,
-} from '@/lib/export/foundry-tiered-zip';
+import type { MineResponse, MineResult } from '@/lib/foundry/public-mining-engine';
+import { isPullLimitReached, isVaultFull, getVaultLimits } from '@/lib/substrate/vault-limits';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
-
-function scoreColor(score: number): string {
-  if (score === 100) return 'text-primary';
-  if (score >= 94) return 'text-purple-400';
-  if (score >= 90) return 'text-amber-400';
-  if (score >= 80) return 'text-sky-400';
-  return 'text-emerald-400';
-}
-
-function mapResultsToExportArtifacts(results: MineResponse['results']): TieredFoundryExportArtifact[] {
-  return results.map((result) => ({
-    id: result.id,
-    name: result.name,
-    score: result.score,
-    publicTier: result.publicTier,
-    valuationDisplay: result.valuationDisplay,
-    category: result.category,
-    systemChain: result.systemChain,
-    description: result.description,
-    fingerprint: result.fingerprint || null,
-    source: 'Memory Stream',
-  }));
-}
 
 interface Props {
   isMining: boolean;
   lastResult: MineResponse | null;
   onMine: () => void;
   onCrystallizing?: (v: boolean) => void;
+  subscriptionTier?: string;
+  vaultCount: number;
+  pullsToday: number;
+  onVaultChange?: () => void;
 }
 
-export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizing }: Props) {
+export function FoundryMiningPanel({
+  isMining, lastResult, onMine, onCrystallizing,
+  subscriptionTier, vaultCount, pullsToday, onVaultChange,
+}: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
-  const [isExporting, setIsExporting] = useState(false);
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
     fingerprint?: string; discoveryCount?: number;
   } | null>(null);
 
+  // Keep/Discard state
+  const [decisions, setDecisions] = useState<Record<string, 'kept' | 'discarded'>>({});
+
+  // Modal states
+  const [dailyLimitOpen, setDailyLimitOpen] = useState(false);
+  const [vaultCapacityOpen, setVaultCapacityOpen] = useState(false);
+  const [mythicModalOpen, setMythicModalOpen] = useState(false);
+  const [pendingMythic, setPendingMythic] = useState<MineResult | null>(null);
+
+  const limits = getVaultLimits(subscriptionTier);
+
   const handleCrystallize = () => {
+    // Check daily pull limit
+    if (isPullLimitReached(pullsToday, subscriptionTier)) {
+      setDailyLimitOpen(true);
+      return;
+    }
+
+    // Reset decisions for new crystallization
+    setDecisions({});
+    setPendingMythic(null);
+
     onCrystallizing?.(true);
     setPhase('sampling');
     setTimeout(() => setPhase('condensing'), 700);
@@ -71,27 +75,49 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
     onMine();
   };
 
-  const handleExportResults = async () => {
-    if (!lastResult || !lastResult.ok || lastResult.results.length === 0) return;
+  const handleKeep = useCallback(async (result: MineResult) => {
+    const isMythic = ['Mythic', 'Apex'].includes(result.publicTier);
+    const currentlyKept = Object.values(decisions).filter(d => d === 'kept').length;
+    const effectiveVaultCount = vaultCount + currentlyKept;
 
-    setIsExporting(true);
-    try {
-      const stats = await downloadTieredFoundryZip({
-        artifacts: mapResultsToExportArtifacts(lastResult.results),
-        filePrefix: 'memory-stream-crystallization-software',
-        sourceLabel: 'Memory Stream Crystallization',
-      });
-      toast.success(`Exported ${stats.artifactCount} pipelines across ${stats.totalLanguageVariants} tiered language bundles`);
-    } catch (error) {
-      console.error(error);
-      toast.error('Export failed');
-    } finally {
-      setIsExporting(false);
+    if (isVaultFull(effectiveVaultCount, subscriptionTier)) {
+      if (isMythic) {
+        setPendingMythic(result);
+        setMythicModalOpen(true);
+      } else {
+        setVaultCapacityOpen(true);
+      }
+      return;
     }
-  };
+
+    // Mark as kept
+    setDecisions(prev => ({ ...prev, [result.id]: 'kept' }));
+    toast.success(`${result.name} stored in Vault`);
+    onVaultChange?.();
+  }, [decisions, vaultCount, subscriptionTier, onVaultChange]);
+
+  const handleDiscard = useCallback((result: MineResult) => {
+    setDecisions(prev => ({ ...prev, [result.id]: 'discarded' }));
+    toast.info(`${result.name} discarded`);
+  }, []);
+
+  const handleMythicDiscard = useCallback(() => {
+    if (pendingMythic) {
+      setDecisions(prev => ({ ...prev, [pendingMythic.id]: 'discarded' }));
+      setPendingMythic(null);
+    }
+  }, [pendingMythic]);
 
   return (
     <div className="space-y-6">
+      {/* Vault usage + pull counter */}
+      <div className="flex flex-wrap items-center gap-4 justify-between">
+        <VaultUsageIndicator currentCount={vaultCount} subscriptionTier={subscriptionTier} />
+        <div className="text-xs font-mono text-muted-foreground">
+          Pulls today: {pullsToday} / {limits.pullsPerDay}
+        </div>
+      </div>
+
       {/* Crystallize button */}
       <div className="flex flex-col items-center">
         <motion.button
@@ -108,7 +134,6 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
             }
           `}
         >
-          {/* Inner shimmer on hover */}
           {!isMining && (
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
@@ -158,7 +183,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
         </AnimatePresence>
       </div>
 
-      {/* Last result */}
+      {/* Keep/Discard results panel */}
       <AnimatePresence mode="wait">
         {lastResult && lastResult.ok && lastResult.results.length > 0 && (
           <motion.div
@@ -166,89 +191,13 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="space-y-3"
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                Last Crystallization — {lastResult.results.length} pipeline{lastResult.results.length > 1 ? 's' : ''}
-              </div>
-              <button
-                onClick={handleExportResults}
-                disabled={isExporting}
-                className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
-              >
-                {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-                {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
-              </button>
-            </div>
-
-            {lastResult.persistedCount > 0 && (
-              <div className="text-[10px] font-mono text-emerald-400/70 flex items-center gap-1.5 mb-3">
-                <Check className="w-3 h-3" />
-                Saved {lastResult.persistedCount} pipeline{lastResult.persistedCount > 1 ? 's' : ''} to Vault
-              </div>
-            )}
-            {lastResult.persistedCount === 0 && lastResult.alreadyOwnedCount > 0 && (
-              <div className="text-[10px] font-mono text-muted-foreground/70 flex items-center gap-1.5 mb-3">
-                <Check className="w-3 h-3" />
-                Already in your Vault
-              </div>
-            )}
-
-            {lastResult.results.map((result, i) => (
-              <motion.div
-                key={result.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.15 }}
-                onClick={() => setProvenancePipeline({
-                  name: result.name,
-                  score: result.score,
-                  systemChain: result.systemChain,
-                  pipelineSteps: result.pipelineSteps,
-                  fingerprint: result.fingerprint,
-                })}
-                className="bg-card/30 border border-border/20 rounded-xl p-4 backdrop-blur-sm cursor-pointer result-card-hover"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${getTierBadgeClass(result.publicTier as PublicTier)} uppercase tracking-wider`}>
-                        {result.publicTier}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground/50 uppercase tracking-wider">
-                        {result.category}
-                      </span>
-                    </div>
-                    <div className="font-mono text-sm font-bold text-foreground">
-                      {result.name}
-                    </div>
-                    <p className="text-xs text-primary/50 font-mono mt-1 leading-relaxed">
-                      {getFunctionalDescription(result.name, result.systemChain)}
-                    </p>
-                    <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
-                      {MEMORY_STREAM_PROVENANCE}
-                    </div>
-                    {result.fingerprint && (
-                      <div className="flex items-center gap-1 mt-1">
-                        <Fingerprint className="w-2.5 h-2.5 text-primary/40" />
-                        <span className="text-[8px] font-mono text-muted-foreground/40">
-                          {truncateFingerprint(result.fingerprint)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-right shrink-0">
-                    <div className={`text-2xl font-mono font-black ${scoreColor(result.score)}`}>
-                      {result.score}
-                    </div>
-                    <div className="text-[9px] text-muted-foreground uppercase tracking-wider">
-                      {formatValuation(result.valuationDisplay)}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            <KeepDiscardPanel
+              results={lastResult.results}
+              onKeep={handleKeep}
+              onDiscard={handleDiscard}
+              decisions={decisions}
+            />
           </motion.div>
         )}
 
@@ -260,7 +209,7 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
             className="text-center py-8"
           >
             <div className="text-muted-foreground/60 font-mono text-sm mb-2">
-              {MEMORY_STREAM_EMPTY}
+              No new pipelines discovered this cycle.
             </div>
             <div className="text-xs text-muted-foreground/40">
               {lastResult.rerollCredit
@@ -275,6 +224,15 @@ export function FoundryMiningPanel({ isMining, lastResult, onMine, onCrystallizi
       <PipelineProvenance
         pipeline={provenancePipeline}
         onClose={() => setProvenancePipeline(null)}
+      />
+
+      {/* Upgrade modals */}
+      <DailyLimitModal open={dailyLimitOpen} onOpenChange={setDailyLimitOpen} />
+      <VaultCapacityModal open={vaultCapacityOpen} onOpenChange={setVaultCapacityOpen} />
+      <MythicDiscoveryModal
+        open={mythicModalOpen}
+        onOpenChange={setMythicModalOpen}
+        onDiscard={handleMythicDiscard}
       />
     </div>
   );
