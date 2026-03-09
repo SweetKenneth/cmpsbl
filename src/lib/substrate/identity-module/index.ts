@@ -259,7 +259,7 @@ export function addPasskeyToActor(actorId: string, credentialId: string): boolea
   }
   if (!actor.passkeys.includes(validCred)) {
     actor.passkeys.push(validCred);
-    state.passkeyCount++;
+    syncPasskeyCount(); // Sync from actual data instead of increment
     emit({ module: 'identity', event_type: 'passkey_bound', outcome: 'succeeded', data: { actorId, credentialId: validCred } });
   }
   return true;
