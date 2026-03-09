@@ -297,6 +297,8 @@ export function SiteAnalyticsSection() {
               { key: '7d' as const, label: '7d' },
               { key: '30d' as const, label: '30d' },
               { key: '90d' as const, label: '90d' },
+              { key: '365d' as const, label: '1y' },
+              { key: 'all' as const, label: 'All' },
             ]).map(({ key, label }) => (
               <button
                 key={key}
