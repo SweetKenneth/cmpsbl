@@ -17,7 +17,8 @@ export type ModuleName =
   | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
   | 'cortex' | 'atlas'                                      // Orchestrator
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
-  | 'forge' | 'lingua' | 'harvest';                                               // EMZ — Manufacturing
+  | 'forge' | 'lingua' | 'harvest'                                               // EMZ — Manufacturing
+  | 'phantom' | 'shadow' | 'evolution';                                            // CSZ — Covert Systems
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 
