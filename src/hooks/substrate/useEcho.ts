@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as echoModule from '@/lib/substrate/echo-module';
+import * as echoModule from '@/lib/substrate/echo';
 
 export interface UseEchoReturn {
   state: ReturnType<typeof useQuery>;
