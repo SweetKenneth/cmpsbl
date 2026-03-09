@@ -439,12 +439,12 @@ async function logAccessAttempt(
       module: request.module,
       action: request.action,
       compute_ms: Math.round(durationMs),
-      metadata: {
+      metadata: JSON.parse(JSON.stringify({
         trace_id: traceId,
         allowed,
         failed_checks: failedChecks,
         ip: request.ip_address,
-      },
+      })) as Json,
     }]);
   } catch (error) {
     console.error('Failed to log access attempt:', error);
