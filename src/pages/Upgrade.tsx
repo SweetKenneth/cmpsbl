@@ -386,7 +386,7 @@ export default function Upgrade() {
                   transition={{ delay: i * 0.1 }}
                   className={cn(
                     "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0 group",
-                    "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
+                    "min-w-[280px] max-w-[320px] sm:min-w-[300px] sm:max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
                     "hover:shadow-xl transition-all duration-300 card-lift",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
