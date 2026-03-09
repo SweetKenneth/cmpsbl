@@ -228,7 +228,8 @@ export function signAction(actorId: string, action: string): { actorId: string; 
 }
 
 export function getActor(id: string): ActorIdentity | null {
-  return actors.get(id) ?? null;
+  const actor = actors.get(id);
+  return actor ? cloneActor(actor) : null;
 }
 
 export function addPasskeyToActor(actorId: string, credentialId: string): boolean {
