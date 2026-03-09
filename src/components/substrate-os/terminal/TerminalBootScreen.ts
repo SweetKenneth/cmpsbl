@@ -131,7 +131,7 @@ export function generateMobileBootScreen(): string[] {
     `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
-    '  ┌─ 38-NODE MATRIX ───────────────┐',
+    '  ┌─ 40-NODE MATRIX ───────────────┐',
     '  │                                │',
     '  │  ⬢ CORE Kernel                 │',
     '  │    core                         │',
