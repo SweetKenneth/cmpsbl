@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
+import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { supabase } from '@/integrations/supabase/client';
 import { FoundryMiningPanel } from '@/components/foundry/FoundryMiningPanel';
 import { FoundryInventory } from '@/components/foundry/FoundryInventory';
