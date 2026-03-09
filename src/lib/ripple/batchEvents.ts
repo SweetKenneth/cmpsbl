@@ -287,16 +287,20 @@ export async function replayEvents(
   result.duration = Date.now() - startTime;
 
   // Log replay
-  await supabase.from('brain_events').insert({
-    module: 'ripple',
-    event_type: 'events.replayed',
-    data: {
-      eventsReplayed: result.eventsReplayed,
-      eventsSkipped: result.eventsSkipped,
-      options,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'ripple',
+      event_type: 'events.replayed',
+      data: {
+        eventsReplayed: result.eventsReplayed,
+        eventsSkipped: result.eventsSkipped,
+        options,
+      } as unknown as Json,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch {
+    // Best-effort logging
+  }
 
   return result;
 }
