@@ -186,12 +186,12 @@ function layerResult(layer: LayerId, label: string, checks: CheckResult[]): Laye
 function checkFilesystem(): LayerResult {
   const checks: CheckResult[] = [];
 
-  // Verify module constants include all 38 nodes across 12 sectors
+  // Verify module constants include all 40 nodes across 12 sectors
   checks.push(
     check(
       'fs_module_count',
-      EXPECTED_MODULE_DIRS.length >= 38,
-      `${EXPECTED_MODULE_DIRS.length} module entries declared (38-node / 12-sector topology)`,
+      EXPECTED_MODULE_DIRS.length >= 40,
+      `${EXPECTED_MODULE_DIRS.length} module entries declared (40-node / 12-sector topology)`,
     ),
   );
 
