@@ -155,7 +155,7 @@ export interface UnifiedProposal {
     security_issues: SecurityIssueItem[];
   };
   
-  modernizer_scan: {
+  evolution_scan: {
     scan_completed: boolean;
     proposals_found: number;
     plan_ready: boolean;
@@ -417,29 +417,29 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   // ─── 7. DEFENSE — security posture + anomaly detection ───
   const securityData = await runDefenseScan();
   
-  // ─── 8. MODERNIZER SCAN — 4-phase cognitive systems scan ───
-  let rawModernizerResult: ScanResultExtended | null = null;
-  let modernizerData: UnifiedProposal['modernizer_scan'];
+  // ─── 8. EVOLUTION SCAN — 4-phase cognitive systems scan ───
+  let rawEvolutionResult: ScanResultExtended | null = null;
+  let evolutionData: UnifiedProposal['evolution_scan'];
   try {
-    rawModernizerResult = await modernizerScan({ dry_run: true });
-    modernizerData = {
+    rawEvolutionResult = await modernizerScan({ dry_run: true });
+    evolutionData = {
       scan_completed: true,
-      proposals_found: rawModernizerResult.proposals.length,
-      plan_ready: rawModernizerResult.plan_ready,
-      plan_status: (rawModernizerResult as any).plan?.status ?? 'none',
-      modules_active: rawModernizerResult.system_snapshot.modules_active,
-      health_overall: rawModernizerResult.system_snapshot.health_overall,
-      edge_risk_flags: rawModernizerResult.edge_analysis.risk_flags.length,
-      anomalies_detected: rawModernizerResult.system_state.detected_anomalies.length,
-      recommended_action: rawModernizerResult.recommended_next_action,
-      scan_duration_ms: rawModernizerResult.scan_duration_ms,
+      proposals_found: rawEvolutionResult.proposals.length,
+      plan_ready: rawEvolutionResult.plan_ready,
+      plan_status: (rawEvolutionResult as any).plan?.status ?? 'none',
+      modules_active: rawEvolutionResult.system_snapshot.modules_active,
+      health_overall: rawEvolutionResult.system_snapshot.health_overall,
+      edge_risk_flags: rawEvolutionResult.edge_analysis.risk_flags.length,
+      anomalies_detected: rawEvolutionResult.system_state.detected_anomalies.length,
+      recommended_action: rawEvolutionResult.recommended_next_action,
+      scan_duration_ms: rawEvolutionResult.scan_duration_ms,
     };
   } catch (e) {
-    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
-    modernizerData = {
+    console.warn('[Proposal] EVOLUTION cognitive scan failed (canary safe):', e);
+    evolutionData = {
       scan_completed: false, proposals_found: 0, plan_ready: false, plan_status: 'error',
       modules_active: 0, health_overall: 0, edge_risk_flags: 0, anomalies_detected: 0,
-      recommended_action: 'Modernizer scan failed — investigate errors', scan_duration_ms: 0,
+      recommended_action: 'Evolution scan failed — investigate errors', scan_duration_ms: 0,
     };
   }
   
@@ -464,19 +464,19 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
   }
   
-  // Add modernizer-detected anomalies as audit gaps
-  if (modernizerData.anomalies_detected > 0) {
-    auditGaps.push(`MODERNIZER detected ${modernizerData.anomalies_detected} system anomaly(ies)`);
+  // Add evolution-detected anomalies as audit gaps
+  if (evolutionData.anomalies_detected > 0) {
+    auditGaps.push(`EVOLUTION detected ${evolutionData.anomalies_detected} system anomaly(ies)`);
   }
-  if (modernizerData.edge_risk_flags > 0) {
-    auditGaps.push(`${modernizerData.edge_risk_flags} edge function risk flag(s) detected`);
+  if (evolutionData.edge_risk_flags > 0) {
+    auditGaps.push(`${evolutionData.edge_risk_flags} edge function risk flag(s) detected`);
   }
   
   // ═══ BUILD ACTION PLAN with bounded discipline ═══
   let actionPlan = buildActionPlan(
     techDebt, evolution, auditGaps, diligenceData,
     productionAudit, structuralHealth, accessibilityData, securityData,
-    governanceChain, modernizerData, rawModernizerResult,
+    governanceChain, evolutionData, rawEvolutionResult,
   );
   
   // ─── Convert minor diligence to proposal (max 1) with probe details ───
@@ -703,7 +703,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     diligence: diligenceData,
     accessibility: accessibilityData,
     security_posture: securityData,
-    modernizer_scan: modernizerData,
+    evolution_scan: evolutionData,
     action_plan: actionPlan,
     guardrails: {
       requires_human_review: true,
@@ -1174,8 +1174,8 @@ function buildActionPlan(
   accessibilityData: UnifiedProposal['accessibility'],
   securityData: UnifiedProposal['security_posture'],
   governanceChain: GovernanceChain,
-  modernizerData?: UnifiedProposal['modernizer_scan'],
-  modernizerResult?: ScanResultExtended | null,
+  evolutionData?: UnifiedProposal['evolution_scan'],
+  evolutionResult?: ScanResultExtended | null,
 ): ActionStep[] {
   // ═══════════════════════════════════════════════════════════
   // VALUE-SCORED PRIORITIZATION
@@ -1419,9 +1419,9 @@ function buildActionPlan(
     });
   }
   
-  // ─── SOURCE 10: MODERNIZER proposals (cognitive scan findings) ───
-  if (modernizerResult) {
-    for (const proposal of modernizerResult.proposals) {
+  // ─── SOURCE 10: EVOLUTION proposals (cognitive scan findings) ───
+  if (evolutionResult) {
+    for (const proposal of evolutionResult.proposals) {
       const riskScore = proposal.risk_level === 'high' ? 70 : proposal.risk_level === 'medium' ? 55 : 40;
       candidates.push({
         value: riskScore * 0.8,
@@ -1429,7 +1429,7 @@ function buildActionPlan(
         step: {
           order: 0,
           category: 'tech-debt',
-          title: `Modernizer: ${proposal.title}`,
+          title: `Evolution: ${proposal.title}`,
           description: proposal.description,
           risk: proposal.risk_level === 'high' ? 'medium' : 'low',
           instructions: [
@@ -1444,7 +1444,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 11: Edge function risk flags ───
-    for (const flag of modernizerResult.edge_analysis.risk_flags) {
+    for (const flag of evolutionResult.edge_analysis.risk_flags) {
       candidates.push({
         value: severityValue(flag.severity) * categoryMultiplier.security * 0.7,
         dedup_key: `edge_risk_${flag.function_name}_${flag.risk_type}`,
@@ -1465,7 +1465,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 12: System anomalies (individually surfaced) ───
-    for (const anomaly of modernizerResult.system_state.detected_anomalies) {
+    for (const anomaly of evolutionResult.system_state.detected_anomalies) {
       candidates.push({
         value: severityValue(anomaly.severity) * 0.75,
         dedup_key: `anomaly_${anomaly.anomaly_type}_${anomaly.affected_components.join('_').slice(0, 20)}`,
@@ -1486,7 +1486,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 13: Missing capabilities (code health gaps) ───
-    for (const cap of modernizerResult.code_health.missing_capabilities) {
+    for (const cap of evolutionResult.code_health.missing_capabilities) {
       candidates.push({
         value: severityValue(cap.impact) * 0.6,
         dedup_key: `missing_cap_${cap.capability}`,

@@ -36,7 +36,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-recursive-self-evolution',
     name: 'Recursive Self-Evolution Loop',
-    modules: ['CORTEX', 'DREAM', 'BRAIN', 'MODERNIZER'],
+    modules: ['CORTEX', 'DREAM', 'BRAIN', 'EVOLUTION'],
     description: 'Closed-loop self-improvement where insights from Dream analysis feed back into architecture mutations',
     emergentProperty: 'Autonomous architecture improvement without external input',
     tier: 'cmpsbl',
@@ -69,7 +69,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-architecture-telomere-repair',
     name: 'Architecture Telomere Repair',
-    modules: ['MODERNIZER', 'SYSTEM', 'CORTEX', 'VISION'],
+    modules: ['EVOLUTION', 'SYSTEM', 'CORTEX', 'VISION'],
     description: 'Detects and repairs architecture aging patterns before they cause systemic degradation',
     emergentProperty: 'Perpetual architecture youth maintenance',
     tier: 'cmpsbl',
@@ -169,7 +169,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-entropic-decay-reversal',
     name: 'Entropic Decay Reversal',
-    modules: ['MODERNIZER', 'DREAM', 'CORTEX', 'SYSTEM'],
+    modules: ['EVOLUTION', 'DREAM', 'CORTEX', 'SYSTEM'],
     description: 'Detects entropy accumulation in knowledge stores and actively reverses degradation',
     emergentProperty: 'Negative entropy maintenance in long-lived systems',
     tier: 'cmpsbl',

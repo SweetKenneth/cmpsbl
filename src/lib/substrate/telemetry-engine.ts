@@ -10,7 +10,7 @@
  * - Record engine execution events (start/end, success/failure)
  * - Record governance blocks and overrides
  * - Record Inclusive scan results (internal + external)
- * - Record Modernizer evolution cycle outcomes
+ * - Record EVOLUTION cycle outcomes
  * - Emit structured, normalized telemetry events
  * - Provide queryable telemetry history
  */
@@ -31,11 +31,11 @@ export type TelemetryEventType =
   | 'inclusive_scan'
   | 'inclusive_repair'
   | 'inclusive_validate'
-  | 'modernizer_scan'
-  | 'modernizer_apply_shadow'
-  | 'modernizer_apply_production'
-  | 'modernizer_verify'
-  | 'modernizer_rollback'
+  | 'evolution_scan'
+  | 'evolution_apply_shadow'
+  | 'evolution_apply_production'
+  | 'evolution_verify'
+  | 'evolution_rollback'
   | 'state_read'
   | 'state_write'
   | 'state_validation_warning'
@@ -119,8 +119,8 @@ class TelemetryEngineClient {
       'engine_dispatch_start', 'engine_dispatch_end', 'engine_dispatch_error',
       'governance_block', 'governance_override',
       'inclusive_scan', 'inclusive_repair', 'inclusive_validate',
-      'modernizer_scan', 'modernizer_apply_shadow', 'modernizer_apply_production',
-      'modernizer_verify', 'modernizer_rollback',
+      'evolution_scan', 'evolution_apply_shadow', 'evolution_apply_production',
+      'evolution_verify', 'evolution_rollback',
       'state_read', 'state_write', 'state_validation_warning', 'custom'
     ];
     for (const type of types) {
@@ -272,9 +272,9 @@ class TelemetryEngineClient {
   }
 
   /**
-   * Emit Modernizer evolution cycle event
+   * Emit EVOLUTION cycle event
    */
-  emitModernizerEvent(
+  emitEvolutionEvent(
     action: 'scan' | 'apply_shadow' | 'apply_production' | 'verify' | 'rollback',
     planId: string,
     success: boolean,
@@ -282,17 +282,17 @@ class TelemetryEngineClient {
     correlationId?: string
   ): TelemetryEvent {
     const typeMap: Record<string, TelemetryEventType> = {
-      scan: 'modernizer_scan',
-      apply_shadow: 'modernizer_apply_shadow',
-      apply_production: 'modernizer_apply_production',
-      verify: 'modernizer_verify',
-      rollback: 'modernizer_rollback',
+      scan: 'evolution_scan',
+      apply_shadow: 'evolution_apply_shadow',
+      apply_production: 'evolution_apply_production',
+      verify: 'evolution_verify',
+      rollback: 'evolution_rollback',
     };
 
     return this.emit(
       typeMap[action] || 'custom',
       success ? 'info' : 'error',
-      { module: 'modernizer', action },
+      { module: 'evolution', action },
       {
         success,
         metadata: { planId, ...details },

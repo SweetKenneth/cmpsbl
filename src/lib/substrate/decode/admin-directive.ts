@@ -157,7 +157,7 @@ export function getDirectiveHistory(limit = 50): AdminDirective[] {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * All 38 nodes in the substrate matrix for insight reporting
+ * All 40 nodes in the substrate matrix for insight reporting
  */
 const ALL_NODES = [
   'CORE', 'SYSTEM',
@@ -175,7 +175,7 @@ const ALL_NODES = [
 
 /**
  * Generate substrate insights (admin-only).
- * Returns real-time operational view of all 38 nodes.
+ * Returns real-time operational view of all 40 nodes.
  */
 export function getSubstrateInsights(sessionId?: string): SubstrateInsight[] | { error: string } {
   const adminCheck = verifyAdminForDecode(sessionId);
@@ -257,7 +257,7 @@ export function getSubstrateSummary(sessionId?: string): string | { error: strin
   const totalOps = insights.reduce((s, i) => s + i.opsCount, 0);
 
   return [
-    `Substrate Status: ${activeCount}/38 nodes active | ${degradedCount} degraded | Avg health: ${avgHealth}%`,
+    `Substrate Status: ${activeCount}/40 nodes active | ${degradedCount} degraded | Avg health: ${avgHealth}%`,
     `Total operations this session: ${totalOps.toLocaleString()}`,
     `All 12 sectors operational. DEFENSE perimeter holding. GOVERNANCE constraints enforced.`,
   ].join('\n');

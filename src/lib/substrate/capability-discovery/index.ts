@@ -1,6 +1,6 @@
 /**
  * Module Capability Discovery
- * Auto-detects module functionality via endpoint probing (38-node / 12-sector architecture)
+ * Auto-detects module functionality via endpoint probing (40-node / 12-sector architecture)
  * 
  * Enterprise Resilience:
  * - Circuit breaker on probe path

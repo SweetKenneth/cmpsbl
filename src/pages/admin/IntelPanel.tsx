@@ -556,21 +556,21 @@ export default function IntelPanel() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.modernizer_scan.scan_completed ? 'text-green-600' : 'text-destructive'}`}>
-                      {unifiedProposal.modernizer_scan.scan_completed ? 'OK' : 'FAIL'}
+                    <p className={`text-lg font-bold ${unifiedProposal.evolution_scan.scan_completed ? 'text-green-600' : 'text-destructive'}`}>
+                      {unifiedProposal.evolution_scan.scan_completed ? 'OK' : 'FAIL'}
                     </p>
-                    <p className="text-[10px] text-muted-foreground">MODERNIZER</p>
+                    <p className="text-[10px] text-muted-foreground">EVOLUTION</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className="text-lg font-bold text-foreground">{unifiedProposal.modernizer_scan.modules_active}</p>
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.evolution_scan.modules_active}</p>
                     <p className="text-[10px] text-muted-foreground">Active Modules</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className="text-lg font-bold text-foreground">{unifiedProposal.modernizer_scan.edge_risk_flags}</p>
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.evolution_scan.edge_risk_flags}</p>
                     <p className="text-[10px] text-muted-foreground">Edge Risks</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className="text-lg font-bold text-foreground">{unifiedProposal.modernizer_scan.health_overall}</p>
+                    <p className="text-lg font-bold text-foreground">{unifiedProposal.evolution_scan.health_overall}</p>
                     <p className="text-[10px] text-muted-foreground">Health Score</p>
                   </div>
                 </div>
