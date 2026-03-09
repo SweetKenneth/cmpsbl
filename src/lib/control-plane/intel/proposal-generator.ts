@@ -422,7 +422,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   let evolutionData: UnifiedProposal['evolution_scan'];
   try {
     rawModernizerResult = await modernizerScan({ dry_run: true });
-    modernizerData = {
+    evolutionData = {
       scan_completed: true,
       proposals_found: rawModernizerResult.proposals.length,
       plan_ready: rawModernizerResult.plan_ready,
