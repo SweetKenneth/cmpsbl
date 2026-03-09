@@ -4,7 +4,7 @@
  * Mobile-friendly with no mid-word line breaks
  * 
  * Architecture:
- * - 38 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
+ * - 40 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
  * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
  * - 675+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
