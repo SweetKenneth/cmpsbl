@@ -286,9 +286,9 @@ export const GETTING_STARTED_KNOWLEDGE: KnowledgeEntry[] = [
 1. **Create an account** — Sign up for free at /auth. No credit card required.
 2. **Explore the Memory Stream** — Visit /memory-stream to see crystallized pipelines
 3. **Activate Pipeline Packs** — Choose capabilities that match your workload from 24 available packs across 6 strategic domains
-4. **Start crystallizing** — Pull real, scored pipelines from the Memory Stream (3 free pulls per day)
+4. **Start crystallizing** — Pull pipelines from the Memory Stream (3 free pulls per day), then Keep or Discard each discovery
 
-Your free Builder tier gives you 3 pipeline slots immediately. Upgrade anytime for more slots and daily crystallizations.`,
+Your free Builder tier gives you 3 pipeline slots, 5 vault capacity, and 3 daily pulls. Upgrade anytime for more slots, vault space, and artifact export.`,
     category: 'how_to',
     keywords: ['get started', 'begin', 'start', 'new user', 'sign up', 'onboarding'],
     confidence: 0.94,

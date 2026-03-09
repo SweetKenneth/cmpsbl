@@ -44,7 +44,7 @@ export function TierUnlockSection() {
                   </div>
                   <div className="text-sm font-medium mt-1">{td.label}</div>
                   <div className="text-xs text-muted-foreground mt-1">
-                    Any {config.slots} of 24 packs
+                    {config.slots} slots · {VAULT_TIER_LIMITS[td.key].vaultCapacity === -1 ? '∞' : VAULT_TIER_LIMITS[td.key].vaultCapacity} vault · {VAULT_TIER_LIMITS[td.key].pullsPerDay}/day
                   </div>
                 </CardContent>
               </Card>
