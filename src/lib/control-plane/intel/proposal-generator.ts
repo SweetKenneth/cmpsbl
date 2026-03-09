@@ -435,8 +435,8 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
       scan_duration_ms: rawModernizerResult.scan_duration_ms,
     };
   } catch (e) {
-    console.warn('[Proposal] MODERNIZER cognitive scan failed (canary safe):', e);
-    modernizerData = {
+    console.warn('[Proposal] EVOLUTION cognitive scan failed (canary safe):', e);
+    evolutionData = {
       scan_completed: false, proposals_found: 0, plan_ready: false, plan_status: 'error',
       modules_active: 0, health_overall: 0, edge_risk_flags: 0, anomalies_detected: 0,
       recommended_action: 'Modernizer scan failed — investigate errors', scan_duration_ms: 0,
