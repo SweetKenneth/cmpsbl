@@ -594,7 +594,7 @@ export function generateFoundryDoc(): string {
   <h3>Key Parameters</h3>
   <table>
     <tr><th>Parameter</th><th>Value</th><th>Description</th></tr>
-    <tr><td>Exploration breadth</td><td>38 nodes × combinatorial chains</td><td>Full topology coverage</td></tr>
+    <tr><td>Exploration breadth</td><td>40 nodes × combinatorial chains</td><td>Full topology coverage</td></tr>
     <tr><td>Scoring</td><td>CJPI (4-factor composite)</td><td>Novelty, utility, complexity, composability</td></tr>
     <tr><td>Deduplication</td><td>Cosine &gt; 0.92 = duplicate</td><td>Semantic similarity threshold</td></tr>
     <tr><td>Time budget</td><td>8–12 hours (full sweep)</td><td>Configurable per reactor run</td></tr>
