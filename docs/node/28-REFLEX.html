@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>REFLEX — Real-Time Edge Decisions · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">REFLEX</span></h1>
+  <p class="subtitle">Real-Time Edge Decisions & Sub-10ms Response — Priority-ordered rules, P99 latency targeting, hit count analytics, and stall detection.</p>
+  <div class="meta">
+    <strong>Node #28</strong> · Sector: EPZ · Generation 1<br>
+    Codename: <em>Impulse</em> · Capabilities: 4
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">&lt;10ms</div><div class="ml">P99 Target</div></div>
+  <div class="metric"><div class="mv">4</div><div class="ml">Priority Levels</div></div>
+  <div class="metric"><div class="mv">50ms</div><div class="ml">Critical Spike</div></div>
+  <div class="metric"><div class="mv">1/sec</div><div class="ml">Stall Threshold</div></div>
+</div>
+
+<h2>Decision Pipeline</h2>
+<div class="box">
+  <pre>decide(input):  [&lt; 10ms budget]
+  1. Match rules (priority-ordered, short-circuit)
+  2. First match → execute action
+  3. Record: decision, latency, confidence, rule
+  4. No match → default with low confidence</pre>
+</div>
+
+<h2>CLM Latency Tiers</h2>
+<table>
+  <thead><tr><th>P99 Latency</th><th>Severity</th></tr></thead>
+  <tbody>
+    <tr><td>10–25ms</td><td>Medium</td></tr>
+    <tr><td>25–50ms</td><td>High</td></tr>
+    <tr><td>&gt; 50ms</td><td>Critical</td></tr>
+  </tbody>
+</table>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ P99 Over P50</div>
+  <p>Targets P99 latency, not average. One slow decision in real-time is more damaging than consistently "okay" averages.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Throughput Stall Detection</div>
+  <p>&lt; 1/sec after 100+ decisions → possible processing freeze. Distinguishes "no traffic" from "system frozen."</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — REFLEX Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>
