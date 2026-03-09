@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVOLUTION — Self-Improvement & Mutation Engine | CMPSBL® Substrate</title>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="doc-header">
+    <div class="node-badge">Node #32</div>
+    <h1>EVOLUTION</h1>
+    <p class="subtitle">Self-Improvement & Mutation Engine</p>
+    <div class="meta">
+      <span class="sector">CSZ</span>
+      <span class="codename">Darwin</span>
+      <span class="generation">Gen 1</span>
+    </div>
+  </header>
+
+  <main class="doc-content">
+    <section>
+      <h2>Executive Summary</h2>
+      <p>EVOLUTION is the substrate's self-improvement engine. It proposes mutations to system behavior, orchestrates the SEBA (Self-Evolving Behavioral Architecture) promotion pipeline, and manages the mutation lifecycle from proposal through shadow testing to production deployment.</p>
+    </section>
+
+    <section>
+      <h2>SEBA 7-Gate Pipeline</h2>
+      <pre><code>Gate 1: LINT    — Static analysis
+Gate 2: TEST    — Unit/integration tests
+Gate 3: SHADOW  — Shadow testing (MANDATORY)
+Gate 4: PERF    — Performance benchmarks
+Gate 5: GOV     — Human/governance review
+Gate 6: CANARY  — 5% production traffic
+Gate 7: PROD    — Full production deployment</code></pre>
+    </section>
+
+    <section>
+      <h2>Fitness Scoring Algorithm</h2>
+      <pre><code>scoreFitness(mutation):
+  1. Historical performance (40%):
+     - Similar mutations in past
+     - Success rate of target node changes
+  
+  2. Simulation results (30%):
+     - ORACLE prediction of outcome
+     - SHADOW dry-run divergence
+  
+  3. Risk assessment (20%):
+     - Rollback complexity
+     - Blast radius (affected nodes)
+  
+  4. Strategic alignment (10%):
+     - CONSCIENCE ethics check
+     - GOVERNANCE policy compliance
+  
+  Promotion threshold: fitness ≥ 0.70</code></pre>
+    </section>
+
+    <section class="trade-secrets">
+      <h2>Trade Secrets</h2>
+      
+      <h3>1. Conservative by Design</h3>
+      <p>EVOLUTION defaults to small, incremental mutations. Large changes are automatically decomposed into smaller steps, each requiring full pipeline passage.</p>
+
+      <h3>2. Evidence-Based Proposals</h3>
+      <p>Every mutation must cite evidence — performance metrics, error logs, or user feedback. Unsupported proposals are rejected at Gate 1.</p>
+
+      <h3>3. Mandatory Shadow Gate</h3>
+      <p>Gate 3 (SHADOW) is non-bypassable. Even emergency patches must pass shadow testing.</p>
+
+      <h3>4. Automatic Rollback Triggers</h3>
+      <ul>
+        <li>Error rate increase > 5% in canary</li>
+        <li>Latency P99 increase > 20%</li>
+        <li>CONSCIENCE ethics violation</li>
+        <li>GOVERNANCE policy breach</li>
+        <li>Manual operator abort</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Relationship to SHADOW</h2>
+      <pre><code>EVOLUTION (proposes mutation)
+     │
+     ▼
+SHADOW (runs shadow test)
+     │
+     ▼
+SEBA (promotes or rejects based on shadow results)</code></pre>
+      <p>Without passing SHADOW, no mutation can reach production.</p>
+    </section>
+
+    <section>
+      <h2>CLM Learning Priorities</h2>
+      <ol>
+        <li><strong>Mutation Success Prediction</strong> — Learning which proposal types have highest promotion rates</li>
+        <li><strong>Optimal Mutation Sizing</strong> — Finding the ideal granularity for changes</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="doc-footer">
+    <p>CMPSBL® Substrate — EVOLUTION Node Deep Dive · Founder Eyes Only</p>
+  </footer>
+</body>
+</html>

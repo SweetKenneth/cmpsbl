@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HARVEST — Data Acquisition & ETL Pipeline | CMPSBL® Substrate</title>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="doc-header">
+    <div class="node-badge">Node #31</div>
+    <h1>HARVEST</h1>
+    <p class="subtitle">Data Acquisition & ETL Pipeline</p>
+    <div class="meta">
+      <span class="sector">EMZ</span>
+      <span class="codename">Reaper</span>
+      <span class="generation">Gen 1</span>
+    </div>
+  </header>
+
+  <main class="doc-content">
+    <section>
+      <h2>Executive Summary</h2>
+      <p>HARVEST is the substrate's data acquisition engine. It owns web scraping, API polling, file ingestion, data normalization, and ETL pipeline orchestration. HARVEST feeds raw data to FORGE for artifact construction and to BRAIN for knowledge embedding.</p>
+    </section>
+
+    <section>
+      <h2>Capabilities</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <h4>scrape</h4>
+          <p>Extract structured data from web sources</p>
+        </div>
+        <div class="metric-card">
+          <h4>poll</h4>
+          <p>Periodically fetch data from external APIs</p>
+        </div>
+        <div class="metric-card">
+          <h4>ingest</h4>
+          <p>Process uploaded files into normalized records</p>
+        </div>
+        <div class="metric-card">
+          <h4>transform</h4>
+          <p>Apply ETL transformations to raw data</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>ETL Pipeline Model</h2>
+      <pre><code>┌─────────────────────────────────────────────────────────┐
+│                    HARVEST Pipeline                      │
+├─────────────────────────────────────────────────────────┤
+│  EXTRACT          TRANSFORM           LOAD               │
+│  ┌─────────┐     ┌─────────────┐     ┌─────────────┐    │
+│  │ Scraper │────▶│ Normalizer  │────▶│ BRAIN embed │    │
+│  │ Poller  │     │ Deduplicator│     │ FORGE build │    │
+│  │ Ingester│     │ Validator   │     │ Storage     │    │
+│  └─────────┘     └─────────────┘     └─────────────┘    │
+└─────────────────────────────────────────────────────────┘</code></pre>
+    </section>
+
+    <section>
+      <h2>Deduplication Algorithm</h2>
+      <pre><code>deduplicate(records[]):
+  1. Compute content hash for each record:
+     hash = SHA-256(JSON.stringify(sortKeys(record)))
+  
+  2. Check against bloom filter (1M capacity, 0.1% FPR)
+  
+  3. If bloom filter miss:
+     - Insert hash into bloom filter
+     - Check exact match in recent cache (LRU, 10K entries)
+  
+  4. Return: unique records only</code></pre>
+    </section>
+
+    <section class="trade-secrets">
+      <h2>Trade Secrets</h2>
+      
+      <h3>1. Politeness by Default</h3>
+      <p>HARVEST respects <code>robots.txt</code> and enforces rate limits by default. This isn't just ethical — it prevents IP bans that would cripple data acquisition. The default 10 req/min is conservative but sustainable.</p>
+
+      <h3>2. Content-Addressed Deduplication</h3>
+      <p>Using SHA-256 hashes of sorted JSON ensures identical records are deduplicated regardless of field order in the source. The bloom filter provides O(1) first-pass filtering.</p>
+
+      <h3>3. Schema Inference</h3>
+      <p>When ingesting unknown file formats, HARVEST samples the first 100 records to infer schema types. Majority type (>80%) becomes field type; mixed types create union types with validation warnings.</p>
+    </section>
+
+    <section>
+      <h2>CLM Learning Priorities</h2>
+      <ol>
+        <li><strong>Source Reliability Scoring</strong> — Learning which sources provide consistent, high-quality data</li>
+        <li><strong>Optimal Polling Frequency</strong> — Balancing freshness against resource consumption</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="doc-footer">
+    <p>CMPSBL® Substrate — HARVEST Node Deep Dive · Founder Eyes Only</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEFENSE — Security Perimeter & Access Enforcement | CMPSBL® Substrate</title>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="doc-header">
+    <div class="node-badge">Node #38</div>
+    <h1>DEFENSE</h1>
+    <p class="subtitle">Security Perimeter & Access Enforcement</p>
+    <div class="meta">
+      <span class="sector">Mesh Overlay</span>
+      <span class="codename">Citadel</span>
+      <span class="generation">Gen 2</span>
+    </div>
+  </header>
+
+  <main class="doc-content">
+    <section>
+      <h2>Executive Summary</h2>
+      <p>DEFENSE is the substrate's security perimeter. It owns authentication, authorization, encryption, and access enforcement. DEFENSE provides the containment boundaries for SHADOW's sandboxing and PHANTOM's stealth ops.</p>
+    </section>
+
+    <section>
+      <h2>Authorization Algorithm</h2>
+      <pre><code>authorize(actor, action, resource):
+  1. Check IDENTITY trust ladder
+  2. Check GOVERNANCE policies
+  3. Check resource permissions
+  4. Check rate limits
+  
+  All checks pass → allow
+  Any check fails → deny with reason</code></pre>
+    </section>
+
+    <section class="trade-secrets">
+      <h2>Trade Secrets</h2>
+      
+      <h3>1. Defense in Depth</h3>
+      <ol>
+        <li>Network perimeter — IP allowlisting, DDoS protection</li>
+        <li>Authentication — Identity verification</li>
+        <li>Authorization — Permission checking</li>
+        <li>Containment — Isolation enforcement</li>
+        <li>Encryption — Data protection at rest/in transit</li>
+      </ol>
+
+      <h3>2. Containment Boundaries</h3>
+      <p>Types: sandbox, shadow, phantom, quarantine. Each with configurable network, storage, and node access permissions + TTL.</p>
+
+      <h3>3. Encryption Standards</h3>
+      <table>
+        <tr><td>At rest</td><td>AES-256-GCM</td></tr>
+        <tr><td>In transit</td><td>TLS 1.3 minimum</td></tr>
+        <tr><td>Key derivation</td><td>PBKDF2 (100K iterations)</td></tr>
+        <tr><td>Hashing</td><td>SHA-256 / bcrypt</td></tr>
+      </table>
+
+      <h3>4. Zero-Trust Internal Communication</h3>
+      <p>Node-to-node communication requires signed certificates, validated on every request, with 30-day automatic rotation.</p>
+    </section>
+
+    <section>
+      <h2>Integration with SHADOW</h2>
+      <pre><code>SHADOW requests containment:
+  1. DEFENSE creates sandbox boundary
+     - No production write access
+     - Ephemeral storage only
+     - Network calls interceptable
+  
+  2. SHADOW executes within boundary
+  
+  3. On teardown, DEFENSE destroys boundary</code></pre>
+    </section>
+
+    <section>
+      <h2>CLM Learning Priorities</h2>
+      <ol>
+        <li><strong>Attack Surface Minimization</strong> — Identifying unused permissions</li>
+        <li><strong>Authentication UX Optimization</strong> — Balancing security with friction</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="doc-footer">
+    <p>CMPSBL® Substrate — DEFENSE Node Deep Dive · Founder Eyes Only</p>
+  </footer>
+</body>
+</html>
