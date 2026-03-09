@@ -370,8 +370,8 @@ export default function Upgrade() {
 
         {/* ═══ TIER CARDS ═══ */}
         <div className="relative">
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
           >
             {TIERS.map((t, i) => {
               const isCurrent = currentProductTier === t.key;
