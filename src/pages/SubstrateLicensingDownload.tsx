@@ -48,9 +48,9 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Builder",
-      "6 Artifact Slots",
+      "6 Artifact Slots · 25 Vault · 6 Pulls/day",
       "Expanded memory depth",
-      "Executable capabilities",
+      "Executable capabilities + artifact export",
       "Priority routing",
       "Email support",
     ],
