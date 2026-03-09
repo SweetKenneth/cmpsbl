@@ -1,5 +1,5 @@
 /**
- * Chapter 32: Thirty-Eight Nodes Deep — December 2025
+ * Chapter 32: Forty Nodes Deep — December 2025
  */
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
