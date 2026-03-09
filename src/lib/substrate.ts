@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { recordSuccess as cbRecordSuccess, recordFailure as cbRecordFailure, canExecute as cbCanExecute } from '@/lib/substrate/circuit-breaker';
 import { recordSample } from '@/lib/substrate/predictive-failure';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex' | 'engineer' | 'atlas';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -1847,6 +1847,37 @@ class SubstrateClient {
     signals: () => this.invoke({ module: 'nerve', action: 'signals' }),
     broadcast: (signal: string, payload?: Record<string, unknown>) => this.invoke({ module: 'nerve', action: 'broadcast', payload: { signal, ...payload } }),
   };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ENGINEER — Engine & Meta-Engine Maintenance Intelligence (Node 39)
+  // ═══════════════════════════════════════════════════════════════
+
+  engineer = {
+    status: () => this.invoke({ module: 'engineer', action: 'status' }),
+    pulse: () => this.invoke({ module: 'engineer', action: 'pulse' }),
+    health: () => this.invoke({ module: 'engineer', action: 'health' }),
+    cycle: () => this.invoke({ module: 'engineer', action: 'cycle' }),
+    proposals: (status?: string) => this.invoke({ module: 'engineer', action: 'proposals', payload: { status } }),
+    engines: () => this.invoke({ module: 'engineer', action: 'engines' }),
+    degraded: () => this.invoke({ module: 'engineer', action: 'degraded' }),
+    studyQueue: () => this.invoke({ module: 'engineer', action: 'study_queue' }),
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // ATLAS — Governance Authority & System Control (Node 40)
+  // ═══════════════════════════════════════════════════════════════
+
+  atlas = {
+    status: () => this.invoke({ module: 'atlas', action: 'status' }),
+    pulse: () => this.invoke({ module: 'atlas', action: 'pulse' }),
+    health: () => this.invoke({ module: 'atlas', action: 'health' }),
+    state: () => this.invoke({ module: 'atlas', action: 'state' }),
+    proposals: () => this.invoke({ module: 'atlas', action: 'proposals' }),
+    decide: (proposalId: string, decision: 'approve' | 'reject', reason?: string) =>
+      this.invoke({ module: 'atlas', action: 'decide', payload: { proposal_id: proposalId, decision, reason } }),
+    setMode: (mode: string) => this.invoke({ module: 'atlas', action: 'set_mode', payload: { mode } }),
+    controls: () => this.invoke({ module: 'atlas', action: 'controls' }),
+  };
 }
 
 export const substrate = SubstrateClient.getInstance();
@@ -1931,3 +1962,6 @@ export const intentMod = substrate.intentMod;
 export const governanceMod = substrate.governanceMod;
 export const medicMod = substrate.medic;
 export const nerveMod = substrate.nerve;
+// Plane & Maintenance additions (Nodes 39-40)
+export const engineerMod = substrate.engineer;
+export const atlasMod = substrate.atlas;

@@ -81,6 +81,8 @@ export const SUBSTRATE_MODULES = [
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
   // CSZ — Covert Systems Zone
   'evolution', 'shadow', 'phantom',
+  // Plane additions (Nodes 39-40)
+  'engineer', 'atlas',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
@@ -160,6 +162,9 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   evolution: 'zone-csz',
   shadow: 'zone-csz',
   phantom: 'zone-csz',
+  // Plane additions (Nodes 39-40)
+  engineer: 'module',
+  atlas: 'plane',
 };
 
 /**
@@ -342,6 +347,9 @@ const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly Substra
   harvest: ['core', 'memory', 'economy'],
   reflex: ['core', 'nexus', 'vision'],
   shadow: ['core', 'defense'],
+  // Nodes 39-40
+  engineer: ['core', 'system'],
+  atlas: ['core', 'governance'],
 };
 
 export function getModuleDependencies(module: SubstrateModuleName): SubstrateModuleName[] {

@@ -81,3 +81,7 @@ export { useDecodePersonality, type UseDecodePersonalityReturn } from '@/lib/sub
 
 // Matrix Resilience (10 resilience engines)
 export { useMatrixResilience, type UseMatrixResilienceReturn } from './useMatrixResilience';
+
+// Nodes 39-40 — Plane additions (Engine & Governance Authority)
+export { useEngineer, type UseEngineerReturn } from './useEngineer';
+export { useAtlas, type UseAtlasReturn } from './useAtlas';

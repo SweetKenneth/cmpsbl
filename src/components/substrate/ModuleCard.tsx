@@ -259,6 +259,19 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Covert execution & shadow mesh operations',
     color: 'text-gray-500',
   },
+  // Plane additions — Nodes 39 & 40
+  engineer: {
+    icon: Settings,
+    label: 'ENGINEER',
+    description: 'Engine & meta-engine maintenance intelligence',
+    color: 'text-cyan-700',
+  },
+  atlas: {
+    icon: Scale,
+    label: 'ATLAS',
+    description: 'Governance authority & system control',
+    color: 'text-amber-800',
+  },
 };
 
 export function ModuleCard({ module, status, onClick }: ModuleCardProps) {

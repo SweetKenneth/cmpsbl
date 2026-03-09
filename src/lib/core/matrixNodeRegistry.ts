@@ -68,7 +68,7 @@ export interface MatrixIntegrityReport {
 // ============ Node Definitions ============
 
 /** 
- * Weight distribution across 38 Matrix Nodes, normalized to 1.0.
+ * Weight distribution across 40 Matrix Nodes, normalized to 1.0.
  * 
  * Topology weights:
  *   CORE (Kernel)        = 0.110 (11%)
@@ -81,8 +81,8 @@ export interface MatrixIntegrityReport {
  *   EMZ (3 nodes)        = 0.045 (4.5%) — FORGE, LINGUA, HARVEST
  *   CSZ (3 nodes)        = 0.055 (5.5%) — EVOLUTION, SHADOW, PHANTOM
  *   Fields (2 nodes)     = 0.060 (6%)   — IMMUNITY, INTENT
- *   Plane (1 node)       = 0.030 (3%)
- *   Shell (1 node)       = 0.030 (3%)
+ *   Plane (3 nodes)      = 0.050 (5%)   — GOVERNANCE, ATLAS, ENGINEER
+ *   Shell (1 node)       = 0.010 (1%)
  *   ─────────────────────────────────
  *   Total                = 1.000 (100%)
  */
@@ -145,11 +145,13 @@ const NODE_DEFINITIONS: Omit<MatrixNode, 'health' | 'rawHealth' | 'breakerState'
   { id: 'immunity', label: 'IMMUNITY', sector: 'field', weight: 0.030, description: 'Resilience field' },
   { id: 'intent', label: 'INTENT', sector: 'field', weight: 0.030, description: 'Capability discovery field' },
 
-  // ─── Plane — Supervisory blanket ───────────────────────────────
-  { id: 'governance', label: 'GOVERNANCE', sector: 'plane', weight: 0.030, description: 'Policy enforcement overlay plane' },
+  // ─── Plane — Supervisory blanket (3 nodes: GOVERNANCE + ATLAS + ENGINEER) ──
+  { id: 'governance', label: 'GOVERNANCE', sector: 'plane', weight: 0.020, description: 'Policy enforcement overlay plane' },
+  { id: 'atlas', label: 'ATLAS', sector: 'plane', weight: 0.015, description: 'Governance authority & system control (Node 40)' },
+  { id: 'engineer', label: 'ENGINEER', sector: 'plane', weight: 0.015, description: 'Engine & meta-engine maintenance intelligence (Node 39)' },
 
   // ─── Shell — Outer containment boundary ────────────────────────
-  { id: 'defense', label: 'DEFENSE', sector: 'shell', weight: 0.030, description: 'Outer containment shell' },
+  { id: 'defense', label: 'DEFENSE', sector: 'shell', weight: 0.010, description: 'Outer containment shell' },
 ];
 
 // Validate total weight === 1.0
