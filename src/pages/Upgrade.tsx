@@ -404,7 +404,7 @@ export default function Upgrade() {
                     <Badge className="absolute top-4 right-4 bg-violet-500 text-white text-[10px]">Popular</Badge>
                   )}
 
-                  <div className="p-6 flex flex-col flex-1">
+                  <div className="p-5 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <div className={cn("w-10 h-10 rounded-xl bg-gradient-to-r flex items-center justify-center", t.accent)}>
                         <TierIcon className="w-5 h-5 text-white" />
