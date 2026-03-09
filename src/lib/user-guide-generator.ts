@@ -345,7 +345,7 @@ export function generateUserGuideHTML(): string {
 <!-- SUBSTRATE OS -->
 <div class="page">
   <h2 id="substrate-os">8. The Substrate OS Dashboard</h2>
-  <p>The dashboard is your command center for the entire 38-node substrate. Key surfaces:</p>
+  <p>The dashboard is your command center for the entire 40-node substrate. Key surfaces:</p>
   
   <div class="card-grid">
     <div class="card">
