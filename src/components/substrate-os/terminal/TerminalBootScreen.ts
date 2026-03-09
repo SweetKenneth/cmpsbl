@@ -8,7 +8,7 @@
  * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
  * - 675+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 500+ commands across all 38 nodes + infrastructure
+ * - 500+ commands across all 40 nodes + infrastructure
  * - CLM across all modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
