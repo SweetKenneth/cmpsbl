@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as reflexModule from '@/lib/substrate/reflex-module';
+import * as reflexModule from '@/lib/substrate/reflex';
 
 export interface UseReflexReturn {
   state: ReturnType<typeof useQuery>;
