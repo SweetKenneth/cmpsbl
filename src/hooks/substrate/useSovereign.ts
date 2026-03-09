@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as sovereignModule from '@/lib/substrate/sovereign-module';
+import * as sovereignModule from '@/lib/substrate/sovereign';
 
 export interface UseSovereignReturn {
   state: ReturnType<typeof useQuery>;
