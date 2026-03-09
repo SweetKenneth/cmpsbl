@@ -38,6 +38,7 @@ export { useAuditModule, type UseAuditModuleReturn } from './useAuditModule';
 export { useIdentity, type UseIdentityReturn } from './useIdentity';
 export { useEconomy, type UseEconomyReturn } from './useEconomy';
 export { useSandbox, type UseSandboxReturn } from './useSandbox';
+export { useNerve, type UseNerveReturn } from './useNerve';
 
 // ═══════════════════════════════════════════════════════════════════
 // EXPANSION NODES (40-Node Architecture)
