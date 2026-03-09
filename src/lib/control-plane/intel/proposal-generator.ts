@@ -1486,7 +1486,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 13: Missing capabilities (code health gaps) ───
-    for (const cap of modernizerResult.code_health.missing_capabilities) {
+    for (const cap of evolutionResult.code_health.missing_capabilities) {
       candidates.push({
         value: severityValue(cap.impact) * 0.6,
         dedup_key: `missing_cap_${cap.capability}`,
