@@ -87,11 +87,29 @@ export function FoundryHero() {
           </button>
         </motion.div>
 
+        {/* Demo video */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.35 }}
+          className="relative w-full max-w-3xl mx-auto mb-10 sm:mb-14 rounded-2xl overflow-hidden border border-border/20 shadow-2xl shadow-primary/5"
+        >
+          <video
+            src="/videos/memory-stream-demo.mov"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto block"
+          />
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-foreground/5 pointer-events-none" />
+        </motion.div>
+
         {/* Memory Stream visualization */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           className="mb-12 sm:mb-14"
         >
           <MemoryRiver autoCrystallize hideTagline />
