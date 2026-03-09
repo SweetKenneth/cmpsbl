@@ -424,8 +424,8 @@ export const ripple = RippleEventBus.getInstance();
 export type { RippleEventBus };
 
 // Version info
-export const RIPPLE_VERSION = '7.0.0';
-export const RIPPLE_CODENAME = 'Cascade';
+export const RIPPLE_VERSION = '8.0.0';
+export const RIPPLE_CODENAME = 'Tempest';
 
 // Batch events & replay
 export {
@@ -444,7 +444,7 @@ export {
   type SubscriptionHealth,
 } from './batchEvents';
  
-// Event analytics - explicitly export to avoid conflicts
+// Event analytics
 export {
   recordEventForAnalytics,
   getEventAnalytics,
@@ -455,3 +455,85 @@ export {
   type EventCorrelation,
   type TimeWindow,
 } from './eventAnalytics';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v8.0.0 TEMPEST ENHANCEMENTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Persistent Event Store (exactly-once, event sourcing)
+export {
+  appendEvent,
+  readFromSequence,
+  readByTimeRange,
+  updateConsumerPosition,
+  getConsumerPosition,
+  getAllConsumerPositions,
+  getConsumerLag,
+  compactExpiredEvents,
+  getEventStoreStats,
+  resetSequences,
+  computePartition,
+  type PersistedEvent,
+  type EventCursor,
+  type StreamPosition,
+  type EventStoreStats,
+} from './persistentEventStore';
+
+// Ordered Delivery Engine (FIFO + causal ordering)
+export {
+  tickClock,
+  mergeClock,
+  happenedBefore,
+  areConcurrent,
+  enqueueForOrdering,
+  forceDelivery,
+  getStalePartitions,
+  checkCausalOrder,
+  getOrderingStats,
+  getPartitionStats,
+  getAllPartitionStats,
+  resetOrderingState,
+  type OrderedEvent,
+  type VectorClock,
+  type DeliverySlot,
+  type OrderingStats,
+} from './orderedDelivery';
+
+// Cross-Node Propagation (topology-aware fan-out)
+export {
+  subscribeNode,
+  getSubscribedNodes,
+  propagate,
+  confirmDelivery,
+  getConfirmations,
+  broadcastToSector,
+  getPropagationStats,
+  getSectorTopology,
+  resetPropagationState,
+  type SectorId,
+  type NodeId,
+  type PropagationEvent,
+  type PropagationHop,
+  type PropagationConfig,
+  type PropagationResult,
+  type PropagationStats,
+} from './crossNodePropagation';
+
+// Event Replay Engine (point-in-time replay)
+export {
+  createReplaySession,
+  startReplay,
+  pauseReplay,
+  cancelReplay,
+  getReplaySession,
+  getActiveSessions,
+  replayLastMinutes,
+  replaySingleEvent,
+  getReplayStats,
+  cleanupSessions,
+  type ReplayEvent,
+  type ReplayConfig,
+  type ReplaySession,
+  type ReplayProgress,
+  type ReplayStats,
+} from './eventReplayEngine';
