@@ -760,7 +760,7 @@ export function generateDiscoveryEngineDoc(): string {
 
   <h2 id="reactor">1. Reactor Architecture</h2>
   <h3>Core Loop</h3>
-  <pre><code>Input:  38-node topology graph
+  <pre><code>Input:  40-node topology graph
 Output: Scored, tiered, deduplicated capability manifest
 
 1. Generate candidate pool from module combinations (depth 2–5)
