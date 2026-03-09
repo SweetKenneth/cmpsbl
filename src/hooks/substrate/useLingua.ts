@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as linguaModule from '@/lib/substrate/lingua-module';
+import * as linguaModule from '@/lib/substrate/lingua';
 
 export interface UseLinguaReturn {
   state: ReturnType<typeof useQuery>;
