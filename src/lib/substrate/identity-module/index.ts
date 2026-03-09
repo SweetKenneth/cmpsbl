@@ -105,6 +105,22 @@ function generateSignature(actorId: string): string {
   return `sig-${(h1 >>> 0).toString(16).padStart(8, '0')}${(h2 >>> 0).toString(16).padStart(8, '0')}`;
 }
 
+/**
+ * Deep clone ActorIdentity to prevent external state mutation
+ */
+function cloneActor(actor: ActorIdentity): ActorIdentity {
+  return {
+    ...actor,
+    passkeys: [...actor.passkeys],
+    reputation: { ...actor.reputation },
+    metadata: actor.metadata ? { ...actor.metadata } : undefined,
+    portableIdentity: actor.portableIdentity ? {
+      ...actor.portableIdentity,
+      linkedAgencies: [...actor.portableIdentity.linkedAgencies],
+    } : undefined,
+  };
+}
+
 function createDefaultReputation(): ActorReputation {
   return {
     trustScore: 50,
@@ -196,7 +212,7 @@ export function registerActor(id: string, type: ActorType, displayName: string, 
 }
 
 export function whoami(): ActorIdentity | null {
-  return state.currentActor;
+  return state.currentActor ? cloneActor(state.currentActor) : null;
 }
 
 export function setCurrentActor(id: string): ActorIdentity | null {
@@ -206,8 +222,9 @@ export function setCurrentActor(id: string): ActorIdentity | null {
   if (actor) {
     actor.lastActiveAt = Date.now();
     state.currentActor = actor;
+    return cloneActor(actor);
   }
-  return actor ?? null;
+  return null;
 }
 
 export function signAction(actorId: string, action: string): { actorId: string; action: string; signature: string; timestamp: number } {
@@ -227,7 +244,8 @@ export function signAction(actorId: string, action: string): { actorId: string; 
 }
 
 export function getActor(id: string): ActorIdentity | null {
-  return actors.get(id) ?? null;
+  const actor = actors.get(id);
+  return actor ? cloneActor(actor) : null;
 }
 
 export function addPasskeyToActor(actorId: string, credentialId: string): boolean {
@@ -241,7 +259,7 @@ export function addPasskeyToActor(actorId: string, credentialId: string): boolea
   }
   if (!actor.passkeys.includes(validCred)) {
     actor.passkeys.push(validCred);
-    state.passkeyCount++;
+    syncPasskeyCount(); // Sync from actual data instead of increment
     emit({ module: 'identity', event_type: 'passkey_bound', outcome: 'succeeded', data: { actorId, credentialId: validCred } });
   }
   return true;
@@ -253,13 +271,14 @@ export function removePasskeyFromActor(actorId: string, credentialId: string): b
   const idx = actor.passkeys.indexOf(credentialId);
   if (idx === -1) return false;
   actor.passkeys.splice(idx, 1);
-  state.passkeyCount = Math.max(0, state.passkeyCount - 1);
+  syncPasskeyCount(); // Sync from actual data instead of decrement
   emit({ module: 'identity', event_type: 'passkey_removed', outcome: 'succeeded', data: { actorId, credentialId } });
   return true;
 }
 
 export function getActorPasskeys(actorId: string): readonly string[] {
-  return Object.freeze(actors.get(actorId)?.passkeys ?? []);
+  // Return frozen copy of actual passkeys array to prevent external mutation
+  return Object.freeze([...(actors.get(actorId)?.passkeys ?? [])]);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -327,11 +346,33 @@ export function getReputationLeaderboard(limit: number = 10): Array<{ actorId: s
     .map(a => ({ actorId: a.id, displayName: a.displayName, reputation: Object.freeze({ ...a.reputation }) }));
 }
 
+// Performance cache for trust score calculations
+const TRUST_SCORE_CACHE_TTL = 30000; // 30 seconds
+let trustScoreCache: { value: number; timestamp: number } | null = null;
+
 function updateAvgTrustScore(): void {
-  if (actors.size === 0) { state.avgTrustScore = 0; return; }
+  trustScoreCache = null; // Invalidate cache
+  getAvgTrustScore(); // Recalculate and cache
+}
+
+function getAvgTrustScore(): number {
+  if (trustScoreCache && (Date.now() - trustScoreCache.timestamp) < TRUST_SCORE_CACHE_TTL) {
+    return trustScoreCache.value;
+  }
+  
+  if (actors.size === 0) {
+    state.avgTrustScore = 0;
+    trustScoreCache = { value: 0, timestamp: Date.now() };
+    return 0;
+  }
+  
   let sum = 0;
   for (const actor of actors.values()) sum += actor.reputation.trustScore;
-  state.avgTrustScore = Math.round(sum / actors.size);
+  const avgScore = Math.round(sum / actors.size);
+  
+  state.avgTrustScore = avgScore;
+  trustScoreCache = { value: avgScore, timestamp: Date.now() };
+  return avgScore;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -409,6 +450,14 @@ export function revokePortableIdentity(actorId: string): boolean {
   syncPortableIdentityCount();
   emit({ module: 'identity', event_type: 'portable_identity_revoked', outcome: 'succeeded', data: { actorId } });
   return true;
+}
+
+function syncPasskeyCount(): void {
+  let count = 0;
+  for (const actor of actors.values()) {
+    count += actor.passkeys.length;
+  }
+  state.passkeyCount = count;
 }
 
 function syncPortableIdentityCount(): void {
