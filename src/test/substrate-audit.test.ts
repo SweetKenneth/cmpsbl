@@ -35,8 +35,8 @@ import {
 } from '@/lib/core/matrixNodeRegistry';
 
 describe('§1 — Matrix Node Registry', () => {
-  it('has exactly 38 nodes', () => {
-    expect(getNodeDefinitions()).toHaveLength(38);
+  it('has exactly 40 nodes', () => {
+    expect(getNodeDefinitions()).toHaveLength(40);
   });
 
   it('weight sum equals 1.000', () => {
