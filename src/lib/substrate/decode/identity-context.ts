@@ -37,6 +37,36 @@ export interface DecodeIdentityContext {
 const identityContexts = new Map<string, DecodeIdentityContext>();
 const MAX_IDENTITY_CONTEXTS = 500;
 
+// Context cleanup configuration
+const CONTEXT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Cleanup expired identity contexts to prevent memory leaks
+ */
+function cleanupExpiredContexts(): void {
+  const now = Date.now();
+  const expiredKeys: string[] = [];
+  
+  for (const [key, context] of identityContexts.entries()) {
+    const contextAge = now - (context.firstSeen ?? 0);
+    if (contextAge > CONTEXT_MAX_AGE_MS) {
+      expiredKeys.push(key);
+    }
+  }
+  
+  for (const key of expiredKeys) {
+    identityContexts.delete(key);
+  }
+  
+  if (expiredKeys.length > 0) {
+    console.debug(`[IDENTITY-CONTEXT] Cleaned up ${expiredKeys.length} expired contexts`);
+  }
+}
+
+// Set up periodic cleanup
+setInterval(cleanupExpiredContexts, CLEANUP_INTERVAL_MS);
+
 /**
  * Build identity context for Decode from current IDENTITY module state
  */
