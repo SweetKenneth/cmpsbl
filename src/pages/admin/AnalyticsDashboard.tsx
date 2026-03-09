@@ -139,6 +139,7 @@ const TAB_STYLES: Record<string, string> = {
   amber:  'bg-amber-500/20 text-amber-400 border border-amber-500/40',
   purple: 'bg-purple-500/20 text-purple-400 border border-purple-500/40',
   cyan:   'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40',
+  red:    'bg-red-500/20 text-red-400 border border-red-500/40',
 };
 
 // ═══════════════════════════════════════════════════════════════
