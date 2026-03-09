@@ -69,7 +69,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-architecture-telomere-repair',
     name: 'Architecture Telomere Repair',
-    modules: ['MODERNIZER', 'SYSTEM', 'CORTEX', 'VISION'],
+    modules: ['EVOLUTION', 'SYSTEM', 'CORTEX', 'VISION'],
     description: 'Detects and repairs architecture aging patterns before they cause systemic degradation',
     emergentProperty: 'Perpetual architecture youth maintenance',
     tier: 'cmpsbl',
