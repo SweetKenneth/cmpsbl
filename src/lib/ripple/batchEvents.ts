@@ -266,7 +266,7 @@ export async function replayEvents(
     }
 
     try {
-      const eventData = event.data as any;
+      const eventData = event.data as Record<string, unknown> | null;
       const eventType = event.event_type?.replace('bus.', '') || 'unknown';
       
       await ripple.publish(
