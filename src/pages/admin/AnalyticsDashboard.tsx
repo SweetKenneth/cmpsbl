@@ -216,6 +216,7 @@ export default function AnalyticsDashboard() {
     { key: 'churn', label: 'Churn Risk', icon: AlertTriangle, color: 'amber' },
     { key: 'journeys', label: 'Journeys', icon: Route, color: 'purple' },
     { key: 'features', label: 'Features', icon: Flame, color: 'cyan' },
+    { key: 'exclusions', label: 'Exclusions', icon: ShieldOff, color: 'red' },
   ];
 
   return (
