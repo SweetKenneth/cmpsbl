@@ -88,7 +88,15 @@ interface FeatureAdoption {
   category_totals: { category: string; count: number }[];
 }
 
-type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features';
+type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features' | 'exclusions';
+
+interface ExcludedFingerprint {
+  id: string;
+  fingerprint: string;
+  reason: string;
+  label: string | null;
+  created_at: string;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
