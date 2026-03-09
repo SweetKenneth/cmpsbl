@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MEDIC — Autonomous Diagnostics & Self-Repair · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">MEDIC</span></h1>
+  <p class="subtitle">Autonomous Diagnostics & Self-Repair — Symptom-based diagnosis, quarantine isolation, self-repair orchestration, and ring-buffered state management.</p>
+  <div class="meta">
+    <strong>Node #20</strong> · Sector: Execution · Generation 1<br>
+    Codename: <em>Healer</em> · Capabilities: diagnose, quarantine, repair
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">4</div><div class="ml">Severity Levels</div></div>
+  <div class="metric"><div class="mv">3</div><div class="ml">Circuit Trip Threshold</div></div>
+  <div class="metric"><div class="mv">300</div><div class="ml">Diagnosis Ring Cap</div></div>
+  <div class="metric"><div class="mv">50</div><div class="ml">Quarantine Ring Cap</div></div>
+</div>
+
+<h2>Diagnostic Severity</h2>
+<table>
+  <thead><tr><th>Severity</th><th>Symptoms</th><th>Response</th></tr></thead>
+  <tbody>
+    <tr><td>healthy</td><td>0</td><td>No action</td></tr>
+    <tr><td>degraded</td><td>1–2</td><td>Auto-repair + monitor</td></tr>
+    <tr><td>critical</td><td>3–4</td><td>Immediate repair</td></tr>
+    <tr><td>quarantined</td><td>5+</td><td>Isolate, manual intervention</td></tr>
+  </tbody>
+</table>
+
+<h2>Quarantine System</h2>
+<div class="box">
+  <pre>quarantine(module, reason):
+  → Create entry → Halt NERVE traffic → Log to AUDIT
+  
+release(quarantineId):
+  → Mark released → Resume traffic → Monitor 30s for re-degradation</pre>
+</div>
+
+<h2>Health Calculation</h2>
+<div class="box">
+  <pre>overallHealth = 100 - (activeIssues × 10)
+activeIssues = unresolved diagnoses WHERE severity ≠ 'healthy'
+If hardening degraded → cap at 40</pre>
+</div>
+
+<h2>Resilience</h2>
+<ul>
+  <li>Circuit Breaker: <strong>3 failures</strong> (conservative — lower than standard 5)</li>
+  <li>Rate limit: 40/min, max 5 concurrent</li>
+  <li>Ring buffers: 300 diagnoses, 50 quarantines, 300 repairs</li>
+  <li>30s auto-restore interval</li>
+</ul>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Conservative Circuit Breaker</div>
+  <p>MEDIC trips at 3 failures, not 5. As the health system, it must be the most reliable node — fails fast to prevent accumulating unreliable diagnostics.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Mutual Health Exclusion</div>
+  <p>MEDIC never diagnoses itself. Self-diagnosis creates recursive dependency. CORE monitors MEDIC externally via heartbeat.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Ring Buffer State</div>
+  <p>All state arrays (300/50/300) use ring buffers. Bounded memory growth regardless of system lifetime.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — MEDIC Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

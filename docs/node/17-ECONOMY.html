@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ECONOMY — Cost Attribution & Financial Intelligence · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">ECONOMY</span></h1>
+  <p class="subtitle">Cost Attribution & Financial Intelligence — Millicent-precision tracking, budget enforcement, anomaly detection, and ROI analysis across all substrate operations.</p>
+  <div class="meta">
+    <strong>Node #17</strong> · Sector: Execution · Generation 1<br>
+    Codename: <em>Ledger</em> · Capabilities: 5 mesh capabilities
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">5</div><div class="ml">Mesh Capabilities</div></div>
+  <div class="metric"><div class="mv">0.001¢</div><div class="ml">Precision (millicent)</div></div>
+  <div class="metric"><div class="mv">2.5σ</div><div class="ml">Anomaly Threshold</div></div>
+  <div class="metric"><div class="mv">7d</div><div class="ml">Forecast Window</div></div>
+</div>
+
+<h2>Cost Attribution</h2>
+<div class="box">
+  <pre>total_cost = (tokens × per_token_rate × complexity_multiplier) + compute_cost
+
+Attribution: developer_id → module → product_code → api_key_id</pre>
+</div>
+
+<h2>Budget Enforcement</h2>
+<div class="box">
+  <pre>if (usage + estimated) &gt; quota → reject "quota_exceeded"
+if (usage + estimated) &gt; quota × 0.9 → allow + "quota_warning"
+otherwise → allow</pre>
+</div>
+
+<h2>Cost Anomaly Detection</h2>
+<div class="box">
+  <pre>z_score = (today_cost - 7d_mean) / 7d_stddev
+
+z &gt; 2.5 → anomaly detected
+z &gt; 4.0 → critical (auto-throttle)</pre>
+</div>
+
+<h2>ROI Calculation</h2>
+<div class="box">
+  <pre>roi = (total_value - total_cost) / total_cost × 100
+Per-capability breakdown available</pre>
+</div>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Millicent Precision</div>
+  <p>All costs in millicents (1/1000¢). Aggregation to display amounts only at presentation layer. Prevents rounding errors on high-volume operations.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Cross-Module Cost Allocation</div>
+  <p>Dual attribution: "who asked" (originating module) and "who did the work" (executing module). Enables precise budget analysis.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — ECONOMY Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

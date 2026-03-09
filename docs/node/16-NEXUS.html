@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEXUS — AI Provider Router & Model Intelligence · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">NEXUS</span></h1>
+  <p class="subtitle">AI Provider Router & Model Intelligence — Single gateway for all AI requests. Multi-axis scoring, gradual failover, cost attribution, and failure prediction.</p>
+  <div class="meta">
+    <strong>Node #16</strong> · Sector: Execution · Generation 1<br>
+    Codename: <em>Oracle</em> · Capabilities: 3 mesh capabilities
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">3</div><div class="ml">Mesh Capabilities</div></div>
+  <div class="metric"><div class="mv">4-Axis</div><div class="ml">Scoring Model</div></div>
+  <div class="metric"><div class="mv">4-Stage</div><div class="ml">Gradual Failover</div></div>
+  <div class="metric"><div class="mv">100</div><div class="ml">Prediction Window</div></div>
+</div>
+
+<h2>Optimal Routing Algorithm</h2>
+<div class="box">
+  <pre>optimal_route(task):
+  1. Filter by capability (model family support)
+  2. Filter by quota (remaining &gt; estimated tokens)
+  3. Score:
+     health × 0.35 + reliability × 0.25
+     + latency × 0.20 + cost × 0.20
+  4. Priority boost for critical tasks
+  5. Failover to second-ranked on failure</pre>
+</div>
+
+<h2>Provider Failure Prediction</h2>
+<div class="box">
+  <pre>predict_failure(provider):
+  Rolling error rate over 5-min windows
+  Trend: 3 consecutive increasing windows + rate &gt; 5%
+  → Signal CORTEX
+  → Pre-warm alternatives
+  → Shift traffic: 10% → 30% → 50% → 100%</pre>
+</div>
+
+<h2>Model-Task Matrix</h2>
+<table>
+  <thead><tr><th>Task Type</th><th>Optimal Models</th></tr></thead>
+  <tbody>
+    <tr><td>Complex reasoning</td><td>gpt-5, gemini-2.5-pro</td></tr>
+    <tr><td>Fast classification</td><td>gpt-5-nano, gemini-2.5-flash-lite</td></tr>
+    <tr><td>Code generation</td><td>gpt-5, gemini-2.5-flash</td></tr>
+    <tr><td>Image analysis</td><td>gemini-2.5-pro, gemini-2.5-flash</td></tr>
+  </tbody>
+</table>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Gradual Traffic Shifting</div>
+  <p>On predicted failure: 10% → 30% → 50% → 100% shift. Prevents thundering-herd on failover provider and allows primary recovery.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Cost Attribution Pipeline</div>
+  <p>Every call tagged with requesting module + task type. Feeds ECONOMY for per-module cost attribution and ROI analysis.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — NEXUS Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>
