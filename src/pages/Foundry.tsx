@@ -133,6 +133,8 @@ export default function Foundry() {
         </div>
         {!user ? (
           <div className="min-h-screen bg-background text-foreground relative z-10">
+            {/* Demo video — above hero, below stats */}
+            <FoundryDemoVideo />
             <div id="hero"><FoundryHero /></div>
             <MemoryStreamExplainer />
             <div id="proof"><ProofNumbers /></div>
