@@ -161,7 +161,7 @@ function OverviewSection() {
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           A continuous cognitive substrate providing routing, memory, learning cycles,
           observability, defense, and execution coordination for AI systems.{" "}
-          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 38 nodes and 12 sectors.
+          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
         </p>
       </div>
 
