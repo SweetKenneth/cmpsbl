@@ -1,5 +1,5 @@
 /**
- * Matrix Runtime Registry — Mutable Source of Truth for all 38 Nodes
+ * Matrix Runtime Registry — Mutable Source of Truth for all 40 Nodes
  * 
  * Extends the read-only matrixNodeRegistry with runtime state management:
  * - Mutable health, breaker state, dependency tracking

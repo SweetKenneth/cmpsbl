@@ -272,9 +272,9 @@ class TelemetryEngineClient {
   }
 
   /**
-   * Emit Modernizer evolution cycle event
+   * Emit EVOLUTION cycle event
    */
-  emitModernizerEvent(
+  emitEvolutionEvent(
     action: 'scan' | 'apply_shadow' | 'apply_production' | 'verify' | 'rollback',
     planId: string,
     success: boolean,
@@ -282,17 +282,17 @@ class TelemetryEngineClient {
     correlationId?: string
   ): TelemetryEvent {
     const typeMap: Record<string, TelemetryEventType> = {
-      scan: 'modernizer_scan',
-      apply_shadow: 'modernizer_apply_shadow',
-      apply_production: 'modernizer_apply_production',
-      verify: 'modernizer_verify',
-      rollback: 'modernizer_rollback',
+      scan: 'evolution_scan',
+      apply_shadow: 'evolution_apply_shadow',
+      apply_production: 'evolution_apply_production',
+      verify: 'evolution_verify',
+      rollback: 'evolution_rollback',
     };
 
     return this.emit(
       typeMap[action] || 'custom',
       success ? 'info' : 'error',
-      { module: 'modernizer', action },
+      { module: 'evolution', action },
       {
         success,
         metadata: { planId, ...details },

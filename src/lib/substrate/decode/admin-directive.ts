@@ -257,7 +257,7 @@ export function getSubstrateSummary(sessionId?: string): string | { error: strin
   const totalOps = insights.reduce((s, i) => s + i.opsCount, 0);
 
   return [
-    `Substrate Status: ${activeCount}/38 nodes active | ${degradedCount} degraded | Avg health: ${avgHealth}%`,
+    `Substrate Status: ${activeCount}/40 nodes active | ${degradedCount} degraded | Avg health: ${avgHealth}%`,
     `Total operations this session: ${totalOps.toLocaleString()}`,
     `All 12 sectors operational. DEFENSE perimeter holding. GOVERNANCE constraints enforced.`,
   ].join('\n');

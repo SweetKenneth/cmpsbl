@@ -251,7 +251,7 @@ export async function getGlobalCostSummary(): Promise<{
     'core', 'ripple', 'access',
     'brain', 'decode', 'dream',
     'defense', 'nexus', 'vision', 'encode',
-    'system', 'modernizer', 'integration', 'inclusive',
+    'system', 'evolution', 'integration', 'inclusive',
     'cortex', 'atlas',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];

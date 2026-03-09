@@ -995,7 +995,7 @@ export {
 } from './hardened-invoke';
 
 // ═══════════════════════════════════════════════════════════════════
-// EXPANSION MODULES v1.0.0 — 14-Node Expansion (38-Node Architecture)
+// EXPANSION MODULES v1.0.0 — 14-Node Expansion (40-Node Architecture)
 // ═══════════════════════════════════════════════════════════════════
 
 // SOVEREIGN — Data Sovereignty & Jurisdictional Compliance
