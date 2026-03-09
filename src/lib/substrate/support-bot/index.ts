@@ -6,7 +6,7 @@
  * escalates uncertainty, and produces audit-safe responses.
  * 
  * Integrations with substrate architecture:
- * - 38 nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
+ * - 40 nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
  * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Observability & monitoring

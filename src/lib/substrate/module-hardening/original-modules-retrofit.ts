@@ -70,7 +70,7 @@ const ORIGINAL_MODULE_PROFILES: ModuleHardeningProfile[] = [
   { name: 'economy',       maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 40 },
   { name: 'identity',      maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 45 },
 
-  // ── Expansion Modules (38-Node / 12-Sector Architecture) ──────────────
+  // ── Expansion Modules (40-Node / 12-Sector Architecture) ──────────────
   { name: 'sovereign',     maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 50 },
   { name: 'oracle',        maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 40 },
   { name: 'conscience',    maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 50 },

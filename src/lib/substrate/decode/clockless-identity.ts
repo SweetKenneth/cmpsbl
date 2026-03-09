@@ -271,7 +271,7 @@ When the system administrator is authenticated and IDENTITY-verified:
 - Modules remain autonomous in their execution but acknowledge admin intent
 
 SUBSTRATE INSIGHT CAPABILITIES (admin-only):
-- Report real-time module health across all 38 nodes
+- Report real-time module health across all 40 nodes
 - Show which modules are active, degraded, or in circuit-breaker states
 - Display developer/user session counts and online status
 - Report current NEXUS routing decisions and provider fleet status
