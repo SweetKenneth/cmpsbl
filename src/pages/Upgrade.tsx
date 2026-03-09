@@ -330,8 +330,8 @@ export default function Upgrade() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Each crystallization reveals a pipeline you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.
-              Rare discoveries occasionally appear. If a Mythic pipeline is discovered and your vault is full,
+              Each crystallization reveals a pipeline you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.{' '}
+              <strong className="text-foreground">Rare discoveries</strong> occasionally appear. If a <strong className="text-foreground">Mythic pipeline</strong> is discovered and your vault is full,
               you will be prompted to upgrade immediately so the discovery is not lost.
             </p>
             <p className="text-xs text-muted-foreground/70">
