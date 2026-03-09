@@ -383,7 +383,7 @@ export function useSubstrateHealthScore() {
   for (const m of ALL_MODULES) defaultModules[m] = true;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation — 38-node / 12-sector
+  // Layer-weighted health calculation — 40-node / 12-sector
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
     const healthy = keys.filter(k => modules[k] !== false).length;

@@ -167,7 +167,7 @@ export function generateMobileBootScreen(): string[] {
     '  │                                │',
     '  └────────────────────────────────┘',
     '',
-    '  ◉ 38 nodes | 12 sectors',
+    '  ◉ 40 nodes | 12 sectors',
     '  ◉ 500+ commands available',
     '  ◉ 300 synergies | 125 executors',
     '  ◉ 675+ capabilities | 100 engines',

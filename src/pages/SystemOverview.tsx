@@ -449,7 +449,7 @@ function InvestorHighlights() {
             <Users className="w-6 h-6 text-primary mb-3" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Defensibility</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />38-node architecture is non-trivial to replicate</li>
+              <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />40-node architecture is non-trivial to replicate</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Self-evolving system creates compounding advantage</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Growing discovery corpus as a data moat</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Published DOI for academic credibility</li>

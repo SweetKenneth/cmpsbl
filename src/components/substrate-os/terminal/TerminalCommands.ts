@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * 500+ commands across 38 nodes / 12 sectors
+ * 500+ commands across 40 nodes / 12 sectors
  * Complete list of all substrate commands organized by sector
  *
  * Tier Gating: free | creator | architect | governor
