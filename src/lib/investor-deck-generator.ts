@@ -241,7 +241,7 @@ export function generateInvestorDeckHTML(): string {
   <p class="stream-tag">SIGNAL → SILICON</p>
   <h1><span>CMPSBL®</span></h1>
   <h1 style="font-size:32px;margin-bottom:8px;">The Memory Stream</h1>
-  <p class="subtitle">The continuous substrate of evolving software systems. 38 nodes across 12 sectors. 675+ capabilities. 14 documented industry firsts. Raw signal enters — production-grade software crystallizes out.</p>
+  <p class="subtitle">The continuous substrate of evolving software systems. 40 nodes across 12 sectors. 675+ capabilities. 14 documented industry firsts. Raw signal enters — production-grade software crystallizes out.</p>
   
   <div class="signal-flow">
     <div class="node active">Signal</div>
