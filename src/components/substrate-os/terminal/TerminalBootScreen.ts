@@ -1,6 +1,6 @@
 /**
  * Terminal Boot Screen
- * 38-Node / 12-Sector Field-Based Topology
+ * 40-Node / 12-Sector Field-Based Topology
  * Mobile-friendly with no mid-word line breaks
  * 
  * Architecture:
