@@ -300,7 +300,7 @@ function runHeartbeatCycle(): void {
   let alive = 0, suspect = 0, dead = 0;
 
   for (const [nodeId, entry] of heartbeats) {
-    const nodeState = getNodeState(nodeId);
+    const nodeState = getNodeState(nodeId as SubstrateModuleName);
     if (nodeState && nodeState.lastHeartbeat > entry.lastSeen) {
       entry.lastSeen = nodeState.lastHeartbeat;
       entry.missedCount = 0;
