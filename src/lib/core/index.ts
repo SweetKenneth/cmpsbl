@@ -81,6 +81,8 @@ export const SUBSTRATE_MODULES = [
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
   // CSZ — Covert Systems Zone
   'evolution', 'shadow', 'phantom',
+  // Plane additions (Nodes 39-40)
+  'engineer', 'atlas',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
