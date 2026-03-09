@@ -28,7 +28,7 @@ const LICENSE_TIERS = [
     popular: false,
     comingSoon: false,
     features: [
-      "3 Artifact Slots",
+      "3 Artifact Slots · 5 Vault · 3 Pulls/day",
       "Full baseline runtime",
       "30 free templates",
       "Persistent Memory (project-scoped)",
