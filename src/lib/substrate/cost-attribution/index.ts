@@ -75,7 +75,7 @@ const DEFAULT_BUDGETS: Record<ModuleName, ModuleBudget> = {
   encode:      { module: 'encode',      daily_token_limit: 120000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
   // Administrative
   system:      { module: 'system',      daily_token_limit: 60000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
-  modernizer:  { module: 'modernizer',  daily_token_limit: 100000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
+  evolution:   { module: 'evolution',   daily_token_limit: 100000, daily_cost_limit_cents: 0, alert_threshold_pct: 75 },
   integration: { module: 'integration', daily_token_limit: 50000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   inclusive:   { module: 'inclusive',    daily_token_limit: 30000,  daily_cost_limit_cents: 0, alert_threshold_pct: 80 },
   // Orchestrator
