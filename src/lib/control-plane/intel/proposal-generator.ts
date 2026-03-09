@@ -476,7 +476,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   let actionPlan = buildActionPlan(
     techDebt, evolution, auditGaps, diligenceData,
     productionAudit, structuralHealth, accessibilityData, securityData,
-    governanceChain, evolutionData, rawModernizerResult,
+    governanceChain, evolutionData, rawEvolutionResult,
   );
   
   // ─── Convert minor diligence to proposal (max 1) with probe details ───
