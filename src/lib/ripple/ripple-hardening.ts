@@ -1,10 +1,21 @@
 /**
- * RIPPLE Hardening v2.0.0 — "Tsunami"
- * 25 enterprise-grade hardening features for the RIPPLE OCG zone
+ * RIPPLE Hardening v3.0.0 — "Tempest"
+ * 35 enterprise-grade hardening features for the RIPPLE kernel zone
+ * 
+ * v3.0.0 additions:
+ * - Persistent event store integration
+ * - Exactly-once delivery semantics
+ * - Cross-node propagation monitoring
+ * - Causal ordering verification
+ * - Replay session management
  */
 
-export const RIPPLE_HARDENING_VERSION = '2.0.0';
-export const RIPPLE_HARDENING_CODENAME = 'Tsunami';
+export const RIPPLE_HARDENING_VERSION = '3.0.0';
+export const RIPPLE_HARDENING_CODENAME = 'Tempest';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ORIGINAL 25 HARDENING FEATURES (v2.0.0)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 // ─── 1. Event Deduplication (Bloom Filter) ─────────────────────────────────
 const bloomFilter = new Set<string>();
