@@ -106,14 +106,14 @@ export function useAtlas(): UseAtlasReturn {
   });
 
   const submit = useMutation({
-    mutationFn: (params: { type: string; description: string; impact: string; requester: string }) =>
-      Promise.resolve(submitProposal(params.type, params.description, params.impact, params.requester)),
+    mutationFn: (params: { source: string; title: string; description: string; impact: string; risk?: 'low' | 'medium' | 'high' | 'critical' }) =>
+      Promise.resolve(submitProposal(params.source, params.title, params.description, params.impact, params.risk)),
     onSuccess: invalidateAtlas,
   });
 
   const decide = useMutation({
-    mutationFn: (params: { proposalId: string; decision: 'approve' | 'reject'; reason: string; decidedBy: string }) =>
-      Promise.resolve(decideProposal(params.proposalId, params.decision, params.reason, params.decidedBy)),
+    mutationFn: (params: { proposalId: string; decision: 'approve' | 'reject' | 'defer'; reason: string }) =>
+      Promise.resolve(decideProposal(params.proposalId, params.decision, params.reason)),
     onSuccess: invalidateAtlas,
   });
 
