@@ -487,8 +487,8 @@ function generateFullHelp(): string {
 ┌─────────────────────────────────────────────────────────────┐
 │          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 38 / 12 Sectors           │
-│  Architecture: 38-node matrix │ 675+ caps │ 300 Synergies  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 40 / 12 Sectors           │
+│  Architecture: 40-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
