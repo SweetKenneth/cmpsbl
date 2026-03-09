@@ -155,7 +155,7 @@ export interface UnifiedProposal {
     security_issues: SecurityIssueItem[];
   };
   
-  modernizer_scan: {
+  evolution_scan: {
     scan_completed: boolean;
     proposals_found: number;
     plan_ready: boolean;
