@@ -394,7 +394,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="info-card" style="margin-top:16px;">
     <h3 style="color:var(--text);">Kenneth E. Sweet Jr.</h3>
     <p><strong>Founder & Chief Cognitive Engineer</strong></p>
-    <p style="margin-top:8px;">Creator and architect of the 38-node Memory Stream substrate. Deep expertise in cognitive systems, AI infrastructure, and the Signal → Silicon pipeline.</p>
+    <p style="margin-top:8px;">Creator and architect of the 40-node Memory Stream substrate. Deep expertise in cognitive systems, AI infrastructure, and the Signal → Silicon pipeline.</p>
     <p style="margin-top:8px;">ORCID: 0009-0001-4237-1243</p>
   </div>
 

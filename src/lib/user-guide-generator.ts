@@ -399,8 +399,8 @@ budget status       # View stream budget governance</code></pre>
     <li><strong>Memory Stream Access</strong> — Quick-link to the crystallization workspace</li>
   </ul>
 
-  <h2 id="architecture">11. 38-Node Architecture</h2>
-  <p>The substrate operates across 38 nodes organized into 12 sectors:</p>
+  <h2 id="architecture">11. 40-Node Architecture</h2>
+  <p>The substrate operates across 40 nodes organized into 12 sectors:</p>
   
   <table>
     <thead><tr><th>Sector</th><th>Systems</th><th>Purpose</th></tr></thead>

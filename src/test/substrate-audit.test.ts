@@ -285,9 +285,9 @@ import {
 } from '@/lib/substrate/capability-router';
 
 describe('§5 — Capability Router', () => {
-  it('all 38 nodes have registered capabilities', () => {
+  it('all 40 nodes have registered capabilities', () => {
     const caps = listCapabilities();
-    expect(caps.length).toBeGreaterThanOrEqual(40); // 38 nodes × ~2 caps each
+    expect(caps.length).toBeGreaterThanOrEqual(40); // 40 nodes × ~2 caps each
   });
 
   it('resolves highest priority healthy module', () => {

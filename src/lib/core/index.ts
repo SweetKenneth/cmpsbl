@@ -76,7 +76,7 @@ export const SUBSTRATE_MODULES = [
   'defense',
   // Module (boots last)
   'integration',
-  // Expansion Modules (38-Node Architecture)
+  // Expansion Modules (40-Node Architecture)
   'sovereign', 'oracle', 'conscience', 'forge',
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
   // CSZ — Covert Systems Zone
