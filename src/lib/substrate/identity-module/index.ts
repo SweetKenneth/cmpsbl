@@ -330,11 +330,33 @@ export function getReputationLeaderboard(limit: number = 10): Array<{ actorId: s
     .map(a => ({ actorId: a.id, displayName: a.displayName, reputation: Object.freeze({ ...a.reputation }) }));
 }
 
+// Performance cache for trust score calculations
+const TRUST_SCORE_CACHE_TTL = 30000; // 30 seconds
+let trustScoreCache: { value: number; timestamp: number } | null = null;
+
 function updateAvgTrustScore(): void {
-  if (actors.size === 0) { state.avgTrustScore = 0; return; }
+  trustScoreCache = null; // Invalidate cache
+  getAvgTrustScore(); // Recalculate and cache
+}
+
+function getAvgTrustScore(): number {
+  if (trustScoreCache && (Date.now() - trustScoreCache.timestamp) < TRUST_SCORE_CACHE_TTL) {
+    return trustScoreCache.value;
+  }
+  
+  if (actors.size === 0) {
+    state.avgTrustScore = 0;
+    trustScoreCache = { value: 0, timestamp: Date.now() };
+    return 0;
+  }
+  
   let sum = 0;
   for (const actor of actors.values()) sum += actor.reputation.trustScore;
-  state.avgTrustScore = Math.round(sum / actors.size);
+  const avgScore = Math.round(sum / actors.size);
+  
+  state.avgTrustScore = avgScore;
+  trustScoreCache = { value: avgScore, timestamp: Date.now() };
+  return avgScore;
 }
 
 // ═══════════════════════════════════════════════════════════════════
