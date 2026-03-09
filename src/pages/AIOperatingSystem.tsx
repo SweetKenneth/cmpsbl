@@ -129,7 +129,7 @@ export default function AIOperatingSystem() {
 
               <div className="flex flex-wrap gap-3 mt-10">
                 <Button asChild size="lg" className="rounded-xl">
-                  <Link to="/modules">Explore All 38 Nodes <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                  <Link to="/modules">Explore All 40 Nodes <ArrowRight className="w-4 h-4 ml-2" /></Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-xl">
                   <Link to="/developers">Get Started Free</Link>
