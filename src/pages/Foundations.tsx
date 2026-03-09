@@ -68,7 +68,7 @@ export default function Foundations() {
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
                 <Layers className="w-4 h-4 text-primary" />
-                <span className="text-sm font-mono text-primary">38 Nodes · 12 Sectors · 3 Standards</span>
+                <span className="text-sm font-mono text-primary">40 Nodes · 12 Sectors · 3 Standards</span>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.95]">
                 Foundations
