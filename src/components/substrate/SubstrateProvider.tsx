@@ -52,7 +52,7 @@ const ALL_MODULES: SubstrateModule[] = [
   'ripple', 'access', 'system', 'modernizer', 'integration', 'inclusive',
   'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'evolution', 'intent', 'governance', 'medic', 'nerve',
-  // Expansion Modules (38-Node Architecture)
+  // Expansion Modules (40-Node Architecture)
   'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex', 'shadow',
 ];

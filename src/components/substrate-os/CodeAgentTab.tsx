@@ -2,7 +2,7 @@
  * ENCODE Tab — Substrate Execution & Generation Interface
  * USER → DECODE → ENCODE pipeline
  * DECODE handles conversational intent parsing; ENCODE handles code execution + sandbox preview
- * Part of the 38-node / 12-sector cognitive architecture
+ * Part of the 40-node / 12-sector cognitive architecture
  */
 
 
