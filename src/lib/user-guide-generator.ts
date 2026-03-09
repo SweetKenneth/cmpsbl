@@ -191,7 +191,7 @@ export function generateUserGuideHTML(): string {
       <li><a href="#substrate-os">The Substrate OS Dashboard</a></li>
       <li><a href="#terminal">Memory Stream Terminal</a></li>
       <li><a href="#workspace">Builder Workspace</a></li>
-      <li><a href="#architecture">38-Node Architecture</a></li>
+      <li><a href="#architecture">40-Node Architecture</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ol>
   </div>
