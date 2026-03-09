@@ -175,7 +175,7 @@ const ALL_NODES = [
 
 /**
  * Generate substrate insights (admin-only).
- * Returns real-time operational view of all 38 nodes.
+ * Returns real-time operational view of all 40 nodes.
  */
 export function getSubstrateInsights(sessionId?: string): SubstrateInsight[] | { error: string } {
   const adminCheck = verifyAdminForDecode(sessionId);
