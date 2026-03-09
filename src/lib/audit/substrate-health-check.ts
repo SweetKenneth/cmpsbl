@@ -52,7 +52,7 @@ export interface HealthCheckReport {
 
 // ─── Constants ───────────────────────────────────────────────────────
 
-/** 38-node canonical module entries (12-sector topology) */
+/** 40-node canonical module entries (12-sector topology) */
 const EXPECTED_MODULE_DIRS: SubstrateModuleName[] = [...SUBSTRATE_MODULES];
 
 /** Terminal handler files that must exist */
