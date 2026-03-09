@@ -300,5 +300,3 @@ export function computeConduitHealth(): ConduitHealthReport {
     timestamp: new Date().toISOString(),
   };
 }
-
-const MAX_RETRY_ATTEMPTS = 5;
