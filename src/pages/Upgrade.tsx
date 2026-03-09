@@ -370,8 +370,8 @@ export default function Upgrade() {
 
         {/* ═══ TIER CARDS ═══ */}
         <div className="relative">
-          <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
           >
             {TIERS.map((t, i) => {
               const isCurrent = currentProductTier === t.key;
@@ -386,7 +386,7 @@ export default function Upgrade() {
                   transition={{ delay: i * 0.1 }}
                   className={cn(
                     "relative rounded-2xl border flex flex-col overflow-hidden snap-center shrink-0 group",
-                    "min-w-[300px] max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
+                    "min-w-[280px] max-w-[320px] sm:min-w-[300px] sm:max-w-[340px] lg:min-w-0 lg:max-w-none lg:flex-1",
                     "hover:shadow-xl transition-all duration-300 card-lift",
                     isCurrent
                       ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
@@ -404,15 +404,15 @@ export default function Upgrade() {
                     <Badge className="absolute top-4 right-4 bg-violet-500 text-white text-[10px]">Popular</Badge>
                   )}
 
-                  <div className="p-6 flex flex-col flex-1">
+                  <div className="p-5 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <div className={cn("w-10 h-10 rounded-xl bg-gradient-to-r flex items-center justify-center", t.accent)}>
                         <TierIcon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold">{t.name}</h3>
+                        <h3 className="text-lg sm:text-xl font-bold">{t.name}</h3>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-3xl font-bold">{displayPrice}</span>
+                          <span className="text-2xl sm:text-3xl font-bold tabular-nums">{displayPrice}</span>
                           <span className="text-muted-foreground text-sm">{t.period}</span>
                         </div>
                       </div>
@@ -421,69 +421,69 @@ export default function Upgrade() {
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
                     {/* Capacity metrics */}
-                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300 space-y-3">
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-3 sm:p-4 mb-4 sm:mb-5 group-hover:border-primary/20 transition-colors duration-300 space-y-2.5 sm:space-y-3">
                       <div className="flex items-center gap-2 mb-1">
                         <Package className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold">Capacity</span>
+                        <span className="text-xs sm:text-sm font-semibold">Capacity</span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-primary font-mono">{t.capacity.slots}</div>
-                          <div className="text-[10px] text-muted-foreground">Slots</div>
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-primary font-mono tabular-nums">{t.capacity.slots}</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Slots</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-foreground font-mono">
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">
                             {t.capacity.vault === 'Unlimited' ? '∞' : t.capacity.vault.split(' ')[0]}
                           </div>
-                          <div className="text-[10px] text-muted-foreground">Vault</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Vault</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-foreground font-mono">{t.capacity.pulls.split(' ')[0]}</div>
-                          <div className="text-[10px] text-muted-foreground">Pulls/day</div>
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">{t.capacity.pulls.split(' ')[0]}</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Pulls/day</div>
                         </div>
                       </div>
                       {/* Export + custom slots badges */}
                       <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                        <span className={`text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border inline-flex items-center gap-1 ${
                           t.capacity.exportEnabled
                             ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
                             : 'border-border/30 text-muted-foreground/50'
                         }`}>
                           {t.capacity.exportEnabled ? (
-                            <><Download className="w-2.5 h-2.5 inline mr-1" />Export</>
+                            <><Download className="w-2.5 h-2.5" />Export</>
                           ) : (
-                            <><X className="w-2.5 h-2.5 inline mr-1" />No Export</>
+                            <><X className="w-2.5 h-2.5" />No Export</>
                           )}
                         </span>
                         {t.capacity.customSlots && (
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/10">
-                            <Sparkles className="w-2.5 h-2.5 inline mr-1" />Custom Slots
+                          <span className="text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border border-primary/30 text-primary bg-primary/10 inline-flex items-center gap-1">
+                            <Sparkles className="w-2.5 h-2.5" />Custom Slots
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className="h-px bg-border/50 mb-5" />
+                    <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
-                    <ul className="space-y-3 flex-1">
+                    <ul className="space-y-2.5 sm:space-y-3 flex-1">
                       {t.features.map(f => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm">
-                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <li key={f} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm">
+                          <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary shrink-0 mt-0.5" />
                           <span>{f}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-6">
+                    <div className="mt-5 sm:mt-6">
                       {t.key === 'builder' ? (
-                        <Button variant="outline" className="w-full" asChild>
+                        <Button variant="outline" className="w-full min-h-[44px]" asChild>
                           <Link to="/auth">Get Started Free</Link>
                         </Button>
                       ) : isCurrent ? (
-                        <Button variant="outline" className="w-full" disabled>Current Plan</Button>
+                        <Button variant="outline" className="w-full min-h-[44px]" disabled>Current Plan</Button>
                       ) : (
                         <Button
-                          className={cn("w-full bg-gradient-to-r text-white border-0 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
+                          className={cn("w-full min-h-[44px] bg-gradient-to-r text-white border-0 shadow-lg shadow-primary/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                           onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                         >
                           Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />

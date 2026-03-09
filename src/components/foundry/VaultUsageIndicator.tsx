@@ -1,6 +1,8 @@
 /**
  * VaultUsageIndicator — Shows current vault usage vs capacity
+ * Mobile-first: compact layout, touch-friendly, responsive bar width
  */
+import { motion } from 'framer-motion';
 import { Archive } from 'lucide-react';
 import { formatVaultCapacity, getVaultLimits } from '@/lib/substrate/vault-limits';
 
@@ -14,23 +16,33 @@ export function VaultUsageIndicator({ currentCount, subscriptionTier, className 
   const limits = getVaultLimits(subscriptionTier);
   const isUnlimited = limits.vaultCapacity === -1;
   const isFull = !isUnlimited && currentCount >= limits.vaultCapacity;
+  const isNearFull = !isUnlimited && !isFull && currentCount >= limits.vaultCapacity * 0.8;
   const percentage = isUnlimited ? 0 : Math.min((currentCount / limits.vaultCapacity) * 100, 100);
 
   return (
-    <div className={`flex items-center gap-2 text-xs font-mono ${className}`}>
-      <Archive className={`w-3.5 h-3.5 ${isFull ? 'text-amber-400' : 'text-muted-foreground'}`} />
-      <span className={isFull ? 'text-amber-400' : 'text-muted-foreground'}>
-        Vault: {currentCount} / {formatVaultCapacity(subscriptionTier)}
-      </span>
+    <div className={`flex items-center gap-2.5 ${className}`}>
+      <div className={`flex items-center gap-1.5 text-xs font-mono tabular-nums ${
+        isFull ? 'text-amber-400' : isNearFull ? 'text-amber-400/70' : 'text-muted-foreground'
+      }`}>
+        <Archive className="w-3.5 h-3.5 shrink-0" />
+        <span className="whitespace-nowrap">
+          {currentCount} / {formatVaultCapacity(subscriptionTier)}
+        </span>
+      </div>
       {!isUnlimited && (
-        <div className="w-16 h-1.5 rounded-full bg-muted/50 overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all ${
-              isFull ? 'bg-amber-400' : percentage > 75 ? 'bg-amber-400/70' : 'bg-primary/60'
+        <div className="w-14 sm:w-20 h-1.5 rounded-full bg-muted/40 overflow-hidden shrink-0">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${percentage}%` }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className={`h-full rounded-full ${
+              isFull ? 'bg-amber-400' : isNearFull ? 'bg-amber-400/70' : 'bg-primary/60'
             }`}
-            style={{ width: `${percentage}%` }}
           />
         </div>
+      )}
+      {isUnlimited && (
+        <span className="text-[10px] font-mono text-muted-foreground/50">∞</span>
       )}
     </div>
   );
