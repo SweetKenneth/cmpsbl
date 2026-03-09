@@ -206,8 +206,9 @@ export function setCurrentActor(id: string): ActorIdentity | null {
   if (actor) {
     actor.lastActiveAt = Date.now();
     state.currentActor = actor;
+    return cloneActor(actor);
   }
-  return actor ?? null;
+  return null;
 }
 
 export function signAction(actorId: string, action: string): { actorId: string; action: string; signature: string; timestamp: number } {
