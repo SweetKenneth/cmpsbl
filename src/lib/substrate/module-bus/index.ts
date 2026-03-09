@@ -18,7 +18,8 @@ export type ModuleName =
   | 'cortex' | 'atlas'                                      // Orchestrator
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
   | 'forge' | 'lingua' | 'harvest'                                               // EMZ — Manufacturing
-  | 'phantom' | 'shadow' | 'evolution';                                            // CSZ — Covert Systems
+  | 'phantom' | 'shadow' | 'evolution'                                             // CSZ — Covert Systems
+  | 'sovereign' | 'conscience' | 'treaty' | 'oracle';                              // ESZ — Sovereignty
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 
