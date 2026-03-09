@@ -9,15 +9,17 @@ import { Helmet } from 'react-helmet-async';
 import {
   Users, Clock, TrendingUp, Activity, Eye, Layers,
   ArrowRight, AlertTriangle, CheckCircle, XCircle, RefreshCw,
-  Zap, Route, Flame, BarChart3,
-  ArrowDownRight, ArrowUpRight,
+  Zap, Route, Flame, BarChart3, Settings, Trash2, UserX, Bot, Plus,
+  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
