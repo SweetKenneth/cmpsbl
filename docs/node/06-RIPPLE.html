@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RIPPLE — Event Bus & Dead Letter Queue · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">RIPPLE</span></h1>
+  <p class="subtitle">Event Bus & Dead Letter Queue — The pub/sub backbone of the 40-node matrix. Priority routing, DLQ with forensic audit, and idempotent delivery.</p>
+  <div class="meta"><strong>Node #6</strong> · Sector: OCG · Generation 1 · Codename: <em>Pulse</em></div>
+</section>
+<div class="sep"></div>
+<div class="metrics">
+  <div class="metric"><div class="mv">4</div><div class="ml">Priority Levels</div></div>
+  <div class="metric"><div class="mv">5</div><div class="ml">Max DLQ Retries</div></div>
+  <div class="metric"><div class="mv">10K</div><div class="ml">Dedup Cache</div></div>
+  <div class="metric"><div class="mv">60s</div><div class="ml">Max Retry Delay</div></div>
+</div>
+<h2>Trade Secrets</h2>
+<div class="secret">
+  <div class="secret-label">◆ Priority Preemption</div>
+  <p>Critical signals preempt the processing queue. Batch processing of low-priority events is <strong>immediately suspended</strong> when a critical signal arrives, ensuring sub-millisecond delivery for circuit breaker trips and governance overrides.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Per-Subscriber Backpressure</div>
+  <p>When fan-out has 10+ subscribers and one is slow, RIPPLE throttles the slow subscriber independently. Fast subscribers receive signals at full speed — no convoy effect.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Idempotency Deduplication</div>
+  <p>10,000-entry LRU cache of processed idempotency keys. Duplicate signals are silently dropped, preventing event storms from cascading through the matrix.</p>
+</div>
+<h2>DLQ Retry Algorithm</h2>
+<pre><code>retry_delay = min(1000 × 2^attempt, 60000) + random(0, 0.25 × delay)
+max_attempts = 5 → then permanent DLQ + AUDIT signal</code></pre>
+<footer class="footer"><div class="brand">CMPSBL®</div><p>RIPPLE Node Deep Dive · Founder Eyes Only</p></footer>
+</div>
+</body>
+</html>

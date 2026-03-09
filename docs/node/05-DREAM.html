@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DREAM — Synthesis Engine & Lineage Tracker · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">DREAM</span></h1>
+  <p class="subtitle">Synthesis Engine & Lineage Tracker — The only node that creates new knowledge without external input. Imagination with provenance.</p>
+  <div class="meta">
+    <strong>Node #5</strong> · Sector: Cognitive (CCR) · Generation 1<br>
+    Codename: <em>Oneiros</em> · Capabilities: dream_synthesis, lineage_tracking
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">5</div><div class="ml">Max Generation</div></div>
+  <div class="metric"><div class="mv">0.85</div><div class="ml">Confidence Decay</div></div>
+  <div class="metric"><div class="mv">50</div><div class="ml">Max Batch Size</div></div>
+  <div class="metric"><div class="mv">15m</div><div class="ml">Min Cycle Interval</div></div>
+</div>
+
+<h2 id="architecture">Architecture</h2>
+
+<h3>Lineage Tracking</h3>
+<p>Every synthesized heuristic carries full provenance: parent IDs, generation depth, root sources, synthesis method, and per-generation confidence decay. <strong>MAX_GENERATION = 5</strong> — no heuristic can be derived more than 5 levels deep to prevent semantic drift.</p>
+
+<h3>Dream Candidate Filter</h3>
+<div class="sf">
+  <span class="sn s-active">Eligible Memories</span><span class="sa">→</span>
+  <span class="sn s-warn">Gen < 5</span><span class="sa">→</span>
+  <span class="sn s-warn">Not Active</span><span class="sa">→</span>
+  <span class="sn s-warn">Conf > 0.3</span><span class="sa">→</span>
+  <span class="sn s-warn">< 3 Syntheses</span><span class="sa">→</span>
+  <span class="sn s-active">Ranked Candidates</span>
+</div>
+
+<h3>Synthesis Priority</h3>
+<pre><code>priority = confidence×0.3 + access_freq×0.25 + recency×0.2 + uniqueness×0.25</code></pre>
+
+<div class="sep"></div>
+
+<h2 id="trade-secrets">Trade Secrets</h2>
+
+<div class="secret">
+  <div class="secret-label">◆ Trade Secret #1 — Generation Depth Limit</div>
+  <p>MAX_GENERATION = 5 prevents the "telephone game" effect. At generation 5, knowledge is "terminal" and must be validated by BRAIN before further use. This is the guardrail that keeps dream synthesis honest.</p>
+</div>
+
+<div class="secret">
+  <div class="secret-label">◆ Trade Secret #2 — Memory Weighting</div>
+  <pre><code>weight = exp(-age/168) × log2(1+accessCount) × confidence²</code></pre>
+  <p>Quadratic confidence emphasis means low-confidence memories have <strong>almost no influence</strong> on synthesis. The 7-day age decay ensures recency while logarithmic access scaling prevents popularity bias.</p>
+</div>
+
+<div class="secret">
+  <div class="secret-label">◆ Trade Secret #3 — Heuristic Auto-Flagging</div>
+  <p>Heuristics with <code>counterExamples > 3</code> are automatically flagged for human review. This self-correcting mechanism prevents DREAM from propagating flawed patterns.</p>
+</div>
+
+<div class="secret">
+  <div class="secret-label">◆ Trade Secret #4 — Drift Pause</div>
+  <p>When the overall drift score exceeds 0.2 (computed as average confidence loss across generation transitions), DREAM <strong>pauses all synthesis</strong> until BRAIN revalidates the heuristic chain. This is the fail-safe against runaway semantic degradation.</p>
+</div>
+
+<div class="sep"></div>
+
+<h2 id="consolidation">Dream Consolidation Cycle</h2>
+<div class="card">
+  <ol>
+    <li>Fetch eligible candidates (filterDreamCandidates)</li>
+    <li>Sort by synthesis priority</li>
+    <li>For each pair: check lineage, compute overlap (cosine > 0.5), synthesize</li>
+    <li>Assign generation = max(parent_gen) + 1</li>
+    <li>Compute confidence = min(parent_conf) × 0.85</li>
+    <li>Store in MEMORY (WARM tier)</li>
+    <li>Emit DREAM_SYNTHESIS_COMPLETE</li>
+  </ol>
+</div>
+
+<h2 id="clm">CLM Learning Priorities</h2>
+<div class="grid2">
+  <div class="card">
+    <h4>Priority 1: Synthesis Quality</h4>
+    <p>Learning which memory pair combinations produce the most useful heuristics.</p>
+  </div>
+  <div class="card">
+    <h4>Priority 2: Optimal Timing</h4>
+    <p>Predicting best moments for dream cycles based on system activity patterns.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="brand">CMPSBL®</div>
+  <p>DREAM Node Deep Dive · Founder Eyes Only · Substrate Architecture</p>
+</footer>
+
+</div>
+</body>
+</html>

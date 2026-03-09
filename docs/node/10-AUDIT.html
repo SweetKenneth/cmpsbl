@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AUDIT — Immutable Compliance Trail · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">AUDIT</span></h1>
+  <p class="subtitle">Immutable Compliance Trail & Chain Verification — SHA-256 hash chain, anchor-based tamper detection, and forensic analysis for governance compliance.</p>
+  <div class="meta"><strong>Node #10</strong> · Sector: OCG · Generation 1 · Codename: <em>Ledger</em></div>
+</section>
+<div class="sep"></div>
+<div class="metrics">
+  <div class="metric"><div class="mv">SHA-256</div><div class="ml">Hash Algorithm</div></div>
+  <div class="metric"><div class="mv">100</div><div class="ml">Anchor Interval</div></div>
+  <div class="metric"><div class="mv">2</div><div class="ml">Verification Layers</div></div>
+</div>
+<h2>Chain Verification</h2>
+<pre><code>prevHash = '0000000000000000'  // Genesis
+for each entry:
+  verify link: entry.previousHash === prevHash
+  verify content: SHA-256(action+details+prevHash) === entry.hash
+  prevHash = entry.hash</code></pre>
+
+<h2>Trade Secrets</h2>
+<div class="secret">
+  <div class="secret-label">◆ Dual Hash Verification</div>
+  <p>Two checks per entry: <strong>link integrity</strong> (chain manipulation) and <strong>content integrity</strong> (data tampering). Catches both swapped entries and modified content.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Long-Range Attack Prevention</div>
+  <p>Anchors written to <code>audit_chain_anchors</code> every 100 receipts. Any inconsistency between anchors and chain state breaks the verification seal — preventing full-chain replacement attacks.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Canonicalized JSON</div>
+  <p>All content is canonicalized (sorted keys, no whitespace) before hashing, ensuring <strong>deterministic hashes</strong> regardless of object property ordering.</p>
+</div>
+<footer class="footer"><div class="brand">CMPSBL®</div><p>AUDIT Node Deep Dive · Founder Eyes Only</p></footer>
+</div>
+</body>
+</html>

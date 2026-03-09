@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RELAY — Cross-Node Routing · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">RELAY</span></h1>
+  <p class="subtitle">Cross-Node Message Routing & Protocol Translation — Intelligent routing, format translation, and sector-boundary enforcement.</p>
+  <div class="meta"><strong>Node #9</strong> · Sector: OCG · Generation 1 · Codename: <em>Bridge</em></div>
+</section>
+<div class="sep"></div>
+<h2>Routing Decision Tree</h2>
+<div class="sf">
+  <span class="sn s-active">Same Sector?</span><span class="sa">→</span>
+  <span class="sn s-active">nodeSignal</span>
+</div>
+<div class="sf">
+  <span class="sn s-warn">Cross Sector?</span><span class="sa">→</span>
+  <span class="sn s-active">sectorBroadcast</span>
+</div>
+<div class="sf">
+  <span class="sn s-error">All Nodes?</span><span class="sa">→</span>
+  <span class="sn s-active">matrixBroadcast</span>
+</div>
+<h2>Trade Secrets</h2>
+<div class="secret">
+  <div class="secret-label">◆ Sector Isolation</div>
+  <p>Messages between sectors pass through RELAY's compliance check. CSZ → OCG messages are validated to prevent covert operations from leaking into compliance audit trails.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Belt-and-Suspenders Dedup</div>
+  <p>Separate 5,000-entry dedup cache from RIPPLE's. Prevents duplicate messages when both RIPPLE and RELAY process the same signal.</p>
+</div>
+<h2>Hardening</h2>
+<div class="hl">
+  <ul>
+    <li>100KB max payload per message</li>
+    <li>100 msg/sec rate limit per source node</li>
+    <li>Circuit breaker per destination (5 failures → trip)</li>
+    <li>Payload sanitization for cross-sector routing</li>
+  </ul>
+</div>
+<footer class="footer"><div class="brand">CMPSBL®</div><p>RELAY Node Deep Dive · Founder Eyes Only</p></footer>
+</div>
+</body>
+</html>
