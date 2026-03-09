@@ -703,7 +703,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     diligence: diligenceData,
     accessibility: accessibilityData,
     security_posture: securityData,
-    modernizer_scan: modernizerData,
+    evolution_scan: evolutionData,
     action_plan: actionPlan,
     guardrails: {
       requires_human_review: true,
