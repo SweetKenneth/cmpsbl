@@ -68,6 +68,9 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   harvest: { module: 'harvest', layer: 'infrastructure', bootOrder: 35, dependencies: ['core', 'memory', 'economy'] },
   reflex: { module: 'reflex', layer: 'operational', bootOrder: 36, dependencies: ['core', 'nexus', 'vision'] },
   shadow: { module: 'shadow', layer: 'mesh', bootOrder: 37, dependencies: ['core', 'defense'] },
+  // Nodes 39-40 — Maintenance & Governance Authority
+  engineer: { module: 'engineer', layer: 'administrative', bootOrder: 39, dependencies: ['core', 'system'] },
+  atlas: { module: 'atlas', layer: 'mesh', bootOrder: 40, dependencies: ['core', 'governance'] },
 };
 
 // Orchestration state

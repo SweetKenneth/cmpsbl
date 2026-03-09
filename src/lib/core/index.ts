@@ -347,6 +347,9 @@ const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly Substra
   harvest: ['core', 'memory', 'economy'],
   reflex: ['core', 'nexus', 'vision'],
   shadow: ['core', 'defense'],
+  // Nodes 39-40
+  engineer: ['core', 'system'],
+  atlas: ['core', 'governance'],
 };
 
 export function getModuleDependencies(module: SubstrateModuleName): SubstrateModuleName[] {
