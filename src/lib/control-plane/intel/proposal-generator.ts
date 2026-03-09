@@ -1465,7 +1465,7 @@ function buildActionPlan(
     }
 
     // ─── SOURCE 12: System anomalies (individually surfaced) ───
-    for (const anomaly of modernizerResult.system_state.detected_anomalies) {
+    for (const anomaly of evolutionResult.system_state.detected_anomalies) {
       candidates.push({
         value: severityValue(anomaly.severity) * 0.75,
         dedup_key: `anomaly_${anomaly.anomaly_type}_${anomaly.affected_components.join('_').slice(0, 20)}`,
