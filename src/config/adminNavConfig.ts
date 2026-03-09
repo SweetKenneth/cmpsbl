@@ -50,7 +50,6 @@ export const adminNavConfig: NavGroup[] = [
       { id: "os", label: "Substrate", path: "/os", icon: Cpu },
       { id: "substrate", label: "Dashboard", path: "/substrate", icon: LayoutDashboard },
       { id: "decode", label: "Decode", path: "/decode", icon: Terminal },
-      { id: "analytics", label: "Analytics Intelligence", path: "/admin/analytics", icon: Eye, isNew: true },
     ],
   },
   {
