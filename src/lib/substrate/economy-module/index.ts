@@ -1,11 +1,12 @@
 /**
- * ECONOMY Module — Cost Attribution & Budget Engine
+ * ECONOMY Module — Cost Attribution & Budget Engine v11.0.0 "Treasury"
  * Real-time cost tracking, budget enforcement, pricing signals
  * Circuit Breaker + Hot-Swap + Graceful Fallback
  * 
- * CLM-Requested Upgrades Implemented:
- * ✅ Predictive cost forecasting (linear regression + seasonal)
- * ✅ Per-capability cost attribution
+ * v11.0.0 additions:
+ * - Persistent cost ledger (double-entry bookkeeping)
+ * - ROI tracking & chargeback engine
+ * - Spend intelligence & optimization recommendations
  */
 
 import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
