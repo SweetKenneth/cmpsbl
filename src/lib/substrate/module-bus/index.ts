@@ -16,7 +16,7 @@ export type ModuleName =
   | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
   | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
   | 'cortex' | 'atlas'                                      // Orchestrator
-  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'; // Infrastructure
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve'; // Infrastructure + OCG
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 
