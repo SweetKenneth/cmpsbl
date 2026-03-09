@@ -65,23 +65,25 @@ const NODE_SECTORS: Record<NodeId, SectorId> = {
   core: 'kernel', ripple: 'kernel', access: 'kernel',
   // Cognitive
   brain: 'cognitive', decode: 'cognitive', dream: 'cognitive',
-  // Operational
-  defense: 'cognitive', nexus: 'operational', vision: 'operational',
+  // Operational (Execution)
+  defense: 'operational', nexus: 'operational', vision: 'operational',
   encode: 'operational', integration: 'operational',
-  // OCG
+  // OCG — Operational Compliance Grid
   memory: 'ocg', relay: 'ocg', audit: 'ocg',
-  identity: 'ocg', economy: 'ocg', sandbox: 'ocg',
-  // ESZ
+  identity: 'ocg', economy: 'ocg', sandbox: 'ocg', nerve: 'ocg',
+  // ESZ — Expansion Sovereignty Zone
   sovereign: 'esz', conscience: 'esz', treaty: 'esz', oracle: 'esz',
-  // EPZ
+  // EPZ — Expansion Perception Zone
   compass: 'epz', echo: 'epz', reflex: 'epz',
-  // EMZ
+  // EMZ — Expansion Manufacturing Zone
   forge: 'emz', lingua: 'emz', harvest: 'emz',
-  // CSZ
+  // CSZ — Covert Systems Zone
   phantom: 'csz', shadow: 'csz', evolution: 'csz',
   // Governance
   governance: 'governance', cortex: 'governance', system: 'governance',
   inclusive: 'governance', modernizer: 'governance',
+  // Additional operational nodes
+  medic: 'operational', immunity: 'operational', intent: 'operational',
 };
 
 const SECTOR_ADJACENCY: Record<SectorId, SectorId[]> = {
