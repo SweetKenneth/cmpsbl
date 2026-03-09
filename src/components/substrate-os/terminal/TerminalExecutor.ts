@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 38-NODE RESPONSE FORMATTERS
+// SYSTEM-WIDE 40-NODE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
