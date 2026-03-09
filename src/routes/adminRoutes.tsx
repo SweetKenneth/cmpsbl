@@ -33,7 +33,7 @@ export const adminRoutes = (
     <Route path="/admin/gate" element={<AdminRoute><GateEngineDashboard /></AdminRoute>} />
     <Route path="/quarry" element={<Navigate to="/admin/quarry" replace />} />
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
-    <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
+    <Route path="/diligence" element={<Navigate to="/" replace />} />
     <Route path="/admin/encode-console" element={<AdminRoute><EncodeConsolePage /></AdminRoute>} />
     <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
   </>
