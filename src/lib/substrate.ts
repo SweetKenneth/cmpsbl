@@ -1962,3 +1962,6 @@ export const intentMod = substrate.intentMod;
 export const governanceMod = substrate.governanceMod;
 export const medicMod = substrate.medic;
 export const nerveMod = substrate.nerve;
+// Plane & Maintenance additions (Nodes 39-40)
+export const engineerMod = substrate.engineer;
+export const atlasMod = substrate.atlas;
