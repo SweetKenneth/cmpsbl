@@ -49,6 +49,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 export interface NexusRouteOptions {
   systemPrompt?: string;
+  messages?: Array<{ role: string; content: string }>;  // v3.1: full message array (overrides prompt+systemPrompt)
   taskType?: string;
   temperature?: number;
   maxTokens?: number;
@@ -65,6 +66,7 @@ export interface NexusRouteOptions {
   costCeiling?: number;            // v3: max cost in USD for this request
   compressPrompt?: boolean;        // v3: auto-compress if over context
   consensusCount?: number;         // v3: how many models to use for consensus
+  openaiCompat?: boolean;          // v3.1: emit OpenAI-compatible SSE format for streaming
 }
 
 export interface NexusRouteResult {
