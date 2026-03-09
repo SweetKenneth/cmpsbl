@@ -169,7 +169,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-entropic-decay-reversal',
     name: 'Entropic Decay Reversal',
-    modules: ['MODERNIZER', 'DREAM', 'CORTEX', 'SYSTEM'],
+    modules: ['EVOLUTION', 'DREAM', 'CORTEX', 'SYSTEM'],
     description: 'Detects entropy accumulation in knowledge stores and actively reverses degradation',
     emergentProperty: 'Negative entropy maintenance in long-lived systems',
     tier: 'cmpsbl',

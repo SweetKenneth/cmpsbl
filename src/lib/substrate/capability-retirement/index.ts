@@ -71,7 +71,7 @@ const DEFAULT_CONFIG: RetirementConfig = {
   scanIntervalHours: 24,
   protectedCapabilities: [
     // Crown Jewels — never retire
-    'cortex_engine', 'seba_engine', 'modernizer',
+    'cortex_engine', 'seba_engine', 'evolution',
     'evolution_ab', 'evolution_rollback', 'evolution_sandbox',
     'dream_pool_federation', 'self_repair_engine',
     'autonomous_workflow_composer', 'dream_lucidity_control',

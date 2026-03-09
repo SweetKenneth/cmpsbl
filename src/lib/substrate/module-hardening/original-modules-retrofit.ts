@@ -53,7 +53,7 @@ const ORIGINAL_MODULE_PROFILES: ModuleHardeningProfile[] = [
   { name: 'cortex',        maxConcurrent: 10,  rateLimit: 120,  healthThreshold: 40 },
   { name: 'inclusive',     maxConcurrent: 6,   rateLimit: 60,   healthThreshold: 35 },
   { name: 'integration',   maxConcurrent: 8,   rateLimit: 80,   healthThreshold: 35 },
-  { name: 'modernizer',    maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 35 },
+  { name: 'evolution',     maxConcurrent: 6,   rateLimit: 50,   healthThreshold: 35 },
   { name: 'medic',         maxConcurrent: 5,   rateLimit: 40,   healthThreshold: 50 },
   { name: 'nerve',         maxConcurrent: 10,  rateLimit: 100,  healthThreshold: 40 },
 
