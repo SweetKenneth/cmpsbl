@@ -375,7 +375,7 @@ export function generateInvestorDeckHTML(): string {
 
   <h2 style="margin-top:48px;">Technical Milestones</h2>
   <ul class="checklist">
-    <li>38-node Memory Stream: 12 sectors with 675+ capabilities</li>
+    <li>40-node Memory Stream: 12 sectors with 675+ capabilities</li>
     <li>Self-evolution engine operational (SEBA) with cryptographic stamps</li>
     <li>Multi-provider AI routing (NEXUS Fleet v5.0)</li>
     <li>Memory Stream crystallization with quality floor enforcement (68+)</li>

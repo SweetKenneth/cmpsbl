@@ -199,8 +199,8 @@ function checkFilesystem(): LayerResult {
   checks.push(
     check(
       'fs_canonical_registry',
-      SUBSTRATE_MODULES.length >= 38,
-      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (38-node architecture)`,
+      SUBSTRATE_MODULES.length >= 40,
+      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (40-node architecture)`,
     ),
   );
 

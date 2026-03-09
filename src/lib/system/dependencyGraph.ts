@@ -81,7 +81,7 @@
     // ── Shell ── (outer containment)
     defense: ['core', 'system', 'identity', 'ripple'],
 
-    // ── Expansion Modules (38-Node Architecture) ──
+    // ── Expansion Modules (40-Node Architecture) ──
     sovereign: ['core', 'defense', 'access'],
     oracle: ['core', 'brain', 'vision'],
     conscience: ['core', 'defense'],

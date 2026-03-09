@@ -51,7 +51,7 @@ export default function MappingWhatWeBuilt() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Capability Versioning</h2>
       <p>ATLAS tracks capability evolution over time. When a node adds a new function or deprecates an old one, ATLAS records the change and notifies dependent nodes. This historical record became invaluable for debugging regressions — "this started failing last Tuesday, what changed?" ATLAS can answer that question in seconds by showing the delta between two points in time.</p>
 
-      <p>ATLAS was unglamorous infrastructure. Nobody demos a dependency graph to investors. But without it, the substrate would have collapsed under its own complexity long before we reached <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">thirty-eight nodes</Link>. It's the kind of tool that proves its value by preventing problems you never see.</p>
+      <p>ATLAS was unglamorous infrastructure. Nobody demos a dependency graph to investors. But without it, the substrate would have collapsed under its own complexity long before we reached <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">forty nodes</Link>. It's the kind of tool that proves its value by preventing problems you never see.</p>
     </BlogArticleLayout>
   );
 }
