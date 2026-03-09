@@ -162,6 +162,9 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   evolution: 'zone-csz',
   shadow: 'zone-csz',
   phantom: 'zone-csz',
+  // Plane additions (Nodes 39-40)
+  engineer: 'module',
+  atlas: 'plane',
 };
 
 /**
