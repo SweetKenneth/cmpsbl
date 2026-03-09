@@ -271,7 +271,7 @@ export function removePasskeyFromActor(actorId: string, credentialId: string): b
   const idx = actor.passkeys.indexOf(credentialId);
   if (idx === -1) return false;
   actor.passkeys.splice(idx, 1);
-  state.passkeyCount = Math.max(0, state.passkeyCount - 1);
+  syncPasskeyCount(); // Sync from actual data instead of decrement
   emit({ module: 'identity', event_type: 'passkey_removed', outcome: 'succeeded', data: { actorId, credentialId } });
   return true;
 }
