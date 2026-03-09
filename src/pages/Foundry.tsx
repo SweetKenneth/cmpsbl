@@ -44,6 +44,21 @@ export default function Foundry() {
   const [crystallizing, setCrystallizing] = useState(false);
   const [discoveries, setDiscoveries] = useState<any[]>([]);
 
+  const handleInventoryRemove = useCallback(async (id: string): Promise<boolean> => {
+    if (!user) return false;
+    const { error } = await supabase
+      .from('foundry_inventory')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+    if (error) {
+      console.error('[Foundry] remove failed', error);
+      return false;
+    }
+    await foundry.reload();
+    return true;
+  }, [user, foundry.reload]);
+
   // Load discoveries for anonymous view
   useEffect(() => {
     if (user) return;
