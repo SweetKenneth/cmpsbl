@@ -43,7 +43,7 @@ export interface PropagationHop {
 export interface PropagationConfig {
   maxTTL: number;
   sectorPriority: SectorId[];
-  enableCrossSetor: boolean;
+  enableCrossSector: boolean;
   confirmationRequired: boolean;
   timeoutMs: number;
 }
