@@ -602,7 +602,7 @@ export function generateFoundryDoc(): string {
 
   <h3>Candidate Generation Strategy</h3>
   <div class="card">
-    <p><strong>Depth 2:</strong> All pairwise module combinations (38 × 37 = 1,406 pairs)</p>
+    <p><strong>Depth 2:</strong> All pairwise module combinations (40 × 39 = 1,560 pairs)</p>
     <p><strong>Depth 3:</strong> Filtered triples — high-affinity pairs extended by one hop</p>
     <p><strong>Depth 4–5:</strong> Only extends from top-scoring depth-3 chains</p>
     <p style="margin-top:12px;font-size:13px;color:var(--text-dim);">
