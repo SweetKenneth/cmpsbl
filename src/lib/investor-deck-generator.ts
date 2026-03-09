@@ -357,7 +357,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="card-grid">
     <div class="info-card">
       <h3>Memory Stream Architecture</h3>
-      <p>38 nodes across 12 sectors designed as a unified, evolving substrate — extremely hard to replicate. The architecture compounds.</p>
+      <p>40 nodes across 12 sectors designed as a unified, evolving substrate — extremely hard to replicate. The architecture compounds.</p>
     </div>
     <div class="info-card">
       <h3>Self-Evolution (SEBA)</h3>
