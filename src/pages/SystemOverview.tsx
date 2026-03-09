@@ -411,7 +411,7 @@ function InvestorHighlights() {
           <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">For Investors</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Infrastructure, Not an App</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mb-10">
-            CMPSBL is a defensible cognitive infrastructure layer. The substrate's 38-node architecture, autonomous discovery engine, 
+            CMPSBL is a defensible cognitive infrastructure layer. The substrate's 40-node architecture, autonomous discovery engine, 
             and silicon export pipeline represent a replacement cost of $18M–$42M in engineering effort.
           </p>
         </motion.div>
