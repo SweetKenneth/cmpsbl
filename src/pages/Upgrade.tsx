@@ -444,20 +444,20 @@ export default function Upgrade() {
                       </div>
                       {/* Export + custom slots badges */}
                       <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                        <span className={`text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border inline-flex items-center gap-1 ${
                           t.capacity.exportEnabled
                             ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
                             : 'border-border/30 text-muted-foreground/50'
                         }`}>
                           {t.capacity.exportEnabled ? (
-                            <><Download className="w-2.5 h-2.5 inline mr-1" />Export</>
+                            <><Download className="w-2.5 h-2.5" />Export</>
                           ) : (
-                            <><X className="w-2.5 h-2.5 inline mr-1" />No Export</>
+                            <><X className="w-2.5 h-2.5" />No Export</>
                           )}
                         </span>
                         {t.capacity.customSlots && (
-                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/10">
-                            <Sparkles className="w-2.5 h-2.5 inline mr-1" />Custom Slots
+                          <span className="text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border border-primary/30 text-primary bg-primary/10 inline-flex items-center gap-1">
+                            <Sparkles className="w-2.5 h-2.5" />Custom Slots
                           </span>
                         )}
                       </div>
