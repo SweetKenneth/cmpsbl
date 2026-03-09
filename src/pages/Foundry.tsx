@@ -228,6 +228,10 @@ export default function Foundry() {
                   lastResult={foundry.lastMineResult}
                   onMine={foundry.mine}
                   onCrystallizing={setCrystallizing}
+                  subscriptionTier={subscriptionTier}
+                  vaultCount={foundry.inventoryCount}
+                  pullsToday={pullsToday}
+                  onVaultChange={foundry.reload}
                 />
                 <FoundryTierLegend />
               </div>
