@@ -172,7 +172,7 @@ export const TERMINAL = {
   
   // Boot header
   bootHeader: 'CMPSBL® MEMORY STREAM',
-  bootSubtitle: '38-NODE MATRIX — Signal → Silicon',
+  bootSubtitle: '40-NODE MATRIX — Signal → Silicon',
   
   // Status messages
   messages: {
@@ -191,7 +191,7 @@ export const DASHBOARD = {
   // Panel section headers
   sectionHeaders: {
     streamControls: { title: 'Stream Controls', subtitle: 'MEMORY STREAM · SIGNAL → SILICON' },
-    sectorTopology: { title: 'Sector Topology', subtitle: '12 SECTORS · 38 NODES' },
+    sectorTopology: { title: 'Sector Topology', subtitle: '12 SECTORS · 40 NODES' },
     streamEvents: { title: 'Stream Events', subtitle: 'LIVE CRYSTALLIZATION FEED' },
     systemHealth: { title: 'System Health', subtitle: 'MATRIX INTEGRITY' },
     streamSecurity: { title: 'Stream Security', subtitle: 'PERIMETER · THREAT DETECTION' },
@@ -205,7 +205,7 @@ export const DASHBOARD = {
     status: 'Memory Stream Active',
     nodes: (active: number, total: number) => `${active}/${total}`,
     integrity: (pct: number) => `${pct}% integrity`,
-    sectors: '38 nodes · Signal → Silicon',
+    sectors: '40 nodes · Signal → Silicon',
   },
 } as const;
 

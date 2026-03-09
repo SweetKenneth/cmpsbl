@@ -2,7 +2,7 @@
  * Substrate Audit Test Suite
  * ━━━━━━━━━━━━━━━━━━━━━━━━━
  * Tests every major substrate function:
- *   - Matrix Node Registry (38-node topology, weight normalization, integrity)
+ *   - Matrix Node Registry (40-node topology, weight normalization, integrity)
  *   - CORE Module (boot sequence, dependencies, lifecycle)
  *   - Control Plane (hashing, canonicalization)
  *   - Merkle Audit Chain (append, verify, tamper detection)
@@ -35,8 +35,8 @@ import {
 } from '@/lib/core/matrixNodeRegistry';
 
 describe('§1 — Matrix Node Registry', () => {
-  it('has exactly 38 nodes', () => {
-    expect(getNodeDefinitions()).toHaveLength(38);
+  it('has exactly 40 nodes', () => {
+    expect(getNodeDefinitions()).toHaveLength(40);
   });
 
   it('weight sum equals 1.000', () => {
@@ -285,9 +285,9 @@ import {
 } from '@/lib/substrate/capability-router';
 
 describe('§5 — Capability Router', () => {
-  it('all 38 nodes have registered capabilities', () => {
+  it('all 40 nodes have registered capabilities', () => {
     const caps = listCapabilities();
-    expect(caps.length).toBeGreaterThanOrEqual(40); // 38 nodes × ~2 caps each
+    expect(caps.length).toBeGreaterThanOrEqual(40); // 40 nodes × ~2 caps each
   });
 
   it('resolves highest priority healthy module', () => {

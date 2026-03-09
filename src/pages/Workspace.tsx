@@ -73,9 +73,9 @@ export default function Workspace() {
     } else if (cmd === 'whoami') {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `Identity: ${user?.email || 'anonymous'}\nTier: ${TIER_LABELS[userTier].label} (${TIER_LABELS[userTier].price})\nCommands: ${availableCommands.length} available` }]);
     } else if (cmd === 'status') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nNodes: 38/38 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nNodes: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
     } else if (cmd === 'modules') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '38 nodes across 12 sectors:\nCORE: BRAIN, MEMORY, DREAM, SYSTEM\nOCG: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER\nESZ/EPZ/EMZ/CSZ: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE, REFLEX, PERCEPTION, FORGE, FOUNDRY, PHANTOM, SHADOW, EVOLUTION\nField: IMMUNITY, INTENT, EVOLUTION_MESH\nPlane: CONTROL, GOVERNOR\nShell: ENGINEER, ENCODE' }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 nodes across 12 sectors:\nCORE: BRAIN, MEMORY, DREAM, SYSTEM\nOCG: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION\nESZ/EPZ/EMZ/CSZ: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE, REFLEX, PERCEPTION, FORGE, FOUNDRY, PHANTOM, SHADOW\nField: IMMUNITY, INTENT\nPlane: GOVERNANCE\nShell: DEFENSE, ENGINEER, ENCODE' }]);
     } else if (matched) {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `[${matched.category.toUpperCase()}] ${matched.description}\n→ Executing ${matched.command}...\n✓ Complete`, tier: matched.tier }]);
     } else {

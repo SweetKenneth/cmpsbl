@@ -68,7 +68,7 @@ interface SubstrateMetrics {
   decode_conversations: number;
 }
 
-// 38-node / 12-sector field-based topology organized by layer
+// 40-node / 12-sector field-based topology organized by layer
 const modulesByLayer = {
   kernel: [
     {
@@ -777,7 +777,7 @@ export default function SubstrateDashboard() {
           <TabsContent value="mesh" className="mt-6">
             <div className="mb-6">
               <Badge variant="outline" className={layerLabels.mesh.color}>MESH OVERLAYS</Badge>
-              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 38 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
+              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 40 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {modulesByLayer.mesh.map((module) => (
@@ -813,7 +813,7 @@ export default function SubstrateDashboard() {
                   </code>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2 text-sm md:text-base">38-Node Architecture ({allModules.length} modules)</h3>
+                  <h3 className="font-semibold mb-2 text-sm md:text-base">40-Node Architecture ({allModules.length} modules)</h3>
                   <pre className="bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
 {`{
   "module": "core" | "ripple" | "access" |       // Kernel

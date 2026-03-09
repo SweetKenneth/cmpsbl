@@ -11,7 +11,7 @@ import type {
 } from './types';
 import { registerCapability, deprecateCapability, listCapabilities } from './registry';
 
-// Known substrate mappings (all 38 nodes)
+// Known substrate mappings (all 40 nodes)
 const SUBSTRATE_MODULES: Record<string, string[]> = {
   // Kernel layer
   CORE: ['kernel', 'scheduler', 'lifecycle'],

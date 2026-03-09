@@ -76,8 +76,8 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
 
   return [
     // Matrix Registry
-    ['Matrix has exactly 38 nodes', () => {
-      assert(getNodeDefinitions().length === 38, `Expected 38, got ${getNodeDefinitions().length}`);
+    ['Matrix has exactly 40 nodes', () => {
+      assert(getNodeDefinitions().length === 40, `Expected 40, got ${getNodeDefinitions().length}`);
     }],
     ['All 12 sectors have nodes', () => {
       const sectors = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;

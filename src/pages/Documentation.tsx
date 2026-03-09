@@ -161,7 +161,7 @@ function OverviewSection() {
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           A continuous cognitive substrate providing routing, memory, learning cycles,
           observability, defense, and execution coordination for AI systems.{" "}
-          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 38 nodes and 12 sectors.
+          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
         </p>
       </div>
 
@@ -245,7 +245,7 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          The substrate is a 38-node topology organized across 12 sectors (layers and zones). Every module participates in
+          The substrate is a 40-node topology organized across 12 sectors (layers and zones). Every module participates in
           a weighted matrix managed by CORE, which acts as the kernel boot authority.
         </p>
       </div>

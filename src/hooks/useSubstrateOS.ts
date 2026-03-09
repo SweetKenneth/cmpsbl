@@ -286,7 +286,7 @@ export function useSystemConfig(key?: string) {
 
 /**
  * Layer-weighted health score for dashboard
- * 38-Node / 12-Sector Field-Based Topology — weighted aggregation:
+ * 40-Node / 12-Sector Field-Based Topology — weighted aggregation:
  *   CORE+SYSTEM: 12% | CCR: 12% | OCG: 15% | Execution: 18% | ESZ+EPZ+EMZ: 13% | CSZ: 10% | Fields+Plane+Shell: 20%
  *
  * Batched into a single useQuery to prevent parallel network request storms.
@@ -294,7 +294,7 @@ export function useSystemConfig(key?: string) {
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions — 38-node / 12-sector topology
+  // Layer definitions — 40-node / 12-sector topology
   const CORE_SYSTEM = ['core', 'system'] as const;
   const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
   const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
@@ -383,7 +383,7 @@ export function useSubstrateHealthScore() {
   for (const m of ALL_MODULES) defaultModules[m] = true;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation — 38-node / 12-sector
+  // Layer-weighted health calculation — 40-node / 12-sector
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
     const healthy = keys.filter(k => modules[k] !== false).length;

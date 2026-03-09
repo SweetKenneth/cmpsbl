@@ -52,7 +52,7 @@ export interface HealthCheckReport {
 
 // ─── Constants ───────────────────────────────────────────────────────
 
-/** 38-node canonical module entries (12-sector topology) */
+/** 40-node canonical module entries (12-sector topology) */
 const EXPECTED_MODULE_DIRS: SubstrateModuleName[] = [...SUBSTRATE_MODULES];
 
 /** Terminal handler files that must exist */
@@ -186,12 +186,12 @@ function layerResult(layer: LayerId, label: string, checks: CheckResult[]): Laye
 function checkFilesystem(): LayerResult {
   const checks: CheckResult[] = [];
 
-  // Verify module constants include all 38 nodes across 12 sectors
+  // Verify module constants include all 40 nodes across 12 sectors
   checks.push(
     check(
       'fs_module_count',
-      EXPECTED_MODULE_DIRS.length >= 38,
-      `${EXPECTED_MODULE_DIRS.length} module entries declared (38-node / 12-sector topology)`,
+      EXPECTED_MODULE_DIRS.length >= 40,
+      `${EXPECTED_MODULE_DIRS.length} module entries declared (40-node / 12-sector topology)`,
     ),
   );
 
@@ -199,8 +199,8 @@ function checkFilesystem(): LayerResult {
   checks.push(
     check(
       'fs_canonical_registry',
-      SUBSTRATE_MODULES.length >= 38,
-      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (38-node architecture)`,
+      SUBSTRATE_MODULES.length >= 40,
+      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (40-node architecture)`,
     ),
   );
 

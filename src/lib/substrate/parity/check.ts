@@ -152,7 +152,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 38 nodes have index exports in their respective directories
+      // All 40 nodes have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

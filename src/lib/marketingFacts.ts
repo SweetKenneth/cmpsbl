@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * 38-Node / 12-Sector Field-Based Topology
+ * 40-Node / 12-Sector Field-Based Topology
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:
@@ -17,8 +17,8 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 38 active nodes across 12 sectors */
-export const NODES_COUNT = 38;
+/** 40 active nodes across 12 sectors */
+export const NODES_COUNT = 40;
 
 /** 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
 export const SECTORS_COUNT = 12;
@@ -91,7 +91,7 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities across all 38 Matrix Nodes
+ * Registered capabilities across all 40 Matrix Nodes
  * 525 base + 150 expansion (high-value-v10) = 675+
  */
 export const CAPABILITIES_COUNT = 675;
@@ -106,7 +106,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
 // =============================================================================
 
 /**
- * Total terminal commands across all 38 nodes
+ * Total terminal commands across all 40 nodes
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
 export const TERMINAL_COMMANDS_COUNT = 500;

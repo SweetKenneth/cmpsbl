@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * Terminal Configuration — 38-Node / 12-Sector Topology (500+ commands)
+ * Terminal Configuration — 40-Node / 12-Sector Topology (500+ commands)
  */
 
 export interface CommandResult {
@@ -44,7 +44,7 @@ export const DEFAULT_CONFIG: TerminalConfig = {
 export const BOOT_MESSAGES = [
   '',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-  '  ▓  CMPSBL® SUBSTRATE — 38-NODE MATRIX ▓',
+  '  ▓  CMPSBL® SUBSTRATE — 40-NODE MATRIX ▓',
   '  ▓                                     ▓',
   '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
   '',
@@ -69,7 +69,7 @@ export const BOOT_MESSAGES = [
   '  │                                       │',
   '  └───────────────────────────────────────┘',
   '',
-  '  ◉ 38 nodes operational | 12 sectors',
+  '  ◉ 40 nodes operational | 12 sectors',
   '  ◉ 500+ commands available',
   '  ◉ 675+ capabilities | Σw = 1.000',
   '  ◉ Health: 100%',

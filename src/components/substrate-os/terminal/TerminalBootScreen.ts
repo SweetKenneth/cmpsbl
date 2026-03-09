@@ -1,14 +1,14 @@
 /**
  * Terminal Boot Screen
- * 38-Node / 12-Sector Field-Based Topology
+ * 40-Node / 12-Sector Field-Based Topology
  * Mobile-friendly with no mid-word line breaks
  * 
  * Architecture:
- * - 38 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
+ * - 40 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
  * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
  * - 675+ capabilities, 100 engines (76 base + 24 meta)
  * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 500+ commands across all 38 nodes + infrastructure
+ * - 500+ commands across all 40 nodes + infrastructure
  * - CLM across all modules
  * - Enhanced mobile boot sequence
  * - Improved visual hierarchy
@@ -80,7 +80,7 @@ const MODULE_STATUS = [
  */
 const MODULE_GRID_DESKTOP = `
   ╔═══════════════════════════════════════════════════════════╗
-   ║              CMPSBL® OS — 38-Node Matrix                ║
+   ║              CMPSBL® OS — 40-Node Matrix                ║
    ║             12-Sector Cognitive Topology                  ║
    ╠═══════════════════════════════════════════════════════════╣
    ║                                                           ║
@@ -131,7 +131,7 @@ export function generateMobileBootScreen(): string[] {
     `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
     '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
     '',
-    '  ┌─ 38-NODE MATRIX ───────────────┐',
+    '  ┌─ 40-NODE MATRIX ───────────────┐',
     '  │                                │',
     '  │  ⬢ CORE Kernel                 │',
     '  │    core                         │',
@@ -167,7 +167,7 @@ export function generateMobileBootScreen(): string[] {
     '  │                                │',
     '  └────────────────────────────────┘',
     '',
-    '  ◉ 38 nodes | 12 sectors',
+    '  ◉ 40 nodes | 12 sectors',
     '  ◉ 500+ commands available',
     '  ◉ 300 synergies | 125 executors',
     '  ◉ 675+ capabilities | 100 engines',
@@ -208,7 +208,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░                                                       ░',
     '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
     '',
-    '  ┌─ 38-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
+    '  ┌─ 40-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
     '  │                                                       │',
     '  │  ⬢ CORE KERNEL ───────────────────────────────────    │',
     '  │    ◉ core (boots first, cascade authority)             │',
@@ -251,7 +251,7 @@ export function generateDesktopBootScreen(): string[] {
     '  └───────────────────────────────────────────────────────┘',
     '',
     '  ╔═══════════════════════════════════════════════════════╗',
-    '  ║  38 NODES │ 12 SECTORS │ 500+ CMDS │ 675+ CAPS       ║',
+    '  ║  40 NODES │ 12 SECTORS │ 500+ CMDS │ 675+ CAPS       ║',
     '  ║  Memory Stream Active │ Quality Floor: 68+            ║',
     '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
     '  ╚═══════════════════════════════════════════════════════╝',

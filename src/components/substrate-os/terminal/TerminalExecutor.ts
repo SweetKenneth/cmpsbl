@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * 38 nodes / 12 sectors | 500+ commands | 300 synergy pipelines
+ * 40 nodes / 12 sectors | 500+ commands | 300 synergy pipelines
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 38-NODE RESPONSE FORMATTERS
+// SYSTEM-WIDE 40-NODE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
@@ -487,8 +487,8 @@ function generateFullHelp(): string {
 ┌─────────────────────────────────────────────────────────────┐
 │          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 38 / 12 Sectors           │
-│  Architecture: 38-node matrix │ 675+ caps │ 300 Synergies  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 40 / 12 Sectors           │
+│  Architecture: 40-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
@@ -978,7 +978,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  38-Node / 12-Sector Field-Based Topology — Full AI Operating System
+│  40-Node / 12-Sector Field-Based Topology — Full AI Operating System
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
@@ -1020,7 +1020,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  38 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
+│  40 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
@@ -1652,7 +1652,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 38 nodes
+      // Non-destructive verification of all 40 nodes
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
@@ -1713,7 +1713,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
           const { resetBreaker } = await import('@/lib/substrate/circuit-breaker');
           
-          // 1. Reset all 38 node circuit breakers
+          // 1. Reset all 40 node circuit breakers
           const breakerResets: string[] = [];
           for (const mod of ALL_EXECUTION_SURFACES) {
             try {
@@ -2041,7 +2041,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (38 node status calls)          ║
+║    2: + module-status-polling (40 node status calls)          ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (backend channels)            ║
 ║                                                              ║
@@ -5507,7 +5507,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       return { success: false, output: `▓ Unknown patch command: ${base}\n  Type 'patch.help' for available commands` };
     }
 
-    // ═══ REGISTRY-BACKED MODULE HANDLERS (All 38 Nodes + Cross-Cutting) ═══
+    // ═══ REGISTRY-BACKED MODULE HANDLERS (All 40 Nodes + Cross-Cutting) ═══
     else if (base.startsWith('memory.') || base.startsWith('relay.') || base.startsWith('audit.') || base.startsWith('identity.') || base.startsWith('economy.') || base.startsWith('sandbox.') || base.startsWith('encode.') || base.startsWith('encoded.') || base.startsWith('gov.') || base.startsWith('obs.') || base.startsWith('analytics.') || base.startsWith('mesh.') || base.startsWith('seba.') || base.startsWith('clm.') || base.startsWith('core.') || base.startsWith('system.') || base.startsWith('brain.') || base.startsWith('dream.') || base.startsWith('ripple.') || base.startsWith('access.') || base.startsWith('defense.') || base.startsWith('decode.') || base.startsWith('nexus.') || base.startsWith('vision.') || base.startsWith('cortex.') || base.startsWith('inclusive.') || base.startsWith('integration.') || base.startsWith('modernizer.') || base.startsWith('shadow.') || base.startsWith('sovereign.') || base.startsWith('oracle.') || base.startsWith('conscience.') || base.startsWith('phantom.') || base.startsWith('forge.') || base.startsWith('lingua.') || base.startsWith('compass.') || base.startsWith('echo.') || base.startsWith('treaty.') || base.startsWith('harvest.') || base.startsWith('reflex.') || base.startsWith('evolution.') || base.startsWith('immunity.') || base.startsWith('governance.') || base.startsWith('medic.') || base.startsWith('nerve.') || base.startsWith('expansion.') || base.startsWith('hardening.') || base.startsWith('engineer.') || base.startsWith('intent.') || base.startsWith('atlas.') || base.startsWith('diligence.') || base.startsWith('eventstream.')) {
       try {
         // Lazy-register all registry-backed handlers on first use

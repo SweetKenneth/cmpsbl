@@ -50,7 +50,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Foundations — Cognitive Infrastructure Standards | CMPSBL®"
-        description="The foundational reference for the CMPSBL Substrate: 38-node architecture, 12 sectors, governed autonomy, and three interconnected standards for cognitive AI systems."
+        description="The foundational reference for the CMPSBL Substrate: 40-node architecture, 12 sectors, governed autonomy, and three interconnected standards for cognitive AI systems."
         keywords={['CMPSBL foundations', 'cognitive infrastructure', 'AI substrate', 'governed autonomy', 'persistent runtime']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
@@ -68,7 +68,7 @@ export default function Foundations() {
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
                 <Layers className="w-4 h-4 text-primary" />
-                <span className="text-sm font-mono text-primary">38 Nodes · 12 Sectors · 3 Standards</span>
+                <span className="text-sm font-mono text-primary">40 Nodes · 12 Sectors · 3 Standards</span>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-[0.95]">
                 Foundations
@@ -161,7 +161,7 @@ export default function Foundations() {
                 <Layers className="w-6 h-6 text-primary mb-3" />
                 <h3 className="font-bold mb-2">Substrate Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  The architectural specification — 38 nodes, 12 sectors, layered execution, mesh overlays, and synergy pipelines.
+                  The architectural specification — 40 nodes, 12 sectors, layered execution, mesh overlays, and synergy pipelines.
                 </p>
                 <Link to="/substrate" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
                   Explore Substrate <ArrowRight className="w-3.5 h-3.5" />

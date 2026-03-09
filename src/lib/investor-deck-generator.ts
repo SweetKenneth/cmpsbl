@@ -6,7 +6,7 @@
 const WORLD_FIRSTS = [
   { achievement: "Autonomous AI Dream State", description: "First AI system to enter an offline dream state for memory synthesis, consolidation, and creative recombination (Simnap & Cascade)", evidence: "Zenodo DOI: 10.5281/zenodo.18234910" },
   { achievement: "Self-Evolving Bounded Agent (SEBA)", description: "First verifiable self-improving AI system with cryptographic evolution stamps, rollback semantics, and human-in-the-loop governance", evidence: "Substrate v7.0.0+" },
-  { achievement: "38-Node Memory Stream", description: "First complete cognitive operating system with 38 nodes across 12 sectors, 675+ capabilities, and 4 shielded expansion zones, operating as a unified Memory Stream", evidence: "Production-grade field-based topology" },
+  { achievement: "40-Node Memory Stream", description: "First complete cognitive operating system with 40 nodes across 12 sectors, 675+ capabilities, and 4 shielded expansion zones, operating as a unified Memory Stream", evidence: "Production-grade field-based topology" },
   { achievement: "Intent Mesh Crystallization", description: "First emergent capability discovery system where systems advertise, compose, and crystallize cross-system pipelines autonomously from the Memory Stream", evidence: "100+ crystallized pipelines" },
   { achievement: "Universal Brain Transfer Pipeline", description: "First system to automatically route memories from a central BRAIN to all systems based on relevance scoring and tag affinity", evidence: "CLM Engine v2.0" },
   { achievement: "DECODE → ENCODE Pipeline", description: "First governed natural-language-to-code execution pipeline where AI never receives raw input — all intent passes through normalization, enrichment, and safety gates", evidence: "v10.5.3" },
@@ -241,7 +241,7 @@ export function generateInvestorDeckHTML(): string {
   <p class="stream-tag">SIGNAL → SILICON</p>
   <h1><span>CMPSBL®</span></h1>
   <h1 style="font-size:32px;margin-bottom:8px;">The Memory Stream</h1>
-  <p class="subtitle">The continuous substrate of evolving software systems. 38 nodes across 12 sectors. 675+ capabilities. 14 documented industry firsts. Raw signal enters — production-grade software crystallizes out.</p>
+  <p class="subtitle">The continuous substrate of evolving software systems. 40 nodes across 12 sectors. 675+ capabilities. 14 documented industry firsts. Raw signal enters — production-grade software crystallizes out.</p>
   
   <div class="signal-flow">
     <div class="node active">Signal</div>
@@ -357,7 +357,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="card-grid">
     <div class="info-card">
       <h3>Memory Stream Architecture</h3>
-      <p>38 nodes across 12 sectors designed as a unified, evolving substrate — extremely hard to replicate. The architecture compounds.</p>
+      <p>40 nodes across 12 sectors designed as a unified, evolving substrate — extremely hard to replicate. The architecture compounds.</p>
     </div>
     <div class="info-card">
       <h3>Self-Evolution (SEBA)</h3>
@@ -375,7 +375,7 @@ export function generateInvestorDeckHTML(): string {
 
   <h2 style="margin-top:48px;">Technical Milestones</h2>
   <ul class="checklist">
-    <li>38-node Memory Stream: 12 sectors with 675+ capabilities</li>
+    <li>40-node Memory Stream: 12 sectors with 675+ capabilities</li>
     <li>Self-evolution engine operational (SEBA) with cryptographic stamps</li>
     <li>Multi-provider AI routing (NEXUS Fleet v5.0)</li>
     <li>Memory Stream crystallization with quality floor enforcement (68+)</li>
@@ -394,7 +394,7 @@ export function generateInvestorDeckHTML(): string {
   <div class="info-card" style="margin-top:16px;">
     <h3 style="color:var(--text);">Kenneth E. Sweet Jr.</h3>
     <p><strong>Founder & Chief Cognitive Engineer</strong></p>
-    <p style="margin-top:8px;">Creator and architect of the 38-node Memory Stream substrate. Deep expertise in cognitive systems, AI infrastructure, and the Signal → Silicon pipeline.</p>
+    <p style="margin-top:8px;">Creator and architect of the 40-node Memory Stream substrate. Deep expertise in cognitive systems, AI infrastructure, and the Signal → Silicon pipeline.</p>
     <p style="margin-top:8px;">ORCID: 0009-0001-4237-1243</p>
   </div>
 

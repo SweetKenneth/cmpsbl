@@ -330,7 +330,7 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     description: "From one function to thirty-eight interconnected nodes. A technical map of the complete substrate architecture and how it all fits together.",
     date: "2025-12-15",
     readTime: "18 min",
-    keywords: ["substrate architecture", "38-node system", "cognitive infrastructure map", "system design"],
+    keywords: ["substrate architecture", "40-node system", "cognitive infrastructure map", "system design"],
     relatedSlugs: ["the-first-line-of-code", "mapping-what-we-built", "signal-to-silicon"],
   },
   {
