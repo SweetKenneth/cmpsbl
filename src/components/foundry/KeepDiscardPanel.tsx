@@ -3,6 +3,7 @@
  * Shows rarity messaging + Keep / Discard actions per pipeline
  * 
  * Mobile-first: 44px touch targets, responsive text, stacked layout on small screens
+ * Uses semantic design tokens (neon-amber, neon-purple) from design system
  */
 import { motion } from 'framer-motion';
 import { Check, X, Sparkles, AlertTriangle } from 'lucide-react';
@@ -14,10 +15,10 @@ import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
 function scoreColor(score: number): string {
   if (score === 100) return 'text-primary';
-  if (score >= 94) return 'text-purple-400';
-  if (score >= 90) return 'text-amber-400';
-  if (score >= 80) return 'text-sky-400';
-  return 'text-emerald-400';
+  if (score >= 94) return 'text-neon-purple';
+  if (score >= 90) return 'text-neon-amber';
+  if (score >= 80) return 'text-neon-cyan';
+  return 'text-neon-green';
 }
 
 function isRareOrAbove(tier: string): boolean {
@@ -33,9 +34,10 @@ interface Props {
   onKeep: (result: MineResult) => void;
   onDiscard: (result: MineResult) => void;
   decisions: Record<string, 'kept' | 'discarded'>;
+  keepLoading?: string | null;
 }
 
-export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Props) {
+export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLoading }: Props) {
   return (
     <div className="space-y-3 sm:space-y-4">
       {/* Header */}
@@ -52,6 +54,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
         const decided = decisions[result.id];
         const rare = isRareOrAbove(result.publicTier);
         const mythic = isMythicOrAbove(result.publicTier);
+        const isSaving = keepLoading === result.id;
 
         return (
           <motion.div
@@ -61,22 +64,22 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
             transition={{ delay: i * 0.12, type: 'spring', damping: 20 }}
             className={`rounded-xl sm:rounded-2xl border backdrop-blur-sm transition-all duration-300 overflow-hidden ${
               decided === 'kept'
-                ? 'border-emerald-500/30 bg-emerald-500/5'
+                ? 'border-neon-green/30 bg-neon-green/5'
                 : decided === 'discarded'
                 ? 'border-border/10 opacity-40'
                 : mythic
-                ? 'border-purple-500/40 ring-1 ring-purple-500/15 shadow-lg shadow-purple-500/5'
+                ? 'border-neon-purple/40 ring-1 ring-neon-purple/15 shadow-lg shadow-neon-purple/5'
                 : rare
-                ? 'border-amber-500/30 shadow-md shadow-amber-500/5'
+                ? 'border-neon-amber/30 shadow-md shadow-neon-amber/5'
                 : 'border-border/20 bg-card/30'
             }`}
           >
             {/* Mythic top accent bar */}
             {!decided && mythic && (
-              <div className="h-[3px] bg-gradient-to-r from-purple-500 via-violet-500 to-fuchsia-500" />
+              <div className="h-[3px] bg-gradient-to-r from-neon-purple via-primary-variant to-neon-magenta" />
             )}
             {!decided && rare && !mythic && (
-              <div className="h-[2px] bg-gradient-to-r from-amber-500 to-orange-500" />
+              <div className="h-[2px] bg-gradient-to-r from-neon-amber to-accent" />
             )}
 
             <div className="p-4 sm:p-5">
@@ -86,17 +89,17 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12 + 0.2 }}
-                  className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-lg bg-purple-500/10 border border-purple-500/20"
+                  className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-lg bg-neon-purple/10 border border-neon-purple/20"
                 >
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    <Sparkles className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                    <Sparkles className="w-4 h-4 text-neon-purple shrink-0 mt-0.5" />
                   </motion.div>
                   <div>
-                    <div className="text-xs sm:text-sm font-bold text-purple-400">Mythic Pipeline Discovered</div>
-                    <div className="text-[10px] sm:text-xs text-purple-400/70 leading-relaxed">
+                    <div className="text-xs sm:text-sm font-bold text-neon-purple">Mythic Pipeline Discovered</div>
+                    <div className="text-[10px] sm:text-xs text-neon-purple/70 leading-relaxed">
                       One of the rarest outcomes in the Memory Stream.
                     </div>
                   </div>
@@ -107,12 +110,12 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12 + 0.2 }}
-                  className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20"
+                  className="flex items-start gap-2.5 mb-3 px-3 py-2.5 rounded-lg bg-neon-amber/10 border border-neon-amber/20"
                 >
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-4 h-4 text-neon-amber shrink-0 mt-0.5" />
                   <div>
-                    <div className="text-xs sm:text-sm font-bold text-amber-400">Rare discovery detected</div>
-                    <div className="text-[10px] sm:text-xs text-amber-400/70 leading-relaxed">
+                    <div className="text-xs sm:text-sm font-bold text-neon-amber">Rare discovery detected</div>
+                    <div className="text-[10px] sm:text-xs text-neon-amber/70 leading-relaxed">
                       Consider storing this in your vault.
                     </div>
                   </div>
@@ -152,18 +155,25 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
                 <div className="flex gap-2 mt-4">
                   <Button
                     size="sm"
+                    disabled={isSaving}
                     className={`flex-1 gap-1.5 min-h-[44px] text-sm font-semibold shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                       mythic
-                        ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white border-0 shadow-purple-500/25 hover:shadow-purple-500/40'
+                        ? 'bg-gradient-to-r from-neon-purple to-primary-variant text-primary-foreground border-0 shadow-neon-purple/25 hover:shadow-neon-purple/40'
                         : 'shadow-primary/25 hover:shadow-primary/30'
                     }`}
                     onClick={() => onKeep(result)}
                   >
-                    <Check className="w-4 h-4" /> Keep Pipeline
+                    {isSaving ? (
+                      <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-4 h-4 rounded-full border-2 border-current/30 border-t-current" />
+                    ) : (
+                      <Check className="w-4 h-4" />
+                    )}
+                    {isSaving ? 'Saving...' : 'Keep Pipeline'}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
+                    disabled={isSaving}
                     className="flex-1 gap-1.5 min-h-[44px] text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors"
                     onClick={() => onDiscard(result)}
                   >
@@ -176,7 +186,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
                   animate={{ opacity: 1, y: 0 }}
                   className={`mt-3 text-xs font-mono flex items-center gap-1.5 px-3 py-2 rounded-lg ${
                     decided === 'kept'
-                      ? 'text-emerald-400 bg-emerald-500/5 border border-emerald-500/10'
+                      ? 'text-neon-green bg-neon-green/5 border border-neon-green/10'
                       : 'text-muted-foreground/50'
                   }`}
                 >
@@ -187,7 +197,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions }: Prop
 
               {/* Mythic secondary hint */}
               {!decided && mythic && (
-                <div className="text-[10px] font-mono text-purple-400/50 mt-2.5 flex items-center gap-1.5 px-1">
+                <div className="text-[10px] font-mono text-neon-purple/50 mt-2.5 flex items-center gap-1.5 px-1">
                   <Sparkles className="w-2.5 h-2.5 shrink-0" />
                   <span>Rare discovery detected. Consider storing this in your vault.</span>
                 </div>

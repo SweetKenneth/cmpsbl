@@ -1,6 +1,7 @@
 /**
  * VaultUsageIndicator — Shows current vault usage vs capacity
  * Mobile-first: compact layout, touch-friendly, responsive bar width
+ * Uses semantic design tokens (neon-amber) from design system
  */
 import { motion } from 'framer-motion';
 import { Archive } from 'lucide-react';
@@ -22,7 +23,7 @@ export function VaultUsageIndicator({ currentCount, subscriptionTier, className 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
       <div className={`flex items-center gap-1.5 text-xs font-mono tabular-nums ${
-        isFull ? 'text-amber-400' : isNearFull ? 'text-amber-400/70' : 'text-muted-foreground'
+        isFull ? 'text-neon-amber' : isNearFull ? 'text-neon-amber/70' : 'text-muted-foreground'
       }`}>
         <Archive className="w-3.5 h-3.5 shrink-0" />
         <span className="whitespace-nowrap">
@@ -36,7 +37,7 @@ export function VaultUsageIndicator({ currentCount, subscriptionTier, className 
             animate={{ width: `${percentage}%` }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className={`h-full rounded-full ${
-              isFull ? 'bg-amber-400' : isNearFull ? 'bg-amber-400/70' : 'bg-primary/60'
+              isFull ? 'bg-neon-amber' : isNearFull ? 'bg-neon-amber/70' : 'bg-primary/60'
             }`}
           />
         </div>

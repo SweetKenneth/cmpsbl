@@ -1,6 +1,6 @@
 /**
  * FoundryMiningPanel — The "CRYSTALLIZE" button + Keep/Discard flow
- * Enforces daily pull limits and vault capacity.
+ * Enforces daily pull limits and vault capacity server-side.
  * Includes rarity messaging and Mythic upgrade trigger.
  * 
  * Mobile-first: 44px touch targets, responsive spacing, safe-area aware
@@ -29,11 +29,16 @@ interface Props {
   vaultCount: number;
   pullsToday: number;
   onVaultChange?: () => void;
+  /** Server-side: store a pipeline in the vault */
+  onKeepPipeline?: (result: MineResult) => Promise<{ success: boolean; error?: string }>;
+  /** Server-side: record a pull */
+  onRecordPull?: () => Promise<number>;
 }
 
 export function FoundryMiningPanel({
   isMining, lastResult, onMine, onCrystallizing,
   subscriptionTier, vaultCount, pullsToday, onVaultChange,
+  onKeepPipeline, onRecordPull,
 }: Props) {
   const [phase, setPhase] = useState<CrystallizationPhase>(null);
   const [provenancePipeline, setProvenancePipeline] = useState<{
@@ -43,16 +48,16 @@ export function FoundryMiningPanel({
   } | null>(null);
 
   const [decisions, setDecisions] = useState<Record<string, 'kept' | 'discarded'>>({});
+  const [keepLoading, setKeepLoading] = useState<string | null>(null);
   const [dailyLimitOpen, setDailyLimitOpen] = useState(false);
   const [vaultCapacityOpen, setVaultCapacityOpen] = useState(false);
   const [mythicModalOpen, setMythicModalOpen] = useState(false);
   const [pendingMythic, setPendingMythic] = useState<MineResult | null>(null);
 
   const limits = getVaultLimits(subscriptionTier);
-  const pullsRemaining = Math.max(0, limits.pullsPerDay - pullsToday);
-  const atPullLimit = pullsRemaining === 0;
+  const atPullLimit = pullsToday >= limits.pullsPerDay;
 
-  const handleCrystallize = () => {
+  const handleCrystallize = async () => {
     if (isPullLimitReached(pullsToday, subscriptionTier)) {
       setDailyLimitOpen(true);
       return;
@@ -64,6 +69,11 @@ export function FoundryMiningPanel({
     setTimeout(() => setPhase('condensing'), 700);
     setTimeout(() => setPhase('crystallizing'), 1400);
     setTimeout(() => { setPhase(null); onCrystallizing?.(false); }, 2200);
+
+    // Record pull server-side BEFORE mining
+    if (onRecordPull) {
+      await onRecordPull();
+    }
     onMine();
   };
 
@@ -82,10 +92,21 @@ export function FoundryMiningPanel({
       return;
     }
 
+    // Server-side persist
+    if (onKeepPipeline) {
+      setKeepLoading(result.id);
+      const { success, error } = await onKeepPipeline(result);
+      setKeepLoading(null);
+      if (!success) {
+        toast.error(error || 'Failed to store pipeline');
+        return;
+      }
+    }
+
     setDecisions(prev => ({ ...prev, [result.id]: 'kept' }));
     toast.success(`${result.name} stored in Vault`);
     onVaultChange?.();
-  }, [decisions, vaultCount, subscriptionTier, onVaultChange]);
+  }, [decisions, vaultCount, subscriptionTier, onVaultChange, onKeepPipeline]);
 
   const handleDiscard = useCallback((result: MineResult) => {
     setDecisions(prev => ({ ...prev, [result.id]: 'discarded' }));
@@ -105,7 +126,7 @@ export function FoundryMiningPanel({
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm px-4 py-3">
         <VaultUsageIndicator currentCount={vaultCount} subscriptionTier={subscriptionTier} />
         <div className={`text-xs font-mono tabular-nums flex items-center gap-1.5 ${
-          atPullLimit ? 'text-amber-400' : 'text-muted-foreground'
+          atPullLimit ? 'text-neon-amber' : 'text-muted-foreground'
         }`}>
           <span>{pullsToday}</span>
           <span className="text-muted-foreground/30">/</span>
@@ -169,8 +190,8 @@ export function FoundryMiningPanel({
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 0.6, repeat: Infinity }}
                 className={`w-2 h-2 rounded-full ${
-                  phase === 'sampling' ? 'bg-sky-400' :
-                  phase === 'condensing' ? 'bg-amber-400' :
+                  phase === 'sampling' ? 'bg-neon-cyan' :
+                  phase === 'condensing' ? 'bg-neon-amber' :
                   'bg-primary'
                 }`}
               />
@@ -197,6 +218,7 @@ export function FoundryMiningPanel({
               onKeep={handleKeep}
               onDiscard={handleDiscard}
               decisions={decisions}
+              keepLoading={keepLoading}
             />
           </motion.div>
         )}

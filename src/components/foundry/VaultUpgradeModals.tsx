@@ -5,9 +5,11 @@
  * 3. Mythic Pipeline Discovered (vault full)
  * 
  * Mobile-first: min-h touch targets, safe-area padding, full-bleed on small screens
+ * Uses semantic design tokens from the design system (neon-amber, neon-purple, neon-cyan)
  */
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +17,16 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Archive, Sparkles, X, Zap } from 'lucide-react';
 
@@ -49,14 +61,14 @@ export function VaultCapacityModal({
   const navigate = useNavigate();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-amber-500/20">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-neon-amber/20">
         {/* Gradient header strip */}
-        <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
+        <div className="h-1 bg-gradient-to-r from-neon-amber to-accent" />
 
         <div className="px-5 pt-6 pb-2 sm:px-8 sm:pt-8">
           <DialogHeader className="space-y-3">
-            <ModalIconBadge bgClass="bg-amber-500/10" borderClass="border-amber-500/20">
-              <Archive className="w-7 h-7 text-amber-400" />
+            <ModalIconBadge bgClass="bg-neon-amber/10" borderClass="border-neon-amber/20">
+              <Archive className="w-7 h-7 text-neon-amber" />
             </ModalIconBadge>
             <DialogTitle className="text-center text-lg sm:text-xl font-bold tracking-tight">
               Vault Capacity Reached
@@ -108,13 +120,13 @@ export function DailyLimitModal({
   const navigate = useNavigate();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-sky-500/20">
-        <div className="h-1 bg-gradient-to-r from-sky-500 to-cyan-500" />
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-primary/20">
+        <div className="h-1 bg-gradient-to-r from-primary to-neon-cyan" />
 
         <div className="px-5 pt-6 pb-2 sm:px-8 sm:pt-8">
           <DialogHeader className="space-y-3">
-            <ModalIconBadge bgClass="bg-sky-500/10" borderClass="border-sky-500/20">
-              <Zap className="w-7 h-7 text-sky-400" />
+            <ModalIconBadge bgClass="bg-primary/10" borderClass="border-primary/20">
+              <Zap className="w-7 h-7 text-primary" />
             </ModalIconBadge>
             <DialogTitle className="text-center text-lg sm:text-xl font-bold tracking-tight">
               Daily Discovery Limit Reached
@@ -159,58 +171,88 @@ export function MythicDiscoveryModal({
   onDiscard?: () => void;
 }) {
   const navigate = useNavigate();
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-purple-500/30 ring-1 ring-purple-500/10">
-        {/* Mythic gradient strip */}
-        <div className="h-1.5 bg-gradient-to-r from-purple-500 via-violet-500 to-fuchsia-500" />
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-0 overflow-hidden border-neon-purple/30 ring-1 ring-neon-purple/10">
+          {/* Mythic gradient strip */}
+          <div className="h-1.5 bg-gradient-to-r from-neon-purple via-primary-variant to-neon-magenta" />
 
-        <div className="px-5 pt-6 pb-2 sm:px-8 sm:pt-8 relative">
-          {/* Subtle radial glow behind icon */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-purple-500/5 blur-3xl pointer-events-none" />
+          <div className="px-5 pt-6 pb-2 sm:px-8 sm:pt-8 relative">
+            {/* Subtle radial glow behind icon */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-neon-purple/5 blur-3xl pointer-events-none" />
 
-          <DialogHeader className="space-y-3 relative">
-            <ModalIconBadge bgClass="bg-purple-500/10" borderClass="border-purple-500/20">
-              <motion.div animate={{ rotate: [0, 8, -8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}>
-                <Sparkles className="w-7 h-7 text-purple-400" />
-              </motion.div>
-            </ModalIconBadge>
-            <DialogTitle className="text-center text-lg sm:text-xl font-bold tracking-tight">
-              Mythic Pipeline Discovered
-            </DialogTitle>
-            <DialogDescription className="text-center text-sm leading-relaxed max-w-xs mx-auto">
-              One of the rarest outcomes in the Memory Stream.
-              Your vault is currently full.
-              Upgrade now to store this discovery before it is lost.
-            </DialogDescription>
-          </DialogHeader>
-        </div>
+            <DialogHeader className="space-y-3 relative">
+              <ModalIconBadge bgClass="bg-neon-purple/10" borderClass="border-neon-purple/20">
+                <motion.div animate={{ rotate: [0, 8, -8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}>
+                  <Sparkles className="w-7 h-7 text-neon-purple" />
+                </motion.div>
+              </ModalIconBadge>
+              <DialogTitle className="text-center text-lg sm:text-xl font-bold tracking-tight">
+                Mythic Pipeline Discovered
+              </DialogTitle>
+              <DialogDescription className="text-center text-sm leading-relaxed max-w-xs mx-auto">
+                One of the rarest outcomes in the Memory Stream.
+                Your vault is currently full.
+                Upgrade now to store this discovery before it is lost.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-        <div className="flex flex-col gap-2.5 px-5 pb-6 pt-3 sm:px-8 sm:pb-8">
-          <Button
-            className="w-full min-h-[44px] gap-1.5 bg-gradient-to-r from-purple-500 to-violet-600 text-white border-0 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-            onClick={() => { onOpenChange(false); navigate('/upgrade'); }}
-          >
-            Upgrade Now <ArrowRight className="w-4 h-4" />
-          </Button>
-          {onManageVault && (
+          <div className="flex flex-col gap-2.5 px-5 pb-6 pt-3 sm:px-8 sm:pb-8">
             <Button
-              variant="outline"
-              className="w-full min-h-[44px] gap-1.5 hover:border-purple-500/30 transition-colors"
-              onClick={() => { onOpenChange(false); onManageVault(); }}
+              className="w-full min-h-[44px] gap-1.5 bg-gradient-to-r from-neon-purple to-primary-variant text-primary-foreground border-0 shadow-lg shadow-neon-purple/25 hover:shadow-neon-purple/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              onClick={() => { onOpenChange(false); navigate('/upgrade'); }}
             >
-              <Archive className="w-4 h-4" /> Manage Vault
+              Upgrade Now <ArrowRight className="w-4 h-4" />
             </Button>
-          )}
-          <Button
-            variant="ghost"
-            className="w-full min-h-[44px] text-muted-foreground hover:text-destructive transition-colors"
-            onClick={() => { onOpenChange(false); onDiscard?.(); }}
-          >
-            <X className="w-4 h-4 mr-1" /> Discard Discovery
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+            {onManageVault && (
+              <Button
+                variant="outline"
+                className="w-full min-h-[44px] gap-1.5 hover:border-neon-purple/30 transition-colors"
+                onClick={() => { onOpenChange(false); onManageVault(); }}
+              >
+                <Archive className="w-4 h-4" /> Manage Vault
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              className="w-full min-h-[44px] text-muted-foreground hover:text-destructive transition-colors"
+              onClick={() => setConfirmDiscard(true)}
+            >
+              <X className="w-4 h-4 mr-1" /> Discard Discovery
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Secondary confirmation for Mythic discard */}
+      <AlertDialog open={confirmDiscard} onOpenChange={setConfirmDiscard}>
+        <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard Mythic Pipeline?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This is one of the rarest discoveries in the Memory Stream. 
+              Once discarded, this pipeline cannot be recovered.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
+            <AlertDialogCancel className="min-h-[44px]">Keep Looking</AlertDialogCancel>
+            <AlertDialogAction
+              className="min-h-[44px] bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                setConfirmDiscard(false);
+                onOpenChange(false);
+                onDiscard?.();
+              }}
+            >
+              Discard Forever
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
