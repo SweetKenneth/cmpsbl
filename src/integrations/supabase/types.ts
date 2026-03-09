@@ -1682,6 +1682,33 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_excluded_fingerprints: {
+        Row: {
+          created_at: string
+          excluded_by: string | null
+          fingerprint: string
+          id: string
+          label: string | null
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          excluded_by?: string | null
+          fingerprint: string
+          id?: string
+          label?: string | null
+          reason?: string
+        }
+        Update: {
+          created_at?: string
+          excluded_by?: string | null
+          fingerprint?: string
+          id?: string
+          label?: string | null
+          reason?: string
+        }
+        Relationships: []
+      }
       analytics_snapshots: {
         Row: {
           active_modules: number | null

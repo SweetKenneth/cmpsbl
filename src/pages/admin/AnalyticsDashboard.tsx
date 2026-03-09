@@ -9,15 +9,17 @@ import { Helmet } from 'react-helmet-async';
 import {
   Users, Clock, TrendingUp, Activity, Eye, Layers,
   ArrowRight, AlertTriangle, CheckCircle, XCircle, RefreshCw,
-  Zap, Route, Flame, BarChart3,
-  ArrowDownRight, ArrowUpRight,
+  Zap, Route, Flame, BarChart3, Settings, Trash2, UserX, Bot, Plus,
+  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -86,7 +88,15 @@ interface FeatureAdoption {
   category_totals: { category: string; count: number }[];
 }
 
-type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features';
+type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features' | 'exclusions';
+
+interface ExcludedFingerprint {
+  id: string;
+  fingerprint: string;
+  reason: string;
+  label: string | null;
+  created_at: string;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
@@ -129,6 +139,7 @@ const TAB_STYLES: Record<string, string> = {
   amber:  'bg-amber-500/20 text-amber-400 border border-amber-500/40',
   purple: 'bg-purple-500/20 text-purple-400 border border-purple-500/40',
   cyan:   'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40',
+  red:    'bg-red-500/20 text-red-400 border border-red-500/40',
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -206,6 +217,7 @@ export default function AnalyticsDashboard() {
     { key: 'churn', label: 'Churn Risk', icon: AlertTriangle, color: 'amber' },
     { key: 'journeys', label: 'Journeys', icon: Route, color: 'purple' },
     { key: 'features', label: 'Features', icon: Flame, color: 'cyan' },
+    { key: 'exclusions', label: 'Exclusions', icon: ShieldOff, color: 'red' },
   ];
 
   return (
@@ -276,6 +288,7 @@ export default function AnalyticsDashboard() {
                 {tab === 'churn' && <ChurnView data={churn} />}
                 {tab === 'journeys' && <JourneysView data={journeys} />}
                 {tab === 'features' && <FeaturesView data={features} />}
+                {tab === 'exclusions' && <ExclusionsView />}
               </>
             )}
           </motion.div>
@@ -898,6 +911,255 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
           )}
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXCLUSIONS MANAGEMENT
+// ═══════════════════════════════════════════════════════════════
+
+function ExclusionsView() {
+  const [exclusions, setExclusions] = useState<ExcludedFingerprint[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [adding, setAdding] = useState(false);
+  const [newFp, setNewFp] = useState('');
+  const [newLabel, setNewLabel] = useState('');
+  const [newReason, setNewReason] = useState<'owner' | 'bot'>('owner');
+  const [myFingerprint, setMyFingerprint] = useState<string | null>(null);
+
+  const fetchExclusions = useCallback(async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from('analytics_excluded_fingerprints')
+      .select('*')
+      .order('created_at', { ascending: false });
+    setExclusions((data as ExcludedFingerprint[]) || []);
+    setLoading(false);
+  }, []);
+
+  // Detect current fingerprint from localStorage (set by site-tracker)
+  useEffect(() => {
+    const stored = localStorage.getItem('cmpsbl_fp');
+    if (stored) setMyFingerprint(stored);
+    fetchExclusions();
+  }, [fetchExclusions]);
+
+  const addExclusion = async (fingerprint: string, reason: string, label?: string) => {
+    setAdding(true);
+    const { error } = await supabase
+      .from('analytics_excluded_fingerprints')
+      .insert({ fingerprint, reason, label: label || null });
+    if (error) {
+      toast.error(error.code === '23505' ? 'Already excluded' : error.message);
+    } else {
+      toast.success('Fingerprint excluded from analytics');
+      setNewFp('');
+      setNewLabel('');
+      await fetchExclusions();
+    }
+    setAdding(false);
+  };
+
+  const removeExclusion = async (id: string) => {
+    await supabase.from('analytics_excluded_fingerprints').delete().eq('id', id);
+    toast.success('Exclusion removed');
+    fetchExclusions();
+  };
+
+  const excludeMyself = () => {
+    if (myFingerprint) addExclusion(myFingerprint, 'owner', 'My device (auto-detected)');
+  };
+
+  const isMyFpExcluded = exclusions.some(e => e.fingerprint === myFingerprint);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <ShieldOff className="w-5 h-5 text-red-400" />
+        <div>
+          <h3 className="text-lg font-bold text-foreground">Exclusion Management</h3>
+          <p className="text-xs text-muted-foreground">Remove yourself and bots from analytics — only track real humans.</p>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Exclude Myself */}
+        <motion.div
+          className={cn(
+            "p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl",
+            CARD_STYLES.red.border, CARD_STYLES.red.bg
+          )}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center border", CARD_STYLES.red.iconBg)}>
+              <UserX className={cn("w-4 h-4", CARD_STYLES.red.iconColor)} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Exclude Myself</span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">
+            Remove your own visits from all analytics data. Uses your current device fingerprint.
+          </p>
+          {myFingerprint ? (
+            <div className="space-y-2">
+              <p className="text-[10px] font-mono text-muted-foreground/60 truncate">
+                FP: {myFingerprint.slice(0, 16)}…
+              </p>
+              {isMyFpExcluded ? (
+                <Badge className="bg-green-500/20 text-green-400 border border-green-500/40">
+                  <CheckCircle className="w-3 h-3 mr-1" /> Already excluded
+                </Badge>
+              ) : (
+                <Button size="sm" variant="destructive" onClick={excludeMyself} disabled={adding}>
+                  {adding ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <UserX className="w-3 h-3 mr-1" />}
+                  Exclude my fingerprint
+                </Button>
+              )}
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground/50 italic">No fingerprint detected yet</p>
+          )}
+        </motion.div>
+
+        {/* Add Custom Exclusion */}
+        <motion.div
+          className={cn(
+            "p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl",
+            CARD_STYLES.amber.border, CARD_STYLES.amber.bg
+          )}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center border", CARD_STYLES.amber.iconBg)}>
+              <Bot className={cn("w-4 h-4", CARD_STYLES.amber.iconColor)} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Add Exclusion</span>
+          </div>
+          <div className="space-y-2">
+            <Input
+              placeholder="Fingerprint hash"
+              value={newFp}
+              onChange={e => setNewFp(e.target.value)}
+              className="h-8 text-xs font-mono bg-background/50"
+            />
+            <Input
+              placeholder="Label (optional)"
+              value={newLabel}
+              onChange={e => setNewLabel(e.target.value)}
+              className="h-8 text-xs bg-background/50"
+            />
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant={newReason === 'owner' ? 'default' : 'outline'}
+                onClick={() => setNewReason('owner')}
+                className="text-[10px] h-7"
+              >
+                <UserX className="w-3 h-3 mr-1" /> Owner
+              </Button>
+              <Button
+                size="sm"
+                variant={newReason === 'bot' ? 'default' : 'outline'}
+                onClick={() => setNewReason('bot')}
+                className="text-[10px] h-7"
+              >
+                <Bot className="w-3 h-3 mr-1" /> Bot
+              </Button>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => addExclusion(newFp, newReason, newLabel)}
+              disabled={!newFp.trim() || adding}
+              className="w-full"
+            >
+              {adding ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Plus className="w-3 h-3 mr-1" />}
+              Add Exclusion
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Exclusions List */}
+      <motion.div
+        className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <ShieldOff className="w-4 h-4 text-muted-foreground" /> Excluded Fingerprints
+            <Badge variant="outline" className="font-mono text-[9px]">{exclusions.length}</Badge>
+          </h3>
+          <Button variant="ghost" size="sm" onClick={fetchExclusions} className="h-7">
+            <RefreshCw className={cn("w-3 h-3", loading && "animate-spin")} />
+          </Button>
+        </div>
+
+        {loading ? (
+          <div className="space-y-2">
+            {[1, 2, 3].map(i => <Skeleton key={i} className="h-12 rounded-lg" />)}
+          </div>
+        ) : exclusions.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <ShieldOff className="w-10 h-10 mx-auto mb-2 opacity-20" />
+            <p className="text-xs">No exclusions configured</p>
+            <p className="text-[10px] mt-1">All fingerprints are being tracked</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {exclusions.map((ex) => (
+              <motion.div
+                key={ex.id}
+                className="flex items-center justify-between p-3 rounded-lg border border-border/20 bg-muted/5 hover:bg-muted/10 transition-all"
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  {ex.reason === 'bot' ? (
+                    <Bot className="w-4 h-4 text-amber-400 shrink-0" />
+                  ) : (
+                    <UserX className="w-4 h-4 text-red-400 shrink-0" />
+                  )}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono text-foreground truncate max-w-[200px]">
+                        {ex.fingerprint.slice(0, 20)}…
+                      </span>
+                      <Badge variant="outline" className="text-[9px] font-mono shrink-0">
+                        {ex.reason}
+                      </Badge>
+                      {ex.fingerprint === myFingerprint && (
+                        <Badge className="bg-primary/20 text-primary border border-primary/40 text-[9px]">you</Badge>
+                      )}
+                    </div>
+                    {ex.label && <p className="text-[10px] text-muted-foreground truncate">{ex.label}</p>}
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-red-400"
+                  onClick={() => removeExclusion(ex.id)}
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </motion.div>
+
+      {/* Info */}
+      <div className="text-[10px] text-muted-foreground/50 font-mono text-center">
+        Excluded fingerprints are filtered from all analytics queries. Changes take effect on next data refresh.
+      </div>
     </div>
   );
 }
