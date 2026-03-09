@@ -53,7 +53,7 @@ interface SiteAnalyticsData {
   connectionTypes: { type: string; count: number }[];
 }
 
-type DateRangeKey = 'today' | 'yesterday' | '7d' | '30d' | '90d';
+type DateRangeKey = 'today' | 'yesterday' | '7d' | '30d' | '90d' | '365d' | 'all';
 
 function getDateRange(key: DateRangeKey): { start: Date; end: Date } {
   const now = new Date();
@@ -72,6 +72,10 @@ function getDateRange(key: DateRangeKey): { start: Date; end: Date } {
       return { start: new Date(Date.now() - 30 * 86400000), end: now };
     case '90d':
       return { start: new Date(Date.now() - 90 * 86400000), end: now };
+    case '365d':
+      return { start: new Date(Date.now() - 365 * 86400000), end: now };
+    case 'all':
+      return { start: new Date('2020-01-01'), end: now };
   }
 }
 
@@ -102,7 +106,7 @@ async function fetchSiteAnalytics(rangeKey: DateRangeKey): Promise<SiteAnalytics
   // Build daily time series — fill gaps
   const dailyRaw: { day: string; views: number; sessions: number; visitors: number }[] = raw.daily || [];
   const dailyMap = new Map(dailyRaw.map(d => [d.day, d]));
-  const days = rangeKey === 'today' ? 1 : rangeKey === 'yesterday' ? 1 : rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : 90;
+  const days = rangeKey === 'today' ? 1 : rangeKey === 'yesterday' ? 1 : rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : rangeKey === '90d' ? 90 : rangeKey === '365d' ? 365 : 90;
   const dailyViews: SiteAnalyticsData['dailyViews'] = [];
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(end.getTime() - i * 86400000).toISOString().split('T')[0];
@@ -293,6 +297,8 @@ export function SiteAnalyticsSection() {
               { key: '7d' as const, label: '7d' },
               { key: '30d' as const, label: '30d' },
               { key: '90d' as const, label: '90d' },
+              { key: '365d' as const, label: '1y' },
+              { key: 'all' as const, label: 'All' },
             ]).map(({ key, label }) => (
               <button
                 key={key}

@@ -18,6 +18,7 @@ const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningC
 const Diligence = lazy(() => import("@/pages/Diligence"));
 const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
 const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
+const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
 
 export const adminRoutes = (
   <>
@@ -36,5 +37,6 @@ export const adminRoutes = (
     <Route path="/admin/*" element={<Navigate to="/" replace />} />
     <Route path="/diligence" element={<AdminRoute><Diligence /></AdminRoute>} />
     <Route path="/admin/encode-console" element={<AdminRoute><EncodeConsolePage /></AdminRoute>} />
+    <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
   </>
 );

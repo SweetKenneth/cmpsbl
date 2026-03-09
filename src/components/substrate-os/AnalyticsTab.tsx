@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network, Users } from 'lucide-react';
+import { BarChart3, Activity, Cpu, Database, RefreshCw, Zap, Brain, Shield, Network, Users, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -227,41 +227,50 @@ export function AnalyticsTab() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      {/* Section Toggle */}
-      <div className="flex gap-2 p-1 rounded-xl bg-muted/30 border border-border/30 w-fit">
-        <button
-          onClick={() => setActiveSection('traffic')}
-          className={cn(
-            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
-            activeSection === 'traffic'
-              ? "bg-green-500/20 text-green-400 border border-green-500/40"
-              : "text-muted-foreground hover:text-foreground"
-          )}
+      {/* Section Toggle + Deep Dive Link */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex gap-2 p-1 rounded-xl bg-muted/30 border border-border/30 w-fit flex-wrap">
+          <button
+            onClick={() => setActiveSection('traffic')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSection === 'traffic'
+                ? "bg-green-500/20 text-green-400 border border-green-500/40"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Users className="w-4 h-4" /> Site Traffic
+          </button>
+          <button
+            onClick={() => setActiveSection('substrate')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSection === 'substrate'
+                ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <BarChart3 className="w-4 h-4" /> Substrate Telemetry
+          </button>
+          <button
+            onClick={() => setActiveSection('behavior')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSection === 'behavior'
+                ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Users className="w-4 h-4" /> User Behavior
+          </button>
+        </div>
+        <a
+          href="/admin/analytics"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/15 border border-primary/20 transition-all"
         >
-          <Users className="w-4 h-4" /> Site Traffic
-        </button>
-        <button
-          onClick={() => setActiveSection('substrate')}
-          className={cn(
-            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
-            activeSection === 'substrate'
-              ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <BarChart3 className="w-4 h-4" /> Substrate Telemetry
-        </button>
-        <button
-          onClick={() => setActiveSection('behavior')}
-          className={cn(
-            "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
-            activeSection === 'behavior'
-              ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <Users className="w-4 h-4" /> User Behavior
-        </button>
+          <ExternalLink className="w-3.5 h-3.5" />
+          Deep Dive Dashboard
+        </a>
       </div>
 
       {activeSection === 'traffic' ? (

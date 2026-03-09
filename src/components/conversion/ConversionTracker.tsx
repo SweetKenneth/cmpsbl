@@ -23,6 +23,7 @@ const FUNNEL_STAGES: Record<string, string> = {
   '/substrate': 'deep_engagement',
   '/persistent-memory': 'deep_engagement',
   '/composable-cognitives': 'deep_engagement',
+  '/admin/analytics': 'deep_engagement',
 };
 
 function getSessionId(): string {
