@@ -157,7 +157,7 @@ export function getDirectiveHistory(limit = 50): AdminDirective[] {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * All 38 nodes in the substrate matrix for insight reporting
+ * All 40 nodes in the substrate matrix for insight reporting
  */
 const ALL_NODES = [
   'CORE', 'SYSTEM',
