@@ -1174,8 +1174,8 @@ function buildActionPlan(
   accessibilityData: UnifiedProposal['accessibility'],
   securityData: UnifiedProposal['security_posture'],
   governanceChain: GovernanceChain,
-  modernizerData?: UnifiedProposal['modernizer_scan'],
-  modernizerResult?: ScanResultExtended | null,
+  evolutionData?: UnifiedProposal['evolution_scan'],
+  evolutionResult?: ScanResultExtended | null,
 ): ActionStep[] {
   // ═══════════════════════════════════════════════════════════
   // VALUE-SCORED PRIORITIZATION
