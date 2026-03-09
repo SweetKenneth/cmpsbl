@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as compassModule from '@/lib/substrate/compass-module';
+import * as compassModule from '@/lib/substrate/compass';
 
 export interface UseCompassReturn {
   state: ReturnType<typeof useQuery>;
