@@ -18,6 +18,7 @@ const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningC
 const Diligence = lazy(() => import("@/pages/Diligence"));
 const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
 const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
+const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
 
 export const adminRoutes = (
   <>
