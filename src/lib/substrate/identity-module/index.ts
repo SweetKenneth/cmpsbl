@@ -452,6 +452,14 @@ export function revokePortableIdentity(actorId: string): boolean {
   return true;
 }
 
+function syncPasskeyCount(): void {
+  let count = 0;
+  for (const actor of actors.values()) {
+    count += actor.passkeys.length;
+  }
+  state.passkeyCount = count;
+}
+
 function syncPortableIdentityCount(): void {
   let count = 0;
   for (const actor of actors.values()) {
