@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Core Exports
- * 38-Node / 12-Sector Field-Based Topology
+ * 40-Node / 12-Sector Field-Based Topology
  * 
  * Complete export of all substrate engines, hooks, and utilities.
  * 3-Layer Architecture: Capabilities (675+) → Engines (76) → Meta-Engines (24)
