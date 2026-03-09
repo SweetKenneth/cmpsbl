@@ -258,26 +258,26 @@ export function registerExpansionHandlers(): void {
 
     // <module>.hardening
     registerHandler(`${lower}.hardening`, async () => {
-      try {
-        const m = await import(`@/lib/substrate/${lower}-module`) as any;
-        const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
-        const fn = m[`get${capName}Hardening`];
-        return { success: true, data: fn?.() ?? { features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
-      } catch {
+      const m = await loadRuntimeModule(lower);
+      if (!m) {
         return { success: true, data: { module: mod.name, features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
       }
+
+      const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
+      const fn = m[`get${capName}Hardening`];
+      return { success: true, data: fn?.() ?? { features: ['circuit_breaker', 'bulkhead_isolation', 'rate_limiting', 'dead_letter_queue', 'shadow_mode', 'state_snapshots', 'auto_restore', 'degraded_mode', 'hot_swap'], status: 'active' } };
     });
 
     // <module>.resilience
     registerHandler(`${lower}.resilience`, async () => {
-      try {
-        const m = await import(`@/lib/substrate/${lower}-module`) as any;
-        const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
-        const fn = m[`get${capName}Resilience`];
-        return { success: true, data: fn?.() ?? { module: mod.name, status: 'nominal' } };
-      } catch {
+      const m = await loadRuntimeModule(lower);
+      if (!m) {
         return { success: true, data: { module: mod.name, status: 'nominal' } };
       }
+
+      const capName = mod.name.charAt(0) + mod.name.slice(1).toLowerCase();
+      const fn = m[`get${capName}Resilience`];
+      return { success: true, data: fn?.() ?? { module: mod.name, status: 'nominal' } };
     });
 
     // ═══ Domain-specific commands ═══
