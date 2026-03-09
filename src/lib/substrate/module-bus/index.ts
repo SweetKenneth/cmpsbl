@@ -16,7 +16,8 @@ export type ModuleName =
   | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
   | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
   | 'cortex' | 'atlas'                                      // Orchestrator
-  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve'; // Infrastructure + OCG
+  | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
+  | 'forge' | 'lingua' | 'harvest';                                               // EMZ — Manufacturing
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 

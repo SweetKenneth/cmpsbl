@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as forgeModule from '@/lib/substrate/forge-module';
+import * as forgeModule from '@/lib/substrate/forge';
 
 export interface UseForgeReturn {
   state: ReturnType<typeof useQuery>;
