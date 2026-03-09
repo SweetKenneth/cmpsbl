@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACCESS — API Gateway & Developer Portal · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">ACCESS</span></h1>
+  <p class="subtitle">API Gateway & Developer Portal — The substrate's outward boundary. Hash-based keys, scoped authorization, dual-layer rate limiting, and usage metering.</p>
+  <div class="meta"><strong>Node #7</strong> · Sector: OCG · Generation 1 · Codename: <em>Gatekeeper</em></div>
+</section>
+<div class="sep"></div>
+<div class="metrics">
+  <div class="metric"><div class="mv">SHA-256</div><div class="ml">Key Hashing</div></div>
+  <div class="metric"><div class="mv">2</div><div class="ml">Rate Limit Layers</div></div>
+  <div class="metric"><div class="mv">4</div><div class="ml">Subscription Tiers</div></div>
+  <div class="metric"><div class="mv">6</div><div class="ml">Database Tables</div></div>
+</div>
+<h2>Trade Secrets</h2>
+<div class="secret">
+  <div class="secret-label">◆ Scoped Access Control</div>
+  <p>API keys carry scope arrays (e.g., <code>['brain.query', 'decode.chat']</code>). Scope checking happens at the gateway level <strong>before any module code executes</strong>. A key with brain.query cannot invoke evolution.apply.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Cost Attribution</div>
+  <p>Every call: <code>(base_cost × complexity) + (tokens × per_token_rate)</code> in millicents. Feeds ECONOMY for chargeback and ROI analysis.</p>
+</div>
+<div class="secret">
+  <div class="secret-label">◆ Zero-Plaintext Keys</div>
+  <p>API keys are <strong>never stored in plaintext</strong>. Only the prefix (for identification) and SHA-256 hash (for verification) are persisted. Raw key is shown once at generation time.</p>
+</div>
+<h2>Subscription Tiers</h2>
+<table>
+  <thead><tr><th>Tier</th><th>Monthly Quota</th><th>Rate/Min</th><th>Features</th></tr></thead>
+  <tbody>
+    <tr><td>Free</td><td>1,000</td><td>10</td><td>Basic modules</td></tr>
+    <tr><td>Starter</td><td>50,000</td><td>60</td><td>+ Advanced</td></tr>
+    <tr><td>Pro</td><td>500,000</td><td>120</td><td>+ Priority routing</td></tr>
+    <tr><td>Enterprise</td><td>Unlimited</td><td>300</td><td>+ Dedicated capacity</td></tr>
+  </tbody>
+</table>
+<footer class="footer"><div class="brand">CMPSBL®</div><p>ACCESS Node Deep Dive · Founder Eyes Only</p></footer>
+</div>
+</body>
+</html>
