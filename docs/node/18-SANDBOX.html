@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SANDBOX — Isolated Execution & Safety Assessment · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">SANDBOX</span></h1>
+  <p class="subtitle">Isolated Execution & Safety Assessment — Frozen-scope isolation, determinism verification, and blast radius containment for untrusted operations.</p>
+  <div class="meta">
+    <strong>Node #18</strong> · Sector: Execution · Generation 1<br>
+    Codename: <em>Cage</em> · Capabilities: safe_eval, safety_assessment
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">2</div><div class="ml">Mesh Capabilities</div></div>
+  <div class="metric"><div class="mv">5s</div><div class="ml">Execution Timeout</div></div>
+  <div class="metric"><div class="mv">16MB</div><div class="ml">Heap Cap</div></div>
+  <div class="metric"><div class="mv">5</div><div class="ml">Max Blast Radius</div></div>
+</div>
+
+<h2>Isolation Model</h2>
+<div class="box">
+  <pre>safe_eval(code):
+  1. Block: fetch, fs, process, globalThis mutation
+  2. Wrap: frozen scope, no prototype chain, timeout, heap cap
+  3. Execute with result capture
+  4. Return { result, sideEffects, deterministic }</pre>
+</div>
+
+<h2>Safety Assessment</h2>
+<table>
+  <thead><tr><th>Score</th><th>Classification</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td>≥ 90</td><td>safe</td><td>Auto-approve</td></tr>
+    <tr><td>70–89</td><td>cautious</td><td>Execute + monitor</td></tr>
+    <tr><td>50–69</td><td>risky</td><td>Require confirmation</td></tr>
+    <tr><td>&lt; 50</td><td>dangerous</td><td>Require admin</td></tr>
+  </tbody>
+</table>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Determinism Verification</div>
+  <p>Runs operations twice with identical inputs. Differing outputs → non-deterministic → lower safety score → higher privilege required.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Copy-on-Write Rollback</div>
+  <p>Every side-effecting operation creates a rollback point. Copy-on-write strategy minimizes memory overhead while enabling full unwind on failure.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — SANDBOX Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>
