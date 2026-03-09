@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { checkQuotaAllowance, incrementQuotaUsage } from './persistentQuotaStore';
 import { analyzeForCompromise, recordCompromiseSignal, updateUsagePattern } from './apiKeyLifecycle';
 import { evaluateAccess, createEnvironmentAttributes, createActionAttributes } from './abacEngine';
