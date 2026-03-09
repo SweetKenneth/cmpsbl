@@ -2,7 +2,7 @@
  * Substrate Audit Test Suite
  * ━━━━━━━━━━━━━━━━━━━━━━━━━
  * Tests every major substrate function:
- *   - Matrix Node Registry (38-node topology, weight normalization, integrity)
+ *   - Matrix Node Registry (40-node topology, weight normalization, integrity)
  *   - CORE Module (boot sequence, dependencies, lifecycle)
  *   - Control Plane (hashing, canonicalization)
  *   - Merkle Audit Chain (append, verify, tamper detection)
