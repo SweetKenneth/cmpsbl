@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INTEGRATION — External System Connector · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">INTEGRATION</span></h1>
+  <p class="subtitle">External System Connector & API Bridge — Boots last, outbound-only authorization, exponential backoff retry, protocol translation gateway.</p>
+  <div class="meta">
+    <strong>Node #21</strong> · Sector: Execution · Generation 1<br>
+    Codename: <em>Gateway</em> · Boot Order: Last (execution)
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">3</div><div class="ml">Protocol Formats</div></div>
+  <div class="metric"><div class="mv">5</div><div class="ml">Max Retry Attempts</div></div>
+  <div class="metric"><div class="mv">30s</div><div class="ml">Max Backoff Delay</div></div>
+  <div class="metric"><div class="mv">Last</div><div class="ml">Boot Order</div></div>
+</div>
+
+<h2>Boot Order</h2>
+<p>INTEGRATION boots last among execution nodes. All internal services must be online before external connections are established — prevents cascading failures from external webhooks hitting uninitialized nodes.</p>
+
+<h2>Protocol Translation</h2>
+<table>
+  <thead><tr><th>Format</th><th>Structure</th></tr></thead>
+  <tbody>
+    <tr><td>Internal (Module Bus)</td><td><code>{ module, event_type, data }</code></td></tr>
+    <tr><td>Matrix (Topology)</td><td><code>{ from, to, signal, payload, sector }</code></td></tr>
+    <tr><td>External (REST)</td><td><code>{ action, params, auth, headers }</code></td></tr>
+  </tbody>
+</table>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Outbound-Only Authorization</div>
+  <p>Only node authorized for external network calls. All other nodes route through INTEGRATION — single auditable gateway.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Retry with Jitter</div>
+  <pre>delay = min(1s × 2^attempt + random(0, 500ms), 30s)
+maxAttempts = 5</pre>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — INTEGRATION Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

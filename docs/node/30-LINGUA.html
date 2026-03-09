@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LINGUA — Protocol Translation & Schema Bridging · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">LINGUA</span></h1>
+  <p class="subtitle">Protocol Translation & Schema Bridging — Fidelity-scored translation, dynamic schema inference, modality bridges, and auto-disable for degraded paths.</p>
+  <div class="meta">
+    <strong>Node #30</strong> · Sector: EMZ · Generation 1<br>
+    Codename: <em>Polyglot</em> · Capabilities: 3
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">500</div><div class="ml">Translation Ring Cap</div></div>
+  <div class="metric"><div class="mv">100</div><div class="ml">Schema Ring Cap</div></div>
+  <div class="metric"><div class="mv">50ms</div><div class="ml">Latency Spike Threshold</div></div>
+  <div class="metric"><div class="mv">70%</div><div class="ml">Fidelity Floor</div></div>
+</div>
+
+<h2>Fidelity Scoring</h2>
+<table>
+  <thead><tr><th>Fidelity</th><th>Quality</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>≥ 0.9</td><td>Excellent</td><td>Lossless</td></tr>
+    <tr><td>≥ 0.7</td><td>Good</td><td>Minor adjustments</td></tr>
+    <tr><td>≥ 0.5</td><td>Acceptable</td><td>Some coercion</td></tr>
+    <tr><td>&lt; 0.5</td><td>Poor</td><td>Potential data loss</td></tr>
+  </tbody>
+</table>
+
+<h2>CLM Health Formula</h2>
+<div class="box">
+  <pre>score = 100 - deductions
+  Low fidelity: -15
+  Latency spikes: -10
+  Disabled bridges: -3 each (max -20)
+  Low schema conf: -2 each (max -10)
+  Capacity warnings: -5 to -15</pre>
+</div>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Dynamic Schema Inference</div>
+  <p>No bridge? Analyze field name semantics + type compatibility for ad-hoc mapping without manual configuration.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Bridge Auto-Disable</div>
+  <p>Fidelity &lt; 50% across 50+ translations → auto-disable. Prevents low-quality translations from propagating.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — LINGUA Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

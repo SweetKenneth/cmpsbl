@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FORGE — Artifact Synthesis & Build Pipelines · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">FORGE</span></h1>
+  <p class="subtitle">Artifact Synthesis & Build Pipelines — Blueprint-to-artifact provenance, 3-stage build pipeline, complexity gating, and quality scoring.</p>
+  <div class="meta">
+    <strong>Node #29</strong> · Sector: EMZ · Generation 1<br>
+    Codename: <em>Foundry</em> · Capabilities: 3
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">3</div><div class="ml">Build Stages</div></div>
+  <div class="metric"><div class="mv">9.0</div><div class="ml">Complexity Gate</div></div>
+  <div class="metric"><div class="mv">80%</div><div class="ml">Success Target</div></div>
+  <div class="metric"><div class="mv">60%</div><div class="ml">Coverage Floor</div></div>
+</div>
+
+<h2>Build Pipeline</h2>
+<div class="box">
+  <pre>Stage 1: COMPILE — syntax, types, dependencies
+Stage 2: TEST — coverage, quality, lint
+Stage 3: DEPLOY — package, register, manifest
+
+Status: compiling → testing → deploying → deployed | failed</pre>
+</div>
+
+<h2>Quality Formula</h2>
+<div class="box">
+  <pre>quality = (coverage × 0.4) + ((10 - complexity) × 6 × 0.3) + (lint × 0.3)
+complexity &gt; 9.0 → automatic build failure</pre>
+</div>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Blueprint-Artifact Provenance</div>
+  <p>Full traceability from deployed artifact → source blueprint. Essential for AUDIT compliance.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — FORGE Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SOVEREIGN — Data Sovereignty & Jurisdictional Compliance · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">SOVEREIGN</span></h1>
+  <p class="subtitle">Data Sovereignty & Jurisdictional Compliance — 11 jurisdictions, 10 compliance frameworks, 5-tier classification, immutable consent records.</p>
+  <div class="meta">
+    <strong>Node #22</strong> · Sector: ESZ · Generation 1<br>
+    Codename: <em>Chancellor</em> · Capabilities: 6
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">11</div><div class="ml">Jurisdictions</div></div>
+  <div class="metric"><div class="mv">10</div><div class="ml">Frameworks</div></div>
+  <div class="metric"><div class="mv">5</div><div class="ml">Classification Tiers</div></div>
+  <div class="metric"><div class="mv">1,000</div><div class="ml">Max Consent Records</div></div>
+</div>
+
+<h2>Data Classification Ladder</h2>
+<table>
+  <thead><tr><th>Level</th><th>Access</th><th>Encryption</th></tr></thead>
+  <tbody>
+    <tr><td>public</td><td>Unrestricted</td><td>None</td></tr>
+    <tr><td>internal</td><td>Authenticated</td><td>At rest</td></tr>
+    <tr><td>confidential</td><td>Role-based</td><td>Rest + transit</td></tr>
+    <tr><td>restricted</td><td>Named individuals</td><td>Rest + transit + rotation</td></tr>
+    <tr><td>top_secret</td><td>Governor-only</td><td>Hardware-backed</td></tr>
+  </tbody>
+</table>
+
+<h2>Compliance Check</h2>
+<div class="box">
+  <pre>checkCompliance(entity, framework):
+  1. Resolve residency rules for jurisdiction
+  2. Verify classification matches framework
+  3. Check consent status
+  4. Verify retention aligns with minimums
+  5. Return: compliant | non_compliant | partial</pre>
+</div>
+
+<h2>CLM Insights</h2>
+<table>
+  <thead><tr><th>Insight</th><th>Trigger</th><th>Severity</th></tr></thead>
+  <tbody>
+    <tr><td>compliance_degradation</td><td>Score &lt; 80%</td><td>High/Critical</td></tr>
+    <tr><td>violation_spike</td><td>≥ 5 violations in 20</td><td>High/Critical</td></tr>
+    <tr><td>consent_expiry</td><td>≥ 5 expiring in 30d</td><td>Medium</td></tr>
+    <tr><td>jurisdiction_gap</td><td>No residency rules</td><td>Medium</td></tr>
+    <tr><td>retention_risk</td><td>&lt; 30d + auto-delete</td><td>Low</td></tr>
+  </tbody>
+</table>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Immutable Consent</div>
+  <p>Consent records are append-only. Withdrawals create new records, never modify originals. Complete audit trail for regulatory compliance.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — SOVEREIGN Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>

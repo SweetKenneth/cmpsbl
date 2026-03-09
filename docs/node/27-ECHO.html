@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ECHO — Digital Twin Simulation · CMPSBL® Node Deep Dive</title>
+<link rel="stylesheet" href="theme.css" />
+</head>
+<body>
+<div class="doc">
+
+<section class="cover">
+  <div class="classification">◆ Founder Eyes Only</div>
+  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
+  <h1><span class="g">ECHO</span></h1>
+  <p class="subtitle">Digital Twin Simulation & What-If Scenarios — Copy-on-scenario isolation, delta-based history, divergence tracking, and parallel what-if analysis.</p>
+  <div class="meta">
+    <strong>Node #27</strong> · Sector: EPZ · Generation 1<br>
+    Codename: <em>Mirror</em> · Capabilities: 3
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<div class="metrics">
+  <div class="metric"><div class="mv">200</div><div class="ml">Scenario Ring Cap</div></div>
+  <div class="metric"><div class="mv">15</div><div class="ml">Divergence Alert</div></div>
+  <div class="metric"><div class="mv">50</div><div class="ml">Desync Delta Threshold</div></div>
+  <div class="metric"><div class="mv">1h</div><div class="ml">Stale Twin Window</div></div>
+</div>
+
+<h2>Scenario Execution</h2>
+<div class="box">
+  <pre>1. Clone twin state (copy-on-scenario)
+2. Apply interventions → propagate effects
+3. divergence = Σ|modified - baseline| / keys
+4. Record: status, before/after, divergence</pre>
+</div>
+
+<h2>Trade Secrets</h2>
+<div class="box">
+  <div class="box-title">◆ Delta-Based History</div>
+  <p>Stores diffs, not full snapshots. 60-80% memory reduction while preserving complete change tracking.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Desync as Signal</div>
+  <p>Large deltas surfaced as CLM insight, not error. Intentional divergence during exploration is valuable.</p>
+</div>
+
+<div class="sep"></div>
+<footer>CMPSBL® Substrate — ECHO Node Deep Dive · Founder Eyes Only</footer>
+</div>
+</body>
+</html>
