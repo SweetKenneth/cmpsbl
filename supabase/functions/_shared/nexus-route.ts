@@ -1052,12 +1052,17 @@ async function callProvider(
     headers["Authorization"] = `Bearer ${apiKey}`;
     if (p.extraHeaders) Object.assign(headers, p.extraHeaders);
 
+    // v3.1: Use explicit messages array if provided, otherwise build from prompt
+    const callMessages = opts.messages
+      ? opts.messages
+      : [
+          { role: "system", content: opts.systemPrompt || "You are an expert AI assistant. Be concise and accurate." },
+          { role: "user", content: prompt },
+        ];
+
     body = {
       model: p.model,
-      messages: [
-        { role: "system", content: opts.systemPrompt || "You are an expert AI assistant. Be concise and accurate." },
-        { role: "user", content: prompt },
-      ],
+      messages: callMessages,
       max_tokens: opts.maxTokens ?? 2048,
       temperature,
     };
