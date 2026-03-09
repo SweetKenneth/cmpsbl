@@ -410,9 +410,9 @@ export default function Upgrade() {
                         <TierIcon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold">{t.name}</h3>
+                        <h3 className="text-lg sm:text-xl font-bold">{t.name}</h3>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-3xl font-bold">{displayPrice}</span>
+                          <span className="text-2xl sm:text-3xl font-bold tabular-nums">{displayPrice}</span>
                           <span className="text-muted-foreground text-sm">{t.period}</span>
                         </div>
                       </div>
