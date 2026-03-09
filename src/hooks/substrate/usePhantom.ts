@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as phantomModule from '@/lib/substrate/phantom-module';
+import * as phantomModule from '@/lib/substrate/phantom';
 
 export interface UsePhantomReturn {
   state: ReturnType<typeof useQuery>;
