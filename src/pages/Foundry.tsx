@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
+import { useVaultState } from '@/hooks/useVaultState';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { supabase } from '@/integrations/supabase/client';
 import { FoundryMiningPanel } from '@/components/foundry/FoundryMiningPanel';
@@ -37,11 +38,11 @@ import { FoundryFinalCTA } from '@/components/foundry-demo/FoundryFinalCTA';
 export default function Foundry() {
   const { user, loading: authLoading } = useAuth();
   const foundry = useFoundryState();
+  const vaultState = useVaultState();
   const { tier: subscriptionTier } = useEngineSubscription();
   const [activeTab, setActiveTab] = useState<'mine' | 'inventory'>('mine');
   const [crystallizing, setCrystallizing] = useState(false);
   const [discoveries, setDiscoveries] = useState<any[]>([]);
-  const [pullsToday, setPullsToday] = useState(0);
 
   // Load discoveries for anonymous view
   useEffect(() => {
@@ -209,7 +210,7 @@ export default function Foundry() {
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Vault ({foundry.inventoryCount})
+                Vault ({vaultState.vaultCount})
                 {activeTab === 'inventory' && (
                   <motion.div
                     layoutId="foundry-tab"
@@ -229,9 +230,11 @@ export default function Foundry() {
                   onMine={foundry.mine}
                   onCrystallizing={setCrystallizing}
                   subscriptionTier={subscriptionTier}
-                  vaultCount={foundry.inventoryCount}
-                  pullsToday={pullsToday}
-                  onVaultChange={foundry.reload}
+                  vaultCount={vaultState.vaultCount}
+                  pullsToday={vaultState.pullsToday}
+                  onVaultChange={vaultState.refresh}
+                  onKeepPipeline={vaultState.keepPipeline}
+                  onRecordPull={vaultState.recordPull}
                 />
                 <FoundryTierLegend />
               </div>

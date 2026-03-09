@@ -13264,6 +13264,51 @@ export type Database = {
         }
         Relationships: []
       }
+      pipeline_vault: {
+        Row: {
+          created_at: string
+          id: string
+          mine_result_id: string | null
+          pipeline_category: string | null
+          pipeline_fingerprint: string | null
+          pipeline_name: string
+          pipeline_score: number
+          pipeline_steps: Json | null
+          pipeline_tier: string
+          system_chain: string[] | null
+          user_id: string
+          valuation_display: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mine_result_id?: string | null
+          pipeline_category?: string | null
+          pipeline_fingerprint?: string | null
+          pipeline_name: string
+          pipeline_score: number
+          pipeline_steps?: Json | null
+          pipeline_tier: string
+          system_chain?: string[] | null
+          user_id: string
+          valuation_display?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mine_result_id?: string | null
+          pipeline_category?: string | null
+          pipeline_fingerprint?: string | null
+          pipeline_name?: string
+          pipeline_score?: number
+          pipeline_steps?: Json | null
+          pipeline_tier?: string
+          system_chain?: string[] | null
+          user_id?: string
+          valuation_display?: number | null
+        }
+        Relationships: []
+      }
       production_promotions: {
         Row: {
           completed_at: string | null
@@ -16887,6 +16932,30 @@ export type Database = {
           },
         ]
       }
+      user_daily_pulls: {
+        Row: {
+          id: string
+          pull_count: number
+          pull_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          pull_count?: number
+          pull_date?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          pull_count?: number
+          pull_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_limits: {
         Row: {
           created_at: string | null
@@ -17363,6 +17432,7 @@ export type Database = {
         Args: { p_cohort_window_days?: number; p_granularity?: string }
         Returns: Json
       }
+      get_daily_pulls: { Args: { p_user_id: string }; Returns: number }
       get_discovery_stats: { Args: never; Returns: Json }
       get_feature_adoption: { Args: { p_start_date?: string }; Returns: Json }
       get_journey_flows: {
@@ -17388,6 +17458,7 @@ export type Database = {
         Args: { p_end_date?: string; p_start_date: string }
         Returns: Json
       }
+      get_vault_count: { Args: { p_user_id: string }; Returns: number }
       governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
         | {
@@ -17414,6 +17485,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      increment_daily_pull: { Args: { p_user_id: string }; Returns: number }
       increment_discovery_count: {
         Args: { p_discovery_id: string }
         Returns: undefined
