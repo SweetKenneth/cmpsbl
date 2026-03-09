@@ -20,7 +20,7 @@ const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard")
 
 export const adminRoutes = (
   <>
-    <Route path="/admin/patches" element={<AdminRoute><AdminPatches /></AdminRoute>} />
+    <Route path="/admin/patches" element={<Navigate to="/" replace />} />
     <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
     <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
     <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
