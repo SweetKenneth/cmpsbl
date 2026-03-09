@@ -421,25 +421,25 @@ export default function Upgrade() {
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
                     {/* Capacity metrics */}
-                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300 space-y-3">
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-3 sm:p-4 mb-4 sm:mb-5 group-hover:border-primary/20 transition-colors duration-300 space-y-2.5 sm:space-y-3">
                       <div className="flex items-center gap-2 mb-1">
                         <Package className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold">Capacity</span>
+                        <span className="text-xs sm:text-sm font-semibold">Capacity</span>
                       </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-primary font-mono">{t.capacity.slots}</div>
-                          <div className="text-[10px] text-muted-foreground">Slots</div>
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-primary font-mono tabular-nums">{t.capacity.slots}</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Slots</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-foreground font-mono">
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">
                             {t.capacity.vault === 'Unlimited' ? '∞' : t.capacity.vault.split(' ')[0]}
                           </div>
-                          <div className="text-[10px] text-muted-foreground">Vault</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Vault</div>
                         </div>
-                        <div className="text-center">
-                          <div className="text-xl font-bold text-foreground font-mono">{t.capacity.pulls.split(' ')[0]}</div>
-                          <div className="text-[10px] text-muted-foreground">Pulls/day</div>
+                        <div className="text-center p-1.5 rounded-lg bg-background/50">
+                          <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">{t.capacity.pulls.split(' ')[0]}</div>
+                          <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Pulls/day</div>
                         </div>
                       </div>
                       {/* Export + custom slots badges */}
