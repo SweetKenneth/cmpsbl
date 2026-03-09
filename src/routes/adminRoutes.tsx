@@ -5,7 +5,6 @@ import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 import { AdminRoute } from "@/components/admin/AdminRoute";
 
-const AdminPatches = lazy(() => import("@/pages/AdminPatches"));
 const ShadowMeshPage = lazy(() => import("@/pages/admin/ShadowMeshPage"));
 const ImmunityMeshDashboard = lazy(() => import("@/pages/admin/ImmunityMeshDashboard"));
 const OwnerReports = lazy(() => import("@/pages/admin/OwnerReports"));
@@ -15,7 +14,6 @@ const QuarryDashboard = lazy(() => import("@/pages/admin/QuarryDashboard"));
 const IntelPanel = lazy(() => import("@/pages/admin/IntelPanel"));
 const STierVault = lazy(() => import("@/pages/admin/STierVault"));
 const DiscoveryMiningConsole = lazy(() => import("@/pages/admin/DiscoveryMiningConsole"));
-const Diligence = lazy(() => import("@/pages/Diligence"));
 const GateEngineDashboard = lazy(() => import("@/pages/admin/GateEngineDashboard"));
 const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
 const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
