@@ -7,6 +7,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { ripple, type RippleEvent, type EventStatus } from './index';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -152,17 +153,21 @@ export async function batchPublish(
   result.duration = Date.now() - startTime;
 
   // Log batch publish
-  await supabase.from('brain_events').insert({
-    module: 'ripple',
-    event_type: 'batch.published',
-    data: {
-      totalEvents: result.totalEvents,
-      published: result.published,
-      failed: result.failed,
-      duration: result.duration,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'ripple',
+      event_type: 'batch.published',
+      data: {
+        totalEvents: result.totalEvents,
+        published: result.published,
+        failed: result.failed,
+        duration: result.duration,
+      } as unknown as Json,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch {
+    // Best-effort logging
+  }
 
   return result;
 }
@@ -261,7 +266,7 @@ export async function replayEvents(
     }
 
     try {
-      const eventData = event.data as any;
+      const eventData = event.data as Record<string, unknown> | null;
       const eventType = event.event_type?.replace('bus.', '') || 'unknown';
       
       await ripple.publish(
@@ -282,16 +287,20 @@ export async function replayEvents(
   result.duration = Date.now() - startTime;
 
   // Log replay
-  await supabase.from('brain_events').insert({
-    module: 'ripple',
-    event_type: 'events.replayed',
-    data: {
-      eventsReplayed: result.eventsReplayed,
-      eventsSkipped: result.eventsSkipped,
-      options,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'ripple',
+      event_type: 'events.replayed',
+      data: {
+        eventsReplayed: result.eventsReplayed,
+        eventsSkipped: result.eventsSkipped,
+        options,
+      } as unknown as Json,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch {
+    // Best-effort logging
+  }
 
   return result;
 }

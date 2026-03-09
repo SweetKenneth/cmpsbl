@@ -43,7 +43,7 @@ export interface PropagationHop {
 export interface PropagationConfig {
   maxTTL: number;
   sectorPriority: SectorId[];
-  enableCrossSetor: boolean;
+  enableCrossSector: boolean;
   confirmationRequired: boolean;
   timeoutMs: number;
 }
@@ -65,23 +65,25 @@ const NODE_SECTORS: Record<NodeId, SectorId> = {
   core: 'kernel', ripple: 'kernel', access: 'kernel',
   // Cognitive
   brain: 'cognitive', decode: 'cognitive', dream: 'cognitive',
-  // Operational
-  defense: 'cognitive', nexus: 'operational', vision: 'operational',
+  // Operational (Execution)
+  defense: 'operational', nexus: 'operational', vision: 'operational',
   encode: 'operational', integration: 'operational',
-  // OCG
+  // OCG — Operational Compliance Grid
   memory: 'ocg', relay: 'ocg', audit: 'ocg',
-  identity: 'ocg', economy: 'ocg', sandbox: 'ocg',
-  // ESZ
+  identity: 'ocg', economy: 'ocg', sandbox: 'ocg', nerve: 'ocg',
+  // ESZ — Expansion Sovereignty Zone
   sovereign: 'esz', conscience: 'esz', treaty: 'esz', oracle: 'esz',
-  // EPZ
+  // EPZ — Expansion Perception Zone
   compass: 'epz', echo: 'epz', reflex: 'epz',
-  // EMZ
+  // EMZ — Expansion Manufacturing Zone
   forge: 'emz', lingua: 'emz', harvest: 'emz',
-  // CSZ
+  // CSZ — Covert Systems Zone
   phantom: 'csz', shadow: 'csz', evolution: 'csz',
   // Governance
   governance: 'governance', cortex: 'governance', system: 'governance',
   inclusive: 'governance', modernizer: 'governance',
+  // Additional operational nodes
+  medic: 'operational', immunity: 'operational', intent: 'operational',
 };
 
 const SECTOR_ADJACENCY: Record<SectorId, SectorId[]> = {
@@ -103,10 +105,22 @@ const SECTOR_ADJACENCY: Record<SectorId, SectorId[]> = {
 const DEFAULT_CONFIG: PropagationConfig = {
   maxTTL: 5,
   sectorPriority: ['kernel', 'cognitive', 'operational', 'ocg', 'governance'],
-  enableCrossSetor: true,
+  enableCrossSector: true,
   confirmationRequired: false,
   timeoutMs: 5000,
 };
+
+// Pre-computed sector→node reverse map for O(1) lookups
+const sectorNodesCache = new Map<SectorId, NodeId[]>();
+function buildSectorCache(): void {
+  sectorNodesCache.clear();
+  for (const [nodeId, sector] of Object.entries(NODE_SECTORS)) {
+    const existing = sectorNodesCache.get(sector) ?? [];
+    existing.push(nodeId);
+    sectorNodesCache.set(sector, existing);
+  }
+}
+buildSectorCache();
 
 const pendingPropagations = new Map<string, PropagationEvent>();
 const deliveryConfirmations = new Map<string, Set<NodeId>>();
@@ -196,7 +210,7 @@ export async function propagate(
   await deliverToNodes(event, sectorNodes);
 
   // Phase 2: Propagate to adjacent sectors
-  if (config.enableCrossSetor && event.ttl > 0) {
+  if (config.enableCrossSector && event.ttl > 0) {
     const adjacentSectors = SECTOR_ADJACENCY[sourceSector] || [];
     for (const sector of adjacentSectors) {
       if (config.sectorPriority.includes(sector)) {
@@ -265,9 +279,7 @@ async function deliverToNodes(
  * Get all nodes in a sector
  */
 function getNodesInSector(sector: SectorId): NodeId[] {
-  return Object.entries(NODE_SECTORS)
-    .filter(([_, s]) => s === sector)
-    .map(([nodeId]) => nodeId);
+  return sectorNodesCache.get(sector) ?? [];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -234,11 +234,14 @@ class RippleEventBus {
 
     // Update in database
     try {
-      await supabase.from('ripple_events')
-        .update({ status: 'succeeded', processed_at: event.processedAt })
-        .eq('id', eventId);
+      await supabase.from('brain_events').insert({
+        module: 'ripple',
+        event_type: `bus.ack`,
+        data: { eventId, status: 'succeeded', processedAt: event.processedAt } as unknown as Json,
+        outcome: 'succeeded',
+      });
     } catch {
-      // Continue
+      // Continue — ack is best-effort persistence
     }
 
     return true;
