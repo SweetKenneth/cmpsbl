@@ -463,27 +463,27 @@ export default function Upgrade() {
                       </div>
                     </div>
 
-                    <div className="h-px bg-border/50 mb-5" />
+                    <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
-                    <ul className="space-y-3 flex-1">
+                    <ul className="space-y-2.5 sm:space-y-3 flex-1">
                       {t.features.map(f => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm">
-                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <li key={f} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm">
+                          <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary shrink-0 mt-0.5" />
                           <span>{f}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="mt-6">
+                    <div className="mt-5 sm:mt-6">
                       {t.key === 'builder' ? (
-                        <Button variant="outline" className="w-full" asChild>
+                        <Button variant="outline" className="w-full min-h-[44px]" asChild>
                           <Link to="/auth">Get Started Free</Link>
                         </Button>
                       ) : isCurrent ? (
-                        <Button variant="outline" className="w-full" disabled>Current Plan</Button>
+                        <Button variant="outline" className="w-full min-h-[44px]" disabled>Current Plan</Button>
                       ) : (
                         <Button
-                          className={cn("w-full bg-gradient-to-r text-white border-0 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
+                          className={cn("w-full min-h-[44px] bg-gradient-to-r text-white border-0 shadow-lg shadow-primary/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                           onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                         >
                           Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />
