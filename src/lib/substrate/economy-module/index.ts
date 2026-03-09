@@ -86,7 +86,7 @@ export function initEconomy(): void {
   emitStarted('economy', 'init', {});
   try {
     initCircuitBreaker('economy', { failureThreshold: 5, recoveryTimeout: 30_000 });
-    moduleEngine = activateModuleEngine('economy', '10.5.1');
+    moduleEngine = activateModuleEngine('economy', '11.0.0');
     state.initialized = true;
     emitSucceeded('economy', 'init', { engineId: moduleEngine.instance.id });
   } catch (err) {
