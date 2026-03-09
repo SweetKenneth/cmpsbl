@@ -105,10 +105,22 @@ const SECTOR_ADJACENCY: Record<SectorId, SectorId[]> = {
 const DEFAULT_CONFIG: PropagationConfig = {
   maxTTL: 5,
   sectorPriority: ['kernel', 'cognitive', 'operational', 'ocg', 'governance'],
-  enableCrossSetor: true,
+  enableCrossSector: true,
   confirmationRequired: false,
   timeoutMs: 5000,
 };
+
+// Pre-computed sector→node reverse map for O(1) lookups
+const sectorNodesCache = new Map<SectorId, NodeId[]>();
+function buildSectorCache(): void {
+  sectorNodesCache.clear();
+  for (const [nodeId, sector] of Object.entries(NODE_SECTORS)) {
+    const existing = sectorNodesCache.get(sector) ?? [];
+    existing.push(nodeId);
+    sectorNodesCache.set(sector, existing);
+  }
+}
+buildSectorCache();
 
 const pendingPropagations = new Map<string, PropagationEvent>();
 const deliveryConfirmations = new Map<string, Set<NodeId>>();
