@@ -208,7 +208,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ░                                                       ░',
     '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
     '',
-    '  ┌─ 38-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
+    '  ┌─ 40-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
     '  │                                                       │',
     '  │  ⬢ CORE KERNEL ───────────────────────────────────    │',
     '  │    ◉ core (boots first, cascade authority)             │',
