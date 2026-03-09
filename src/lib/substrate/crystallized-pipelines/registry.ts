@@ -36,7 +36,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
   {
     id: 'cp-recursive-self-evolution',
     name: 'Recursive Self-Evolution Loop',
-    modules: ['CORTEX', 'DREAM', 'BRAIN', 'MODERNIZER'],
+    modules: ['CORTEX', 'DREAM', 'BRAIN', 'EVOLUTION'],
     description: 'Closed-loop self-improvement where insights from Dream analysis feed back into architecture mutations',
     emergentProperty: 'Autonomous architecture improvement without external input',
     tier: 'cmpsbl',
