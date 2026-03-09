@@ -1,6 +1,6 @@
 /**
- * Upgrade — Horizontal-Scroll Artifact Capacity Model
- * Builder (3) · Operator (6) · Architect (12)
+ * Upgrade — Memory Stream Capacity + Vault System
+ * Builder (3/5) · Studio (6/25) · Creator (9/75) · Architect (12/∞)
  * Packs grouped by Strategic Domain with horizontal card scrolling
  */
 import { useState, useRef, useCallback } from 'react';
@@ -22,10 +22,12 @@ import {
   Check, ArrowRight, Brain, Package, Shield, Zap,
   Server, Building2, Lock, Unlock, Layers, Eye,
   Sparkles, Compass, ChevronLeft, ChevronRight,
+  Archive, Download, X,
 } from 'lucide-react';
 import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
+import { VAULT_TIER_LIMITS } from '@/lib/substrate/vault-limits';
 import { motion } from 'framer-motion';
 
 /* ─── Tier definitions (public-facing) ─── */
@@ -42,6 +44,13 @@ const TIERS: {
   popular?: boolean;
   stripeTier?: EngineSubscriptionTier;
   features: string[];
+  capacity: {
+    slots: number;
+    vault: string;
+    pulls: string;
+    exportEnabled: boolean;
+    customSlots: boolean;
+  };
 }[] = [
   {
     key: 'builder',
@@ -50,15 +59,14 @@ const TIERS: {
     annualPrice: '$0',
     period: '/mo',
     tagline: 'Build real things. Not a trial.',
-    description: 'Full runtime access with baseline technology. Activate any 3 artifact packs.',
+    description: 'Full runtime access with baseline technology.',
     accent: 'from-emerald-500 to-emerald-600',
     icon: Unlock,
+    capacity: { slots: 3, vault: '5 pipelines', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
-      '3 Artifact Slots',
       'Full baseline runtime',
       'All 24 packs visible',
       'Standard memory depth',
-      '30 free templates',
       'Community support',
     ],
   },
@@ -69,12 +77,12 @@ const TIERS: {
     annualPrice: '$23',
     period: '/mo',
     tagline: 'More capacity for builders shipping products.',
-    description: '6 artifact slots, expanded memory, executable capabilities, and priority routing.',
+    description: 'Expanded memory, executable capabilities, and priority routing.',
     accent: 'from-violet-500 to-purple-500',
     icon: Sparkles,
     stripeTier: 'creator' as EngineSubscriptionTier,
+    capacity: { slots: 6, vault: '25 pipelines', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
-      '6 Artifact Slots',
       'Expanded memory depth',
       'All 24 packs visible',
       'Executable capabilities',
@@ -89,18 +97,18 @@ const TIERS: {
     annualPrice: '$39',
     period: '/mo',
     tagline: '9 template packs. Maximum creative output.',
-    description: '9 artifact slots, 9 template packs, trace exports, and high-priority Nexus routing.',
+    description: 'Trace exports, high-priority NEXUS routing, custom pipeline slots.',
     accent: 'from-blue-500 to-indigo-500',
     icon: Layers,
     popular: true,
     stripeTier: 'studio' as EngineSubscriptionTier,
+    capacity: { slots: 9, vault: '75 pipelines', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
-      '9 Artifact Slots',
       '9 template packs included',
       'Expanded memory partitions',
       'Trace & audit exports',
-      'High-priority Nexus routing',
-      'Advanced automation pipelines',
+      'High-priority NEXUS routing',
+      'Custom pipeline slots',
       'Priority email support',
     ],
   },
@@ -111,18 +119,18 @@ const TIERS: {
     annualPrice: '$63',
     period: '/mo',
     tagline: 'Full control. Your infrastructure.',
-    description: '12 artifact slots, self-hosted deployment, and full governance authority.',
+    description: 'Self-hosted deployment and full governance authority.',
     accent: 'from-amber-500 to-orange-500',
     icon: Building2,
     stripeTier: 'architect' as EngineSubscriptionTier,
+    capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
     features: [
-      '12 Artifact Slots',
       'Dedicated memory partitions',
       'Self-hosted deployment (LNCHBL)',
       'Full governance authority',
       'Compliance & audit exports',
       'Organization workspaces',
-      'SLA-aware controls',
+      'Custom pipeline slots',
       'Dedicated support channel',
     ],
   },
@@ -189,7 +197,6 @@ function DomainPackRow({
       transition={{ duration: 0.5 }}
       className="relative"
     >
-      {/* Domain Header */}
       <div className="container mx-auto px-4 mb-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -204,8 +211,6 @@ function DomainPackRow({
               {packs.length} packs
             </Badge>
           </div>
-
-          {/* Scroll arrows — desktop only */}
           <div className="hidden sm:flex items-center gap-1.5">
             <button
               onClick={() => scroll('left')}
@@ -225,17 +230,13 @@ function DomainPackRow({
         </div>
       </div>
 
-      {/* Horizontal Scroll Track */}
       <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-4 lg:px-[max(1rem,calc((100vw-80rem)/2+1rem))] no-scrollbar"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {packs.map((pack) => (
-          <div
-            key={pack.id}
-            className="min-w-[300px] max-w-[340px] snap-start shrink-0"
-          >
+          <div key={pack.id} className="min-w-[300px] max-w-[340px] snap-start shrink-0">
             <PackActivationCard
               pack={pack}
               slotState={slotState}
@@ -246,8 +247,6 @@ function DomainPackRow({
             />
           </div>
         ))}
-
-        {/* End spacer for scroll padding */}
         <div className="shrink-0 w-4 lg:w-1" aria-hidden />
       </div>
     </motion.section>
@@ -282,7 +281,7 @@ export default function Upgrade() {
       </div>
       <SEO
         title="Pricing — CMPSBL"
-        description="One stream, your capacity. 24 pipeline packs — every pack = 1 slot. Choose Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
+        description="Memory Stream capacity plans. Daily pulls, vault storage, and artifact slots. Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
@@ -295,25 +294,50 @@ export default function Upgrade() {
             className="space-y-4"
           >
             <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
-              <Package className="w-3 h-3 mr-1.5 inline" />
-              Memory Stream Capacity
+              <Sparkles className="w-3 h-3 mr-1.5 inline" />
+              Memory Stream
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              One Stream.{" "}
-              <span style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>Your Capacity.</span>
+              Memory Stream
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              24 pipeline packs. Every pack = 1 slot. Crystallize from the Memory Stream with 3, 6, 9, or 12 slots.
+              The system discovers pipelines. Your plan controls how many you can pull.
             </p>
-            {slotState.activeCount > 0 && (
-              <div className="flex justify-center mt-4">
-                <SlotCapacityIndicator slotState={slotState} variant="compact" />
-              </div>
-            )}
+          </motion.div>
+
+          {/* Memory Stream Explainer */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="max-w-2xl mx-auto mt-8 text-left bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
+          >
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              The Memory Stream continuously generates new pipelines.
+              Each day you can crystallize a limited number of discoveries depending on your plan.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { tier: 'Builder', pulls: '3', color: 'text-emerald-400' },
+                { tier: 'Studio', pulls: '6', color: 'text-violet-400' },
+                { tier: 'Creator', pulls: '9', color: 'text-sky-400' },
+                { tier: 'Architect', pulls: '12', color: 'text-amber-400' },
+              ].map(t => (
+                <div key={t.tier} className="text-center p-2 rounded-lg bg-muted/30">
+                  <div className={`text-lg font-mono font-bold ${t.color}`}>{t.pulls}</div>
+                  <div className="text-[10px] text-muted-foreground">{t.tier}</div>
+                </div>
+              ))}
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Each crystallization reveals a pipeline you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.
+              Rare discoveries occasionally appear. If a Mythic pipeline is discovered and your vault is full,
+              you will be prompted to upgrade immediately so the discovery is not lost.
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              <strong className="text-foreground">Slots</strong> control how many pipelines run simultaneously.{' '}
+              <strong className="text-foreground">Vault capacity</strong> controls how many discoveries you can store.
+            </p>
           </motion.div>
 
           {/* Billing toggle */}
@@ -344,7 +368,7 @@ export default function Upgrade() {
           </div>
         </div>
 
-        {/* ═══ TIER CARDS — Horizontal scroll on mobile ═══ */}
+        {/* ═══ TIER CARDS ═══ */}
         <div className="relative">
           <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 lg:px-0 lg:overflow-visible lg:justify-center lg:flex-wrap no-scrollbar max-w-5xl mx-auto"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
@@ -353,7 +377,6 @@ export default function Upgrade() {
               const isCurrent = currentProductTier === t.key;
               const displayPrice = billingInterval === 'annual' && t.key !== 'builder' ? t.annualPrice : t.price;
               const TierIcon = t.icon;
-              const tierConfig = PRODUCT_TIERS[t.key];
 
               return (
                 <motion.div
@@ -397,13 +420,47 @@ export default function Upgrade() {
 
                     <p className="text-sm text-muted-foreground mb-4">{t.tagline}</p>
 
-                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300">
-                      <div className="flex items-center gap-2 mb-2">
+                    {/* Capacity metrics */}
+                    <div className="rounded-xl bg-muted/50 border border-border/30 p-4 mb-5 group-hover:border-primary/20 transition-colors duration-300 space-y-3">
+                      <div className="flex items-center gap-2 mb-1">
                         <Package className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold">Artifact Capacity</span>
+                        <span className="text-sm font-semibold">Capacity</span>
                       </div>
-                      <div className="text-2xl font-bold text-primary font-mono tabular-nums">{tierConfig.slots} Slots</div>
-                      <p className="text-xs text-muted-foreground mt-1">{t.description}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="text-center">
+                          <div className="text-xl font-bold text-primary font-mono">{t.capacity.slots}</div>
+                          <div className="text-[10px] text-muted-foreground">Slots</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xl font-bold text-foreground font-mono">
+                            {t.capacity.vault === 'Unlimited' ? '∞' : t.capacity.vault.split(' ')[0]}
+                          </div>
+                          <div className="text-[10px] text-muted-foreground">Vault</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xl font-bold text-foreground font-mono">{t.capacity.pulls.split(' ')[0]}</div>
+                          <div className="text-[10px] text-muted-foreground">Pulls/day</div>
+                        </div>
+                      </div>
+                      {/* Export + custom slots badges */}
+                      <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
+                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                          t.capacity.exportEnabled
+                            ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
+                            : 'border-border/30 text-muted-foreground/50'
+                        }`}>
+                          {t.capacity.exportEnabled ? (
+                            <><Download className="w-2.5 h-2.5 inline mr-1" />Export</>
+                          ) : (
+                            <><X className="w-2.5 h-2.5 inline mr-1" />No Export</>
+                          )}
+                        </span>
+                        {t.capacity.customSlots && (
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/10">
+                            <Sparkles className="w-2.5 h-2.5 inline mr-1" />Custom Slots
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <div className="h-px bg-border/50 mb-5" />
@@ -443,7 +500,7 @@ export default function Upgrade() {
         {/* Section divider */}
         <div className="section-divider max-w-4xl mx-auto mt-24 mb-0" />
 
-        {/* ═══ EVERY PLAN INCLUDES — Baseline Highlights ═══ */}
+        {/* ═══ EVERY PLAN INCLUDES ═══ */}
         <section className="container mx-auto px-4 mt-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
@@ -514,7 +571,7 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ ARTIFACT PACKS BY DOMAIN — Horizontal Scroll Rows ═══ */}
+        {/* ═══ ARTIFACT PACKS BY DOMAIN ═══ */}
         <section className="mt-24">
           <div className="container mx-auto px-4 text-center mb-12">
             <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
@@ -525,7 +582,6 @@ export default function Upgrade() {
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
               Every pack = 1 slot. All visible to all plans. Scroll each category to explore.
             </p>
-            {/* Slot capacity indicator */}
             <div className="flex justify-center mt-6">
               <SlotCapacityIndicator slotState={slotState} variant="full" className="max-w-sm w-full" />
             </div>
@@ -590,11 +646,12 @@ export default function Upgrade() {
           <div className="max-w-2xl mx-auto space-y-8">
             <h2 className="text-2xl font-bold text-center tracking-tight">Common Questions</h2>
             {[
-              { q: 'What is the baseline runtime?', a: 'Every plan includes the full system runtime — all engines, pipelines, and core capabilities. There is no capability gating. Plans differ in pipeline capacity, not in what the system can do.' },
-              { q: 'Why does every pack cost 1 slot?', a: 'Simplicity enables clarity. Every pipeline pack is a composed capability of equal strategic weight. Choose any combination — no pack is locked behind a specific tier.' },
-              { q: 'Can I change my active packs?', a: 'Yes. You can activate and deactivate packs at any time within your slot capacity. No migration, no waiting.' },
-              { q: 'Can I start free and upgrade later?', a: 'Yes. The Builder plan is fully functional with 3 slots. Upgrade to Studio (6) or Architect (12) when you need more capacity.' },
-              { q: 'What happens when my subscription ends?', a: 'Your projects continue on the baseline runtime. Activated packs beyond your slot capacity are paused until you resubscribe.' },
+              { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously generates new pipelines. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
+              { q: 'What is the vault?', a: 'The vault stores pipelines you choose to keep after crystallization. Each tier has different vault capacity — from 5 (Builder) to unlimited (Architect). Remove old pipelines to free space.' },
+              { q: 'What happens with Mythic discoveries?', a: 'Mythic pipelines are among the rarest outcomes. If your vault is full when one appears, you will be prompted to upgrade or manage your vault to keep it.' },
+              { q: 'Can I export my discoveries?', a: 'Studio and above can export full artifact packs including runtime, pipeline implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
+              { q: 'What are custom pipeline slots?', a: 'Creator and Architect tiers can equip discovered pipelines directly into runtime slots. Lower tiers can only activate prebuilt artifact packs.' },
+              { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (
               <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
