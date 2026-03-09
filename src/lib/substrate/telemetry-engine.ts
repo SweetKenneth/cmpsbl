@@ -10,7 +10,7 @@
  * - Record engine execution events (start/end, success/failure)
  * - Record governance blocks and overrides
  * - Record Inclusive scan results (internal + external)
- * - Record Modernizer evolution cycle outcomes
+ * - Record EVOLUTION cycle outcomes
  * - Emit structured, normalized telemetry events
  * - Provide queryable telemetry history
  */
