@@ -259,7 +259,8 @@ export function removePasskeyFromActor(actorId: string, credentialId: string): b
 }
 
 export function getActorPasskeys(actorId: string): readonly string[] {
-  return Object.freeze(actors.get(actorId)?.passkeys ?? []);
+  // Return frozen copy of actual passkeys array to prevent external mutation
+  return Object.freeze([...(actors.get(actorId)?.passkeys ?? [])]);
 }
 
 // ═══════════════════════════════════════════════════════════════════
