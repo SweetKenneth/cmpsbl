@@ -464,19 +464,19 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
     auditGaps.push(`Only ${auditModules.size}/${monitoredCount} modules have audit coverage`);
   }
   
-  // Add modernizer-detected anomalies as audit gaps
-  if (modernizerData.anomalies_detected > 0) {
-    auditGaps.push(`MODERNIZER detected ${modernizerData.anomalies_detected} system anomaly(ies)`);
+  // Add evolution-detected anomalies as audit gaps
+  if (evolutionData.anomalies_detected > 0) {
+    auditGaps.push(`EVOLUTION detected ${evolutionData.anomalies_detected} system anomaly(ies)`);
   }
-  if (modernizerData.edge_risk_flags > 0) {
-    auditGaps.push(`${modernizerData.edge_risk_flags} edge function risk flag(s) detected`);
+  if (evolutionData.edge_risk_flags > 0) {
+    auditGaps.push(`${evolutionData.edge_risk_flags} edge function risk flag(s) detected`);
   }
   
   // ═══ BUILD ACTION PLAN with bounded discipline ═══
   let actionPlan = buildActionPlan(
     techDebt, evolution, auditGaps, diligenceData,
     productionAudit, structuralHealth, accessibilityData, securityData,
-    governanceChain, modernizerData, rawModernizerResult,
+    governanceChain, evolutionData, rawModernizerResult,
   );
   
   // ─── Convert minor diligence to proposal (max 1) with probe details ───
