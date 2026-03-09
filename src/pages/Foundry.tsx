@@ -239,7 +239,7 @@ export default function Foundry() {
                 <FoundryTierLegend />
               </div>
             ) : (
-              <FoundryInventory inventory={foundry.inventory} onRemove={vaultState.removePipeline} />
+              <FoundryInventory inventory={foundry.inventory} onRemove={handleInventoryRemove} />
             )}
           </div>
         )}

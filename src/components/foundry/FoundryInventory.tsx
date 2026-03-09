@@ -212,23 +212,26 @@ export function FoundryInventory({ inventory, onRemove }: Props) {
               </div>
             </div>
 
-            {/* Remove button — visible on hover / always on mobile */}
+            {/* Remove button — bottom right, no overlap with score */}
             {onRemove && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setConfirmRemove(item);
-                }}
-                disabled={removing === item.id}
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100 max-sm:opacity-60 transition-opacity p-1.5 rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive/60 hover:text-destructive border border-destructive/10 hover:border-destructive/20 min-h-[36px] min-w-[36px] flex items-center justify-center"
-                aria-label={`Remove ${item.artifactName} from vault`}
-              >
-                {removing === item.id ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Trash2 className="w-3.5 h-3.5" />
-                )}
-              </button>
+              <div className="flex justify-end mt-2 pt-2 border-t border-border/10">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setConfirmRemove(item);
+                  }}
+                  disabled={removing === item.id}
+                  className="flex items-center gap-1.5 text-[10px] font-mono p-1.5 rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive/60 hover:text-destructive border border-destructive/10 hover:border-destructive/20 transition-colors"
+                  aria-label={`Remove ${item.artifactName} from vault`}
+                >
+                  {removing === item.id ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-3.5 h-3.5" />
+                  )}
+                  <span>Remove</span>
+                </button>
+              </div>
             )}
           </motion.div>
         ))}
