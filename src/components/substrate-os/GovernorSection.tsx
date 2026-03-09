@@ -505,6 +505,20 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               </div>
               <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
             </Button>
+            <Button
+              variant="outline"
+              className="justify-between h-auto p-3 sm:p-4 border-blue-500/20 hover:bg-blue-500/5"
+              onClick={() => navigate('/admin/analytics')}
+            >
+              <div className="flex items-center gap-3 text-left">
+                <BarChart3 className="w-5 h-5 text-blue-500 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Analytics Intelligence</p>
+                  <p className="text-[10px] text-muted-foreground">Pulse · Retention · Churn · Journeys</p>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            </Button>
           </div>
         </CardContent>
       </Card>

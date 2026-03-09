@@ -287,6 +287,7 @@ export default function AnalyticsDashboard() {
                 {tab === 'churn' && <ChurnView data={churn} />}
                 {tab === 'journeys' && <JourneysView data={journeys} />}
                 {tab === 'features' && <FeaturesView data={features} />}
+                {tab === 'exclusions' && <ExclusionsView />}
               </>
             )}
           </motion.div>
