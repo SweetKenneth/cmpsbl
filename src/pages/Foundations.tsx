@@ -50,7 +50,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Foundations — Cognitive Infrastructure Standards | CMPSBL®"
-        description="The foundational reference for the CMPSBL Substrate: 38-node architecture, 12 sectors, governed autonomy, and three interconnected standards for cognitive AI systems."
+        description="The foundational reference for the CMPSBL Substrate: 40-node architecture, 12 sectors, governed autonomy, and three interconnected standards for cognitive AI systems."
         keywords={['CMPSBL foundations', 'cognitive infrastructure', 'AI substrate', 'governed autonomy', 'persistent runtime']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
