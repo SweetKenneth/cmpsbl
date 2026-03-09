@@ -938,17 +938,10 @@ function ExclusionsView() {
     setLoading(false);
   }, []);
 
-  // Detect current fingerprint from latest session
+  // Detect current fingerprint from localStorage (set by site-tracker)
   useEffect(() => {
-    (async () => {
-      const { data } = await supabase
-        .from('site_analytics')
-        .select('fingerprint')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (data?.fingerprint) setMyFingerprint(data.fingerprint);
-    })();
+    const stored = localStorage.getItem('cmpsbl_fp');
+    if (stored) setMyFingerprint(stored);
     fetchExclusions();
   }, [fetchExclusions]);
 
