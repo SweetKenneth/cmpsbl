@@ -227,14 +227,14 @@ No credit card required. Create an account and start immediately. You can upgrad
     question_pattern: 'How many crystallizations do I get per day?',
     answer: `Daily Memory Stream crystallization limits by tier:
 
-• Builder (Free): 3 per day
-• Studio ($29/mo): 6 per day
-• Creator ($49/mo): 9 per day
-• Architect ($79/mo): 12 per day
+• Builder (Free): 3 per day — vault stores up to 5 pipelines
+• Studio ($29/mo): 6 per day — vault stores up to 25 pipelines
+• Creator ($49/mo): 9 per day — vault stores up to 75 pipelines
+• Architect ($79/mo): 12 per day — unlimited vault storage
 
-Each crystallization pulls a real, scored pipeline (quality floor: 68+) from the Memory Stream into your workspace. Limits reset daily.`,
+Each crystallization reveals a pipeline. You choose to Keep (store in vault) or Discard. Limits reset daily. Artifact export available for paid tiers only. Creator+ can equip custom pipeline slots.`,
     category: 'question',
-    keywords: ['crystallizations', 'pulls', 'daily', 'limit', 'how many'],
+    keywords: ['crystallizations', 'pulls', 'daily', 'limit', 'how many', 'vault'],
     confidence: 0.95,
     verified: true,
     priority: 'high',
