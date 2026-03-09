@@ -1020,7 +1020,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  38 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
+│  40 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
