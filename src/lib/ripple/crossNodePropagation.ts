@@ -279,9 +279,7 @@ async function deliverToNodes(
  * Get all nodes in a sector
  */
 function getNodesInSector(sector: SectorId): NodeId[] {
-  return Object.entries(NODE_SECTORS)
-    .filter(([_, s]) => s === sector)
-    .map(([nodeId]) => nodeId);
+  return sectorNodesCache.get(sector) ?? [];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

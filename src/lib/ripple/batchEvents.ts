@@ -152,17 +152,21 @@ export async function batchPublish(
   result.duration = Date.now() - startTime;
 
   // Log batch publish
-  await supabase.from('brain_events').insert({
-    module: 'ripple',
-    event_type: 'batch.published',
-    data: {
-      totalEvents: result.totalEvents,
-      published: result.published,
-      failed: result.failed,
-      duration: result.duration,
-    } as unknown as Record<string, never>,
-    outcome: result.success ? 'success' : 'partial',
-  });
+  try {
+    await supabase.from('brain_events').insert({
+      module: 'ripple',
+      event_type: 'batch.published',
+      data: {
+        totalEvents: result.totalEvents,
+        published: result.published,
+        failed: result.failed,
+        duration: result.duration,
+      } as unknown as Json,
+      outcome: result.success ? 'success' : 'partial',
+    });
+  } catch {
+    // Best-effort logging
+  }
 
   return result;
 }

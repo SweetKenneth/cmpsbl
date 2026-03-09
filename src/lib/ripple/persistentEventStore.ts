@@ -369,11 +369,22 @@ export async function compactExpiredEvents(): Promise<{ removed: number }> {
     Date.now() - DEFAULT_CONFIG.retentionDays * 24 * 60 * 60 * 1000
   ).toISOString();
 
-  // We can't actually delete from brain_events easily, but we can mark as compacted
-  // This is a placeholder for actual compaction logic
-  console.log(`[RIPPLE Store] Would compact events older than ${cutoff}`);
+  // Mark expired ripple events as compacted via outcome update
+  try {
+    const { data, error } = await supabase
+      .from('brain_events')
+      .update({ outcome: 'compacted' })
+      .eq('module', 'ripple')
+      .like('event_type', 'store.%')
+      .lt('created_at', cutoff)
+      .neq('outcome', 'compacted')
+      .select('id');
 
-  return { removed: 0 };
+    if (error || !data) return { removed: 0 };
+    return { removed: data.length };
+  } catch {
+    return { removed: 0 };
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
