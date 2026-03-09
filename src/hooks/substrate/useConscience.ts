@@ -3,7 +3,7 @@
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';
-import * as conscienceModule from '@/lib/substrate/conscience-module';
+import * as conscienceModule from '@/lib/substrate/conscience';
 
 export interface UseConscienceReturn {
   state: ReturnType<typeof useQuery>;
