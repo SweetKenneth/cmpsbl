@@ -20,7 +20,7 @@ import { downloadUserGuide } from "@/lib/user-guide-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "38-Node Memory Stream", desc: "First cognitive infrastructure with 38 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
+  { title: "40-Node Memory Stream", desc: "First cognitive infrastructure with 40 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
   { title: "Intent Mesh Crystallization", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
   { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
