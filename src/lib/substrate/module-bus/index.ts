@@ -19,7 +19,8 @@ export type ModuleName =
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
   | 'forge' | 'lingua' | 'harvest'                                               // EMZ — Manufacturing
   | 'phantom' | 'shadow' | 'evolution'                                             // CSZ — Covert Systems
-  | 'sovereign' | 'conscience' | 'treaty' | 'oracle';                              // ESZ — Sovereignty
+  | 'sovereign' | 'conscience' | 'treaty' | 'oracle'                               // ESZ — Sovereignty
+  | 'compass' | 'echo' | 'reflex';                                                 // EPZ — Perception
 
 export type SignalPriority = 'low' | 'normal' | 'high' | 'critical';
 
