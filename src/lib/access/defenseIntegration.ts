@@ -351,7 +351,7 @@ function emitToDefense(eventType: string, data: unknown): void {
     supabase.from('brain_events').insert([{
       module: 'access',
       event_type: `defense:${eventType}`,
-      data,
+      data: data as Record<string, unknown>,
       outcome: 'pending',
     }]).then(() => {});
   } catch (error) {
