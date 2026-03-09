@@ -4,13 +4,13 @@
  * journey flows, feature adoption, visitor intelligence, conversion tracking.
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
-  Users, Clock, TrendingUp, TrendingDown, Activity, Eye, Layers,
+  Users, Clock, TrendingUp, Activity, Eye, Layers,
   ArrowRight, AlertTriangle, CheckCircle, XCircle, RefreshCw,
-  Zap, Route, Flame, BarChart3, Timer, Globe, Fingerprint,
-  ArrowDownRight, ArrowUpRight, Monitor,
+  Zap, Route, Flame, BarChart3,
+  ArrowDownRight, ArrowUpRight,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -86,7 +86,7 @@ interface FeatureAdoption {
   category_totals: { category: string; count: number }[];
 }
 
-type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features' | 'overview';
+type Tab = 'pulse' | 'retention' | 'churn' | 'journeys' | 'features';
 
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
@@ -96,15 +96,6 @@ function fmt(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
   return n.toString();
-}
-
-function fmtDuration(ms: number): string {
-  if (ms < 1000) return `${ms}ms`;
-  const secs = Math.round(ms / 1000);
-  if (secs < 60) return `${secs}s`;
-  const mins = Math.floor(secs / 60);
-  if (mins < 60) return `${mins}m ${secs % 60}s`;
-  return `${Math.floor(mins / 60)}h ${mins % 60}m`;
 }
 
 function trendIcon(current: number, prev: number) {
@@ -120,6 +111,26 @@ function trendPct(current: number, prev: number): string {
   return `${pct > 0 ? '+' : ''}${pct.toFixed(0)}%`;
 }
 
+// ─── Static color maps (Tailwind needs full class names at build time) ───
+
+const CARD_STYLES: Record<string, { border: string; bg: string; iconBg: string; iconColor: string }> = {
+  green:   { border: 'border-green-500/30',   bg: 'from-green-500/10 to-green-500/5',     iconBg: 'bg-green-500/20 border-green-500/40',     iconColor: 'text-green-400' },
+  emerald: { border: 'border-emerald-500/30', bg: 'from-emerald-500/10 to-emerald-500/5', iconBg: 'bg-emerald-500/20 border-emerald-500/40', iconColor: 'text-emerald-400' },
+  blue:    { border: 'border-blue-500/30',    bg: 'from-blue-500/10 to-blue-500/5',       iconBg: 'bg-blue-500/20 border-blue-500/40',       iconColor: 'text-blue-400' },
+  purple:  { border: 'border-purple-500/30',  bg: 'from-purple-500/10 to-purple-500/5',   iconBg: 'bg-purple-500/20 border-purple-500/40',   iconColor: 'text-purple-400' },
+  cyan:    { border: 'border-cyan-500/30',    bg: 'from-cyan-500/10 to-cyan-500/5',       iconBg: 'bg-cyan-500/20 border-cyan-500/40',       iconColor: 'text-cyan-400' },
+  amber:   { border: 'border-amber-500/30',   bg: 'from-amber-500/10 to-amber-500/5',     iconBg: 'bg-amber-500/20 border-amber-500/40',     iconColor: 'text-amber-400' },
+  red:     { border: 'border-red-500/30',     bg: 'from-red-500/10 to-red-500/5',         iconBg: 'bg-red-500/20 border-red-500/40',         iconColor: 'text-red-400' },
+};
+
+const TAB_STYLES: Record<string, string> = {
+  green:  'bg-green-500/20 text-green-400 border border-green-500/40',
+  blue:   'bg-blue-500/20 text-blue-400 border border-blue-500/40',
+  amber:  'bg-amber-500/20 text-amber-400 border border-amber-500/40',
+  purple: 'bg-purple-500/20 text-purple-400 border border-purple-500/40',
+  cyan:   'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40',
+};
+
 // ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
@@ -134,51 +145,42 @@ export default function AnalyticsDashboard() {
   const [churn, setChurn] = useState<ChurnData | null>(null);
   const [journeys, setJourneys] = useState<JourneyFlows | null>(null);
   const [features, setFeatures] = useState<FeatureAdoption | null>(null);
-  const [overview, setOverview] = useState<any>(null);
 
   const fetchTab = useCallback(async (t: Tab) => {
     setLoading(true);
     try {
       switch (t) {
         case 'pulse': {
-          const { data } = await supabase.rpc('get_realtime_pulse');
-          setPulse(data as any);
+          const { data, error } = await supabase.rpc('get_realtime_pulse');
+          if (!error && data) setPulse(data as any);
           break;
         }
         case 'retention': {
-          const { data } = await supabase.rpc('get_cohort_retention', {
+          const { data, error } = await supabase.rpc('get_cohort_retention', {
             p_cohort_window_days: 90,
             p_granularity: 'week',
           });
-          setCohorts((data as any) || []);
+          if (!error) setCohorts((data as any) || []);
           break;
         }
         case 'churn': {
-          const { data } = await supabase.rpc('get_churn_risk_scores', { p_limit: 50 });
-          setChurn(data as any);
+          const { data, error } = await supabase.rpc('get_churn_risk_scores', { p_limit: 50 });
+          if (!error && data) setChurn(data as any);
           break;
         }
         case 'journeys': {
-          const { data } = await supabase.rpc('get_journey_flows', {
+          const { data, error } = await supabase.rpc('get_journey_flows', {
             p_start_date: new Date(Date.now() - 30 * 86400000).toISOString(),
             p_min_count: 2,
           });
-          setJourneys(data as any);
+          if (!error && data) setJourneys(data as any);
           break;
         }
         case 'features': {
-          const { data } = await supabase.rpc('get_feature_adoption', {
+          const { data, error } = await supabase.rpc('get_feature_adoption', {
             p_start_date: new Date(Date.now() - 30 * 86400000).toISOString(),
           });
-          setFeatures(data as any);
-          break;
-        }
-        case 'overview': {
-          const [pulseRes, churnRes] = await Promise.all([
-            supabase.rpc('get_realtime_pulse'),
-            supabase.rpc('get_churn_risk_scores', { p_limit: 5 }),
-          ]);
-          setOverview({ pulse: pulseRes.data, churn: churnRes.data });
+          if (!error && data) setFeatures(data as any);
           break;
         }
       }
@@ -244,12 +246,9 @@ export default function AnalyticsDashboard() {
                 className={cn(
                   "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap",
                   isActive
-                    ? `bg-${t.color}-500/20 text-${t.color}-400 border border-${t.color}-500/40`
+                    ? TAB_STYLES[t.color]
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
                 )}
-                style={isActive ? {
-                  backgroundColor: `hsl(var(--${t.color === 'green' ? 'primary' : t.color === 'blue' ? 'primary' : 'accent'}) / 0.15)`,
-                } : undefined}
               >
                 <Icon className="w-4 h-4" /> {t.label}
               </button>
@@ -272,11 +271,11 @@ export default function AnalyticsDashboard() {
               </div>
             ) : (
               <>
-                {tab === 'pulse' && pulse && <PulseView data={pulse} />}
+                {tab === 'pulse' && <PulseView data={pulse} />}
                 {tab === 'retention' && <RetentionView cohorts={cohorts} />}
-                {tab === 'churn' && churn && <ChurnView data={churn} />}
-                {tab === 'journeys' && journeys && <JourneysView data={journeys} />}
-                {tab === 'features' && features && <FeaturesView data={features} />}
+                {tab === 'churn' && <ChurnView data={churn} />}
+                {tab === 'journeys' && <JourneysView data={journeys} />}
+                {tab === 'features' && <FeaturesView data={features} />}
               </>
             )}
           </motion.div>
@@ -290,7 +289,9 @@ export default function AnalyticsDashboard() {
 // REAL-TIME PULSE
 // ═══════════════════════════════════════════════════════════════
 
-function PulseView({ data }: { data: RealtimePulse }) {
+function PulseView({ data }: { data: RealtimePulse | null }) {
+  if (!data) return <EmptyState icon={Activity} message="No real-time data available" />;
+
   const maxHourSessions = Math.max(...(data.hourly_today?.map(h => h.sessions) || [1]), 1);
 
   return (
@@ -367,7 +368,7 @@ function PulseView({ data }: { data: RealtimePulse }) {
             <Zap className="w-4 h-4 text-green-400" /> Active Pages (15 min)
           </h3>
           <div className="space-y-2">
-            {data.top_pages_now.map((p, idx) => (
+            {data.top_pages_now.map((p) => (
               <div key={p.page} className="flex items-center justify-between text-sm">
                 <span className="font-mono text-foreground/80">{p.page}</span>
                 <Badge variant="outline" className="font-mono text-xs">{p.count} views</Badge>
@@ -383,20 +384,19 @@ function PulseView({ data }: { data: RealtimePulse }) {
 function PulseCard({ label, value, sub, icon: Icon, color, pulse: isPulsing }: {
   label: string; value: string; sub: string; icon: any; color: string; pulse?: boolean;
 }) {
+  const styles = CARD_STYLES[color] || CARD_STYLES.blue;
   return (
     <motion.div
       className={cn(
         "p-5 rounded-2xl border bg-gradient-to-br backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5",
-        `border-${color}-500/30 from-${color}-500/10 to-${color}-500/5`
+        styles.border, styles.bg
       )}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center border relative",
-          `bg-${color}-500/20 border-${color}-500/40`
-        )}>
-          <Icon className={cn("w-4 h-4", `text-${color}-400`)} />
+        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center border relative", styles.iconBg)}>
+          <Icon className={cn("w-4 h-4", styles.iconColor)} />
           {isPulsing && (
             <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
           )}
@@ -406,6 +406,15 @@ function PulseCard({ label, value, sub, icon: Icon, color, pulse: isPulsing }: {
       <p className="text-2xl font-bold font-mono tabular-nums text-foreground">{value}</p>
       <p className="text-[10px] text-muted-foreground mt-1">{sub}</p>
     </motion.div>
+  );
+}
+
+function EmptyState({ icon: Icon, message }: { icon: any; message: string }) {
+  return (
+    <div className="text-center py-16 text-muted-foreground">
+      <Icon className="w-12 h-12 mx-auto mb-3 opacity-30" />
+      <p className="text-sm">{message}</p>
+    </div>
   );
 }
 
@@ -442,10 +451,10 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl border border-border/30">
         <table className="w-full text-xs border-collapse">
           <thead>
-            <tr className="border-b border-border/40">
+            <tr className="border-b border-border/40 bg-muted/10">
               <th className="text-left py-3 px-3 text-muted-foreground font-medium w-32">Cohort</th>
               <th className="text-center py-3 px-3 text-muted-foreground font-medium w-20">Size</th>
               <th className="text-center py-3 px-3 text-muted-foreground font-medium">Day 1</th>
@@ -490,7 +499,7 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
       {/* Legend */}
       <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
         <span>Retention strength:</span>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
           <span className="w-4 h-3 rounded bg-red-500/20" /> &lt;5%
           <span className="w-4 h-3 rounded bg-amber-500/30 ml-2" /> 5-15%
           <span className="w-4 h-3 rounded bg-green-500/40 ml-2" /> 15-30%
@@ -505,18 +514,20 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
 // CHURN RISK
 // ═══════════════════════════════════════════════════════════════
 
-function ChurnView({ data }: { data: ChurnData }) {
+function ChurnView({ data }: { data: ChurnData | null }) {
+  if (!data?.summary) return <EmptyState icon={AlertTriangle} message="No churn data available yet" />;
+
   const s = data.summary;
 
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <PulseCard label="Total Scored" value={fmt(s.total_scored)} sub="visitors analyzed" icon={Users} color="blue" />
-        <PulseCard label="Avg Score" value={s.avg_score?.toFixed(0) || '0'} sub="out of 100" icon={Activity} color="purple" />
-        <PulseCard label="Critical" value={fmt(s.critical_count)} sub="score ≥ 70" icon={XCircle} color="red" />
-        <PulseCard label="Warning" value={fmt(s.warning_count)} sub="score 40-69" icon={AlertTriangle} color="amber" />
-        <PulseCard label="Healthy" value={fmt(s.healthy_count)} sub="score < 40" icon={CheckCircle} color="green" />
+        <PulseCard label="Total Scored" value={fmt(s.total_scored || 0)} sub="visitors analyzed" icon={Users} color="blue" />
+        <PulseCard label="Avg Score" value={(s.avg_score ?? 0).toFixed(0)} sub="out of 100" icon={Activity} color="purple" />
+        <PulseCard label="Critical" value={fmt(s.critical_count || 0)} sub="score ≥ 70" icon={XCircle} color="red" />
+        <PulseCard label="Warning" value={fmt(s.warning_count || 0)} sub="score 40-69" icon={AlertTriangle} color="amber" />
+        <PulseCard label="Healthy" value={fmt(s.healthy_count || 0)} sub="score < 40" icon={CheckCircle} color="green" />
       </div>
 
       {/* Risk Distribution Bar */}
@@ -568,76 +579,78 @@ function ChurnView({ data }: { data: ChurnData }) {
       )}
 
       {/* Visitor List */}
-      <motion.div
-        className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.1 }}
-      >
-        <h3 className="text-sm font-semibold text-foreground mb-4">At-Risk Visitors</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border/30">
-                <th className="text-left py-2 text-muted-foreground font-medium">Fingerprint</th>
-                <th className="text-center py-2 text-muted-foreground font-medium">Score</th>
-                <th className="text-center py-2 text-muted-foreground font-medium">Risk</th>
-                <th className="text-right py-2 text-muted-foreground font-medium">Sessions</th>
-                <th className="text-right py-2 text-muted-foreground font-medium">Avg Pages</th>
-                <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
-                <th className="text-right py-2 text-muted-foreground font-medium">7d Trend</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(data.visitors || []).slice(0, 25).map((v, idx) => (
-                <motion.tr
-                  key={v.fingerprint}
-                  className="border-b border-border/10 hover:bg-muted/10 transition"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: idx * 0.02 }}
-                >
-                  <td className="py-2 font-mono text-foreground/70">{v.fingerprint}</td>
-                  <td className="py-2 text-center">
-                    <span className={cn(
-                      "inline-block px-2 py-0.5 rounded font-mono font-bold",
-                      v.churn_score >= 70 ? 'bg-red-500/20 text-red-400' :
-                      v.churn_score >= 40 ? 'bg-amber-500/20 text-amber-400' :
-                      'bg-green-500/20 text-green-400'
-                    )}>
-                      {v.churn_score}
-                    </span>
-                  </td>
-                  <td className="py-2 text-center">
-                    <Badge variant="outline" className={cn("text-[9px] font-mono",
-                      v.risk_level === 'critical' ? 'border-red-500/40 text-red-400' :
-                      v.risk_level === 'warning' ? 'border-amber-500/40 text-amber-400' :
-                      'border-green-500/40 text-green-400'
-                    )}>
-                      {v.risk_level}
-                    </Badge>
-                  </td>
-                  <td className="py-2 text-right font-mono text-foreground">{v.total_sessions}</td>
-                  <td className="py-2 text-right font-mono text-muted-foreground">{v.avg_pages}</td>
-                  <td className="py-2 text-right font-mono text-muted-foreground">{v.days_since_visit}d</td>
-                  <td className="py-2 text-right">
-                    <span className="flex items-center justify-end gap-1 font-mono">
-                      {trendIcon(v.recent_7d, v.prev_7d)}
+      {(data.visitors?.length ?? 0) > 0 && (
+        <motion.div
+          className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <h3 className="text-sm font-semibold text-foreground mb-4">At-Risk Visitors</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-border/30">
+                  <th className="text-left py-2 text-muted-foreground font-medium">Fingerprint</th>
+                  <th className="text-center py-2 text-muted-foreground font-medium">Score</th>
+                  <th className="text-center py-2 text-muted-foreground font-medium">Risk</th>
+                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Sessions</th>
+                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Avg Pages</th>
+                  <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
+                  <th className="text-right py-2 text-muted-foreground font-medium hidden lg:table-cell">7d Trend</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.visitors.slice(0, 25).map((v, idx) => (
+                  <motion.tr
+                    key={v.fingerprint}
+                    className="border-b border-border/10 hover:bg-muted/10 transition"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: idx * 0.02 }}
+                  >
+                    <td className="py-2 font-mono text-foreground/70 truncate max-w-[120px]">{v.fingerprint}</td>
+                    <td className="py-2 text-center">
                       <span className={cn(
-                        v.recent_7d > v.prev_7d ? 'text-green-400' :
-                        v.recent_7d < v.prev_7d ? 'text-red-400' :
-                        'text-muted-foreground'
+                        "inline-block px-2 py-0.5 rounded font-mono font-bold",
+                        v.churn_score >= 70 ? 'bg-red-500/20 text-red-400' :
+                        v.churn_score >= 40 ? 'bg-amber-500/20 text-amber-400' :
+                        'bg-green-500/20 text-green-400'
                       )}>
-                        {v.recent_7d} vs {v.prev_7d}
+                        {v.churn_score}
                       </span>
-                    </span>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
+                    </td>
+                    <td className="py-2 text-center">
+                      <Badge variant="outline" className={cn("text-[9px] font-mono",
+                        v.risk_level === 'critical' ? 'border-red-500/40 text-red-400' :
+                        v.risk_level === 'warning' ? 'border-amber-500/40 text-amber-400' :
+                        'border-green-500/40 text-green-400'
+                      )}>
+                        {v.risk_level}
+                      </Badge>
+                    </td>
+                    <td className="py-2 text-right font-mono text-foreground hidden md:table-cell">{v.total_sessions}</td>
+                    <td className="py-2 text-right font-mono text-muted-foreground hidden md:table-cell">{v.avg_pages}</td>
+                    <td className="py-2 text-right font-mono text-muted-foreground">{v.days_since_visit}d</td>
+                    <td className="py-2 text-right hidden lg:table-cell">
+                      <span className="flex items-center justify-end gap-1 font-mono">
+                        {trendIcon(v.recent_7d, v.prev_7d)}
+                        <span className={cn(
+                          v.recent_7d > v.prev_7d ? 'text-green-400' :
+                          v.recent_7d < v.prev_7d ? 'text-red-400' :
+                          'text-muted-foreground'
+                        )}>
+                          {v.recent_7d} vs {v.prev_7d}
+                        </span>
+                      </span>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -646,7 +659,9 @@ function ChurnView({ data }: { data: ChurnData }) {
 // JOURNEY FLOWS
 // ═══════════════════════════════════════════════════════════════
 
-function JourneysView({ data }: { data: JourneyFlows }) {
+function JourneysView({ data }: { data: JourneyFlows | null }) {
+  if (!data) return <EmptyState icon={Route} message="No journey data available yet" />;
+
   const maxTransition = data.transitions?.[0]?.count || 1;
 
   return (
@@ -745,19 +760,19 @@ function JourneysView({ data }: { data: JourneyFlows }) {
             const pct = (t.count / maxTransition) * 100;
             return (
               <motion.div
-                key={`${t.from}-${t.to}`}
+                key={`${t.from}-${t.to}-${idx}`}
                 className="rounded-lg border border-border/20 bg-muted/5 p-3"
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.03 }}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-2 text-xs font-mono">
-                    <span className="text-foreground/80 truncate max-w-[120px]">{t.from}</span>
+                <div className="flex items-center justify-between mb-1.5 flex-wrap gap-2">
+                  <div className="flex items-center gap-2 text-xs font-mono min-w-0">
+                    <span className="text-foreground/80 truncate max-w-[140px]">{t.from}</span>
                     <ArrowRight className="w-3 h-3 text-muted-foreground shrink-0" />
-                    <span className="text-foreground/80 truncate max-w-[120px]">{t.to}</span>
+                    <span className="text-foreground/80 truncate max-w-[140px]">{t.to}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs">
+                  <div className="flex items-center gap-3 text-xs shrink-0">
                     <span className="font-mono text-muted-foreground">{t.sessions} sessions</span>
                     <span className="font-mono font-semibold text-foreground">{t.count}×</span>
                   </div>
@@ -788,7 +803,9 @@ function JourneysView({ data }: { data: JourneyFlows }) {
 // FEATURE ADOPTION
 // ═══════════════════════════════════════════════════════════════
 
-function FeaturesView({ data }: { data: FeatureAdoption }) {
+function FeaturesView({ data }: { data: FeatureAdoption | null }) {
+  if (!data) return <EmptyState icon={Flame} message="No feature adoption data yet" />;
+
   const maxUses = data.features?.[0]?.total_uses || 1;
 
   const categoryColors: Record<string, string> = {
@@ -846,14 +863,14 @@ function FeaturesView({ data }: { data: FeatureAdoption }) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.03 }}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-foreground font-mono">{f.feature}</span>
-                    <Badge variant="outline" className="text-[9px] font-mono">{f.category}</Badge>
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-sm font-medium text-foreground font-mono truncate">{f.feature}</span>
+                    <Badge variant="outline" className="text-[9px] font-mono shrink-0">{f.category}</Badge>
                   </div>
-                  <div className="flex items-center gap-4 text-xs">
-                    <span className="text-muted-foreground">{f.unique_users} users</span>
-                    <span className="text-muted-foreground">{f.avg_per_user}/user</span>
+                  <div className="flex items-center gap-4 text-xs shrink-0">
+                    <span className="text-muted-foreground hidden sm:inline">{f.unique_users} users</span>
+                    <span className="text-muted-foreground hidden sm:inline">{f.avg_per_user}/user</span>
                     <div className="flex items-center gap-1">
                       {trendIcon(f.trend_7d, f.trend_prev_7d)}
                       <span className={cn("font-mono text-[10px]",
