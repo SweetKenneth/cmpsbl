@@ -294,7 +294,7 @@ export function useSystemConfig(key?: string) {
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions — 38-node / 12-sector topology
+  // Layer definitions — 40-node / 12-sector topology
   const CORE_SYSTEM = ['core', 'system'] as const;
   const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
   const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
