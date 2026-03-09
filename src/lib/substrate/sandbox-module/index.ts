@@ -456,11 +456,11 @@ export function setResourceLimits(sandboxId: string, limits: Partial<ResourceLim
 
 function clampResourceLimits(limits: ResourceLimits): ResourceLimits {
   return {
-    maxExecutionMs: clampNumber(limits.maxExecutionMs, 100, 300_000),
-    maxMemoryBytes: clampNumber(limits.maxMemoryBytes, 1024, 256 * 1024 * 1024),
-    maxCpuPercent: clampNumber(limits.maxCpuPercent, 5, 100),
-    maxConcurrentExecutions: clampNumber(limits.maxConcurrentExecutions, 1, 10),
-    maxCodeLengthBytes: clampNumber(limits.maxCodeLengthBytes, 100, 500_000),
+    maxExecutionMs: clampNumber(limits.maxExecutionMs, 100, 300_000, 30_000),
+    maxMemoryBytes: clampNumber(limits.maxMemoryBytes, 1024, 256 * 1024 * 1024, 64 * 1024 * 1024),
+    maxCpuPercent: clampNumber(limits.maxCpuPercent, 5, 100, 80),
+    maxConcurrentExecutions: clampNumber(limits.maxConcurrentExecutions, 1, 10, 3),
+    maxCodeLengthBytes: clampNumber(limits.maxCodeLengthBytes, 100, 500_000, 100_000),
   };
 }
 
