@@ -91,7 +91,7 @@ export const TOTAL_ENGINE_ECOSYSTEM = ENGINES_COUNT + META_ENGINES_COUNT;
 // =============================================================================
 
 /**
- * Registered capabilities across all 38 Matrix Nodes
+ * Registered capabilities across all 40 Matrix Nodes
  * 525 base + 150 expansion (high-value-v10) = 675+
  */
 export const CAPABILITIES_COUNT = 675;
