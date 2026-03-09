@@ -55,16 +55,19 @@ Think of it as the infrastructure layer that makes any AI provider more capable.
 How it works:
 1. The Memory Stream continuously generates and evaluates pipelines
 2. Each pipeline is scored for quality (minimum floor: 68+)
-3. You can "crystallize" a pipeline — pulling it from the stream into your workspace
-4. Every pull is real, production-grade software
+3. You can "crystallize" a pipeline — pulling it from the stream
+4. After crystallization, choose Keep (store in vault) or Discard
+5. Every pull is real, production-grade software
 
 Daily crystallization limits depend on your tier:
-• Builder (Free): 3 pulls / day
-• Studio ($29/mo): 6 pulls / day
-• Creator ($49/mo): 9 pulls / day
-• Architect ($79/mo): 12 pulls / day`,
+• Builder (Free): 3 pulls / day — 5 vault capacity
+• Studio ($29/mo): 6 pulls / day — 25 vault capacity
+• Creator ($49/mo): 9 pulls / day — 75 vault capacity
+• Architect ($79/mo): 12 pulls / day — Unlimited vault
+
+Rare discoveries (Relic, Mythic, Apex) trigger special alerts. Mythic discoveries prompt vault upgrade if full. Artifact export is available for paid tiers only.`,
     category: 'question',
-    keywords: ['memory stream', 'crystallize', 'pipeline', 'pulls', 'stream'],
+    keywords: ['memory stream', 'crystallize', 'pipeline', 'pulls', 'stream', 'vault', 'keep', 'discard'],
     confidence: 0.95,
     verified: true,
     priority: 'critical',
