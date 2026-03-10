@@ -2467,9 +2467,9 @@ ${allFeatures.map(f => {
       }
     // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
     // Legacy handler removed to prevent duplicate handling
-    } else if (base === 'modernizer.export') {
+    } else if (base === 'evolution.export' || base === 'modernizer.export') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Job ID required\n  Usage: modernizer.export <job_id>' };
+        return { success: false, output: '▓ ERROR: Job ID required\n  Usage: evolution.export <job_id>' };
       }
       result = await modernizer.export(args[0]);
     } else if (base === 'modernizer.quota') {
