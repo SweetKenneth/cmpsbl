@@ -968,7 +968,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'autonomous_operator',
     name: 'Autonomous Operator',
     artifactType: 'meta-engine',
-    modules: ['MODERNIZER', 'DREAM', 'BRAIN', 'CORTEX', 'NEXUS', 'VISION'],
+    modules: ['EVOLUTION', 'DREAM', 'BRAIN', 'CORTEX', 'NEXUS', 'VISION'],
     classification: 'architecture',
     reason: 'Self-driving operations — autonomous system management with bounded authority',
     enables: 'Autonomous system evolution, self-optimizing workflows',
