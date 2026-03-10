@@ -98,7 +98,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.evolve shadow — Execute shadow apply
+   * evolution.evolve shadow — Execute shadow apply
    */
   async evolveShadow(plan_id?: string): Promise<CommandResult> {
     // Check for active run or create new one
