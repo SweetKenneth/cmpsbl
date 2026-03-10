@@ -2724,7 +2724,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } else if (subCmd === 'set') {
         const mode = args[1];
         if (!mode || !['off', 'advisory', 'governed'].includes(mode)) {
-          return { success: false, output: '▓ ERROR: Invalid mode\n  Usage: modernizer.autonomy set <off|advisory|governed>' };
+          return { success: false, output: '▓ ERROR: Invalid mode\n  Usage: evolution.autonomy set <off|advisory|governed>' };
         }
         try {
           const { setAutonomyMode } = await import('@/lib/evolve/autonomy');
