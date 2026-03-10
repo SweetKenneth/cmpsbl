@@ -121,9 +121,9 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     );
   }
 
-  // Compute total value using internal formula
+  // Compute total value using blended formula
   const totalValuation = inventory.reduce((s, i) => {
-    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+    return s + computeBlendedValuation(i.score, i.category || 'general', (i.systemChain || []).length);
   }, 0);
 
   const handleExportVault = async () => {
