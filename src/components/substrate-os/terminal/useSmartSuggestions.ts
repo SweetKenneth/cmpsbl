@@ -22,7 +22,7 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'brain.optimize': ['brain.status', 'brain.graph_build', 'brain.patterns', 'system.health'],
   'brain.deep_think': ['brain.hypothesis_test', 'brain.synthesize', 'brain.remember', 'brain.patterns'],
   'brain.synthesize': ['brain.patterns', 'brain.graph_build', 'brain.reflect', 'brain.deep_think'],
-  'brain.patterns': ['brain.reflect', 'brain.optimize', 'brain.synthesize', 'modernizer.scan'],
+  'brain.patterns': ['brain.reflect', 'brain.optimize', 'brain.synthesize', 'evolution.status'],
   'brain.graph_build': ['brain.graph_summary', 'brain.patterns', 'brain.synthesize', 'brain.coherence_check'],
   'brain.graph_summary': ['brain.graph_build', 'brain.query', 'brain.patterns', 'brain.coherence_check'],
   'brain.curiosity': ['brain.explore', 'brain.query', 'brain.deep_think', 'brain.synthesize'],
