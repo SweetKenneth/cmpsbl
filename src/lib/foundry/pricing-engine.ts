@@ -50,6 +50,14 @@ export interface PricingArtifact {
  * Price a single artifact via the NEXUS consensus pricing engine
  */
 export async function priceArtifact(artifact: PricingArtifact): Promise<CommercializationPricing> {
+  // ECONOMY budget gate
+  const budgetCheck = canExecutePricingRun();
+  if (!budgetCheck.allowed) {
+    console.warn('[PricingEngine] ECONOMY budget gate rejected:', budgetCheck.reason);
+    return computeLocalFallback(artifact);
+  }
+
+  const startTime = Date.now();
   try {
     const { data, error } = await supabase.functions.invoke('pf-nexus-pricing', {
       body: {
@@ -66,10 +74,59 @@ export async function priceArtifact(artifact: PricingArtifact): Promise<Commerci
     });
 
     if (error) throw error;
-    return data as CommercializationPricing;
+    const result = data as CommercializationPricing;
+
+    // Record through ECONOMY governance primitive
+    try {
+      const evidence = result.pricing_evidence;
+      recordPricingRun({
+        artifact_id: artifact.vault_id || 'unknown',
+        artifact_name: artifact.pipeline_name,
+        source_table: artifact.source_table || 'pipeline_vault',
+        providers_queried: evidence?.providers?.map((p: any) => p.provider) || [],
+        providers_succeeded: evidence?.providers_used || [],
+        providers_failed: evidence?.providers_failed || [],
+        outliers_rejected: evidence?.outliers_rejected || [],
+        pricing_source: result.pricing_source,
+        recommended_price: result.recommended_resale_price,
+        consensus_mid: evidence?.consensus_mid ?? null,
+        confidence: result.pricing_confidence,
+        total_latency_ms: Date.now() - startTime,
+        per_provider_latency: extractProviderLatencies(evidence),
+        estimated_cost_millicents: estimatePricingCost(evidence),
+      });
+    } catch {
+      // ECONOMY tracking failure should never block pricing
+    }
+
+    return result;
   } catch (err) {
     console.error('[PricingEngine] Consensus failed, using local fallback:', err);
-    return computeLocalFallback(artifact);
+    const fallback = computeLocalFallback(artifact);
+
+    // Record fallback through ECONOMY
+    try {
+      recordPricingRun({
+        artifact_id: artifact.vault_id || 'unknown',
+        artifact_name: artifact.pipeline_name,
+        source_table: artifact.source_table || 'pipeline_vault',
+        providers_queried: [],
+        providers_succeeded: [],
+        providers_failed: ['edge-function'],
+        outliers_rejected: [],
+        pricing_source: 'local-fallback',
+        recommended_price: fallback.recommended_resale_price,
+        consensus_mid: null,
+        confidence: fallback.pricing_confidence,
+        total_latency_ms: Date.now() - startTime,
+        per_provider_latency: {},
+        estimated_cost_millicents: 0,
+      });
+    } catch {
+      // silent
+    }
+
+    return fallback;
   }
 }
 
