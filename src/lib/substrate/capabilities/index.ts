@@ -1079,7 +1079,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'proposal_impact_analyzer',
     name: 'Proposal Impact Analyzer',
     description: 'Simulates proposed changes to predict their system-wide impact',
-    modules: ['MODERNIZER', 'VISION', 'CORTEX'],
+    modules: ['EVOLUTION', 'VISION', 'CORTEX'],
     layer: 'Admin',
     userBenefit: 'Know the impact of changes before deploying',
     status: 'active',
