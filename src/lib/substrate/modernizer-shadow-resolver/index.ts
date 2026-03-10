@@ -1,8 +1,8 @@
 /**
- * MODERNIZER Shadow Loop Resolver
+ * EVOLUTION Shadow Loop Resolver
  * Crown Jewel Capability
  * 
- * CLM Request: MODERNIZER flagged shadow loop — evolution runs stuck in shadow_applied
+ * CLM Request: EVOLUTION flagged shadow loop — evolution runs stuck in shadow_applied
  * phase for 3+ consecutive cycles without progressing to production or verification.
  * 
  * Resolution: Automatic detection, forced resolution, and prevention of shadow loops
