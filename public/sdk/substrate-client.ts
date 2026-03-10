@@ -849,58 +849,61 @@ export class SubstrateClient {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // MODERNIZER MODULE — Self-Improvement Engine
+  // EVOLUTION NODE — Self-Improvement Engine
   // ═══════════════════════════════════════════════════════════════════════════
 
-  modernizer = {
+  evolution = {
     status: () =>
-      this.invoke({ module: 'modernizer', action: 'status' }),
+      this.invoke({ module: 'evolution', action: 'status' }),
     
     pulse: () =>
-      this.invoke({ module: 'modernizer', action: 'pulse' }),
+      this.invoke({ module: 'evolution', action: 'pulse' }),
     
     scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
-      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+      this.invoke({ module: 'evolution', action: 'scan', payload: options }),
     
     jobs: (limit?: number) =>
-      this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
+      this.invoke({ module: 'evolution', action: 'jobs', payload: { limit } }),
     
     job: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'job', payload: { job_id } }),
     
     quota: () =>
-      this.invoke({ module: 'modernizer', action: 'quota' }),
+      this.invoke({ module: 'evolution', action: 'quota' }),
     
     analyze: (module?: string) =>
-      this.invoke({ module: 'modernizer', action: 'analyze', payload: { module } }),
+      this.invoke({ module: 'evolution', action: 'analyze', payload: { module } }),
     
     export: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'export', payload: { job_id } }),
     
     propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
-      this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
+      this.invoke({ module: 'evolution', action: 'propose', payload: options }),
     
     plans: () =>
-      this.invoke({ module: 'modernizer', action: 'plans' }),
+      this.invoke({ module: 'evolution', action: 'plans' }),
     
     review: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'review', payload: { plan_id } }),
     
     apply: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'apply', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'apply', payload: { plan_id } }),
     
     rollback: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'rollback', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'rollback', payload: { plan_id } }),
     
     delete: (plan_id: string, reason?: string) =>
-      this.invoke({ module: 'modernizer', action: 'delete', payload: { plan_id, reason } }),
+      this.invoke({ module: 'evolution', action: 'delete', payload: { plan_id, reason } }),
     
     archived: () =>
-      this.invoke({ module: 'modernizer', action: 'archived' }),
+      this.invoke({ module: 'evolution', action: 'archived' }),
     
     implement: (archived_function: string, target_action: string) =>
-      this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
+      this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
+
+  /** @deprecated Use evolution — MODERNIZER was absorbed by EVOLUTION */
+  get modernizer() { return this.evolution; }
 }
 
 // Export for module usage

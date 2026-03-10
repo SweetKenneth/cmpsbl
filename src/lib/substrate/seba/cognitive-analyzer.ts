@@ -137,7 +137,7 @@ export class CognitiveAnalyzer {
         brain_healthy: this.backendStats.brain?.healthy,
         brain_memories: this.backendStats.brain?.metrics?.total_memories,
         brain_hot: this.backendStats.brain?.tiers?.hot?.current,
-        modernizer_health: this.backendStats.modernizer?.system_health?.score,
+        evolution_health: this.backendStats.evolution?.system_health?.score,
       });
       
       // Load recently addressed insights for deduplication

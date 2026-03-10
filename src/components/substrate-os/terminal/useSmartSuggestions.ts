@@ -228,7 +228,7 @@ function generateReason(lastCmd: string, suggestedCmd: string): string {
   if (suggestedCmd.includes('heal')) return 'Auto-fix issues';
   if (sugModule === 'brain') return 'Process learnings';
   if (sugModule === 'vision') return 'Monitor results';
-  if (sugModule === 'modernizer') return 'Plan improvements';
+  if (sugModule === 'evolution') return 'Plan improvements';
   
   return 'Suggested next step';
 }
