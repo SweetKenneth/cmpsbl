@@ -125,7 +125,7 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     model: 'openrouter/qwen3-235b-a22b:free',
     rpm: 16, rpd: 160, tpm: 20000,
     latencyClass: 'standard',
-    affinities: ['reasoning', 'code', 'analysis'],
+    affinities: ['reasoning', 'code', 'analysis', 'pricing'],
     priority: 9,
     costPerMToken: 0,
   },
