@@ -160,8 +160,8 @@ export default function Solutions() {
                 <CardContent className="p-4 sm:p-6 md:p-10">
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-4 shadow-lg`}>
-                        <solution.icon className="w-7 h-7 text-white" />
+                       <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
+                         <solution.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                       </div>
                       <h2 className="text-xl sm:text-2xl font-black mb-2 text-foreground">{solution.name}</h2>
                       <p className="text-base sm:text-lg text-primary font-medium mb-4">{solution.tagline}</p>
