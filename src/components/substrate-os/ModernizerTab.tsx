@@ -419,7 +419,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      queryClient.invalidateQueries({ queryKey: ['evolution-status'] });
       toast.success('Rollback completed successfully');
       setRollbackDialog({ open: false, planId: null, backupId: null });
       setConfirmValue('');
