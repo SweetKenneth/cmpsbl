@@ -751,7 +751,7 @@ class SubstrateClient {
       return {
         success: true,
         plans: [],
-        message: 'No active evolution plan. Run `modernizer.evolve` to start.',
+        message: 'No active evolution plan. Run `evolution.evolve` to start.',
       };
     },
     

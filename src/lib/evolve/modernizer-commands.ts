@@ -42,7 +42,7 @@ export const modernizerCommands = {
       return {
         success: true,
         data: { status: 'idle', message: 'No active evolution' },
-        formatted: '✅ Modernizer idle — no active evolution',
+        formatted: '✅ EVOLUTION idle — no active evolution',
       };
     }
 
