@@ -915,7 +915,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'metacognition_engine',
     name: 'Metacognition Engine',
     artifactType: 'engine',
-    modules: ['BRAIN', 'MODERNIZER', 'CORTEX'],
+    modules: ['BRAIN', 'EVOLUTION', 'CORTEX'],
     classification: 'architecture',
     reason: 'Self-reflection with confidence calibration and recursive self-improvement',
     enables: 'The system that thinks about thinking — meta-cognitive awareness',
