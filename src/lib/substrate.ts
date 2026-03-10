@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { recordSuccess as cbRecordSuccess, recordFailure as cbRecordFailure, canExecute as cbCanExecute } from '@/lib/substrate/circuit-breaker';
 import { recordSample } from '@/lib/substrate/predictive-failure';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex' | 'engineer' | 'atlas';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'evolution' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex' | 'engineer' | 'atlas';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
