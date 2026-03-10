@@ -81,7 +81,7 @@ function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundr
   }));
 }
 
-export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Props) {
+export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll, repricing, subscriptionTier }: Props) {
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
