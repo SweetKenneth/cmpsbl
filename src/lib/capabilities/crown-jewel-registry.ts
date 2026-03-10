@@ -1019,7 +1019,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     crown_jewel: true, admin_only: true,
   },
   {
-    id: 'modernizer', name: 'Modernizer', artifactType: 'engine', modules: ['MODERNIZER'],
+    id: 'evolution_engine', name: 'Evolution Engine', artifactType: 'engine', modules: ['EVOLUTION'],
     classification: 'architecture',
     reason: 'Shadow-to-production code diffs', enables: 'Autonomous code evolution',
     composesWith: ['evolution_engine'], dangerIfExposed: 'Code mutation algorithm exposed',
