@@ -2437,10 +2437,10 @@ export async function executeAutonomousRepair(
     reversible: true,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: fixes,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   // Step 3: DEFENSE - Safety validation
