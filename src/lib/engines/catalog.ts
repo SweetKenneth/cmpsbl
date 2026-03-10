@@ -187,7 +187,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "meridian", codename: "MERIDIAN", tagline: "Content Delivery Network",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgpQ7FtTiAL4a1Yr5YhrH", icon: Globe, color: "185 100% 40%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "MERIDIAN delivers content at the speed of proximity. Global edge distribution, asset optimization, and intelligent routing that puts your content milliseconds from every user.",
