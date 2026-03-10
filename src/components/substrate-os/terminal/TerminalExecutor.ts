@@ -2578,9 +2578,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.rollback') {
+    } else if (base === 'evolution.rollback' || base === 'modernizer.rollback') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.rollback <plan_id>' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
