@@ -172,8 +172,8 @@ export default function Engines() {
                 Each Engine is a self-contained, obfuscated, tamper-proof runtime
                 forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
-              <p className="text-sm text-muted-foreground/60 font-mono">
-                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled
+              <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
+                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled with agent
               </p>
             </motion.div>
           </div>
