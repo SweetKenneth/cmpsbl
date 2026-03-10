@@ -148,7 +148,7 @@ export default function Explore() {
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
-      <section className="relative z-10 px-4 py-16 sm:py-32 overflow-hidden">
+      <section className="relative z-10 px-3 sm:px-4 py-14 sm:py-32 overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
