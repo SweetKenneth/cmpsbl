@@ -5338,7 +5338,7 @@ export async function executeProactiveMaintenanceEngine(
   const startTime = performance.now();
   const steps: SynergyStepResult[] = [];
   
-  steps.push({ module: 'MODERNIZER', success: true, data: { codeAnalyzed: true, hotspots: 6 }, durationMs: 150 });
+  steps.push({ module: 'EVOLUTION', success: true, data: { codeAnalyzed: true, hotspots: 6 }, durationMs: 150 });
   steps.push({ module: 'VISION', success: true, data: { degradationDetected: 3, severity: 'low' }, durationMs: 100 });
   steps.push({ module: 'BRAIN', success: true, data: { failureHistory: 12, riskScore: 0.23 }, durationMs: 80 });
   
