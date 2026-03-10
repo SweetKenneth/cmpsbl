@@ -732,7 +732,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'recursive-architecture-refactorer',
     name: 'Autonomous Architecture Refactorer',
     artifactType: 'capability',
-    modules: ['SYSTEM', 'CORTEX', 'MODERNIZER', 'VISION'],
+    modules: ['SYSTEM', 'CORTEX', 'EVOLUTION', 'VISION'],
     classification: 'architecture',
     reason: 'System rewrites its own architecture for optimal performance',
     enables: 'Dynamic topology optimization, non-disruptive self-refactoring',
