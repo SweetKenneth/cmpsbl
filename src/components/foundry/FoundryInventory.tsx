@@ -146,14 +146,30 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
   return (
     <div>
       {/* Summary */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/10">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border/10">
         <div className="text-xs font-mono text-muted-foreground">
           {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          {hasAnyPricing && (
+            <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+              <DollarSign className="w-3 h-3 text-neon-green" />
+              Resale total: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
+            </div>
+          )}
           <div className="text-xs font-mono text-muted-foreground">
-            Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
+          {onRepriceAll && (
+            <button
+              onClick={onRepriceAll}
+              disabled={repricing}
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+            >
+              {repricing ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
+              {repricing ? 'Repricing...' : 'Reprice All'}
+            </button>
+          )}
           {getVaultLimits(subscriptionTier).exportEnabled ? (
             <button
               onClick={handleExportVault}
