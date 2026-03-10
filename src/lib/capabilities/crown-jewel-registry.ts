@@ -1719,8 +1719,8 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     crown_jewel: true, admin_only: true,
   },
   {
-    id: 'cj2-modernizer-shadow-evolution', name: 'Shadow Evolution Engine',
-    artifactType: 'capability', modules: ['MODERNIZER', 'CORTEX', 'SANDBOX'],
+    id: 'cj2-evolution-shadow-evolution', name: 'Shadow Evolution Engine',
+    artifactType: 'capability', modules: ['EVOLUTION', 'CORTEX', 'SANDBOX'],
     classification: 'architecture',
     reason: 'Runs parallel shadow evolutions that never touch production until validated',
     enables: 'Risk-free evolution exploration in isolated cognitive sandboxes',
