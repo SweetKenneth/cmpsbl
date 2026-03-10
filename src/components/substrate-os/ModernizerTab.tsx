@@ -185,14 +185,14 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
 
   // Fetch system status
   const { data: status, isLoading: statusLoading } = useQuery({
-    queryKey: ['modernizer-status'],
+    queryKey: ['evolution-status'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'status' }
+        body: { module: 'evolution', action: 'status' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
-        throw new Error((data as any)?.error_message || (data as any)?.error || 'Modernizer status failed');
+        throw new Error((data as any)?.error_message || (data as any)?.error || 'Evolution status failed');
       }
       return data;
     },
