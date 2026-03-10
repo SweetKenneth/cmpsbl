@@ -10673,7 +10673,7 @@ async function handleSystem(
     case "health": {
       // Comprehensive health diagnostics with circuit breaker status - ALL 40 NODES
       
-      // Ensure all 38 nodes are in state for health check
+      // Ensure all 40 nodes are in state for health check
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
