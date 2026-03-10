@@ -2405,7 +2405,7 @@ export async function executeGoalDecomposition(
 
 /**
  * Autonomous Repair Executor
- * MODERNIZER + VISION + CORTEX + DEFENSE → Self-healing
+ * EVOLUTION + VISION + CORTEX + DEFENSE → Self-healing
  */
 export async function executeAutonomousRepair(
   context: SynergyExecutionContext
