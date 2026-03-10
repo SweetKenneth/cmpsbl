@@ -477,7 +477,13 @@ const prompt = userMessage + context.contextString;`,
                 <InteractivePlayground />
               </motion.div>
             </div>
+            </div>
           </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            FINAL CTA
+            ══════════════════════════════════════════════════════════════════════ */}
         <section className="py-20">
           <div className="container mx-auto px-4">
             <motion.div 
