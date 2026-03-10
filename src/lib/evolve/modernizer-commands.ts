@@ -60,7 +60,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.jobs — List all evolution runs
+   * evolution.jobs — List all evolution runs
    */
   async jobs(limit = 10): Promise<CommandResult> {
     const activeRun = await evolutionRuns.getActiveRun();
