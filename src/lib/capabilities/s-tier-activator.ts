@@ -366,6 +366,7 @@ export function activateWaveOnly(wave: ActivationWave): ActivationResult {
     8: WAVE_8_ACTIVATIONS,
     9: WAVE_9_ACTIVATIONS,
     10: WAVE_10_ACTIVATIONS,
+    11: WAVE_11_ACTIVATIONS,
   };
   return activateWave(wave, waveMap[wave]);
 }
@@ -383,7 +384,7 @@ export function getActivationLog(): ActivationResult[] {
 export function getSTierCapabilityCount(): {
   wave1: number; wave2: number; wave3: number; wave4: number; wave5: number;
   wave6: number; wave7: number; wave8: number; wave9: number; wave10: number;
-  total: number;
+  wave11: number; total: number;
 } {
   return {
     wave1: WAVE_1_ACTIVATIONS.length,
@@ -396,10 +397,11 @@ export function getSTierCapabilityCount(): {
     wave8: WAVE_8_ACTIVATIONS.length,
     wave9: WAVE_9_ACTIVATIONS.length,
     wave10: WAVE_10_ACTIVATIONS.length,
+    wave11: WAVE_11_ACTIVATIONS.length,
     total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length +
       WAVE_4_ACTIVATIONS.length + WAVE_5_ACTIVATIONS.length + WAVE_6_ACTIVATIONS.length +
       WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length + WAVE_9_ACTIVATIONS.length +
-      WAVE_10_ACTIVATIONS.length,
+      WAVE_10_ACTIVATIONS.length + WAVE_11_ACTIVATIONS.length,
   };
 }
 
@@ -415,4 +417,5 @@ export const S_TIER_WAVES = {
   WAVE_8: WAVE_8_ACTIVATIONS,
   WAVE_9: WAVE_9_ACTIVATIONS,
   WAVE_10: WAVE_10_ACTIVATIONS,
+  WAVE_11: WAVE_11_ACTIVATIONS,
 } as const;
