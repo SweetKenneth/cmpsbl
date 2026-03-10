@@ -698,7 +698,7 @@ class SubstrateClient {
     // Unified engine replacing scan, plans, review, verify, analyze
     
     /**
-     * Unified Evolution Cycle - Single authoritative modernizer workflow
+     * Unified Evolution Cycle - Single authoritative evolution workflow
      * Replaces: scan, plans, review, verify, analyze
      * 
      * Usage:
@@ -745,13 +745,13 @@ class SubstrateClient {
             status: state.current_plan.phase,
             created_at: state.current_plan.created_at,
           }],
-          message: 'Use `modernizer.evolve` for the unified Evolution Cycle workflow.',
+          message: 'Use `evolution.evolve` for the unified Evolution Cycle workflow.',
         };
       }
       return {
         success: true,
         plans: [],
-        message: 'No active evolution plan. Run `modernizer.evolve` to start.',
+        message: 'No active evolution plan. Run `evolution.evolve` to start.',
       };
     },
     

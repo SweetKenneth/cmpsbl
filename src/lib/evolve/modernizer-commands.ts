@@ -1,6 +1,6 @@
 /**
- * Modernizer Commands — Terminal & API Command Interface
- * Unified command layer for evolution operations
+ * Evolution Commands — Terminal & API Command Interface
+ * Unified command layer for evolution operations (formerly modernizer-commands)
  */
 
 import { evolutionRuns, type EvolutionRun, type CreateRunOptions } from './evolution-runs';
@@ -42,7 +42,7 @@ export const modernizerCommands = {
       return {
         success: true,
         data: { status: 'idle', message: 'No active evolution' },
-        formatted: '✅ Modernizer idle — no active evolution',
+        formatted: '✅ EVOLUTION idle — no active evolution',
       };
     }
 

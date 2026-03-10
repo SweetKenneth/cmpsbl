@@ -32,16 +32,16 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
   { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
   
-  // Modernizer shortcuts (v10.5.4 ARCHITECT Evolution Cycle)
-  { alias: 'me', expansion: 'modernizer.evolve', description: 'Evolution Cycle' },
-  { alias: 'ms', expansion: 'modernizer.evolve status', description: 'Evolution status' },
-  { alias: 'ma', expansion: 'modernizer.evolve shadow', description: 'Apply shadow' },
-  { alias: 'mp', expansion: 'modernizer.evolve production', description: 'Apply production' },
+  // Evolution shortcuts (EVOLUTION node — formerly Modernizer)
+  { alias: 'me', expansion: 'evolution.evolve', description: 'Evolution Cycle' },
+  { alias: 'ms', expansion: 'evolution.evolve status', description: 'Evolution status' },
+  { alias: 'ma', expansion: 'evolution.evolve shadow', description: 'Apply shadow' },
+  { alias: 'mp', expansion: 'evolution.evolve production', description: 'Apply production' },
   
   // Omega Observer shortcuts (v1.0.0)
-  { alias: 'mv', expansion: 'modernizer.verify', description: 'Eligibility gate' },
-  { alias: 'mf', expansion: 'modernizer.forensics', description: 'Historical forensics' },
-  { alias: 'mo', expansion: 'modernizer.omega', description: 'Omega observer' },
+  { alias: 'mv', expansion: 'evolution.verify', description: 'Eligibility gate' },
+  { alias: 'mf', expansion: 'evolution.forensics', description: 'Historical forensics' },
+  { alias: 'mo', expansion: 'evolution.omega', description: 'Omega observer' },
   
   // Defense shortcuts
   { alias: 'dp', expansion: 'defense.posture', description: 'Security posture' },

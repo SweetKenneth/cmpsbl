@@ -203,7 +203,7 @@ function getRelatedFiles(module: string, changeType: string): string[] {
     decode: ['src/components/substrate-os/DecodeTab.tsx', 'src/hooks/useSubstrate.ts'],
     nexus: ['src/lib/substrate.ts', 'src/components/substrate-os/NexusTab.tsx'],
     vision: ['src/components/substrate-os/VisionTab.tsx', 'src/hooks/useSubstrate.ts'],
-    modernizer: ['src/pages/Modernizer.tsx', 'src/components/modernizer/'],
+    evolution: ['src/lib/evolution-mesh/', 'src/hooks/substrate/useEvolution.ts'],
     system: ['src/lib/substrate.ts', 'src/config/'],
     core: ['src/lib/codeagent/', 'src/config/'],
   };
