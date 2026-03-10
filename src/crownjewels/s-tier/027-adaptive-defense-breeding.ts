@@ -145,12 +145,15 @@ export function createDefenseBreeder(config: {
     const allRules = [...parentA.rules, ...parentB.rules];
     for (const rule of allRules) {
       if (Math.random() < 0.6) { // 60% chance to inherit each rule
-        const mutatedRule = { ...rule, source: 'bred' as const };
+        const shouldMutate = Math.random() < breedingRate;
+        const mutatedRule: DefenseRule = {
+          ...rule,
+          source: shouldMutate ? 'mutated' : 'bred',
+        };
         // Apply mutation
-        if (Math.random() < breedingRate) {
+        if (shouldMutate) {
           mutatedRule.sensitivity = Math.max(0, Math.min(1, mutatedRule.sensitivity + (Math.random() - 0.5) * 0.2));
           mutatedRule.confidence = Math.max(0.1, Math.min(1, mutatedRule.confidence + (Math.random() - 0.5) * 0.1));
-          mutatedRule.source = 'mutated';
         }
         childRules.push(mutatedRule);
       }
