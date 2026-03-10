@@ -446,8 +446,8 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   const sealSVG = generateSealSVG(input.score, tier);
   const deepFunctionalContent = getDeepFunctionalExplanation(input.name, input.systemChain);
 
-  const tierAccent = tier === 'Apex' ? '#c9a84c' : tier === 'Enterprise' ? '#94a3b8' : tier === 'Architect' ? '#a78bfa' : '#6ee7b7';
-  const tierAccentDim = tier === 'Apex' ? 'rgba(201,168,76,0.08)' : tier === 'Enterprise' ? 'rgba(148,163,184,0.08)' : tier === 'Architect' ? 'rgba(167,139,250,0.08)' : 'rgba(110,231,183,0.08)';
+  const tierAccent = tier === 'Apex' ? '#c9a84c' : tier === 'Mythic' ? '#a855f7' : tier === 'Relic' ? '#f59e0b' : tier === 'Prime' ? '#94a3b8' : tier === 'Mint' ? '#6ee7b7' : '#71717a';
+  const tierAccentDim = tier === 'Apex' ? 'rgba(201,168,76,0.08)' : tier === 'Mythic' ? 'rgba(168,85,247,0.08)' : tier === 'Relic' ? 'rgba(245,158,11,0.08)' : tier === 'Prime' ? 'rgba(148,163,184,0.08)' : tier === 'Mint' ? 'rgba(110,231,183,0.08)' : 'rgba(113,113,122,0.08)';
 
   return `<!DOCTYPE html>
 <html lang="en">
