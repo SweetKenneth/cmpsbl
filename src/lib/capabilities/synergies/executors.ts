@@ -4393,10 +4393,10 @@ export async function executeFullStackEvolution(
     breakingChanges: 0,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: impact,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   // Step 3: BRAIN - Historical outcomes
