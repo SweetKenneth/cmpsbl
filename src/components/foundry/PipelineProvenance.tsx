@@ -346,6 +346,7 @@ export function PipelineProvenance({ pipeline, onClose, subscriptionTier }: Prop
                   category: null,
                   fingerprint,
                 }}
+                subscriptionTier={subscriptionTier}
               />
             </div>
           </DrawerContent>
