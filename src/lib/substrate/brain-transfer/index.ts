@@ -1172,7 +1172,7 @@ export async function checkDependencyHealth(module: TransferModule): Promise<Dep
 export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
