@@ -53,7 +53,7 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     model: 'groq/llama-3.3-70b-versatile',
     rpm: 24, rpd: 800, tpm: 12000,
     latencyClass: 'ultra',
-    affinities: ['reasoning', 'code', 'generation'],
+    affinities: ['reasoning', 'code', 'generation', 'pricing'],
     priority: 1,
     costPerMToken: 0,
   },
