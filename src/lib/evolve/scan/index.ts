@@ -281,7 +281,7 @@ function determineNextAction(
   
   // If plan is pending review
   if (planResult?.plan.status === 'pending_review') {
-    return `Plan ${planResult.plan.plan_id.substring(0, 8)} requires review. Run 'modernizer.review ${planResult.plan.plan_id.substring(0, 8)}' to inspect.`;
+    return `Plan ${planResult.plan.plan_id.substring(0, 8)} requires review. Run 'evolution.review ${planResult.plan.plan_id.substring(0, 8)}' to inspect.`;
   }
   
   // If plan is blocked, explain why
