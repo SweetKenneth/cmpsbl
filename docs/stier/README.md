@@ -15,6 +15,13 @@ This document set catalogs every piece of software the CMPSBL substrate has auto
 - **Discovery time** — how long the substrate took to find and validate it
 - **System integration** — where it's installed and what it connects to
 - **What it unlocks** — the strategic value for CMPSBL
+- **Deployment mode** — standalone artifact or bundled runtime dependency
+- **Competitive landscape** — what competitors offer similar software and how CMPSBL differs
+- **Ideal buyers** — who would purchase this as a licensed artifact
+- **Suggested resell price** — determined by the CMPSBL consensus pricing engine
+- **Pricing engine** — how the price was calculated (blended valuation formula)
+- **Ideal marketplaces** — recommended distribution channels by tier
+- **Recap** — one-paragraph executive summary
 
 ## Ranking Methodology
 
@@ -26,6 +33,24 @@ Usefulness factors:
 3. **Competitive moat** — Is this hard to replicate and defensible?
 4. **Breadth of use** — How many other capabilities depend on it?
 5. **Customer value** — Does it directly improve the end-user experience?
+
+## Pricing Engine
+
+All suggested resell prices are computed by the **CMPSBL Blended Valuation Engine (v3.1.0)**:
+
+```
+FinalPrice = (CJPIValue × 0.75) + (NormalizedInternal × 0.25)
+```
+
+Where:
+- **CJPIValue** = ExponentialBase × (1 + (TierMultiplier - 1) × 0.15)
+- **ExponentialBase** = 5000 + ((CJPI - 60) / 40)^2.5 × 995,000
+- **NormalizedInternal** = estimateMarketValue() × 0.1
+- **Category multipliers** apply (Security 1.8×, Governance 1.6×, Cognitive 1.5×, etc.)
+
+Tier multipliers: Apex (4.0×), Mythic (3.0×), Relic (2.0×), Prime (1.5×), Mint (1.2×), Raw (1.0×)
+
+Public marketplace items are normalized to $19–$299 tiers. Off-menu items (recursive, self-improving) are licensed on request.
 
 ## Document Set
 
