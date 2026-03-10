@@ -37,7 +37,7 @@ const MODULE_PRIORITIES: Record<string, ModulePriority> = {
   DECODE: 'important',
   RIPPLE: 'important',
   IDENTITY: 'important',
-  MODERNIZER: 'standard',
+  EVOLUTION: 'standard',
   INTEGRATION: 'standard',
   CORTEX: 'standard',
   MEMORY: 'standard',

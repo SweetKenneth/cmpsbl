@@ -557,7 +557,7 @@ function inferAcceptsForModule(module: string): string[] {
     NEXUS: ['model', 'task_type', 'priority'],
     DREAM: ['topic', 'seed', 'mode'],
     ENCODE: ['context', 'pattern', 'module'],
-    MODERNIZER: ['plan_id', 'module', 'operation'],
+    EVOLUTION: ['plan_id', 'module', 'operation'],
     SYSTEM: ['module', 'metric', 'check_type'],
     ACCESS: ['actor_id', 'api_key_id', 'module'],
     RIPPLE: ['webhook_id', 'event_type', 'target_url'],

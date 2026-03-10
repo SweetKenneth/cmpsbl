@@ -114,7 +114,7 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   RIPPLE: ['status', 'propagate', 'subscribe', 'broadcast', 'history'],
   ACCESS: ['status', 'register', 'create_key', 'validate', 'entitlements', 'usage'],
   SYSTEM: ['status', 'boot', 'shutdown', 'config', 'capabilities', 'scan_adapt'],
-  MODERNIZER: ['status', 'scan', 'evolve', 'diff', 'review', 'receipts'],
+  EVOLUTION: ['status', 'scan', 'evolve', 'diff', 'review', 'receipts'],
   INTEGRATION: ['status', 'connect', 'disconnect', 'list', 'health'],
   INCLUSIVE: ['status', 'scan', 'fix', 'report', 'guidelines'],
   CORTEX: ['status', 'propose', 'evaluate', 'apply', 'audit', 'learn'],

@@ -1119,7 +1119,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Safe feature releases with automatic guardrails',
     status: 'active',
-    emergentFrom: 'modernizer-flags-v7',
+    emergentFrom: 'evolution-flags-v7',
     riskLevel: 'medium',
     executionMode: 'streaming',
   },

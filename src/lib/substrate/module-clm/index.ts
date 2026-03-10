@@ -503,7 +503,7 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
     kpis: ['pii_detection_rate', 'false_negative_rate', 'privacy_score'],
     selfReflectionPrompt: 'As the PHANTOM module, how can I improve PII detection accuracy and privacy-preserving analytics?',
   },
-  // evolution entry exists above (migrated from modernizer)
+  // evolution entry exists above
   shadow: {
     moduleId: 'shadow', displayName: 'SHADOW',
     learningTopics: ['Shadow execution fidelity', 'Divergence analysis', 'Production parity', 'Metric capture accuracy'],

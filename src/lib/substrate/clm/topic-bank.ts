@@ -263,10 +263,10 @@ const CORE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'>[] = [
     confidenceLevel: 0,
   },
   // ═══════════════════════════════════════════════════════════════════════════
-  // MODERNIZER — Safe Code Evolution & Shadow Apply
+  // EVOLUTION — Safe Code Evolution & Shadow Apply
   // ═══════════════════════════════════════════════════════════════════════════
   {
-    id: 'modernizer-evolution',
+    id: 'evolution-shadow-apply',
     name: 'Shadow-mode code apply, diff validation, regression prevention, safe evolution',
     category: 'core_curriculum',
     weight: 0.72,

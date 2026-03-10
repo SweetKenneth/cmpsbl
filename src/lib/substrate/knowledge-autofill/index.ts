@@ -44,7 +44,7 @@ export async function identifyAndScheduleGaps(): Promise<AutoFillSession[]> {
       access: ['API gateway rate limiting strategies', 'developer portal best practices'],
       integration: ['system integration reliability patterns', 'webhook management best practices'],
       system: ['autonomous system health monitoring', 'self-healing infrastructure patterns'],
-      modernizer: ['safe automated code evolution techniques', 'shadow deployment validation strategies'],
+      evolution: ['safe automated code evolution techniques', 'shadow deployment validation strategies'],
       inclusive: ['WCAG 2.2 automated compliance checking', 'accessibility testing automation'],
       cortex: ['AI orchestration and task decomposition', 'multi-agent coordination patterns'],
       core: ['substrate kernel architecture patterns', 'module lifecycle management'],

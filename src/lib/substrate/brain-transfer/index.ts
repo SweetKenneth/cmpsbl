@@ -780,7 +780,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     { title: 'Isolation Guarantees', content: 'Sandboxes run with strict CSP headers and no network access by default. File system is copy-on-write. Memory limited to 256MB. CPU limited to 30s per execution. Auto-teardown after TTL.', priority: 97 },
     { title: 'Speculative Execution Protocol', content: 'Before any production code change, run in sandbox first. Compare output against expected behavior. If sandbox execution fails, block production promotion. Log all sandbox runs for AUDIT.', priority: 95 },
     { title: 'Sandbox Pool Management', content: 'Pre-warm 3 sandbox environments for instant availability. Recycle sandboxes after each use (full state wipe). Monitor pool utilization and scale up during peak hours.', priority: 90 },
-    { title: 'Canary Testing Integration', content: 'MODERNIZER uses SANDBOX for canary testing before shadow-apply. Run evolved code in sandbox with production-like inputs. Compare output quality scores before promoting.', priority: 93 },
+    { title: 'Canary Testing Integration', content: 'EVOLUTION uses SANDBOX for canary testing before shadow-apply. Run evolved code in sandbox with production-like inputs. Compare output quality scores before promoting.', priority: 93 },
     { title: 'Resource Leak Detection', content: 'Monitor sandbox memory and CPU usage during execution. Flag executions that approach limits. Auto-kill runaway processes after 30s. Report resource leaks to VISION for trending.', priority: 91 },
   ];
 

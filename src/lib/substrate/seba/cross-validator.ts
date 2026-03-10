@@ -2,7 +2,7 @@
  * SEBA Cross-Validator — v1.0.0
  * 
  * Post-execution verification engine that compares predicted impact vs actual delta.
- * Closes the loop between SEBA's proposals and Modernizer's execution.
+ * Closes the loop between SEBA's proposals and EVOLUTION's execution.
  * 
  * Also implements proposal chaining — dependent proposals that execute sequentially.
  */
