@@ -1650,7 +1650,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
   },
   {
     id: 'cj2-system-topology-mutation', name: 'Topology Mutation Engine',
-    artifactType: 'capability', modules: ['SYSTEM', 'CORTEX', 'MODERNIZER'],
+    artifactType: 'capability', modules: ['SYSTEM', 'CORTEX', 'EVOLUTION'],
     classification: 'architecture',
     reason: 'Autonomously restructures module topology for optimal information flow',
     enables: 'Self-reorganizing architecture that adapts module connections at runtime',
