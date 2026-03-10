@@ -66,7 +66,7 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   brain: 'src/hooks/substrate/useBrain.ts',
   vision: 'src/hooks/substrate/useVision.ts',
   cortex: 'src/hooks/substrate/useCortex.ts',
-  modernizer: 'src/hooks/substrate/useModernizer.ts',
+  evolution: 'src/hooks/substrate/useEvolution.ts',
   decode: 'src/hooks/substrate/useDecode.ts',
   defense: 'src/hooks/substrate/useDefense.ts',
   nexus: 'src/hooks/substrate/useNexus.ts',
