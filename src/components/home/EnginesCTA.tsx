@@ -93,7 +93,7 @@ export function EnginesCTA() {
                   <span className="text-3xl sm:text-4xl font-black text-primary">40% off</span>
                   <span className="text-sm text-muted-foreground">bundled w/ agent</span>
                 </div>
-                <span className="text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199 standalone · Lifetime license</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199+ standalone · Lifetime license</span>
               </div>
             </div>
 
