@@ -30,9 +30,9 @@ interface PricingProvider {
 const PRICING_PROVIDERS: PricingProvider[] = [
   {
     id: 'claude-haiku',
-    name: 'Claude Haiku',
+    name: 'Claude Haiku 4.5',
     envKey: 'ANTHROPIC_API_KEY',
-    model: 'claude-3-5-haiku-20241022',
+    model: 'claude-haiku-4-5',
     call: async (prompt: string, apiKey: string) => {
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -42,7 +42,7 @@ const PRICING_PROVIDERS: PricingProvider[] = [
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-3-5-haiku-20241022",
+          model: "claude-haiku-4-5",
           system: SYSTEM_PROMPT,
           messages: [{ role: "user", content: prompt }],
           max_tokens: 800,
@@ -115,9 +115,9 @@ const PRICING_PROVIDERS: PricingProvider[] = [
   },
   {
     id: 'openrouter-qwen',
-    name: 'OpenRouter Qwen 235B',
+    name: 'OpenRouter Qwen3 80B',
     envKey: 'OPENROUTER_API_KEY',
-    model: 'qwen/qwen3-235b-a22b:free',
+    model: 'qwen/qwen3-next-80b-a3b-instruct:free',
     call: async (prompt: string, apiKey: string) => {
       const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -128,7 +128,7 @@ const PRICING_PROVIDERS: PricingProvider[] = [
           "X-Title": "CMPSBL Pricing Engine",
         },
         body: JSON.stringify({
-          model: "qwen/qwen3-235b-a22b:free",
+          model: "qwen/qwen3-next-80b-a3b-instruct:free",
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: prompt + "\n\nIMPORTANT: Return ONLY the JSON object, no thinking tags, no explanation." },
@@ -144,7 +144,6 @@ const PRICING_PROVIDERS: PricingProvider[] = [
     },
   },
 ];
-
 // ── Prompt Builder ──
 
 function buildPricingPrompt(artifact: {
@@ -159,32 +158,44 @@ function buildPricingPrompt(artifact: {
   exportTargets?: string[];
   runtimeType?: string;
 }): string {
-  return `Analyze this software artifact for commercialization pricing:
+  // Convert internal value to a qualitative signal to prevent anchoring bias
+  const complexitySignal = (artifact.internalValue || 0) > 10000 ? 'very high'
+    : (artifact.internalValue || 0) > 5000 ? 'high'
+    : (artifact.internalValue || 0) > 1000 ? 'moderate'
+    : 'standard';
+
+  return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
 
 ARTIFACT: ${artifact.name}
-DESCRIPTION: ${artifact.description || 'Crystallized software pipeline'}
-MODULES: ${artifact.modules.join(', ')}
-CJPI SCORE: ${artifact.score}/100
+DESCRIPTION: ${artifact.description || 'Crystallized software pipeline / reusable code module'}
+MODULES: ${artifact.modules.join(', ')} (${artifact.modules.length} total)
+CJPI SCORE: ${artifact.score}/100 (higher = more sophisticated)
 TIER: ${artifact.tier}
 CATEGORY: ${artifact.category || 'general'}
-INTERNAL VALUE ESTIMATE: $${artifact.internalValue || 0}
+ENGINEERING COMPLEXITY: ${complexitySignal}
 HARDWARE EXPORT: ${artifact.hasHardwareExport ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(artifact.exportTargets || ['source']).join(', ')}
 RUNTIME: ${artifact.runtimeType || 'JavaScript/TypeScript'}
 
+CRITICAL PRICING GUIDELINES — follow these ranges strictly:
+- A single reusable module/library: $10-$80
+- A multi-module developer toolkit (2-5 modules): $30-$200
+- A comprehensive framework or platform (5+ modules): $100-$500
+- Only very large enterprise infrastructure should exceed $500
+- Do NOT exceed $1,000 unless the artifact is a complete enterprise platform with 8+ modules
+- Think about what a solo developer or small team would actually pay on Gumroad
+
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
-  "price_range_low": number,
-  "price_range_high": number,
-  "estimated_mid_price": number,
+  "price_range_low": number (realistic minimum retail price in USD),
+  "price_range_high": number (realistic maximum retail price in USD),
+  "estimated_mid_price": number (best single retail price in USD),
   "market_category": "string — most fitting software market category",
-  "comparable_product_types": "string — 1-2 sentences on comparable products/tools",
-  "suggested_marketplaces": ["array of 2-4 best-fit platforms"],
+  "comparable_product_types": "string — 1-2 sentences naming real comparable products at similar price points",
+  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace"],
   "pricing_confidence": number between 0 and 1,
   "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
-}
-
-Bias toward realistic indie/solo-developer pricing for tools and libraries. Enterprise pricing only if artifact complexity warrants it.`;
+}`;
 }
 
 // ── JSON Parser (handles markdown fences, thinking tags) ──

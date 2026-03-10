@@ -98,10 +98,10 @@ export default function PricingMethod() {
             </p>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
-                { name: 'Claude Haiku', desc: 'Anthropic\'s efficient analyst — strong on nuanced market categorization' },
+                { name: 'Claude Haiku 4.5', desc: 'Anthropic\'s efficient analyst — strong on nuanced market categorization' },
                 { name: 'GPT-4o-mini', desc: 'OpenAI\'s low-cost model — excellent structured reasoning' },
                 { name: 'Llama 3.3 70B', desc: 'Groq\'s ultra-fast open model — fast, grounded estimates' },
-                { name: 'Qwen 235B', desc: 'OpenRouter\'s free tier — independent cross-validation' },
+                { name: 'Qwen3 80B', desc: 'OpenRouter\'s free tier — independent cross-validation' },
               ].map(m => (
                 <div key={m.name} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
                   <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />

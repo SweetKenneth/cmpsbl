@@ -173,10 +173,10 @@ export function PricingEvidencePanel({
 
 function providerDisplayName(id: string): string {
   switch (id) {
-    case 'claude-haiku': return 'Claude Haiku';
+    case 'claude-haiku': return 'Claude Haiku 4.5';
     case 'openai-mini': return 'OpenAI GPT-4o-mini';
     case 'groq-llama': return 'Groq Llama 3.3';
-    case 'openrouter-qwen': return 'OpenRouter Qwen';
+    case 'openrouter-qwen': return 'OpenRouter Qwen3 80B';
     default: return id;
   }
 }
