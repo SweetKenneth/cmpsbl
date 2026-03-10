@@ -902,7 +902,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'evolution_engine',
     name: 'Evolution Engine',
     artifactType: 'engine',
-    modules: ['MODERNIZER', 'DREAM', 'BRAIN'],
+    modules: ['EVOLUTION', 'DREAM', 'BRAIN'],
     classification: 'architecture',
     reason: 'Self-improvement through continuous proposals and nocturnal optimization',
     enables: 'The system that improves the system — continuous evolution',
