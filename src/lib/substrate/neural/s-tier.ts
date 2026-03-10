@@ -5,7 +5,8 @@
 
 export * from '@/crownjewels/s-tier/030-semantic-knowledge-graph';
 export * from '@/crownjewels/s-tier/073-embedding-store';
-export * from '@/crownjewels/s-tier/094-embedding-similarity';
+// embedding-similarity has overlapping SimilarityResult with embedding-store
+export { EmbeddingSimilarityEngine } from '@/crownjewels/s-tier/094-embedding-similarity';
 export * from '@/crownjewels/s-tier/116-recursive-meta-learning';
 export * from '@/crownjewels/s-tier/130-adaptive-product-brain';
 export * from '@/crownjewels/s-tier/139-recursive-cognitive-bootstrapping';
