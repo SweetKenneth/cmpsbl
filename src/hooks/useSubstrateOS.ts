@@ -119,7 +119,7 @@ export function useDreamStatusOS() {
   });
 }
 
-/** @deprecated Use useEvolutionStatusOS — MODERNIZER is now EVOLUTION */
+/** @deprecated Use useEvolutionStatusOS — EVOLUTION node */
 export function useModernizerStatusOS() {
   return useEvolutionStatusOS();
 }
