@@ -10506,8 +10506,8 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
-  // 38-node architecture across 12 sectors
-  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
+  // 40-node architecture across 12 sectors
+  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense', 'engineer', 'atlas'];
 
   switch (action) {
     case "status": {
