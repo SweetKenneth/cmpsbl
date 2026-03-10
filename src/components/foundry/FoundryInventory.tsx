@@ -90,6 +90,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
   const [isExporting, setIsExporting] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);
   const [confirmRemove, setConfirmRemove] = useState<InventoryItem | null>(null);
+  const [expandedPricing, setExpandedPricing] = useState<string | null>(null);
 
   const handleRemove = useCallback(async () => {
     if (!confirmRemove || !onRemove) return;
