@@ -89,7 +89,7 @@ const STARTER_RECIPES: Recipe[] = [
     steps: [
       { id: "1", module: "brain", action: "reflect", params: {}, description: "Synthesize learnings" },
       { id: "2", module: "dream", action: "cycle", params: {}, description: "Run dream cycle" },
-      { id: "3", module: "modernizer", action: "scan", params: { module: "brain" }, description: "Scan for improvements" },
+      { id: "3", module: "evolution", action: "scan", params: { module: "brain" }, description: "Scan for improvements" },
       { id: "4", module: "system", action: "backup", params: {}, description: "Backup before mutations" },
     ]
   },
