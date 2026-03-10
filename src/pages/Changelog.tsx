@@ -578,7 +578,7 @@ const stratumInfra: Specimen[] = [
     ],
     phenotype: [
       "The substrate learns autonomously and continuously — perpetual cognition without human presence",
-      "Brain knowledge flows to specialized modules for domain-specific recall",
+      "Brain knowledge flows to specialized nodes for domain-specific recall",
       "Memory tiers self-manage — no manual intervention for promotion or pruning",
     ],
     affectedNodes: ["BRAIN", "MEMORY", "NEXUS"],
