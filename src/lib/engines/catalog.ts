@@ -139,7 +139,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "automaton", codename: "AUTOMATON", tagline: "Workflow Automation Engine",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgjQ7FtTiAL4aO0YcTEEh", icon: Cog, color: "38 90% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "AUTOMATON turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation that handles the boring stuff so your team handles the brilliant stuff.",
