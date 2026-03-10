@@ -17,6 +17,8 @@ import {
 } from '@/lib/substrate/economy-module/pricingGovernance';
 
 export type { PricingEvidence, ProviderEstimate };
+
+export interface CommercializationPricing {
   recommended_resale_price: number;
   indie_price: number;
   standard_price: number;
