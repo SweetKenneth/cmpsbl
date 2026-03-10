@@ -9,6 +9,8 @@ import { getStreamStats, getStreamHealth, getStreamBreakerState } from '../modul
 import { planStoreHealth } from '../plans/planStore';
 import { discussionHealth } from '../encode-module/discussion';
 import { getIroncladState } from '../ironclad/fabric';
+import { getDiscoveryHealth, getDiscoveryBreakerState } from '../intent-mesh/discovery-engine';
+import { isVaultLoaded, getVaultPrimitiveCount, getVaultDistribution } from '../vault-primitive-loader';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
