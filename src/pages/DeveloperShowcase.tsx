@@ -158,7 +158,7 @@ export default function DeveloperShowcase() {
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
               }}>Think, Remember, Dream</span>
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
               CMPSBL's 40-node substrate gives your applications persistent memory, 
               DREAM cycles for autonomous improvement, and intelligent multi-provider AI routing across 12 coordinated sectors.
             </p>
