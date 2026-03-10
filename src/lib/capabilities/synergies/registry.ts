@@ -971,7 +971,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'enhancer', required: true },
       { name: 'DEFENSE', role: 'validator', required: true },
