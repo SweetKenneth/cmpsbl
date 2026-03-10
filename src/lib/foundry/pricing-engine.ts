@@ -74,11 +74,14 @@ export async function priceArtifact(artifact: PricingArtifact): Promise<Commerci
     });
 
     if (error) throw error;
-    const result = data as CommercializationPricing;
+    const rawResult = data as CommercializationPricing;
+
+    // Apply blended formula: merge consensus with CJPI + internal signals
+    const result = applyBlendedFormula(rawResult, artifact);
 
     // Record through ECONOMY governance primitive
     try {
-      const evidence = result.pricing_evidence;
+      const evidence = rawResult.pricing_evidence;
       recordPricingRun({
         artifact_id: artifact.vault_id || 'unknown',
         artifact_name: artifact.pipeline_name,
