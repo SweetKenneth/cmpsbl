@@ -175,24 +175,29 @@ serve(async (req: Request) => {
       for (const art of artifacts.slice(0, 50)) {
         try {
           const result = await priceArtifact(art, supabase);
-          // Update DB
+          // Update DB — update both foundry_inventory and pipeline_vault
+          const pricingUpdate = {
+            recommended_resale_price: result.recommended_resale_price,
+            indie_price: result.indie_price,
+            standard_price: result.standard_price,
+            enterprise_price: result.enterprise_price,
+            estimated_market_range_low: result.estimated_market_range_low,
+            estimated_market_range_high: result.estimated_market_range_high,
+            pricing_confidence: result.pricing_confidence,
+            market_category: result.market_category,
+            comparable_summary: result.comparable_summary,
+            suggested_marketplaces: result.suggested_marketplaces,
+            commercialization_notes: result.commercialization_notes,
+            pricing_last_updated_at: new Date().toISOString(),
+            pricing_source: result.pricing_source,
+            pricing_source_version: '1.0.0',
+          };
           if (art.vault_id) {
-            await supabase.from('pipeline_vault').update({
-              recommended_resale_price: result.recommended_resale_price,
-              indie_price: result.indie_price,
-              standard_price: result.standard_price,
-              enterprise_price: result.enterprise_price,
-              estimated_market_range_low: result.estimated_market_range_low,
-              estimated_market_range_high: result.estimated_market_range_high,
-              pricing_confidence: result.pricing_confidence,
-              market_category: result.market_category,
-              comparable_summary: result.comparable_summary,
-              suggested_marketplaces: result.suggested_marketplaces,
-              commercialization_notes: result.commercialization_notes,
-              pricing_last_updated_at: new Date().toISOString(),
-              pricing_source: result.pricing_source,
-              pricing_source_version: '1.0.0',
-            }).eq('id', art.vault_id);
+            // Try foundry_inventory first (primary table), then pipeline_vault
+            await Promise.allSettled([
+              supabase.from('foundry_inventory').update(pricingUpdate).eq('id', art.vault_id),
+              supabase.from('pipeline_vault').update(pricingUpdate).eq('id', art.vault_id),
+            ]);
           }
           results.push({ id: art.vault_id, success: true, pricing: result });
         } catch (err) {
