@@ -176,7 +176,7 @@ export default function CurrentProjects() {
                 className="group h-full glass-edge card-lift cursor-pointer border-border/40 hover:border-primary/40 transition-all duration-300 overflow-hidden"
                 onClick={() => project.external ? window.open(project.href, "_blank") : navigate(project.href)}
               >
-                <CardContent className="p-6 flex flex-col h-full">
+                <CardContent className="p-4 sm:p-6 flex flex-col h-full">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
