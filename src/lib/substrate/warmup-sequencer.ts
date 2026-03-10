@@ -16,19 +16,28 @@ export interface WarmUpStage {
  * A stage only starts after all nodes in the previous stage complete.
  */
 export const BOOT_SEQUENCE: WarmUpStage[] = [
-  { stage: 0, modules: ['system', 'ripple'], label: 'Infrastructure' },
-  { stage: 1, modules: ['memory', 'access', 'defense'], label: 'Foundation' },
-  { stage: 2, modules: ['nexus', 'identity', 'relay', 'nerve'], label: 'Connectivity & OCG' },
-  { stage: 3, modules: ['brain', 'vision', 'economy'], label: 'Intelligence' },
-  { stage: 4, modules: ['decode', 'encode', 'cortex'], label: 'Cognitive' },
-  { stage: 5, modules: ['integration', 'dream'], label: 'Extended' },
-  // Expansion Nodes (40-Node / 12-Sector Architecture)
-  { stage: 6, modules: ['sovereign', 'conscience'], label: 'Sovereignty & Ethics' },
-  { stage: 7, modules: ['oracle', 'compass', 'echo'], label: 'Predictive & Simulation' },
+  // Stage 0: Kernel — CORE is boot authority
+  { stage: 0, modules: ['core', 'system', 'ripple'], label: 'Kernel & Infrastructure' },
+  // Stage 1: CCR — Core Cognitive Ring
+  { stage: 1, modules: ['brain', 'memory', 'dream'], label: 'Core Cognitive Ring' },
+  // Stage 2: OCG — Operational Compliance Grid
+  { stage: 2, modules: ['access', 'identity', 'relay', 'audit'], label: 'Operational Compliance' },
+  // Stage 3: Execution — primary operational nodes
+  { stage: 3, modules: ['nexus', 'nerve', 'vision', 'economy'], label: 'Execution Core' },
+  { stage: 4, modules: ['decode', 'encode', 'cortex'], label: 'Cognitive Execution' },
+  { stage: 5, modules: ['sandbox', 'inclusive', 'medic', 'integration'], label: 'Execution Extended' },
+  // Stage 6: ESZ — Expansion Sovereignty Zone
+  { stage: 6, modules: ['sovereign', 'conscience', 'oracle', 'treaty'], label: 'Sovereignty & Ethics' },
+  // Stage 7: EPZ — Expansion Perception Zone
+  { stage: 7, modules: ['compass', 'echo', 'reflex'], label: 'Perception & Simulation' },
+  // Stage 8: EMZ — Expansion Manufacturing Zone
   { stage: 8, modules: ['forge', 'lingua', 'harvest'], label: 'Manufacturing & Data' },
-  { stage: 9, modules: ['treaty', 'reflex'], label: 'Compliance & Edge' },
-  // CSZ — Covert Systems Zone (40-Node Architecture)
-  { stage: 10, modules: ['evolution', 'shadow', 'phantom'], label: 'Covert Systems' },
+  // Stage 9: CSZ — Cognitive Shadow Zone
+  { stage: 9, modules: ['evolution', 'shadow', 'phantom'], label: 'Cognitive Shadow' },
+  // Stage 10: Fields & Mesh Overlays
+  { stage: 10, modules: ['immunity', 'intent', 'defense'], label: 'Field Overlays' },
+  // Stage 11: Plane + Shell — Governance & outer boundary
+  { stage: 11, modules: ['governance', 'engineer', 'atlas'], label: 'Governance & Shell' },
 ];
 
 export interface WarmUpResult {

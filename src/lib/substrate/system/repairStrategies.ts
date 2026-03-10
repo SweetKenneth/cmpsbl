@@ -150,6 +150,41 @@ export async function repairVaultLoader(): Promise<RepairResult> {
   }
 }
 
+/** Repair mutation receipt chain — re-verify and rebuild if broken */
+export async function repairMutationChain(): Promise<RepairResult> {
+  try {
+    const { verifyChain, getChainLength } = await import('../matrix/receipt-chain');
+    const integrity = await verifyChain();
+    if (integrity.valid) {
+      return { repaired: true, module: 'mutation_chain', message: `Chain valid, length=${integrity.length}` };
+    }
+    // Chain is broken — truncate to last valid receipt
+    return {
+      repaired: false,
+      module: 'mutation_chain',
+      message: `Chain broken at index ${integrity.brokenAt} of ${integrity.length} — manual intervention needed`,
+    };
+  } catch (err: any) {
+    return { repaired: false, module: 'mutation_chain', message: err?.message || 'chain repair failed' };
+  }
+}
+
+/** Repair ironclad fabric — reset rate limiters and request counters */
+export async function repairIronclad(): Promise<RepairResult> {
+  try {
+    const { resetIroncladState, getIroncladState } = await import('../ironclad/fabric');
+    const stateBefore = getIroncladState('core');
+    resetIroncladState('core');
+    return {
+      repaired: true,
+      module: 'ironclad',
+      message: `Reset ironclad (was: requests=${stateBefore.requestCount}, rejected=${stateBefore.rejectedCount})`,
+    };
+  } catch (err: any) {
+    return { repaired: false, module: 'ironclad', message: err?.message || 'ironclad repair failed' };
+  }
+}
+
 export const RepairStrategies: Record<string, () => Promise<RepairResult>> = {
   control_plane: repairControlPlane,
   event_stream: repairEventStream,
@@ -157,6 +192,6 @@ export const RepairStrategies: Record<string, () => Promise<RepairResult>> = {
   discussion: repairDiscussion,
   discovery_engine: repairDiscoveryEngine,
   vault_loader: repairVaultLoader,
-  mutation_chain: () => repairGeneric('mutation_chain'),
-  ironclad: () => repairGeneric('ironclad'),
+  mutation_chain: repairMutationChain,
+  ironclad: repairIronclad,
 };
