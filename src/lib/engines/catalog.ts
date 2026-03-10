@@ -2,7 +2,7 @@
  * COMPOSABLE ENGINES Catalog
  * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
  * Tiered pricing: APEX $599 | ELITE $399 | CORE $199 | Free $0
- * Bundle discount: 40% off when purchased with another engine.
+ * Bundle discount: 40% off when bundled with an agent.
  * ARCHITECT uses annual subscription at $999/yr.
  */
 
