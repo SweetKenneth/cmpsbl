@@ -128,7 +128,7 @@ export function useEvolutionStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'evolution', 'status'],
-    queryFn: withGracefulFallback(() => modernizer.status()),
+    queryFn: withGracefulFallback(() => evolutionMod.status()),
     refetchInterval: pollingEnabled ? 30000 : false,
     enabled: pollingEnabled,
   });
