@@ -64,7 +64,7 @@ export const SUBSTRATE_MODULES = [
   // OCG Zones (Operational Compliance Grid — includes NERVE)
   'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
   // Absorbed (routes to evolution field)
-  'modernizer',
+  'evolution',
   // 9 Execution Modules (NERVE moved to OCG)
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
   'medic',
