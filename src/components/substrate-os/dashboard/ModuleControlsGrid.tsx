@@ -11,7 +11,7 @@ import {
 import { ModuleControlCard } from './ModuleControlCard';
 import { 
   useBrainStatusOS, useDefenseStatusOS, useNexusStatusOS, 
-  useDreamStatusOS, useModernizerStatusOS, useDecodeStatusOS,
+  useDreamStatusOS, useEvolutionStatusOS, useDecodeStatusOS,
   useCoreStatusOS, useRippleStatusOS, useAccessStatusOS,
   useIntegrationStatusOS, useVisionHealthOS, useSystemStatus,
   useCortexStatusOS, useInclusiveStatusOS,
