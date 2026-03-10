@@ -7,7 +7,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { isEditorPreviewEnv } from '@/lib/system/isLovableEditorPreviewEnv';
+import { isEditorPreviewEnv } from '@/lib/system/isEditorPreviewEnv';
 
 // ─── Bot Detection ───────────────────────────────────────────────────
 const BOT_UA_PATTERNS = [
