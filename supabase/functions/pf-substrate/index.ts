@@ -5569,8 +5569,8 @@ STYLE:
 - Use proper terminology — modules, engines, capabilities, meta-engines.
 - Structure with headers and code blocks when helpful.
 
-KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
-- All 38 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE).
+KNOWLEDGE (40-NODE / 12-SECTOR MATRIX):
+- All 40 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE), Atlas (ATLAS), Engineering (ENGINEER).
 - The substrate client API, edge function endpoints, Engine Bus dispatch patterns.
 - Memory is 4-tier: Hot (127 records/7d), Warm (2K/30d), Cold (200/forever), Legacy (unlimited/forever).
 - 675+ capabilities, NEXUS multi-provider routing, governed EVOLUTION lifecycle.
