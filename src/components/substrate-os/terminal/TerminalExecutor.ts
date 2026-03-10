@@ -2745,9 +2745,9 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } catch (err) {
         return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipts'}` };
       }
-    } else if (base === 'modernizer.receipt') {
+    } else if (base === 'evolution.receipt' || base === 'modernizer.receipt') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Run ID required\n  Usage: modernizer.receipt <run_id>' };
+        return { success: false, output: '▓ ERROR: Run ID required\n  Usage: evolution.receipt <run_id>' };
       }
       try {
         const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
