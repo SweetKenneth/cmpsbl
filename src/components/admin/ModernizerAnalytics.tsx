@@ -101,7 +101,7 @@ export const ModernizerAnalytics = () => {
         <div className="space-y-2">
           {runs.slice(0, 7).map((run) => (
             <div key={run.run_id} className="flex items-center justify-between py-2 border-b last:border-0">
-              <span className="text-sm truncate max-w-[200px]">{run.title || run.run_id.slice(0, 12)}</span>
+              <span className="text-sm truncate max-w-[200px]">{run.plan_id.slice(0, 12)}</span>
               <div className="flex items-center gap-4 text-sm">
                 <span className={`font-medium ${
                   run.phase === 'verified' ? 'text-emerald-500' :
