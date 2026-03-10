@@ -232,10 +232,53 @@ const WAVE_10_ACTIVATIONS = [
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 11 — CJPI 85 (Full Cognitive Autonomy & Meta-Systems)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_11_ACTIVATIONS = [
+  { module: 'system', capability: 'autonomous_operator', priority: 85, id: 'S-CJ107' },
+  { module: 'governance', capability: 'self_governance', priority: 85, id: 'S-CJ108' },
+  { module: 'mesh', capability: 'cognitive_mesh', priority: 85, id: 'S-CJ109' },
+  { module: 'brain', capability: 'brain_orchestrator', priority: 85, id: 'S-CJ110' },
+  { module: 'cortex', capability: 'cortex_engine', priority: 85, id: 'S-CJ111' },
+  { module: 'encode', capability: 'seba_engine', priority: 85, id: 'S-CJ112' },
+  { module: 'modernizer', capability: 'modernizer_core', priority: 85, id: 'S-CJ113' },
+  { module: 'evolution', capability: 'evolution_ab', priority: 85, id: 'S-CJ114' },
+  { module: 'evolution', capability: 'evolution_rollback', priority: 85, id: 'S-CJ115' },
+  { module: 'evolution', capability: 'evolution_sandbox', priority: 85, id: 'S-CJ116' },
+  { module: 'dream', capability: 'dream_pool_federation', priority: 85, id: 'S-CJ117' },
+  { module: 'medic', capability: 'self_repair_engine', priority: 85, id: 'S-CJ118' },
+  { module: 'cortex', capability: 'autonomous_workflow_composer', priority: 85, id: 'S-CJ119' },
+  { module: 'dream', capability: 'dream_lucidity_control', priority: 85, id: 'S-CJ120' },
+  { module: 'brain', capability: 'semantic_compression', priority: 85, id: 'S-CJ121' },
+  { module: 'dream', capability: 'dream_cross_pollination', priority: 85, id: 'S-CJ122' },
+  { module: 'cortex', capability: 'cognitive_load_balancer', priority: 85, id: 'S-CJ123' },
+  { module: 'encode', capability: 'graduated_autonomy', priority: 85, id: 'S-CJ124' },
+  { module: 'core', capability: 'cascade_prevention', priority: 85, id: 'S-CJ125' },
+  { module: 'brain', capability: 'meta_reasoning', priority: 85, id: 'S-CJ126' },
+  { module: 'cortex', capability: 'recursive_planning', priority: 85, id: 'S-CJ127' },
+  { module: 'brain', capability: 'temporal_reasoning', priority: 85, id: 'S-CJ128' },
+  { module: 'dream', capability: 'generative_hypothesis', priority: 85, id: 'S-CJ129' },
+  { module: 'system', capability: 'topology_mutation', priority: 85, id: 'S-CJ130' },
+  { module: 'vision', capability: 'predictive_state_modeling', priority: 85, id: 'S-CJ131' },
+  { module: 'defense', capability: 'adversarial_simulation', priority: 85, id: 'S-CJ132' },
+  { module: 'cortex', capability: 'goal_decomposition', priority: 85, id: 'S-CJ133' },
+  { module: 'brain', capability: 'episodic_replay', priority: 85, id: 'S-CJ134' },
+  { module: 'encode', capability: 'intent_compiler', priority: 85, id: 'S-CJ135' },
+  { module: 'core', capability: 'homeostatic_regulator', priority: 85, id: 'S-CJ136' },
+  { module: 'modernizer', capability: 'shadow_evolution', priority: 85, id: 'S-CJ137' },
+  { module: 'dream', capability: 'counterfactual_engine', priority: 85, id: 'S-CJ138' },
+  { module: 'cortex', capability: 'attention_allocation', priority: 85, id: 'S-CJ139' },
+  { module: 'system', capability: 'entropy_reversal', priority: 85, id: 'S-CJ140' },
+  { module: 'cortex', capability: 'dynamic_pipeline_optimizer', priority: 85, id: 'S-CJ141' },
+  { module: 'brain', capability: 'classifier_library', priority: 85, id: 'S-CJ142' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Activation Engine
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 interface ActivationResult {
   wave: ActivationWave;
