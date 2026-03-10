@@ -11413,7 +11413,7 @@ async function handleSystem(
       // v5.5.0: System resilience snapshot surface
       const { role = 'observer' } = data;
       
-      // Ensure all 38 nodes are in state
+      // Ensure all 40 nodes are in state
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
