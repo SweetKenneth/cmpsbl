@@ -11533,7 +11533,7 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Ensure all 38 nodes are in state for diagnostics
+      // Ensure all 40 nodes are in state for diagnostics
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
