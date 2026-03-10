@@ -928,7 +928,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'self_documentation_engine',
     name: 'Self-Documentation Engine',
     artifactType: 'engine',
-    modules: ['MODERNIZER', 'SYSTEM', 'CORTEX'],
+    modules: ['EVOLUTION', 'SYSTEM', 'CORTEX'],
     classification: 'architecture',
     reason: 'Autonomous documentation with audit compliance and quality review',
     enables: 'Living documentation — self-updating architectural knowledge',
