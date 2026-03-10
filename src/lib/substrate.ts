@@ -652,12 +652,12 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
-  // Modernizer Module — Substrate Codebase Analysis & Improvement Engine (v6.5.0)
+  // EVOLUTION Node — Substrate Self-Improvement Engine (formerly Modernizer)
   // Unified Evolution Cycle for substrate self-improvement
-  modernizer = {
-    /** Get modernizer service status with substrate health metrics */
+  evolution = {
+    /** Get EVOLUTION node status with substrate health metrics */
     status: () =>
-      this.invoke({ module: 'modernizer', action: 'status' }),
+      this.invoke({ module: 'evolution', action: 'status' }),
     
     /** List recent substrate scans and improvement proposals */
     jobs: (limit?: number) =>
