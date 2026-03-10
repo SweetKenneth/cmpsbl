@@ -4898,10 +4898,10 @@ export async function executeComprehensiveAccessibilityAudit(
     suggestedPatches: ['add_aria_labels', 'improve_contrast', 'fix_focus_order'],
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: fixes,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   return createSuccessResult(context.synergyId, {
