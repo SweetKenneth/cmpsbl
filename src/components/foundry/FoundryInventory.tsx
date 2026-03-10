@@ -1,13 +1,13 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export & removal
- * Updated with commercialization pricing display
+ * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { formatPrice, confidenceLabel } from '@/lib/foundry/pricing-engine';
+import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { estimateMarketValue, formatMarketValue, getCategoryMultiplierLabel } from '@/lib/pipeline-valuation';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
