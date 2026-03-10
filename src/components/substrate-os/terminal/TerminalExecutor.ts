@@ -2630,7 +2630,7 @@ ${allFeatures.map(f => {
       }
       result = await modernizer.implement(args[0], args[1]);
     } else if (base === 'modernizer.refresh') {
-      result = await substrate.invoke({ module: 'modernizer', action: 'refresh' });
+      result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
     } else if (base === 'modernizer.autopilot') {
       result = await substrate.invoke({ module: 'modernizer', action: 'autopilot' });
     } else if (base === 'modernizer.confidence') {
