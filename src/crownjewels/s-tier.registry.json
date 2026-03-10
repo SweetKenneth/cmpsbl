@@ -1,7 +1,7 @@
 {
-  "version": "1.2.0",
-  "generatedAt": "2026-03-10T12:00:00.000Z",
-  "totalArtifacts": 208,
+  "version": "1.3.0",
+  "generatedAt": "2026-03-10T18:00:00.000Z",
+  "totalArtifacts": 233,
   "canonicalModules": ["CORE","SYSTEM","BRAIN","DREAM","RIPPLE","ACCESS","DEFENSE","NEXUS","DECODE","VISION","CORTEX","INCLUSIVE","INTEGRATION","MODERNIZER","MEDIC","NERVE","GOVERNANCE","OBSERVABILITY","ANALYTICS","EVOLUTION","IMMUNITY","INTENT","MESH","AUDIT","MEMORY","ECONOMY","RELAY","IDENTITY","ATLAS","ENCODE","SOVEREIGN","ORACLE","CONSCIENCE","PHANTOM","FORGE","LINGUA","COMPASS","ECHO","TREATY","HARVEST","REFLEX"],
   "entries": [
     {"rank":1,"id":"S-129","name":"Substrate Registry","cjpi":98,"module":"CORE","type":"Architecture","description":"Single source of truth for all registered entities. Tracks modules, capabilities, pipelines with lifecycle management and dependency resolution.","dependencyFootprint":[],"exportMode":"PureStandalone","signatureHash":"a3c7e1f0","version":"1.0.0","approved":true,"generatedAt":"2026-03-01T00:00:00.000Z","hasCode":true},
