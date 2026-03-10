@@ -2635,8 +2635,7 @@ ${allFeatures.map(f => {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.confidence <plan_id>' };
       }
       result = await substrate.invoke({ module: 'evolution', action: 'confidence', payload: { plan_id: args[0] } });
-    } else if (base === 'modernizer.stamps') {
-      // Evolution stamps — same as seba.stamps but via modernizer namespace
+    } else if (base === 'evolution.stamps' || base === 'modernizer.stamps') {
       const limit = parseInt(args[0]) || 10;
       try {
         const { data: stamps, error } = await supabase
@@ -2647,7 +2646,7 @@ ${allFeatures.map(f => {
           .limit(limit);
         if (error) return { success: false, output: `▓ Stamp query error: ${error.message}` };
         if (!stamps || stamps.length === 0) {
-          return { success: true, output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: modernizer.evolve → shadow → production to generate stamps.' };
+          return { success: true, output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: evolution.evolve → shadow → production to generate stamps.' };
         }
         let output = `╔══════════════════════════════════════════════════════════════╗\n║  EVOLUTION STAMPS — Verification Trail                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
         for (const stamp of stamps) {
