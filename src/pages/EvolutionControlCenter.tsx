@@ -112,81 +112,88 @@ const VALUE_PROPS = [
 
 // ── Animated Evolution Diagram ──────────────────────────────
 function EvolutionDiagram() {
-  const nodes = [
-    { label: 'SCAN', icon: Eye, x: '10%', y: '20%', delay: 0 },
-    { label: 'DRY-RUN', icon: FlaskConical, x: '40%', y: '10%', delay: 0.25 },
-    { label: 'REVIEW', icon: Shield, x: '70%', y: '20%', delay: 0.5 },
-    { label: 'APPLY', icon: Zap, x: '80%', y: '55%', delay: 0.75 },
-    { label: 'RECEIPT', icon: Layers, x: '50%', y: '70%', delay: 1.0 },
-    { label: 'ROLLBACK', icon: RotateCcw, x: '15%', y: '60%', delay: 1.25 },
+  const stages = [
+    { label: 'SCAN', icon: Eye, desc: 'Detect gaps' },
+    { label: 'DRY-RUN', icon: FlaskConical, desc: 'Simulate fix' },
+    { label: 'REVIEW', icon: Shield, desc: 'Policy check' },
+    { label: 'APPLY', icon: Zap, desc: 'Execute safe' },
+    { label: 'RECEIPT', icon: Layers, desc: 'Audit log' },
+    { label: 'ROLLBACK', icon: RotateCcw, desc: 'Undo ready' },
   ];
 
   return (
-    <div className="relative w-full max-w-sm sm:max-w-md mx-auto aspect-square">
-      {/* Connection path */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" fill="none">
-        <motion.path
-          d="M 15 25 Q 30 10 45 15 Q 60 10 75 25 Q 85 40 85 60 Q 70 80 55 75 Q 35 80 20 65 Q 10 50 15 25"
-          stroke="hsl(var(--primary) / 0.2)"
-          strokeWidth="0.4"
-          strokeDasharray="2.5 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 2.5, ease: "easeInOut" }}
-        />
-        <motion.circle
-          r="1.2"
-          fill="hsl(var(--primary))"
-          opacity={0.5}
-        >
-          <animateMotion
-            dur="5s"
-            repeatCount="indefinite"
-            path="M 15 25 Q 30 10 45 15 Q 60 10 75 25 Q 85 40 85 60 Q 70 80 55 75 Q 35 80 20 65 Q 10 50 15 25"
-          />
-        </motion.circle>
-      </svg>
-
-      {/* Nodes */}
-      {nodes.map((node) => (
+    <div className="w-full max-w-md mx-auto">
+      {/* Linear pipeline diagram */}
+      <div className="relative">
+        {/* Connection line */}
         <motion.div
-          key={node.label}
-          className="absolute flex flex-col items-center gap-1 -translate-x-1/2 -translate-y-1/2"
-          style={{ left: node.x, top: node.y }}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: node.delay }}
-        >
-          <motion.div
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-card border border-border/40 flex items-center justify-center shadow-sm hover:border-primary/30 transition-colors"
-            animate={{ y: [0, -2.5, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: node.delay }}
-          >
-            <node.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-          </motion.div>
-          <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/70 tracking-wider">
-            {node.label}
-          </span>
-        </motion.div>
-      ))}
+          className="absolute left-6 sm:left-7 top-6 bottom-6 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-primary/40"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{ transformOrigin: 'top' }}
+        />
 
-      {/* Center label */}
-      <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
-      >
-        <div className="text-center">
-          <motion.div
-            className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full border border-primary/25 bg-primary/5 flex items-center justify-center"
-            animate={{ rotate: [0, 360] }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          >
-            <GitBranch className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-          </motion.div>
-          <span className="text-[10px] sm:text-xs font-bold text-foreground mt-1.5 block tracking-wide">EVOLVE</span>
+        {/* Animated pulse traveling down the line */}
+        <motion.div
+          className="absolute left-[23px] sm:left-[27px] w-1.5 h-1.5 rounded-full bg-primary shadow-sm shadow-primary/50"
+          animate={{ top: ['8%', '92%'] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
+        />
+
+        <div className="space-y-1">
+          {stages.map((stage, i) => (
+            <motion.div
+              key={stage.label}
+              className="relative flex items-center gap-4 p-3 sm:p-4 rounded-xl hover:bg-card/50 transition-colors group"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.15 }}
+            >
+              {/* Node circle */}
+              <motion.div
+                className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-card border border-border/50 flex items-center justify-center shadow-sm group-hover:border-primary/40 transition-colors flex-shrink-0"
+                whileHover={{ scale: 1.08 }}
+              >
+                <stage.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              </motion.div>
+
+              {/* Label */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono text-muted-foreground/50 tracking-widest">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-sm sm:text-base font-bold text-foreground tracking-wide">
+                    {stage.label}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{stage.desc}</p>
+              </div>
+
+              {/* Status indicator */}
+              <motion.div
+                className="w-2 h-2 rounded-full bg-primary/30 flex-shrink-0"
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+              />
+            </motion.div>
+          ))}
         </div>
+      </div>
+
+      {/* Summary bar */}
+      <motion.div
+        className="mt-4 p-3 rounded-xl border border-primary/15 bg-primary/5 flex items-center justify-between"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2 }}
+      >
+        <div className="flex items-center gap-2">
+          <GitBranch className="w-4 h-4 text-primary" />
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Governed Pipeline</span>
+        </div>
+        <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">Every step auditable</span>
       </motion.div>
     </div>
   );

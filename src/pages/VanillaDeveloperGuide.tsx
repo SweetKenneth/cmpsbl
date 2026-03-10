@@ -471,30 +471,44 @@ Deno.serve(async (req) => {
             </p>
           </motion.div>
 
-          <CopyBlock label="Architecture Overview" code={`┌──────────────────────────────────────────────────────┐
-│                    Your Application                    │
-│            SDK calls  ·  REST API  ·  Webhooks         │
-├──────────────────────────────────────────────────────┤
-│                                                        │
-│   ┌────────────────────────────────────────────────┐   │
-│   │              ACCESS (Identity Layer)            │   │
-│   │       API Keys · Quotas · Rate Limits          │   │
-│   └────────────────────────────────────────────────┘   │
-│                          │                             │
-│   ┌────────┬────────┬────────┬────────┬────────────┐   │
-│   │ BRAIN  │ DECODE │ NEXUS  │ DREAM  │  DEFENSE   │   │
-│   │ Memory │ Intent │ Route  │ Evolve │  Security  │   │
-│   └────────┴────────┴────────┴────────┴────────────┘   │
-│                          │                             │
-│   ┌────────────────────────────────────────────────┐   │
-│   │               VISION (Observability)           │   │
-│   │       Health · Metrics · Logs · Traces         │   │
-│   └────────────────────────────────────────────────┘   │
-│                                                        │
-├──────────────────────────────────────────────────────┤
-│             PostgreSQL  ·  Edge Functions               │
-│                BYOK AI Providers                        │
-└──────────────────────────────────────────────────────┘`} />
+          <CopyBlock label="40-Node Architecture — 12 Sectors" code={`┌──────────────────────────────────────────────────────────┐
+│                     Your Application                      │
+│             SDK calls  ·  REST API  ·  Webhooks           │
+├──────────────────────────────────────────────────────────┤
+│                                                            │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │                ACCESS (Identity Layer)                 │ │
+│  │         API Keys · Quotas · Rate Limits               │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                            │                               │
+│  ── KERNEL ────────────────────────────────────────────── │
+│  │ CORE · SYSTEM · BRAIN · MEMORY · DREAM               │ │
+│                            │                               │
+│  ── COGNITIVE (CCR) ───────────────────────────────────── │
+│  │ DECODE · NEXUS · VISION · CORTEX · ENCODE            │ │
+│                            │                               │
+│  ── ORCHESTRATION (OCG) ──────────────────────────────── │
+│  │ RIPPLE · ACCESS · NERVE · ECONOMY                    │ │
+│                            │                               │
+│  ── EXECUTION ─────────────────────────────────────────── │
+│  │ INCLUSIVE · INTEGRATION · EVOLUTION · CLOCKLESS       │ │
+│                            │                               │
+│  ── EXPANSION (ESZ·EPZ·EMZ·CSZ) ─────────────────────── │
+│  │ SOVEREIGN · CONSCIENCE · SENTINEL · ORACLE           │ │
+│  │ REFLEX · PERCEPTION · FORGE · FOUNDRY                │ │
+│  │ PHANTOM · SHADOW · LINGUA · HARVEST · COMPASS        │ │
+│  │ MEDIC                                                 │ │
+│                            │                               │
+│  ── FIELD · PLANE · ATLAS · SHELL ─────────────────────  │
+│  │ IMMUNITY · INTENT · GOVERNANCE · DEFENSE              │ │
+│  │ ENGINEER · ATLAS · ENCODE                             │ │
+│                                                            │
+├──────────────────────────────────────────────────────────┤
+│              PostgreSQL  ·  Edge Functions                  │
+│                 BYOK AI Providers                           │
+└──────────────────────────────────────────────────────────┘
+
+Σ(weights) = 1.000 — All 40 nodes weighted, coordinated, boot-sequenced.`} />
         </section>
 
         {/* ── BYOK Explainer ───────────────────────────────── */}

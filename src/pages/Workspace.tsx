@@ -113,8 +113,8 @@ export default function Workspace() {
               Signal → Silicon
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Your personal space to create, test, and deploy with the full power of 38 cognitive nodes.
-              Free tier gets persistent memory, rare agents, and {counts.free} terminal commands.
+              Your personal space to create, test, and deploy with the full power of 40 cognitive nodes across 12 sectors.
+              Free tier gets persistent memory, SDK templates, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
               <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 font-mono text-xs">
