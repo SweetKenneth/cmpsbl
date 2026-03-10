@@ -142,7 +142,7 @@ export default function Foundry() {
             <div id="engine"><RecursiveLoop /></div>
             {/* Mid-page conversion nudge */}
             <FoundryMidCTA />
-            <div id="apex"><CrownJewelShowcase /></div>
+            <div id="apex"><ApexDiscoveryShowcase /></div>
             <div id="stream"><LiveDiscoveryStream discoveries={discoveries} /></div>
             <CategoryBreakdown />
             <TierDistribution />
