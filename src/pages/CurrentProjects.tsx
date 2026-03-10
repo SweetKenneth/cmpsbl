@@ -218,10 +218,10 @@ export default function CurrentProjects() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 border-t border-border/30 bg-gradient-to-b from-muted/10 to-background">
-        <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-black mb-4 text-foreground">Want to Build Together?</h2>
-          <p className="text-lg text-muted-foreground mb-8">100+ projects shipped over 15 years. Join us.</p>
+       <section className="py-12 sm:py-16 px-3 sm:px-4 border-t border-border/30 bg-gradient-to-b from-muted/10 to-background">
+         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
+           <h2 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-foreground">Want to Build Together?</h2>
+           <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">100+ projects shipped over 15 years. Join us.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2">
               Investor Information <ArrowRight className="w-4 h-4" />
