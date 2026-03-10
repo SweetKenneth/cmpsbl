@@ -1864,7 +1864,7 @@ export async function executePredictiveHealing(
     rollbackPlan: true,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: fixes,
     durationMs: performance.now() - modStart,
