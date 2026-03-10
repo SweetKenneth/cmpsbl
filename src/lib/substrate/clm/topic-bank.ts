@@ -60,7 +60,7 @@ const CORE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'>[] = [
     weight: 1.0,
     priority: 1,
     domainAnchors: ['system-design', 'architecture', 'module-contracts'],
-    moduleRefs: ['BRAIN', 'MODERNIZER'],
+    moduleRefs: ['BRAIN', 'EVOLUTION'],
     kpis: ['module_health_score', 'contract_violations', 'architecture_coherence'],
     confidenceLevel: 0,
   },
