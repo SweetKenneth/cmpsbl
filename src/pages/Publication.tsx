@@ -66,8 +66,8 @@ const priorArtDocs = [
 ];
 
 const systemMetrics = [
-  { label: "Architecture Nodes", value: "38", icon: Layers },
-  { label: "Architectural Sectors", value: "7", icon: GitBranch },
+  { label: "Architecture Nodes", value: "40", icon: Layers },
+  { label: "Architectural Sectors", value: "12", icon: GitBranch },
   { label: "Synergy Pipelines", value: "300+", icon: Zap },
   { label: "Autonomy Tiers", value: "3", icon: Shield },
   { label: "Hardening Coverage", value: "100%", icon: Fingerprint },
@@ -238,9 +238,9 @@ export default function Publication() {
                 self-evolution within deterministic safety boundaries.
               </p>
               <p>
-                As of version 13.5 (IRONCLAD epoch), the substrate comprises 38 matrix nodes organized across
-                seven architectural sectors, with 300+ synergy pipelines, a three-tier autonomy governance model,
-                and full-spectrum resilience hardening across all subsystems.
+                As of the current MINDGAMES epoch, the substrate comprises 40 matrix nodes organized across
+                twelve architectural sectors, with 300+ synergy pipelines, a three-tier autonomy governance model,
+                675+ capabilities, and full-spectrum resilience hardening across all subsystems.
               </p>
             </div>
           </motion.div>

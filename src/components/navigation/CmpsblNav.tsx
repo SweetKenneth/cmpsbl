@@ -135,7 +135,7 @@ export function CmpsblNav() {
       items: [
         { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW" },
         { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "LIVE", highlight: true },
-        { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any AI agent", icon: Brain, badge: "LIVE", highlight: true },
+        { name: "Use cases", href: "/use-cases", description: "Industry applications", icon: Globe },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
         { name: "System overview", href: "/overview", description: "The full picture", icon: Globe },

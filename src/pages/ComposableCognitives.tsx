@@ -384,9 +384,9 @@ export default function ComposableCognitives() {
                     className="h-[290px]"
                     index={i}
                     frontTitle={item.displayName}
-                    frontSubtitle={`"${item.personality.motto}" — ${item.personality.tone}`}
+                    frontSubtitle={`${item.tagline}`}
                     frontIcon={
-                      <img src={IMAGE_MAP[item.imagePath] || hybridImg} alt={item.displayName} className="w-8 h-8 object-contain" />
+                      <img src={IMAGE_MAP[item.imagePath] || hybridImg} alt={item.displayName} className="w-14 h-14 object-contain rounded-xl" />
                     }
                     frontBadge={tierCfg.label}
                     frontBadgeClass={cn(
