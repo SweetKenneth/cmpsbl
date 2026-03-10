@@ -2317,7 +2317,7 @@ ${allFeatures.map(f => {
       result = await evolutionMod.status();
     } else if (base === 'evolution.jobs' || base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
-      result = await modernizer.jobs(limit);
+      result = await evolutionMod.jobs(limit);
     }
     // ═══ EVOLUTION CYCLE ═══
     else if (base === 'evolution.evolve' || base === 'modernizer.evolve') {
