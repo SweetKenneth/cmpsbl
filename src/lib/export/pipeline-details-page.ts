@@ -987,30 +987,47 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <div class="section-card">
     <table class="valuation-table">
       <tr>
-        <td>Base value (CJPI ${input.score})</td>
+        <td>Exponential Base (CJPI ${input.score})</td>
         <td>${formatMarketValue(valuation.baseValue)}</td>
       </tr>
       <tr>
-        <td>Category multiplier · ${escapeHtml(input.category)}${valuation.categoryLabel ? ` (${escapeHtml(valuation.categoryLabel)})` : ''}</td>
-        <td>×${valuation.categoryMultiplier.toFixed(1)}</td>
+        <td>CJPI Multiplier · ${escapeHtml(valuation.tier)} tier</td>
+        <td>×${valuation.cjpiMultiplier.toFixed(1)}</td>
       </tr>
       <tr>
-        <td>Complexity factor · ${input.systemChain.length} module${input.systemChain.length !== 1 ? 's' : ''}</td>
-        <td>×${valuation.complexityMultiplier.toFixed(2)}</td>
+        <td>CJPIValue (Base × Multiplier)</td>
+        <td>${formatMarketValue(valuation.cjpiValue)}</td>
       </tr>
-      ${valuation.apexMultiplier > 1 ? `<tr>
-        <td>Apex tier premium</td>
-        <td>×${valuation.apexMultiplier.toFixed(1)}</td>
-      </tr>` : ''}
       <tr>
-        <td style="font-weight: 600; color: var(--ink);">Estimated Market Value</td>
+        <td>Internal Signal (estimateMarketValue × 0.001)</td>
+        <td>$${valuation.normalizedInternal.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: var(--ink);">Blended Valuation</td>
         <td class="valuation-total">${valuation.formatted}</td>
       </tr>
     </table>
     <p class="valuation-methodology">
-      Methodology: Base value scales exponentially with CJPI score (range $5K–$1M). Category, complexity, 
-      and tier multipliers are applied based on enterprise demand patterns and technical sophistication. 
-      This is a deterministic scoring model — not a market appraisal.
+      Methodology: Blended formula — FinalPrice = (CJPIValue × 0.75) + (NormalizedInternal × 0.25). 
+      When consensus pricing is available, MarketWeight = 0.55 + (Confidence × 0.20) blends AI market estimates 
+      with technical signals. This is a deterministic scoring model — not a market appraisal.
+    </p>
+  </div>
+
+  <!-- ═══════ Where to Sell ═══════ -->
+  <h2>Recommended Distribution Channels</h2>
+  <div class="section-card">
+    <p style="font-size: 0.88rem; margin-bottom: 1rem;">
+      Based on the pipeline's tier (${escapeHtml(tier)}), category (${escapeHtml(input.category)}), 
+      and valuation, the following platforms are recommended for distribution:
+    </p>
+    <div class="language-grid">
+      ${marketplaces.map(m => `<span class="lang-tag" style="font-family: Inter, sans-serif; font-size: 0.78rem; padding: 0.35rem 0.75rem;">${escapeHtml(m)}</span>`).join('\n      ')}
+    </div>
+    <p style="font-size: 0.78rem; color: var(--ink-faint); margin-top: 1rem; font-style: italic;">
+      ${valuation.total >= 100000 ? 'At this valuation tier, enterprise direct licensing or cloud marketplace listing is recommended for maximum revenue.' :
+        valuation.total >= 10000 ? 'This pipeline is well-suited for developer marketplace listing with tiered pricing (indie/standard/enterprise).' :
+        'Consider listing on developer-focused platforms with competitive pricing to build traction.'}
     </p>
   </div>
 
