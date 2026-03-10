@@ -282,7 +282,7 @@ function ProvenanceBody({
 }
 
 /* ── Main component ── */
-export function PipelineProvenance({ pipeline, onClose }: Props) {
+export function PipelineProvenance({ pipeline, onClose, subscriptionTier }: Props) {
   const isMobile = useIsMobile();
   const [exportOpen, setExportOpen] = useState(false);
 
