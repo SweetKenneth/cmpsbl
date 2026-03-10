@@ -672,7 +672,7 @@ class SubstrateClient {
     
     /** Alias for scan - submit a substrate analysis request */
     submit: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
-      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+      this.invoke({ module: 'evolution', action: 'scan', payload: options }),
     
     /** Get a specific scan/job by ID */
     job: (job_id: string) =>
