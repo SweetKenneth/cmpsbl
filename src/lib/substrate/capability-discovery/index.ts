@@ -126,7 +126,7 @@ const MODULE_OPERATIONS: Record<string, string[]> = {
   AUDIT: ['status', 'log', 'query', 'export', 'retain'],
   MEDIC: ['status', 'diagnose', 'heal', 'quarantine', 'report'],
   RELAY: ['status', 'send', 'deliver', 'queue', 'retry'],
-  ECONOMY: ['status', 'budget', 'cost', 'forecast', 'optimize'],
+  ECONOMY: ['status', 'budget', 'cost', 'forecast', 'optimize', 'price', 'reprice', 'pricing_anomaly'],
   SOVEREIGN: ['status', 'classify_jurisdiction', 'enforce_regulation', 'attest', 'audit_compliance'],
   ORACLE: ['status', 'forecast', 'model', 'simulate', 'calibrate'],
   CONSCIENCE: ['status', 'assess_impact', 'detect_bias', 'score_fairness', 'audit_ethics'],
