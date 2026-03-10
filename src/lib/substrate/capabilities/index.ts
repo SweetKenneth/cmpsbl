@@ -1107,7 +1107,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Clear roadmap for upgrading legacy components',
     status: 'active',
-    emergentFrom: 'modernizer-deprecation-v7',
+    emergentFrom: 'evolution-deprecation-v7',
     riskLevel: 'low',
     executionMode: 'async',
   },
