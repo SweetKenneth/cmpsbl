@@ -89,7 +89,7 @@ async function fetchBackendStats(): Promise<BackendStats> {
   try {
     // Fetch EVOLUTION node status from backend
     const modResponse = await supabase.functions.invoke('pf-substrate', {
-      body: { module: 'modernizer', action: 'status' }, // edge function still uses legacy name for backward compat
+      body: { module: 'evolution', action: 'status' },
     });
     if (modResponse.data?.success) {
       stats.evolution = {
