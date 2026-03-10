@@ -157,15 +157,15 @@ export default function Engines() {
         </div>
 
         {/* Hero */}
-        <section className="relative pt-10 pb-16 px-4 overflow-hidden">
+        <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5 sm:mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
                 <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 sm:mb-4">
                 COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
