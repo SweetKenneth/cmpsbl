@@ -14,11 +14,11 @@
  * 7. INTEL Aggregator — cross-system signal correlation
  * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
  * 9. DEFENSE Module — security posture, anomalies, threat landscape
- * 10. MODERNIZER Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
+ * 10. EVOLUTION Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
  * 
  * Governance lifecycle:
- * - Modernizer snapshot before generation
- * - Modernizer.verify (canary), diffs, receipts pre-export
+ * - EVOLUTION snapshot before generation
+ * - EVOLUTION.verify (canary), diffs, receipts pre-export
  * - SEBA choreographical stamping
  * - External-AI execution barrier enforced
  * 
@@ -277,7 +277,7 @@ export interface LayerSummary {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// GOVERNANCE LIFECYCLE — Modernizer + SEBA
+// GOVERNANCE LIFECYCLE — EVOLUTION + SEBA
 // ═══════════════════════════════════════════════════════════════
 
 interface GovernanceChain {
@@ -307,7 +307,7 @@ async function runSnapshotDiscipline(): Promise<string> {
   }
 }
 
-async function runModernizerGovernanceChain(): Promise<GovernanceChain> {
+async function runEvolutionGovernanceChain(): Promise<GovernanceChain> {
   const snapshot_id = await runSnapshotDiscipline();
   
   let verification_hash = '';
@@ -367,7 +367,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   engineerNode.clear();
   
   // ─── STEP 0b: Snapshot Discipline (Pre-Generation) ───
-  const governanceChain = await runModernizerGovernanceChain();
+  const governanceChain = await runEvolutionGovernanceChain();
   
   // ─── 1. INTEL + ENGINEER (fresh run) ───
   // Run the maintenance battery first to populate findings/signals
@@ -601,7 +601,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   actionPlan.forEach((step, i) => { step.order = i + 1; });
   
   // ─── POST-RECONCILIATION: Sync technical_debt with action_plan ───
-  // Modernizer proposals inject tech-debt action steps during buildActionPlan
+  // EVOLUTION proposals inject tech-debt action steps during buildActionPlan
   // that aren't reflected in buildTechDebtSection. Reconcile now.
   const actionPlanDebtItems = actionPlan.filter(s => s.category === 'tech-debt');
   for (const step of actionPlanDebtItems) {

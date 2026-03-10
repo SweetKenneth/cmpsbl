@@ -47,8 +47,7 @@ const MODULE_TABLE_MAP: Record<string, { layer: string; tables: string[]; eventP
   encode:      { layer: 'Operational',    tables: ['sandbox_sessions'],                       eventPrefix: 'encode' },
   // Administrative Layer
   system:      { layer: 'Administrative', tables: ['substrate_health_log'],                   eventPrefix: 'system' },
-  modernizer:  { layer: 'Administrative', tables: ['evolution_runs', 'evolution_receipts', 'evolution_circuit'], eventPrefix: 'modernizer' },
-  'evolution-control': { layer: 'Administrative', tables: ['audit_logs'], eventPrefix: 'evolution' },
+  evolution:   { layer: 'Administrative', tables: ['evolution_runs', 'evolution_receipts', 'evolution_circuit'], eventPrefix: 'evolution' },
   integration: { layer: 'Administrative', tables: ['mcp_connections'],                        eventPrefix: 'integration' },
   inclusive:   { layer: 'Administrative', tables: ['accessibility_scans'],                    eventPrefix: 'inclusive' },
   // Orchestrator Layer

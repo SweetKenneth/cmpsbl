@@ -17,11 +17,11 @@ import type { Json } from '@/integrations/supabase/types';
 export type SubstrateModule = 
   | 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'encode' | 'system'
   | 'inclusive' | 'defense' | 'nexus' | 'vision' | 'dream'
-  | 'modernizer' | 'integration' | 'cortex'
+  | 'evolution' | 'integration' | 'cortex'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
-  | 'immunity' | 'evolution' | 'intent' | 'governance'
+  | 'immunity' | 'intent' | 'governance'
   | 'medic' | 'nerve'
-  // Expansion Modules (37-Node Architecture)
+  // Expansion Nodes (40-Node Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
@@ -447,9 +447,9 @@ export async function approveTopEnhancements(topN: number = 2): Promise<{
 const ALL_MODULES: SubstrateModule[] = [
   'core', 'ripple', 'access', 'brain', 'decode', 'encode', 'system',
   'inclusive', 'defense', 'nexus', 'vision', 'dream',
-  'modernizer', 'integration', 'cortex',
+  'evolution', 'integration', 'cortex',
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
-  'immunity', 'evolution', 'intent', 'governance',
+  'immunity', 'intent', 'governance',
   'medic', 'nerve',
 ];
 

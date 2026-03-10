@@ -118,12 +118,12 @@ export const SYSTEM_HV_CAPABILITIES: HighValueCapability[] = [
   { id: 'maintenance_window_scheduler', name: 'Maintenance Window Scheduler', module: 'SYSTEM', description: 'Schedule and coordinate maintenance windows across modules', risk: 'low', reversible: true, category: 'operations' },
 ];
 
-/** MODERNIZER — Architecture Evolution (4) */
+/** EVOLUTION — Architecture Evolution (4) */
 export const MODERNIZER_HV_CAPABILITIES: HighValueCapability[] = [
-  { id: 'code_smell_detector', name: 'Code Smell Detector', module: 'MODERNIZER', description: 'Identify architectural anti-patterns and code smells', risk: 'low', reversible: true, category: 'self-improvement' },
-  { id: 'refactor_planner', name: 'Refactor Planner', module: 'MODERNIZER', description: 'Plan safe refactoring sequences with dependency analysis', risk: 'medium', reversible: true, category: 'self-improvement' },
-  { id: 'technical_debt_scorer', name: 'Technical Debt Scorer', module: 'MODERNIZER', description: 'Quantify technical debt by module with priority ranking', risk: 'low', reversible: true, category: 'self-improvement' },
-  { id: 'migration_path_optimizer', name: 'Migration Path Optimizer', module: 'MODERNIZER', description: 'Find optimal migration routes with minimum disruption', risk: 'medium', reversible: true, category: 'self-improvement' },
+  { id: 'code_smell_detector', name: 'Code Smell Detector', module: 'EVOLUTION', description: 'Identify architectural anti-patterns and code smells', risk: 'low', reversible: true, category: 'self-improvement' },
+  { id: 'refactor_planner', name: 'Refactor Planner', module: 'EVOLUTION', description: 'Plan safe refactoring sequences with dependency analysis', risk: 'medium', reversible: true, category: 'self-improvement' },
+  { id: 'technical_debt_scorer', name: 'Technical Debt Scorer', module: 'EVOLUTION', description: 'Quantify technical debt by node with priority ranking', risk: 'low', reversible: true, category: 'self-improvement' },
+  { id: 'migration_path_optimizer', name: 'Migration Path Optimizer', module: 'EVOLUTION', description: 'Find optimal migration routes with minimum disruption', risk: 'medium', reversible: true, category: 'self-improvement' },
 ];
 
 /** INCLUSIVE — Universal Access (4) */

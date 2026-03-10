@@ -89,7 +89,7 @@ async function executeRollback(
     record.success = true;
     
     await supabase.from('brain_events').insert([{
-      module: 'modernizer',
+      module: 'evolution',
       event_type: 'evolution_rollback',
       data: {
         evolution_id: evolutionId,
@@ -100,7 +100,7 @@ async function executeRollback(
       outcome: 'success',
     }]);
     
-    publish('modernizer' as ModuleName, 'evolution.rolled_back', {
+    publish('evolution' as ModuleName, 'evolution.rolled_back', {
       evolutionId,
       reason,
     });
@@ -109,7 +109,7 @@ async function executeRollback(
   } catch (err) {
     console.error('[Rollback] Failed:', err);
     await supabase.from('brain_events').insert([{
-      module: 'modernizer',
+      module: 'evolution',
       event_type: 'evolution_rollback',
       data: { evolution_id: evolutionId, error: String(err) } as unknown as import('@/integrations/supabase/types').Json,
       outcome: 'failure',
