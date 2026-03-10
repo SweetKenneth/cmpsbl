@@ -728,14 +728,16 @@ export class AtlasCommandInterpreter {
   }
 
   private async handleCycleRun(command: ParsedCommand): Promise<CommandResult> {
-    // Check usage first
+    // Check usage via ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: todayUsage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used')
-      .eq('date', new Date().toISOString().split('T')[0])
+      .from('ai_daily_quota')
+      .select('calls_used, calls_budget')
+      .eq('date', today)
       .maybeSingle();
 
-    if ((todayUsage?.calls_used || 0) >= 50) {
+    const budget = todayUsage?.calls_budget || 50;
+    if ((todayUsage?.calls_used || 0) >= budget) {
       return {
         success: false,
         message: '⚠️ Daily call limit reached (50/50). Evolution cycles paused to stay within free tier.\n\nReset at midnight UTC.',
