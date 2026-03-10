@@ -52,7 +52,7 @@ const MODULES: Array<{ id: string; label: string; layer: string; resolvers: numb
   { id: 'relay', label: 'RELAY', layer: 'Orchestrator', resolvers: 3 },
   { id: 'sandbox', label: 'SANDBOX', layer: 'Orchestrator', resolvers: 2 },
   { id: 'system', label: 'SYSTEM', layer: 'Infrastructure', resolvers: 2 },
-  { id: 'modernizer', label: 'MODERN.', layer: 'Infrastructure', resolvers: 2 },
+  { id: 'evolution', label: 'EVOLUTION', layer: 'Infrastructure', resolvers: 2 },
   { id: 'inclusive', label: 'INCLUSIVE', layer: 'Infrastructure', resolvers: 2 },
   { id: 'ripple', label: 'RIPPLE', layer: 'Infrastructure', resolvers: 2 },
   { id: 'integration', label: 'INTEG.', layer: 'Infrastructure', resolvers: 2 },
