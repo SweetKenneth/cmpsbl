@@ -2632,7 +2632,7 @@ ${allFeatures.map(f => {
     } else if (base === 'modernizer.refresh') {
       result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
     } else if (base === 'modernizer.autopilot') {
-      result = await substrate.invoke({ module: 'modernizer', action: 'autopilot' });
+      result = await substrate.invoke({ module: 'evolution', action: 'autopilot' });
     } else if (base === 'modernizer.confidence') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
