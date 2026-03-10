@@ -1,5 +1,6 @@
 /**
  * usePricingEngine — Hook for artifact pricing and batch repricing
+ * v2.0: Supports consensus pricing with multi-model evidence
  */
 import { useState, useCallback } from 'react';
 import {
@@ -25,7 +26,7 @@ export function usePricingEngine() {
 
       // Persist if vault_id provided
       if (artifact.vault_id) {
-        const pricingUpdate = {
+        const pricingUpdate: Record<string, any> = {
           recommended_resale_price: result.recommended_resale_price,
           indie_price: result.indie_price,
           standard_price: result.standard_price,
@@ -39,10 +40,14 @@ export function usePricingEngine() {
           commercialization_notes: result.commercialization_notes,
           pricing_last_updated_at: new Date().toISOString(),
           pricing_source: result.pricing_source,
-          pricing_source_version: '1.0.0',
+          pricing_source_version: result.pricing_source_version || '2.0.0',
         };
 
-        // Route to correct table based on source
+        // Include evidence if available
+        if (result.pricing_evidence) {
+          pricingUpdate.pricing_evidence = result.pricing_evidence;
+        }
+
         const table = artifact.source_table || 'pipeline_vault';
         await supabase.from(table).update(pricingUpdate as any).eq('id', artifact.vault_id);
       }
@@ -96,16 +101,12 @@ export function usePricingEngine() {
   }, [user, repriceAll]);
 
   /**
-   * Reprice ALL discoveries across both foundry_inventory and pipeline_vault
-   */
-  /**
-   * Reprice ALL discoveries across foundry_inventory, pipeline_vault, AND vault_promotions (S-Tier)
+   * Reprice ALL discoveries across foundry_inventory, pipeline_vault, AND vault_promotions
    */
   const repriceAllDiscoveries = useCallback(async () => {
     if (!user) return { success: 0, failed: 0 };
     setLoading(true);
     try {
-      // Fetch from all three tables in parallel
       const [inventoryRes, vaultRes, promotionsRes] = await Promise.all([
         supabase
           .from('foundry_inventory')
@@ -123,7 +124,6 @@ export function usePricingEngine() {
 
       const artifacts: PricingArtifact[] = [];
 
-      // Map foundry_inventory items
       for (const d of (inventoryRes.data ?? []) as any[]) {
         artifacts.push({
           vault_id: d.id,
@@ -137,7 +137,6 @@ export function usePricingEngine() {
         });
       }
 
-      // Map pipeline_vault items (dedupe by id)
       const existingIds = new Set(artifacts.map(a => a.vault_id));
       for (const d of (vaultRes.data ?? []) as any[]) {
         if (!existingIds.has(d.id)) {
@@ -155,7 +154,6 @@ export function usePricingEngine() {
         }
       }
 
-      // Map vault_promotions (S-Tier Crown Jewels / promoted discoveries)
       for (const d of (promotionsRes.data ?? []) as any[]) {
         if (!existingIds.has(d.id)) {
           artifacts.push({

@@ -210,6 +210,7 @@ export const publicRoutes = (
     <Route path="/evolution" element={<EvolutionControlCenter />} />
     <Route path="/architecture" element={<Architecture />} />
     <Route path="/pricing" element={<Upgrade />} />
+    <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Upgrade />} />
     <Route path="/packs" element={<Packs />} />
     <Route path="/start-here" element={<StartHere />} />
