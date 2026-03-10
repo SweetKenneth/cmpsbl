@@ -72,7 +72,7 @@ const EDGES: MeshEdge[] = [
   { source: 'vision', target: 'economy', weight: 1 },
   { source: 'nexus', target: 'relay', weight: 2 },
   { source: 'nexus', target: 'brain', weight: 1 },
-  { source: 'system', target: 'modernizer', weight: 2 },
+  { source: 'system', target: 'evolution', weight: 2 },
   { source: 'system', target: 'cortex', weight: 1 },
   { source: 'clm', target: 'brain', weight: 2 },
   { source: 'clm', target: 'memory', weight: 2 },

@@ -109,7 +109,7 @@ async function executeRollback(
   } catch (err) {
     console.error('[Rollback] Failed:', err);
     await supabase.from('brain_events').insert([{
-      module: 'modernizer',
+      module: 'evolution',
       event_type: 'evolution_rollback',
       data: { evolution_id: evolutionId, error: String(err) } as unknown as import('@/integrations/supabase/types').Json,
       outcome: 'failure',

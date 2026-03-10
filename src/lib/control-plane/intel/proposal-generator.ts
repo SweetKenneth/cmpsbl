@@ -277,7 +277,7 @@ export interface LayerSummary {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// GOVERNANCE LIFECYCLE — Modernizer + SEBA
+// GOVERNANCE LIFECYCLE — EVOLUTION + SEBA
 // ═══════════════════════════════════════════════════════════════
 
 interface GovernanceChain {
