@@ -560,7 +560,7 @@ const stratumInfra: Specimen[] = [
       "SANDBOX enforced hard resource boundaries with state preservation",
     ],
     phenotype: [
-      "All infrastructure modules now self-report healthy on previously-requested improvements",
+      "All infrastructure nodes now self-report healthy on previously-requested improvements",
       "Compliance audits generate on-demand across multiple governance frameworks",
       "Cost trend forecasting enables proactive budget governance",
     ],
