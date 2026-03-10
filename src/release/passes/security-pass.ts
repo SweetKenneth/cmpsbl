@@ -147,20 +147,20 @@ export async function runSecurityPass(): Promise<PassResult> {
     medSeverity++;
   }
 
-  // 6. No Lovable AI references (per project policy)
-  let lovableAiRefs = 0;
+  // 6. No external AI gateway references (per project policy — must use NEXUS)
+  let externalAiRefs = 0;
   for (const dir of SCAN_DIRS) {
     scanFiles(dir, (path, content) => {
       if (content.includes('LOVABLE_API_KEY') || content.includes('ai.gateway.lovable.dev')) {
-        lovableAiRefs++;
-        notes.push(`🔴 ${path}: Lovable AI reference detected (must use NEXUS)`);
+        externalAiRefs++;
+        notes.push(`🔴 ${path}: External AI gateway reference detected (must use NEXUS)`);
       }
     });
   }
-  if (lovableAiRefs > 0) {
-    highSeverity += lovableAiRefs;
+  if (externalAiRefs > 0) {
+    highSeverity += externalAiRefs;
   } else {
-    notes.push('✓ No Lovable AI references — NEXUS router enforced');
+    notes.push('✓ No external AI gateway references — NEXUS router enforced');
   }
 
   // 7. Edge functions use service_role appropriately
