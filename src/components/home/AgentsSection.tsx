@@ -115,7 +115,7 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
                 </div>
               </div>
 
-              {/* Crown Jewel Powers */}
+              {/* Apex Discovery Powers */}
               <div className={cn("grid gap-3", agent.powers.length > 3 ? "sm:grid-cols-3 lg:grid-cols-5" : "sm:grid-cols-3")}>
                 {agent.powers.map((power, pIdx) => (
                   <motion.div
