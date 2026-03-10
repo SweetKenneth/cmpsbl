@@ -16,7 +16,7 @@ import {
   canExecutePricingRun,
 } from '@/lib/substrate/economy-module/pricingGovernance';
 
-export interface CommercializationPricing {
+export type { PricingEvidence, ProviderEstimate };
   recommended_resale_price: number;
   indie_price: number;
   standard_price: number;
