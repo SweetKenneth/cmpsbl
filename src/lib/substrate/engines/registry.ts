@@ -1434,7 +1434,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   evolution_governance_engine: {
     id: 'evolution_governance_engine',
     name: 'Evolution Governance Engine',
-    description: 'MODERNIZER module world-first enhancements: Evolution outcome prediction, checkpoint-based rollback authority, impact analysis, and proposal ranking.',
+    description: 'EVOLUTION module world-first enhancements: Evolution outcome prediction, checkpoint-based rollback authority, impact analysis, and proposal ranking.',
     category: 'enhancement',
     capabilities: [
       'evolution_predictor',
