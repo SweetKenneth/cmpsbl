@@ -260,7 +260,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'proposal_impact_analyzer',
       'health_trend_analyzer',
     ],
-    primaryModules: ['VISION', 'BRAIN', 'MODERNIZER'],
+    primaryModules: ['VISION', 'BRAIN', 'EVOLUTION'],
     layer: 'Admin',
     synergyMultiplier: 2.0,
     complexityScore: 6,
