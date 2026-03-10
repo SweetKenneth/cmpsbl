@@ -426,7 +426,7 @@ export default function GovernorPanel() {
             {[
               { label: 'INTEL Panel', desc: 'Aggregation & founder insights', path: '/admin/intel', icon: Eye, color: 'text-primary' },
               { label: 'GATE Engine', desc: 'Production validation gauntlet', path: '/admin/gate', icon: Shield, color: 'text-amber-500' },
-              { label: 'S-Tier Vault', desc: 'Crown jewel asset registry', path: '/admin/s-tier-vault', icon: Shield, color: 'text-purple-500' },
+              { label: 'S-Tier Vault', desc: 'Apex Discovery asset registry', path: '/admin/s-tier-vault', icon: Shield, color: 'text-purple-500' },
               { label: 'Quarry', desc: 'Asset extraction & processing', path: '/admin/quarry', icon: Cpu, color: 'text-orange-500' },
               { label: 'Immunity Mesh', desc: 'Training · Probes · Analytics', path: '/admin/immunity-mesh', icon: Network, color: 'text-cyan-500' },
               { label: 'Governance Plane', desc: 'High-level governance controls', path: '/admin/governance', icon: Shield, color: 'text-indigo-500' },
