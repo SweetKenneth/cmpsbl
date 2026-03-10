@@ -624,7 +624,7 @@ export async function getEvolutionConfidence(module: TransferModule): Promise<Ev
 export async function getAllEvolutionConfidence(): Promise<EvolutionConfidence[]> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
     'identity', 'economy', 'sandbox',
   ];
