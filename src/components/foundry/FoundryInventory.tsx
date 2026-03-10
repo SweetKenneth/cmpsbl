@@ -121,10 +121,10 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     );
   }
 
-  // Use recommended resale price when available, fall back to internal valuation
-  const totalResaleValue = inventory.reduce((s, i) => s + (i.recommendedResalePrice ?? 0), 0);
-  const totalValuation = inventory.reduce((s, i) => s + i.valuationDisplay, 0);
-  const hasAnyPricing = inventory.some(i => i.recommendedResalePrice != null);
+  // Compute total value using internal formula
+  const totalValuation = inventory.reduce((s, i) => {
+    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+  }, 0);
 
   const handleExportVault = async () => {
     setIsExporting(true);
