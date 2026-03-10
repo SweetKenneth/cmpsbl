@@ -5,7 +5,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, modernizer, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 
 // ═══════════════════════════════════════════════════════════════
@@ -128,7 +128,7 @@ export function useEvolutionStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
     queryKey: ['substrate', 'evolution', 'status'],
-    queryFn: withGracefulFallback(() => modernizer.status()),
+    queryFn: withGracefulFallback(() => evolutionMod.status()),
     refetchInterval: pollingEnabled ? 30000 : false,
     enabled: pollingEnabled,
   });
@@ -324,7 +324,7 @@ export function useSubstrateHealthScore() {
     vision: () => vision.health(),
     dream: () => dream.status(),
     system: () => system.status(),
-    modernizer: () => modernizer.status(),
+    modernizer: () => evolutionMod.status(), // absorbed facade → EVOLUTION
     integration: () => integration.status(),
     cortex: () => cortex.status(),
     inclusive: () => inclusive.status(),
@@ -352,7 +352,7 @@ export function useSubstrateHealthScore() {
     shadow: () => defense.status(),
     // Mesh overlays
     immunity: () => defense.status(),
-    evolution: () => modernizer.status(),
+    evolution: () => evolutionMod.status(),
     intent: () => cortex.status(),
     governance: () => cortex.status(),
   };
@@ -602,8 +602,7 @@ export function useIntegrationDiscoverOS() {
 
 // ═══════════════════════════════════════════════════════════════
 // INCLUSIVE MODULE HOOKS — Human Compatibility (v6.0.0)
-// With full glue layer integration to SYSTEM, VISION, DEFENSE, MODERNIZER
-// ═══════════════════════════════════════════════════════════════
+// With full glue layer integration to SYSTEM, VISION, DEFENSE, EVOLUTION
 
 export function useInclusiveStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
