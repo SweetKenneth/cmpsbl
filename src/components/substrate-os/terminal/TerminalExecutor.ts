@@ -2610,7 +2610,7 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.applied') {
+    } else if (base === 'evolution.applied' || base === 'modernizer.applied') {
       const res = await modernizer.applied();
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
