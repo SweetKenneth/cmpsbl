@@ -171,9 +171,9 @@ export default function Solutions() {
                           <Badge key={metric} variant="outline" className="text-xs font-mono">{metric}</Badge>
                         ))}
                       </div>
-                      <Link to={solution.link}>
-                        <Button className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all">
-                          Learn More <ArrowRight className="w-4 h-4" />
+                       <Link to={solution.link}>
+                         <Button className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                           Learn More <ArrowRight className="w-4 h-4" />
                         </Button>
                       </Link>
                     </div>
