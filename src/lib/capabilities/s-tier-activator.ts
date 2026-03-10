@@ -109,10 +109,42 @@ const WAVE_3_ACTIVATIONS = [
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 4 — CJPI 92 (Enterprise Tier)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_4_ACTIVATIONS = [
+  { module: 'brain', capability: 'embedding_store', priority: 92, id: 'S-134' },
+  { module: 'atlas', capability: 'capability_gate_engine', priority: 92, id: 'S-77' },
+  { module: 'governance', capability: 'self_audit_loop', priority: 92, id: 'S-78' },
+  { module: 'vision', capability: 'performance_regression_detector', priority: 92, id: 'S-104' },
+  { module: 'defense', capability: 'honeypot_intelligence', priority: 92, id: 'S-107' },
+  { module: 'nexus', capability: 'fallback_chain_architect', priority: 92, id: 'S-112' },
+  { module: 'memory', capability: 'knowledge_compaction', priority: 92, id: 'S-115' },
+  { module: 'memory', capability: 'cross_session_persistence', priority: 92, id: 'S-130' },
+  { module: 'nexus', capability: 'token_optimization', priority: 92, id: 'S-138' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 5 — CJPI 91 (Operational Excellence)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_5_ACTIVATIONS = [
+  { module: 'identity', capability: 'zero_trust_session_binder', priority: 91, id: 'S-79' },
+  { module: 'nerve', capability: 'quorum_negotiator', priority: 91, id: 'S-80' },
+  { module: 'audit', capability: 'compliance_attestation', priority: 91, id: 'S-81' },
+  { module: 'vision', capability: 'resource_waste_profiler', priority: 91, id: 'S-109' },
+  { module: 'decode', capability: 'personality_adaptation', priority: 91, id: 'S-110' },
+  { module: 'economy', capability: 'roi_attribution', priority: 91, id: 'S-111' },
+  { module: 'defense', capability: 'behavioral_anomaly_detector', priority: 91, id: 'S-113' },
+  { module: 'access', capability: 'quota_intelligence', priority: 91, id: 'S-119' },
+  { module: 'defense', capability: 'input_sanitization_gateway', priority: 91, id: 'S-122' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Activation Engine
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ActivationWave = 1 | 2 | 3;
+export type ActivationWave = 1 | 2 | 3 | 4 | 5;
 
 interface ActivationResult {
   wave: ActivationWave;
@@ -151,17 +183,21 @@ function activateWave(
 }
 
 /**
- * Activate all 3 waves sequentially
+ * Activate all 5 waves sequentially
  * Call during substrate boot after capability router is initialized
  */
 export function activateAllSTierCapabilities(): ActivationResult[] {
-  console.log('[S-Tier Activator] ═══ Beginning staged activation ═══');
-  console.log(`[S-Tier Activator] Total: ${WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length} capabilities across 3 waves`);
+  const allWaves = [WAVE_1_ACTIVATIONS, WAVE_2_ACTIVATIONS, WAVE_3_ACTIVATIONS, WAVE_4_ACTIVATIONS, WAVE_5_ACTIVATIONS];
+  const total = allWaves.reduce((s, w) => s + w.length, 0);
+  console.log(`[S-Tier Activator] ═══ Beginning staged activation ═══`);
+  console.log(`[S-Tier Activator] Total: ${total} capabilities across 5 waves`);
 
   const results = [
     activateWave(1, WAVE_1_ACTIVATIONS),
     activateWave(2, WAVE_2_ACTIVATIONS),
     activateWave(3, WAVE_3_ACTIVATIONS),
+    activateWave(4, WAVE_4_ACTIVATIONS),
+    activateWave(5, WAVE_5_ACTIVATIONS),
   ];
 
   const totalActivated = results.reduce((sum, r) => sum + r.totalActivated, 0);
@@ -174,10 +210,12 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
  * Activate a specific wave only
  */
 export function activateWaveOnly(wave: ActivationWave): ActivationResult {
-  const waveMap = {
+  const waveMap: Record<ActivationWave, ReadonlyArray<{ module: string; capability: string; priority: number; id: string }>> = {
     1: WAVE_1_ACTIVATIONS,
     2: WAVE_2_ACTIVATIONS,
     3: WAVE_3_ACTIVATIONS,
+    4: WAVE_4_ACTIVATIONS,
+    5: WAVE_5_ACTIVATIONS,
   };
   return activateWave(wave, waveMap[wave]);
 }
@@ -196,13 +234,17 @@ export function getSTierCapabilityCount(): {
   wave1: number;
   wave2: number;
   wave3: number;
+  wave4: number;
+  wave5: number;
   total: number;
 } {
   return {
     wave1: WAVE_1_ACTIVATIONS.length,
     wave2: WAVE_2_ACTIVATIONS.length,
     wave3: WAVE_3_ACTIVATIONS.length,
-    total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length,
+    wave4: WAVE_4_ACTIVATIONS.length,
+    wave5: WAVE_5_ACTIVATIONS.length,
+    total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length + WAVE_4_ACTIVATIONS.length + WAVE_5_ACTIVATIONS.length,
   };
 }
 
@@ -211,4 +253,6 @@ export const S_TIER_WAVES = {
   WAVE_1: WAVE_1_ACTIVATIONS,
   WAVE_2: WAVE_2_ACTIVATIONS,
   WAVE_3: WAVE_3_ACTIVATIONS,
+  WAVE_4: WAVE_4_ACTIVATIONS,
+  WAVE_5: WAVE_5_ACTIVATIONS,
 } as const;
