@@ -112,7 +112,7 @@ export default function VanillaDeveloperGuide() {
               all through clean, typed function calls.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <a href="#quickstart">
                   <Terminal className="w-4 h-4" />
                   Quick Start
