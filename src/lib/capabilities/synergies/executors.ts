@@ -5679,7 +5679,7 @@ export async function executeAdaptiveConfigurationIntelligence(
   
   steps.push({ module: 'CORE', success: true, data: { configAnalyzed: true, parameters: 48 }, durationMs: 70 });
   steps.push({ module: 'VISION', success: true, data: { metricsCollected: true, improvement: '+18%' }, durationMs: 90 });
-  steps.push({ module: 'MODERNIZER', success: true, data: { recommendationsGenerated: 6, confidence: 0.86 }, durationMs: 120 });
+  steps.push({ module: 'EVOLUTION', success: true, data: { recommendationsGenerated: 6, confidence: 0.86 }, durationMs: 120 });
   steps.push({ module: 'BRAIN', success: true, data: { historyValidated: true, successRate: 0.91 }, durationMs: 80 });
   
   return createSuccessResult(context.synergyId, { optimizations: 6, expectedGain: '+18%' }, steps, startTime);

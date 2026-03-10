@@ -112,7 +112,7 @@ const EXPECTED_EDGE_FUNCTIONS = [
   'marketplace-generate-template',
   'marketplace-verify-license',
   'memory-playground',
-  'modernizer',
+  'evolution',
   'nexus-budget-optimizer',
   'nexus-code-assistant',
   'nexus-provider-discovery',
