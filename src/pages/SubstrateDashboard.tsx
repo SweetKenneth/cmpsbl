@@ -131,7 +131,7 @@ const modulesByLayer = {
   operational: [
     {
       id: "defense",
-      name: "Defense",
+      name: "DEFENSE",
       description: "Bot detection, threat analysis",
       icon: Shield,
       color: "text-red-500",
@@ -140,7 +140,7 @@ const modulesByLayer = {
     },
     {
       id: "nexus",
-      name: "Nexus",
+      name: "NEXUS",
       description: "Multi-provider AI routing",
       icon: Zap,
       color: "text-yellow-500",
@@ -149,7 +149,7 @@ const modulesByLayer = {
     },
     {
       id: "vision",
-      name: "Vision",
+      name: "VISION",
       description: "Observability, metrics, health",
       icon: Eye,
       color: "text-green-500",
