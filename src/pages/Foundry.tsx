@@ -26,7 +26,7 @@ import { FoundryDemoVideo } from '@/components/foundry-demo/FoundryDemoVideo';
 import { MemoryStreamExplainer } from '@/components/foundry-demo/MemoryStreamExplainer';
 import { ProofNumbers } from '@/components/foundry-demo/ProofNumbers';
 import { RecursiveLoop } from '@/components/foundry-demo/RecursiveLoop';
-import { CrownJewelShowcase } from '@/components/foundry-demo/CrownJewelShowcase';
+import { ApexDiscoveryShowcase } from '@/components/foundry-demo/CrownJewelShowcase';
 import { LiveDiscoveryStream } from '@/components/foundry-demo/LiveDiscoveryStream';
 import { CategoryBreakdown } from '@/components/foundry-demo/CategoryBreakdown';
 import { TierDistribution } from '@/components/foundry-demo/TierDistribution';

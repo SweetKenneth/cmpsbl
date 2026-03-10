@@ -7,14 +7,6 @@ import { motion } from 'framer-motion';
 interface ApexDiscovery {
   name: string;
   category: string;
-  systems: string[];
-  capability: string;
-  whatItDoes: string;
-}
-
-interface ApexDiscovery {
-  name: string;
-  category: string;
   score: number;
   tier: string;
   systems: string[];
@@ -30,7 +22,10 @@ const TOP_DISCOVERIES: ApexDiscovery[] = [
   { name: 'Intelligent Data Pipeline Orchestrator', score: 93, tier: 'RELIC', category: 'DATA', systems: ['CORTEX', 'DECODE', 'INTEGRATION', 'RELAY'], capability: 'Coordinates complex multi-source data pipelines with automatic schema detection, transformation, and delivery across heterogeneous systems.', whatItDoes: 'Connects any data source to any destination with automatic format conversion, error recovery, and delivery guarantees.' },
 ];
 
-export function CrownJewelShowcase() {
+/** @deprecated Use ApexDiscoveryShowcase instead */
+export const CrownJewelShowcase = ApexDiscoveryShowcase;
+
+export function ApexDiscoveryShowcase() {
   return (
     <section className="py-20 sm:py-24 md:py-40 px-5 sm:px-6 relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
@@ -84,11 +79,9 @@ export function CrownJewelShowcase() {
                   </div>
                 </div>
               </div>
-              {/* Full description — no truncation */}
               <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed mb-3.5">
                 {discovery.capability}
               </p>
-              {/* Functional explanation replacing node list */}
               <div className="bg-muted/20 border border-border/10 rounded-lg px-3 py-2.5">
                 <p className="text-xs sm:text-sm font-mono text-foreground/70 leading-relaxed">
                   <span className="text-primary/70 font-bold text-[10px] sm:text-xs uppercase tracking-wider mr-1.5">What it does →</span>
