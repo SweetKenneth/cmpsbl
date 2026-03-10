@@ -5330,7 +5330,7 @@ export async function executeEntitlementEvolution(
 
 /**
  * Proactive Maintenance Engine Executor
- * MODERNIZER + VISION + BRAIN → Maintenance predicted from degradation patterns
+ * EVOLUTION + VISION + BRAIN → Maintenance predicted from degradation patterns
  */
 export async function executeProactiveMaintenanceEngine(
   context: SynergyExecutionContext
