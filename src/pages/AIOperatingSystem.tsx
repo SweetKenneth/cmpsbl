@@ -6,7 +6,7 @@
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, Shield, Network, Moon, Workflow, Cpu, Layers, Zap, Target, Gamepad2 } from "lucide-react";
+import { ArrowRight, Brain, Shield, Network, Moon, Workflow, Cpu, Layers, Zap, Target, Gamepad2, Database, Eye, Activity } from "lucide-react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
@@ -19,11 +19,11 @@ const faqItems = [
   },
   {
     question: "How is an AI Operating System different from an AI framework?",
-    answer: "AI frameworks like LangChain or CrewAI solve individual problems — chaining prompts, managing agents, or structuring outputs. An AI Operating System integrates all of these concerns (memory, routing, security, monitoring, optimization) into a single platform where modules communicate and enhance each other. The whole is greater than the sum of its parts."
+    answer: "AI frameworks like LangChain or CrewAI solve individual problems — chaining prompts, managing agents, or structuring outputs. An AI Operating System integrates all of these concerns (memory, routing, security, monitoring, optimization) into a single platform where nodes communicate and enhance each other. The whole is greater than the sum of its parts."
   },
   {
     question: "What problems does CMPSBL's AI Operating System solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory (vector DBs), routing (API gateways), security (prompt filters), and monitoring (observability platforms), CMPSBL provides all 14 subsystems as integrated modules that share context, learn from each other, and self-optimize."
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory (vector DBs), routing (API gateways), security (prompt filters), and monitoring (observability platforms), CMPSBL provides 40 nodes across 12 sectors as an integrated cognitive substrate that shares context, learns from each other, and self-optimizes."
   },
   {
     question: "Who needs an AI Operating System?",
@@ -31,21 +31,36 @@ const faqItems = [
   },
   {
     question: "Can CMPSBL work with existing AI models and providers?",
-    answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS module intelligently routes to OpenAI, Google Gemini, Anthropic Claude, or local models based on task requirements. Bring your own keys (BYOK) and your existing AI stack — CMPSBL orchestrates everything underneath."
+    answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS node intelligently routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on task requirements. Bring your own keys (BYOK) and your existing AI stack — CMPSBL orchestrates everything underneath."
   },
   {
     question: "What is CMPSBL's architecture?",
-    answer: "The substrate consists of 10 entities (CORE kernel + 8 modules + INTEGRATION), wrapped by 5 mesh overlays (DEFENSE outermost → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE innermost), with 9 hot-swappable zones across CCR (SYSTEM, BRAIN, MEMORY, DREAM) and CCL (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)."
+    answer: "The substrate is a 40-node matrix organized across 12 sectors — Kernel (CORE, SYSTEM), CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ, EPZ, EMZ, CSZ zones, plus Fields (EVOLUTION, IMMUNITY, INTENT), Plane (GOVERNANCE), and Shell (DEFENSE). Weights are managed by CORE with Σ = 1.000."
   },
 ];
 
 const pillars = [
-  { icon: Brain, title: "Persistent Memory", description: "3-tier memory architecture (hot/warm/cold) that gives AI agents long-term learning and contextual recall across sessions.", link: "/modules/brain" },
-  { icon: Network, title: "Intelligent Routing", description: "Multi-provider model routing that automatically selects the optimal AI model based on task complexity, cost, and latency.", link: "/modules/nexus" },
-  { icon: Shield, title: "AI-Native Security", description: "Purpose-built threat detection for AI systems — prompt injection defense, adversarial filtering, and automated incident response.", link: "/modules/defense" },
-  { icon: Moon, title: "Autonomous Optimization", description: "Off-peak self-improvement cycles that analyze patterns, consolidate memory, and tune performance — your AI gets smarter overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", description: "Cross-module orchestration coordinates execution surfaces as a unified intelligence, discovering emergent capabilities no single module possesses.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", description: "Dependency-ordered boot, health monitoring, auto-recovery, and zero-downtime hot reload — production-grade reliability built in.", link: "/modules/core" },
+  { icon: Brain, title: "Persistent Memory", description: "4-tier memory architecture (hot/warm/cold/legacy) with DREAM consolidation. Every agent remembers — free for all users.", link: "/persistent-memory" },
+  { icon: Network, title: "Intelligent Routing", description: "NEXUS routes to 14+ providers based on task complexity, cost, and latency. Auto-failover. Budget-aware. Zero lock-in.", link: "/modules/nexus" },
+  { icon: Shield, title: "AI-Native Security", description: "DEFENSE wraps the outer shell. Prompt injection detection, adversarial filtering, bot detection, and rate limiting built in.", link: "/modules/defense" },
+  { icon: Moon, title: "Autonomous Optimization", description: "DREAM cycles consolidate memory, generate heuristics, and surface lateral insights — your AI improves overnight, autonomously.", link: "/modules/dream" },
+  { icon: Workflow, title: "Meta-Orchestration", description: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy pipelines discover emergent capabilities.", link: "/modules/cortex" },
+  { icon: Cpu, title: "Self-Healing Runtime", description: "CORE boots 40 nodes in dependency order with circuit breakers, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
+];
+
+const sectors = [
+  { label: "Kernel", nodes: "CORE, SYSTEM", count: 2 },
+  { label: "CCR", nodes: "BRAIN, MEMORY, DREAM", count: 3 },
+  { label: "OCG", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6 },
+  { label: "Execution", nodes: "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION", count: 10 },
+  { label: "ESZ", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4 },
+  { label: "EPZ", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3 },
+  { label: "EMZ", nodes: "FORGE, TRANSLATE, INGEST", count: 3 },
+  { label: "CSZ", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3 },
+  { label: "Fields", nodes: "EVOLUTION, IMMUNITY, INTENT", count: 3 },
+  { label: "Plane", nodes: "GOVERNANCE", count: 1 },
+  { label: "Atlas", nodes: "ATLAS", count: 1 },
+  { label: "Shell", nodes: "DEFENSE", count: 1 },
 ];
 
 export default function AIOperatingSystem() {
@@ -79,7 +94,7 @@ export default function AIOperatingSystem() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "CMPSBL Substrate",
-    "description": "The world's first AI Operating System — 14 integrated modules providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
+    "description": "The world's first AI Operating System — 40 integrated nodes across 12 sectors providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
     "url": "https://cmpsbl.com/ai-operating-system",
     "applicationCategory": "AI Operating System",
     "operatingSystem": "Cloud",
@@ -90,10 +105,10 @@ export default function AIOperatingSystem() {
     <>
       <Helmet>
         <title>What is an AI Operating System? | CMPSBL — The First AI OS</title>
-        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the first governed AI OS — modular, persistent, and self-improving." />
+        <meta name="description" content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the first governed AI OS — 40 nodes, 12 sectors, self-improving." />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
-        <meta property="og:description" content="The first AI Operating System — modular cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization." />
+        <meta property="og:description" content="The first AI Operating System — 40-node cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
@@ -123,16 +138,16 @@ export default function AIOperatingSystem() {
               </p>
               <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
                 Just as traditional operating systems unified file management, process scheduling, and I/O for applications, 
-                an AI Operating System unifies the fragmented AI infrastructure stack into one platform where every subsystem 
+                an AI Operating System unifies the fragmented AI infrastructure stack into one platform where every node 
                 communicates, learns, and enhances the others.
               </p>
 
               <div className="flex flex-wrap gap-3 mt-10">
-                <Button asChild size="lg" className="rounded-xl">
+                <Button asChild size="lg" className="rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/modules">Explore All 40 Nodes <ArrowRight className="w-4 h-4 ml-2" /></Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-xl">
-                  <Link to="/developers">Get Started Free</Link>
+                <Button asChild variant="outline" size="lg" className="rounded-xl hover:border-primary/30 transition-colors">
+                  <Link to="/persistent-memory">Try Persistent Memory (FREE)</Link>
                 </Button>
               </div>
             </motion.div>
@@ -148,12 +163,12 @@ export default function AIOperatingSystem() {
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
               Today's AI teams cobble together separate tools for every concern — a vector database for memory, 
               an API gateway for routing, a prompt filter for security, an APM tool for monitoring, and manual processes for optimization. 
-              These tools don't talk to each other. When your security module detects a threat, your memory module doesn't learn from it. 
-              When your routing module finds a cheaper model, your monitoring module doesn't know why latency changed.
+              These tools don't talk to each other. When DEFENSE detects a threat, BRAIN doesn't learn from it. 
+              When NEXUS finds a cheaper model, VISION doesn't know why latency changed.
             </p>
             <p className="text-foreground font-medium leading-relaxed max-w-3xl">
-              An AI Operating System eliminates this fragmentation. Every module shares context, events propagate in real-time, 
-              and the system self-optimizes as a unified whole.
+              An AI Operating System eliminates this fragmentation. Every node shares context, events propagate through RIPPLE in real-time, 
+              and the system self-optimizes as a unified whole through DREAM cycles.
             </p>
           </div>
         </section>
@@ -178,7 +193,7 @@ export default function AIOperatingSystem() {
                 >
                   <Link
                     to={pillar.link}
-                    className="group block p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full"
+                    className="group block p-6 rounded-xl border border-border bg-card hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 h-full shimmer-on-hover card-lift"
                   >
                     <pillar.icon className="w-8 h-8 text-primary mb-4 group-hover:scale-110 transition-transform" />
                     <h3 className="text-lg font-bold text-foreground mb-2">{pillar.title}</h3>
@@ -190,26 +205,43 @@ export default function AIOperatingSystem() {
           </div>
         </section>
 
-        {/* CMPSBL as the Reference Implementation */}
+        {/* 40-Node Architecture */}
         <section className="py-12 sm:py-16 border-t border-border/50">
-          <div className="container mx-auto max-w-4xl px-4">
+          <div className="container mx-auto max-w-5xl px-4">
             <h2 className="text-2xl sm:text-3xl font-bold mb-4 flex items-center gap-2">
-              <Zap className="w-6 h-6 text-primary" /> CMPSBL: The First AI Operating System
+              <Activity className="w-6 h-6 text-primary" /> 40-Node · 12-Sector Architecture
             </h2>
-            <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
-              The CMPSBL Substrate is the reference implementation of the Cognitive Reality category. 
-              With <strong className="text-foreground">10 integrated entities</strong> organized across <strong className="text-foreground">6 architectural layers</strong>, 
-              it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 100 crystallized Apex Discovery pipelines.
+            <p className="text-muted-foreground leading-relaxed mb-8 max-w-3xl">
+              The CMPSBL Substrate organizes 40 specialized nodes across 12 sectors. Each node holds a weight in the system matrix (Σ = 1.000), 
+              managed by CORE. Circuit breakers prevent cascading failures. DREAM cycles optimize autonomously.
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {sectors.map((sector, i) => (
+                <motion.div
+                  key={sector.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="p-4 rounded-xl border border-border/50 bg-card/50 hover:border-primary/20 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-bold text-foreground">{sector.label}</h3>
+                    <span className="text-[10px] font-mono text-muted-foreground">{sector.count} nodes</span>
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground leading-relaxed">{sector.nodes}</p>
+                </motion.div>
+              ))}
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
               {[
-                { value: "10", label: "Entities" },
-                { value: "6", label: "Architectural Layers" },
-                { value: "24", label: "Modules" },
+                { value: "40", label: "Nodes" },
+                { value: "12", label: "Sectors" },
+                { value: "1.000", label: "Σ Weight" },
                 { value: "360+", label: "Terminal Commands" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-4 rounded-xl border border-border bg-card">
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-primary font-mono tabular-nums">{stat.value}</div>
                   <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
                 </div>
               ))}
@@ -229,7 +261,7 @@ export default function AIOperatingSystem() {
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="group p-5 rounded-xl border border-border bg-card"
+                  className="group p-5 rounded-xl border border-border bg-card hover:border-primary/15 transition-colors"
                 >
                   <summary className="font-bold text-foreground cursor-pointer list-none flex items-center justify-between">
                     {item.question}
@@ -246,16 +278,13 @@ export default function AIOperatingSystem() {
         <section className="py-14 sm:py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
           <div className="container mx-auto max-w-3xl px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to run your AI on an operating system?</h2>
-            <p className="text-muted-foreground mb-8">Start building with the world's first AI OS. Free to explore.</p>
+            <p className="text-muted-foreground mb-8">Start building with the world's first AI OS. Persistent memory is free for all users.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Button asChild size="lg" className="rounded-xl">
-                <Link to="/start-here">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              <Button asChild size="lg" className="rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Link to="/persistent-memory">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl">
+              <Button asChild variant="outline" size="lg" className="rounded-xl hover:border-primary/30 transition-colors">
                 <Link to="/modules">Explore All 40 Nodes</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl">
-                <Link to="/gaming">Gaming AI <Gamepad2 className="w-4 h-4 ml-2" /></Link>
               </Button>
             </div>
           </div>
