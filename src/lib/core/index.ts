@@ -318,7 +318,7 @@ const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly Substra
   identity: ['core'],
   relay: ['core'],
   audit: ['core'],
-  modernizer: ['core'],
+  evolution: ['core'],
   decode: ['core'],
   encode: ['core', 'decode'],
   vision: ['core'],
