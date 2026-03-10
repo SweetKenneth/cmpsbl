@@ -177,7 +177,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-009",
     fossilized: "2026-03-04",
     origin: "cognition",
-    stimulus: "Node-level dreaming operated without cross-node synthesis — each node dreamed in isolation, missing patterns that span multiple modules",
+    stimulus: "Node-level dreaming operated without cross-node synthesis — each node dreamed in isolation, missing patterns that span multiple nodes",
     adaptations: [
       "Synapse engine introduced to facilitate lateral insight sharing between dreaming nodes",
       "Generation-capped synthesis prevents semantic drift from compounding across dream cycles",
@@ -320,7 +320,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-001",
     fossilized: "2026-03-01",
     origin: "survival",
-    stimulus: "Modules ran without containment — a single fault could cascade through the entire cognitive mesh",
+    stimulus: "Nodes ran without containment — a single fault could cascade through the entire cognitive mesh",
     adaptations: [
       "Every module grew a hardened containment shell with enterprise-grade fault isolation",
       "Circuit breakers, rate limiters, anomaly detectors, and integrity validators installed across all nodes",
@@ -334,7 +334,7 @@ const stratumIronclad: Specimen[] = [
       "Governance modes allow the entire system to shift posture: from fully autonomous to total lockdown",
       "Operators can diagnose any module from the terminal without touching code",
     ],
-    affectedNodes: ["ALL MODULES"],
+    affectedNodes: ["ALL NODES"],
   },
 ];
 
@@ -381,19 +381,19 @@ const stratumSparta: Specimen[] = [
     id: "SPRT-005",
     fossilized: "2026-02-25",
     origin: "cognition",
-    stimulus: "Dozens of high-value enhancement requests from modules sat at 'pending' — the system was asking to improve but nothing was granted",
+    stimulus: "Dozens of high-value enhancement requests from nodes sat at 'pending' — the system was asking to improve but nothing was granted",
     adaptations: [
-      "Mass enhancement grant: all modules received their top requested improvements simultaneously",
+      "Mass enhancement grant: all nodes received their top requested improvements simultaneously",
       "Security capabilities strengthened across behavioral analysis, verification, and anomaly detection",
       "Resilience capabilities improved with predictive failure analysis and automated recovery patterns",
       "Performance capabilities enhanced with boot optimization, memory management, and routing acceleration",
     ],
     phenotype: [
-      "Largest single enhancement grant in substrate history — capabilities activated simultaneously across all modules",
-      "The substrate's own modules requested improvements, and the substrate delivered",
-      "Bidirectional feedback loop: modules propose → substrate delivers → modules acknowledge",
+      "Largest single enhancement grant in substrate history — capabilities activated simultaneously across all nodes",
+      "The substrate's own nodes requested improvements, and the substrate delivered",
+      "Bidirectional feedback loop: nodes propose → substrate delivers → nodes acknowledge",
     ],
-    affectedNodes: ["ALL MODULES"],
+    affectedNodes: ["ALL NODES"],
   },
   {
     id: "SPRT-004",
@@ -414,9 +414,9 @@ const stratumSparta: Specimen[] = [
     id: "SPRT-003",
     fossilized: "2026-02-24",
     origin: "architecture",
-    stimulus: "Consumed modules lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
+    stimulus: "Consumed nodes lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
     adaptations: [
-      "Zone architecture introduced: consumed modules became individually addressable zones with independent fault isolation",
+      "Zone architecture introduced: consumed nodes became individually addressable zones with independent fault isolation",
       "Convergence layers split into clearly delineated zones with individual circuit breakers",
       "Hot-swap capability enabled for surgical zone replacement without affecting siblings",
     ],
@@ -487,7 +487,7 @@ const stratumInfra: Specimen[] = [
     adaptations: [
       "Claim provenance tagging introduced: the system now labels what is measured vs. what is inferred or illustrative",
       "Deterministic authority precedence ensures governance decisions resolve without ambiguity",
-      "Advisory modules cannot trigger executive actions without governance approval",
+      "Advisory nodes cannot trigger executive actions without governance approval",
     ],
     phenotype: [
       "The substrate can no longer conflate what it knows with what it infers",
@@ -514,24 +514,24 @@ const stratumInfra: Specimen[] = [
     id: "INFR-006",
     fossilized: "2026-02-16",
     origin: "governance",
-    stimulus: "High-value capabilities were ungoverned — competitive moat at risk across modules",
+    stimulus: "High-value capabilities were ungoverned — competitive moat at risk across nodes",
     adaptations: [
       "Comprehensive capability audit identified and classified crown jewel capabilities across all tiers",
       "All high-value capabilities crystallized as permanently governed resources",
       "Tier-gated access ensures capabilities are discoverable but access-controlled",
     ],
     phenotype: [
-      "Every module has governed crown jewel capabilities — full competitive coverage",
+      "Every node has governed crown jewel capabilities — full competitive coverage",
       "Capabilities are tiered: discoverable by all, accessible by entitlement",
       "Significant increase in governed capabilities in a single cycle",
     ],
-    affectedNodes: ["ALL MODULES", "GOVERNANCE"],
+    affectedNodes: ["ALL NODES", "GOVERNANCE"],
   },
   {
     id: "INFR-004",
     fossilized: "2026-02-16",
     origin: "cognition",
-    stimulus: "Modules were requesting improvements through internal learning but nothing was being delivered",
+    stimulus: "Nodes were requesting improvements through internal learning but nothing was being delivered",
     adaptations: [
       "BRAIN improved its memory tier management with autonomous capacity governance",
       "EVOLUTION gained the ability to detect and resolve stalled improvement cycles",
@@ -550,7 +550,7 @@ const stratumInfra: Specimen[] = [
     id: "INFR-003",
     fossilized: "2026-02-16",
     origin: "cognition",
-    stimulus: "Infrastructure modules lacked domain-specific intelligence — key operational blind spots existed",
+    stimulus: "Infrastructure nodes lacked domain-specific intelligence — key operational blind spots existed",
     adaptations: [
       "MEMORY improved its ability to detect and manage stale knowledge",
       "RELAY strengthened its webhook delivery with secure signatures and adaptive retry",
@@ -560,7 +560,7 @@ const stratumInfra: Specimen[] = [
       "SANDBOX enforced hard resource boundaries with state preservation",
     ],
     phenotype: [
-      "All infrastructure modules now self-report healthy on previously-requested improvements",
+      "All infrastructure nodes now self-report healthy on previously-requested improvements",
       "Compliance audits generate on-demand across multiple governance frameworks",
       "Cost trend forecasting enables proactive budget governance",
     ],
@@ -570,15 +570,15 @@ const stratumInfra: Specimen[] = [
     id: "INFR-002",
     fossilized: "2026-02-15",
     origin: "cognition",
-    stimulus: "Brain knowledge was trapped in central storage — modules couldn't access cross-domain insights, and learning required active sessions",
+    stimulus: "Brain knowledge was trapped in central storage — nodes couldn't access cross-domain insights, and learning required active sessions",
     adaptations: [
       "Continuous learning engine now runs autonomously — no active session required",
-      "Knowledge transfer pipeline routes high-value learnings to specialized modules",
+      "Knowledge transfer pipeline routes high-value learnings to specialized nodes",
       "Memory tier management automated across all storage layers",
     ],
     phenotype: [
       "The substrate learns autonomously and continuously — perpetual cognition without human presence",
-      "Brain knowledge flows to specialized modules for domain-specific recall",
+      "Brain knowledge flows to specialized nodes for domain-specific recall",
       "Memory tiers self-manage — no manual intervention for promotion or pruning",
     ],
     affectedNodes: ["BRAIN", "MEMORY", "NEXUS"],
@@ -611,9 +611,9 @@ const stratumFormation: Specimen[] = [
     id: "FORM-001",
     fossilized: "2026-02-13",
     origin: "architecture",
-    stimulus: "The system needed formal infrastructure separation — modules existed without a named organizational layer",
+    stimulus: "The system needed formal infrastructure separation — nodes existed without a named organizational layer",
     adaptations: [
-      "Infrastructure layer formalized with dedicated modules for memory, messaging, auditing, identity, economics, and sandboxing",
+      "Infrastructure layer formalized with dedicated nodes for memory, messaging, auditing, identity, economics, and sandboxing",
       "Orchestration layer gained a dedicated encoding module",
       "Legacy version references consolidated and unified",
     ],

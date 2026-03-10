@@ -9,7 +9,7 @@ const REQUIRED_ROUTES = [
   { path: '/', label: 'Home' },
   { path: '/os', label: 'OS Dashboard' },
   { path: '/auth', label: 'Authentication' },
-  { path: '/modules', label: 'Modules Hub' },
+  { path: '/modules', label: 'Nodes Hub' },
   { path: '/about', label: 'About' },
   { path: '/pricing', label: 'Pricing / Upgrade' },
   { path: '/docs', label: 'Documentation' },

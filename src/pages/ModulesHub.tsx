@@ -23,7 +23,7 @@ export default function ModulesHub() {
     <>
       <SEO
         title="Substrate Nodes — AI Architecture | CMPSBL"
-        description="Browse all substrate execution surfaces — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
+        description="Browse all substrate nodes — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
@@ -106,7 +106,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'system'} <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'node'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}

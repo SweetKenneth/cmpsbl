@@ -136,7 +136,7 @@ export default function IntentMeshPublic() {
         keywords={['intent mesh', 'cross-module discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
           { name: 'Intent Mesh', url: 'https://cmpsbl.com/intent-mesh' },
         ]}
       />
@@ -311,14 +311,14 @@ Learning feedback → improved future routing`}</pre>
           <div className="max-w-4xl mx-auto px-6 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              The Intent Mesh is one layer of the CMPSBL Substrate — a cognitive orchestration system with modules, mesh overlays, and convergence zones.
+              The Intent Mesh is one layer of the CMPSBL Substrate — a cognitive orchestration system with nodes, mesh overlays, and convergence zones.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 to="/modules"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
               >
-                All Modules <ArrowRight className="w-4 h-4" />
+                All Nodes <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 to="/documentation"

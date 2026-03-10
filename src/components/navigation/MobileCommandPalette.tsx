@@ -25,7 +25,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "How It Works", href: "/ai-operating-system", section: "Platform", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
   { name: "Substrate", href: "/substrate", section: "Platform", icon: Cpu, keywords: ["core", "infrastructure", "dashboard"] },
   { name: "Substrate Demo", href: "/demo", section: "Platform", icon: Sparkles, keywords: ["interactive", "live", "try"] },
-  { name: "All Modules", href: "/modules", section: "Platform", icon: Layers, keywords: ["modules", "production", "hub"] },
+  { name: "All Nodes", href: "/modules", section: "Platform", icon: Layers, keywords: ["nodes", "production", "hub"] },
   { name: "Runtime", href: "/runtime", section: "Platform", icon: Code, keywords: ["execution", "environment"] },
   { name: "Dashboard", href: "/os", section: "Platform", icon: Layers, keywords: ["command center", "control"] },
   { name: "Capability Map", href: "/capability-map", section: "Platform", icon: Network },

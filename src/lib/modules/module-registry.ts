@@ -3,7 +3,7 @@
  * 40-Node Matrix across 12 Sectors
  * 
  * visibility:
- *   'public'  → shown on /modules hub cards
+ *   'public'  → shown on /modules hub cards (Nodes)
  *   'mesh'    → shown in mesh overlay section
  *   'hidden'  → internal zones, detail pages only (not hub cards)
  */
@@ -588,7 +588,7 @@ export const LAYER_COLORS: Record<string, string> = {
   CCL: 'from-sky-500/20 to-lime-500/20',
 };
 
-/** Public entities shown on /modules hub page */
+/** Public entities shown on /modules hub page (Nodes) */
 export function getPublicModules(): ModuleInfo[] {
   return MODULE_REGISTRY.filter(m => m.visibility === 'public');
 }
