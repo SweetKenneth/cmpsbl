@@ -807,7 +807,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'pattern_evolver',
       'dream_journal',
     ],
-    primaryModules: ['DREAM', 'BRAIN', 'MODERNIZER'],
+    primaryModules: ['DREAM', 'BRAIN', 'EVOLUTION'],
     layer: 'Admin',
     synergyMultiplier: 2.4,
     complexityScore: 8,
