@@ -461,7 +461,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'proposal_impact_analyzer',
       'deprecation_path_finder',
     ],
-    primaryModules: ['MODERNIZER', 'SYSTEM', 'CORTEX'],
+    primaryModules: ['EVOLUTION', 'SYSTEM', 'CORTEX'],
     layer: 'Admin',
     synergyMultiplier: 2.4,
     complexityScore: 9,
