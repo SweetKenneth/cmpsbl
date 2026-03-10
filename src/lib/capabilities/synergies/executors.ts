@@ -2427,8 +2427,8 @@ export async function executeAutonomousRepair(
     durationMs: performance.now() - visionStart,
   });
   
-  // Step 2: MODERNIZER - Generate fixes
-  const modernizerStart = performance.now();
+  // Step 2: EVOLUTION - Generate fixes
+  const evolutionStart = performance.now();
   const fixes = {
     proposed: [
       { issue: 'memory_leak_pattern', fix: 'add_cleanup_hook', confidence: 0.88 },
