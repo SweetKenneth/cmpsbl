@@ -86,6 +86,7 @@ const Namespace = lazy(() => import("@/pages/Namespace"));
 const Insights = lazy(() => import("@/pages/Insights"));
 const SystemOverview = lazy(() => import("@/pages/SystemOverview"));
 const Workspace = lazy(() => import("@/pages/Workspace"));
+const PricingMethod = lazy(() => import("@/pages/PricingMethod"));
 
 const Support = lazy(() => import("@/pages/Support"));
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
@@ -209,6 +210,7 @@ export const publicRoutes = (
     <Route path="/evolution" element={<EvolutionControlCenter />} />
     <Route path="/architecture" element={<Architecture />} />
     <Route path="/pricing" element={<Upgrade />} />
+    <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Upgrade />} />
     <Route path="/packs" element={<Packs />} />
     <Route path="/start-here" element={<StartHere />} />

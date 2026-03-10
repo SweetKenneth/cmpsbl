@@ -7827,6 +7827,7 @@ export type Database = {
           pipeline_fingerprint: string | null
           pipeline_steps: Json | null
           pricing_confidence: number | null
+          pricing_evidence: Json | null
           pricing_last_updated_at: string | null
           pricing_source: string | null
           pricing_source_version: string | null
@@ -7858,6 +7859,7 @@ export type Database = {
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
@@ -7889,6 +7891,7 @@ export type Database = {
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
@@ -13325,6 +13328,7 @@ export type Database = {
           pipeline_steps: Json | null
           pipeline_tier: string
           pricing_confidence: number | null
+          pricing_evidence: Json | null
           pricing_last_updated_at: string | null
           pricing_source: string | null
           pricing_source_version: string | null
@@ -13353,6 +13357,7 @@ export type Database = {
           pipeline_steps?: Json | null
           pipeline_tier: string
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
@@ -13381,6 +13386,7 @@ export type Database = {
           pipeline_steps?: Json | null
           pipeline_tier?: string
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
@@ -17206,6 +17212,7 @@ export type Database = {
           module_chain: string[] | null
           name: string
           pricing_confidence: number | null
+          pricing_evidence: Json | null
           pricing_last_updated_at: string | null
           pricing_source: string | null
           pricing_source_version: string | null
@@ -17237,6 +17244,7 @@ export type Database = {
           module_chain?: string[] | null
           name: string
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
@@ -17268,6 +17276,7 @@ export type Database = {
           module_chain?: string[] | null
           name?: string
           pricing_confidence?: number | null
+          pricing_evidence?: Json | null
           pricing_last_updated_at?: string | null
           pricing_source?: string | null
           pricing_source_version?: string | null
