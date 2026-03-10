@@ -690,11 +690,12 @@ export class AtlasCommandInterpreter {
   }
 
   private async handleUsageQuery(command: ParsedCommand): Promise<CommandResult> {
-    // Fetch today's usage
+    // Fetch today's usage from ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: todayUsage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used, tokens_used')
-      .eq('date', new Date().toISOString().split('T')[0])
+      .from('ai_daily_quota')
+      .select('calls_used, tokens_used, calls_budget')
+      .eq('date', today)
       .maybeSingle();
 
     // Fetch monthly usage
@@ -703,7 +704,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -715,14 +716,14 @@ export class AtlasCommandInterpreter {
       { calls: 0, tokens: 0 }
     ) || { calls: 0, tokens: 0 };
 
-    const dailyRemaining = Math.max(0, 50 - (todayUsage?.calls_used || 0));
-    const monthlyRemaining = Math.max(0, 1000 - monthlyTotals.calls);
+    const dailyBudget = todayUsage?.calls_budget || 50;
+    const dailyRemaining = Math.max(0, dailyBudget - (todayUsage?.calls_used || 0));
     const cyclesRemaining = Math.floor(dailyRemaining / 2.5);
 
     return {
       success: true,
-      message: `💳 **Usage & Quota**\n\n**Today:**\n• Calls: ${todayUsage?.calls_used || 0} / 50 (${dailyRemaining} remaining)\n• Cycles: ~${cyclesRemaining} remaining\n• Tokens: ${(todayUsage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Calls: ${monthlyTotals.calls} / 1,000 (${monthlyRemaining} remaining)\n• Tokens: ${monthlyTotals.tokens.toLocaleString()}\n\n**Free Tier:**\n• ~50 calls/day\n• ~20 evolution cycles/day\n• ~400 cycles/month`,
-      data: { todayUsage, monthlyTotals, dailyRemaining, monthlyRemaining },
+      message: `💳 **Usage & Quota**\n\n**Today:**\n• Calls: ${todayUsage?.calls_used || 0} / ${dailyBudget} (${dailyRemaining} remaining)\n• Cycles: ~${cyclesRemaining} remaining\n• Tokens: ${(todayUsage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls}\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
+      data: { todayUsage, monthlyTotals, dailyRemaining },
     };
   }
 
