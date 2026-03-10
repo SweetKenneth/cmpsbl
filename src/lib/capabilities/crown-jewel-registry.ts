@@ -1163,7 +1163,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'creative_forge',
     name: 'Creative Forge',
     artifactType: 'meta-engine',
-    modules: ['DREAM', 'BRAIN', 'DECODE', 'CORTEX', 'MODERNIZER'],
+    modules: ['DREAM', 'BRAIN', 'DECODE', 'CORTEX', 'EVOLUTION'],
     classification: 'experience',
     reason: 'Full creative stack — generative synthesis, pattern evolution',
     enables: 'Creative solution generation, cross-domain innovation',
