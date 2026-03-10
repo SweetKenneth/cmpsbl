@@ -1026,7 +1026,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     crown_jewel: true, admin_only: true,
   },
   {
-    id: 'evolution_ab', name: 'Evolution A/B', artifactType: 'engine', modules: ['MODERNIZER'],
+    id: 'evolution_ab', name: 'Evolution A/B', artifactType: 'engine', modules: ['EVOLUTION'],
     classification: 'architecture',
     reason: 'Parallel evolution variant testing', enables: 'Multi-path evolution comparison',
     composesWith: ['evolution_engine'], dangerIfExposed: 'Evolution testing strategy exposed',
