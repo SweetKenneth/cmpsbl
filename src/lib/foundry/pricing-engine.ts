@@ -132,6 +132,7 @@ export async function priceArtifact(artifact: PricingArtifact): Promise<Commerci
 
 /**
  * Batch reprice multiple artifacts and persist results to DB
+ * ECONOMY governance: tracks batch lifecycle and per-item costs
  */
 export async function batchReprice(
   artifacts: PricingArtifact[],
@@ -140,6 +141,9 @@ export async function batchReprice(
   const batchSize = 10;
   let success = 0;
   let failed = 0;
+
+  // Start ECONOMY batch tracking
+  startBatchRepricing(artifacts.length);
 
   for (let i = 0; i < artifacts.length; i += batchSize) {
     const batch = artifacts.slice(i, i + batchSize);
@@ -162,15 +166,58 @@ export async function batchReprice(
 
       if (error) throw error;
       const results = data?.results || [];
-      success += results.filter((r: any) => r.success).length;
-      failed += results.filter((r: any) => !r.success).length;
+      const batchSuccess = results.filter((r: any) => r.success).length;
+      const batchFailed = results.filter((r: any) => !r.success).length;
+      success += batchSuccess;
+      failed += batchFailed;
+
+      // Record each batch item through ECONOMY
+      for (const r of results) {
+        try {
+          recordBatchItem(
+            r.success,
+            r.recommended_resale_price || 0,
+            r.pricing_confidence || 0,
+            estimatePricingCost(r.pricing_evidence),
+            r.pricing_evidence?.providers_used || [],
+          );
+        } catch {
+          // silent
+        }
+      }
     } catch {
       failed += batch.length;
+      for (const a of batch) {
+        try { recordBatchItem(false, 0, 0, 0, []); } catch { /* silent */ }
+      }
     }
     onProgress?.(Math.min(i + batchSize, artifacts.length), artifacts.length);
   }
 
+  // Complete ECONOMY batch tracking
+  completeBatchRepricing();
+
   return { success, failed };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ECONOMY Helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function extractProviderLatencies(evidence: PricingEvidence | undefined): Record<string, number> {
+  if (!evidence?.providers) return {};
+  const latencies: Record<string, number> = {};
+  for (const p of evidence.providers) {
+    if (p.latency_ms) latencies[p.provider] = p.latency_ms;
+  }
+  return latencies;
+}
+
+function estimatePricingCost(evidence: PricingEvidence | undefined): number {
+  if (!evidence?.providers) return 0;
+  // Estimate ~50 millicents per successful provider query (free-tier = 0, paid ~100 tokens)
+  const successfulCount = evidence.providers.filter((p: any) => p.success).length;
+  return successfulCount * 50;
 }
 
 /**
