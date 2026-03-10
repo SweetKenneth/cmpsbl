@@ -5009,10 +5009,10 @@ export async function executeSelfDocumentingEvolution(
     changeType: 'feature',
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: changes,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   // Step 2: DECODE - Explanation generation
