@@ -271,7 +271,7 @@ export default function SystemIntegrity() {
               <Shield className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">System Integrity</h1>
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight">System Integrity</h1>
               <p className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-widest">
                 40 Nodes · 12 Sectors · {breakerSummary.totalTrips} total trips
               </p>
