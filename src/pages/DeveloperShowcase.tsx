@@ -162,11 +162,11 @@ export default function DeveloperShowcase() {
               CMPSBL's 40-node substrate gives your applications persistent memory, 
               DREAM cycles for autonomous improvement, and intelligent multi-provider AI routing across 12 coordinated sectors.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg" className="gap-2 h-12 px-8 text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700">
-                <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-8 text-base">
+             <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+               <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                 <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
+               </Button>
+               <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base">
                 <Link to="/documentation"><BookOpen className="w-5 h-5" />Documentation</Link>
               </Button>
             </div>
