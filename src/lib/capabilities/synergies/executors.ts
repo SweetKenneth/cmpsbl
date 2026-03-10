@@ -5195,8 +5195,8 @@ export async function executeAutonomousOptimizationLoop(
     durationMs: performance.now() - brainStart,
   });
   
-  // Step 4: MODERNIZER - Apply optimization
-  const modernizerStart = performance.now();
+  // Step 4: EVOLUTION - Apply optimization
+  const evolutionStart = performance.now();
   const optimization = {
     applied: !context.dryRun,
     changeType: 'query_optimization',
