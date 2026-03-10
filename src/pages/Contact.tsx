@@ -193,9 +193,9 @@ export default function Contact() {
               </motion.div>
             </div>
 
-            <motion.div {...stagger(0.1)} id="contact-form">
-              <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl shadow-primary/[0.03]">
-                <CardContent className="p-8">
+             <motion.div {...stagger(0.1)} id="contact-form">
+               <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge shadow-xl shadow-primary/[0.03]">
+                 <CardContent className="p-5 sm:p-8">
                   <h2 className="text-xl sm:text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
