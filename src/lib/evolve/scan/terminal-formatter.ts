@@ -245,7 +245,7 @@ function formatStandardScan(result: ScanResultExtended, options: ScanOptions): s
   const W = 50; // Column width
   
   lines.push('╔' + '═'.repeat(W) + '╗');
-  lines.push('║  MODERNIZER SCAN RESULTS' + ' '.repeat(W - 26) + '║');
+  lines.push('║  EVOLUTION SCAN RESULTS' + ' '.repeat(W - 25) + '║');
   lines.push('╠' + '═'.repeat(W) + '╣');
   
   lines.push(`║  Scan: ${truncateId(result.scan_id, 16).padEnd(W - 10)}║`);
