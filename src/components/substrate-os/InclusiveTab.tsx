@@ -6,7 +6,7 @@
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk pipeline
- * - MODERNIZER: regressions → proposals
+ * - EVOLUTION: regressions → proposals
  * - TEMPLATES: scan→repair→validate→approve pipeline
  * - MARKETPLACE: block publishing on critical violations
  * - ACCESS: Role-based capability gating

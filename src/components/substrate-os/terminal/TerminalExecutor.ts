@@ -1001,7 +1001,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  │
 │  ├─ ADMIN LAYER ─────────────────────────────────────────────
 │  │  system://     orchestration, lifecycle, heal
-│  │  modernizer:// upgrades, codebase evolution
+│  │  evolution://  upgrades, codebase evolution
 │  │  inclusive://  accessibility, human compatibility
 │  │
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────

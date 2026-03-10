@@ -45,7 +45,7 @@ const moduleIcons: Record<string, React.ElementType> = {
   BRAIN: Brain,
   DEFENSE: Shield,
   SYSTEM: Activity,
-  MODERNIZER: Sparkles,
+  EVOLUTION: Sparkles,
   CORTEX: Zap,
   DECODE: Eye,
   DREAM: Sparkles,
