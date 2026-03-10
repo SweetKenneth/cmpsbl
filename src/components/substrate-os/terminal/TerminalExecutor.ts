@@ -2491,7 +2491,7 @@ ${allFeatures.map(f => {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.validate <plan_id>' };
       }
-      const res = await modernizer.validate(args[0]);
+      const res = await evolutionMod.validate(args[0]);
       const errObj = res.error as any;
       const errMsg = typeof errObj === 'string' ? errObj : errObj?.message;
       result = { success: !res.error, data: res.data, error: errMsg };
