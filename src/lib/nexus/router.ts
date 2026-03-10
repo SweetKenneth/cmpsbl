@@ -116,7 +116,7 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     model: 'openrouter/llama-3.3-70b-instruct:free',
     rpm: 16, rpd: 160, tpm: 20000,
     latencyClass: 'standard',
-    affinities: ['reasoning', 'generation', 'research'],
+    affinities: ['reasoning', 'generation', 'research', 'pricing'],
     priority: 8,
     costPerMToken: 0,
   },
