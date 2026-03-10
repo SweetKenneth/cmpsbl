@@ -170,7 +170,7 @@ function autoDetect(): void {
   }
 
   // Retry with backoff — system/retry.ts provides withRetry + RetryPresets
-  for (const mod of ['NEXUS', 'RIPPLE', 'INTEGRATION', 'ENCODE', 'MODERNIZER', 'CORTEX']) {
+  for (const mod of ['NEXUS', 'RIPPLE', 'INTEGRATION', 'ENCODE', 'EVOLUTION', 'CORTEX']) {
     registerPatternCoverage('retry_with_backoff', mod, true);
   }
 

@@ -257,7 +257,7 @@ export class CognitiveAnalyzer {
         }
       }
 
-      // Also check substrate_applied_improvements for Modernizer cooldowns
+      // Also check substrate_applied_improvements for EVOLUTION cooldowns
       const { data: applied } = await supabase
         .from('substrate_applied_improvements')
         .select('improvement_key, applied_at')

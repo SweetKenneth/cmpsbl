@@ -273,7 +273,7 @@ function inferAffectedModules(title: string, description: string): string[] {
     'nexus': 'NEXUS', 'router': 'NEXUS', 'provider': 'NEXUS',
     'vision': 'VISION', 'metric': 'VISION', 'anomaly': 'VISION',
     'system': 'SYSTEM', 'health': 'SYSTEM', 'heal': 'SYSTEM',
-    'modernizer': 'MODERNIZER', 'evolve': 'MODERNIZER', 'evolution': 'MODERNIZER',
+    'modernizer': 'EVOLUTION', 'evolve': 'EVOLUTION', 'evolution': 'EVOLUTION',
     'integration': 'INTEGRATION', 'webhook': 'INTEGRATION',
     'inclusive': 'INCLUSIVE', 'accessibility': 'INCLUSIVE',
     'cortex': 'CORTEX', 'orchestrat': 'CORTEX',

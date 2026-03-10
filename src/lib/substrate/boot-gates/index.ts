@@ -70,7 +70,7 @@ export const BOOT_ORDER: Array<{ module: ModuleName; order: number; deps: Module
   { module: 'medic',       order: 19, deps: ['core', 'vision'] },
   // Phase 5: System + Orchestration
   { module: 'system',      order: 20, deps: ['core', 'vision'] },
-  { module: 'modernizer',  order: 21, deps: ['core', 'system', 'vision'] },
+  { module: 'evolution',   order: 21, deps: ['core', 'system', 'vision'] },
   { module: 'inclusive',    order: 22, deps: ['core', 'system'] },
   { module: 'cortex',      order: 23, deps: ['core', 'nexus', 'system', 'vision'] },
   { module: 'atlas',       order: 24, deps: ['core', 'system'] },
