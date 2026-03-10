@@ -66,7 +66,7 @@ export function EnginesCTA() {
 
           <div className="relative p-5 sm:p-10 md:p-14 space-y-8 sm:space-y-10">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 sm:gap-6">
               <div>
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
