@@ -30,7 +30,7 @@ export const BUILTIN_MACROS: MacroDefinition[] = [
       'system.health',
       'brain.reflect',
       'dream.status',
-      'modernizer.status',
+      'evolution.status',
       'vision.analytics',
     ],
     createdAt: new Date(),
