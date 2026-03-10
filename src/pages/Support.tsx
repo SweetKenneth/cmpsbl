@@ -43,12 +43,12 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "What is CMPSBL?",
-    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing through the NEXUS router, security via the DEFENSE module, and self-evolution — the operating system for AI.",
+    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing through NEXUS, security via the DEFENSE system, and self-evolution — the operating system for AI.",
   },
   {
     category: "Getting Started",
     question: "How do I get started?",
-    answer: "Sign up for a free Builder account. From the dashboard, you can explore the Module Library, create your first Pipeline Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
+    answer: "Sign up for a free Builder account. From the dashboard, you can explore the systems, create your first Pipeline Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
   },
   {
     category: "Getting Started",
@@ -65,12 +65,12 @@ const FAQ_ITEMS = [
   {
     category: "Pipelines & Foundry",
     question: "What are Pipeline Packs?",
-    answer: "Pipeline Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate modules for specific workflows like content generation, data enrichment, or monitoring.",
+    answer: "Pipeline Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
     category: "Pipelines & Foundry",
     question: "What is the Foundry?",
-    answer: "The Foundry is the build environment where you compose, test, and deploy Pipeline Packs. It provides a visual editor for connecting modules, setting triggers, and configuring capability chains without writing code.",
+    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring software pipelines and lets you crystallize, store, and export them.",
   },
   {
     category: "Pipelines & Foundry",
@@ -92,7 +92,7 @@ const FAQ_ITEMS = [
   {
     category: "Artifact Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing nodes in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
+    answer: "Engines are the 20 specialized processing nodes in the substrate — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
     category: "Artifact Packs",
@@ -116,7 +116,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "What subscription tiers are available?",
-    answer: "Builder (Free) — Artifact Store, Persistent Memory, Composition basics. Creator ($9/mo) — Expanded store, executable capabilities, synergy pipelines. Architect ($19/mo) — Cross-module orchestration, larger memory limits. Enterprise ($99/mo) — Organization workspaces, governance controls, SLA.",
+    answer: "Builder (Free) — Full runtime, 3 pipeline slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom pipelines, SLA.",
   },
   {
     category: "Account & Access",
@@ -126,7 +126,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "Is CMPSBL secure for enterprise use?",
-    answer: "Yes. Security is built into the core via the DEFENSE module: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
+    answer: "Yes. Security is built into the core via the DEFENSE system: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
   },
   {
     category: "Account & Access",
