@@ -305,7 +305,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     useCases: ["Mission-critical AI deployments", "Self-healing infrastructure", "High-availability cognitive systems"],
   },
   {
-    slug: "modernizer",
+    slug: "evolution",
     name: "EVOLUTION",
     tagline: "Bounded Self-Evolution Engine",
     description: "Identifies optimization opportunities, generates evolution proposals, evaluates them for safety, and applies approved changes under strict governance.",

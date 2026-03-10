@@ -816,18 +816,19 @@ export class AtlasCommandInterpreter {
       detail: state.capabilities.seba?.enabled ? `Active (${sebaState.current_phase})` : 'Disabled',
     });
     
-    // Check free tier usage
-    const { data: usage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used')
+    // Check daily quota via ai_daily_quota (NEXUS-tracked)
+    const { data: quotaData } = await supabase
+      .from('ai_daily_quota')
+      .select('calls_used, calls_budget')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
     
-    const callsUsed = usage?.calls_used || 0;
+    const callsUsed = quotaData?.calls_used || 0;
+    const callsBudget = quotaData?.calls_budget || 50;
     checks.push({
       name: 'Daily Quota',
-      status: callsUsed >= 50 ? 'fail' : callsUsed >= 40 ? 'warn' : 'pass',
-      detail: `${callsUsed}/50 calls (${Math.max(0, 50 - callsUsed)} remaining)`,
+      status: callsUsed >= callsBudget ? 'fail' : callsUsed >= callsBudget * 0.8 ? 'warn' : 'pass',
+      detail: `${callsUsed}/${callsBudget} calls (${Math.max(0, callsBudget - callsUsed)} remaining)`,
     });
     
     // Check pending approvals

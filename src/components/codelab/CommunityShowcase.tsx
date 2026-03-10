@@ -176,7 +176,7 @@ const MODULE_COLORS: Record<string, string> = {
   access: "bg-orange-500",
   core: "bg-slate-500",
   ripple: "bg-indigo-500",
-  modernizer: "bg-emerald-500",
+  evolution: "bg-emerald-500",
 };
 
 export function CommunityShowcase() {
