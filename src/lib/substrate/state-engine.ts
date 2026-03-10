@@ -131,8 +131,8 @@ const SCHEMAS: Record<StateSchemaName, StateSchema> = {
       { name: 'lastCheckAt', type: 'string', required: false, default: null },
     ],
   },
-  modernizer_state: {
-    name: 'modernizer_state',
+  evolution_state: {
+    name: 'evolution_state',
     version: '1.0.0',
     description: 'Evolution cycle state',
     fields: [

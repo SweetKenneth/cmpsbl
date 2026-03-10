@@ -12,7 +12,7 @@ const ATOMIC_PATTERNS = [
   // Short IDs (8+ hex chars)
   /\b[a-f0-9]{8,}\b/gi,
   // Module.action format
-  /\b(core|ripple|access|brain|decode|dream|defense|nexus|vision|system|modernizer|inclusive|integration|cortex|clm)\.[a-z_]+\b/gi,
+  /\b(core|ripple|access|brain|decode|dream|defense|nexus|vision|system|evolution|inclusive|integration|cortex|clm)\.[a-z_]+\b/gi,
   // Timestamps ISO format
   /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/g,
   // Date format

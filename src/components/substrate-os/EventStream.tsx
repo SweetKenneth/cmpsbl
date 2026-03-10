@@ -72,7 +72,7 @@ const OUTCOME_COLORS: Record<string, string> = {
   skipped: 'text-muted-foreground',
 };
 
-const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
+const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
 
 export function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);
