@@ -1629,15 +1629,15 @@ export function getSEO(path: string): PageSEO {
 
   if (path.startsWith('/modules/')) {
     return {
-      title: 'Module Detail — Substrate Architecture | CMPSBL',
-      description: 'Explore this substrate module: sector placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
-      ogTitle: 'Substrate Module — CMPSBL',
-      ogDescription: 'Module architecture, capabilities, and integration guides.',
+      title: 'Node Detail — Substrate Architecture | CMPSBL',
+      description: 'Explore this substrate node: sector placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
+      ogTitle: 'Substrate Node — CMPSBL',
+      ogDescription: 'Node architecture, capabilities, and integration guides.',
       ogImage: OG_FEATURE,
-      keywords: ['substrate module', 'sector architecture', 'module integration'],
+      keywords: ['substrate node', 'sector architecture', 'node integration'],
       schema: 'feature',
       intent: 'Feature/Capability',
-      primaryKeyword: 'substrate module detail',
+      primaryKeyword: 'substrate node detail',
     };
   }
 
