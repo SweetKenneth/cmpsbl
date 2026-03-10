@@ -30,9 +30,9 @@ interface PricingProvider {
 const PRICING_PROVIDERS: PricingProvider[] = [
   {
     id: 'claude-haiku',
-    name: 'Claude Haiku',
+    name: 'Claude Haiku 4.5',
     envKey: 'ANTHROPIC_API_KEY',
-    model: 'claude-3-5-haiku-20241022',
+    model: 'claude-haiku-4-5',
     call: async (prompt: string, apiKey: string) => {
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -42,7 +42,7 @@ const PRICING_PROVIDERS: PricingProvider[] = [
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-3-5-haiku-20241022",
+          model: "claude-haiku-4-5",
           system: SYSTEM_PROMPT,
           messages: [{ role: "user", content: prompt }],
           max_tokens: 800,
@@ -115,9 +115,9 @@ const PRICING_PROVIDERS: PricingProvider[] = [
   },
   {
     id: 'openrouter-qwen',
-    name: 'OpenRouter Qwen 235B',
+    name: 'OpenRouter Qwen3 80B',
     envKey: 'OPENROUTER_API_KEY',
-    model: 'qwen/qwen3-235b-a22b:free',
+    model: 'qwen/qwen3-next-80b-a3b-instruct:free',
     call: async (prompt: string, apiKey: string) => {
       const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -128,7 +128,7 @@ const PRICING_PROVIDERS: PricingProvider[] = [
           "X-Title": "CMPSBL Pricing Engine",
         },
         body: JSON.stringify({
-          model: "qwen/qwen3-235b-a22b:free",
+          model: "qwen/qwen3-next-80b-a3b-instruct:free",
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: prompt + "\n\nIMPORTANT: Return ONLY the JSON object, no thinking tags, no explanation." },
@@ -144,7 +144,6 @@ const PRICING_PROVIDERS: PricingProvider[] = [
     },
   },
 ];
-
 // ── Prompt Builder ──
 
 function buildPricingPrompt(artifact: {
