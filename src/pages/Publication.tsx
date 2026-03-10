@@ -116,7 +116,7 @@ export default function Publication() {
 
       <main className="relative z-10">
         {/* ═══════════ HERO ═══════════ */}
-        <section className="container mx-auto px-6 pt-28 pb-12 md:pt-36 md:pb-16">
+        <section className="container mx-auto px-4 sm:px-6 pt-20 sm:pt-28 pb-10 sm:pb-12 md:pt-36 md:pb-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial="hidden"
