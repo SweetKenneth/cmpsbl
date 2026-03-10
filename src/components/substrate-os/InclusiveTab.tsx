@@ -99,7 +99,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
       
       // Handle scan-and-repair result
       if (data.repair?.applied) {
