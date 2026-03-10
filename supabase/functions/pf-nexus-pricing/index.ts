@@ -158,26 +158,32 @@ function buildPricingPrompt(artifact: {
   exportTargets?: string[];
   runtimeType?: string;
 }): string {
+  // Convert internal value to a qualitative signal to prevent anchoring bias
+  const complexitySignal = (artifact.internalValue || 0) > 10000 ? 'very high'
+    : (artifact.internalValue || 0) > 5000 ? 'high'
+    : (artifact.internalValue || 0) > 1000 ? 'moderate'
+    : 'standard';
+
   return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
 
 ARTIFACT: ${artifact.name}
 DESCRIPTION: ${artifact.description || 'Crystallized software pipeline / reusable code module'}
-MODULES: ${artifact.modules.join(', ')}
+MODULES: ${artifact.modules.join(', ')} (${artifact.modules.length} total)
 CJPI SCORE: ${artifact.score}/100 (higher = more sophisticated)
 TIER: ${artifact.tier}
 CATEGORY: ${artifact.category || 'general'}
-INTERNAL VALUE SIGNAL: $${artifact.internalValue || 0} (engineering estimate, NOT retail price)
+ENGINEERING COMPLEXITY: ${complexitySignal}
 HARDWARE EXPORT: ${artifact.hasHardwareExport ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(artifact.exportTargets || ['source']).join(', ')}
 RUNTIME: ${artifact.runtimeType || 'JavaScript/TypeScript'}
 
-PRICING GUIDELINES:
-- Most indie dev tools/libraries sell for $5-$200
-- Sophisticated multi-module systems sell for $50-$500
-- Only enterprise-grade infrastructure platforms exceed $1,000
-- A single reusable module typically sells for $10-$80
-- A complete multi-module toolkit sells for $50-$300
-- Internal value signals should NOT be treated as retail prices
+CRITICAL PRICING GUIDELINES — follow these ranges strictly:
+- A single reusable module/library: $10-$80
+- A multi-module developer toolkit (2-5 modules): $30-$200
+- A comprehensive framework or platform (5+ modules): $100-$500
+- Only very large enterprise infrastructure should exceed $500
+- Do NOT exceed $1,000 unless the artifact is a complete enterprise platform with 8+ modules
+- Think about what a solo developer or small team would actually pay on Gumroad
 
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
@@ -190,6 +196,8 @@ Return a JSON object with EXACTLY these fields (no markdown, no explanation):
   "pricing_confidence": number between 0 and 1,
   "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
 }`;
+}
+
 // ── JSON Parser (handles markdown fences, thinking tags) ──
 
 function parseProviderJSON(raw: string): any {
