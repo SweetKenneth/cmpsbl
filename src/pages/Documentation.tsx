@@ -159,7 +159,7 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Memory Stream Substrate</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          A continuous cognitive substrate providing routing, memory, learning cycles,
+          A 40-node cognitive substrate organized across 12 sectors, providing routing, memory, learning cycles,
           observability, defense, and execution coordination for AI systems.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
         </p>
