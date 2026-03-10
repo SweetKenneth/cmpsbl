@@ -19,7 +19,7 @@ export const ModernizerAnalytics = () => {
     const fetchAnalytics = async () => {
       try {
         const { data, error } = await supabase
-          .from('modernizer_analytics')
+          .from('evolution_runs')
           .select('*')
           .order('created_at', { ascending: false })
           .limit(30);

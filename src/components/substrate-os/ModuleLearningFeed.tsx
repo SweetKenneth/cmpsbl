@@ -70,7 +70,7 @@ const MODULE_COLORS: Record<string, string> = {
   ripple: 'text-cyan-400 border-cyan-500/30',
   access: 'text-orange-400 border-orange-500/30',
   inclusive: 'text-pink-400 border-pink-500/30',
-  modernizer: 'text-emerald-400 border-emerald-500/30',
+  evolution: 'text-emerald-400 border-emerald-500/30',
   system: 'text-gray-400 border-gray-500/30',
   decode: 'text-indigo-400 border-indigo-500/30',
   autoblog: 'text-violet-400 border-violet-500/30',

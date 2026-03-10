@@ -768,7 +768,7 @@ export function ModernizerTab({ enabled }: EvolutionTabProps) {
                               <div className="p-3 rounded-lg bg-black/40 border border-white/10">
                                 <p className="text-[10px] text-muted-foreground mb-1">Terminal command:</p>
                                 <code className="text-xs font-mono text-emerald-400">
-                                  modernizer.apply {plan.id.slice(0, 8)}
+                                  evolution.apply {plan.id.slice(0, 8)}
                                 </code>
                               </div>
                               
