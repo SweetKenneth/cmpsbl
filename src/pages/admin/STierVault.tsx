@@ -137,7 +137,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       byModule[e.module] = (byModule[e.module] ?? 0) + 1;
       const tier = getTierLabel(e.cjpi);
       byTier[tier as keyof typeof byTier]++;
-      totalRegValue += estimateMarketValue(e.cjpi, e.type, 1);
+      totalRegValue += estimateMarketValue(e.cjpi, e.type, Math.max(1, e.dependencyFootprint.length));
     }
 
     // Promoted stats
