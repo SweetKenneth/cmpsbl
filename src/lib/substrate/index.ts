@@ -1310,3 +1310,55 @@ export {
   getModuleExecutionLog,
   getTotalAutonomousActions,
 } from './autonomous-hardening/barrel';
+
+// ═══════════════════════════════════════════════════════════════
+// S-Tier Runtime Primitives — 233 capabilities across 40 nodes
+// ═══════════════════════════════════════════════════════════════
+
+// Execution Nodes
+export * from './nexus-primitives';
+export * from './immunity-primitives';
+export * from './vision-primitives';
+export * from './defense-primitives';
+export * from './medic/s-tier';
+export * from './cognitive-capabilities/s-tier';
+
+// Core Nodes
+export * from './neural/s-tier';
+export * from './memory-module/s-tier';
+export * from './decode/s-tier';
+export * from './governance/s-tier';
+export * from './evolution/s-tier';
+export * from './economy-module/s-tier';
+export * from './dream/s-tier';
+export * from './identity-module/s-tier';
+export * from './integration-module/s-tier';
+
+// Expansion Zones
+export * from './sovereign/s-tier';
+export * from './oracle/s-tier';
+export * from './conscience/s-tier';
+export * from './phantom/s-tier';
+export * from './forge/s-tier';
+export * from './lingua/s-tier';
+export * from './compass/s-tier';
+export * from './echo/s-tier';
+export * from './treaty/s-tier';
+export * from './reflex/s-tier';
+
+// Vault Primitive Loader — 1,894 dynamic capabilities
+export {
+  loadVaultPrimitives,
+  getNodePrimitives,
+  getPrimitive,
+  getVaultPrimitiveCount,
+  getVaultDistribution,
+  getPrimitivesByCategory,
+  getTopPrimitives,
+  isVaultLoaded,
+  resetVaultLoader,
+  type VaultPrimitive,
+} from './vault-primitive-loader';
+
+// System Audit & Self-Repair
+export { runSystemAudit, runSelfRepair } from './system';
