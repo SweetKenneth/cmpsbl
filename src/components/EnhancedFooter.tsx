@@ -72,7 +72,7 @@ export function EnhancedFooter() {
       title: "Explore",
       links: [
         { name: "Memory Stream", href: "/foundry", highlight: true },
-        { name: "EVOLUTION", href: "/evolution", highlight: true },
+        { name: "Persistent Memory", href: "/persistent-memory", highlight: true },
         { name: "Blog", href: "/blog" },
         { name: "Showcase", href: "/showcase" },
         { name: "System overview", href: "/overview" },
