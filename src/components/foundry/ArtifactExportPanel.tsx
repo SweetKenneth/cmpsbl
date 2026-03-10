@@ -15,7 +15,9 @@ import {
 import { getUnlockStatus } from '@/lib/export/language-unlock-tiers';
 import { scoreToPublicTier, getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getVaultLimits } from '@/lib/substrate/vault-limits';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 interface ArtifactExportPanelProps {
   artifact: {
@@ -25,6 +27,7 @@ interface ArtifactExportPanelProps {
     category?: string | null;
     fingerprint?: string;
   };
+  subscriptionTier?: string;
 }
 
 const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
@@ -35,9 +38,10 @@ const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
   silicon: { icon: Cpu,   color: 'text-purple-400' },
 };
 
-export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
+export function ArtifactExportPanel({ artifact, subscriptionTier }: ArtifactExportPanelProps) {
   const [expanded, setExpanded] = useState(false);
   const [exporting, setExporting] = useState<ExportLanguage | null>(null);
+  const limits = getVaultLimits(subscriptionTier);
 
   const languages = useMemo(() => getLanguagesForScore(artifact.score), [artifact.score]);
   const tiers = useMemo(() => getUnlockStatus(artifact.score), [artifact.score]);
