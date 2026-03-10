@@ -2440,7 +2440,7 @@ ${allFeatures.map(f => {
       
       return { success: cycleResult.success, output };
     }
-    else if (base === 'modernizer.scan') {
+    else if (base === 'evolution.scan' || base === 'modernizer.scan') {
       // Cognitive Systems Scan with options
       const hasExplain = args.includes('--explain');
       const hasLLMReport = args.includes('--llm-report');
