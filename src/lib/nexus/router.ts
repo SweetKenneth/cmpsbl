@@ -174,6 +174,16 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     priority: 14,
     costPerMToken: 0,
   },
+  // ── Anthropic Claude Haiku (paid, pricing/commercialization) ──
+  {
+    id: 'anthropic-haiku',
+    model: 'anthropic/claude-3-5-haiku',
+    rpm: 50, rpd: 5000, tpm: 25000,
+    latencyClass: 'fast',
+    affinities: ['analysis', 'research', 'pricing'],
+    priority: 15,
+    costPerMToken: 250,
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
