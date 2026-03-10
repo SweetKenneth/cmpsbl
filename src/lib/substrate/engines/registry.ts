@@ -1583,7 +1583,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     description: 'EVOLUTION architecture evolution: code smell detection, safe refactoring planning, technical debt quantification, and migration path optimization.',
     category: 'evolution',
     capabilities: ['code_smell_detector', 'refactor_planner', 'technical_debt_scorer', 'migration_path_optimizer'],
-    primaryModules: ['MODERNIZER'],
+    primaryModules: ['EVOLUTION'],
     layer: 'Admin',
     synergyMultiplier: 2.8,
     complexityScore: 9,

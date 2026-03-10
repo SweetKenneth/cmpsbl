@@ -192,7 +192,7 @@ Query the history:
 \`\`\`
 evolve.status       # Current evolution state
 evolve.receipts     # View audit trail
-modernizer.omega    # Deep analysis mode
+evolution.omega    # Deep analysis mode
 \`\`\`
 
 ### Why This Matters

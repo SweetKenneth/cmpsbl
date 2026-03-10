@@ -162,7 +162,7 @@ export type EngineId =
   | 'config_runtime_engine'        // CORE: FeatureFlagEngine, ConfigHotReload, EnvironmentValidator
   | 'adapter_transform_engine'     // INTEGRATION: AdapterHealthMonitor, WebhookOrchestrator, DataTransformer
   | 'cognitive_accessibility_engine'  // INCLUSIVE: CognitiveLoadOptimizer, AccessibilityScorer, RemediationEngine
-  | 'evolution_governance_engine'  // MODERNIZER: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
+  | 'evolution_governance_engine'  // EVOLUTION: EvolutionPredictor, RollbackAuthority, ImpactAnalyzer, ProposalRanker
 
   // ═══════════════════════════════════════════════════════════════════════════
   // NEW v9.0.0 ENGINES — 6 Infrastructure Layer Engines
