@@ -234,6 +234,9 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
       case 'discovery_engine':
         actions.push(...(await healDiscoveryEngine(force)));
         break;
+      case 'vault_loader':
+        actions.push(...(await healVaultLoader(force)));
+        break;
     }
 
     // Step 3: Restore score
