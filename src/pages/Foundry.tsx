@@ -49,20 +49,10 @@ export default function Foundry() {
   const [discoveries, setDiscoveries] = useState<any[]>([]);
 
   const handleRepriceAll = useCallback(async () => {
-    if (!foundry.inventory || foundry.inventory.length === 0) return;
-    const artifacts = foundry.inventory.map((item: any) => ({
-      vault_id: item.id,
-      pipeline_name: item.artifactName,
-      pipeline_score: item.score,
-      pipeline_tier: item.publicTier,
-      pipeline_category: item.category,
-      system_chain: item.systemChain,
-      valuation_display: item.valuationDisplay,
-    }));
-    const result = await pricingEngine.repriceAll(artifacts);
+    const result = await pricingEngine.repriceAllDiscoveries();
     toast.success(`Repriced ${result.success} artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
     await foundry.reload();
-  }, [foundry.inventory, foundry.reload, pricingEngine]);
+  }, [foundry.reload, pricingEngine]);
 
   const handleRepriceOne = useCallback(async (id: string) => {
     const item = foundry.inventory?.find((i: any) => i.id === id);
