@@ -82,7 +82,7 @@ const INDUSTRY_PRESETS = [
     icon: Briefcase,
     description: 'Operations AI, institutional memory, workflow automation, LLM governance, and system integration',
     color: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
-    enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'modernizer', 'integration'],
+    enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'evolution', 'integration'],
     tagline: 'Intelligence that scales',
   },
 ];
