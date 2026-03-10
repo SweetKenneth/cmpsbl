@@ -11518,7 +11518,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // Comprehensive system diagnostics - ALL 38 NODES
+      // Comprehensive system diagnostics - ALL 40 NODES
       const [
         { data: orchestrator },
         { count: memoryCount },
