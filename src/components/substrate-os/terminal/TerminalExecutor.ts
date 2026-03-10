@@ -2482,9 +2482,9 @@ ${allFeatures.map(f => {
       result = await modernizer.propose({ scope, notes });
     } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
       result = await modernizer.plans();
-    } else if (base === 'modernizer.review') {
+    } else if (base === 'evolution.review' || base === 'modernizer.review') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.review <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.review <plan_id>' };
       }
       result = await modernizer.review(args[0]);
     } else if (base === 'modernizer.validate') {
