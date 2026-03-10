@@ -120,7 +120,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj3-brain-concept-formation',
   'cj3-encode-semantic-invariant-checker',
   'cj3-core-autonomy-gradient-engine',
-  'cj3-modernizer-legacy-comprehension',
+  'cj3-evolution-legacy-comprehension',
   'cj3-dream-collective-unconscious',
   'cj3-cortex-cognitive-scheduling',
   'cj3-system-graceful-degradation',
