@@ -1573,7 +1573,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'intelligent-deprecation-manager',
     name: 'Intelligent Deprecation Manager',
-    description: 'CORTEX identifies deprecated features using VISION usage analytics, BRAIN impact analysis, and MODERNIZER migration planning',
+    description: 'CORTEX identifies deprecated features using VISION usage analytics, BRAIN impact analysis, and EVOLUTION migration planning',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
