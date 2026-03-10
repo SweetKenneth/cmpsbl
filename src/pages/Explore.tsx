@@ -208,8 +208,8 @@ export default function Explore() {
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                    <div className="text-2xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
+                     <div className="text-[9px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
