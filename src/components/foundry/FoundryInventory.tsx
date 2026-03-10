@@ -277,6 +277,7 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
       <PipelineProvenance
         pipeline={provenancePipeline}
         onClose={() => setProvenancePipeline(null)}
+        subscriptionTier={subscriptionTier}
       />
     </div>
   );
