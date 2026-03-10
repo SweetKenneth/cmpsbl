@@ -199,7 +199,7 @@ export default function HumansTxt() {
           </motion.div>
 
           {/* Section grid */}
-          <motion.div className="grid sm:grid-cols-2 gap-4 mb-12" variants={stagger} initial="hidden" animate="show">
+          <motion.div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mb-10 sm:mb-12" variants={stagger} initial="hidden" animate="show">
             {sections.map((section) => (
               <motion.div key={section.title} variants={fadeUp} className={section.title === 'Team' ? 'sm:col-span-2' : ''}>
                 <Card className="h-full border-border/30 bg-card/40 backdrop-blur-sm glass-edge hover:border-primary/20 transition-colors">
