@@ -487,7 +487,7 @@ const stratumInfra: Specimen[] = [
     adaptations: [
       "Claim provenance tagging introduced: the system now labels what is measured vs. what is inferred or illustrative",
       "Deterministic authority precedence ensures governance decisions resolve without ambiguity",
-      "Advisory modules cannot trigger executive actions without governance approval",
+      "Advisory nodes cannot trigger executive actions without governance approval",
     ],
     phenotype: [
       "The substrate can no longer conflate what it knows with what it infers",
