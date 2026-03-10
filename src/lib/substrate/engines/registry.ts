@@ -736,7 +736,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'autonomous_quality_review',
       'deprecation_path_finder',
     ],
-    primaryModules: ['MODERNIZER', 'SYSTEM', 'CORTEX'],
+    primaryModules: ['EVOLUTION', 'SYSTEM', 'CORTEX'],
     layer: 'Admin',
     synergyMultiplier: 2.1,
     complexityScore: 6,
