@@ -3,7 +3,8 @@
  */
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Fingerprint, Loader2, Trash2 } from 'lucide-react';
+import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
