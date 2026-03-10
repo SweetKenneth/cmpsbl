@@ -86,7 +86,7 @@ const EXPECTED_DOMAINS: Record<ModuleName, string[]> = {
   relay:       ['outbound-routing', 'channel-selection', 'delivery'],
   audit:       ['compliance', 'immutable-logging', 'retention', 'soc2'],
   identity:    ['actor-attribution', 'webauthn', 'device-trust', 'sessions'],
-  economy:     ['cost-tracking', 'budgets', 'forecasting', 'roi'],
+  economy:     ['cost-tracking', 'budgets', 'forecasting', 'roi', 'consensus-pricing', 'pricing-governance', 'pricing-anomaly-detection'],
   sandbox:     ['code-execution', 'isolation', 'safety', 'rollback'],
 };
 
