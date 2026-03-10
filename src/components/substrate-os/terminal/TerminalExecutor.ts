@@ -2586,7 +2586,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
       }
-      const res = await modernizer.rollback(planId);
+      const res = await evolutionMod.rollback(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Rollback failed';
