@@ -120,7 +120,7 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   system: Layers,
   access: Shield,
   core: Layers,
-  modernizer: Sparkles,
+  evolution: Sparkles,
 };
 
 const MODULE_COLORS: Record<string, string> = {
