@@ -107,7 +107,8 @@ export function usePricingEngine() {
     if (!user) return { success: 0, failed: 0 };
     setLoading(true);
     try {
-      const [inventoryRes, vaultRes, promotionsRes] = await Promise.all([
+      // Fetch from all tables — handle >1000 row limit for promotions
+      const [inventoryRes, vaultRes] = await Promise.all([
         supabase
           .from('foundry_inventory')
           .select('id, artifact_name, score, category, system_chain, valuation_display, public_tier')
@@ -116,11 +117,23 @@ export function usePricingEngine() {
           .from('pipeline_vault')
           .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display')
           .eq('user_id', user.id),
-        supabase
+      ]);
+
+      // Paginate vault_promotions to handle >1000 rows
+      const allPromotions: any[] = [];
+      let offset = 0;
+      const pageSize = 1000;
+      while (true) {
+        const { data } = await supabase
           .from('vault_promotions')
           .select('id, name, cjpi, category, module_chain, tier, description')
-          .eq('export_ready', true),
-      ]);
+          .eq('export_ready', true)
+          .range(offset, offset + pageSize - 1);
+        if (!data || data.length === 0) break;
+        allPromotions.push(...data);
+        if (data.length < pageSize) break;
+        offset += pageSize;
+      }
 
       const artifacts: PricingArtifact[] = [];
 
@@ -154,7 +167,7 @@ export function usePricingEngine() {
         }
       }
 
-      for (const d of (promotionsRes.data ?? []) as any[]) {
+      for (const d of allPromotions as any[]) {
         if (!existingIds.has(d.id)) {
           artifacts.push({
             vault_id: d.id,
