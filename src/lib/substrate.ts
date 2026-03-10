@@ -684,7 +684,7 @@ class SubstrateClient {
     
     /** Quick analysis of a specific substrate module */
     analyze: (module?: string) =>
-      this.invoke({ module: 'modernizer', action: 'analyze', payload: { module } }),
+      this.invoke({ module: 'evolution', action: 'analyze', payload: { module } }),
     
     /** Export improvement proposals */
     export: (job_id: string) =>
