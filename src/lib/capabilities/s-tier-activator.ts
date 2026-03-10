@@ -280,11 +280,12 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
   const allWaves = [
     WAVE_1_ACTIVATIONS, WAVE_2_ACTIVATIONS, WAVE_3_ACTIVATIONS,
     WAVE_4_ACTIVATIONS, WAVE_5_ACTIVATIONS, WAVE_6_ACTIVATIONS,
-    WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS,
+    WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS, WAVE_9_ACTIVATIONS,
+    WAVE_10_ACTIVATIONS,
   ];
   const total = allWaves.reduce((s, w) => s + w.length, 0);
   console.log(`[S-Tier Activator] ═══ Beginning staged activation ═══`);
-  console.log(`[S-Tier Activator] Total: ${total} capabilities across 8 waves`);
+  console.log(`[S-Tier Activator] Total: ${total} capabilities across 10 waves`);
 
   const results = [
     activateWave(1, WAVE_1_ACTIVATIONS),
@@ -295,6 +296,8 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     activateWave(6, WAVE_6_ACTIVATIONS),
     activateWave(7, WAVE_7_ACTIVATIONS),
     activateWave(8, WAVE_8_ACTIVATIONS),
+    activateWave(9, WAVE_9_ACTIVATIONS),
+    activateWave(10, WAVE_10_ACTIVATIONS),
   ];
 
   const totalActivated = results.reduce((sum, r) => sum + r.totalActivated, 0);
