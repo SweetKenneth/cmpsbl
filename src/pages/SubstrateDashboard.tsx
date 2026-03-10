@@ -530,12 +530,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">CMPSBL Substrate — Featuring Clockless Cognitive Reality</p>
+              <p className="text-sm md:text-base text-muted-foreground">40-Node Cognitive Architecture · 12 Sectors · Clockless Coordination</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. Entities wrapped by mesh overlays, hot-swappable zones, composable pipelines, and terminal commands.
+            The complete cognitive operating system — 40 nodes across 12 sectors, coordinated by a weighted matrix where Σ = 1.000. CORE boots every node in dependency order, DEFENSE wraps the outer shell, and DREAM synthesizes improvements autonomously. Every node name, weight, and breaker state is visible here.
           </p>
           
           <div className="flex gap-3">

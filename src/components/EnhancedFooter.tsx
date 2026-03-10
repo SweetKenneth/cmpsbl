@@ -33,7 +33,7 @@ export function EnhancedFooter() {
       title: "Platform",
       links: [
         { name: "Substrate", href: "/substrate" },
-        { name: "All modules", href: "/modules" },
+        { name: "All nodes", href: "/modules" },
         { name: "How it works", href: "/ai-operating-system" },
         { name: "Runtime", href: "/runtime" },
         { name: "Foundations", href: "/foundations" },

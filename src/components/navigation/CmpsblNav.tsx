@@ -98,7 +98,7 @@ export function CmpsblNav() {
       icon: Layers,
       items: [
         { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
-        { name: "All modules", href: "/modules", description: "40 nodes across 12 sectors", icon: Layers },
+        { name: "All nodes", href: "/modules", description: "40 nodes across 12 sectors", icon: Layers },
         { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },

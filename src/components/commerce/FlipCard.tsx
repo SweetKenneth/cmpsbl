@@ -134,7 +134,7 @@ export function FlipCard({
           </div>
 
           {/* Flip hint */}
-          <div className="px-5 pb-3 text-[11px] text-muted-foreground/50 font-mono text-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="px-5 pb-3 text-[11px] text-muted-foreground/50 font-mono text-center">
             TAP TO FLIP
           </div>
         </div>
