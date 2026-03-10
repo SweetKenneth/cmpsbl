@@ -44,7 +44,7 @@ const EVOLUTION_PHASES = [
     name: 'Diagnose',
     icon: Activity,
     tagline: 'Understand why, not just what',
-    description: 'Cross-correlates findings across modules using VISION telemetry, MEMORY decay patterns, and DEFENSE threat scoring. Grades each issue A→F by impact.',
+    description: 'Cross-correlates findings across nodes using VISION telemetry, MEMORY decay patterns, and DEFENSE threat scoring. Grades each issue A→F by impact.',
     color: 'from-amber-500/20 to-yellow-500/10',
     accent: 'text-amber-400',
     border: 'border-amber-500/20',
