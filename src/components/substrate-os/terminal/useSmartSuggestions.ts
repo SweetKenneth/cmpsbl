@@ -171,10 +171,10 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'inclusive.scan': ['inclusive.violations', 'inclusive.fix', 'inclusive.score', 'inclusive.status'],
   'inclusive.violations': ['inclusive.fix', 'inclusive.scan', 'inclusive.status', 'vision.logs'],
 
-  // Encode workflows
-  'encode.status': ['encode.queue', 'encode.receipts', 'encode.health', 'modernizer.status'],
-  'encode.queue': ['encode.status', 'encode.receipts', 'modernizer.jobs', 'vision.logs'],
-  'encode.receipts': ['encode.queue', 'encode.status', 'brain.query', 'modernizer.history'],
+  // ENCODE workflows
+  'encode.status': ['encode.queue', 'encode.receipts', 'encode.health', 'evolution.status'],
+  'encode.queue': ['encode.status', 'encode.receipts', 'evolution.jobs', 'vision.logs'],
+  'encode.receipts': ['encode.queue', 'encode.status', 'brain.query', 'evolution.receipts'],
 };
 
 // Module-level defaults when specific command not found
