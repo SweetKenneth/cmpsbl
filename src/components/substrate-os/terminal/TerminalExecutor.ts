@@ -2472,17 +2472,15 @@ ${allFeatures.map(f => {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: evolution.export <job_id>' };
       }
       result = await modernizer.export(args[0]);
-    } else if (base === 'modernizer.quota') {
+    } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
       result = await modernizer.quota();
-    } else if (base === 'modernizer.pulse') {
+    } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
       result = await modernizer.pulse();
-    } else if (base === 'modernizer.propose') {
-      // Legacy: Generate upgrade proposal in shadow mode
+    } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
       result = await modernizer.propose({ scope, notes });
-    } else if (base === 'modernizer.plans') {
-      // Forward to evolution cycle
+    } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
       result = await modernizer.plans();
     } else if (base === 'modernizer.review') {
       if (!args[0]) {
