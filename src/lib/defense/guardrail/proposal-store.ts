@@ -297,11 +297,46 @@ export function clearProposals(): void {
   proposals.clear();
 }
 
-// ── Spike state stub (Phase 3 will replace) ─────────────────────
-let _spikeActive = false;
-export function setSpikeActive(active: boolean): void {
-  _spikeActive = active;
+// ── Spike detection — rate-based traffic analysis ─────────────────
+const SPIKE_WINDOW_MS = 60_000; // 1 minute sliding window
+const SPIKE_THRESHOLD = 50;     // requests per window to trigger spike
+const requestTimestamps: number[] = [];
+
+export function recordRequest(): void {
+  const now = Date.now();
+  requestTimestamps.push(now);
+  // Evict entries outside the window
+  while (requestTimestamps.length > 0 && requestTimestamps[0] < now - SPIKE_WINDOW_MS) {
+    requestTimestamps.shift();
+  }
 }
+
+export function setSpikeActive(active: boolean): void {
+  // Manual override — force spike state for governance freeze
+  _spikeOverride = active;
+}
+
+let _spikeOverride: boolean | null = null;
+
 export function isSpikeActive(): boolean {
-  return _spikeActive;
+  if (_spikeOverride !== null) return _spikeOverride;
+  const now = Date.now();
+  const recentCount = requestTimestamps.filter(t => t >= now - SPIKE_WINDOW_MS).length;
+  return recentCount >= SPIKE_THRESHOLD;
+}
+
+export function resetSpikeOverride(): void {
+  _spikeOverride = null;
+}
+
+export function getSpikeStats() {
+  const now = Date.now();
+  const recentCount = requestTimestamps.filter(t => t >= now - SPIKE_WINDOW_MS).length;
+  return {
+    requestsInWindow: recentCount,
+    threshold: SPIKE_THRESHOLD,
+    windowMs: SPIKE_WINDOW_MS,
+    isSpike: isSpikeActive(),
+    hasOverride: _spikeOverride !== null,
+  };
 }

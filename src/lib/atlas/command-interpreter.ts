@@ -656,11 +656,12 @@ export class AtlasCommandInterpreter {
   private async handleMetricsQuery(command: ParsedCommand): Promise<CommandResult> {
     const state = atlas.getState();
     
-    // Fetch usage stats
+    // Fetch usage stats from ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: usage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
-      .gte('date', new Date().toISOString().split('T')[0])
+      .eq('date', today)
       .maybeSingle();
 
     // Fetch monthly usage
@@ -669,7 +670,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -683,17 +684,18 @@ export class AtlasCommandInterpreter {
 
     return {
       success: true,
-      message: `📊 **System Metrics**\n\n**Atlas State:**\n• Mode: ${state.mode.toUpperCase()}\n• Health: ${state.systemHealth}%\n• Pending Approvals: ${state.pendingApprovals}\n\n**Today's Usage:**\n• AI Calls: ${usage?.calls_used || 0} / 50\n• Tokens: ${(usage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls} / 1,000\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
+      message: `📊 **System Metrics**\n\n**Atlas State:**\n• Mode: ${state.mode.toUpperCase()}\n• Health: ${state.systemHealth}%\n• Pending Approvals: ${state.pendingApprovals}\n\n**Today's Usage:**\n• AI Calls: ${usage?.calls_used || 0}\n• Tokens: ${(usage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls}\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
       data: { state, usage, monthlyTotals },
     };
   }
 
   private async handleUsageQuery(command: ParsedCommand): Promise<CommandResult> {
-    // Fetch today's usage
+    // Fetch today's usage from ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: todayUsage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used, tokens_used')
-      .eq('date', new Date().toISOString().split('T')[0])
+      .from('ai_daily_quota')
+      .select('calls_used, tokens_used, calls_budget')
+      .eq('date', today)
       .maybeSingle();
 
     // Fetch monthly usage
@@ -702,7 +704,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -714,26 +716,28 @@ export class AtlasCommandInterpreter {
       { calls: 0, tokens: 0 }
     ) || { calls: 0, tokens: 0 };
 
-    const dailyRemaining = Math.max(0, 50 - (todayUsage?.calls_used || 0));
-    const monthlyRemaining = Math.max(0, 1000 - monthlyTotals.calls);
+    const dailyBudget = todayUsage?.calls_budget || 50;
+    const dailyRemaining = Math.max(0, dailyBudget - (todayUsage?.calls_used || 0));
     const cyclesRemaining = Math.floor(dailyRemaining / 2.5);
 
     return {
       success: true,
-      message: `💳 **Usage & Quota**\n\n**Today:**\n• Calls: ${todayUsage?.calls_used || 0} / 50 (${dailyRemaining} remaining)\n• Cycles: ~${cyclesRemaining} remaining\n• Tokens: ${(todayUsage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Calls: ${monthlyTotals.calls} / 1,000 (${monthlyRemaining} remaining)\n• Tokens: ${monthlyTotals.tokens.toLocaleString()}\n\n**Free Tier:**\n• ~50 calls/day\n• ~20 evolution cycles/day\n• ~400 cycles/month`,
-      data: { todayUsage, monthlyTotals, dailyRemaining, monthlyRemaining },
+      message: `💳 **Usage & Quota**\n\n**Today:**\n• Calls: ${todayUsage?.calls_used || 0} / ${dailyBudget} (${dailyRemaining} remaining)\n• Cycles: ~${cyclesRemaining} remaining\n• Tokens: ${(todayUsage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls}\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
+      data: { todayUsage, monthlyTotals, dailyRemaining },
     };
   }
 
   private async handleCycleRun(command: ParsedCommand): Promise<CommandResult> {
-    // Check usage first
+    // Check usage via ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: todayUsage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used')
-      .eq('date', new Date().toISOString().split('T')[0])
+      .from('ai_daily_quota')
+      .select('calls_used, calls_budget')
+      .eq('date', today)
       .maybeSingle();
 
-    if ((todayUsage?.calls_used || 0) >= 50) {
+    const budget = todayUsage?.calls_budget || 50;
+    if ((todayUsage?.calls_used || 0) >= budget) {
       return {
         success: false,
         message: '⚠️ Daily call limit reached (50/50). Evolution cycles paused to stay within free tier.\n\nReset at midnight UTC.',
@@ -812,18 +816,19 @@ export class AtlasCommandInterpreter {
       detail: state.capabilities.seba?.enabled ? `Active (${sebaState.current_phase})` : 'Disabled',
     });
     
-    // Check free tier usage
-    const { data: usage } = await supabase
-      .from('lovable_ai_usage')
-      .select('calls_used')
+    // Check daily quota via ai_daily_quota (NEXUS-tracked)
+    const { data: quotaData } = await supabase
+      .from('ai_daily_quota')
+      .select('calls_used, calls_budget')
       .eq('date', new Date().toISOString().split('T')[0])
       .maybeSingle();
     
-    const callsUsed = usage?.calls_used || 0;
+    const callsUsed = quotaData?.calls_used || 0;
+    const callsBudget = quotaData?.calls_budget || 50;
     checks.push({
       name: 'Daily Quota',
-      status: callsUsed >= 50 ? 'fail' : callsUsed >= 40 ? 'warn' : 'pass',
-      detail: `${callsUsed}/50 calls (${Math.max(0, 50 - callsUsed)} remaining)`,
+      status: callsUsed >= callsBudget ? 'fail' : callsUsed >= callsBudget * 0.8 ? 'warn' : 'pass',
+      detail: `${callsUsed}/${callsBudget} calls (${Math.max(0, callsBudget - callsUsed)} remaining)`,
     });
     
     // Check pending approvals
