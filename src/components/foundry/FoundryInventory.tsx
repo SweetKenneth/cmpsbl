@@ -152,14 +152,9 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
             {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {hasAnyPricing && (
-              <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
-                <DollarSign className="w-3 h-3 text-neon-green" />
-                Resale: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
-              </div>
-            )}
-            <div className="text-xs font-mono text-muted-foreground">
-              Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+              <DollarSign className="w-3 h-3 text-neon-green" />
+              Est. Value: <span className="text-neon-green font-bold">{formatMarketValue(totalValuation)}</span>
             </div>
           </div>
         </div>
