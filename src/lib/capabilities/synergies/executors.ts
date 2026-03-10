@@ -5579,7 +5579,7 @@ export async function executeReasoningQualityAmplifier(
 
 /**
  * Secure Evolution Pipeline Executor
- * MODERNIZER + DEFENSE + BRAIN + CORTEX → Security-vetted evolution
+ * EVOLUTION + DEFENSE + BRAIN + CORTEX → Security-vetted evolution
  */
 export async function executeSecureEvolutionPipeline(
   context: SynergyExecutionContext
