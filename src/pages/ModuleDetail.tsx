@@ -43,7 +43,7 @@ export default function ModuleDetail() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": `What does the ${mod.name} module do in CMPSBL's AI Operating System?`,
+        "name": `What does the ${mod.name} node do in CMPSBL's AI Operating System?`,
         "acceptedAnswer": { "@type": "Answer", "text": mod.heroDescription },
       },
       ...mod.highlights.map(h => ({
