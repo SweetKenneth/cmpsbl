@@ -968,7 +968,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-repair',
     name: 'Autonomous Repair',
-    description: 'MODERNIZER auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
+    description: 'EVOLUTION auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
