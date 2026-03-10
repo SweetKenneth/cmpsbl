@@ -954,7 +954,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'evolution_governance_engine',
     name: 'Evolution Governance Engine',
     artifactType: 'engine',
-    modules: ['MODERNIZER'],
+    modules: ['EVOLUTION'],
     classification: 'architecture',
     reason: 'Evolution outcome prediction and checkpoint-based rollback authority',
     enables: 'Safe evolution with prediction, rollback, impact analysis',
