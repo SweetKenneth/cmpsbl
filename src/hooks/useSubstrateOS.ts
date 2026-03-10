@@ -119,10 +119,15 @@ export function useDreamStatusOS() {
   });
 }
 
+/** @deprecated Use useEvolutionStatusOS — MODERNIZER is now EVOLUTION */
 export function useModernizerStatusOS() {
+  return useEvolutionStatusOS();
+}
+
+export function useEvolutionStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
-    queryKey: ['substrate', 'modernizer', 'status'],
+    queryKey: ['substrate', 'evolution', 'status'],
     queryFn: withGracefulFallback(() => modernizer.status()),
     refetchInterval: pollingEnabled ? 30000 : false,
     enabled: pollingEnabled,
