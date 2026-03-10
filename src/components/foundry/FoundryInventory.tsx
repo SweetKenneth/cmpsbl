@@ -133,14 +133,25 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
           <div className="text-xs font-mono text-muted-foreground">
             Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
-          <button
-            onClick={handleExportVault}
-            disabled={isExporting}
-            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
-          >
-            {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-            {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
-          </button>
+          {getVaultLimits(subscriptionTier).exportEnabled ? (
+            <button
+              onClick={handleExportVault}
+              disabled={isExporting}
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+            >
+              {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+              {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
+            </button>
+          ) : (
+            <Link
+              to="/upgrade"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+            >
+              <Lock className="w-3 h-3" />
+              Export (Studio+)
+              <ArrowUpRight className="w-3 h-3" />
+            </Link>
+          )
         </div>
       </div>
 
