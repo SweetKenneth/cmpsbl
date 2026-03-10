@@ -757,7 +757,7 @@ class SubstrateClient {
     
     /** @deprecated Use evolve({ target: 'status' }) - Review a specific upgrade plan */
     review: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'review', payload: { plan_id } }),
     
     /** Validate plan readiness (Evolution Cycle) */
     validate: (plan_id: string) =>
