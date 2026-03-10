@@ -185,7 +185,7 @@ const MODULE_DEFAULTS: Record<string, string[]> = {
   defense: ['defense.status', 'defense.posture', 'defense.anomaly', 'defense.rules'],
   nexus: ['nexus.status', 'nexus.providers', 'nexus.text', 'nexus.route_stats'],
   dream: ['dream.status', 'dream.cycle', 'dream.mood', 'brain.dream'],
-  modernizer: ['modernizer.status', 'modernizer.scan', 'modernizer.plans', 'modernizer.applied'],
+  evolution: ['evolution.status', 'evolution.scan', 'evolution.plans', 'evolution.applied'],
   core: ['core.status', 'core.jobs', 'core.pulse', 'system.status'],
   ripple: ['ripple.status', 'ripple.topics', 'ripple.events', 'ripple.pulse'],
   access: ['access.status', 'access.usage', 'access.quota', 'access.list_keys'],

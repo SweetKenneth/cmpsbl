@@ -2354,13 +2354,13 @@ ${allFeatures.map(f => {
 │  start a fresh Evolution Cycle.
 │
 │  To confirm override, run:
-│    modernizer.evolve --confirm
+│    evolution.evolve --confirm
 │
 │  To view current plan status:
-│    modernizer.evolve status
+│    evolution.evolve status
 │
 │  To abort current plan:
-│    modernizer.evolve abort
+│    evolution.evolve abort
 │
 └──────────────────────────────────────────────────────────────`,
         };
