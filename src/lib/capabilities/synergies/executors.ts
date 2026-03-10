@@ -1853,7 +1853,7 @@ export async function executePredictiveHealing(
     durationMs: performance.now() - brainStart,
   });
   
-  // Step 2: MODERNIZER - Generate fixes
+  // Step 2: EVOLUTION - Generate fixes
   const modStart = performance.now();
   const fixes = {
     proactiveFixes: [
