@@ -34,7 +34,7 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   ripple: Radio,
   access: Activity,
   system: Activity,
-  modernizer: Activity,
+  evolution: Activity,
   integration: Activity,
   cortex: Activity,
   inclusive: Activity,
