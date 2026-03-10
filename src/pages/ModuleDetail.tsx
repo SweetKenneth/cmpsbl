@@ -27,7 +27,7 @@ export default function ModuleDetail() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": `CMPSBL ${mod.name} Module`,
+    "name": `CMPSBL ${mod.name} Node`,
     "description": mod.description,
     "url": `https://cmpsbl.com/modules/${mod.slug}`,
     "applicationCategory": "AI Operating System",
