@@ -53,7 +53,7 @@ import { ModuleLearningFeed } from '@/components/substrate-os/ModuleLearningFeed
 const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   core: Cpu, brain: Brain, cortex: Cpu, defense: Shield, nexus: Network,
   vision: Eye, ripple: Zap, access: Lock, inclusive: Accessibility,
-  modernizer: RefreshCw, system: Settings, decode: FileText, dream: Moon,
+  evolution: RefreshCw, system: Settings, decode: FileText, dream: Moon,
   integration: Plug, encode: FileText, memory: FileText, relay: FileText,
   audit: FileText, identity: FileText, economy: FileText, sandbox: FileText,
   nerve: Zap, medic: FileText, sovereign: Shield, oracle: Eye,
