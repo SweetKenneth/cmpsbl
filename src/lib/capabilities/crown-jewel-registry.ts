@@ -836,7 +836,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'stier-autonomous-ops-steward',
     name: 'Autonomous Ops Steward',
     artifactType: 'capability',
-    modules: ['SYSTEM', 'CORTEX', 'VISION', 'MODERNIZER'],
+    modules: ['SYSTEM', 'CORTEX', 'VISION', 'EVOLUTION'],
     classification: 'architecture',
     reason: 'Fully self-maintaining infrastructure with autonomous optimization',
     enables: 'Autonomous operations — self-maintenance and predictive optimization',
