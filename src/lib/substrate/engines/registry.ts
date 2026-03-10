@@ -349,7 +349,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'autonomous_documentation',
       'audit_compliance_reporter',
     ],
-    primaryModules: ['MODERNIZER', 'SYSTEM', 'CORTEX'],
+    primaryModules: ['EVOLUTION', 'SYSTEM', 'CORTEX'],
     layer: 'Admin',
     synergyMultiplier: 1.9,
     complexityScore: 6,
