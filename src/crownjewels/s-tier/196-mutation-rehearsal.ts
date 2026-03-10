@@ -7,8 +7,8 @@ export class MutationRehearsalEngine {
 
   rehearse(mutation: string, baselinePerf: number, mutatedPerf: number, failureModes: string[]): typeof this.rehearsals[0] {
     const delta = (mutatedPerf - baselinePerf) / Math.max(1, baselinePerf);
-    const verdict = failureModes.length > 2 ? 'blocked' : delta < -0.1 ? 'risky' : 'safe';
-    const result = { id: crypto.randomUUID(), mutation, performanceDelta: delta, failureModes, verdict, rehearsedAt: new Date().toISOString() };
+    const verdict: 'safe' | 'risky' | 'blocked' = failureModes.length > 2 ? 'blocked' : delta < -0.1 ? 'risky' : 'safe';
+    const result: typeof this.rehearsals[0] = { id: crypto.randomUUID(), mutation, performanceDelta: delta, failureModes, verdict, rehearsedAt: new Date().toISOString() };
     this.rehearsals.push(result);
     return result;
   }
