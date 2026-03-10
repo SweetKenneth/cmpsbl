@@ -2734,7 +2734,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
           return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to set autonomy mode'}` };
         }
       } else {
-        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.autonomy [status|set <mode>]' };
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.autonomy [status|set <mode>]' };
       }
     } else if (base === 'modernizer.receipts') {
       const limit = args[0] ? parseInt(args[0]) : 10;
