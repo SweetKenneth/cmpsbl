@@ -490,7 +490,7 @@ export default function UseCases() {
               >
                 <Card className={cn(
                   "h-full border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden",
-                  "hover:border-current/30 transition-all duration-300",
+                  "hover:border-current/30 transition-all duration-300 card-lift shimmer-on-hover",
                   vision.color
                 )}>
                   {/* Timeline badge */}
