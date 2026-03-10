@@ -275,10 +275,89 @@ const WAVE_11_ACTIVATIONS = [
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 12 — CJPI 92 (Expansion: Enterprise Synergies)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_12_ACTIVATIONS = [
+  { module: 'oracle', capability: 'predictive_oracle_engine', priority: 92, id: 'S-ORC01' },
+  { module: 'ripple', capability: 'temporal_ripple_analyzer', priority: 92, id: 'S-RPL02' },
+  { module: 'oracle', capability: 'predictive_trend_crystallizer', priority: 92, id: 'S-ORC04' },
+  { module: 'compass', capability: 'jurisdiction_aware_router', priority: 92, id: 'S-SYN06' },
+  { module: 'reflex', capability: 'predictive_reflex_arc', priority: 92, id: 'S-RFX03' },
+  { module: 'sovereign', capability: 'regulatory_genome_mapper', priority: 92, id: 'S-SOV03' },
+  { module: 'analytics', capability: 'stakeholder_impact_analyzer', priority: 92, id: 'S-ANL02' },
+  { module: 'phantom', capability: 'selective_amnesia_controller', priority: 92, id: 'S-PHA01' },
+  { module: 'forge', capability: 'artifact_hardening_foundry', priority: 92, id: 'S-FRG03' },
+  { module: 'lingua', capability: 'cultural_context_adapter', priority: 92, id: 'S-LNG02' },
+  { module: 'mesh', capability: 'proximity_intelligence', priority: 92, id: 'S-MSH01' },
+  { module: 'evolution', capability: 'mutation_rehearsal', priority: 92, id: 'S-SYN07' },
+  { module: 'sovereign', capability: 'breach_penalty_calculator', priority: 92, id: 'S-SYN08' },
+  { module: 'relay', capability: 'cross_zone_relay_bridge', priority: 92, id: 'S-RLY01' },
+  { module: 'mesh', capability: 'mesh_topology_optimizer', priority: 92, id: 'S-SYN09' },
+  { module: 'access', capability: 'entitlement_cascade_resolver', priority: 92, id: 'S-ACC01' },
+  { module: 'modernizer', capability: 'progressive_migration', priority: 92, id: 'S-MOD01' },
+  { module: 'integration', capability: 'event_driven_integration_mesh', priority: 92, id: 'S-SYN10' },
+  { module: 'encode', capability: 'legacy_transcoding_bridge', priority: 92, id: 'S-ENC01' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 13 — CJPI 91 (Expansion: Sovereign & Conscience)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_13_ACTIVATIONS = [
+  { module: 'conscience', capability: 'ethical_constraint_engine', priority: 91, id: 'S-CON01' },
+  { module: 'phantom', capability: 'stealth_operations_controller', priority: 91, id: 'S-PHA03' },
+  { module: 'inclusive', capability: 'universal_input_interpreter', priority: 91, id: 'S-INC02' },
+  { module: 'observability', capability: 'cognitive_flame_graph', priority: 91, id: 'S-OBS03' },
+  { module: 'treaty', capability: 'fair_negotiation_protocol', priority: 91, id: 'S-TRT02' },
+  { module: 'decode', capability: 'adaptive_interface_compiler', priority: 91, id: 'S-INT01' },
+  { module: 'analytics', capability: 'analytics_observability_convergence', priority: 91, id: 'S-ANL04' },
+  { module: 'sovereign', capability: 'cross_border_transfer_arbiter', priority: 91, id: 'S-SOV04' },
+  { module: 'oracle', capability: 'confidence_calibration', priority: 91, id: 'S-ORC03b' },
+  { module: 'lingua', capability: 'domain_terminology_forge', priority: 91, id: 'S-LNG03' },
+  { module: 'compass', capability: 'geofenced_policy_engine', priority: 91, id: 'S-CMP03' },
+  { module: 'treaty', capability: 'contract_evolution_mediator', priority: 91, id: 'S-TRT03' },
+  { module: 'harvest', capability: 'freshness_arbitrage', priority: 91, id: 'S-HRV03' },
+  { module: 'reflex', capability: 'reflex_accuracy_monitor', priority: 91, id: 'S-RFX04b' },
+  { module: 'immunity', capability: 'autoimmune_prevention', priority: 91, id: 'S-IMM01' },
+  { module: 'intent', capability: 'predictive_intent_preloader', priority: 91, id: 'S-INT04' },
+  { module: 'relay', capability: 'gossip_protocol_engine', priority: 91, id: 'S-RLY03' },
+  { module: 'integration', capability: 'external_event_bridge', priority: 91, id: 'S-INT05' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 14 — CJPI 88-90 (Expansion: Final Tier)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_14_ACTIVATIONS = [
+  { module: 'forge', capability: 'capability_forge_engine', priority: 90, id: 'S-FRG01' },
+  { module: 'lingua', capability: 'polyglot_translation_matrix', priority: 90, id: 'S-LNG01' },
+  { module: 'ripple', capability: 'event_storm_dampener', priority: 90, id: 'S-RPL03' },
+  { module: 'analytics', capability: 'cohort_intelligence_engine', priority: 90, id: 'S-ANL03' },
+  { module: 'conscience', capability: 'ethical_debt_tracker', priority: 90, id: 'S-CON04' },
+  { module: 'phantom', capability: 'plausible_deniability_engine', priority: 90, id: 'S-PHA04' },
+  { module: 'forge', capability: 'capability_genealogy_tracker', priority: 90, id: 'S-FRG04' },
+  { module: 'harvest', capability: 'provenance_chain_verifier', priority: 90, id: 'S-HRV04' },
+  { module: 'reflex', capability: 'edge_cascade_coordinator', priority: 90, id: 'S-RFX04' },
+  { module: 'relay', capability: 'dead_letter_intelligence_engine', priority: 90, id: 'S-RLY04' },
+  { module: 'echo', capability: 'parallel_universe_comparator', priority: 90, id: 'S-ECH04' },
+  { module: 'compass', capability: 'strategic_navigation_engine', priority: 89, id: 'S-CMP01' },
+  { module: 'echo', capability: 'distributed_echo_network', priority: 89, id: 'S-ECH01' },
+  { module: 'inclusive', capability: 'cognitive_load_accessibility_governor', priority: 89, id: 'S-INC03' },
+  { module: 'lingua', capability: 'intent_preserving_summarizer', priority: 89, id: 'S-LNG04' },
+  { module: 'compass', capability: 'supply_chain_geospatial_tracker', priority: 89, id: 'S-CMP04' },
+  { module: 'treaty', capability: 'multi_party_consensus_broker', priority: 89, id: 'S-TRT04' },
+  { module: 'treaty', capability: 'negotiation_protocol_engine', priority: 88, id: 'S-TRT01' },
+  { module: 'harvest', capability: 'data_harvest_orchestrator', priority: 88, id: 'S-HRV01' },
+  { module: 'reflex', capability: 'reactive_reflex_controller', priority: 88, id: 'S-RFX01' },
+  { module: 'identity', capability: 'identity_federation_bridge', priority: 88, id: 'S-IDN01' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Activation Engine
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
 
 interface ActivationResult {
   wave: ActivationWave;
