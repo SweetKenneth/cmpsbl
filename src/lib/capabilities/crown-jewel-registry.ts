@@ -105,7 +105,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj2-brain-episodic-replay',
   'cj2-encode-intent-compiler',
   'cj2-core-homeostatic-regulator',
-  'cj2-modernizer-shadow-evolution',
+  'cj2-evolution-shadow-evolution',
   'cj2-dream-counterfactual-engine',
   'cj2-cortex-attention-allocation',
   'cj2-system-entropy-reversal',
