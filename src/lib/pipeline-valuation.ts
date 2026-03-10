@@ -28,9 +28,8 @@ export function estimateMarketValue(cjpi: number, category: string, moduleChainL
   const baseValue = 5000 + Math.pow(normalized, 2.5) * 995000;
   const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
   const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.12;
-  // Apex premium: score 100 → 2.0x, 95+ → 1.5x, 92+ → 1.2x
-  const apexMult = cjpi >= 100 ? 2.0 : cjpi >= 95 ? 1.5 : cjpi >= 92 ? 1.2 : 1.0;
-  return Math.round(baseValue * catMult * complexityMult * apexMult);
+  // No apex/tier multiplier here — tier premiums are applied only in computeBlendedValuation
+  return Math.round(baseValue * catMult * complexityMult);
 }
 
 /** Format a numeric value as a human-readable USD string */
@@ -46,11 +45,15 @@ export function formatMarketValue(value: number): string {
  */
 export function computeBlendedValuation(score: number, category: string, moduleChainLength: number): number {
   const internalValue = estimateMarketValue(score, category, moduleChainLength);
-  const normalizedInternal = internalValue * 0.001;
+  // NormalizedInternal scaled to be meaningful in the blend (not negligible)
+  const normalizedInternal = internalValue * 0.1;
   const baseValue = getExponentialBase(score);
   const tier = getTierFromScore(score);
   const cjpiMultiplier = getCJPIMultiplier(tier);
-  const cjpiValue = baseValue * cjpiMultiplier;
+  // Tier multiplier applied as a PREMIUM adjustment, not raw scaling
+  // Premium = (multiplier - 1) dampened by 0.15 to prevent doubling
+  const tierPremium = (cjpiMultiplier - 1) * 0.15;
+  const cjpiValue = baseValue * (1 + tierPremium);
   return Math.round((cjpiValue * 0.75) + (normalizedInternal * 0.25));
 }
 

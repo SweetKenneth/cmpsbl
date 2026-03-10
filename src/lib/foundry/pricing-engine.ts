@@ -224,19 +224,20 @@ function estimatePricingCost(evidence: PricingEvidence | undefined): number {
 }
 
 /**
- * Blended Pricing Formula (deterministic)
+ * Blended Pricing Formula (deterministic) v3.1
  * ─────────────────────────────────────────
- * NormalizedInternal = InternalValue × 0.001
- * CJPIValue          = BaseValue × CJPIMultiplier
- * MarketWeight       = 0.55 + (Confidence × 0.20)
+ * NormalizedInternal = InternalValue × 0.1
+ * TierPremium       = (CJPIMultiplier − 1) × 0.15
+ * CJPIValue         = BaseValue × (1 + TierPremium)
+ * MarketWeight      = 0.55 + (Confidence × 0.20)
  *
  * FinalPrice =
  *   (ConsensusPrice × MarketWeight) +
  *   (CJPIValue × 0.25) +
  *   (NormalizedInternal × (1 − MarketWeight − 0.25))
  *
- * When no ConsensusPrice exists, redistribute MarketWeight
- * across CJPIValue and NormalizedInternal proportionally.
+ * When no ConsensusPrice exists, redistribute:
+ *   75% CJPIValue + 25% NormalizedInternal
  */
 
 import {
@@ -258,15 +259,18 @@ function computeBlendedPrice(inputs: BlendedInputs): number {
   const category = artifact.pipeline_category || 'core';
   const moduleCount = artifact.system_chain?.length || 1;
 
-  // InternalValue = full estimateMarketValue() output
+  // InternalValue = full estimateMarketValue() output (no apex doubling)
   const internalValue = estimateMarketValue(score, category, moduleCount);
-  const normalizedInternal = internalValue * 0.001;
+  // Scaled to be meaningful in the blend (0.1, not 0.001)
+  const normalizedInternal = internalValue * 0.1;
 
-  // CJPIValue = exponential base × graduated 6-tier multiplier
+  // CJPIValue = exponential base with tier multiplier as dampened premium
   const baseValue = getExponentialBase(score);
   const tier = getTierFromScore(score);
   const cjpiMultiplier = getCJPIMultiplier(tier);
-  const cjpiValue = baseValue * cjpiMultiplier;
+  // Premium adjustment: (multiplier - 1) × 0.15 dampening factor
+  const tierPremium = (cjpiMultiplier - 1) * 0.15;
+  const cjpiValue = baseValue * (1 + tierPremium);
 
   if (consensusPrice != null && consensusPrice > 0) {
     // Full blended formula
@@ -279,11 +283,8 @@ function computeBlendedPrice(inputs: BlendedInputs): number {
            (normalizedInternal * internalWeight);
   }
 
-  // No consensus — redistribute MarketWeight across CJPIValue + Internal
-  // CJPIValue gets 0.25 + 0.55 share, NormalizedInternal gets the rest
-  const cjpiWeight = 0.75;
-  const internalWeight = 0.25;
-  return (cjpiValue * cjpiWeight) + (normalizedInternal * internalWeight);
+  // No consensus — redistribute: 75% CJPIValue + 25% NormalizedInternal
+  return (cjpiValue * 0.75) + (normalizedInternal * 0.25);
 }
 
 /**
@@ -297,16 +298,16 @@ function computeLocalFallback(artifact: PricingArtifact): CommercializationPrici
     recommended_resale_price: recommended,
     indie_price: Math.round(recommended * 0.6 * 100) / 100,
     standard_price: recommended,
-    enterprise_price: Math.round(recommended * 3.5 * 100) / 100,
-    estimated_market_range_low: Math.round(recommended * 0.5 * 100) / 100,
-    estimated_market_range_high: Math.round(recommended * 2 * 100) / 100,
+    enterprise_price: Math.round(recommended * 2.0 * 100) / 100,
+    estimated_market_range_low: Math.round(recommended * 0.7 * 100) / 100,
+    estimated_market_range_high: Math.round(recommended * 1.5 * 100) / 100,
     pricing_confidence: 0.3,
     market_category: 'Software Tool',
     comparable_summary: 'Local estimate — enable consensus pricing for market-grounded analysis.',
     suggested_marketplaces: artifact.pipeline_score >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad'],
     commercialization_notes: 'Fallback pricing from internal signals only (blended CJPIValue + NormalizedInternal).',
     pricing_source: 'local-fallback',
-    pricing_source_version: '3.0.0',
+    pricing_source_version: '3.1.0',
   };
 }
 
@@ -330,10 +331,10 @@ export function applyBlendedFormula(
     recommended_resale_price: recommended,
     indie_price: Math.round(recommended * 0.6 * 100) / 100,
     standard_price: recommended,
-    enterprise_price: Math.round(recommended * 3.5 * 100) / 100,
-    estimated_market_range_low: Math.round(recommended * 0.5 * 100) / 100,
-    estimated_market_range_high: Math.round(recommended * 2 * 100) / 100,
-    pricing_source_version: '3.0.0',
+    enterprise_price: Math.round(recommended * 2.0 * 100) / 100,
+    estimated_market_range_low: Math.round(recommended * 0.7 * 100) / 100,
+    estimated_market_range_high: Math.round(recommended * 1.5 * 100) / 100,
+    pricing_source_version: '3.1.0',
   };
 }
 
