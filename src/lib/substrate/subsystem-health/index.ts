@@ -447,6 +447,31 @@ async function healDiscoveryEngine(force: boolean): Promise<string[]> {
   return actions;
 }
 
+async function healVaultLoader(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    const { isVaultLoaded, getVaultPrimitiveCount, resetVaultLoader, loadVaultPrimitives } = await import('../vault-primitive-loader');
+    const wasPreviouslyLoaded = isVaultLoaded();
+    const countBefore = getVaultPrimitiveCount();
+
+    actions.push(`Pre-heal: loaded=${wasPreviouslyLoaded}, count=${countBefore}`);
+
+    if (force || !wasPreviouslyLoaded || countBefore === 0) {
+      resetVaultLoader();
+      const result = await loadVaultPrimitives();
+      actions.push(`Reloaded: ${result.loaded} primitives across ${Object.keys(result.byNode).length} nodes`);
+      if (result.errors.length > 0) {
+        actions.push(`Load errors: ${result.errors.join('; ')}`);
+      }
+    } else {
+      actions.push('Vault loader healthy — no action needed');
+    }
+  } catch (err) {
+    actions.push(`Vault Loader heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
 // ═══ Export Subsystem IDs ════════════════════════════════════════
 
 export { ALL_SUBSYSTEM_IDS };
