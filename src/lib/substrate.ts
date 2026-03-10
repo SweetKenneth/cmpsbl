@@ -1926,7 +1926,9 @@ export const dream = substrate.dream;
 export const ripple = substrate.ripple;
 export const access = substrate.access;
 export const system = substrate.system;
-export const modernizer = substrate.modernizer;
+/** @deprecated Use evolutionMod — Modernizer absorbed by EVOLUTION */
+export const modernizer = substrate.evolution;
+export const evolutionClient = substrate.evolution;
 export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;
