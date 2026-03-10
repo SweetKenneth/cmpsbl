@@ -226,13 +226,13 @@ function estimatePricingCost(evidence: PricingEvidence | undefined): number {
 function computeLocalFallback(artifact: PricingArtifact): CommercializationPricing {
   const score = artifact.pipeline_score;
   const internalValue = artifact.valuation_display || 0;
-  const normalizedInternal = Math.min(Math.max(internalValue * 0.001, 5), 2000);
+  const normalizedInternal = Math.max(internalValue * 0.001, 5);
 
   let cjpiMultiplier = 1.0;
-  if (score >= 100) cjpiMultiplier = 2.5;
-  else if (score >= 94) cjpiMultiplier = 2.0;
-  else if (score >= 90) cjpiMultiplier = 1.6;
-  else if (score >= 80) cjpiMultiplier = 1.3;
+  if (score >= 100) cjpiMultiplier = 4.0;
+  else if (score >= 94) cjpiMultiplier = 3.0;
+  else if (score >= 90) cjpiMultiplier = 2.2;
+  else if (score >= 80) cjpiMultiplier = 1.5;
   else if (score >= 68) cjpiMultiplier = 1.0;
   else cjpiMultiplier = 0.7;
 

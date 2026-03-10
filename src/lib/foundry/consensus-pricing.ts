@@ -197,8 +197,8 @@ export function computeConsensusPricing(
   // Step 2: Compute consensus
   const consensus = computeConsensusEstimate(processed);
 
-  // Step 3: Internal value normalization ($5 - $2000 range)
-  const normalizedInternal = Math.min(Math.max(input.internal_value * 0.001, 5), 2000);
+   // Step 3: Internal value normalization — scale but preserve magnitude
+  const normalizedInternal = Math.max(input.internal_value * 0.001, 5);
 
   // Step 4: CJPI multiplier
   const cjpiMultiplier = getCJPIMultiplier(input.cjpi_score);
@@ -243,8 +243,8 @@ export function computeConsensusPricing(
 
   const adjustedPrice = basePrice * complexityBonus * hardwarePremium;
 
-  // Step 9: Clamp to reasonable range ($1 - $50,000)
-  const recommended = Math.round(Math.min(Math.max(adjustedPrice, 1), 50000) * 100) / 100;
+  // Step 9: Floor at $1 — no artificial ceiling
+  const recommended = Math.round(Math.max(adjustedPrice, 1) * 100) / 100;
 
   // Step 10: Confidence scoring
   const confidence = computeConfidence(processed, consensus, input);
@@ -329,12 +329,13 @@ function computeConfidence(
 // ── Shared Pricing Prompt ──
 
 export function buildConsensusPricingPrompt(input: ConsensusInput): string {
-  const complexitySignal = (input.internal_value || 0) > 10000 ? 'very high'
-    : (input.internal_value || 0) > 5000 ? 'high'
+  const complexitySignal = (input.internal_value || 0) > 500000 ? 'exceptional — enterprise platform class'
+    : (input.internal_value || 0) > 100000 ? 'very high — significant infrastructure'
+    : (input.internal_value || 0) > 10000 ? 'high'
     : (input.internal_value || 0) > 1000 ? 'moderate'
     : 'standard';
 
-  return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
+  return `Price this software artifact for commercial sale. Consider all channels: enterprise licensing, marketplace distribution, SaaS integration, and direct sales.
 
 ARTIFACT: ${input.artifact_name}
 DESCRIPTION: ${input.artifact_description || 'Crystallized software pipeline / reusable code module'}
@@ -347,13 +348,14 @@ HARDWARE EXPORT: ${input.has_hardware_export ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(input.export_targets || ['source']).join(', ')}
 RUNTIME: ${input.runtime_type || 'JavaScript/TypeScript'}
 
-CRITICAL PRICING GUIDELINES — follow these ranges strictly:
-- A single reusable module/library: $10-$80
-- A multi-module developer toolkit (2-5 modules): $30-$200
-- A comprehensive framework or platform (5+ modules): $100-$500
-- Only very large enterprise infrastructure should exceed $500
-- Do NOT exceed $1,000 unless the artifact is a complete enterprise platform with 8+ modules
-- Think about what a solo developer or small team would actually pay on Gumroad
+PRICING GUIDELINES — price according to real commercial software market value:
+- A single reusable module/library: $10-$200
+- A multi-module developer toolkit (2-5 modules): $50-$2,000
+- A comprehensive framework or platform (5+ modules): $500-$25,000
+- Enterprise infrastructure, orchestration platforms, or AI substrates: $5,000-$500,000+
+- Highly sophisticated multi-module systems with 8+ modules and high CJPI scores can exceed $100,000
+- Price based on the engineering value, sophistication, and what an enterprise or serious buyer would pay
+- Do NOT artificially constrain pricing — if it's worth $50,000 or $500,000, price it accordingly
 
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
@@ -362,7 +364,7 @@ Return a JSON object with EXACTLY these fields (no markdown, no explanation):
   "estimated_mid_price": number (best single retail price in USD),
   "market_category": "string — most fitting software market category",
   "comparable_product_types": "string — 1-2 sentences naming real comparable products at similar price points",
-  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace"],
+  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace, Azure Marketplace, Google Cloud Marketplace, enterprise direct licensing"],
   "pricing_confidence": number between 0 and 1,
   "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
 }`;
@@ -371,10 +373,10 @@ Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 // ── Helpers ──
 
 function getCJPIMultiplier(score: number): number {
-  if (score >= 100) return 2.5;
-  if (score >= 94) return 2.0;
-  if (score >= 90) return 1.6;
-  if (score >= 80) return 1.3;
+  if (score >= 100) return 4.0;
+  if (score >= 94) return 3.0;
+  if (score >= 90) return 2.2;
+  if (score >= 80) return 1.5;
   if (score >= 68) return 1.0;
   return 0.7;
 }
