@@ -1579,7 +1579,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'CORTEX', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
