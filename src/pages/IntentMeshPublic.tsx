@@ -136,7 +136,7 @@ export default function IntentMeshPublic() {
         keywords={['intent mesh', 'cross-module discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
+          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
           { name: 'Intent Mesh', url: 'https://cmpsbl.com/intent-mesh' },
         ]}
       />
