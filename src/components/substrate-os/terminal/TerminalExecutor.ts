@@ -2570,7 +2570,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.applyProduction(planId);
+      const res = await evolutionMod.applyProduction(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Production apply failed';
