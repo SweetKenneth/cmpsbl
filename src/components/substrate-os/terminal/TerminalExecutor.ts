@@ -2661,7 +2661,7 @@ ${allFeatures.map(f => {
     }
 
     // ═══ CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
-    else if (base === 'modernizer.circuit') {
+    else if (base === 'evolution.circuit' || base === 'modernizer.circuit') {
       const subCmd = args[0] || 'status';
       if (subCmd === 'status') {
         try {
