@@ -1709,11 +1709,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   
-  // MODERNIZER × VISION (proactive maintenance)
+  // EVOLUTION × VISION (proactive maintenance)
   {
     id: 'proactive-maintenance-engine',
     name: 'Proactive Maintenance Engine',
-    description: 'MODERNIZER predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
+    description: 'EVOLUTION predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
     category: 'resilience',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
