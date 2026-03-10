@@ -531,7 +531,7 @@ const stratumInfra: Specimen[] = [
     id: "INFR-004",
     fossilized: "2026-02-16",
     origin: "cognition",
-    stimulus: "Modules were requesting improvements through internal learning but nothing was being delivered",
+    stimulus: "Nodes were requesting improvements through internal learning but nothing was being delivered",
     adaptations: [
       "BRAIN improved its memory tier management with autonomous capacity governance",
       "EVOLUTION gained the ability to detect and resolve stalled improvement cycles",
