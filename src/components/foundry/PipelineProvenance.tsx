@@ -72,6 +72,7 @@ function ProvenanceBody({
   onOpenExport: () => void;
   onClose: () => void;
   isMobile: boolean;
+  subscriptionTier?: string;
 }) {
   const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState<boolean | null>(null);
