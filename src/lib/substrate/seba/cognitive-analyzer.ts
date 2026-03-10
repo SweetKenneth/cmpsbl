@@ -46,7 +46,7 @@ interface BackendStats {
 }
 
 async function fetchBackendStats(): Promise<BackendStats> {
-  const stats: BackendStats = { brain: null, modernizer: null };
+  const stats: BackendStats = { brain: null, evolution: null };
   
   try {
     // Fetch brain status from database directly (pf-brain-status may not be deployed)
