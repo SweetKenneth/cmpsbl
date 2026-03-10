@@ -2,7 +2,7 @@
  * COMPOSABLE ENGINES Catalog
  * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
  * Tiered pricing: APEX $599 | ELITE $399 | CORE $199 | Free $0
- * Bundle discount: 40% off when purchased with another engine.
+ * Bundle discount: 40% off when bundled with an agent.
  * ARCHITECT uses annual subscription at $999/yr.
  */
 
@@ -139,7 +139,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "automaton", codename: "AUTOMATON", tagline: "Workflow Automation Engine",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgjQ7FtTiAL4aO0YcTEEh", icon: Cog, color: "38 90% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "AUTOMATON turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation that handles the boring stuff so your team handles the brilliant stuff.",
@@ -148,7 +148,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "catalyst", codename: "CATALYST", tagline: "Event-Driven Architecture",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgkQ7FtTiAL4a80YXxyvP", icon: Sparkles, color: "310 100% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "CATALYST makes everything reactive. Pub/sub messaging, event sourcing, and CQRS patterns that decouple your services and let them evolve independently.",
@@ -187,7 +187,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "meridian", codename: "MERIDIAN", tagline: "Content Delivery Network",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgpQ7FtTiAL4a1Yr5YhrH", icon: Globe, color: "185 100% 40%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "MERIDIAN delivers content at the speed of proximity. Global edge distribution, asset optimization, and intelligent routing that puts your content milliseconds from every user.",
@@ -214,7 +214,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "aegis", codename: "AEGIS", tagline: "Identity & Access Governance",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgRQ7FtTiAL4af82LmdJR", icon: Fingerprint, color: "15 85% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "AEGIS governs who — and what — can touch your systems. Fine-grained RBAC, policy-as-code enforcement, credential rotation, and session attestation. Born from the substrate's Governance Crown Jewels.",

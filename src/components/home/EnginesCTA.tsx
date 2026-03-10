@@ -90,10 +90,10 @@ export function EnginesCTA() {
 
               <div className="flex flex-col items-start sm:items-end gap-1.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-black text-primary">$99</span>
-                  <span className="text-sm text-muted-foreground">bundled</span>
+                  <span className="text-3xl sm:text-4xl font-black text-primary">40% off</span>
+                  <span className="text-sm text-muted-foreground">bundled w/ agent</span>
                 </div>
-                <span className="text-xs text-muted-foreground/60 font-mono">$199 standalone · Lifetime license</span>
+                <span className="text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199 standalone · Lifetime license</span>
               </div>
             </div>
 
