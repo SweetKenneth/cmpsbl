@@ -146,7 +146,7 @@ const PersistentMemoryLanding = () => {
                   { icon: Target, title: "Behavior drifts without memory", description: "Without recall, agents can't learn preferences, maintain consistency, or improve over time." }
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                    <Card className="h-full border-destructive/20 bg-destructive/5 hover:border-destructive/30 transition-colors">
+                    <Card className="h-full border-destructive/20 bg-destructive/5 hover:border-destructive/30 transition-colors card-lift">
                       <CardContent className="pt-6">
                         <div className="w-12 h-12 rounded-lg bg-destructive/10 flex items-center justify-center mb-4">
                           <item.icon className="w-6 h-6 text-destructive" />

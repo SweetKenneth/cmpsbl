@@ -112,14 +112,14 @@ export default function VanillaDeveloperGuide() {
               all through clean, typed function calls.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <a href="#quickstart">
                   <Terminal className="w-4 h-4" />
                   Quick Start
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="gap-2">
+              <Button asChild size="lg" variant="outline" className="gap-2 hover:border-primary/30 transition-colors">
                 <Link to="/api-access">
                   <BookOpen className="w-4 h-4" />
                   Full API Reference
@@ -150,7 +150,7 @@ export default function VanillaDeveloperGuide() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.07 }}
               >
-                <Card className="h-full border-border/50 bg-card/80 hover:border-primary/30 transition-colors group">
+                <Card className="h-full border-border/50 bg-card/80 hover:border-primary/30 transition-colors group card-lift shimmer-on-hover">
                   <CardHeader className="pb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

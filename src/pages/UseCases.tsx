@@ -129,7 +129,7 @@ function CapabilityPill({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
+    <div className="flex items-center gap-3 p-4 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm shimmer-on-hover card-lift">
       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
         <Icon className="w-5 h-5 text-primary" />
       </div>
@@ -440,13 +440,13 @@ export default function UseCases() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 <Link to="/codelab">
                   <Code className="w-4 h-4" />
                   Start Building
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="gap-2">
+              <Button asChild variant="outline" size="lg" className="gap-2 hover:border-primary/30 transition-colors">
                 <Link to="/contact">
                   <MessageSquare className="w-4 h-4" />
                   Talk to Sales
@@ -490,7 +490,7 @@ export default function UseCases() {
               >
                 <Card className={cn(
                   "h-full border-border/50 bg-card/50 backdrop-blur-sm relative overflow-hidden",
-                  "hover:border-current/30 transition-all duration-300",
+                  "hover:border-current/30 transition-all duration-300 card-lift shimmer-on-hover",
                   vision.color
                 )}>
                   {/* Timeline badge */}
