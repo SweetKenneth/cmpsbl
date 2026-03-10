@@ -455,7 +455,7 @@ function getModuleFiles(module: string): string[] {
     inclusive: ['src/lib/inclusive/'],
     cortex: ['src/lib/substrate/orchestrator-engine.ts'],
     governance: ['src/lib/substrate/governance/'],
-    immunity: ['src/lib/substrate/modernizer-shadow-resolver/'],
+    immunity: ['src/lib/substrate/evolution-shadow-resolver/'],
     intent: ['src/lib/substrate/intent-mesh/'],
     integration: ['src/lib/integrations/'],
     medic: ['src/lib/substrate/medic/'],
