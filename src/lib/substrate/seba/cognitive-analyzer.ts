@@ -232,10 +232,18 @@ export class CognitiveAnalyzer {
       // Check ALL existing proposals (pending, approved, applied) to prevent duplicates
       // Pending proposals should block new identical proposals
       // Approved/applied within cooldown should also block
-      const { data: proposals } = await supabase
+      const { data: pendingProposals } = await supabase
         .from('evolution_proposals')
         .select('title, target_system, status, created_at, reviewed_at')
-        .or(`status.eq.pending,and(status.in.(approved,applied),reviewed_at.gte.${cutoff})`);
+        .eq('status', 'pending');
+      
+      const { data: recentProposals } = await supabase
+        .from('evolution_proposals')
+        .select('title, target_system, status, created_at, reviewed_at')
+        .in('status', ['approved', 'applied'])
+        .gte('reviewed_at', cutoff);
+      
+      const proposals = [...(pendingProposals || []), ...(recentProposals || [])];
         
       if (proposals) {
         for (const p of proposals) {
