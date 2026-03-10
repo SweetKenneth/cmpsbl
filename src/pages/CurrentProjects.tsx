@@ -155,7 +155,7 @@ export default function CurrentProjects() {
              Current Projects
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             The CMPSBL ecosystem spans cognitive infrastructure, self-hosted deployment via <span className="text-foreground font-semibold">LNCHBL</span>, 
             security, accessibility, and autonomous AI. Nine live products. 100+ projects shipped over 15 years.
           </p>
