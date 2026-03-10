@@ -226,7 +226,7 @@ export function HeroMetaSubstrate() {
               <p className="text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground/80 tracking-tight leading-snug">
                 Where machines learn to
               </p>
-              <div className="mt-1 text-3xl sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
+              <div className="mt-1 text-[1.75rem] sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
                 <TypedText 
                   texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[

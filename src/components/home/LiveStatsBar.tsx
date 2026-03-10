@@ -81,22 +81,22 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
+          <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
         </div>
 
-        {/* Stats row — horizontal scroll on mobile */}
-        <div className="flex items-center justify-start sm:justify-center gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 sm:pb-0">
+        {/* Stats — 3-col grid on mobile, horizontal row on desktop */}
+        <div className="grid grid-cols-3 gap-x-3 gap-y-2 sm:flex sm:items-center sm:justify-center sm:gap-6 md:gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.3 }}
-              className="flex items-center gap-1.5 shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 justify-center sm:justify-start shrink-0"
             >
-              <stat.icon className={cn("w-3 h-3 sm:w-3.5 sm:h-3.5", stat.color)} />
-              <span className={cn("text-xs sm:text-sm font-black tabular-nums", stat.color)}>{stat.value}</span>
-              <span className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-medium uppercase tracking-wider whitespace-nowrap">{stat.label}</span>
+              <stat.icon className={cn("w-3 h-3 shrink-0", stat.color)} />
+              <span className={cn("text-[11px] sm:text-sm font-black tabular-nums leading-none", stat.color)}>{stat.value}</span>
+              <span className="text-[8px] sm:text-[10px] text-muted-foreground/60 font-medium uppercase tracking-wider whitespace-nowrap leading-none">{stat.label}</span>
             </motion.div>
           ))}
         </div>
