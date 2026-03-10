@@ -797,7 +797,7 @@ export default function STierVault() {
         type: 'CMPSBL® Offline Vault Manifest',
         purpose: 'Complete disaster-recovery snapshot of all discovered and curated software. If the server is ever lost, this file contains everything needed to reconstruct the vault.',
         generatedAt: new Date().toISOString(),
-        generatedBy: 'S-Tier Crown Jewel Vault — Offline Manifest System',
+        generatedBy: 'S-Tier Apex Discovery Vault — Offline Manifest System',
         copyright: '© 2025–2026 CMPSBL®. All rights reserved.',
         architect: 'Kenneth E. Sweet Jr. — ORCID 0009-0001-4237-1243',
       },
