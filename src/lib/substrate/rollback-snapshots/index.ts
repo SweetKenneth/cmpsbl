@@ -2,7 +2,7 @@
  * Rollback Snapshot Storage
  * Enterprise-only persistent state snapshots for safe evolution
  * 
- * Captures system state before evolution/modernizer changes,
+ * Captures system state before evolution changes,
  * enabling confident rollback to known-good states.
  */
 
