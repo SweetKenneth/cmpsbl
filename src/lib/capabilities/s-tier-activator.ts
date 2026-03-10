@@ -269,7 +269,7 @@ const WAVE_11_ACTIVATIONS = [
   { module: 'brain', capability: 'episodic_replay', priority: 85, id: 'S-CJ134' },
   { module: 'encode', capability: 'intent_compiler', priority: 85, id: 'S-CJ135' },
   { module: 'core', capability: 'homeostatic_regulator', priority: 85, id: 'S-CJ136' },
-  { module: 'modernizer', capability: 'shadow_evolution', priority: 85, id: 'S-CJ137' },
+  { module: 'evolution', capability: 'shadow_evolution', priority: 85, id: 'S-CJ137' },
   { module: 'dream', capability: 'counterfactual_engine', priority: 85, id: 'S-CJ138' },
   { module: 'cortex', capability: 'attention_allocation', priority: 85, id: 'S-CJ139' },
   { module: 'system', capability: 'entropy_reversal', priority: 85, id: 'S-CJ140' },
