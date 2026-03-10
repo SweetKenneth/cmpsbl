@@ -223,7 +223,7 @@ export default function ModuleDetail() {
             </h2>
             <div className="space-y-4">
               {mod.useCases.map((useCase, i) => (
-                <div key={i} className="flex items-start gap-3 p-5 rounded-xl border border-border bg-card">
+                <div key={i} className="flex items-start gap-3 p-5 rounded-xl border border-border bg-card card-lift shimmer-on-hover">
                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <span className="text-sm font-bold text-primary">{i + 1}</span>
                   </div>
