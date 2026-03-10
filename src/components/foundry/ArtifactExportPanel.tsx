@@ -84,6 +84,27 @@ export function ArtifactExportPanel({ artifact, subscriptionTier }: ArtifactExpo
     }
   };
 
+  if (!limits.exportEnabled) {
+    return (
+      <div className="px-5 pb-4">
+        <div className="flex items-center justify-between p-3 rounded-lg border border-border/20 bg-muted/10">
+          <div className="flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-muted-foreground/50" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+              Export requires Studio tier or above
+            </span>
+          </div>
+          <Link
+            to="/upgrade"
+            className="flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors"
+          >
+            Upgrade <ArrowUpRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-5 pb-4">
       {/* Header toggle */}
