@@ -131,9 +131,9 @@ export default function Contact() {
       </section>
 
       {/* Contact Form */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+       <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
+         <div className="container mx-auto max-w-5xl">
+           <div className="grid md:grid-cols-2 gap-6 md:gap-12">
             <div className="space-y-6">
               <motion.div {...stagger(0)}>
                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
