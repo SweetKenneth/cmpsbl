@@ -2,11 +2,19 @@
  * Foundry Pricing Engine — Client-side interface for consensus commercialization pricing
  * Calls the pf-nexus-pricing edge function for multi-model market analysis
  * Falls back to local estimation when all providers are unavailable
+ * 
+ * ECONOMY Node Primitive: All pricing runs are recorded through ECONOMY
+ * for cost attribution, anomaly detection, and governance.
  */
 import { supabase } from '@/integrations/supabase/client';
 import type { PricingEvidence, ProviderEstimate } from './consensus-pricing';
-
-export type { PricingEvidence, ProviderEstimate };
+import {
+  recordPricingRun,
+  startBatchRepricing,
+  recordBatchItem,
+  completeBatchRepricing,
+  canExecutePricingRun,
+} from '@/lib/substrate/economy-module/pricingGovernance';
 
 export interface CommercializationPricing {
   recommended_resale_price: number;
