@@ -668,7 +668,7 @@ class SubstrateClient {
      * Scan the substrate codebase for architecture improvements 
      */
     scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
-      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+      this.invoke({ module: 'evolution', action: 'scan', payload: options }),
     
     /** Alias for scan - submit a substrate analysis request */
     submit: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
