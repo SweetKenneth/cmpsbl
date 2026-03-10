@@ -146,25 +146,30 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
   return (
     <div>
       {/* Summary */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border/10">
-        <div className="text-xs font-mono text-muted-foreground">
-          {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          {hasAnyPricing && (
-            <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
-              <DollarSign className="w-3 h-3 text-neon-green" />
-              Resale total: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
-            </div>
-          )}
+      <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-border/10">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-xs font-mono text-muted-foreground">
-            Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
           </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {hasAnyPricing && (
+              <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+                <DollarSign className="w-3 h-3 text-neon-green" />
+                Resale: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
+              </div>
+            )}
+            <div className="text-xs font-mono text-muted-foreground">
+              Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            </div>
+          </div>
+        </div>
+        {/* Action buttons — full width row on mobile */}
+        <div className="flex flex-wrap items-center gap-2">
           {onRepriceAll && (
             <button
               onClick={onRepriceAll}
               disabled={repricing}
-              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
             >
               {repricing ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
               {repricing ? 'Repricing...' : 'Reprice All'}
@@ -174,7 +179,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
             <button
               onClick={handleExportVault}
               disabled={isExporting}
-              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
             >
               {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
               {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
@@ -182,7 +187,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
           ) : (
             <Link
               to="/upgrade"
-              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40"
             >
               <Lock className="w-3 h-3" />
               Export (Studio+)

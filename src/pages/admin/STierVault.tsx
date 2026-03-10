@@ -878,6 +878,14 @@ export default function STierVault() {
             </div>
           </div>
           <div className="flex gap-2 self-start sm:self-auto flex-wrap">
+            <Button variant="outline" size="sm" onClick={handleRepriceAll} disabled={pricingEngine.loading} className="gap-1.5">
+              {pricingEngine.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+              {pricingEngine.loading
+                ? pricingEngine.batchProgress
+                  ? `${pricingEngine.batchProgress.completed}/${pricingEngine.batchProgress.total}`
+                  : 'Repricing...'
+                : 'Reprice All'}
+            </Button>
             <Button variant="outline" size="sm" onClick={() => setShowAnalytics(!showAnalytics)} className="gap-1.5">
               <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
             </Button>
