@@ -10,6 +10,8 @@ import {
   formatMarketValue,
   getCategoryMultiplierLabel,
   getTierFromScore,
+  getExponentialBase,
+  getCJPIMultiplier,
   CATEGORY_MARKET_MULTIPLIERS,
 } from '@/lib/pipeline-valuation';
 
@@ -331,27 +333,57 @@ function toSlug(name: string): string {
 }
 
 function getValuationBreakdown(score: number, category: string, moduleChainLength: number) {
-  const normalized = Math.max(0, score - 60) / 40;
-  const baseValue = 5000 + Math.pow(normalized, 2.5) * 995000;
-  const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
-  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.12;
-  const apexMult = score >= 100 ? 2.0 : score >= 95 ? 1.5 : score >= 92 ? 1.2 : 1.0;
-  const total = estimateMarketValue(score, category, moduleChainLength);
+  // Blended formula components
+  const internalValue = estimateMarketValue(score, category, moduleChainLength);
+  const normalizedInternal = internalValue * 0.001;
+  const baseValue = getExponentialBase(score);
+  const tier = getTierFromScore(score);
+  const cjpiMultiplier = getCJPIMultiplier(tier);
+  const cjpiValue = baseValue * cjpiMultiplier;
+
+  // No-consensus fallback: 75% CJPIValue + 25% NormalizedInternal
+  const blendedTotal = (cjpiValue * 0.75) + (normalizedInternal * 0.25);
 
   return {
     baseValue: Math.round(baseValue),
-    categoryMultiplier: catMult,
+    cjpiMultiplier,
+    cjpiValue: Math.round(cjpiValue),
+    normalizedInternal: Math.round(normalizedInternal * 100) / 100,
+    internalValue: Math.round(internalValue),
+    tier,
     categoryLabel: getCategoryMultiplierLabel(category),
-    complexityMultiplier: complexityMult,
-    apexMultiplier: apexMult,
-    total,
-    formatted: formatMarketValue(total),
+    total: Math.round(blendedTotal),
+    formatted: formatMarketValue(Math.round(blendedTotal)),
   };
 }
 
+function getSuggestedMarketplaces(score: number, category: string, tier: string): string[] {
+  const markets: string[] = [];
+  const cat = category.toLowerCase();
+
+  // Tier-based marketplace suggestions
+  if (tier === 'Apex' || tier === 'Mythic') {
+    markets.push('AWS Marketplace', 'Azure Marketplace', 'Enterprise Direct Licensing');
+  }
+  if (tier === 'Relic' || tier === 'Prime') {
+    markets.push('GitHub Marketplace', 'Vercel Templates');
+  }
+  markets.push('Gumroad', 'Lemon Squeezy');
+
+  // Category-specific
+  if (cat === 'security' || cat === 'compliance' || cat === 'privacy') {
+    markets.push('Google Cloud Marketplace');
+  }
+  if (cat === 'cognitive' || cat === 'learning' || cat === 'prediction') {
+    markets.push('Hugging Face');
+  }
+
+  return [...new Set(markets)].slice(0, 5);
+}
+
 function generateSealSVG(score: number, tier: string): string {
-  const tierColor = tier === 'Apex' ? '#c9a84c' : tier === 'Enterprise' ? '#94a3b8' : tier === 'Architect' ? '#a78bfa' : '#6ee7b7';
-  const tierColorDark = tier === 'Apex' ? '#a67c00' : tier === 'Enterprise' ? '#64748b' : tier === 'Architect' ? '#7c3aed' : '#059669';
+  const tierColor = tier === 'Apex' ? '#c9a84c' : tier === 'Mythic' ? '#a855f7' : tier === 'Relic' ? '#f59e0b' : tier === 'Prime' ? '#94a3b8' : tier === 'Mint' ? '#6ee7b7' : '#71717a';
+  const tierColorDark = tier === 'Apex' ? '#a67c00' : tier === 'Mythic' ? '#7c3aed' : tier === 'Relic' ? '#d97706' : tier === 'Prime' ? '#64748b' : tier === 'Mint' ? '#059669' : '#52525b';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="140" height="140">
     <defs>
       <radialGradient id="sealGrad" cx="50%" cy="40%" r="55%">
@@ -409,13 +441,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   const useCases = getUseCases(input.category, input.name, input.systemChain);
   const tier = getTierFromScore(input.score);
   const valuation = getValuationBreakdown(input.score, input.category, input.systemChain.length);
+  const marketplaces = getSuggestedMarketplaces(input.score, input.category, tier);
   const exportDate = new Date().toISOString();
   const formattedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const sealSVG = generateSealSVG(input.score, tier);
   const deepFunctionalContent = getDeepFunctionalExplanation(input.name, input.systemChain);
 
-  const tierAccent = tier === 'Apex' ? '#c9a84c' : tier === 'Enterprise' ? '#94a3b8' : tier === 'Architect' ? '#a78bfa' : '#6ee7b7';
-  const tierAccentDim = tier === 'Apex' ? 'rgba(201,168,76,0.08)' : tier === 'Enterprise' ? 'rgba(148,163,184,0.08)' : tier === 'Architect' ? 'rgba(167,139,250,0.08)' : 'rgba(110,231,183,0.08)';
+  const tierAccent = tier === 'Apex' ? '#c9a84c' : tier === 'Mythic' ? '#a855f7' : tier === 'Relic' ? '#f59e0b' : tier === 'Prime' ? '#94a3b8' : tier === 'Mint' ? '#6ee7b7' : '#71717a';
+  const tierAccentDim = tier === 'Apex' ? 'rgba(201,168,76,0.08)' : tier === 'Mythic' ? 'rgba(168,85,247,0.08)' : tier === 'Relic' ? 'rgba(245,158,11,0.08)' : tier === 'Prime' ? 'rgba(148,163,184,0.08)' : tier === 'Mint' ? 'rgba(110,231,183,0.08)' : 'rgba(113,113,122,0.08)';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -925,10 +958,12 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       <h3>Tier Classification</h3>
       <div class="quality-tier">${escapeHtml(tier)}</div>
       <p style="margin-top: 0.75rem; font-size: 0.82rem;">
-        ${tier === 'Apex' ? 'Apex tier represents the top ~5% of all discoveries — pipelines with exceptional quality, novelty, and practical utility.' :
-          tier === 'Enterprise' ? 'Enterprise tier pipelines demonstrate high quality and are suitable for production deployment in commercial environments.' :
-          tier === 'Architect' ? 'Architect tier pipelines show strong fundamentals and can serve as building blocks for larger systems.' :
-          'Creator tier pipelines provide functional capabilities suitable for development and experimentation.'}
+        ${tier === 'Apex' ? 'APEX tier represents the top ~1% — pipelines with exceptional quality, novelty, and practical utility. 4.0× CJPI multiplier.' :
+          tier === 'Mythic' ? 'MYTHIC tier pipelines demonstrate near-perfect quality and are prime candidates for enterprise licensing. 3.0× CJPI multiplier.' :
+          tier === 'Relic' ? 'RELIC tier pipelines show outstanding technical depth suitable for production deployment. 2.0× CJPI multiplier.' :
+          tier === 'Prime' ? 'PRIME tier pipelines offer strong commercial potential as standalone products. 1.5× CJPI multiplier.' :
+          tier === 'Mint' ? 'MINT tier pipelines provide solid functional capabilities ready for integration. 1.2× CJPI multiplier.' :
+          'RAW tier pipelines are functional building blocks suitable for development and experimentation. 1.0× CJPI multiplier.'}
       </p>
     </div>
   </div>
@@ -952,30 +987,47 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <div class="section-card">
     <table class="valuation-table">
       <tr>
-        <td>Base value (CJPI ${input.score})</td>
+        <td>Exponential Base (CJPI ${input.score})</td>
         <td>${formatMarketValue(valuation.baseValue)}</td>
       </tr>
       <tr>
-        <td>Category multiplier · ${escapeHtml(input.category)}${valuation.categoryLabel ? ` (${escapeHtml(valuation.categoryLabel)})` : ''}</td>
-        <td>×${valuation.categoryMultiplier.toFixed(1)}</td>
+        <td>CJPI Multiplier · ${escapeHtml(valuation.tier)} tier</td>
+        <td>×${valuation.cjpiMultiplier.toFixed(1)}</td>
       </tr>
       <tr>
-        <td>Complexity factor · ${input.systemChain.length} module${input.systemChain.length !== 1 ? 's' : ''}</td>
-        <td>×${valuation.complexityMultiplier.toFixed(2)}</td>
+        <td>CJPIValue (Base × Multiplier)</td>
+        <td>${formatMarketValue(valuation.cjpiValue)}</td>
       </tr>
-      ${valuation.apexMultiplier > 1 ? `<tr>
-        <td>Apex tier premium</td>
-        <td>×${valuation.apexMultiplier.toFixed(1)}</td>
-      </tr>` : ''}
       <tr>
-        <td style="font-weight: 600; color: var(--ink);">Estimated Market Value</td>
+        <td>Internal Signal (estimateMarketValue × 0.001)</td>
+        <td>$${valuation.normalizedInternal.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: var(--ink);">Blended Valuation</td>
         <td class="valuation-total">${valuation.formatted}</td>
       </tr>
     </table>
     <p class="valuation-methodology">
-      Methodology: Base value scales exponentially with CJPI score (range $5K–$1M). Category, complexity, 
-      and tier multipliers are applied based on enterprise demand patterns and technical sophistication. 
-      This is a deterministic scoring model — not a market appraisal.
+      Methodology: Blended formula — FinalPrice = (CJPIValue × 0.75) + (NormalizedInternal × 0.25). 
+      When consensus pricing is available, MarketWeight = 0.55 + (Confidence × 0.20) blends AI market estimates 
+      with technical signals. This is a deterministic scoring model — not a market appraisal.
+    </p>
+  </div>
+
+  <!-- ═══════ Where to Sell ═══════ -->
+  <h2>Recommended Distribution Channels</h2>
+  <div class="section-card">
+    <p style="font-size: 0.88rem; margin-bottom: 1rem;">
+      Based on the pipeline's tier (${escapeHtml(tier)}), category (${escapeHtml(input.category)}), 
+      and valuation, the following platforms are recommended for distribution:
+    </p>
+    <div class="language-grid">
+      ${marketplaces.map(m => `<span class="lang-tag" style="font-family: Inter, sans-serif; font-size: 0.78rem; padding: 0.35rem 0.75rem;">${escapeHtml(m)}</span>`).join('\n      ')}
+    </div>
+    <p style="font-size: 0.78rem; color: var(--ink-faint); margin-top: 1rem; font-style: italic;">
+      ${valuation.total >= 100000 ? 'At this valuation tier, enterprise direct licensing or cloud marketplace listing is recommended for maximum revenue.' :
+        valuation.total >= 10000 ? 'This pipeline is well-suited for developer marketplace listing with tiered pricing (indie/standard/enterprise).' :
+        'Consider listing on developer-focused platforms with competitive pricing to build traction.'}
     </p>
   </div>
 

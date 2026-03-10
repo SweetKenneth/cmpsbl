@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
-import { estimateMarketValue, formatMarketValue, getCategoryMultiplierLabel } from '@/lib/pipeline-valuation';
+import { estimateMarketValue, formatMarketValue, getCategoryMultiplierLabel, getExponentialBase, getCJPIMultiplier, getTierFromScore } from '@/lib/pipeline-valuation';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
