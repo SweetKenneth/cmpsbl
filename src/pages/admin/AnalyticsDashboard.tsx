@@ -438,10 +438,41 @@ function PulseView({ data }: { data: RealtimePulse | null }) {
           <div className="space-y-2">
             {data.top_pages_now.map((p) => (
               <div key={p.page} className="flex items-center justify-between text-sm">
-                <span className="font-mono text-foreground/80">{p.page}</span>
-                <Badge variant="outline" className="font-mono text-xs">{p.count} views</Badge>
+                <span className="font-mono text-foreground/80 truncate max-w-[60%]">{p.page}</span>
+                <Badge variant="outline" className="font-mono text-xs shrink-0">{p.count} views</Badge>
               </div>
             ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Per-Page Time */}
+      {data.page_times?.length > 0 && (
+        <motion.div
+          className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-purple-400" /> Time Per Page (24h avg)
+          </h3>
+          <div className="space-y-2">
+            {data.page_times.map((p) => {
+              const secs = Math.round((p.avg_time_ms || 0) / 1000);
+              const mins = Math.floor(secs / 60);
+              const remainSecs = secs % 60;
+              const timeStr = mins > 0 ? `${mins}m ${remainSecs}s` : `${secs}s`;
+              return (
+                <div key={p.page} className="flex items-center justify-between text-xs gap-2">
+                  <span className="font-mono text-foreground/80 truncate min-w-0">{p.page}</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-mono text-muted-foreground">{p.views} views</span>
+                    <Badge variant="outline" className="font-mono text-xs tabular-nums">{timeStr}</Badge>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       )}
