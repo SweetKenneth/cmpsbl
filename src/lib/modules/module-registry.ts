@@ -3,7 +3,7 @@
  * 40-Node Matrix across 12 Sectors
  * 
  * visibility:
- *   'public'  → shown on /modules hub cards
+ *   'public'  → shown on /modules hub cards (Nodes)
  *   'mesh'    → shown in mesh overlay section
  *   'hidden'  → internal zones, detail pages only (not hub cards)
  */
