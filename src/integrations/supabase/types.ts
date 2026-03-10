@@ -17191,52 +17191,94 @@ export type Database = {
         Row: {
           category: string | null
           cjpi: number
+          commercialization_notes: string | null
+          comparable_summary: string | null
           created_at: string
           description: string | null
           discovery_id: string
+          enterprise_price: number | null
+          estimated_market_range_high: number | null
+          estimated_market_range_low: number | null
           export_ready: boolean | null
           id: string
+          indie_price: number | null
+          market_category: string | null
           module_chain: string[] | null
           name: string
+          pricing_confidence: number | null
+          pricing_last_updated_at: string | null
+          pricing_source: string | null
+          pricing_source_version: string | null
           promoted_at: string
+          recommended_resale_price: number | null
           reviewed_at: string | null
           reviewed_by: string | null
           run_id: string | null
+          standard_price: number | null
           status: string | null
+          suggested_marketplaces: string[] | null
           tier: string | null
         }
         Insert: {
           category?: string | null
           cjpi: number
+          commercialization_notes?: string | null
+          comparable_summary?: string | null
           created_at?: string
           description?: string | null
           discovery_id: string
+          enterprise_price?: number | null
+          estimated_market_range_high?: number | null
+          estimated_market_range_low?: number | null
           export_ready?: boolean | null
           id?: string
+          indie_price?: number | null
+          market_category?: string | null
           module_chain?: string[] | null
           name: string
+          pricing_confidence?: number | null
+          pricing_last_updated_at?: string | null
+          pricing_source?: string | null
+          pricing_source_version?: string | null
           promoted_at?: string
+          recommended_resale_price?: number | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           run_id?: string | null
+          standard_price?: number | null
           status?: string | null
+          suggested_marketplaces?: string[] | null
           tier?: string | null
         }
         Update: {
           category?: string | null
           cjpi?: number
+          commercialization_notes?: string | null
+          comparable_summary?: string | null
           created_at?: string
           description?: string | null
           discovery_id?: string
+          enterprise_price?: number | null
+          estimated_market_range_high?: number | null
+          estimated_market_range_low?: number | null
           export_ready?: boolean | null
           id?: string
+          indie_price?: number | null
+          market_category?: string | null
           module_chain?: string[] | null
           name?: string
+          pricing_confidence?: number | null
+          pricing_last_updated_at?: string | null
+          pricing_source?: string | null
+          pricing_source_version?: string | null
           promoted_at?: string
+          recommended_resale_price?: number | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           run_id?: string | null
+          standard_price?: number | null
           status?: string | null
+          suggested_marketplaces?: string[] | null
           tier?: string | null
         }
         Relationships: []

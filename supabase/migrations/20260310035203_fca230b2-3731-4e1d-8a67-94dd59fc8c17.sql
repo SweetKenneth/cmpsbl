@@ -1,0 +1,15 @@
+ALTER TABLE public.vault_promotions
+  ADD COLUMN IF NOT EXISTS recommended_resale_price numeric,
+  ADD COLUMN IF NOT EXISTS indie_price numeric,
+  ADD COLUMN IF NOT EXISTS standard_price numeric,
+  ADD COLUMN IF NOT EXISTS enterprise_price numeric,
+  ADD COLUMN IF NOT EXISTS estimated_market_range_low numeric,
+  ADD COLUMN IF NOT EXISTS estimated_market_range_high numeric,
+  ADD COLUMN IF NOT EXISTS pricing_confidence numeric,
+  ADD COLUMN IF NOT EXISTS market_category text,
+  ADD COLUMN IF NOT EXISTS comparable_summary text,
+  ADD COLUMN IF NOT EXISTS suggested_marketplaces text[],
+  ADD COLUMN IF NOT EXISTS commercialization_notes text,
+  ADD COLUMN IF NOT EXISTS pricing_last_updated_at timestamptz,
+  ADD COLUMN IF NOT EXISTS pricing_source text,
+  ADD COLUMN IF NOT EXISTS pricing_source_version text;
