@@ -298,7 +298,7 @@ const WAVE_12_ACTIVATIONS = [
   { module: 'relay', capability: 'cross_zone_relay_bridge', priority: 92, id: 'S-RLY01' },
   { module: 'mesh', capability: 'mesh_topology_optimizer', priority: 92, id: 'S-SYN09' },
   { module: 'access', capability: 'entitlement_cascade_resolver', priority: 92, id: 'S-ACC01' },
-  { module: 'modernizer', capability: 'progressive_migration', priority: 92, id: 'S-MOD01' },
+  { module: 'evolution', capability: 'progressive_migration', priority: 92, id: 'S-MOD01' },
   { module: 'integration', capability: 'event_driven_integration_mesh', priority: 92, id: 'S-SYN10' },
   { module: 'encode', capability: 'legacy_transcoding_bridge', priority: 92, id: 'S-ENC01' },
 ] as const;
