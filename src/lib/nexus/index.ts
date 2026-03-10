@@ -134,6 +134,7 @@ export const SUPPORTED_PROVIDERS = [
   'hyperbolic',
   'stability',
   'fal',
+  'anthropic',
 ] as const;
 
 export type SupportedProvider = typeof SUPPORTED_PROVIDERS[number];
