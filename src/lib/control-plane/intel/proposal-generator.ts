@@ -421,7 +421,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   let rawEvolutionResult: ScanResultExtended | null = null;
   let evolutionData: UnifiedProposal['evolution_scan'];
   try {
-    rawEvolutionResult = await modernizerScan({ dry_run: true });
+    rawEvolutionResult = await evolutionScan({ dry_run: true });
     evolutionData = {
       scan_completed: true,
       proposals_found: rawEvolutionResult.proposals.length,
