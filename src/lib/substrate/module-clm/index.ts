@@ -135,7 +135,7 @@ Provide specific, actionable improvements.`,
     selfReflectionPrompt: `As the BRAIN module, analyze how I can become a better cognitive core AND senior developer:
 - How is my memory consolidation and retrieval performing? What queries am I failing on?
 - Am I building a coherent knowledge graph or fragmented islands?
-- What TypeScript/React/Supabase patterns do I need to master for Modernizer evolution?
+- What TypeScript/React/Supabase patterns do I need to master for EVOLUTION cycles?
 - How can I better understand the substrate architecture to guide code changes?
 - What coding anti-patterns am I generating? What production patterns should I internalize?
 - How can I improve my ability to validate code diffs and catch regressions?
