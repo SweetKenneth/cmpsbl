@@ -39,7 +39,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'predictive-issue-prevention',
     name: 'Predictive Issue Prevention',
-    description: 'VISION metrics analyzed by BRAIN learning to trigger MODERNIZER pre-emptive fixes',
+    description: 'VISION metrics analyzed by BRAIN learning to trigger EVOLUTION pre-emptive fixes',
     category: 'intelligence',
     modules: [
       { name: 'VISION', role: 'primary', required: true },
