@@ -190,7 +190,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.evolve production — Execute production apply
+   * evolution.evolve production — Execute production apply
    */
   async evolveProduction(): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
