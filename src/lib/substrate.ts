@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { recordSuccess as cbRecordSuccess, recordFailure as cbRecordFailure, canExecute as cbCanExecute } from '@/lib/substrate/circuit-breaker';
 import { recordSample } from '@/lib/substrate/predictive-failure';
 
-export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'modernizer' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'evolution' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex' | 'engineer' | 'atlas';
+export type SubstrateModule = 'core' | 'brain' | 'decode' | 'encode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'ripple' | 'access' | 'system' | 'evolution' | 'integration' | 'inclusive' | 'cortex' | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'immunity' | 'intent' | 'governance' | 'medic' | 'nerve' | 'shadow' | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge' | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex' | 'engineer' | 'atlas';
 
 export interface SubstrateRequest {
   module: SubstrateModule;
@@ -652,47 +652,47 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
-  // Modernizer Module — Substrate Codebase Analysis & Improvement Engine (v6.5.0)
+  // EVOLUTION Node — Substrate Self-Improvement Engine (formerly Modernizer)
   // Unified Evolution Cycle for substrate self-improvement
-  modernizer = {
-    /** Get modernizer service status with substrate health metrics */
+  evolution = {
+    /** Get EVOLUTION node status with substrate health metrics */
     status: () =>
-      this.invoke({ module: 'modernizer', action: 'status' }),
+      this.invoke({ module: 'evolution', action: 'status' }),
     
     /** List recent substrate scans and improvement proposals */
     jobs: (limit?: number) =>
-      this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
+      this.invoke({ module: 'evolution', action: 'jobs', payload: { limit } }),
     
     /** 
      * @deprecated Use evolve() instead - Unified Evolution Cycle
      * Scan the substrate codebase for architecture improvements 
      */
     scan: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
-      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+      this.invoke({ module: 'evolution', action: 'scan', payload: options }),
     
     /** Alias for scan - submit a substrate analysis request */
     submit: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) =>
-      this.invoke({ module: 'modernizer', action: 'scan', payload: options }),
+      this.invoke({ module: 'evolution', action: 'scan', payload: options }),
     
     /** Get a specific scan/job by ID */
     job: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'job', payload: { job_id } }),
     
     /** Check usage quota for scans */
     quota: () =>
-      this.invoke({ module: 'modernizer', action: 'quota' }),
+      this.invoke({ module: 'evolution', action: 'quota' }),
     
     /** Quick analysis of a specific substrate module */
     analyze: (module?: string) =>
-      this.invoke({ module: 'modernizer', action: 'analyze', payload: { module } }),
+      this.invoke({ module: 'evolution', action: 'analyze', payload: { module } }),
     
     /** Export improvement proposals */
     export: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'export', payload: { job_id } }),
     
     /** Lightweight heartbeat */
     pulse: () =>
-      this.invoke({ module: 'modernizer', action: 'pulse' }),
+      this.invoke({ module: 'evolution', action: 'pulse' }),
     
     // ═══ EVOLUTION CYCLE v6.5.0 ═══
     // Unified engine replacing scan, plans, review, verify, analyze
@@ -729,7 +729,7 @@ class SubstrateClient {
     
     /** @deprecated Use evolve() - Generate an upgrade proposal */
     propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
-      this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
+      this.invoke({ module: 'evolution', action: 'propose', payload: options }),
     
     /** @deprecated Use evolve({ target: 'status' }) - List all upgrade plans */
     plans: async () => {
@@ -757,15 +757,15 @@ class SubstrateClient {
     
     /** @deprecated Use evolve({ target: 'status' }) - Review a specific upgrade plan */
     review: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'review', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'review', payload: { plan_id } }),
     
     /** Validate plan readiness (Evolution Cycle) */
     validate: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'validate', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'validate', payload: { plan_id } }),
     
     /** View plan diff and health comparison (Evolution Cycle) */
     diff: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'diff', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'diff', payload: { plan_id } }),
     
     /** @deprecated Use evolve({ target: 'shadow' }) then evolve({ target: 'production' }) */
     apply: (plan_id: string) =>
@@ -811,12 +811,15 @@ class SubstrateClient {
     
     /** Scan archived edge functions for repurposing opportunities */
     archived: () =>
-      this.invoke({ module: 'modernizer', action: 'archived' }),
+      this.invoke({ module: 'evolution', action: 'archived' }),
     
     /** Generate code to implement an archived function repurposing */
     implement: (archived_function: string, target_action: string) =>
-      this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
+      this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
+
+  /** @deprecated Use `evolution` — Modernizer was absorbed by EVOLUTION */
+  get modernizer() { return this.evolution; }
 
   // ═══════════════════════════════════════════════════════════════
   // CORE MODULE — The Kernel (Scheduler, Router, Lifecycle)
@@ -1926,7 +1929,9 @@ export const dream = substrate.dream;
 export const ripple = substrate.ripple;
 export const access = substrate.access;
 export const system = substrate.system;
-export const modernizer = substrate.modernizer;
+/** @deprecated Use evolutionMod — Modernizer absorbed by EVOLUTION */
+export const modernizer = substrate.evolution;
+export const evolutionClient = substrate.evolution;
 export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
 export const cortex = substrate.cortex;

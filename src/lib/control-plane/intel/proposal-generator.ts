@@ -300,7 +300,7 @@ function generateDeterministicHash(input: string): string {
 async function runSnapshotDiscipline(): Promise<string> {
   try {
     // Use scan as a lightweight snapshot proxy
-    const result = await substrate.modernizer.scan({ depth: 'quick' });
+    const result = await substrate.evolution.scan({ depth: 'quick' });
     return (result as any)?.data?.snapshot_id ?? `snap_${Date.now().toString(36)}`;
   } catch {
     return `snap_${Date.now().toString(36)}`;
@@ -315,7 +315,7 @@ async function runModernizerGovernanceChain(): Promise<GovernanceChain> {
   let receipt_id = '';
   
   try {
-    const mod = substrate.modernizer as any;
+    const mod = substrate.evolution as any;
     const [verifyRes, diffRes, receiptRes] = await Promise.allSettled([
       mod.verify ? mod.verify({ mode: 'canary' }) : mod.validate?.('canary'),
       mod.diff ? mod.diff('latest') : Promise.resolve(null),

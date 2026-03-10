@@ -34,7 +34,7 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   brain: { module: 'brain', layer: 'cognitive', bootOrder: 4, dependencies: ['core'] },
   vision: { module: 'vision', layer: 'operational', bootOrder: 5, dependencies: ['core'] },
   cortex: { module: 'cortex', layer: 'orchestrator', bootOrder: 6, dependencies: ['core'] },
-  modernizer: { module: 'modernizer', layer: 'mesh', bootOrder: 7, dependencies: ['core'] },
+  
   decode: { module: 'decode', layer: 'cognitive', bootOrder: 8, dependencies: ['core'] },
   encode: { module: 'encode', layer: 'orchestrator', bootOrder: 9, dependencies: ['core', 'decode'] },
   defense: { module: 'defense', layer: 'mesh', bootOrder: 10, dependencies: ['core'] },

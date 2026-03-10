@@ -49,7 +49,7 @@ const defaultModuleStatus: ModuleStatus = {
 // All entries including facades for backward compat
 const ALL_MODULES: SubstrateModule[] = [
   'core', 'brain', 'decode', 'encode', 'defense', 'nexus', 'vision', 'dream',
-  'ripple', 'access', 'system', 'modernizer', 'integration', 'inclusive',
+  'ripple', 'access', 'system', 'evolution', 'integration', 'inclusive',
   'cortex', 'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'evolution', 'intent', 'governance', 'medic', 'nerve',
   // Expansion Modules (40-Node Architecture)

@@ -255,7 +255,7 @@ export function registerExecutionHandlers(): void {
 
   registerHandler('modernizer.runs', async () => {
     const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'modernizer', action: 'runs' });
+    return await substrate.invoke({ module: 'evolution', action: 'runs' });
   });
 
   registerHandler('modernizer.health', async () => {

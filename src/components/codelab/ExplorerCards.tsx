@@ -196,7 +196,7 @@ const modules: ModuleConfig[] = [
     ],
   },
   {
-    id: "modernizer",
+    id: "evolution",
     name: "Evolution",
     description: "Self-improvement proposals, architecture scanning, upgrades",
     icon: Zap,

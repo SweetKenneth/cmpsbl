@@ -2630,14 +2630,14 @@ ${allFeatures.map(f => {
       }
       result = await modernizer.implement(args[0], args[1]);
     } else if (base === 'modernizer.refresh') {
-      result = await substrate.invoke({ module: 'modernizer', action: 'refresh' });
+      result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
     } else if (base === 'modernizer.autopilot') {
-      result = await substrate.invoke({ module: 'modernizer', action: 'autopilot' });
+      result = await substrate.invoke({ module: 'evolution', action: 'autopilot' });
     } else if (base === 'modernizer.confidence') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
       }
-      result = await substrate.invoke({ module: 'modernizer', action: 'confidence', payload: { plan_id: args[0] } });
+      result = await substrate.invoke({ module: 'evolution', action: 'confidence', payload: { plan_id: args[0] } });
     } else if (base === 'modernizer.stamps') {
       // Evolution stamps — same as seba.stamps but via modernizer namespace
       const limit = parseInt(args[0]) || 10;

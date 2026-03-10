@@ -52,7 +52,7 @@ const moduleConfig: { id: SubstrateModule; name: string; icon: React.ElementType
   { id: "vision", name: "Vision", icon: Eye, color: "text-blue-500", layer: "Operational" },
   // Administrative Layer
   { id: "system", name: "System", icon: Settings, color: "text-red-500", layer: "CCR Zone" },
-  { id: "modernizer", name: "Evolution", icon: Zap, color: "text-emerald-500", layer: "Overlay" },
+  { id: "evolution", name: "Evolution", icon: Zap, color: "text-emerald-500", layer: "Overlay" },
 ];
 
 export function ObservabilityHUD() {
