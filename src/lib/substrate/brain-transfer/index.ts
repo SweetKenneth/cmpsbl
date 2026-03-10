@@ -1047,7 +1047,7 @@ export async function reportTransferFeedback(feedback: TransferFeedback): Promis
 export async function pruneUnhelpfulPatterns(): Promise<{ pruned: number }> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
