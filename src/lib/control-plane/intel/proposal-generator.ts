@@ -14,11 +14,11 @@
  * 7. INTEL Aggregator — cross-system signal correlation
  * 8. INCLUSIVE Module — WCAG 2.2 accessibility scan (86-rule engine)
  * 9. DEFENSE Module — security posture, anomalies, threat landscape
- * 10. MODERNIZER Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
+ * 10. EVOLUTION Scan — 4-phase cognitive systems scan (edge/system/health/LLM)
  * 
  * Governance lifecycle:
- * - Modernizer snapshot before generation
- * - Modernizer.verify (canary), diffs, receipts pre-export
+ * - EVOLUTION snapshot before generation
+ * - EVOLUTION.verify (canary), diffs, receipts pre-export
  * - SEBA choreographical stamping
  * - External-AI execution barrier enforced
  * 
