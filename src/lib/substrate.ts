@@ -745,7 +745,7 @@ class SubstrateClient {
             status: state.current_plan.phase,
             created_at: state.current_plan.created_at,
           }],
-          message: 'Use `modernizer.evolve` for the unified Evolution Cycle workflow.',
+          message: 'Use `evolution.evolve` for the unified Evolution Cycle workflow.',
         };
       }
       return {
