@@ -2513,11 +2513,10 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply') {
+    } else if (base === 'evolution.apply' || base === 'modernizer.apply') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
       }
-      // Resolve short plan ID to full UUID
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
