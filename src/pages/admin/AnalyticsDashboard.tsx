@@ -968,8 +968,8 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
                     <Badge variant="outline" className="text-[9px] font-mono shrink-0">{f.category}</Badge>
                   </div>
                   <div className="flex items-center gap-4 text-xs shrink-0">
-                    <span className="text-muted-foreground hidden sm:inline">{f.unique_users} users</span>
-                    <span className="text-muted-foreground hidden sm:inline">{f.avg_per_user}/user</span>
+                    <span className="text-muted-foreground">{f.unique_users} users</span>
+                    <span className="text-muted-foreground">{f.avg_per_user}/user</span>
                     <div className="flex items-center gap-1">
                       {trendIcon(f.trend_7d, f.trend_prev_7d)}
                       <span className={cn("font-mono text-[10px]",
