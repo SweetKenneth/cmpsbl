@@ -339,7 +339,7 @@ function resolveTargetScope(proposal: ScanProposal): TargetScope | null {
 function resolveTargetModule(proposal: ScanProposal): string | undefined {
   const content = `${proposal.title} ${proposal.description}`.toLowerCase();
   
-  const modules = ['brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive'];
+  const modules = ['brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'cortex', 'inclusive'];
   
   for (const mod of modules) {
     if (content.includes(mod)) {
