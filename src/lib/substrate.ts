@@ -680,7 +680,7 @@ class SubstrateClient {
     
     /** Check usage quota for scans */
     quota: () =>
-      this.invoke({ module: 'modernizer', action: 'quota' }),
+      this.invoke({ module: 'evolution', action: 'quota' }),
     
     /** Quick analysis of a specific substrate module */
     analyze: (module?: string) =>
