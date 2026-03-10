@@ -45,11 +45,15 @@ export function formatMarketValue(value: number): string {
  */
 export function computeBlendedValuation(score: number, category: string, moduleChainLength: number): number {
   const internalValue = estimateMarketValue(score, category, moduleChainLength);
-  const normalizedInternal = internalValue * 0.001;
+  // NormalizedInternal scaled to be meaningful in the blend (not negligible)
+  const normalizedInternal = internalValue * 0.1;
   const baseValue = getExponentialBase(score);
   const tier = getTierFromScore(score);
   const cjpiMultiplier = getCJPIMultiplier(tier);
-  const cjpiValue = baseValue * cjpiMultiplier;
+  // Tier multiplier applied as a PREMIUM adjustment, not raw scaling
+  // Premium = (multiplier - 1) dampened by 0.15 to prevent doubling
+  const tierPremium = (cjpiMultiplier - 1) * 0.15;
+  const cjpiValue = baseValue * (1 + tierPremium);
   return Math.round((cjpiValue * 0.75) + (normalizedInternal * 0.25));
 }
 
