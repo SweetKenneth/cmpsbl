@@ -2481,7 +2481,7 @@ ${allFeatures.map(f => {
       const notes = args.slice(1).join(' ') || '';
       result = await evolutionMod.propose({ scope, notes });
     } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
-      result = await modernizer.plans();
+      result = await evolutionMod.plans();
     } else if (base === 'evolution.review' || base === 'modernizer.review') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.review <plan_id>' };
