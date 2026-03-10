@@ -232,7 +232,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'DECODE', role: 'enhancer', required: false },
     ],
     risk: 'low',
