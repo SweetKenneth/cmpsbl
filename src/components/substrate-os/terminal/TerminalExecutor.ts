@@ -602,24 +602,24 @@ function generateFullHelp(): string {
 ┌─ EVOLUTION CYCLE ────────────────────────────────────────────┐
 │                                                             │
 │  ┌─ COGNITIVE SCAN ─────────────────────────────────────┐   │
-│  │  modernizer.scan              Full systems scan       │   │
-│  │  modernizer.scan --explain    Human-readable output   │   │
-│  │  modernizer.scan --llm-report LLM reasoning included  │   │
+│  │  evolution.scan              Full systems scan       │   │
+│  │  evolution.scan --explain    Human-readable output   │   │
+│  │  evolution.scan --llm-report LLM reasoning included  │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌─ LIFECYCLE ──────────────────────────────────────────┐   │
-│  │  1. modernizer.scan           Creates plan            │   │
-│  │  2. modernizer.evolve shadow  Apply to shadow env     │   │
-│  │  3. modernizer.evolve production  Promote (needs 2)   │   │
-│  │  4. modernizer.evolve verify  Complete cycle          │   │
-│  │     modernizer.evolve abort   Cancel active run       │   │
+│  │  1. evolution.scan           Creates plan            │   │
+│  │  2. evolution.evolve shadow  Apply to shadow env     │   │
+│  │  3. evolution.evolve production  Promote (needs 2)   │   │
+│  │  4. evolution.evolve verify  Complete cycle          │   │
+│  │     evolution.evolve abort   Cancel active run       │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌─ CIRCUIT BREAKER ────────────────────────────────────┐   │
-│  │  modernizer.circuit status    Check circuit state     │   │
-│  │  modernizer.circuit reset     Close circuit           │   │
-│  │  modernizer.autonomy status   View autonomy mode      │   │
-│  │  modernizer.autonomy set <m>  off|advisory|governed   │   │
+│  │  evolution.circuit status    Check circuit state     │   │
+│  │  evolution.circuit reset     Close circuit           │   │
+│  │  evolution.autonomy status   View autonomy mode      │   │
+│  │  evolution.autonomy set <m>  off|advisory|governed   │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
