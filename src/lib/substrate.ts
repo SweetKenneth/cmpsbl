@@ -729,7 +729,7 @@ class SubstrateClient {
     
     /** @deprecated Use evolve() - Generate an upgrade proposal */
     propose: (options?: { scope?: string; notes?: string; max_changes?: number }) =>
-      this.invoke({ module: 'modernizer', action: 'propose', payload: options }),
+      this.invoke({ module: 'evolution', action: 'propose', payload: options }),
     
     /** @deprecated Use evolve({ target: 'status' }) - List all upgrade plans */
     plans: async () => {
