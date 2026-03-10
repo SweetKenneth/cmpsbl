@@ -151,7 +151,7 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
               Export (Studio+)
               <ArrowUpRight className="w-3 h-3" />
             </Link>
-          )
+          )}
         </div>
       </div>
 
