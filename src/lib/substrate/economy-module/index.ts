@@ -87,8 +87,11 @@ export function initEconomy(): void {
   try {
     initCircuitBreaker('economy', { failureThreshold: 5, recoveryTimeout: 30_000 });
     moduleEngine = activateModuleEngine('economy', '11.0.0');
+    // Initialize pricing governance primitive
+    const { initPricingGovernance } = require('./pricingGovernance');
+    initPricingGovernance();
     state.initialized = true;
-    emitSucceeded('economy', 'init', { engineId: moduleEngine.instance.id });
+    emitSucceeded('economy', 'init', { engineId: moduleEngine.instance.id, primitives: ['cost_ledger', 'roi_engine', 'spend_intelligence', 'pricing_governance'] });
   } catch (err) {
     state.initialized = true;
     emitFailed('economy', 'init', err instanceof Error ? err.message : String(err));
@@ -409,3 +412,29 @@ export {
   type CostCorrelation,
   type SpendIntelligenceStats,
 } from './spendIntelligence';
+
+// Pricing Governance (consensus pricing primitive)
+export {
+  initPricingGovernance,
+  recordPricingRun,
+  getProviderPricingStats,
+  getPricingAnomalies,
+  startBatchRepricing,
+  recordBatchItem,
+  completeBatchRepricing,
+  getActiveBatch,
+  getBatchHistory,
+  setPricingBudget,
+  canExecutePricingRun,
+  getPricingGovernanceSummary,
+  getPricingCostByProvider,
+  getPricingConfidenceTrend,
+  getPricingGovernanceState,
+  resetPricingGovernance,
+  type PricingRunRecord,
+  type PricingProviderStats,
+  type PricingAnomalyEvent,
+  type BatchRepricingReceipt,
+  type PricingGovernanceSummary,
+  type PricingGovernanceState,
+} from './pricingGovernance';
