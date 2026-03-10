@@ -850,7 +850,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'compliance_drift_detector',
     name: 'Compliance Drift Detector',
     description: 'Monitors configurations for deviations from security compliance baselines',
-    modules: ['DEFENSE', 'VISION', 'MODERNIZER'],
+    modules: ['DEFENSE', 'VISION', 'EVOLUTION'],
     layer: 'Operational',
     userBenefit: 'Stay compliant without manual audits',
     status: 'active',
