@@ -131,7 +131,7 @@ export default function ModuleDetail() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card"
+                  className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card shimmer-on-hover card-lift"
                 >
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-3.5 h-3.5 text-primary" />
