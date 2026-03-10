@@ -765,7 +765,7 @@ class SubstrateClient {
     
     /** View plan diff and health comparison (Evolution Cycle) */
     diff: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'diff', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'diff', payload: { plan_id } }),
     
     /** @deprecated Use evolve({ target: 'shadow' }) then evolve({ target: 'production' }) */
     apply: (plan_id: string) =>
