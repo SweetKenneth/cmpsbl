@@ -396,7 +396,7 @@ function activateWave(
 }
 
 /**
- * Activate all 11 waves sequentially
+ * Activate all 14 waves sequentially
  * Call during substrate boot after capability router is initialized
  */
 export function activateAllSTierCapabilities(): ActivationResult[] {
@@ -404,11 +404,12 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     WAVE_1_ACTIVATIONS, WAVE_2_ACTIVATIONS, WAVE_3_ACTIVATIONS,
     WAVE_4_ACTIVATIONS, WAVE_5_ACTIVATIONS, WAVE_6_ACTIVATIONS,
     WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS, WAVE_9_ACTIVATIONS,
-    WAVE_10_ACTIVATIONS, WAVE_11_ACTIVATIONS,
+    WAVE_10_ACTIVATIONS, WAVE_11_ACTIVATIONS, WAVE_12_ACTIVATIONS,
+    WAVE_13_ACTIVATIONS, WAVE_14_ACTIVATIONS,
   ];
   const total = allWaves.reduce((s, w) => s + w.length, 0);
   console.log(`[S-Tier Activator] ═══ Beginning staged activation ═══`);
-  console.log(`[S-Tier Activator] Total: ${total} capabilities across 11 waves`);
+  console.log(`[S-Tier Activator] Total: ${total} capabilities across 14 waves`);
 
   const results = [
     activateWave(1, WAVE_1_ACTIVATIONS),
@@ -422,6 +423,9 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     activateWave(9, WAVE_9_ACTIVATIONS),
     activateWave(10, WAVE_10_ACTIVATIONS),
     activateWave(11, WAVE_11_ACTIVATIONS),
+    activateWave(12, WAVE_12_ACTIVATIONS),
+    activateWave(13, WAVE_13_ACTIVATIONS),
+    activateWave(14, WAVE_14_ACTIVATIONS),
   ];
 
   const totalActivated = results.reduce((sum, r) => sum + r.totalActivated, 0);
@@ -446,6 +450,9 @@ export function activateWaveOnly(wave: ActivationWave): ActivationResult {
     9: WAVE_9_ACTIVATIONS,
     10: WAVE_10_ACTIVATIONS,
     11: WAVE_11_ACTIVATIONS,
+    12: WAVE_12_ACTIVATIONS,
+    13: WAVE_13_ACTIVATIONS,
+    14: WAVE_14_ACTIVATIONS,
   };
   return activateWave(wave, waveMap[wave]);
 }
@@ -463,7 +470,7 @@ export function getActivationLog(): ActivationResult[] {
 export function getSTierCapabilityCount(): {
   wave1: number; wave2: number; wave3: number; wave4: number; wave5: number;
   wave6: number; wave7: number; wave8: number; wave9: number; wave10: number;
-  wave11: number; total: number;
+  wave11: number; wave12: number; wave13: number; wave14: number; total: number;
 } {
   return {
     wave1: WAVE_1_ACTIVATIONS.length,
@@ -477,10 +484,14 @@ export function getSTierCapabilityCount(): {
     wave9: WAVE_9_ACTIVATIONS.length,
     wave10: WAVE_10_ACTIVATIONS.length,
     wave11: WAVE_11_ACTIVATIONS.length,
+    wave12: WAVE_12_ACTIVATIONS.length,
+    wave13: WAVE_13_ACTIVATIONS.length,
+    wave14: WAVE_14_ACTIVATIONS.length,
     total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length +
       WAVE_4_ACTIVATIONS.length + WAVE_5_ACTIVATIONS.length + WAVE_6_ACTIVATIONS.length +
       WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length + WAVE_9_ACTIVATIONS.length +
-      WAVE_10_ACTIVATIONS.length + WAVE_11_ACTIVATIONS.length,
+      WAVE_10_ACTIVATIONS.length + WAVE_11_ACTIVATIONS.length + WAVE_12_ACTIVATIONS.length +
+      WAVE_13_ACTIVATIONS.length + WAVE_14_ACTIVATIONS.length,
   };
 }
 
@@ -497,4 +508,7 @@ export const S_TIER_WAVES = {
   WAVE_9: WAVE_9_ACTIVATIONS,
   WAVE_10: WAVE_10_ACTIVATIONS,
   WAVE_11: WAVE_11_ACTIVATIONS,
+  WAVE_12: WAVE_12_ACTIVATIONS,
+  WAVE_13: WAVE_13_ACTIVATIONS,
+  WAVE_14: WAVE_14_ACTIVATIONS,
 } as const;
