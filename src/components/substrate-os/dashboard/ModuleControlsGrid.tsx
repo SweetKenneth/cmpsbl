@@ -46,7 +46,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();
   const dreamStatus = useDreamStatusOS();
-  const modernizerStatus = useModernizerStatusOS();
+  const evolutionAdminStatus = useEvolutionStatusOS();
   const decodeStatus = useDecodeStatusOS();
   const coreStatus = useCoreStatusOS();
   const rippleStatus = useRippleStatusOS();
