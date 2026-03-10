@@ -573,7 +573,7 @@ const stratumInfra: Specimen[] = [
     stimulus: "Brain knowledge was trapped in central storage — nodes couldn't access cross-domain insights, and learning required active sessions",
     adaptations: [
       "Continuous learning engine now runs autonomously — no active session required",
-      "Knowledge transfer pipeline routes high-value learnings to specialized modules",
+      "Knowledge transfer pipeline routes high-value learnings to specialized nodes",
       "Memory tier management automated across all storage layers",
     ],
     phenotype: [
