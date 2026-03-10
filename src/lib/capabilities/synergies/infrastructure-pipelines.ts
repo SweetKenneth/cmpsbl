@@ -295,11 +295,11 @@ export const INFRASTRUCTURE_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'sandbox-safe-evolution',
     name: 'Sandbox Safe Evolution',
-    description: 'SANDBOX tests MODERNIZER evolution proposals with CORTEX approval gates and AUDIT change logging',
+    description: 'SANDBOX tests EVOLUTION proposals with CORTEX approval gates and AUDIT change logging',
     category: 'automation',
     modules: [
       { name: 'SANDBOX', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'enhancer', required: true },
       { name: 'AUDIT', role: 'validator', required: true },
     ],
