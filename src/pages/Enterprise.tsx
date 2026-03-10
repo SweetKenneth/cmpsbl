@@ -140,7 +140,7 @@ export default function Enterprise() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.04 }}
-                  className="flex items-start gap-3 p-3 rounded-lg border border-border/40 bg-card/30"
+                  className="flex items-start gap-3 p-3 rounded-lg border border-border/40 bg-card/30 shimmer-on-hover card-lift"
                 >
                   <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <span className="text-sm text-muted-foreground">{feature}</span>

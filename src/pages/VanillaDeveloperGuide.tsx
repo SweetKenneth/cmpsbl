@@ -150,7 +150,7 @@ export default function VanillaDeveloperGuide() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.07 }}
               >
-                <Card className="h-full border-border/50 bg-card/80 hover:border-primary/30 transition-colors group">
+                <Card className="h-full border-border/50 bg-card/80 hover:border-primary/30 transition-colors group card-lift shimmer-on-hover">
                   <CardHeader className="pb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

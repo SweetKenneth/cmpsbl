@@ -303,7 +303,7 @@ await substrate('vision.health', {});`}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className="text-center p-5 rounded-xl border border-border/40 bg-card/50"
+                className="text-center p-5 rounded-xl border border-border/40 bg-card/50 shimmer-on-hover card-lift"
               >
                 <p className="text-2xl md:text-3xl font-bold text-primary">{s.value}</p>
                 <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
