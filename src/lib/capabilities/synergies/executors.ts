@@ -4992,7 +4992,7 @@ export async function executeAdaptiveContentTransformation(
 
 /**
  * Self-Documenting Evolution Executor
- * MODERNIZER + DECODE + BRAIN + SYSTEM → Auto-documentation
+ * EVOLUTION + DECODE + BRAIN + SYSTEM → Auto-documentation
  */
 export async function executeSelfDocumentingEvolution(
   context: SynergyExecutionContext
