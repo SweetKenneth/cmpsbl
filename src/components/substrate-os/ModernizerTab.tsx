@@ -549,7 +549,7 @@ export function ModernizerTab({ enabled }: EvolutionTabProps) {
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <p className="text-lg text-muted-foreground">
-              Modernizer requires Operator privileges
+              EVOLUTION requires Operator privileges
             </p>
           </div>
         </div>
