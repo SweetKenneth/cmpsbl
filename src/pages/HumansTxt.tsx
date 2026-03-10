@@ -187,7 +187,7 @@ export default function HumansTxt() {
 
         <div className="container mx-auto px-3 sm:px-4 pt-20 sm:pt-24 pb-12 sm:pb-16 max-w-4xl relative z-10">
           {/* Header */}
-          <motion.div className="mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div className="mb-10 sm:mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
               <Users className="w-3 h-3 text-primary" />
               <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline">humanstxt.org</a>
