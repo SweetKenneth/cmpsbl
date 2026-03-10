@@ -1560,7 +1560,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'SYSTEM', role: 'validator', required: true },
