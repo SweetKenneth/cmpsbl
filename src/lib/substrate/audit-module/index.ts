@@ -151,7 +151,7 @@ const ALL_MONITORED_MODULES = Object.freeze([
   'identity', 'relay', 'audit', 'memory', 'economy', 'sandbox',
   // Execution
   'encode', 'defense', 'nexus', 'vision', 'dream', 'integration',
-  'system', 'modernizer', 'inclusive',
+  'system', 'evolution', 'inclusive',
   // ESZ — Expansion Sovereignty Zone
   'sovereign', 'conscience', 'treaty', 'oracle',
   // EPZ — Expansion Perception Zone
