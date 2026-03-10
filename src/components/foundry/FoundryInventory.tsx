@@ -257,7 +257,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                     {item.score}
                   </div>
                   <div className="text-[10px] font-mono font-bold text-neon-green">
-                    {formatMarketValue(estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length))}
+                    {formatMarketValue(computeBlendedValuation(item.score, item.category || 'general', (item.systemChain || []).length))}
                   </div>
                 </div>
               </div>
