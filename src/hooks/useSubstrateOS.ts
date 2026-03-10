@@ -324,7 +324,7 @@ export function useSubstrateHealthScore() {
     vision: () => vision.health(),
     dream: () => dream.status(),
     system: () => system.status(),
-    modernizer: () => modernizer.status(),
+    modernizer: () => evolutionMod.status(), // absorbed facade → EVOLUTION
     integration: () => integration.status(),
     cortex: () => cortex.status(),
     inclusive: () => inclusive.status(),
