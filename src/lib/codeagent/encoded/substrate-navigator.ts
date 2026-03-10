@@ -68,7 +68,8 @@ const SEMANTIC_ALIASES: Record<string, string> = {
 
   // ECONOMY
   cost: 'economy', budget: 'economy', pricing: 'economy', billing: 'economy',
-  marketplace: 'economy', revenue: 'economy',
+  marketplace: 'economy', revenue: 'economy', reprice: 'economy', 'consensus pricing': 'economy',
+  'pricing anomaly': 'economy', 'pricing governance': 'economy',
 
   // SANDBOX
   isolation: 'sandbox', 'safe execution': 'sandbox', testing: 'sandbox',
