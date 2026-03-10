@@ -1214,7 +1214,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   {
     name: 'Autonomous Migration Planner',
     tier: 'enterprise',
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     outcome_summary: 'Generate and execute multi-phase migration plans with automated rollback and validation',
     category: 'optimization',
     public_safe: true,
