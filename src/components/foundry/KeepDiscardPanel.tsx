@@ -146,7 +146,10 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     {result.score}
                   </div>
                   <div className="text-[9px] text-neon-green font-bold uppercase tracking-wider font-mono tabular-nums">
-                    {formatMarketValue(estimateMarketValue(result.score, result.category, result.systemChain.length))}
+                    {formatMarketValue(computeBlendedValuation(result.score, result.category, result.systemChain.length))}
+                  </div>
+                  <div className="text-[8px] text-muted-foreground font-mono mt-0.5">
+                    {getSuggestedMarketplaces(result.score, result.category).slice(0, 2).join(' · ')}
                   </div>
                 </div>
               </div>
