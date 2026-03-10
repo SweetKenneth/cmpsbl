@@ -1580,7 +1580,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   technical_debt_engine: {
     id: 'technical_debt_engine',
     name: 'Technical Debt Engine',
-    description: 'MODERNIZER architecture evolution: code smell detection, safe refactoring planning, technical debt quantification, and migration path optimization.',
+    description: 'EVOLUTION architecture evolution: code smell detection, safe refactoring planning, technical debt quantification, and migration path optimization.',
     category: 'evolution',
     capabilities: ['code_smell_detector', 'refactor_planner', 'technical_debt_scorer', 'migration_path_optimizer'],
     primaryModules: ['MODERNIZER'],
