@@ -1,6 +1,6 @@
 /**
- * MODERNIZER Module — Self-Evolution & Code Intelligence
- * Substrate Evolution Engine
+ * EVOLUTION Module — Self-Evolution & Code Intelligence
+ * Substrate Evolution Engine (formerly MODERNIZER)
  * 
  * Provides:
  * - Code scanning and analysis
@@ -339,18 +339,24 @@ export async function rollbackEvolution(runId: string): Promise<boolean> {
 // ============ Module Metadata ============
 
 import { SUBSTRATE_VERSION as _MV } from '@/lib/substrate/versions';
-export const MODERNIZER_VERSION = _MV;
-export const MODERNIZER_CODENAME = 'Architect';
+export const EVOLUTION_VERSION = _MV;
+export const EVOLUTION_CODENAME = 'Architect';
+/** @deprecated Use EVOLUTION_VERSION */
+export const MODERNIZER_VERSION = EVOLUTION_VERSION;
+/** @deprecated Use EVOLUTION_CODENAME */
+export const MODERNIZER_CODENAME = EVOLUTION_CODENAME;
 
-export interface ModernizerStatus {
+export interface EvolutionStatus {
   version: string;
   last_scan?: ScanResult;
   pending_proposals: number;
   active_runs: number;
   patterns_available: number;
 }
+/** @deprecated Use EvolutionStatus */
+export type ModernizerStatus = EvolutionStatus;
 
-export async function getModernizerStatus(): Promise<ModernizerStatus> {
+export async function getEvolutionModuleStatus(): Promise<EvolutionStatus> {
   try {
     const { count: runsCount } = await supabase
       .from('evolution_runs')
@@ -358,21 +364,23 @@ export async function getModernizerStatus(): Promise<ModernizerStatus> {
       .not('phase', 'in', '("verified","aborted","failed")');
 
     return {
-      version: MODERNIZER_VERSION,
+      version: EVOLUTION_VERSION,
       pending_proposals: 0,
       active_runs: runsCount || 0,
       patterns_available: Object.keys(CODE_PATTERNS).length,
     };
   } catch (error) {
-    console.error('Error fetching modernizer status:', error);
+    console.error('Error fetching EVOLUTION status:', error);
     return {
-      version: MODERNIZER_VERSION,
+      version: EVOLUTION_VERSION,
       pending_proposals: 0,
       active_runs: 0,
       patterns_available: Object.keys(CODE_PATTERNS).length,
     };
   }
 }
+/** @deprecated Use getEvolutionModuleStatus */
+export const getModernizerStatus = getEvolutionModuleStatus;
  
  // Code analysis
  export * from './codeAnalysis';

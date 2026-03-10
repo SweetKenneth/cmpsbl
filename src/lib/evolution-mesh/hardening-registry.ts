@@ -141,7 +141,7 @@ const hardeningLayers: HardeningLayer[] = [
       const violations: string[] = [];
       if (ctx.diff) {
         if (/lovable\.ai|ai\.gateway\.lovable/.test(ctx.diff)) {
-          violations.push('Uses Lovable AI gateway instead of NEXUS');
+          violations.push('Uses external AI gateway instead of NEXUS');
         }
         if (/service_role_key|SUPABASE_SERVICE_ROLE/.test(ctx.diff)) {
           violations.push('Exposes service role key in client code');

@@ -172,7 +172,7 @@ export function checkPromotionGate(proposalId: string): PromotionGateResult {
     );
   }
 
-  // Spike check — imported at Phase 3, stub for now
+  // Spike check — rate-based traffic analysis
   if (isSpikeActive()) {
     reasons.push('Traffic spike active — promotions frozen');
   }

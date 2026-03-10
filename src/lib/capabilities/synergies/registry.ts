@@ -39,7 +39,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'predictive-issue-prevention',
     name: 'Predictive Issue Prevention',
-    description: 'VISION metrics analyzed by BRAIN learning to trigger MODERNIZER pre-emptive fixes',
+    description: 'VISION metrics analyzed by BRAIN learning to trigger EVOLUTION pre-emptive fixes',
     category: 'intelligence',
     modules: [
       { name: 'VISION', role: 'primary', required: true },
@@ -148,7 +148,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'self-healing',
     name: 'Self-Healing',
-    description: 'SYSTEM diagnostics trigger MODERNIZER auto-fixes validated by VISION regression checks',
+    description: 'SYSTEM diagnostics trigger EVOLUTION auto-fixes validated by VISION regression checks',
     category: 'resilience',
     modules: [
       { name: 'SYSTEM', role: 'primary', required: true },
@@ -228,7 +228,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'adaptive-ui',
     name: 'Adaptive UI',
-    description: 'INCLUSIVE scan informs MODERNIZER fixes and DECODE personalization',
+    description: 'INCLUSIVE scan informs EVOLUTION fixes and DECODE personalization',
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
@@ -245,7 +245,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'evolution-confidence',
     name: 'Evolution Confidence',
-    description: 'CORTEX proposals scored by BRAIN learning history and MODERNIZER impact analysis',
+    description: 'CORTEX proposals scored by BRAIN learning history and EVOLUTION impact analysis',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
@@ -260,7 +260,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-documentation',
     name: 'Autonomous Documentation',
-    description: 'MODERNIZER code analysis combined with DECODE explanation and SYSTEM versioning',
+    description: 'EVOLUTION code analysis combined with DECODE explanation and SYSTEM versioning',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
@@ -499,7 +499,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-evolution',
     name: 'Autonomous Evolution',
-    description: 'CORTEX evolution proposals enhanced by BRAIN learning history and MODERNIZER impact simulation',
+    description: 'CORTEX evolution proposals enhanced by BRAIN learning history and EVOLUTION impact simulation',
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
@@ -825,7 +825,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'predictive-healing',
     name: 'Predictive Healing',
-    description: 'BRAIN failure pattern prediction triggers MODERNIZER proactive fixes before issues occur',
+    description: 'BRAIN failure pattern prediction triggers EVOLUTION proactive fixes before issues occur',
     category: 'resilience',
     modules: [
       { name: 'BRAIN', role: 'primary', required: true },
@@ -968,7 +968,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-repair',
     name: 'Autonomous Repair',
-    description: 'MODERNIZER auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
+    description: 'EVOLUTION auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
@@ -1422,7 +1422,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'full-stack-evolution',
     name: 'Full-Stack Evolution',
-    description: 'CORTEX proposes changes validated by MODERNIZER impact, BRAIN history, VISION metrics, and DEFENSE safety checks',
+    description: 'CORTEX proposes changes validated by EVOLUTION impact, BRAIN history, VISION metrics, and DEFENSE safety checks',
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
@@ -1523,7 +1523,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'comprehensive-accessibility-audit',
     name: 'Comprehensive Accessibility Audit',
-    description: 'INCLUSIVE performs deep audit with VISION metrics tracking, DECODE readability scoring, and MODERNIZER auto-fix suggestions',
+    description: 'INCLUSIVE performs deep audit with VISION metrics tracking, DECODE readability scoring, and EVOLUTION auto-fix suggestions',
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
@@ -1557,7 +1557,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'self-documenting-evolution',
     name: 'Self-Documenting Evolution',
-    description: 'MODERNIZER tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
+    description: 'EVOLUTION tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
@@ -1573,7 +1573,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'intelligent-deprecation-manager',
     name: 'Intelligent Deprecation Manager',
-    description: 'CORTEX identifies deprecated features using VISION usage analytics, BRAIN impact analysis, and MODERNIZER migration planning',
+    description: 'CORTEX identifies deprecated features using VISION usage analytics, BRAIN impact analysis, and EVOLUTION migration planning',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
@@ -1589,7 +1589,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-optimization-loop',
     name: 'Autonomous Optimization Loop',
-    description: 'CORTEX identifies bottlenecks using VISION metrics, BRAIN patterns, and MODERNIZER applies automated improvements',
+    description: 'CORTEX identifies bottlenecks using VISION metrics, BRAIN patterns, and EVOLUTION applies automated improvements',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
@@ -1709,11 +1709,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   
-  // MODERNIZER × VISION (proactive maintenance)
+  // EVOLUTION × VISION (proactive maintenance)
   {
     id: 'proactive-maintenance-engine',
     name: 'Proactive Maintenance Engine',
-    description: 'MODERNIZER predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
+    description: 'EVOLUTION predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
     category: 'resilience',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
@@ -1760,11 +1760,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   
-  // DEFENSE × MODERNIZER (security evolution)
+  // DEFENSE × EVOLUTION (security evolution)
   {
     id: 'security-posture-evolution',
     name: 'Security Posture Evolution',
-    description: 'DEFENSE policies evolved by MODERNIZER analysis, BRAIN threat patterns, and CORTEX governance approval',
+    description: 'DEFENSE policies evolved by EVOLUTION analysis, BRAIN threat patterns, and CORTEX governance approval',
     category: 'security',
     modules: [
       { name: 'DEFENSE', role: 'primary', required: true },
@@ -1814,11 +1814,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // VISION × MODERNIZER × DREAM (predictive evolution)
+  // VISION × EVOLUTION × DREAM (predictive evolution)
   {
     id: 'predictive-evolution-engine',
     name: 'Predictive Evolution Engine',
-    description: 'VISION detects degradation trends while DREAM synthesizes solutions and MODERNIZER proposes targeted fixes',
+    description: 'VISION detects degradation trends while DREAM synthesizes solutions and EVOLUTION proposes targeted fixes',
     category: 'automation',
     modules: [
       { name: 'VISION', role: 'primary', required: true },
@@ -1959,11 +1959,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // MODERNIZER × BRAIN × DEFENSE × CORTEX (Secure Evolution Pipeline)
+  // EVOLUTION × BRAIN × DEFENSE × CORTEX (Secure Evolution Pipeline)
   {
     id: 'secure-evolution-pipeline',
     name: 'Secure Evolution Pipeline',
-    description: 'MODERNIZER evolution proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
+    description: 'EVOLUTION proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
@@ -2049,11 +2049,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // CORE × VISION × MODERNIZER × BRAIN (Adaptive Configuration Intelligence)
+  // CORE × VISION × EVOLUTION × BRAIN (Adaptive Configuration Intelligence)
   {
     id: 'adaptive-configuration-intelligence',
     name: 'Adaptive Configuration Intelligence',
-    description: 'CORE config optimized by VISION metrics, MODERNIZER recommendations, and BRAIN performance history',
+    description: 'CORE config optimized by VISION metrics, EVOLUTION recommendations, and BRAIN performance history',
     category: 'optimization',
     modules: [
       { name: 'CORE', role: 'primary', required: true },

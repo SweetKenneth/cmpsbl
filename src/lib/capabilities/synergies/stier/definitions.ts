@@ -69,7 +69,7 @@ export const STIER_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-ops-steward',
     name: 'Autonomous Ops Steward',
-    description: 'Fully self-maintaining infrastructure with guardrails via SYSTEM health management, CORTEX decision automation, VISION observability, and MODERNIZER self-repair',
+    description: 'Fully self-maintaining infrastructure with guardrails via SYSTEM health management, CORTEX decision automation, VISION observability, and EVOLUTION self-repair',
     category: 'automation',
     modules: [
       { name: 'SYSTEM', role: 'primary', required: true },
@@ -264,7 +264,7 @@ export const STIER_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'friction-auto-removal-engine',
     name: 'Friction Auto-Removal Engine',
-    description: 'Detects and removes UX friction automatically using VISION drop-off detection, CORTEX optimization proposals, and MODERNIZER automated fixes',
+    description: 'Detects and removes UX friction automatically using VISION drop-off detection, CORTEX optimization proposals, and EVOLUTION automated fixes',
     category: 'automation',
     modules: [
       { name: 'VISION', role: 'primary', required: true },

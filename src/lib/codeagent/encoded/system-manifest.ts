@@ -270,7 +270,7 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     name: 'IMMUNITY',
     layer: 'mesh-overlay',
     description: 'Adaptive resilience mesh. Executor shadow training, gap classification, self-healing patterns.',
-    corePath: 'src/lib/substrate/modernizer-shadow-resolver/',
+    corePath: 'src/lib/substrate/evolution-shadow-resolver/',
     dependencies: ['core', 'defense'],
     dependents: [],
   },

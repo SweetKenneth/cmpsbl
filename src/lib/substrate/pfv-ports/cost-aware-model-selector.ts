@@ -17,7 +17,7 @@ export interface ModelCost {
 
 /**
  * Substrate-native model cost registry
- * Routes through NEXUS — no direct Lovable AI usage
+ * Routes through NEXUS — no direct external AI gateway usage
  */
 export const MODEL_COSTS: ModelCost[] = [
   { model: 'nexus/flash', provider: 'nexus', costPerToken: 0.0000005, avgLatency: 300, successRate: 0.98 },

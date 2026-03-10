@@ -752,7 +752,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'INTEL Aggregator', 'ENGINEER Maintenance Node', 'SEBA Evolution Signals',
         'Full Audit Runner', 'Substrate Health Check', 'AUDIT Compliance Ledger',
         'Diligence Harness', 'INCLUSIVE WCAG 2.2 Scanner', 'DEFENSE Security Posture',
-        'MODERNIZER 4-Phase Cognitive Scan',
+        'EVOLUTION 4-Phase Cognitive Scan',
       ],
       governance: {
         receipt_id: governanceChain.receipt_id,
@@ -1522,7 +1522,7 @@ function buildActionPlan(
     if (debtSteps.some(s => s.title === candidate.step.title)) continue;
     
     // Cross-source semantic dedup: extract the core subject from title/description
-    // so "Anomaly: 4 critical table(s) inaccessible" and "Modernizer: Resolve resilience gap"
+    // so "Anomaly: 4 critical table(s) inaccessible" and "Evolution: Resolve resilience gap"
     // don't both appear when they reference the same affected components
     const subjectKey = extractSubjectKey(candidate.step);
     if (subjectKey && seenSubjects.has(subjectKey)) continue;
@@ -1616,23 +1616,23 @@ function buildExecutiveSummary(
  */
 function extractSubjectKey(step: ActionStep): string | null {
   // ── Priority 0: Extract affected components from instructions ──
-  // This catches anomalies AND Modernizer proposals that reference the same components.
-  // Must run first so "Anomaly: X affecting A,B,C" and "Modernizer: Resolve X (Affected: A,B,C)" collapse.
+  // This catches anomalies AND EVOLUTION proposals that reference the same components.
+  // Must run first so "Anomaly: X affecting A,B,C" and "Evolution: Resolve X (Affected: A,B,C)" collapse.
   const affectedComponents = extractAffectedComponents(step);
   if (affectedComponents) {
     return `affected:${affectedComponents}`;
   }
 
   // ── Priority 1: Extract capability name from title ──
-  // "Missing capability: X" and "Modernizer: Add X" should always collapse
+  // "Missing capability: X" and "Evolution: Add X" should always collapse
   const capMatch = step.title.match(/(?:Missing capability)\s*:\s*(.+)/i);
   if (capMatch) {
     return `cap:${capMatch[1].trim().toLowerCase()}`;
   }
   
-  const modCapMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure)\s+(.+)/i);
-  if (modCapMatch) {
-    return `cap:${modCapMatch[1].trim().toLowerCase()}`;
+  const evoCapMatch = step.title.match(/^(?:Evolution|Modernizer):\s*(?:Add|Configure)\s+(.+)/i);
+  if (evoCapMatch) {
+    return `cap:${evoCapMatch[1].trim().toLowerCase()}`;
   }
 
   // ── Priority 2: Extract edge function risk subjects ──
