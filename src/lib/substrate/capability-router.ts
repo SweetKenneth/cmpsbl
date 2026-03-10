@@ -170,11 +170,16 @@ registerCapability('governance', 'veto_authority', 95);
 registerCapability('governance', 'policy_enforcement', 90);
 registerCapability('engineer', 'engine_maintenance', 90);
 registerCapability('engineer', 'health_scoring', 85);
+registerCapability('engineer', 'p95_latency_tracking', 80);
 registerCapability('defense', 'threat_analysis', 95);
 registerCapability('defense', 'rate_limiting', 90);
 registerCapability('defense', 'quarantine', 85);
-registerCapability('modernizer', 'legacy_migration', 85);
-registerCapability('modernizer', 'api_versioning', 80);
+
+// ─── Pre-register: ATLAS — Capability Registry (Node #40) ──────────────────
+registerCapability('atlas', 'capability_registry', 95);
+registerCapability('atlas', 'entitlement_resolution', 90);
+registerCapability('atlas', 'capability_gating', 85);
+registerCapability('atlas', 'capability_discovery', 85);
 
 // ─── CLM-Priority Capabilities (40 nodes × 2 = 80 capabilities) ────────────
 import { registerCLMPriorities } from './clm/node-priorities';

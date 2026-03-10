@@ -22,7 +22,7 @@ import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from 
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
-export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream' | 'discovery_engine';
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream' | 'discovery_engine' | 'vault_loader';
 
 export interface SubsystemHealthEntry {
   id: SubsystemId;
@@ -71,9 +71,10 @@ const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string 
   immunity_mesh: { name: 'IMMUNITY Mesh', circuitModule: 'subsys:immunity_mesh' },
   event_stream: { name: 'Event Stream', circuitModule: 'subsys:event_stream' },
   discovery_engine: { name: 'Discovery Engine', circuitModule: 'subsys:discovery_engine' },
+  vault_loader: { name: 'Vault Primitive Loader', circuitModule: 'subsys:vault_loader' },
 };
 
-const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream', 'discovery_engine'];
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream', 'discovery_engine', 'vault_loader'];
 
 // ═══ Init ════════════════════════════════════════════════════════
 
@@ -232,6 +233,9 @@ export async function healSubsystem(id: SubsystemId, force = false): Promise<Sub
         break;
       case 'discovery_engine':
         actions.push(...(await healDiscoveryEngine(force)));
+        break;
+      case 'vault_loader':
+        actions.push(...(await healVaultLoader(force)));
         break;
     }
 
@@ -439,6 +443,31 @@ async function healDiscoveryEngine(force: boolean): Promise<string[]> {
     actions.push(`Post-heal: health=${result.newScore}`);
   } catch (err) {
     actions.push(`Discovery Engine heal error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return actions;
+}
+
+async function healVaultLoader(force: boolean): Promise<string[]> {
+  const actions: string[] = [];
+  try {
+    const { isVaultLoaded, getVaultPrimitiveCount, resetVaultLoader, loadVaultPrimitives } = await import('../vault-primitive-loader');
+    const wasPreviouslyLoaded = isVaultLoaded();
+    const countBefore = getVaultPrimitiveCount();
+
+    actions.push(`Pre-heal: loaded=${wasPreviouslyLoaded}, count=${countBefore}`);
+
+    if (force || !wasPreviouslyLoaded || countBefore === 0) {
+      resetVaultLoader();
+      const result = await loadVaultPrimitives();
+      actions.push(`Reloaded: ${result.loaded} primitives across ${Object.keys(result.byNode).length} nodes`);
+      if (result.errors.length > 0) {
+        actions.push(`Load errors: ${result.errors.join('; ')}`);
+      }
+    } else {
+      actions.push('Vault loader healthy — no action needed');
+    }
+  } catch (err) {
+    actions.push(`Vault Loader heal error: ${err instanceof Error ? err.message : String(err)}`);
   }
   return actions;
 }

@@ -39,7 +39,7 @@ export async function initializeSubstrate(): Promise<void> {
     // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
     const executionNodes = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-      'medic',
+      'medic', 'nerve',
       'integration', // boots last among execution nodes
     ] as const;
     const eszNodes = ['sovereign', 'oracle', 'conscience', 'treaty'] as const;
@@ -49,6 +49,7 @@ export async function initializeSubstrate(): Promise<void> {
     const meshOverlays = [
       'governance', 'intent', 'immunity', 'defense', // innermost → outermost
     ] as const;
+    const expansionNodes = ['engineer', 'atlas'] as const; // Nodes 39-40
     
     // 1. Boot CORE (standalone kernel)
     const coreResult = await substrate.invoke({ module: 'core', action: 'boot' });
@@ -71,7 +72,7 @@ export async function initializeSubstrate(): Promise<void> {
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
-      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes];
+      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes, ...expansionNodes];
       for (const node of allNodes) {
         await yieldToMain();
         const result = await substrate.invoke({ module: node, action: 'pulse' });
