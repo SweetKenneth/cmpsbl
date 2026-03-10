@@ -2530,9 +2530,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply_shadow') {
+    } else if (base === 'evolution.apply_shadow' || base === 'modernizer.apply_shadow') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_shadow <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply_shadow <plan_id>' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
