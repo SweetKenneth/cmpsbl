@@ -102,7 +102,7 @@ const modulesByLayer = {
   cognitive: [
     {
       id: "brain",
-      name: "Brain",
+      name: "BRAIN",
       description: "Memory, learning cycles, reflection",
       icon: Brain,
       color: "text-purple-500",
@@ -111,7 +111,7 @@ const modulesByLayer = {
     },
     {
       id: "decode",
-      name: "Decode",
+      name: "DECODE",
       description: "Intent decoding, chat, oracle",
       icon: MessageSquare,
       color: "text-blue-500",
@@ -120,7 +120,7 @@ const modulesByLayer = {
     },
     {
       id: "dream",
-      name: "Dream",
+      name: "DREAM",
       description: "Dream-Eater operations, nightly processing",
       icon: Moon,
       color: "text-indigo-500",
