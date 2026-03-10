@@ -136,7 +136,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   'cj4-brain-knowledge-fusion-reactor',
   'cj4-encode-intent-verification',
   'cj4-core-substrate-homeostasis',
-  'cj4-modernizer-architectural-telomere',
+  'cj4-evolution-architectural-telomere',
   'cj4-dream-synthetic-intuition',
   'cj4-cortex-priority-landscape',
   'cj4-system-autonomous-triage',
