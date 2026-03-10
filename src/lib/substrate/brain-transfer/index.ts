@@ -23,7 +23,7 @@ function clampPriority(value: number): number {
 
 export type TransferModule = 
   | 'core' | 'ripple' | 'access' | 'nexus' | 'dream' | 'integration'
-  | 'system' | 'modernizer' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive'
+  | 'system' | 'evolution' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'encode';
 
 export interface ModuleTransferConfig {
