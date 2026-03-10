@@ -16,7 +16,7 @@ export type ModuleName =
   | 'CORE' | 'RIPPLE' | 'ACCESS'      // Kernel
   | 'BRAIN' | 'DECODE' | 'DREAM'       // Cognitive
   | 'DEFENSE' | 'NEXUS' | 'VISION'     // Operational
-  | 'SYSTEM' | 'MODERNIZER' | 'INTEGRATION' | 'INCLUSIVE'  // Administrative
+  | 'SYSTEM' | 'EVOLUTION' | 'INTEGRATION' | 'INCLUSIVE'  // Administrative
   | 'CORTEX';                          // Orchestrator
 
 export interface SynergyPipeline {
