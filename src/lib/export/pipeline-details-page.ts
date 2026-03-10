@@ -333,22 +333,52 @@ function toSlug(name: string): string {
 }
 
 function getValuationBreakdown(score: number, category: string, moduleChainLength: number) {
-  const normalized = Math.max(0, score - 60) / 40;
-  const baseValue = 5000 + Math.pow(normalized, 2.5) * 995000;
-  const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
-  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.12;
-  const apexMult = score >= 100 ? 2.0 : score >= 95 ? 1.5 : score >= 92 ? 1.2 : 1.0;
-  const total = estimateMarketValue(score, category, moduleChainLength);
+  // Blended formula components
+  const internalValue = estimateMarketValue(score, category, moduleChainLength);
+  const normalizedInternal = internalValue * 0.001;
+  const baseValue = getExponentialBase(score);
+  const tier = getTierFromScore(score);
+  const cjpiMultiplier = getCJPIMultiplier(tier);
+  const cjpiValue = baseValue * cjpiMultiplier;
+
+  // No-consensus fallback: 75% CJPIValue + 25% NormalizedInternal
+  const blendedTotal = (cjpiValue * 0.75) + (normalizedInternal * 0.25);
 
   return {
     baseValue: Math.round(baseValue),
-    categoryMultiplier: catMult,
+    cjpiMultiplier,
+    cjpiValue: Math.round(cjpiValue),
+    normalizedInternal: Math.round(normalizedInternal * 100) / 100,
+    internalValue: Math.round(internalValue),
+    tier,
     categoryLabel: getCategoryMultiplierLabel(category),
-    complexityMultiplier: complexityMult,
-    apexMultiplier: apexMult,
-    total,
-    formatted: formatMarketValue(total),
+    total: Math.round(blendedTotal),
+    formatted: formatMarketValue(Math.round(blendedTotal)),
   };
+}
+
+function getSuggestedMarketplaces(score: number, category: string, tier: string): string[] {
+  const markets: string[] = [];
+  const cat = category.toLowerCase();
+
+  // Tier-based marketplace suggestions
+  if (tier === 'Apex' || tier === 'Mythic') {
+    markets.push('AWS Marketplace', 'Azure Marketplace', 'Enterprise Direct Licensing');
+  }
+  if (tier === 'Relic' || tier === 'Prime') {
+    markets.push('GitHub Marketplace', 'Vercel Templates');
+  }
+  markets.push('Gumroad', 'Lemon Squeezy');
+
+  // Category-specific
+  if (cat === 'security' || cat === 'compliance' || cat === 'privacy') {
+    markets.push('Google Cloud Marketplace');
+  }
+  if (cat === 'cognitive' || cat === 'learning' || cat === 'prediction') {
+    markets.push('Hugging Face');
+  }
+
+  return [...new Set(markets)].slice(0, 5);
 }
 
 function generateSealSVG(score: number, tier: string): string {
