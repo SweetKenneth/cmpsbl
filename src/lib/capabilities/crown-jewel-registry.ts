@@ -1750,7 +1750,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
   },
   {
     id: 'cj2-system-entropy-reversal', name: 'Entropy Reversal Engine',
-    artifactType: 'capability', modules: ['SYSTEM', 'CORTEX', 'MODERNIZER', 'DREAM'],
+    artifactType: 'capability', modules: ['SYSTEM', 'CORTEX', 'EVOLUTION', 'DREAM'],
     classification: 'architecture',
     reason: 'Reverses system entropy — actively increases order and reduces complexity drift',
     enables: 'Self-organizing system that becomes more coherent over time, not less',
