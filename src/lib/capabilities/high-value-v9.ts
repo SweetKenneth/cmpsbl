@@ -112,7 +112,7 @@ export const APEX_CAPABILITIES: HighValueCapability[] = [
 
   // ADMINISTRATIVE LAYER
   { id: 'predictive_capacity_planner', name: 'Predictive Capacity Planner', module: 'SYSTEM', description: 'ML-driven capacity forecasting with proactive scale-up recommendations', risk: 'low', reversible: true, category: 'operations' },
-  { id: 'architecture_fitness_scorer', name: 'Architecture Fitness Scorer', module: 'MODERNIZER', description: 'Score architecture against fitness functions for coupling, cohesion, and extensibility', risk: 'low', reversible: true, category: 'self-improvement' },
+  { id: 'architecture_fitness_scorer', name: 'Architecture Fitness Scorer', module: 'EVOLUTION', description: 'Score architecture against fitness functions for coupling, cohesion, and extensibility', risk: 'low', reversible: true, category: 'self-improvement' },
   { id: 'voice_navigation_engine', name: 'Voice Navigation Engine', module: 'INCLUSIVE', description: 'Voice-command navigation and interaction for motor-impaired users', risk: 'low', reversible: true, category: 'accessibility' },
 
   // ORCHESTRATOR LAYER

@@ -171,10 +171,10 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'inclusive.scan': ['inclusive.violations', 'inclusive.fix', 'inclusive.score', 'inclusive.status'],
   'inclusive.violations': ['inclusive.fix', 'inclusive.scan', 'inclusive.status', 'vision.logs'],
 
-  // Encode workflows
-  'encode.status': ['encode.queue', 'encode.receipts', 'encode.health', 'modernizer.status'],
-  'encode.queue': ['encode.status', 'encode.receipts', 'modernizer.jobs', 'vision.logs'],
-  'encode.receipts': ['encode.queue', 'encode.status', 'brain.query', 'modernizer.history'],
+  // ENCODE workflows
+  'encode.status': ['encode.queue', 'encode.receipts', 'encode.health', 'evolution.status'],
+  'encode.queue': ['encode.status', 'encode.receipts', 'evolution.jobs', 'vision.logs'],
+  'encode.receipts': ['encode.queue', 'encode.status', 'brain.query', 'evolution.receipts'],
 };
 
 // Module-level defaults when specific command not found
@@ -185,7 +185,7 @@ const MODULE_DEFAULTS: Record<string, string[]> = {
   defense: ['defense.status', 'defense.posture', 'defense.anomaly', 'defense.rules'],
   nexus: ['nexus.status', 'nexus.providers', 'nexus.text', 'nexus.route_stats'],
   dream: ['dream.status', 'dream.cycle', 'dream.mood', 'brain.dream'],
-  modernizer: ['modernizer.status', 'modernizer.scan', 'modernizer.plans', 'modernizer.applied'],
+  evolution: ['evolution.status', 'evolution.scan', 'evolution.plans', 'evolution.applied'],
   core: ['core.status', 'core.jobs', 'core.pulse', 'system.status'],
   ripple: ['ripple.status', 'ripple.topics', 'ripple.events', 'ripple.pulse'],
   access: ['access.status', 'access.usage', 'access.quota', 'access.list_keys'],

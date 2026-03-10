@@ -103,7 +103,7 @@ const PATTERN_DEFS: Record<StabilityPatternId, { name: string; description: stri
 const CORE_MODULES = [
   'CORE', 'SYSTEM', 'BRAIN', 'DREAM', 'NEXUS', 'DECODE',
   'VISION', 'CORTEX', 'DEFENSE', 'RIPPLE', 'ACCESS',
-  'ENCODE', 'MODERNIZER', 'INTEGRATION',
+  'ENCODE', 'EVOLUTION', 'INTEGRATION',
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -170,7 +170,7 @@ function autoDetect(): void {
   }
 
   // Retry with backoff — system/retry.ts provides withRetry + RetryPresets
-  for (const mod of ['NEXUS', 'RIPPLE', 'INTEGRATION', 'ENCODE', 'MODERNIZER', 'CORTEX']) {
+  for (const mod of ['NEXUS', 'RIPPLE', 'INTEGRATION', 'ENCODE', 'EVOLUTION', 'CORTEX']) {
     registerPatternCoverage('retry_with_backoff', mod, true);
   }
 

@@ -602,24 +602,24 @@ function generateFullHelp(): string {
 ┌─ EVOLUTION CYCLE ────────────────────────────────────────────┐
 │                                                             │
 │  ┌─ COGNITIVE SCAN ─────────────────────────────────────┐   │
-│  │  modernizer.scan              Full systems scan       │   │
-│  │  modernizer.scan --explain    Human-readable output   │   │
-│  │  modernizer.scan --llm-report LLM reasoning included  │   │
+│  │  evolution.scan              Full systems scan       │   │
+│  │  evolution.scan --explain    Human-readable output   │   │
+│  │  evolution.scan --llm-report LLM reasoning included  │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌─ LIFECYCLE ──────────────────────────────────────────┐   │
-│  │  1. modernizer.scan           Creates plan            │   │
-│  │  2. modernizer.evolve shadow  Apply to shadow env     │   │
-│  │  3. modernizer.evolve production  Promote (needs 2)   │   │
-│  │  4. modernizer.evolve verify  Complete cycle          │   │
-│  │     modernizer.evolve abort   Cancel active run       │   │
+│  │  1. evolution.scan           Creates plan            │   │
+│  │  2. evolution.evolve shadow  Apply to shadow env     │   │
+│  │  3. evolution.evolve production  Promote (needs 2)   │   │
+│  │  4. evolution.evolve verify  Complete cycle          │   │
+│  │     evolution.evolve abort   Cancel active run       │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌─ CIRCUIT BREAKER ────────────────────────────────────┐   │
-│  │  modernizer.circuit status    Check circuit state     │   │
-│  │  modernizer.circuit reset     Close circuit           │   │
-│  │  modernizer.autonomy status   View autonomy mode      │   │
-│  │  modernizer.autonomy set <m>  off|advisory|governed   │   │
+│  │  evolution.circuit status    Check circuit state     │   │
+│  │  evolution.circuit reset     Close circuit           │   │
+│  │  evolution.autonomy status   View autonomy mode      │   │
+│  │  evolution.autonomy set <m>  off|advisory|governed   │   │
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -2312,15 +2312,15 @@ ${allFeatures.map(f => {
       return { success: true, output, data: cap };
     }
 
-    // MODERNIZER module (via substrate)
-    else if (base === 'modernizer.status') {
+    // EVOLUTION node (via substrate) — handles both evolution.* and legacy modernizer.* commands
+    else if (base === 'evolution.status' || base === 'modernizer.status') {
       result = await modernizer.status();
-    } else if (base === 'modernizer.jobs') {
+    } else if (base === 'evolution.jobs' || base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
     }
     // ═══ EVOLUTION CYCLE ═══
-    else if (base === 'modernizer.evolve') {
+    else if (base === 'evolution.evolve' || base === 'modernizer.evolve') {
       const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
       
       // Parse target from args
@@ -2354,13 +2354,13 @@ ${allFeatures.map(f => {
 │  start a fresh Evolution Cycle.
 │
 │  To confirm override, run:
-│    modernizer.evolve --confirm
+│    evolution.evolve --confirm
 │
 │  To view current plan status:
-│    modernizer.evolve status
+│    evolution.evolve status
 │
 │  To abort current plan:
-│    modernizer.evolve abort
+│    evolution.evolve abort
 │
 └──────────────────────────────────────────────────────────────`,
         };
@@ -2420,18 +2420,18 @@ ${allFeatures.map(f => {
         output += `
 │
 │  Next steps:
-│    modernizer.evolve shadow           — Apply to shadow
-│    modernizer.evolve production       — Promote to production
-│    modernizer.evolve verify           — Run verification
+│    evolution.evolve shadow           — Apply to shadow
+│    evolution.evolve production       — Promote to production
+│    evolution.evolve verify           — Run verification
 │
 │  Or use full plan ID:
-│    modernizer.review ${planRef}`;
+│    evolution.review ${planRef}`;
       } else if (cycleResult.phase === 'shadow_applied') {
         output += `
 │
 │  Next step:
-│    modernizer.evolve production       — Promote to production
-│    modernizer.evolve verify           — Verify changes`;
+│    evolution.evolve production       — Promote to production
+│    evolution.evolve verify           — Verify changes`;
       }
       
       output += `
@@ -2440,7 +2440,7 @@ ${allFeatures.map(f => {
       
       return { success: cycleResult.success, output };
     }
-    else if (base === 'modernizer.scan') {
+    else if (base === 'evolution.scan' || base === 'modernizer.scan') {
       // Cognitive Systems Scan with options
       const hasExplain = args.includes('--explain');
       const hasLLMReport = args.includes('--llm-report');
@@ -2467,44 +2467,42 @@ ${allFeatures.map(f => {
       }
     // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
     // Legacy handler removed to prevent duplicate handling
-    } else if (base === 'modernizer.export') {
+    } else if (base === 'evolution.export' || base === 'modernizer.export') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Job ID required\n  Usage: modernizer.export <job_id>' };
+        return { success: false, output: '▓ ERROR: Job ID required\n  Usage: evolution.export <job_id>' };
       }
       result = await modernizer.export(args[0]);
-    } else if (base === 'modernizer.quota') {
+    } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
       result = await modernizer.quota();
-    } else if (base === 'modernizer.pulse') {
+    } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
       result = await modernizer.pulse();
-    } else if (base === 'modernizer.propose') {
-      // Legacy: Generate upgrade proposal in shadow mode
+    } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
       result = await modernizer.propose({ scope, notes });
-    } else if (base === 'modernizer.plans') {
-      // Forward to evolution cycle
+    } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
       result = await modernizer.plans();
-    } else if (base === 'modernizer.review') {
+    } else if (base === 'evolution.review' || base === 'modernizer.review') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.review <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.review <plan_id>' };
       }
       result = await modernizer.review(args[0]);
-    } else if (base === 'modernizer.validate') {
+    } else if (base === 'evolution.validate' || base === 'modernizer.validate') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.validate <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.validate <plan_id>' };
       }
       const res = await modernizer.validate(args[0]);
       const errObj = res.error as any;
       const errMsg = typeof errObj === 'string' ? errObj : errObj?.message;
       result = { success: !res.error, data: res.data, error: errMsg };
-    } else if (base === 'modernizer.diff') {
+    } else if (base === 'evolution.diff' || base === 'modernizer.diff') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.diff <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.diff <plan_id>' };
       }
       // Resolve short plan ID to full UUID (matching other commands)
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.diff(planId);
       const data = res.data as any;
@@ -2515,14 +2513,13 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply') {
+    } else if (base === 'evolution.apply' || base === 'modernizer.apply') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply <plan_id>\n\n  Workflow: proposed → shadow_applied → applied (production)' };
       }
-      // Resolve short plan ID to full UUID
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.apply(planId);
       // Check both fetch error and success:false in response data
@@ -2533,13 +2530,13 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply_shadow') {
+    } else if (base === 'evolution.apply_shadow' || base === 'modernizer.apply_shadow') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_shadow <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply_shadow <plan_id>' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.applyShadow(planId);
       const data = res.data as any;
@@ -2549,9 +2546,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.test_shadow') {
+    } else if (base === 'evolution.test_shadow' || base === 'modernizer.test_shadow') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.test_shadow <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.test_shadow <plan_id>' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
@@ -2565,13 +2562,13 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply_production') {
+    } else if (base === 'evolution.apply_production' || base === 'modernizer.apply_production') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.applyProduction(planId);
       const data = res.data as any;
@@ -2581,9 +2578,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.rollback') {
+    } else if (base === 'evolution.rollback' || base === 'modernizer.rollback') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.rollback <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.rollback <plan_id>' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
@@ -2597,9 +2594,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.delete') {
+    } else if (base === 'evolution.delete' || base === 'modernizer.delete') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.delete <plan_id> [reason]' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.delete <plan_id> [reason]' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
@@ -2613,7 +2610,7 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.applied') {
+    } else if (base === 'evolution.applied' || base === 'modernizer.applied') {
       const res = await modernizer.applied();
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
@@ -2622,24 +2619,23 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.archived') {
+    } else if (base === 'evolution.archived' || base === 'modernizer.archived') {
       result = await modernizer.archived();
-    } else if (base === 'modernizer.implement') {
+    } else if (base === 'evolution.implement' || base === 'modernizer.implement') {
       if (!args[0] || !args[1]) {
-        return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: modernizer.implement <archived_function> <target_action>\n  Example: modernizer.implement pf-brain-systems-reasoning brain.deep_think' };
+        return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: evolution.implement <archived_function> <target_action>\n  Example: evolution.implement pf-brain-systems-reasoning brain.deep_think' };
       }
       result = await modernizer.implement(args[0], args[1]);
-    } else if (base === 'modernizer.refresh') {
+    } else if (base === 'evolution.refresh' || base === 'modernizer.refresh') {
       result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
-    } else if (base === 'modernizer.autopilot') {
+    } else if (base === 'evolution.autopilot' || base === 'modernizer.autopilot') {
       result = await substrate.invoke({ module: 'evolution', action: 'autopilot' });
-    } else if (base === 'modernizer.confidence') {
+    } else if (base === 'evolution.confidence' || base === 'modernizer.confidence') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.confidence <plan_id>' };
       }
       result = await substrate.invoke({ module: 'evolution', action: 'confidence', payload: { plan_id: args[0] } });
-    } else if (base === 'modernizer.stamps') {
-      // Evolution stamps — same as seba.stamps but via modernizer namespace
+    } else if (base === 'evolution.stamps' || base === 'modernizer.stamps') {
       const limit = parseInt(args[0]) || 10;
       try {
         const { data: stamps, error } = await supabase
@@ -2650,7 +2646,7 @@ ${allFeatures.map(f => {
           .limit(limit);
         if (error) return { success: false, output: `▓ Stamp query error: ${error.message}` };
         if (!stamps || stamps.length === 0) {
-          return { success: true, output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: modernizer.evolve → shadow → production to generate stamps.' };
+          return { success: true, output: '◉ No evolution stamps found\n  Stamps are created when evolutions apply to production.\n  Run: evolution.evolve → shadow → production to generate stamps.' };
         }
         let output = `╔══════════════════════════════════════════════════════════════╗\n║  EVOLUTION STAMPS — Verification Trail                        ║\n╠══════════════════════════════════════════════════════════════╣\n`;
         for (const stamp of stamps) {
@@ -2665,7 +2661,7 @@ ${allFeatures.map(f => {
     }
 
     // ═══ CIRCUIT BREAKER, AUTONOMY, RECEIPTS ═══
-    else if (base === 'modernizer.circuit') {
+    else if (base === 'evolution.circuit' || base === 'modernizer.circuit') {
       const subCmd = args[0] || 'status';
       if (subCmd === 'status') {
         try {
@@ -2702,9 +2698,9 @@ ${status.trip_reason ? `║  Trip Reason: ${status.trip_reason.substring(0, 40).
           return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to trip circuit'}` };
         }
       } else {
-        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.circuit [status|reset|open <reason>]' };
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.circuit [status|reset|open <reason>]' };
       }
-    } else if (base === 'modernizer.autonomy') {
+    } else if (base === 'evolution.autonomy' || base === 'modernizer.autonomy') {
       const subCmd = args[0] || 'status';
       if (subCmd === 'status') {
         try {
@@ -2728,7 +2724,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } else if (subCmd === 'set') {
         const mode = args[1];
         if (!mode || !['off', 'advisory', 'governed'].includes(mode)) {
-          return { success: false, output: '▓ ERROR: Invalid mode\n  Usage: modernizer.autonomy set <off|advisory|governed>' };
+          return { success: false, output: '▓ ERROR: Invalid mode\n  Usage: evolution.autonomy set <off|advisory|governed>' };
         }
         try {
           const { setAutonomyMode } = await import('@/lib/evolve/autonomy');
@@ -2738,9 +2734,9 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
           return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to set autonomy mode'}` };
         }
       } else {
-        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.autonomy [status|set <mode>]' };
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.autonomy [status|set <mode>]' };
       }
-    } else if (base === 'modernizer.receipts') {
+    } else if (base === 'evolution.receipts' || base === 'modernizer.receipts') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       try {
         const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
@@ -2749,9 +2745,9 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } catch (err) {
         return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipts'}` };
       }
-    } else if (base === 'modernizer.receipt') {
+    } else if (base === 'evolution.receipt' || base === 'modernizer.receipt') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Run ID required\n  Usage: modernizer.receipt <run_id>' };
+        return { success: false, output: '▓ ERROR: Run ID required\n  Usage: evolution.receipt <run_id>' };
       }
       try {
         const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
@@ -2763,7 +2759,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     }
 
     // ═══ OMEGA OBSERVER ENGINE ═══
-    else if (base === 'modernizer.verify') {
+    else if (base === 'evolution.verify' || base === 'modernizer.verify') {
       try {
         const { checkEligibility, formatEligibility } = await import('@/lib/evolve/eligibility-gate');
         const { evolutionRuns } = await import('@/lib/evolve/evolution-runs');
@@ -2816,7 +2812,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
             const meta = run.metadata || {};
             const actions = (meta.total_actions as number) || 0;
             lines.push(`║  🔬 ${run.run_id.slice(0, 12)} │ Phase: ${run.phase}`);
-            lines.push(`║     Actions: ${actions} │ Ready for: modernizer.evolve production`);
+            lines.push(`║     Actions: ${actions} │ Ready for: evolution.evolve production`);
           }
           lines.push('╚══════════════════════════════════════════════════════════════╝');
         }
