@@ -75,7 +75,7 @@ const EXPECTED_DOMAINS: Record<ModuleName, string[]> = {
   encode:      ['codegen', 'filesystem', 'structural-awareness', 'scoring'],
   // Administrative
   system:      ['health', 'governance', 'configuration', 'audit'],
-  modernizer:  ['evolution', 'upgrades', 'diffs', 'rollback'],
+  evolution:   ['evolution', 'upgrades', 'diffs', 'rollback'],
   integration: ['webhooks', 'transforms', 'connectors', 'schemas'],
   inclusive:   ['accessibility', 'wcag', 'aria', 'focus-management'],
   // Orchestrator

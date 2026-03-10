@@ -111,7 +111,7 @@ const MODULE_CONFIG: Record<string, {
   brain: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.brain, hookName: 'useBrain' },
   vision: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.vision, hookName: 'useVision' },
   cortex: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.cortex, hookName: 'useCortex' },
-  modernizer: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.modernizer, hookName: 'useModernizer' },
+  evolution: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.evolution, hookName: 'useEvolution' },
   decode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.decode, hookName: 'useDecode' },
   defense: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.defense, hookName: 'useDefense' },
   nexus: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.nexus, hookName: 'useNexus' },

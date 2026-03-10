@@ -1391,7 +1391,8 @@ export const COMMAND_CATEGORIES = {
   cortex: { label: 'CORTEX', color: 'text-violet-400', borderColor: 'border-violet-500/30', commands: CORTEX_COMMANDS },
   inclusive: { label: 'INCLUSIVE', color: 'text-teal-400', borderColor: 'border-teal-500/30', commands: INCLUSIVE_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
-  modernizer: { label: 'MODERNIZER', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
+  /** @deprecated MODERNIZER commands are legacy aliases — EVOLUTION_COMMANDS is the canonical set */
+  modernizer: { label: 'EVOLUTION', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
   seba: { label: 'SEBA', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SEBA_COMMANDS },
   clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: [...CLM_COMMANDS, ...MODULE_CLM_COMMANDS] },
   autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },

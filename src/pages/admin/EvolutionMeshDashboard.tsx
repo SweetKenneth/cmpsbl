@@ -442,9 +442,9 @@ export default function EvolutionMeshDashboard() {
     },
   });
 
-  const modernizerHook = useModernizer();
+  const evolutionHook = useEvolution();
   const abortEvolveMutation = useMutation({
-    mutationFn: () => modernizerHook.evolve.mutateAsync({ target: 'abort' }),
+    mutationFn: () => evolutionHook.rollback.mutateAsync({ cycleId: 'active', reason: 'user-abort' }),
     onSuccess: () => {
       toast.success('Evolution aborted — old proposals cleared');
       invalidateAll();

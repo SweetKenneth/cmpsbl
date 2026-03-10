@@ -284,9 +284,9 @@ Provide specific access control and billing improvements.`,
 - How can I better handle cognitive accessibility requirements?
 Provide specific accessibility compliance improvements.`,
   },
-  modernizer: {
-    moduleId: 'modernizer',
-    displayName: 'MODERNIZER',
+  evolution: {
+    moduleId: 'evolution',
+    displayName: 'EVOLUTION',
     learningTopics: [
       'Safe code evolution: shadow-apply, canary deployment, rollback strategies',
       'Diff validation: structural anchor preservation, export safety',
@@ -296,7 +296,7 @@ Provide specific accessibility compliance improvements.`,
       'Code migration patterns: incremental refactoring, feature flags',
     ],
     kpis: ['evolution_success_rate', 'shadow_accuracy', 'regression_catch_rate', 'upgrade_velocity'],
-    selfReflectionPrompt: `As the MODERNIZER evolution engine, how can I become a safer, faster code evolver?
+    selfReflectionPrompt: `As the EVOLUTION engine, how can I become a safer, faster code evolver?
 - What percentage of my evolution cycles succeed vs fail, and why?
 - Is shadow mode catching regressions effectively?
 - What code migration patterns cause the most problems?

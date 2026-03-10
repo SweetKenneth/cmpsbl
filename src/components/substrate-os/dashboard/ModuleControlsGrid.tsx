@@ -217,13 +217,13 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { await systemHeal.mutateAsync(undefined); },
     },
     {
-      id: 'modernizer', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
+      id: 'evolution', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
       description: 'Bounded self-evolution engine',
       gradient: 'bg-gradient-to-r from-rose-500 to-pink-600', accentColor: 'bg-rose-500',
-      status: modernizerStatus,
-      metrics: [{ label: 'Engine', value: modernizerStatus.data?.success ? 'Ready' : 'Checking' }],
+      status: evolutionAdminStatus,
+      metrics: [{ label: 'Engine', value: evolutionAdminStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
-      onAction: async () => { const r = await modernizer.scan(); toast.info(`Evolution: ${r.success ? 'Started' : 'Failed'}`); },
+      onAction: async () => { const r = await evolutionMod.scan(); toast.info(`Evolution: ${r.success ? 'Started' : 'Failed'}`); },
     },
     {
       id: 'integration', name: 'INTEGRATION', layer: 'admin' as const, icon: Plug,
