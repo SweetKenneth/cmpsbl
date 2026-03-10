@@ -369,5 +369,5 @@ export function registerExecutionHandlers(): void {
     ],
   }));
 
-  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)', { count: 50 });
+  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION)', { count: 50 });
 }

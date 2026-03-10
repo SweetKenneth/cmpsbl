@@ -198,7 +198,7 @@ const MODULE_FILE_MAP: Record<string, string[]> = {
   decode: ['src/components/substrate-os/DecodeTab.tsx', 'src/lib/substrate.ts'],
   nexus: ['src/lib/nexus/', 'src/components/substrate-os/NexusTab.tsx'],
   vision: ['src/components/substrate-os/VisionTab.tsx', 'src/hooks/useSubstrate.ts'],
-  modernizer: ['src/pages/Modernizer.tsx', 'src/components/modernizer/'],
+  evolution: ['src/lib/evolve/', 'src/lib/substrate/evolution-cycle.ts'],
   system: ['src/lib/substrate.ts', 'src/config/'],
   core: ['src/lib/codeagent/', 'src/config/'],
   dream: ['src/lib/substrate.ts', 'supabase/functions/pf-substrate/index.ts'],

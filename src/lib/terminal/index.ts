@@ -91,7 +91,7 @@ export {
   registerOCGHandlers,
 } from './ocg-handlers';
 
-// Execution layer handlers (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)
+// Execution layer handlers (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION)
 export {
   registerExecutionHandlers,
 } from './execution-handlers';
