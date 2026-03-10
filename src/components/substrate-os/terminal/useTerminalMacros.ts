@@ -61,11 +61,11 @@ export const BUILTIN_MACROS: MacroDefinition[] = [
   },
   {
     name: 'upgrade_cycle',
-    description: 'Full modernizer upgrade workflow',
+    description: 'Full EVOLUTION upgrade workflow',
     commands: [
-      'modernizer.scan deep',
-      'modernizer.status',
-      'modernizer.plans',
+      'evolution.scan deep',
+      'evolution.status',
+      'evolution.plans',
     ],
     createdAt: new Date(),
   },
