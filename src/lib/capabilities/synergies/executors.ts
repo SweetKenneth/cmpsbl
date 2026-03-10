@@ -5669,7 +5669,7 @@ export async function executePersonalizedAccessibilityEngine(
 
 /**
  * Adaptive Configuration Intelligence Executor
- * CORE + VISION + MODERNIZER + BRAIN → Intelligent config adaptation
+ * CORE + VISION + EVOLUTION + BRAIN → Intelligent config adaptation
  */
 export async function executeAdaptiveConfigurationIntelligence(
   context: SynergyExecutionContext
