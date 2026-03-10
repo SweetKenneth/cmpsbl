@@ -190,7 +190,7 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </div>
               
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
