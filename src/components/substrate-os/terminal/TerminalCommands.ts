@@ -228,7 +228,7 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.capability', description: 'Get capability details', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '<capability_id>' },
 ];
 
-export const MODERNIZER_COMMANDS: CommandDefinition[] = [
+export const EVOLUTION_CORE_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.status', description: 'EVOLUTION node status', category: 'evolution', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.jobs', description: 'List evolution runs (active + completed)', category: 'evolution', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[limit]' },
   { command: 'evolution.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'evolution', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '[shadow|production|verify|abort|status] [--confirm]', example: 'evolution.evolve shadow' },
