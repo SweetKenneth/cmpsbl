@@ -635,7 +635,7 @@ const MODULE_VERBS: Record<string, string[]> = {
   INTEGRATION: ['connect', 'bridge', 'sync', 'map', 'federate'],
   NERVE: ['signal', 'propagate', 'broadcast', 'relay', 'subscribe'],
   INCLUSIVE: ['scan', 'remediate', 'score', 'annotate', 'test'],
-  EVOLUTION: ['migrate', 'refactor', 'upgrade', 'transpile', 'coerce'],
+  // EVOLUTION already mapped above (line 634)
   MEDIC: ['diagnose', 'heal', 'recover', 'rollback', 'repair'],
   RIPPLE: ['propagate', 'cascade', 'notify', 'react', 'resolve'],
   AUDIT: ['log', 'trace', 'attest', 'sign', 'archive'],

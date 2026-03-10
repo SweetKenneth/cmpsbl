@@ -4,11 +4,11 @@ import { Card } from '@/components/ui/card';
 import { TrendingUp, CheckCircle, XCircle, Users, Clock } from 'lucide-react';
 
 interface Analytics {
-  id: string;
-  site_url: string | null;
-  status: string | null;
-  analysis_result: any;
+  run_id: string;
+  phase: string | null;
+  confidence_score: number | null;
   created_at: string;
+  metadata: any;
 }
 
 export const ModernizerAnalytics = () => {
