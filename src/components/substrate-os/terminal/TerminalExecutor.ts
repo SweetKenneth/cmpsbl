@@ -2502,7 +2502,7 @@ ${allFeatures.map(f => {
       // Resolve short plan ID to full UUID (matching other commands)
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.diff(planId);
       const data = res.data as any;
