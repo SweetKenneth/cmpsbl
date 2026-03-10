@@ -28,12 +28,12 @@ export interface JobsResult {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER COMMANDS
+// EVOLUTION COMMANDS
 // ═══════════════════════════════════════════════════════════════
 
-export const modernizerCommands = {
+export const evolutionCommands = {
   /**
-   * modernizer.status — Get current evolution status
+   * evolution.status — Get current evolution status
    */
   async status(): Promise<CommandResult> {
     const activeRun = await evolutionRuns.getActiveRun();
@@ -60,7 +60,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.jobs — List all evolution runs
+   * evolution.jobs — List all evolution runs
    */
   async jobs(limit = 10): Promise<CommandResult> {
     const activeRun = await evolutionRuns.getActiveRun();
@@ -98,7 +98,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.evolve shadow — Execute shadow apply
+   * evolution.evolve shadow — Execute shadow apply
    */
   async evolveShadow(plan_id?: string): Promise<CommandResult> {
     // Check for active run or create new one
@@ -160,7 +160,7 @@ export const modernizerCommands = {
       changes,
       health_before: {
         overall_score: 0.95,
-        module_health: { modernizer: 100, system: 100 },
+        module_health: { evolution: 100, system: 100 },
         error_count: 0,
         warning_count: 0,
       },
@@ -190,7 +190,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.evolve production — Execute production apply
+   * evolution.evolve production — Execute production apply
    */
   async evolveProduction(): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
@@ -229,7 +229,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.evolve verify — Verify and complete evolution
+   * evolution.evolve verify — Verify and complete evolution
    */
   async evolveVerify(): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
@@ -260,7 +260,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.evolve abort — Abort active evolution
+   * evolution.evolve abort — Abort active evolution
    */
   async evolveAbort(reason?: string): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
@@ -291,7 +291,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.receipts — List recent receipts
+   * evolution.receipts — List recent receipts
    */
   async receipts(limit = 10): Promise<CommandResult> {
     const recentReceipts = await evolutionReceipts.getRecentReceipts(limit);
@@ -360,7 +360,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.receipt <run_id> — Get receipt for specific run
+   * evolution.receipt <run_id> — Get receipt for specific run
    */
   async receipt(run_id: string): Promise<CommandResult> {
     const receipt = await evolutionReceipts.getReceiptByRunId(run_id);
@@ -381,7 +381,7 @@ export const modernizerCommands = {
   },
 
   /**
-   * modernizer.scan — Cognitive systems scan (v0.7.7)
+   * evolution.scan — Cognitive systems scan (v0.7.7)
    */
   async scan(options: ScanOptions = {}): Promise<CommandResult> {
     const result = await evolutionScan(options);
@@ -394,4 +394,6 @@ export const modernizerCommands = {
   },
 };
 
-export default modernizerCommands;
+/** @deprecated Use evolutionCommands */
+export const modernizerCommands = evolutionCommands;
+export default evolutionCommands;

@@ -210,7 +210,7 @@ export async function createPlanFromNormalized(
 
 /**
  * Validate that a plan contains only normalized actions
- * Used by modernizer.evolve to reject malformed plans
+ * Used by evolution.evolve to reject malformed plans
  */
 export function validatePlanForEvolution(plan: NormalizedPlan): { 
   valid: boolean; 

@@ -57,7 +57,7 @@ const ATOMIC_PATTERNS = [
   // Timestamps
   /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/g,
   // Module names
-  /(?:BRAIN|DECODE|DREAM|VISION|NEXUS|DEFENSE|CORE|RIPPLE|ACCESS|SYSTEM|MODERNIZER|INTEGRATION|CORTEX|INCLUSIVE|MEMORY|RELAY|AUDIT|IDENTITY|ECONOMY|SANDBOX|ENCODE|ATLAS)/g,
+  /(?:BRAIN|DECODE|DREAM|VISION|NEXUS|DEFENSE|CORE|RIPPLE|ACCESS|SYSTEM|EVOLUTION|INTEGRATION|CORTEX|INCLUSIVE|MEMORY|RELAY|AUDIT|IDENTITY|ECONOMY|SANDBOX|ENCODE|ATLAS)/g,
   // Status labels
   /(?:OK|HEALTHY|BLOCKED|READY|PENDING|FAILED|VERIFIED|ABORTED)/g,
   // Command names
@@ -245,7 +245,7 @@ function formatStandardScan(result: ScanResultExtended, options: ScanOptions): s
   const W = 50; // Column width
   
   lines.push('╔' + '═'.repeat(W) + '╗');
-  lines.push('║  MODERNIZER SCAN RESULTS' + ' '.repeat(W - 26) + '║');
+  lines.push('║  EVOLUTION SCAN RESULTS' + ' '.repeat(W - 25) + '║');
   lines.push('╠' + '═'.repeat(W) + '╣');
   
   lines.push(`║  Scan: ${truncateId(result.scan_id, 16).padEnd(W - 10)}║`);
@@ -307,7 +307,7 @@ function formatFullScan(result: ScanResultExtended, options: ScanOptions): strin
   const W = 64; // Full width
   
   lines.push('╔' + '═'.repeat(W) + '╗');
-  lines.push('║  MODERNIZER SCAN RESULTS' + ' '.repeat(W - 26) + '║');
+  lines.push('║  EVOLUTION SCAN RESULTS' + ' '.repeat(W - 25) + '║');
   lines.push('╠' + '═'.repeat(W) + '╣');
   lines.push(`║  Scan ID: ${result.scan_id.substring(0, 24).padEnd(24)}` + ' '.repeat(W - 38) + '║');
   lines.push(`║  Duration: ${(result.scan_duration_ms / 1000).toFixed(2)}s` + ' '.repeat(W - 18) + '║');
