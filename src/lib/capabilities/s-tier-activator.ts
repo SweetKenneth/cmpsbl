@@ -319,6 +319,8 @@ export function activateWaveOnly(wave: ActivationWave): ActivationResult {
     6: WAVE_6_ACTIVATIONS,
     7: WAVE_7_ACTIVATIONS,
     8: WAVE_8_ACTIVATIONS,
+    9: WAVE_9_ACTIVATIONS,
+    10: WAVE_10_ACTIVATIONS,
   };
   return activateWave(wave, waveMap[wave]);
 }
