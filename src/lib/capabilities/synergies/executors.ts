@@ -5390,7 +5390,7 @@ export async function executeSecurityPostureEvolution(
   const steps: SynergyStepResult[] = [];
   
   steps.push({ module: 'DEFENSE', success: true, data: { policiesAnalyzed: 32, gaps: 4 }, durationMs: 120 });
-  steps.push({ module: 'MODERNIZER', success: true, data: { proposalsGenerated: 6 }, durationMs: 150 });
+  steps.push({ module: 'EVOLUTION', success: true, data: { proposalsGenerated: 6 }, durationMs: 150 });
   steps.push({ module: 'BRAIN', success: true, data: { threatPatterns: 18, riskReduction: '23%' }, durationMs: 100 });
   steps.push({ module: 'CORTEX', success: true, data: { approved: 5, deferred: 1 }, durationMs: 80 });
   
