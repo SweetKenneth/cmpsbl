@@ -752,7 +752,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         'INTEL Aggregator', 'ENGINEER Maintenance Node', 'SEBA Evolution Signals',
         'Full Audit Runner', 'Substrate Health Check', 'AUDIT Compliance Ledger',
         'Diligence Harness', 'INCLUSIVE WCAG 2.2 Scanner', 'DEFENSE Security Posture',
-        'MODERNIZER 4-Phase Cognitive Scan',
+        'EVOLUTION 4-Phase Cognitive Scan',
       ],
       governance: {
         receipt_id: governanceChain.receipt_id,
