@@ -101,7 +101,7 @@ const WAVE_3_ACTIVATIONS = [
   { module: 'relay', capability: 'priority_aware_relay', priority: 93, id: 'S-RLY02' },
   { module: 'intent', capability: 'intent_chaining', priority: 93, id: 'S-INT03' },
   { module: 'access', capability: 'adaptive_rate_limiting', priority: 93, id: 'S-ACC02' },
-  { module: 'modernizer', capability: 'technical_debt_quantifier', priority: 93, id: 'S-MOD02' },
+  { module: 'evolution', capability: 'technical_debt_quantifier', priority: 93, id: 'S-MOD02' },
   { module: 'identity', capability: 'federated_identity_resolver', priority: 93, id: 'S-IDN02' },
   { module: 'harvest', capability: 'cross_lingual_intelligence', priority: 93, id: 'S-SYN04' },
   { module: 'echo', capability: 'adversarial_wargame', priority: 93, id: 'S-SYN05' },
