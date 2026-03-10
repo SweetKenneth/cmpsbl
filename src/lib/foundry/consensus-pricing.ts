@@ -329,12 +329,13 @@ function computeConfidence(
 // ── Shared Pricing Prompt ──
 
 export function buildConsensusPricingPrompt(input: ConsensusInput): string {
-  const complexitySignal = (input.internal_value || 0) > 10000 ? 'very high'
-    : (input.internal_value || 0) > 5000 ? 'high'
+  const complexitySignal = (input.internal_value || 0) > 500000 ? 'exceptional — enterprise platform class'
+    : (input.internal_value || 0) > 100000 ? 'very high — significant infrastructure'
+    : (input.internal_value || 0) > 10000 ? 'high'
     : (input.internal_value || 0) > 1000 ? 'moderate'
     : 'standard';
 
-  return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
+  return `Price this software artifact for commercial sale. Consider all channels: enterprise licensing, marketplace distribution, SaaS integration, and direct sales.
 
 ARTIFACT: ${input.artifact_name}
 DESCRIPTION: ${input.artifact_description || 'Crystallized software pipeline / reusable code module'}

@@ -159,12 +159,13 @@ function buildPricingPrompt(artifact: {
   runtimeType?: string;
 }): string {
   // Convert internal value to a qualitative signal to prevent anchoring bias
-  const complexitySignal = (artifact.internalValue || 0) > 10000 ? 'very high'
-    : (artifact.internalValue || 0) > 5000 ? 'high'
+  const complexitySignal = (artifact.internalValue || 0) > 500000 ? 'exceptional — enterprise platform class'
+    : (artifact.internalValue || 0) > 100000 ? 'very high — significant infrastructure'
+    : (artifact.internalValue || 0) > 10000 ? 'high'
     : (artifact.internalValue || 0) > 1000 ? 'moderate'
     : 'standard';
 
-  return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
+  return `Price this software artifact for commercial sale. Consider all channels: enterprise licensing, marketplace distribution, SaaS integration, and direct sales.
 
 ARTIFACT: ${artifact.name}
 DESCRIPTION: ${artifact.description || 'Crystallized software pipeline / reusable code module'}
