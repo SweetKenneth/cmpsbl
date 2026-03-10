@@ -7814,14 +7814,28 @@ export type Database = {
           artifact_id: string
           artifact_name: string
           category: string | null
+          commercialization_notes: string | null
+          comparable_summary: string | null
+          enterprise_price: number | null
+          estimated_market_range_high: number | null
+          estimated_market_range_low: number | null
           id: string
+          indie_price: number | null
+          market_category: string | null
           metadata: Json | null
           obtained_at: string
           pipeline_fingerprint: string | null
           pipeline_steps: Json | null
+          pricing_confidence: number | null
+          pricing_last_updated_at: string | null
+          pricing_source: string | null
+          pricing_source_version: string | null
           public_tier: string
+          recommended_resale_price: number | null
           score: number
           source: string
+          standard_price: number | null
+          suggested_marketplaces: string[] | null
           system_chain: string[] | null
           user_id: string
           valuation_display: number
@@ -7831,14 +7845,28 @@ export type Database = {
           artifact_id: string
           artifact_name: string
           category?: string | null
+          commercialization_notes?: string | null
+          comparable_summary?: string | null
+          enterprise_price?: number | null
+          estimated_market_range_high?: number | null
+          estimated_market_range_low?: number | null
           id?: string
+          indie_price?: number | null
+          market_category?: string | null
           metadata?: Json | null
           obtained_at?: string
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
+          pricing_confidence?: number | null
+          pricing_last_updated_at?: string | null
+          pricing_source?: string | null
+          pricing_source_version?: string | null
           public_tier: string
+          recommended_resale_price?: number | null
           score: number
           source?: string
+          standard_price?: number | null
+          suggested_marketplaces?: string[] | null
           system_chain?: string[] | null
           user_id: string
           valuation_display?: number
@@ -7848,14 +7876,28 @@ export type Database = {
           artifact_id?: string
           artifact_name?: string
           category?: string | null
+          commercialization_notes?: string | null
+          comparable_summary?: string | null
+          enterprise_price?: number | null
+          estimated_market_range_high?: number | null
+          estimated_market_range_low?: number | null
           id?: string
+          indie_price?: number | null
+          market_category?: string | null
           metadata?: Json | null
           obtained_at?: string
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
+          pricing_confidence?: number | null
+          pricing_last_updated_at?: string | null
+          pricing_source?: string | null
+          pricing_source_version?: string | null
           public_tier?: string
+          recommended_resale_price?: number | null
           score?: number
           source?: string
+          standard_price?: number | null
+          suggested_marketplaces?: string[] | null
           system_chain?: string[] | null
           user_id?: string
           valuation_display?: number
