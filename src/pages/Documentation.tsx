@@ -178,14 +178,15 @@ function OverviewSection() {
           the <strong className="text-foreground">OCG</strong> (Operational Compliance Grid) handles boundary enforcement, and the <strong className="text-foreground">Execution tier</strong> runs
           all user-facing capabilities. Cross-cutting <strong className="text-foreground">Fields</strong> (EVOLUTION, IMMUNITY, INTENT) permeate every layer.
         </p>
-        <CodeBlock title="Substrate layers">{`┌─────────────────────────────────────────────────────────┐
+        <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
 │  GOVERNANCE (Plane)        Legitimacy supervision       │
 ├─────────────────────────────────────────────────────────┤
 │  DEFENSE (Shell)           Terminal boundary enforcement │
 ├─────────────────────────────────────────────────────────┤
 │  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
 │                            VISION · CORTEX · ECONOMY    │
-│                            SANDBOX · INCLUSIVE · MEDIC   │
+│                            SANDBOX · INCLUSIVE · MEDIC  │
+│                            INTEGRATION                  │
 ├─────────────────────────────────────────────────────────┤
 │  OCG                       RIPPLE · ACCESS · IDENTITY   │
 │                            RELAY · AUDIT · NERVE        │
@@ -193,8 +194,17 @@ function OverviewSection() {
 │  CCR (Cognitive Core)      BRAIN · MEMORY · DREAM       │
 ├─────────────────────────────────────────────────────────┤
 │  SPINE                     CORE → SYSTEM                │
+├─────────────────────────────────────────────────────────┤
+│  ESZ                       COMPLIANCE · PREDICT ·       │
+│                            ETHICS · CONTRACT            │
+│  EPZ                       SIMULATE · GEOSPATIAL · EDGE │
+│  EMZ                       FORGE · TRANSLATE · INGEST   │
+│  CSZ                       EVOLUTION · SHADOW · PHANTOM │
+├─────────────────────────────────────────────────────────┤
+│  ATLAS                     Control plane (Node 40)      │
 └─────────────────────────────────────────────────────────┘
-Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)`}</CodeBlock>
+Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)
+Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
