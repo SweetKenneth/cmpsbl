@@ -148,7 +148,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'self-healing',
     name: 'Self-Healing',
-    description: 'SYSTEM diagnostics trigger MODERNIZER auto-fixes validated by VISION regression checks',
+    description: 'SYSTEM diagnostics trigger EVOLUTION auto-fixes validated by VISION regression checks',
     category: 'resilience',
     modules: [
       { name: 'SYSTEM', role: 'primary', required: true },
