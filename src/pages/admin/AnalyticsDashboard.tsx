@@ -728,10 +728,10 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                         {v.risk_level}
                       </Badge>
                     </td>
-                    <td className="py-2 text-right font-mono text-foreground hidden md:table-cell">{v.total_sessions}</td>
-                    <td className="py-2 text-right font-mono text-muted-foreground hidden md:table-cell">{v.avg_pages}</td>
+                    <td className="py-2 text-right font-mono text-foreground">{v.total_sessions}</td>
+                    <td className="py-2 text-right font-mono text-muted-foreground">{v.avg_pages}</td>
                     <td className="py-2 text-right font-mono text-muted-foreground">{v.days_since_visit}d</td>
-                    <td className="py-2 text-right hidden lg:table-cell">
+                    <td className="py-2 text-right">
                       <span className="flex items-center justify-end gap-1 font-mono">
                         {trendIcon(v.recent_7d, v.prev_7d)}
                         <span className={cn(
