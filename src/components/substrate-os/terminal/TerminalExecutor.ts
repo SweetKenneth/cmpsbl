@@ -2611,7 +2611,7 @@ ${allFeatures.map(f => {
         result = { success: true, data: res.data };
       }
     } else if (base === 'evolution.applied' || base === 'modernizer.applied') {
-      const res = await modernizer.applied();
+      const res = await evolutionMod.applied();
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Failed to fetch applied';
