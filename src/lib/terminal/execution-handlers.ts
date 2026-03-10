@@ -249,8 +249,8 @@ export function registerExecutionHandlers(): void {
   });
 
   registerHandler('modernizer.plans', async () => {
-    const { evolutionMod } = await import('@/lib/substrate');
-    return await evolutionMod.jobs();
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.jobs();
   });
 
   registerHandler('modernizer.runs', async () => {
