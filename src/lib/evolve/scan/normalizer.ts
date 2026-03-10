@@ -95,7 +95,7 @@ const CATEGORY_TO_ACTION: Record<string, NormalizedActionType> = {
 
 // Infer target scope from proposal content
 const SCOPE_KEYWORDS: Record<TargetScope, string[]> = {
-  module: ['module', 'component', 'service', 'brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive'],
+  module: ['module', 'component', 'service', 'brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'cortex', 'inclusive'],
   edge: ['edge', 'function', 'supabase', 'pf-', 'deno'],
   api: ['api', 'endpoint', 'route', 'router', 'webhook'],
   database: ['table', 'schema', 'rls', 'policy', 'migration', 'database'],
