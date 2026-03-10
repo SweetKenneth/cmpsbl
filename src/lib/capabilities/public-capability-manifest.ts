@@ -441,7 +441,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   {
     name: 'Architecture Modernization Planner',
     tier: 'architect',
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     outcome_summary: 'Generate risk-scored migration roadmaps with incremental execution plans for legacy systems',
     category: 'optimization',
     public_safe: true,
