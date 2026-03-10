@@ -157,7 +157,7 @@ export default function Solutions() {
             <motion.div key={solution.name} {...fadeUp} transition={{ duration: 0.5, delay: index * 0.05 }}>
                <Card className="bg-card/80 backdrop-blur-sm border border-border glass-edge card-lift hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group overflow-hidden">
                  <div className={`h-1 w-full bg-gradient-to-r ${solution.color} opacity-80`} />
-                <CardContent className="p-5 sm:p-8 md:p-10">
+                <CardContent className="p-4 sm:p-6 md:p-10">
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                       <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-4 shadow-lg`}>
