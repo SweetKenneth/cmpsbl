@@ -2519,7 +2519,7 @@ ${allFeatures.map(f => {
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
-        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'modernizer.plans' to list available plans.` };
+        return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
       const res = await modernizer.apply(planId);
       // Check both fetch error and success:false in response data
