@@ -332,10 +332,10 @@ function toSlug(name: string): string {
 
 function getValuationBreakdown(score: number, category: string, moduleChainLength: number) {
   const normalized = Math.max(0, score - 60) / 40;
-  const baseValue = 5000 + Math.pow(normalized, 2.5) * 495000;
+  const baseValue = 5000 + Math.pow(normalized, 2.5) * 995000;
   const catMult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()] ?? 1.0;
-  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.08;
-  const apexMult = score >= 95 ? 1.5 : score >= 92 ? 1.2 : 1.0;
+  const complexityMult = 1 + (Math.min(moduleChainLength, 6) - 1) * 0.12;
+  const apexMult = score >= 100 ? 2.0 : score >= 95 ? 1.5 : score >= 92 ? 1.2 : 1.0;
   const total = estimateMarketValue(score, category, moduleChainLength);
 
   return {
