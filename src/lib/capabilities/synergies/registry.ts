@@ -1422,7 +1422,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'full-stack-evolution',
     name: 'Full-Stack Evolution',
-    description: 'CORTEX proposes changes validated by MODERNIZER impact, BRAIN history, VISION metrics, and DEFENSE safety checks',
+    description: 'CORTEX proposes changes validated by EVOLUTION impact, BRAIN history, VISION metrics, and DEFENSE safety checks',
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
