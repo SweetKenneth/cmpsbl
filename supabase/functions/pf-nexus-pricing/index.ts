@@ -325,7 +325,7 @@ function computeConsensusPrice(
     normalizedInternal * cjpiMult * weights.cjpi;
 
   const adjustedPrice = basePrice * complexityBonus * hardwarePremium;
-  const recommended = Math.round(Math.min(Math.max(adjustedPrice, 1), 50000) * 100) / 100;
+  const recommended = Math.round(Math.max(adjustedPrice, 1) * 100) / 100;
 
   // Market range
   const rangeLow = included.length > 0
