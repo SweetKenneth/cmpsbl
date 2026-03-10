@@ -93,8 +93,8 @@ export default function Contact() {
       </section>
 
       {/* Departments */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-6xl">
+       <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
+         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp} className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Reach the Right Team</h2>
             <p className="text-muted-foreground text-sm sm:text-base">Connect directly with the department that can help you most.</p>
