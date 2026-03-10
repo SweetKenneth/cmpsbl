@@ -2700,7 +2700,7 @@ ${status.trip_reason ? `║  Trip Reason: ${status.trip_reason.substring(0, 40).
       } else {
         return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.circuit [status|reset|open <reason>]' };
       }
-    } else if (base === 'modernizer.autonomy') {
+    } else if (base === 'evolution.autonomy' || base === 'modernizer.autonomy') {
       const subCmd = args[0] || 'status';
       if (subCmd === 'status') {
         try {
