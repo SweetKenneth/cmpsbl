@@ -1523,7 +1523,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'comprehensive-accessibility-audit',
     name: 'Comprehensive Accessibility Audit',
-    description: 'INCLUSIVE performs deep audit with VISION metrics tracking, DECODE readability scoring, and MODERNIZER auto-fix suggestions',
+    description: 'INCLUSIVE performs deep audit with VISION metrics tracking, DECODE readability scoring, and EVOLUTION auto-fix suggestions',
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
