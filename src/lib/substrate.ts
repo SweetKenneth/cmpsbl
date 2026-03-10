@@ -676,7 +676,7 @@ class SubstrateClient {
     
     /** Get a specific scan/job by ID */
     job: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'job', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'job', payload: { job_id } }),
     
     /** Check usage quota for scans */
     quota: () =>
