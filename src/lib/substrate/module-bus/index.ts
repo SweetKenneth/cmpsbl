@@ -14,7 +14,7 @@ export type ModuleName =
   | 'core' | 'ripple' | 'access'                          // Kernel
   | 'brain' | 'decode' | 'dream'                           // Cognitive
   | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
-  | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
+  | 'system' | 'evolution' | 'integration' | 'inclusive'    // Administrative
   | 'cortex' | 'atlas'                                      // Orchestrator
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
   | 'forge' | 'lingua' | 'harvest'                                               // EMZ — Manufacturing
