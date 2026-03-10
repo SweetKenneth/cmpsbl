@@ -1,11 +1,17 @@
 /**
- * Architecture — Public SEO page for CMPSBL layered cognitive kernel
- * /architecture — linked from footer "Connect" section
+ * Architecture — Public SEO page for CMPSBL 40-node substrate topology
+ * /architecture
  */
 
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
-import { Layers, Cpu, Shield, Brain, Zap, Eye, Moon, ArrowRight, Network, Settings, Plug, Accessibility, Code2, Wand2, Target, Scale, HeartPulse, Dna, Radio, Key, Fingerprint, Send, FileCheck, Coins, FlaskConical } from "lucide-react";
+import {
+  Layers, Cpu, Shield, Brain, Zap, Eye, Moon, ArrowRight, Network,
+  Settings, Plug, Accessibility, Code2, Wand2, Target, Scale,
+  HeartPulse, Dna, Radio, Key, Fingerprint, Send, FileCheck, Coins,
+  FlaskConical, Compass, Copy, Ghost, Pickaxe, Languages, Globe,
+  Gavel, Stethoscope, Map, Wrench, Activity,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -22,69 +28,187 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-const KERNEL = { name: "CORE", icon: Cpu, desc: "Standalone boot authority — initializes all layers, maintains canonical registry" };
+/* ─── Full 40-node topology, grouped by the 12 canonical sectors ─── */
 
-const NODES = [
-  { name: "DECODE", icon: Brain, desc: "Natural language interpreter — prompt parsing, intent extraction" },
-  { name: "ENCODE", icon: Code2, desc: "Code generation pipeline — fix generation, rule absorption" },
-  { name: "VISION", icon: Eye, desc: "Unified observability — health aggregation, metric visualization" },
-  { name: "CORTEX", icon: Wand2, desc: "Orchestrator — multi-surface coordination, task routing" },
-  { name: "NEXUS", icon: Zap, desc: "AI routing gateway — provider abstraction, model selection" },
-  { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering" },
-  { name: "SANDBOX", icon: FlaskConical, desc: "Isolated execution — safe experimentation, staged deployments" },
-  { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility engine — WCAG scanning, compliance reporting" },
-  { name: "INTEGRATION", icon: Plug, desc: "Dependency resolver — cross-surface binding, boots last" },
+interface NodeDef {
+  name: string;
+  icon: React.ElementType;
+  desc: string;
+}
+
+interface SectorDef {
+  label: string;
+  tag: string;
+  nodes: NodeDef[];
+}
+
+const SECTORS: SectorDef[] = [
+  {
+    label: "Kernel",
+    tag: "SPINE",
+    nodes: [
+      { name: "CORE", icon: Cpu, desc: "Boot authority — initializes all sectors, owns the weighted node registry (Σ = 1.000)." },
+      { name: "SYSTEM", icon: Settings, desc: "Lifecycle management, configuration state, diagnostics aggregation, and self-repair loop." },
+    ],
+  },
+  {
+    label: "Cognitive Core Reality",
+    tag: "CCR",
+    nodes: [
+      { name: "BRAIN", icon: Brain, desc: "Reasoning engine — reflection cycles, pattern recognition, 384-dim hash-embed learning." },
+      { name: "MEMORY", icon: Brain, desc: "Tiered persistent storage — hot/warm/cold recall with SM-2 spaced repetition." },
+      { name: "DREAM", icon: Moon, desc: "Synthesis zone — creative combination, heuristic generation, SimNap offline cycles." },
+    ],
+  },
+  {
+    label: "Operational Compliance Grid",
+    tag: "OCG",
+    nodes: [
+      { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-sector communication, cascade detection." },
+      { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
+      { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
+      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-node message routing." },
+      { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
+      { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-node coordination." },
+    ],
+  },
+  {
+    label: "Execution",
+    tag: "EXE",
+    nodes: [
+      { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
+      { name: "ENCODE", icon: Code2, desc: "Code generation pipeline — 7-stage execution chain, output formatting." },
+      { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
+      { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
+      { name: "NEXUS", icon: Zap, desc: "AI provider routing gateway — model selection, fallback chains, cost tracking." },
+      { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering." },
+      { name: "SANDBOX", icon: FlaskConical, desc: "Isolated execution environment — safe experimentation, staged deployments." },
+      { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility engine — WCAG scanning, compliance reporting." },
+      { name: "MEDIC", icon: Stethoscope, desc: "Autonomous diagnostics — self-repair engine, real-state probes." },
+      { name: "INTEGRATION", icon: Plug, desc: "Dependency resolver — cross-surface binding, boots last in sequence." },
+    ],
+  },
+  {
+    label: "Expansion Sovereignty Zone",
+    tag: "ESZ",
+    nodes: [
+      { name: "SOVEREIGN", icon: Globe, desc: "Data sovereignty — jurisdictional compliance, consent management." },
+      { name: "ORACLE", icon: Compass, desc: "Predictive modeling — Bayesian networks, 10K Monte Carlo iterations." },
+      { name: "CONSCIENCE", icon: Scale, desc: "Ethical assessment — 5-type bias detection, decision boundaries." },
+      { name: "TREATY", icon: Gavel, desc: "Contract negotiation & SLA enforcement." },
+    ],
+  },
+  {
+    label: "Expansion Perception Zone",
+    tag: "EPZ",
+    nodes: [
+      { name: "COMPASS", icon: Compass, desc: "Geospatial analysis & location-aware processing." },
+      { name: "ECHO", icon: Copy, desc: "Digital twin simulation & scenario replay." },
+      { name: "REFLEX", icon: Zap, desc: "Edge computing orchestration & low-latency response." },
+    ],
+  },
+  {
+    label: "Expansion Manufacturing Zone",
+    tag: "EMZ",
+    nodes: [
+      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing pipelines." },
+      { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
+      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL pipelines." },
+    ],
+  },
+  {
+    label: "Covert Sovereignty Zone",
+    tag: "CSZ",
+    nodes: [
+      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate pipeline, fitness scoring, shadow A/B." },
+      { name: "SHADOW", icon: Shield, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
+      { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization." },
+    ],
+  },
+  {
+    label: "Fields",
+    tag: "FIELD",
+    nodes: [
+      { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience — anomaly signatures, 3-sigma drift baselines, cascade detection." },
+      { name: "INTENT", icon: Target, desc: "Purpose alignment — DAG-based action planning, goal lifecycle management." },
+    ],
+  },
+  {
+    label: "Plane",
+    tag: "PLANE",
+    nodes: [
+      { name: "GOVERNANCE", icon: Scale, desc: "Policy enforcement overlay — action legitimacy supervision, veto authority." },
+      { name: "ENGINEER", icon: Wrench, desc: "Infrastructure automation — P95 latency tracking, deployment orchestration." },
+    ],
+  },
+  {
+    label: "Atlas",
+    tag: "ATLAS",
+    nodes: [
+      { name: "ATLAS", icon: Map, desc: "System map & capability registry — 80-capability index, the global view of what exists." },
+    ],
+  },
+  {
+    label: "Shell",
+    tag: "SHELL",
+    nodes: [
+      { name: "DEFENSE", icon: Shield, desc: "Terminal boundary enforcement — outermost containment shell, threat filtering." },
+    ],
+  },
 ];
 
-const MESHES = [
-  { name: "DEFENSE", icon: Shield, desc: "Outermost — AI-powered security, threat analysis", position: "Outermost" },
-  { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience, self-healing patterns", position: "Outer" },
-  { name: "EVOLUTION", icon: Dna, desc: "Self-improvement — mutation proposals, shadow A/B", position: "Middle" },
-  { name: "INTENT", icon: Target, desc: "Cross-node intent routing, goal decomposition", position: "Inner" },
-  { name: "GOVERNANCE", icon: Scale, desc: "Ethical constraints, veto authority, coherence", position: "Innermost" },
-];
+const BOOT_SEQUENCE = `CORE (Kernel Boot Authority)
+  → SYSTEM (Spine — Lifecycle & Config)
+  → CCR: BRAIN + MEMORY + DREAM
+  → OCG: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT + NERVE
+  → Execution: DECODE, ENCODE, VISION, CORTEX, NEXUS,
+               ECONOMY, SANDBOX, INCLUSIVE, MEDIC
+  → INTEGRATION (boots last — dependency resolver)
+  → ESZ: SOVEREIGN + ORACLE + CONSCIENCE + TREATY
+  → EPZ: COMPASS + ECHO + REFLEX
+  → EMZ: FORGE + LINGUA + HARVEST
+  → CSZ: EVOLUTION + SHADOW + PHANTOM
+  ← Fields permeate: IMMUNITY + INTENT
+  ← Plane overlay: GOVERNANCE + ENGINEER
+  ← Atlas maps: ATLAS
+  ← Shell wraps: DEFENSE (outermost)`;
 
-const CCR_ZONES = [
-  { name: "SYSTEM", icon: Settings, desc: "Lifecycle management, diagnostics" },
-  { name: "BRAIN", icon: Brain, desc: "Reasoning engine, reflection cycles" },
-  { name: "MEMORY", icon: Brain, desc: "Persistent tiered storage, recall" },
-  { name: "DREAM", icon: Moon, desc: "Synthesis, creative combination" },
-];
-
-const OCG_ZONES = [
-  { name: "RIPPLE", icon: Radio, desc: "Signal/event bus, inter-zone communication" },
-  { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting" },
-  { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution" },
-  { name: "RELAY", icon: Send, desc: "Webhook dispatch, external integrations" },
-  { name: "AUDIT", icon: FileCheck, desc: "Integrity ledger, compliance logging" },
+const KEY_PROPERTIES = [
+  { title: "Weight Invariant", desc: "Every node carries a governance weight. The sum across all 40 nodes is exactly 1.000 — no single node can dominate decisions." },
+  { title: "Clockless Coordination", desc: "Nodes share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
+  { title: "Circuit Breaker Isolation", desc: "Every node has independent failure tracking with automatic circuit breakers. Degradation never cascades across sectors." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow pipeline before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
+  { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
+  { title: "Graceful Degradation", desc: "When individual nodes fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
 
 export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Cognitive Kernel Architecture | CMPSBL"
-        description="CMPSBL architecture: CORE boot authority, 9 execution nodes, 5 protective layers, and 9 internal infrastructure zones. Hot-swappable, autonomously evolving."
+        title="Substrate Architecture | CMPSBL"
+        description="How CMPSBL works: 40 autonomous nodes across 12 sectors — deterministic boot, clockless coordination, shadow-first mutation, and tamper-evident audit."
         image="https://cmpsbl.com/og/architecture.jpg"
-        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI architecture', 'modular AI platform', 'AI infrastructure layers']}
+        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI nodes', 'cognitive substrate', 'AI infrastructure layers']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL uses a 12-phase boot sequence: CORE initializes all sectors, maintains the node registry, and orchestrates lifecycle events across 40 nodes.' },
-          { question: 'How many components does CMPSBL have?', answer: 'CMPSBL has 40 nodes across 12 sectors: CORE, SYSTEM, CCR (3), OCG (6), Execution (11), ESZ (4), EPZ (3), EMZ (3), CSZ (3), Fields (2), Plane (2), and Shell (1).' },
-          { question: 'What are the protective layers?', answer: 'Four shielded expansion zones (ESZ, EPZ, EMZ, CSZ) group specialized nodes, while Fields (IMMUNITY, INTENT) permeate all sectors, GOVERNANCE supervises, and DEFENSE forms the outermost containment shell.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-node substrate organized into 12 sectors. CORE boots all sectors in a deterministic sequence and maintains a weighted node registry where all weights sum to exactly 1.000.' },
+          { question: 'What are the 12 sectors?', answer: 'Kernel (SPINE), CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, and Shell. Each sector groups related nodes with distinct operational responsibilities.' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation pipeline: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
         ]}
       />
 
       <PublicNav />
 
       <main>
-        {/* Hero with interactive graph */}
+        {/* ── Hero + Interactive Graph ── */}
         <section className="relative py-16 md:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.04] pointer-events-none"
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.04] pointer-events-none"
             style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 60%)' }}
           />
           <div className="container mx-auto max-w-6xl px-4 relative">
@@ -92,18 +216,22 @@ export default function Architecture() {
               <motion.div {...fadeUp} className="max-w-xl">
                 <Badge variant="outline" className="mb-5 border-primary/30 text-primary gap-1.5">
                   <Layers className="w-3 h-3" />
-                  Production Architecture
+                  40 Nodes · 12 Sectors
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.05]">
                   How CMPSBL Works
                 </h1>
-                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6">
-                  A layered orchestration architecture that boots deterministically, heals autonomously,
-                  and evolves without human intervention. 40 nodes across 12 sectors, 675+ capabilities.
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
+                  A layered orchestration architecture that boots deterministically, coordinates without a shared clock,
+                  heals autonomously, and evolves through a shadow-first mutation pipeline — all governed by a tamper-evident audit chain.
+                </p>
+                <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
+                  40 nodes across 12 sectors. Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
+                  No single node can dominate system-level decisions without proportional representation.
                 </p>
                 <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-                  Click any node to inspect
+                  Click any node in the diagram to inspect
                 </p>
               </motion.div>
 
@@ -118,140 +246,62 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* Boot Sequence */}
+        {/* ── Boot Sequence ── */}
         <section className="border-y border-border bg-muted/30">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-6">Boot Sequence</h2>
+              <h2 className="text-3xl font-bold mb-2">Deterministic Boot Sequence</h2>
+              <p className="text-muted-foreground mb-6">
+                CORE initializes all sectors in a fixed order. Fields permeate the spine,
+                the Plane overlay supervises, ATLAS indexes, and DEFENSE seals the boundary.
+              </p>
               <Card className="bg-card">
                 <CardContent className="p-6">
-                  <pre className="text-sm font-mono text-muted-foreground leading-relaxed overflow-x-auto">{`CORE (Standalone Kernel)
-  → SYSTEM (Elevated Spine Layer)
-  → CCR (Cognitive Reality): BRAIN + MEMORY + DREAM
-  → OCG (Operational Compliance Grid): RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT
-  → Modules: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE
-  → INTEGRATION (boots last — dependency resolver)
-  ← Fields wrap spine: EVOLUTION + IMMUNITY + INTENT
-  ← Overlay Plane: GOVERNANCE
-  ← Defense Shell: DEFENSE (outermost)`}</pre>
+                  <pre className="text-sm font-mono text-muted-foreground leading-relaxed overflow-x-auto whitespace-pre">{BOOT_SEQUENCE}</pre>
                 </CardContent>
               </Card>
             </motion.div>
           </div>
         </section>
 
-        {/* CORE Kernel */}
-        <section className="container mx-auto max-w-5xl px-4 py-16">
-          <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-8">CORE Kernel</h2>
-            <Card className="border-primary/20 bg-primary/5">
-              <CardContent className="p-6 flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <KERNEL.icon className="w-6 h-6 text-primary" />
+        {/* ── All 12 Sectors ── */}
+        {SECTORS.map((sector, sIdx) => (
+          <section
+            key={sector.tag}
+            className={`border-t border-border ${sIdx % 2 === 0 ? 'bg-muted/20' : ''}`}
+          >
+            <div className="container mx-auto max-w-5xl px-4 py-14">
+              <motion.div {...fadeUp}>
+                <div className="flex items-center gap-3 mb-6">
+                  <h2 className="text-2xl font-bold">{sector.label}</h2>
+                  <Badge variant="outline" className="text-xs font-mono">{sector.tag}</Badge>
+                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'node' : 'nodes'}</Badge>
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">{KERNEL.name}</h3>
-                  <p className="text-muted-foreground">{KERNEL.desc}</p>
+                <div className={`grid gap-3 ${sector.nodes.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : sector.nodes.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
+                  {sector.nodes.map((node) => (
+                    <Card key={node.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
+                      <CardContent className="p-5 flex items-start gap-3">
+                        <node.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-bold font-mono text-sm">{node.name}</span>
+                          <p className="text-xs text-muted-foreground mt-1">{node.desc}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </section>
+              </motion.div>
+            </div>
+          </section>
+        ))}
 
-        {/* Execution Surface Nodes */}
-        <section className="border-t border-border bg-muted/20">
+        {/* ── Key Properties ── */}
+        <section className="border-t border-border">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Execution Surface Nodes</h2>
-              <p className="text-muted-foreground mb-8">Public-facing cognitive capabilities that boot after CORE and convergence layers are online.</p>
+              <h2 className="text-3xl font-bold mb-8">Architectural Properties</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {NODES.map((mod) => (
-                  <Card key={mod.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
-                    <CardContent className="p-5 flex items-start gap-3">
-                      <mod.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <span className="font-bold font-mono text-sm">{mod.name}</span>
-                        <p className="text-xs text-muted-foreground mt-1">{mod.desc}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Protective Layers */}
-        <section className="border-t border-border">
-          <div className="container mx-auto max-w-5xl px-4 py-16">
-            <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Protective Layers</h2>
-              <p className="text-muted-foreground mb-8">Behavioral layers that wrap all nodes, ordered outermost to innermost.</p>
-              <div className="space-y-3">
-                {MESHES.map((mesh, i) => (
-                  <Card key={mesh.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
-                    <CardContent className="p-5 flex items-center gap-4">
-                      <Badge variant="outline" className="shrink-0 w-24 justify-center text-xs">{mesh.position}</Badge>
-                      <mesh.icon className="w-5 h-5 text-primary shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <span className="font-bold font-mono text-sm">{mesh.name}</span>
-                        <p className="text-xs text-muted-foreground">{mesh.desc}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Internal Infrastructure */}
-        <section className="border-t border-border bg-muted/20">
-          <div className="container mx-auto max-w-5xl px-4 py-16">
-            <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Internal Infrastructure</h2>
-              <p className="text-muted-foreground mb-8">Core infrastructure zones that power the substrate — fully monitored, independently scalable.</p>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">CCR — Layer 0 (Cognitive Reality)</h3>
-                  <div className="space-y-2">
-                    {CCR_ZONES.map((z) => (
-                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary/20 transition-colors duration-200">
-                        <span className="font-mono text-xs font-bold w-16">{z.name}</span>
-                        <span className="text-xs text-muted-foreground">{z.desc}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-sm text-primary tracking-wider uppercase mb-3">OCG — Operational Compliance Grid</h3>
-                  <div className="space-y-2">
-                    {OCG_ZONES.map((z) => (
-                      <div key={z.name} className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover:border-primary/20 transition-colors duration-200">
-                        <span className="font-mono text-xs font-bold w-16">{z.name}</span>
-                        <span className="text-xs text-muted-foreground">{z.desc}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Key Properties */}
-        <section className="border-t border-border">
-          <div className="container mx-auto max-w-5xl px-4 py-16">
-            <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-8">Key Properties</h2>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  { title: "Hot-Swappable Zones", desc: "CCR/OCG zones can be independently cycled without system restart" },
-                  { title: "Circuit Breaker Isolation", desc: "Every zone has independent failure tracking — degradation never cascades" },
-                  { title: "Autonomous Evolution", desc: "The EVOLUTION overlay continuously improves system behavior" },
-                  { title: "Shadow Training", desc: "Executors practice on real system gaps in shadow mode before production" },
-                ].map((prop) => (
+                {KEY_PROPERTIES.map((prop) => (
                   <Card key={prop.title} className="hover:border-primary/20 transition-all duration-300 card-lift">
                     <CardContent className="p-5">
                       <h3 className="font-semibold mb-1">{prop.title}</h3>
@@ -264,17 +314,17 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* ── CTA ── */}
         <section className="border-t border-border bg-muted/30">
           <div className="container mx-auto max-w-4xl px-4 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              Dive deeper into the nodes, documentation, and live infrastructure.
+              Dive deeper into individual nodes, live infrastructure, and technical documentation.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/modules">
                 <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  All Nodes <ArrowRight className="w-4 h-4" />
+                  All 40 Nodes <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">
