@@ -4359,7 +4359,7 @@ export async function executeCognitiveStatePreservation(
 
 /**
  * Full-Stack Evolution Executor
- * CORTEX + MODERNIZER + BRAIN + VISION + DEFENSE → Safe system evolution
+ * CORTEX + EVOLUTION + BRAIN + VISION + DEFENSE → Safe system evolution
  */
 export async function executeFullStackEvolution(
   context: SynergyExecutionContext
