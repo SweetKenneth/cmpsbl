@@ -193,9 +193,9 @@ export default function DeveloperShowcase() {
       </section>
 
       {/* Core Features */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
+       <section className="py-16 sm:py-24">
+         <div className="container mx-auto px-3 sm:px-4">
+           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-14">
             <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />Core Capabilities</Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Everything Your App Needs</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
