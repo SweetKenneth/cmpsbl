@@ -5445,7 +5445,7 @@ export async function executePredictiveEvolutionEngine(
   
   steps.push({ module: 'VISION', success: true, data: { degradationTrends: 4, projectedImpact: 'medium' }, durationMs: 100 });
   steps.push({ module: 'DREAM', success: true, data: { solutionsSynthesized: 6, novelty: 0.72 }, durationMs: 180 });
-  steps.push({ module: 'MODERNIZER', success: true, data: { proposalsGenerated: 4, confidence: 0.84 }, durationMs: 150 });
+  steps.push({ module: 'EVOLUTION', success: true, data: { proposalsGenerated: 4, confidence: 0.84 }, durationMs: 150 });
   
   return createSuccessResult(context.synergyId, { fixesProposed: 4, confidence: 0.84 }, steps, startTime);
 }
