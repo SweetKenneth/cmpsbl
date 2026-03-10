@@ -25,7 +25,7 @@ export function usePricingEngine() {
 
       // Persist if vault_id provided
       if (artifact.vault_id) {
-        await supabase.from('pipeline_vault').update({
+        const pricingUpdate = {
           recommended_resale_price: result.recommended_resale_price,
           indie_price: result.indie_price,
           standard_price: result.standard_price,
@@ -40,7 +40,11 @@ export function usePricingEngine() {
           pricing_last_updated_at: new Date().toISOString(),
           pricing_source: result.pricing_source,
           pricing_source_version: '1.0.0',
-        } as any).eq('id', artifact.vault_id);
+        };
+
+        // Route to correct table based on source
+        const table = artifact.source_table || 'pipeline_vault';
+        await supabase.from(table).update(pricingUpdate as any).eq('id', artifact.vault_id);
       }
 
       return result;
