@@ -223,7 +223,7 @@ const WAVE_10_ACTIVATIONS = [
   { module: 'governance', capability: 'policy_aware_intelligence_gate', priority: 86, id: 'S-CJ95' },
   { module: 'governance', capability: 'intelligence_governance_kernel', priority: 86, id: 'S-CJ96' },
   { module: 'brain', capability: 'recursive_cognitive_bootstrapping', priority: 86, id: 'S-CJ97' },
-  { module: 'atlas', capability: 'recursive_capability_discoverer', priority: 86, id: 'S-CJ98' },
+  { module: 'harvest', capability: 'recursive_capability_discoverer', priority: 86, id: 'S-CJ98' },
   { module: 'memory', capability: 'recursive_knowledge_crystallization', priority: 86, id: 'S-CJ99' },
   { module: 'memory', capability: 'recursive_infinite_context', priority: 86, id: 'S-CJ100' },
   { module: 'evolution', capability: 'recursive_self_improvement_pipeline', priority: 86, id: 'S-CJ101' },
