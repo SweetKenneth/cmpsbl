@@ -1072,7 +1072,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // MODERNIZER Module (4)
+  // EVOLUTION Module (4)
   // ═══════════════════════════════════════════════════════════════════════════
   
   proposal_impact_analyzer: {
