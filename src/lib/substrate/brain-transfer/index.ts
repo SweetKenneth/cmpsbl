@@ -410,7 +410,7 @@ const SYSTEM_PATTERNS = [
   { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: CORE kernel boots first, then 9 modules initialize in dependency order across 6 layers. Each module reports ready before next tier starts.', priority: 88 },
 ];
 
-const MODERNIZER_PATTERNS = [
+const EVOLUTION_PATTERNS = [
   { title: 'Shadow Testing Protocol', content: 'Every evolution must run in shadow first. Compare shadow metrics against production baseline for 5 minutes. Only promote if: no regressions, error rate delta < 1%, latency delta < 10%.', priority: 97 },
   { title: 'Rollback Readiness', content: 'Before applying any change, snapshot the current state (file hash, config values, DB schema). Store rollback instructions as executable steps. Test rollback in shadow before production.', priority: 96 },
   { title: 'Diff Quality Assessment', content: 'Score diffs on: lines changed vs lines affected (blast radius), number of files touched (fragmentation), test coverage of changed code, and dependency impact depth.', priority: 90 },
