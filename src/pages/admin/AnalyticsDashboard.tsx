@@ -240,10 +240,13 @@ export default function AnalyticsDashboard() {
               </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => fetchTab(tab)} className="gap-1.5 h-9">
-            <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
-            Refresh
-          </Button>
+          <div className="flex items-center gap-2">
+            <ExcludeDeviceButton />
+            <Button variant="outline" size="sm" onClick={() => fetchTab(tab)} className="gap-1.5 h-9">
+              <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {/* Tab Navigation — scrollable on mobile with 44px touch targets */}
