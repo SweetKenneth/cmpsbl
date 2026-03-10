@@ -195,7 +195,7 @@ export default function Explore() {
                 <br className="hidden sm:block" />
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
-              <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+              <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
                 Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 pipeline slots.
               </p>
               
