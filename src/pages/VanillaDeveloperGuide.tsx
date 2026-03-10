@@ -467,7 +467,7 @@ Deno.serve(async (req) => {
               Architecture
             </h2>
             <p className="text-muted-foreground text-center max-w-xl mx-auto mb-10">
-              One endpoint. Eleven modules. Four layers.
+              One endpoint. 40 nodes. 12 sectors.
             </p>
           </motion.div>
 
