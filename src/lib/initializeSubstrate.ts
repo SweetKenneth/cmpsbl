@@ -72,7 +72,7 @@ export async function initializeSubstrate(): Promise<void> {
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
-      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes];
+      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes, ...expansionNodes];
       for (const node of allNodes) {
         await yieldToMain();
         const result = await substrate.invoke({ module: node, action: 'pulse' });
