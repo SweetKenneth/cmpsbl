@@ -12,13 +12,22 @@ interface ApexDiscovery {
   whatItDoes: string;
 }
 
-const APEX_DISCOVERIES: ApexDiscovery[] = [
-  { name: 'Fitness Landscape Navigator', category: 'EVOLUTION', systems: ['BRAIN', 'CORTEX', 'EVOLUTION', 'VISION'], capability: 'Maps the entire solution fitness landscape to identify optimal evolutionary paths, avoiding local maxima through topological analysis.', whatItDoes: 'Analyzes solution spaces to locate optimal strategies and avoid local maxima during adaptive search.' },
-  { name: 'Causal Reasoning Engine', category: 'COGNITIVE', systems: ['BRAIN', 'CORTEX', 'DREAM', 'VISION'], capability: 'Performs counterfactual inference on system state, answering "what if" questions about system configurations before execution.', whatItDoes: 'Simulates hypothetical system configurations and predicts outcomes before committing changes.' },
-  { name: 'Constitutional AI Guardian', category: 'GOVERNANCE', systems: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'], capability: 'Enforces constitutional constraints on all AI operations, preventing policy violations through formal verification at runtime.', whatItDoes: 'Validates every AI operation against safety constraints in real time, blocking policy violations automatically.' },
-  { name: 'Meta-Learning Optimizer', category: 'LEARNING', systems: ['BRAIN', 'CORTEX', 'DREAM', 'EVOLUTION'], capability: 'Learns how the system learns — optimizing the learning process itself by adjusting hyperparameters across all adaptive subsystems.', whatItDoes: 'Optimizes the learning process itself by tuning parameters across all adaptive subsystems simultaneously.' },
-  { name: 'Spectral Arbitrator', category: 'ROUTING', systems: ['GOVERNANCE', 'MEMORY', 'NEXUS', 'RIPPLE', 'SYSTEM'], capability: 'Routes signals across the substrate using spectral graph decomposition, ensuring optimal message paths with zero-conflict arbitration.', whatItDoes: 'Routes signals through the substrate using graph decomposition, ensuring zero-conflict message delivery.' },
-  { name: 'Co-Evolutionary Synchronizer', category: 'EVOLUTION', systems: ['CORTEX', 'EVOLUTION', 'GOVERNANCE', 'SYSTEM'], capability: 'Coordinates parallel evolutionary processes to prevent destructive interference, keeping multiple adaptation streams synchronized.', whatItDoes: 'Keeps parallel evolution streams synchronized so competing adaptations don\'t cancel each other out.' },
+interface ApexDiscovery {
+  name: string;
+  category: string;
+  score: number;
+  tier: string;
+  systems: string[];
+  capability: string;
+  whatItDoes: string;
+}
+
+const TOP_DISCOVERIES: ApexDiscovery[] = [
+  { name: 'Constitutional AI Guardian', score: 100, tier: 'APEX', category: 'GOVERNANCE', systems: ['BRAIN', 'CORTEX', 'DEFENSE', 'GOVERNANCE'], capability: 'Enforces constitutional constraints on all AI operations, preventing policy violations through formal verification at runtime.', whatItDoes: 'Validates every AI operation against safety constraints in real time, blocking policy violations automatically.' },
+  { name: 'Autonomous Threat Response Engine', score: 97, tier: 'MYTHIC', category: 'SECURITY', systems: ['DEFENSE', 'NERVE', 'IMMUNITY', 'SYSTEM'], capability: 'Detects, classifies, and neutralizes threats autonomously — from anomalous traffic to zero-day exploit patterns — without human intervention.', whatItDoes: 'Automatically detects and responds to security threats in real time, isolating compromised components before damage spreads.' },
+  { name: 'Predictive Infrastructure Scaler', score: 96, tier: 'MYTHIC', category: 'INFRASTRUCTURE', systems: ['ANALYTICS', 'BRAIN', 'NERVE', 'SYSTEM'], capability: 'Forecasts resource demand using historical patterns and live telemetry, scaling infrastructure preemptively to prevent bottlenecks.', whatItDoes: 'Predicts traffic spikes and auto-scales servers, databases, and compute before demand hits — zero downtime.' },
+  { name: 'Compliance Audit Automator', score: 94, tier: 'MYTHIC', category: 'COMPLIANCE', systems: ['AUDIT', 'GOVERNANCE', 'MEMORY', 'SOVEREIGN'], capability: 'Continuously audits system operations against regulatory frameworks (SOC2, GDPR, HIPAA), generating verifiable compliance reports automatically.', whatItDoes: 'Runs continuous compliance checks and produces audit-ready reports — replacing weeks of manual review with real-time validation.' },
+  { name: 'Intelligent Data Pipeline Orchestrator', score: 93, tier: 'RELIC', category: 'DATA', systems: ['CORTEX', 'DECODE', 'INTEGRATION', 'RELAY'], capability: 'Coordinates complex multi-source data pipelines with automatic schema detection, transformation, and delivery across heterogeneous systems.', whatItDoes: 'Connects any data source to any destination with automatic format conversion, error recovery, and delivery guarantees.' },
 ];
 
 export function CrownJewelShowcase() {

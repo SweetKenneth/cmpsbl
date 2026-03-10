@@ -8,9 +8,12 @@ interface TierData {
 }
 
 const TIERS: TierData[] = [
-  { tier: 'cmpsbl-only', count: 578, label: 'APEX', color: 'hsl(var(--primary))', description: 'CJPI 95–100 · Proprietary crown jewels · 95 with perfect scores', percentage: '50.6%' },
-  { tier: 'enterprise', count: 484, label: 'ENTERPRISE', color: 'hsl(45, 95%, 55%)', description: 'CJPI 85–94 · Production-grade pipelines', percentage: '42.3%' },
-  { tier: 'architect', count: 81, label: 'ARCHITECT', color: 'hsl(200, 80%, 60%)', description: 'CJPI 80–84 · Advanced building blocks', percentage: '7.1%' },
+  { tier: 'apex',   count: 95,  label: 'APEX',   color: 'hsl(var(--primary))',    description: 'CJPI 100 · Perfect score crown achievements',       percentage: '8.3%' },
+  { tier: 'mythic', count: 187, label: 'MYTHIC', color: 'hsl(280, 80%, 65%)',     description: 'CJPI 94–99 · Near-perfect synthesis — silicon-eligible', percentage: '16.4%' },
+  { tier: 'relic',  count: 296, label: 'RELIC',  color: 'hsl(45, 95%, 55%)',      description: 'CJPI 90–93 · Rare finds — exceptional capability',  percentage: '25.9%' },
+  { tier: 'prime',  count: 312, label: 'PRIME',  color: 'hsl(200, 80%, 60%)',     description: 'CJPI 80–89 · High-quality production pipelines',    percentage: '27.3%' },
+  { tier: 'mint',   count: 192, label: 'MINT',   color: 'hsl(160, 60%, 50%)',     description: 'CJPI 68–79 · Solid discovery — production-viable',  percentage: '16.8%' },
+  { tier: 'raw',    count: 61,  label: 'RAW',    color: 'hsl(0, 0%, 50%)',        description: 'CJPI 1–67 · Unrefined extraction — experimental',   percentage: '5.3%' },
 ];
 
 export function TierDistribution() {
