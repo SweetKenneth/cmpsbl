@@ -10511,7 +10511,7 @@ async function handleSystem(
 
   switch (action) {
     case "status": {
-      // Full system status with health data - checks ALL 38 NODES
+      // Full system status with health data - checks ALL 40 NODES
       const checks: Record<string, boolean> = {};
       
       // Initialize all 38 nodes as false
