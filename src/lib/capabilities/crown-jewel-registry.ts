@@ -981,7 +981,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'self_governance',
     name: 'Self Governance',
     artifactType: 'meta-engine',
-    modules: ['SYSTEM', 'DEFENSE', 'CORE', 'MODERNIZER', 'CORTEX'],
+    modules: ['SYSTEM', 'DEFENSE', 'CORE', 'EVOLUTION', 'CORTEX'],
     classification: 'architecture',
     reason: 'Autonomous self-management combining healing, documentation, and evolution',
     enables: 'Truly self-sustaining system — homeostatic balance',
