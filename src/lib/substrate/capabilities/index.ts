@@ -1050,7 +1050,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'config_drift_detector',
     name: 'Config Drift Detector',
     description: 'Monitors configurations for unauthorized or unintended changes',
-    modules: ['SYSTEM', 'DEFENSE', 'MODERNIZER'],
+    modules: ['SYSTEM', 'DEFENSE', 'EVOLUTION'],
     layer: 'Admin',
     userBenefit: 'Catch configuration changes before they cause issues',
     status: 'active',
