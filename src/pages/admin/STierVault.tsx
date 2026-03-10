@@ -13,7 +13,7 @@ import {
   Shield, Copy, Download, Eye, Search, Lock, CheckCircle,
   Code2, Package, ChevronDown, ChevronUp, FileCode, Globe,
   Zap, Loader2, ArrowUpDown, DollarSign, TrendingUp,
-  BarChart3, ArrowUp, Filter,
+  BarChart3, ArrowUp, Filter, RefreshCw,
 } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
@@ -29,6 +29,9 @@ import {
 import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { usePricingEngine } from "@/hooks/usePricingEngine";
+import { formatPrice } from "@/lib/foundry/pricing-engine";
+import type { PricingArtifact } from "@/lib/foundry/pricing-engine";
 
 const entries = registryData.entries as STierEntry[];
 
