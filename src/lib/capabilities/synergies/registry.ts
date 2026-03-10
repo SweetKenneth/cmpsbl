@@ -2049,11 +2049,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // CORE × VISION × MODERNIZER × BRAIN (Adaptive Configuration Intelligence)
+  // CORE × VISION × EVOLUTION × BRAIN (Adaptive Configuration Intelligence)
   {
     id: 'adaptive-configuration-intelligence',
     name: 'Adaptive Configuration Intelligence',
-    description: 'CORE config optimized by VISION metrics, MODERNIZER recommendations, and BRAIN performance history',
+    description: 'CORE config optimized by VISION metrics, EVOLUTION recommendations, and BRAIN performance history',
     category: 'optimization',
     modules: [
       { name: 'CORE', role: 'primary', required: true },
