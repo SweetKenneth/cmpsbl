@@ -224,19 +224,20 @@ function estimatePricingCost(evidence: PricingEvidence | undefined): number {
 }
 
 /**
- * Blended Pricing Formula (deterministic)
+ * Blended Pricing Formula (deterministic) v3.1
  * ─────────────────────────────────────────
- * NormalizedInternal = InternalValue × 0.001
- * CJPIValue          = BaseValue × CJPIMultiplier
- * MarketWeight       = 0.55 + (Confidence × 0.20)
+ * NormalizedInternal = InternalValue × 0.1
+ * TierPremium       = (CJPIMultiplier − 1) × 0.15
+ * CJPIValue         = BaseValue × (1 + TierPremium)
+ * MarketWeight      = 0.55 + (Confidence × 0.20)
  *
  * FinalPrice =
  *   (ConsensusPrice × MarketWeight) +
  *   (CJPIValue × 0.25) +
  *   (NormalizedInternal × (1 − MarketWeight − 0.25))
  *
- * When no ConsensusPrice exists, redistribute MarketWeight
- * across CJPIValue and NormalizedInternal proportionally.
+ * When no ConsensusPrice exists, redistribute:
+ *   75% CJPIValue + 25% NormalizedInternal
  */
 
 import {
