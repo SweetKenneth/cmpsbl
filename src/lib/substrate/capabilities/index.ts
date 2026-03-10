@@ -1132,7 +1132,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'accessibility_regression_guard',
     name: 'Accessibility Regression Guard',
     description: 'Prevents deployment of changes that degrade accessibility scores',
-    modules: ['INCLUSIVE', 'MODERNIZER', 'DEFENSE'],
+    modules: ['INCLUSIVE', 'EVOLUTION', 'DEFENSE'],
     layer: 'Admin',
     userBenefit: 'Never accidentally break accessibility',
     status: 'active',
