@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
-import { estimateMarketValue, formatMarketValue, getCategoryMultiplierLabel, getExponentialBase, getCJPIMultiplier, getTierFromScore } from '@/lib/pipeline-valuation';
+import { formatMarketValue, computeBlendedValuation, getSuggestedMarketplaces, getTierFromScore, getCJPIMultiplier, getExponentialBase } from '@/lib/pipeline-valuation';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
@@ -121,9 +121,9 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     );
   }
 
-  // Compute total value using internal formula
+  // Compute total value using blended formula
   const totalValuation = inventory.reduce((s, i) => {
-    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+    return s + computeBlendedValuation(i.score, i.category || 'general', (i.systemChain || []).length);
   }, 0);
 
   const handleExportVault = async () => {
@@ -257,19 +257,16 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                     {item.score}
                   </div>
                   <div className="text-[10px] font-mono font-bold text-neon-green">
-                    {formatMarketValue(estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length))}
+                    {formatMarketValue(computeBlendedValuation(item.score, item.category || 'general', (item.systemChain || []).length))}
                   </div>
                 </div>
               </div>
 
-              {/* Valuation breakdown row */}
               <div className="mt-2 pt-2 border-t border-border/10">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground">
-                    <span>Category: <span className="text-foreground capitalize">{item.category || 'general'}</span></span>
-                    {getCategoryMultiplierLabel(item.category || 'general') && (
-                      <span className="text-neon-amber">{getCategoryMultiplierLabel(item.category || 'general')}</span>
-                    )}
+                    <span>Tier: <span className="text-foreground uppercase">{getTierFromScore(item.score)}</span></span>
+                    <span>×{getCJPIMultiplier(getTierFromScore(item.score)).toFixed(1)}</span>
                     <span>Modules: <span className="text-foreground">{(item.systemChain || []).length}</span></span>
                   </div>
                   <button
@@ -286,7 +283,11 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                 {/* Expanded valuation details */}
                 <AnimatePresence>
                   {expandedPricing === item.id && (() => {
-                    const val = estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length);
+                    const blended = computeBlendedValuation(item.score, item.category || 'general', (item.systemChain || []).length);
+                    const tier = getTierFromScore(item.score);
+                    const base = getExponentialBase(item.score);
+                    const mult = getCJPIMultiplier(tier);
+                    const marketplaces = getSuggestedMarketplaces(item.score, item.category || 'general');
                     return (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
@@ -297,11 +298,15 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                         <div className="mt-2 space-y-1.5 text-[9px] font-mono">
                           <div className="flex items-center gap-1.5 text-muted-foreground">
                             <DollarSign className="w-2.5 h-2.5" />
-                            Estimated Value: <span className="text-neon-green font-bold">{formatMarketValue(val)}</span>
+                            Blended Value: <span className="text-neon-green font-bold">{formatMarketValue(blended)}</span>
                           </div>
                           <div className="flex items-center gap-1.5 text-muted-foreground">
                             <TrendingUp className="w-2.5 h-2.5" />
-                            Valuation Method: <span className="text-foreground">CJPI × Category × Complexity formula</span>
+                            Base: {formatMarketValue(base)} × {mult.toFixed(1)} ({tier})
+                          </div>
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <Store className="w-2.5 h-2.5" />
+                            Sell on: <span className="text-foreground">{marketplaces.join(', ')}</span>
                           </div>
                           {item.systemChain && item.systemChain.length > 0 && (
                             <div className="text-muted-foreground/70 leading-relaxed mt-1">

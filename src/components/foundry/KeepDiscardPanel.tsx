@@ -10,7 +10,7 @@ import { Check, X, Sparkles, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
-import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { formatMarketValue, computeBlendedValuation, getSuggestedMarketplaces } from '@/lib/pipeline-valuation';
 import type { MineResult } from '@/lib/foundry/public-mining-engine';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
@@ -146,7 +146,10 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     {result.score}
                   </div>
                   <div className="text-[9px] text-neon-green font-bold uppercase tracking-wider font-mono tabular-nums">
-                    {formatMarketValue(estimateMarketValue(result.score, result.category, result.systemChain.length))}
+                    {formatMarketValue(computeBlendedValuation(result.score, result.category, result.systemChain.length))}
+                  </div>
+                  <div className="text-[8px] text-muted-foreground font-mono mt-0.5">
+                    {getSuggestedMarketplaces(result.score, result.category).slice(0, 2).join(' · ')}
                   </div>
                 </div>
               </div>

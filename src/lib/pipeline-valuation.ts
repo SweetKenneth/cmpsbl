@@ -40,6 +40,39 @@ export function formatMarketValue(value: number): string {
   return `$${value}`;
 }
 
+/**
+ * Compute the blended valuation (no-consensus fallback).
+ * FinalPrice = (CJPIValue × 0.75) + (NormalizedInternal × 0.25)
+ */
+export function computeBlendedValuation(score: number, category: string, moduleChainLength: number): number {
+  const internalValue = estimateMarketValue(score, category, moduleChainLength);
+  const normalizedInternal = internalValue * 0.001;
+  const baseValue = getExponentialBase(score);
+  const tier = getTierFromScore(score);
+  const cjpiMultiplier = getCJPIMultiplier(tier);
+  const cjpiValue = baseValue * cjpiMultiplier;
+  return Math.round((cjpiValue * 0.75) + (normalizedInternal * 0.25));
+}
+
+/**
+ * Get suggested marketplaces based on tier and category
+ */
+export function getSuggestedMarketplaces(score: number, category: string): string[] {
+  const tier = getTierFromScore(score);
+  const cat = category.toLowerCase();
+  const markets: string[] = [];
+  if (tier === 'Apex' || tier === 'Mythic') {
+    markets.push('AWS Marketplace', 'Azure Marketplace', 'Enterprise Direct');
+  }
+  if (tier === 'Relic' || tier === 'Prime') {
+    markets.push('GitHub Marketplace', 'Vercel Templates');
+  }
+  markets.push('Gumroad', 'Lemon Squeezy');
+  if (cat === 'security' || cat === 'compliance' || cat === 'privacy') markets.push('Google Cloud Marketplace');
+  if (cat === 'cognitive' || cat === 'learning' || cat === 'prediction') markets.push('Hugging Face');
+  return [...new Set(markets)].slice(0, 4);
+}
+
 /** Get the category multiplier label for display */
 export function getCategoryMultiplierLabel(category: string): string {
   const mult = CATEGORY_MARKET_MULTIPLIERS[category.toLowerCase()];

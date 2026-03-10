@@ -3,7 +3,7 @@
  * Uses internal valuation formula for total vault value
  */
 import { motion } from 'framer-motion';
-import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { computeBlendedValuation, formatMarketValue } from '@/lib/pipeline-valuation';
 
 interface InventoryForStats {
   score: number;
@@ -22,7 +22,7 @@ interface Props {
 
 export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays, inventory }: Props) {
   const totalValue = (inventory || []).reduce((s, i) => {
-    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+    return s + computeBlendedValuation(i.score, i.category || 'general', (i.systemChain || []).length);
   }, 0);
 
   return (
