@@ -68,7 +68,7 @@
     medic: ['core', 'system', 'vision'],
     nerve: ['core', 'ripple', 'system'],
     integration: ['core', 'system', 'ripple', 'audit'],
-    modernizer: ['core', 'encode', 'cortex'],
+    // modernizer is now EVOLUTION (legacy alias removed)
 
     // ── Fields ── (permeate CCR + Execution)
     evolution: ['core', 'brain', 'memory', 'vision'],

@@ -635,9 +635,9 @@ export function useInclusiveRepairOS() {
   return useMutation({
     mutationFn: (target: string) => inclusive.repair(target),
     onSuccess: () => {
-      // Invalidate INCLUSIVE, MODERNIZER (may trigger proposal)
+      // Invalidate INCLUSIVE, EVOLUTION (may trigger proposal)
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
     },
   });
 }
