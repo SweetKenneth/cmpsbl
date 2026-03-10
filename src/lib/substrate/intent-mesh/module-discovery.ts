@@ -166,7 +166,7 @@ const MODULE_DISCOVERY_PROFILES: Record<string, {
     affinityModules: ['SANDBOX', 'EVOLUTION', 'BRAIN'],
     discoveryHints: ['Can I detect architecture drift?', 'Can I score tech debt?', 'Can I recommend design patterns?'],
   },
-  MODERNIZER: {
+  EVOLUTION: {
     naturalDomains: ['evolution', 'upgrade', 'migration', 'shadow', 'deployment', 'diff', 'regression'],
     dataAssets: ['evolution_runs', 'upgrade_plans', 'diff_history', 'regression_logs'],
     latentCapabilities: ['evolution_risk_scoring', 'rollback_prediction', 'upgrade_path_optimization', 'shadow_accuracy_scoring', 'migration_complexity_estimation'],
@@ -557,7 +557,7 @@ function inferAcceptsForModule(module: string): string[] {
     NEXUS: ['model', 'task_type', 'priority'],
     DREAM: ['topic', 'seed', 'mode'],
     ENCODE: ['context', 'pattern', 'module'],
-    MODERNIZER: ['plan_id', 'module', 'operation'],
+    EVOLUTION: ['plan_id', 'module', 'operation'],
     SYSTEM: ['module', 'metric', 'check_type'],
     ACCESS: ['actor_id', 'api_key_id', 'module'],
     RIPPLE: ['webhook_id', 'event_type', 'target_url'],

@@ -276,23 +276,23 @@ function determineNextAction(
   // If plan is ready, recommend evolution
   if (planResult?.plan.status === 'ready') {
     const actionCount = planResult.plan.total_actions;
-    return `Plan ${planResult.plan.plan_id.substring(0, 8)} ready — ${actionCount} actions. Run 'modernizer.evolve shadow' to apply.`;
+    return `Plan ${planResult.plan.plan_id.substring(0, 8)} ready — ${actionCount} actions. Run 'evolution.evolve shadow' to apply.`;
   }
   
   // If plan is pending review
   if (planResult?.plan.status === 'pending_review') {
-    return `Plan ${planResult.plan.plan_id.substring(0, 8)} requires review. Run 'modernizer.review ${planResult.plan.plan_id.substring(0, 8)}' to inspect.`;
+    return `Plan ${planResult.plan.plan_id.substring(0, 8)} requires review. Run 'evolution.review ${planResult.plan.plan_id.substring(0, 8)}' to inspect.`;
   }
   
   // If plan is blocked, explain why
   if (planResult?.plan.status === 'blocked' && planResult.plan.blockers.length > 0) {
     const blocker = planResult.plan.blockers[0];
-    return `Plan blocked: ${blocker.message}. Run 'modernizer.plans' to inspect.`;
+    return `Plan blocked: ${blocker.message}. Run 'evolution.plans' to inspect.`;
   }
   
   // If circuit is blocked
   if (mergeResult.blocked_reasons.some(r => r.includes('circuit'))) {
-    return 'Evolution circuit is OPEN. Run "modernizer.circuit reset" to re-enable.';
+    return 'Evolution circuit is OPEN. Run "evolution.circuit reset" to re-enable.';
   }
   
   // If no proposals

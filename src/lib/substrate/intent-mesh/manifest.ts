@@ -511,7 +511,7 @@ export const MESH_MANIFEST: MeshResolver[] = [
     enabled: true,
   },
 
-  // ── EVOLUTION (formerly MODERNIZER) ──
+  // ── EVOLUTION ──
   {
     id: 'evolution.evolution_status',
     module: 'EVOLUTION',

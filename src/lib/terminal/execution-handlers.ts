@@ -1,6 +1,6 @@
 /**
  * Execution Layer Terminal Handlers
- * DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER
+ * DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION
  * 
  * Note: ENCODE is in encode-handlers.ts, ECONOMY/SANDBOX in infra-module-handlers.ts
  */
@@ -369,5 +369,5 @@ export function registerExecutionHandlers(): void {
     ],
   }));
 
-  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, MODERNIZER)', { count: 50 });
+  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION)', { count: 50 });
 }

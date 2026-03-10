@@ -27,7 +27,7 @@ const BURST_DEADLINE_MS = 50_000;
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
   'brain', 'decode', 'defense', 'nexus', 'vision', 'dream',
-  'cortex', 'ripple', 'modernizer', 'encode', 'access',
+  'cortex', 'ripple', 'evolution', 'encode', 'access',
   'system', 'inclusive', 'integration', 'memory', 'relay',
   'audit', 'identity', 'economy', 'sandbox'
 ];
@@ -50,7 +50,7 @@ const MODULE_RELEVANCE: Record<string, string[]> = {
   access:       ['permission', 'role', 'authorization', 'api key', 'token', 'quota'],
   ripple:       ['event', 'propagation', 'broadcast', 'publish', 'subscribe', 'cascade'],
   system:       ['health', 'audit', 'configuration', 'settings', 'admin', 'governance'],
-  modernizer:   ['upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff'],
+  evolution:    ['upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff'],
   inclusive:    ['accessibility', 'a11y', 'wcag', 'aria', 'screen reader', 'keyboard'],
   integration:  ['webhook', 'api', 'endpoint', 'transform', 'pipeline', 'data sync'],
   core:         ['memory', 'storage', 'persistence', 'state', 'cache', 'retrieve'],

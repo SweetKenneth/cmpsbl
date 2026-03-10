@@ -1072,7 +1072,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
   },
   
   // ═══════════════════════════════════════════════════════════════════════════
-  // MODERNIZER Module (4)
+  // EVOLUTION Module (4)
   // ═══════════════════════════════════════════════════════════════════════════
   
   proposal_impact_analyzer: {
@@ -1083,7 +1083,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Know the impact of changes before deploying',
     status: 'active',
-    emergentFrom: 'modernizer-impact-v7',
+    emergentFrom: 'evolution-impact-v7',
     riskLevel: 'low',
     executionMode: 'async',
   },
@@ -1095,7 +1095,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Prioritize safe migrations, defer risky ones',
     status: 'active',
-    emergentFrom: 'modernizer-risk-v7',
+    emergentFrom: 'evolution-risk-v7',
     riskLevel: 'low',
     executionMode: 'sync',
   },
@@ -1107,7 +1107,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Clear roadmap for upgrading legacy components',
     status: 'active',
-    emergentFrom: 'modernizer-deprecation-v7',
+    emergentFrom: 'evolution-deprecation-v7',
     riskLevel: 'low',
     executionMode: 'async',
   },
@@ -1119,7 +1119,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Safe feature releases with automatic guardrails',
     status: 'active',
-    emergentFrom: 'modernizer-flags-v7',
+    emergentFrom: 'evolution-flags-v7',
     riskLevel: 'medium',
     executionMode: 'streaming',
   },

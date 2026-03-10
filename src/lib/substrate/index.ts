@@ -52,7 +52,7 @@ export {
   type StateEngineState,
 } from './state-engine';
 
-// Evolution Cycle - Unified Modernizer Engine (v6.5.0)
+// Evolution Cycle - Unified Evolution Engine (v6.5.0)
 export {
   evolutionCycle,
   EvolutionCycleClient,

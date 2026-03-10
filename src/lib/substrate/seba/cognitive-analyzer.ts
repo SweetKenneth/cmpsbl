@@ -6,7 +6,7 @@
  * - Memory, Learning, Imagination, Reasoning (Core 4)
  * - Security, Telemetry, Governance, Resources, Architecture (Extended 5)
  * 
- * Uses backend stats (brain.status, modernizer.status) to bypass RLS
+ * Uses backend stats (brain.status, evolution.status) to bypass RLS
  */
 
 import { memoryCore, type MemoryEntry } from '../memory-core';

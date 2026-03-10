@@ -116,7 +116,7 @@ export function registerEncodeModuleHandlers(): void {
         'clm.run core', 'clm.run ripple', 'clm.run access',
         'clm.run brain', 'clm.run decode', 'clm.run dream',
         'clm.run defense', 'clm.run nexus', 'clm.run vision', 'clm.run integration',
-        'clm.run system', 'clm.run modernizer', 'clm.run inclusive',
+        'clm.run system', 'clm.run evolution', 'clm.run inclusive',
         'clm.run cortex', 'clm.run encode',
         'clm.run memory', 'clm.run relay', 'clm.run audit',
         'clm.run identity', 'clm.run economy', 'clm.run sandbox',

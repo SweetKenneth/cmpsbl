@@ -3,12 +3,12 @@
  * Determines Free / Creator / Architect / Governor access level
  * 
  * Uses the Access module's identity endpoint for unified role resolution
- * across Dashboard, Terminal, Modernizer, and all substrate modules.
+ * across Dashboard, Terminal, EVOLUTION, and all substrate modules.
  * 
  * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ free):
  * - Free: Any authenticated user (read-only dashboard, basic commands)
  * - Creator: Users with 'operator' or 'moderator' role (terminal, engines, analytics)
- * - Architect: Users with specific architect entitlements (evolution, modernizer, mesh)
+ * - Architect: Users with specific architect entitlements (evolution, mesh)
  * - Governor: Admin users only (full system access, cognitive forge, agencies, mints)
  * 
  * @version 3.0.0 — Unified with pricing tiers

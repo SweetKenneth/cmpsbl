@@ -410,7 +410,7 @@ const SYSTEM_PATTERNS = [
   { title: 'Bootstrap Ordering', content: 'Boot modules in dependency order: CORE kernel boots first, then 9 modules initialize in dependency order across 6 layers. Each module reports ready before next tier starts.', priority: 88 },
 ];
 
-const MODERNIZER_PATTERNS = [
+const EVOLUTION_PATTERNS = [
   { title: 'Shadow Testing Protocol', content: 'Every evolution must run in shadow first. Compare shadow metrics against production baseline for 5 minutes. Only promote if: no regressions, error rate delta < 1%, latency delta < 10%.', priority: 97 },
   { title: 'Rollback Readiness', content: 'Before applying any change, snapshot the current state (file hash, config values, DB schema). Store rollback instructions as executable steps. Test rollback in shadow before production.', priority: 96 },
   { title: 'Diff Quality Assessment', content: 'Score diffs on: lines changed vs lines affected (blast radius), number of files touched (fragmentation), test coverage of changed code, and dependency impact depth.', priority: 90 },
@@ -780,7 +780,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     { title: 'Isolation Guarantees', content: 'Sandboxes run with strict CSP headers and no network access by default. File system is copy-on-write. Memory limited to 256MB. CPU limited to 30s per execution. Auto-teardown after TTL.', priority: 97 },
     { title: 'Speculative Execution Protocol', content: 'Before any production code change, run in sandbox first. Compare output against expected behavior. If sandbox execution fails, block production promotion. Log all sandbox runs for AUDIT.', priority: 95 },
     { title: 'Sandbox Pool Management', content: 'Pre-warm 3 sandbox environments for instant availability. Recycle sandboxes after each use (full state wipe). Monitor pool utilization and scale up during peak hours.', priority: 90 },
-    { title: 'Canary Testing Integration', content: 'MODERNIZER uses SANDBOX for canary testing before shadow-apply. Run evolved code in sandbox with production-like inputs. Compare output quality scores before promoting.', priority: 93 },
+    { title: 'Canary Testing Integration', content: 'EVOLUTION uses SANDBOX for canary testing before shadow-apply. Run evolved code in sandbox with production-like inputs. Compare output quality scores before promoting.', priority: 93 },
     { title: 'Resource Leak Detection', content: 'Monitor sandbox memory and CPU usage during execution. Flag executions that approach limits. Auto-kill runaway processes after 30s. Report resource leaks to VISION for trending.', priority: 91 },
   ];
 
@@ -795,7 +795,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     vision: VISION_PATTERNS,
     integration: INTEGRATION_PATTERNS,
     system: SYSTEM_PATTERNS,
-    evolution: MODERNIZER_PATTERNS,
+    evolution: EVOLUTION_PATTERNS,
     inclusive: INCLUSIVE_PATTERNS,
     cortex: CORTEX_PATTERNS,
     encode: ENCODE_PATTERNS,

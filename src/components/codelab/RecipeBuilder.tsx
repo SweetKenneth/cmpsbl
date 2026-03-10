@@ -120,7 +120,7 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   system: Layers,
   access: Shield,
   core: Layers,
-  modernizer: Sparkles,
+  evolution: Sparkles,
 };
 
 const MODULE_COLORS: Record<string, string> = {
@@ -133,7 +133,7 @@ const MODULE_COLORS: Record<string, string> = {
   system: "text-red-500",
   access: "text-orange-500",
   core: "text-slate-500",
-  modernizer: "text-emerald-500",
+  evolution: "text-emerald-500",
 };
 
 export function RecipeBuilder() {

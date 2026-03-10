@@ -31,7 +31,7 @@ export interface TestResult {
 
 export interface RegressionSuiteResult {
   suite_id: string;
-  trigger: string; // What triggered the suite (e.g., 'seba_execution', 'modernizer_deploy')
+  trigger: string; // What triggered the suite (e.g., 'seba_execution', 'evolution_deploy')
   started_at: string;
   completed_at: string;
   duration_ms: number;

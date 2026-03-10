@@ -4,7 +4,7 @@
  * 40 nodes / 12 sectors | 500+ commands | 300 synergy pipelines
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
+import { substrate, brain, decode, defense, nexus, vision, dream, system, modernizer as evolutionMod, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition, getCommandTier, meetsRequiredTier, getTierIcon, getTierLabel, type CommandTier } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
@@ -493,7 +493,7 @@ function generateFullHelp(): string {
 │  Access Tiers:                                              │
 │    ○ FREE        Read-only, status, pulse                   │
 │    ◆ CREATOR     Actions, mutations ($29/mo)                │
-│    ★ ARCHITECT   Evolution, modernizer ($79/mo)            │
+│    ★ ARCHITECT   Evolution, advanced ops ($79/mo)           │
 │    ◉ GOVERNOR    System restore, admin (CMPSBL only)        │
 │                                                             │
 │  Quick navigation:                                          │
@@ -929,7 +929,7 @@ export async function executeCommand(
     const tierDescriptions: Record<string, string> = {
       free: 'Read-only dashboard, status commands',
       creator: 'Terminal, engines, analytics, actions ($29/mo)',
-      architect: 'Evolution, modernizer, mesh, advanced ops ($79/mo)',
+      architect: 'Evolution, mesh, advanced ops ($79/mo)',
       governor: 'Full system authority, admin, mint (CMPSBL only)',
     };
     const tierDesc = tierDescriptions[effectiveTier] || '';
@@ -1001,7 +1001,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  │
 │  ├─ ADMIN LAYER ─────────────────────────────────────────────
 │  │  system://     orchestration, lifecycle, heal
-│  │  modernizer:// upgrades, codebase evolution
+│  │  evolution://  upgrades, codebase evolution
 │  │  inclusive://  accessibility, human compatibility
 │  │
 │  ├─ ORCHESTRATOR LAYER ──────────────────────────────────────
@@ -2314,10 +2314,10 @@ ${allFeatures.map(f => {
 
     // EVOLUTION node (via substrate) — handles both evolution.* and legacy modernizer.* commands
     else if (base === 'evolution.status' || base === 'modernizer.status') {
-      result = await modernizer.status();
+      result = await evolutionMod.status();
     } else if (base === 'evolution.jobs' || base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
-      result = await modernizer.jobs(limit);
+      result = await evolutionMod.jobs(limit);
     }
     // ═══ EVOLUTION CYCLE ═══
     else if (base === 'evolution.evolve' || base === 'modernizer.evolve') {
@@ -2463,35 +2463,35 @@ ${allFeatures.map(f => {
       } catch (err) {
         // Fallback to legacy scan if new pipeline not available
         const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
-        result = await modernizer.scan({ depth: depth || 'standard' });
+        result = await evolutionMod.scan({ depth: depth || 'standard' });
       }
-    // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
+    // NOTE: evolution.analyze is handled by Omega Observer Engine (see line ~1354)
     // Legacy handler removed to prevent duplicate handling
     } else if (base === 'evolution.export' || base === 'modernizer.export') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: evolution.export <job_id>' };
       }
-      result = await modernizer.export(args[0]);
+      result = await evolutionMod.export(args[0]);
     } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
-      result = await modernizer.quota();
+      result = await evolutionMod.quota();
     } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
-      result = await modernizer.pulse();
+      result = await evolutionMod.pulse();
     } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
-      result = await modernizer.propose({ scope, notes });
+      result = await evolutionMod.propose({ scope, notes });
     } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
-      result = await modernizer.plans();
+      result = await evolutionMod.plans();
     } else if (base === 'evolution.review' || base === 'modernizer.review') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.review <plan_id>' };
       }
-      result = await modernizer.review(args[0]);
+      result = await evolutionMod.review(args[0]);
     } else if (base === 'evolution.validate' || base === 'modernizer.validate') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.validate <plan_id>' };
       }
-      const res = await modernizer.validate(args[0]);
+      const res = await evolutionMod.validate(args[0]);
       const errObj = res.error as any;
       const errMsg = typeof errObj === 'string' ? errObj : errObj?.message;
       result = { success: !res.error, data: res.data, error: errMsg };
@@ -2504,7 +2504,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.diff(planId);
+      const res = await evolutionMod.diff(planId);
       const data = res.data as any;
       const errObj = res.error as any;
       if (res.error || (data && data.success === false)) {
@@ -2521,7 +2521,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.apply(planId);
+      const res = await evolutionMod.apply(planId);
       // Check both fetch error and success:false in response data
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
@@ -2538,7 +2538,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.applyShadow(planId);
+      const res = await evolutionMod.applyShadow(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Shadow apply failed';
@@ -2554,7 +2554,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
       }
-      const res = await modernizer.testShadow(planId);
+      const res = await evolutionMod.testShadow(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Shadow test failed';
@@ -2570,7 +2570,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.applyProduction(planId);
+      const res = await evolutionMod.applyProduction(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Production apply failed';
@@ -2586,7 +2586,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
       }
-      const res = await modernizer.rollback(planId);
+      const res = await evolutionMod.rollback(planId);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Rollback failed';
@@ -2602,7 +2602,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
       }
-      const res = await modernizer.delete(planId, args.slice(1).join(' ') || undefined);
+      const res = await evolutionMod.delete(planId, args.slice(1).join(' ') || undefined);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Delete failed';
@@ -2611,7 +2611,7 @@ ${allFeatures.map(f => {
         result = { success: true, data: res.data };
       }
     } else if (base === 'evolution.applied' || base === 'modernizer.applied') {
-      const res = await modernizer.applied();
+      const res = await evolutionMod.applied();
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Failed to fetch applied';
@@ -2620,12 +2620,12 @@ ${allFeatures.map(f => {
         result = { success: true, data: res.data };
       }
     } else if (base === 'evolution.archived' || base === 'modernizer.archived') {
-      result = await modernizer.archived();
+      result = await evolutionMod.archived();
     } else if (base === 'evolution.implement' || base === 'modernizer.implement') {
       if (!args[0] || !args[1]) {
         return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: evolution.implement <archived_function> <target_action>\n  Example: evolution.implement pf-brain-systems-reasoning brain.deep_think' };
       }
-      result = await modernizer.implement(args[0], args[1]);
+      result = await evolutionMod.implement(args[0], args[1]);
     } else if (base === 'evolution.refresh' || base === 'modernizer.refresh') {
       result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
     } else if (base === 'evolution.autopilot' || base === 'modernizer.autopilot') {
