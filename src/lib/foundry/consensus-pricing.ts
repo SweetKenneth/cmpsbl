@@ -329,26 +329,31 @@ function computeConfidence(
 // ── Shared Pricing Prompt ──
 
 export function buildConsensusPricingPrompt(input: ConsensusInput): string {
+  const complexitySignal = (input.internal_value || 0) > 10000 ? 'very high'
+    : (input.internal_value || 0) > 5000 ? 'high'
+    : (input.internal_value || 0) > 1000 ? 'moderate'
+    : 'standard';
+
   return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
 
 ARTIFACT: ${input.artifact_name}
 DESCRIPTION: ${input.artifact_description || 'Crystallized software pipeline / reusable code module'}
-MODULES: ${input.modules.join(', ')}
+MODULES: ${input.modules.join(', ')} (${input.modules.length} total)
 CJPI SCORE: ${input.cjpi_score}/100 (higher = more sophisticated)
 TIER: ${input.tier}
 CATEGORY: ${input.category || 'general'}
-INTERNAL VALUE SIGNAL: $${input.internal_value || 0} (engineering estimate, NOT retail price)
+ENGINEERING COMPLEXITY: ${complexitySignal}
 HARDWARE EXPORT: ${input.has_hardware_export ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(input.export_targets || ['source']).join(', ')}
 RUNTIME: ${input.runtime_type || 'JavaScript/TypeScript'}
 
-PRICING GUIDELINES:
-- Most indie dev tools/libraries sell for $5-$200
-- Sophisticated multi-module systems sell for $50-$500
-- Only enterprise-grade infrastructure platforms exceed $1,000
-- A single reusable module typically sells for $10-$80
-- A complete multi-module toolkit sells for $50-$300
-- Internal value signals should NOT be treated as retail prices
+CRITICAL PRICING GUIDELINES — follow these ranges strictly:
+- A single reusable module/library: $10-$80
+- A multi-module developer toolkit (2-5 modules): $30-$200
+- A comprehensive framework or platform (5+ modules): $100-$500
+- Only very large enterprise infrastructure should exceed $500
+- Do NOT exceed $1,000 unless the artifact is a complete enterprise platform with 8+ modules
+- Think about what a solo developer or small team would actually pay on Gumroad
 
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
