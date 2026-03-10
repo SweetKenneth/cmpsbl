@@ -29,8 +29,8 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'brain.explore': ['brain.remember', 'brain.synthesize', 'brain.patterns', 'brain.curiosity'],
   
   // System workflows
-  'system.status': ['system.health', 'vision.pulse', 'system.diagnostics', 'modernizer.status'],
-  'system.health': ['system.heal', 'system.diagnostics', 'vision.metrics', 'modernizer.scan'],
+  'system.status': ['system.health', 'vision.pulse', 'system.diagnostics', 'evolution.status'],
+  'system.health': ['system.heal', 'system.diagnostics', 'vision.metrics', 'evolution.scan'],
   'system.diagnostics': ['system.heal', 'system.health', 'vision.logs', 'system.backup'],
   'system.heal': ['system.health', 'system.status', 'system.diagnostics', 'vision.pulse'],
   'system.backup': ['system.list_backups', 'system.status', 'system.restore', 'system.health'],
