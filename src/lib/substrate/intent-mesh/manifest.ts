@@ -511,10 +511,10 @@ export const MESH_MANIFEST: MeshResolver[] = [
     enabled: true,
   },
 
-  // ── MODERNIZER ──
+  // ── EVOLUTION (formerly MODERNIZER) ──
   {
-    id: 'modernizer.evolution_status',
-    module: 'MODERNIZER',
+    id: 'evolution.evolution_status',
+    module: 'EVOLUTION',
     description: 'Get status and risk assessment of evolution runs',
     domains: ['evolution', 'upgrade', 'migration'],
     accepts: ['plan_id', 'module', 'operation'],
@@ -523,8 +523,8 @@ export const MESH_MANIFEST: MeshResolver[] = [
     enabled: true,
   },
   {
-    id: 'modernizer.upgrade_readiness',
-    module: 'MODERNIZER',
+    id: 'evolution.upgrade_readiness',
+    module: 'EVOLUTION',
     description: 'Assess module readiness for upgrade or migration',
     domains: ['upgrade', 'deployment', 'regression'],
     accepts: ['module', 'target_version'],

@@ -124,7 +124,7 @@ const authority: AuthorityContract = {
   toEncode:       moduleRouter('encode', 'status'),
   // Administrative
   toSystem:       moduleRouter('system', 'status'),
-  toModernizer:   moduleRouter('modernizer', 'scan'),
+  toEvolution:    moduleRouter('evolution', 'scan'),
   toIntegration:  moduleRouter('integration', 'query'),
   toInclusive:    moduleRouter('inclusive', 'scan'),
   // Orchestrator

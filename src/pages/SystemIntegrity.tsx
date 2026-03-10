@@ -87,7 +87,7 @@ const LAYERS: LayerDef[] = [
     color: 'amber',
     members: [
       { key: 'evolution', label: 'EVOLUTION' },
-      { key: 'modernizer', label: 'MODERNIZER' },
+      { key: 'shadow', label: 'SHADOW' },
       { key: 'governance', label: 'GOVERNANCE' },
     ],
   },

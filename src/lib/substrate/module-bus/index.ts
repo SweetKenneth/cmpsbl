@@ -14,7 +14,7 @@ export type ModuleName =
   | 'core' | 'ripple' | 'access'                          // Kernel
   | 'brain' | 'decode' | 'dream'                           // Cognitive
   | 'defense' | 'nexus' | 'vision' | 'encode'              // Operational
-  | 'system' | 'modernizer' | 'integration' | 'inclusive'   // Administrative
+  | 'system' | 'evolution' | 'integration' | 'inclusive'    // Administrative
   | 'cortex' | 'atlas'                                      // Orchestrator
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'nerve' // Infrastructure + OCG
   | 'forge' | 'lingua' | 'harvest'                                               // EMZ — Manufacturing
@@ -107,11 +107,11 @@ const AUTO_ROUTES: Record<string, ModuleName[]> = {
   [SIGNAL_TYPES.THREAT_DETECTED]: ['access', 'system', 'vision', 'audit', 'identity'],
   [SIGNAL_TYPES.RATE_LIMIT_BREACH]: ['nexus', 'access', 'defense', 'economy'],
   [SIGNAL_TYPES.PROVIDER_DOWN]: ['nexus', 'decode', 'dream', 'relay'],
-  [SIGNAL_TYPES.REGRESSION_DETECTED]: ['modernizer', 'system', 'cortex', 'audit'],
-  [SIGNAL_TYPES.PATTERN_LEARNED]: ['cortex', 'dream', 'modernizer', 'memory'],
+  [SIGNAL_TYPES.REGRESSION_DETECTED]: ['evolution', 'system', 'cortex', 'audit'],
+  [SIGNAL_TYPES.PATTERN_LEARNED]: ['cortex', 'dream', 'evolution', 'memory'],
   [SIGNAL_TYPES.QUOTA_WARNING]: ['nexus', 'system', 'access', 'economy'],
   [SIGNAL_TYPES.COST_SPIKE]: ['nexus', 'system', 'access', 'economy'],
-  [SIGNAL_TYPES.DREAM_INSIGHT]: ['cortex', 'modernizer', 'brain', 'memory'],
+  [SIGNAL_TYPES.DREAM_INSIGHT]: ['cortex', 'evolution', 'brain', 'memory'],
   [SIGNAL_TYPES.HEALTH_DEGRADED]: ['system', 'vision', 'cortex', 'audit'],
 };
 

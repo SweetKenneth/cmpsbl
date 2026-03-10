@@ -119,10 +119,15 @@ export function useDreamStatusOS() {
   });
 }
 
+/** @deprecated Use useEvolutionStatusOS — MODERNIZER is now EVOLUTION */
 export function useModernizerStatusOS() {
+  return useEvolutionStatusOS();
+}
+
+export function useEvolutionStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
   return useQuery({
-    queryKey: ['substrate', 'modernizer', 'status'],
+    queryKey: ['substrate', 'evolution', 'status'],
     queryFn: withGracefulFallback(() => modernizer.status()),
     refetchInterval: pollingEnabled ? 30000 : false,
     enabled: pollingEnabled,
@@ -305,7 +310,7 @@ export function useSubstrateHealthScore() {
 
   const ALL_MODULES = [
     ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...MESH_OVERLAYS, 'modernizer',
+    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...MESH_OVERLAYS,
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
@@ -630,9 +635,9 @@ export function useInclusiveRepairOS() {
   return useMutation({
     mutationFn: (target: string) => inclusive.repair(target),
     onSuccess: () => {
-      // Invalidate INCLUSIVE, MODERNIZER (may trigger proposal)
+      // Invalidate INCLUSIVE, EVOLUTION (may trigger proposal)
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
     },
   });
 }
@@ -793,15 +798,7 @@ export function useHarvestStatusOS() {
   });
 }
 
-export function useEvolutionStatusOS() {
-  const pollingEnabled = debugMode.allowModulePolling();
-  return useQuery({
-    queryKey: ['substrate', 'evolution', 'status'],
-    queryFn: withGracefulFallback(() => evolutionMod.status()),
-    refetchInterval: pollingEnabled ? 30000 : false,
-    enabled: pollingEnabled,
-  });
-}
+// Primary EVOLUTION status hook is defined above (line ~127)
 
 export function useShadowStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
