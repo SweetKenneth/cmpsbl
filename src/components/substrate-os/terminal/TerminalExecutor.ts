@@ -2479,7 +2479,7 @@ ${allFeatures.map(f => {
     } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
-      result = await modernizer.propose({ scope, notes });
+      result = await evolutionMod.propose({ scope, notes });
     } else if (base === 'evolution.plans' || base === 'modernizer.plans') {
       result = await modernizer.plans();
     } else if (base === 'evolution.review' || base === 'modernizer.review') {
