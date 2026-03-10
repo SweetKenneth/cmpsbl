@@ -114,6 +114,16 @@ export async function initializeSubstrate(): Promise<void> {
       const total = waves.reduce((sum, w) => sum + w.totalActivated, 0);
       console.log(`🏆 S-Tier activated: ${total} capabilities across ${waves.length} waves`);
     } catch { /* graceful */ }
+
+    // Load vault primitives (1,894 discoveries → runtime capabilities)
+    try {
+      const { loadVaultPrimitives } = await import('@/lib/substrate/vault-primitive-loader');
+      const vaultResult = await loadVaultPrimitives();
+      console.log(`🔮 Vault primitives loaded: ${vaultResult.loaded} discoveries across ${Object.keys(vaultResult.byNode).length} nodes`);
+      if (vaultResult.errors.length > 0) {
+        console.warn('[VAULT-LOADER] Errors:', vaultResult.errors);
+      }
+    } catch { /* graceful */ }
     
     // Rehydrate persistent control plane state (revision-aware)
     try {
