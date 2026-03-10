@@ -77,7 +77,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
   // LNCHBL Crown Jewels (original 10 — architecture class)
   'cortex_engine',
   'seba_engine',
-  'modernizer',
+  'evolution_engine',
   'evolution_ab',
   'evolution_rollback',
   'evolution_sandbox',
