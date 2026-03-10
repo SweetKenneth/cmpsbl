@@ -2698,7 +2698,7 @@ ${status.trip_reason ? `║  Trip Reason: ${status.trip_reason.substring(0, 40).
           return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to trip circuit'}` };
         }
       } else {
-        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: modernizer.circuit [status|reset|open <reason>]' };
+        return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.circuit [status|reset|open <reason>]' };
       }
     } else if (base === 'modernizer.autonomy') {
       const subCmd = args[0] || 'status';
