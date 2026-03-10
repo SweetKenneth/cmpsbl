@@ -10,7 +10,7 @@ import { Check, X, Sparkles, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
-import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { formatMarketValue, computeBlendedValuation, getSuggestedMarketplaces } from '@/lib/pipeline-valuation';
 import type { MineResult } from '@/lib/foundry/public-mining-engine';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
