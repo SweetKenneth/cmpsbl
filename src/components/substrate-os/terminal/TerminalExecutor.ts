@@ -2637,7 +2637,7 @@ ${allFeatures.map(f => {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
       }
-      result = await substrate.invoke({ module: 'modernizer', action: 'confidence', payload: { plan_id: args[0] } });
+      result = await substrate.invoke({ module: 'evolution', action: 'confidence', payload: { plan_id: args[0] } });
     } else if (base === 'modernizer.stamps') {
       // Evolution stamps — same as seba.stamps but via modernizer namespace
       const limit = parseInt(args[0]) || 10;

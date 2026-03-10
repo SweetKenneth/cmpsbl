@@ -315,7 +315,7 @@ async function runModernizerGovernanceChain(): Promise<GovernanceChain> {
   let receipt_id = '';
   
   try {
-    const mod = substrate.modernizer as any;
+    const mod = substrate.evolution as any;
     const [verifyRes, diffRes, receiptRes] = await Promise.allSettled([
       mod.verify ? mod.verify({ mode: 'canary' }) : mod.validate?.('canary'),
       mod.diff ? mod.diff('latest') : Promise.resolve(null),
