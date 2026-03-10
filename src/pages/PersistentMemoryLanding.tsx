@@ -30,7 +30,6 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { SEO } from '@/components/SEO';
 import { InteractivePlayground } from '@/components/developer/InteractivePlayground';
-import { SEO } from '@/components/SEO';
 
 const PersistentMemoryLanding = () => {
   return (
