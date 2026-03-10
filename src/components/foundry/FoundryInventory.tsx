@@ -42,11 +42,26 @@ interface InventoryItem {
   systemChain: string[] | null;
   pipelineFingerprint?: string | null;
   pipelineSteps?: PipelineStep[] | null;
+  // Pricing fields
+  recommendedResalePrice?: number | null;
+  indiePrice?: number | null;
+  standardPrice?: number | null;
+  enterprisePrice?: number | null;
+  pricingConfidence?: number | null;
+  marketCategory?: string | null;
+  suggestedMarketplaces?: string[] | null;
+  comparableSummary?: string | null;
+  commercializationNotes?: string | null;
+  pricingSource?: string | null;
+  pricingLastUpdatedAt?: string | null;
 }
 
 interface Props {
   inventory: InventoryItem[];
   onRemove?: (id: string) => Promise<boolean>;
+  onReprice?: (id: string) => Promise<void>;
+  onRepriceAll?: () => Promise<void>;
+  repricing?: boolean;
   subscriptionTier?: string;
 }
 
