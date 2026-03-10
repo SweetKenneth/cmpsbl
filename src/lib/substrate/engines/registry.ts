@@ -623,7 +623,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'inclusive_testing_orchestrator',
       'adaptive_interface_optimizer',
     ],
-    primaryModules: ['INCLUSIVE', 'MODERNIZER', 'VISION'],
+    primaryModules: ['INCLUSIVE', 'EVOLUTION', 'VISION'],
     layer: 'Admin',
     synergyMultiplier: 2.5,
     complexityScore: 8,
