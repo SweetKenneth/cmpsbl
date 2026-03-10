@@ -698,7 +698,7 @@ class SubstrateClient {
     // Unified engine replacing scan, plans, review, verify, analyze
     
     /**
-     * Unified Evolution Cycle - Single authoritative modernizer workflow
+     * Unified Evolution Cycle - Single authoritative evolution workflow
      * Replaces: scan, plans, review, verify, analyze
      * 
      * Usage:
