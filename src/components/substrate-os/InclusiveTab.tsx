@@ -158,7 +158,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
       toast.success('Accessibility repairs applied', { description: `${data?.fixes_applied || 0} issues fixed` });
     },
     onError: (error) => {

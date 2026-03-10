@@ -117,7 +117,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
     author: "dataops",
     category: "data",
     tags: ["data", "etl", "pipeline", "automation"],
-    modules: ["core", "vision", "brain", "modernizer"],
+    modules: ["core", "vision", "brain", "evolution"],
     stars: 334,
     forks: 87,
     featured: false,

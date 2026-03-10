@@ -100,7 +100,7 @@ export interface HighlightToken {
 }
 
 const KEYWORDS = ['true', 'false', 'null', 'undefined', 'success', 'error', 'pending', 'active', 'inactive'];
-const MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'modernizer', 'core', 'ripple', 'access', 'integration'];
+const MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'system', 'evolution', 'core', 'ripple', 'access', 'integration'];
 
 export function tokenize(text: string): HighlightToken[] {
   const tokens: HighlightToken[] = [];

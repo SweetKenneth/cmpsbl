@@ -466,7 +466,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      queryClient.invalidateQueries({ queryKey: ['evolution-status'] });
       toast.success('Shadow → Production promotion complete', {
         description: `Validation ✓ | Shadow Tests ✓ | Health: ${data.pre_health}% → ${data.post_health}%`,
       });
