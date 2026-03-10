@@ -1716,7 +1716,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
     category: 'resilience',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'validator', required: true },
     ],
