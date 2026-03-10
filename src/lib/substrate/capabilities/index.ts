@@ -467,7 +467,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'continuous_improvement_engine',
     name: 'Continuous Improvement Engine',
     description: 'Generates substrate upgrade proposals during idle time',
-    modules: ['MODERNIZER', 'DREAM'],
+    modules: ['EVOLUTION', 'DREAM'],
     layer: 'Admin',
     userBenefit: 'System that improves itself 24/7',
     status: 'active',
