@@ -688,7 +688,7 @@ class SubstrateClient {
     
     /** Export improvement proposals */
     export: (job_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'export', payload: { job_id } }),
+      this.invoke({ module: 'evolution', action: 'export', payload: { job_id } }),
     
     /** Lightweight heartbeat */
     pulse: () =>
