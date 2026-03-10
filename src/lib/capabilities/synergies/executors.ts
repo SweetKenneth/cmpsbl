@@ -655,7 +655,7 @@ export async function executeEntitlementAwareRouting(
 
 /**
  * Autonomous Evolution Executor
- * CORTEX + BRAIN + MODERNIZER + VISION → Self-improvement pipeline
+ * CORTEX + BRAIN + EVOLUTION + VISION → Self-improvement pipeline
  */
 export async function executeAutonomousEvolution(
   context: SynergyExecutionContext
