@@ -94,12 +94,15 @@ export function usePricingEngine() {
   /**
    * Reprice ALL discoveries across both foundry_inventory and pipeline_vault
    */
+  /**
+   * Reprice ALL discoveries across foundry_inventory, pipeline_vault, AND vault_promotions (S-Tier)
+   */
   const repriceAllDiscoveries = useCallback(async () => {
     if (!user) return { success: 0, failed: 0 };
     setLoading(true);
     try {
-      // Fetch from both tables in parallel
-      const [inventoryRes, vaultRes] = await Promise.all([
+      // Fetch from all three tables in parallel
+      const [inventoryRes, vaultRes, promotionsRes] = await Promise.all([
         supabase
           .from('foundry_inventory')
           .select('id, artifact_name, score, category, system_chain, valuation_display, public_tier')
@@ -108,6 +111,10 @@ export function usePricingEngine() {
           .from('pipeline_vault')
           .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display')
           .eq('user_id', user.id),
+        supabase
+          .from('vault_promotions')
+          .select('id, name, cjpi, category, module_chain, tier, description')
+          .eq('export_ready', true),
       ]);
 
       const artifacts: PricingArtifact[] = [];
@@ -116,6 +123,7 @@ export function usePricingEngine() {
       for (const d of (inventoryRes.data ?? []) as any[]) {
         artifacts.push({
           vault_id: d.id,
+          source_table: 'foundry_inventory',
           pipeline_name: d.artifact_name,
           pipeline_score: d.score,
           pipeline_tier: d.public_tier || 'Raw',
@@ -131,6 +139,7 @@ export function usePricingEngine() {
         if (!existingIds.has(d.id)) {
           artifacts.push({
             vault_id: d.id,
+            source_table: 'pipeline_vault',
             pipeline_name: d.pipeline_name,
             pipeline_score: d.pipeline_score,
             pipeline_tier: d.pipeline_tier,
@@ -138,6 +147,24 @@ export function usePricingEngine() {
             system_chain: d.system_chain,
             valuation_display: d.valuation_display,
           });
+          existingIds.add(d.id);
+        }
+      }
+
+      // Map vault_promotions (S-Tier Crown Jewels / promoted discoveries)
+      for (const d of (promotionsRes.data ?? []) as any[]) {
+        if (!existingIds.has(d.id)) {
+          artifacts.push({
+            vault_id: d.id,
+            source_table: 'vault_promotions',
+            pipeline_name: d.name,
+            pipeline_score: d.cjpi,
+            pipeline_tier: d.tier || 'Apex',
+            pipeline_category: d.category,
+            system_chain: d.module_chain,
+            valuation_display: null,
+          });
+          existingIds.add(d.id);
         }
       }
 
