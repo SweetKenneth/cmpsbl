@@ -328,7 +328,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'inclusive_testing_orchestrator',
       'autonomous_quality_review',
     ],
-    primaryModules: ['INCLUSIVE', 'MODERNIZER', 'CORTEX'],
+    primaryModules: ['INCLUSIVE', 'EVOLUTION', 'CORTEX'],
     layer: 'Admin',
     synergyMultiplier: 2.1,
     complexityScore: 7,
