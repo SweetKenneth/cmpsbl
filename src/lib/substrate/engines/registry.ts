@@ -1442,7 +1442,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'impact_analyzer',
       'proposal_ranker',
     ],
-    primaryModules: ['MODERNIZER'],
+    primaryModules: ['EVOLUTION'],
     layer: 'Admin',
     synergyMultiplier: 2.9,
     complexityScore: 9,
