@@ -123,20 +123,26 @@ export async function downloadTieredFoundryZip(options: {
     exportedAt: new Date().toISOString(),
     source: sourceLabel,
     artifactCount: artifacts.length,
-    totalValuation: artifacts.reduce((sum, item) => sum + (item.valuationDisplay || 0), 0),
-    artifacts: artifacts.map((item) => ({
-      id: item.id,
-      name: item.name,
-      score: item.score,
-      tier: item.publicTier,
-      valuation: item.valuationDisplay || 0,
-      category: item.category || null,
-      systemChain: item.systemChain || [],
-      fingerprint: item.fingerprint || null,
-      obtainedAt: item.obtainedAt || null,
-      source: item.source || sourceLabel,
-      exportLanguages: languageMap[item.id],
-    })),
+    totalValuation: artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0),
+    totalValuationFormatted: formatMarketValue(artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0)),
+    valuationMethod: 'CJPI × Category × Complexity internal formula',
+    artifacts: artifacts.map((item) => {
+      const estValue = estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length);
+      return {
+        id: item.id,
+        name: item.name,
+        score: item.score,
+        tier: item.publicTier,
+        estimatedValue: estValue,
+        estimatedValueFormatted: formatMarketValue(estValue),
+        category: item.category || null,
+        systemChain: item.systemChain || [],
+        fingerprint: item.fingerprint || null,
+        obtainedAt: item.obtainedAt || null,
+        source: item.source || sourceLabel,
+        exportLanguages: languageMap[item.id],
+      };
+    }),
   };
   root.file('manifest.json', JSON.stringify(manifest, null, 2));
 

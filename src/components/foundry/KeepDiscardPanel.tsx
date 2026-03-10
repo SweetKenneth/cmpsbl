@@ -145,8 +145,8 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                   <div className={`text-xl sm:text-2xl font-mono font-black tabular-nums ${scoreColor(result.score)}`}>
                     {result.score}
                   </div>
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider font-mono tabular-nums">
-                    {formatValuation(result.valuationDisplay)}
+                  <div className="text-[9px] text-neon-green font-bold uppercase tracking-wider font-mono tabular-nums">
+                    {formatMarketValue(estimateMarketValue(result.score, result.category, result.systemChain.length))}
                   </div>
                 </div>
               </div>
