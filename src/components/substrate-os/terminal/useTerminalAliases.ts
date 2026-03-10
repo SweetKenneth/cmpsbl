@@ -32,7 +32,7 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'dc', expansion: 'dream.cycle', description: 'Dream cycle' },
   { alias: 'ds', expansion: 'dream.status', description: 'Dream status' },
   
-  // Evolution shortcuts (EVOLUTION node — formerly Modernizer)
+  // Evolution shortcuts (EVOLUTION node)
   { alias: 'me', expansion: 'evolution.evolve', description: 'Evolution Cycle' },
   { alias: 'ms', expansion: 'evolution.evolve status', description: 'Evolution status' },
   { alias: 'ma', expansion: 'evolution.evolve shadow', description: 'Apply shadow' },

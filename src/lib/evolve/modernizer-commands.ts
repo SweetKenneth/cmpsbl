@@ -381,7 +381,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.scan — Cognitive systems scan (v0.7.7)
+   * evolution.scan — Cognitive systems scan (v0.7.7)
    */
   async scan(options: ScanOptions = {}): Promise<CommandResult> {
     const result = await evolutionScan(options);

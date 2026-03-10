@@ -68,7 +68,7 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'dream.feed': ['dream.consume', 'dream.cycle', 'dream.interpret', 'dream.reflect'],
   'dream.consume': ['dream.reflect', 'dream.cycle', 'brain.reflect', 'dream.status'],
   
-  // Evolution Cycle workflows (formerly modernizer)
+  // Evolution Cycle workflows
   'evolution.status': ['evolution.evolve', 'evolution.evolve status', 'evolution.jobs', 'evolution.quota'],
   'evolution.evolve': ['evolution.evolve shadow', 'evolution.evolve production', 'evolution.evolve verify', 'evolution.evolve status'],
   'evolution.evolve status': ['evolution.evolve', 'evolution.evolve shadow', 'evolution.evolve abort', 'system.health'],
