@@ -136,7 +136,7 @@ export default function CurrentProjects() {
       <PublicNav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden py-20 md:py-28 px-4">
+      <section className="relative overflow-hidden py-16 sm:py-20 md:py-28 px-3 sm:px-4">
         <div className="absolute inset-0 bg-[var(--gradient-mesh)] opacity-40" />
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 30% 40%, hsl(var(--primary) / 0.08), transparent 60%)" }} />
         
