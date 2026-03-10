@@ -147,15 +147,15 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Dream heartbeat with circadian data',
   },
   
-  // Modernizer
+  // Evolution
   {
     patterns: [/upgrade/i, /improve/i, /optimize/i, /modernize/i, /scan.*improvements/i, /evolve/i, /evolution/i],
-    command: 'modernizer.evolve',
+    command: 'evolution.evolve',
     explanation: 'Start Evolution Cycle',
   },
   {
     patterns: [/pending.*upgrades/i, /upgrade.*plans/i, /what.*upgrade/i, /evolution.*status/i, /evolve.*status/i],
-    command: 'modernizer.evolve status',
+    command: 'evolution.evolve status',
     explanation: 'Check evolution status',
   },
   
