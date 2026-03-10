@@ -1589,7 +1589,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-optimization-loop',
     name: 'Autonomous Optimization Loop',
-    description: 'CORTEX identifies bottlenecks using VISION metrics, BRAIN patterns, and MODERNIZER applies automated improvements',
+    description: 'CORTEX identifies bottlenecks using VISION metrics, BRAIN patterns, and EVOLUTION applies automated improvements',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
