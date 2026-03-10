@@ -570,7 +570,7 @@ const stratumInfra: Specimen[] = [
     id: "INFR-002",
     fossilized: "2026-02-15",
     origin: "cognition",
-    stimulus: "Brain knowledge was trapped in central storage — modules couldn't access cross-domain insights, and learning required active sessions",
+    stimulus: "Brain knowledge was trapped in central storage — nodes couldn't access cross-domain insights, and learning required active sessions",
     adaptations: [
       "Continuous learning engine now runs autonomously — no active session required",
       "Knowledge transfer pipeline routes high-value learnings to specialized modules",
