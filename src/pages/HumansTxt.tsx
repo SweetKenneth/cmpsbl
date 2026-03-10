@@ -185,7 +185,7 @@ export default function HumansTxt() {
             style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }} />
         </div>
 
-        <div className="container mx-auto px-4 pt-24 pb-16 max-w-4xl relative z-10">
+        <div className="container mx-auto px-3 sm:px-4 pt-20 sm:pt-24 pb-12 sm:pb-16 max-w-4xl relative z-10">
           {/* Header */}
           <motion.div className="mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
