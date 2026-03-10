@@ -313,6 +313,7 @@ export function PipelineProvenance({ pipeline, onClose, subscriptionTier }: Prop
     onOpenExport: () => setExportOpen(true),
     onClose,
     isMobile,
+    subscriptionTier,
   };
 
   /* ── Mobile: two Drawers ── */
