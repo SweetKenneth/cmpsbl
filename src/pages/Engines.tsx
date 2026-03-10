@@ -213,14 +213,14 @@ export default function Engines() {
           </div>
 
           {/* Footer note */}
-          <div className="container mx-auto px-4 mt-16 text-center">
-            <div className="inline-flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl border border-border/40 bg-card/50">
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+          <div className="container mx-auto px-3 sm:px-4 mt-12 sm:mt-16 text-center">
+            <div className="inline-flex flex-col items-center gap-3 p-5 sm:p-8 rounded-2xl border border-border/40 bg-card/50 glass-edge">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
                 Every license includes a numbered Ownership Certificate, full documentation,
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
-              <p className="text-xs font-mono text-muted-foreground/50">
-                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled
+              <p className="text-[10px] sm:text-xs font-mono text-muted-foreground/50">
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled with agent
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">
