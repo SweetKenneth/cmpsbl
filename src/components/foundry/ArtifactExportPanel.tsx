@@ -4,7 +4,7 @@
  */
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Lock, ChevronDown, ChevronUp, Cpu, Code2, Loader2 } from 'lucide-react';
+import { Download, Lock, ChevronDown, ChevronUp, Cpu, Code2, Loader2, ArrowUpRight } from 'lucide-react';
 import {
   getLanguagesForScore,
   generateSingleExport,
@@ -15,7 +15,9 @@ import {
 import { getUnlockStatus } from '@/lib/export/language-unlock-tiers';
 import { scoreToPublicTier, getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getVaultLimits } from '@/lib/substrate/vault-limits';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 interface ArtifactExportPanelProps {
   artifact: {
@@ -25,6 +27,7 @@ interface ArtifactExportPanelProps {
     category?: string | null;
     fingerprint?: string;
   };
+  subscriptionTier?: string;
 }
 
 const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
@@ -35,9 +38,10 @@ const TIER_LABELS: Record<string, { icon: typeof Code2; color: string }> = {
   silicon: { icon: Cpu,   color: 'text-purple-400' },
 };
 
-export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
+export function ArtifactExportPanel({ artifact, subscriptionTier }: ArtifactExportPanelProps) {
   const [expanded, setExpanded] = useState(false);
   const [exporting, setExporting] = useState<ExportLanguage | null>(null);
+  const limits = getVaultLimits(subscriptionTier);
 
   const languages = useMemo(() => getLanguagesForScore(artifact.score), [artifact.score]);
   const tiers = useMemo(() => getUnlockStatus(artifact.score), [artifact.score]);
@@ -79,6 +83,27 @@ export function ArtifactExportPanel({ artifact }: ArtifactExportPanelProps) {
       setExporting(null);
     }
   };
+
+  if (!limits.exportEnabled) {
+    return (
+      <div className="px-5 pb-4">
+        <div className="flex items-center justify-between p-3 rounded-lg border border-border/20 bg-muted/10">
+          <div className="flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-muted-foreground/50" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+              Export requires Studio tier or above
+            </span>
+          </div>
+          <Link
+            to="/upgrade"
+            className="flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors"
+          >
+            Upgrade <ArrowUpRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-5 pb-4">

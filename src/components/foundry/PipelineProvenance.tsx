@@ -31,6 +31,7 @@ interface Props {
     lastDiscoveredAt?: string;
   } | null;
   onClose: () => void;
+  subscriptionTier?: string;
 }
 
 function tierColor(score: number): string {
@@ -51,6 +52,7 @@ function tierGlow(score: number): string {
 /* ── Shared provenance body ── */
 function ProvenanceBody({
   pipeline,
+  subscriptionTier,
   cjpi,
   steps,
   modules,
@@ -71,6 +73,7 @@ function ProvenanceBody({
   onOpenExport: () => void;
   onClose: () => void;
   isMobile: boolean;
+  subscriptionTier?: string;
 }) {
   const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState<boolean | null>(null);
@@ -253,6 +256,7 @@ function ProvenanceBody({
             category: null,
             fingerprint,
           }}
+          subscriptionTier={subscriptionTier}
         />
       )}
 
@@ -281,7 +285,7 @@ function ProvenanceBody({
 }
 
 /* ── Main component ── */
-export function PipelineProvenance({ pipeline, onClose }: Props) {
+export function PipelineProvenance({ pipeline, onClose, subscriptionTier }: Props) {
   const isMobile = useIsMobile();
   const [exportOpen, setExportOpen] = useState(false);
 
@@ -309,6 +313,7 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
     onOpenExport: () => setExportOpen(true),
     onClose,
     isMobile,
+    subscriptionTier,
   };
 
   /* ── Mobile: two Drawers ── */
@@ -344,6 +349,7 @@ export function PipelineProvenance({ pipeline, onClose }: Props) {
                   category: null,
                   fingerprint,
                 }}
+                subscriptionTier={subscriptionTier}
               />
             </div>
           </DrawerContent>

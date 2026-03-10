@@ -3,11 +3,13 @@
  */
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Fingerprint, Loader2, Trash2 } from 'lucide-react';
+import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getVaultLimits } from '@/lib/substrate/vault-limits';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import {
   downloadTieredFoundryZip,
@@ -43,6 +45,7 @@ interface InventoryItem {
 interface Props {
   inventory: InventoryItem[];
   onRemove?: (id: string) => Promise<boolean>;
+  subscriptionTier?: string;
 }
 
 function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundryExportArtifact[] {
@@ -61,7 +64,7 @@ function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundr
   }));
 }
 
-export function FoundryInventory({ inventory, onRemove }: Props) {
+export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Props) {
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
@@ -130,14 +133,25 @@ export function FoundryInventory({ inventory, onRemove }: Props) {
           <div className="text-xs font-mono text-muted-foreground">
             Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
-          <button
-            onClick={handleExportVault}
-            disabled={isExporting}
-            className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
-          >
-            {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-            {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
-          </button>
+          {getVaultLimits(subscriptionTier).exportEnabled ? (
+            <button
+              onClick={handleExportVault}
+              disabled={isExporting}
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+            >
+              {isExporting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+              {isExporting ? 'Building ZIP...' : 'Export Tiered ZIP'}
+            </button>
+          ) : (
+            <Link
+              to="/upgrade"
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40"
+            >
+              <Lock className="w-3 h-3" />
+              Export (Studio+)
+              <ArrowUpRight className="w-3 h-3" />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -263,6 +277,7 @@ export function FoundryInventory({ inventory, onRemove }: Props) {
       <PipelineProvenance
         pipeline={provenancePipeline}
         onClose={() => setProvenancePipeline(null)}
+        subscriptionTier={subscriptionTier}
       />
     </div>
   );
