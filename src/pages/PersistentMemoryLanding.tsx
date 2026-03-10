@@ -477,7 +477,6 @@ const prompt = userMessage + context.contextString;`,
                 <InteractivePlayground />
               </motion.div>
             </div>
-            </div>
           </div>
         </section>
 
