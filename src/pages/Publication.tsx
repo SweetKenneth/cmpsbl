@@ -135,7 +135,7 @@ export default function Publication() {
               </Badge>
             </motion.div>
 
-            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-4">
+            <motion.h1 variants={fadeUp} custom={1} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-4">
               CMPSBL® Substrate OS
             </motion.h1>
 
