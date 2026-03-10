@@ -2465,7 +2465,7 @@ ${allFeatures.map(f => {
         const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
         result = await evolutionMod.scan({ depth: depth || 'standard' });
       }
-    // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
+    // NOTE: evolution.analyze is handled by Omega Observer Engine (see line ~1354)
     // Legacy handler removed to prevent duplicate handling
     } else if (base === 'evolution.export' || base === 'modernizer.export') {
       if (!args[0]) {
