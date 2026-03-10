@@ -371,7 +371,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'hypothesis_validation',
     name: 'Hypothesis Validation',
     description: 'Validates hunches with IF-THEN scenarios before costly execution',
-    modules: ['BRAIN', 'MODERNIZER'],
+    modules: ['BRAIN', 'EVOLUTION'],
     layer: 'Cognitive',
     userBenefit: 'Test assumptions before committing resources',
     status: 'active',
