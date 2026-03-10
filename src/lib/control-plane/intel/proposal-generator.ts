@@ -367,7 +367,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   engineerNode.clear();
   
   // ─── STEP 0b: Snapshot Discipline (Pre-Generation) ───
-  const governanceChain = await runModernizerGovernanceChain();
+  const governanceChain = await runEvolutionGovernanceChain();
   
   // ─── 1. INTEL + ENGINEER (fresh run) ───
   // Run the maintenance battery first to populate findings/signals
