@@ -183,7 +183,7 @@ export default function Explore() {
             {/* Flowing accent at top */}
             <div className="h-[2px] memory-stream-bar opacity-70" />
 
-            <div className="relative p-7 sm:p-14 md:p-20 text-center">
+            <div className="relative p-5 sm:p-14 md:p-20 text-center">
               {/* Floating badge — CSS fade-in replaces motion */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
