@@ -501,7 +501,7 @@ const CROSS_MODULE_ROUTES: Record<TransferModule, TransferModule[]> = {
   audit:        ['identity', 'defense', 'system'],
   identity:     ['access', 'defense', 'audit'],
   economy:      ['access', 'system', 'vision'],
-  sandbox:      ['encode', 'modernizer', 'system'],
+  sandbox:      ['encode', 'evolution', 'system'],
 };
 
 /**
