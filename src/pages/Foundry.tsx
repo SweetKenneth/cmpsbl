@@ -224,6 +224,7 @@ export default function Foundry() {
               totalMines={foundry.userState?.totalMines ?? 0}
               streakDays={foundry.userState?.streakDays ?? 0}
               tierCounts={foundry.tierCounts}
+              inventory={foundry.inventory?.map((i: any) => ({ score: i.score, category: i.category, systemChain: i.systemChain }))}
             />
 
             {/* Tab bar */}

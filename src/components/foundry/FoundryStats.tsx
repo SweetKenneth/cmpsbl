@@ -1,8 +1,15 @@
 /**
  * FoundryStats — Quick stats bar for the Memory Stream page
- * Polished: glass-edge cards, glow accents, smoother entrance
+ * Uses internal valuation formula for total vault value
  */
 import { motion } from 'framer-motion';
+import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+
+interface InventoryForStats {
+  score: number;
+  category: string | null;
+  systemChain: string[] | null;
+}
 
 interface Props {
   inventoryCount: number;
@@ -10,21 +17,33 @@ interface Props {
   totalMines: number;
   streakDays: number;
   tierCounts: Record<string, number>;
+  inventory?: InventoryForStats[];
 }
 
-export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays }: Props) {
+export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays, inventory }: Props) {
+  const totalValue = (inventory || []).reduce((s, i) => {
+    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+  }, 0);
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
       <StatCard label="Vault" value={String(inventoryCount)} delay={0} />
+      <StatCard
+        label="Vault Value"
+        value={totalValue > 0 ? formatMarketValue(totalValue) : '—'}
+        accent="text-neon-green"
+        sub="est. market value"
+        delay={0.03}
+      />
       <StatCard
         label="Best Pull"
         value={bestPull ? String(bestPull.score) : '—'}
         accent={bestPull ? (bestPull.score === 100 ? 'text-primary' : bestPull.score >= 94 ? 'text-purple-400' : bestPull.score >= 90 ? 'text-amber-400' : bestPull.score >= 80 ? 'text-sky-400' : 'text-emerald-400') : undefined}
         sub={bestPull?.publicTier}
-        delay={0.05}
+        delay={0.06}
       />
-      <StatCard label="Crystallizations" value={String(totalMines)} delay={0.1} />
-      <StatCard label="Streak" value={streakDays > 0 ? `${streakDays}d` : '—'} sub={streakDays > 0 ? 'stability bonus' : undefined} delay={0.15} />
+      <StatCard label="Crystallizations" value={String(totalMines)} delay={0.09} />
+      <StatCard label="Streak" value={streakDays > 0 ? `${streakDays}d` : '—'} sub={streakDays > 0 ? 'stability bonus' : undefined} delay={0.12} />
     </div>
   );
 }

@@ -9,7 +9,8 @@ import { motion } from 'framer-motion';
 import { Check, X, Sparkles, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
+import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
 import type { MineResult } from '@/lib/foundry/public-mining-engine';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
@@ -144,8 +145,8 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                   <div className={`text-xl sm:text-2xl font-mono font-black tabular-nums ${scoreColor(result.score)}`}>
                     {result.score}
                   </div>
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-wider font-mono tabular-nums">
-                    {formatValuation(result.valuationDisplay)}
+                  <div className="text-[9px] text-neon-green font-bold uppercase tracking-wider font-mono tabular-nums">
+                    {formatMarketValue(estimateMarketValue(result.score, result.category, result.systemChain.length))}
                   </div>
                 </div>
               </div>

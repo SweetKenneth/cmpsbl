@@ -1,13 +1,13 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export & removal
- * Updated with commercialization pricing display
+ * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
-import { formatPrice, confidenceLabel } from '@/lib/foundry/pricing-engine';
+import { getTierBadgeClass, type PublicTier } from '@/lib/foundry/public-tiers';
+import { estimateMarketValue, formatMarketValue, getCategoryMultiplierLabel } from '@/lib/pipeline-valuation';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
@@ -121,10 +121,10 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     );
   }
 
-  // Use recommended resale price when available, fall back to internal valuation
-  const totalResaleValue = inventory.reduce((s, i) => s + (i.recommendedResalePrice ?? 0), 0);
-  const totalValuation = inventory.reduce((s, i) => s + i.valuationDisplay, 0);
-  const hasAnyPricing = inventory.some(i => i.recommendedResalePrice != null);
+  // Compute total value using internal formula
+  const totalValuation = inventory.reduce((s, i) => {
+    return s + estimateMarketValue(i.score, i.category || 'general', (i.systemChain || []).length);
+  }, 0);
 
   const handleExportVault = async () => {
     setIsExporting(true);
@@ -152,14 +152,9 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
             {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {hasAnyPricing && (
-              <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
-                <DollarSign className="w-3 h-3 text-neon-green" />
-                Resale: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
-              </div>
-            )}
-            <div className="text-xs font-mono text-muted-foreground">
-              Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+              <DollarSign className="w-3 h-3 text-neon-green" />
+              Est. Value: <span className="text-neon-green font-bold">{formatMarketValue(totalValuation)}</span>
             </div>
           </div>
         </div>
@@ -261,41 +256,38 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                   }`}>
                     {item.score}
                   </div>
-                  {item.recommendedResalePrice != null ? (
-                    <div className="text-[10px] font-mono font-bold text-neon-green">
-                      {formatPrice(item.recommendedResalePrice)}
-                    </div>
-                  ) : (
-                    <div className="text-[9px] text-muted-foreground">
-                      {formatValuation(item.valuationDisplay)}
-                    </div>
-                  )}
+                  <div className="text-[10px] font-mono font-bold text-neon-green">
+                    {formatMarketValue(estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length))}
+                  </div>
                 </div>
               </div>
 
-              {/* Pricing summary row */}
-              {item.recommendedResalePrice != null && (
-                <div className="mt-2 pt-2 border-t border-border/10">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground">
-                      <span>Indie: <span className="text-foreground">{formatPrice(item.indiePrice ?? 0)}</span></span>
-                      <span>Std: <span className="text-foreground">{formatPrice(item.standardPrice ?? 0)}</span></span>
-                      <span>Ent: <span className="text-foreground">{formatPrice(item.enterprisePrice ?? 0)}</span></span>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpandedPricing(expandedPricing === item.id ? null : item.id);
-                      }}
-                      className="p-0.5 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {expandedPricing === item.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                    </button>
+              {/* Valuation breakdown row */}
+              <div className="mt-2 pt-2 border-t border-border/10">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground">
+                    <span>Category: <span className="text-foreground capitalize">{item.category || 'general'}</span></span>
+                    {getCategoryMultiplierLabel(item.category || 'general') && (
+                      <span className="text-neon-amber">{getCategoryMultiplierLabel(item.category || 'general')}</span>
+                    )}
+                    <span>Modules: <span className="text-foreground">{(item.systemChain || []).length}</span></span>
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpandedPricing(expandedPricing === item.id ? null : item.id);
+                    }}
+                    className="p-0.5 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {expandedPricing === item.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                  </button>
+                </div>
 
-                  {/* Expanded pricing details */}
-                  <AnimatePresence>
-                    {expandedPricing === item.id && (
+                {/* Expanded valuation details */}
+                <AnimatePresence>
+                  {expandedPricing === item.id && (() => {
+                    const val = estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length);
+                    return (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
@@ -303,46 +295,25 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                         className="overflow-hidden"
                       >
                         <div className="mt-2 space-y-1.5 text-[9px] font-mono">
-                          {item.marketCategory && (
-                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                              <Store className="w-2.5 h-2.5" />
-                              Category: <span className="text-foreground">{item.marketCategory}</span>
-                            </div>
-                          )}
-                          {item.suggestedMarketplaces && item.suggestedMarketplaces.length > 0 && (
-                            <div className="flex items-start gap-1.5 text-muted-foreground">
-                              <TrendingUp className="w-2.5 h-2.5 mt-0.5 shrink-0" />
-                              <span>Marketplaces: <span className="text-foreground">{item.suggestedMarketplaces.join(', ')}</span></span>
-                            </div>
-                          )}
-                          {item.pricingConfidence != null && (
-                            <div className="text-muted-foreground">
-                              Confidence: <span className={`font-bold ${item.pricingConfidence >= 0.7 ? 'text-neon-green' : item.pricingConfidence >= 0.5 ? 'text-neon-amber' : 'text-muted-foreground'}`}>
-                                {confidenceLabel(item.pricingConfidence)}
-                              </span>
-                              {item.pricingSource && (
-                                <span className="ml-2 text-muted-foreground/50">
-                                  via {item.pricingSource === 'claude-haiku' ? 'Claude Haiku' : 'local estimate'}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                          {item.comparableSummary && (
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <DollarSign className="w-2.5 h-2.5" />
+                            Estimated Value: <span className="text-neon-green font-bold">{formatMarketValue(val)}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <TrendingUp className="w-2.5 h-2.5" />
+                            Valuation Method: <span className="text-foreground">CJPI × Category × Complexity formula</span>
+                          </div>
+                          {item.systemChain && item.systemChain.length > 0 && (
                             <div className="text-muted-foreground/70 leading-relaxed mt-1">
-                              {item.comparableSummary}
-                            </div>
-                          )}
-                          {item.commercializationNotes && (
-                            <div className="text-muted-foreground/60 leading-relaxed italic">
-                              {item.commercializationNotes}
+                              Chain: {item.systemChain.join(' → ')}
                             </div>
                           )}
                         </div>
                       </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
+                    );
+                  })()}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Remove button — bottom right, no overlap with score */}
