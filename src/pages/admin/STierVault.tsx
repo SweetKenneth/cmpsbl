@@ -516,6 +516,43 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
+  // Pricing engine for S-Tier repricing
+  const pricingEngine = usePricingEngine();
+
+  const handleRepriceAll = useCallback(async () => {
+    // Build artifacts from registry entries + promoted discoveries
+    const artifacts: PricingArtifact[] = [];
+
+    // Registry entries (static S-Tier Crown Jewels)
+    for (const entry of entries) {
+      artifacts.push({
+        pipeline_name: entry.name,
+        pipeline_score: entry.cjpi,
+        pipeline_tier: 'Apex',
+        pipeline_category: entry.type,
+        system_chain: [entry.module],
+        valuation_display: null,
+      });
+    }
+
+    // Promoted discoveries from vault_promotions
+    for (const d of promoted) {
+      artifacts.push({
+        vault_id: d.id,
+        source_table: 'vault_promotions',
+        pipeline_name: d.name,
+        pipeline_score: d.cjpi,
+        pipeline_tier: d.tier || 'Apex',
+        pipeline_category: d.category,
+        system_chain: d.module_chain,
+        valuation_display: null,
+      });
+    }
+
+    const result = await pricingEngine.repriceAll(artifacts);
+    toast.success(`Repriced ${result.success} S-Tier artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+  }, [promoted, pricingEngine]);
+
   // Discovered tab filters
   const [discCategoryFilter, setDiscCategoryFilter] = useState<string | null>(null);
   const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
