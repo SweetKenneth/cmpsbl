@@ -160,7 +160,7 @@ const modulesByLayer = {
   admin: [
     {
       id: "system",
-      name: "System",
+      name: "SYSTEM",
       description: "Administration, configuration",
       icon: Settings,
       color: "text-gray-400",
@@ -169,7 +169,7 @@ const modulesByLayer = {
     },
     {
       id: "integration",
-      name: "Integration",
+      name: "INTEGRATION",
       description: "Enterprise adapters, LLM governance",
       icon: Plug,
       color: "text-emerald-500",
@@ -178,7 +178,7 @@ const modulesByLayer = {
     },
     {
       id: "inclusive",
-      name: "Inclusive",
+      name: "INCLUSIVE",
       description: "Human compatibility, WCAG, a11y",
       icon: Accessibility,
       color: "text-pink-500",
@@ -187,7 +187,7 @@ const modulesByLayer = {
     },
     {
       id: "medic",
-      name: "Medic",
+      name: "MEDIC",
       description: "Self-healing diagnostics & recovery",
       icon: HeartPulse,
       color: "text-red-400",
@@ -198,7 +198,7 @@ const modulesByLayer = {
   orchestrator: [
     {
       id: "cortex",
-      name: "Cortex",
+      name: "CORTEX",
       description: "Agency orchestrator, evolution, governance",
       icon: Wand2,
       color: "text-violet-500",
