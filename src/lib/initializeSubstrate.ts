@@ -37,6 +37,10 @@ export async function initializeSubstrate(): Promise<void> {
     console.log('─────────────────────────────────────────');
     
     // Boot order: CORE → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
+    // CCR (Core Cognitive Ring) — booted after CORE
+    const ccrNodes = ['brain', 'memory', 'dream'] as const;
+    // OCG (Operational Compliance Grid)
+    const ocgNodes = ['ripple', 'access', 'identity', 'relay', 'audit'] as const;
     const executionNodes = [
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
       'medic', 'nerve',
@@ -72,7 +76,7 @@ export async function initializeSubstrate(): Promise<void> {
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
-      const allNodes = [...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes, ...expansionNodes];
+      const allNodes = [...ccrNodes, ...ocgNodes, ...executionNodes, ...eszNodes, ...epzNodes, ...emzNodes, ...cszNodes, ...expansionNodes];
       for (const node of allNodes) {
         await yieldToMain();
         const result = await substrate.invoke({ module: node, action: 'pulse' });
