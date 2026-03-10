@@ -825,7 +825,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'predictive-healing',
     name: 'Predictive Healing',
-    description: 'BRAIN failure pattern prediction triggers MODERNIZER proactive fixes before issues occur',
+    description: 'BRAIN failure pattern prediction triggers EVOLUTION proactive fixes before issues occur',
     category: 'resilience',
     modules: [
       { name: 'BRAIN', role: 'primary', required: true },
