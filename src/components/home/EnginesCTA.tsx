@@ -26,7 +26,7 @@ const TIER_DOT: Record<string, string> = {
 
 export function EnginesCTA() {
   return (
-    <section className="relative z-10 px-4 py-12 sm:py-20 overflow-hidden">
+    <section className="relative z-10 px-3 sm:px-4 py-12 sm:py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
