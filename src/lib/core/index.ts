@@ -124,8 +124,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   relay: 'zone-ocg',
   audit: 'zone-ocg',
   nerve: 'zone-ocg',
-  // Absorbed
-  evolution: 'absorbed',
+  // (evolution is in CSZ below)
   // Execution Modules
   decode: 'module',
   encode: 'module',
