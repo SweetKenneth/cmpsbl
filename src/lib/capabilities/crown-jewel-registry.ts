@@ -1277,7 +1277,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'syn-autonomous-evolution',
     name: 'Autonomous Evolution Synergy',
     artifactType: 'pipeline',
-    modules: ['CORTEX', 'BRAIN', 'MODERNIZER', 'SEBA'],
+    modules: ['CORTEX', 'BRAIN', 'EVOLUTION', 'SEBA'],
     classification: 'experience',
     reason: 'CORTEX evolution proposals enhanced by learning and impact simulation',
     enables: 'Fully autonomous system evolution with bounded safety',
