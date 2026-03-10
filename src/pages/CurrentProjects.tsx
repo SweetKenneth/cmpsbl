@@ -151,8 +151,8 @@ export default function CurrentProjects() {
             CMPSBL ECOSYSTEM
           </Badge>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-[1.1] mb-6">
-            Current Projects
+           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-foreground leading-[1.1] mb-4 sm:mb-6">
+             Current Projects
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
