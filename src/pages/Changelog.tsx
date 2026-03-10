@@ -334,7 +334,7 @@ const stratumIronclad: Specimen[] = [
       "Governance modes allow the entire system to shift posture: from fully autonomous to total lockdown",
       "Operators can diagnose any module from the terminal without touching code",
     ],
-    affectedNodes: ["ALL MODULES"],
+    affectedNodes: ["ALL NODES"],
   },
 ];
 
