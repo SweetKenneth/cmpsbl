@@ -22,7 +22,7 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="Substrate Systems — AI Architecture | CMPSBL"
+        title="Substrate Nodes — AI Architecture | CMPSBL"
         description="Browse all substrate execution surfaces — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
