@@ -187,10 +187,54 @@ const WAVE_8_ACTIVATIONS = [
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 9 — CJPI 87 (Strategic Autonomy & Product Intelligence)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_9_ACTIVATIONS = [
+  { module: 'cortex', capability: 'explainable_intelligence_compiler', priority: 87, id: 'S-CJ77' },
+  { module: 'system', capability: 'autonomous_ops_steward', priority: 87, id: 'S-CJ78' },
+  { module: 'governance', capability: 'autonomy_budget_manager', priority: 87, id: 'S-CJ79' },
+  { module: 'governance', capability: 'autonomy_rollback_authority', priority: 87, id: 'S-CJ80' },
+  { module: 'defense', capability: 'intelligence_containment', priority: 87, id: 'S-CJ81' },
+  { module: 'defense', capability: 'emergent_threat_anticipator', priority: 87, id: 'S-CJ82' },
+  { module: 'identity', capability: 'behavioral_trust_scoring', priority: 87, id: 'S-CJ83' },
+  { module: 'economy', capability: 'autonomous_cost_arbitrage', priority: 87, id: 'S-CJ84' },
+  { module: 'nexus', capability: 'value_weighted_reasoning_router', priority: 87, id: 'S-CJ85' },
+  { module: 'vision', capability: 'waste_detection_intelligence', priority: 87, id: 'S-CJ86' },
+  { module: 'decode', capability: 'intent_drift_tracker', priority: 87, id: 'S-CJ87' },
+  { module: 'brain', capability: 'adaptive_product_brain', priority: 87, id: 'S-CJ88' },
+  { module: 'decode', capability: 'friction_auto_removal', priority: 87, id: 'S-CJ89' },
+  { module: 'cortex', capability: 'cross_pipeline_arbitration', priority: 87, id: 'S-CJ90' },
+  { module: 'atlas', capability: 'capability_impact_forecaster', priority: 87, id: 'S-CJ91' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 10 — CJPI 86 (Recursive Depth & Governance)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_10_ACTIVATIONS = [
+  { module: 'system', capability: 'self_scaling_intelligence_fabric', priority: 86, id: 'S-CJ92' },
+  { module: 'governance', capability: 'regulatory_mode_switcher', priority: 86, id: 'S-CJ93' },
+  { module: 'audit', capability: 'audit_grade_decision_ledger', priority: 86, id: 'S-CJ94' },
+  { module: 'governance', capability: 'policy_aware_intelligence_gate', priority: 86, id: 'S-CJ95' },
+  { module: 'governance', capability: 'intelligence_governance_kernel', priority: 86, id: 'S-CJ96' },
+  { module: 'brain', capability: 'recursive_cognitive_bootstrapping', priority: 86, id: 'S-CJ97' },
+  { module: 'atlas', capability: 'recursive_capability_discoverer', priority: 86, id: 'S-CJ98' },
+  { module: 'memory', capability: 'recursive_knowledge_crystallization', priority: 86, id: 'S-CJ99' },
+  { module: 'memory', capability: 'recursive_infinite_context', priority: 86, id: 'S-CJ100' },
+  { module: 'evolution', capability: 'recursive_self_improvement_pipeline', priority: 86, id: 'S-CJ101' },
+  { module: 'evolution', capability: 'evolution_engine', priority: 86, id: 'S-CJ102' },
+  { module: 'brain', capability: 'metacognition_engine', priority: 86, id: 'S-CJ103' },
+  { module: 'system', capability: 'self_documentation_engine', priority: 86, id: 'S-CJ104' },
+  { module: 'cortex', capability: 'cortex_orchestration_engine', priority: 86, id: 'S-CJ105' },
+  { module: 'governance', capability: 'evolution_governance_engine', priority: 86, id: 'S-CJ106' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Activation Engine
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 interface ActivationResult {
   wave: ActivationWave;
