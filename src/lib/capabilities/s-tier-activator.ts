@@ -336,14 +336,8 @@ export function getActivationLog(): ActivationResult[] {
  * Get total S-tier capability count across all waves
  */
 export function getSTierCapabilityCount(): {
-  wave1: number;
-  wave2: number;
-  wave3: number;
-  wave4: number;
-  wave5: number;
-  wave6: number;
-  wave7: number;
-  wave8: number;
+  wave1: number; wave2: number; wave3: number; wave4: number; wave5: number;
+  wave6: number; wave7: number; wave8: number; wave9: number; wave10: number;
   total: number;
 } {
   return {
@@ -355,9 +349,12 @@ export function getSTierCapabilityCount(): {
     wave6: WAVE_6_ACTIVATIONS.length,
     wave7: WAVE_7_ACTIVATIONS.length,
     wave8: WAVE_8_ACTIVATIONS.length,
+    wave9: WAVE_9_ACTIVATIONS.length,
+    wave10: WAVE_10_ACTIVATIONS.length,
     total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length +
       WAVE_4_ACTIVATIONS.length + WAVE_5_ACTIVATIONS.length + WAVE_6_ACTIVATIONS.length +
-      WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length,
+      WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length + WAVE_9_ACTIVATIONS.length +
+      WAVE_10_ACTIVATIONS.length,
   };
 }
 
