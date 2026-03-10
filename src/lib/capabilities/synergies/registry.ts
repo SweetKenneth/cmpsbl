@@ -263,7 +263,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER code analysis combined with DECODE explanation and SYSTEM versioning',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
       { name: 'SYSTEM', role: 'validator', required: false },
     ],
