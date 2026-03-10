@@ -1,6 +1,6 @@
 /**
- * Module Detail Page — Hybrid marketing hero + technical depth
- * SEO: /modules/:slug — captures specific module intent
+ * Node Detail Page — Hybrid marketing hero + technical depth
+ * SEO: /modules/:slug — captures specific node intent
  */
 
 import { useParams, Link, Navigate } from "react-router-dom";
