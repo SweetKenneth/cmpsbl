@@ -44,11 +44,11 @@ export function CrownJewelShowcase() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground text-center mb-3 sm:mb-4 font-mono">
-            Apex Discoveries — What the Memory Stream Surfaces
+            Top Discoveries — What the Memory Stream Surfaces
           </h2>
           <p className="text-center text-foreground/90 mb-2 max-w-2xl mx-auto text-sm sm:text-base px-2 leading-relaxed font-medium">
-            These are the highest-scoring software pipelines discovered by the substrate.
-            Each represents a complete working program synthesized from system behavior.
+            The highest-value software pipelines discovered by the substrate.
+            Each solves a real problem teams face every day.
           </p>
           <p className="text-center text-muted-foreground/60 mb-12 sm:mb-16 max-w-2xl mx-auto text-xs sm:text-sm px-2 leading-relaxed font-mono">
             Pipelines are executable software architectures automatically discovered
@@ -57,7 +57,7 @@ export function CrownJewelShowcase() {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-          {APEX_DISCOVERIES.map((discovery, i) => (
+          {TOP_DISCOVERIES.map((discovery, i) => (
             <motion.div
               key={discovery.name}
               initial={{ opacity: 0, y: 12 }}
@@ -68,12 +68,12 @@ export function CrownJewelShowcase() {
             >
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <span className="text-[11px] sm:text-xs font-mono px-2 py-1 rounded-md border border-primary/30 bg-primary/10 text-primary uppercase tracking-wider font-bold">
-                      CJPI: 100
+                      CJPI: {discovery.score}
                     </span>
                     <span className="text-[10px] sm:text-xs font-mono text-primary/50 italic">
-                      Perfect Score
+                      {discovery.tier}
                     </span>
                     <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider font-mono">
                       {discovery.category}
