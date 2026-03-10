@@ -27,7 +27,7 @@ export type ModuleName =
   | 'ripple'
   | 'access'
   | 'inclusive'
-  | 'modernizer'
+  | 'evolution'
   | 'system'
   | 'decode'
   | 'dream'
