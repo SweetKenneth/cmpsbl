@@ -3,7 +3,7 @@
  * Stages and registers CJPI 88+ S-tier vault entries as functional capabilities
  * in the Capability Router — transitioning them from "vault blueprints" to "active capabilities"
  *
- * Activation follows 8 waves:
+ * Activation follows 10 waves:
  *   Wave 1 (CJPI 95-98): Critical infrastructure — immediate activation
  *   Wave 2 (CJPI 94):    High-value capabilities
  *   Wave 3 (CJPI 93):    Extended coverage — full matrix parity
@@ -12,6 +12,8 @@
  *   Wave 6 (CJPI 90):    Advanced defense & diagnostics
  *   Wave 7 (CJPI 89):    Deep infrastructure
  *   Wave 8 (CJPI 88):    Autonomous intelligence
+ *   Wave 9 (CJPI 87):    Strategic autonomy & product intelligence
+ *   Wave 10 (CJPI 86):   Recursive depth & governance
  *
  * All activations are registered through the governed Capability Router.
  */
@@ -185,10 +187,54 @@ const WAVE_8_ACTIVATIONS = [
 ] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 9 — CJPI 87 (Strategic Autonomy & Product Intelligence)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_9_ACTIVATIONS = [
+  { module: 'cortex', capability: 'explainable_intelligence_compiler', priority: 87, id: 'S-CJ77' },
+  { module: 'system', capability: 'autonomous_ops_steward', priority: 87, id: 'S-CJ78' },
+  { module: 'governance', capability: 'autonomy_budget_manager', priority: 87, id: 'S-CJ79' },
+  { module: 'governance', capability: 'autonomy_rollback_authority', priority: 87, id: 'S-CJ80' },
+  { module: 'defense', capability: 'intelligence_containment', priority: 87, id: 'S-CJ81' },
+  { module: 'defense', capability: 'emergent_threat_anticipator', priority: 87, id: 'S-CJ82' },
+  { module: 'identity', capability: 'behavioral_trust_scoring', priority: 87, id: 'S-CJ83' },
+  { module: 'economy', capability: 'autonomous_cost_arbitrage', priority: 87, id: 'S-CJ84' },
+  { module: 'nexus', capability: 'value_weighted_reasoning_router', priority: 87, id: 'S-CJ85' },
+  { module: 'vision', capability: 'waste_detection_intelligence', priority: 87, id: 'S-CJ86' },
+  { module: 'decode', capability: 'intent_drift_tracker', priority: 87, id: 'S-CJ87' },
+  { module: 'brain', capability: 'adaptive_product_brain', priority: 87, id: 'S-CJ88' },
+  { module: 'decode', capability: 'friction_auto_removal', priority: 87, id: 'S-CJ89' },
+  { module: 'cortex', capability: 'cross_pipeline_arbitration', priority: 87, id: 'S-CJ90' },
+  { module: 'atlas', capability: 'capability_impact_forecaster', priority: 87, id: 'S-CJ91' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// WAVE 10 — CJPI 86 (Recursive Depth & Governance)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const WAVE_10_ACTIVATIONS = [
+  { module: 'system', capability: 'self_scaling_intelligence_fabric', priority: 86, id: 'S-CJ92' },
+  { module: 'governance', capability: 'regulatory_mode_switcher', priority: 86, id: 'S-CJ93' },
+  { module: 'audit', capability: 'audit_grade_decision_ledger', priority: 86, id: 'S-CJ94' },
+  { module: 'governance', capability: 'policy_aware_intelligence_gate', priority: 86, id: 'S-CJ95' },
+  { module: 'governance', capability: 'intelligence_governance_kernel', priority: 86, id: 'S-CJ96' },
+  { module: 'brain', capability: 'recursive_cognitive_bootstrapping', priority: 86, id: 'S-CJ97' },
+  { module: 'atlas', capability: 'recursive_capability_discoverer', priority: 86, id: 'S-CJ98' },
+  { module: 'memory', capability: 'recursive_knowledge_crystallization', priority: 86, id: 'S-CJ99' },
+  { module: 'memory', capability: 'recursive_infinite_context', priority: 86, id: 'S-CJ100' },
+  { module: 'evolution', capability: 'recursive_self_improvement_pipeline', priority: 86, id: 'S-CJ101' },
+  { module: 'evolution', capability: 'evolution_engine', priority: 86, id: 'S-CJ102' },
+  { module: 'brain', capability: 'metacognition_engine', priority: 86, id: 'S-CJ103' },
+  { module: 'system', capability: 'self_documentation_engine', priority: 86, id: 'S-CJ104' },
+  { module: 'cortex', capability: 'cortex_orchestration_engine', priority: 86, id: 'S-CJ105' },
+  { module: 'governance', capability: 'evolution_governance_engine', priority: 86, id: 'S-CJ106' },
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Activation Engine
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type ActivationWave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 interface ActivationResult {
   wave: ActivationWave;
@@ -234,11 +280,12 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
   const allWaves = [
     WAVE_1_ACTIVATIONS, WAVE_2_ACTIVATIONS, WAVE_3_ACTIVATIONS,
     WAVE_4_ACTIVATIONS, WAVE_5_ACTIVATIONS, WAVE_6_ACTIVATIONS,
-    WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS,
+    WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS, WAVE_9_ACTIVATIONS,
+    WAVE_10_ACTIVATIONS,
   ];
   const total = allWaves.reduce((s, w) => s + w.length, 0);
   console.log(`[S-Tier Activator] ═══ Beginning staged activation ═══`);
-  console.log(`[S-Tier Activator] Total: ${total} capabilities across 8 waves`);
+  console.log(`[S-Tier Activator] Total: ${total} capabilities across 10 waves`);
 
   const results = [
     activateWave(1, WAVE_1_ACTIVATIONS),
@@ -249,6 +296,8 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     activateWave(6, WAVE_6_ACTIVATIONS),
     activateWave(7, WAVE_7_ACTIVATIONS),
     activateWave(8, WAVE_8_ACTIVATIONS),
+    activateWave(9, WAVE_9_ACTIVATIONS),
+    activateWave(10, WAVE_10_ACTIVATIONS),
   ];
 
   const totalActivated = results.reduce((sum, r) => sum + r.totalActivated, 0);
@@ -270,6 +319,8 @@ export function activateWaveOnly(wave: ActivationWave): ActivationResult {
     6: WAVE_6_ACTIVATIONS,
     7: WAVE_7_ACTIVATIONS,
     8: WAVE_8_ACTIVATIONS,
+    9: WAVE_9_ACTIVATIONS,
+    10: WAVE_10_ACTIVATIONS,
   };
   return activateWave(wave, waveMap[wave]);
 }
@@ -285,14 +336,8 @@ export function getActivationLog(): ActivationResult[] {
  * Get total S-tier capability count across all waves
  */
 export function getSTierCapabilityCount(): {
-  wave1: number;
-  wave2: number;
-  wave3: number;
-  wave4: number;
-  wave5: number;
-  wave6: number;
-  wave7: number;
-  wave8: number;
+  wave1: number; wave2: number; wave3: number; wave4: number; wave5: number;
+  wave6: number; wave7: number; wave8: number; wave9: number; wave10: number;
   total: number;
 } {
   return {
@@ -304,9 +349,12 @@ export function getSTierCapabilityCount(): {
     wave6: WAVE_6_ACTIVATIONS.length,
     wave7: WAVE_7_ACTIVATIONS.length,
     wave8: WAVE_8_ACTIVATIONS.length,
+    wave9: WAVE_9_ACTIVATIONS.length,
+    wave10: WAVE_10_ACTIVATIONS.length,
     total: WAVE_1_ACTIVATIONS.length + WAVE_2_ACTIVATIONS.length + WAVE_3_ACTIVATIONS.length +
       WAVE_4_ACTIVATIONS.length + WAVE_5_ACTIVATIONS.length + WAVE_6_ACTIVATIONS.length +
-      WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length,
+      WAVE_7_ACTIVATIONS.length + WAVE_8_ACTIVATIONS.length + WAVE_9_ACTIVATIONS.length +
+      WAVE_10_ACTIVATIONS.length,
   };
 }
 
@@ -320,4 +368,6 @@ export const S_TIER_WAVES = {
   WAVE_6: WAVE_6_ACTIVATIONS,
   WAVE_7: WAVE_7_ACTIVATIONS,
   WAVE_8: WAVE_8_ACTIVATIONS,
+  WAVE_9: WAVE_9_ACTIVATIONS,
+  WAVE_10: WAVE_10_ACTIVATIONS,
 } as const;
