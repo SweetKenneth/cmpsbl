@@ -1,6 +1,6 @@
 /**
  * System Overview — Unified investor/user/public page
- * Explains the full Memory Stream → Substrate → Software/Hardware pipeline
+ * 40-node cognitive substrate overview
  */
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -18,8 +18,6 @@ const fadeUp = {
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.5 } }),
 };
 
-// ── Sections ────────────────────────────────────────────────────
-
 function Hero() {
   return (
     <section className="relative overflow-hidden py-24 md:py-32 px-6">
@@ -35,7 +33,7 @@ function Hero() {
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-10">
             An autonomous cognitive substrate that captures ideas, crystallizes them into production-grade software, 
-            and crosses the silicon boundary into hardware — all governed by a self-evolving intelligence layer.
+            and crosses the silicon boundary into hardware — all governed by a self-evolving 40-node intelligence layer.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/foundry/demo" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
@@ -59,14 +57,14 @@ function WhatIs() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">What is CMPSBL?</h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-6">
             CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 40-node intelligence architecture 
-            that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
+            organized into 12 sectors that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
             It's an always-running system that <em>discovers</em> software the way a research lab discovers compounds.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
             {[
-              { icon: Brain, title: '38 Active Systems', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE and 33 more — each with distinct responsibilities.' },
-              { icon: Layers, title: '675+ Capabilities', desc: 'From natural language understanding to threat detection, each capability is runtime-addressable.' },
-              { icon: Shield, title: 'Self-Governing', desc: 'Governance is built in. NERVE enforces compliance. DEFENSE isolates threats. EVOLUTION adapts safely.' },
+              { icon: Brain, title: '40 Active Nodes', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE, BRAIN, ATLAS, ENGINEER, and 32 more — each with distinct responsibilities across 12 sectors.' },
+              { icon: Layers, title: '675+ Capabilities', desc: 'From natural language understanding to threat detection, each capability is runtime-addressable via the unified API.' },
+              { icon: Shield, title: 'Self-Governing', desc: 'Governance is built in. NERVE enforces compliance. DEFENSE isolates threats. EVOLUTION adapts safely within policy boundaries.' },
             ].map((item, i) => (
               <motion.div key={item.title} variants={fadeUp} custom={i + 1} className="p-6 rounded-xl border border-border bg-card">
                 <item.icon className="w-8 h-8 text-primary mb-3" />
@@ -150,42 +148,12 @@ function MemoryStreamSection() {
 
 function SubstrateCapabilities() {
   const capabilities = [
-    { 
-      icon: Brain, 
-      name: 'DREAM', 
-      desc: 'Background optimization cycles that continuously improve system performance and discover new patterns while idle.',
-      tier: 'Studio+' 
-    },
-    { 
-      icon: Zap, 
-      name: 'EVOLUTION', 
-      desc: 'Safe self-modification with rollback boundaries. The substrate adapts its own architecture within governed constraints.',
-      tier: 'Architect' 
-    },
-    { 
-      icon: Globe, 
-      name: 'NEXUS', 
-      desc: 'Multi-provider AI routing engine. Dispatches to the optimal model per task — latency, cost, and capability balanced.',
-      tier: 'All tiers' 
-    },
-    { 
-      icon: Shield, 
-      name: 'DEFENSE', 
-      desc: 'Real-time threat detection, anomaly isolation, and input sanitization across every system boundary.',
-      tier: 'All tiers' 
-    },
-    { 
-      icon: Cpu, 
-      name: 'MEMORY', 
-      desc: 'Persistent context with auto-tiering. Isolated namespaces keep knowledge separated and retrievable across sessions.',
-      tier: 'All tiers' 
-    },
-    { 
-      icon: Clock, 
-      name: 'CLOCKLESS', 
-      desc: 'Event-driven execution without polling. Systems activate only when needed — zero idle compute waste.',
-      tier: 'All tiers' 
-    },
+    { icon: Brain, name: 'DREAM', desc: 'Background optimization cycles that continuously improve system performance and discover new patterns while idle.', tier: 'Studio+' },
+    { icon: Zap, name: 'EVOLUTION', desc: 'Safe self-modification with rollback boundaries. The substrate adapts its own architecture within governed constraints.', tier: 'Architect' },
+    { icon: Globe, name: 'NEXUS', desc: 'Multi-provider AI routing engine. Dispatches to the optimal model per task — latency, cost, and capability balanced.', tier: 'All tiers' },
+    { icon: Shield, name: 'DEFENSE', desc: 'Real-time threat detection, anomaly isolation, and input sanitization across every system boundary.', tier: 'All tiers' },
+    { icon: Cpu, name: 'MEMORY', desc: 'Persistent context with auto-tiering. Isolated namespaces keep knowledge separated and retrievable across sessions.', tier: 'All tiers' },
+    { icon: Clock, name: 'CLOCKLESS', desc: 'Event-driven execution without polling. Systems activate only when needed — zero idle compute waste.', tier: 'All tiers' },
   ];
 
   return (
@@ -264,71 +232,28 @@ function ExportEcosystem() {
 function PricingSection() {
   const tiers = [
     {
-      name: 'Free',
-      price: '$0',
-      interval: 'forever',
+      name: 'Free', price: '$0', interval: 'forever',
       desc: 'Explore the substrate. Full runtime access.',
-      features: [
-        '3 pipeline slots',
-        'NEXUS routing (standard)',
-        '1 memory namespace',
-        '5 min/day radio access',
-        '12 crystallized assets',
-      ],
-      cta: 'Get Started',
-      href: '/auth',
-      highlight: false,
+      features: ['3 pipeline slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
+      cta: 'Get Started', href: '/auth', highlight: false,
     },
     {
-      name: 'Studio',
-      price: '$29',
-      interval: '/mo',
+      name: 'Studio', price: '$29', interval: '/mo',
       desc: 'Expanded depth for serious builders.',
-      features: [
-        'Everything in Free',
-        '3 memory namespaces',
-        'DREAM background optimization',
-        'Automation scheduling',
-        '30 crystallized assets',
-        '30 min/day radio access',
-      ],
-      cta: 'Start Building',
-      href: '/upgrade',
-      highlight: false,
+      features: ['Everything in Free', '3 memory namespaces', 'DREAM background optimization', 'Automation scheduling', '30 crystallized assets', '30 min/day radio access'],
+      cta: 'Start Building', href: '/upgrade', highlight: false,
     },
     {
-      name: 'Creator',
-      price: '$49',
-      interval: '/mo',
+      name: 'Creator', price: '$49', interval: '/mo',
       desc: 'Full operational depth with trace exports.',
-      features: [
-        'Everything in Studio',
-        '6 memory namespaces',
-        'High-priority NEXUS routing',
-        'Execution trace exports',
-        '45 crystallized assets',
-        '45 min/day radio access',
-      ],
-      cta: 'Upgrade to Creator',
-      href: '/upgrade',
-      highlight: true,
+      features: ['Everything in Studio', '6 memory namespaces', 'High-priority NEXUS routing', 'Execution trace exports', '45 crystallized assets', '45 min/day radio access'],
+      cta: 'Upgrade to Creator', href: '/upgrade', highlight: true,
     },
     {
-      name: 'Architect',
-      price: '$79',
-      interval: '/mo',
+      name: 'Architect', price: '$79', interval: '/mo',
       desc: 'Maximum depth. Full substrate control.',
-      features: [
-        'Everything in Creator',
-        '12 memory namespaces',
-        'Highest-priority routing',
-        'EVOLUTION safe self-modification',
-        '60 crystallized assets',
-        '60 min/day radio access',
-      ],
-      cta: 'Go Architect',
-      href: '/upgrade',
-      highlight: false,
+      features: ['Everything in Creator', '12 memory namespaces', 'Highest-priority routing', 'EVOLUTION safe self-modification', '60 crystallized assets', '60 min/day radio access'],
+      cta: 'Go Architect', href: '/upgrade', highlight: false,
     },
   ];
 
@@ -398,7 +323,7 @@ function PricingSection() {
 
 function InvestorHighlights() {
   const stats = [
-    { label: 'Active Systems', value: '38', sub: '12-sector topology' },
+    { label: 'Active Nodes', value: '40', sub: '12-sector topology' },
     { label: 'Capabilities', value: '675+', sub: 'Runtime-addressable' },
     { label: 'Export Languages', value: '20+', sub: 'Software + Hardware' },
     { label: 'Quality Floor', value: '68', sub: 'No junk, ever' },
@@ -439,7 +364,7 @@ function InvestorHighlights() {
             <TrendingUp className="w-6 h-6 text-primary mb-3" />
             <h3 className="text-lg font-semibold text-foreground mb-2">Revenue Model</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
-               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Consumer SaaS: $0 / $29 / $49 / $79 per month</li>
+              <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Consumer SaaS: $0 / $29 / $49 / $79 per month</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Enterprise licensing: $2,500/mo standalone</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />OEM partnerships: $50K–$150K/yr</li>
               <li className="flex items-start gap-2"><ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />Discovery Corpus API: $500/mo</li>
@@ -492,19 +417,16 @@ function ClosingCTA() {
   );
 }
 
-// ── Page Composition ────────────────────────────────────────────
-
 export default function SystemOverview() {
   return (
     <>
       <Helmet>
         <title>System Overview — CMPSBL®</title>
-        <meta name="description" content="From Memory to Silicon. An autonomous cognitive substrate that crystallizes ideas into production software and hardware. For investors, builders, and the curious." />
+        <meta name="description" content="From Memory to Silicon. A 40-node autonomous cognitive substrate that crystallizes ideas into production software and hardware. For investors, builders, and the curious." />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
         <PublicNav />
-
         <Hero />
         <WhatIs />
         <div id="memory-stream"><MemoryStreamSection /></div>
