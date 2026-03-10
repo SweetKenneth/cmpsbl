@@ -121,7 +121,7 @@ const MODULE_DISCOVERY_PROFILES: Record<string, {
     naturalDomains: ['execution', 'validation', 'code', 'testing', 'safety', 'isolation', 'containment'],
     dataAssets: ['execution_logs', 'validation_results', 'safety_checks', 'resource_usage_history'],
     latentCapabilities: ['code_complexity_scoring', 'execution_pattern_analysis', 'resource_prediction', 'safety_policy_learning', 'regression_sandbox'],
-    affinityModules: ['ENCODE', 'BRAIN', 'MODERNIZER'],
+    affinityModules: ['ENCODE', 'BRAIN', 'EVOLUTION'],
     discoveryHints: ['Can I predict resource usage before execution?', 'Can I learn from past safety violations?', 'Can I score code complexity?'],
   },
   INCLUSIVE: {
