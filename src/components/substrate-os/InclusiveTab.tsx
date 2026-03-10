@@ -99,7 +99,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
       
       // Handle scan-and-repair result
       if (data.repair?.applied) {
@@ -149,7 +149,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
   });
 
-  // Repair mutation - may trigger MODERNIZER proposal
+  // Repair mutation - may trigger EVOLUTION proposal
   const repairMutation = useMutation({
     mutationFn: async (target: string) => {
       const result = await inclusive.repair(target);
@@ -158,7 +158,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
       toast.success('Accessibility repairs applied', { description: `${data?.fixes_applied || 0} issues fixed` });
     },
     onError: (error) => {

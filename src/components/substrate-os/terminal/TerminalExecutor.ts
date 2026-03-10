@@ -2448,8 +2448,8 @@ ${allFeatures.map(f => {
       
       // Import and execute the new scan pipeline
       try {
-        const { modernizerScan, formatScanResult } = await import('@/lib/evolve/scan');
-        const scanResult = await modernizerScan({
+        const { evolutionScan, formatScanResult } = await import('@/lib/evolve/scan');
+        const scanResult = await evolutionScan({
           explain: hasExplain,
           llm_report: hasLLMReport,
           dry_run: hasDryRun,

@@ -326,7 +326,7 @@ export default function ImmunityMeshDashboard() {
           <TabsTrigger value="build" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Hammer className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Shadow Build</span>
           </TabsTrigger>
-          <TabsTrigger value="modernizer" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
+          <TabsTrigger value="evolution" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
             <Target className="w-3.5 h-3.5 flex-shrink-0" /><span className="hidden sm:inline">Evolution</span>
           </TabsTrigger>
           <TabsTrigger value="encode-training" className="text-xs gap-1 sm:gap-1.5 data-[state=active]:shadow-sm flex-shrink-0 px-2 sm:px-3">
@@ -464,7 +464,7 @@ export default function ImmunityMeshDashboard() {
         </TabsContent>
 
         {/* ══════════════════ EVOLUTION SHADOW ══════════════════ */}
-        <TabsContent value="modernizer" className="space-y-5">
+        <TabsContent value="evolution" className="space-y-5">
           <ModernizerShadowPanel />
         </TabsContent>
 

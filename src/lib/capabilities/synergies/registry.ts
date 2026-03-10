@@ -232,7 +232,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'DECODE', role: 'enhancer', required: false },
     ],
     risk: 'low',
@@ -250,7 +250,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
@@ -263,7 +263,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER code analysis combined with DECODE explanation and SYSTEM versioning',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
       { name: 'SYSTEM', role: 'validator', required: false },
     ],
@@ -504,7 +504,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'VISION', role: 'validator', required: true },
     ],
     risk: 'medium',
@@ -829,7 +829,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'resilience',
     modules: [
       { name: 'BRAIN', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'VISION', role: 'validator', required: true },
     ],
     risk: 'medium',
@@ -971,7 +971,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER auto-patches issues detected by VISION with CORTEX approval and DEFENSE safety validation',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'enhancer', required: true },
       { name: 'DEFENSE', role: 'validator', required: true },
@@ -1426,7 +1426,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'DEFENSE', role: 'validator', required: true },
@@ -1529,7 +1529,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'INCLUSIVE', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'low',
     reversible: true,
@@ -1560,7 +1560,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'SYSTEM', role: 'validator', required: true },
@@ -1579,7 +1579,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'CORTEX', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
@@ -1595,7 +1595,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'CORTEX', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
@@ -1716,7 +1716,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER predicts maintenance needs from VISION degradation patterns and BRAIN failure history',
     category: 'resilience',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'validator', required: true },
     ],
@@ -1768,7 +1768,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'security',
     modules: [
       { name: 'DEFENSE', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'validator', required: true },
     ],
@@ -1823,7 +1823,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     modules: [
       { name: 'VISION', role: 'primary', required: true },
       { name: 'DREAM', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
@@ -1966,7 +1966,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER evolution proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DEFENSE', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'validator', required: true },
@@ -2058,7 +2058,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     modules: [
       { name: 'CORE', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'validator', required: true },
     ],
     risk: 'medium',

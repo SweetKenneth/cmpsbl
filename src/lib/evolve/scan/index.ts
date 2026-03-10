@@ -1,5 +1,5 @@
 /**
- * Modernizer Scan — Cognitive Systems Scan
+ * Evolution Scan — Cognitive Systems Scan
  * Always Produces Valid Plans + Mobile-First Output
  * 
  * SCAN = 3-SOURCE SYNTHESIS → NORMALIZE → PLAN (always valid)
@@ -44,14 +44,14 @@ export interface ScanResultExtended extends ScanResult {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER SCAN — v0.7.9
+// EVOLUTION SCAN — v0.7.9
 // ═══════════════════════════════════════════════════════════════
 
 /**
  * Execute cognitive systems scan
  * ALWAYS returns a valid, inspectable plan
  */
-export async function modernizerScan(options: ScanOptions = {}): Promise<ScanResultExtended> {
+export async function evolutionScan(options: ScanOptions = {}): Promise<ScanResultExtended> {
   const startTime = Date.now();
   const scanId = `scan_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
   
@@ -259,7 +259,7 @@ function getArchitectureMap(): Record<string, string[]> {
     kernel: ['CORE', 'RIPPLE', 'ACCESS'],
     cognitive: ['BRAIN', 'DECODE', 'DREAM'],
     operational: ['DEFENSE', 'NEXUS', 'VISION'],
-    administrative: ['SYSTEM', 'MODERNIZER', 'INTEGRATION', 'INCLUSIVE'],
+    administrative: ['SYSTEM', 'EVOLUTION', 'INTEGRATION', 'INCLUSIVE'],
     orchestrator: ['CORTEX', 'ENCODE'],
     infrastructure: ['MEMORY', 'RELAY', 'AUDIT', 'IDENTITY', 'ECONOMY', 'SANDBOX'],
   };
@@ -316,7 +316,10 @@ export function formatScanResult(result: ScanResultExtended, options: ScanOption
   return formatScanResultMobile(result, options);
 }
 
+/** @deprecated Use evolutionScan */
+export const modernizerScan = evolutionScan;
+
 export const scan = {
-  execute: modernizerScan,
+  execute: evolutionScan,
   format: formatScanResult,
 };

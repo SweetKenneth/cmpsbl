@@ -1,6 +1,6 @@
 /**
  * S-Tier 179 — Shadow Evolution
- * ID: S-CJ137 | CJPI: 85 | Module: MODERNIZER
+ * ID: S-CJ137 | CJPI: 85 | Module: EVOLUTION
  * Shadow evolution testing before production deployment.
  */
 

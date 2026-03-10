@@ -295,11 +295,11 @@ export const INFRASTRUCTURE_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'sandbox-safe-evolution',
     name: 'Sandbox Safe Evolution',
-    description: 'SANDBOX tests MODERNIZER evolution proposals with CORTEX approval gates and AUDIT change logging',
+    description: 'SANDBOX tests EVOLUTION proposals with CORTEX approval gates and AUDIT change logging',
     category: 'automation',
     modules: [
       { name: 'SANDBOX', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'enhancer', required: true },
       { name: 'AUDIT', role: 'validator', required: true },
     ],
@@ -522,13 +522,13 @@ export const INFRASTRUCTURE_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   {
-    id: 'economy-modernizer-roi',
-    name: 'Economy Modernizer ROI',
-    description: 'ECONOMY measures MODERNIZER evolution ROI with VISION before/after metrics and AUDIT change tracking',
+    id: 'economy-evolution-roi',
+    name: 'Economy Evolution ROI',
+    description: 'ECONOMY measures EVOLUTION ROI with VISION before/after metrics and AUDIT change tracking',
     category: 'optimization',
     modules: [
       { name: 'ECONOMY', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'AUDIT', role: 'validator', required: true },
     ],

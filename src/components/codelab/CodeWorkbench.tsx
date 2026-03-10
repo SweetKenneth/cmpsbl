@@ -237,8 +237,8 @@ export function CodeWorkbench() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {["core", "ripple", "access", "brain", "decode", "dream", "defense", "nexus", "vision", "system", "modernizer", "integration"].map((m) => (
-                  <SelectItem key={m} value={m} className="capitalize">{m}</SelectItem>
+                {["core", "ripple", "access", "brain", "decode", "dream", "defense", "nexus", "vision", "system", "evolution", "integration"].map((m) => (
+                  <SelectItem key={m} value={m} className="capitalize">{m.toUpperCase()}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

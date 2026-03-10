@@ -141,7 +141,7 @@ interface ScanResult {
   message: string;
 }
 
-interface ModernizerTabProps {
+interface EvolutionTabProps {
   enabled: boolean;
 }
 
@@ -165,7 +165,7 @@ function useCopyToClipboard() {
   return { copy, copiedId };
 }
 
-export function ModernizerTab({ enabled }: ModernizerTabProps) {
+export function ModernizerTab({ enabled }: EvolutionTabProps) {
   const queryClient = useQueryClient();
   const { copy, copiedId } = useCopyToClipboard();
   const [selectedScope, setSelectedScope] = useState('all');
@@ -185,14 +185,14 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
 
   // Fetch system status
   const { data: status, isLoading: statusLoading } = useQuery({
-    queryKey: ['modernizer-status'],
+    queryKey: ['evolution-status'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'status' }
+        body: { module: 'evolution', action: 'status' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
-        throw new Error((data as any)?.error_message || (data as any)?.error || 'Modernizer status failed');
+        throw new Error((data as any)?.error_message || (data as any)?.error || 'Evolution status failed');
       }
       return data;
     },
@@ -216,10 +216,10 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
 
   // Fetch archived functions
   const { data: archived, isLoading: archivedLoading } = useQuery({
-    queryKey: ['modernizer-archived'],
+    queryKey: ['evolution-archived'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'archived' }
+        body: { module: 'evolution', action: 'archived' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
@@ -234,7 +234,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
   const scanMutation = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'scan' }
+        body: { module: 'evolution', action: 'scan' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
@@ -393,7 +393,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      queryClient.invalidateQueries({ queryKey: ['evolution-status'] });
       toast.success('Upgrade applied successfully', {
         description: `Health: ${data.pre_health}% → ${data.post_health}%`,
       });
@@ -419,7 +419,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      queryClient.invalidateQueries({ queryKey: ['evolution-status'] });
       toast.success('Rollback completed successfully');
       setRollbackDialog({ open: false, planId: null, backupId: null });
       setConfirmValue('');
@@ -466,7 +466,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['upgrade-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['modernizer-status'] });
+      queryClient.invalidateQueries({ queryKey: ['evolution-status'] });
       toast.success('Shadow → Production promotion complete', {
         description: `Validation ✓ | Shadow Tests ✓ | Health: ${data.pre_health}% → ${data.post_health}%`,
       });

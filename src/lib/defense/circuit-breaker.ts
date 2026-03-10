@@ -58,7 +58,7 @@ const DEFAULT_CONFIG: CircuitConfig = {
 // All substrate execution surfaces
 const SUBSTRATE_MODULES = [
   'core', 'ripple', 'access', 'brain', 'vision', 'cortex',
-  'modernizer', 'decode', 'defense', 'nexus', 'dream',
+  'evolution', 'decode', 'defense', 'nexus', 'dream',
   'integration', 'inclusive', 'system',
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'encode'

@@ -8,7 +8,7 @@ import { evolutionReceipts, type EvolutionReceipt } from './evolution-receipts';
 import { shadowExecutor } from './shadow-executor';
 import { productionExecutor } from './production-executor';
 import { emitEvolveEvent } from './telemetry';
-import { modernizerScan, formatScanResult, type ScanOptions } from './scan';
+import { evolutionScan, formatScanResult, type ScanOptions } from './scan';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -384,7 +384,7 @@ export const modernizerCommands = {
    * modernizer.scan — Cognitive systems scan (v0.7.7)
    */
   async scan(options: ScanOptions = {}): Promise<CommandResult> {
-    const result = await modernizerScan(options);
+    const result = await evolutionScan(options);
 
     return {
       success: result.plan_ready || result.proposals.length === 0,

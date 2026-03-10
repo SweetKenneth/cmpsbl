@@ -64,7 +64,7 @@ export const SUBSTRATE_MODULES = [
   // OCG Zones (Operational Compliance Grid — includes NERVE)
   'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
   // Absorbed (routes to evolution field)
-  'modernizer',
+  'evolution',
   // 9 Execution Modules (NERVE moved to OCG)
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
   'medic',
@@ -101,7 +101,7 @@ export const CCR_ZONE_MODULES = ['brain', 'memory', 'dream'] as const;
 export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
 
 // Absorbed (route to a field)
-export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
+export const ABSORBED_FACADES = ['evolution'] as const; // → evolution field
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
@@ -124,8 +124,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   relay: 'zone-ocg',
   audit: 'zone-ocg',
   nerve: 'zone-ocg',
-  // Absorbed
-  modernizer: 'absorbed',
+  // (evolution is in CSZ below)
   // Execution Modules
   decode: 'module',
   encode: 'module',
@@ -318,7 +317,7 @@ const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly Substra
   identity: ['core'],
   relay: ['core'],
   audit: ['core'],
-  modernizer: ['core'],
+  // evolution deps defined in CSZ section below
   decode: ['core'],
   encode: ['core', 'decode'],
   vision: ['core'],

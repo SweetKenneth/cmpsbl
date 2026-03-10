@@ -156,7 +156,7 @@ You can use OpenAI, Anthropic, Google AI, Mistral, open-source models, or any co
 
 This isn't uncontrolled self-modification — it's governed EVOLUTION with full audit trails and safety checks enforced by the GOVERNANCE layer.`,
     category: 'question',
-    keywords: ['improve', 'evolution', 'self-improving', 'modernizer', 'evolve'],
+    keywords: ['improve', 'evolution', 'self-improving', 'evolve'],
     confidence: 0.92,
     verified: true,
     priority: 'high',

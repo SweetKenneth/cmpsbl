@@ -19,7 +19,7 @@
  * - Batch mode for efficiency
  */
 
-import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
+import { evolutionScan, type ScanResultExtended } from '@/lib/evolve/scan';
 import type { ScanProposal, DetectedAnomaly, MissingCapability } from '@/lib/evolve/scan/types';
 import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId, type ExecutorModuleMeta, getExecutorsByCategory } from '@/immune/pilotExecutors';
@@ -438,7 +438,7 @@ export async function runModernizerShadow(): Promise<ModernizerShadowReport> {
   log.info('shadow-gap-training', 'Starting gap-driven shadow training scan...');
   
   // Step 1: Run evolution scan to find real gaps
-  const scanResult = await modernizerScan({ dry_run: true });
+  const scanResult = await evolutionScan({ dry_run: true });
   const scanId = scanResult.scan_id;
   
   // Step 2: Extract gap tasks

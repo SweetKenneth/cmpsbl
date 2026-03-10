@@ -68,7 +68,7 @@
     medic: ['core', 'system', 'vision'],
     nerve: ['core', 'ripple', 'system'],
     integration: ['core', 'system', 'ripple', 'audit'],
-    modernizer: ['core', 'encode', 'cortex'],  // legacy alias — kept for Record<> completeness
+    // evolution deps are defined in Fields section below
 
     // ── Fields ── (permeate CCR + Execution)
     evolution: ['core', 'brain', 'memory', 'vision'],

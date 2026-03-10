@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 // ═══════════════════════════════════════════════════════════════
 
 export type ChangeType = 'fix' | 'feature' | 'enhancement' | 'config';
-export type ChangeSource = 'modernizer' | 'cloud' | 'manual' | 'unknown';
+export type ChangeSource = 'evolution' | 'cloud' | 'manual' | 'unknown';
 export type ChangePhase = 'planning' | 'apply' | 'verify' | 'post_apply' | 'idle';
 
 export interface LedgerEntry {

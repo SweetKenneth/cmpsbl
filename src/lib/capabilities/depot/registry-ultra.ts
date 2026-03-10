@@ -547,7 +547,7 @@ export const CAPABILITY_ULTRA: CapabilityArtifact[] = [
     name: 'Code Generation Platform',
     category: 'automation',
     description: 'Enterprise code generation with multi-language support and testing',
-    requiredModules: ['NEXUS', 'BRAIN', 'MODERNIZER'],
+    requiredModules: ['NEXUS', 'BRAIN', 'EVOLUTION'],
     executorType: 'container',
     artifactFormat: 'container',
     version: '2.0.0',

@@ -77,7 +77,7 @@ export function registerSynergyHandlers(): void {
     return {
       success: false,
       error: 'Usage: cortex.synergy.by_module <module-name>',
-      modules: ['BRAIN', 'CORTEX', 'VISION', 'DEFENSE', 'DREAM', 'NEXUS', 'SYSTEM', 'RIPPLE', 'DECODE', 'ACCESS', 'INCLUSIVE', 'MODERNIZER', 'INTEGRATION', 'CORE'],
+      modules: ['BRAIN', 'CORTEX', 'VISION', 'DEFENSE', 'DREAM', 'NEXUS', 'SYSTEM', 'RIPPLE', 'DECODE', 'ACCESS', 'INCLUSIVE', 'EVOLUTION', 'INTEGRATION', 'CORE'],
     };
   });
 

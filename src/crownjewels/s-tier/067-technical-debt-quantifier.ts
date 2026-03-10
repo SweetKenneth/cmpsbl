@@ -1,6 +1,6 @@
 /**
  * S-Tier 067 — Technical Debt Quantifier
- * CJPI: 93 | Node: MODERNIZER | ID: S-MOD02
+ * CJPI: 93 | Node: EVOLUTION | ID: S-MOD02
  *
  * Scores and tracks technical debt across substrate modules.
  * Provides prioritized remediation recommendations.

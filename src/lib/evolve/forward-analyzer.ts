@@ -9,7 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { modernizerScan, type ScanResultExtended } from './scan';
+import { evolutionScan, type ScanResultExtended } from './scan';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -79,7 +79,7 @@ export async function analyzeForwardIntent(): Promise<AnalyzeResult> {
       result.estimated_deltas = calculateEstimatedDeltas(activePlan);
     } else {
       // Run virtual scan to project potential changes
-      const scanResult = await modernizerScan({ dry_run: true });
+      const scanResult = await evolutionScan({ dry_run: true });
       
       if (!scanResult.plan_ready && scanResult.blocked_reasons && scanResult.blocked_reasons.length > 0) {
         result.blocked = true;
@@ -195,7 +195,7 @@ function calculateEstimatedDeltas(plan: Record<string, unknown>): EstimatedDelta
 
   if (totalActions > 0) {
     deltas.push({
-      component: 'modernizer',
+      component: 'evolution',
       metric: 'evolution_success',
       estimate: `~${(confidence * 100).toFixed(0)}% confidence`,
     });

@@ -2,7 +2,7 @@
  * Rollback Snapshot Storage
  * Enterprise-only persistent state snapshots for safe evolution
  * 
- * Captures system state before evolution/modernizer changes,
+ * Captures system state before evolution changes,
  * enabling confident rollback to known-good states.
  */
 
@@ -12,7 +12,7 @@ export interface Snapshot {
   id: string;
   label: string;
   timestamp: number;
-  trigger: 'manual' | 'pre-evolution' | 'pre-modernizer' | 'pre-seba' | 'scheduled';
+  trigger: 'manual' | 'pre-evolution' | 'pre-seba' | 'scheduled';
   state: Record<string, unknown>;
   moduleVersions: Record<string, string>;
   configHash: string;

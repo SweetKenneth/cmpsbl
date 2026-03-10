@@ -1,6 +1,6 @@
 /**
  * S-Tier 201 — Progressive Migration Orchestrator
- * ID: S-MOD03 | CJPI: 92 | Module: MODERNIZER
+ * ID: S-MOD03 | CJPI: 92 | Module: EVOLUTION
  */
 export class ProgressiveMigrationOrchestrator {
   private migrations: Map<string, { source: string; target: string; progress: number; status: 'planned' | 'canary' | 'rolling' | 'complete' | 'rolled_back' }> = new Map();
