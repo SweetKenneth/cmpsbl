@@ -870,7 +870,7 @@ export async function transferAllModules(): Promise<{
 }> {
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
     'identity', 'economy', 'sandbox',
   ];
