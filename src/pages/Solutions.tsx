@@ -151,7 +151,7 @@ export default function Solutions() {
       </section>
 
       {/* Solutions Grid */}
-      <section className="py-16 px-4 relative z-10">
+      <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
         <div className="container mx-auto max-w-6xl space-y-6">
           {solutions.map((solution, index) => (
             <motion.div key={solution.name} {...fadeUp} transition={{ duration: 0.5, delay: index * 0.05 }}>

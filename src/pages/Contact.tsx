@@ -222,7 +222,7 @@ export default function Contact() {
                       <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">Message *</label>
                       <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Tell us about your needs..." className="min-h-[150px]" />
                     </div>
-                    <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90 h-12 text-base font-semibold shadow-lg shadow-primary/20">
+                    <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90 h-12 text-base font-semibold shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all">
                       {isSubmitting ? "Sending..." : (<>Send Message<Send className="w-4 h-4 ml-2" /></>)}
                     </Button>
                   </form>

@@ -223,7 +223,7 @@ export default function CurrentProjects() {
            <h2 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-foreground">Want to Build Together?</h2>
            <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">100+ projects shipped over 15 years. Join us.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2">
+            <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2 shadow-lg shadow-primary/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
               Investor Information <ArrowRight className="w-4 h-4" />
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/roadmap')}>View Roadmap</Button>

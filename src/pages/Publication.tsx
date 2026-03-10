@@ -491,7 +491,7 @@ export default function Publication() {
         </section>
 
         {/* ═══════════ CTA ═══════════ */}
-        <section className="container mx-auto px-6 pt-4 pb-20">
+        <section className="container mx-auto px-4 sm:px-6 pt-4 pb-16 sm:pb-20">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}

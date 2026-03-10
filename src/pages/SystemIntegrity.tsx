@@ -277,7 +277,7 @@ export default function SystemIntegrity() {
               </p>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground max-w-2xl">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
             Real-time structural health of the CMPSBL substrate. Each node reports availability, correctness, and performance 
             through the 3-lane integrity model. Circuit breakers protect against cascade failures.
           </p>

@@ -202,7 +202,7 @@ export default function DeveloperShowcase() {
               A complete cognitive infrastructure built on 40 nodes across 12 sectors for building intelligent, adaptive applications.
             </p>
           </motion.div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {devFeatures.map((feature, idx) => (
               <FeatureCard key={feature.title} {...feature} delay={idx * 0.1} />
             ))}
