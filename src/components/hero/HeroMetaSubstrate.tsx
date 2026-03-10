@@ -164,7 +164,7 @@ export function HeroMetaSubstrate() {
   return (
     <section 
       aria-label="CMPSBL hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
     >
       <HeroBackground />
 
