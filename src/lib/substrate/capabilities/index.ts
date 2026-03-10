@@ -1156,7 +1156,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'wcag_auto_remediation_engine',
     name: 'WCAG Auto-Remediation Engine',
     description: 'Automatically fixes WCAG violations with AI-generated patches',
-    modules: ['INCLUSIVE', 'NEXUS', 'MODERNIZER'],
+    modules: ['INCLUSIVE', 'NEXUS', 'EVOLUTION'],
     layer: 'Admin',
     userBenefit: 'Automatic accessibility fixes without developer effort',
     status: 'active',
