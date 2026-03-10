@@ -1529,7 +1529,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'INCLUSIVE', role: 'primary', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'DECODE', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'low',
     reversible: true,
