@@ -223,34 +223,34 @@ export function registerExecutionHandlers(): void {
   });
 
   // ═══════════════════════════════════════════════════════
-  // MODERNIZER — Evolution engine
+  // EVOLUTION — Self-Improvement Engine (legacy modernizer.* aliases kept for backward compat)
   // ═══════════════════════════════════════════════════════
 
   registerHandler('modernizer.status', async () => {
-    const { modernizer } = await import('@/lib/substrate');
-    return await modernizer.status();
+    const { evolutionMod } = await import('@/lib/substrate');
+    return await evolutionMod.status();
   });
 
   registerHandler('modernizer.scan', async () => {
-    const { modernizer } = await import('@/lib/substrate');
-    return await modernizer.scan();
+    const { evolutionMod } = await import('@/lib/substrate');
+    return await evolutionMod.scan();
   });
 
   registerHandler('modernizer.propose', async () => {
-    return { success: false, error: 'Usage: modernizer.propose <description>' };
+    return { success: false, error: 'Usage: evolution.propose <description>' };
   });
 
   registerHandler('modernizer.apply', async () => {
-    return { success: false, error: 'Usage: modernizer.apply <plan_id>' };
+    return { success: false, error: 'Usage: evolution.apply <plan_id>' };
   });
 
   registerHandler('modernizer.verify', async () => {
-    return { success: false, error: 'Usage: modernizer.verify <run_id>' };
+    return { success: false, error: 'Usage: evolution.verify <run_id>' };
   });
 
   registerHandler('modernizer.plans', async () => {
-    const { modernizer } = await import('@/lib/substrate');
-    return await modernizer.jobs();
+    const { evolutionMod } = await import('@/lib/substrate');
+    return await evolutionMod.jobs();
   });
 
   registerHandler('modernizer.runs', async () => {
@@ -259,9 +259,9 @@ export function registerExecutionHandlers(): void {
   });
 
   registerHandler('modernizer.health', async () => {
-    const { modernizer } = await import('@/lib/substrate');
-    const status = await modernizer.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'MODERNIZER', layer: 'Execution' } };
+    const { evolutionMod } = await import('@/lib/substrate');
+    const status = await evolutionMod.status();
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
   });
 
   // ═══ HELP COMMANDS ═══
