@@ -175,9 +175,9 @@ export default function DeveloperShowcase() {
       </section>
 
       {/* Stats Bar */}
-      <section className="border-y border-border/50 bg-card/30 py-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+       <section className="border-y border-border/50 bg-card/30 py-8 sm:py-10">
+         <div className="container mx-auto px-3 sm:px-4">
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             {techCapabilities.map((cap, idx) => (
               <motion.div key={cap.label} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="text-center">
