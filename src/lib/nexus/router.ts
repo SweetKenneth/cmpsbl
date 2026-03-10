@@ -41,7 +41,7 @@ export interface FleetProvider {
   costPerMToken: number; // millicents per million tokens (0 = free)
 }
 
-export type TaskType = 'reasoning' | 'research' | 'refinement' | 'generation' | 'code' | 'analysis';
+export type TaskType = 'reasoning' | 'research' | 'refinement' | 'generation' | 'code' | 'analysis' | 'pricing';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // FLEET REGISTRY — All free-tier providers at 80% safety margin
@@ -173,6 +173,16 @@ export const FLEET_REGISTRY: FleetProvider[] = [
     affinities: ['generation', 'reasoning'],
     priority: 14,
     costPerMToken: 0,
+  },
+  // ── Anthropic Claude Haiku (paid, pricing/commercialization) ──
+  {
+    id: 'anthropic-haiku',
+    model: 'anthropic/claude-3-5-haiku',
+    rpm: 50, rpd: 5000, tpm: 25000,
+    latencyClass: 'fast',
+    affinities: ['analysis', 'research', 'pricing'],
+    priority: 15,
+    costPerMToken: 250,
   },
 ];
 

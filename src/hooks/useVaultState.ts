@@ -17,6 +17,20 @@ export interface VaultPipeline {
   pipelineFingerprint: string | null;
   valuationDisplay: number | null;
   createdAt: string;
+  // Commercialization pricing fields
+  recommendedResalePrice: number | null;
+  indiePrice: number | null;
+  standardPrice: number | null;
+  enterprisePrice: number | null;
+  estimatedMarketRangeLow: number | null;
+  estimatedMarketRangeHigh: number | null;
+  pricingConfidence: number | null;
+  marketCategory: string | null;
+  comparableSummary: string | null;
+  suggestedMarketplaces: string[] | null;
+  commercializationNotes: string | null;
+  pricingSource: string | null;
+  pricingLastUpdatedAt: string | null;
 }
 
 export function useVaultState() {
@@ -60,6 +74,19 @@ export function useVaultState() {
           pipelineFingerprint: r.pipeline_fingerprint,
           valuationDisplay: r.valuation_display,
           createdAt: r.created_at,
+          recommendedResalePrice: r.recommended_resale_price,
+          indiePrice: r.indie_price,
+          standardPrice: r.standard_price,
+          enterprisePrice: r.enterprise_price,
+          estimatedMarketRangeLow: r.estimated_market_range_low,
+          estimatedMarketRangeHigh: r.estimated_market_range_high,
+          pricingConfidence: r.pricing_confidence,
+          marketCategory: r.market_category,
+          comparableSummary: r.comparable_summary,
+          suggestedMarketplaces: r.suggested_marketplaces,
+          commercializationNotes: r.commercialization_notes,
+          pricingSource: r.pricing_source,
+          pricingLastUpdatedAt: r.pricing_last_updated_at,
         }))
       );
     } catch (err) {

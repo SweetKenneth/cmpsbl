@@ -34,6 +34,18 @@ interface InventoryItem {
   systemChain: string[] | null;
   pipelineFingerprint?: string | null;
   pipelineSteps?: any[] | null;
+  // Pricing fields
+  recommendedResalePrice?: number | null;
+  indiePrice?: number | null;
+  standardPrice?: number | null;
+  enterprisePrice?: number | null;
+  pricingConfidence?: number | null;
+  marketCategory?: string | null;
+  suggestedMarketplaces?: string[] | null;
+  comparableSummary?: string | null;
+  commercializationNotes?: string | null;
+  pricingSource?: string | null;
+  pricingLastUpdatedAt?: string | null;
 }
 
 export function useFoundryState() {
@@ -99,6 +111,17 @@ export function useFoundryState() {
         systemChain: i.system_chain,
         pipelineFingerprint: i.pipeline_fingerprint,
         pipelineSteps: i.pipeline_steps,
+        recommendedResalePrice: i.recommended_resale_price,
+        indiePrice: i.indie_price,
+        standardPrice: i.standard_price,
+        enterprisePrice: i.enterprise_price,
+        pricingConfidence: i.pricing_confidence,
+        marketCategory: i.market_category,
+        suggestedMarketplaces: i.suggested_marketplaces,
+        comparableSummary: i.comparable_summary,
+        commercializationNotes: i.commercialization_notes,
+        pricingSource: i.pricing_source,
+        pricingLastUpdatedAt: i.pricing_last_updated_at,
       }));
 
       setInventory(mappedInventory);

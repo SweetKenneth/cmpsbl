@@ -1,0 +1,102 @@
+/**
+ * usePricingEngine — Hook for artifact pricing and batch repricing
+ */
+import { useState, useCallback } from 'react';
+import {
+  priceArtifact,
+  batchReprice,
+  type CommercializationPricing,
+  type PricingArtifact,
+} from '@/lib/foundry/pricing-engine';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+
+export function usePricingEngine() {
+  const { user } = useAuth();
+  const [pricing, setPricing] = useState<CommercializationPricing | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [batchProgress, setBatchProgress] = useState<{ completed: number; total: number } | null>(null);
+
+  const priceOne = useCallback(async (artifact: PricingArtifact) => {
+    setLoading(true);
+    try {
+      const result = await priceArtifact(artifact);
+      setPricing(result);
+
+      // Persist if vault_id provided
+      if (artifact.vault_id) {
+        await supabase.from('pipeline_vault').update({
+          recommended_resale_price: result.recommended_resale_price,
+          indie_price: result.indie_price,
+          standard_price: result.standard_price,
+          enterprise_price: result.enterprise_price,
+          estimated_market_range_low: result.estimated_market_range_low,
+          estimated_market_range_high: result.estimated_market_range_high,
+          pricing_confidence: result.pricing_confidence,
+          market_category: result.market_category,
+          comparable_summary: result.comparable_summary,
+          suggested_marketplaces: result.suggested_marketplaces,
+          commercialization_notes: result.commercialization_notes,
+          pricing_last_updated_at: new Date().toISOString(),
+          pricing_source: result.pricing_source,
+          pricing_source_version: '1.0.0',
+        } as any).eq('id', artifact.vault_id);
+      }
+
+      return result;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const repriceAll = useCallback(async (artifacts: PricingArtifact[]) => {
+    setLoading(true);
+    setBatchProgress({ completed: 0, total: artifacts.length });
+    try {
+      const result = await batchReprice(artifacts, (completed, total) => {
+        setBatchProgress({ completed, total });
+      });
+      return result;
+    } finally {
+      setLoading(false);
+      setBatchProgress(null);
+    }
+  }, []);
+
+  const repriceUnpriced = useCallback(async () => {
+    if (!user) return { success: 0, failed: 0 };
+    setLoading(true);
+    try {
+      const { data } = await supabase
+        .from('pipeline_vault')
+        .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display')
+        .eq('user_id', user.id)
+        .is('recommended_resale_price' as any, null);
+
+      if (!data || data.length === 0) return { success: 0, failed: 0 };
+
+      const artifacts: PricingArtifact[] = data.map((d: any) => ({
+        vault_id: d.id,
+        pipeline_name: d.pipeline_name,
+        pipeline_score: d.pipeline_score,
+        pipeline_tier: d.pipeline_tier,
+        pipeline_category: d.pipeline_category,
+        system_chain: d.system_chain,
+        valuation_display: d.valuation_display,
+      }));
+
+      return await repriceAll(artifacts);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, repriceAll]);
+
+  return {
+    pricing,
+    loading,
+    batchProgress,
+    priceOne,
+    repriceAll,
+    repriceUnpriced,
+  };
+}

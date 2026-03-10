@@ -301,6 +301,27 @@ const PROVIDERS: ProviderConfig[] = [
     }),
     extractContent: (data) => data.choices?.[0]?.message?.content || "",
   },
+  // ── Anthropic Claude Haiku (paid, pricing/commercialization) ──
+  {
+    id: "anthropic-haiku",
+    name: "Anthropic Claude Haiku",
+    baseUrl: "https://api.anthropic.com/v1/messages",
+    model: "claude-3-5-haiku-20241022",
+    envKey: "ANTHROPIC_API_KEY",
+    rpm: 50, rpd: 5000, priority: 15,
+    affinities: ["analysis", "research", "pricing"],
+    freeTier: false,
+    formatRequest: (prompt, systemPrompt, model, maxTokens, temperature) => ({
+      model,
+      system: systemPrompt,
+      messages: [
+        { role: "user", content: prompt },
+      ],
+      max_tokens: maxTokens,
+      temperature,
+    }),
+    extractContent: (data) => data.content?.[0]?.text || "",
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════
@@ -357,8 +378,9 @@ async function callProvider(
   // Provider-specific URL and auth handling
   if (provider.id === "google-aistudio") {
     url = url.replace("{model}", provider.model) + `?key=${apiKey}`;
-  } else if (provider.id === "cohere") {
-    headers["Authorization"] = `Bearer ${apiKey}`;
+  } else if (provider.id === "anthropic-haiku") {
+    headers["x-api-key"] = apiKey;
+    headers["anthropic-version"] = "2023-06-01";
   } else {
     headers["Authorization"] = `Bearer ${apiKey}`;
   }

@@ -13,7 +13,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useFoundryState } from '@/hooks/useFoundryState';
 import { useVaultState } from '@/hooks/useVaultState';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { usePricingEngine } from '@/hooks/usePricingEngine';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { FoundryMiningPanel } from '@/components/foundry/FoundryMiningPanel';
 import { FoundryInventory } from '@/components/foundry/FoundryInventory';
 import { FoundryStats } from '@/components/foundry/FoundryStats';
@@ -41,9 +43,42 @@ export default function Foundry() {
   const foundry = useFoundryState();
   const vaultState = useVaultState();
   const { tier: subscriptionTier } = useEngineSubscription();
+  const pricingEngine = usePricingEngine();
   const [activeTab, setActiveTab] = useState<'mine' | 'inventory'>('mine');
   const [crystallizing, setCrystallizing] = useState(false);
   const [discoveries, setDiscoveries] = useState<any[]>([]);
+
+  const handleRepriceAll = useCallback(async () => {
+    if (!foundry.inventory || foundry.inventory.length === 0) return;
+    const artifacts = foundry.inventory.map((item: any) => ({
+      vault_id: item.id,
+      pipeline_name: item.artifactName,
+      pipeline_score: item.score,
+      pipeline_tier: item.publicTier,
+      pipeline_category: item.category,
+      system_chain: item.systemChain,
+      valuation_display: item.valuationDisplay,
+    }));
+    const result = await pricingEngine.repriceAll(artifacts);
+    toast.success(`Repriced ${result.success} artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+    await foundry.reload();
+  }, [foundry.inventory, foundry.reload, pricingEngine]);
+
+  const handleRepriceOne = useCallback(async (id: string) => {
+    const item = foundry.inventory?.find((i: any) => i.id === id);
+    if (!item) return;
+    await pricingEngine.priceOne({
+      vault_id: item.id,
+      pipeline_name: item.artifactName,
+      pipeline_score: item.score,
+      pipeline_tier: item.publicTier,
+      pipeline_category: item.category,
+      system_chain: item.systemChain,
+      valuation_display: item.valuationDisplay,
+    });
+    toast.success(`Repriced ${item.artifactName}`);
+    await foundry.reload();
+  }, [foundry.inventory, foundry.reload, pricingEngine]);
 
   const handleInventoryRemove = useCallback(async (id: string): Promise<boolean> => {
     if (!user) return false;
@@ -257,7 +292,7 @@ export default function Foundry() {
                 <FoundryTierLegend />
               </div>
             ) : (
-              <FoundryInventory inventory={foundry.inventory} onRemove={handleInventoryRemove} subscriptionTier={subscriptionTier} />
+              <FoundryInventory inventory={foundry.inventory} onRemove={handleInventoryRemove} onReprice={handleRepriceOne} onRepriceAll={handleRepriceAll} repricing={pricingEngine.loading} subscriptionTier={subscriptionTier} />
             )}
           </div>
         )}

@@ -1,11 +1,13 @@
 /**
  * FoundryInventory — User's vault of crystallized pipelines with export & removal
+ * Updated with commercialization pricing display
  */
 import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/foundry/public-tiers';
+import { formatPrice, confidenceLabel } from '@/lib/foundry/pricing-engine';
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
@@ -40,11 +42,26 @@ interface InventoryItem {
   systemChain: string[] | null;
   pipelineFingerprint?: string | null;
   pipelineSteps?: PipelineStep[] | null;
+  // Pricing fields
+  recommendedResalePrice?: number | null;
+  indiePrice?: number | null;
+  standardPrice?: number | null;
+  enterprisePrice?: number | null;
+  pricingConfidence?: number | null;
+  marketCategory?: string | null;
+  suggestedMarketplaces?: string[] | null;
+  comparableSummary?: string | null;
+  commercializationNotes?: string | null;
+  pricingSource?: string | null;
+  pricingLastUpdatedAt?: string | null;
 }
 
 interface Props {
   inventory: InventoryItem[];
   onRemove?: (id: string) => Promise<boolean>;
+  onReprice?: (id: string) => Promise<void>;
+  onRepriceAll?: () => Promise<void>;
+  repricing?: boolean;
   subscriptionTier?: string;
 }
 
@@ -64,7 +81,7 @@ function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundr
   }));
 }
 
-export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Props) {
+export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll, repricing, subscriptionTier }: Props) {
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
@@ -73,6 +90,7 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
   const [isExporting, setIsExporting] = useState(false);
   const [removing, setRemoving] = useState<string | null>(null);
   const [confirmRemove, setConfirmRemove] = useState<InventoryItem | null>(null);
+  const [expandedPricing, setExpandedPricing] = useState<string | null>(null);
 
   const handleRemove = useCallback(async () => {
     if (!confirmRemove || !onRemove) return;
@@ -103,7 +121,10 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
     );
   }
 
+  // Use recommended resale price when available, fall back to internal valuation
+  const totalResaleValue = inventory.reduce((s, i) => s + (i.recommendedResalePrice ?? 0), 0);
   const totalValuation = inventory.reduce((s, i) => s + i.valuationDisplay, 0);
+  const hasAnyPricing = inventory.some(i => i.recommendedResalePrice != null);
 
   const handleExportVault = async () => {
     setIsExporting(true);
@@ -125,14 +146,30 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
   return (
     <div>
       {/* Summary */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/10">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border/10">
         <div className="text-xs font-mono text-muted-foreground">
           {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
+          {hasAnyPricing && (
+            <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+              <DollarSign className="w-3 h-3 text-neon-green" />
+              Resale total: <span className="text-neon-green font-bold">{formatPrice(totalResaleValue)}</span>
+            </div>
+          )}
           <div className="text-xs font-mono text-muted-foreground">
-            Vault value: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
+            Internal: <span className="text-foreground font-bold">{formatValuation(totalValuation)}</span>
           </div>
+          {onRepriceAll && (
+            <button
+              onClick={onRepriceAll}
+              disabled={repricing}
+              className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
+            >
+              {repricing ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
+              {repricing ? 'Repricing...' : 'Reprice All'}
+            </button>
+          )}
           {getVaultLimits(subscriptionTier).exportEnabled ? (
             <button
               onClick={handleExportVault}
@@ -219,11 +256,88 @@ export function FoundryInventory({ inventory, onRemove, subscriptionTier }: Prop
                   }`}>
                     {item.score}
                   </div>
-                  <div className="text-[9px] text-muted-foreground">
-                    {formatValuation(item.valuationDisplay)}
-                  </div>
+                  {item.recommendedResalePrice != null ? (
+                    <div className="text-[10px] font-mono font-bold text-neon-green">
+                      {formatPrice(item.recommendedResalePrice)}
+                    </div>
+                  ) : (
+                    <div className="text-[9px] text-muted-foreground">
+                      {formatValuation(item.valuationDisplay)}
+                    </div>
+                  )}
                 </div>
               </div>
+
+              {/* Pricing summary row */}
+              {item.recommendedResalePrice != null && (
+                <div className="mt-2 pt-2 border-t border-border/10">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground">
+                      <span>Indie: <span className="text-foreground">{formatPrice(item.indiePrice ?? 0)}</span></span>
+                      <span>Std: <span className="text-foreground">{formatPrice(item.standardPrice ?? 0)}</span></span>
+                      <span>Ent: <span className="text-foreground">{formatPrice(item.enterprisePrice ?? 0)}</span></span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedPricing(expandedPricing === item.id ? null : item.id);
+                      }}
+                      className="p-0.5 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {expandedPricing === item.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                    </button>
+                  </div>
+
+                  {/* Expanded pricing details */}
+                  <AnimatePresence>
+                    {expandedPricing === item.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-2 space-y-1.5 text-[9px] font-mono">
+                          {item.marketCategory && (
+                            <div className="flex items-center gap-1.5 text-muted-foreground">
+                              <Store className="w-2.5 h-2.5" />
+                              Category: <span className="text-foreground">{item.marketCategory}</span>
+                            </div>
+                          )}
+                          {item.suggestedMarketplaces && item.suggestedMarketplaces.length > 0 && (
+                            <div className="flex items-start gap-1.5 text-muted-foreground">
+                              <TrendingUp className="w-2.5 h-2.5 mt-0.5 shrink-0" />
+                              <span>Marketplaces: <span className="text-foreground">{item.suggestedMarketplaces.join(', ')}</span></span>
+                            </div>
+                          )}
+                          {item.pricingConfidence != null && (
+                            <div className="text-muted-foreground">
+                              Confidence: <span className={`font-bold ${item.pricingConfidence >= 0.7 ? 'text-neon-green' : item.pricingConfidence >= 0.5 ? 'text-neon-amber' : 'text-muted-foreground'}`}>
+                                {confidenceLabel(item.pricingConfidence)}
+                              </span>
+                              {item.pricingSource && (
+                                <span className="ml-2 text-muted-foreground/50">
+                                  via {item.pricingSource === 'claude-haiku' ? 'Claude Haiku' : 'local estimate'}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          {item.comparableSummary && (
+                            <div className="text-muted-foreground/70 leading-relaxed mt-1">
+                              {item.comparableSummary}
+                            </div>
+                          )}
+                          {item.commercializationNotes && (
+                            <div className="text-muted-foreground/60 leading-relaxed italic">
+                              {item.commercializationNotes}
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
 
             {/* Remove button — bottom right, no overlap with score */}

@@ -134,6 +134,7 @@ export const SUPPORTED_PROVIDERS = [
   'hyperbolic',
   'stability',
   'fal',
+  'anthropic',
 ] as const;
 
 export type SupportedProvider = typeof SUPPORTED_PROVIDERS[number];
@@ -157,6 +158,7 @@ export const PROVIDER_CAPABILITIES: Record<SupportedProvider, {
   hyperbolic: { types: ['text', 'reasoning'], freeTier: true, latency: 'medium', quality: 'high' },
   stability: { types: ['image'], freeTier: false, latency: 'medium', quality: 'premium' },
   fal: { types: ['image', 'video'], freeTier: false, latency: 'medium', quality: 'high' },
+  anthropic: { types: ['text', 'analysis', 'pricing', 'research'], freeTier: false, latency: 'medium', quality: 'premium' },
 };
 
 /**
