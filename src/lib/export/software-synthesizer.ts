@@ -58,7 +58,7 @@ function moduleOps(mod: string): { verb: string; desc: string } {
     ENCODE: { verb: 'serialize', desc: 'format encoding + compression' },
     INCLUSIVE: { verb: 'adapt', desc: 'accessibility adaptation + format normalization' },
     INTEGRATION: { verb: 'connect', desc: 'protocol bridging + API gateway' },
-    MODERNIZER: { verb: 'upgrade', desc: 'legacy migration + schema evolution' },
+    EVOLUTION: { verb: 'upgrade', desc: 'legacy migration + schema evolution' },
     MEDIC: { verb: 'heal', desc: 'self-repair + recovery orchestration' },
     RIPPLE: { verb: 'propagate', desc: 'event cascade + change notification' },
   };

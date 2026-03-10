@@ -48,7 +48,7 @@ const SUBSTRATE_MODULES: Record<string, string[]> = {
 // History: pf-ripple-image → was 402 stub (deleted 2026-01-28)
 const FULL_OVERLAP_FUNCTIONS = [
   'pf-marketing-strategy',     // → Uses free-tier router, standalone OK
-  'pf-modernizer-export',      // → MODERNIZER.export (has active usage - ModernizerJobStatus.tsx)
+  'pf-modernizer-export',      // → EVOLUTION.export (has active usage - EvolutionJobStatus)
 ];
 
 // Edge functions with partial overlap (DO NOT DELETE)

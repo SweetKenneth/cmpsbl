@@ -87,7 +87,7 @@ CORE: Scheduling & lifecycle management
 RIPPLE: Event bus & integration
 ACCESS: Identity & permissions
 SYSTEM: Orchestration & coordination
-MODERNIZER: Self-upgrade pipelines
+EVOLUTION: Self-upgrade pipelines
 INTEGRATION: External connectors
 INCLUSIVE: Accessibility compliance
 CORTEX: Policy orchestration
