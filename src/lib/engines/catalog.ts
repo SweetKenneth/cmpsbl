@@ -214,7 +214,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "aegis", codename: "AEGIS", tagline: "Identity & Access Governance",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgRQ7FtTiAL4af82LmdJR", icon: Fingerprint, color: "15 85% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "AEGIS governs who — and what — can touch your systems. Fine-grained RBAC, policy-as-code enforcement, credential rotation, and session attestation. Born from the substrate's Governance Crown Jewels.",
