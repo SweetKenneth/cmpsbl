@@ -8,9 +8,12 @@ interface TierData {
 }
 
 const TIERS: TierData[] = [
-  { tier: 'cmpsbl-only', count: 578, label: 'APEX', color: 'hsl(var(--primary))', description: 'CJPI 95–100 · Proprietary crown jewels · 95 with perfect scores', percentage: '50.6%' },
-  { tier: 'enterprise', count: 484, label: 'ENTERPRISE', color: 'hsl(45, 95%, 55%)', description: 'CJPI 85–94 · Production-grade pipelines', percentage: '42.3%' },
-  { tier: 'architect', count: 81, label: 'ARCHITECT', color: 'hsl(200, 80%, 60%)', description: 'CJPI 80–84 · Advanced building blocks', percentage: '7.1%' },
+  { tier: 'apex',   count: 95,  label: 'APEX',   color: 'hsl(var(--primary))',    description: 'CJPI 100 · Perfect score crown achievements',       percentage: '8.3%' },
+  { tier: 'mythic', count: 187, label: 'MYTHIC', color: 'hsl(280, 80%, 65%)',     description: 'CJPI 94–99 · Near-perfect synthesis — silicon-eligible', percentage: '16.4%' },
+  { tier: 'relic',  count: 296, label: 'RELIC',  color: 'hsl(45, 95%, 55%)',      description: 'CJPI 90–93 · Rare finds — exceptional capability',  percentage: '25.9%' },
+  { tier: 'prime',  count: 312, label: 'PRIME',  color: 'hsl(200, 80%, 60%)',     description: 'CJPI 80–89 · High-quality production pipelines',    percentage: '27.3%' },
+  { tier: 'mint',   count: 192, label: 'MINT',   color: 'hsl(160, 60%, 50%)',     description: 'CJPI 68–79 · Solid discovery — production-viable',  percentage: '16.8%' },
+  { tier: 'raw',    count: 61,  label: 'RAW',    color: 'hsl(0, 0%, 50%)',        description: 'CJPI 1–67 · Unrefined extraction — experimental',   percentage: '5.3%' },
 ];
 
 export function TierDistribution() {
@@ -29,7 +32,7 @@ export function TierDistribution() {
             Quality Distribution
           </h2>
           <p className="text-center text-muted-foreground/50 text-xs sm:text-sm font-mono mb-12 sm:mb-16 px-2">
-            {total.toLocaleString()} programs · <span className="text-primary font-bold">50.6% Apex tier</span> · Zero below CJPI 80
+            {total.toLocaleString()} programs · <span className="text-primary font-bold">6 tiers</span> · Quality floor at CJPI 68
           </p>
         </motion.div>
 
@@ -52,7 +55,7 @@ export function TierDistribution() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {TIERS.map((t, i) => (
             <motion.div
               key={t.tier}
