@@ -3,7 +3,7 @@
  * Stages and registers CJPI 88+ S-tier vault entries as functional capabilities
  * in the Capability Router — transitioning them from "vault blueprints" to "active capabilities"
  *
- * Activation follows 8 waves:
+ * Activation follows 10 waves:
  *   Wave 1 (CJPI 95-98): Critical infrastructure — immediate activation
  *   Wave 2 (CJPI 94):    High-value capabilities
  *   Wave 3 (CJPI 93):    Extended coverage — full matrix parity
@@ -12,6 +12,8 @@
  *   Wave 6 (CJPI 90):    Advanced defense & diagnostics
  *   Wave 7 (CJPI 89):    Deep infrastructure
  *   Wave 8 (CJPI 88):    Autonomous intelligence
+ *   Wave 9 (CJPI 87):    Strategic autonomy & product intelligence
+ *   Wave 10 (CJPI 86):   Recursive depth & governance
  *
  * All activations are registered through the governed Capability Router.
  */
