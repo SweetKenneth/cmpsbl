@@ -146,7 +146,7 @@ export const PRO_CAPABILITIES: TieredCapability[] = [
  */
 export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
   // === SELF-IMPROVEMENT (Non-Recursive — Enterprise-Only) ===
-  // Crown Jewels (SEBA, Modernizer, Cortex, Evolution A/B, Rollback, Sandbox, Dream Pool,
+  // Crown Jewels (SEBA, EVOLUTION, Cortex, Evolution A/B, Rollback, Sandbox, Dream Pool,
   // Self-Repair, Autonomous Workflow Composer, Dream Lucidity) are CMPSBL-ONLY — not listed here.
   { id: 'impact_replay', name: 'Impact Replay', tier: 'enterprise', category: 'self-improvement', description: 'Replay queries against new states to verify impact' },
   { id: 'dream_proposal', name: 'Dream → Proposal Pipeline', tier: 'enterprise', category: 'self-improvement', description: 'Convert cognitive insights into evolution proposals' },

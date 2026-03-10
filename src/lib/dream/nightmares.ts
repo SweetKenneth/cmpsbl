@@ -133,7 +133,7 @@ export const REFERENCE_NIGHTMARES: readonly NightmareScenario[] = Object.freeze(
     'drift',
     'Gradual memory consolidation bias creates behavioral deviation',
     'System responses drift from intended behavior over time',
-    ['BRAIN', 'DREAM', 'MODERNIZER'],
+    ['BRAIN', 'DREAM', 'EVOLUTION'],
     'theoretical',
     'Behavioral drift detection in DREAM synthesis, periodic audits'
   ),

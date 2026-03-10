@@ -164,7 +164,7 @@ const CATEGORY_KNOWLEDGE_SCOPE: Record<ExecutorModuleMeta['category'], {
     criticalFiles: ['src/lib/substrate/cost-attribution/index.ts', 'src/lib/substrate/economy-module/index.ts'],
   },
   autonomy: {
-    relevantModules: ['AUTONOMY', 'modernizer', 'encode', 'intent-mesh', 'substrate-core'],
+    relevantModules: ['AUTONOMY', 'evolution', 'encode', 'intent-mesh', 'substrate-core'],
     relevantPatterns: ['substrateSingleton', 'eventEmit', 'moduleExport', 'memoryStore'],
     criticalFiles: ['src/lib/substrate/evolution-cycle.ts', 'src/lib/substrate/encode-module/pipeline.ts'],
   },

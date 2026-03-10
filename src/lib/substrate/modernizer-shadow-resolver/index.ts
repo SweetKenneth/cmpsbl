@@ -160,7 +160,7 @@ export async function resolveShadowLoops(): Promise<ShadowLoopReport> {
     try {
       await supabase.from('brain_events').insert({
         event_type: 'shadow_loop_resolution',
-        category: 'modernizer',
+        category: 'evolution',
         content: `Shadow loop resolver: ${report.staleRunsAborted} stale runs aborted, ${consecutiveCount} consecutive shadow runs detected. Loop: ${loopDetected}`,
         data: report,
         source: 'shadow_resolver',

@@ -88,7 +88,7 @@ export function useInclusive(): UseInclusiveReturn {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'system', 'audit'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
     },
   });
   
