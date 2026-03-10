@@ -197,7 +197,7 @@ export default function DeveloperShowcase() {
          <div className="container mx-auto px-3 sm:px-4">
            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-14">
             <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />Core Capabilities</Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Everything Your App Needs</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Everything Your App Needs</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               A complete cognitive infrastructure built on 40 nodes across 12 sectors for building intelligent, adaptive applications.
             </p>
