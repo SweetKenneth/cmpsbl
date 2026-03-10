@@ -974,7 +974,14 @@ export default function STierVault() {
                 })}
               </div>
             </div>
-            <p className="text-xs text-muted-foreground">Showing {filtered.length} of {entries.length} artifacts</p>
+            <p className="text-xs text-muted-foreground">
+              Showing {filtered.length} of {entries.length} artifacts
+              {filtered.length > 0 && (
+                <> • Total est. {formatMarketValue(
+                  filtered.reduce((s, e) => s + estimateMarketValue(e.cjpi, e.type, Math.max(1, e.dependencyFootprint.length)), 0)
+                )}</>
+              )}
+            </p>
             <div className="space-y-3">
               {filtered.map(entry => (
                 <ArtifactCard key={entry.id} entry={entry} onViewCode={handleViewCode} onExport={handleExport} loadingCode={loadingCode} expanded={expandedIds.has(entry.id)} onToggle={() => toggleExpand(entry.id)} />
