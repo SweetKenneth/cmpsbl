@@ -124,8 +124,8 @@ export default function Solutions() {
               40 Nodes · 12 Sectors · 675+ Capabilities
             </Badge>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground">
-              Everything Your AI{" "}
+             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
+               Everything Your AI{" "}
               <span style={{
                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                 WebkitBackgroundClip: "text",
