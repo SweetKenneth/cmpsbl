@@ -142,7 +142,7 @@ export type EngineId =
   | 'dialogue_engine'          // DECODE: tone calibration, disambiguation, dialogue planning, language detection
   | 'prompt_safety_engine'     // DEFENSE: prompt injection, data poisoning, output sanitization, adversarial probing
   | 'observability_engine'     // VISION: real-time dashboard, metric correlation, alert fatigue, baselines
-  | 'technical_debt_engine'    // MODERNIZER: code smells, refactoring, debt scoring, migration paths
+  | 'technical_debt_engine'    // EVOLUTION: code smells, refactoring, debt scoring, migration paths
 
   // ═══════════════════════════════════════════════════════════════════════════
   // NEW v8.1.0 ENGINES — 14 World-First Enhancement Engines
