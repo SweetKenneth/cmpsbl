@@ -395,7 +395,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'autonomous_quality_review',
     name: 'Autonomous Quality Review',
     description: 'Self-evaluates outputs on clarity, accuracy, aesthetics, completeness',
-    modules: ['MODERNIZER', 'CORTEX'],
+    modules: ['EVOLUTION', 'CORTEX'],
     layer: 'Orchestrator',
     userBenefit: 'Auto-polished outputs without manual review',
     status: 'active',
