@@ -307,7 +307,7 @@ async function runSnapshotDiscipline(): Promise<string> {
   }
 }
 
-async function runModernizerGovernanceChain(): Promise<GovernanceChain> {
+async function runEvolutionGovernanceChain(): Promise<GovernanceChain> {
   const snapshot_id = await runSnapshotDiscipline();
   
   let verification_hash = '';
