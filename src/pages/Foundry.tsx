@@ -292,7 +292,7 @@ export default function Foundry() {
                 <FoundryTierLegend />
               </div>
             ) : (
-              <FoundryInventory inventory={foundry.inventory} onRemove={handleInventoryRemove} subscriptionTier={subscriptionTier} />
+              <FoundryInventory inventory={foundry.inventory} onRemove={handleInventoryRemove} onReprice={handleRepriceOne} onRepriceAll={handleRepriceAll} repricing={pricingEngine.loading} subscriptionTier={subscriptionTier} />
             )}
           </div>
         )}
