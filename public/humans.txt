@@ -9,6 +9,25 @@ Contact: hello@CMPSBL.com
 Phone: (760) FLUID-AI
 Twitter: @cmpsbl
 
+Lead Architect: Kenneth E. Sweet Jr.
+ORCID: https://orcid.org/0009-0001-4237-1243
+Role: Founder & Chief Architect
+
+Head of AI Research: Dr. Sarah Chen
+Role: Multi-agent cognition & memory architectures
+
+Senior Systems Engineer: Marcus Rodriguez
+Role: Runtime performance & NEXUS routing
+
+Junior Developer & DevOps: Priya Nakamura
+Role: CI/CD pipelines & MODERNIZER node
+
+Security Researcher: James Whitfield
+Role: DEFENSE node & behavioral fingerprinting
+
+VP of Communications: Elena Vasquez
+Role: Brand strategy & community
+
 /* THANKS */
 
 Built with love, caffeine, and autonomous AI assistance.
@@ -17,12 +36,12 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/03/06
+Last update: 2026/03/10
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
 Backend: CMPSBL Cloud
-AI: Multi-provider orchestration via Nexus
+AI: Multi-provider orchestration via NEXUS
 
 Standards: HTML5, CSS3, ES2024
 Components: Radix UI, shadcn/ui
@@ -41,7 +60,7 @@ We believe in:
 - Security through behavioral analysis
 - Persistent memory and dream cycles
 
-/* SUBSTRATE MODULES */
+/* SUBSTRATE NODES */
 
 BRAIN: Memory, learning, reflection cycles
 DECODE: Epistemic conversation interpreter
@@ -60,12 +79,11 @@ CORTEX: Policy orchestration
 
 /* COLOPHON */
 
-Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-ARCHITECT Epoch — Composable Cognitive Infrastructure
-Modular AI substrate with persistent memory, governed evolution, and adaptive intelligence.
-WCAG 2.2 Accessibility via INCLUSIVE Module
+CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
+40 Nodes • 12 Sectors • 675+ Capabilities
+WCAG 2.2 Accessibility via INCLUSIVE Node
 
-CMPSBL® — Cognitive Infrastructure for AI.
+CMPSBL® — Where Machines Learn To Think.
 
 /* STANDARD */
 This file follows the humans.txt standard from humanstxt.org
