@@ -441,6 +441,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   const useCases = getUseCases(input.category, input.name, input.systemChain);
   const tier = getTierFromScore(input.score);
   const valuation = getValuationBreakdown(input.score, input.category, input.systemChain.length);
+  const marketplaces = getSuggestedMarketplaces(input.score, input.category, tier);
   const exportDate = new Date().toISOString();
   const formattedDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const sealSVG = generateSealSVG(input.score, tier);
