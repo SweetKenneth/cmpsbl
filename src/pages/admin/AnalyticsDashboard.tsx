@@ -10,7 +10,7 @@ import {
   Users, Clock, TrendingUp, Activity, Eye, Layers,
   ArrowRight, AlertTriangle, CheckCircle, XCircle, RefreshCw,
   Zap, Route, Flame, BarChart3, Settings, Trash2, UserX, Bot, Plus,
-  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2,
+  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2, Fingerprint,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
