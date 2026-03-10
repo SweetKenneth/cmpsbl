@@ -2475,7 +2475,7 @@ ${allFeatures.map(f => {
     } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
       result = await evolutionMod.quota();
     } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
-      result = await modernizer.pulse();
+      result = await evolutionMod.pulse();
     } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
       const scope = args[0] || 'all';
       const notes = args.slice(1).join(' ') || '';
