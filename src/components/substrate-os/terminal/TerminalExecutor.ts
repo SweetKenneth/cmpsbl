@@ -2486,7 +2486,7 @@ ${allFeatures.map(f => {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.review <plan_id>' };
       }
-      result = await modernizer.review(args[0]);
+      result = await evolutionMod.review(args[0]);
     } else if (base === 'evolution.validate' || base === 'modernizer.validate') {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.validate <plan_id>' };
