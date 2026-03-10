@@ -68,21 +68,21 @@ const COMMAND_WORKFLOWS: Record<string, string[]> = {
   'dream.feed': ['dream.consume', 'dream.cycle', 'dream.interpret', 'dream.reflect'],
   'dream.consume': ['dream.reflect', 'dream.cycle', 'brain.reflect', 'dream.status'],
   
-  // Modernizer Evolution Cycle workflows (v6.5.0)
-  'modernizer.status': ['modernizer.evolve', 'modernizer.evolve status', 'modernizer.jobs', 'modernizer.quota'],
-  'modernizer.evolve': ['modernizer.evolve shadow', 'modernizer.evolve production', 'modernizer.evolve verify', 'modernizer.evolve status'],
-  'modernizer.evolve status': ['modernizer.evolve', 'modernizer.evolve shadow', 'modernizer.evolve abort', 'system.health'],
-  'modernizer.evolve shadow': ['modernizer.evolve production', 'modernizer.evolve verify', 'modernizer.evolve status', 'system.health'],
-  'modernizer.evolve production': ['modernizer.evolve verify', 'modernizer.evolve status', 'system.health', 'vision.pulse'],
-  'modernizer.evolve verify': ['modernizer.evolve status', 'system.health', 'vision.pulse', 'modernizer.jobs'],
-  'modernizer.evolve abort': ['modernizer.evolve', 'modernizer.status', 'system.health', 'modernizer.jobs'],
+  // Evolution Cycle workflows (formerly modernizer)
+  'evolution.status': ['evolution.evolve', 'evolution.evolve status', 'evolution.jobs', 'evolution.quota'],
+  'evolution.evolve': ['evolution.evolve shadow', 'evolution.evolve production', 'evolution.evolve verify', 'evolution.evolve status'],
+  'evolution.evolve status': ['evolution.evolve', 'evolution.evolve shadow', 'evolution.evolve abort', 'system.health'],
+  'evolution.evolve shadow': ['evolution.evolve production', 'evolution.evolve verify', 'evolution.evolve status', 'system.health'],
+  'evolution.evolve production': ['evolution.evolve verify', 'evolution.evolve status', 'system.health', 'vision.pulse'],
+  'evolution.evolve verify': ['evolution.evolve status', 'system.health', 'vision.pulse', 'evolution.jobs'],
+  'evolution.evolve abort': ['evolution.evolve', 'evolution.status', 'system.health', 'evolution.jobs'],
   // Legacy commands (redirect to evolve)
-  'modernizer.scan': ['modernizer.evolve', 'modernizer.evolve status', 'modernizer.analyze', 'modernizer.status'],
-  'modernizer.propose': ['modernizer.evolve', 'modernizer.evolve shadow', 'modernizer.status', 'modernizer.analyze'],
-  'modernizer.plans': ['modernizer.evolve status', 'modernizer.evolve shadow', 'modernizer.evolve abort', 'modernizer.status'],
-  'modernizer.apply': ['modernizer.evolve shadow', 'modernizer.evolve production', 'modernizer.evolve status', 'system.health'],
-  'modernizer.rollback': ['modernizer.evolve status', 'modernizer.status', 'system.health', 'modernizer.jobs'],
-  'modernizer.applied': ['modernizer.plans', 'modernizer.status', 'modernizer.scan', 'system.health'],
+  'evolution.scan': ['evolution.evolve', 'evolution.evolve status', 'evolution.analyze', 'evolution.status'],
+  'evolution.propose': ['evolution.evolve', 'evolution.evolve shadow', 'evolution.status', 'evolution.analyze'],
+  'evolution.plans': ['evolution.evolve status', 'evolution.evolve shadow', 'evolution.evolve abort', 'evolution.status'],
+  'evolution.apply': ['evolution.evolve shadow', 'evolution.evolve production', 'evolution.evolve status', 'system.health'],
+  'evolution.rollback': ['evolution.evolve status', 'evolution.status', 'system.health', 'evolution.jobs'],
+  'evolution.applied': ['evolution.plans', 'evolution.status', 'evolution.scan', 'system.health'],
   
   // Core workflows
   'core.status': ['core.pulse', 'core.jobs', 'core.config', 'system.status'],

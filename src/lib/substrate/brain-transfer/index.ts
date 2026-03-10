@@ -213,8 +213,8 @@ const MODULE_CONFIGS: Record<TransferModule, ModuleTransferConfig> = {
     hotCacheLimit: 60,
     minConfidence: 0.5,
   },
-  modernizer: {
-    module: 'modernizer',
+  evolution: {
+    module: 'evolution',
     relevanceSignals: [
       'upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff',
       'delta', 'improvement', 'optimization', 'performance', 'regression',
@@ -222,7 +222,7 @@ const MODULE_CONFIGS: Record<TransferModule, ModuleTransferConfig> = {
       'breaking change', 'compatibility', 'deprecation', 'plan',
     ],
     memoryTypes: ['learned', 'heuristic', 'pattern', 'evolution'],
-    hotCategoryPrefix: 'modernizer_transfer',
+    hotCategoryPrefix: 'evolution_transfer',
     hotCacheLimit: 70,
     minConfidence: 0.6,
   },
