@@ -1322,6 +1322,8 @@ export * from './vision-primitives';
 export * from './defense-primitives';
 export * from './medic/s-tier';
 export * from './cognitive-capabilities/s-tier';
+export * from './nerve/s-tier';
+export * from './inclusive/s-tier';
 
 // Core Nodes
 export * from './neural/s-tier';
@@ -1345,6 +1347,9 @@ export * from './compass/s-tier';
 export * from './echo/s-tier';
 export * from './treaty/s-tier';
 export * from './reflex/s-tier';
+export * from './shadow-module/s-tier';
+export * from './harvest/s-tier';
+export * from './atlas/s-tier';
 
 // Vault Primitive Loader — 1,894 dynamic capabilities
 export {

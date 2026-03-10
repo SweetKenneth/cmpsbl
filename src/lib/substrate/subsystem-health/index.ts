@@ -22,7 +22,7 @@ import { updateHealthRegistry, getShadowMeshState, updateShadowMeshState } from 
 
 // ═══ Types ═══════════════════════════════════════════════════════
 
-export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream' | 'discovery_engine';
+export type SubsystemId = 'intent_mesh' | 'autoblog' | 'seba' | 'shadow_mesh' | 'clm' | 'evolution_mesh' | 'immunity_mesh' | 'event_stream' | 'discovery_engine' | 'vault_loader';
 
 export interface SubsystemHealthEntry {
   id: SubsystemId;
@@ -71,9 +71,10 @@ const SUBSYSTEM_META: Record<SubsystemId, { name: string; circuitModule: string 
   immunity_mesh: { name: 'IMMUNITY Mesh', circuitModule: 'subsys:immunity_mesh' },
   event_stream: { name: 'Event Stream', circuitModule: 'subsys:event_stream' },
   discovery_engine: { name: 'Discovery Engine', circuitModule: 'subsys:discovery_engine' },
+  vault_loader: { name: 'Vault Primitive Loader', circuitModule: 'subsys:vault_loader' },
 };
 
-const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream', 'discovery_engine'];
+const ALL_SUBSYSTEM_IDS: SubsystemId[] = ['intent_mesh', 'autoblog', 'seba', 'shadow_mesh', 'clm', 'evolution_mesh', 'immunity_mesh', 'event_stream', 'discovery_engine', 'vault_loader'];
 
 // ═══ Init ════════════════════════════════════════════════════════
 
