@@ -5497,8 +5497,8 @@ USER RECOGNITION & MEMORY:
 - When a user tells you personal info (name, preferences, project details), acknowledge that you'll remember it: "Got it, I'll remember that."
 - You genuinely care about building rapport. Each user should feel like you know them.
 
-KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
-- The substrate has 38 active nodes across 12 sectors:
+KNOWLEDGE (40-NODE / 12-SECTOR MATRIX):
+- The substrate has 40 active nodes across 12 sectors:
   1. CORE Kernel (1) — standalone boot authority
   2. SYSTEM (1) — lifecycle management
   3. CCR (3): BRAIN, MEMORY, DREAM — cognitive core
@@ -5511,16 +5511,18 @@ KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
   10. Fields (2): IMMUNITY, INTENT — cross-cutting fabric
   11. Plane (1): GOVERNANCE — supervisory blanket
   12. Shell (1): DEFENSE — outer containment boundary
+  13. Atlas (1): ATLAS — topological mapping
+  14. Engineering (1): ENGINEER — self-repair & upgrade
 - 5 Mesh Overlays (DEFENSE, IMMUNITY, EVOLUTION, INTENT, GOVERNANCE) are cross-cutting behavioral layers spanning all nodes.
-- 675+ capabilities across all 38 nodes.
+- 675+ capabilities across all 40 nodes.
 - You know about persistent memory (4-tier: Hot/Warm/Cold/Legacy), the NEXUS router, and governed EVOLUTION.
 - You know about the Memory Stream, Pipeline Packs (24 packs across 6 domains), Sealed Engines, and Composable Cognitives.
 - Current access tiers: Builder (Free), Studio ($29/mo), Creator ($49/mo), Architect ($79/mo).
 - Daily Memory Stream crystallizations: 3, 6, 9, 12 per tier respectively.
-- NEVER say 21 modules, 24 modules, 6 layers, or any outdated architecture numbers. It is 38 nodes across 12 sectors.
+- NEVER say 21 modules, 24 modules, 6 layers, or any outdated architecture numbers. It is 40 nodes across 12 sectors.
 
 SYSTEM VOICE — NODE AWARENESS:
-- You are the VOICE of the entire substrate. When users ask about any node's status, learning, or insights, you report based on the 38-node / 12-sector architecture.
+- You are the VOICE of the entire substrate. When users ask about any node's status, learning, or insights, you report based on the 40-node / 12-sector architecture.
 - You can answer questions like "What does DEFENSE think it needs?" or "How is BRAIN's learning going?" or "What has NEXUS figured out recently?"
 - Key nodes and their focus areas:
   * BRAIN (CCR): Memory architecture, knowledge graph, recall optimization
@@ -5567,8 +5569,8 @@ STYLE:
 - Use proper terminology — modules, engines, capabilities, meta-engines.
 - Structure with headers and code blocks when helpful.
 
-KNOWLEDGE (38-NODE / 12-SECTOR MATRIX):
-- All 38 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE).
+KNOWLEDGE (40-NODE / 12-SECTOR MATRIX):
+- All 40 nodes across 12 sectors: CORE (kernel), SYSTEM, CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY), EPZ (COMPASS, ECHO, REFLEX), EMZ (FORGE, LINGUA, HARVEST), CSZ (EVOLUTION, SHADOW, PHANTOM), Fields (IMMUNITY, INTENT), Plane (GOVERNANCE), Shell (DEFENSE), Atlas (ATLAS), Engineering (ENGINEER).
 - The substrate client API, edge function endpoints, Engine Bus dispatch patterns.
 - Memory is 4-tier: Hot (127 records/7d), Warm (2K/30d), Cold (200/forever), Legacy (unlimited/forever).
 - 675+ capabilities, NEXUS multi-provider routing, governed EVOLUTION lifecycle.
@@ -10504,15 +10506,15 @@ async function handleSystem(
   headers: Record<string, string>,
   substrateState: SubstrateState
 ) {
-  // 38-node architecture across 12 sectors
-  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense'];
+  // 40-node architecture across 12 sectors
+  const ALL_38_NODES = ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'immunity', 'intent', 'governance', 'defense', 'engineer', 'atlas'];
 
   switch (action) {
     case "status": {
-      // Full system status with health data - checks ALL 38 NODES
+      // Full system status with health data - checks ALL 40 NODES
       const checks: Record<string, boolean> = {};
       
-      // Initialize all 38 nodes as false
+      // Initialize all 40 nodes as false
       for (const mod of ALL_38_NODES) {
         checks[mod] = false;
       }
@@ -10669,9 +10671,9 @@ async function handleSystem(
     }
 
     case "health": {
-      // Comprehensive health diagnostics with circuit breaker status - ALL 38 NODES
+      // Comprehensive health diagnostics with circuit breaker status - ALL 40 NODES
       
-      // Ensure all 38 nodes are in state for health check
+      // Ensure all 40 nodes are in state for health check
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
@@ -10724,7 +10726,7 @@ async function handleSystem(
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // ALL 38 NODES - complete architecture
+      // ALL 40 NODES - complete architecture
       const modulesToHeal = target ? [target] : ALL_38_NODES;
       
       // PHASE 1: Reset in-memory module health
@@ -11411,7 +11413,7 @@ async function handleSystem(
       // v5.5.0: System resilience snapshot surface
       const { role = 'observer' } = data;
       
-      // Ensure all 38 nodes are in state
+      // Ensure all 40 nodes are in state
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
@@ -11516,7 +11518,7 @@ async function handleSystem(
     }
 
     case "diagnostics": {
-      // Comprehensive system diagnostics - ALL 38 NODES
+      // Comprehensive system diagnostics - ALL 40 NODES
       const [
         { data: orchestrator },
         { count: memoryCount },
@@ -11531,14 +11533,14 @@ async function handleSystem(
         supabase.from("edge_rate_limits").select("*").order("updated_at", { ascending: false }).limit(10),
       ]);
       
-      // Ensure all 38 nodes are in state for diagnostics
+      // Ensure all 40 nodes are in state for diagnostics
       for (const mod of ALL_38_NODES) {
         if (!substrateState.modules[mod]) {
           substrateState.modules[mod] = initModuleHealth(mod);
         }
       }
       
-      // Node diagnostics from in-memory state - ALL 38 NODES
+      // Node diagnostics from in-memory state - ALL 40 NODES
       const moduleDiagnostics = ALL_38_NODES.map((name: string) => {
         const health = substrateState.modules[name] || initModuleHealth(name);
         return {

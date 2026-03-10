@@ -202,7 +202,7 @@ export default function Explore() {
               {/* Mini stats row */}
               <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10">
                  {[
-                   { value: "38", label: "Substrate Nodes" },
+                   { value: "40", label: "Substrate Nodes" },
                    { value: "24", label: "Pipeline Packs" },
                    { value: "20", label: "Sealed Engines" },
                    { value: "99.9%", label: "Uptime SLA" },

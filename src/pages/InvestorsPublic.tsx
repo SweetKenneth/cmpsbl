@@ -75,7 +75,7 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Stream Nodes", value: "38", color: "text-primary" },
+    { icon: Layers, label: "Stream Nodes", value: "40", color: "text-primary" },
     { icon: Zap, label: "Crystallized Pipelines", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Capabilities", value: "675+", color: "text-violet-400" }

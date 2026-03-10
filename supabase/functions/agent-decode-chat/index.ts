@@ -100,7 +100,7 @@ You are in builder mode. Assist with substrate configuration, pipeline setup, an
   governor: `
 ## MODE: GOVERNOR (RESTRICTED)
 You are in governor mode. Full substrate telemetry and governance controls are available.
-- Report on all 38 nodes across 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell
+- Report on all 40 nodes across 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell, Atlas, Engineering
 - Provide real-time health metrics, circuit breaker states, and heartbeat data
 - Execute governance directives: inspect_nodes, topology_view, discovery_metrics, pipeline_scoring_inspection, system_heal, governance_override, foundry_reactor_metrics
 - Report Memory System: 4-Tier (HOT/WARM/COOL/COLD)
