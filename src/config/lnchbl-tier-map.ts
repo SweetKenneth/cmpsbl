@@ -22,7 +22,7 @@ export type DistributionTier = 'free' | 'builder' | 'pro' | 'enterprise';
 export const CROWN_JEWEL_IDS: readonly string[] = [
   'cortex_engine',                // Autonomous PROPOSE→APPLY→LEARN loop
   'seba_engine',                  // Self-Evolving Bounded Agent
-  'modernizer',                   // Shadow-to-production code diffs
+  'evolution_engine',             // Shadow-to-production code diffs
   'evolution_ab',                 // Parallel evolution variant testing
   'evolution_rollback',           // Auto-revert of failed evolution
   'evolution_sandbox',            // Isolated evolution testing
