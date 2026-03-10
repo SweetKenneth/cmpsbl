@@ -9,6 +9,7 @@ import { getTierBadgeClass, formatValuation, type PublicTier } from '@/lib/found
 import { MEMORY_STREAM_PROVENANCE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { getVaultLimits } from '@/lib/substrate/vault-limits';
 import { truncateFingerprint, type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import {
   downloadTieredFoundryZip,
