@@ -957,7 +957,7 @@ export async function getModuleKnowledgeReport(module: TransferModule): Promise<
 export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeReport[]> {
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
