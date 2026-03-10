@@ -815,7 +815,7 @@ class SubstrateClient {
     
     /** Generate code to implement an archived function repurposing */
     implement: (archived_function: string, target_action: string) =>
-      this.invoke({ module: 'modernizer', action: 'implement_archived', payload: { archived_function, target_action } }),
+      this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
   // ═══════════════════════════════════════════════════════════════
