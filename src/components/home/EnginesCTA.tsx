@@ -98,7 +98,7 @@ export function EnginesCTA() {
             </div>
 
             {/* Engine highlights grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-10">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
               {ENGINE_HIGHLIGHTS.map((engine, i) => (
                 <motion.div
                   key={engine.name}
