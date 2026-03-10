@@ -1103,7 +1103,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'deprecation_path_finder',
     name: 'Deprecation Path Finder',
     description: 'Maps upgrade paths for deprecated features and dependencies',
-    modules: ['MODERNIZER', 'SYSTEM', 'BRAIN'],
+    modules: ['EVOLUTION', 'SYSTEM', 'BRAIN'],
     layer: 'Admin',
     userBenefit: 'Clear roadmap for upgrading legacy components',
     status: 'active',
