@@ -151,7 +151,7 @@ export default function DeveloperShowcase() {
               <Terminal className="w-4 h-4 mr-2" />
               For Software Developers
             </Badge>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
               <span className="text-foreground">Build Apps That </span>
               <span className="block sm:inline" style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
