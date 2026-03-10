@@ -49,7 +49,7 @@ export interface DefenseLearningInsights {
 
 /**
  * Generate learning summary from defense events in a time window
- * Uses NEXUS router for AI analysis (never direct Lovable AI)
+ * Uses NEXUS router for AI analysis (never direct external gateway)
  */
 export async function generateDefenseLearningSummary(
   periodStart: Date,

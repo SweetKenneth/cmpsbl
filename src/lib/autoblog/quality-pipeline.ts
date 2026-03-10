@@ -8,7 +8,7 @@
  *  3. Split Brain Evaluation — dual Reader/Skeptic review + caveat injection
  *  4. Assumption Labeler — extract implicit assumptions, detect breakage
  *
- * All AI calls go through the NEXUS router — never use Lovable AI.
+ * All AI calls go through the NEXUS router — never bypass governance.
  */
 
 import { supabase } from '@/integrations/supabase/client';
