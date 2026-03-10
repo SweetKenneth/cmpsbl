@@ -352,7 +352,7 @@ export function useSubstrateHealthScore() {
     shadow: () => defense.status(),
     // Mesh overlays
     immunity: () => defense.status(),
-    evolution: () => modernizer.status(),
+    evolution: () => evolutionMod.status(),
     intent: () => cortex.status(),
     governance: () => cortex.status(),
   };
