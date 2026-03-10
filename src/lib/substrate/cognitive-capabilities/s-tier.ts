@@ -17,4 +17,9 @@ export * from '@/crownjewels/s-tier/165-cognitive-load-balancer';
 export * from '@/crownjewels/s-tier/169-recursive-planning';
 export * from '@/crownjewels/s-tier/175-goal-decomposition';
 export * from '@/crownjewels/s-tier/181-attention-allocation';
-export * from '@/crownjewels/s-tier/183-dynamic-pipeline-optimizer';
+// dynamic-pipeline-optimizer has OptimizationResult collision with nexus/081
+export {
+  DynamicPipelineOptimizer,
+  type PipelineConfig as DynamicPipelineConfig,
+  type OptimizationResult as PipelineOptimizationResult,
+} from '@/crownjewels/s-tier/183-dynamic-pipeline-optimizer';

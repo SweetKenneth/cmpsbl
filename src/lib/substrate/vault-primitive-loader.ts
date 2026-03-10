@@ -17,37 +17,128 @@ import { registerCapability } from './capability-router';
 const CATEGORY_NODE_MAP: Record<string, string> = {
   // Security & compliance
   security: 'defense',
+  threat: 'defense',
+  firewall: 'defense',
   compliance: 'sovereign',
+  sovereignty: 'sovereign',
   privacy: 'phantom',
+  anonymization: 'phantom',
   contracts: 'treaty',
+  agreement: 'treaty',
   ethics: 'conscience',
+  bias: 'conscience',
 
   // Cognitive & learning
   cognitive: 'brain',
+  reasoning: 'brain',
+  intelligence: 'brain',
+  neural: 'brain',
   learning: 'brain',
   prediction: 'oracle',
+  forecasting: 'oracle',
+  bayesian: 'oracle',
   simulation: 'echo',
+  replay: 'echo',
+
+  // Memory & knowledge
+  memory: 'memory',
+  persistence: 'memory',
+  knowledge: 'memory',
+  caching: 'memory',
+  retention: 'memory',
 
   // Execution & orchestration
   orchestration: 'cortex',
+  pipeline: 'cortex',
+  workflow: 'cortex',
   routing: 'nexus',
+  fleet: 'nexus',
+  provider: 'nexus',
+  ai_routing: 'nexus',
   edge: 'reflex',
+  latency: 'reflex',
+
+  // Communication & decode
+  conversation: 'decode',
+  intent: 'decode',
+  interface: 'decode',
+  nlp: 'decode',
+
+  // Build & encode
+  generation: 'encode',
+  build: 'encode',
+  compilation: 'encode',
 
   // Governance & evolution
   governance: 'governance',
+  policy: 'governance',
+  audit: 'governance',
   evolution: 'evolution',
+  mutation: 'evolution',
+  optimization: 'evolution',
 
-  // Observability & integration
+  // Observability & health
   observability: 'vision',
+  monitoring: 'vision',
+  anomaly: 'vision',
+  diagnostics: 'medic',
+  triage: 'medic',
+  healing: 'immunity',
+  resilience: 'immunity',
+  self_healing: 'immunity',
+
+  // Integration & infrastructure
   integration: 'integration',
+  webhook: 'integration',
+  api: 'integration',
+  connector: 'integration',
+
+  // Identity & access
+  identity: 'identity',
+  authentication: 'identity',
+  authorization: 'identity',
+
+  // Economy
+  economy: 'economy',
+  billing: 'economy',
+  cost: 'economy',
+  pricing: 'economy',
+
+  // Dream & synthesis
+  dream: 'dream',
+  imagination: 'dream',
+  hypothesis: 'dream',
 
   // Specialized
   localization: 'lingua',
+  translation: 'lingua',
+  language: 'lingua',
   geospatial: 'compass',
+  navigation: 'compass',
   synthesis: 'forge',
+  artifact: 'forge',
+  crafting: 'forge',
+
+  // Signal & relay
+  signal: 'nerve',
+  relay: 'nerve',
+  messaging: 'nerve',
 
   // Data/ingestion → HARVEST
   acquisition: 'harvest',
+  ingestion: 'harvest',
+  crawling: 'harvest',
+  scraping: 'harvest',
+  data: 'harvest',
+
+  // Shadow & testing
+  shadow: 'shadow',
+  testing: 'shadow',
+  verification: 'shadow',
+
+  // Sandbox
+  sandbox: 'sandbox',
+  isolation: 'sandbox',
 };
 
 /** Fallback: if category not mapped, use first module in chain (lowercased) */
