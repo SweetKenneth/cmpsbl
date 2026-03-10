@@ -414,7 +414,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'ethical_guardrails',
       'evolution_confidence_scoring',
     ],
-    primaryModules: ['CORTEX', 'DECODE', 'MODERNIZER'],
+    primaryModules: ['CORTEX', 'DECODE', 'EVOLUTION'],
     layer: 'Orchestrator',
     synergyMultiplier: 2.0,
     complexityScore: 8,
