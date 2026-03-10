@@ -2812,7 +2812,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
             const meta = run.metadata || {};
             const actions = (meta.total_actions as number) || 0;
             lines.push(`║  🔬 ${run.run_id.slice(0, 12)} │ Phase: ${run.phase}`);
-            lines.push(`║     Actions: ${actions} │ Ready for: modernizer.evolve production`);
+            lines.push(`║     Actions: ${actions} │ Ready for: evolution.evolve production`);
           }
           lines.push('╚══════════════════════════════════════════════════════════════╝');
         }
