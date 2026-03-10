@@ -92,12 +92,14 @@ serve(async (req) => {
 
         if (error) throw error;
 
-        // Update access counts
+        // Update access counts (best-effort, non-blocking)
         if (data && data.length > 0) {
-          await supabase
-            .from("brain_memory_hot")
-            .update({ access_count: supabase.rpc("increment_access", {}) })
-            .in("id", data.map(m => m.id));
+          for (const m of data) {
+            await supabase
+              .from("brain_memory_hot")
+              .update({ access_count: (m.access_count || 0) + 1 })
+              .eq("id", m.id);
+          }
         }
 
         const memories = (data || []).map(m => ({
