@@ -291,7 +291,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.receipts — List recent receipts
+   * evolution.receipts — List recent receipts
    */
   async receipts(limit = 10): Promise<CommandResult> {
     const recentReceipts = await evolutionReceipts.getRecentReceipts(limit);
