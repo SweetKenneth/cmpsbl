@@ -287,12 +287,12 @@ function determineNextAction(
   // If plan is blocked, explain why
   if (planResult?.plan.status === 'blocked' && planResult.plan.blockers.length > 0) {
     const blocker = planResult.plan.blockers[0];
-    return `Plan blocked: ${blocker.message}. Run 'modernizer.plans' to inspect.`;
+    return `Plan blocked: ${blocker.message}. Run 'evolution.plans' to inspect.`;
   }
   
   // If circuit is blocked
   if (mergeResult.blocked_reasons.some(r => r.includes('circuit'))) {
-    return 'Evolution circuit is OPEN. Run "modernizer.circuit reset" to re-enable.';
+    return 'Evolution circuit is OPEN. Run "evolution.circuit reset" to re-enable.';
   }
   
   // If no proposals

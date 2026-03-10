@@ -14,7 +14,7 @@
  * - SYSTEM: Audit aggregation, health surfaces
  * - VISION: Metrics, observability, health snapshots
  * - DEFENSE: Severity escalation to risk pipeline
- * - MODERNIZER: Regression-triggered proposals
+ * - EVOLUTION: Regression-triggered proposals
  * - TEMPLATES: Compliance gate (scan→repair→validate→approve)
  * - MARKETPLACE: Publish blocking on critical violations
  * - ACCESS: Role-based capability gating
