@@ -163,8 +163,8 @@ export default function CurrentProjects() {
       </section>
 
       {/* Projects Grid */}
-      <section className="container mx-auto px-4 pb-20 max-w-6xl">
-        <div className="grid gap-6 md:grid-cols-2">
+       <section className="container mx-auto px-3 sm:px-4 pb-16 sm:pb-20 max-w-6xl">
+         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
