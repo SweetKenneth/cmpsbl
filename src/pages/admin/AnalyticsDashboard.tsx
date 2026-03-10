@@ -34,6 +34,7 @@ interface RealtimePulse {
   avg_pages_today: number;
   top_pages_now: { page: string; count: number }[];
   hourly_today: { hour: number; sessions: number }[];
+  page_times: { page: string; avg_time_ms: number; views: number }[];
 }
 
 interface CohortRow {
