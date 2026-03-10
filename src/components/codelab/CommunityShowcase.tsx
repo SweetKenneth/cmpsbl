@@ -74,7 +74,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
     author: "contentlab",
     category: "content",
     tags: ["content", "ai", "marketing", "automation"],
-    modules: ["brain", "nexus", "vision", "modernizer"],
+    modules: ["brain", "nexus", "vision", "evolution"],
     stars: 512,
     forks: 145,
     featured: false,
