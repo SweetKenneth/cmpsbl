@@ -84,7 +84,7 @@ export const STIER_CAPABILITIES: CapabilityArtifact[] = [
     category: 'automation',
     description: 'Self-improvement: Fully self-maintaining infrastructure with autonomous optimization',
     longDescription: 'A self-improving operations system that autonomously maintains, optimizes, and evolves infrastructure. Combines real-time monitoring with predictive maintenance and self-healing capabilities. Fire half the ops tickets.',
-    requiredModules: ['SYSTEM', 'CORTEX', 'VISION', 'MODERNIZER'],
+    requiredModules: ['SYSTEM', 'CORTEX', 'VISION', 'EVOLUTION'],
     compatibleModules: ['DEFENSE', 'MEDIC'],
     executorType: 'container',
     artifactFormat: 'container',
