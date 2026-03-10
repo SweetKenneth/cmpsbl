@@ -212,8 +212,8 @@ class EvolutionCycleClient {
 
     // Perform scan (this also creates the evolution_run)
     try {
-      const { modernizerScan } = await import('@/lib/evolve/scan');
-      const scanResult = await modernizerScan({ 
+      const { evolutionScan } = await import('@/lib/evolve/scan');
+      const scanResult = await evolutionScan({ 
         explain: false, 
         llm_report: false, 
         dry_run: false 
