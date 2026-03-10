@@ -5068,7 +5068,7 @@ export async function executeSelfDocumentingEvolution(
 
 /**
  * Intelligent Deprecation Manager Executor
- * CORTEX + VISION + BRAIN + MODERNIZER → Smart feature sunset
+ * CORTEX + VISION + BRAIN + EVOLUTION → Smart feature sunset
  */
 export async function executeIntelligentDeprecationManager(
   context: SynergyExecutionContext
