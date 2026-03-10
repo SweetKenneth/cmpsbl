@@ -2420,18 +2420,18 @@ ${allFeatures.map(f => {
         output += `
 │
 │  Next steps:
-│    modernizer.evolve shadow           — Apply to shadow
-│    modernizer.evolve production       — Promote to production
-│    modernizer.evolve verify           — Run verification
+│    evolution.evolve shadow           — Apply to shadow
+│    evolution.evolve production       — Promote to production
+│    evolution.evolve verify           — Run verification
 │
 │  Or use full plan ID:
-│    modernizer.review ${planRef}`;
+│    evolution.review ${planRef}`;
       } else if (cycleResult.phase === 'shadow_applied') {
         output += `
 │
 │  Next step:
-│    modernizer.evolve production       — Promote to production
-│    modernizer.evolve verify           — Verify changes`;
+│    evolution.evolve production       — Promote to production
+│    evolution.evolve verify           — Verify changes`;
       }
       
       output += `
