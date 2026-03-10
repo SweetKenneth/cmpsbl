@@ -25,7 +25,7 @@ export function usePricingEngine() {
 
       // Persist if vault_id provided
       if (artifact.vault_id) {
-        await supabase.from('pipeline_vault').update({
+        const pricingUpdate = {
           recommended_resale_price: result.recommended_resale_price,
           indie_price: result.indie_price,
           standard_price: result.standard_price,
@@ -40,7 +40,11 @@ export function usePricingEngine() {
           pricing_last_updated_at: new Date().toISOString(),
           pricing_source: result.pricing_source,
           pricing_source_version: '1.0.0',
-        } as any).eq('id', artifact.vault_id);
+        };
+
+        // Route to correct table based on source
+        const table = artifact.source_table || 'pipeline_vault';
+        await supabase.from(table).update(pricingUpdate as any).eq('id', artifact.vault_id);
       }
 
       return result;
@@ -94,12 +98,15 @@ export function usePricingEngine() {
   /**
    * Reprice ALL discoveries across both foundry_inventory and pipeline_vault
    */
+  /**
+   * Reprice ALL discoveries across foundry_inventory, pipeline_vault, AND vault_promotions (S-Tier)
+   */
   const repriceAllDiscoveries = useCallback(async () => {
     if (!user) return { success: 0, failed: 0 };
     setLoading(true);
     try {
-      // Fetch from both tables in parallel
-      const [inventoryRes, vaultRes] = await Promise.all([
+      // Fetch from all three tables in parallel
+      const [inventoryRes, vaultRes, promotionsRes] = await Promise.all([
         supabase
           .from('foundry_inventory')
           .select('id, artifact_name, score, category, system_chain, valuation_display, public_tier')
@@ -108,6 +115,10 @@ export function usePricingEngine() {
           .from('pipeline_vault')
           .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display')
           .eq('user_id', user.id),
+        supabase
+          .from('vault_promotions')
+          .select('id, name, cjpi, category, module_chain, tier, description')
+          .eq('export_ready', true),
       ]);
 
       const artifacts: PricingArtifact[] = [];
@@ -116,6 +127,7 @@ export function usePricingEngine() {
       for (const d of (inventoryRes.data ?? []) as any[]) {
         artifacts.push({
           vault_id: d.id,
+          source_table: 'foundry_inventory',
           pipeline_name: d.artifact_name,
           pipeline_score: d.score,
           pipeline_tier: d.public_tier || 'Raw',
@@ -131,6 +143,7 @@ export function usePricingEngine() {
         if (!existingIds.has(d.id)) {
           artifacts.push({
             vault_id: d.id,
+            source_table: 'pipeline_vault',
             pipeline_name: d.pipeline_name,
             pipeline_score: d.pipeline_score,
             pipeline_tier: d.pipeline_tier,
@@ -138,6 +151,24 @@ export function usePricingEngine() {
             system_chain: d.system_chain,
             valuation_display: d.valuation_display,
           });
+          existingIds.add(d.id);
+        }
+      }
+
+      // Map vault_promotions (S-Tier Crown Jewels / promoted discoveries)
+      for (const d of (promotionsRes.data ?? []) as any[]) {
+        if (!existingIds.has(d.id)) {
+          artifacts.push({
+            vault_id: d.id,
+            source_table: 'vault_promotions',
+            pipeline_name: d.name,
+            pipeline_score: d.cjpi,
+            pipeline_tier: d.tier || 'Apex',
+            pipeline_category: d.category,
+            system_chain: d.module_chain,
+            valuation_display: null,
+          });
+          existingIds.add(d.id);
         }
       }
 

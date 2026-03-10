@@ -13,7 +13,7 @@ import {
   Shield, Copy, Download, Eye, Search, Lock, CheckCircle,
   Code2, Package, ChevronDown, ChevronUp, FileCode, Globe,
   Zap, Loader2, ArrowUpDown, DollarSign, TrendingUp,
-  BarChart3, ArrowUp, Filter,
+  BarChart3, ArrowUp, Filter, RefreshCw,
 } from "lucide-react";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
@@ -29,6 +29,9 @@ import {
 import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { usePricingEngine } from "@/hooks/usePricingEngine";
+import { formatPrice } from "@/lib/foundry/pricing-engine";
+import type { PricingArtifact } from "@/lib/foundry/pricing-engine";
 
 const entries = registryData.entries as STierEntry[];
 
@@ -513,6 +516,43 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
+  // Pricing engine for S-Tier repricing
+  const pricingEngine = usePricingEngine();
+
+  const handleRepriceAll = useCallback(async () => {
+    // Build artifacts from registry entries + promoted discoveries
+    const artifacts: PricingArtifact[] = [];
+
+    // Registry entries (static S-Tier Crown Jewels)
+    for (const entry of entries) {
+      artifacts.push({
+        pipeline_name: entry.name,
+        pipeline_score: entry.cjpi,
+        pipeline_tier: 'Apex',
+        pipeline_category: entry.type,
+        system_chain: [entry.module],
+        valuation_display: null,
+      });
+    }
+
+    // Promoted discoveries from vault_promotions
+    for (const d of promoted) {
+      artifacts.push({
+        vault_id: d.id,
+        source_table: 'vault_promotions',
+        pipeline_name: d.name,
+        pipeline_score: d.cjpi,
+        pipeline_tier: d.tier || 'Apex',
+        pipeline_category: d.category,
+        system_chain: d.module_chain,
+        valuation_display: null,
+      });
+    }
+
+    const result = await pricingEngine.repriceAll(artifacts);
+    toast.success(`Repriced ${result.success} S-Tier artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+  }, [promoted, pricingEngine]);
+
   // Discovered tab filters
   const [discCategoryFilter, setDiscCategoryFilter] = useState<string | null>(null);
   const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
@@ -875,6 +915,14 @@ export default function STierVault() {
             </div>
           </div>
           <div className="flex gap-2 self-start sm:self-auto flex-wrap">
+            <Button variant="outline" size="sm" onClick={handleRepriceAll} disabled={pricingEngine.loading} className="gap-1.5">
+              {pricingEngine.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+              {pricingEngine.loading
+                ? pricingEngine.batchProgress
+                  ? `${pricingEngine.batchProgress.completed}/${pricingEngine.batchProgress.total}`
+                  : 'Repricing...'
+                : 'Reprice All'}
+            </Button>
             <Button variant="outline" size="sm" onClick={() => setShowAnalytics(!showAnalytics)} className="gap-1.5">
               <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
             </Button>
