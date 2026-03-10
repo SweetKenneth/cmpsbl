@@ -259,8 +259,8 @@ export function registerExecutionHandlers(): void {
   });
 
   registerHandler('modernizer.health', async () => {
-    const { evolutionMod } = await import('@/lib/substrate');
-    const status = await evolutionMod.status();
+    const { evolutionClient } = await import('@/lib/substrate');
+    const status = await evolutionClient.status();
     return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
   });
 
