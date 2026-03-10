@@ -106,6 +106,14 @@ export async function initializeSubstrate(): Promise<void> {
       const { startAutoRecovery } = await import('./substrate/core-circuit-recovery');
       startAutoRecovery();
     } catch { /* graceful */ }
+
+    // Activate S-Tier capabilities (3-wave staged activation)
+    try {
+      const { activateAllSTierCapabilities } = await import('@/lib/capabilities/s-tier-activator');
+      const waves = activateAllSTierCapabilities();
+      const total = waves.reduce((sum, w) => sum + w.totalActivated, 0);
+      console.log(`🏆 S-Tier activated: ${total} capabilities across ${waves.length} waves`);
+    } catch { /* graceful */ }
     
     // Rehydrate persistent control plane state (revision-aware)
     try {
