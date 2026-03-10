@@ -1616,23 +1616,23 @@ function buildExecutiveSummary(
  */
 function extractSubjectKey(step: ActionStep): string | null {
   // ── Priority 0: Extract affected components from instructions ──
-  // This catches anomalies AND Modernizer proposals that reference the same components.
-  // Must run first so "Anomaly: X affecting A,B,C" and "Modernizer: Resolve X (Affected: A,B,C)" collapse.
+  // This catches anomalies AND EVOLUTION proposals that reference the same components.
+  // Must run first so "Anomaly: X affecting A,B,C" and "Evolution: Resolve X (Affected: A,B,C)" collapse.
   const affectedComponents = extractAffectedComponents(step);
   if (affectedComponents) {
     return `affected:${affectedComponents}`;
   }
 
   // ── Priority 1: Extract capability name from title ──
-  // "Missing capability: X" and "Modernizer: Add X" should always collapse
+  // "Missing capability: X" and "Evolution: Add X" should always collapse
   const capMatch = step.title.match(/(?:Missing capability)\s*:\s*(.+)/i);
   if (capMatch) {
     return `cap:${capMatch[1].trim().toLowerCase()}`;
   }
   
-  const modCapMatch = step.title.match(/^Modernizer:\s*(?:Add|Configure)\s+(.+)/i);
-  if (modCapMatch) {
-    return `cap:${modCapMatch[1].trim().toLowerCase()}`;
+  const evoCapMatch = step.title.match(/^(?:Evolution|Modernizer):\s*(?:Add|Configure)\s+(.+)/i);
+  if (evoCapMatch) {
+    return `cap:${evoCapMatch[1].trim().toLowerCase()}`;
   }
 
   // ── Priority 2: Extract edge function risk subjects ──

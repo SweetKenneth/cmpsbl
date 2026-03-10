@@ -421,7 +421,7 @@ const MODULE_DOMAIN_KNOWLEDGE: Record<string, {
     dataAssets: ['code_history', 'pattern_library', 'refactoring_logs', 'architecture_manifest'],
     potentialOutputs: ['code_quality_score', 'pattern_matches', 'tech_debt_estimate', 'refactoring_suggestions', 'recommended_pattern', 'dependency_graph', 'architecture_fit'],
   },
-  MODERNIZER: {
+  EVOLUTION: {
     naturalDomains: ['evolution', 'upgrade', 'migration', 'shadow', 'deployment', 'diff', 'regression'],
     dataAssets: ['evolution_runs', 'upgrade_plans', 'diff_history', 'regression_logs'],
     potentialOutputs: ['evolution_phase', 'risk_score', 'rollback_available', 'shadow_accuracy', 'readiness_score', 'migration_complexity', 'estimated_duration'],

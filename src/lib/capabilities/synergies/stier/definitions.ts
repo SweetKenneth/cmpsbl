@@ -69,7 +69,7 @@ export const STIER_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-ops-steward',
     name: 'Autonomous Ops Steward',
-    description: 'Fully self-maintaining infrastructure with guardrails via SYSTEM health management, CORTEX decision automation, VISION observability, and MODERNIZER self-repair',
+    description: 'Fully self-maintaining infrastructure with guardrails via SYSTEM health management, CORTEX decision automation, VISION observability, and EVOLUTION self-repair',
     category: 'automation',
     modules: [
       { name: 'SYSTEM', role: 'primary', required: true },
