@@ -75,7 +75,7 @@ export const STIER_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
       { name: 'SYSTEM', role: 'primary', required: true },
       { name: 'CORTEX', role: 'enhancer', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'high',
     reversible: true,
