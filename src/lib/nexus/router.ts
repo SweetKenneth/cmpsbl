@@ -41,7 +41,7 @@ export interface FleetProvider {
   costPerMToken: number; // millicents per million tokens (0 = free)
 }
 
-export type TaskType = 'reasoning' | 'research' | 'refinement' | 'generation' | 'code' | 'analysis';
+export type TaskType = 'reasoning' | 'research' | 'refinement' | 'generation' | 'code' | 'analysis' | 'pricing';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // FLEET REGISTRY — All free-tier providers at 80% safety margin
