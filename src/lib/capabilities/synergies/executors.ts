@@ -5118,8 +5118,8 @@ export async function executeIntelligentDeprecationManager(
     durationMs: performance.now() - brainStart,
   });
   
-  // Step 4: MODERNIZER - Migration plan
-  const modernizerStart = performance.now();
+  // Step 4: EVOLUTION - Migration plan
+  const evolutionStart = performance.now();
   const migration = {
     planGenerated: true,
     stepsRequired: 3,
