@@ -74,11 +74,14 @@ export async function priceArtifact(artifact: PricingArtifact): Promise<Commerci
     });
 
     if (error) throw error;
-    const result = data as CommercializationPricing;
+    const rawResult = data as CommercializationPricing;
+
+    // Apply blended formula: merge consensus with CJPI + internal signals
+    const result = applyBlendedFormula(rawResult, artifact);
 
     // Record through ECONOMY governance primitive
     try {
-      const evidence = result.pricing_evidence;
+      const evidence = rawResult.pricing_evidence;
       recordPricingRun({
         artifact_id: artifact.vault_id || 'unknown',
         artifact_name: artifact.pipeline_name,
@@ -221,25 +224,74 @@ function estimatePricingCost(evidence: PricingEvidence | undefined): number {
 }
 
 /**
+ * Blended Pricing Formula (deterministic)
+ * ─────────────────────────────────────────
+ * NormalizedInternal = InternalValue × 0.001
+ * CJPIValue          = BaseValue × CJPIMultiplier
+ * MarketWeight       = 0.55 + (Confidence × 0.20)
+ *
+ * FinalPrice =
+ *   (ConsensusPrice × MarketWeight) +
+ *   (CJPIValue × 0.25) +
+ *   (NormalizedInternal × (1 − MarketWeight − 0.25))
+ *
+ * When no ConsensusPrice exists, redistribute MarketWeight
+ * across CJPIValue and NormalizedInternal proportionally.
+ */
+
+import {
+  estimateMarketValue,
+  getExponentialBase,
+  getCJPIMultiplier,
+  getTierFromScore,
+} from '@/lib/pipeline-valuation';
+
+interface BlendedInputs {
+  artifact: PricingArtifact;
+  consensusPrice?: number | null;
+  consensusConfidence?: number;
+}
+
+function computeBlendedPrice(inputs: BlendedInputs): number {
+  const { artifact, consensusPrice, consensusConfidence } = inputs;
+  const score = artifact.pipeline_score;
+  const category = artifact.pipeline_category || 'core';
+  const moduleCount = artifact.system_chain?.length || 1;
+
+  // InternalValue = full estimateMarketValue() output
+  const internalValue = estimateMarketValue(score, category, moduleCount);
+  const normalizedInternal = internalValue * 0.001;
+
+  // CJPIValue = exponential base × graduated 6-tier multiplier
+  const baseValue = getExponentialBase(score);
+  const tier = getTierFromScore(score);
+  const cjpiMultiplier = getCJPIMultiplier(tier);
+  const cjpiValue = baseValue * cjpiMultiplier;
+
+  if (consensusPrice != null && consensusPrice > 0) {
+    // Full blended formula
+    const confidence = consensusConfidence ?? 0.5;
+    const marketWeight = 0.55 + (confidence * 0.20);
+    const internalWeight = 1 - marketWeight - 0.25;
+
+    return (consensusPrice * marketWeight) +
+           (cjpiValue * 0.25) +
+           (normalizedInternal * internalWeight);
+  }
+
+  // No consensus — redistribute MarketWeight across CJPIValue + Internal
+  // CJPIValue gets 0.25 + 0.55 share, NormalizedInternal gets the rest
+  const cjpiWeight = 0.75;
+  const internalWeight = 0.25;
+  return (cjpiValue * cjpiWeight) + (normalizedInternal * internalWeight);
+}
+
+/**
  * Client-side fallback pricing when edge function is unavailable
+ * Uses the blended formula with no consensus term
  */
 function computeLocalFallback(artifact: PricingArtifact): CommercializationPricing {
-  const score = artifact.pipeline_score;
-  const internalValue = artifact.valuation_display || 0;
-  const normalizedInternal = Math.max(internalValue * 0.001, 5);
-
-  let cjpiMultiplier = 1.0;
-  if (score >= 100) cjpiMultiplier = 4.0;
-  else if (score >= 94) cjpiMultiplier = 3.0;
-  else if (score >= 90) cjpiMultiplier = 2.2;
-  else if (score >= 80) cjpiMultiplier = 1.5;
-  else if (score >= 68) cjpiMultiplier = 1.0;
-  else cjpiMultiplier = 0.7;
-
-  const moduleCount = artifact.system_chain?.length || 1;
-  const complexityBonus = 1 + (Math.min(moduleCount, 10) * 0.05);
-  const basePrice = normalizedInternal * cjpiMultiplier * complexityBonus;
-  const recommended = Math.round(basePrice * 100) / 100;
+  const recommended = Math.round(computeBlendedPrice({ artifact }) * 100) / 100;
 
   return {
     recommended_resale_price: recommended,
@@ -251,10 +303,37 @@ function computeLocalFallback(artifact: PricingArtifact): CommercializationPrici
     pricing_confidence: 0.3,
     market_category: 'Software Tool',
     comparable_summary: 'Local estimate — enable consensus pricing for market-grounded analysis.',
-    suggested_marketplaces: score >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad'],
-    commercialization_notes: 'Fallback pricing from internal signals only.',
+    suggested_marketplaces: artifact.pipeline_score >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad'],
+    commercialization_notes: 'Fallback pricing from internal signals only (blended CJPIValue + NormalizedInternal).',
     pricing_source: 'local-fallback',
-    pricing_source_version: '2.0.0',
+    pricing_source_version: '3.0.0',
+  };
+}
+
+/**
+ * Apply blended formula to a consensus result, replacing the raw consensus price
+ * with the deterministic blend of consensus + CJPI + internal signals
+ */
+export function applyBlendedFormula(
+  consensusResult: CommercializationPricing,
+  artifact: PricingArtifact,
+): CommercializationPricing {
+  const blended = computeBlendedPrice({
+    artifact,
+    consensusPrice: consensusResult.recommended_resale_price,
+    consensusConfidence: consensusResult.pricing_confidence,
+  });
+  const recommended = Math.round(blended * 100) / 100;
+
+  return {
+    ...consensusResult,
+    recommended_resale_price: recommended,
+    indie_price: Math.round(recommended * 0.6 * 100) / 100,
+    standard_price: recommended,
+    enterprise_price: Math.round(recommended * 3.5 * 100) / 100,
+    estimated_market_range_low: Math.round(recommended * 0.5 * 100) / 100,
+    estimated_market_range_high: Math.round(recommended * 2 * 100) / 100,
+    pricing_source_version: '3.0.0',
   };
 }
 
