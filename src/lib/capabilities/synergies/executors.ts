@@ -4838,7 +4838,7 @@ export async function executeCostAwareRouting(
 
 /**
  * Comprehensive Accessibility Audit Executor
- * INCLUSIVE + VISION + DECODE + MODERNIZER → Deep a11y analysis
+ * INCLUSIVE + VISION + DECODE + EVOLUTION → Deep a11y analysis
  */
 export async function executeComprehensiveAccessibilityAudit(
   context: SynergyExecutionContext
