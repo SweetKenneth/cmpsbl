@@ -93,7 +93,7 @@ const CORE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'>[] = [
     weight: 0.95,
     priority: 4,
     domainAnchors: ['evolution', 'shadow-mode', 'regression', 'code-diffs'],
-    moduleRefs: ['BRAIN', 'MODERNIZER'],
+    moduleRefs: ['BRAIN', 'EVOLUTION'],
     kpis: ['evolution_success_rate', 'regression_catch_rate', 'shadow_accuracy'],
     confidenceLevel: 0,
   },
