@@ -34,6 +34,18 @@ interface InventoryItem {
   systemChain: string[] | null;
   pipelineFingerprint?: string | null;
   pipelineSteps?: any[] | null;
+  // Pricing fields
+  recommendedResalePrice?: number | null;
+  indiePrice?: number | null;
+  standardPrice?: number | null;
+  enterprisePrice?: number | null;
+  pricingConfidence?: number | null;
+  marketCategory?: string | null;
+  suggestedMarketplaces?: string[] | null;
+  comparableSummary?: string | null;
+  commercializationNotes?: string | null;
+  pricingSource?: string | null;
+  pricingLastUpdatedAt?: string | null;
 }
 
 export function useFoundryState() {
