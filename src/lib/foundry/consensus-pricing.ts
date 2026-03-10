@@ -197,8 +197,8 @@ export function computeConsensusPricing(
   // Step 2: Compute consensus
   const consensus = computeConsensusEstimate(processed);
 
-  // Step 3: Internal value normalization ($5 - $2000 range)
-  const normalizedInternal = Math.min(Math.max(input.internal_value * 0.001, 5), 2000);
+   // Step 3: Internal value normalization — scale but preserve magnitude
+  const normalizedInternal = Math.max(input.internal_value * 0.001, 5);
 
   // Step 4: CJPI multiplier
   const cjpiMultiplier = getCJPIMultiplier(input.cjpi_score);
