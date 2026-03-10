@@ -258,15 +258,18 @@ function computeBlendedPrice(inputs: BlendedInputs): number {
   const category = artifact.pipeline_category || 'core';
   const moduleCount = artifact.system_chain?.length || 1;
 
-  // InternalValue = full estimateMarketValue() output
+  // InternalValue = full estimateMarketValue() output (no apex doubling)
   const internalValue = estimateMarketValue(score, category, moduleCount);
-  const normalizedInternal = internalValue * 0.001;
+  // Scaled to be meaningful in the blend (0.1, not 0.001)
+  const normalizedInternal = internalValue * 0.1;
 
-  // CJPIValue = exponential base × graduated 6-tier multiplier
+  // CJPIValue = exponential base with tier multiplier as dampened premium
   const baseValue = getExponentialBase(score);
   const tier = getTierFromScore(score);
   const cjpiMultiplier = getCJPIMultiplier(tier);
-  const cjpiValue = baseValue * cjpiMultiplier;
+  // Premium adjustment: (multiplier - 1) × 0.15 dampening factor
+  const tierPremium = (cjpiMultiplier - 1) * 0.15;
+  const cjpiValue = baseValue * (1 + tierPremium);
 
   if (consensusPrice != null && consensusPrice > 0) {
     // Full blended formula
@@ -279,11 +282,8 @@ function computeBlendedPrice(inputs: BlendedInputs): number {
            (normalizedInternal * internalWeight);
   }
 
-  // No consensus — redistribute MarketWeight across CJPIValue + Internal
-  // CJPIValue gets 0.25 + 0.55 share, NormalizedInternal gets the rest
-  const cjpiWeight = 0.75;
-  const internalWeight = 0.25;
-  return (cjpiValue * cjpiWeight) + (normalizedInternal * internalWeight);
+  // No consensus — redistribute: 75% CJPIValue + 25% NormalizedInternal
+  return (cjpiValue * 0.75) + (normalizedInternal * 0.25);
 }
 
 /**
