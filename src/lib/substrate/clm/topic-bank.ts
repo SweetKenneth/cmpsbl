@@ -87,7 +87,7 @@ const CORE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'>[] = [
     confidenceLevel: 0,
   },
   {
-    id: 'brain-modernizer-evolution',
+    id: 'brain-evolution-training',
     name: 'Safe code evolution: shadow-apply, diff validation, regression detection',
     category: 'core_curriculum',
     weight: 0.95,
