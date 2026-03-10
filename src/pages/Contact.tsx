@@ -154,10 +154,10 @@ export default function Contact() {
                 </Card>
               </motion.div>
 
-              <motion.div {...stagger(0.1)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-                  <CardContent className="p-8">
-                    <MessageSquare className="w-10 h-10 text-primary mb-4" />
+               <motion.div {...stagger(0.1)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
+                   <CardContent className="p-5 sm:p-8">
+                     <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-primary mb-3 sm:mb-4" />
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
                     <ul className="space-y-3">
                       {["Response time: Within 24-48 hours", "Dedicated team support for all inquiries", "Technical docs and demos available on request"].map((text, i) => (
