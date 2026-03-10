@@ -1966,7 +1966,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     description: 'MODERNIZER evolution proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
     category: 'automation',
     modules: [
-      { name: 'MODERNIZER', role: 'primary', required: true },
+      { name: 'EVOLUTION', role: 'primary', required: true },
       { name: 'DEFENSE', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'CORTEX', role: 'validator', required: true },
