@@ -2626,13 +2626,13 @@ ${allFeatures.map(f => {
         return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: evolution.implement <archived_function> <target_action>\n  Example: evolution.implement pf-brain-systems-reasoning brain.deep_think' };
       }
       result = await modernizer.implement(args[0], args[1]);
-    } else if (base === 'modernizer.refresh') {
+    } else if (base === 'evolution.refresh' || base === 'modernizer.refresh') {
       result = await substrate.invoke({ module: 'evolution', action: 'refresh' });
-    } else if (base === 'modernizer.autopilot') {
+    } else if (base === 'evolution.autopilot' || base === 'modernizer.autopilot') {
       result = await substrate.invoke({ module: 'evolution', action: 'autopilot' });
-    } else if (base === 'modernizer.confidence') {
+    } else if (base === 'evolution.confidence' || base === 'modernizer.confidence') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.confidence <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.confidence <plan_id>' };
       }
       result = await substrate.invoke({ module: 'evolution', action: 'confidence', payload: { plan_id: args[0] } });
     } else if (base === 'modernizer.stamps') {
