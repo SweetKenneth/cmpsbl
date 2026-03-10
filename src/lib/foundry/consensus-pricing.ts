@@ -243,8 +243,8 @@ export function computeConsensusPricing(
 
   const adjustedPrice = basePrice * complexityBonus * hardwarePremium;
 
-  // Step 9: Clamp to reasonable range ($1 - $50,000)
-  const recommended = Math.round(Math.min(Math.max(adjustedPrice, 1), 50000) * 100) / 100;
+  // Step 9: Floor at $1 — no artificial ceiling
+  const recommended = Math.round(Math.max(adjustedPrice, 1) * 100) / 100;
 
   // Step 10: Confidence scoring
   const confidence = computeConfidence(processed, consensus, input);
