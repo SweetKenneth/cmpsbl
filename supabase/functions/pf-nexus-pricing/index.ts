@@ -280,7 +280,7 @@ function computeConsensusPrice(
   tier: string,
 ) {
   const included = estimates.filter(e => e.success && !e.excluded_as_outlier);
-  const normalizedInternal = Math.min(Math.max(internalValue * 0.001, 5), 2000);
+  const normalizedInternal = Math.max(internalValue * 0.001, 5);
 
   // CJPI multiplier
   let cjpiMult = 1.0;
