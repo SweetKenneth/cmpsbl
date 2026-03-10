@@ -212,7 +212,7 @@ export default function Publication() {
         </section>
 
         {/* ═══════════ ABSTRACT ═══════════ */}
-        <section className="container mx-auto px-6 py-12">
+         <section className="container mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
