@@ -135,8 +135,8 @@ export default function Contact() {
          <div className="container mx-auto max-w-5xl">
            <div className="grid md:grid-cols-2 gap-6 md:gap-12">
             <div className="space-y-6">
-              <motion.div {...stagger(0)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+               <motion.div {...stagger(0)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
                   <CardContent className="p-8">
                     <Mail className="w-10 h-10 text-primary mb-4" />
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">General Contact</h2>
