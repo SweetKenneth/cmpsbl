@@ -2463,7 +2463,7 @@ ${allFeatures.map(f => {
       } catch (err) {
         // Fallback to legacy scan if new pipeline not available
         const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
-        result = await modernizer.scan({ depth: depth || 'standard' });
+        result = await evolutionMod.scan({ depth: depth || 'standard' });
       }
     // NOTE: modernizer.analyze is handled by Omega Observer Engine (see line ~1354)
     // Legacy handler removed to prevent duplicate handling
