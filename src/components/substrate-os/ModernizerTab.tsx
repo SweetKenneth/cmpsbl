@@ -234,7 +234,7 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
   const scanMutation = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'scan' }
+        body: { module: 'evolution', action: 'scan' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
