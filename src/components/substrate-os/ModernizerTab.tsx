@@ -216,10 +216,10 @@ export function ModernizerTab({ enabled }: ModernizerTabProps) {
 
   // Fetch archived functions
   const { data: archived, isLoading: archivedLoading } = useQuery({
-    queryKey: ['modernizer-archived'],
+    queryKey: ['evolution-archived'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'modernizer', action: 'archived' }
+        body: { module: 'evolution', action: 'archived' }
       });
       if (error) throw error;
       if ((data as any)?.success === false) {
