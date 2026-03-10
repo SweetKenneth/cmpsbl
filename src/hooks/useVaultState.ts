@@ -17,6 +17,20 @@ export interface VaultPipeline {
   pipelineFingerprint: string | null;
   valuationDisplay: number | null;
   createdAt: string;
+  // Commercialization pricing fields
+  recommendedResalePrice: number | null;
+  indiePrice: number | null;
+  standardPrice: number | null;
+  enterprisePrice: number | null;
+  estimatedMarketRangeLow: number | null;
+  estimatedMarketRangeHigh: number | null;
+  pricingConfidence: number | null;
+  marketCategory: string | null;
+  comparableSummary: string | null;
+  suggestedMarketplaces: string[] | null;
+  commercializationNotes: string | null;
+  pricingSource: string | null;
+  pricingLastUpdatedAt: string | null;
 }
 
 export function useVaultState() {
