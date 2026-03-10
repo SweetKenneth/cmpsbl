@@ -22,7 +22,7 @@ const SUBSTRATE_MODULES: Record<string, string[]> = {
   VISION: ['observability', 'metrics', 'monitoring', 'telemetry'],
   CORTEX: ['agency', 'proposal', 'evaluation', 'execution', 'autonomous'],
   // Operational layer
-  MODERNIZER: ['upgrade', 'improvement', 'evolution', 'self-improve'],
+  EVOLUTION: ['upgrade', 'improvement', 'evolution', 'self-improve'],
   DECODE: ['chat', 'intent', 'generation', 'user-facing', 'interpreter'],
   DEFENSE: ['bot', 'threat', 'security', 'ip-reputation', 'rate-limit'],
   NEXUS: ['routing', 'ai-provider', 'text', 'image', 'video'],
