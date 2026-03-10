@@ -1829,7 +1829,7 @@ export async function executeComplianceAutomation(
 
 /**
  * Predictive Healing Executor
- * BRAIN + MODERNIZER + VISION → Fix issues before they occur
+ * BRAIN + EVOLUTION + VISION → Fix issues before they occur
  */
 export async function executePredictiveHealing(
   context: SynergyExecutionContext
