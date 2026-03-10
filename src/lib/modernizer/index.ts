@@ -1,6 +1,6 @@
 /**
- * MODERNIZER Module — Self-Evolution & Code Intelligence
- * Substrate Evolution Engine
+ * EVOLUTION Module — Self-Evolution & Code Intelligence
+ * Substrate Evolution Engine (formerly MODERNIZER)
  * 
  * Provides:
  * - Code scanning and analysis
