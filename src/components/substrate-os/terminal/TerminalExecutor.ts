@@ -2504,7 +2504,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found\n  Use 'evolution.plans' to list available plans.` };
       }
-      const res = await modernizer.diff(planId);
+      const res = await evolutionMod.diff(planId);
       const data = res.data as any;
       const errObj = res.error as any;
       if (res.error || (data && data.success === false)) {
