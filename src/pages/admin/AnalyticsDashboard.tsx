@@ -693,10 +693,10 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                   <th className="text-left py-2 text-muted-foreground font-medium">Fingerprint</th>
                   <th className="text-center py-2 text-muted-foreground font-medium">Score</th>
                   <th className="text-center py-2 text-muted-foreground font-medium">Risk</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Sessions</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Avg Pages</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden lg:table-cell">7d Trend</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Sessions</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Avg Pages</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">7d Trend</th>
                 </tr>
               </thead>
               <tbody>
