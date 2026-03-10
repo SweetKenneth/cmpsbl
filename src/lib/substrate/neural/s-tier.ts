@@ -16,4 +16,5 @@ export * from '@/crownjewels/s-tier/163-semantic-compression';
 export * from '@/crownjewels/s-tier/168-meta-reasoning';
 export * from '@/crownjewels/s-tier/170-temporal-reasoning';
 export * from '@/crownjewels/s-tier/176-episodic-replay';
-export * from '@/crownjewels/s-tier/184-classifier-library';
+// classifier-library has ClassificationResult collision with pfv-ports
+export { ClassifierLibrary, type ClassifierStrategy, type ClassificationResult as BrainClassificationResult } from '@/crownjewels/s-tier/184-classifier-library';

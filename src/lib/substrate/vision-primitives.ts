@@ -10,4 +10,5 @@ export * from '@/crownjewels/s-tier/099-telemetry-ingestion';
 export * from '@/crownjewels/s-tier/101-root-cause-analysis';
 export { WasteDetectionIntelligence } from '@/crownjewels/s-tier/128-waste-detection-intelligence';
 export type { WasteReport as WasteDetectionReport, WasteItem as WasteDetectionItem } from '@/crownjewels/s-tier/128-waste-detection-intelligence';
-export * from '@/crownjewels/s-tier/173-predictive-state-modeling';
+// predictive-state-modeling has StateSnapshot collision with module-hardening
+export { PredictiveStateModeling, type StatePrediction, type StateSnapshot as VisionStateSnapshot } from '@/crownjewels/s-tier/173-predictive-state-modeling';
