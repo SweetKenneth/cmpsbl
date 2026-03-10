@@ -490,7 +490,7 @@ const response = await substrate.nexus.text(
                   Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>
                 <Button variant="ghost" size="sm" className="gap-2 p-0" onClick={() => setActiveTab("explorer")}>
-                  Explore Modules <ArrowRight className="w-4 h-4" />
+                  Explore Nodes <ArrowRight className="w-4 h-4" />
                 </Button>
               </Card>
 

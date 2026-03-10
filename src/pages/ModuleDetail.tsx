@@ -270,7 +270,7 @@ export default function ModuleDetail() {
                 <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl">
-                <Link to="/modules">Explore All Modules</Link>
+                <Link to="/modules">Explore All Nodes</Link>
               </Button>
             </div>
           </div>

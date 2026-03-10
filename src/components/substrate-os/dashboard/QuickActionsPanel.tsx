@@ -38,12 +38,12 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   };
 
   const handleHealAll = async () => {
-    pushToast({ message: 'Auto-Heal initiated — Scanning all modules...', variant: 'info' });
-    voice.info('Initiating system-wide heal', 'Scanning all modules for degradation...', 'SYSTEM');
+    pushToast({ message: 'Auto-Heal initiated — Scanning all nodes...', variant: 'info' });
+    voice.info('Initiating system-wide heal', 'Scanning all nodes for degradation...', 'SYSTEM');
     try {
       await healMutation.mutateAsync(undefined);
       pushToast({ message: 'System heal complete', variant: 'success' });
-      voice.success('System heal complete', 'All modules restored', 'SYSTEM');
+      voice.success('System heal complete', 'All nodes restored', 'SYSTEM');
       healthScore.refetch();
       showSuccess('heal');
     } catch {

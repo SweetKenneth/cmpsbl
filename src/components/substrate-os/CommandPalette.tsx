@@ -62,8 +62,8 @@ const AVAILABLE_COMMANDS = [
   { command: 'cortex.propose', description: 'Generate architectural proposal', category: 'cortex' },
   
   // System commands
-  { command: 'system.heal', description: 'Self-heal all modules', category: 'system' },
-  { command: 'system.heal brain', description: 'Heal brain module only', category: 'system' },
+  { command: 'system.heal', description: 'Self-heal all nodes', category: 'system' },
+  { command: 'system.heal brain', description: 'Heal BRAIN node only', category: 'system' },
   { command: 'system.status', description: 'Show system status', category: 'system' },
   
   // Nexus commands

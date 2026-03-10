@@ -979,7 +979,7 @@ export default function STierVault() {
                       <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
                         <div className="flex items-center gap-1.5 min-w-max pb-1">
                           <Zap className="w-3 h-3 text-muted-foreground shrink-0" />
-                          <Badge variant={discModuleFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setDiscModuleFilter(null)}>All Modules</Badge>
+                          <Badge variant={discModuleFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setDiscModuleFilter(null)}>All Nodes</Badge>
                           {discModules.map(m => (
                             <Badge key={m} variant={discModuleFilter === m ? "default" : "outline"} className={`cursor-pointer text-xs shrink-0 ${discModuleFilter === m ? '' : MODULE_COLORS[m] ?? ''}`} onClick={() => setDiscModuleFilter(discModuleFilter === m ? null : m)}>
                               {m}
