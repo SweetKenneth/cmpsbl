@@ -5204,10 +5204,10 @@ export async function executeAutonomousOptimizationLoop(
     testsPassed: true,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: optimization,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   return createSuccessResult(context.synergyId, {
