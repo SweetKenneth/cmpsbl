@@ -179,13 +179,13 @@ serve(withMiddleware(async (req) => {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        Authorization: \`Bearer \${RESEND_API_KEY}\`,
+        Authorization: 'Bearer ' + RESEND_API_KEY,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         from: 'CMPSBL <Dev@CMPSBL.com>',
         to: [email],
-        subject: 'You\\'re in — Welcome to the Substrate',
+        subject: "You're in — Welcome to the Substrate",
         html,
       }),
     });
@@ -193,30 +193,28 @@ serve(withMiddleware(async (req) => {
     const ok = res.ok;
     if (!ok) {
       const errText = await res.text();
-      console.error(\`[WELCOME-EMAIL] Resend error: \${res.status} - \${errText}\`);
+      console.error('[WELCOME-EMAIL] Resend error: ' + res.status + ' - ' + errText);
     } else {
-      console.log(\`[WELCOME-EMAIL] Sent to \${email}\`);
+      console.log('[WELCOME-EMAIL] Sent to ' + email);
     }
 
     // Notify owner
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        Authorization: \`Bearer \${RESEND_API_KEY}\`,
+        Authorization: 'Bearer ' + RESEND_API_KEY,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         from: 'CMPSBL <Dev@CMPSBL.com>',
         to: ['kennethsweet214@gmail.com'],
-        subject: \`🆕 New Signup: \${email}\`,
-        html: \`
-          <div style="font-family:monospace;background:#0a0a0a;color:#e5e5e5;padding:24px;max-width:400px;">
-            <div style="border:1px solid #22c55e;border-radius:8px;padding:4px 12px;display:inline-block;font-size:11px;color:#22c55e;letter-spacing:2px;margin-bottom:16px;">NEW USER</div>
-            <p style="font-size:14px;margin:8px 0;"><strong style="color:#fff;">\${email}</strong></p>
-            <p style="font-size:12px;color:#888;margin:4px 0;">Name: \${displayName}</p>
-            <p style="font-size:12px;color:#888;margin:4px 0;">Time: \${new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })}</p>
-          </div>
-        \`,
+        subject: '🆕 New Signup: ' + email,
+        html: '<div style="font-family:monospace;background:#0a0a0a;color:#e5e5e5;padding:24px;max-width:400px;">'
+          + '<div style="border:1px solid #22c55e;border-radius:8px;padding:4px 12px;display:inline-block;font-size:11px;color:#22c55e;letter-spacing:2px;margin-bottom:16px;">NEW USER</div>'
+          + '<p style="font-size:14px;margin:8px 0;"><strong style="color:#fff;">' + email + '</strong></p>'
+          + '<p style="font-size:12px;color:#888;margin:4px 0;">Name: ' + displayName + '</p>'
+          + '<p style="font-size:12px;color:#888;margin:4px 0;">Time: ' + new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }) + '</p>'
+          + '</div>',
       }),
     }).catch(e => console.error('[WELCOME-EMAIL] Owner notify failed:', e));
 
