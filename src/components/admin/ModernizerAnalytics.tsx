@@ -25,7 +25,7 @@ export const ModernizerAnalytics = () => {
       try {
         const { data, error } = await supabase
           .from('evolution_runs')
-          .select('run_id, phase, confidence_score, created_at, title, risk_level')
+          .select('run_id, phase, confidence_score, created_at, plan_id, risk_level')
           .order('created_at', { ascending: false })
           .limit(30);
 
