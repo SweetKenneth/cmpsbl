@@ -101,7 +101,7 @@ export const CCR_ZONE_MODULES = ['brain', 'memory', 'dream'] as const;
 export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
 
 // Absorbed (route to a field)
-export const ABSORBED_FACADES = ['modernizer'] as const; // → evolution field
+export const ABSORBED_FACADES = ['evolution'] as const; // → evolution field
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 

@@ -576,7 +576,7 @@ const ARCHITECTURE_PATTERNS = [
   'policy-aware-intelligence',
   'seba',
   'cortex_engine',
-  'modernizer',
+  'evolution_engine',
   'brain-orchestrator',
   'brain_orchestrator',
   'cognitive-cycle',
