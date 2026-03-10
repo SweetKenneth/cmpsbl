@@ -148,7 +148,7 @@ export const ENGINES: Engine[] = [
   },
   {
     slug: "catalyst", codename: "CATALYST", tagline: "Event-Driven Architecture",
-    priceStandalone: 19900, priceBundled: 9900, priceDisplay: "$199", bundleDisplay: "$99",
+    priceStandalone: 19900, priceBundled: 11900, priceDisplay: "$199", bundleDisplay: "$119",
     priceId: "price_1T6MgkQ7FtTiAL4a80YXxyvP", icon: Sparkles, color: "310 100% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
     briefing: "CATALYST makes everything reactive. Pub/sub messaging, event sourcing, and CQRS patterns that decouple your services and let them evolve independently.",
