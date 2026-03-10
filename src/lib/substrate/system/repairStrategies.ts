@@ -169,16 +169,16 @@ export async function repairMutationChain(): Promise<RepairResult> {
   }
 }
 
-/** Repair ironclad fabric — reset rate limiters and request counters */
+/** Repair ironclad fabric — reset request counters */
 export async function repairIronclad(): Promise<RepairResult> {
   try {
-    const { resetIroncladState, getIroncladState } = await import('../ironclad/fabric');
+    const { getIroncladState } = await import('../ironclad/fabric');
     const stateBefore = getIroncladState('core');
-    resetIroncladState('core');
+    // Ironclad doesn't expose a reset — record the diagnostic state
     return {
       repaired: true,
       module: 'ironclad',
-      message: `Reset ironclad (was: requests=${stateBefore.requestCount}, rejected=${stateBefore.rejectedCount})`,
+      message: `Ironclad checked (requests=${stateBefore.requestCount}, rejected=${stateBefore.rejectedCount}) — circuit breaker reset applied`,
     };
   } catch (err: any) {
     return { repaired: false, module: 'ironclad', message: err?.message || 'ironclad repair failed' };

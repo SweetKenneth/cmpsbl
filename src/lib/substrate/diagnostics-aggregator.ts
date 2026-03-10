@@ -57,7 +57,7 @@ export function collectDiagnostics(): SubstrateDiagnostics {
     memory.level === 'critical' ||
     circuitBreakers.open > 2 ||
     subsystems.overallScore < 40 ||
-    !matrixIntegrity.healthy
+    matrixIntegrity.isCritical
   ) {
     overallHealth = 'critical';
   } else if (
