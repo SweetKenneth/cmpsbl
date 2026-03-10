@@ -1348,7 +1348,7 @@ export async function executeFrictionAutoRemovalEngine(
     module: 'EVOLUTION',
     success: true,
     data: appliedFixes,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart2,
   });
   
   return createSuccessResult(context.synergyId, {

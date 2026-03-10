@@ -195,7 +195,7 @@ function calculateEstimatedDeltas(plan: Record<string, unknown>): EstimatedDelta
 
   if (totalActions > 0) {
     deltas.push({
-      component: 'modernizer',
+      component: 'evolution',
       metric: 'evolution_success',
       estimate: `~${(confidence * 100).toFixed(0)}% confidence`,
     });

@@ -522,13 +522,13 @@ export const INFRASTRUCTURE_SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   {
-    id: 'economy-modernizer-roi',
-    name: 'Economy Modernizer ROI',
-    description: 'ECONOMY measures MODERNIZER evolution ROI with VISION before/after metrics and AUDIT change tracking',
+    id: 'economy-evolution-roi',
+    name: 'Economy Evolution ROI',
+    description: 'ECONOMY measures EVOLUTION ROI with VISION before/after metrics and AUDIT change tracking',
     category: 'optimization',
     modules: [
       { name: 'ECONOMY', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'AUDIT', role: 'validator', required: true },
     ],

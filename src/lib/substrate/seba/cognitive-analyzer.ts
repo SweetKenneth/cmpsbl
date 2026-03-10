@@ -143,9 +143,8 @@ export class CognitiveAnalyzer {
       // Load recently addressed insights for deduplication
       const recentlyAddressed = await this.getRecentlyAddressedInsights();
 
-      // ═══ MODERNIZER SCAN INSIGHTS (mobile-first, real backend proposals) ═══
-      // NOTE: Modernizer scan insights are now generated via the core engines below.
-      // The previous analyzeModernizerScan() method was removed as redundant.
+      // ═══ EVOLUTION SCAN INSIGHTS (mobile-first, real backend proposals) ═══
+      // Evolution scan insights are now generated via the core engines below.
       
       // ═══ CORE ENGINES (Original 4) ═══
       // 1. Memory Analysis — Look for patterns in stored knowledge
