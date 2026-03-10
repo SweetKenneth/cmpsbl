@@ -2759,7 +2759,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     }
 
     // ═══ OMEGA OBSERVER ENGINE ═══
-    else if (base === 'modernizer.verify') {
+    else if (base === 'evolution.verify' || base === 'modernizer.verify') {
       try {
         const { checkEligibility, formatEligibility } = await import('@/lib/evolve/eligibility-gate');
         const { evolutionRuns } = await import('@/lib/evolve/evolution-runs');
