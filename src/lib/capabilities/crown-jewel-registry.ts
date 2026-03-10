@@ -1249,7 +1249,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     id: 'stier-friction-auto-removal-engine',
     name: 'Friction Auto-Removal Engine',
     artifactType: 'capability',
-    modules: ['VISION', 'CORTEX', 'MODERNIZER'],
+    modules: ['VISION', 'CORTEX', 'EVOLUTION'],
     classification: 'experience',
     reason: 'Autonomously detects and removes UX friction — self-improving conversion',
     enables: 'Autonomous UX optimization with code generation',
