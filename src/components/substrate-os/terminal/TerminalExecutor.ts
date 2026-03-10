@@ -2562,9 +2562,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.apply_production') {
+    } else if (base === 'evolution.apply_production' || base === 'modernizer.apply_production') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.apply_production <plan_id>\n\n  Note: Plan must be in shadow_applied status first.' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
