@@ -10,7 +10,7 @@ import {
   Users, Clock, TrendingUp, Activity, Eye, Layers,
   ArrowRight, AlertTriangle, CheckCircle, XCircle, RefreshCw,
   Zap, Route, Flame, BarChart3, Settings, Trash2, UserX, Bot, Plus,
-  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2,
+  ArrowDownRight, ArrowUpRight, ShieldOff, Loader2, Fingerprint,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -143,6 +143,55 @@ const TAB_STYLES: Record<string, string> = {
 };
 
 // ═══════════════════════════════════════════════════════════════
+// EXCLUDE DEVICE BUTTON (header-level quick action)
+// ═══════════════════════════════════════════════════════════════
+
+function ExcludeDeviceButton() {
+  const [excluded, setExcluded] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const fp = typeof localStorage !== 'undefined' ? localStorage.getItem('cmpsbl_fp') : null;
+
+  useEffect(() => {
+    if (!fp) return;
+    supabase.from('analytics_excluded_fingerprints')
+      .select('id')
+      .eq('fingerprint', fp)
+      .maybeSingle()
+      .then(({ data }) => { if (data) setExcluded(true); });
+  }, [fp]);
+
+  const handleExclude = async () => {
+    if (!fp || excluded) return;
+    setBusy(true);
+    const { error } = await supabase.from('analytics_excluded_fingerprints').insert({
+      fingerprint: fp,
+      reason: 'owner',
+      label: 'Owner device (quick-exclude)',
+    });
+    if (!error) {
+      setExcluded(true);
+      toast.success('This device is now excluded from analytics');
+    } else {
+      toast.error(error.code === '23505' ? 'Already excluded' : error.message);
+    }
+    setBusy(false);
+  };
+
+  if (!fp) return null;
+
+  return excluded ? (
+    <Badge className="bg-green-500/20 text-green-400 border border-green-500/40 gap-1 h-9 px-3">
+      <CheckCircle className="w-3 h-3" /> Device Excluded
+    </Badge>
+  ) : (
+    <Button variant="outline" size="sm" onClick={handleExclude} disabled={busy} className="gap-1.5 h-9 border-red-500/30 text-red-400 hover:bg-red-500/10">
+      {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Fingerprint className="w-3.5 h-3.5" />}
+      Exclude This Device
+    </Button>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
@@ -240,10 +289,13 @@ export default function AnalyticsDashboard() {
               </p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => fetchTab(tab)} className="gap-1.5 h-9">
-            <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
-            Refresh
-          </Button>
+          <div className="flex items-center gap-2">
+            <ExcludeDeviceButton />
+            <Button variant="outline" size="sm" onClick={() => fetchTab(tab)} className="gap-1.5 h-9">
+              <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {/* Tab Navigation — scrollable on mobile with 44px touch targets */}
