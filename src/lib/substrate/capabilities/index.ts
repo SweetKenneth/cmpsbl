@@ -1091,7 +1091,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'migration_risk_scorer',
     name: 'Migration Risk Scorer',
     description: 'Quantifies risk levels for proposed migrations and upgrades',
-    modules: ['MODERNIZER', 'DEFENSE', 'BRAIN'],
+    modules: ['EVOLUTION', 'DEFENSE', 'BRAIN'],
     layer: 'Admin',
     userBenefit: 'Prioritize safe migrations, defer risky ones',
     status: 'active',
