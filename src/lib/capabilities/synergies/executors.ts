@@ -5127,10 +5127,10 @@ export async function executeIntelligentDeprecationManager(
     automatable: true,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: migration,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   return createSuccessResult(context.synergyId, {
