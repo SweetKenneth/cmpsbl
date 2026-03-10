@@ -22,7 +22,7 @@ import { integrityService } from '@/lib/evolution-mesh/integrity-service';
 import { snapshotService } from '@/lib/evolution-mesh/snapshot-service';
 import { telemetryService } from '@/lib/evolution-mesh/telemetry-service';
 import { mutationEngine } from '@/lib/evolution-mesh/mutation-engine';
-import { useModernizer } from '@/hooks/substrate/useModernizer';
+import { useEvolution } from '@/hooks/substrate/useEvolution';
 import type { MutationProposal, MutationRun, ChangeArtifact, VerificationScan } from '@/lib/evolution-mesh/mutation-engine';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
