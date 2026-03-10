@@ -329,32 +329,38 @@ function computeConfidence(
 // ── Shared Pricing Prompt ──
 
 export function buildConsensusPricingPrompt(input: ConsensusInput): string {
-  return `Analyze this software artifact for commercialization pricing:
+  return `Price this software artifact for sale on indie developer marketplaces (Gumroad, GitHub Marketplace, npm).
 
 ARTIFACT: ${input.artifact_name}
-DESCRIPTION: ${input.artifact_description || 'Crystallized software pipeline'}
+DESCRIPTION: ${input.artifact_description || 'Crystallized software pipeline / reusable code module'}
 MODULES: ${input.modules.join(', ')}
-CJPI SCORE: ${input.cjpi_score}/100
+CJPI SCORE: ${input.cjpi_score}/100 (higher = more sophisticated)
 TIER: ${input.tier}
 CATEGORY: ${input.category || 'general'}
-INTERNAL VALUE ESTIMATE: $${input.internal_value || 0}
+INTERNAL VALUE SIGNAL: $${input.internal_value || 0} (engineering estimate, NOT retail price)
 HARDWARE EXPORT: ${input.has_hardware_export ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(input.export_targets || ['source']).join(', ')}
 RUNTIME: ${input.runtime_type || 'JavaScript/TypeScript'}
 
+PRICING GUIDELINES:
+- Most indie dev tools/libraries sell for $5-$200
+- Sophisticated multi-module systems sell for $50-$500
+- Only enterprise-grade infrastructure platforms exceed $1,000
+- A single reusable module typically sells for $10-$80
+- A complete multi-module toolkit sells for $50-$300
+- Internal value signals should NOT be treated as retail prices
+
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
-  "price_range_low": number,
-  "price_range_high": number,
-  "estimated_mid_price": number,
+  "price_range_low": number (realistic minimum retail price in USD),
+  "price_range_high": number (realistic maximum retail price in USD),
+  "estimated_mid_price": number (best single retail price in USD),
   "market_category": "string — most fitting software market category",
-  "comparable_product_types": "string — 1-2 sentences on comparable products/tools",
-  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Unity Asset Store, AWS Marketplace, Vercel Templates"],
+  "comparable_product_types": "string — 1-2 sentences naming real comparable products at similar price points",
+  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace"],
   "pricing_confidence": number between 0 and 1,
   "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
-}
-
-Bias toward realistic indie/solo-developer pricing for tools and libraries. Enterprise pricing only if artifact complexity warrants it.`;
+}`;
 }
 
 // ── Helpers ──
