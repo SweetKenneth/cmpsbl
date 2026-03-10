@@ -1491,7 +1491,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
   },
   {
     id: 'cj-encode-semantic-refactoring', name: 'Semantic Code Refactoring',
-    artifactType: 'capability', modules: ['ENCODE', 'BRAIN', 'MODERNIZER'],
+    artifactType: 'capability', modules: ['ENCODE', 'BRAIN', 'EVOLUTION'],
     classification: 'experience',
     reason: 'Refactors code based on semantic intent rather than syntactic patterns',
     enables: 'Intent-preserving code transformation with full regression safety',
