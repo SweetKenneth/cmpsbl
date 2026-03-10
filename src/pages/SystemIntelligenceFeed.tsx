@@ -73,7 +73,7 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   ripple: 'from-cyan-500/20 to-cyan-600/5 border-cyan-500/30',
   access: 'from-orange-500/20 to-orange-600/5 border-orange-500/30',
   inclusive: 'from-pink-500/20 to-pink-600/5 border-pink-500/30',
-  evolution: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/30',
+  
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
   decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
   dream: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
