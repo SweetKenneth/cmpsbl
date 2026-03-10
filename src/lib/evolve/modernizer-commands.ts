@@ -260,7 +260,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.evolve abort — Abort active evolution
+   * evolution.evolve abort — Abort active evolution
    */
   async evolveAbort(reason?: string): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
