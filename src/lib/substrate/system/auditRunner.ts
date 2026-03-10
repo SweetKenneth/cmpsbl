@@ -234,6 +234,8 @@ export async function runSystemAudit(): Promise<AuditReport> {
     unwrap(planResult, 'plan_store'),
     unwrap(discussionResult, 'discussion'),
     testIronclad(),
+    testDiscoveryEngine(),
+    testVaultLoader(),
   ];
 
   const success = results.every(r => r.ok);

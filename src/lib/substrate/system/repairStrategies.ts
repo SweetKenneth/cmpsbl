@@ -131,13 +131,32 @@ async function repairGeneric(moduleName: string): Promise<RepairResult> {
   }
 }
 
+/** Attempt to reload vault primitives from database */
+export async function repairVaultLoader(): Promise<RepairResult> {
+  try {
+    const { resetVaultLoader, loadVaultPrimitives, getVaultPrimitiveCount } = await import('../vault-primitive-loader');
+    resetVaultLoader();
+    const result = await loadVaultPrimitives();
+    const count = getVaultPrimitiveCount();
+    return {
+      repaired: count > 0,
+      module: 'vault_loader',
+      message: count > 0
+        ? `Reloaded ${result.loaded} primitives across ${Object.keys(result.byNode).length} nodes`
+        : 'Reload returned 0 primitives',
+    };
+  } catch (err: any) {
+    return { repaired: false, module: 'vault_loader', message: err?.message || 'vault reload failed' };
+  }
+}
+
 export const RepairStrategies: Record<string, () => Promise<RepairResult>> = {
   control_plane: repairControlPlane,
   event_stream: repairEventStream,
   plan_store: repairPlanStore,
   discussion: repairDiscussion,
   discovery_engine: repairDiscoveryEngine,
-  // Previously missing — audit detects these but had no repair path
+  vault_loader: repairVaultLoader,
   mutation_chain: () => repairGeneric('mutation_chain'),
   ironclad: () => repairGeneric('ironclad'),
 };
