@@ -245,7 +245,7 @@ const WAVE_11_ACTIVATIONS = [
   { module: 'brain', capability: 'brain_orchestrator', priority: 85, id: 'S-CJ110' },
   { module: 'cortex', capability: 'cortex_engine', priority: 85, id: 'S-CJ111' },
   { module: 'encode', capability: 'seba_engine', priority: 85, id: 'S-CJ112' },
-  { module: 'modernizer', capability: 'modernizer_core', priority: 85, id: 'S-CJ113' },
+  { module: 'evolution', capability: 'modernizer_core', priority: 85, id: 'S-CJ113' },
   { module: 'evolution', capability: 'evolution_ab', priority: 85, id: 'S-CJ114' },
   { module: 'evolution', capability: 'evolution_rollback', priority: 85, id: 'S-CJ115' },
   { module: 'evolution', capability: 'evolution_sandbox', priority: 85, id: 'S-CJ116' },
