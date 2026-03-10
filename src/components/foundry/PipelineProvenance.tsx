@@ -254,6 +254,7 @@ function ProvenanceBody({
             category: null,
             fingerprint,
           }}
+          subscriptionTier={subscriptionTier}
         />
       )}
 
