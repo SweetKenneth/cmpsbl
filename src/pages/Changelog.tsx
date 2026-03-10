@@ -329,10 +329,10 @@ const stratumIronclad: Specimen[] = [
       "Unified health aggregation provides a single-pane view of system integrity",
     ],
     phenotype: [
-      "The substrate can isolate a failing module without affecting its neighbors — surgical fault containment",
+      "The substrate can isolate a failing node without affecting its neighbors — surgical fault containment",
       "Every node is independently observable, rate-limited, and self-healing",
       "Governance modes allow the entire system to shift posture: from fully autonomous to total lockdown",
-      "Operators can diagnose any module from the terminal without touching code",
+      "Operators can diagnose any node from the terminal without touching code",
     ],
     affectedNodes: ["ALL NODES"],
   },

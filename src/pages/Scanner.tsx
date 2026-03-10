@@ -77,7 +77,7 @@ const DEBT_TYPES = [
   { icon: Radio, label: 'Broken circuit breakers', desc: 'Open circuits silently blocking execution' },
   { icon: Gauge, label: 'Performance regression', desc: 'Latency creep, memory leaks, bloated bundles' },
   { icon: Lock, label: 'Auth flow gaps', desc: 'Permission leaks, missing guards, stale tokens' },
-  { icon: Layers, label: 'Architectural drift', desc: 'Modules diverging from intended design patterns' },
+  { icon: Layers, label: 'Architectural drift', desc: 'Nodes diverging from intended design patterns' },
   { icon: Eye, label: 'Entropy anomalies', desc: 'Behavioral drift and unusual system patterns' },
   { icon: Cpu, label: 'Capability gaps', desc: 'Missing features your system should already have' },
   { icon: Flame, label: 'Dependency vulnerabilities', desc: 'Outdated packages with known CVEs' },

@@ -143,7 +143,7 @@ export default function ModuleDetail() {
           </div>
         </section>
 
-        {/* ═══ Why This Module (SEO-Rich Highlights) ═══ */}
+        {/* ═══ Why This Node (SEO-Rich Highlights) ═══ */}
         <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">

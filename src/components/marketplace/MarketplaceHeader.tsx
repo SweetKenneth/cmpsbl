@@ -153,7 +153,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
         >
           {[
             { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
-            { value: '14', label: 'Core Modules', accent: 'text-violet-500' },
+            { value: '14', label: 'Core Nodes', accent: 'text-violet-500' },
             { value: '0%', label: 'AI Drift', accent: 'text-emerald-500' },
             { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-orange-500' },
           ].map(({ value, label, accent }) => (
