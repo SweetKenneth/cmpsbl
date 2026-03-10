@@ -149,7 +149,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
     },
   });
 
-  // Repair mutation - may trigger MODERNIZER proposal
+  // Repair mutation - may trigger EVOLUTION proposal
   const repairMutation = useMutation({
     mutationFn: async (target: string) => {
       const result = await inclusive.repair(target);
