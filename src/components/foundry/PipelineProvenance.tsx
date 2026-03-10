@@ -31,6 +31,7 @@ interface Props {
     lastDiscoveredAt?: string;
   } | null;
   onClose: () => void;
+  subscriptionTier?: string;
 }
 
 function tierColor(score: number): string {
