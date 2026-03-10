@@ -197,7 +197,7 @@ const LayerCard = memo(function LayerCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-border/20 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border/20 bg-card/50 backdrop-blur-sm glass-edge card-lift transition-all duration-300">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
