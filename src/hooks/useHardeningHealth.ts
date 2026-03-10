@@ -64,7 +64,7 @@ const HARDENED_MODULES = [
   { key: 'SHADOW', codename: 'Spectre', loader: () => Promise.resolve({ grade: 'A', score: 91 }) },
   { key: 'PHANTOM', codename: 'Ghost', loader: () => Promise.resolve({ grade: 'A', score: 93 }) },
   // Shell & Field
-  { key: 'MODERNIZER', codename: 'Catalyst', loader: () => Promise.resolve({ grade: 'A', score: 97 }) },
+  { key: 'EVOLUTION', codename: 'Catalyst', loader: () => Promise.resolve({ grade: 'A', score: 97 }) },
   { key: 'CONSCIENCE', codename: 'Compass', loader: () => Promise.resolve({ grade: 'A', score: 89 }) },
   // Remaining modules
   { key: 'INTEGRATION', codename: 'Bridge', loader: () => Promise.resolve({ grade: 'A', score: 94 }) },

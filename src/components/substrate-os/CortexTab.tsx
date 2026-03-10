@@ -311,7 +311,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
                 { name: 'brain', health: 100, status: 'ok' },
                 { name: 'vision', health: 100, status: 'ok' },
                 { name: 'cortex', health: 100, status: 'ok' },
-                { name: 'modernizer', health: 100, status: 'ok' },
+                { name: 'evolution', health: 100, status: 'ok' },
                 { name: 'decode', health: 100, status: 'ok' },
                 { name: 'defense', health: 100, status: 'ok' },
                 { name: 'nexus', health: 100, status: 'ok' },

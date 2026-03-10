@@ -1,7 +1,7 @@
 /**
  * Regression Test Auto-Trigger v1.0.0
  * Automatically fires the regression test suite after every
- * seba.execute or modernizer.evolve completion
+ * seba.execute or evolution.evolve completion
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -31,7 +31,7 @@ export function enableRegressionTrigger(config: Partial<TriggerConfig> = {}): vo
   if (triggerActive || !cfg.enabled) return;
   
   // Listen for evolution completion signals via module bus
-  const signals = ['evolution.applied', 'seba.executed', 'modernizer.evolved'];
+  const signals = ['evolution.applied', 'seba.executed', 'evolution.evolved'];
   
   for (const signal of signals) {
     subscribe('system' as ModuleName, signal, async (busSignal) => {

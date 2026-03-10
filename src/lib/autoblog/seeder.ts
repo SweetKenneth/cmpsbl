@@ -122,7 +122,7 @@ But self-modification is the most dangerous capability to get wrong. Here's how 
 Each phase has strict gates. Failing any gate stops the cycle entirely.
 
 **1. PROPOSE Phase**
-The Modernizer module scans system state and generates improvement proposals:
+The EVOLUTION module scans system state and generates improvement proposals:
 - Performance regression fixes
 - Efficiency optimizations  
 - Capability enhancements
@@ -192,7 +192,7 @@ Query the history:
 \`\`\`
 evolve.status       # Current evolution state
 evolve.receipts     # View audit trail
-modernizer.omega    # Deep analysis mode
+evolution.omega    # Deep analysis mode
 \`\`\`
 
 ### Why This Matters

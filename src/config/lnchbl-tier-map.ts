@@ -22,7 +22,7 @@ export type DistributionTier = 'free' | 'builder' | 'pro' | 'enterprise';
 export const CROWN_JEWEL_IDS: readonly string[] = [
   'cortex_engine',                // Autonomous PROPOSE→APPLY→LEARN loop
   'seba_engine',                  // Self-Evolving Bounded Agent
-  'modernizer',                   // Shadow-to-production code diffs
+  'evolution_engine',             // Shadow-to-production code diffs
   'evolution_ab',                 // Parallel evolution variant testing
   'evolution_rollback',           // Auto-revert of failed evolution
   'evolution_sandbox',            // Isolated evolution testing
@@ -146,7 +146,7 @@ export const PRO_CAPABILITIES: TieredCapability[] = [
  */
 export const ENTERPRISE_CAPABILITIES: TieredCapability[] = [
   // === SELF-IMPROVEMENT (Non-Recursive — Enterprise-Only) ===
-  // Crown Jewels (SEBA, Modernizer, Cortex, Evolution A/B, Rollback, Sandbox, Dream Pool,
+  // Crown Jewels (SEBA, EVOLUTION, Cortex, Evolution A/B, Rollback, Sandbox, Dream Pool,
   // Self-Repair, Autonomous Workflow Composer, Dream Lucidity) are CMPSBL-ONLY — not listed here.
   { id: 'impact_replay', name: 'Impact Replay', tier: 'enterprise', category: 'self-improvement', description: 'Replay queries against new states to verify impact' },
   { id: 'dream_proposal', name: 'Dream → Proposal Pipeline', tier: 'enterprise', category: 'self-improvement', description: 'Convert cognitive insights into evolution proposals' },

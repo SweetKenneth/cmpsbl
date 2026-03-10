@@ -119,7 +119,7 @@ export const SYSTEM_HV_CAPABILITIES: HighValueCapability[] = [
 ];
 
 /** EVOLUTION — Architecture Evolution (4) */
-export const MODERNIZER_HV_CAPABILITIES: HighValueCapability[] = [
+export const EVOLUTION_HV_CAPABILITIES: HighValueCapability[] = [
   { id: 'code_smell_detector', name: 'Code Smell Detector', module: 'EVOLUTION', description: 'Identify architectural anti-patterns and code smells', risk: 'low', reversible: true, category: 'self-improvement' },
   { id: 'refactor_planner', name: 'Refactor Planner', module: 'EVOLUTION', description: 'Plan safe refactoring sequences with dependency analysis', risk: 'medium', reversible: true, category: 'self-improvement' },
   { id: 'technical_debt_scorer', name: 'Technical Debt Scorer', module: 'EVOLUTION', description: 'Quantify technical debt by node with priority ranking', risk: 'low', reversible: true, category: 'self-improvement' },
@@ -165,7 +165,7 @@ export const ALL_HIGH_VALUE_CAPABILITIES: HighValueCapability[] = [
   ...VISION_HV_CAPABILITIES,
   ...INTEGRATION_HV_CAPABILITIES,
   ...SYSTEM_HV_CAPABILITIES,
-  ...MODERNIZER_HV_CAPABILITIES,
+  ...EVOLUTION_HV_CAPABILITIES,
   ...INCLUSIVE_HV_CAPABILITIES,
   ...CORTEX_HV_CAPABILITIES,
   ...ALL_INFRASTRUCTURE_CAPABILITIES,

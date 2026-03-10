@@ -121,7 +121,7 @@ const MODULE_DISCOVERY_PROFILES: Record<string, {
     naturalDomains: ['execution', 'validation', 'code', 'testing', 'safety', 'isolation', 'containment'],
     dataAssets: ['execution_logs', 'validation_results', 'safety_checks', 'resource_usage_history'],
     latentCapabilities: ['code_complexity_scoring', 'execution_pattern_analysis', 'resource_prediction', 'safety_policy_learning', 'regression_sandbox'],
-    affinityModules: ['ENCODE', 'BRAIN', 'MODERNIZER'],
+    affinityModules: ['ENCODE', 'BRAIN', 'EVOLUTION'],
     discoveryHints: ['Can I predict resource usage before execution?', 'Can I learn from past safety violations?', 'Can I score code complexity?'],
   },
   INCLUSIVE: {
@@ -163,7 +163,7 @@ const MODULE_DISCOVERY_PROFILES: Record<string, {
     naturalDomains: ['code', 'generation', 'refactoring', 'typescript', 'react', 'architecture', 'patterns'],
     dataAssets: ['code_history', 'pattern_library', 'refactoring_logs', 'architecture_manifest'],
     latentCapabilities: ['code_smell_detection', 'pattern_recommendation', 'architecture_drift_detection', 'dependency_analysis', 'tech_debt_scoring'],
-    affinityModules: ['SANDBOX', 'MODERNIZER', 'BRAIN'],
+    affinityModules: ['SANDBOX', 'EVOLUTION', 'BRAIN'],
     discoveryHints: ['Can I detect architecture drift?', 'Can I score tech debt?', 'Can I recommend design patterns?'],
   },
   MODERNIZER: {

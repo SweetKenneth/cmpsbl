@@ -119,7 +119,7 @@ export function useDreamStatusOS() {
   });
 }
 
-/** @deprecated Use useEvolutionStatusOS — MODERNIZER is now EVOLUTION */
+/** @deprecated Use useEvolutionStatusOS — EVOLUTION node */
 export function useModernizerStatusOS() {
   return useEvolutionStatusOS();
 }
@@ -324,7 +324,7 @@ export function useSubstrateHealthScore() {
     vision: () => vision.health(),
     dream: () => dream.status(),
     system: () => system.status(),
-    modernizer: () => evolutionMod.status(), // absorbed facade → EVOLUTION
+    // evolution is mapped below in mesh overlays
     integration: () => integration.status(),
     cortex: () => cortex.status(),
     inclusive: () => inclusive.status(),

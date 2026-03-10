@@ -441,7 +441,7 @@ class CrossModuleHealthAggregator {
   private modules = [
     'BRAIN', 'DECODE', 'DEFENSE', 'NEXUS', 'VISION', 'DREAM',
     'SYSTEM', 'CORTEX', 'RIPPLE', 'ACCESS', 'CORE', 'INTEGRATION',
-    'INCLUSIVE', 'MODERNIZER', 'ENCODE', 'ECONOMY', 'IDENTITY',
+    'INCLUSIVE', 'EVOLUTION', 'ENCODE', 'ECONOMY', 'IDENTITY',
     'RELAY', 'AUDIT', 'SANDBOX', 'MEMORY'
   ];
   

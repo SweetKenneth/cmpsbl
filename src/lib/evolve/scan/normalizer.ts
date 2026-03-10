@@ -95,7 +95,7 @@ const CATEGORY_TO_ACTION: Record<string, NormalizedActionType> = {
 
 // Infer target scope from proposal content
 const SCOPE_KEYWORDS: Record<TargetScope, string[]> = {
-  module: ['module', 'component', 'service', 'brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive'],
+  module: ['module', 'component', 'service', 'brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'cortex', 'inclusive'],
   edge: ['edge', 'function', 'supabase', 'pf-', 'deno'],
   api: ['api', 'endpoint', 'route', 'router', 'webhook'],
   database: ['table', 'schema', 'rls', 'policy', 'migration', 'database'],
@@ -339,7 +339,7 @@ function resolveTargetScope(proposal: ScanProposal): TargetScope | null {
 function resolveTargetModule(proposal: ScanProposal): string | undefined {
   const content = `${proposal.title} ${proposal.description}`.toLowerCase();
   
-  const modules = ['brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'cortex', 'inclusive'];
+  const modules = ['brain', 'decode', 'dream', 'vision', 'nexus', 'defense', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'cortex', 'inclusive'];
   
   for (const mod of modules) {
     if (content.includes(mod)) {
@@ -380,7 +380,7 @@ function stripDecorations(text: string): string {
 
 /**
  * Validate that a plan contains only normalized actions
- * Used by modernizer.evolve to reject malformed plans
+ * Used by evolution.evolve to reject malformed plans
  */
 export function validateNormalizedPlan(planData: {
   actions?: NormalizedAction[];

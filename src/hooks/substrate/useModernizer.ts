@@ -1,5 +1,5 @@
 /**
- * useModernizer Hook — MODERNIZER → EVOLUTION mesh proxy
+ * useModernizer Hook — EVOLUTION mesh proxy
  * 
  * Respects debug mode kill-switch and shadow-to-production execution pipeline.
  * Part of the layered cognitive architecture.
@@ -9,8 +9,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 
-// Access evolution module from substrate singleton (formerly modernizer)
-const modernizer = substrate.evolution;
+// Access evolution module from substrate singleton
+const evolution = substrate.evolution;
 
 export interface UseModernizerReturn {
   // Status & Health
@@ -50,75 +50,75 @@ export function useModernizer(): UseModernizerReturn {
   const queryClient = useQueryClient();
   const pollingEnabled = debugMode.allowModulePolling();
   
-  const invalidateModernizer = () => {
-    queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer'] });
+  const invalidateEvolution = () => {
+    queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution'] });
   };
   
   const status = useQuery({
-    queryKey: ['substrate', 'modernizer', 'status'],
-    queryFn: () => modernizer.status(),
+    queryKey: ['substrate', 'evolution', 'status'],
+    queryFn: () => evolution.status(),
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
     enabled: pollingEnabled,
   });
   
   const pulse = useQuery({
-    queryKey: ['substrate', 'modernizer', 'pulse'],
-    queryFn: () => modernizer.pulse(),
+    queryKey: ['substrate', 'evolution', 'pulse'],
+    queryFn: () => evolution.pulse(),
     refetchInterval: pollingEnabled ? 10000 : false,
     staleTime: 5000,
     enabled: pollingEnabled,
   });
   
   const quota = useQuery({
-    queryKey: ['substrate', 'modernizer', 'quota'],
-    queryFn: () => modernizer.quota(),
+    queryKey: ['substrate', 'evolution', 'quota'],
+    queryFn: () => evolution.quota(),
     refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
     enabled: pollingEnabled,
   });
   
   const evolutionStatus = useQuery({
-    queryKey: ['substrate', 'modernizer', 'evolution_status'],
-    queryFn: () => modernizer.evolutionStatus(),
+    queryKey: ['substrate', 'evolution', 'evolution_status'],
+    queryFn: () => evolution.evolutionStatus(),
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
     enabled: pollingEnabled,
   });
   
   const jobs = (limit = 20) => useQuery({
-    queryKey: ['substrate', 'modernizer', 'jobs', limit],
-    queryFn: () => modernizer.jobs(limit),
+    queryKey: ['substrate', 'evolution', 'jobs', limit],
+    queryFn: () => evolution.jobs(limit),
     staleTime: 30000,
   });
   
   const job = (jobId: string) => useQuery({
-    queryKey: ['substrate', 'modernizer', 'job', jobId],
-    queryFn: () => modernizer.job(jobId),
+    queryKey: ['substrate', 'evolution', 'job', jobId],
+    queryFn: () => evolution.job(jobId),
     staleTime: 30000,
     enabled: !!jobId,
   });
   
   const applied = useQuery({
-    queryKey: ['substrate', 'modernizer', 'applied'],
-    queryFn: () => modernizer.applied(),
+    queryKey: ['substrate', 'evolution', 'applied'],
+    queryFn: () => evolution.applied(),
     staleTime: 60000,
   });
   
   const archived = useQuery({
-    queryKey: ['substrate', 'modernizer', 'archived'],
-    queryFn: () => modernizer.archived(),
+    queryKey: ['substrate', 'evolution', 'archived'],
+    queryFn: () => evolution.archived(),
     staleTime: 120000,
   });
   
   const scan = useMutation({
     mutationFn: (options?: { module?: string; depth?: 'quick' | 'standard' | 'deep' }) => 
-      modernizer.scan(options),
-    onSuccess: invalidateModernizer,
+      evolution.scan(options),
+    onSuccess: invalidateEvolution,
   });
   
   const analyze = useMutation({
-    mutationFn: (module?: string) => modernizer.analyze(module),
+    mutationFn: (module?: string) => evolution.analyze(module),
   });
   
   const evolve = useMutation({
@@ -126,62 +126,62 @@ export function useModernizer(): UseModernizerReturn {
       depth?: 'quick' | 'standard' | 'deep';
       confirm_override?: boolean;
       target?: 'scan' | 'shadow' | 'production' | 'verify' | 'abort' | 'status';
-    }) => modernizer.evolve(options),
-    onSuccess: invalidateModernizer,
+    }) => evolution.evolve(options),
+    onSuccess: invalidateEvolution,
   });
   
   const exportJob = useMutation({
-    mutationFn: (jobId: string) => modernizer.export(jobId),
+    mutationFn: (jobId: string) => evolution.export(jobId),
   });
   
   const propose = useMutation({
     mutationFn: (options?: { scope?: string; notes?: string; max_changes?: number }) => 
-      modernizer.propose(options),
-    onSuccess: invalidateModernizer,
+      evolution.propose(options),
+    onSuccess: invalidateEvolution,
   });
   
   const review = useMutation({
-    mutationFn: (planId: string) => modernizer.review(planId),
+    mutationFn: (planId: string) => evolution.review(planId),
   });
   
   const validate = useMutation({
-    mutationFn: (planId: string) => modernizer.validate(planId),
+    mutationFn: (planId: string) => evolution.validate(planId),
   });
   
   const diff = useMutation({
-    mutationFn: (planId: string) => modernizer.diff(planId),
+    mutationFn: (planId: string) => evolution.diff(planId),
   });
   
   const apply = useMutation({
-    mutationFn: (planId: string) => modernizer.apply(planId),
-    onSuccess: invalidateModernizer,
+    mutationFn: (planId: string) => evolution.apply(planId),
+    onSuccess: invalidateEvolution,
   });
   
   const applyShadow = useMutation({
-    mutationFn: (planId: string) => modernizer.applyShadow(planId),
-    onSuccess: invalidateModernizer,
+    mutationFn: (planId: string) => evolution.applyShadow(planId),
+    onSuccess: invalidateEvolution,
   });
   
   const applyProduction = useMutation({
-    mutationFn: (planId: string) => modernizer.applyProduction(planId),
-    onSuccess: invalidateModernizer,
+    mutationFn: (planId: string) => evolution.applyProduction(planId),
+    onSuccess: invalidateEvolution,
   });
   
   const rollback = useMutation({
-    mutationFn: (planId: string) => modernizer.rollback(planId),
-    onSuccess: invalidateModernizer,
+    mutationFn: (planId: string) => evolution.rollback(planId),
+    onSuccess: invalidateEvolution,
   });
   
   const deletePlan = useMutation({
     mutationFn: (params: { planId: string; reason?: string }) => 
-      modernizer.delete(params.planId, params.reason),
-    onSuccess: invalidateModernizer,
+      evolution.delete(params.planId, params.reason),
+    onSuccess: invalidateEvolution,
   });
   
   const implement = useMutation({
     mutationFn: (params: { archivedFunction: string; targetAction: string }) => 
-      modernizer.implement(params.archivedFunction, params.targetAction),
-    onSuccess: invalidateModernizer,
+      evolution.implement(params.archivedFunction, params.targetAction),
+    onSuccess: invalidateEvolution,
   });
   
   return {

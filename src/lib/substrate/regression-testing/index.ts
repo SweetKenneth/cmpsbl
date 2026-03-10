@@ -1,6 +1,6 @@
 /**
  * Automated Regression Testing — v1.0.0
- * Post-evolution smoke tests to catch regressions from Modernizer/SEBA changes.
+ * Post-evolution smoke tests to catch regressions from EVOLUTION/SEBA changes.
  * Runs health checks, memory integrity tests, and module response validation.
  */
 

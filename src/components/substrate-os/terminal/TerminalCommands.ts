@@ -6,7 +6,7 @@
  * Tier Gating: free | creator | architect | governor
  *   free      = Status, pulse, read-only queries
  *   creator   = Actions, mutations, basic operations ($29/mo)
- *   architect = Evolution, modernizer, advanced ops ($79/mo)
+ *   architect = Evolution, advanced ops ($79/mo)
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
 
@@ -228,7 +228,7 @@ export const SYSTEM_COMMANDS: CommandDefinition[] = [
   { command: 'system.capability', description: 'Get capability details', category: 'system', icon: Box, requiresOperator: false, requiredTier: 'free', args: '<capability_id>' },
 ];
 
-export const MODERNIZER_COMMANDS: CommandDefinition[] = [
+export const EVOLUTION_CORE_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.status', description: 'EVOLUTION node status', category: 'evolution', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.jobs', description: 'List evolution runs (active + completed)', category: 'evolution', icon: Activity, requiresOperator: false, requiredTier: 'free', args: '[limit]' },
   { command: 'evolution.evolve', description: 'Unified Evolution Cycle (scan → plan → shadow → production → verify)', category: 'evolution', icon: Sparkles, requiresOperator: true, requiredTier: 'architect', args: '[shadow|production|verify|abort|status] [--confirm]', example: 'evolution.evolve shadow' },
@@ -410,7 +410,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help vision', description: 'Vision module commands', category: 'meta', icon: Eye, requiresOperator: false },
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
-  { command: 'help modernizer', description: 'Modernizer module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
+  { command: 'help evolution', description: 'EVOLUTION module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
   { command: 'help cortex', description: 'Cortex (Agency) module commands', category: 'meta', icon: Wand2, requiresOperator: false },
   { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
@@ -1090,7 +1090,7 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.depth', description: 'Scan depth distribution', category: 'inclusive', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.gates', description: 'Compliance gate results', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.escalations', description: 'DEFENSE escalation tracker', category: 'inclusive', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.proposals', description: 'Modernizer proposal tracker', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.proposals', description: 'EVOLUTION proposal tracker', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.score_history', description: 'Accessibility score history', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.autofix', description: 'Auto-fix queue status', category: 'inclusive', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.contrast', description: 'Color contrast analyzer', category: 'inclusive', icon: Eye, requiresOperator: false, requiredTier: 'free' },
@@ -1321,7 +1321,7 @@ export const ALL_COMMANDS: CommandDefinition[] = [
   ...VISION_COMMANDS,
   ...DREAM_COMMANDS,
   ...SYSTEM_COMMANDS,
-  ...MODERNIZER_COMMANDS,
+  ...EVOLUTION_CORE_COMMANDS,
   ...CORTEX_COMMANDS,
   ...INCLUSIVE_COMMANDS,
   ...CLM_COMMANDS,
@@ -1391,8 +1391,7 @@ export const COMMAND_CATEGORIES = {
   cortex: { label: 'CORTEX', color: 'text-violet-400', borderColor: 'border-violet-500/30', commands: CORTEX_COMMANDS },
   inclusive: { label: 'INCLUSIVE', color: 'text-teal-400', borderColor: 'border-teal-500/30', commands: INCLUSIVE_COMMANDS },
   system: { label: 'SYSTEM', color: 'text-gray-400', borderColor: 'border-gray-500/30', commands: SYSTEM_COMMANDS },
-  /** @deprecated MODERNIZER commands are legacy aliases — EVOLUTION_COMMANDS is the canonical set */
-  modernizer: { label: 'EVOLUTION', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: MODERNIZER_COMMANDS },
+  evolution_core: { label: 'EVOLUTION', color: 'text-pink-400', borderColor: 'border-pink-500/30', commands: EVOLUTION_CORE_COMMANDS },
   seba: { label: 'SEBA', color: 'text-emerald-400', borderColor: 'border-emerald-500/30', commands: SEBA_COMMANDS },
   clm: { label: 'CLM', color: 'text-indigo-400', borderColor: 'border-indigo-500/30', commands: [...CLM_COMMANDS, ...MODULE_CLM_COMMANDS] },
   autoblog: { label: 'AUTOBLOG', color: 'text-rose-400', borderColor: 'border-rose-500/30', commands: AUTOBLOG_COMMANDS },

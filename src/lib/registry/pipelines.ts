@@ -16,7 +16,7 @@ export type ModuleName =
   | 'CORE' | 'RIPPLE' | 'ACCESS'      // Kernel
   | 'BRAIN' | 'DECODE' | 'DREAM'       // Cognitive
   | 'DEFENSE' | 'NEXUS' | 'VISION'     // Operational
-  | 'SYSTEM' | 'MODERNIZER' | 'INTEGRATION' | 'INCLUSIVE'  // Administrative
+  | 'SYSTEM' | 'EVOLUTION' | 'INTEGRATION' | 'INCLUSIVE'  // Administrative
   | 'CORTEX';                          // Orchestrator
 
 export interface SynergyPipeline {
@@ -45,7 +45,7 @@ export const SYNERGY_PIPELINES: readonly SynergyPipeline[] = Object.freeze([
   {
     id: 'SEP-001',
     name: 'Autonomous Evolution',
-    modules: ['DREAM', 'BRAIN', 'MODERNIZER', 'CORTEX'] as const,
+    modules: ['DREAM', 'BRAIN', 'EVOLUTION', 'CORTEX'] as const,
     description: 'Learning-to-evolution loop where insights flow from consumption to capability expansion',
     emergentProperty: 'Self-directed capability expansion',
     status: 'descriptive_only',

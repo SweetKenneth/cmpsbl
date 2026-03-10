@@ -44,7 +44,7 @@ const MODULE_COLORS: Record<string, string> = {
   DREAM: 'hsl(280, 80%, 65%)',
   SYSTEM: 'hsl(210, 50%, 55%)',
   ENCODE: 'hsl(330, 70%, 60%)',
-  MODERNIZER: 'hsl(15, 75%, 55%)',
+  EVOLUTION: 'hsl(15, 75%, 55%)',
   RIPPLE: 'hsl(195, 75%, 55%)',
   ACCESS: 'hsl(150, 60%, 50%)',
   INTEGRATION: 'hsl(60, 65%, 50%)',

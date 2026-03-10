@@ -456,7 +456,7 @@ export const META_ENGINE_REGISTRY: Record<MetaEngineId, MetaEngineDefinition> = 
   world_first_intelligence: {
     id: 'world_first_intelligence',
     name: 'World-First Intelligence',
-    description: 'Full intelligence world-first stack combining VISION predictive analytics, CORTEX orchestration, and MODERNIZER evolution governance for strategic foresight.',
+    description: 'Full intelligence world-first stack combining VISION predictive analytics, CORTEX orchestration, and EVOLUTION governance for strategic foresight.',
     category: 'intelligence',
     engines: ['predictive_analytics_engine', 'cortex_orchestration_engine', 'evolution_governance_engine'],
     totalCapabilities: 12,

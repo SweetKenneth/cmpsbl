@@ -151,7 +151,7 @@ const ALL_MONITORED_MODULES = Object.freeze([
   'identity', 'relay', 'audit', 'memory', 'economy', 'sandbox',
   // Execution
   'encode', 'defense', 'nexus', 'vision', 'dream', 'integration',
-  'system', 'modernizer', 'inclusive',
+  'system', 'evolution', 'inclusive',
   // ESZ — Expansion Sovereignty Zone
   'sovereign', 'conscience', 'treaty', 'oracle',
   // EPZ — Expansion Perception Zone
@@ -429,7 +429,7 @@ export function generateComplianceReport(framework: ComplianceFramework, periodD
 
 function isRelevantToControl(entry: AuditEntry, controlId: string, framework: ComplianceFramework): boolean {
   const accessModules = ['identity', 'access', 'defense'];
-  const changeModules = ['encode', 'modernizer', 'system'];
+  const changeModules = ['encode', 'evolution', 'system'];
   const monitorModules = ['cortex', 'vision', 'dream', 'brain'];
 
   if (framework === 'SOC2') {

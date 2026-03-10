@@ -281,7 +281,7 @@ export const executeAdapterTransformEngine: EngineExecutor = (ctx) => executeEng
 // INCLUSIVE Module Enhancements
 export const executeCognitiveAccessibilityEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
-// MODERNIZER Module Enhancements
+// EVOLUTION Module Enhancements
 export const executeEvolutionGovernanceEngine: EngineExecutor = (ctx) => executeEngine(ctx);
 
 // High-Value Capability Engines (8)

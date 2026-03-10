@@ -737,7 +737,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
 
   function parseImprovementRequest(input: string): { module: string; change_type: string; description: string } {
     // Simple parsing - extract module and change type from input
-    const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'encode', 'modernizer', 'integration'];
+    const modules = ['brain', 'defense', 'nexus', 'vision', 'dream', 'system', 'core', 'ripple', 'access', 'decode', 'encode', 'evolution', 'integration'];
     const foundModule = modules.find(m => input.toLowerCase().includes(m)) || 'system';
     
     const changeTypes = ['edge_function', 'config_update', 'prompt_refinement', 'rate_limit', 'rls_policy'];

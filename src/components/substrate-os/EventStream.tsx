@@ -34,7 +34,7 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   ripple: Radio,
   access: Activity,
   system: Activity,
-  modernizer: Activity,
+  evolution: Activity,
   integration: Activity,
   cortex: Activity,
   inclusive: Activity,
@@ -57,7 +57,7 @@ const MODULE_COLORS: Record<string, string> = {
   ripple: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
   access: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
   system: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
-  modernizer: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  evolution: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
   integration: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
   cortex: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
   inclusive: 'text-pink-400 bg-pink-500/10 border-pink-500/30',
@@ -72,7 +72,7 @@ const OUTCOME_COLORS: Record<string, string> = {
   skipped: 'text-muted-foreground',
 };
 
-const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'modernizer', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
+const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
 
 export function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);

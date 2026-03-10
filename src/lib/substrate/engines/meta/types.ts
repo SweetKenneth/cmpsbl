@@ -56,7 +56,7 @@ export type MetaEngineId =
   // World-First Enhancement Meta-Engines (4)
   | 'world_first_cognitive'     // BRAIN + DECODE + DREAM world-first enhancements
   | 'world_first_operational'   // NEXUS + SYSTEM + CORE + INTEGRATION world-first enhancements
-  | 'world_first_intelligence'  // VISION + CORTEX + MODERNIZER world-first enhancements
+  | 'world_first_intelligence'  // VISION + CORTEX + EVOLUTION world-first enhancements
   | 'world_first_governance'    // DEFENSE + ACCESS + RIPPLE + INCLUSIVE world-first enhancements
   // High-Value Expansion Meta-Engines (2)
   | 'resilience_shield'         // Sandbox + Prompt Safety + Saga + Policy Access

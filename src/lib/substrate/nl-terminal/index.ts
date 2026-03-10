@@ -54,9 +54,9 @@ const COMMAND_PATTERNS: CommandPattern[] = [
   { patterns: [/\brun\s+(?:a\s+)?(?:seba\s+)?cycle\b/i, /\bevolve\b/i, /\bstart\s+evolution\b/i], command: 'seba.cycle', description: 'Run SEBA evolution cycle' },
   { patterns: [/\breview\s+proposals?\b/i, /\bpending\s+proposals?\b/i, /\bwhat(?:'s| is)\s+pending\b/i], command: 'seba.review', description: 'Review pending proposals' },
 
-  // Modernizer
-  { patterns: [/\bmodernize\b/i, /\bupgrade\b/i, /\bscan\s+(?:for\s+)?improvements?\b/i], command: 'modernizer.evolve', description: 'Start modernization scan' },
-  { patterns: [/\bmodernizer\s*status\b/i], command: 'modernizer.status', description: 'Check modernizer status' },
+  // Evolution
+  { patterns: [/\bmodernize\b/i, /\bupgrade\b/i, /\bscan\s+(?:for\s+)?improvements?\b/i], command: 'evolution.evolve', description: 'Start evolution scan' },
+  { patterns: [/\bevolution\s*status\b/i, /\bmodernizer\s*status\b/i], command: 'evolution.status', description: 'Check EVOLUTION status' },
 
   // Cortex
   { patterns: [/\bcortex\s*status\b/i, /\borchestrator\b/i], command: 'cortex.status', description: 'Check cortex status' },
