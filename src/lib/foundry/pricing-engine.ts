@@ -22,6 +22,7 @@ export interface CommercializationPricing {
 
 export interface PricingArtifact {
   vault_id?: string;
+  source_table?: 'foundry_inventory' | 'pipeline_vault' | 'vault_promotions';
   pipeline_name: string;
   pipeline_score: number;
   pipeline_tier: string;
