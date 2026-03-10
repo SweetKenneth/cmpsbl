@@ -21,7 +21,7 @@ const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
 // Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
 const loadDeferredCSS = () => import("@/styles/deferred.css");
 // Deferred utility imports — loaded dynamically to reduce initial JS
-import { isEditorPreviewEnv } from "@/lib/system/isLovableEditorPreviewEnv";
+import { isEditorPreviewEnv } from "@/lib/system/isEditorPreviewEnv";
 
 // CRITICAL: DiagErrorBoundary must be EAGERLY loaded so it can catch crashes
 import { DiagErrorBoundary } from "@/components/system/DiagErrorBoundary";

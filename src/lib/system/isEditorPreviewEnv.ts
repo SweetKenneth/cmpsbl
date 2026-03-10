@@ -12,7 +12,7 @@ export function isEditorPreviewEnv(): boolean {
     const qs = new URLSearchParams(window.location.search);
     const host = window.location.hostname;
 
-    // Only detect Lovable editor preview via URL signals — never use iframe detection,
+    // Detect editor preview via URL signals — never use iframe detection,
     // as that falsely triggers on production embeds and some mobile browsers.
     return (
       qs.has('__lovable_token') || qs.has('__preview_token') ||

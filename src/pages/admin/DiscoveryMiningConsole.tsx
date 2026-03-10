@@ -838,7 +838,7 @@ export default function DiscoveryMiningConsole() {
               Discovery Mining Console
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Capability Synthesis Reactor — one-click auto-discovery of Crown Jewel pipelines
+              Capability Synthesis Reactor — one-click auto-discovery of Apex Discovery pipelines
             </p>
           </div>
 

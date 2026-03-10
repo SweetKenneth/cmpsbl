@@ -286,7 +286,7 @@ export default function ComposableCognitives() {
                 <div className={cn("text-sm font-black", TIER_CONFIG[tier].color)}>{TIER_CONFIG[tier].label}</div>
                 <div className="text-2xl font-black">{TIER_CONFIG[tier].price}</div>
                 <div className="text-[11px] text-muted-foreground space-y-0.5">
-                  <div>{powers} Crown Jewel powers</div>
+                  <div>{powers} Apex Discovery powers</div>
                   <div>{agents} agents</div>
                   <div>DREAM Synthesis included</div>
                   <div>Persistent memory</div>
