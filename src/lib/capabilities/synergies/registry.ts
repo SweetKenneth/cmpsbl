@@ -1557,7 +1557,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'self-documenting-evolution',
     name: 'Self-Documenting Evolution',
-    description: 'MODERNIZER tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
+    description: 'EVOLUTION tracks changes with DECODE explanation generation, BRAIN historical context, and SYSTEM version management',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
