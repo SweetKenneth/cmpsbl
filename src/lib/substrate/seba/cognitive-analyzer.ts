@@ -38,7 +38,7 @@ interface BackendStats {
     };
     needs_tiering: boolean;
   } | null;
-  modernizer: {
+  evolution: {
     system_health: { score: number; orchestrator: number };
     plans: { pending: number; applied: number };
     improvement_areas: string[];
