@@ -229,7 +229,7 @@ export default function SubstrateLicensingDownload() {
             <div className="max-w-3xl mx-auto text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Black-Box Protected Artifacts</h2>
               <p className="text-muted-foreground">
-                Experience Crown Jewels are delivered as sealed artifacts — you get the full power without exposing the underlying architecture. Your data stays local. Your execution stays private.
+                Experience Apex Discoveries are delivered as sealed artifacts — you get the full power without exposing the underlying architecture. Your data stays local. Your execution stays private.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">

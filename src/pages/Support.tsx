@@ -87,12 +87,12 @@ const FAQ_ITEMS = [
   {
     category: "Artifact Packs",
     question: "What are Composable Cognitives?",
-    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as Sealed Runtimes. Each comes with 3–5 Crown Jewel powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as Sealed Runtimes. Each comes with 3–5 Apex Discovery powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
     category: "Artifact Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing modules in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
+    answer: "Engines are the 20 specialized processing nodes in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
     category: "Artifact Packs",

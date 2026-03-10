@@ -176,7 +176,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
               </h4>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
                 {isGated 
-                  ? 'This Crown Jewel capability requires an Enterprise subscription. Upgrade to unlock code snippets, SDK imports, and full documentation.'
+                  ? 'This Apex Discovery capability requires an Enterprise subscription. Upgrade to unlock code snippets, SDK imports, and full documentation.'
                   : 'This artifact is delivered as a black-boxed runtime. Source code, export, and cloning are permanently disabled to protect proprietary architecture.'}
               </p>
               <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-orange-600 hover:bg-orange-500" : "bg-amber-600 hover:bg-amber-500")}>

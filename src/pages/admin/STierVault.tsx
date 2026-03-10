@@ -797,7 +797,7 @@ export default function STierVault() {
         type: 'CMPSBL® Offline Vault Manifest',
         purpose: 'Complete disaster-recovery snapshot of all discovered and curated software. If the server is ever lost, this file contains everything needed to reconstruct the vault.',
         generatedAt: new Date().toISOString(),
-        generatedBy: 'S-Tier Crown Jewel Vault — Offline Manifest System',
+        generatedBy: 'S-Tier Apex Discovery Vault — Offline Manifest System',
         copyright: '© 2025–2026 CMPSBL®. All rights reserved.',
         architect: 'Kenneth E. Sweet Jr. — ORCID 0009-0001-4237-1243',
       },
@@ -868,7 +868,7 @@ export default function STierVault() {
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-400 shrink-0" />
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold">S-Tier Crown Jewel Vault</h1>
+              <h1 className="text-xl sm:text-2xl font-bold">S-Tier Apex Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 {entries.length} registry artifacts • {promoted.length} promoted discoveries • 24 export languages
               </p>
@@ -1045,7 +1045,7 @@ export default function STierVault() {
                     <Zap className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                     <p className="text-muted-foreground">
                       {promoted.length === 0
-                        ? 'No promoted discoveries yet — run the Discovery Engine to find Crown Jewels'
+                        ? 'No promoted discoveries yet — run the Discovery Engine to find Apex Discoveries'
                         : 'No discoveries match your filters'}
                     </p>
                   </div>

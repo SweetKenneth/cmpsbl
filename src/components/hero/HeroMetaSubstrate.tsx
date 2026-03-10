@@ -241,20 +241,20 @@ export function HeroMetaSubstrate() {
               </div>
             </motion.div>
             
-            {/* Subtitle — fluid narrative */}
+            {/* Subtitle — clear value prop */}
             <motion.p 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.5 }}
               className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto lg:mx-0 mb-7 sm:mb-9 leading-[1.8]"
             >
-              Signals enter the{' '}
-               <span className="text-foreground/90 font-medium">Memory Stream</span>,{' '}
-               the system discovers and packages exportable software capabilities called{' '}
-               <span className="text-foreground/90 font-medium">pipelines</span>,{' '}
-               and in rare cases —{' '}
-               <span className="text-primary font-medium">silicon computer chips</span>.{' '}
-               CMPSBL sits between AI models and applications — acting as the operating system that manages intelligence.
+              Every interaction flows through the{' '}
+              <span className="text-foreground/90 font-medium">Memory Stream</span> — where the system
+              autonomously discovers, packages, and exports reusable software{' '}
+              <span className="text-foreground/90 font-medium">pipelines</span>. The rarest discoveries
+              become specs for{' '}
+              <span className="text-primary font-medium">silicon computer chips</span>.{' '}
+              Think of it as the OS layer between AI models and your applications.
             </motion.p>
             
             {/* CTAs — primary + ghost for clean hierarchy */}
