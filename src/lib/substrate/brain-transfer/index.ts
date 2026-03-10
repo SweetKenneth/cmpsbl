@@ -795,7 +795,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     vision: VISION_PATTERNS,
     integration: INTEGRATION_PATTERNS,
     system: SYSTEM_PATTERNS,
-    modernizer: MODERNIZER_PATTERNS,
+    evolution: MODERNIZER_PATTERNS,
     inclusive: INCLUSIVE_PATTERNS,
     cortex: CORTEX_PATTERNS,
     encode: ENCODE_PATTERNS,
