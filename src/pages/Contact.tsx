@@ -101,8 +101,8 @@ export default function Contact() {
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {DEPARTMENTS.map((dept, index) => (
-              <motion.div key={dept.name} {...stagger(index * 0.06)}>
-                <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300">
+               <motion.div key={dept.name} {...stagger(index * 0.06)}>
+                 <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm glass-edge card-lift hover:border-primary/30 transition-all duration-300">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
