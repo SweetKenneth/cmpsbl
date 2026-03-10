@@ -15,12 +15,12 @@ export type ModuleName =
   | 'core' | 'ripple' | 'access'
   | 'brain' | 'decode' | 'dream'
   | 'defense' | 'nexus' | 'vision' | 'encode'
-  | 'system' | 'modernizer' | 'integration' | 'inclusive'
+  | 'system' | 'evolution' | 'integration' | 'inclusive'
   | 'cortex' | 'atlas' | 'medic'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'nerve'   // OCG — inter-node signaling
   | 'shadow'  // CSZ — shadow mesh operations
-  // Expansion Modules (40-Node Architecture)
+  // Expansion Nodes (40-Node Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 
