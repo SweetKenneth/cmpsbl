@@ -963,10 +963,10 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
         <td>Complexity factor · ${input.systemChain.length} module${input.systemChain.length !== 1 ? 's' : ''}</td>
         <td>×${valuation.complexityMultiplier.toFixed(2)}</td>
       </tr>
-      \${valuation.apexMultiplier > 1 ? \`<tr>
+      ${valuation.apexMultiplier > 1 ? `<tr>
         <td>Apex tier premium</td>
-        <td>×\${valuation.apexMultiplier.toFixed(1)}</td>
-      </tr>\` : ''}
+        <td>×${valuation.apexMultiplier.toFixed(1)}</td>
+      </tr>` : ''}
       <tr>
         <td style="font-weight: 600; color: var(--ink);">Estimated Market Value</td>
         <td class="valuation-total">${valuation.formatted}</td>
