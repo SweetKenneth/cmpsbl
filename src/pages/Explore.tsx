@@ -200,7 +200,7 @@ export default function Explore() {
               </p>
               
               {/* Mini stats row */}
-              <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10">
+              <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
                  {[
                    { value: "40", label: "Substrate Nodes" },
                    { value: "24", label: "Pipeline Packs" },
