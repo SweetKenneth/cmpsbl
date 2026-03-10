@@ -1045,7 +1045,7 @@ export default function STierVault() {
                     <Zap className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                     <p className="text-muted-foreground">
                       {promoted.length === 0
-                        ? 'No promoted discoveries yet — run the Discovery Engine to find Crown Jewels'
+                        ? 'No promoted discoveries yet — run the Discovery Engine to find Apex Discoveries'
                         : 'No discoveries match your filters'}
                     </p>
                   </div>

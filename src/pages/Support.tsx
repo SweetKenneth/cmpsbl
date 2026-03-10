@@ -92,7 +92,7 @@ const FAQ_ITEMS = [
   {
     category: "Artifact Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing modules in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
+    answer: "Engines are the 20 specialized processing nodes in the substrate library — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
     category: "Artifact Packs",

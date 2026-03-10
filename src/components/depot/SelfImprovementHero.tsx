@@ -187,7 +187,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                       Recursive Self-Optimization Core
                     </h3>
                     <p className="text-sm md:text-base text-muted-foreground">
-                      The crown jewel. A system that improves its own improvement algorithms — 
+                      The apex discovery. A system that improves its own improvement algorithms — 
                       creating infinite capability ceilings with bounded recursion safety.
                     </p>
                   </div>

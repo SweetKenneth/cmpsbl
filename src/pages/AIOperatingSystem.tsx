@@ -199,7 +199,7 @@ export default function AIOperatingSystem() {
             <p className="text-muted-foreground leading-relaxed mb-6 max-w-3xl">
               The CMPSBL Substrate is the reference implementation of the Cognitive Reality category. 
               With <strong className="text-foreground">10 integrated entities</strong> organized across <strong className="text-foreground">6 architectural layers</strong>, 
-              it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 100 crystallized Crown Jewel pipelines.
+              it provides the complete cognitive runtime for production AI — from the kernel event bus to meta-orchestration with 100 crystallized Apex Discovery pipelines.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
               {[
