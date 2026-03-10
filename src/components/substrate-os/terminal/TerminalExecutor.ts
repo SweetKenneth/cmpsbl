@@ -2602,7 +2602,7 @@ ${allFeatures.map(f => {
       if (!planId) {
         return { success: false, output: `▓ ERROR: Plan '${args[0]}' not found` };
       }
-      const res = await modernizer.delete(planId, args.slice(1).join(' ') || undefined);
+      const res = await evolutionMod.delete(planId, args.slice(1).join(' ') || undefined);
       const data = res.data as any;
       if (res.error || (data && data.success === false)) {
         const errMsg = res.error?.message || data?.error_message || data?.error || 'Delete failed';
