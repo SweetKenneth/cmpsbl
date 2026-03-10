@@ -1,13 +1,15 @@
 {
-  "version": "2.0.0",
-  "generatedAt": "2026-03-10T20:00:00.000Z",
+  "version": "3.0.0",
+  "generatedAt": "2026-03-10T22:00:00.000Z",
   "totalArtifacts": 233,
-  "activatedCount": 63,
-  "activationVersion": "2.0.0",
+  "activatedCount": 81,
+  "activationVersion": "3.0.0",
   "activationWaves": {
     "wave1": { "count": 19, "minCJPI": 95, "status": "active" },
     "wave2": { "count": 14, "minCJPI": 94, "status": "active" },
-    "wave3": { "count": 30, "minCJPI": 93, "status": "active" }
+    "wave3": { "count": 30, "minCJPI": 93, "status": "active" },
+    "wave4": { "count": 9, "minCJPI": 92, "status": "active" },
+    "wave5": { "count": 9, "minCJPI": 91, "status": "active" }
   },
   "canonicalModules": ["CORE","SYSTEM","BRAIN","DREAM","RIPPLE","ACCESS","DEFENSE","NEXUS","DECODE","VISION","CORTEX","INCLUSIVE","INTEGRATION","MODERNIZER","MEDIC","NERVE","GOVERNANCE","OBSERVABILITY","ANALYTICS","EVOLUTION","IMMUNITY","INTENT","MESH","AUDIT","MEMORY","ECONOMY","RELAY","IDENTITY","ATLAS","ENCODE","SOVEREIGN","ORACLE","CONSCIENCE","PHANTOM","FORGE","LINGUA","COMPASS","ECHO","TREATY","HARVEST","REFLEX"],
   "entries": [
