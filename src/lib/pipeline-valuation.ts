@@ -47,10 +47,33 @@ export function getCategoryMultiplierLabel(category: string): string {
   return `${mult}x ${category} premium`;
 }
 
-/** Get tier label from CJPI score */
+/** Get tier label from CJPI score — graduated 6-tier system */
 export function getTierFromScore(cjpi: number): string {
-  if (cjpi >= 95) return 'Apex';
-  if (cjpi >= 85) return 'Enterprise';
-  if (cjpi >= 70) return 'Architect';
-  return 'Creator';
+  if (cjpi >= 100) return 'Apex';
+  if (cjpi >= 94) return 'Mythic';
+  if (cjpi >= 90) return 'Relic';
+  if (cjpi >= 80) return 'Prime';
+  if (cjpi >= 68) return 'Mint';
+  return 'Raw';
+}
+
+/** 6-tier CJPI multiplier for blended pricing formula */
+export function getCJPIMultiplier(tier: string): number {
+  switch (tier.toLowerCase()) {
+    case 'apex': return 4.0;
+    case 'mythic': return 3.0;
+    case 'relic': return 2.0;
+    case 'prime': return 1.5;
+    case 'mint': return 1.2;
+    case 'raw': default: return 1.0;
+  }
+}
+
+/**
+ * Extract the exponential base value from a CJPI score (before category/complexity multipliers).
+ * This is the "BaseValue" term in the blended pricing formula.
+ */
+export function getExponentialBase(cjpi: number): number {
+  const normalized = Math.max(0, cjpi - 60) / 40;
+  return 5000 + Math.pow(normalized, 2.5) * 995000;
 }
