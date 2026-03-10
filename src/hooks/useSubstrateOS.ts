@@ -602,8 +602,7 @@ export function useIntegrationDiscoverOS() {
 
 // ═══════════════════════════════════════════════════════════════
 // INCLUSIVE MODULE HOOKS — Human Compatibility (v6.0.0)
-// With full glue layer integration to SYSTEM, VISION, DEFENSE, MODERNIZER
-// ═══════════════════════════════════════════════════════════════
+// With full glue layer integration to SYSTEM, VISION, DEFENSE, EVOLUTION
 
 export function useInclusiveStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
