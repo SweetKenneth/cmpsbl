@@ -84,8 +84,8 @@ export interface AuthorityContract {
   // ── Administrative Layer ──
   /** Route system orchestration to System */
   toSystem(input: string): Promise<unknown>;
-  /** Route self-upgrade to Modernizer */
-  toModernizer(input: string): Promise<unknown>;
+  /** Route self-evolution to Evolution */
+  toEvolution(input: string): Promise<unknown>;
   /** Route connector queries to Integration */
   toIntegration(input: string): Promise<unknown>;
   /** Route accessibility to Inclusive */

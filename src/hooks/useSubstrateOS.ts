@@ -798,15 +798,7 @@ export function useHarvestStatusOS() {
   });
 }
 
-export function useEvolutionStatusOS() {
-  const pollingEnabled = debugMode.allowModulePolling();
-  return useQuery({
-    queryKey: ['substrate', 'evolution', 'status'],
-    queryFn: withGracefulFallback(() => evolutionMod.status()),
-    refetchInterval: pollingEnabled ? 30000 : false,
-    enabled: pollingEnabled,
-  });
-}
+// Primary EVOLUTION status hook is defined above (line ~127)
 
 export function useShadowStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();
