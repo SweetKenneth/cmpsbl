@@ -10,6 +10,8 @@ import {
   formatMarketValue,
   getCategoryMultiplierLabel,
   getTierFromScore,
+  getExponentialBase,
+  getCJPIMultiplier,
   CATEGORY_MARKET_MULTIPLIERS,
 } from '@/lib/pipeline-valuation';
 
