@@ -225,8 +225,8 @@ export default function HumansTxt() {
           </motion.div>
 
           {/* Philosophy quote */}
-          <motion.div className="mb-12 p-6 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+           <motion.div className="mb-10 sm:mb-12 p-5 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
+             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <blockquote className="text-xl sm:text-2xl font-light italic text-foreground mb-2">
               "Building the infrastructure layer for autonomous AI systems."
             </blockquote>
