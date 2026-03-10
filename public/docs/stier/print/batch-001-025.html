@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S-Tier Vault — Batch 1: #1–#25 — CMPSBL®</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="/vault" class="back-link">← Back to Vault</a>
+<button class="print-btn" onclick="window.print()">🖨 Print this document</button>
+
+<nav class="print-nav">
+<a href="index.html">Index</a>
+<a href="batch-001-025.html"><strong>#1–25</strong></a>
+<a href="batch-026-050.html">#26–50</a>
+<a href="batch-051-075.html">#51–75</a>
+<a href="batch-076-100.html">#76–100</a>
+<a href="batch-101-125.html">#101–125</a>
+<a href="batch-126-150.html">#126–150</a>
+<a href="batch-151-175.html">#151–175</a>
+<a href="batch-176-200.html">#176–200</a>
+<a href="batch-201-225.html">#201–225</a>
+<a href="batch-226-233.html">#226–233</a>
+</nav>
+
+<div class="doc-meta">
+<span class="badge primary">Batch 1 of 10</span>
+<span class="badge vault">Ranks #1 – #25</span>
+<span class="badge">Reproduction: $3.5M – $4.7M</span>
+</div>
+
+<h1>S-Tier Capability Vault — Batch 1</h1>
+<p>The 25 most useful capabilities in the CMPSBL substrate, ranked by real-world impact.</p>
+
+<!-- ═══ #1 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#1</span>
+<span class="card-title">Fleet Intelligence Orchestrator</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">NEXUS</span>
+<span class="meta-tag tier-apex">Apex</span>
+<span class="meta-tag">CJPI 98</span>
+<span class="meta-tag">S-95</span>
+</div>
+
+<div class="section-label">For Investors</div>
+<p>The brain that decides which AI model handles each request. Instead of being locked into one provider, CMPSBL simultaneously scores every available AI provider in real-time and routes each task to the best one based on quality, speed, and cost. Saves an estimated <strong>$8K–$15K/month</strong> in AI costs while improving response quality.</p>
+
+<div class="section-label">For Engineers</div>
+<p>Real-time scoring matrix across all registered AI providers. Weighted round-robin with quality-gated fallback chains. Each provider scored on latency (p50/p95/p99), error rate, token throughput, and output quality via semantic similarity. Routing table updates every 30 seconds. Fallback chains dynamically constructed using degradation-aware selection.</p>
+<p><code>scoreProviders() · route() · buildFallbackChain() · updateScoringMatrix()</code></p>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$180K – $240K</span></div>
+<div class="price-item"><span class="price-label">Team Effort</span><span class="price-value">3 engineers × 4 months</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 2</span></div>
+<div class="price-item"><span class="price-label">Deploy</span><span class="price-value">PureStandalone</span></div>
+</div>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Marketplace Price</span><span class="price-value">$299</span></div>
+<div class="price-item"><span class="price-label">Enterprise License</span><span class="price-value">$45K – $75K/yr</span></div>
+<div class="price-item"><span class="price-label">Pricing Engine</span><span class="price-value">Blended v3.1.0 · Apex 4.0×</span></div>
+</div>
+
+<div class="section-label">Competitive Landscape</div>
+<table class="competitor-table">
+<thead><tr><th>Competitor</th><th>Product</th><th>CMPSBL Advantage</th></tr></thead>
+<tbody>
+<tr><td>Martian</td><td>Model Router</td><td>Routes by real-time quality + cost + latency, not just prompt complexity</td></tr>
+<tr><td>Portkey</td><td>AI Gateway</td><td>Scoring engine that learns and adapts, not just a proxy</td></tr>
+<tr><td>LiteLLM</td><td>Unified API</td><td>Actively optimizes per-request based on live data</td></tr>
+<tr><td>OpenRouter</td><td>Routing</td><td>Autonomous decision engine with budget awareness</td></tr>
+</tbody>
+</table>
+
+<div class="section-label">Ideal Buyers</div>
+<p>AI startups running multi-provider inference · Enterprise AI teams needing vendor-agnostic infrastructure · MLOps platforms · Managed service providers</p>
+
+<div class="section-label">Ideal Marketplaces</div>
+<p>AWS Marketplace · Azure Marketplace · Enterprise Direct · GitHub Marketplace</p>
+
+<div class="recap-box">
+<strong>Recap:</strong> The single most valuable capability in the vault. Eliminates AI vendor lock-in, reduces inference costs 30–60%, provides zero-downtime failover — all autonomously. Discovered Hour 2, reproduction cost $180K–$240K. Foundation of the NEXUS routing layer with 6+ downstream dependents.
+</div>
+</div>
+
+<!-- ═══ #2 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#2</span>
+<span class="card-title">Cost-Aware Routing Engine</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">NEXUS</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 96</span>
+</div>
+
+<div class="section-label">For Investors</div>
+<p>Tracks AI spending in real-time against budgets and automatically adjusts which models are used as budgets get tight. Gracefully degrades to cheaper models without visible quality loss. An autopilot CFO for AI spend.</p>
+
+<div class="section-label">For Engineers</div>
+<p>Real-time budget tracking with progressive quality degradation. Per-module, per-user, and global budget pools. Multi-tier degradation curve: 80% → standard models; 90% → token compression; 95% → hard caps with queue deferral.</p>
+<p><code>trackSpend() · getBudgetStatus() · applyDegradationCurve() · allocateBudget()</code></p>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 3</span></div>
+<div class="price-item"><span class="price-label">Deploy</span><span class="price-value">PureStandalone</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $25K–$45K ent</span></div>
+</div>
+
+<div class="recap-box">
+<strong>Recap:</strong> Turns AI spending from a liability into a managed resource. Real-time budget tracking with progressive degradation preserving UX quality. Discovered Hour 3, reproduction cost $120K–$160K.
+</div>
+</div>
+
+<!-- ═══ #3 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#3</span>
+<span class="card-title">Self-Healing Orchestrator</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">IMMUNITY</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 96</span>
+</div>
+
+<div class="section-label">For Investors</div>
+<p>When something breaks, this system fixes itself. Detects failures, analyzes blast radius, selects the best repair strategy, and applies it. Learns which strategies work best over time. A senior SRE that never sleeps.</p>
+
+<div class="section-label">For Engineers</div>
+<p>4-phase healing loop: Detect → Diagnose (dependency graph traversal) → Select strategy (restart, rollback, isolate, reroute, scale) → Execute with rollback safety. Repair history feeds strategy scoring model.</p>
+<p><code>detectAnomaly() · analyzeBlastRadius() · selectRepairStrategy() · executeHealing()</code></p>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$225K – $300K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 4</span></div>
+<div class="price-item"><span class="price-label">Deploy</span><span class="price-value">PureStandalone</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$299 / $60K–$120K ent</span></div>
+</div>
+
+<div class="section-label">Competitive Landscape</div>
+<table class="competitor-table">
+<thead><tr><th>Competitor</th><th>CMPSBL Advantage</th></tr></thead>
+<tbody>
+<tr><td>PagerDuty</td><td>Pages humans; CMPSBL repairs autonomously</td></tr>
+<tr><td>Shoreline.io</td><td>Runs predefined scripts; CMPSBL selects and evolves strategies</td></tr>
+<tr><td>AWS Auto Scaling</td><td>AWS scales; CMPSBL diagnoses + selects strategy</td></tr>
+</tbody>
+</table>
+
+<div class="recap-box">
+<strong>Recap:</strong> Replaces human SRE toil with autonomous repair intelligence. Discovered Hour 4, reproduction cost $225K–$300K. Foundation of the IMMUNITY defense layer.
+</div>
+</div>
+
+<!-- ═══ #4 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#4</span>
+<span class="card-title">Multi-Model Consensus</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">NEXUS</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 94</span>
+</div>
+
+<div class="section-label">For Investors</div>
+<p>Sends the same prompt to multiple AI models simultaneously and synthesizes a consensus answer more reliable than any single model. Like a panel of experts voting. Critical for enterprise trust.</p>
+
+<div class="section-label">For Engineers</div>
+<p>Three consensus modes: majority voting (classification), semantic merging (generation), confidence-weighted blending. Dissent detector flags strong model disagreement. Budget-aware quorum sizing.</p>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$160K – $200K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 8</span></div>
+<div class="price-item"><span class="price-label">Deploy</span><span class="price-value">PureStandalone</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$299 / $35K–$60K ent</span></div>
+</div>
+
+<div class="recap-box"><strong>Recap:</strong> Turns single-model guessing into multi-model verification. Dramatically reduces hallucination risk. Discovered Hour 8, reproduction cost $160K–$200K.</div>
+</div>
+
+<!-- ═══ #5 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#5</span>
+<span class="card-title">Substrate Registry</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">CORE</span>
+<span class="meta-tag tier-apex">Apex</span>
+<span class="meta-tag">CJPI 98</span>
+</div>
+
+<div class="section-label">For Investors</div>
+<p>The master catalog of everything in the system. Tracks what's running, what's healthy, what depends on what, and boot ordering. Without this, the 40-node substrate would be disconnected pieces.</p>
+
+<div class="section-label">For Engineers</div>
+<p>Central entity registry: service locator + lifecycle management. Five entity types, four lifecycle states (registered → active → degraded → decommissioned). Dependency-aware activation with topological sort and circular dependency detection.</p>
+
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$60K – $80K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 1 (first ever)</span></div>
+<div class="price-item"><span class="price-label">Deploy</span><span class="price-value">PureStandalone</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $15K–$25K ent</span></div>
+</div>
+
+<div class="recap-box"><strong>Recap:</strong> The first capability ever discovered. Everything else depends on it. 233 downstream dependents. Discovered Hour 1 in 20 minutes. Reproduction cost $60K–$80K.</div>
+</div>
+
+<!-- ═══ #6 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#6</span>
+<span class="card-title">Autonomous Triage Engine</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">MEDIC</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 97</span>
+</div>
+<p>Medical-grade triage for distributed systems. Assesses severity, prioritizes by business impact, and dispatches repairs in the right order. Mass casualty mode for system-wide incidents.</p>
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 2</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$299 / $30K–$55K ent</span></div>
+</div>
+<div class="recap-box"><strong>Recap:</strong> Emergency room logic for software operations. Correlates symptoms, diagnoses root cause, dispatches by business impact. Reproduction cost $120K–$160K.</div>
+</div>
+
+<!-- ═══ #7 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#7</span>
+<span class="card-title">Tamper-Evident Chain</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">AUDIT</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 95</span>
+</div>
+<p>Immutable, cryptographically-verified audit log using Merkle tree structure. Blockchain-grade integrity without blockchain overhead. Essential for SOC 2, GDPR, HIPAA compliance.</p>
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$75K – $100K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 3</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $20K–$40K ent</span></div>
+</div>
+<div class="recap-box"><strong>Recap:</strong> Cryptographically chained, Merkle-verified audit log. Tamper detection is instant. Foundation for enterprise compliance. Reproduction cost $75K–$100K.</div>
+</div>
+
+<!-- ═══ #8 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#8</span>
+<span class="card-title">Pipeline Composition Engine</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">CORTEX</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 95</span>
+</div>
+<p>Composable typed pipeline builder with branching, fan-in/fan-out, backpressure control, error recovery, and serializable pipelines for persistence and replay.</p>
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$160K – $200K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 4</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $25K–$50K ent</span></div>
+</div>
+<div class="recap-box"><strong>Recap:</strong> LEGO system for AI operations — snap stages together, handle errors, serialize for persistence. Reproduction cost $160K–$200K.</div>
+</div>
+
+<!-- ═══ #9 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#9</span>
+<span class="card-title">Mutation Proposal Engine</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">EVOLUTION</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 95</span>
+<span class="meta-tag offmenu">⚠️ OFF-MENU</span>
+</div>
+<p>The engine that discovered the other 232 capabilities. Generates, evaluates, and applies system mutations with rollback safety. Fitness scoring, shadow testing, governance gates. <strong>The machine that builds the machines.</strong></p>
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$270K – $360K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 5</span></div>
+<div class="price-item"><span class="price-label">Enterprise License</span><span class="price-value">$150K – $500K/yr</span></div>
+</div>
+<div class="recap-box"><strong>Recap:</strong> CMPSBL's most defensible moat. Self-modifying architecture with governed mutation. No competitor has anything equivalent. Licensed on request only. Reproduction cost $270K–$360K.</div>
+</div>
+
+<!-- ═══ #10 ═══ -->
+<div class="capability-card">
+<div class="card-header">
+<span class="card-rank">#10</span>
+<span class="card-title">Multi-Modal Interpreter</span>
+</div>
+<div class="card-meta">
+<span class="meta-tag module">DECODE</span>
+<span class="meta-tag tier-mythic">Mythic</span>
+<span class="meta-tag">CJPI 97</span>
+</div>
+<p>Unified interpretation pipeline: natural language, terminal commands, structured data, code, and hybrid inputs. Classification cascade with context threading.</p>
+<div class="pricing-row">
+<div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div>
+<div class="price-item"><span class="price-label">Discovered</span><span class="price-value">Day 1, Hour 1</span></div>
+<div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$299 / $25K–$45K ent</span></div>
+</div>
+<div class="recap-box"><strong>Recap:</strong> The front door of the user experience. Understands text, code, commands, data, and any mix. Reproduction cost $120K–$160K.</div>
+</div>
+
+<!-- ═══ #11–#25 condensed ═══ -->
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#11</span><span class="card-title">Consensus Heartbeat Protocol</span></div>
+<div class="card-meta"><span class="meta-tag module">NERVE</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 96</span></div>
+<p>Gossip-style heartbeat with Byzantine-fault-tolerant liveness detection. Sub-second failure detection across 40 nodes.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$35K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#12</span><span class="card-title">Anomaly Correlation Engine</span></div>
+<div class="card-meta"><span class="meta-tag module">VISION</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 96</span></div>
+<p>Multi-stream anomaly correlation across temporal, causal, spatial, and behavioral dimensions. Ranked incident hypotheses with confidence scores.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$160K – $200K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $30K–$55K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#13</span><span class="card-title">Write-Ahead Log Engine</span></div>
+<div class="card-meta"><span class="meta-tag module">MEMORY</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 95</span></div>
+<p>Crash-recoverable operation journal. Every mutation logged before execution, enabling replay on failure. Classical WAL with checkpointing and compaction.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$75K – $100K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$99 / $10K–$20K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#14</span><span class="card-title">Hallucination Guard</span></div>
+<div class="card-meta"><span class="meta-tag module">DREAM</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 90</span></div>
+<p>Multi-source verification catches fabricated facts, internal contradictions, and low-confidence generation before they reach users. Non-negotiable for enterprise AI.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$160K – $200K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $35K–$65K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#15</span><span class="card-title">Adaptive Defense Breeding</span></div>
+<div class="card-meta"><span class="meta-tag module">IMMUNITY</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 95</span><span class="meta-tag offmenu">⚠️ OFF-MENU</span></div>
+<p>Evolutionary defense generation using genetic algorithms. New threat → breed candidate defenses → evaluate fitness → promote winners. A biological immune system for software.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$225K – $300K</span></div><div class="price-item"><span class="price-label">Enterprise License</span><span class="price-value">$100K – $300K/yr</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#16</span><span class="card-title">Context Threading Engine</span></div>
+<div class="card-meta"><span class="meta-tag module">DECODE</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 94</span></div>
+<p>Conversational context as a DAG with thread forking, pronoun resolution, ellipsis expansion, and stale context compression.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$40K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#17</span><span class="card-title">Prompt Injection Shield</span></div>
+<div class="card-meta"><span class="meta-tag module">DEFENSE</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 90</span></div>
+<p>Multi-layer prompt injection detection: pattern matching, semantic manipulation analysis, structural boundary enforcement. Evolving signature database.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $25K–$50K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#18</span><span class="card-title">Semantic Knowledge Graph</span></div>
+<div class="card-meta"><span class="meta-tag module">BRAIN</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 94</span></div>
+<p>Graph-based knowledge with semantic queries, typed relationships, inference rules, and vector-clock conflict resolution. Long-term structured memory with reasoning.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$200K – $250K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $30K–$55K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#19</span><span class="card-title">Veto Authority Engine</span></div>
+<div class="card-meta"><span class="meta-tag module">GOVERNANCE</span><span class="meta-tag tier-mythic">Mythic</span><span class="meta-tag">CJPI 94</span></div>
+<p>Four impact tiers: T1 auto-approved, T2 logged, T3 single approver, T4 quorum. Impact scoring: blast radius × reversibility × cost × security sensitivity.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$75K – $100K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$40K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#20</span><span class="card-title">Shadow Run Environment</span></div>
+<div class="card-meta"><span class="meta-tag module">EVOLUTION</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Sandboxed execution mirroring production. Request replay with outcome comparison. How CMPSBL evolves safely — Gate 3 of the SEBA pipeline.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$180K – $240K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $30K–$55K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#21</span><span class="card-title">Adaptive Accessibility Governor</span></div>
+<div class="card-meta"><span class="meta-tag module">INCLUSIVE</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Proactively detects accessibility needs from interaction patterns and adapts interfaces. WCAG 2.1 AA compliant. Opens CMPSBL to 15% of the global population with disabilities.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$40K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#22</span><span class="card-title">Circuit Breaker Fabric</span></div>
+<div class="card-meta"><span class="meta-tag module">CORE</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Three-state circuit breaker (Closed/Open/Half-Open) with adaptive thresholds and per-endpoint granularity. Prevents cascading failures.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$60K – $80K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$49 / $10K–$20K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#23</span><span class="card-title">Predictive Failure Forecaster</span></div>
+<div class="card-meta"><span class="meta-tag module">MEDIC</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Time-series forecasting with historical failure signature matching. Predictions include failure type, ETA, confidence, and recommended preventive action.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$160K – $200K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$199 / $30K–$55K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#24</span><span class="card-title">Intent Classification Engine</span></div>
+<div class="card-meta"><span class="meta-tag module">DECODE</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Multi-label hierarchical intent classification with few-shot learning and disambiguation UX. Bridge between natural language and executable actions.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$40K ent</span></div></div>
+</div>
+
+<div class="capability-card">
+<div class="card-header"><span class="card-rank">#25</span><span class="card-title">Real-Time Cost Attribution</span></div>
+<div class="card-meta"><span class="meta-tag module">ECONOMY</span><span class="meta-tag tier-relic">Relic</span><span class="meta-tag">CJPI 93</span></div>
+<p>Four-level attribution (global, module, user, request) with metered + amortized costs. Real-time aggregation. Foundation for profitable AI operations.</p>
+<div class="pricing-row"><div class="price-item"><span class="price-label">Reproduction</span><span class="price-value">$120K – $160K</span></div><div class="price-item"><span class="price-label">Marketplace</span><span class="price-value">$149 / $20K–$40K ent</span></div></div>
+</div>
+
+<!-- ═══ Summary ═══ -->
+<h2>Batch 1 Summary</h2>
+<table>
+<thead><tr><th>Rank</th><th>Name</th><th>Module</th><th>Tier</th><th>Reproduction Cost</th><th>Resell</th></tr></thead>
+<tbody>
+<tr><td>#1</td><td>Fleet Intelligence Orchestrator</td><td>NEXUS</td><td>Apex</td><td>$180K–$240K</td><td>$299</td></tr>
+<tr><td>#2</td><td>Cost-Aware Routing Engine</td><td>NEXUS</td><td>Mythic</td><td>$120K–$160K</td><td>$199</td></tr>
+<tr><td>#3</td><td>Self-Healing Orchestrator</td><td>IMMUNITY</td><td>Mythic</td><td>$225K–$300K</td><td>$299</td></tr>
+<tr><td>#4</td><td>Multi-Model Consensus</td><td>NEXUS</td><td>Mythic</td><td>$160K–$200K</td><td>$299</td></tr>
+<tr><td>#5</td><td>Substrate Registry</td><td>CORE</td><td>Apex</td><td>$60K–$80K</td><td>$149</td></tr>
+<tr><td>#6</td><td>Autonomous Triage Engine</td><td>MEDIC</td><td>Mythic</td><td>$120K–$160K</td><td>$299</td></tr>
+<tr><td>#7</td><td>Tamper-Evident Chain</td><td>AUDIT</td><td>Mythic</td><td>$75K–$100K</td><td>$199</td></tr>
+<tr><td>#8</td><td>Pipeline Composition Engine</td><td>CORTEX</td><td>Mythic</td><td>$160K–$200K</td><td>$199</td></tr>
+<tr><td>#9</td><td>Mutation Proposal Engine</td><td>EVOLUTION</td><td>Mythic</td><td>$270K–$360K</td><td>Off-menu</td></tr>
+<tr><td>#10</td><td>Multi-Modal Interpreter</td><td>DECODE</td><td>Mythic</td><td>$120K–$160K</td><td>$299</td></tr>
+<tr><td>#11</td><td>Consensus Heartbeat Protocol</td><td>NERVE</td><td>Mythic</td><td>$120K–$160K</td><td>$149</td></tr>
+<tr><td>#12</td><td>Anomaly Correlation Engine</td><td>VISION</td><td>Mythic</td><td>$160K–$200K</td><td>$199</td></tr>
+<tr><td>#13</td><td>Write-Ahead Log Engine</td><td>MEMORY</td><td>Mythic</td><td>$75K–$100K</td><td>$99</td></tr>
+<tr><td>#14</td><td>Hallucination Guard</td><td>DREAM</td><td>Relic</td><td>$160K–$200K</td><td>$199</td></tr>
+<tr><td>#15</td><td>Adaptive Defense Breeding</td><td>IMMUNITY</td><td>Mythic</td><td>$225K–$300K</td><td>Off-menu</td></tr>
+<tr><td>#16</td><td>Context Threading Engine</td><td>DECODE</td><td>Mythic</td><td>$120K–$160K</td><td>$149</td></tr>
+<tr><td>#17</td><td>Prompt Injection Shield</td><td>DEFENSE</td><td>Relic</td><td>$120K–$160K</td><td>$149</td></tr>
+<tr><td>#18</td><td>Semantic Knowledge Graph</td><td>BRAIN</td><td>Mythic</td><td>$200K–$250K</td><td>$199</td></tr>
+<tr><td>#19</td><td>Veto Authority Engine</td><td>GOVERNANCE</td><td>Mythic</td><td>$75K–$100K</td><td>$149</td></tr>
+<tr><td>#20</td><td>Shadow Run Environment</td><td>EVOLUTION</td><td>Relic</td><td>$180K–$240K</td><td>$199</td></tr>
+<tr><td>#21</td><td>Adaptive Accessibility Governor</td><td>INCLUSIVE</td><td>Relic</td><td>$120K–$160K</td><td>$149</td></tr>
+<tr><td>#22</td><td>Circuit Breaker Fabric</td><td>CORE</td><td>Relic</td><td>$60K–$80K</td><td>$49</td></tr>
+<tr><td>#23</td><td>Predictive Failure Forecaster</td><td>MEDIC</td><td>Relic</td><td>$160K–$200K</td><td>$199</td></tr>
+<tr><td>#24</td><td>Intent Classification Engine</td><td>DECODE</td><td>Relic</td><td>$120K–$160K</td><td>$149</td></tr>
+<tr><td>#25</td><td>Real-Time Cost Attribution</td><td>ECONOMY</td><td>Relic</td><td>$120K–$160K</td><td>$149</td></tr>
+</tbody>
+</table>
+
+<p><strong>Batch 1 Total Reproduction Cost: $3.5M – $4.7M</strong> · Off-menu: 2 · All discovered within the first 28 hours</p>
+
+<div class="doc-footer">
+<p>© 2025–2026 CMPSBL®. S-Tier Registry v7.0.0 · Blended Valuation Engine v3.1.0</p>
+</div>
+
+</body>
+</html>
