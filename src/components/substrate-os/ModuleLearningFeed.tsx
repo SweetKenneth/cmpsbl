@@ -50,7 +50,7 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
   ripple: Zap,
   access: Lock,
   inclusive: Accessibility,
-  modernizer: RefreshCw,
+  evolution: RefreshCw,
   system: Settings,
   decode: FileText,
   autoblog: TrendingUp,
