@@ -85,7 +85,7 @@ export function HowCmpsblWorks() {
           {/* What the OS manages */}
           <div className="text-center mb-4">
             <p className="text-sm text-muted-foreground">
-              The 40-node matrix orchestrates intelligence across your application:
+              The substrate orchestrates intelligence across your application:
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

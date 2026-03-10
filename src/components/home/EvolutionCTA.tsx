@@ -154,7 +154,7 @@ export function EvolutionCTA() {
                 </Button>
                 <Button asChild size="lg" variant="outline" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-semibold border-border/40 hover:border-primary/30 transition-colors">
                   <Link to="/developers/guide">
-                    Not a vibe coder? Use SDK
+                    Integrate via SDK
                   </Link>
                 </Button>
               </div>
