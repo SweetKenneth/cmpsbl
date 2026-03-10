@@ -1,9 +1,12 @@
 /**
- * Foundry Pricing Engine — Client-side interface for commercialization pricing
- * Calls the pf-nexus-pricing edge function for Claude-backed market analysis
- * Falls back to local estimation when Claude is unavailable
+ * Foundry Pricing Engine — Client-side interface for consensus commercialization pricing
+ * Calls the pf-nexus-pricing edge function for multi-model market analysis
+ * Falls back to local estimation when all providers are unavailable
  */
 import { supabase } from '@/integrations/supabase/client';
+import type { PricingEvidence, ProviderEstimate } from './consensus-pricing';
+
+export type { PricingEvidence, ProviderEstimate };
 
 export interface CommercializationPricing {
   recommended_resale_price: number;
@@ -17,7 +20,9 @@ export interface CommercializationPricing {
   comparable_summary: string;
   suggested_marketplaces: string[];
   commercialization_notes: string;
-  pricing_source: 'claude-haiku' | 'local' | 'local-fallback';
+  pricing_source: 'consensus' | 'partial-consensus' | 'single-provider' | 'claude-haiku' | 'local' | 'local-fallback';
+  pricing_source_version?: string;
+  pricing_evidence?: PricingEvidence;
 }
 
 export interface PricingArtifact {
@@ -32,7 +37,7 @@ export interface PricingArtifact {
 }
 
 /**
- * Price a single artifact via the NEXUS pricing engine
+ * Price a single artifact via the NEXUS consensus pricing engine
  */
 export async function priceArtifact(artifact: PricingArtifact): Promise<CommercializationPricing> {
   try {
@@ -53,7 +58,7 @@ export async function priceArtifact(artifact: PricingArtifact): Promise<Commerci
     if (error) throw error;
     return data as CommercializationPricing;
   } catch (err) {
-    console.error('[PricingEngine] Failed, using local fallback:', err);
+    console.error('[PricingEngine] Consensus failed, using local fallback:', err);
     return computeLocalFallback(artifact);
   }
 }
@@ -77,6 +82,7 @@ export async function batchReprice(
           action: 'batch-reprice',
           artifacts: batch.map(a => ({
             vault_id: a.vault_id,
+            source_table: a.source_table,
             pipeline_name: a.pipeline_name,
             pipeline_score: a.pipeline_score,
             pipeline_tier: a.pipeline_tier,
@@ -130,10 +136,11 @@ function computeLocalFallback(artifact: PricingArtifact): CommercializationPrici
     estimated_market_range_high: Math.round(recommended * 2 * 100) / 100,
     pricing_confidence: 0.3,
     market_category: 'Software Tool',
-    comparable_summary: 'Local estimate — enable Claude Haiku for market-grounded pricing.',
+    comparable_summary: 'Local estimate — enable consensus pricing for market-grounded analysis.',
     suggested_marketplaces: score >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad'],
     commercialization_notes: 'Fallback pricing from internal signals only.',
     pricing_source: 'local-fallback',
+    pricing_source_version: '2.0.0',
   };
 }
 
@@ -150,7 +157,22 @@ export function formatPrice(amount: number): string {
  * Get confidence label
  */
 export function confidenceLabel(confidence: number): string {
-  if (confidence >= 0.8) return 'High';
-  if (confidence >= 0.5) return 'Medium';
+  if (confidence >= 0.7) return 'High';
+  if (confidence >= 0.4) return 'Medium';
   return 'Low';
+}
+
+/**
+ * Get pricing source display label
+ */
+export function pricingSourceLabel(source: string): string {
+  switch (source) {
+    case 'consensus': return 'Multi-Model Consensus';
+    case 'partial-consensus': return 'Partial Consensus';
+    case 'single-provider': return 'Single Provider';
+    case 'claude-haiku': return 'Claude Haiku';
+    case 'local': return 'Internal Estimate';
+    case 'local-fallback': return 'Local Fallback';
+    default: return source;
+  }
 }
