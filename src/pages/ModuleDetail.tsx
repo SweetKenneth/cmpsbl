@@ -266,10 +266,10 @@ export default function ModuleDetail() {
             <h2 className="text-3xl font-bold mb-4">Ready to build with {mod.name}?</h2>
             <p className="text-muted-foreground mb-8">Start for free. No credit card required.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Button asChild size="lg" className="rounded-xl">
-                <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              <Button asChild size="lg" className="rounded-xl gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4" /></Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl">
+              <Button asChild variant="outline" size="lg" className="rounded-xl hover:border-primary/30 transition-all">
                 <Link to="/modules">Explore All Nodes</Link>
               </Button>
             </div>
