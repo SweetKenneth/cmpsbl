@@ -1,6 +1,6 @@
 /**
  * S-Tier 203 — Legacy Transcoding Bridge (SYN15)
- * ID: S-SYN15 | CJPI: 92 | Module: MODERNIZER×ENCODE
+ * ID: S-SYN15 | CJPI: 92 | Module: EVOLUTION×ENCODE
  */
 export class LegacyTranscodingBridge {
   private codecs: Map<string, { decode: (input: string) => Record<string, unknown>; encode: (input: Record<string, unknown>) => string }> = new Map();

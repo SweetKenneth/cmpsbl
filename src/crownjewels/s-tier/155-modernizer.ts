@@ -1,6 +1,6 @@
 /**
- * S-Tier 155 — MODERNIZER
- * ID: S-CJ113 | CJPI: 85 | Module: MODERNIZER
+ * S-Tier 155 — EVOLUTION
+ * ID: S-CJ113 | CJPI: 85 | Module: EVOLUTION
  * Automated modernization engine for legacy system transformation.
  */
 

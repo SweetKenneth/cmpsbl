@@ -165,7 +165,7 @@ function useCopyToClipboard() {
   return { copy, copiedId };
 }
 
-export function ModernizerTab({ enabled }: ModernizerTabProps) {
+export function ModernizerTab({ enabled }: EvolutionTabProps) {
   const queryClient = useQueryClient();
   const { copy, copiedId } = useCopyToClipboard();
   const [selectedScope, setSelectedScope] = useState('all');
