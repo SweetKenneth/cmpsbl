@@ -611,9 +611,9 @@ const stratumFormation: Specimen[] = [
     id: "FORM-001",
     fossilized: "2026-02-13",
     origin: "architecture",
-    stimulus: "The system needed formal infrastructure separation — modules existed without a named organizational layer",
+    stimulus: "The system needed formal infrastructure separation — nodes existed without a named organizational layer",
     adaptations: [
-      "Infrastructure layer formalized with dedicated modules for memory, messaging, auditing, identity, economics, and sandboxing",
+      "Infrastructure layer formalized with dedicated nodes for memory, messaging, auditing, identity, economics, and sandboxing",
       "Orchestration layer gained a dedicated encoding module",
       "Legacy version references consolidated and unified",
     ],
