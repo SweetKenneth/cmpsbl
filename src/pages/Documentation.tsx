@@ -199,7 +199,7 @@ Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)`}</CodeBlock>
 
       {/* Core systems grid */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Core Systems</h3>
+        <h3 className="font-semibold text-foreground mb-4">Core Nodes</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
