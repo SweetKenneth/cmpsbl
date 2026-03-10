@@ -228,7 +228,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'adaptive-ui',
     name: 'Adaptive UI',
-    description: 'INCLUSIVE scan informs MODERNIZER fixes and DECODE personalization',
+    description: 'INCLUSIVE scan informs EVOLUTION fixes and DECODE personalization',
     category: 'accessibility',
     modules: [
       { name: 'INCLUSIVE', role: 'primary', required: true },
