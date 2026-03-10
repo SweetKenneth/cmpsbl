@@ -160,7 +160,7 @@ export const evolutionCommands = {
       changes,
       health_before: {
         overall_score: 0.95,
-        module_health: { modernizer: 100, system: 100 },
+        module_health: { evolution: 100, system: 100 },
         error_count: 0,
         warning_count: 0,
       },

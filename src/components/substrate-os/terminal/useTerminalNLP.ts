@@ -352,7 +352,7 @@ export function suggestFromContext(
   });
   
   // Add common quick commands
-  const quickCommands = ['system.status', 'vision.pulse', 'brain.reflect', 'modernizer.status'];
+  const quickCommands = ['system.status', 'vision.pulse', 'brain.reflect', 'evolution.status'];
   quickCommands.forEach(qc => {
     const cmd = ALL_COMMANDS.find(c => c.command === qc);
     if (cmd && !suggestions.includes(cmd)) {
