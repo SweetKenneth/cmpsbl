@@ -197,7 +197,7 @@ const LayerCard = memo(function LayerCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="border-border/20 bg-card/50 backdrop-blur-sm">
+      <Card className="border-border/20 bg-card/50 backdrop-blur-sm glass-edge card-lift transition-all duration-300">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -259,7 +259,7 @@ export default function SystemIntegrity() {
 
       <PublicNav />
 
-      <div className="container mx-auto px-4 py-8 max-w-5xl space-y-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-5xl space-y-6 sm:space-y-8">
         {/* Header */}
         <motion.div 
           className="space-y-2"
@@ -271,13 +271,13 @@ export default function SystemIntegrity() {
               <Shield className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">System Integrity</h1>
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight">System Integrity</h1>
               <p className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-widest">
                 40 Nodes · 12 Sectors · {breakerSummary.totalTrips} total trips
               </p>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground max-w-2xl">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
             Real-time structural health of the CMPSBL substrate. Each node reports availability, correctness, and performance 
             through the 3-lane integrity model. Circuit breakers protect against cascade failures.
           </p>

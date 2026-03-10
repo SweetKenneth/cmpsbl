@@ -136,7 +136,7 @@ export default function CurrentProjects() {
       <PublicNav />
 
       {/* Hero */}
-      <section className="relative overflow-hidden py-20 md:py-28 px-4">
+      <section className="relative overflow-hidden py-16 sm:py-20 md:py-28 px-3 sm:px-4">
         <div className="absolute inset-0 bg-[var(--gradient-mesh)] opacity-40" />
         <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 30% 40%, hsl(var(--primary) / 0.08), transparent 60%)" }} />
         
@@ -151,11 +151,11 @@ export default function CurrentProjects() {
             CMPSBL ECOSYSTEM
           </Badge>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-[1.1] mb-6">
-            Current Projects
+           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-foreground leading-[1.1] mb-4 sm:mb-6">
+             Current Projects
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             The CMPSBL ecosystem spans cognitive infrastructure, self-hosted deployment via <span className="text-foreground font-semibold">LNCHBL</span>, 
             security, accessibility, and autonomous AI. Nine live products. 100+ projects shipped over 15 years.
           </p>
@@ -163,8 +163,8 @@ export default function CurrentProjects() {
       </section>
 
       {/* Projects Grid */}
-      <section className="container mx-auto px-4 pb-20 max-w-6xl">
-        <div className="grid gap-6 md:grid-cols-2">
+       <section className="container mx-auto px-3 sm:px-4 pb-16 sm:pb-20 max-w-6xl">
+         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
@@ -176,7 +176,7 @@ export default function CurrentProjects() {
                 className="group h-full glass-edge card-lift cursor-pointer border-border/40 hover:border-primary/40 transition-all duration-300 overflow-hidden"
                 onClick={() => project.external ? window.open(project.href, "_blank") : navigate(project.href)}
               >
-                <CardContent className="p-6 flex flex-col h-full">
+                <CardContent className="p-4 sm:p-6 flex flex-col h-full">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -218,12 +218,12 @@ export default function CurrentProjects() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-4 border-t border-border/30 bg-gradient-to-b from-muted/10 to-background">
-        <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-black mb-4 text-foreground">Want to Build Together?</h2>
-          <p className="text-lg text-muted-foreground mb-8">100+ projects shipped over 15 years. Join us.</p>
+       <section className="py-12 sm:py-16 px-3 sm:px-4 border-t border-border/30 bg-gradient-to-b from-muted/10 to-background">
+         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
+           <h2 className="text-2xl sm:text-3xl font-black mb-3 sm:mb-4 text-foreground">Want to Build Together?</h2>
+           <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">100+ projects shipped over 15 years. Join us.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2">
+            <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2 shadow-lg shadow-primary/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
               Investor Information <ArrowRight className="w-4 h-4" />
             </Button>
             <Button size="lg" variant="outline" onClick={() => navigate('/roadmap')}>View Roadmap</Button>

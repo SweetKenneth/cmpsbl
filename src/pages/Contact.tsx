@@ -72,17 +72,17 @@ export default function Contact() {
       </div>
 
       {/* Hero */}
-      <section className="relative py-24 md:py-32 overflow-hidden">
+      <section className="relative py-20 sm:py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
         </div>
-        <div className="container mx-auto px-4 relative z-10 max-w-4xl">
+        <div className="container mx-auto px-3 sm:px-4 relative z-10 max-w-4xl">
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
               <Mail className="w-3 h-3 mr-2" />
               Get in Touch
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 text-foreground tracking-tight">
               Talk to the CMPSBL Team
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
@@ -93,16 +93,16 @@ export default function Contact() {
       </section>
 
       {/* Departments */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-6xl">
+       <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
+         <div className="container mx-auto max-w-6xl">
           <motion.div {...fadeUp} className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Reach the Right Team</h2>
             <p className="text-muted-foreground text-sm sm:text-base">Connect directly with the department that can help you most.</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {DEPARTMENTS.map((dept, index) => (
-              <motion.div key={dept.name} {...stagger(index * 0.06)}>
-                <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300">
+               <motion.div key={dept.name} {...stagger(index * 0.06)}>
+                 <Card className="h-full border-border/50 bg-card/50 backdrop-blur-sm glass-edge card-lift hover:border-primary/30 transition-all duration-300">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -131,13 +131,13 @@ export default function Contact() {
       </section>
 
       {/* Contact Form */}
-      <section className="py-16 px-4 relative z-10">
-        <div className="container mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+       <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
+         <div className="container mx-auto max-w-5xl">
+           <div className="grid md:grid-cols-2 gap-6 md:gap-12">
             <div className="space-y-6">
-              <motion.div {...stagger(0)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-                  <CardContent className="p-8">
+               <motion.div {...stagger(0)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
+                   <CardContent className="p-5 sm:p-8">
                     <Mail className="w-10 h-10 text-primary mb-4" />
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">General Contact</h2>
                     <div className="space-y-4">
@@ -154,10 +154,10 @@ export default function Contact() {
                 </Card>
               </motion.div>
 
-              <motion.div {...stagger(0.1)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-                  <CardContent className="p-8">
-                    <MessageSquare className="w-10 h-10 text-primary mb-4" />
+               <motion.div {...stagger(0.1)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
+                   <CardContent className="p-5 sm:p-8">
+                     <MessageSquare className="w-8 h-8 sm:w-10 sm:h-10 text-primary mb-3 sm:mb-4" />
                     <h2 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">What to Expect</h2>
                     <ul className="space-y-3">
                       {["Response time: Within 24-48 hours", "Dedicated team support for all inquiries", "Technical docs and demos available on request"].map((text, i) => (
@@ -171,10 +171,10 @@ export default function Contact() {
                 </Card>
               </motion.div>
 
-              <motion.div {...stagger(0.2)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
+               <motion.div {...stagger(0.2)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
+                   <CardContent className="p-5 sm:p-8">
+                     <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-foreground">Connect With Us</h3>
                     <div className="space-y-3">
                       {[
                         { href: "https://x.com/cmpsbl", label: "Twitter / X", icon: "𝕏" },
@@ -193,9 +193,9 @@ export default function Contact() {
               </motion.div>
             </div>
 
-            <motion.div {...stagger(0.1)} id="contact-form">
-              <Card className="border-border/50 bg-card/50 backdrop-blur-sm shadow-xl shadow-primary/[0.03]">
-                <CardContent className="p-8">
+             <motion.div {...stagger(0.1)} id="contact-form">
+               <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge shadow-xl shadow-primary/[0.03]">
+                 <CardContent className="p-5 sm:p-8">
                   <h2 className="text-xl sm:text-2xl font-bold mb-6 text-foreground">Send Us a Message</h2>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
@@ -222,7 +222,7 @@ export default function Contact() {
                       <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">Message *</label>
                       <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Tell us about your needs..." className="min-h-[150px]" />
                     </div>
-                    <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90 h-12 text-base font-semibold shadow-lg shadow-primary/20">
+                    <Button type="submit" disabled={isSubmitting} className="w-full bg-primary hover:bg-primary/90 h-12 text-base font-semibold shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all">
                       {isSubmitting ? "Sending..." : (<>Send Message<Send className="w-4 h-4 ml-2" /></>)}
                     </Button>
                   </form>

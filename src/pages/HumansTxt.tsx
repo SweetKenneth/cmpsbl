@@ -185,21 +185,21 @@ export default function HumansTxt() {
             style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }} />
         </div>
 
-        <div className="container mx-auto px-4 pt-24 pb-16 max-w-4xl relative z-10">
+        <div className="container mx-auto px-3 sm:px-4 pt-20 sm:pt-24 pb-12 sm:pb-16 max-w-4xl relative z-10">
           {/* Header */}
-          <motion.div className="mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div className="mb-10 sm:mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
               <Users className="w-3 h-3 text-primary" />
               <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline">humanstxt.org</a>
             </Badge>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
             <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
               Every system has its architects. The CMPSBL team — six engineers, researchers, and communicators — building cognitive infrastructure for AI.
             </p>
           </motion.div>
 
           {/* Section grid */}
-          <motion.div className="grid sm:grid-cols-2 gap-4 mb-12" variants={stagger} initial="hidden" animate="show">
+          <motion.div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mb-10 sm:mb-12" variants={stagger} initial="hidden" animate="show">
             {sections.map((section) => (
               <motion.div key={section.title} variants={fadeUp} className={section.title === 'Team' ? 'sm:col-span-2' : ''}>
                 <Card className="h-full border-border/30 bg-card/40 backdrop-blur-sm glass-edge hover:border-primary/20 transition-colors">
@@ -225,9 +225,9 @@ export default function HumansTxt() {
           </motion.div>
 
           {/* Philosophy quote */}
-          <motion.div className="mb-12 p-6 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <blockquote className="text-xl sm:text-2xl font-light italic text-foreground mb-2">
+           <motion.div className="mb-10 sm:mb-12 p-5 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
+             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <blockquote className="text-lg sm:text-xl md:text-2xl font-light italic text-foreground mb-2">
               "Building the infrastructure layer for autonomous AI systems."
             </blockquote>
             <p className="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest">The substrate mission</p>

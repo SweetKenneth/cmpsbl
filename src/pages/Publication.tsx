@@ -116,7 +116,7 @@ export default function Publication() {
 
       <main className="relative z-10">
         {/* ═══════════ HERO ═══════════ */}
-        <section className="container mx-auto px-6 pt-28 pb-12 md:pt-36 md:pb-16">
+        <section className="container mx-auto px-4 sm:px-6 pt-20 sm:pt-28 pb-10 sm:pb-12 md:pt-36 md:pb-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial="hidden"
@@ -135,7 +135,7 @@ export default function Publication() {
               </Badge>
             </motion.div>
 
-            <motion.h1 variants={fadeUp} custom={1} className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-4">
+            <motion.h1 variants={fadeUp} custom={1} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-4">
               CMPSBL® Substrate OS
             </motion.h1>
 
@@ -212,7 +212,7 @@ export default function Publication() {
         </section>
 
         {/* ═══════════ ABSTRACT ═══════════ */}
-        <section className="container mx-auto px-6 py-12">
+         <section className="container mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
@@ -247,7 +247,7 @@ export default function Publication() {
         </section>
 
         {/* ═══════════ SYSTEM METRICS ═══════════ */}
-        <section className="container mx-auto px-6 py-12">
+        <section className="container mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <motion.div
             className="max-w-4xl mx-auto"
             initial="hidden"
@@ -277,7 +277,7 @@ export default function Publication() {
         </div>
 
         {/* ═══════════ PRIOR ART CLAIMS ═══════════ */}
-        <section className="container mx-auto px-6 py-16">
+         <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
@@ -317,7 +317,7 @@ export default function Publication() {
         </div>
 
         {/* ═══════════ DOCUMENT INDEX ═══════════ */}
-        <section className="container mx-auto px-6 py-16">
+         <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial="hidden"
@@ -397,7 +397,7 @@ export default function Publication() {
         </div>
 
         {/* ═══════════ CITATIONS ═══════════ */}
-        <section className="container mx-auto px-6 py-16">
+         <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
@@ -447,7 +447,7 @@ export default function Publication() {
         </div>
 
         {/* ═══════════ IP NOTICE ═══════════ */}
-        <section className="container mx-auto px-6 py-16">
+        <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
@@ -491,7 +491,7 @@ export default function Publication() {
         </section>
 
         {/* ═══════════ CTA ═══════════ */}
-        <section className="container mx-auto px-6 pt-4 pb-20">
+        <section className="container mx-auto px-4 sm:px-6 pt-4 pb-16 sm:pb-20">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}

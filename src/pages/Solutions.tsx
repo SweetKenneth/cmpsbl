@@ -111,7 +111,7 @@ export default function Solutions() {
       <PublicNav />
 
       {/* Hero */}
-      <section className="relative py-24 md:py-32 overflow-hidden">
+      <section className="relative py-20 sm:py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
           <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px]" />
@@ -124,8 +124,8 @@ export default function Solutions() {
               40 Nodes · 12 Sectors · 675+ Capabilities
             </Badge>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-foreground">
-              Everything Your AI{" "}
+             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
+               Everything Your AI{" "}
               <span style={{
                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                 WebkitBackgroundClip: "text",
@@ -151,17 +151,17 @@ export default function Solutions() {
       </section>
 
       {/* Solutions Grid */}
-      <section className="py-16 px-4 relative z-10">
+      <section className="py-12 sm:py-16 px-3 sm:px-4 relative z-10">
         <div className="container mx-auto max-w-6xl space-y-6">
           {solutions.map((solution, index) => (
             <motion.div key={solution.name} {...fadeUp} transition={{ duration: 0.5, delay: index * 0.05 }}>
-              <Card className="bg-card/80 backdrop-blur-sm border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group overflow-hidden">
-                <div className={`h-1 w-full bg-gradient-to-r ${solution.color}`} />
-                <CardContent className="p-5 sm:p-8 md:p-10">
+               <Card className="bg-card/80 backdrop-blur-sm border border-border glass-edge card-lift hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group overflow-hidden">
+                 <div className={`h-1 w-full bg-gradient-to-r ${solution.color} opacity-80`} />
+                <CardContent className="p-4 sm:p-6 md:p-10">
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-4 shadow-lg`}>
-                        <solution.icon className="w-7 h-7 text-white" />
+                       <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
+                         <solution.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                       </div>
                       <h2 className="text-xl sm:text-2xl font-black mb-2 text-foreground">{solution.name}</h2>
                       <p className="text-base sm:text-lg text-primary font-medium mb-4">{solution.tagline}</p>
@@ -171,9 +171,9 @@ export default function Solutions() {
                           <Badge key={metric} variant="outline" className="text-xs font-mono">{metric}</Badge>
                         ))}
                       </div>
-                      <Link to={solution.link}>
-                        <Button className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all">
-                          Learn More <ArrowRight className="w-4 h-4" />
+                       <Link to={solution.link}>
+                         <Button className="bg-primary hover:bg-primary/90 min-h-[44px] gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                           Learn More <ArrowRight className="w-4 h-4" />
                         </Button>
                       </Link>
                     </div>
