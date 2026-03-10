@@ -164,7 +164,7 @@ export function HeroMetaSubstrate() {
   return (
     <section 
       aria-label="CMPSBL hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
     >
       <HeroBackground />
 
@@ -191,7 +191,7 @@ export function HeroMetaSubstrate() {
             
             {/* CMPSBL — massive wordmark */}
             <h1 
-              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
+              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
             >
               <span 
                 className="inline-block clockless-river-text"
@@ -226,7 +226,7 @@ export function HeroMetaSubstrate() {
               <p className="text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground/80 tracking-tight leading-snug">
                 Where machines learn to
               </p>
-              <div className="mt-1 text-3xl sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
+              <div className="mt-1 text-[1.75rem] sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
                 <TypedText 
                   texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
@@ -403,7 +403,7 @@ export function HeroMetaSubstrate() {
           transition={{ delay: 0.85 }}
           className="mb-6 sm:mb-10"
         >
-          <div className="flex items-center justify-center gap-0 overflow-x-auto scrollbar-hide py-2">
+          <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
             {[
               "Signal",
               "Memory Stream",
@@ -413,11 +413,11 @@ export function HeroMetaSubstrate() {
               "Applications",
             ].map((step, i, arr) => (
               <div key={step} className="flex items-center shrink-0">
-                <div className="px-3 py-1.5 rounded-lg border border-border/25 bg-card/30 backdrop-blur-sm">
-                  <span className="text-[10px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30 backdrop-blur-sm">
+                  <span className="text-[9px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
                 </div>
                 {i < arr.length - 1 && (
-                  <span className="text-muted-foreground/30 text-xs font-bold px-1.5">→</span>
+                  <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
                 )}
               </div>
             ))}
@@ -436,7 +436,7 @@ export function HeroMetaSubstrate() {
             <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
             <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
             <AnimatedStat value={107} suffix="K" label="Crystallized" delay={0} />
-            <AnimatedStat value={38} label="Stream Nodes" delay={1} />
+            <AnimatedStat value={40} label="Stream Nodes" delay={1} />
             <AnimatedStat value={95} suffix="+" label="Apex Tier" delay={2} />
             <AnimatedStat value={9} label="Capability Domains" delay={3} />
           </div>

@@ -148,7 +148,7 @@ export default function Explore() {
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
-      <section className="relative z-10 px-4 py-16 sm:py-32 overflow-hidden">
+      <section className="relative z-10 px-3 sm:px-4 py-14 sm:py-32 overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
@@ -183,24 +183,24 @@ export default function Explore() {
             {/* Flowing accent at top */}
             <div className="h-[2px] memory-stream-bar opacity-70" />
 
-            <div className="relative p-7 sm:p-14 md:p-20 text-center">
+            <div className="relative p-5 sm:p-14 md:p-20 text-center">
               {/* Floating badge — CSS fade-in replaces motion */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
               </div>
               
-              <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
-              <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+              <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
                 Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 pipeline slots.
               </p>
               
               {/* Mini stats row */}
-              <div className="flex flex-wrap justify-center gap-6 sm:gap-12 mb-10">
+              <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
                  {[
                    { value: "40", label: "Substrate Nodes" },
                    { value: "24", label: "Pipeline Packs" },
@@ -208,21 +208,21 @@ export default function Explore() {
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                    <div className="text-2xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
+                     <div className="text-[9px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="relative px-10 h-14 sm:h-16 text-base sm:text-lg bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
+               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
                   <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Start Building — Free
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-8 h-14 sm:h-16 text-base sm:text-lg border-white/25 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
+                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/25 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/upgrade">
                     <Terminal className="w-5 h-5 mr-2" />
                     View Plans
