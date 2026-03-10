@@ -1115,7 +1115,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'feature_flag_governor',
     name: 'Feature Flag Governor',
     description: 'Manages feature flags with automatic rollback on error thresholds',
-    modules: ['MODERNIZER', 'VISION', 'DEFENSE'],
+    modules: ['EVOLUTION', 'VISION', 'DEFENSE'],
     layer: 'Admin',
     userBenefit: 'Safe feature releases with automatic guardrails',
     status: 'active',
