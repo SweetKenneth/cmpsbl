@@ -22,7 +22,7 @@ import {
   useSovereignStatusOS, useOracleStatusOS, useConscienceStatusOS, useTreatyStatusOS,
   useCompassStatusOS, useEchoStatusOS, useReflexStatusOS,
   useForgeStatusOS, useLinguaStatusOS, useHarvestStatusOS,
-  useEvolutionStatusOS, useShadowStatusOS, usePhantomStatusOS,
+  useShadowStatusOS, usePhantomStatusOS,
   useImmunityStatusOS, useIntentStatusOS, useGovernanceStatusOS,
   useMedicStatusOS, useNerveStatusOS,
 } from '@/hooks/useSubstrateOS';
