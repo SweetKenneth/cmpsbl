@@ -141,7 +141,7 @@ interface ScanResult {
   message: string;
 }
 
-interface ModernizerTabProps {
+interface EvolutionTabProps {
   enabled: boolean;
 }
 
