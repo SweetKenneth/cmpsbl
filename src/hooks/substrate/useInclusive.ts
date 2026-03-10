@@ -58,7 +58,7 @@ export function useInclusive(): UseInclusiveReturn {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer', 'status'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution', 'status'] });
     },
   });
   
@@ -66,7 +66,7 @@ export function useInclusive(): UseInclusiveReturn {
     mutationFn: (target: string) => inclusive.repair(target),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'inclusive'] });
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'modernizer'] });
+      queryClient.invalidateQueries({ queryKey: ['substrate', 'evolution'] });
     },
   });
   
