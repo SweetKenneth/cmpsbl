@@ -28,12 +28,12 @@ export interface JobsResult {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER COMMANDS
+// EVOLUTION COMMANDS
 // ═══════════════════════════════════════════════════════════════
 
-export const modernizerCommands = {
+export const evolutionCommands = {
   /**
-   * modernizer.status — Get current evolution status
+   * evolution.status — Get current evolution status
    */
   async status(): Promise<CommandResult> {
     const activeRun = await evolutionRuns.getActiveRun();
