@@ -661,7 +661,7 @@ class SubstrateClient {
     
     /** List recent substrate scans and improvement proposals */
     jobs: (limit?: number) =>
-      this.invoke({ module: 'modernizer', action: 'jobs', payload: { limit } }),
+      this.invoke({ module: 'evolution', action: 'jobs', payload: { limit } }),
     
     /** 
      * @deprecated Use evolve() instead - Unified Evolution Cycle
