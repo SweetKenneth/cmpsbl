@@ -8,7 +8,7 @@ interface EvolutionRun {
   phase: string | null;
   confidence_score: number | null;
   created_at: string;
-  title: string | null;
+  plan_id: string;
   risk_level: string | null;
 }
 
