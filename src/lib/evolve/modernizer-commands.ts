@@ -229,7 +229,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.evolve verify — Verify and complete evolution
+   * evolution.evolve verify — Verify and complete evolution
    */
   async evolveVerify(): Promise<CommandResult> {
     const run = await evolutionRuns.getActiveRun();
