@@ -27,6 +27,7 @@ interface LicenseInfo {
 export default function SubstrateLicensingSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
+  const tier = searchParams.get('tier');
   
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [license, setLicense] = useState<LicenseInfo | null>(null);
@@ -50,6 +51,18 @@ export default function SubstrateLicensingSuccess() {
 
         setLicense(data.license);
         setStatus('success');
+
+        // Send tier upgrade email
+        if (data.license?.email && tier) {
+          supabase.functions.invoke('tier-upgrade-email', {
+            body: {
+              email: data.license.email,
+              name: data.license.name || data.license.email?.split('@')[0],
+              tier,
+              previous_tier: 'builder',
+            },
+          }).catch(err => console.log('Upgrade email error:', err));
+        }
       } catch (err) {
         setStatus('error');
         setErrorMessage(err instanceof Error ? err.message : 'Failed to verify license');
@@ -57,7 +70,7 @@ export default function SubstrateLicensingSuccess() {
     };
 
     verifyLicense();
-  }, [sessionId]);
+  }, [sessionId, tier]);
 
   return (
     <>
