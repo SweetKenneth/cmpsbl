@@ -958,10 +958,12 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       <h3>Tier Classification</h3>
       <div class="quality-tier">${escapeHtml(tier)}</div>
       <p style="margin-top: 0.75rem; font-size: 0.82rem;">
-        ${tier === 'Apex' ? 'Apex tier represents the top ~5% of all discoveries — pipelines with exceptional quality, novelty, and practical utility.' :
-          tier === 'Enterprise' ? 'Enterprise tier pipelines demonstrate high quality and are suitable for production deployment in commercial environments.' :
-          tier === 'Architect' ? 'Architect tier pipelines show strong fundamentals and can serve as building blocks for larger systems.' :
-          'Creator tier pipelines provide functional capabilities suitable for development and experimentation.'}
+        ${tier === 'Apex' ? 'APEX tier represents the top ~1% — pipelines with exceptional quality, novelty, and practical utility. 4.0× CJPI multiplier.' :
+          tier === 'Mythic' ? 'MYTHIC tier pipelines demonstrate near-perfect quality and are prime candidates for enterprise licensing. 3.0× CJPI multiplier.' :
+          tier === 'Relic' ? 'RELIC tier pipelines show outstanding technical depth suitable for production deployment. 2.0× CJPI multiplier.' :
+          tier === 'Prime' ? 'PRIME tier pipelines offer strong commercial potential as standalone products. 1.5× CJPI multiplier.' :
+          tier === 'Mint' ? 'MINT tier pipelines provide solid functional capabilities ready for integration. 1.2× CJPI multiplier.' :
+          'RAW tier pipelines are functional building blocks suitable for development and experimentation. 1.0× CJPI multiplier.'}
       </p>
     </div>
   </div>
