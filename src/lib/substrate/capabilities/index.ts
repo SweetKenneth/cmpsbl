@@ -1095,7 +1095,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Prioritize safe migrations, defer risky ones',
     status: 'active',
-    emergentFrom: 'modernizer-risk-v7',
+    emergentFrom: 'evolution-risk-v7',
     riskLevel: 'low',
     executionMode: 'sync',
   },
