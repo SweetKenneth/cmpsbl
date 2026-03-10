@@ -761,7 +761,7 @@ class SubstrateClient {
     
     /** Validate plan readiness (Evolution Cycle) */
     validate: (plan_id: string) =>
-      this.invoke({ module: 'modernizer', action: 'validate', payload: { plan_id } }),
+      this.invoke({ module: 'evolution', action: 'validate', payload: { plan_id } }),
     
     /** View plan diff and health comparison (Evolution Cycle) */
     diff: (plan_id: string) =>
