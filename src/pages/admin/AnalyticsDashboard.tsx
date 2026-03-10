@@ -34,6 +34,7 @@ interface RealtimePulse {
   avg_pages_today: number;
   top_pages_now: { page: string; count: number }[];
   hourly_today: { hour: number; sessions: number }[];
+  page_times: { page: string; avg_time_ms: number; views: number }[];
 }
 
 interface CohortRow {
@@ -437,10 +438,41 @@ function PulseView({ data }: { data: RealtimePulse | null }) {
           <div className="space-y-2">
             {data.top_pages_now.map((p) => (
               <div key={p.page} className="flex items-center justify-between text-sm">
-                <span className="font-mono text-foreground/80">{p.page}</span>
-                <Badge variant="outline" className="font-mono text-xs">{p.count} views</Badge>
+                <span className="font-mono text-foreground/80 truncate max-w-[60%]">{p.page}</span>
+                <Badge variant="outline" className="font-mono text-xs shrink-0">{p.count} views</Badge>
               </div>
             ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Per-Page Time */}
+      {data.page_times?.length > 0 && (
+        <motion.div
+          className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-purple-400" /> Time Per Page (24h avg)
+          </h3>
+          <div className="space-y-2">
+            {data.page_times.map((p) => {
+              const secs = Math.round((p.avg_time_ms || 0) / 1000);
+              const mins = Math.floor(secs / 60);
+              const remainSecs = secs % 60;
+              const timeStr = mins > 0 ? `${mins}m ${remainSecs}s` : `${secs}s`;
+              return (
+                <div key={p.page} className="flex items-center justify-between text-xs gap-2">
+                  <span className="font-mono text-foreground/80 truncate min-w-0">{p.page}</span>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-mono text-muted-foreground">{p.views} views</span>
+                    <Badge variant="outline" className="font-mono text-xs tabular-nums">{timeStr}</Badge>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       )}
@@ -661,10 +693,10 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                   <th className="text-left py-2 text-muted-foreground font-medium">Fingerprint</th>
                   <th className="text-center py-2 text-muted-foreground font-medium">Score</th>
                   <th className="text-center py-2 text-muted-foreground font-medium">Risk</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Sessions</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden md:table-cell">Avg Pages</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
-                  <th className="text-right py-2 text-muted-foreground font-medium hidden lg:table-cell">7d Trend</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Sessions</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Avg Pages</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">Days Gone</th>
+                   <th className="text-right py-2 text-muted-foreground font-medium">7d Trend</th>
                 </tr>
               </thead>
               <tbody>
@@ -696,10 +728,10 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                         {v.risk_level}
                       </Badge>
                     </td>
-                    <td className="py-2 text-right font-mono text-foreground hidden md:table-cell">{v.total_sessions}</td>
-                    <td className="py-2 text-right font-mono text-muted-foreground hidden md:table-cell">{v.avg_pages}</td>
+                    <td className="py-2 text-right font-mono text-foreground">{v.total_sessions}</td>
+                    <td className="py-2 text-right font-mono text-muted-foreground">{v.avg_pages}</td>
                     <td className="py-2 text-right font-mono text-muted-foreground">{v.days_since_visit}d</td>
-                    <td className="py-2 text-right hidden lg:table-cell">
+                    <td className="py-2 text-right">
                       <span className="flex items-center justify-end gap-1 font-mono">
                         {trendIcon(v.recent_7d, v.prev_7d)}
                         <span className={cn(
@@ -936,8 +968,8 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
                     <Badge variant="outline" className="text-[9px] font-mono shrink-0">{f.category}</Badge>
                   </div>
                   <div className="flex items-center gap-4 text-xs shrink-0">
-                    <span className="text-muted-foreground hidden sm:inline">{f.unique_users} users</span>
-                    <span className="text-muted-foreground hidden sm:inline">{f.avg_per_user}/user</span>
+                    <span className="text-muted-foreground">{f.unique_users} users</span>
+                    <span className="text-muted-foreground">{f.avg_per_user}/user</span>
                     <div className="flex items-center gap-1">
                       {trendIcon(f.trend_7d, f.trend_prev_7d)}
                       <span className={cn("font-mono text-[10px]",
