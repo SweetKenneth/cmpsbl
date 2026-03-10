@@ -192,7 +192,7 @@ export default function HumansTxt() {
               <Users className="w-3 h-3 text-primary" />
               <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline">humanstxt.org</a>
             </Badge>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
             <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
               Every system has its architects. The CMPSBL team — six engineers, researchers, and communicators — building cognitive infrastructure for AI.
             </p>
