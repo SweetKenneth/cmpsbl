@@ -2750,8 +2750,8 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         return { success: false, output: '▓ ERROR: Run ID required\n  Usage: evolution.receipt <run_id>' };
       }
       try {
-        const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
-        const res = await modernizerCommands.receipt(args[0]);
+        const { evolutionCommands } = await import('@/lib/evolve/modernizer-commands');
+        const res = await evolutionCommands.receipt(args[0]);
         return { success: res.success, output: res.formatted || JSON.stringify(res.data, null, 2), data: res.data };
       } catch (err) {
         return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipt'}` };

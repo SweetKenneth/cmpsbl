@@ -394,4 +394,6 @@ export const evolutionCommands = {
   },
 };
 
-export default modernizerCommands;
+/** @deprecated Use evolutionCommands */
+export const modernizerCommands = evolutionCommands;
+export default evolutionCommands;
