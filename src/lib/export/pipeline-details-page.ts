@@ -382,8 +382,8 @@ function getSuggestedMarketplaces(score: number, category: string, tier: string)
 }
 
 function generateSealSVG(score: number, tier: string): string {
-  const tierColor = tier === 'Apex' ? '#c9a84c' : tier === 'Enterprise' ? '#94a3b8' : tier === 'Architect' ? '#a78bfa' : '#6ee7b7';
-  const tierColorDark = tier === 'Apex' ? '#a67c00' : tier === 'Enterprise' ? '#64748b' : tier === 'Architect' ? '#7c3aed' : '#059669';
+  const tierColor = tier === 'Apex' ? '#c9a84c' : tier === 'Mythic' ? '#a855f7' : tier === 'Relic' ? '#f59e0b' : tier === 'Prime' ? '#94a3b8' : tier === 'Mint' ? '#6ee7b7' : '#71717a';
+  const tierColorDark = tier === 'Apex' ? '#a67c00' : tier === 'Mythic' ? '#7c3aed' : tier === 'Relic' ? '#d97706' : tier === 'Prime' ? '#64748b' : tier === 'Mint' ? '#059669' : '#52525b';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="140" height="140">
     <defs>
       <radialGradient id="sealGrad" cx="50%" cy="40%" r="55%">
