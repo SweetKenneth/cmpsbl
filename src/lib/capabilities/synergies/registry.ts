@@ -245,7 +245,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'evolution-confidence',
     name: 'Evolution Confidence',
-    description: 'CORTEX proposals scored by BRAIN learning history and MODERNIZER impact analysis',
+    description: 'CORTEX proposals scored by BRAIN learning history and EVOLUTION impact analysis',
     category: 'automation',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
