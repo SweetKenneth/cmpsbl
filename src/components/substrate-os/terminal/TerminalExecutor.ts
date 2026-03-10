@@ -520,7 +520,7 @@ function generateFullHelp(): string {
 │                                                             │
 │  ◇ ADMIN LAYER                                              │
 │    system       (${COMMAND_CATEGORIES.system.commands.length.toString().padStart(2)} cmds)  Orchestration, heal, backup        │
-│    modernizer   (${COMMAND_CATEGORIES.modernizer.commands.length.toString().padStart(2)} cmds)  Evolution engine, upgrades         │
+│    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Evolution engine, upgrades         │
 │    inclusive    (${COMMAND_CATEGORIES.inclusive.commands.length.toString().padStart(2)} cmds)  Accessibility, WCAG scanning       │
 │                                                             │
 │  ★ ORCHESTRATOR LAYER                                       │

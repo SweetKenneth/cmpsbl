@@ -324,7 +324,7 @@ export function useSubstrateHealthScore() {
     vision: () => vision.health(),
     dream: () => dream.status(),
     system: () => system.status(),
-    evolution: () => evolutionMod.status(),
+    // evolution is mapped below in mesh overlays
     integration: () => integration.status(),
     cortex: () => cortex.status(),
     inclusive: () => inclusive.status(),
