@@ -160,7 +160,7 @@ export default function ModuleDetail() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors"
+                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors shimmer-on-hover card-lift"
                 >
                   <h3 className="text-lg font-bold text-foreground mb-2">{highlight.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{highlight.description}</p>
