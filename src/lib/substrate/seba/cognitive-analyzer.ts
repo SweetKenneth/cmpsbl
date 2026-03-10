@@ -87,9 +87,9 @@ async function fetchBackendStats(): Promise<BackendStats> {
   }
   
   try {
-    // Fetch modernizer status from backend
+    // Fetch evolution status from backend (formerly modernizer)
     const modResponse = await supabase.functions.invoke('pf-substrate', {
-      body: { module: 'modernizer', action: 'status' },
+      body: { module: 'modernizer', action: 'status' }, // edge function still uses legacy name
     });
     if (modResponse.data?.success) {
       stats.modernizer = {

@@ -55,7 +55,7 @@ const DEFAULT_ALERT_CONFIGS: AlertConfig[] = [
   // Administrative Layer
   { module: 'system', criticalThreshold: 20, warningThreshold: 40, enabled: true, cooldownMinutes: 5 },
   { module: 'inclusive', criticalThreshold: 40, warningThreshold: 60, enabled: true, cooldownMinutes: 20 },
-  { module: 'modernizer', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
+  { module: 'evolution', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
   // Orchestrator Layer
   { module: 'cortex', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },
   { module: 'encode', criticalThreshold: 30, warningThreshold: 50, enabled: true, cooldownMinutes: 15 },

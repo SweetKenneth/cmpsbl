@@ -23,7 +23,7 @@ function clampPriority(value: number): number {
 
 export type TransferModule = 
   | 'core' | 'ripple' | 'access' | 'nexus' | 'dream' | 'integration'
-  | 'system' | 'modernizer' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive'
+  | 'system' | 'evolution' | 'decode' | 'defense' | 'cortex' | 'vision' | 'inclusive'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox' | 'encode';
 
 export interface ModuleTransferConfig {
@@ -213,8 +213,8 @@ const MODULE_CONFIGS: Record<TransferModule, ModuleTransferConfig> = {
     hotCacheLimit: 60,
     minConfidence: 0.5,
   },
-  modernizer: {
-    module: 'modernizer',
+  evolution: {
+    module: 'evolution',
     relevanceSignals: [
       'upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff',
       'delta', 'improvement', 'optimization', 'performance', 'regression',
@@ -222,7 +222,7 @@ const MODULE_CONFIGS: Record<TransferModule, ModuleTransferConfig> = {
       'breaking change', 'compatibility', 'deprecation', 'plan',
     ],
     memoryTypes: ['learned', 'heuristic', 'pattern', 'evolution'],
-    hotCategoryPrefix: 'modernizer_transfer',
+    hotCategoryPrefix: 'evolution_transfer',
     hotCacheLimit: 70,
     minConfidence: 0.6,
   },
@@ -487,21 +487,21 @@ const CROSS_MODULE_ROUTES: Record<TransferModule, TransferModule[]> = {
   access:       ['defense', 'system', 'integration'],
   decode:       ['dream', 'inclusive', 'cortex'] as any,
   nexus:        ['vision', 'defense', 'system'],
-  dream:        ['cortex', 'modernizer', 'decode'] as any,
+  dream:        ['cortex', 'evolution', 'decode'] as any,
   defense:      ['access', 'vision', 'system'],
-  vision:       ['defense', 'system', 'modernizer'],
+  vision:       ['defense', 'system', 'evolution'],
   integration:  ['ripple', 'access', 'nexus'],
-  system:       ['vision', 'cortex', 'modernizer'],
-  modernizer:   ['cortex', 'system', 'vision'],
-  inclusive:    ['decode', 'modernizer', 'vision'] as any,
-  cortex:       ['modernizer', 'system', 'dream'] as any,
+  system:       ['vision', 'cortex', 'evolution'],
+  evolution:    ['cortex', 'system', 'vision'],
+  inclusive:    ['decode', 'evolution', 'vision'] as any,
+  cortex:       ['evolution', 'system', 'dream'] as any,
   encode:       ['decode', 'brain', 'cortex'] as any,
   memory:       ['brain', 'core', 'vision'] as any,
   relay:        ['ripple', 'integration', 'audit'],
   audit:        ['identity', 'defense', 'system'],
   identity:     ['access', 'defense', 'audit'],
   economy:      ['access', 'system', 'vision'],
-  sandbox:      ['encode', 'modernizer', 'system'],
+  sandbox:      ['encode', 'evolution', 'system'],
 };
 
 /**
@@ -624,7 +624,7 @@ export async function getEvolutionConfidence(module: TransferModule): Promise<Ev
 export async function getAllEvolutionConfidence(): Promise<EvolutionConfidence[]> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
     'identity', 'economy', 'sandbox',
   ];
@@ -795,7 +795,7 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
     vision: VISION_PATTERNS,
     integration: INTEGRATION_PATTERNS,
     system: SYSTEM_PATTERNS,
-    modernizer: MODERNIZER_PATTERNS,
+    evolution: MODERNIZER_PATTERNS,
     inclusive: INCLUSIVE_PATTERNS,
     cortex: CORTEX_PATTERNS,
     encode: ENCODE_PATTERNS,
@@ -870,7 +870,7 @@ export async function transferAllModules(): Promise<{
 }> {
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
     'identity', 'economy', 'sandbox',
   ];
@@ -897,7 +897,7 @@ export async function ingestAllModulePatterns(): Promise<{
 }> {
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode', 'memory', 'relay', 'audit',
     'identity', 'economy', 'sandbox',
   ];
@@ -957,7 +957,7 @@ export async function getModuleKnowledgeReport(module: TransferModule): Promise<
 export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeReport[]> {
   const modules: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
@@ -1047,7 +1047,7 @@ export async function reportTransferFeedback(feedback: TransferFeedback): Promis
 export async function pruneUnhelpfulPatterns(): Promise<{ pruned: number }> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
@@ -1099,7 +1099,7 @@ const MODULE_DEPENDENCIES: Record<TransferModule, TransferModule[]> = {
   vision:       ['core', 'ripple'],
   integration:  ['core', 'ripple', 'access'],
   system:       ['core', 'vision'],
-  modernizer:   ['core', 'system', 'vision'],
+  evolution:    ['core', 'system', 'vision'],
   inclusive:    ['core', 'system'],
   cortex:       ['core', 'nexus', 'system', 'vision'],
   encode:       ['core', 'decode', 'brain' as TransferModule],
@@ -1172,7 +1172,7 @@ export async function checkDependencyHealth(module: TransferModule): Promise<Dep
 export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
   const ALL_MODULES: TransferModule[] = [
     'core', 'ripple', 'access', 'decode', 'nexus', 'dream',
-    'defense', 'vision', 'integration', 'system', 'modernizer',
+    'defense', 'vision', 'integration', 'system', 'evolution',
     'inclusive', 'cortex', 'encode',
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];

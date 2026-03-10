@@ -143,7 +143,7 @@ export async function resolveShadowLoops(): Promise<ShadowLoopReport> {
       report.resolution = 'escalated';
       
       emit({
-        module: 'modernizer',
+        module: 'evolution',
         event_type: 'shadow_loop_detected',
         outcome: 'succeeded',
         data: {

@@ -171,11 +171,11 @@ export const MODULE_REGISTRY: ModuleRegistryEntry[] = [
     ],
   },
   {
-    id: 'modernizer',
+    id: 'evolution',
     name: 'Evolution',
     layer: 'orchestrator',
     status: 'healthy',
-    capabilities: ['modernizer.scan', 'modernizer.propose', 'modernizer.apply'],
+    capabilities: ['evolution.scan', 'evolution.propose', 'evolution.apply'],
     actions: [
       { id: 'scan', name: 'Scan for Upgrades', risk: 'low', reversible: true, requiresConfirmation: false },
       { id: 'propose', name: 'Propose Changes', risk: 'low', reversible: true, requiresConfirmation: false },
