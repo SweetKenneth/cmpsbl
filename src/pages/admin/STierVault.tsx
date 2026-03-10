@@ -868,7 +868,7 @@ export default function STierVault() {
           <div className="flex items-center gap-3">
             <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-400 shrink-0" />
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold">S-Tier Crown Jewel Vault</h1>
+              <h1 className="text-xl sm:text-2xl font-bold">S-Tier Apex Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 {entries.length} registry artifacts • {promoted.length} promoted discoveries • 24 export languages
               </p>
