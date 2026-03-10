@@ -26,7 +26,7 @@ const TIER_DOT: Record<string, string> = {
 
 export function EnginesCTA() {
   return (
-    <section className="relative z-10 px-4 py-12 sm:py-20 overflow-hidden">
+    <section className="relative z-10 px-3 sm:px-4 py-12 sm:py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -64,9 +64,9 @@ export function EnginesCTA() {
           <div className="h-[2px] memory-stream-bar opacity-40" />
           <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-          <div className="relative p-6 sm:p-10 md:p-14">
+          <div className="relative p-5 sm:p-10 md:p-14 space-y-8 sm:space-y-10">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 sm:gap-6">
               <div>
                 <motion.div
                   initial={{ opacity: 0, x: -10 }}
@@ -93,12 +93,12 @@ export function EnginesCTA() {
                   <span className="text-3xl sm:text-4xl font-black text-primary">40% off</span>
                   <span className="text-sm text-muted-foreground">bundled w/ agent</span>
                 </div>
-                <span className="text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199 standalone · Lifetime license</span>
+                <span className="text-[10px] sm:text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199+ standalone · Lifetime license</span>
               </div>
             </div>
 
             {/* Engine highlights grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-10">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
               {ENGINE_HIGHLIGHTS.map((engine, i) => (
                 <motion.div
                   key={engine.name}
@@ -118,7 +118,7 @@ export function EnginesCTA() {
             </div>
 
             {/* Stats row */}
-            <div className="flex flex-wrap justify-center gap-8 sm:gap-14 mb-10">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-14">
               {[
                 { icon: Shield, value: "20", label: "Sealed Engines" },
                 { icon: Cpu, value: "3", label: "Clearance Tiers" },

@@ -145,35 +145,35 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="20 black-boxed, tamper-proof composable engines. APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled. Own the tool. Own the outcome." />
+        <meta name="description" content="20 black-boxed, tamper-proof composable engines. APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent. Own the tool. Own the outcome." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         <PublicNav />
 
         {/* Breadcrumb trail */}
-        <div className="container mx-auto px-4 pt-20">
+        <div className="container mx-auto px-3 sm:px-4 pt-20">
           <PublicBreadcrumb />
         </div>
 
         {/* Hero */}
-        <section className="relative pt-10 pb-16 px-4 overflow-hidden">
+        <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5 sm:mb-6">
                 <ShieldCheck className="w-4 h-4 text-primary" />
                 <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">SEALED RUNTIME PROGRAM</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3 sm:mb-4">
                 COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
                 Each Engine is a self-contained, obfuscated, tamper-proof runtime
                 forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
-              <p className="text-sm text-muted-foreground/60 font-mono">
-                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled
+              <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
+                20 sealed runtimes · 3 clearance tiers · Free to $599 · 40% off bundled with agent
               </p>
             </motion.div>
           </div>
@@ -181,7 +181,7 @@ export default function Engines() {
 
         {/* Scroll gallery */}
         <section className="pb-24">
-          <div className="container mx-auto px-4 flex items-center justify-between mb-6">
+          <div className="container mx-auto px-3 sm:px-4 flex items-center justify-between mb-6">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {(["APEX", "ELITE", "CORE"] as const).map((tier) => (
                 <Badge key={tier} variant="outline" className={cn("text-[11px] font-mono", TIER_BADGE[tier])}>
@@ -213,14 +213,14 @@ export default function Engines() {
           </div>
 
           {/* Footer note */}
-          <div className="container mx-auto px-4 mt-16 text-center">
-            <div className="inline-flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl border border-border/40 bg-card/50">
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
+          <div className="container mx-auto px-3 sm:px-4 mt-12 sm:mt-16 text-center">
+            <div className="inline-flex flex-col items-center gap-3 p-5 sm:p-8 rounded-2xl border border-border/40 bg-card/50 glass-edge">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
                 Every license includes a numbered Ownership Certificate, full documentation,
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
-              <p className="text-xs font-mono text-muted-foreground/50">
-                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled
+              <p className="text-[10px] sm:text-xs font-mono text-muted-foreground/50">
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 40% off bundled with agent
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">
