@@ -227,8 +227,8 @@ export function registerExecutionHandlers(): void {
   // ═══════════════════════════════════════════════════════
 
   registerHandler('modernizer.status', async () => {
-    const { evolutionMod } = await import('@/lib/substrate');
-    return await evolutionMod.status();
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.status();
   });
 
   registerHandler('modernizer.scan', async () => {
