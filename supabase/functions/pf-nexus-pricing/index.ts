@@ -1,6 +1,9 @@
 /**
- * NEXUS Pricing Engine — Claude Haiku market comparison via NEXUS router
- * Routes through pf-nexus-router with anthropic-haiku preference for pricing analysis
+ * NEXUS Consensus Pricing Engine v2.0
+ * Multi-model pricing with outlier rejection and median merge
+ * 
+ * Providers: Claude Haiku, OpenAI GPT-4o-mini, Groq Llama, OpenRouter Qwen
+ * Falls back gracefully when providers are unavailable
  */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -11,7 +14,139 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// ── Pricing prompt template ──
+const CONSENSUS_VERSION = '2.0.0';
+const SYSTEM_PROMPT = "You are a software pricing analyst. Return only valid JSON, no markdown fences, no explanation text.";
+
+// ── Provider Definitions ──
+
+interface PricingProvider {
+  id: string;
+  name: string;
+  envKey: string;
+  model: string;
+  call: (prompt: string, apiKey: string) => Promise<any>;
+}
+
+const PRICING_PROVIDERS: PricingProvider[] = [
+  {
+    id: 'claude-haiku',
+    name: 'Claude Haiku',
+    envKey: 'ANTHROPIC_API_KEY',
+    model: 'claude-3-5-haiku-20241022',
+    call: async (prompt: string, apiKey: string) => {
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-3-5-haiku-20241022",
+          system: SYSTEM_PROMPT,
+          messages: [{ role: "user", content: prompt }],
+          max_tokens: 800,
+          temperature: 0.3,
+        }),
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!resp.ok) throw new Error(`Claude API error: ${resp.status}`);
+      const data = await resp.json();
+      return { text: data.content?.[0]?.text || '', tokens: (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0) };
+    },
+  },
+  {
+    id: 'openai-mini',
+    name: 'OpenAI GPT-4o-mini',
+    envKey: 'OPENAI_API_KEY',
+    model: 'gpt-4o-mini',
+    call: async (prompt: string, apiKey: string) => {
+      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: prompt },
+          ],
+          max_tokens: 800,
+          temperature: 0.3,
+          response_format: { type: "json_object" },
+        }),
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!resp.ok) throw new Error(`OpenAI API error: ${resp.status}`);
+      const data = await resp.json();
+      return { text: data.choices?.[0]?.message?.content || '', tokens: (data.usage?.total_tokens || 0) };
+    },
+  },
+  {
+    id: 'groq-llama',
+    name: 'Groq Llama 3.3 70B',
+    envKey: 'GROQ_API_KEY',
+    model: 'llama-3.3-70b-versatile',
+    call: async (prompt: string, apiKey: string) => {
+      const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: prompt },
+          ],
+          max_tokens: 800,
+          temperature: 0.3,
+          response_format: { type: "json_object" },
+        }),
+        signal: AbortSignal.timeout(12000),
+      });
+      if (!resp.ok) throw new Error(`Groq API error: ${resp.status}`);
+      const data = await resp.json();
+      return { text: data.choices?.[0]?.message?.content || '', tokens: (data.usage?.total_tokens || 0) };
+    },
+  },
+  {
+    id: 'openrouter-qwen',
+    name: 'OpenRouter Qwen 235B',
+    envKey: 'OPENROUTER_API_KEY',
+    model: 'qwen/qwen3-235b-a22b:free',
+    call: async (prompt: string, apiKey: string) => {
+      const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`,
+          "HTTP-Referer": "https://cmpsbl.lovable.app",
+          "X-Title": "CMPSBL Pricing Engine",
+        },
+        body: JSON.stringify({
+          model: "qwen/qwen3-235b-a22b:free",
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: prompt + "\n\nIMPORTANT: Return ONLY the JSON object, no thinking tags, no explanation." },
+          ],
+          max_tokens: 800,
+          temperature: 0.3,
+        }),
+        signal: AbortSignal.timeout(20000),
+      });
+      if (!resp.ok) throw new Error(`OpenRouter API error: ${resp.status}`);
+      const data = await resp.json();
+      return { text: data.choices?.[0]?.message?.content || '', tokens: (data.usage?.total_tokens || 0) };
+    },
+  },
+];
+
+// ── Prompt Builder ──
+
 function buildPricingPrompt(artifact: {
   name: string;
   description?: string;
@@ -39,113 +174,205 @@ RUNTIME: ${artifact.runtimeType || 'JavaScript/TypeScript'}
 
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
-  "market_category": "string — most fitting software market category",
-  "comparable_types": "string — 1-2 sentences on comparable products/tools",
   "price_range_low": number,
   "price_range_high": number,
-  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Unity Asset Store, AWS Marketplace, Vercel Templates"],
+  "estimated_mid_price": number,
+  "market_category": "string — most fitting software market category",
+  "comparable_product_types": "string — 1-2 sentences on comparable products/tools",
+  "suggested_marketplaces": ["array of 2-4 best-fit platforms"],
   "pricing_confidence": number between 0 and 1,
-  "commercialization_rationale": "string — 1-2 sentences on best commercialization path",
-  "distribution_type": "string — one of: library, package, template, artifact_pack, open_core, enterprise_licensed, infrastructure_image, hardware_asset"
+  "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
 }
 
 Bias toward realistic indie/solo-developer pricing for tools and libraries. Enterprise pricing only if artifact complexity warrants it.`;
 }
 
-// ── Grounded pricing formula ──
-interface PricingInputs {
-  internalValue: number;
-  cjpiScore: number;
-  claudeRangeLow?: number;
-  claudeRangeHigh?: number;
-  moduleCount: number;
-  hasHardwareExport: boolean;
-  tier: string;
+// ── JSON Parser (handles markdown fences, thinking tags) ──
+
+function parseProviderJSON(raw: string): any {
+  let cleaned = raw
+    .replace(/```json\s*/g, '')
+    .replace(/```\s*/g, '')
+    .replace(/<think>[\s\S]*?<\/think>/g, '')
+    .replace(/<thinking>[\s\S]*?<\/thinking>/g, '')
+    .trim();
+  
+  // Try to extract JSON object if surrounded by text
+  const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+  if (jsonMatch) cleaned = jsonMatch[0];
+  
+  return JSON.parse(cleaned);
 }
 
-interface PricingOutput {
-  recommended_resale_price: number;
-  indie_price: number;
-  standard_price: number;
-  enterprise_price: number;
-  estimated_market_range_low: number;
-  estimated_market_range_high: number;
+// ── Outlier Rejection ──
+
+interface ProviderEstimate {
+  provider: string;
+  model: string;
+  price_range_low: number;
+  price_range_high: number;
+  estimated_mid_price: number;
+  market_category: string;
+  comparable_product_types: string;
+  suggested_marketplaces: string[];
+  pricing_confidence: number;
+  commercialization_rationale: string;
+  success: boolean;
+  excluded_as_outlier: boolean;
+  error?: string;
+  latency_ms?: number;
+  tokens_used?: number;
+  timestamp: string;
 }
 
-function computeGroundedPricing(inputs: PricingInputs): PricingOutput {
-  const { internalValue, cjpiScore, claudeRangeLow, claudeRangeHigh, moduleCount, hasHardwareExport, tier } = inputs;
+function rejectOutliers(estimates: ProviderEstimate[]): ProviderEstimate[] {
+  const successful = estimates.filter(e => e.success);
+  if (successful.length <= 2) return estimates;
 
-  // Normalize internal value to realistic range ($5 - $2000 for indie software)
+  const midPrices = successful.map(e => e.estimated_mid_price).sort((a, b) => a - b);
+  const q1 = midPrices[Math.floor(midPrices.length * 0.25)];
+  const q3 = midPrices[Math.floor(midPrices.length * 0.75)];
+  const iqr = q3 - q1;
+  const lowerBound = iqr > 1 ? q1 - 2.5 * iqr : q1 * 0.3;
+  const upperBound = iqr > 1 ? q3 + 2.5 * iqr : q3 * 3.0;
+
+  return estimates.map(e => {
+    if (!e.success) return e;
+    const isOutlier = e.estimated_mid_price < lowerBound || e.estimated_mid_price > upperBound;
+    return { ...e, excluded_as_outlier: isOutlier };
+  });
+}
+
+function median(arr: number[]): number {
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function mode(arr: string[]): string {
+  const freq = new Map<string, number>();
+  for (const v of arr) freq.set(v, (freq.get(v) || 0) + 1);
+  let best = arr[0] || 'Software Tool';
+  let bestCount = 0;
+  for (const [k, v] of freq) { if (v > bestCount) { best = k; bestCount = v; } }
+  return best;
+}
+
+// ── Consensus Computation ──
+
+function computeConsensusPrice(
+  estimates: ProviderEstimate[],
+  internalValue: number,
+  cjpiScore: number,
+  moduleCount: number,
+  hasHardwareExport: boolean,
+  tier: string,
+) {
+  const included = estimates.filter(e => e.success && !e.excluded_as_outlier);
   const normalizedInternal = Math.min(Math.max(internalValue * 0.001, 5), 2000);
 
-  // Claude market median (if available)
-  const hasClaudeData = claudeRangeLow !== undefined && claudeRangeHigh !== undefined;
-  const claudeMedian = hasClaudeData ? (claudeRangeLow! + claudeRangeHigh!) / 2 : normalizedInternal;
-  const marketLow = hasClaudeData ? claudeRangeLow! : normalizedInternal * 0.5;
-  const marketHigh = hasClaudeData ? claudeRangeHigh! : normalizedInternal * 2;
+  // CJPI multiplier
+  let cjpiMult = 1.0;
+  if (cjpiScore >= 100) cjpiMult = 2.5;
+  else if (cjpiScore >= 94) cjpiMult = 2.0;
+  else if (cjpiScore >= 90) cjpiMult = 1.6;
+  else if (cjpiScore >= 80) cjpiMult = 1.3;
+  else if (cjpiScore >= 68) cjpiMult = 1.0;
+  else cjpiMult = 0.7;
 
-  // CJPI adjustment: score 90+ gets premium multiplier
-  let cjpiMultiplier = 1.0;
-  if (cjpiScore >= 100) cjpiMultiplier = 2.5;
-  else if (cjpiScore >= 94) cjpiMultiplier = 2.0;
-  else if (cjpiScore >= 90) cjpiMultiplier = 1.6;
-  else if (cjpiScore >= 80) cjpiMultiplier = 1.3;
-  else if (cjpiScore >= 68) cjpiMultiplier = 1.0;
-  else cjpiMultiplier = 0.7;
-
-  // Module complexity bonus
   const complexityBonus = 1 + (Math.min(moduleCount, 10) * 0.05);
-
-  // Hardware export premium
   const hardwarePremium = hasHardwareExport ? 1.3 : 1.0;
 
-  // Weighted combination: 30% internal, 50% Claude market, 20% CJPI adjustment
-  const basePrice = hasClaudeData
-    ? (normalizedInternal * 0.3 + claudeMedian * 0.5 + normalizedInternal * cjpiMultiplier * 0.2)
-    : normalizedInternal * cjpiMultiplier;
+  // Weights based on provider count
+  const successCount = included.length;
+  let weights: { internal: number; market: number; cjpi: number };
+  let source: string;
+
+  if (successCount >= 3) {
+    weights = { internal: 0.20, market: 0.55, cjpi: 0.25 };
+    source = 'consensus';
+  } else if (successCount === 2) {
+    weights = { internal: 0.25, market: 0.50, cjpi: 0.25 };
+    source = 'partial-consensus';
+  } else if (successCount === 1) {
+    weights = { internal: 0.30, market: 0.45, cjpi: 0.25 };
+    source = 'single-provider';
+  } else {
+    weights = { internal: 0.55, market: 0.0, cjpi: 0.45 };
+    source = 'local-fallback';
+  }
+
+  // Consensus mid from successful providers
+  const consensusMid = included.length > 0
+    ? median(included.map(e => e.estimated_mid_price))
+    : null;
+
+  const marketAnchor = consensusMid ?? normalizedInternal;
+  const basePrice =
+    normalizedInternal * weights.internal +
+    marketAnchor * weights.market +
+    normalizedInternal * cjpiMult * weights.cjpi;
 
   const adjustedPrice = basePrice * complexityBonus * hardwarePremium;
-  const recommended = Math.round(adjustedPrice * 100) / 100;
+  const recommended = Math.round(Math.min(Math.max(adjustedPrice, 1), 50000) * 100) / 100;
+
+  // Market range
+  const rangeLow = included.length > 0
+    ? median(included.map(e => e.price_range_low))
+    : recommended * 0.5;
+  const rangeHigh = included.length > 0
+    ? median(included.map(e => e.price_range_high))
+    : recommended * 2.0;
+
+  // Confidence
+  let confidence = 0.2;
+  confidence += Math.min(successCount / 3, 1) * 0.3;
+  if (consensusMid && successCount >= 2) {
+    const mids = included.map(e => e.estimated_mid_price);
+    const avgDev = mids.reduce((s, m) => s + Math.abs(m - consensusMid) / consensusMid, 0) / mids.length;
+    confidence += Math.max(0, 1 - avgDev) * 0.25;
+  }
+  if (cjpiScore > 0) confidence += 0.05;
+  if (internalValue > 0) confidence += 0.05;
+  if (moduleCount > 1) confidence += 0.05;
+  confidence = Math.min(confidence, 1.0);
+
+  // Aggregate metadata
+  const marketCategory = included.length > 0
+    ? mode(included.map(e => e.market_category))
+    : 'Software Tool';
+  const marketplaces = [...new Set(included.flatMap(e => e.suggested_marketplaces))].slice(0, 5);
+  const bestProvider = included.sort((a, b) => b.pricing_confidence - a.pricing_confidence)[0];
 
   return {
     recommended_resale_price: recommended,
     indie_price: Math.round(recommended * 0.6 * 100) / 100,
-    standard_price: Math.round(recommended * 100) / 100,
+    standard_price: recommended,
     enterprise_price: Math.round(recommended * 3.5 * 100) / 100,
-    estimated_market_range_low: Math.round(marketLow * 100) / 100,
-    estimated_market_range_high: Math.round(marketHigh * 100) / 100,
+    estimated_market_range_low: Math.round(rangeLow * 100) / 100,
+    estimated_market_range_high: Math.round(rangeHigh * 100) / 100,
+    pricing_confidence: Math.round(confidence * 100) / 100,
+    market_category: marketCategory,
+    comparable_summary: bestProvider?.comparable_product_types || 'Local estimate based on CJPI and internal signals.',
+    suggested_marketplaces: marketplaces.length > 0 ? marketplaces : (cjpiScore >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad']),
+    commercialization_notes: bestProvider?.commercialization_rationale || 'Pricing generated from internal signals.',
+    pricing_source: source,
+    pricing_source_version: CONSENSUS_VERSION,
+    pricing_evidence: {
+      providers: estimates,
+      consensus_mid: consensusMid,
+      internal_value_contribution: Math.round(normalizedInternal * 100) / 100,
+      cjpi_contribution: cjpiMult,
+      outliers_rejected: estimates.filter(e => e.excluded_as_outlier).map(e => e.provider),
+      providers_used: included.map(e => e.provider),
+      providers_failed: estimates.filter(e => !e.success).map(e => e.provider),
+      formula_weights: { internal: weights.internal, consensus_market: weights.market, cjpi_premium: weights.cjpi },
+      computed_at: new Date().toISOString(),
+    },
   };
 }
 
-// ── Local fallback pricing (no Claude) ──
-function computeFallbackPricing(artifact: {
-  score: number;
-  internalValue: number;
-  moduleCount: number;
-  tier: string;
-  hasHardwareExport: boolean;
-}): PricingOutput & { market_category: string; suggested_marketplaces: string[]; pricing_confidence: number; comparable_summary: string; commercialization_notes: string } {
-  const pricing = computeGroundedPricing({
-    internalValue: artifact.internalValue,
-    cjpiScore: artifact.score,
-    moduleCount: artifact.moduleCount,
-    hasHardwareExport: artifact.hasHardwareExport,
-    tier: artifact.tier,
-  });
-
-  const marketplaces = artifact.score >= 90
-    ? ['Gumroad', 'GitHub Marketplace', 'Lemon Squeezy']
-    : ['Gumroad', 'npm'];
-
-  return {
-    ...pricing,
-    market_category: 'Software Tool',
-    suggested_marketplaces: marketplaces,
-    pricing_confidence: 0.4,
-    comparable_summary: 'Local estimate based on CJPI and internal valuation signals.',
-    commercialization_notes: 'Pricing generated from internal signals only. Enable Claude Haiku analysis for market-grounded pricing.',
-  };
-}
+// ── Main Handler ──
 
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
@@ -161,22 +388,19 @@ serve(async (req: Request) => {
     const body = await req.json();
     const { action = 'price', artifacts = [], artifact } = body;
 
-    // Single artifact pricing
     if (action === 'price' && artifact) {
-      const result = await priceArtifact(artifact, supabase);
+      const result = await priceArtifactConsensus(artifact, supabase);
       return new Response(JSON.stringify(result), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Batch reprice
     if (action === 'batch-reprice') {
       const results = [];
       for (const art of artifacts.slice(0, 50)) {
         try {
-          const result = await priceArtifact(art, supabase);
-          // Update DB — update both foundry_inventory and pipeline_vault
-          const pricingUpdate = {
+          const result = await priceArtifactConsensus(art, supabase);
+          const pricingUpdate: Record<string, any> = {
             recommended_resale_price: result.recommended_resale_price,
             indie_price: result.indie_price,
             standard_price: result.standard_price,
@@ -190,21 +414,23 @@ serve(async (req: Request) => {
             commercialization_notes: result.commercialization_notes,
             pricing_last_updated_at: new Date().toISOString(),
             pricing_source: result.pricing_source,
-            pricing_source_version: '1.0.0',
+            pricing_source_version: CONSENSUS_VERSION,
+            pricing_evidence: result.pricing_evidence,
           };
           if (art.vault_id) {
-            // Try foundry_inventory first (primary table), then pipeline_vault
-            await Promise.allSettled([
-              supabase.from('foundry_inventory').update(pricingUpdate).eq('id', art.vault_id),
-              supabase.from('pipeline_vault').update(pricingUpdate).eq('id', art.vault_id),
-            ]);
+            // Route to correct table
+            const table = art.source_table || 'pipeline_vault';
+            await supabase.from(table).update(pricingUpdate).eq('id', art.vault_id);
+            // Also try the other table in case of cross-table artifacts
+            if (table === 'pipeline_vault') {
+              await supabase.from('foundry_inventory').update(pricingUpdate).eq('id', art.vault_id).maybeSingle();
+            }
           }
           results.push({ id: art.vault_id, success: true, pricing: result });
         } catch (err) {
           results.push({ id: art.vault_id, success: false, error: (err as Error).message });
         }
-        // Rate limit spacing
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 300));
       }
       return new Response(JSON.stringify({ results, processed: results.length }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -224,7 +450,9 @@ serve(async (req: Request) => {
   }
 });
 
-async function priceArtifact(artifact: any, supabase: any) {
+// ── Core Pricing Function ──
+
+async function priceArtifactConsensus(artifact: any, supabase: any) {
   const modules = artifact.system_chain || artifact.modules || [];
   const score = artifact.pipeline_score || artifact.score || 50;
   const tier = artifact.pipeline_tier || artifact.tier || 'Raw';
@@ -232,125 +460,123 @@ async function priceArtifact(artifact: any, supabase: any) {
   const name = artifact.pipeline_name || artifact.name || 'Unknown Artifact';
   const category = artifact.pipeline_category || artifact.category || null;
 
-  const anthropicKey = Deno.env.get("ANTHROPIC_API_KEY");
-  
-  if (!anthropicKey) {
-    // Fallback: no Claude available
-    const fallback = computeFallbackPricing({
-      score,
-      internalValue,
-      moduleCount: modules.length,
-      tier,
-      hasHardwareExport: false,
-    });
-    return { ...fallback, pricing_source: 'local' };
-  }
+  const prompt = buildPricingPrompt({
+    name,
+    modules,
+    score,
+    tier,
+    category,
+    internalValue,
+    hasHardwareExport: false,
+    exportTargets: ['source', 'typescript', 'python'],
+    runtimeType: 'JavaScript/TypeScript',
+  });
 
-  // Call Claude Haiku directly (not through pf-nexus-router to avoid circular complexity)
-  try {
-    const prompt = buildPricingPrompt({
-      name,
-      modules,
-      score,
-      tier,
-      category,
-      internalValue,
-      hasHardwareExport: false,
-      exportTargets: ['source', 'typescript', 'python'],
-      runtimeType: 'JavaScript/TypeScript',
-    });
+  // Query all available providers in parallel
+  const estimates: ProviderEstimate[] = await Promise.all(
+    PRICING_PROVIDERS.map(async (provider) => {
+      const apiKey = Deno.env.get(provider.envKey);
+      if (!apiKey) {
+        return {
+          provider: provider.id,
+          model: provider.model,
+          price_range_low: 0,
+          price_range_high: 0,
+          estimated_mid_price: 0,
+          market_category: '',
+          comparable_product_types: '',
+          suggested_marketplaces: [],
+          pricing_confidence: 0,
+          commercialization_rationale: '',
+          success: false,
+          excluded_as_outlier: false,
+          error: `${provider.envKey} not configured`,
+          timestamp: new Date().toISOString(),
+        };
+      }
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": anthropicKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-3-5-haiku-20241022",
-        system: "You are a software pricing analyst. Return only valid JSON, no markdown fences, no explanation text.",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 800,
-        temperature: 0.3,
-      }),
-      signal: AbortSignal.timeout(15000),
-    });
+      const start = Date.now();
+      try {
+        const result = await provider.call(prompt, apiKey);
+        const latencyMs = Date.now() - start;
+        const parsed = parseProviderJSON(result.text);
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error(`Claude Haiku error [${response.status}]: ${errText.slice(0, 200)}`);
-      throw new Error(`Claude API error: ${response.status}`);
-    }
+        // Log success
+        try {
+          await supabase.from('ai_usage_log').insert({
+            provider: provider.id,
+            model: provider.model,
+            category: 'nexus_consensus_pricing',
+            success: true,
+            tokens_used: result.tokens || 0,
+            response_time_ms: latencyMs,
+            cost: 0,
+            metadata: { artifact_name: name, pricing_confidence: parsed.pricing_confidence },
+          });
+        } catch { /* non-critical */ }
 
-    const data = await response.json();
-    const content = data.content?.[0]?.text || '';
-    
-    // Parse Claude's JSON response
-    let claudeResult: any;
-    try {
-      // Handle potential markdown fences
-      const jsonStr = content.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-      claudeResult = JSON.parse(jsonStr);
-    } catch {
-      console.error('Failed to parse Claude pricing response:', content.slice(0, 200));
-      throw new Error('Invalid Claude response format');
-    }
+        return {
+          provider: provider.id,
+          model: provider.model,
+          price_range_low: parsed.price_range_low || 0,
+          price_range_high: parsed.price_range_high || 0,
+          estimated_mid_price: parsed.estimated_mid_price || ((parsed.price_range_low || 0) + (parsed.price_range_high || 0)) / 2,
+          market_category: parsed.market_category || 'Software Tool',
+          comparable_product_types: parsed.comparable_product_types || parsed.comparable_types || '',
+          suggested_marketplaces: parsed.suggested_marketplaces || [],
+          pricing_confidence: parsed.pricing_confidence || 0.5,
+          commercialization_rationale: parsed.commercialization_rationale || '',
+          success: true,
+          excluded_as_outlier: false,
+          latency_ms: latencyMs,
+          tokens_used: result.tokens,
+          timestamp: new Date().toISOString(),
+        };
+      } catch (err) {
+        const latencyMs = Date.now() - start;
+        // Log failure
+        try {
+          await supabase.from('ai_usage_log').insert({
+            provider: provider.id,
+            model: provider.model,
+            category: 'nexus_consensus_pricing',
+            success: false,
+            response_time_ms: latencyMs,
+            metadata: { error: (err as Error).message, artifact_name: name },
+          });
+        } catch { /* non-critical */ }
 
-    // Compute grounded pricing using Claude + internal signals
-    const pricing = computeGroundedPricing({
-      internalValue,
-      cjpiScore: score,
-      claudeRangeLow: claudeResult.price_range_low,
-      claudeRangeHigh: claudeResult.price_range_high,
-      moduleCount: modules.length,
-      hasHardwareExport: false,
-      tier,
-    });
+        return {
+          provider: provider.id,
+          model: provider.model,
+          price_range_low: 0,
+          price_range_high: 0,
+          estimated_mid_price: 0,
+          market_category: '',
+          comparable_product_types: '',
+          suggested_marketplaces: [],
+          pricing_confidence: 0,
+          commercialization_rationale: '',
+          success: false,
+          excluded_as_outlier: false,
+          error: (err as Error).message,
+          latency_ms: latencyMs,
+          timestamp: new Date().toISOString(),
+        };
+      }
+    }),
+  );
 
-    // Log pricing event
-    try {
-      await supabase.from('ai_usage_log').insert({
-        provider: 'anthropic-haiku',
-        model: 'claude-3-5-haiku-20241022',
-        category: 'nexus_pricing',
-        success: true,
-        tokens_used: data.usage?.input_tokens + data.usage?.output_tokens || 0,
-        cost: 0,
-        metadata: { artifact_name: name, pricing_confidence: claudeResult.pricing_confidence },
-      });
-    } catch { /* non-critical */ }
+  // Reject outliers
+  const processed = rejectOutliers(estimates);
 
-    return {
-      ...pricing,
-      market_category: claudeResult.market_category || 'Software Tool',
-      suggested_marketplaces: claudeResult.suggested_marketplaces || ['Gumroad'],
-      pricing_confidence: claudeResult.pricing_confidence || 0.7,
-      comparable_summary: claudeResult.comparable_types || '',
-      commercialization_notes: claudeResult.commercialization_rationale || '',
-      pricing_source: 'claude-haiku',
-    };
-  } catch (err) {
-    console.error('Claude pricing failed, using fallback:', (err as Error).message);
-    
-    // Log failure
-    try {
-      await supabase.from('ai_usage_log').insert({
-        provider: 'anthropic-haiku',
-        model: 'claude-3-5-haiku-20241022',
-        category: 'nexus_pricing',
-        success: false,
-        metadata: { error: (err as Error).message, artifact_name: name },
-      });
-    } catch { /* non-critical */ }
-
-    const fallback = computeFallbackPricing({
-      score,
-      internalValue,
-      moduleCount: modules.length,
-      tier,
-      hasHardwareExport: false,
-    });
-    return { ...fallback, pricing_source: 'local-fallback' };
-  }
+  // Compute consensus pricing
+  return computeConsensusPrice(
+    processed,
+    internalValue,
+    score,
+    modules.length,
+    false,
+    tier,
+  );
 }
