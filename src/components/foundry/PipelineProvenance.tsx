@@ -52,6 +52,7 @@ function tierGlow(score: number): string {
 /* ── Shared provenance body ── */
 function ProvenanceBody({
   pipeline,
+  subscriptionTier,
   cjpi,
   steps,
   modules,
