@@ -2619,11 +2619,11 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.archived') {
+    } else if (base === 'evolution.archived' || base === 'modernizer.archived') {
       result = await modernizer.archived();
-    } else if (base === 'modernizer.implement') {
+    } else if (base === 'evolution.implement' || base === 'modernizer.implement') {
       if (!args[0] || !args[1]) {
-        return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: modernizer.implement <archived_function> <target_action>\n  Example: modernizer.implement pf-brain-systems-reasoning brain.deep_think' };
+        return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: evolution.implement <archived_function> <target_action>\n  Example: evolution.implement pf-brain-systems-reasoning brain.deep_think' };
       }
       result = await modernizer.implement(args[0], args[1]);
     } else if (base === 'modernizer.refresh') {
