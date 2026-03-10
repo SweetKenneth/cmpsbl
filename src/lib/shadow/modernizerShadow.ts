@@ -19,7 +19,7 @@
  * - Batch mode for efficiency
  */
 
-import { modernizerScan, type ScanResultExtended } from '@/lib/evolve/scan';
+import { evolutionScan, type ScanResultExtended } from '@/lib/evolve/scan';
 import type { ScanProposal, DetectedAnomaly, MissingCapability } from '@/lib/evolve/scan/types';
 import { getSynergyExecutor } from '@/lib/capabilities/synergies/registry';
 import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId, type ExecutorModuleMeta, getExecutorsByCategory } from '@/immune/pilotExecutors';

@@ -8,7 +8,7 @@ import { evolutionReceipts, type EvolutionReceipt } from './evolution-receipts';
 import { shadowExecutor } from './shadow-executor';
 import { productionExecutor } from './production-executor';
 import { emitEvolveEvent } from './telemetry';
-import { modernizerScan, formatScanResult, type ScanOptions } from './scan';
+import { evolutionScan, formatScanResult, type ScanOptions } from './scan';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES

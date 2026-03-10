@@ -9,7 +9,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { modernizerScan, type ScanResultExtended } from './scan';
+import { evolutionScan, type ScanResultExtended } from './scan';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES

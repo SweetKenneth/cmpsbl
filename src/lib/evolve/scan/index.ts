@@ -1,5 +1,5 @@
 /**
- * Modernizer Scan — Cognitive Systems Scan
+ * Evolution Scan — Cognitive Systems Scan
  * Always Produces Valid Plans + Mobile-First Output
  * 
  * SCAN = 3-SOURCE SYNTHESIS → NORMALIZE → PLAN (always valid)

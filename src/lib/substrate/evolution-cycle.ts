@@ -461,7 +461,7 @@ class EvolutionCycleClient {
       this.emitGovernanceSignal('production_apply', { plan_id: plan.plan_id });
 
       // ══════════════════════════════════════════════════════════════════════
-      // CREATE EVOLUTION STAMP — Mandatory traceability for modernizer cycles
+      // CREATE EVOLUTION STAMP — Mandatory traceability for evolution cycles
       // ══════════════════════════════════════════════════════════════════════
       await this.createEvolutionStamp(plan);
 
