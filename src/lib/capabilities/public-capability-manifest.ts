@@ -770,7 +770,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   {
     name: 'Shadow Evolution Tracking',
     tier: 'enterprise',
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     outcome_summary: 'Track and govern shadow evolution paths to prevent uncontrolled system drift',
     category: 'compliance',
     public_safe: true,
