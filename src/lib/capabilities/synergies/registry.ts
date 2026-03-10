@@ -260,7 +260,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-documentation',
     name: 'Autonomous Documentation',
-    description: 'MODERNIZER code analysis combined with DECODE explanation and SYSTEM versioning',
+    description: 'EVOLUTION code analysis combined with DECODE explanation and SYSTEM versioning',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
