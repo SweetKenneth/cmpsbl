@@ -447,7 +447,7 @@ export default function Publication() {
         </div>
 
         {/* ═══════════ IP NOTICE ═══════════ */}
-        <section className="container mx-auto px-6 py-16">
+        <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 16 }}
