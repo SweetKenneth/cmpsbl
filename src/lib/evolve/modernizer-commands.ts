@@ -360,7 +360,7 @@ export const evolutionCommands = {
   },
 
   /**
-   * modernizer.receipt <run_id> — Get receipt for specific run
+   * evolution.receipt <run_id> — Get receipt for specific run
    */
   async receipt(run_id: string): Promise<CommandResult> {
     const receipt = await evolutionReceipts.getReceiptByRunId(run_id);
