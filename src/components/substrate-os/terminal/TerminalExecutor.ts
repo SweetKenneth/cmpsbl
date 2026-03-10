@@ -2312,15 +2312,15 @@ ${allFeatures.map(f => {
       return { success: true, output, data: cap };
     }
 
-    // MODERNIZER module (via substrate)
-    else if (base === 'modernizer.status') {
+    // EVOLUTION node (via substrate) — handles both evolution.* and legacy modernizer.* commands
+    else if (base === 'evolution.status' || base === 'modernizer.status') {
       result = await modernizer.status();
-    } else if (base === 'modernizer.jobs') {
+    } else if (base === 'evolution.jobs' || base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
     }
     // ═══ EVOLUTION CYCLE ═══
-    else if (base === 'modernizer.evolve') {
+    else if (base === 'evolution.evolve' || base === 'modernizer.evolve') {
       const { evolutionCycle } = await import('@/lib/substrate/evolution-cycle');
       
       // Parse target from args
