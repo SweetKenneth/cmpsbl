@@ -588,7 +588,7 @@ export const LAYER_COLORS: Record<string, string> = {
   CCL: 'from-sky-500/20 to-lime-500/20',
 };
 
-/** Public entities shown on /modules hub page */
+/** Public entities shown on /modules hub page (Nodes) */
 export function getPublicModules(): ModuleInfo[] {
   return MODULE_REGISTRY.filter(m => m.visibility === 'public');
 }
