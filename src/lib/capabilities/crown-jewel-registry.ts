@@ -1033,7 +1033,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     crown_jewel: true, admin_only: true,
   },
   {
-    id: 'evolution_rollback', name: 'Evolution Rollback', artifactType: 'engine', modules: ['MODERNIZER'],
+    id: 'evolution_rollback', name: 'Evolution Rollback', artifactType: 'engine', modules: ['EVOLUTION'],
     classification: 'architecture',
     reason: 'Auto-revert of failed evolution', enables: 'Safe evolution with rollback',
     composesWith: ['evolution_governance_engine'], dangerIfExposed: 'Rollback triggers exposed',
