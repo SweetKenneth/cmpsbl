@@ -1426,7 +1426,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'BRAIN', role: 'enhancer', required: true },
       { name: 'VISION', role: 'enhancer', required: true },
       { name: 'DEFENSE', role: 'validator', required: true },
