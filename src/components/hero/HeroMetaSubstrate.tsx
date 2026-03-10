@@ -436,7 +436,7 @@ export function HeroMetaSubstrate() {
             <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
             <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
             <AnimatedStat value={107} suffix="K" label="Crystallized" delay={0} />
-            <AnimatedStat value={38} label="Stream Nodes" delay={1} />
+            <AnimatedStat value={40} label="Stream Nodes" delay={1} />
             <AnimatedStat value={95} suffix="+" label="Apex Tier" delay={2} />
             <AnimatedStat value={9} label="Capability Domains" delay={3} />
           </div>
