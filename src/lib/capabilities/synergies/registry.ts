@@ -1823,7 +1823,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     modules: [
       { name: 'VISION', role: 'primary', required: true },
       { name: 'DREAM', role: 'enhancer', required: true },
-      { name: 'MODERNIZER', role: 'validator', required: true },
+      { name: 'EVOLUTION', role: 'validator', required: true },
     ],
     risk: 'medium',
     reversible: true,
