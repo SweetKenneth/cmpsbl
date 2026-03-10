@@ -152,7 +152,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     category: 'resilience',
     modules: [
       { name: 'SYSTEM', role: 'primary', required: true },
-      { name: 'MODERNIZER', role: 'enhancer', required: true },
+      { name: 'EVOLUTION', role: 'enhancer', required: true },
       { name: 'VISION', role: 'validator', required: true },
     ],
     risk: 'medium',

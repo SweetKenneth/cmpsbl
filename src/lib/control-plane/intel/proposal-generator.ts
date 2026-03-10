@@ -613,7 +613,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
         title: step.title,
         description: step.description,
         severity: step.risk === 'high' ? 'error' : 'warn',
-        source: step.instructions.find(i => i.startsWith('Source:') || i.startsWith('Category:')) ?? 'MODERNIZER',
+        source: step.instructions.find(i => i.startsWith('Source:') || i.startsWith('Category:')) ?? 'EVOLUTION',
         suggested_fix: step.instructions.find(i => !i.startsWith('Rollback:') && !i.startsWith('Source:') && !i.startsWith('Category:') && !i.startsWith('Affected') && !i.startsWith('Confidence:')) ?? step.description,
         affected_area: step.instructions.find(i => i.startsWith('Affected'))?.replace(/^Affected\s*modules?:\s*/i, '') ?? 'system',
       });
