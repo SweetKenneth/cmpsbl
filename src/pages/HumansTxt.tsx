@@ -35,7 +35,7 @@ Senior Systems Engineer: Marcus Rodriguez
 Role: Runtime performance & NEXUS routing
 
 Junior Developer & DevOps: Priya Nakamura
-Role: CI/CD pipelines & MODERNIZER node
+Role: CI/CD pipelines & EVOLUTION node
 
 Security Researcher: James Whitfield
 Role: DEFENSE node & behavioral fingerprinting
