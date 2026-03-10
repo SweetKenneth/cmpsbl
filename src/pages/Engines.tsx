@@ -152,7 +152,7 @@ export default function Engines() {
         <PublicNav />
 
         {/* Breadcrumb trail */}
-        <div className="container mx-auto px-4 pt-20">
+        <div className="container mx-auto px-3 sm:px-4 pt-20">
           <PublicBreadcrumb />
         </div>
 
