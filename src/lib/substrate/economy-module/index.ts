@@ -409,3 +409,29 @@ export {
   type CostCorrelation,
   type SpendIntelligenceStats,
 } from './spendIntelligence';
+
+// Pricing Governance (consensus pricing primitive)
+export {
+  initPricingGovernance,
+  recordPricingRun,
+  getProviderPricingStats,
+  getPricingAnomalies,
+  startBatchRepricing,
+  recordBatchItem,
+  completeBatchRepricing,
+  getActiveBatch,
+  getBatchHistory,
+  setPricingBudget,
+  canExecutePricingRun,
+  getPricingGovernanceSummary,
+  getPricingCostByProvider,
+  getPricingConfidenceTrend,
+  getPricingGovernanceState,
+  resetPricingGovernance,
+  type PricingRunRecord,
+  type PricingProviderStats,
+  type PricingAnomalyEvent,
+  type BatchRepricingReceipt,
+  type PricingGovernanceSummary,
+  type PricingGovernanceState,
+} from './pricingGovernance';
