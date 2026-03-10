@@ -934,14 +934,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   </div>
 
   <!-- ═══════ Valuation ═══════ -->
-  <h2>AI Valuation Estimate</h2>
+  <h2>Market Valuation Estimate</h2>
 
   <div class="valuation-disclaimer">
-    <div class="title">⚠ AI-Generated Estimate — Not Financial Advice</div>
+    <div class="title">⚠ Heuristic Estimate — Not Financial Advice</div>
     <p>
-      The valuation below is produced by a heuristic model using the pipeline's
-      CJPI score, category, and complexity as inputs. <strong>This estimate may be significantly 
-      inaccurate</strong> and should not be relied upon for financial, investment, or business decisions.
+      The valuation below is produced by a deterministic scoring model using the pipeline's
+      CJPI score, category, and complexity as inputs. <strong>This estimate may differ from 
+      actual market value</strong> and should not be relied upon for financial, investment, or business decisions.
     </p>
     <p>
       Actual market value depends on factors this model cannot assess: market demand,
@@ -963,19 +963,19 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
         <td>Complexity factor · ${input.systemChain.length} module${input.systemChain.length !== 1 ? 's' : ''}</td>
         <td>×${valuation.complexityMultiplier.toFixed(2)}</td>
       </tr>
-      ${valuation.apexMultiplier > 1 ? `<tr>
+      \${valuation.apexMultiplier > 1 ? \`<tr>
         <td>Apex tier premium</td>
-        <td>×${valuation.apexMultiplier.toFixed(1)}</td>
-      </tr>` : ''}
+        <td>×\${valuation.apexMultiplier.toFixed(1)}</td>
+      </tr>\` : ''}
       <tr>
         <td style="font-weight: 600; color: var(--ink);">Estimated Market Value</td>
         <td class="valuation-total">${valuation.formatted}</td>
       </tr>
     </table>
     <p class="valuation-methodology">
-      Methodology: Base value scales exponentially with CJPI score (range $5K–$500K). Category, complexity, 
-      and tier multipliers are applied based on historical demand patterns. This is a heuristic model — 
-      not a market appraisal.
+      Methodology: Base value scales exponentially with CJPI score (range $5K–$1M). Category, complexity, 
+      and tier multipliers are applied based on enterprise demand patterns and technical sophistication. 
+      This is a deterministic scoring model — not a market appraisal.
     </p>
   </div>
 
