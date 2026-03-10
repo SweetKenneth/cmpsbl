@@ -25,7 +25,7 @@ export type StateSchemaName =
   | 'imagination_state'
   | 'reasoning_state'
   | 'governance_state'
-  | 'modernizer_state'
+  | 'evolution_state'
   | 'inclusive_state'
   | 'telemetry_state';
 
