@@ -11540,7 +11540,7 @@ async function handleSystem(
         }
       }
       
-      // Node diagnostics from in-memory state - ALL 38 NODES
+      // Node diagnostics from in-memory state - ALL 40 NODES
       const moduleDiagnostics = ALL_38_NODES.map((name: string) => {
         const health = substrateState.modules[name] || initModuleHealth(name);
         return {
