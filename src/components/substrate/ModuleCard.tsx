@@ -66,12 +66,6 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Administration, config',
     color: 'text-gray-500',
   },
-  evolution: {
-    icon: Sparkles,
-    label: 'EVOLUTION',
-    description: 'Bounded self-evolution',
-    color: 'text-fuchsia-500',
-  },
   core: {
     icon: Cpu,
     label: 'Core',
