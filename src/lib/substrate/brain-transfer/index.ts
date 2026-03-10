@@ -1099,7 +1099,7 @@ const MODULE_DEPENDENCIES: Record<TransferModule, TransferModule[]> = {
   vision:       ['core', 'ripple'],
   integration:  ['core', 'ripple', 'access'],
   system:       ['core', 'vision'],
-  modernizer:   ['core', 'system', 'vision'],
+  evolution:    ['core', 'system', 'vision'],
   inclusive:    ['core', 'system'],
   cortex:       ['core', 'nexus', 'system', 'vision'],
   encode:       ['core', 'decode', 'brain' as TransferModule],
