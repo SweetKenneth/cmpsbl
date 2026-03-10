@@ -38,7 +38,7 @@ interface BackendStats {
     };
     needs_tiering: boolean;
   } | null;
-  modernizer: {
+  evolution: {
     system_health: { score: number; orchestrator: number };
     plans: { pending: number; applied: number };
     improvement_areas: string[];
@@ -46,7 +46,7 @@ interface BackendStats {
 }
 
 async function fetchBackendStats(): Promise<BackendStats> {
-  const stats: BackendStats = { brain: null, modernizer: null };
+  const stats: BackendStats = { brain: null, evolution: null };
   
   try {
     // Fetch brain status from database directly (pf-brain-status may not be deployed)
@@ -87,19 +87,19 @@ async function fetchBackendStats(): Promise<BackendStats> {
   }
   
   try {
-    // Fetch evolution status from backend (formerly modernizer)
+    // Fetch EVOLUTION node status from backend
     const modResponse = await supabase.functions.invoke('pf-substrate', {
-      body: { module: 'modernizer', action: 'status' }, // edge function still uses legacy name
+      body: { module: 'modernizer', action: 'status' }, // edge function still uses legacy name for backward compat
     });
     if (modResponse.data?.success) {
-      stats.modernizer = {
+      stats.evolution = {
         system_health: modResponse.data.system_health || { score: 100, orchestrator: 100 },
         plans: modResponse.data.plans || { pending: 0, applied: 0 },
         improvement_areas: modResponse.data.improvement_areas || [],
       };
     }
   } catch (e) {
-    console.warn('[SEBA] Failed to fetch modernizer stats from backend:', e);
+    console.warn('[SEBA] Failed to fetch evolution stats from backend:', e);
   }
   
   return stats;
@@ -137,7 +137,7 @@ export class CognitiveAnalyzer {
         brain_healthy: this.backendStats.brain?.healthy,
         brain_memories: this.backendStats.brain?.metrics?.total_memories,
         brain_hot: this.backendStats.brain?.tiers?.hot?.current,
-        modernizer_health: this.backendStats.modernizer?.system_health?.score,
+        evolution_health: this.backendStats.evolution?.system_health?.score,
       });
       
       // Load recently addressed insights for deduplication

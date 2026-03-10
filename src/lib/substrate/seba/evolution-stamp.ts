@@ -40,7 +40,7 @@ export interface EvolutionStamp {
   /** Whether the change is reversible */
   reversible: boolean;
   /** Who/what initiated */
-  initiator: 'seba_auto' | 'seba_governed' | 'human_approved' | 'modernizer_governed';
+  initiator: 'seba_auto' | 'seba_governed' | 'human_approved' | 'evolution_governed';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
