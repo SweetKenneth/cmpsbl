@@ -1388,7 +1388,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
   },
   {
-    id: 'world_first_intelligence', name: 'World-First Intelligence', artifactType: 'meta-engine', modules: ['VISION', 'CORTEX', 'MODERNIZER'],
+    id: 'world_first_intelligence', name: 'World-First Intelligence', artifactType: 'meta-engine', modules: ['VISION', 'CORTEX', 'EVOLUTION'],
     classification: 'experience', reason: 'Full intelligence world-first stack', enables: 'SLA breach prediction',
     composesWith: ['intelligence_pipeline'], dangerIfExposed: 'Intelligence enhancement patterns are IP',
     crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
