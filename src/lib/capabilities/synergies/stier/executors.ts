@@ -1336,7 +1336,7 @@ export async function executeFrictionAutoRemovalEngine(
     durationMs: performance.now() - cortexStart,
   });
   
-  // Step 3: MODERNIZER - Apply fixes
+  // Step 3: EVOLUTION - Apply fixes
   const evolutionStart2 = performance.now();
   const appliedFixes = {
     changesApplied: context.dryRun ? 0 : optimizations.proposals.filter(p => p.approved).length,

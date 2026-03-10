@@ -1959,11 +1959,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // MODERNIZER × BRAIN × DEFENSE × CORTEX (Secure Evolution Pipeline)
+  // EVOLUTION × BRAIN × DEFENSE × CORTEX (Secure Evolution Pipeline)
   {
     id: 'secure-evolution-pipeline',
     name: 'Secure Evolution Pipeline',
-    description: 'MODERNIZER evolution proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
+    description: 'EVOLUTION proposals vetted by DEFENSE security analysis, BRAIN history, and CORTEX approval',
     category: 'automation',
     modules: [
       { name: 'EVOLUTION', role: 'primary', required: true },
