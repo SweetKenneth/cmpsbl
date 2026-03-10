@@ -4,6 +4,7 @@
  */
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Lock, ChevronDown, ChevronUp, Cpu, Code2, Loader2, ArrowUpRight } from 'lucide-react';
 import { Download, Lock, ChevronDown, ChevronUp, Cpu, Code2, Loader2 } from 'lucide-react';
 import {
   getLanguagesForScore,
