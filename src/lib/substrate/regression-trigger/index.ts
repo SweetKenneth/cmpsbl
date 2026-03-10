@@ -1,7 +1,7 @@
 /**
  * Regression Test Auto-Trigger v1.0.0
  * Automatically fires the regression test suite after every
- * seba.execute or modernizer.evolve completion
+ * seba.execute or evolution.evolve completion
  */
 
 import { supabase } from '@/integrations/supabase/client';
