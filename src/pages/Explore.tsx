@@ -222,10 +222,10 @@ export default function Explore() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/25 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
+                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/25 !text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/upgrade">
                     <Terminal className="w-5 h-5 mr-2" />
-                    View Plans
+                    <span className="text-white">View Plans</span>
                   </Link>
                 </Button>
               </div>
