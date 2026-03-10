@@ -191,7 +191,7 @@ export function HeroMetaSubstrate() {
             
             {/* CMPSBL — massive wordmark */}
             <h1 
-              className="text-[3.5rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
+              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
             >
               <span 
                 className="inline-block clockless-river-text"
