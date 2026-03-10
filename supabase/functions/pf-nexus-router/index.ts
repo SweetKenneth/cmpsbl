@@ -378,8 +378,9 @@ async function callProvider(
   // Provider-specific URL and auth handling
   if (provider.id === "google-aistudio") {
     url = url.replace("{model}", provider.model) + `?key=${apiKey}`;
-  } else if (provider.id === "cohere") {
-    headers["Authorization"] = `Bearer ${apiKey}`;
+  } else if (provider.id === "anthropic-haiku") {
+    headers["x-api-key"] = apiKey;
+    headers["anthropic-version"] = "2023-06-01";
   } else {
     headers["Authorization"] = `Bearer ${apiKey}`;
   }
