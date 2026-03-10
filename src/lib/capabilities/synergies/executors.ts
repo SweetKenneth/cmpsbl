@@ -4890,8 +4890,8 @@ export async function executeComprehensiveAccessibilityAudit(
     durationMs: performance.now() - decodeStart,
   });
   
-  // Step 4: MODERNIZER - Auto-fix suggestions
-  const modernizerStart = performance.now();
+  // Step 4: EVOLUTION - Auto-fix suggestions
+  const evolutionStart = performance.now();
   const fixes = {
     autoFixable: 6,
     manualRequired: 5,
