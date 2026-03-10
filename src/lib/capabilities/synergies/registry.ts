@@ -1814,11 +1814,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 4,
   },
   
-  // VISION × MODERNIZER × DREAM (predictive evolution)
+  // VISION × EVOLUTION × DREAM (predictive evolution)
   {
     id: 'predictive-evolution-engine',
     name: 'Predictive Evolution Engine',
-    description: 'VISION detects degradation trends while DREAM synthesizes solutions and MODERNIZER proposes targeted fixes',
+    description: 'VISION detects degradation trends while DREAM synthesizes solutions and EVOLUTION proposes targeted fixes',
     category: 'automation',
     modules: [
       { name: 'VISION', role: 'primary', required: true },
