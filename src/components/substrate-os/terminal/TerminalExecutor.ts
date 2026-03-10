@@ -2736,7 +2736,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
       } else {
         return { success: false, output: '▓ ERROR: Invalid subcommand\n  Usage: evolution.autonomy [status|set <mode>]' };
       }
-    } else if (base === 'modernizer.receipts') {
+    } else if (base === 'evolution.receipts' || base === 'modernizer.receipts') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       try {
         const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
