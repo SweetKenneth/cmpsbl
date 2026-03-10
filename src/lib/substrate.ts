@@ -692,7 +692,7 @@ class SubstrateClient {
     
     /** Lightweight heartbeat */
     pulse: () =>
-      this.invoke({ module: 'modernizer', action: 'pulse' }),
+      this.invoke({ module: 'evolution', action: 'pulse' }),
     
     // ═══ EVOLUTION CYCLE v6.5.0 ═══
     // Unified engine replacing scan, plans, review, verify, analyze
