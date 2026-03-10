@@ -10726,7 +10726,7 @@ async function handleSystem(
       const tested: Array<{ module: string; status: string; score: number }> = [];
       const errors: string[] = [];
       
-      // ALL 38 NODES - complete architecture
+      // ALL 40 NODES - complete architecture
       const modulesToHeal = target ? [target] : ALL_38_NODES;
       
       // PHASE 1: Reset in-memory module health
