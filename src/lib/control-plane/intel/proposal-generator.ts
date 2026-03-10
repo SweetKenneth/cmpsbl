@@ -601,7 +601,7 @@ export async function generateUnifiedProposal(): Promise<UnifiedProposal> {
   actionPlan.forEach((step, i) => { step.order = i + 1; });
   
   // ─── POST-RECONCILIATION: Sync technical_debt with action_plan ───
-  // Modernizer proposals inject tech-debt action steps during buildActionPlan
+  // EVOLUTION proposals inject tech-debt action steps during buildActionPlan
   // that aren't reflected in buildTechDebtSection. Reconcile now.
   const actionPlanDebtItems = actionPlan.filter(s => s.category === 'tech-debt');
   for (const step of actionPlanDebtItems) {

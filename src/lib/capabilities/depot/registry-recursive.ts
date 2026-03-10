@@ -78,7 +78,7 @@ export const RECURSIVE_CAPABILITIES: CapabilityArtifact[] = [
 - Module dependency analysis
 - Non-disruptive refactoring
 - Performance regression guards`,
-    requiredModules: ['SYSTEM', 'CORTEX', 'MODERNIZER', 'VISION'],
+    requiredModules: ['SYSTEM', 'CORTEX', 'EVOLUTION', 'VISION'],
     compatibleModules: ['DREAM', 'BRAIN', 'ATLAS'],
     executorType: 'container',
     artifactFormat: 'container',
