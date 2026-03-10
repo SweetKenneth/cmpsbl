@@ -1522,7 +1522,7 @@ function buildActionPlan(
     if (debtSteps.some(s => s.title === candidate.step.title)) continue;
     
     // Cross-source semantic dedup: extract the core subject from title/description
-    // so "Anomaly: 4 critical table(s) inaccessible" and "Modernizer: Resolve resilience gap"
+    // so "Anomaly: 4 critical table(s) inaccessible" and "Evolution: Resolve resilience gap"
     // don't both appear when they reference the same affected components
     const subjectKey = extractSubjectKey(candidate.step);
     if (subjectKey && seenSubjects.has(subjectKey)) continue;
