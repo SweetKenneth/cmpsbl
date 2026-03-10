@@ -373,10 +373,10 @@ Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 // ── Helpers ──
 
 function getCJPIMultiplier(score: number): number {
-  if (score >= 100) return 2.5;
-  if (score >= 94) return 2.0;
-  if (score >= 90) return 1.6;
-  if (score >= 80) return 1.3;
+  if (score >= 100) return 4.0;
+  if (score >= 94) return 3.0;
+  if (score >= 90) return 2.2;
+  if (score >= 80) return 1.5;
   if (score >= 68) return 1.0;
   return 0.7;
 }

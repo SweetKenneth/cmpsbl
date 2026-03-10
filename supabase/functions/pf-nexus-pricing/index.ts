@@ -286,10 +286,10 @@ function computeConsensusPrice(
 
   // CJPI multiplier
   let cjpiMult = 1.0;
-  if (cjpiScore >= 100) cjpiMult = 2.5;
-  else if (cjpiScore >= 94) cjpiMult = 2.0;
-  else if (cjpiScore >= 90) cjpiMult = 1.6;
-  else if (cjpiScore >= 80) cjpiMult = 1.3;
+  if (cjpiScore >= 100) cjpiMult = 4.0;
+  else if (cjpiScore >= 94) cjpiMult = 3.0;
+  else if (cjpiScore >= 90) cjpiMult = 2.2;
+  else if (cjpiScore >= 80) cjpiMult = 1.5;
   else if (cjpiScore >= 68) cjpiMult = 1.0;
   else cjpiMult = 0.7;
 
