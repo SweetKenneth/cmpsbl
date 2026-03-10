@@ -2471,7 +2471,7 @@ ${allFeatures.map(f => {
       if (!args[0]) {
         return { success: false, output: '▓ ERROR: Job ID required\n  Usage: evolution.export <job_id>' };
       }
-      result = await modernizer.export(args[0]);
+      result = await evolutionMod.export(args[0]);
     } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
       result = await modernizer.quota();
     } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
