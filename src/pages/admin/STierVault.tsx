@@ -255,6 +255,9 @@ function ArtifactCard({
   entry: STierEntry; onViewCode: (e: STierEntry) => void; onExport: (e: STierEntry) => void;
   loadingCode: boolean; expanded: boolean; onToggle: () => void;
 }) {
+  const chainLength = Math.max(1, entry.dependencyFootprint.length);
+  const entryValue = estimateMarketValue(entry.cjpi, entry.type, chainLength);
+
   return (
     <Card className="border-border/50 hover:border-border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
       <CardContent className="p-3 sm:p-4">
@@ -263,6 +266,10 @@ function ArtifactCard({
           <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(entry.cjpi)}`}>{entry.cjpi}</Badge>
           <Badge variant="outline" className={`text-xs border ${MODULE_COLORS[entry.module] ?? "bg-muted text-muted-foreground"}`}>{entry.module}</Badge>
           <Badge variant="outline" className="text-xs">{entry.type}</Badge>
+          <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+            <DollarSign className="w-3 h-3 mr-0.5" />
+            {formatMarketValue(entryValue)}
+          </Badge>
           {entry.approved ? (
             <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
           ) : (
@@ -307,6 +314,7 @@ function ArtifactCard({
               <div><span className="text-muted-foreground">Module:</span> {entry.module}</div>
               <div><span className="text-muted-foreground">Type:</span> {entry.type}</div>
               <div><span className="text-muted-foreground">Export:</span> {entry.exportMode}</div>
+              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(entryValue)}</span></div>
               <div className="col-span-2"><span className="text-muted-foreground">Signature:</span> <code className="font-mono">{entry.signatureHash}</code></div>
               <div className="col-span-2"><span className="text-muted-foreground">Generated:</span> {new Date(entry.generatedAt).toLocaleDateString()}</div>
             </div>
