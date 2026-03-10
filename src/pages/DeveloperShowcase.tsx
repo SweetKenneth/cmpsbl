@@ -145,7 +145,7 @@ export default function DeveloperShowcase() {
           <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]" />
           <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px]" />
         </div>
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-3 sm:px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 px-4 py-1.5 bg-cyan-500/10 text-cyan-400 border-cyan-500/30">
               <Terminal className="w-4 h-4 mr-2" />
