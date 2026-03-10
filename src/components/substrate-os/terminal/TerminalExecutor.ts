@@ -2620,7 +2620,7 @@ ${allFeatures.map(f => {
         result = { success: true, data: res.data };
       }
     } else if (base === 'evolution.archived' || base === 'modernizer.archived') {
-      result = await modernizer.archived();
+      result = await evolutionMod.archived();
     } else if (base === 'evolution.implement' || base === 'modernizer.implement') {
       if (!args[0] || !args[1]) {
         return { success: false, output: '▓ ERROR: Both archived_function and target_action required\n  Usage: evolution.implement <archived_function> <target_action>\n  Example: evolution.implement pf-brain-systems-reasoning brain.deep_think' };
