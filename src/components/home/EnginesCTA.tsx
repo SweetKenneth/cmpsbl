@@ -64,7 +64,7 @@ export function EnginesCTA() {
           <div className="h-[2px] memory-stream-bar opacity-40" />
           <div className="h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
-          <div className="relative p-6 sm:p-10 md:p-14">
+          <div className="relative p-5 sm:p-10 md:p-14 space-y-8 sm:space-y-10">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
               <div>
