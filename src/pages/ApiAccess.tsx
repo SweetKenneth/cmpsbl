@@ -235,7 +235,7 @@ export default function ApiAccess() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="group p-5 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm hover:border-primary/20 transition-all duration-300"
+                className="group p-5 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm hover:border-primary/20 transition-all duration-300 shimmer-on-hover card-lift"
               >
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/15 transition-colors">
                   <mod.icon className="w-5 h-5 text-primary" />
