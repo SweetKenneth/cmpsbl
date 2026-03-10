@@ -3,8 +3,12 @@
  */
 // sovereign-authority-kernel has registerPolicy/removePolicy collision with governance/075
 export {
-  SovereignAuthorityKernel,
+  checkAuthority,
+  listPolicies as listSovereignPolicies,
+  registerPolicy as registerSovereignPolicy,
+  removePolicy as removeSovereignPolicy,
   type AuthorityPolicy as SovereignAuthorityPolicy,
+  type AuthorityCheck,
 } from '@/crownjewels/s-tier/055-sovereign-authority-kernel';
 export * from '@/crownjewels/s-tier/035-data-sovereignty-partitioner';
 export * from '@/crownjewels/s-tier/190-regulatory-genome-mapper';
