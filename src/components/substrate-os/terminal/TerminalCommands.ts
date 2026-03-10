@@ -19,7 +19,7 @@ export type CommandTier = SubstrateRole; // 'free' | 'creator' | 'architect' | '
 export interface CommandDefinition {
   command: string;
   description: string;
-  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'evolution' | 'immunity' | 'observability' | 'shadow';
+  category: 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'evolution' | 'core' | 'ripple' | 'access' | 'integration' | 'cortex' | 'inclusive' | 'clm' | 'autoblog' | 'meta' | 'engine' | 'infra' | 'memory_mod' | 'relay_mod' | 'audit_mod' | 'identity_mod' | 'economy_mod' | 'sandbox_mod' | 'engineer' | 'intent_hub' | 'atlas' | 'sovereign' | 'oracle' | 'conscience' | 'treaty' | 'compass' | 'echo' | 'reflex' | 'forge' | 'lingua' | 'phantom' | 'harvest' | 'medic' | 'nerve' | 'governance' | 'immunity' | 'observability' | 'shadow';
   icon: LucideIcon;
   /** @deprecated Use requiredTier instead */
   requiresOperator: boolean;
