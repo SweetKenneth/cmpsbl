@@ -317,7 +317,7 @@ const MODULE_DEPENDENCIES: Readonly<Record<SubstrateModuleName, readonly Substra
   identity: ['core'],
   relay: ['core'],
   audit: ['core'],
-  evolution: ['core'],
+  // evolution deps defined in CSZ section below
   decode: ['core'],
   encode: ['core', 'decode'],
   vision: ['core'],
