@@ -37,12 +37,12 @@ const CORRELATION_GROUPS: Record<string, string[]> = {
   vision: ['defense', 'system', 'nexus', 'audit'],
   encode: ['decode', 'brain', 'sandbox'],
   // Administrative
-  system: ['defense', 'access', 'modernizer', 'audit'],
-  modernizer: ['system', 'cortex', 'vision'],
+  system: ['defense', 'access', 'evolution', 'audit'],
+  evolution: ['system', 'cortex', 'vision'],
   integration: ['nexus', 'system', 'relay'],
-  inclusive: ['decode', 'modernizer', 'vision'],
+  inclusive: ['decode', 'evolution', 'vision'],
   // Orchestrator
-  cortex: ['brain', 'nexus', 'modernizer'],
+  cortex: ['brain', 'nexus', 'evolution'],
   atlas: ['cortex', 'brain', 'vision'],
   // Infrastructure
   memory: ['brain', 'core', 'dream'],

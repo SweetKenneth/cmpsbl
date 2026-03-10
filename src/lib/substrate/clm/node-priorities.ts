@@ -205,7 +205,7 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
     acknowledged: true, generation: 1,
   },
   {
-    node: 'modernizer', displayName: 'MODERNIZER', sector: 'Execution',
+    node: 'evolution', displayName: 'EVOLUTION', sector: 'Execution',
     priorities: [
       { capability: 'clm_legacy_migration_patterns', description: 'Safe legacy-to-modern migration strategies with rollback', priority: 88 },
       { capability: 'clm_api_versioning_strategy', description: 'Semver enforcement, deprecation schedules, and sunset policies', priority: 85 },

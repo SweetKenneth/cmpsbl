@@ -63,7 +63,7 @@ const SUBSTRATE_DIRECTORIES = [
   { path: 'src/lib/substrate/dream-proposal', module: 'dream-proposal', desc: 'Dream proposal evaluation' },
   { path: 'src/lib/substrate/circuit-breaker', module: 'resilience', desc: 'Circuit breaker patterns' },
   { path: 'src/lib/substrate/hot-swap', module: 'hot-swap', desc: 'Hot-swappable module loading' },
-  { path: 'src/lib/substrate/evolution-cycle.ts', module: 'modernizer', desc: 'Evolution cycle engine' },
+  { path: 'src/lib/substrate/evolution-cycle.ts', module: 'evolution', desc: 'Evolution cycle engine' },
   { path: 'src/lib/substrate/capabilities', module: 'capabilities', desc: 'Capability definitions & synergies' },
   { path: 'src/hooks/substrate', module: 'hooks', desc: 'React hooks for all modules' },
   { path: 'src/components/substrate-os', module: 'os-ui', desc: 'OS Dashboard components' },

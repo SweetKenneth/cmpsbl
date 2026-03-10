@@ -429,7 +429,7 @@ export function generateComplianceReport(framework: ComplianceFramework, periodD
 
 function isRelevantToControl(entry: AuditEntry, controlId: string, framework: ComplianceFramework): boolean {
   const accessModules = ['identity', 'access', 'defense'];
-  const changeModules = ['encode', 'modernizer', 'system'];
+  const changeModules = ['encode', 'evolution', 'system'];
   const monitorModules = ['cortex', 'vision', 'dream', 'brain'];
 
   if (framework === 'SOC2') {
