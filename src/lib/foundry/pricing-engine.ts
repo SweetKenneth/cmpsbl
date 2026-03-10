@@ -297,16 +297,16 @@ function computeLocalFallback(artifact: PricingArtifact): CommercializationPrici
     recommended_resale_price: recommended,
     indie_price: Math.round(recommended * 0.6 * 100) / 100,
     standard_price: recommended,
-    enterprise_price: Math.round(recommended * 3.5 * 100) / 100,
-    estimated_market_range_low: Math.round(recommended * 0.5 * 100) / 100,
-    estimated_market_range_high: Math.round(recommended * 2 * 100) / 100,
+    enterprise_price: Math.round(recommended * 2.0 * 100) / 100,
+    estimated_market_range_low: Math.round(recommended * 0.7 * 100) / 100,
+    estimated_market_range_high: Math.round(recommended * 1.5 * 100) / 100,
     pricing_confidence: 0.3,
     market_category: 'Software Tool',
     comparable_summary: 'Local estimate — enable consensus pricing for market-grounded analysis.',
     suggested_marketplaces: artifact.pipeline_score >= 90 ? ['Gumroad', 'GitHub Marketplace'] : ['Gumroad'],
     commercialization_notes: 'Fallback pricing from internal signals only (blended CJPIValue + NormalizedInternal).',
     pricing_source: 'local-fallback',
-    pricing_source_version: '3.0.0',
+    pricing_source_version: '3.1.0',
   };
 }
 
