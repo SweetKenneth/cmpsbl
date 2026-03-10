@@ -317,7 +317,7 @@ function activateWave(
 }
 
 /**
- * Activate all 8 waves sequentially
+ * Activate all 11 waves sequentially
  * Call during substrate boot after capability router is initialized
  */
 export function activateAllSTierCapabilities(): ActivationResult[] {
@@ -325,11 +325,11 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     WAVE_1_ACTIVATIONS, WAVE_2_ACTIVATIONS, WAVE_3_ACTIVATIONS,
     WAVE_4_ACTIVATIONS, WAVE_5_ACTIVATIONS, WAVE_6_ACTIVATIONS,
     WAVE_7_ACTIVATIONS, WAVE_8_ACTIVATIONS, WAVE_9_ACTIVATIONS,
-    WAVE_10_ACTIVATIONS,
+    WAVE_10_ACTIVATIONS, WAVE_11_ACTIVATIONS,
   ];
   const total = allWaves.reduce((s, w) => s + w.length, 0);
   console.log(`[S-Tier Activator] ═══ Beginning staged activation ═══`);
-  console.log(`[S-Tier Activator] Total: ${total} capabilities across 10 waves`);
+  console.log(`[S-Tier Activator] Total: ${total} capabilities across 11 waves`);
 
   const results = [
     activateWave(1, WAVE_1_ACTIVATIONS),
@@ -342,6 +342,7 @@ export function activateAllSTierCapabilities(): ActivationResult[] {
     activateWave(8, WAVE_8_ACTIVATIONS),
     activateWave(9, WAVE_9_ACTIVATIONS),
     activateWave(10, WAVE_10_ACTIVATIONS),
+    activateWave(11, WAVE_11_ACTIVATIONS),
   ];
 
   const totalActivated = results.reduce((sum, r) => sum + r.totalActivated, 0);
