@@ -44,6 +44,7 @@ interface InventoryItem {
 interface Props {
   inventory: InventoryItem[];
   onRemove?: (id: string) => Promise<boolean>;
+  subscriptionTier?: string;
 }
 
 function mapInventoryToExportArtifacts(inventory: InventoryItem[]): TieredFoundryExportArtifact[] {
