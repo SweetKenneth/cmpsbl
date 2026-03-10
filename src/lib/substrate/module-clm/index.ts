@@ -503,11 +503,7 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
     kpis: ['pii_detection_rate', 'false_negative_rate', 'privacy_score'],
     selfReflectionPrompt: 'As the PHANTOM module, how can I improve PII detection accuracy and privacy-preserving analytics?',
   },
-  evolution: {
-    moduleId: 'evolution', displayName: 'EVOLUTION',
-    learningTopics: ['Shadow validation accuracy', 'Canary deployment safety', 'Regression detection speed', 'Rollback reliability'],
-    kpis: ['shadow_accuracy', 'canary_success_rate', 'regression_catch_rate'],
-    selfReflectionPrompt: 'As the EVOLUTION module, how can I improve shadow validation and reduce regression risk?',
+  /** evolution entry already exists above — this duplicate was from modernizer migration */
   },
   shadow: {
     moduleId: 'shadow', displayName: 'SHADOW',

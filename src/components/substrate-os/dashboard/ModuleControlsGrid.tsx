@@ -223,7 +223,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: evolutionAdminStatus,
       metrics: [{ label: 'Engine', value: evolutionAdminStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
-      onAction: async () => { const r = await evolutionMod.scan(); toast.info(`Evolution: ${r.success ? 'Started' : 'Failed'}`); },
+      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Online' : 'Failed'}`); },
     },
     {
       id: 'integration', name: 'INTEGRATION', layer: 'admin' as const, icon: Plug,

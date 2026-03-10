@@ -110,7 +110,7 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   core: 'text-slate-400', brain: 'text-purple-400', cortex: 'text-blue-400',
   defense: 'text-red-400', nexus: 'text-green-400', vision: 'text-amber-400',
   ripple: 'text-cyan-400', access: 'text-orange-400', inclusive: 'text-pink-400',
-  modernizer: 'text-emerald-400', system: 'text-gray-400', decode: 'text-indigo-400',
+  evolution: 'text-emerald-400', system: 'text-gray-400', decode: 'text-indigo-400',
   dream: 'text-violet-400', integration: 'text-fuchsia-400', encode: 'text-yellow-400',
   memory: 'text-sky-400', relay: 'text-lime-400', audit: 'text-stone-400',
   identity: 'text-rose-400', economy: 'text-amber-500', sandbox: 'text-teal-400',
