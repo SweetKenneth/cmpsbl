@@ -209,7 +209,7 @@ const modulesByLayer = {
   infrastructure: [
     {
       id: "memory",
-      name: "Memory",
+      name: "MEMORY",
       description: "Embedding store, staleness detection, relevance feedback",
       icon: Database,
       color: "text-teal-500",
@@ -218,7 +218,7 @@ const modulesByLayer = {
     },
     {
       id: "relay",
-      name: "Relay",
+      name: "RELAY",
       description: "HMAC verification, adaptive retry, webhook dispatch",
       icon: Network,
       color: "text-sky-500",
@@ -227,7 +227,7 @@ const modulesByLayer = {
     },
     {
       id: "audit",
-      name: "Audit",
+      name: "AUDIT",
       description: "Compliance templates, log compression, SOC2/GDPR",
       icon: ClipboardCheck,
       color: "text-slate-400",
@@ -236,7 +236,7 @@ const modulesByLayer = {
     },
     {
       id: "identity",
-      name: "Identity",
+      name: "IDENTITY",
       description: "Actor reputation, passkeys, biometric portability",
       icon: Fingerprint,
       color: "text-rose-400",
@@ -245,7 +245,7 @@ const modulesByLayer = {
     },
     {
       id: "economy",
-      name: "Economy",
+      name: "ECONOMY",
       description: "Predictive cost forecasting, per-capability attribution",
       icon: Coins,
       color: "text-amber-500",
@@ -254,7 +254,7 @@ const modulesByLayer = {
     },
     {
       id: "sandbox",
-      name: "Sandbox",
+      name: "SANDBOX",
       description: "Resource limits, state snapshots, isolated execution",
       icon: Box,
       color: "text-lime-500",
@@ -263,7 +263,7 @@ const modulesByLayer = {
     },
     {
       id: "encode",
-      name: "Encode",
+      name: "ENCODE",
       description: "Structural generation, filesystem-aware, error patterns",
       icon: FileCode,
       color: "text-cyan-500",
