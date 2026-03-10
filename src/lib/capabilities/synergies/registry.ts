@@ -499,7 +499,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'autonomous-evolution',
     name: 'Autonomous Evolution',
-    description: 'CORTEX evolution proposals enhanced by BRAIN learning history and MODERNIZER impact simulation',
+    description: 'CORTEX evolution proposals enhanced by BRAIN learning history and EVOLUTION impact simulation',
     category: 'orchestration',
     modules: [
       { name: 'CORTEX', role: 'primary', required: true },
