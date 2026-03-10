@@ -414,9 +414,9 @@ const stratumSparta: Specimen[] = [
     id: "SPRT-003",
     fossilized: "2026-02-24",
     origin: "architecture",
-    stimulus: "Consumed modules lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
+    stimulus: "Consumed nodes lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
     adaptations: [
-      "Zone architecture introduced: consumed modules became individually addressable zones with independent fault isolation",
+      "Zone architecture introduced: consumed nodes became individually addressable zones with independent fault isolation",
       "Convergence layers split into clearly delineated zones with individual circuit breakers",
       "Hot-swap capability enabled for surgical zone replacement without affecting siblings",
     ],
