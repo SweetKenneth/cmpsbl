@@ -1760,11 +1760,11 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
     minModulesRequired: 3,
   },
   
-  // DEFENSE × MODERNIZER (security evolution)
+  // DEFENSE × EVOLUTION (security evolution)
   {
     id: 'security-posture-evolution',
     name: 'Security Posture Evolution',
-    description: 'DEFENSE policies evolved by MODERNIZER analysis, BRAIN threat patterns, and CORTEX governance approval',
+    description: 'DEFENSE policies evolved by EVOLUTION analysis, BRAIN threat patterns, and CORTEX governance approval',
     category: 'security',
     modules: [
       { name: 'DEFENSE', role: 'primary', required: true },
