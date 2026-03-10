@@ -143,6 +143,69 @@ function testIronclad(): AuditResult {
   }
 }
 
+function testDiscoveryEngine(): AuditResult {
+  try {
+    const health = getDiscoveryHealth();
+    const breaker = getDiscoveryBreakerState();
+
+    if (breaker.state === 'open') {
+      return {
+        ok: false,
+        module: 'discovery_engine',
+        detail: `circuit OPEN (failures=${breaker.totalFailures}), health=${health.score}`,
+      };
+    }
+
+    if (health.score < 50) {
+      return {
+        ok: false,
+        module: 'discovery_engine',
+        detail: `health critical (${health.score}/100), breaker=${breaker.state}`,
+      };
+    }
+
+    return {
+      ok: true,
+      module: 'discovery_engine',
+      detail: `health=${health.score}, breaker=${breaker.state}`,
+    };
+  } catch (err: any) {
+    return { ok: false, module: 'discovery_engine', detail: err?.message || 'discovery engine error' };
+  }
+}
+
+function testVaultLoader(): AuditResult {
+  try {
+    if (!isVaultLoaded()) {
+      return {
+        ok: false,
+        module: 'vault_loader',
+        detail: 'Vault primitives not loaded — boot may have failed',
+      };
+    }
+
+    const count = getVaultPrimitiveCount();
+    const dist = getVaultDistribution();
+    const nodeCount = Object.keys(dist).length;
+
+    if (count === 0) {
+      return {
+        ok: false,
+        module: 'vault_loader',
+        detail: 'Vault loaded but 0 primitives registered',
+      };
+    }
+
+    return {
+      ok: true,
+      module: 'vault_loader',
+      detail: `${count} primitives across ${nodeCount} nodes`,
+    };
+  } catch (err: any) {
+    return { ok: false, module: 'vault_loader', detail: err?.message || 'vault loader error' };
+  }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // RUNNER
 // ═══════════════════════════════════════════════════════════════
