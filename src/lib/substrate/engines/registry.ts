@@ -1050,7 +1050,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'response_quality_calibration',
       'recursive_self_improvement',
     ],
-    primaryModules: ['BRAIN', 'MODERNIZER', 'CORTEX'],
+    primaryModules: ['BRAIN', 'EVOLUTION', 'CORTEX'],
     layer: 'Cognitive',
     synergyMultiplier: 3.0,
     complexityScore: 10,
