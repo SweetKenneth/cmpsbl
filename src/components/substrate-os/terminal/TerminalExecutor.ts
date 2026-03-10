@@ -929,7 +929,7 @@ export async function executeCommand(
     const tierDescriptions: Record<string, string> = {
       free: 'Read-only dashboard, status commands',
       creator: 'Terminal, engines, analytics, actions ($29/mo)',
-      architect: 'Evolution, modernizer, mesh, advanced ops ($79/mo)',
+      architect: 'Evolution, mesh, advanced ops ($79/mo)',
       governor: 'Full system authority, admin, mint (CMPSBL only)',
     };
     const tierDesc = tierDescriptions[effectiveTier] || '';
