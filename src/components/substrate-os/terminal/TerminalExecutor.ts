@@ -2473,7 +2473,7 @@ ${allFeatures.map(f => {
       }
       result = await evolutionMod.export(args[0]);
     } else if (base === 'evolution.quota' || base === 'modernizer.quota') {
-      result = await modernizer.quota();
+      result = await evolutionMod.quota();
     } else if (base === 'evolution.pulse' || base === 'modernizer.pulse') {
       result = await modernizer.pulse();
     } else if (base === 'evolution.propose' || base === 'modernizer.propose') {
