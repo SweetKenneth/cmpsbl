@@ -269,7 +269,7 @@ export default function EngineDetail() {
                     </p>
                     {!engine.isSubscription && !engine.isFree && (
                       <p className="text-sm text-primary font-semibold mt-1.5">
-                        {engine.bundleDisplay} when bundled with another engine
+                        {engine.bundleDisplay} when bundled with an agent (40% off)
                       </p>
                     )}
                   </div>

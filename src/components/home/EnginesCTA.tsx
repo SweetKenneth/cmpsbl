@@ -118,7 +118,7 @@ export function EnginesCTA() {
             </div>
 
             {/* Stats row */}
-            <div className="flex flex-wrap justify-center gap-8 sm:gap-14 mb-10">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-14">
               {[
                 { icon: Shield, value: "20", label: "Sealed Engines" },
                 { icon: Cpu, value: "3", label: "Clearance Tiers" },
