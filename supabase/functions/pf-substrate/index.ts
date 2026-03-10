@@ -10514,7 +10514,7 @@ async function handleSystem(
       // Full system status with health data - checks ALL 40 NODES
       const checks: Record<string, boolean> = {};
       
-      // Initialize all 38 nodes as false
+      // Initialize all 40 nodes as false
       for (const mod of ALL_38_NODES) {
         checks[mod] = false;
       }
