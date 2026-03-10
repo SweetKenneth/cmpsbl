@@ -550,7 +550,7 @@ const stratumInfra: Specimen[] = [
     id: "INFR-003",
     fossilized: "2026-02-16",
     origin: "cognition",
-    stimulus: "Infrastructure modules lacked domain-specific intelligence — key operational blind spots existed",
+    stimulus: "Infrastructure nodes lacked domain-specific intelligence — key operational blind spots existed",
     adaptations: [
       "MEMORY improved its ability to detect and manage stale knowledge",
       "RELAY strengthened its webhook delivery with secure signatures and adaptive retry",
