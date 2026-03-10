@@ -440,7 +440,7 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'proposal_impact_analyzer',
       'active_learning_triggers',
     ],
-    primaryModules: ['MODERNIZER', 'DREAM', 'BRAIN'],
+    primaryModules: ['EVOLUTION', 'DREAM', 'BRAIN'],
     layer: 'Admin',
     synergyMultiplier: 3.0,
     complexityScore: 10,
