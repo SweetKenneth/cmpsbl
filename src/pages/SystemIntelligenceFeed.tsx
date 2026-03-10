@@ -53,7 +53,7 @@ import { ModuleLearningFeed } from '@/components/substrate-os/ModuleLearningFeed
 const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
   core: Cpu, brain: Brain, cortex: Cpu, defense: Shield, nexus: Network,
   vision: Eye, ripple: Zap, access: Lock, inclusive: Accessibility,
-  modernizer: RefreshCw, system: Settings, decode: FileText, dream: Moon,
+  system: Settings, decode: FileText, dream: Moon,
   integration: Plug, encode: FileText, memory: FileText, relay: FileText,
   audit: FileText, identity: FileText, economy: FileText, sandbox: FileText,
   nerve: Zap, medic: FileText, sovereign: Shield, oracle: Eye,
@@ -73,7 +73,7 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   ripple: 'from-cyan-500/20 to-cyan-600/5 border-cyan-500/30',
   access: 'from-orange-500/20 to-orange-600/5 border-orange-500/30',
   inclusive: 'from-pink-500/20 to-pink-600/5 border-pink-500/30',
-  modernizer: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/30',
+  
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
   decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
   dream: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
@@ -110,7 +110,7 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   core: 'text-slate-400', brain: 'text-purple-400', cortex: 'text-blue-400',
   defense: 'text-red-400', nexus: 'text-green-400', vision: 'text-amber-400',
   ripple: 'text-cyan-400', access: 'text-orange-400', inclusive: 'text-pink-400',
-  modernizer: 'text-emerald-400', system: 'text-gray-400', decode: 'text-indigo-400',
+  system: 'text-gray-400', decode: 'text-indigo-400',
   dream: 'text-violet-400', integration: 'text-fuchsia-400', encode: 'text-yellow-400',
   memory: 'text-sky-400', relay: 'text-lime-400', audit: 'text-stone-400',
   identity: 'text-rose-400', economy: 'text-amber-500', sandbox: 'text-teal-400',

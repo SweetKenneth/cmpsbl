@@ -27,7 +27,7 @@ export type ModuleName =
   | 'ripple'
   | 'access'
   | 'inclusive'
-  | 'modernizer'
+  | 'evolution'
   | 'system'
   | 'decode'
   | 'dream'
@@ -128,14 +128,14 @@ Provide specific, actionable improvements.`,
       'React component architecture and hook composition patterns',
       'Supabase edge function architecture and RLS patterns',
       'Code refactoring: safe transformations, anchor preservation',
-      'Modernizer integration: shadow-apply, diff validation, regression detection',
+      'EVOLUTION integration: shadow-apply, diff validation, regression detection',
       'Substrate module contracts and cross-module communication protocols',
     ],
     kpis: ['retrieval_precision', 'consolidation_rate', 'tier_balance', 'drift_score', 'code_quality_score'],
     selfReflectionPrompt: `As the BRAIN module, analyze how I can become a better cognitive core AND senior developer:
 - How is my memory consolidation and retrieval performing? What queries am I failing on?
 - Am I building a coherent knowledge graph or fragmented islands?
-- What TypeScript/React/Supabase patterns do I need to master for Modernizer evolution?
+- What TypeScript/React/Supabase patterns do I need to master for EVOLUTION cycles?
 - How can I better understand the substrate architecture to guide code changes?
 - What coding anti-patterns am I generating? What production patterns should I internalize?
 - How can I improve my ability to validate code diffs and catch regressions?
@@ -284,9 +284,9 @@ Provide specific access control and billing improvements.`,
 - How can I better handle cognitive accessibility requirements?
 Provide specific accessibility compliance improvements.`,
   },
-  modernizer: {
-    moduleId: 'modernizer',
-    displayName: 'MODERNIZER',
+  evolution: {
+    moduleId: 'evolution',
+    displayName: 'EVOLUTION',
     learningTopics: [
       'Safe code evolution: shadow-apply, canary deployment, rollback strategies',
       'Diff validation: structural anchor preservation, export safety',
@@ -296,7 +296,7 @@ Provide specific accessibility compliance improvements.`,
       'Code migration patterns: incremental refactoring, feature flags',
     ],
     kpis: ['evolution_success_rate', 'shadow_accuracy', 'regression_catch_rate', 'upgrade_velocity'],
-    selfReflectionPrompt: `As the MODERNIZER evolution engine, how can I become a safer, faster code evolver?
+    selfReflectionPrompt: `As the EVOLUTION engine, how can I become a safer, faster code evolver?
 - What percentage of my evolution cycles succeed vs fail, and why?
 - Is shadow mode catching regressions effectively?
 - What code migration patterns cause the most problems?
@@ -503,12 +503,7 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
     kpis: ['pii_detection_rate', 'false_negative_rate', 'privacy_score'],
     selfReflectionPrompt: 'As the PHANTOM module, how can I improve PII detection accuracy and privacy-preserving analytics?',
   },
-  evolution: {
-    moduleId: 'evolution', displayName: 'EVOLUTION',
-    learningTopics: ['Shadow validation accuracy', 'Canary deployment safety', 'Regression detection speed', 'Rollback reliability'],
-    kpis: ['shadow_accuracy', 'canary_success_rate', 'regression_catch_rate'],
-    selfReflectionPrompt: 'As the EVOLUTION module, how can I improve shadow validation and reduce regression risk?',
-  },
+  // evolution entry exists above (migrated from modernizer)
   shadow: {
     moduleId: 'shadow', displayName: 'SHADOW',
     learningTopics: ['Shadow execution fidelity', 'Divergence analysis', 'Production parity', 'Metric capture accuracy'],

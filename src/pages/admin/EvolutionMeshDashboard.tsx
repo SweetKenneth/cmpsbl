@@ -22,7 +22,7 @@ import { integrityService } from '@/lib/evolution-mesh/integrity-service';
 import { snapshotService } from '@/lib/evolution-mesh/snapshot-service';
 import { telemetryService } from '@/lib/evolution-mesh/telemetry-service';
 import { mutationEngine } from '@/lib/evolution-mesh/mutation-engine';
-import { useModernizer } from '@/hooks/substrate/useModernizer';
+import { useEvolution } from '@/hooks/substrate/useEvolution';
 import type { MutationProposal, MutationRun, ChangeArtifact, VerificationScan } from '@/lib/evolution-mesh/mutation-engine';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -442,9 +442,9 @@ export default function EvolutionMeshDashboard() {
     },
   });
 
-  const modernizerHook = useModernizer();
+  const evolutionHook = useEvolution();
   const abortEvolveMutation = useMutation({
-    mutationFn: () => modernizerHook.evolve.mutateAsync({ target: 'abort' }),
+    mutationFn: () => evolutionHook.rollback.mutateAsync({ cycleId: 'active', reason: 'user-abort' }),
     onSuccess: () => {
       toast.success('Evolution aborted — old proposals cleared');
       invalidateAll();

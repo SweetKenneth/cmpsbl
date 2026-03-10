@@ -11,7 +11,7 @@ import {
 import { ModuleControlCard } from './ModuleControlCard';
 import { 
   useBrainStatusOS, useDefenseStatusOS, useNexusStatusOS, 
-  useDreamStatusOS, useModernizerStatusOS, useDecodeStatusOS,
+  useDreamStatusOS, useEvolutionStatusOS, useDecodeStatusOS,
   useCoreStatusOS, useRippleStatusOS, useAccessStatusOS,
   useIntegrationStatusOS, useVisionHealthOS, useSystemStatus,
   useCortexStatusOS, useInclusiveStatusOS,
@@ -22,7 +22,7 @@ import {
   useSovereignStatusOS, useOracleStatusOS, useConscienceStatusOS, useTreatyStatusOS,
   useCompassStatusOS, useEchoStatusOS, useReflexStatusOS,
   useForgeStatusOS, useLinguaStatusOS, useHarvestStatusOS,
-  useEvolutionStatusOS, useShadowStatusOS, usePhantomStatusOS,
+  useShadowStatusOS, usePhantomStatusOS,
   useImmunityStatusOS, useIntentStatusOS, useGovernanceStatusOS,
   useMedicStatusOS, useNerveStatusOS,
 } from '@/hooks/useSubstrateOS';
@@ -34,7 +34,7 @@ import {
 } from '@/hooks/useSubstrateOSEnhanced';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { brain, defense, nexus, system, dream, modernizer, decode, core, ripple, access, integration, vision, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
+import { brain, defense, nexus, system, dream, decode, core, ripple, access, integration, vision, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
 
 interface ModuleControlsGridProps {
   enabled: boolean;
@@ -46,7 +46,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
   const defenseStatus = useDefenseStatusOS();
   const nexusStatus = useNexusStatusOS();
   const dreamStatus = useDreamStatusOS();
-  const modernizerStatus = useModernizerStatusOS();
+  const evolutionAdminStatus = useEvolutionStatusOS();
   const decodeStatus = useDecodeStatusOS();
   const coreStatus = useCoreStatusOS();
   const rippleStatus = useRippleStatusOS();
@@ -217,13 +217,13 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       onAction: async () => { await systemHeal.mutateAsync(undefined); },
     },
     {
-      id: 'modernizer', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
+      id: 'evolution', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
       description: 'Bounded self-evolution engine',
       gradient: 'bg-gradient-to-r from-rose-500 to-pink-600', accentColor: 'bg-rose-500',
-      status: modernizerStatus,
-      metrics: [{ label: 'Engine', value: modernizerStatus.data?.success ? 'Ready' : 'Checking' }],
+      status: evolutionAdminStatus,
+      metrics: [{ label: 'Engine', value: evolutionAdminStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
-      onAction: async () => { const r = await modernizer.scan(); toast.info(`Evolution: ${r.success ? 'Started' : 'Failed'}`); },
+      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Online' : 'Failed'}`); },
     },
     {
       id: 'integration', name: 'INTEGRATION', layer: 'admin' as const, icon: Plug,
