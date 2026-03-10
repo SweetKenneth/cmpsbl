@@ -686,10 +686,10 @@ export async function executeAutonomousEvolution(
     reversible: true,
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: simulation,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   // Step 3: VISION - Predict impact
