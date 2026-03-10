@@ -364,7 +364,7 @@ Return a JSON object with EXACTLY these fields (no markdown, no explanation):
   "estimated_mid_price": number (best single retail price in USD),
   "market_category": "string — most fitting software market category",
   "comparable_product_types": "string — 1-2 sentences naming real comparable products at similar price points",
-  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace"],
+  "suggested_marketplaces": ["array of 2-4 best-fit platforms from: Gumroad, Lemon Squeezy, GitHub Marketplace, npm, Docker Hub, Hugging Face, Vercel Templates, AWS Marketplace, Azure Marketplace, Google Cloud Marketplace, enterprise direct licensing"],
   "pricing_confidence": number between 0 and 1,
   "commercialization_rationale": "string — 1-2 sentences on best commercialization path"
 }`;
