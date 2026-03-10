@@ -514,18 +514,18 @@ const stratumInfra: Specimen[] = [
     id: "INFR-006",
     fossilized: "2026-02-16",
     origin: "governance",
-    stimulus: "High-value capabilities were ungoverned — competitive moat at risk across modules",
+    stimulus: "High-value capabilities were ungoverned — competitive moat at risk across nodes",
     adaptations: [
       "Comprehensive capability audit identified and classified crown jewel capabilities across all tiers",
       "All high-value capabilities crystallized as permanently governed resources",
       "Tier-gated access ensures capabilities are discoverable but access-controlled",
     ],
     phenotype: [
-      "Every module has governed crown jewel capabilities — full competitive coverage",
+      "Every node has governed crown jewel capabilities — full competitive coverage",
       "Capabilities are tiered: discoverable by all, accessible by entitlement",
       "Significant increase in governed capabilities in a single cycle",
     ],
-    affectedNodes: ["ALL MODULES", "GOVERNANCE"],
+    affectedNodes: ["ALL NODES", "GOVERNANCE"],
   },
   {
     id: "INFR-004",
