@@ -427,7 +427,7 @@ export const STIER_DEPOT_CAPABILITIES: CapabilityArtifact[] = [
     description: 'Product behavior evolves with usage patterns. "The product learns."',
     longDescription: 'Self-evolving product intelligence using BRAIN learning, VISION usage analytics, and DECODE user preference extraction for continuous product adaptation.',
     requiredModules: ['BRAIN', 'VISION', 'DECODE'],
-    compatibleModules: ['CORTEX', 'MODERNIZER'],
+    compatibleModules: ['CORTEX', 'EVOLUTION'],
     executorType: 'js',
     artifactFormat: 'zip',
     version: '1.0.0',
