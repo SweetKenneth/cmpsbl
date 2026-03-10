@@ -73,7 +73,7 @@ const modulesByLayer = {
   kernel: [
     {
       id: "core",
-      name: "Core",
+      name: "CORE",
       description: "Kernel scheduler, lifecycle, orchestration",
       icon: Cpu,
       color: "text-orange-500",
@@ -82,7 +82,7 @@ const modulesByLayer = {
     },
     {
       id: "ripple",
-      name: "Ripple",
+      name: "RIPPLE",
       description: "Message bus, pub/sub, queues",
       icon: Radio,
       color: "text-cyan-400",
@@ -91,7 +91,7 @@ const modulesByLayer = {
     },
     {
       id: "access",
-      name: "Access",
+      name: "ACCESS",
       description: "API keys, billing, metering",
       icon: Key,
       color: "text-amber-400",
