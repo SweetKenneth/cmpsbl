@@ -2594,9 +2594,9 @@ ${allFeatures.map(f => {
       } else {
         result = { success: true, data: res.data };
       }
-    } else if (base === 'modernizer.delete') {
+    } else if (base === 'evolution.delete' || base === 'modernizer.delete') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.delete <plan_id> [reason]' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.delete <plan_id> [reason]' };
       }
       const planId = await resolveShortPlanId(args[0]);
       if (!planId) {
