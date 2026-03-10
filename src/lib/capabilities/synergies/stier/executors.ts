@@ -1337,7 +1337,7 @@ export async function executeFrictionAutoRemovalEngine(
   });
   
   // Step 3: MODERNIZER - Apply fixes
-  const modernizerStart = performance.now();
+  const evolutionStart2 = performance.now();
   const appliedFixes = {
     changesApplied: context.dryRun ? 0 : optimizations.proposals.filter(p => p.approved).length,
     rollbackReady: true,
@@ -1345,7 +1345,7 @@ export async function executeFrictionAutoRemovalEngine(
     testDuration: '7d',
   };
   steps.push({
-    module: 'MODERNIZER',
+    module: 'EVOLUTION',
     success: true,
     data: appliedFixes,
     durationMs: performance.now() - modernizerStart,
