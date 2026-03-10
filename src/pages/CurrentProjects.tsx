@@ -1,9 +1,8 @@
 /**
- * Current Projects — CMPSBL Shipped Systems
- * Redesigned to match the current site design system
+ * Current Projects — CMPSBL & LNCHBL Shipped Systems
  */
 
-import { Shield, Zap, Brain, ArrowRight, Eye, Wrench, Server, Sparkles, Accessibility, ExternalLink } from "lucide-react";
+import { Shield, Zap, Brain, ArrowRight, Eye, Wrench, Server, Sparkles, Accessibility, ExternalLink, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,10 +21,32 @@ const fadeUp = {
 
 const projects = [
   {
+    id: "cmpsbl",
+    name: "CMPSBL",
+    tagline: "Cognitive Infrastructure for AI",
+    description: "The 40-node cognitive orchestration substrate. Persistent memory, DREAM cycles, NEXUS routing, governed evolution, and 675+ capabilities across 12 sectors. The platform everything else runs on.",
+    icon: Brain,
+    status: "Live",
+    features: ["40 nodes · 12 sectors", "Persistent memory", "DREAM cycles", "NEXUS routing", "Governed evolution", "175,000+ lines"],
+    href: "/substrate",
+    external: false
+  },
+  {
+    id: "lnchbl",
+    name: "LNCHBL",
+    tagline: "Self-Hosted CMPSBL Deployment",
+    description: "Deploy the complete CMPSBL substrate on your own infrastructure. Air-gapped, sovereign, and fully compliant. Enterprise-grade with dedicated memory partitions and organization workspaces.",
+    icon: Rocket,
+    status: "Enterprise",
+    features: ["Full substrate deploy", "Air-gapped security", "Data sovereignty", "Compliance-ready", "Dedicated partitions", "Custom domains"],
+    href: "/enterprise",
+    external: false
+  },
+  {
     id: "rckbl",
     name: "RCKBL",
     tagline: "Enterprise Website Security",
-    description: "Bot defense born from reverse-engineering stealth technology. Behavioral analysis and real-time threat blocking.",
+    description: "Bot defense born from reverse-engineering stealth technology. Behavioral analysis and real-time threat blocking. Built on CMPSBL's DEFENSE node.",
     icon: Shield,
     status: "Live",
     features: ["AI bot detection", "Behavioral fingerprinting", "Real-time blocking", "WordPress plugin", "Adaptive CAPTCHA", "Device scoring"],
@@ -36,7 +57,7 @@ const projects = [
     id: "rndrbl",
     name: "RNDRBL",
     tagline: "Accessibility-First Browser",
-    description: "Browser with integrated control panel. Real-time customization for users with disabilities.",
+    description: "Browser with integrated control panel. Real-time customization for users with disabilities. Powered by CMPSBL's INCLUSIVE node.",
     icon: Eye,
     status: "Running",
     features: ["Layover controls", "Customizable features", "Disability support", "Browser extension", "Real-time adjustments", "Universal compatibility"],
@@ -69,7 +90,7 @@ const projects = [
     id: "cascade",
     name: "Cascade",
     tagline: "Autonomous Dreaming AI",
-    description: "First documented autonomous AI with memory reflection cycles—dreaming. Published on Zenodo and OSF.",
+    description: "First documented autonomous AI with memory reflection cycles — dreaming. Published on Zenodo and OSF. Built on CMPSBL's BRAIN and DREAM nodes.",
     icon: Brain,
     status: "Deployed",
     features: ["Memory reflection", "Dream cycles", "Autonomous learning", "Self-improvement", "Pattern synthesis", "Verified proof"],
@@ -80,10 +101,10 @@ const projects = [
     id: "nexus",
     name: "AI Nexus",
     tagline: "Multi-Provider Gateway",
-    description: "Unified routing across 20+ LLM providers. Intelligent load balancing, failover, and cost optimization.",
+    description: "Unified routing across 13+ LLM providers. Intelligent load balancing, failover, and cost optimization. Core CMPSBL NEXUS node exposed as a standalone service.",
     icon: Server,
     status: "Running",
-    features: ["20+ providers", "Auto fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero downtime"],
+    features: ["13+ providers", "Auto fallbacks", "Cost optimization", "Smart routing", "Load balancing", "Zero downtime"],
     href: "https://cmpsbl.com/blog/ai-triad-intelligent-routing",
     external: true
   },
@@ -106,10 +127,10 @@ export default function CurrentProjects() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Current Projects — CMPSBL Shipped Systems"
-        description="Explore CMPSBL's ecosystem of shipped products: RCKBL, RNDRBL, PTCHBL, SPLCBL, Cascade, AI Nexus, and XCTBL Space. Real systems that work."
+        title="Current Projects — CMPSBL & LNCHBL Ecosystem"
+        description="Explore the CMPSBL ecosystem: the 40-node cognitive substrate, LNCHBL self-hosted deployment, RCKBL security, RNDRBL accessibility, and more. Real systems, shipped and operational."
         canonical="https://cmpsbl.com/projects"
-        keywords={['CMPSBL projects', 'AI security', 'accessibility tools', 'WordPress plugins', 'autonomous AI']}
+        keywords={['CMPSBL projects', 'LNCHBL', 'AI security', 'accessibility tools', 'autonomous AI', 'self-hosted AI']}
       />
 
       <PublicNav />
@@ -127,7 +148,7 @@ export default function CurrentProjects() {
         >
           <Badge variant="outline" className="mb-6 border-primary/30 text-primary font-mono text-xs">
             <Sparkles className="w-3 h-3 mr-2" />
-            SHIPPED SYSTEMS
+            CMPSBL ECOSYSTEM
           </Badge>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-[1.1] mb-6">
@@ -135,7 +156,8 @@ export default function CurrentProjects() {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Seven live products. 100+ projects shipped over 15 years. Real, operational, and independently verifiable.
+            The CMPSBL ecosystem spans cognitive infrastructure, self-hosted deployment via <span className="text-foreground font-semibold">LNCHBL</span>, 
+            security, accessibility, and autonomous AI. Nine live products. 100+ projects shipped over 15 years.
           </p>
         </motion.div>
       </section>
@@ -148,13 +170,13 @@ export default function CurrentProjects() {
               key={project.id}
               {...fadeUp}
               transition={{ duration: 0.5, delay: i * 0.07 }}
+              className={project.id === 'cmpsbl' ? 'md:col-span-2' : ''}
             >
               <Card 
                 className="group h-full glass-edge card-lift cursor-pointer border-border/40 hover:border-primary/40 transition-all duration-300 overflow-hidden"
                 onClick={() => project.external ? window.open(project.href, "_blank") : navigate(project.href)}
               >
                 <CardContent className="p-6 flex flex-col h-full">
-                  {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
@@ -172,13 +194,7 @@ export default function CurrentProjects() {
                       {project.status}
                     </Badge>
                   </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
-                    {project.description}
-                  </p>
-
-                  {/* Features */}
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">{project.description}</p>
                   <div className="grid grid-cols-2 gap-1.5 mb-5">
                     {project.features.map((feature, j) => (
                       <div key={j} className="flex items-center gap-2 text-xs text-muted-foreground/80">
@@ -187,18 +203,9 @@ export default function CurrentProjects() {
                       </div>
                     ))}
                   </div>
-
-                  {/* CTA */}
                   <div className="pt-3 border-t border-border/30">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="w-full gap-2 text-muted-foreground hover:text-primary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        project.external ? window.open(project.href, "_blank") : navigate(project.href);
-                      }}
-                    >
+                    <Button variant="ghost" size="sm" className="w-full gap-2 text-muted-foreground hover:text-primary"
+                      onClick={(e) => { e.stopPropagation(); project.external ? window.open(project.href, "_blank") : navigate(project.href); }}>
                       {project.external ? "Visit" : "View"}
                       {project.external ? <ExternalLink className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                     </Button>
@@ -210,25 +217,17 @@ export default function CurrentProjects() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-16 px-4 border-t border-border/30 bg-gradient-to-b from-muted/10 to-background">
         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-black mb-4 text-foreground">
-            Want to Build Together?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            100+ projects shipped over 15 years. Join us.
-          </p>
+          <h2 className="text-3xl font-black mb-4 text-foreground">Want to Build Together?</h2>
+          <p className="text-lg text-muted-foreground mb-8">100+ projects shipped over 15 years. Join us.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" onClick={() => navigate('/investors')} className="bg-primary hover:bg-primary/90 gap-2">
               Investor Information <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/roadmap')}>
-              View Roadmap
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/contact')}>
-              Contact Team
-            </Button>
+            <Button size="lg" variant="outline" onClick={() => navigate('/roadmap')}>View Roadmap</Button>
+            <Button size="lg" variant="outline" onClick={() => navigate('/contact')}>Contact Team</Button>
           </div>
         </motion.div>
       </section>

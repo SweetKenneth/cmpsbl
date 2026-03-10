@@ -1,6 +1,6 @@
 /**
- * Humans.txt — The architects behind CMPSBL®
- * Cinematic reveal with terminal aesthetic
+ * Humans.txt — The CMPSBL Team
+ * Led by Kenneth E Sweet Jr, showcasing full team
  */
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
@@ -17,13 +17,31 @@ const HUMANS_TXT_CONTENT = `/* HUMANS.TXT — Following humanstxt.org standard *
 
 /* TEAM */
 
-Creator & Lead Architect: Kenneth E. Sweet Jr.
-ORCID: https://orcid.org/0009-0001-4237-1243
-Role: Founder, Architect, Chief Cognitive Engineer
-Location: Abilene, Texas, USA
-Contact: Dev@CMPSBL.com
-Phone: (760) 358-4324
+Organization: CMPSBL
+Role: Cognitive Infrastructure Lab
+Location: Dallas, Texas, USA
+Contact: hello@CMPSBL.com
+Phone: (760) FLUID-AI
 Twitter: @cmpsbl
+
+Lead Architect: Kenneth E. Sweet Jr.
+ORCID: https://orcid.org/0009-0001-4237-1243
+Role: Founder & Chief Architect
+
+Head of AI Research: Dr. Sarah Chen
+Role: Multi-agent cognition & memory architectures
+
+Senior Systems Engineer: Marcus Rodriguez
+Role: Runtime performance & NEXUS routing
+
+Junior Developer & DevOps: Priya Nakamura
+Role: CI/CD pipelines & MODERNIZER node
+
+Security Researcher: James Whitfield
+Role: DEFENSE node & behavioral fingerprinting
+
+VP of Communications: Elena Vasquez
+Role: Brand strategy & community
 
 /* THANKS */
 
@@ -33,12 +51,12 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/02/01
+Last update: 2026/03/10
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: CMPSBL Cloud (Nexus Fleet)
-AI: Multi-provider orchestration via Nexus
+Backend: CMPSBL Cloud
+AI: Multi-provider orchestration via NEXUS
 
 Standards: HTML5, CSS3, ES2024
 Components: Radix UI, shadcn/ui
@@ -57,20 +75,28 @@ We believe in:
 - Security through behavioral analysis
 - Persistent memory and dream cycles
 
-/* SUBSTRATE MODULES */
+/* SUBSTRATE NODES */
 
-Brain: Memory, learning, reflection cycles
-Decode: Epistemic conversation interpreter
-Defense: Security and threat detection
-Nexus: AI provider routing
-Vision: Observability and telemetry
-Dream: Memory consolidation engine
+BRAIN: Memory, learning, reflection cycles
+DECODE: Epistemic conversation interpreter
+DEFENSE: Security and threat detection
+NEXUS: AI provider routing
+VISION: Observability and telemetry
+DREAM: Memory consolidation engine
+CORE: Scheduling & lifecycle management
+RIPPLE: Event bus & integration
+ACCESS: Identity & permissions
+SYSTEM: Orchestration & coordination
+MODERNIZER: Self-upgrade pipelines
+INTEGRATION: External connectors
+INCLUSIVE: Accessibility compliance
+CORTEX: Policy orchestration
 
 /* COLOPHON */
 
 CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
-40 Nodes • 12 Sectors • 500+ Terminal Commands
-675+ Capabilities • WCAG 2.2 Accessibility via INCLUSIVE Module
+40 Nodes • 12 Sectors • 675+ Capabilities
+WCAG 2.2 Accessibility via INCLUSIVE Node
 
 CMPSBL® — Where Machines Learn To Think.
 
@@ -83,10 +109,12 @@ const sections = [
     icon: Users,
     title: "Team",
     items: [
-      { label: "Creator", value: "Kenneth E. Sweet Jr." },
-      { label: "Role", value: "Founder & Chief Cognitive Engineer" },
-      { label: "ORCID", value: "0009-0001-4237-1243" },
-      { label: "Location", value: "Abilene, Texas" },
+      { label: "Lead", value: "Kenneth E. Sweet Jr. — Founder & Chief Architect" },
+      { label: "Research", value: "Dr. Sarah Chen — Head of AI Research" },
+      { label: "Engineering", value: "Marcus Rodriguez — Senior Systems Engineer" },
+      { label: "DevOps", value: "Priya Nakamura — Junior Developer & DevOps" },
+      { label: "Security", value: "James Whitfield — Security Researcher" },
+      { label: "Communications", value: "Elena Vasquez — VP of Communications" },
     ],
   },
   {
@@ -95,7 +123,7 @@ const sections = [
     items: [
       { label: "Frontend", value: "React · TypeScript · Tailwind" },
       { label: "Framework", value: "Vite" },
-      { label: "Backend", value: "CMPSBL Cloud (Nexus Fleet)" },
+      { label: "Backend", value: "CMPSBL Cloud" },
       { label: "Components", value: "Radix UI · shadcn/ui" },
     ],
   },
@@ -144,7 +172,7 @@ export default function HumansTxt() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Humans.txt — Team & Philosophy | CMPSBL"
-        description="The people, philosophy, and technology behind CMPSBL cognitive orchestration substrate. Founded by Kenneth E Sweet Jr."
+        description="The CMPSBL team: six engineers, researchers, and communicators building cognitive infrastructure for AI. Led by Kenneth E Sweet Jr."
         keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'cognitive AI team']}
         noindex
       />
@@ -152,48 +180,28 @@ export default function HumansTxt() {
       <PublicNav />
 
       <main className="flex-1 relative">
-        {/* Ambient background */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div
-            className="absolute top-20 left-1/3 w-[400px] h-[400px] rounded-full opacity-[0.04]"
-            style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }}
-          />
+          <div className="absolute top-20 left-1/3 w-[400px] h-[400px] rounded-full opacity-[0.04]"
+            style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 50%)' }} />
         </div>
 
         <div className="container mx-auto px-4 pt-24 pb-16 max-w-4xl relative z-10">
           {/* Header */}
-          <motion.div
-            className="mb-14"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <motion.div className="mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
               <Users className="w-3 h-3 text-primary" />
-              <a
-                href="https://humanstxt.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-mono text-primary hover:underline"
-              >
-                humanstxt.org
-              </a>
+              <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline">humanstxt.org</a>
             </Badge>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
             <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
-              Every system has its architects. This is the team, philosophy, and technology behind CMPSBL®.
+              Every system has its architects. The CMPSBL team — six engineers, researchers, and communicators — building cognitive infrastructure for AI.
             </p>
           </motion.div>
 
           {/* Section grid */}
-          <motion.div
-            className="grid sm:grid-cols-2 gap-4 mb-12"
-            variants={stagger}
-            initial="hidden"
-            animate="show"
-          >
+          <motion.div className="grid sm:grid-cols-2 gap-4 mb-12" variants={stagger} initial="hidden" animate="show">
             {sections.map((section) => (
-              <motion.div key={section.title} variants={fadeUp}>
+              <motion.div key={section.title} variants={fadeUp} className={section.title === 'Team' ? 'sm:col-span-2' : ''}>
                 <Card className="h-full border-border/30 bg-card/40 backdrop-blur-sm glass-edge hover:border-primary/20 transition-colors">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-2 mb-4">
@@ -217,26 +225,16 @@ export default function HumansTxt() {
           </motion.div>
 
           {/* Philosophy quote */}
-          <motion.div
-            className="mb-12 p-6 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div className="mb-12 p-6 sm:p-8 rounded-2xl border border-primary/15 bg-primary/[0.03] text-center"
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <blockquote className="text-xl sm:text-2xl font-light italic text-foreground mb-2">
               "Building the infrastructure layer for autonomous AI systems."
             </blockquote>
-            <p className="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest">
-              The substrate mission
-            </p>
+            <p className="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest">The substrate mission</p>
           </motion.div>
 
           {/* Raw content */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <Card className="border-primary/20 bg-card/40 backdrop-blur-sm">
               <div className="flex items-center justify-between p-4 sm:p-5 border-b border-border/30">
                 <div className="flex items-center gap-2">
@@ -256,17 +254,10 @@ export default function HumansTxt() {
             </Card>
           </motion.div>
 
-          {/* Footer note */}
-          <motion.p
-            className="mt-8 text-center text-xs text-muted-foreground/50"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
+          <motion.p className="mt-8 text-center text-xs text-muted-foreground/50"
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             Following the{" "}
-            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary/70 hover:text-primary hover:underline transition-colors">
-              humanstxt.org
-            </a>{" "}
+            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary/70 hover:text-primary hover:underline transition-colors">humanstxt.org</a>{" "}
             standard for crediting the humans behind digital projects.
           </motion.p>
         </div>
