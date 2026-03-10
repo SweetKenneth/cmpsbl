@@ -119,7 +119,7 @@ export default function VanillaDeveloperGuide() {
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="gap-2">
+              <Button asChild size="lg" variant="outline" className="gap-2 hover:border-primary/30 transition-colors">
                 <Link to="/api-access">
                   <BookOpen className="w-4 h-4" />
                   Full API Reference
