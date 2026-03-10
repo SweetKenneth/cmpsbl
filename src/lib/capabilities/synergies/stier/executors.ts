@@ -330,7 +330,7 @@ export async function executeExplainableIntelligenceCompiler(
 
 /**
  * Autonomous Ops Steward Executor
- * SYSTEM × CORTEX × VISION × MODERNIZER → Self-maintaining infrastructure
+ * SYSTEM × CORTEX × VISION × EVOLUTION → Self-maintaining infrastructure
  */
 export async function executeAutonomousOpsSteward(
   context: SynergyExecutionContext
