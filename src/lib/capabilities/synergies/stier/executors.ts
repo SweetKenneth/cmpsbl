@@ -1279,7 +1279,7 @@ export async function executeAdaptiveProductBrain(
 
 /**
  * Friction Auto-Removal Engine Executor
- * VISION × CORTEX × MODERNIZER → Auto-remove UX friction
+ * VISION × CORTEX × EVOLUTION → Auto-remove UX friction
  */
 export async function executeFrictionAutoRemovalEngine(
   context: SynergyExecutionContext
