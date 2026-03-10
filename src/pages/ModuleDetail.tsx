@@ -1,6 +1,6 @@
 /**
- * Module Detail Page — Hybrid marketing hero + technical depth
- * SEO: /modules/:slug — captures specific module intent
+ * Node Detail Page — Hybrid marketing hero + technical depth
+ * SEO: /modules/:slug — captures specific node intent
  */
 
 import { useParams, Link, Navigate } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function ModuleDetail() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": `CMPSBL ${mod.name} Module`,
+    "name": `CMPSBL ${mod.name} Node`,
     "description": mod.description,
     "url": `https://cmpsbl.com/modules/${mod.slug}`,
     "applicationCategory": "AI Operating System",
@@ -43,7 +43,7 @@ export default function ModuleDetail() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": `What does the ${mod.name} module do in CMPSBL's AI Operating System?`,
+        "name": `What does the ${mod.name} node do in CMPSBL's AI Operating System?`,
         "acceptedAnswer": { "@type": "Answer", "text": mod.heroDescription },
       },
       ...mod.highlights.map(h => ({
@@ -104,9 +104,9 @@ export default function ModuleDetail() {
               </p>
 
               <div className="flex flex-wrap gap-3 mt-8">
-                <Button asChild size="lg" className="rounded-xl">
+                <Button asChild size="lg" className="rounded-xl gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/developers">
-                    Get Started Free <ArrowRight className="w-4 h-4 ml-2" />
+                    Get Started Free <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-xl">
@@ -131,7 +131,7 @@ export default function ModuleDetail() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card"
+                  className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card shimmer-on-hover card-lift"
                 >
                   <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-3.5 h-3.5 text-primary" />
@@ -143,7 +143,7 @@ export default function ModuleDetail() {
           </div>
         </section>
 
-        {/* ═══ Why This Module (SEO-Rich Highlights) ═══ */}
+        {/* ═══ Why This Node (SEO-Rich Highlights) ═══ */}
         <section className="py-12 sm:py-16 bg-muted/30 border-t border-border/50">
           <div className="container mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-bold mb-3 flex items-center gap-2">
@@ -160,7 +160,7 @@ export default function ModuleDetail() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors"
+                  className="p-6 rounded-xl border border-border bg-card hover:border-primary/20 transition-colors shimmer-on-hover card-lift"
                 >
                   <h3 className="text-lg font-bold text-foreground mb-2">{highlight.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{highlight.description}</p>
@@ -223,7 +223,7 @@ export default function ModuleDetail() {
             </h2>
             <div className="space-y-4">
               {mod.useCases.map((useCase, i) => (
-                <div key={i} className="flex items-start gap-3 p-5 rounded-xl border border-border bg-card">
+                <div key={i} className="flex items-start gap-3 p-5 rounded-xl border border-border bg-card card-lift shimmer-on-hover">
                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <span className="text-sm font-bold text-primary">{i + 1}</span>
                   </div>
@@ -266,10 +266,10 @@ export default function ModuleDetail() {
             <h2 className="text-3xl font-bold mb-4">Ready to build with {mod.name}?</h2>
             <p className="text-muted-foreground mb-8">Start for free. No credit card required.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Button asChild size="lg" className="rounded-xl">
-                <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              <Button asChild size="lg" className="rounded-xl gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4" /></Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl">
+              <Button asChild variant="outline" size="lg" className="rounded-xl hover:border-primary/30 transition-all">
                 <Link to="/modules">Explore All Nodes</Link>
               </Button>
             </div>
