@@ -2495,9 +2495,9 @@ ${allFeatures.map(f => {
       const errObj = res.error as any;
       const errMsg = typeof errObj === 'string' ? errObj : errObj?.message;
       result = { success: !res.error, data: res.data, error: errMsg };
-    } else if (base === 'modernizer.diff') {
+    } else if (base === 'evolution.diff' || base === 'modernizer.diff') {
       if (!args[0]) {
-        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: modernizer.diff <plan_id>' };
+        return { success: false, output: '▓ ERROR: Plan ID required\n  Usage: evolution.diff <plan_id>' };
       }
       // Resolve short plan ID to full UUID (matching other commands)
       const planId = await resolveShortPlanId(args[0]);
