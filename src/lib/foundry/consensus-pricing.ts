@@ -347,13 +347,14 @@ HARDWARE EXPORT: ${input.has_hardware_export ? 'Yes' : 'No'}
 EXPORT TARGETS: ${(input.export_targets || ['source']).join(', ')}
 RUNTIME: ${input.runtime_type || 'JavaScript/TypeScript'}
 
-CRITICAL PRICING GUIDELINES — follow these ranges strictly:
-- A single reusable module/library: $10-$80
-- A multi-module developer toolkit (2-5 modules): $30-$200
-- A comprehensive framework or platform (5+ modules): $100-$500
-- Only very large enterprise infrastructure should exceed $500
-- Do NOT exceed $1,000 unless the artifact is a complete enterprise platform with 8+ modules
-- Think about what a solo developer or small team would actually pay on Gumroad
+PRICING GUIDELINES — price according to real commercial software market value:
+- A single reusable module/library: $10-$200
+- A multi-module developer toolkit (2-5 modules): $50-$2,000
+- A comprehensive framework or platform (5+ modules): $500-$25,000
+- Enterprise infrastructure, orchestration platforms, or AI substrates: $5,000-$500,000+
+- Highly sophisticated multi-module systems with 8+ modules and high CJPI scores can exceed $100,000
+- Price based on the engineering value, sophistication, and what an enterprise or serious buyer would pay
+- Do NOT artificially constrain pricing — if it's worth $50,000 or $500,000, price it accordingly
 
 Return a JSON object with EXACTLY these fields (no markdown, no explanation):
 {
