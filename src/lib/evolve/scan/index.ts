@@ -276,7 +276,7 @@ function determineNextAction(
   // If plan is ready, recommend evolution
   if (planResult?.plan.status === 'ready') {
     const actionCount = planResult.plan.total_actions;
-    return `Plan ${planResult.plan.plan_id.substring(0, 8)} ready — ${actionCount} actions. Run 'modernizer.evolve shadow' to apply.`;
+    return `Plan ${planResult.plan.plan_id.substring(0, 8)} ready — ${actionCount} actions. Run 'evolution.evolve shadow' to apply.`;
   }
   
   // If plan is pending review
