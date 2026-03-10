@@ -2739,8 +2739,8 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
     } else if (base === 'evolution.receipts' || base === 'modernizer.receipts') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       try {
-        const { modernizerCommands } = await import('@/lib/evolve/modernizer-commands');
-        const res = await modernizerCommands.receipts(limit);
+        const { evolutionCommands } = await import('@/lib/evolve/modernizer-commands');
+        const res = await evolutionCommands.receipts(limit);
         return { success: res.success, output: res.formatted || JSON.stringify(res.data, null, 2), data: res.data };
       } catch (err) {
         return { success: false, output: `▓ ERROR: ${err instanceof Error ? err.message : 'Failed to get receipts'}` };
