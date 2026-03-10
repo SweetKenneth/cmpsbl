@@ -22,7 +22,7 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="Substrate Systems — AI Architecture | CMPSBL"
+        title="Substrate Nodes — AI Architecture | CMPSBL"
         description="Browse all substrate execution surfaces — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
@@ -49,7 +49,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                Execution Surfaces.{" "}
+                40 Nodes.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>

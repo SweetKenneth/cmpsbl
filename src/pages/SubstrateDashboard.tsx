@@ -73,7 +73,7 @@ const modulesByLayer = {
   kernel: [
     {
       id: "core",
-      name: "Core",
+      name: "CORE",
       description: "Kernel scheduler, lifecycle, orchestration",
       icon: Cpu,
       color: "text-orange-500",
@@ -82,7 +82,7 @@ const modulesByLayer = {
     },
     {
       id: "ripple",
-      name: "Ripple",
+      name: "RIPPLE",
       description: "Message bus, pub/sub, queues",
       icon: Radio,
       color: "text-cyan-400",
@@ -91,7 +91,7 @@ const modulesByLayer = {
     },
     {
       id: "access",
-      name: "Access",
+      name: "ACCESS",
       description: "API keys, billing, metering",
       icon: Key,
       color: "text-amber-400",
@@ -102,7 +102,7 @@ const modulesByLayer = {
   cognitive: [
     {
       id: "brain",
-      name: "Brain",
+      name: "BRAIN",
       description: "Memory, learning cycles, reflection",
       icon: Brain,
       color: "text-purple-500",
@@ -111,7 +111,7 @@ const modulesByLayer = {
     },
     {
       id: "decode",
-      name: "Decode",
+      name: "DECODE",
       description: "Intent decoding, chat, oracle",
       icon: MessageSquare,
       color: "text-blue-500",
@@ -120,7 +120,7 @@ const modulesByLayer = {
     },
     {
       id: "dream",
-      name: "Dream",
+      name: "DREAM",
       description: "Dream-Eater operations, nightly processing",
       icon: Moon,
       color: "text-indigo-500",
@@ -131,7 +131,7 @@ const modulesByLayer = {
   operational: [
     {
       id: "defense",
-      name: "Defense",
+      name: "DEFENSE",
       description: "Bot detection, threat analysis",
       icon: Shield,
       color: "text-red-500",
@@ -140,7 +140,7 @@ const modulesByLayer = {
     },
     {
       id: "nexus",
-      name: "Nexus",
+      name: "NEXUS",
       description: "Multi-provider AI routing",
       icon: Zap,
       color: "text-yellow-500",
@@ -149,7 +149,7 @@ const modulesByLayer = {
     },
     {
       id: "vision",
-      name: "Vision",
+      name: "VISION",
       description: "Observability, metrics, health",
       icon: Eye,
       color: "text-green-500",
@@ -160,7 +160,7 @@ const modulesByLayer = {
   admin: [
     {
       id: "system",
-      name: "System",
+      name: "SYSTEM",
       description: "Administration, configuration",
       icon: Settings,
       color: "text-gray-400",
@@ -169,7 +169,7 @@ const modulesByLayer = {
     },
     {
       id: "integration",
-      name: "Integration",
+      name: "INTEGRATION",
       description: "Enterprise adapters, LLM governance",
       icon: Plug,
       color: "text-emerald-500",
@@ -178,7 +178,7 @@ const modulesByLayer = {
     },
     {
       id: "inclusive",
-      name: "Inclusive",
+      name: "INCLUSIVE",
       description: "Human compatibility, WCAG, a11y",
       icon: Accessibility,
       color: "text-pink-500",
@@ -187,7 +187,7 @@ const modulesByLayer = {
     },
     {
       id: "medic",
-      name: "Medic",
+      name: "MEDIC",
       description: "Self-healing diagnostics & recovery",
       icon: HeartPulse,
       color: "text-red-400",
@@ -198,7 +198,7 @@ const modulesByLayer = {
   orchestrator: [
     {
       id: "cortex",
-      name: "Cortex",
+      name: "CORTEX",
       description: "Agency orchestrator, evolution, governance",
       icon: Wand2,
       color: "text-violet-500",
@@ -209,7 +209,7 @@ const modulesByLayer = {
   infrastructure: [
     {
       id: "memory",
-      name: "Memory",
+      name: "MEMORY",
       description: "Embedding store, staleness detection, relevance feedback",
       icon: Database,
       color: "text-teal-500",
@@ -218,7 +218,7 @@ const modulesByLayer = {
     },
     {
       id: "relay",
-      name: "Relay",
+      name: "RELAY",
       description: "HMAC verification, adaptive retry, webhook dispatch",
       icon: Network,
       color: "text-sky-500",
@@ -227,7 +227,7 @@ const modulesByLayer = {
     },
     {
       id: "audit",
-      name: "Audit",
+      name: "AUDIT",
       description: "Compliance templates, log compression, SOC2/GDPR",
       icon: ClipboardCheck,
       color: "text-slate-400",
@@ -236,7 +236,7 @@ const modulesByLayer = {
     },
     {
       id: "identity",
-      name: "Identity",
+      name: "IDENTITY",
       description: "Actor reputation, passkeys, biometric portability",
       icon: Fingerprint,
       color: "text-rose-400",
@@ -245,7 +245,7 @@ const modulesByLayer = {
     },
     {
       id: "economy",
-      name: "Economy",
+      name: "ECONOMY",
       description: "Predictive cost forecasting, per-capability attribution",
       icon: Coins,
       color: "text-amber-500",
@@ -254,7 +254,7 @@ const modulesByLayer = {
     },
     {
       id: "sandbox",
-      name: "Sandbox",
+      name: "SANDBOX",
       description: "Resource limits, state snapshots, isolated execution",
       icon: Box,
       color: "text-lime-500",
@@ -263,7 +263,7 @@ const modulesByLayer = {
     },
     {
       id: "encode",
-      name: "Encode",
+      name: "ENCODE",
       description: "Structural generation, filesystem-aware, error patterns",
       icon: FileCode,
       color: "text-cyan-500",
@@ -530,12 +530,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">CMPSBL Substrate — Featuring Clockless Cognitive Reality</p>
+              <p className="text-sm md:text-base text-muted-foreground">40-Node Cognitive Architecture · 12 Sectors · Clockless Coordination</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            Unified control center for the AI orchestration substrate. Entities wrapped by mesh overlays, hot-swappable zones, composable pipelines, and terminal commands.
+            The complete cognitive operating system — 40 nodes across 12 sectors, coordinated by a weighted matrix where Σ = 1.000. CORE boots every node in dependency order, DEFENSE wraps the outer shell, and DREAM synthesizes improvements autonomously. Every node name, weight, and breaker state is visible here.
           </p>
           
           <div className="flex gap-3">

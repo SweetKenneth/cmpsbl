@@ -159,7 +159,7 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Memory Stream Substrate</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          A continuous cognitive substrate providing routing, memory, learning cycles,
+          A 40-node cognitive substrate organized across 12 sectors, providing routing, memory, learning cycles,
           observability, defense, and execution coordination for AI systems.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
         </p>
@@ -178,14 +178,15 @@ function OverviewSection() {
           the <strong className="text-foreground">OCG</strong> (Operational Compliance Grid) handles boundary enforcement, and the <strong className="text-foreground">Execution tier</strong> runs
           all user-facing capabilities. Cross-cutting <strong className="text-foreground">Fields</strong> (EVOLUTION, IMMUNITY, INTENT) permeate every layer.
         </p>
-        <CodeBlock title="Substrate layers">{`┌─────────────────────────────────────────────────────────┐
+        <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
 │  GOVERNANCE (Plane)        Legitimacy supervision       │
 ├─────────────────────────────────────────────────────────┤
 │  DEFENSE (Shell)           Terminal boundary enforcement │
 ├─────────────────────────────────────────────────────────┤
 │  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
 │                            VISION · CORTEX · ECONOMY    │
-│                            SANDBOX · INCLUSIVE · MEDIC   │
+│                            SANDBOX · INCLUSIVE · MEDIC  │
+│                            INTEGRATION                  │
 ├─────────────────────────────────────────────────────────┤
 │  OCG                       RIPPLE · ACCESS · IDENTITY   │
 │                            RELAY · AUDIT · NERVE        │
@@ -193,13 +194,22 @@ function OverviewSection() {
 │  CCR (Cognitive Core)      BRAIN · MEMORY · DREAM       │
 ├─────────────────────────────────────────────────────────┤
 │  SPINE                     CORE → SYSTEM                │
+├─────────────────────────────────────────────────────────┤
+│  ESZ                       COMPLIANCE · PREDICT ·       │
+│                            ETHICS · CONTRACT            │
+│  EPZ                       SIMULATE · GEOSPATIAL · EDGE │
+│  EMZ                       FORGE · TRANSLATE · INGEST   │
+│  CSZ                       EVOLUTION · SHADOW · PHANTOM │
+├─────────────────────────────────────────────────────────┤
+│  ATLAS                     Control plane (Node 40)      │
 └─────────────────────────────────────────────────────────┘
-Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)`}</CodeBlock>
+Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)
+Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Core Systems</h3>
+        <h3 className="font-semibold text-foreground mb-4">Core Nodes</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
@@ -245,8 +255,8 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          The substrate is a 40-node topology organized across 12 sectors (layers and zones). Every module participates in
-          a weighted matrix managed by CORE, which acts as the kernel boot authority.
+          The substrate is a 40-node topology organized across 12 sectors. Every node participates in
+          a weighted matrix managed by CORE (Σ = 1.000), which acts as the kernel boot authority.
         </p>
       </div>
 
@@ -254,7 +264,7 @@ function ArchitectureSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Layer Hierarchy</h3>
         <DocTable
-          headers={["Layer", "Role", "Modules"]}
+          headers={["Sector", "Role", "Nodes"]}
           rows={[
             ["Spine", "Kernel boot authority and lifecycle management", "CORE, SYSTEM"],
             ["CCR", "Cognitive Core Reality — reasoning and synthesis", "BRAIN, MEMORY, DREAM"],
