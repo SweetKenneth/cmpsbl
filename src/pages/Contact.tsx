@@ -171,10 +171,10 @@ export default function Contact() {
                 </Card>
               </motion.div>
 
-              <motion.div {...stagger(0.2)}>
-                <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-bold mb-4 text-foreground">Connect With Us</h3>
+               <motion.div {...stagger(0.2)}>
+                 <Card className="border-border/50 bg-card/50 backdrop-blur-sm glass-edge">
+                   <CardContent className="p-5 sm:p-8">
+                     <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-foreground">Connect With Us</h3>
                     <div className="space-y-3">
                       {[
                         { href: "https://x.com/cmpsbl", label: "Twitter / X", icon: "𝕏" },
