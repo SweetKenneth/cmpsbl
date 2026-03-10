@@ -1083,7 +1083,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     layer: 'Admin',
     userBenefit: 'Know the impact of changes before deploying',
     status: 'active',
-    emergentFrom: 'modernizer-impact-v7',
+    emergentFrom: 'evolution-impact-v7',
     riskLevel: 'low',
     executionMode: 'async',
   },
