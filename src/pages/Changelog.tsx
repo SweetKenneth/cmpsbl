@@ -322,7 +322,7 @@ const stratumIronclad: Specimen[] = [
     origin: "survival",
     stimulus: "Nodes ran without containment — a single fault could cascade through the entire cognitive mesh",
     adaptations: [
-      "Every module grew a hardened containment shell with enterprise-grade fault isolation",
+      "Every node grew a hardened containment shell with enterprise-grade fault isolation",
       "Circuit breakers, rate limiters, anomaly detectors, and integrity validators installed across all nodes",
       "The control plane gained new operational capabilities for maintenance, message routing, and governance mode switching",
       "Terminal surface expanded to full operational coverage for diagnostics and containment",
