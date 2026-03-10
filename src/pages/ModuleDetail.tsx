@@ -104,9 +104,9 @@ export default function ModuleDetail() {
               </p>
 
               <div className="flex flex-wrap gap-3 mt-8">
-                <Button asChild size="lg" className="rounded-xl">
+                <Button asChild size="lg" className="rounded-xl gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/developers">
-                    Get Started Free <ArrowRight className="w-4 h-4 ml-2" />
+                    Get Started Free <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-xl">
