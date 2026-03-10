@@ -103,7 +103,7 @@ const PATTERN_DEFS: Record<StabilityPatternId, { name: string; description: stri
 const CORE_MODULES = [
   'CORE', 'SYSTEM', 'BRAIN', 'DREAM', 'NEXUS', 'DECODE',
   'VISION', 'CORTEX', 'DEFENSE', 'RIPPLE', 'ACCESS',
-  'ENCODE', 'MODERNIZER', 'INTEGRATION',
+  'ENCODE', 'EVOLUTION', 'INTEGRATION',
 ];
 
 // ═══════════════════════════════════════════════════════════════
