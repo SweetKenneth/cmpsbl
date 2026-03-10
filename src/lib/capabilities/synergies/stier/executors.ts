@@ -409,7 +409,7 @@ export async function executeAutonomousOpsSteward(
     module: 'EVOLUTION',
     success: true,
     data: selfRepairStatus,
-    durationMs: performance.now() - modernizerStart,
+    durationMs: performance.now() - evolutionStart,
   });
   
   return createSuccessResult(context.synergyId, {
