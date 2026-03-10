@@ -2314,7 +2314,7 @@ ${allFeatures.map(f => {
 
     // EVOLUTION node (via substrate) — handles both evolution.* and legacy modernizer.* commands
     else if (base === 'evolution.status' || base === 'modernizer.status') {
-      result = await modernizer.status();
+      result = await evolutionMod.status();
     } else if (base === 'evolution.jobs' || base === 'modernizer.jobs') {
       const limit = args[0] ? parseInt(args[0]) : 10;
       result = await modernizer.jobs(limit);
