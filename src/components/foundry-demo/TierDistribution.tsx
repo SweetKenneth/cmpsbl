@@ -32,7 +32,7 @@ export function TierDistribution() {
             Quality Distribution
           </h2>
           <p className="text-center text-muted-foreground/50 text-xs sm:text-sm font-mono mb-12 sm:mb-16 px-2">
-            {total.toLocaleString()} programs · <span className="text-primary font-bold">50.6% Apex tier</span> · Zero below CJPI 80
+            {total.toLocaleString()} programs · <span className="text-primary font-bold">6 tiers</span> · Quality floor at CJPI 68
           </p>
         </motion.div>
 
