@@ -944,7 +944,7 @@ export const CAPABILITY_REGISTRY: Record<CapabilityId, CapabilityDefinition> = {
     id: 'nocturnal_optimization_runner',
     name: 'Nocturnal Optimization Runner',
     description: 'Executes resource-intensive optimizations during low-traffic periods',
-    modules: ['DREAM', 'SYSTEM', 'MODERNIZER'],
+    modules: ['DREAM', 'SYSTEM', 'EVOLUTION'],
     layer: 'Cognitive',
     userBenefit: 'Improve system without impacting users',
     status: 'active',
