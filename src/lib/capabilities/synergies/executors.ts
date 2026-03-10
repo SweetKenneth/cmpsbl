@@ -5587,7 +5587,7 @@ export async function executeSecureEvolutionPipeline(
   const startTime = performance.now();
   const steps: SynergyStepResult[] = [];
   
-  steps.push({ module: 'MODERNIZER', success: true, data: { proposalsGenerated: 4, impact: 'medium' }, durationMs: 180 });
+  steps.push({ module: 'EVOLUTION', success: true, data: { proposalsGenerated: 4, impact: 'medium' }, durationMs: 180 });
   steps.push({ module: 'DEFENSE', success: true, data: { securityVetted: true, vulnerabilities: 0 }, durationMs: 150 });
   steps.push({ module: 'BRAIN', success: true, data: { historyChecked: true, similarSuccess: 0.89 }, durationMs: 120 });
   steps.push({ module: 'CORTEX', success: true, data: { approved: true, governance: 'passed' }, durationMs: 80 });
