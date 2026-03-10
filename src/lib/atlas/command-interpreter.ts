@@ -656,11 +656,12 @@ export class AtlasCommandInterpreter {
   private async handleMetricsQuery(command: ParsedCommand): Promise<CommandResult> {
     const state = atlas.getState();
     
-    // Fetch usage stats
+    // Fetch usage stats from ai_daily_quota (NEXUS-tracked)
+    const today = new Date().toISOString().split('T')[0];
     const { data: usage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
-      .gte('date', new Date().toISOString().split('T')[0])
+      .eq('date', today)
       .maybeSingle();
 
     // Fetch monthly usage
@@ -669,7 +670,7 @@ export class AtlasCommandInterpreter {
     startOfMonth.setHours(0, 0, 0, 0);
     
     const { data: monthlyUsage } = await supabase
-      .from('lovable_ai_usage')
+      .from('ai_daily_quota')
       .select('calls_used, tokens_used')
       .gte('date', startOfMonth.toISOString().split('T')[0]);
 
@@ -683,7 +684,7 @@ export class AtlasCommandInterpreter {
 
     return {
       success: true,
-      message: `📊 **System Metrics**\n\n**Atlas State:**\n• Mode: ${state.mode.toUpperCase()}\n• Health: ${state.systemHealth}%\n• Pending Approvals: ${state.pendingApprovals}\n\n**Today's Usage:**\n• AI Calls: ${usage?.calls_used || 0} / 50\n• Tokens: ${(usage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls} / 1,000\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
+      message: `📊 **System Metrics**\n\n**Atlas State:**\n• Mode: ${state.mode.toUpperCase()}\n• Health: ${state.systemHealth}%\n• Pending Approvals: ${state.pendingApprovals}\n\n**Today's Usage:**\n• AI Calls: ${usage?.calls_used || 0}\n• Tokens: ${(usage?.tokens_used || 0).toLocaleString()}\n\n**This Month:**\n• Total Calls: ${monthlyTotals.calls}\n• Total Tokens: ${monthlyTotals.tokens.toLocaleString()}`,
       data: { state, usage, monthlyTotals },
     };
   }
