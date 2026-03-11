@@ -203,7 +203,7 @@ export function MeshActivityTab() {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              emergent module intelligence • live feed • pipeline crystallization
+              emergent module intelligence • live feed • memory crystallization
             </p>
           </div>
         </div>
