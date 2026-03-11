@@ -145,7 +145,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="30 black-boxed, tamper-proof composable engines. 10 S-TIER at $999, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
+        <meta name="description" content="40 black-boxed, tamper-proof composable engines. 20 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -173,7 +173,7 @@ export default function Engines() {
                 forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                30 sealed runtimes · 10 S-TIER $999 · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
+                40 sealed runtimes · 20 S-TIER · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
               </p>
             </motion.div>
           </div>
@@ -220,7 +220,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-[10px] sm:text-xs font-mono text-muted-foreground/50">
-                3 free · CORE $199 · ELITE $399 · APEX $599 · S-TIER $999 · 40% off bundled with agent
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 20 S-TIER sealed runtimes · 40% off bundled with agent
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">
