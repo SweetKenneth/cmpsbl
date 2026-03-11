@@ -416,19 +416,19 @@ export function SignalForge() {
                   >
                     <Card
                       className={cn(
-                        "p-4 cursor-pointer transition-all duration-200",
+                        "p-3 sm:p-4 cursor-pointer transition-all duration-200",
                         "hover:border-primary/40 hover:shadow-md hover:shadow-primary/5",
                         isSelected && "border-primary ring-1 ring-primary/20"
                       )}
                       onClick={() => setSelectedTemplate(isSelected ? null : template)}
                     >
-                      <div className="flex items-start gap-3 mb-2.5">
-                        <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                          <Icon className="w-4 h-4 text-primary" />
+                      <div className="flex items-start gap-2.5 sm:gap-3 mb-2">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                          <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-sm truncate">{template.namePattern}</h3>
-                          <p className="text-[11px] text-muted-foreground capitalize">{template.category}</p>
+                          <h3 className="font-semibold text-[13px] sm:text-sm truncate">{template.namePattern}</h3>
+                          <p className="text-[10px] sm:text-[11px] text-muted-foreground capitalize">{template.category}</p>
                         </div>
                         <Badge 
                           variant="outline" 
