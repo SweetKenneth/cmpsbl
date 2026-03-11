@@ -107,7 +107,7 @@ const nodes = [
     icon: Code2,
     title: "Code Intelligence",
     node: "ENCODE",
-    description: "Code execution, generation intelligence, and the DECODE → ENCODE pipeline.",
+    description: "Code execution, generation intelligence, and the DECODE → ENCODE memory formation.",
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
