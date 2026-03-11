@@ -15,7 +15,7 @@ interface MeshToggleState {
 export const useMeshToggle = create<MeshToggleState>()(
   persist(
     (set) => ({
-      enabled: false, // OFF by default — opt-in safety
+      enabled: true, // ON by default — full matrix mesh active
       setEnabled: (enabled) => {
         set({ enabled });
         // Auto-start/stop scheduler when mesh toggles
