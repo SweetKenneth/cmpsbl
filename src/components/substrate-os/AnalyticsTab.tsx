@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { SiteAnalyticsSection } from './SiteAnalyticsSection';
 import { UserBehaviorSection } from './UserBehaviorSection';
+import { DevMetricsSection } from './DevMetricsSection';
 
 interface TelemetryData {
   brainEvents: number;
