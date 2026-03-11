@@ -46,7 +46,8 @@ serve(async (req) => {
         const { data, error } = await supabase
           .from("brain_memory_hot")
           .insert({
-            content: content.substring(0, 1000), // Limit for demo
+            content: content.substring(0, 1000),
+            context: metadata.context || "playground-demo",
             importance_score: importanceScore,
             source_module: "playground",
             memory_type: "playground",
