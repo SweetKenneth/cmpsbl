@@ -431,7 +431,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'terminal' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing pipelines in real-time.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing memories in real-time.">
                 <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <Suspense fallback={<PanelLoader />}>
                     <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
