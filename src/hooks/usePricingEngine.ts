@@ -107,27 +107,30 @@ export function usePricingEngine() {
     if (!user) return { success: 0, failed: 0 };
     setLoading(true);
     try {
-      // Fetch from all tables — handle >1000 row limit for promotions
+      // Fetch ONLY unpriced items from all tables
       const [inventoryRes, vaultRes] = await Promise.all([
         supabase
           .from('foundry_inventory')
-          .select('id, artifact_name, score, category, system_chain, valuation_display, public_tier')
-          .eq('user_id', user.id),
+          .select('id, artifact_name, score, category, system_chain, valuation_display, public_tier, recommended_resale_price')
+          .eq('user_id', user.id)
+          .is('recommended_resale_price' as any, null),
         supabase
           .from('pipeline_vault')
-          .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display')
-          .eq('user_id', user.id),
+          .select('id, pipeline_name, pipeline_score, pipeline_tier, pipeline_category, system_chain, valuation_display, recommended_resale_price')
+          .eq('user_id', user.id)
+          .is('recommended_resale_price' as any, null),
       ]);
 
-      // Paginate vault_promotions to handle >1000 rows
+      // Paginate vault_promotions — only unpriced
       const allPromotions: any[] = [];
       let offset = 0;
       const pageSize = 1000;
       while (true) {
         const { data } = await supabase
           .from('vault_promotions')
-          .select('id, name, cjpi, category, module_chain, tier, description')
+          .select('id, name, cjpi, category, module_chain, tier, description, recommended_resale_price')
           .eq('export_ready', true)
+          .is('recommended_resale_price' as any, null)
           .range(offset, offset + pageSize - 1);
         if (!data || data.length === 0) break;
         allPromotions.push(...data);

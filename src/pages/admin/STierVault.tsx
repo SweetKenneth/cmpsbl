@@ -528,11 +528,12 @@ export default function STierVault() {
   const pricingEngine = usePricingEngine();
 
   const handleRepriceAll = useCallback(async () => {
-    // Build artifacts from registry entries + promoted discoveries
+    // Build artifacts from registry entries + promoted discoveries — only unpriced
     const artifacts: PricingArtifact[] = [];
 
-    // Registry entries (static S-Tier Crown Jewels)
+    // Registry entries (static S-Tier Crown Jewels) — skip if already priced
     for (const entry of entries) {
+      if ((entry as any).recommended_resale_price != null) continue;
       artifacts.push({
         pipeline_name: entry.name,
         pipeline_score: entry.cjpi,
@@ -543,8 +544,9 @@ export default function STierVault() {
       });
     }
 
-    // Promoted discoveries from vault_promotions
+    // Promoted discoveries from vault_promotions — skip if already priced
     for (const d of promoted) {
+      if ((d as any).recommended_resale_price != null) continue;
       artifacts.push({
         vault_id: d.id,
         source_table: 'vault_promotions',
@@ -557,9 +559,14 @@ export default function STierVault() {
       });
     }
 
+    if (artifacts.length === 0) {
+      toast.info('All items already priced — nothing to do');
+      return;
+    }
+
     const result = await pricingEngine.repriceAll(artifacts);
-    toast.success(`Repriced ${result.success} S-Tier artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
-  }, [promoted, pricingEngine]);
+    toast.success(`Priced ${result.success} new artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+  }, [promoted, entries, pricingEngine]);
 
   // Discovered tab filters
   const [discCategoryFilter, setDiscCategoryFilter] = useState<string | null>(null);
