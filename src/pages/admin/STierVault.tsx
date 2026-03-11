@@ -96,10 +96,12 @@ function getCJPIColor(cjpi: number): string {
 }
 
 function getTierLabel(cjpi: number): string {
-  if (cjpi >= 95) return 'Apex';
-  if (cjpi >= 85) return 'Enterprise';
-  if (cjpi >= 70) return 'Architect';
-  return 'Creator';
+  if (cjpi >= 100) return 'Apex';
+  if (cjpi >= 94) return 'Mythic';
+  if (cjpi >= 90) return 'Relic';
+  if (cjpi >= 80) return 'Prime';
+  if (cjpi >= 68) return 'Mint';
+  return 'Raw';
 }
 
 const LANGUAGES = getAllLanguages();
