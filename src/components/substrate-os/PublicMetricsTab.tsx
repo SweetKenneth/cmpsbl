@@ -47,9 +47,9 @@ const METRIC_FIELDS: MetricField[] = [
   { key: 'layersCount', label: 'Layers', description: 'Architectural layers', type: 'number', icon: Layers, category: 'architecture' },
   
   // Synergy
-  { key: 'synergyPipelinesCount', label: 'Synergy Pipelines', description: '98 core + 22 S-tier + 27 discovery', type: 'number', icon: Zap, category: 'synergy' },
+  { key: 'synergyPipelinesCount', label: 'Synergy Memories', description: '98 core + 22 S-tier + 27 discovery', type: 'number', icon: Zap, category: 'synergy' },
   { key: 'synergyExecutorsCount', label: 'Synergy Executors', description: 'Custom executor functions', type: 'number', icon: Zap, category: 'synergy' },
-  { key: 'stierPipelinesCount', label: 'S-Tier Pipelines', description: 'Premium synergy pipelines', type: 'number', icon: Zap, category: 'synergy' },
+  { key: 'stierPipelinesCount', label: 'S-Tier Memories', description: 'Premium synergy memories', type: 'number', icon: Zap, category: 'synergy' },
   
   // Engines
   { key: 'enginesCount', label: 'Engines', description: 'Base engine count', type: 'number', icon: Cpu, category: 'engine' },
