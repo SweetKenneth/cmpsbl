@@ -48,7 +48,7 @@ const NODE_MAP: Record<string, NodeMeta> = {
   COMPASS:     { id: 'compass',     label: 'COMPASS',     sector: 'epz',       sectorLabel: 'Perception (EPZ)',    weight: 0.020, description: 'Geospatial analysis & navigation.' },
   ECHO:        { id: 'echo',        label: 'ECHO',        sector: 'epz',       sectorLabel: 'Perception (EPZ)',    weight: 0.020, description: 'Digital twin simulation & replay.' },
   REFLEX:      { id: 'reflex',      label: 'REFLEX',      sector: 'epz',       sectorLabel: 'Perception (EPZ)',    weight: 0.020, description: 'Edge computing orchestration.' },
-  FORGE:       { id: 'forge',       label: 'FORGE',       sector: 'emz',       sectorLabel: 'Manufacturing (EMZ)', weight: 0.015, description: 'Artifact synthesis & manufacturing pipelines.' },
+  FORGE:       { id: 'forge',       label: 'FORGE',       sector: 'emz',       sectorLabel: 'Manufacturing (EMZ)', weight: 0.015, description: 'Artifact synthesis & manufacturing engine.' },
   LINGUA:      { id: 'lingua',      label: 'LINGUA',      sector: 'emz',       sectorLabel: 'Manufacturing (EMZ)', weight: 0.015, description: 'Translation & localization engine.' },
   HARVEST:     { id: 'harvest',     label: 'HARVEST',     sector: 'emz',       sectorLabel: 'Manufacturing (EMZ)', weight: 0.015, description: 'Data acquisition & ETL pipelines.' },
   EVOLUTION:   { id: 'evolution',   label: 'EVOLUTION',   sector: 'csz',       sectorLabel: 'Covert (CSZ)',        weight: 0.020, description: 'Mutation lifecycle & self-evolution engine.' },
