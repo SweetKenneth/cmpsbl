@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function LiveStatsBar() {
-  const stats = useLiveStats();
 
   return (
     <section className="relative z-10 py-3 sm:py-4 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 backdrop-blur-sm overflow-hidden">
