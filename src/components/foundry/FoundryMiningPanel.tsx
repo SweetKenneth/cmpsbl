@@ -5,10 +5,10 @@
  * 
  * Mobile-first: 44px touch targets, responsive spacing, safe-area aware
  */
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Pickaxe, Loader2 } from 'lucide-react';
-import { MEMORY_STREAM_QUALITY_NOTE, CRYSTALLIZATION_PHASES } from '@/lib/branding/memory-stream';
+import { MEMORY_STREAM_QUALITY_NOTE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
 import { KeepDiscardPanel } from './KeepDiscardPanel';
 import { VaultUsageIndicator } from './VaultUsageIndicator';
@@ -17,8 +17,6 @@ import { type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse, MineResult } from '@/lib/foundry/public-mining-engine';
 import { isPullLimitReached, isVaultFull, getVaultLimits } from '@/lib/substrate/vault-limits';
 import { toast } from 'sonner';
-
-type CrystallizationPhase = 'sampling' | 'condensing' | 'crystallizing' | null;
 
 interface Props {
   isMining: boolean;
@@ -29,18 +27,152 @@ interface Props {
   vaultCount: number;
   pullsToday: number;
   onVaultChange?: () => void;
-  /** Server-side: store a pipeline in the vault */
   onKeepPipeline?: (result: MineResult) => Promise<{ success: boolean; error?: string }>;
-  /** Server-side: record a pull */
   onRecordPull?: () => Promise<number>;
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Crystallization Ritual — cinematic full-screen synthesis
+// ═══════════════════════════════════════════════════════════════
+
+function CrystallizationRitual({ onComplete }: { onComplete: () => void }) {
+  const progress = useMotionValue(0);
+  const displayProgress = useTransform(progress, v => Math.round(v));
+  const [phase, setPhase] = useState(0);
+
+  const phases = [
+    'Sampling Memory Stream…',
+    'Condensing topology graph…',
+    'Scoring pipeline integrity…',
+    'Crystallizing architecture…',
+    'Materializing artifacts…',
+  ];
+
+  useEffect(() => {
+    const ctrl = animate(progress, 100, {
+      duration: 2.8,
+      ease: [0.25, 0.1, 0.25, 1],
+      onUpdate: (v) => {
+        const p = Math.floor((v / 100) * phases.length);
+        setPhase(Math.min(p, phases.length - 1));
+      },
+      onComplete,
+    });
+    return () => ctrl.stop();
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md"
+    >
+      <div className="text-center px-6 max-w-sm">
+        {/* Crystallization rings */}
+        <div className="relative w-32 h-32 mx-auto mb-6">
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{
+              border: '2px solid hsl(var(--primary) / 0.15)',
+              background: 'radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 70%)',
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-3 rounded-full border-2 border-neon-cyan/25"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-6 rounded-full"
+            style={{ border: '1.5px solid hsl(var(--neon-purple) / 0.3)' }}
+            animate={{ rotate: 360, scale: [1, 1.08, 1] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-9 rounded-full bg-primary/8"
+            animate={{
+              scale: [1, 1.4, 1],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{ duration: 1.6, repeat: Infinity }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.span className="text-3xl font-black font-mono text-primary tabular-nums">
+              {displayProgress}
+            </motion.span>
+          </div>
+
+          {/* Orbiting particles */}
+          {[0, 1, 2, 3].map(i => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-neon-cyan/60"
+              style={{ top: '50%', left: '50%' }}
+              animate={{
+                x: [
+                  Math.cos((i * Math.PI) / 2) * 52,
+                  Math.cos((i * Math.PI) / 2 + Math.PI) * 52,
+                  Math.cos((i * Math.PI) / 2 + Math.PI * 2) * 52,
+                ],
+                y: [
+                  Math.sin((i * Math.PI) / 2) * 52,
+                  Math.sin((i * Math.PI) / 2 + Math.PI) * 52,
+                  Math.sin((i * Math.PI) / 2 + Math.PI * 2) * 52,
+                ],
+                opacity: [0.3, 1, 0.3],
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
+            />
+          ))}
+        </div>
+
+        {/* Phase text */}
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={phase}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="text-sm font-mono text-muted-foreground tracking-wide"
+          >
+            {phases[phase]}
+          </motion.p>
+        </AnimatePresence>
+
+        {/* Rising sparks */}
+        <div className="mt-5 flex justify-center gap-2">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="w-1 h-1 rounded-full bg-primary/80"
+              animate={{
+                y: [0, -18, 0],
+                opacity: [0.2, 1, 0.2],
+                scale: [0.6, 1.4, 0.6],
+              }}
+              transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.1 }}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Main Component
+// ═══════════════════════════════════════════════════════════════
 
 export function FoundryMiningPanel({
   isMining, lastResult, onMine, onCrystallizing,
   subscriptionTier, vaultCount, pullsToday, onVaultChange,
   onKeepPipeline, onRecordPull,
 }: Props) {
-  const [phase, setPhase] = useState<CrystallizationPhase>(null);
+  const [showRitual, setShowRitual] = useState(false);
   const [provenancePipeline, setProvenancePipeline] = useState<{
     name: string; score: number; systemChain: string[];
     pipelineSteps?: PipelineStep[];
@@ -64,18 +196,21 @@ export function FoundryMiningPanel({
     }
     setDecisions({});
     setPendingMythic(null);
-    onCrystallizing?.(true);
-    setPhase('sampling');
-    setTimeout(() => setPhase('condensing'), 700);
-    setTimeout(() => setPhase('crystallizing'), 1400);
-    setTimeout(() => { setPhase(null); onCrystallizing?.(false); }, 2200);
 
-    // Record pull server-side BEFORE mining
+    // Launch cinematic ritual
+    setShowRitual(true);
+    onCrystallizing?.(true);
+
     if (onRecordPull) {
       await onRecordPull();
     }
     onMine();
   };
+
+  const handleRitualComplete = useCallback(() => {
+    setShowRitual(false);
+    onCrystallizing?.(false);
+  }, [onCrystallizing]);
 
   const handleKeep = useCallback(async (result: MineResult) => {
     const isMythic = ['Mythic', 'Apex'].includes(result.publicTier);
@@ -92,7 +227,6 @@ export function FoundryMiningPanel({
       return;
     }
 
-    // Server-side persist
     if (onKeepPipeline) {
       setKeepLoading(result.id);
       const { success, error } = await onKeepPipeline(result);
@@ -122,6 +256,11 @@ export function FoundryMiningPanel({
 
   return (
     <div className="space-y-5 sm:space-y-6">
+      {/* Crystallization Ritual Overlay */}
+      <AnimatePresence>
+        {showRitual && <CrystallizationRitual onComplete={handleRitualComplete} />}
+      </AnimatePresence>
+
       {/* ── Status bar: vault + pulls ── */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border/30 bg-card/30 backdrop-blur-sm px-4 py-3">
         <VaultUsageIndicator currentCount={vaultCount} subscriptionTier={subscriptionTier} />
@@ -146,17 +285,20 @@ export function FoundryMiningPanel({
           className={`
             relative w-full max-w-md min-h-[56px] sm:min-h-[64px] py-4 sm:py-6 rounded-2xl font-mono
             text-base sm:text-lg font-black uppercase tracking-wider
-            transition-all duration-200 border-2
+            transition-all duration-200 border-2 overflow-hidden
             ${isMining
               ? 'bg-muted/20 border-border/20 text-muted-foreground cursor-wait'
-              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 crystallize-glow'
+              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10'
             }
           `}
         >
+          {/* Shimmer sweep on idle */}
           {!isMining && (
-            <div className="absolute inset-0 rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-            </div>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/8 to-transparent"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'linear' }}
+            />
           )}
           <div className="relative flex items-center justify-center gap-3">
             {isMining ? (
@@ -176,31 +318,6 @@ export function FoundryMiningPanel({
         <div className="text-[10px] font-mono text-muted-foreground/40 mt-2.5 text-center px-4">
           {MEMORY_STREAM_QUALITY_NOTE}
         </div>
-
-        {/* Crystallization phase animation */}
-        <AnimatePresence>
-          {phase && (
-            <motion.div
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              className="mt-3 flex items-center gap-2"
-            >
-              <motion.div
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 0.6, repeat: Infinity }}
-                className={`w-2 h-2 rounded-full ${
-                  phase === 'sampling' ? 'bg-neon-cyan' :
-                  phase === 'condensing' ? 'bg-neon-amber' :
-                  'bg-primary'
-                }`}
-              />
-              <span className="text-xs font-mono text-muted-foreground animate-fade-in">
-                {CRYSTALLIZATION_PHASES.find(p => p.key === phase)?.label}
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Keep/Discard results panel */}
