@@ -218,7 +218,7 @@ function getDependencies(module: string): string[] {
     decode: ['framer-motion', 'lucide-react'],
     nexus: ['recharts', 'date-fns'],
     vision: ['recharts'],
-    modernizer: ['framer-motion', 'jszip'],
+    evolution: ['framer-motion', 'jszip'],
     system: [],
     core: [],
   };
