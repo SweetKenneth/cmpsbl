@@ -181,13 +181,16 @@ export {
   type FederationStats,
 } from './mesh-federation';
 
-// INTENT Voice — signal-to-voice translation layer
+// INTENT Voice — signal-to-voice translation with per-node personalities
 export {
   translateSignal,
   translateSignalWithSource,
   getSignalCategory,
+  getNodePersonality,
+  getAllPersonalities,
   createCommEvent,
   generateLiveCommEvent,
   type MeshCommEvent,
   type SignalCategory,
+  type NodePersonality,
 } from './intent-voice';
