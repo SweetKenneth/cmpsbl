@@ -17,18 +17,21 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const TIER_COLORS: Record<string, string> = {
+  META: "from-amber-500/20 to-yellow-500/10 border-amber-500/30",
   APEX: "from-red-500/20 to-orange-500/10 border-red-500/30",
   ELITE: "from-purple-500/20 to-blue-500/10 border-purple-500/30",
   CORE: "from-cyan-500/20 to-green-500/10 border-cyan-500/30",
 };
 
 const TIER_BADGE: Record<string, string> = {
+  META: "bg-amber-500/15 text-amber-400 border-amber-500/25",
   APEX: "bg-red-500/15 text-red-400 border-red-500/25",
   ELITE: "bg-purple-500/15 text-purple-400 border-purple-500/25",
   CORE: "bg-cyan-500/15 text-cyan-400 border-cyan-500/25",
 };
 
 const TIER_GLOW: Record<string, string> = {
+  META: "hover:shadow-amber-500/8",
   APEX: "hover:shadow-red-500/8",
   ELITE: "hover:shadow-purple-500/8",
   CORE: "hover:shadow-cyan-500/8",
@@ -145,7 +148,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="40 black-boxed, tamper-proof composable engines. 20 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
+        <meta name="description" content="54 composable engines including 4 META superpipelines at $1,999, 30 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -173,7 +176,7 @@ export default function Engines() {
                 forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                40 sealed runtimes · 20 S-TIER · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
+                54 sealed runtimes · 4 META $1,999 · 30 S-TIER · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
               </p>
             </motion.div>
           </div>
@@ -183,7 +186,7 @@ export default function Engines() {
         <section className="pb-24">
           <div className="container mx-auto px-3 sm:px-4 flex items-center justify-between mb-6">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-              {(["APEX", "ELITE", "CORE"] as const).map((tier) => (
+              {(["META", "APEX", "ELITE", "CORE"] as const).map((tier) => (
                 <Badge key={tier} variant="outline" className={cn("text-[11px] font-mono", TIER_BADGE[tier])}>
                   {tier} · {ENGINES.filter(e => e.tier === tier).length}
                 </Badge>
@@ -220,7 +223,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-[10px] sm:text-xs font-mono text-muted-foreground/50">
-                3 free · CORE $199 · ELITE $399 · APEX $599 · 20 S-TIER sealed runtimes · 40% off bundled with agent
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 30 S-TIER · 4 META $1,999 · 40% off bundled with agent
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">

@@ -11,6 +11,8 @@ import {
   Cog, Sparkles, Radio, Castle, Lock, Globe, Cpu,
   Diamond, Hammer, Network, Fingerprint, Waypoints, FlaskConical,
   Flame, Swords, Skull, BookOpen, ShieldAlert, Landmark, Bird, Router, Clock, Bot,
+  Atom, Battery, ShieldHalf, Cable, FlaskRound, IterationCw, Merge, Database, Heart, Blocks,
+  Crown, Layers, Orbit, Gem,
 } from "lucide-react";
 
 export interface Engine {
@@ -24,7 +26,7 @@ export interface Engine {
   priceId: string;
   icon: React.ElementType;
   color: string;
-  tier: "APEX" | "ELITE" | "CORE";
+  tier: "APEX" | "ELITE" | "CORE" | "META";
   edition: string;
   briefing: string;
   capabilities: string[];
@@ -412,12 +414,150 @@ export const ENGINES: Engine[] = [
     capabilities: ["Autonomous Workflow Composer — designs workflows from natural language", "Task Dependency Resolver — handles complex DAG execution with cycle detection", "Goal Decomposition — breaks high-level goals into executable atomic steps", "Goal Tracking — monitors progress across all active objectives in real time", "Pipeline Composition Engine — chains pipelines dynamically based on context", "Scheduler Engine — optimizes execution timing across all active workflows"],
     threatLevel: "SUPREME — WORKFLOW OPS", clearance: "LEVEL 10 — S-TIER",
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // S-TIER ENGINES WAVE 3 — 10 Meta-Engine Feedstock ($599 each, $359 bundled)
+  // Designed for chaining into commercial meta-engines
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    slug: "axiom", codename: "AXIOM", tagline: "Logical Inference Core",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pfxQ7FtTiAL4asMjMPQyZ", icon: Atom, color: "210 85% 55%", tier: "APEX",
+    edition: "S-TIER Edition — Inference Supremacy",
+    briefing: "AXIOM is pure logic. Formal Theorem Prover validates complex logical chains, Constraint Satisfaction Solver resolves multi-variable systems, Deductive Reasoning Engine applies first-principles analysis, Syllogistic Validator ensures argument soundness, and Abductive Inference generates best-explanation hypotheses from incomplete data.",
+    capabilities: ["Formal Theorem Prover — validates complex logical chains with formal verification", "Constraint Satisfaction Solver — resolves multi-variable optimization problems", "Deductive Reasoning Engine — first-principles logical analysis", "Syllogistic Validator — ensures argument soundness and logical consistency", "Abductive Inference — generates best-explanation hypotheses from incomplete data"],
+    threatLevel: "SUPREME — INFERENCE OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "dynamo", codename: "DYNAMO", tagline: "Resource Optimization Core",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pfyQ7FtTiAL4aD66RUINW", icon: Battery, color: "45 90% 48%", tier: "APEX",
+    edition: "S-TIER Edition — Optimization Supremacy",
+    briefing: "DYNAMO squeezes maximum value from every resource. FinOps Optimizer tracks and minimizes cloud spend in real time, Compute Budget Controller enforces hard resource ceilings, Token Economics Engine optimizes LLM token allocation, Resource Arbitrage identifies cost asymmetries across providers, and Waste Detection Intelligence eliminates redundant computation.",
+    capabilities: ["FinOps Optimizer — real-time cloud cost tracking and minimization", "Compute Budget Controller — enforces hard resource ceilings per workload", "Token Economics Engine — optimizes LLM token allocation across models", "Resource Arbitrage — exploits cost asymmetries across infrastructure providers", "Waste Detection Intelligence — identifies and eliminates redundant computation"],
+    threatLevel: "SUPREME — RESOURCE OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "warden", codename: "WARDEN", tagline: "Policy Enforcement Core",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg1Q7FtTiAL4aptWtuKbb", icon: ShieldHalf, color: "15 80% 48%", tier: "APEX",
+    edition: "S-TIER Edition — Enforcement Supremacy",
+    briefing: "WARDEN enforces every policy. Graduated Autonomy Controller calibrates system independence per context, Sandbox Isolation Engine runs untrusted code in sealed environments, Compliance Gate blocks non-compliant operations at the boundary, Policy Cascade Propagator pushes policy changes across all subsystems, and Access Arbitration resolves competing access claims in real time.",
+    capabilities: ["Graduated Autonomy Controller — calibrates system independence per context", "Sandbox Isolation Engine — sealed execution for untrusted operations", "Compliance Gate — blocks non-compliant operations at the boundary", "Policy Cascade Propagator — pushes policy changes across all subsystems instantly", "Access Arbitration — resolves competing access claims in real time"],
+    threatLevel: "SUPREME — ENFORCEMENT OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "synapse", codename: "SYNAPSE", tagline: "Neural Bridge Engine",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg2Q7FtTiAL4aCQUugB6R", icon: Cable, color: "280 75% 55%", tier: "APEX",
+    edition: "S-TIER Edition — Bridge Supremacy",
+    briefing: "SYNAPSE bridges every cognitive gap. Cross-Engine Signal Relay pipes outputs between engines with zero latency, Cognitive Bridge fuses reasoning chains from disparate engines, Context Threading maintains coherent state across multi-hop pipelines, Inter-Agent Messaging enables agents to coordinate at cognitive level, and Attention Routing focuses inter-engine bandwidth on highest-priority signals.",
+    capabilities: ["Cross-Engine Signal Relay — zero-latency output piping between engines", "Cognitive Bridge — fuses reasoning chains from disparate engine outputs", "Context Threading — maintains coherent state across multi-hop pipelines", "Inter-Agent Messaging — cognitive-level coordination between autonomous agents", "Attention Routing — focuses inter-engine bandwidth on highest-priority signals"],
+    threatLevel: "SUPREME — BRIDGE OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "crucible", codename: "CRUCIBLE", tagline: "Stress Testing Reactor",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg3Q7FtTiAL4aEfrpVOBp", icon: FlaskRound, color: "0 75% 50%", tier: "APEX",
+    edition: "S-TIER Edition — Testing Supremacy",
+    briefing: "CRUCIBLE breaks everything on purpose. Chaos Engineering Controller injects precise failures into production-like environments, Mutation Testing Engine verifies test suite effectiveness, Adversarial Simulation generates worst-case attack scenarios, Load Stress Analyzer finds breaking points under extreme load, and Failure Injection Orchestrator coordinates multi-fault scenarios.",
+    capabilities: ["Chaos Engineering Controller — precise failure injection into production-like environments", "Mutation Testing Engine — verifies test suite effectiveness by mutating code", "Adversarial Simulation — generates worst-case attack and failure scenarios", "Load Stress Analyzer — finds system breaking points under extreme load", "Failure Injection Orchestrator — coordinates multi-fault failure scenarios"],
+    threatLevel: "SUPREME — STRESS OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "echo", codename: "ECHO", tagline: "Feedback Loop Engine",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg4Q7FtTiAL4aHcRgDqUp", icon: IterationCw, color: "160 70% 45%", tier: "APEX",
+    edition: "S-TIER Edition — Feedback Supremacy",
+    briefing: "ECHO closes every loop. Outcome Tracker records and scores every decision outcome, Reinforcement Learning Loop adjusts strategies based on reward signals, Performance Calibration auto-tunes system parameters, Drift Correction Engine detects and reverses performance degradation, and Confidence Recalibration adjusts prediction confidence based on historical accuracy.",
+    capabilities: ["Outcome Tracker — records and scores every decision outcome", "Reinforcement Learning Loop — adjusts strategies based on reward signals", "Performance Calibration — auto-tunes system parameters from feedback data", "Drift Correction Engine — detects and reverses performance degradation", "Confidence Recalibration — adjusts prediction confidence from historical accuracy"],
+    threatLevel: "SUPREME — FEEDBACK OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "vortex", codename: "VORTEX", tagline: "Data Fusion Core",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg6Q7FtTiAL4aYGXjxjV0", icon: Merge, color: "310 80% 50%", tier: "APEX",
+    edition: "S-TIER Edition — Fusion Supremacy",
+    briefing: "VORTEX fuses every signal. Multi-Source Intelligence Aggregator combines data from heterogeneous sources, Signal Correlation Engine finds hidden relationships across data streams, Cross-Domain Synthesizer merges insights from unrelated domains, Intelligence Denoiser filters noise from high-value signals, and Semantic Fusion compresses multi-modal data into unified representations.",
+    capabilities: ["Multi-Source Intelligence Aggregator — combines heterogeneous data sources", "Signal Correlation Engine — finds hidden relationships across data streams", "Cross-Domain Synthesizer — merges insights from unrelated domains", "Intelligence Denoiser — filters noise from high-value intelligence signals", "Semantic Fusion — compresses multi-modal data into unified representations"],
+    threatLevel: "SUPREME — FUSION OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "monolith", codename: "MONOLITH", tagline: "State Management Fortress",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg7Q7FtTiAL4aKtOXPqwo", icon: Database, color: "220 65% 45%", tier: "APEX",
+    edition: "S-TIER Edition — State Supremacy",
+    briefing: "MONOLITH manages all state. CRDT-Based Consistency ensures conflict-free distributed state, Checkpoint/Restore captures and restores system snapshots instantly, State Migration moves state between nodes without downtime, Snapshot Isolation provides transaction-safe reads, and State Compaction minimizes storage while preserving full history.",
+    capabilities: ["CRDT-Based Consistency — conflict-free replicated data types for distributed state", "Checkpoint/Restore — instant system snapshot capture and restoration", "State Migration — zero-downtime state transfer between nodes", "Snapshot Isolation — transaction-safe reads without locking", "State Compaction — minimizes storage while preserving full history"],
+    threatLevel: "SUPREME — STATE OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "seraph", codename: "SERAPH", tagline: "Ethical Reasoning Core",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pg9Q7FtTiAL4aRQET40Yo", icon: Heart, color: "340 70% 55%", tier: "APEX",
+    edition: "S-TIER Edition — Ethics Supremacy",
+    briefing: "SERAPH ensures every action is ethical. Ethical Constraint Reasoner evaluates actions against moral frameworks, Bias Detection Scanner identifies and flags systematic biases, Fairness Auditor ensures equitable outcomes across populations, Harm Prevention Gate blocks actions with predicted negative externalities, and Value Alignment Engine continuously calibrates system behavior to human values.",
+    capabilities: ["Ethical Constraint Reasoner — evaluates actions against moral frameworks", "Bias Detection Scanner — identifies and flags systematic biases in outputs", "Fairness Auditor — ensures equitable outcomes across all populations", "Harm Prevention Gate — blocks actions with predicted negative externalities", "Value Alignment Engine — continuously calibrates behavior to human values"],
+    threatLevel: "SUPREME — ETHICS OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+  {
+    slug: "progenitor", codename: "PROGENITOR", tagline: "Capability Genesis Engine",
+    priceStandalone: 59900, priceBundled: 35900, priceDisplay: "$599", bundleDisplay: "$359",
+    priceId: "price_1T9pgAQ7FtTiAL4a9MJczerR", icon: Blocks, color: "145 75% 40%", tier: "APEX",
+    edition: "S-TIER Edition — Genesis Supremacy",
+    briefing: "PROGENITOR creates new capabilities from existing ones. Capability Genesis Reactor synthesizes novel primitives from component building blocks, Blueprint Evolution Compiler evolves blueprints through iterative refinement, Artifact Hardening Foundry hardens raw capabilities into production-grade artifacts, Capability Genealogy Tracker maps the lineage of every generated capability, and Capability Forge Engine orchestrates end-to-end capability creation pipelines.",
+    capabilities: ["Capability Genesis Reactor — synthesizes novel primitives from building blocks", "Blueprint Evolution Compiler — evolves blueprints through iterative refinement", "Artifact Hardening Foundry — hardens raw capabilities into production-grade artifacts", "Capability Genealogy Tracker — maps lineage of every generated capability", "Capability Forge Engine — orchestrates end-to-end capability creation pipelines"],
+    threatLevel: "SUPREME — GENESIS OPS", clearance: "LEVEL 10 — S-TIER",
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // META-ENGINES — 4 Commercial Superpipelines ($1,999 each, $1,199 bundled)
+  // Each chains 4 S-tier engines into a compound execution pipeline
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    slug: "godmind", codename: "GODMIND", tagline: "Cognitive Superpipeline",
+    priceStandalone: 199900, priceBundled: 119900, priceDisplay: "$1,999", bundleDisplay: "$1,199",
+    priceId: "price_1T9pgGQ7FtTiAL4a58HQ3Dvw", icon: Crown, color: "45 100% 55%", tier: "META",
+    edition: "META-ENGINE — Cognitive Singularity",
+    briefing: "GODMIND chains PANDORA → AXIOM → SYNAPSE → ECHO into a recursive cognitive superpipeline. PANDORA generates hypotheses via metacognition, AXIOM validates them through formal logic, SYNAPSE bridges the reasoning chains across engines, and ECHO closes the loop with reinforcement learning — creating a self-improving cognitive system that gets smarter with every execution.",
+    capabilities: ["PANDORA stage — metacognitive hypothesis generation and recursive planning", "AXIOM stage — formal logical validation and constraint satisfaction", "SYNAPSE stage — cross-engine reasoning chain bridging and context threading", "ECHO stage — reinforcement learning feedback and confidence recalibration", "Compound synergy: 4 engines × 5 primitives = 20 primitives orchestrated", "Self-improving: every execution cycle makes the next one more accurate"],
+    threatLevel: "TRANSCENDENT — META-COGNITIVE", clearance: "LEVEL 11 — META-TIER",
+  },
+  {
+    slug: "fortress", codename: "FORTRESS", tagline: "Defense Superpipeline",
+    priceStandalone: 199900, priceBundled: 119900, priceDisplay: "$1,999", bundleDisplay: "$1,199",
+    priceId: "price_1T9pgHQ7FtTiAL4aEuknUub0", icon: Layers, color: "0 80% 48%", tier: "META",
+    edition: "META-ENGINE — Defense Singularity",
+    briefing: "FORTRESS chains CERBERUS → WARDEN → CRUCIBLE → HYDRA into an impenetrable defense superpipeline. CERBERUS blocks attacks at every gate, WARDEN enforces policies across the perimeter, CRUCIBLE stress-tests for unknown vulnerabilities, and HYDRA self-heals any damage that gets through — creating a defense system that is simultaneously proactive, reactive, and regenerative.",
+    capabilities: ["CERBERUS stage — multi-gate attack blocking and prompt injection shielding", "WARDEN stage — policy enforcement and graduated autonomy control", "CRUCIBLE stage — chaos engineering and adversarial vulnerability discovery", "HYDRA stage — self-healing repair and cascading failure isolation", "Compound synergy: 4 engines × 5 primitives = 20 primitives orchestrated", "Regenerative: damage triggers automatic hardening of attack surface"],
+    threatLevel: "TRANSCENDENT — META-DEFENSE", clearance: "LEVEL 11 — META-TIER",
+  },
+  {
+    slug: "singularity", codename: "SINGULARITY", tagline: "Intelligence Superpipeline",
+    priceStandalone: 199900, priceBundled: 119900, priceDisplay: "$1,999", bundleDisplay: "$1,199",
+    priceId: "price_1T9pgJQ7FtTiAL4aBNJOYxud", icon: Orbit, color: "270 85% 55%", tier: "META",
+    edition: "META-ENGINE — Intelligence Singularity",
+    briefing: "SINGULARITY chains OMNISCIENT → VORTEX → DYNAMO → PROGENITOR into a total intelligence superpipeline. OMNISCIENT predicts across all time horizons, VORTEX fuses multi-source intelligence into unified signals, DYNAMO optimizes resource allocation for maximum insight per dollar, and PROGENITOR creates new analytical capabilities on-the-fly — an intelligence system that invents its own tools.",
+    capabilities: ["OMNISCIENT stage — multi-horizon prediction and counterfactual analysis", "VORTEX stage — multi-source data fusion and signal correlation", "DYNAMO stage — resource optimization and cost-aware intelligence routing", "PROGENITOR stage — on-the-fly capability synthesis for novel analytical needs", "Compound synergy: 4 engines × 5-6 primitives = 21 primitives orchestrated", "Self-tooling: creates new analytical primitives when existing ones are insufficient"],
+    threatLevel: "TRANSCENDENT — META-INTELLIGENCE", clearance: "LEVEL 11 — META-TIER",
+  },
+  {
+    slug: "eternus", codename: "ETERNUS", tagline: "Governance Superpipeline",
+    priceStandalone: 199900, priceBundled: 119900, priceDisplay: "$1,999", bundleDisplay: "$1,199",
+    priceId: "price_1T9pgKQ7FtTiAL4aJfC6B3ev", icon: Gem, color: "180 70% 45%", tier: "META",
+    edition: "META-ENGINE — Governance Singularity",
+    briefing: "ETERNUS chains SOVEREIGN → SERAPH → MONOLITH → GOLEM into an autonomous governance superpipeline. SOVEREIGN provides policy-gated governance, SERAPH ensures every action meets ethical standards, MONOLITH maintains immutable state for full auditability, and GOLEM automates workflow execution — creating an autonomous system that governs itself ethically, transparently, and indefinitely.",
+    capabilities: ["SOVEREIGN stage — policy-gated governance with regulatory compliance", "SERAPH stage — ethical constraint reasoning and value alignment", "MONOLITH stage — immutable state management for full audit trail", "GOLEM stage — autonomous workflow execution and goal tracking", "Compound synergy: 4 engines × 5-6 primitives = 22 primitives orchestrated", "Self-governing: operates indefinitely without human oversight while maintaining ethical alignment"],
+    threatLevel: "TRANSCENDENT — META-GOVERNANCE", clearance: "LEVEL 11 — META-TIER",
+  },
 ];
 
 export const getEngineBySlug = (slug: string): Engine | undefined =>
   ENGINES.find((e) => e.slug === slug);
 
-export const TIER_ORDER = { APEX: 0, ELITE: 1, CORE: 2 } as const;
+export const TIER_ORDER = { APEX: 0, ELITE: 1, CORE: 2, META: -1 } as const;
 
 export const getEnginesByTier = (tier: Engine["tier"]): Engine[] =>
   ENGINES.filter((e) => e.tier === tier);
