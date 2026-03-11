@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
       VitePWA({
         registerType: "autoUpdate",
         injectRegister: false, // Disable auto-injection to manually defer SW registration
-        includeAssets: ["favicon.png", "pwa-192x192.png", "pwa-512x512.png", "apple-touch-icon.png"],
+        includeAssets: ["favicon.png", "icon-192.png", "icon-512.png", "apple-touch-icon.png"],
 
         // Critical: prevent build-time injection of <link rel="manifest">.
         // We manage the manifest link manually in index.html (and disable it in editor/preview)
