@@ -142,7 +142,7 @@ export function useUserRole(): UserRoleState {
           
           if (sub?.tier) {
             const tierMap: Record<string, SubstrateRole> = {
-              'enterprise': 'architect',
+              'enterprise': 'governor',
               'pro': 'architect',
               'studio': 'studio',
               'builder': 'creator',
