@@ -148,7 +148,7 @@ export function MeshActivityTab() {
       const p = await getSavedPipelines();
       setSavedPipelines(p);
     } catch {
-      toast.error('Failed to save pipeline');
+      toast.error('Failed to save memory');
       setSavingId(null);
     }
   };
