@@ -222,78 +222,117 @@ const pipeline = substrate.pipeline({
 
   return (
     <section className="relative overflow-hidden">
-      {/* Hero */}
-      <div className="relative border-b border-border/50">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-cyan-500/5" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
-          backgroundSize: '32px 32px',
+      {/* Hero — Cinematic Mobile-First */}
+      <div className="relative border-b border-border/50 overflow-hidden">
+        {/* Layered background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/30" />
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: `
+            linear-gradient(hsl(var(--primary) / 0.6) 1px, transparent 1px),
+            linear-gradient(90deg, hsl(var(--primary) / 0.6) 1px, transparent 1px)
+          `,
+          backgroundSize: '48px 48px',
         }} />
+        {/* Glow orbs */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-primary/8 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[300px] h-[200px] rounded-full bg-neon-cyan/6 blur-[80px]" />
 
-        <div className="container mx-auto px-4 py-12 md:py-20 relative">
-          <div className="max-w-5xl mx-auto">
-            {/* Badge */}
-            <div className="flex justify-center mb-6">
-              <Badge className="gap-2 px-4 py-2 text-sm bg-gradient-to-r from-violet-500/20 to-cyan-500/20 text-violet-400 border-violet-500/30">
-                <Dices className="w-4 h-4" />
-                Free · Unlimited Forging · {DAILY_LIMIT} Downloads/Day
+        <div className="container mx-auto px-5 pt-10 pb-12 md:pt-20 md:pb-16 relative">
+          <div className="max-w-3xl mx-auto text-center">
+            {/* Top badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-center mb-5"
+            >
+              <Badge variant="outline" className="gap-2 px-3.5 py-1.5 text-xs font-mono border-primary/30 bg-primary/5 text-primary">
+                <Dices className="w-3.5 h-3.5" />
+                FREE · UNLIMITED FORGING · {DAILY_LIMIT} DOWNLOADS/DAY
               </Badge>
-            </div>
+            </motion.div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-center mb-4">
-              <span className="bg-gradient-to-r from-violet-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
+              className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl font-black tracking-tight mb-5"
+            >
+              <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
                 SIGNAL FORGE
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground text-center mb-4 max-w-3xl mx-auto">
-              The substrate's combinatorial engine synthesizes production-ready pipeline templates 
-              from {31} modules × {20} categories × infinite configurations.
-            </p>
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto"
+            >
+              Synthesize production-ready pipeline templates from 
+              <span className="font-semibold text-foreground"> 31 modules × 20 categories</span>. 
+              Every template is unique, CJPI-validated, and free to forge.
+            </motion.p>
 
-            <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-8">
-              Every template is unique — generated from the same autonomous discovery engine 
-              that powers the substrate's internal evolution. Forge, preview, download. No cost. No limits on generation.
-            </p>
-
-            {/* How It Works — Inline Diagram */}
-            <div className="max-w-4xl mx-auto mb-10">
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-0 items-center">
-                {[
-                  { icon: Dices, label: 'Randomize', desc: 'Module × Category', color: 'text-violet-500', bg: 'from-violet-500/10 to-violet-500/5' },
-                  { icon: Brain, label: 'Synthesize', desc: 'Pipeline Topology', color: 'text-cyan-500', bg: 'from-cyan-500/10 to-cyan-500/5' },
-                  { icon: Zap, label: 'Score', desc: 'CJPI Validation', color: 'text-amber-500', bg: 'from-amber-500/10 to-amber-500/5' },
-                  { icon: Eye, label: 'Preview', desc: 'Code & Modules', color: 'text-emerald-500', bg: 'from-emerald-500/10 to-emerald-500/5' },
-                  { icon: Download, label: 'Download', desc: 'Production-Ready', color: 'text-rose-500', bg: 'from-rose-500/10 to-rose-500/5' },
-                ].map((step, i) => (
-                  <div key={i} className="flex md:flex-col items-center gap-2 md:gap-1 relative">
-                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${step.bg} border border-border/50 flex items-center justify-center`}>
-                      <step.icon className={`w-5 h-5 md:w-6 md:h-6 ${step.color}`} />
+            {/* Cinematic Pipeline Diagram — Vertical on mobile, horizontal on desktop */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="mb-10 mx-auto max-w-md md:max-w-2xl"
+            >
+              <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm p-5 md:p-6">
+                <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-4">Pipeline Synthesis Flow</p>
+                
+                {/* Mobile: vertical timeline / Desktop: horizontal */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
+                  {[
+                    { icon: Dices, label: 'Randomize', color: 'bg-primary/10 text-primary border-primary/20' },
+                    { icon: Brain, label: 'Synthesize', color: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20' },
+                    { icon: Zap, label: 'Score', color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20' },
+                    { icon: Eye, label: 'Preview', color: 'bg-neon-green/10 text-neon-green border-neon-green/20' },
+                    { icon: Download, label: 'Download', color: 'bg-neon-purple/10 text-neon-purple border-neon-purple/20' },
+                  ].map((step, i, arr) => (
+                    <div key={i} className="flex md:flex-col items-center gap-3 md:gap-2 relative">
+                      {/* Step circle */}
+                      <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl border ${step.color} flex items-center justify-center shrink-0 transition-transform hover:scale-110`}>
+                        <step.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-semibold text-foreground md:text-xs">{step.label}</span>
+                      
+                      {/* Connector line — vertical on mobile, horizontal on desktop */}
+                      {i < arr.length - 1 && (
+                        <>
+                          {/* Mobile vertical connector */}
+                          <div className="absolute left-[21px] top-[44px] w-px h-3 bg-border/60 md:hidden" />
+                          {/* Desktop horizontal connector */}
+                          <div className="hidden md:block absolute -right-[calc(50%-24px)] top-[23px] w-[calc(100%-48px)] h-px bg-border/60" style={{ left: 'calc(50% + 24px)' }} />
+                        </>
+                      )}
                     </div>
-                    <div className="md:text-center">
-                      <p className="font-semibold text-sm">{step.label}</p>
-                      <p className="text-xs text-muted-foreground">{step.desc}</p>
-                    </div>
-                    {i < 4 && (
-                      <ArrowRight className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40 z-10" style={{ top: '28px' }} />
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Forge Button */}
-            <div className="text-center space-y-3">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="space-y-3"
+            >
               <Button
                 size="lg"
                 onClick={handleForge}
                 disabled={isForging}
-                className="gap-3 px-8 py-6 text-lg font-bold bg-gradient-to-r from-violet-600 via-cyan-600 to-emerald-600 hover:opacity-90 text-white shadow-lg shadow-violet-500/20 hover:shadow-xl hover:shadow-violet-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="gap-3 px-8 h-14 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 {isForging ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Forging Templates…
+                    Forging…
                   </>
                 ) : (
                   <>
@@ -320,20 +359,19 @@ const pipeline = substrate.pipeline({
               <p className="text-xs text-muted-foreground">
                 {user ? (
                   <>
-                    <span className="text-emerald-500 font-medium">{remaining} downloads remaining today</span>
-                    {' '}· Forge unlimited · Sign out to browse only
+                    <span className="text-neon-green font-medium font-mono">{remaining} downloads remaining</span>
+                    {' '}· Forge unlimited
                   </>
                 ) : (
                   <>
-                    Forge freely · <Link to="/auth" className="text-primary hover:underline">Sign in</Link> to download ({DAILY_LIMIT}/day free)
+                    Forge freely · <Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to download ({DAILY_LIMIT}/day free)
                   </>
                 )}
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-
       {/* Forged Results */}
       <AnimatePresence>
         {forgedTemplates.length > 0 && (
