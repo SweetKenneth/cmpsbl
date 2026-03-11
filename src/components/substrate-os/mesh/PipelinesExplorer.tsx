@@ -194,8 +194,8 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
             <Bookmark className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">
               {pipelines.length === 0
-                ? 'No saved pipelines yet. Approve proposals or save receipts from the Live view.'
-                : 'No pipelines match your search.'}
+                ? 'No saved memories yet. Approve proposals or save receipts from the Live view.'
+                : 'No memories match your search.'}
             </p>
             {search && (
               <Button variant="ghost" size="sm" className="mt-3" onClick={() => setSearch('')}>
