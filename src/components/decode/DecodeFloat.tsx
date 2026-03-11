@@ -125,7 +125,10 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
     const interval = setInterval(dodge, 5000);
-    setTimeout(dodge, 1000);
+    const scheduleInitialDodge = typeof requestIdleCallback === 'function'
+      ? () => requestIdleCallback(() => dodge(), { timeout: 3000 })
+      : () => setTimeout(dodge, 2500);
+    scheduleInitialDodge();
     return () => { window.removeEventListener("scroll", handleScroll); window.removeEventListener("resize", handleResize); clearTimeout(scrollTimeout); clearTimeout(resizeTimeout); clearInterval(interval); cancelAnimationFrame(dodgeRaf.current); };
   }, [dodge, clamp]);
 
