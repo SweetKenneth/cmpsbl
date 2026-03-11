@@ -442,13 +442,13 @@ export function SignalForge() {
                         </Badge>
                       </div>
 
-                      <div className="flex flex-wrap gap-1 mb-2.5">
+                      <div className="flex flex-wrap gap-1 mb-2">
                         {template.modulePattern.map((mod, i) => (
-                          <Badge key={i} variant="secondary" className="text-[10px] font-mono px-1.5 py-0">{mod}</Badge>
+                          <Badge key={i} variant="secondary" className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0">{mod}</Badge>
                         ))}
                       </div>
 
-                      <p className="text-[11px] text-muted-foreground line-clamp-2">{template.descriptionPattern}</p>
+                      <p className="text-[10px] sm:text-[11px] text-muted-foreground line-clamp-2">{template.descriptionPattern}</p>
 
                       <AnimatePresence>
                         {isSelected && (
