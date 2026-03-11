@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { generateTemplateBatch, type GeneratedTemplate } from "@/lib/discovery/template-generator";
+import { forgeSignalBatch, SIGNAL_FORGE_PRIMITIVE } from "@/lib/substrate/forge/signal-forge";
+import type { GeneratedTemplate } from "@/lib/discovery/template-generator";
 import { Link } from "react-router-dom";
 
 // Rate limit: 5 downloads per day per user
@@ -96,21 +97,20 @@ export function SignalForge() {
 
   const handleForge = useCallback(() => {
     setIsForging(true);
-    // Use requestAnimationFrame to allow UI to update before heavy computation
     requestAnimationFrame(() => {
       setTimeout(() => {
-        const batch = generateTemplateBatch({
+        const result = forgeSignalBatch({
           batchSize: 12,
           minModules: 2,
           maxModules: 5,
           minCjpiTarget: 80,
           biasHighValue: true,
         });
-        setForgedTemplates(batch);
+        setForgedTemplates(result.templates);
         setSelectedTemplate(null);
         setIsForging(false);
-        toast.success(`Forged ${batch.length} templates from the substrate`);
-      }, 600); // Brief delay for dramatic effect
+        toast.success(`Forged ${result.templates.length} templates in ${result.executionMs}ms [${result.batchId}]`);
+      }, 600);
     });
   }, []);
 

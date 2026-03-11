@@ -26,3 +26,14 @@ export {
 
 export { forgeCLM, runForgeCLMCycle } from './clm';
 export { forgeHardeningReport, validateForgeInput, FORGE_LIMITS } from './hardening';
+export {
+  SIGNAL_FORGE_PRIMITIVE,
+  forgeSignalBatch,
+  forgeRetireCombo,
+  forgeIsComboRetired,
+  forgeGetRetired,
+  forgeClearRetired,
+  forgeSignalStats,
+  type ForgeSignalRequest,
+  type ForgeSignalResult,
+} from './signal-forge';
