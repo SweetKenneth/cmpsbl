@@ -469,7 +469,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'cortex' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Pipeline orchestration engine. Design, monitor, and debug multi-step execution pipelines with real-time tracing.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Memory orchestration engine. Design, monitor, and debug multi-step execution memories with real-time tracing.">
                 <PanelContainer id="cortex">
                   <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
