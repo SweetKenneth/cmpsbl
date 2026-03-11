@@ -4,6 +4,9 @@
  */
 
 export * from '@/crownjewels/s-tier/007-anomaly-correlation-engine';
+export * from '@/crownjewels/s-tier/022-full-stack-observability';
+export * from '@/crownjewels/s-tier/037-realtime-analytics-fusion';
+export * from '@/crownjewels/s-tier/054-distributed-tracing';
 export * from '@/crownjewels/s-tier/076-performance-regression-detector';
 export * from '@/crownjewels/s-tier/085-resource-waste-profiler';
 export * from '@/crownjewels/s-tier/099-telemetry-ingestion';
