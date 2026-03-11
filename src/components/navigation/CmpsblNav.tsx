@@ -103,10 +103,11 @@ export function CmpsblNav() {
       name: "Platform",
       icon: Layers,
       items: [
-        { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
+      { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
         { name: "All nodes", href: "/modules", description: "40 nodes across 12 sectors", icon: Layers },
         { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
+        { name: "System overview", href: "https://cmpsbl.com/overview", description: "Interactive system explorer", icon: Globe, external: true },
         { name: "Capability map", href: "/capability-map", description: "Visual node & primitive atlas", icon: Map },
         { name: "EVOLUTION", href: "/evolution", description: "Self-upgrade & lifecycle mesh", icon: GitBranch },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
