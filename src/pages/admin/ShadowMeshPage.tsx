@@ -77,6 +77,9 @@ export default function ShadowMeshPage() {
       {/* Toggle */}
       <ShadowMeshToggle />
 
+      {/* Mesh Communications Feed */}
+      <IntentMeshCommsFeed />
+
       {/* Analytics */}
       <ShadowMeshAnalytics key={analyticsKey} />
 
