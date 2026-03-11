@@ -4465,7 +4465,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
         }
         
         if (improvementCount > 0) {
-          output += `║  MODERNIZER IMPROVEMENTS (${improvementCount}):\n`;
+          output += `║  EVOLUTION IMPROVEMENTS (${improvementCount}):\n`;
           for (const i of (improvements || []).slice(0, 5)) {
             const key = i.improvement_key.substring(0, 45);
             output += `║    • ${key}...\n`;

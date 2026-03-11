@@ -1,5 +1,5 @@
 /**
- * MODERNIZER Module — Code Analysis Engine
+ * EVOLUTION Module — Code Analysis Engine
  * Complexity analysis, duplication detection, and quality metrics
  */
 

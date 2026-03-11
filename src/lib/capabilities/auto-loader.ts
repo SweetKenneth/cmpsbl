@@ -22,7 +22,7 @@ const SUBSTRATE_MODULES: Record<string, string[]> = {
   VISION: ['observability', 'metrics', 'monitoring', 'telemetry'],
   CORTEX: ['agency', 'proposal', 'evaluation', 'execution', 'autonomous'],
   // Operational layer
-  MODERNIZER: ['upgrade', 'improvement', 'evolution', 'self-improve'],
+  EVOLUTION: ['upgrade', 'improvement', 'evolution', 'self-improve'],
   DECODE: ['chat', 'intent', 'generation', 'user-facing', 'interpreter'],
   DEFENSE: ['bot', 'threat', 'security', 'ip-reputation', 'rate-limit'],
   NEXUS: ['routing', 'ai-provider', 'text', 'image', 'video'],
@@ -48,7 +48,7 @@ const SUBSTRATE_MODULES: Record<string, string[]> = {
 // History: pf-ripple-image → was 402 stub (deleted 2026-01-28)
 const FULL_OVERLAP_FUNCTIONS = [
   'pf-marketing-strategy',     // → Uses free-tier router, standalone OK
-  'pf-modernizer-export',      // → MODERNIZER.export (has active usage - ModernizerJobStatus.tsx)
+  'pf-modernizer-export',      // → EVOLUTION.export (has active usage - EvolutionJobStatus)
 ];
 
 // Edge functions with partial overlap (DO NOT DELETE)

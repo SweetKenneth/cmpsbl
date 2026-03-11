@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Glue Layer — Cross-Module Integration
- * Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
+ * Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, EVOLUTION, TEMPLATES, MARKETPLACE
  *
  * @origin(cmptbl) — Human Compatibility Pipeline (14th Substrate Module)
  * Developed by CMPSBL® as part of the cognitive orchestration substrate.
@@ -9,7 +9,7 @@
  * - SYSTEM: inclusive.selfScan → system.audit aggregation
  * - VISION: inclusive.score → vision.health metrics
  * - DEFENSE: severity escalation → defense risk pipeline
- * - MODERNIZER: regressions → modernizer.propose triggers
+ * - EVOLUTION: regressions → evolution.propose triggers
  * - TEMPLATES: scan → repair → validate → approve pipeline
  * - MARKETPLACE: block publishing on critical violations
  * - ACCESS: Role-based capability gating
@@ -248,7 +248,7 @@ export function shouldTriggerDefenseAlert(issues: InclusiveIssue[]): boolean {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER INTEGRATION — Proposal Triggers
+// EVOLUTION INTEGRATION — Proposal Triggers
 // ═══════════════════════════════════════════════════════════════
 
 export interface ModernizerProposal {

@@ -1,67 +1,65 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
-import { TrendingUp, CheckCircle, XCircle, Users, Clock } from 'lucide-react';
+import { TrendingUp, CheckCircle, XCircle, Clock } from 'lucide-react';
 
-interface Analytics {
-  id: string;
-  site_url: string | null;
-  status: string | null;
-  analysis_result: any;
+interface EvolutionRun {
+  run_id: string;
+  phase: string | null;
+  confidence_score: number | null;
   created_at: string;
+  plan_id: string;
+  risk_level: string | null;
 }
 
+/**
+ * EvolutionAnalytics — Displays evolution run metrics from the evolution_runs table.
+ * @deprecated Component name retained for import compatibility; internally uses EVOLUTION data.
+ */
 export const ModernizerAnalytics = () => {
-  const [analytics, setAnalytics] = useState<Analytics[]>([]);
+  const [runs, setRuns] = useState<EvolutionRun[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAnalytics = async () => {
+    const fetchRuns = async () => {
       try {
         const { data, error } = await supabase
-          .from('modernizer_analytics')
-          .select('*')
+          .from('evolution_runs')
+          .select('run_id, phase, confidence_score, created_at, plan_id, risk_level')
           .order('created_at', { ascending: false })
           .limit(30);
 
         if (error) throw error;
-        setAnalytics(data || []);
+        setRuns(data || []);
       } catch (error) {
-        console.error('Failed to fetch analytics:', error);
+        console.error('Failed to fetch evolution runs:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAnalytics();
+    fetchRuns();
   }, []);
 
   if (loading) return <div>Loading analytics...</div>;
 
-  const totalJobs = analytics.length;
-  const totalCompleted = analytics.filter(a => a.status === 'completed').length;
-  const totalFailed = analytics.filter(a => a.status === 'failed').length;
-  
-  const avgA11y = analytics.reduce((sum, item) => {
-    const score = item.analysis_result?.accessibility_score || 0;
-    return sum + score;
-  }, 0) / (analytics.length || 1);
-  
-  const avgSEO = analytics.reduce((sum, item) => {
-    const score = item.analysis_result?.seo_score || 0;
-    return sum + score;
-  }, 0) / (analytics.length || 1);
+  const totalRuns = runs.length;
+  const verified = runs.filter(r => r.phase === 'verified').length;
+  const failed = runs.filter(r => r.phase === 'failed' || r.phase === 'aborted').length;
+  const planning = runs.filter(r => r.phase === 'planning').length;
+
+  const avgConfidence = runs.reduce((sum, r) => sum + (r.confidence_score || 0), 0) / (totalRuns || 1);
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Evolution Analytics</h2>
+      <h2 className="text-2xl font-bold">EVOLUTION Analytics</h2>
 
       <div className="grid md:grid-cols-4 gap-4">
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm text-muted-foreground">Total Jobs</div>
-              <div className="text-3xl font-bold mt-1">{totalJobs}</div>
+              <div className="text-sm text-muted-foreground">Total Runs</div>
+              <div className="text-3xl font-bold mt-1">{totalRuns}</div>
             </div>
             <TrendingUp className="h-8 w-8 text-primary opacity-50" />
           </div>
@@ -70,83 +68,88 @@ export const ModernizerAnalytics = () => {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm text-muted-foreground">Completed</div>
-              <div className="text-3xl font-bold mt-1 text-green-600">{totalCompleted}</div>
+              <div className="text-sm text-muted-foreground">Verified</div>
+              <div className="text-3xl font-bold mt-1 text-emerald-500">{verified}</div>
             </div>
-            <CheckCircle className="h-8 w-8 text-green-600 opacity-50" />
+            <CheckCircle className="h-8 w-8 text-emerald-500 opacity-50" />
           </div>
         </Card>
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm text-muted-foreground">Avg A11y Score</div>
-              <div className="text-3xl font-bold mt-1">{Math.round(avgA11y)}%</div>
+              <div className="text-sm text-muted-foreground">Planning</div>
+              <div className="text-3xl font-bold mt-1">{planning}</div>
             </div>
-            <CheckCircle className="h-8 w-8 text-blue-600 opacity-50" />
+            <Clock className="h-8 w-8 text-muted-foreground opacity-50" />
           </div>
         </Card>
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm text-muted-foreground">Avg SEO Score</div>
-              <div className="text-3xl font-bold mt-1">{Math.round(avgSEO)}%</div>
+              <div className="text-sm text-muted-foreground">Avg Confidence</div>
+              <div className="text-3xl font-bold mt-1">{Math.round(avgConfidence)}%</div>
             </div>
-            <TrendingUp className="h-8 w-8 text-purple-600 opacity-50" />
+            <TrendingUp className="h-8 w-8 text-primary opacity-50" />
           </div>
         </Card>
       </div>
 
       <Card className="p-6">
-        <h3 className="font-semibold mb-4">Overall Stats</h3>
+        <h3 className="font-semibold mb-4">Recent Evolution Runs</h3>
+        <div className="space-y-2">
+          {runs.slice(0, 7).map((run) => (
+            <div key={run.run_id} className="flex items-center justify-between py-2 border-b last:border-0">
+              <span className="text-sm truncate max-w-[200px]">{run.plan_id.slice(0, 12)}</span>
+              <div className="flex items-center gap-4 text-sm">
+                <span className={`font-medium ${
+                  run.phase === 'verified' ? 'text-emerald-500' :
+                  run.phase === 'failed' || run.phase === 'aborted' ? 'text-destructive' :
+                  'text-muted-foreground'
+                }`}>
+                  {run.phase}
+                </span>
+                {run.confidence_score != null && (
+                  <span className="font-medium">
+                    {Math.round(run.confidence_score)}%
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+          {runs.length === 0 && (
+            <p className="text-sm text-muted-foreground text-center py-4">No evolution runs yet.</p>
+          )}
+        </div>
+      </Card>
+
+      <Card className="p-6">
+        <h3 className="font-semibold mb-4">Run Summary</h3>
         <div className="grid md:grid-cols-3 gap-4">
           <div className="flex items-center gap-3">
-            <Users className="h-5 w-5 text-muted-foreground" />
+            <CheckCircle className="h-5 w-5 text-emerald-500" />
             <div>
-              <div className="text-sm text-muted-foreground">Total Sites</div>
-              <div className="font-bold">{analytics.filter((item, index, self) => 
-                index === self.findIndex(t => t.site_url === item.site_url)
-              ).length}</div>
+              <div className="text-sm text-muted-foreground">Success Rate</div>
+              <div className="font-bold">{totalRuns > 0 ? Math.round((verified / totalRuns) * 100) : 0}%</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Clock className="h-5 w-5 text-muted-foreground" />
             <div>
-              <div className="text-sm text-muted-foreground">Pending</div>
+              <div className="text-sm text-muted-foreground">In Progress</div>
               <div className="font-bold">
-                {analytics.filter(a => a.status === 'pending').length}
+                {runs.filter(r => r.phase === 'shadow_applied' || r.phase === 'production_applied').length}
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <XCircle className="h-5 w-5 text-destructive" />
             <div>
-              <div className="text-sm text-muted-foreground">Failed Jobs</div>
-              <div className="font-bold">{totalFailed}</div>
+              <div className="text-sm text-muted-foreground">Failed / Aborted</div>
+              <div className="font-bold">{failed}</div>
             </div>
           </div>
-        </div>
-      </Card>
-
-      <Card className="p-6">
-        <h3 className="font-semibold mb-4">Recent Scans</h3>
-        <div className="space-y-2">
-          {analytics.slice(0, 7).map((item) => (
-            <div key={item.id} className="flex items-center justify-between py-2 border-b last:border-0">
-              <span className="text-sm truncate max-w-[200px]">{item.site_url || 'Unknown'}</span>
-              <div className="flex items-center gap-4 text-sm">
-                <span className={`font-medium ${item.status === 'completed' ? 'text-green-600' : item.status === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>
-                  {item.status}
-                </span>
-                {item.analysis_result?.accessibility_score && (
-                  <span className="font-medium">
-                    {Math.round(item.analysis_result.accessibility_score)}% A11y
-                  </span>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
       </Card>
     </div>

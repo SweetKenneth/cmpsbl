@@ -180,7 +180,7 @@ const UNIVERSAL_CONSTRAINTS: ArchConstraint[] = [
   { id: 'UC-003', rule: 'Edge functions are archived unless explicitly repurposed for substrate', severity: 'warning', scope: ['*'] },
   { id: 'UC-004', rule: 'State management: Zustand for versioning, React Query for async — no Redux', severity: 'error', scope: ['*'] },
   { id: 'UC-005', rule: 'All substrate modules follow emit() pattern for cross-module events', severity: 'error', scope: ['*'] },
-  { id: 'UC-006', rule: 'Use NEXUS router for AI calls — never Lovable AI gateway', severity: 'fatal', scope: ['*'] },
+  { id: 'UC-006', rule: 'Use NEXUS router for AI calls — never bypass governance', severity: 'fatal', scope: ['*'] },
   { id: 'UC-007', rule: 'Module names are always ALL CAPS (BRAIN, ENCODE, DECODE, etc.)', severity: 'error', scope: ['*'] },
   { id: 'UC-008', rule: 'Hooks in src/hooks/substrate/ follow use[Module] naming convention', severity: 'error', scope: ['*'] },
   { id: 'UC-009', rule: 'All colors must use HSL via semantic design tokens — never raw hex/rgb in components', severity: 'error', scope: ['*'] },
