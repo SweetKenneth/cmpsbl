@@ -437,7 +437,7 @@ async function technicalDebtTests(): Promise<Array<[string, TestFn]>> {
     }],
     ['lib/system barrel exports without error', async () => {
       const mod = await import('@/lib/system');
-      assert(typeof mod.log === 'function', 'log not exported');
+      assert(typeof mod.log === 'object' && mod.log !== null, 'log not exported');
       assert(typeof mod.withRetry === 'function', 'withRetry not exported');
     }],
     ['lib/substrate/system barrel exports', async () => {
