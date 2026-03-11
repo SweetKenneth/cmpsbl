@@ -109,7 +109,7 @@ export function isDirectInvocationBlocked(edgeFunctionName: string): boolean {
   // They must go through the adapter
   const adaptedPrefixes = [
     'pf-marketing-strategy',
-    'pf-modernizer-export',
+    'pf-evolution-export',
   ];
   
   return adaptedPrefixes.some(prefix => edgeFunctionName.startsWith(prefix));

@@ -57,7 +57,7 @@ export const ZONE_VERSIONS = {
 // ─── Absorbed ─────────────────────────────────────────────────────────────────
 
 export const ABSORBED_VERSIONS = {
-  modernizer: { get version() { return v(); }, codename: 'Architect', absorbedBy: 'evolution', description: 'Self-upgrade → EVOLUTION mesh' },
+  evolution_legacy: { get version() { return v(); }, codename: 'Architect', absorbedBy: 'evolution', description: 'Self-upgrade → EVOLUTION mesh' },
 };
 
 // ─── Control Planes ───────────────────────────────────────────────────────────

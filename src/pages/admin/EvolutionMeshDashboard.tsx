@@ -805,7 +805,7 @@ export default function EvolutionMeshDashboard() {
                           <AlertDialogHeader>
                             <AlertDialogTitle>Abort this evolution?</AlertDialogTitle>
                             <AlertDialogDescription>
-                              This calls modernizer.evolve abort to terminate the active evolution run associated with this proposal.
+                              This calls evolution.evolve abort to terminate the active evolution run associated with this proposal.
                               Any in-progress shadow or canary stages will be halted.
                             </AlertDialogDescription>
                           </AlertDialogHeader>

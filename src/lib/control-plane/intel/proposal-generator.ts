@@ -1630,7 +1630,7 @@ function extractSubjectKey(step: ActionStep): string | null {
     return `cap:${capMatch[1].trim().toLowerCase()}`;
   }
   
-  const evoCapMatch = step.title.match(/^(?:Evolution|Modernizer):\s*(?:Add|Configure)\s+(.+)/i);
+  const evoCapMatch = step.title.match(/^(?:Evolution):\s*(?:Add|Configure)\s+(.+)/i);
   if (evoCapMatch) {
     return `cap:${evoCapMatch[1].trim().toLowerCase()}`;
   }

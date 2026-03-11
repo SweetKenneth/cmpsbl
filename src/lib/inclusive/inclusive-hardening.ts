@@ -74,7 +74,7 @@ let escalationsSuppressed = 0;
 export function recordEscalation(suppressed = false) { if (suppressed) escalationsSuppressed++; else defenseEscalations++; }
 export function getEscalationStats() { return { escalated: defenseEscalations, suppressed: escalationsSuppressed }; }
 
-// ═══ 11. Modernizer Proposal Tracker ═══
+// ═══ 11. Evolution Proposal Tracker ═══
 let proposalsGenerated = 0;
 let proposalsApplied = 0;
 export function recordProposal(applied = false) { proposalsGenerated++; if (applied) proposalsApplied++; }
