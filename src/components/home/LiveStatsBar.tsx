@@ -1,71 +1,9 @@
 /**
- * Live Stats Bar — Real-time system metrics pulled from DB
- * Displays at the top of the homepage for social proof and trust
+ * Live Stats Bar — Design space narrative with live indicator
  */
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Activity, Brain, Zap, Shield, Users, Clock, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
-import { getMetric } from "@/stores/publicMetricsStore";
-
-interface LiveStat {
-  icon: React.ElementType;
-  value: string;
-  label: string;
-  color: string;
-}
-
-function useLiveStats() {
-  const [stats, setStats] = useState<LiveStat[]>([
-    { icon: Activity, value: "—", label: "Stream Events", color: "text-cyan-400" },
-    { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
-    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
-    { icon: Brain, value: "—", label: "Crystallized", color: "text-violet-400" },
-    { icon: Users, value: "—", label: "API Calls Today", color: "text-cyan-400" },
-    { icon: CheckCircle2, value: "—", label: "Probes Passed", color: "text-emerald-400" },
-  ]);
-
-  useEffect(() => {
-    async function fetchLiveStats() {
-      try {
-        const { data, error } = await supabase.rpc("get_public_live_stats");
-
-        if (error || !data) {
-          console.warn("[LiveStats] RPC failed:", error?.message);
-          return;
-        }
-
-        const stats = data as { brain_events: number; memories: number; api_calls: number; total_probes: number };
-
-        const formatNum = (n: number | null): string => {
-          if (!n) return "0";
-          if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-          if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-          return n.toLocaleString();
-        };
-
-        setStats([
-          { icon: Activity, value: formatNum(stats.brain_events), label: "Stream Events", color: "text-cyan-400" },
-          { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
-          { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
-          { icon: Brain, value: formatNum(stats.memories), label: "Crystallized", color: "text-violet-400" },
-          { icon: Users, value: formatNum(stats.api_calls), label: "API Calls Today", color: "text-cyan-400" },
-          { icon: CheckCircle2, value: formatNum(stats.total_probes), label: "Probes Run", color: "text-emerald-400" },
-        ]);
-      } catch {
-        // Silent — show defaults
-      }
-    }
-
-    fetchLiveStats();
-    const interval = setInterval(fetchLiveStats, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return stats;
-}
 
 export function LiveStatsBar() {
   const stats = useLiveStats();
