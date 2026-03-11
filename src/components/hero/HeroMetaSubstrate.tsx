@@ -206,27 +206,17 @@ export function HeroMetaSubstrate() {
               </span>
             </h1>
 
-            {/* Thesis line */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-sm sm:text-base text-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
-            >
-              CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
-            </motion.p>
-
-            {/* Tagline — two-part rhythm */}
+            {/* Tagline — two-part rhythm — NOW FIRST AND ENHANCED */}
             <motion.div 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.5 }}
-              className="mb-5 sm:mb-8"
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mb-6 sm:mb-8"
             >
-              <p className="text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground/80 tracking-tight leading-snug">
-                Where machines learn to
+              <p className="text-xl sm:text-2xl md:text-3xl font-medium text-foreground/70 tracking-tight leading-snug mb-2">
+                Where machines learn how to
               </p>
-              <div className="mt-1 text-[1.75rem] sm:text-5xl md:text-[3.5rem] font-extrabold tracking-tight leading-none min-h-[1.15em]">
+              <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
                 <TypedText 
                   texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
@@ -240,12 +230,22 @@ export function HeroMetaSubstrate() {
                 />
               </div>
             </motion.div>
+
+            {/* Thesis line — NOW SECONDARY */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-sm sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
+            >
+              CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
+            </motion.p>
             
             {/* Subtitle — clear value prop */}
             <motion.div 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.5 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
               className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9 space-y-4"
             >
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
