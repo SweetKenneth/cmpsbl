@@ -100,7 +100,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     if (ok) {
       toast.success(`${confirmRemove.artifactName} removed from vault`);
     } else {
-      toast.error('Failed to remove pipeline');
+      toast.error('Failed to remove memory');
     }
     setConfirmRemove(null);
   }, [confirmRemove, onRemove]);
