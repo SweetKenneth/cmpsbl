@@ -278,10 +278,10 @@ export const DEEP_TOPICS = {
       seoKeywords: ['AI plugin certification', 'AI safety verification', 'CMPSBL VERIFY module'],
     },
     {
-      topic: 'MODERNIZER: Legacy System Transformation with AI Analysis',
+      topic: 'EVOLUTION: Legacy System Transformation with AI Analysis',
       hook: 'Your legacy codebase isn\'t technical debt—it\'s an opportunity for intelligent transformation.',
       keyPoints: ['Deep structural analysis of existing codebases', 'Risk-ranked modernization recommendations', 'Incremental migration strategies', 'ROI modeling for modernization projects'],
-      seoKeywords: ['legacy modernization AI', 'code transformation', 'CMPSBL MODERNIZER'],
+      seoKeywords: ['legacy modernization AI', 'code transformation', 'CMPSBL EVOLUTION'],
     },
   ],
 };

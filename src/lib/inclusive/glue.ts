@@ -248,7 +248,7 @@ export function shouldTriggerDefenseAlert(issues: InclusiveIssue[]): boolean {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MODERNIZER INTEGRATION — Proposal Triggers
+// EVOLUTION INTEGRATION — Proposal Triggers
 // ═══════════════════════════════════════════════════════════════
 
 export interface ModernizerProposal {

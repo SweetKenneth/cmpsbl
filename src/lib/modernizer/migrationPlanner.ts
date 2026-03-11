@@ -1,5 +1,5 @@
 /**
- * MODERNIZER Module — Migration Planner
+ * EVOLUTION Module — Migration Planner
  * Dependency upgrades, breaking changes, and migration paths
  */
 
