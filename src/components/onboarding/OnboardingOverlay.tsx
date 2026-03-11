@@ -30,8 +30,8 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Sparkles className="h-7 w-7" />,
     title: 'Welcome to the Memory Stream',
-    description: 'The substrate discovers and scores software pipelines continuously. Crystallize them into your vault, choose what to keep, and deploy real production-grade software.',
-    detail: 'Every crystallization reveals a pipeline. You decide: Keep it or Discard it.',
+    description: 'The substrate discovers and scores software memories continuously. Crystallize them into your vault, choose what to keep, and deploy real production-grade software.',
+    detail: 'Every crystallization reveals a memory. You decide: Keep it or Discard it.',
     link: '/foundry',
     linkLabel: 'Open Memory Stream',
     gradient: 'from-sky-500/20 via-indigo-500/10 to-transparent',
