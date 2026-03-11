@@ -11,3 +11,5 @@ export * from '@/crownjewels/s-tier/156-evolution-ab';
 export * from '@/crownjewels/s-tier/157-evolution-rollback';
 export * from '@/crownjewels/s-tier/158-evolution-sandbox';
 export * from '@/crownjewels/s-tier/196-mutation-rehearsal';
+export * from '@/crownjewels/s-tier/154-seba-engine';
+export * from '@/crownjewels/s-tier/172-topology-mutation';

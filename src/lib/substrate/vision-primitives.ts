@@ -15,3 +15,5 @@ export { WasteDetectionIntelligence } from '@/crownjewels/s-tier/128-waste-detec
 export type { WasteReport as WasteDetectionReport, WasteItem as WasteDetectionItem } from '@/crownjewels/s-tier/128-waste-detection-intelligence';
 // predictive-state-modeling has StateSnapshot collision with module-hardening
 export { PredictiveStateModeling, type StatePrediction, type StateSnapshot as VisionStateSnapshot } from '@/crownjewels/s-tier/173-predictive-state-modeling';
+export * from '@/crownjewels/s-tier/207-cognitive-flame-graph';
+export * from '@/crownjewels/s-tier/210-analytics-observability-convergence';

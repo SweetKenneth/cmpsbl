@@ -23,3 +23,4 @@ export {
   type PipelineConfig as DynamicPipelineConfig,
   type OptimizationResult as PipelineOptimizationResult,
 } from '@/crownjewels/s-tier/183-dynamic-pipeline-optimizer';
+export * from '@/crownjewels/s-tier/151-cognitive-mesh';

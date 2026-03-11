@@ -18,3 +18,5 @@ export * from '@/crownjewels/s-tier/170-temporal-reasoning';
 export * from '@/crownjewels/s-tier/176-episodic-replay';
 // classifier-library has ClassificationResult collision with pfv-ports
 export { ClassifierLibrary, type ClassifierStrategy, type ClassificationResult as BrainClassificationResult } from '@/crownjewels/s-tier/184-classifier-library';
+export * from '@/crownjewels/s-tier/042-pattern-extraction';
+export * from '@/crownjewels/s-tier/182-entropy-reversal';

@@ -16,3 +16,4 @@ export * from '@/crownjewels/s-tier/137-policy-aware-intelligence-gate';
 export { IntelligenceGovernanceKernel } from '@/crownjewels/s-tier/138-intelligence-governance-kernel';
 export * from '@/crownjewels/s-tier/148-evolution-governance-engine';
 export * from '@/crownjewels/s-tier/150-self-governance';
+export * from '@/crownjewels/s-tier/166-graduated-autonomy';
