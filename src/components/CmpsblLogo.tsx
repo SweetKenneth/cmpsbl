@@ -4,7 +4,7 @@
  * Restricted to navigation bar and footer
  */
 
-import cmpsblLogo from "@/assets/cmpsbl-logo.png";
+import cmpsblLogo from "@/assets/cmpsbl-logo.webp";
 import { cn } from "@/lib/utils";
 
 interface CmpsblLogoProps {
