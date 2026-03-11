@@ -259,14 +259,9 @@ export function HeroMetaSubstrate() {
                 explores a design space a million times larger than the stars in the observable universe.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                The rarest discoveries don't stop at software.
-              </p>
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                They become designs for{' '}
-                <span className="text-primary font-medium">silicon computer chips</span>.
-              </p>
-              <p className="text-sm sm:text-base text-foreground/90 font-semibold leading-[1.8]">
-                Start now — free.
+                The rarest discoveries don't stop at software — they become designs for{' '}
+                <span className="text-primary font-medium">silicon computer chips</span>.{' '}
+                <span className="text-foreground/90 font-semibold">Start now — free.</span>
               </p>
             </motion.div>
             
