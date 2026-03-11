@@ -5,7 +5,14 @@
 
 export * from '@/crownjewels/s-tier/001-substrate-registry';
 export * from '@/crownjewels/s-tier/011-circuit-breaker';
-export * from '@/crownjewels/s-tier/012-rate-limiter';
+// rate-limiter has RateLimitConfig/RateLimitResult collision with adaptive-rate-limiting
+export {
+  createRateLimiter,
+  type RateLimitConfig as CoreRateLimitConfig,
+  type RateLimitResult as CoreRateLimitResult,
+  type Strategy as RateLimitStrategy,
+} from '@/crownjewels/s-tier/012-rate-limiter';
+export * from '@/crownjewels/s-tier/013-state-machine';
 export * from '@/crownjewels/s-tier/013-state-machine';
 export * from '@/crownjewels/s-tier/014-event-sourcing';
 export * from '@/crownjewels/s-tier/015-feature-flags';
