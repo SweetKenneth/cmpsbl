@@ -251,15 +251,14 @@ export function HeroMetaSubstrate() {
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
                 Every interaction flows through the{' '}
                 <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
-                discovers and packages working software pipelines automatically.
+                discovers and packages working, exportable software pipelines automatically.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                Built from <span className="text-foreground/90 font-medium">940+ capabilities</span> across{' '}
-                <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, the Memory Stream
-                explores a design space a million times larger than the stars in the observable universe.
+                Built from <span className="text-foreground/90 font-medium">endless capabilities</span> across{' '}
+                <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, it explores a design space a million times larger than the stars in the observable universe.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                The rarest discoveries don't stop at software — they become designs for{' '}
+                The rarest discoveries don't stop at software. They become designs for{' '}
                 <span className="text-primary font-medium">silicon computer chips</span>.{' '}
                 <span className="text-foreground/90 font-semibold">Start now — free.</span>
               </p>
