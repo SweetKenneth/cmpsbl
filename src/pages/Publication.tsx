@@ -68,7 +68,7 @@ const priorArtDocs = [
 const systemMetrics = [
   { label: "Architecture Nodes", value: "40", icon: Layers },
   { label: "Architectural Sectors", value: "12", icon: GitBranch },
-  { label: "Synergy Pipelines", value: "300+", icon: Zap },
+  { label: "Synergy Memories", value: "300+", icon: Zap },
   { label: "Autonomy Tiers", value: "3", icon: Shield },
   { label: "Hardening Coverage", value: "100%", icon: Fingerprint },
   { label: "Export Targets", value: "25", icon: Globe },
