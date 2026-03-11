@@ -97,7 +97,7 @@ export async function broadcastIntent(intent: Omit<MeshIntent, 'id' | 'timestamp
   }).catch(() => {}); // Non-blocking
 
   // Emit real comm events for the mesh feed (fire-and-forget)
-  emitCommEvents(intent, responses, resolvedBy).catch(() => {});
+  emitCommEvents(intent, responses).catch(() => {});
 
   // Auto-discovery: if resolution was partial/failed, queue gap analysis
   const isPartial = resolvedBy.length < externalResolvers.length;
