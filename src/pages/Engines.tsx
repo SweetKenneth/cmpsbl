@@ -176,7 +176,7 @@ export default function Engines() {
                 forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                40 sealed runtimes · 20 S-TIER · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
+                54 sealed runtimes · 4 META $1,999 · 30 S-TIER · APEX $599 · ELITE $399 · CORE $199 · 3 Free · 40% off bundled
               </p>
             </motion.div>
           </div>
