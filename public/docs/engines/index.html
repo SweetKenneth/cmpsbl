@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S-TIER Engines — Technical Dossier | CMPSBL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: hsl(0 0% 100%);
+      --bg-warm: hsl(220 14% 96%);
+      --bg-card: hsl(220 14% 98%);
+      --fg: hsl(220 15% 12%);
+      --fg-muted: hsl(220 10% 46%);
+      --primary: hsl(210 60% 45%);
+      --primary-light: hsl(210 60% 92%);
+      --accent-gold: hsl(45 100% 50%);
+      --accent-red: hsl(0 80% 50%);
+      --accent-green: hsl(145 60% 40%);
+      --border: hsl(220 14% 88%);
+      --border-light: hsl(220 14% 92%);
+      --radius: 16px;
+      --shadow-sm: 0 1px 3px hsl(220 14% 10% / 0.04);
+      --shadow-md: 0 4px 20px hsl(220 14% 10% / 0.06);
+      --shadow-lg: 0 8px 40px hsl(220 14% 10% / 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .doc-header .label {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .doc-header h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-header .subtitle {
+      font-size: 1.15rem;
+      color: var(--fg-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ─── SUMMARY BAR ─── */
+    .summary-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 3.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .summary-stat {
+      background: var(--bg-card);
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .summary-stat .value {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+    }
+
+    .summary-stat .label-small {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ─── ENGINE CARD ─── */
+    .engine-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+      page-break-inside: avoid;
+    }
+
+    .engine-card:hover { box-shadow: var(--shadow-md); }
+
+    .engine-card .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .engine-card .codename {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+
+    .engine-card .tagline {
+      font-size: 0.95rem;
+      color: var(--fg-muted);
+      margin-top: 0.15rem;
+    }
+
+    .engine-card .price-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .engine-card .price-bundle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .engine-card .edition-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      background: var(--bg-warm);
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+    }
+
+    .engine-card .briefing {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--fg);
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* ─── PRIMITIVES LIST ─── */
+    .primitives-heading {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      margin-bottom: 1rem;
+    }
+
+    .primitive-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .primitive-bullet {
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-top: 0.55rem;
+    }
+
+    .primitive-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--fg);
+    }
+
+    .primitive-desc {
+      font-size: 0.82rem;
+      color: var(--fg-muted);
+    }
+
+    /* ─── METADATA ROW ─── */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .meta-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      background: var(--bg-warm);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+    }
+
+    .meta-tag.highlight {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: hsl(210 60% 82%);
+    }
+
+    /* ─── VALUATION TABLE ─── */
+    .valuation-section {
+      margin-top: 3.5rem;
+      padding-top: 3rem;
+      border-top: 2px solid var(--border);
+    }
+
+    .valuation-section h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .valuation-section .section-desc {
+      color: var(--fg-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .valuation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .valuation-table thead th {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg-warm);
+    }
+
+    .valuation-table tbody td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+    }
+
+    .valuation-table tbody tr:hover {
+      background: hsl(210 60% 97%);
+    }
+
+    .valuation-table .engine-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      color: var(--fg);
+    }
+
+    .valuation-table .price-cell {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .valuation-table .bundled-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--accent-green);
+      font-size: 0.8rem;
+    }
+
+    .valuation-table .primitives-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+    }
+
+    /* ─── TOTALS ROW ─── */
+    .valuation-table tfoot td {
+      padding: 1rem;
+      border-top: 2px solid var(--border);
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+
+    /* ─── FOOTER ─── */
+    .doc-footer {
+      margin-top: 4rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .doc-footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .container { padding: 0 1.25rem; }
+      .doc-header { padding: 2.5rem 0 2rem; }
+      .doc-header h1 { font-size: 1.75rem; }
+      .summary-bar { grid-template-columns: repeat(2, 1fr); }
+      .engine-card { padding: 1.5rem; }
+      .engine-card .card-top { flex-direction: column; gap: 0.75rem; }
+      .engine-card .codename { font-size: 1.35rem; }
+      .valuation-table { font-size: 0.75rem; }
+      .valuation-table thead th,
+      .valuation-table tbody td { padding: 0.6rem 0.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .summary-bar { grid-template-columns: 1fr 1fr; }
+      .summary-stat { padding: 1rem 0.75rem; }
+      .summary-stat .value { font-size: 1.35rem; }
+      .meta-row { gap: 0.35rem; }
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      body { font-size: 11pt; }
+      .container { max-width: 100%; padding: 0; }
+      .engine-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+      .doc-header { padding: 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="doc-header">
+      <span class="label">Technical Dossier — Classified</span>
+      <h1>S-TIER ENGINES</h1>
+      <p class="subtitle">10 supreme sealed runtimes forged from the highest-scoring S-tier primitives. Each engine fuses 5–6 Apex Discovery artifacts into a single, black-boxed execution unit.</p>
+    </header>
+
+    <!-- SUMMARY BAR -->
+    <div class="summary-bar">
+      <div class="summary-stat">
+        <div class="value">10</div>
+        <div class="label-small">Engines</div>
+      </div>
+      <div class="summary-stat">
+        <div class="value">53</div>
+        <div class="label-small">S-Tier Primitives</div>
+      </div>
+      <div class="summary-stat">
+        <div class="value">$999</div>
+        <div class="label-small">Per Engine</div>
+      </div>
+      <div class="summary-stat">
+        <div class="value">40%</div>
+        <div class="label-small">Bundle Discount</div>
+      </div>
+    </div>
+
+    <!-- ENGINE 1 — SOVEREIGN -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">SOVEREIGN</div>
+          <div class="tagline">Autonomous Governance Kernel</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Governance Supremacy</div>
+      <div class="briefing">SOVEREIGN fuses 6 crown-class governance primitives into an autonomous governance supercomplex. Every decision is policy-gated, audit-logged, and regulation-aware. Compliance, ethics, and access control — unified into a single sealed runtime that requires zero human oversight for regulatory adherence.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Intelligence Governance Kernel</span> — <span class="primitive-desc">Meta-governance over all cognitive subsystems; the governor of governors.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Policy-Aware Intelligence Gate</span> — <span class="primitive-desc">Blocks non-compliant reasoning paths before execution.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Audit-Grade Decision Ledger</span> — <span class="primitive-desc">Immutable hash-chain decision trail for full auditability.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Regulatory Mode Switcher</span> — <span class="primitive-desc">Auto-adapts behavior across GDPR, HIPAA, SOC2, and custom frameworks.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Capability Impact Forecaster</span> — <span class="primitive-desc">Predicts downstream effects of capability activation before execution.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Entitlement Resolution Engine</span> — <span class="primitive-desc">Resolves cascading access rights and entitlement graphs in real time.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">6 primitives</span>
+        <span class="meta-tag">CORTEX · DEFENSE · ATLAS</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Autonomous</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 2 — COLOSSUS -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">COLOSSUS</div>
+          <div class="tagline">Fleet Supremacy Engine</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Fleet Dominance</div>
+      <div class="briefing">COLOSSUS merges 5 fleet-scale primitives into a command layer that orchestrates thousands of agents with zero contention. Autonomous cost optimization, self-scaling compute fabric, and cross-pipeline arbitration — the engine that runs the fleet.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Fleet Intelligence Orchestrator</span> — <span class="primitive-desc">Cognitive-affinity task routing across distributed agent fleets.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Self-Scaling Intelligence Fabric</span> — <span class="primitive-desc">Auto-scales compute topology based on real-time demand signals.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Cross-Pipeline Arbitration Engine</span> — <span class="primitive-desc">Resolves inter-pipeline resource conflicts without deadlocks.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Cost-Aware Routing Engine</span> — <span class="primitive-desc">Real-time cost/quality optimization per request across all providers.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Autonomous Ops Steward</span> — <span class="primitive-desc">Self-managing operations requiring zero human intervention.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">NEXUS · CORTEX · NERVE</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Fleet-Scale</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 3 — HARBINGER -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">HARBINGER</div>
+          <div class="tagline">Predictive Threat Neutralizer</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Threat Supremacy</div>
+      <div class="briefing">HARBINGER weaves 5 defense-grade primitives into a predictive threat mesh. Threats are detected via behavioral trust scoring, correlated across signals, contained within isolation boundaries, and neutralized — all before they materialize into incidents.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Emergent Threat Anticipator</span> — <span class="primitive-desc">Predicts novel attack vectors via pattern extrapolation from historical signals.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Behavioral Trust Scoring</span> — <span class="primitive-desc">Continuous entity trust assessment based on behavioral patterns.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Intelligence Containment Engine</span> — <span class="primitive-desc">Isolates compromised reasoning chains before they propagate.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Anomaly Correlation Engine</span> — <span class="primitive-desc">Cross-signal anomaly fusion across distributed telemetry sources.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Cascade Prevention</span> — <span class="primitive-desc">Halts failure propagation at the origin point before cascade.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">DEFENSE · IMMUNITY · OBSERVER</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Active Defense</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 4 — PROMETHEUS -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">PROMETHEUS</div>
+          <div class="tagline">Self-Evolution Reactor</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Evolution Supremacy</div>
+      <div class="briefing">PROMETHEUS combines 5 evolution primitives into a self-evolving reactor. The system proposes architecture mutations, rehearses them in shadow environments, validates through 7 SEBA gates, and applies changes autonomously — a system that improves itself.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Recursive Self-Improvement Pipeline</span> — <span class="primitive-desc">Multi-pass evolutionary refinement with convergence tracking.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Mutation Proposal Engine</span> — <span class="primitive-desc">Generates typed architecture mutation proposals with impact scoring.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">SEBA Engine (7-Gate)</span> — <span class="primitive-desc">Safety-bounded evolution assessment through 7 sequential validation gates.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Shadow Run Environment</span> — <span class="primitive-desc">Risk-free mutation testing in isolated shadow execution.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Mutation Rehearsal</span> — <span class="primitive-desc">Dry-run mutations with full state rollback guarantees.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">EVOLUTION · SHADOW · SYSTEM</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Self-Improving</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 5 — OMNISCIENT -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">OMNISCIENT</div>
+          <div class="tagline">Full-Spectrum Oracle</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Prediction Supremacy</div>
+      <div class="briefing">OMNISCIENT fuses 6 oracle-class primitives into a total-spectrum prediction system. Multi-horizon forecasting, counterfactual analysis, Bayesian prediction with 10K Monte Carlo iterations, and confidence calibration — see every possible future and act on the highest-probability path.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Multi-Horizon Prediction</span> — <span class="primitive-desc">Short, medium, and long-range forecasting with divergence tracking.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Predictive Oracle Engine</span> — <span class="primitive-desc">Bayesian network with 10,000 Monte Carlo iterations per prediction.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Counterfactual Scenario Engine</span> — <span class="primitive-desc">What-if analysis across branching decision trees.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Confidence Calibration</span> — <span class="primitive-desc">Continuous probability recalibration against ground truth.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Oracle Ripple Precognition</span> — <span class="primitive-desc">Second-order effect prediction across system boundaries.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Predictive Trend Crystallizer</span> — <span class="primitive-desc">Transforms weak signals into actionable trend forecasts.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">6 primitives</span>
+        <span class="meta-tag">ORACLE · BRAIN · VISION</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Predictive</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 6 — LEVIATHAN -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">LEVIATHAN</div>
+          <div class="tagline">Deep Memory Architect</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Memory Supremacy</div>
+      <div class="briefing">LEVIATHAN merges 5 memory-class primitives into a distributed deep-memory fabric. Perfect recall across sessions, cross-node memory coherence via gossip protocols, and predictive state pre-loading — memory that scales across entire clusters.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Context Threading</span> — <span class="primitive-desc">Maintains conversation coherence across sessions and context windows.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Immune Memory Persistence</span> — <span class="primitive-desc">Remembers and adapts to past threats with SM-2 repetition.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Predictive State Modeling</span> — <span class="primitive-desc">Pre-loads state before it's needed based on usage patterns.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Gossip Protocol Engine</span> — <span class="primitive-desc">Epidemic memory propagation across distributed nodes.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">State Synchronization</span> — <span class="primitive-desc">Conflict-free replicated state (CRDT) across clusters.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">MEMORY · NERVE · DECODE</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Distributed</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 7 — CHIMERA -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">CHIMERA</div>
+          <div class="tagline">Adaptive Intelligence Mesh</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Adaptation Supremacy</div>
+      <div class="briefing">CHIMERA fuses 5 adaptation primitives into a self-reshaping intelligence mesh. It reads user intent in real time, detects when goals shift mid-session, removes friction before users notice it, and morphs its entire communication style per user preference.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Adaptive Product Brain</span> — <span class="primitive-desc">Learns product usage patterns and adapts interface autonomously.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Intent Drift Tracker</span> — <span class="primitive-desc">Detects when user goals shift mid-session and re-aligns.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Friction Auto-Removal Engine</span> — <span class="primitive-desc">Identifies and eliminates UX friction preemptively.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Intent Disambiguation</span> — <span class="primitive-desc">Resolves ambiguous requests using deep contextual analysis.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Personality Adaptation</span> — <span class="primitive-desc">Morphs communication style, tone, and verbosity per user.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">DECODE · INTENT · BRAIN</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Self-Reshaping</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 8 — TITAN -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">TITAN</div>
+          <div class="tagline">Infrastructure Supremacy Engine</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Infrastructure Supremacy</div>
+      <div class="briefing">TITAN fuses 6 infrastructure primitives into an indestructible kernel. Byzantine fault tolerance, self-healing consensus, dynamic quorum negotiation, and automatic topology optimization — the foundation that never breaks, under any conditions.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Circuit Breaker</span> — <span class="primitive-desc">Cascading failure isolation at sub-millisecond response times.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Consensus Heartbeat Protocol</span> — <span class="primitive-desc">Distributed liveness detection with configurable failure thresholds.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Distributed Consensus Mesh</span> — <span class="primitive-desc">Multi-node agreement without single point of failure.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Quorum Negotiator</span> — <span class="primitive-desc">Dynamic quorum sizing under network partition conditions.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Homeostatic Regulator</span> — <span class="primitive-desc">Maintains system equilibrium autonomously via feedback loops.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Mesh Topology Optimizer</span> — <span class="primitive-desc">Self-optimizing network topology for minimal latency.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">6 primitives</span>
+        <span class="meta-tag">SYSTEM · NERVE · CORE</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Byzantine Tolerant</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 9 — WRAITH -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">WRAITH</div>
+          <div class="tagline">Shadow Operations Command</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Shadow Supremacy</div>
+      <div class="briefing">WRAITH merges 5 shadow-operation primitives into a covert testing platform. Test anything in shadow without production risk, mutate system topologies at runtime, A/B test evolutionary strategies against live traffic, and rollback instantly if reality diverges from prediction.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Shadow Evolution Testing</span> — <span class="primitive-desc">TSAC-verified shadow execution with production parity.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Topology Mutation</span> — <span class="primitive-desc">Reshape system architecture at runtime without downtime.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Evolution A/B</span> — <span class="primitive-desc">Split-test evolutionary strategies against live traffic patterns.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Evolution Rollback</span> — <span class="primitive-desc">Instant rollback with full state preservation and audit trail.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Evolution Sandbox</span> — <span class="primitive-desc">Isolated mutation testing environment with chaos injection.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">SHADOW · EVOLUTION · SYSTEM</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Covert Ops</span>
+      </div>
+    </article>
+
+    <!-- ENGINE 10 — APEX ONE -->
+    <article class="engine-card">
+      <div class="card-top">
+        <div>
+          <div class="codename">APEX ONE</div>
+          <div class="tagline">Crown Intelligence Convergence</div>
+        </div>
+        <div style="text-align:right">
+          <div class="price-tag">$999</div>
+          <div class="price-bundle">$599 bundled</div>
+        </div>
+      </div>
+      <div class="edition-tag">S-TIER Edition — Crown Convergence</div>
+      <div class="briefing">APEX ONE is the convergence of the highest-value decision-making primitives. Every reasoning path is explainable, every decision confidence-scored, every resource allocation value-weighted, and every wasted cycle detected and eliminated. The crown jewel of intelligent decision-making.</div>
+      <div class="primitives-heading">Fused S-Tier Primitives</div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Strategic Foresight Engine</span> — <span class="primitive-desc">Long-horizon strategic planning with scenario tree evaluation.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Decision Confidence Governor</span> — <span class="primitive-desc">Gates decisions that fall below configurable confidence thresholds.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Explainable Intelligence Compiler</span> — <span class="primitive-desc">Transforms opaque reasoning into fully auditable explanation chains.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Value-Weighted Reasoning Router</span> — <span class="primitive-desc">Routes queries by expected value output, not just latency.</span></div></div>
+      <div class="primitive-item"><span class="primitive-bullet"></span><div><span class="primitive-name">Waste Detection Intelligence</span> — <span class="primitive-desc">Identifies and eliminates computational waste across all pipelines.</span></div></div>
+      <div class="meta-row">
+        <span class="meta-tag highlight">5 primitives</span>
+        <span class="meta-tag">CORTEX · NEXUS · ORACLE</span>
+        <span class="meta-tag">Clearance: Level 10</span>
+        <span class="meta-tag">Crown Class</span>
+      </div>
+    </article>
+
+    <!-- VALUATION TABLE -->
+    <section class="valuation-section">
+      <h2>Comparative Valuation</h2>
+      <p class="section-desc">All 10 S-tier engines at a glance. Each fuses 5–6 Apex Discovery primitives into a single sealed runtime.</p>
+
+      <table class="valuation-table">
+        <thead>
+          <tr>
+            <th>Engine</th>
+            <th>Domain</th>
+            <th>Primitives</th>
+            <th>Standalone</th>
+            <th>Bundled</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="engine-name">SOVEREIGN</td>
+            <td>Governance</td>
+            <td class="primitives-cell">6 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">COLOSSUS</td>
+            <td>Fleet Ops</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">HARBINGER</td>
+            <td>Threat Defense</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">PROMETHEUS</td>
+            <td>Self-Evolution</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">OMNISCIENT</td>
+            <td>Prediction</td>
+            <td class="primitives-cell">6 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">LEVIATHAN</td>
+            <td>Memory</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">CHIMERA</td>
+            <td>Adaptation</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">TITAN</td>
+            <td>Infrastructure</td>
+            <td class="primitives-cell">6 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">WRAITH</td>
+            <td>Shadow Ops</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+          <tr>
+            <td class="engine-name">APEX ONE</td>
+            <td>Decision Intelligence</td>
+            <td class="primitives-cell">5 primitives</td>
+            <td class="price-cell">$999</td>
+            <td class="bundled-cell">$599</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>TOTAL</td>
+            <td></td>
+            <td class="primitives-cell">53 primitives</td>
+            <td class="price-cell">$9,990</td>
+            <td class="bundled-cell">$5,990</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="doc-footer">
+      <p>CMPSBL S-TIER Engines — Technical Dossier — Classified</p>
+      <p style="margin-top: 0.5rem;">All engines are sealed, obfuscated runtimes. Source code is not distributed. 40% discount applied when bundled with any Composable Cognitive agent.</p>
+    </footer>
+
+  </div>
+</body>
+</html>
