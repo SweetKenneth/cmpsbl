@@ -375,6 +375,12 @@ export function CmpsblNav() {
                   </>
                 ) : (
                   <>
+                    <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-3 font-medium text-muted-foreground hover:text-foreground hidden lg:flex">
+                      <Link to="/codelab">
+                        <Terminal className="w-4 h-4 mr-1.5" />
+                        CodeLab
+                      </Link>
+                    </Button>
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">
                       <Link to="/auth">Sign in</Link>
                     </Button>
