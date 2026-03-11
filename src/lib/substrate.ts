@@ -819,7 +819,7 @@ class SubstrateClient {
   };
 
   /** @deprecated Use `evolution` — Modernizer was absorbed by EVOLUTION */
-  get modernizer() { return this.evolution; }
+  get _legacyEvolutionAlias() { return this.evolution; }
 
   // ═══════════════════════════════════════════════════════════════
   // CORE MODULE — The Kernel (Scheduler, Router, Lifecycle)
