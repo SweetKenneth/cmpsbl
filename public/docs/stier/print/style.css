@@ -705,37 +705,81 @@ hr {
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   body {
-    padding: 2rem 1.25rem 3rem;
+    padding: 1.5rem 1rem 2.5rem;
+    line-height: 1.72;
   }
 
-  h1 { font-size: 1.4rem; }
-  h2 { margin-top: 2.5rem; }
+  h1 {
+    font-size: 1.3rem;
+    padding-bottom: 1rem;
+    margin-bottom: 0.75rem;
+  }
 
+  h2 {
+    font-size: 1rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 { font-size: 0.9rem; }
+
+  p { font-size: 0.88rem; }
+
+  /* ── Cards ── */
   .capability-card {
-    padding: 1.75rem 1.35rem 1.5rem;
-    margin: 2rem 0;
+    padding: 1.5rem 1.25rem 1.25rem;
+    margin: 1.75rem 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .capability-card .card-header {
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .capability-card .card-rank {
+    font-size: 0.72rem;
+    align-self: flex-start;
   }
 
   .capability-card .card-title {
     font-size: 1.05rem;
   }
 
-  .stat-bar {
-    flex-direction: column;
+  .capability-card .card-meta {
+    gap: 0.35rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 
-  .stat-bar > div:not(:last-of-type) {
-    border-right: none;
-    border-bottom: 1px solid var(--border-light);
+  .capability-card .meta-tag {
+    font-size: 0.55rem;
+    padding: 0.2rem 0.5rem;
   }
 
+  .capability-card p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  /* ── Section labels ── */
+  .section-label {
+    font-size: 0.58rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Pricing grid → stacked on mobile ── */
   .pricing-row {
     grid-template-columns: 1fr 1fr;
+    margin: 1rem 0;
   }
 
   .pricing-row .price-item {
+    padding: 0.7rem 0.85rem;
     border-bottom: 1px solid var(--border-light);
   }
 
@@ -743,10 +787,139 @@ hr {
     border-right: none;
   }
 
+  .pricing-row .price-item:nth-last-child(-n+2):nth-child(odd) ~ .price-item,
+  .pricing-row .price-item:last-child {
+    border-bottom: none;
+  }
+
+  .pricing-row .price-label {
+    font-size: 0.5rem;
+  }
+
+  .pricing-row .price-value {
+    font-size: 0.72rem;
+  }
+
+  /* ── Stat bar ── */
+  .stat-bar {
+    flex-direction: column;
+  }
+
+  .stat-bar > div {
+    padding: 0.85rem 1rem;
+    min-width: unset;
+  }
+
+  .stat-bar > div:not(:last-of-type) {
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .stat-bar .price-label { font-size: 0.52rem; }
+  .stat-bar .stat { font-size: 0.85rem; }
+
+  /* ── Tables ── */
+  .competitor-table,
+  table {
+    font-size: 0.72rem;
+    margin: 0.75rem 0 1rem;
+  }
+
+  .competitor-table th,
+  .competitor-table td,
+  th, td {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .competitor-table th,
+  th {
+    font-size: 0.55rem;
+  }
+
+  /* ── Recap ── */
+  .recap-box {
+    padding: 0.85rem 1rem;
+    font-size: 0.82rem;
+    margin: 1.25rem 0 0;
+  }
+
+  /* ── Code ── */
+  code {
+    font-size: 0.68rem;
+    padding: 0.15rem 0.35rem;
+    word-break: break-all;
+  }
+
+  /* ── Nav ── */
   .print-nav {
     gap: 0.2rem;
     padding: 0.6rem 0.75rem;
+    margin-bottom: 2rem;
   }
+
+  .print-nav a {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .print-btn {
+    font-size: 0.72rem;
+    padding: 0.5rem 1.1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .back-link {
+    font-size: 0.72rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .doc-meta {
+    gap: 0.35rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .doc-meta .badge {
+    font-size: 0.58rem;
+    padding: 0.25rem 0.55rem;
+  }
+
+  .doc-footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    font-size: 0.65rem;
+  }
+
+  hr { margin: 2rem 0; }
+
+  ul, ol { padding-left: 1.2rem; }
+  li { font-size: 0.85rem; margin-bottom: 0.4rem; }
+}
+
+/* ── Extra-small phones ── */
+@media (max-width: 400px) {
+  body { padding: 1.25rem 0.85rem 2rem; }
+
+  .capability-card {
+    padding: 1.25rem 1rem 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .capability-card .card-title { font-size: 0.95rem; }
+
+  .pricing-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-row .price-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .pricing-row .price-item:last-child {
+    border-bottom: none;
+  }
+
+  .competitor-table { display: block; overflow-x: auto; }
 }
 
 
