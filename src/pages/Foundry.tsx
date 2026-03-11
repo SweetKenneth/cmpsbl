@@ -50,7 +50,11 @@ export default function Foundry() {
 
   const handleRepriceAll = useCallback(async () => {
     const result = await pricingEngine.repriceAllDiscoveries();
-    toast.success(`Repriced ${result.success} artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+    if (result.success === 0 && result.failed === 0) {
+      toast.info('All items already priced — nothing to do');
+    } else {
+      toast.success(`Priced ${result.success} new artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+    }
     await foundry.reload();
   }, [foundry.reload, pricingEngine]);
 
