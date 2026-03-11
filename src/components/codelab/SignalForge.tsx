@@ -164,7 +164,7 @@ export function SignalForge() {
   return (
     <section className="relative overflow-hidden">
       <AnimatePresence>
-        {showRitual && <ForgeRitualOverlay onComplete={handleRitualComplete} />}
+        {showRitual && <BlueprintForgeRitual onComplete={handleRitualComplete} />}
       </AnimatePresence>
 
       {/* Hero */}
