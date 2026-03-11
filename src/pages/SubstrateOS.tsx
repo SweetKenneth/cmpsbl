@@ -493,7 +493,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'encode' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation pipeline. Monitor code agent execution, review outputs, and track pipeline performance.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation engine. Monitor code agent execution, review outputs, and track memory formation performance.">
                 <PanelContainer id="encode">
                   <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
