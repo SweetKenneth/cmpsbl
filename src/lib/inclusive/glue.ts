@@ -251,7 +251,7 @@ export function shouldTriggerDefenseAlert(issues: InclusiveIssue[]): boolean {
 // EVOLUTION INTEGRATION — Proposal Triggers
 // ═══════════════════════════════════════════════════════════════
 
-export interface ModernizerProposal {
+export interface EvolutionProposal {
   type: 'fix_accessibility';
   source: 'inclusive';
   tag: 'human_compatibility';
