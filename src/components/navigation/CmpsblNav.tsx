@@ -440,7 +440,7 @@ export function CmpsblNav() {
                 {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
                   { name: "Upgrade", href: "/upgrade", icon: Zap },
-                  { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
+                  { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
                   { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW" },
                 ].map((item) => (
                   <Link
