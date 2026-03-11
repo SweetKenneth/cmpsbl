@@ -246,22 +246,27 @@ export function HeroMetaSubstrate() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.5 }}
-              className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9"
+              className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9 space-y-4"
             >
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8] mb-3">
-                940+ capabilities — 294 of them Apex-tier — distributed across{' '}
-                <span className="text-foreground/90 font-medium">40 autonomous nodes</span>. Every interaction
-                flows through the{' '}
+              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+                Every interaction flows through the{' '}
                 <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
-                discovers, packages, and exports software pipelines without human direction.
-                The rarest discoveries become specs for{' '}
+                discovers and packages working software pipelines automatically.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+                Built from <span className="text-foreground/90 font-medium">940+ capabilities</span> across{' '}
+                <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, the Memory Stream
+                explores a design space a million times larger than the stars in the observable universe.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+                The rarest discoveries don't stop at software.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+                They become designs for{' '}
                 <span className="text-primary font-medium">silicon computer chips</span>.
               </p>
-              <p className="text-xs sm:text-sm text-muted-foreground/50 leading-[1.7] font-mono">
-                Pipeline combinatorics:{' '}
-                <span className="text-foreground/70 font-semibold">10²⁹</span> unique execution paths —{' '}
-                a million times more than stars in the observable universe.{' '}
-                <span className="text-foreground/60">This is the OS layer between AI and your applications.</span>
+              <p className="text-sm sm:text-base text-foreground/90 font-semibold leading-[1.8]">
+                Start now — free.
               </p>
             </motion.div>
             
