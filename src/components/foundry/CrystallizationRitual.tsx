@@ -1,5 +1,5 @@
 /**
- * CrystallizationRitual — Cinematic "pipeline crystallization" overlay
+ * CrystallizationRitual — Cinematic "memory crystallization" overlay
  * 
  * Aesthetic: Raw liquid data slowly solidifying into a crystal structure.
  * Amorphous blobs converge, facets form, a hexagonal crystal grows from center,
