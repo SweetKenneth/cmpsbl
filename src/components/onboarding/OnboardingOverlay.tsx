@@ -41,7 +41,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Gem className="h-7 w-7" />,
     title: 'Rarity & Discovery',
-    description: 'Every pipeline is scored 68–100 and assigned a rarity tier. Rare discoveries (Relic, Mythic, Apex) appear occasionally — Mythic pipelines trigger special vault prompts so you never lose them.',
+    description: 'Every memory is scored 68–100 and assigned a rarity tier. Rare discoveries (Relic, Mythic, Apex) appear occasionally — Mythic memories trigger special vault prompts so you never lose them.',
     detail: 'Mint (68–79) · Prime (80–89) · Relic (90–93) · Mythic (94–99) · Apex (100)',
     link: '/foundry',
     linkLabel: 'Start Crystallizing',
