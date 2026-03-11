@@ -30,9 +30,9 @@ const PHASES = [
     tagline: "Tokenization & Trade",
     status: "In Progress",
     color: "primary",
-    description: "Pipelines become tradeable assets. Creators earn from crystallized work. Consumers purchase proven, governed capabilities on-demand.",
+    description: "Memories become tradeable assets. Creators earn from crystallized work. Consumers purchase proven, governed capabilities on-demand.",
     capabilities: [
-      "Pipeline marketplace with provenance verification",
+      "Memory marketplace with provenance verification",
       "Usage-based pricing & creator royalties",
       "Governed asset exchange with audit trails",
       "Enterprise procurement & bulk licensing",
