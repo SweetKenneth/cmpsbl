@@ -43,7 +43,7 @@ export function AnalyticsTab() {
   const [data, setData] = useState<TelemetryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('7d');
-  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate' | 'behavior'>('traffic');
+  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate' | 'behavior' | 'devs'>('traffic');
 
   const fetchTelemetry = useCallback(async () => {
     setLoading(true);
