@@ -182,7 +182,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
           </h3>
 
           {/* Description */}
-          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3 line-clamp-2">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
             {pipeline.description}
           </p>
 
