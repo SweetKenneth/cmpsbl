@@ -1,5 +1,5 @@
 /**
- * PipelineProvenance — Visual lineage surface for crystallized pipelines.
+ * PipelineProvenance — Visual lineage surface for crystallized memories.
  * Mobile: uses bottom Drawer with scrollable content; export opens in a second Drawer.
  * Desktop: uses centered modal overlay.
  */
