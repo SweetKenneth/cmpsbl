@@ -56,7 +56,7 @@ const priorArtDocs = [
   { title: "Release Abstract", desc: "System overview and publication purpose", icon: FileText, slug: "release-abstract", num: "01" },
   { title: "System Overview", desc: "Clockless cognitive substrate infrastructure", icon: Layers, slug: "system-overview", num: "02" },
   { title: "Memory Stream & Foundry", desc: "Signal → discovery → crystallization architecture", icon: Brain, slug: "memory-stream", num: "03" },
-  { title: "Pipeline Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
+  { title: "Memory Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
   { title: "Universal Export", desc: "Cross-language export and portable runtime", icon: Globe, slug: "universal-export", num: "05" },
   { title: "Governance & Safety", desc: "Shadow verification, bounded autonomy, auditability", icon: Shield, slug: "governance-safety", num: "06" },
   { title: "IRONCLAD Hardening", desc: "Circuit breakers, subsystem healing, safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
@@ -68,7 +68,7 @@ const priorArtDocs = [
 const systemMetrics = [
   { label: "Architecture Nodes", value: "40", icon: Layers },
   { label: "Architectural Sectors", value: "12", icon: GitBranch },
-  { label: "Synergy Pipelines", value: "300+", icon: Zap },
+  { label: "Synergy Memories", value: "300+", icon: Zap },
   { label: "Autonomy Tiers", value: "3", icon: Shield },
   { label: "Hardening Coverage", value: "100%", icon: Fingerprint },
   { label: "Export Targets", value: "25", icon: Globe },
@@ -77,7 +77,7 @@ const systemMetrics = [
 const priorArtClaims = [
   "Clockless cognitive orchestration with weighted integrity scoring",
   "Memory stream architecture with signal-to-discovery crystallization",
-  "Pipeline crystallization with structural fingerprinting and replay verification",
+  "Memory crystallization with structural fingerprinting and replay verification",
   "Universal cross-language export with embedded micro-substrate runtime",
   "Shadow-mode governance with bounded autonomy tiers",
   "IRONCLAD resilience fabric with per-module bulkhead isolation",

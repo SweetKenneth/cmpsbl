@@ -610,7 +610,7 @@ export default function EvolutionMeshDashboard() {
         <Tabs defaultValue="pipeline" className="w-full">
           <TabsList className="w-full flex overflow-x-auto gap-0.5 p-1">
             <TabsTrigger value="pipeline" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
-              <Rocket className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Pipeline</span>
+              <Rocket className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Formation</span>
             </TabsTrigger>
             <TabsTrigger value="artifacts" className="text-xs gap-1 flex-1 min-w-0 px-2 sm:px-3">
               <Package className="w-3 h-3 flex-shrink-0" /> <span className="hidden sm:inline">Artifacts</span>
@@ -633,7 +633,7 @@ export default function EvolutionMeshDashboard() {
             ) : proposals.length === 0 ? (
               <EmptyState
                 icon={Rocket}
-                title="No mutations in the pipeline"
+                title="No mutations in the formation queue"
                 description="Mutations appear here when executors create change artifacts and proposals. Enable 'Mutation Intake' above to start accepting proposals."
               />
             ) : (

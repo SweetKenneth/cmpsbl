@@ -26,7 +26,7 @@ const FEATURE_LABELS: Record<DepthFeatureKey, { name: string; description: strin
   },
   allowAutomationScheduling: {
     name: 'Automation Scheduling',
-    description: 'Cron and event-driven pipeline scheduling for recurring workflows.',
+    description: 'Cron and event-driven automation scheduling for recurring workflows.',
   },
   safeEvolutionAccess: {
     name: 'Safe Evolution',

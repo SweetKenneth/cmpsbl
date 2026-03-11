@@ -354,7 +354,7 @@ export function AccountTab() {
             <CardContent>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {[
-                  { label: 'Pipelines Found', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-amber-400' },
+                  { label: 'Memories Formed', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-amber-400' },
                   { label: 'Total Mines', value: discoveryStats.totalMines, icon: Pickaxe, color: 'text-blue-400' },
                   { label: 'Avg Score', value: discoveryStats.avgScore, icon: TrendingUp, color: 'text-emerald-400' },
                   { label: 'Highest Score', value: discoveryStats.highestScore, icon: Trophy, color: 'text-yellow-400' },

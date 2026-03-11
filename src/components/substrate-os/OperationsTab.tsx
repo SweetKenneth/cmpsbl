@@ -204,7 +204,7 @@ export function OperationsTab() {
             <FileSearch className="w-4 h-4 text-indigo-500 shrink-0" />
             DECODE — Recent Processing
           </CardTitle>
-          <CardDescription className="text-[11px]">Latest NLU pipeline activity</CardDescription>
+          <CardDescription className="text-[11px]">Latest NLU memory formation activity</CardDescription>
         </CardHeader>
         <CardContent className="px-4 sm:px-6">
           <ScrollArea className="h-[200px]">

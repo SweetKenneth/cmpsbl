@@ -1,6 +1,6 @@
 /**
  * User Onboarding Flow — Memory Stream themed
- * Explains crystallized pipelines, free-tier value, and upgrade path
+ * Explains crystallized memories, free-tier value, and upgrade path
  */
 
 import { useState, useEffect } from 'react';
@@ -30,8 +30,8 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Sparkles className="h-7 w-7" />,
     title: 'Welcome to the Memory Stream',
-    description: 'The substrate discovers and scores software pipelines continuously. Crystallize them into your vault, choose what to keep, and deploy real production-grade software.',
-    detail: 'Every crystallization reveals a pipeline. You decide: Keep it or Discard it.',
+    description: 'The substrate discovers and scores software memories continuously. Crystallize them into your vault, choose what to keep, and deploy real production-grade software.',
+    detail: 'Every crystallization reveals a memory. You decide: Keep it or Discard it.',
     link: '/foundry',
     linkLabel: 'Open Memory Stream',
     gradient: 'from-sky-500/20 via-indigo-500/10 to-transparent',
@@ -41,7 +41,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Gem className="h-7 w-7" />,
     title: 'Rarity & Discovery',
-    description: 'Every pipeline is scored 68–100 and assigned a rarity tier. Rare discoveries (Relic, Mythic, Apex) appear occasionally — Mythic pipelines trigger special vault prompts so you never lose them.',
+    description: 'Every memory is scored 68–100 and assigned a rarity tier. Rare discoveries (Relic, Mythic, Apex) appear occasionally — Mythic memories trigger special vault prompts so you never lose them.',
     detail: 'Mint (68–79) · Prime (80–89) · Relic (90–93) · Mythic (94–99) · Apex (100)',
     link: '/foundry',
     linkLabel: 'Start Crystallizing',
@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Brain className="h-7 w-7" />,
     title: 'Your Vault Stores Discoveries',
-    description: 'Pipelines you choose to keep go into your vault. Vault capacity depends on your tier — from 5 (Builder) to unlimited (Architect). Remove old pipelines to free space anytime.',
+    description: 'Memories you choose to keep go into your vault. Vault capacity depends on your tier — from 5 (Builder) to unlimited (Architect). Remove old memories to free space anytime.',
     detail: 'Builder: 5 · Studio: 25 · Creator: 75 · Architect: Unlimited',
     link: '/foundry',
     linkLabel: 'Explore Vault',
@@ -74,7 +74,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Terminal className="h-7 w-7" />,
     title: 'Build & Command',
-    description: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. Creator and Architect tiers can equip discovered pipelines directly into custom runtime slots.',
+    description: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. Creator and Architect tiers can equip discovered memories directly into custom runtime slots.',
     detail: 'Studio ($29) · Creator ($49) · Architect ($79) — depth, not feature walls.',
     link: '/workspace',
     linkLabel: 'Open Terminal',

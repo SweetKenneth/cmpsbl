@@ -53,8 +53,8 @@ export default function Packs() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Artifact Packs — Activate AI Capabilities | CMPSBL"
-        description="Browse and activate 24 artifact packs across 6 strategic domains. Each pack uses 1 slot — choose persistent memory, routing, defense, and more. Start free with 3 slots."
+        title="Memory Packs — Activate AI Capabilities | CMPSBL"
+        description="Browse and activate 24 memory packs across 6 strategic domains. Each pack uses 1 slot — choose persistent memory, routing, defense, and more. Start free with 3 slots."
         canonical="https://cmpsbl.com/packs"
         keywords={['artifact packs', 'AI capabilities', 'CMPSBL packs', 'composable AI systems', 'persistent memory pack', 'AI routing', 'defense pack']}
       />
@@ -72,9 +72,9 @@ export default function Packs() {
               <Package className="w-3 h-3 mr-1.5 inline" />
               Pack Management
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">Artifact Packs</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">Memory Packs</h1>
             <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-              24 artifact packs across 6 strategic domains. Every pack = 1 slot. Activate what you need, swap anytime.
+              24 memory packs across 6 strategic domains. Every pack = 1 slot. Activate what you need, swap anytime.
             </p>
           </motion.div>
 

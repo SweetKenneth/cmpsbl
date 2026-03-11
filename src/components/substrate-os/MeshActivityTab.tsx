@@ -1,6 +1,6 @@
 /**
  * MeshActivityTab — Real-time Intent Mesh dashboard
- * v10.1 — Live realtime feed, replay integration, pipeline crystallization
+ * v10.1 — Live realtime feed, replay integration, memory crystallization
  */
 
 
@@ -142,13 +142,13 @@ export function MeshActivityTab() {
     setSavingId(receipt.id || '');
     try {
       await savePipelineFromReceipt(receipt, name);
-      toast.success(`Pipeline "${name}" saved from mesh discovery`);
+      toast.success(`Memory "${name}" saved from mesh discovery`);
       setPipelineName('');
       setSavingId(null);
       const p = await getSavedPipelines();
       setSavedPipelines(p);
     } catch {
-      toast.error('Failed to save pipeline');
+      toast.error('Failed to save memory');
       setSavingId(null);
     }
   };
@@ -158,9 +158,9 @@ export function MeshActivityTab() {
     setRunningPipeline(pipeline.id);
     try {
       const result = await runSavedPipeline(pipeline);
-      toast.success(`Pipeline "${pipeline.name}" executed: ${result.resolversResponded} resolvers in ${result.totalDurationMs}ms`);
+      toast.success(`Memory "${pipeline.name}" executed: ${result.resolversResponded} resolvers in ${result.totalDurationMs}ms`);
     } catch {
-      toast.error('Pipeline execution failed');
+      toast.error('Memory execution failed');
     } finally {
       setRunningPipeline(null);
     }
@@ -203,7 +203,7 @@ export function MeshActivityTab() {
               )}
             </h2>
             <p className="text-xs text-muted-foreground font-mono">
-              emergent module intelligence • live feed • pipeline crystallization
+              emergent module intelligence • live feed • memory crystallization
             </p>
           </div>
         </div>
@@ -221,7 +221,7 @@ export function MeshActivityTab() {
                 onClick={() => setActiveView('pipelines')}
                 className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
               >
-                <Layers className="w-3 h-3 inline mr-1" />Pipelines ({savedPipelines.length})
+                <Layers className="w-3 h-3 inline mr-1" />Memories ({savedPipelines.length})
               </button>
               <button 
                 onClick={() => setActiveView('proposals')}

@@ -1,5 +1,5 @@
 /**
- * FoundryInventory — User's vault of crystallized pipelines with export & removal
+ * FoundryInventory — User's vault of crystallized memories with export & removal
  * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
@@ -100,7 +100,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
     if (ok) {
       toast.success(`${confirmRemove.artifactName} removed from vault`);
     } else {
-      toast.error('Failed to remove pipeline');
+      toast.error('Failed to remove memory');
     }
     setConfirmRemove(null);
   }, [confirmRemove, onRemove]);
@@ -112,10 +112,10 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
           <Fingerprint className="w-7 h-7 text-primary/40" />
         </div>
         <div className="text-foreground font-mono text-sm font-bold mb-2">
-          No pipelines crystallized yet
+          No memories crystallized yet
         </div>
         <div className="text-xs text-muted-foreground/60 max-w-xs mx-auto leading-relaxed">
-          Switch to the Crystallize tab and pull your first pipeline from the Memory Stream
+          Switch to the Crystallize tab and pull your first memory from the Memory Stream
         </div>
       </div>
     );
@@ -134,7 +134,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
         filePrefix: 'memory-stream-vault-software',
         sourceLabel: 'Memory Stream Vault',
       });
-      toast.success(`Exported ${stats.artifactCount} pipelines across ${stats.totalLanguageVariants} tiered language bundles`);
+      toast.success(`Exported ${stats.artifactCount} memories across ${stats.totalLanguageVariants} tiered language bundles`);
     } catch (err) {
       console.error(err);
       toast.error('Export failed');
@@ -149,7 +149,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
       <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-border/10">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-xs font-mono text-muted-foreground">
-            {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
+            {inventory.length} memor{inventory.length !== 1 ? 'ies' : 'y'}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">

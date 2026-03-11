@@ -26,16 +26,16 @@ const JOURNEY_STEPS = [
   {
     phase: '03',
     title: 'Crystallization',
-    summary: 'Strong memories crystallize into pipelines — complete, production-grade software systems scored by the CJPI engine.',
-    detail: 'Crystallization is irreversible. Once a pipeline forms, it enters the permanent registry. Each pipeline is a real program with real capabilities. 1,143 have formed so far.',
+    summary: 'Strong memories crystallize into capabilities — complete, production-grade software systems scored by the CJPI engine.',
+    detail: 'Crystallization is irreversible. Once a capability forms, it enters the permanent registry. Each capability is a real program with real functionality. 1,143 have formed so far.',
     icon: '◆',
     gradient: 'from-[hsl(var(--neon-cyan)/0.15)] to-transparent',
   },
   {
     phase: '04',
     title: 'Software Export',
-    summary: 'Crystallized pipelines can be exported as deployable software, carrying their full lineage and quality score.',
-    detail: 'Exported pipelines are sealed. They run as discovered — no modification, no tampering, no drift. Each carries which systems combined, what score they achieved, and which tier they occupy.',
+    summary: 'Crystallized memories can be exported as deployable software, carrying their full lineage and quality score.',
+    detail: 'Exported memories are sealed. They run as discovered — no modification, no tampering, no drift. Each carries which systems combined, what score they achieved, and which tier they occupy.',
     icon: '▣',
     gradient: 'from-[hsl(var(--neon-green)/0.15)] to-transparent',
   },
@@ -150,7 +150,7 @@ export function MemoryStreamExplainer() {
           <div className="inline-block bg-card/50 border border-border/20 rounded-xl px-6 sm:px-8 py-4 sm:py-5 max-w-lg shadow-lg shadow-primary/5">
             <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
               The Memory Stream has already produced{' '}
-              <span className="text-foreground font-bold">1,143 crystallized pipelines</span> across{' '}
+              <span className="text-foreground font-bold">1,143 crystallized memories</span> across{' '}
               <span className="text-foreground font-bold">9 capability domains</span> — autonomously,
               in under 9 hours.
             </p>

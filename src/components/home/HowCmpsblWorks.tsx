@@ -13,7 +13,7 @@ const cmpsblStack = ["Models", "CMPSBL AI Operating System", "Applications"];
 
 const explanations = [
   { label: "Nodes", desc: "are system services" },
-  { label: "Pipelines", desc: "are reusable workflows" },
+  { label: "Memories", desc: "are crystallized solutions" },
   { label: "Memory", desc: "stores experience across sessions" },
   { label: "Dream cycles", desc: "improve the system over time" },
 ];

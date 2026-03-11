@@ -431,7 +431,7 @@ export default function GovernorPanel() {
               { label: 'Immunity Mesh', desc: 'Training · Probes · Analytics', path: '/admin/immunity-mesh', icon: Network, color: 'text-cyan-500' },
               { label: 'Governance Plane', desc: 'High-level governance controls', path: '/admin/governance', icon: Shield, color: 'text-indigo-500' },
               { label: 'Discovery Mining', desc: 'Capability discovery console', path: '/admin/discovery-mining', icon: Zap, color: 'text-emerald-500' },
-              { label: 'EVOLUTION Mesh', desc: 'Evolution pipeline dashboard', path: '/admin/evolution', icon: Activity, color: 'text-rose-500' },
+              { label: 'EVOLUTION Mesh', desc: 'Evolution engine dashboard', path: '/admin/evolution', icon: Activity, color: 'text-rose-500' },
             ].map(surface => (
               <motion.div key={surface.path} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
                 <Button

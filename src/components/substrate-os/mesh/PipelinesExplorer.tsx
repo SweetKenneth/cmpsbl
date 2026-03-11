@@ -1,5 +1,5 @@
 /**
- * PipelinesExplorer — Blog/Composable Artifacts-style pipeline browser
+ * PipelinesExplorer — Blog/Composable Artifacts-style memory browser
  * Horizontal scroll carousels by category, search, mobile-friendly
  */
 
@@ -135,7 +135,7 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
             <div className="flex items-center gap-3 flex-1">
               <Layers className="w-5 h-5 text-cyan-400 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Crystallized Pipelines</p>
+                <p className="text-sm font-medium">Crystallized Memories</p>
                 <p className="text-xs text-muted-foreground">
                   {pipelines.length} saved resolver chains • Searchable by module, domain, or intent
                 </p>
@@ -153,7 +153,7 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search pipelines by name, module, domain..."
+            placeholder="Search memories by name, module, domain..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="pl-10"
@@ -194,8 +194,8 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
             <Bookmark className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
             <p className="text-sm text-muted-foreground">
               {pipelines.length === 0
-                ? 'No saved pipelines yet. Approve proposals or save receipts from the Live view.'
-                : 'No pipelines match your search.'}
+                ? 'No saved memories yet. Approve proposals or save receipts from the Live view.'
+                : 'No memories match your search.'}
             </p>
             {search && (
               <Button variant="ghost" size="sm" className="mt-3" onClick={() => setSearch('')}>
@@ -320,7 +320,7 @@ function PipelineCard({ pipeline, enabled, onRun, running, index, category }: {
             ) : (
               <Play className="h-3 w-3" />
             )}
-            Replay Pipeline
+            Replay Memory
           </Button>
         </CardContent>
       </Card>

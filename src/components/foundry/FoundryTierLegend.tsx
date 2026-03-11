@@ -14,7 +14,7 @@ export function FoundryTierLegend() {
       className="bg-card/30 border border-border/15 rounded-xl p-5 sm:p-6 backdrop-blur-sm"
     >
       <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.3em] mb-5">
-        Pipeline Tiers
+        Memory Tiers
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
         {PUBLIC_TIERS.map((tier, i) => (

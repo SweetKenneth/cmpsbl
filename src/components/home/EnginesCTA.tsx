@@ -83,7 +83,7 @@ export function EnginesCTA() {
                   20 Sealed <span className="text-primary">Engines</span>
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
-                  Production-grade runtimes crystallized from the Memory Stream's highest-scoring pipelines.
+                  Production-grade runtimes crystallized from the Memory Stream's highest-scoring memories.
                   Each engine is tamper-proof, zero-dependency, and built for a single mission.
                 </p>
               </div>

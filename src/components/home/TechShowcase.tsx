@@ -307,7 +307,7 @@ await cmpsbl.integration.execute({
     icon: Code,
     layer: "Admin",
     title: "INCLUSIVE A11y",
-    description: "Human compatibility & accessibility pipeline",
+    description: "Human compatibility & accessibility engine",
     color: "text-pink-500",
     gradient: "from-pink-500 to-rose-600",
     code: `// Scan a target for accessibility issues
@@ -504,7 +504,7 @@ console.log(result.output, result.metrics);`,
     description: "Code generation & execution intelligence",
     color: "text-yellow-500",
     gradient: "from-yellow-500 to-lime-600",
-    code: `// Generate code from intent (via DECODE pipeline)
+    code: `// Generate code from intent (via DECODE memory formation)
 const result = await cmpsbl.encode.generate({
   intent: "Create a REST API endpoint for user profiles",
   language: "typescript",

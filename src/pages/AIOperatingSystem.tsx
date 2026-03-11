@@ -40,7 +40,7 @@ const faqItems = [
   },
   {
     question: "What is the Memory Stream?",
-    answer: "The Memory Stream is the substrate's autonomous discovery pipeline. Every interaction flows through it — the system discovers, packages, and exports reusable software pipelines. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
+    answer: "The Memory Stream is the substrate's autonomous memory formation engine. Every interaction flows through it — the system forms memories of successful solutions, packages them, and exports them as capability memories. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
   },
   {
     question: "What problems does CMPSBL solve?",
@@ -65,7 +65,7 @@ const pillars = [
   { icon: Network, title: "Intelligent Routing", desc: "NEXUS routes to 14+ providers based on task complexity, cost, and latency. Auto-failover. Budget-aware. Zero lock-in.", link: "/modules/nexus" },
   { icon: Shield, title: "AI-Native Security", desc: "DEFENSE wraps the outer shell. Prompt injection detection, adversarial filtering, bot detection, and rate limiting — built in.", link: "/modules/defense" },
   { icon: Moon, title: "DREAM Cycles", desc: "Autonomous optimization during idle periods. Consolidate memory, generate heuristics, and surface lateral insights overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", desc: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy pipelines discover emergent capabilities.", link: "/modules/cortex" },
+  { icon: Workflow, title: "Meta-Orchestration", desc: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy memories discover emergent capabilities.", link: "/modules/cortex" },
   { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots 40 nodes in dependency order with circuit breakers, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
 ];
 
@@ -367,8 +367,8 @@ export default function AIOperatingSystem() {
             <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
               {[
                 { icon: Eye, title: "Observe", desc: "Every interaction is captured — model calls, latency patterns, cost signals, failure modes." },
-                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously packaged into exportable software pipelines." },
-                { icon: Cpu, title: "Export", desc: "Pipelines ship as sealed runtimes. The rarest become silicon chip specifications." },
+                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously packaged into exportable capability memories." },
+                { icon: Cpu, title: "Export", desc: "Memories ship as sealed runtimes. The rarest become silicon chip specifications." },
               ].map((step, i) => (
                 <motion.div
                   key={step.title}

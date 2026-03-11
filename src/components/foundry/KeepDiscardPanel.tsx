@@ -1,6 +1,6 @@
 /**
  * KeepDiscardPanel — Post-crystallization decision UI
- * Shows rarity messaging + Keep / Discard actions per pipeline
+ * Shows rarity messaging + Keep / Discard actions per memory
  * 
  * Mobile-first: 44px touch targets, responsive text, stacked layout on small screens
  * Uses semantic design tokens (neon-amber, neon-purple) from design system
@@ -44,7 +44,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
       {/* Header */}
       <div className="flex items-center justify-between gap-2">
         <div className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          {results.length} pipeline{results.length > 1 ? 's' : ''} discovered
+          {results.length} memor{results.length > 1 ? 'ies' : 'y'} discovered
         </div>
         <Badge variant="outline" className="text-[10px] font-mono border-primary/20 text-primary/70 px-2 py-0.5">
           Keep or Discard

@@ -107,13 +107,13 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
     // ── Studio tier ──
     { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance', minTier: 'studio' },
-    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Pipeline orchestration', minTier: 'studio' },
+    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', minTier: 'studio' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers', minTier: 'studio' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline', minTier: 'studio' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', minTier: 'studio' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
     // ── Architect tier ──
-    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline', minTier: 'architect' },
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution engine', minTier: 'architect' },
     { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', minTier: 'architect' },
     { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', minTier: 'architect' },
     { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', minTier: 'architect' },
@@ -431,7 +431,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'terminal' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing pipelines in real-time.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing memories in real-time.">
                 <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <Suspense fallback={<PanelLoader />}>
                     <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
@@ -469,7 +469,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'cortex' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Pipeline orchestration engine. Design, monitor, and debug multi-step execution pipelines with real-time tracing.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Memory orchestration engine. Design, monitor, and debug multi-step execution memories with real-time tracing.">
                 <PanelContainer id="cortex">
                   <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
@@ -493,7 +493,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'encode' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation pipeline. Monitor code agent execution, review outputs, and track pipeline performance.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation engine. Monitor code agent execution, review outputs, and track memory formation performance.">
                 <PanelContainer id="encode">
                   <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
@@ -509,7 +509,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'evolution' && (
-              <TierGate requiredTier="architect" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution pipeline with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
+              <TierGate requiredTier="architect" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
                 <PanelContainer id="evolution">
                   <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
                 </PanelContainer>
@@ -549,7 +549,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'forge' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production pipeline with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production engine with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
                 <PanelContainer id="forge">
                   <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
                 </PanelContainer>
