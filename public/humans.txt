@@ -9,24 +9,10 @@ Contact: hello@CMPSBL.com
 Phone: (760) FLUID-AI
 Twitter: @cmpsbl
 
-Lead Architect: Kenneth E. Sweet Jr.
+Founder & Chief Architect: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
-Role: Founder & Chief Architect
 
-Head of AI Research: Dr. Sarah Chen
-Role: Multi-agent cognition & memory architectures
-
-Senior Systems Engineer: Marcus Rodriguez
-Role: Runtime performance & NEXUS routing
-
-Junior Developer & DevOps: Priya Nakamura
-Role: CI/CD pipelines & EVOLUTION node
-
-Security Researcher: James Whitfield
-Role: DEFENSE node & behavioral fingerprinting
-
-VP of Communications: Elena Vasquez
-Role: Brand strategy & community
+Team: A small interdisciplinary team working across research, engineering, security, and operations.
 
 /* THANKS */
 
