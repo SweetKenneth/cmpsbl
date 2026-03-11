@@ -1,35 +1,31 @@
 /**
- * SIGNAL FORGE — Free Template Synthesis Engine
+ * SIGNAL FORGE — Blueprint Synthesis Engine
  * 
- * Generates production-ready templates from the substrate's combinatorial
- * module × category × capability space. Auth-gated with daily rate limits.
- * Lives on the CodeLab page as the primary hero feature.
+ * Generates production-ready pipeline blueprints from the substrate's
+ * combinatorial space. Auth-gated downloads with daily rate limits.
  */
 
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { 
   Sparkles, Dices, Download, Zap, Brain, Shield, Moon, Eye, 
   MessageSquare, Settings, Cpu, Globe, ArrowRight, Check, 
-  Loader2, Copy, Lock, Network, Flame, RefreshCw, LogIn
+  Copy, Lock, Network, Flame, RefreshCw, LogIn, Hexagon
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { forgeSignalBatch, SIGNAL_FORGE_PRIMITIVE } from "@/lib/substrate/forge/signal-forge";
+import { forgeSignalBatch } from "@/lib/substrate/forge/signal-forge";
 import type { GeneratedTemplate } from "@/lib/discovery/template-generator";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
-// Rate limit: 5 downloads per day per user
 const DAILY_LIMIT = 5;
 const STORAGE_KEY = 'signal-forge-downloads';
 
-interface DownloadRecord {
-  date: string;
-  count: number;
-}
+interface DownloadRecord { date: string; count: number; }
 
 function getTodayDownloads(): DownloadRecord {
   const today = new Date().toISOString().slice(0, 10);
@@ -51,36 +47,126 @@ function incrementDownloads(): DownloadRecord {
 }
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
-  cognitive: Brain,
-  evolution: Flame,
-  security: Shield,
-  routing: Network,
-  learning: Brain,
-  orchestration: Cpu,
-  integration: Globe,
-  observability: Eye,
-  governance: Shield,
-  compliance: Lock,
-  prediction: Sparkles,
-  ethics: Shield,
-  privacy: Lock,
-  synthesis: Zap,
-  localization: Globe,
-  geospatial: Globe,
-  simulation: Cpu,
-  contracts: Settings,
-  acquisition: Download,
-  edge: Zap,
+  cognitive: Brain, evolution: Flame, security: Shield, routing: Network,
+  learning: Brain, orchestration: Cpu, integration: Globe, observability: Eye,
+  governance: Shield, compliance: Lock, prediction: Sparkles, ethics: Shield,
+  privacy: Lock, synthesis: Zap, localization: Globe, geospatial: Globe,
+  simulation: Cpu, contracts: Settings, acquisition: Download, edge: Zap,
 };
+
+// ═══════════════════════════════════════════════════════════════
+// Forging Ritual — full-screen synthesis animation
+// ═══════════════════════════════════════════════════════════════
+
+function ForgeRitualOverlay({ onComplete }: { onComplete: () => void }) {
+  const progress = useMotionValue(0);
+  const displayProgress = useTransform(progress, v => Math.round(v));
+  const [phase, setPhase] = useState(0);
+
+  const phases = [
+    'Scanning module space…',
+    'Mapping topology combinations…',
+    'Validating CJPI thresholds…',
+    'Scoring blueprint integrity…',
+    'Materializing blueprints…',
+  ];
+
+  useEffect(() => {
+    const ctrl = animate(progress, 100, {
+      duration: 2.4,
+      ease: [0.25, 0.1, 0.25, 1],
+      onUpdate: (v) => {
+        const p = Math.floor((v / 100) * phases.length);
+        setPhase(Math.min(p, phases.length - 1));
+      },
+      onComplete,
+    });
+    return () => ctrl.stop();
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md"
+    >
+      <div className="text-center px-6 max-w-sm">
+        {/* Animated forge ring */}
+        <div className="relative w-28 h-28 mx-auto mb-6">
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-primary/20"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-2 rounded-full border-2 border-neon-cyan/30"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-4 rounded-full border border-neon-purple/20"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="absolute inset-6 rounded-full bg-primary/10"
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.span className="text-2xl font-black font-mono text-primary tabular-nums">
+              {displayProgress}
+            </motion.span>
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={phase}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            className="text-sm font-mono text-muted-foreground"
+          >
+            {phases[phase]}
+          </motion.p>
+        </AnimatePresence>
+
+        <div className="mt-6 flex justify-center gap-1.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full bg-primary"
+              animate={{
+                y: [0, -12, 0],
+                opacity: [0.3, 1, 0.3],
+                scale: [0.8, 1.3, 0.8],
+              }}
+              transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.12 }}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Main Component
+// ═══════════════════════════════════════════════════════════════
 
 export function SignalForge() {
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isForging, setIsForging] = useState(false);
+  const [showRitual, setShowRitual] = useState(false);
   const [forgedTemplates, setForgedTemplates] = useState<GeneratedTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<GeneratedTemplate | null>(null);
   const [downloadsToday, setDownloadsToday] = useState(0);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [revealIndex, setRevealIndex] = useState(-1);
+  const pendingResult = useRef<GeneratedTemplate[] | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
@@ -97,116 +183,59 @@ export function SignalForge() {
 
   const handleForge = useCallback(() => {
     setIsForging(true);
+    setShowRitual(true);
+    setRevealIndex(-1);
+    setSelectedTemplate(null);
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        const result = forgeSignalBatch({
-          batchSize: 12,
-          minModules: 2,
-          maxModules: 5,
-          minCjpiTarget: 80,
-          biasHighValue: true,
-        });
-        setForgedTemplates(result.templates);
-        setSelectedTemplate(null);
-        setIsForging(false);
-        toast.success(`Forged ${result.templates.length} templates in ${result.executionMs}ms [${result.batchId}]`);
-      }, 600);
+      const result = forgeSignalBatch({
+        batchSize: 12, minModules: 2, maxModules: 5,
+        minCjpiTarget: 80, biasHighValue: true,
+      });
+      pendingResult.current = result.templates;
+    });
+  }, []);
+
+  const handleRitualComplete = useCallback(() => {
+    setShowRitual(false);
+    setIsForging(false);
+    const templates = pendingResult.current || [];
+    pendingResult.current = null;
+    setForgedTemplates(templates);
+    toast.success(`${templates.length} blueprints forged`);
+    templates.forEach((_, i) => {
+      setTimeout(() => setRevealIndex(i), i * 80);
     });
   }, []);
 
   const handleDownload = (template: GeneratedTemplate) => {
-    if (!user) {
-      toast.error('Sign in to download templates');
-      return;
-    }
+    if (!user) { toast.error('Sign in to export blueprints'); return; }
     const record = getTodayDownloads();
     if (record.count >= DAILY_LIMIT) {
       toast.error(`Daily limit reached (${DAILY_LIMIT}/day). Come back tomorrow!`);
       return;
     }
-
-    const content = `/**
- * ${template.namePattern}
- * Generated by CMPSBL SIGNAL FORGE
- * 
- * Category: ${template.category}
- * Module Chain: ${template.modulePattern.join(' → ')}
- * Error Strategy: ${template.errorStrategy}
- * Max Execution: ${template.maxExecutionMs}ms
- * 
- * Description:
- * ${template.descriptionPattern}
- * 
- * Rationale:
- * ${template.rationale}
- * 
- * CJPI Scores:
- *   Strategic Leverage: ${template.baseBreakdown.strategicLeverage}/100
- *   Recursion Potential: ${template.baseBreakdown.recursionPotential}/100
- *   Cross-Node Impact: ${template.baseBreakdown.crossNodeImpact}/100
- *   Composability: ${template.baseBreakdown.composability}/100
- *   Governance Influence: ${template.baseBreakdown.governanceInfluence}/100
- *   Moat Sensitivity: ${template.baseBreakdown.moatSensitivity}/100
- */
-
-import { substrate } from '@cmpsbl/sdk';
-
-// Entry: ${template.entryPattern}
-// Exit: ${template.exitPattern}
-
-const pipeline = substrate.pipeline({
-  name: '${template.namePattern}',
-  modules: [${template.modulePattern.map(m => `'${m}'`).join(', ')}],
-  category: '${template.category}',
-  errorStrategy: '${template.errorStrategy}',
-  maxExecutionMs: ${template.maxExecutionMs},
-});
-
-// Initialize module chain
-${template.modulePattern.map((m, i) => `const ${m.toLowerCase()}Node = pipeline.node('${m}', { order: ${i + 1} });`).join('\n')}
-
-// Wire entry → chain → exit
-pipeline.entry('${template.entryPattern}', ${template.modulePattern[0].toLowerCase()}Node);
-${template.modulePattern.slice(0, -1).map((m, i) => `${m.toLowerCase()}Node.pipe(${template.modulePattern[i + 1].toLowerCase()}Node);`).join('\n')}
-${template.modulePattern[template.modulePattern.length - 1].toLowerCase()}Node.exit('${template.exitPattern}');
-
-// Execute
-export async function run(input: Record<string, unknown>) {
-  return pipeline.execute(input);
-}
-
-export default pipeline;
-`;
-
+    const content = `/**\n * ${template.namePattern}\n * SIGNAL FORGE — CMPSBL Substrate\n * Category: ${template.category}\n * Chain: ${template.modulePattern.join(' → ')}\n * ${template.rationale}\n */\n\nimport { substrate } from '@cmpsbl/sdk';\n\nconst pipeline = substrate.pipeline({\n  name: '${template.namePattern}',\n  modules: [${template.modulePattern.map(m => `'${m}'`).join(', ')}],\n  category: '${template.category}',\n  errorStrategy: '${template.errorStrategy}',\n  maxExecutionMs: ${template.maxExecutionMs},\n});\n\n${template.modulePattern.map((m, i) => `const ${m.toLowerCase()}Node = pipeline.node('${m}', { order: ${i + 1} });`).join('\n')}\n\npipeline.entry('${template.entryPattern}', ${template.modulePattern[0].toLowerCase()}Node);\n${template.modulePattern.slice(0, -1).map((m, i) => `${m.toLowerCase()}Node.pipe(${template.modulePattern[i + 1].toLowerCase()}Node);`).join('\n')}\n${template.modulePattern[template.modulePattern.length - 1].toLowerCase()}Node.exit('${template.exitPattern}');\n\nexport async function run(input: Record<string, unknown>) {\n  return pipeline.execute(input);\n}\n\nexport default pipeline;\n`;
     const blob = new Blob([content], { type: 'text/typescript' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const kebab = template.namePattern.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    a.download = `${kebab}.ts`;
+    a.download = `${template.namePattern.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ts`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-
     const updated = incrementDownloads();
     setDownloadsToday(updated.count);
-    toast.success(`Downloaded: ${template.namePattern} (${updated.count}/${DAILY_LIMIT} today)`);
+    toast.success(`Exported: ${template.namePattern} (${updated.count}/${DAILY_LIMIT} today)`);
   };
 
   const handleCopy = (template: GeneratedTemplate) => {
-    const snippet = `// ${template.namePattern} — ${template.category}
-// Modules: ${template.modulePattern.join(' → ')}
-import { substrate } from '@cmpsbl/sdk';
-const pipeline = substrate.pipeline({
-  name: '${template.namePattern}',
-  modules: [${template.modulePattern.map(m => `'${m}'`).join(', ')}],
-  category: '${template.category}',
-});`;
+    const snippet = `// ${template.namePattern} — ${template.category}\n// Modules: ${template.modulePattern.join(' → ')}\nimport { substrate } from '@cmpsbl/sdk';\nconst pipeline = substrate.pipeline({\n  name: '${template.namePattern}',\n  modules: [${template.modulePattern.map(m => `'${m}'`).join(', ')}],\n  category: '${template.category}',\n});`;
     navigator.clipboard.writeText(snippet);
     setCopiedId(template.namePattern);
     setTimeout(() => setCopiedId(null), 2000);
-    toast.success('Copied to clipboard');
+    toast.success('Blueprint copied');
   };
 
   const remaining = DAILY_LIMIT - downloadsToday;
@@ -220,103 +249,82 @@ const pipeline = substrate.pipeline({
     );
   };
 
+  const STEPS = [
+    { icon: Dices, label: 'Randomize', color: 'text-primary' },
+    { icon: Brain, label: 'Synthesize', color: 'text-neon-cyan' },
+    { icon: Zap, label: 'Validate', color: 'text-neon-amber' },
+    { icon: Eye, label: 'Preview', color: 'text-neon-green' },
+    { icon: Download, label: 'Export', color: 'text-neon-purple' },
+  ];
+
   return (
     <section className="relative overflow-hidden">
-      {/* Hero — Cinematic Mobile-First */}
-      <div className="relative border-b border-border/50 overflow-hidden">
-        {/* Layered background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/30" />
-        <div className="absolute inset-0 opacity-[0.04]" style={{
-          backgroundImage: `
-            linear-gradient(hsl(var(--primary) / 0.6) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--primary) / 0.6) 1px, transparent 1px)
-          `,
-          backgroundSize: '48px 48px',
-        }} />
-        {/* Glow orbs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-primary/8 blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[300px] h-[200px] rounded-full bg-neon-cyan/6 blur-[80px]" />
+      <AnimatePresence>
+        {showRitual && <ForgeRitualOverlay onComplete={handleRitualComplete} />}
+      </AnimatePresence>
 
-        <div className="container mx-auto px-5 pt-10 pb-12 md:pt-20 md:pb-16 relative">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Top badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex justify-center mb-5"
-            >
-              <Badge variant="outline" className="gap-2 px-3.5 py-1.5 text-xs font-mono border-primary/30 bg-primary/5 text-primary">
-                <Dices className="w-3.5 h-3.5" />
-                FREE · UNLIMITED FORGING · {DAILY_LIMIT} DOWNLOADS/DAY
+      {/* Hero */}
+      <div className="relative border-b border-border/50 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full bg-primary/6 blur-[100px]" />
+
+        <div className="container mx-auto px-5 pt-10 pb-10 md:pt-20 md:pb-14 relative">
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-6">
+              <Badge variant="outline" className="gap-1.5 px-3 py-1 text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
+                <Hexagon className="w-3 h-3" />
+                Free · {DAILY_LIMIT} exports / day
               </Badge>
             </motion.div>
 
-            {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl font-black tracking-tight mb-5"
+              className="text-[2.25rem] leading-[1.08] sm:text-5xl md:text-6xl font-black tracking-tight mb-4"
             >
               <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
                 SIGNAL FORGE
               </span>
             </motion.h1>
 
-            {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl mx-auto"
+              className="text-[15px] sm:text-base text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto"
             >
-              Synthesize production-ready pipeline templates from 
-              <span className="font-semibold text-foreground"> 31 modules × 20 categories</span>. 
-              Every template is unique, CJPI-validated, and free to forge.
+              Production-grade pipeline blueprints, synthesized from the substrate's 
+              autonomous discovery engine. Not demos — deployable architecture.
             </motion.p>
 
-            {/* Cinematic Pipeline Diagram — Vertical on mobile, horizontal on desktop */}
+            {/* Pipeline flow */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="mb-10 mx-auto max-w-md md:max-w-2xl"
+              className="mb-9 mx-auto"
             >
-              <div className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm p-5 md:p-6">
-                <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-4">Pipeline Synthesis Flow</p>
-                
-                {/* Mobile: vertical timeline / Desktop: horizontal */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
-                  {[
-                    { icon: Dices, label: 'Randomize', color: 'bg-primary/10 text-primary border-primary/20' },
-                    { icon: Brain, label: 'Synthesize', color: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20' },
-                    { icon: Zap, label: 'Score', color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20' },
-                    { icon: Eye, label: 'Preview', color: 'bg-neon-green/10 text-neon-green border-neon-green/20' },
-                    { icon: Download, label: 'Download', color: 'bg-neon-purple/10 text-neon-purple border-neon-purple/20' },
-                  ].map((step, i, arr) => (
-                    <div key={i} className="flex md:flex-col items-center gap-3 md:gap-2 relative">
-                      {/* Step circle */}
-                      <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl border ${step.color} flex items-center justify-center shrink-0 transition-transform hover:scale-110`}>
-                        <step.icon className="w-5 h-5" />
+              <div className="flex items-center justify-center gap-1 sm:gap-2">
+                {STEPS.map((step, i) => (
+                  <div key={i} className="flex items-center gap-1 sm:gap-2">
+                    <div className="flex flex-col items-center gap-1">
+                      <div className={cn(
+                        "w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-border/60 bg-card/80",
+                        "flex items-center justify-center transition-transform hover:scale-110"
+                      )}>
+                        <step.icon className={cn("w-4 h-4 sm:w-5 sm:h-5", step.color)} />
                       </div>
-                      <span className="text-sm font-semibold text-foreground md:text-xs">{step.label}</span>
-                      
-                      {/* Connector line — vertical on mobile, horizontal on desktop */}
-                      {i < arr.length - 1 && (
-                        <>
-                          {/* Mobile vertical connector */}
-                          <div className="absolute left-[21px] top-[44px] w-px h-3 bg-border/60 md:hidden" />
-                          {/* Desktop horizontal connector */}
-                          <div className="hidden md:block absolute -right-[calc(50%-24px)] top-[23px] w-[calc(100%-48px)] h-px bg-border/60" style={{ left: 'calc(50% + 24px)' }} />
-                        </>
-                      )}
+                      <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground">{step.label}</span>
                     </div>
-                  ))}
-                </div>
+                    {i < STEPS.length - 1 && (
+                      <ArrowRight className="w-3 h-3 text-border mt-[-14px] shrink-0" />
+                    )}
+                  </div>
+                ))}
               </div>
             </motion.div>
 
-            {/* Forge Button */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -327,125 +335,101 @@ const pipeline = substrate.pipeline({
                 size="lg"
                 onClick={handleForge}
                 disabled={isForging}
-                className="gap-3 px-8 h-14 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="gap-3 px-8 h-13 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                {isForging ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Forging…
-                  </>
-                ) : (
-                  <>
-                    <Dices className="w-5 h-5" />
-                    Forge Templates
-                    <Sparkles className="w-4 h-4" />
-                  </>
-                )}
+                <Dices className="w-5 h-5" />
+                Forge Blueprints
+                <Sparkles className="w-4 h-4" />
               </Button>
 
               {forgedTemplates.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleForge}
-                  disabled={isForging}
-                  className="gap-2 text-muted-foreground"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  Re-Forge New Batch
-                </Button>
+                <div>
+                  <Button variant="ghost" size="sm" onClick={handleForge} disabled={isForging} className="gap-2 text-muted-foreground">
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Re-Forge
+                  </Button>
+                </div>
               )}
 
               <p className="text-xs text-muted-foreground">
                 {user ? (
-                  <>
-                    <span className="text-neon-green font-medium font-mono">{remaining} downloads remaining</span>
-                    {' '}· Forge unlimited
-                  </>
+                  <span className="font-mono text-neon-green">{remaining} exports remaining today</span>
                 ) : (
-                  <>
-                    Forge freely · <Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to download ({DAILY_LIMIT}/day free)
-                  </>
+                  <>Forge freely · <Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to export</>
                 )}
               </p>
             </motion.div>
           </div>
         </div>
       </div>
-      {/* Forged Results */}
+
+      {/* Results */}
       <AnimatePresence>
         {forgedTemplates.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="container mx-auto px-4 py-8 md:py-12"
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold">Forged Templates</h2>
-                <p className="text-sm text-muted-foreground">
-                  {forgedTemplates.length} unique pipeline templates synthesized from the substrate
-                </p>
+                <h2 className="text-xl font-bold">Forged Blueprints</h2>
+                <p className="text-sm text-muted-foreground">{forgedTemplates.length} unique pipeline architectures</p>
               </div>
-              <Badge variant="outline" className="text-xs">
-                CJPI Validated
-              </Badge>
+              <Badge variant="outline" className="text-[10px] font-mono">CJPI VALIDATED</Badge>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {forgedTemplates.map((template, index) => {
                 const Icon = CATEGORY_ICONS[template.category] || Zap;
                 const cjpi = avgCjpi(template);
                 const isSelected = selectedTemplate?.namePattern === template.namePattern;
+                const isRevealed = index <= revealIndex;
 
                 return (
                   <motion.div
                     key={template.namePattern + index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    initial={{ opacity: 0, y: 16, scale: 0.96 }}
+                    animate={isRevealed ? { opacity: 1, y: 0, scale: 1 } : {}}
+                    transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                   >
                     <Card
-                      className={`p-4 cursor-pointer transition-all hover:border-primary/50 ${
-                        isSelected ? 'border-primary ring-1 ring-primary/20' : ''
-                      }`}
+                      className={cn(
+                        "p-4 cursor-pointer transition-all duration-200",
+                        "hover:border-primary/40 hover:shadow-md hover:shadow-primary/5",
+                        isSelected && "border-primary ring-1 ring-primary/20"
+                      )}
                       onClick={() => setSelectedTemplate(isSelected ? null : template)}
                     >
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                          <Icon className="w-5 h-5 text-primary" />
+                      <div className="flex items-start gap-3 mb-2.5">
+                        <div className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                          <Icon className="w-4 h-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-sm truncate">{template.namePattern}</h3>
-                          <p className="text-xs text-muted-foreground capitalize">{template.category}</p>
+                          <p className="text-[11px] text-muted-foreground capitalize">{template.category}</p>
                         </div>
                         <Badge 
                           variant="outline" 
-                          className={`shrink-0 text-xs ${
-                            cjpi >= 90 ? 'text-emerald-500 border-emerald-500/30' :
-                            cjpi >= 80 ? 'text-cyan-500 border-cyan-500/30' :
-                            'text-amber-500 border-amber-500/30'
-                          }`}
+                          className={cn("shrink-0 text-[10px] font-mono tabular-nums",
+                            cjpi >= 90 ? 'text-neon-green border-neon-green/30' :
+                            cjpi >= 80 ? 'text-neon-cyan border-neon-cyan/30' :
+                            'text-neon-amber border-neon-amber/30'
+                          )}
                         >
-                          CJPI {cjpi}
+                          {cjpi}
                         </Badge>
                       </div>
 
-                      {/* Module chain */}
-                      <div className="flex flex-wrap gap-1 mb-3">
+                      <div className="flex flex-wrap gap-1 mb-2.5">
                         {template.modulePattern.map((mod, i) => (
-                          <Badge key={i} variant="secondary" className="text-[10px] font-mono">
-                            {mod}
-                          </Badge>
+                          <Badge key={i} variant="secondary" className="text-[10px] font-mono px-1.5 py-0">{mod}</Badge>
                         ))}
                       </div>
 
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
-                        {template.descriptionPattern}
-                      </p>
+                      <p className="text-[11px] text-muted-foreground line-clamp-2">{template.descriptionPattern}</p>
 
-                      {/* Expanded detail */}
                       <AnimatePresence>
                         {isSelected && (
                           <motion.div
@@ -454,29 +438,22 @@ const pipeline = substrate.pipeline({
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden"
                           >
-                            <div className="pt-3 border-t border-border/50 space-y-3">
-                              {/* Scores */}
+                            <div className="pt-3 mt-3 border-t border-border/50 space-y-3">
                               <div className="grid grid-cols-3 gap-2 text-xs">
-                                <div className="text-center p-1.5 rounded bg-muted/50">
-                                  <p className="font-mono font-bold text-foreground">{template.baseBreakdown.strategicLeverage}</p>
-                                  <p className="text-muted-foreground text-[10px]">Strategy</p>
-                                </div>
-                                <div className="text-center p-1.5 rounded bg-muted/50">
-                                  <p className="font-mono font-bold text-foreground">{template.baseBreakdown.composability}</p>
-                                  <p className="text-muted-foreground text-[10px]">Compose</p>
-                                </div>
-                                <div className="text-center p-1.5 rounded bg-muted/50">
-                                  <p className="font-mono font-bold text-foreground">{template.baseBreakdown.crossNodeImpact}</p>
-                                  <p className="text-muted-foreground text-[10px]">Impact</p>
-                                </div>
+                                {[
+                                  { v: template.baseBreakdown.strategicLeverage, l: 'Strategy' },
+                                  { v: template.baseBreakdown.composability, l: 'Compose' },
+                                  { v: template.baseBreakdown.crossNodeImpact, l: 'Impact' },
+                                ].map((s, i) => (
+                                  <div key={i} className="text-center p-1.5 rounded bg-muted/50">
+                                    <p className="font-mono font-bold text-foreground tabular-nums">{s.v}</p>
+                                    <p className="text-muted-foreground text-[10px]">{s.l}</p>
+                                  </div>
+                                ))}
                               </div>
 
-                              {/* Rationale */}
-                              <p className="text-xs text-muted-foreground italic">
-                                "{template.rationale}"
-                              </p>
+                              <p className="text-[11px] text-muted-foreground italic">"{template.rationale}"</p>
 
-                              {/* Pipeline preview */}
                               <pre className="bg-muted/50 p-3 rounded text-[11px] font-mono overflow-auto max-h-32">
 {`// ${template.namePattern}
 import { substrate } from '@cmpsbl/sdk';
@@ -488,47 +465,19 @@ const pipeline = substrate.pipeline({
 });`}
                               </pre>
 
-                              {/* Actions */}
                               <div className="flex gap-2">
                                 {user ? (
-                                  <Button
-                                    size="sm"
-                                    className="flex-1 gap-1.5"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleDownload(template);
-                                    }}
-                                    disabled={remaining <= 0}
-                                  >
+                                  <Button size="sm" className="flex-1 gap-1.5" onClick={(e) => { e.stopPropagation(); handleDownload(template); }} disabled={remaining <= 0}>
                                     <Download className="w-3.5 h-3.5" />
-                                    {remaining > 0 ? 'Download .ts' : 'Limit Reached'}
+                                    {remaining > 0 ? 'Export .ts' : 'Limit Reached'}
                                   </Button>
                                 ) : (
-                                  <Button
-                                    asChild
-                                    size="sm"
-                                    className="flex-1 gap-1.5"
-                                  >
-                                    <Link to="/auth">
-                                      <LogIn className="w-3.5 h-3.5" />
-                                      Sign In to Download
-                                    </Link>
+                                  <Button asChild size="sm" className="flex-1 gap-1.5">
+                                    <Link to="/auth"><LogIn className="w-3.5 h-3.5" />Sign In to Export</Link>
                                   </Button>
                                 )}
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="gap-1.5"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleCopy(template);
-                                  }}
-                                >
-                                  {copiedId === template.namePattern ? (
-                                    <Check className="w-3.5 h-3.5" />
-                                  ) : (
-                                    <Copy className="w-3.5 h-3.5" />
-                                  )}
+                                <Button variant="outline" size="sm" className="gap-1.5" onClick={(e) => { e.stopPropagation(); handleCopy(template); }}>
+                                  {copiedId === template.namePattern ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                                 </Button>
                               </div>
                             </div>
