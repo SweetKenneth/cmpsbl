@@ -651,7 +651,7 @@ export {
   ripple,
   access,
   system,
-  evolutionClient as modernizer,  // backward-compat alias for internal re-exports
+  evolutionClient,  // canonical EVOLUTION export (legacy modernizer alias removed)
   integration,
   inclusive,
   cortex,
