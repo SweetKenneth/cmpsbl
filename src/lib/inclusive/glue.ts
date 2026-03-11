@@ -9,7 +9,7 @@
  * - SYSTEM: inclusive.selfScan → system.audit aggregation
  * - VISION: inclusive.score → vision.health metrics
  * - DEFENSE: severity escalation → defense risk pipeline
- * - MODERNIZER: regressions → modernizer.propose triggers
+ * - EVOLUTION: regressions → evolution.propose triggers
  * - TEMPLATES: scan → repair → validate → approve pipeline
  * - MARKETPLACE: block publishing on critical violations
  * - ACCESS: Role-based capability gating
