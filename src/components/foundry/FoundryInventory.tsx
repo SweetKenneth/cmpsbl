@@ -134,7 +134,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
         filePrefix: 'memory-stream-vault-software',
         sourceLabel: 'Memory Stream Vault',
       });
-      toast.success(`Exported ${stats.artifactCount} pipelines across ${stats.totalLanguageVariants} tiered language bundles`);
+      toast.success(`Exported ${stats.artifactCount} memories across ${stats.totalLanguageVariants} tiered language bundles`);
     } catch (err) {
       console.error(err);
       toast.error('Export failed');
