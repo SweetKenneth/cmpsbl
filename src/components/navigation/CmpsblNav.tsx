@@ -34,6 +34,11 @@ import {
   Mail,
   Package,
   FlaskConical,
+  Play,
+  CreditCard,
+  GitBranch,
+  Map,
+  Activity,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
