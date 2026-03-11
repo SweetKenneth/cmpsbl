@@ -31,8 +31,8 @@ export default function SignalToSilicon() {
       <p>The output isn't just a response — it's a crystallized artifact. Over time, frequently-used processing paths crystallize into reusable memories. Each gets scored across five dimensions: novelty, utility, reliability, efficiency, and composability. High-scoring memories get promoted from Mint to Prime to Relic to Mythic to Apex — a <a href="https://en.wikipedia.org/wiki/Maturity_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">maturity model</a> for discovered software.</p>
 
       <figure className="my-8">
-        <img src={imgPacks} alt="Crystallized artifact packs — deployable software pipelines discovered by the substrate" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
-        <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">Crystallized pipelines become deployable artifact packs — software discovered autonomously by the substrate.</figcaption>
+        <img src={imgPacks} alt="Crystallized memory packs — deployable software memories discovered by the substrate" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+        <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">Crystallized memories become deployable capability packs — software discovered autonomously by the substrate.</figcaption>
       </figure>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Silicon</h2>
