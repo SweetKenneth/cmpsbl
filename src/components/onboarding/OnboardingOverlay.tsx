@@ -1,6 +1,6 @@
 /**
  * User Onboarding Flow — Memory Stream themed
- * Explains crystallized pipelines, free-tier value, and upgrade path
+ * Explains crystallized memories, free-tier value, and upgrade path
  */
 
 import { useState, useEffect } from 'react';
