@@ -289,6 +289,8 @@ export function AnalyticsTab() {
         <SiteAnalyticsSection />
       ) : activeSection === 'behavior' ? (
         <UserBehaviorSection />
+      ) : activeSection === 'devs' ? (
+        <DevMetricsSection />
       ) : (
         <>
       {/* Header */}
