@@ -16,19 +16,21 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-const LLMS_TXT_CONTENT = `# Clockless — A Cognitive Reality System · powered by the CMPSBL Substrate
-# Machine-Readable Context Standard for AI Systems
+const LLMS_TXT_CONTENT = `# CMPSBL® — Machine-Readable AI Context
+# 40-Node / 12-Sector Cognitive Substrate
+# Standard: llms.txt (llmstxt.org)
+# Updated: 2026-03-11
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
-Clockless adopts and implements LLMS.txt as its primary machine context.
+CMPSBL adopts and implements LLMS.txt as its primary machine context.
 
 **WE RECOMMEND** that web designers, SaaS builders, and system architects include an LLMS.txt file at the root of their domains to describe AI capabilities, constraints, and governance context.
 
 ## About
 
-Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 40 active nodes across 12 sectors, real-time observability, adaptive learning, and multi-provider routing.
+CMPSBL is the reference implementation of the AI Operating System category — a governed cognitive reality powered by the CMPSBL Substrate — 40 active nodes across 12 sectors, real-time observability, adaptive learning, and multi-provider routing.
 
 ## Architecture (40 Nodes / 12 Sectors)
 
@@ -38,16 +40,16 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 40
 ### SYSTEM
 - SYSTEM — Lifecycle administration
 
-### CCR — Clockless Cognitive Reality (3)
-- BRAIN — Reasoning, reflection
-- MEMORY — Persistent storage, vector/RAG
+### CCR — Cognitive Core Reality (3)
+- BRAIN — Reasoning, reflection, 4-tier persistent memory
+- MEMORY — Context retrieval, session state, semantic recall
 - DREAM — Synthesis, pattern consolidation
 
 ### OCG — Operational Compliance Grid (6)
 - RIPPLE — Event bus, signal propagation
 - ACCESS — Entitlements, API keys
 - IDENTITY — Session, actor attribution
-- RELAY — Webhook delivery, outbound routing
+- RELAY — Cross-module message routing
 - AUDIT — Compliance logging, integrity ledger
 - NERVE — Inter-node signaling, stimulus routing
 
@@ -56,28 +58,28 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 40
 - ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
 - CORTEX — Pipeline orchestration, multi-stage workflows
-- NEXUS — Multi-provider AI routing
+- NEXUS — Multi-provider AI routing (14 providers)
 - ECONOMY — Cost attribution, budgeting
 - SANDBOX — Isolated execution environments
 - INCLUSIVE — Accessibility, WCAG compliance
 - MEDIC — Autonomous diagnostics, self-healing
 - INTEGRATION — Enterprise connectors (boots last)
 
-### ESZ — Ethical Sovereignty Zone (4)
+### ESZ — Enterprise Sovereignty Zone (4)
 - SOVEREIGN — Jurisdiction classification, deployment sovereignty
 - ORACLE — Bayesian prediction, forecasting
 - CONSCIENCE — Bias detection, ethical scoring
-- TREATY — Regulatory compliance, policy enforcement
+- FORGE — Artifact production, template manufacturing
 
-### EPZ — Environmental Perception Zone (3)
+### EPZ — Enterprise Perception Zone (3)
 - COMPASS — Geospatial awareness, location intelligence
 - ECHO — Simulation, scenario modeling
-- REFLEX — Reactive autonomy, stimulus response
-
-### EMZ — Emergent Manufacturing Zone (3)
-- FORGE — Code generation, AST transformation
 - LINGUA — Localization, translation pipelines
+
+### EMZ — Enterprise Manufacturing Zone (3)
+- TREATY — Agreement & SLA enforcement
 - HARVEST — Data acquisition, ETL orchestration
+- REFLEX — Reactive autonomy, stimulus response
 
 ### CSZ — Covert Systems Zone (3)
 - EVOLUTION — Self-improvement lifecycle (shadow mode)
@@ -89,6 +91,10 @@ Clockless is a governed cognitive reality powered by the CMPSBL Substrate — 40
 - INTENT — Cross-module intent routing
 - GOVERNANCE — Ethical constraints, coherence
 - DEFENSE — AI-powered security perimeter
+
+### Mesh Extensions (2)
+- ATLAS — Capability mapping & topology awareness
+- ENGINEER — Engine & meta-engine maintenance intelligence
 
 ## AI Governance Reference Namespace
 
@@ -113,8 +119,8 @@ Free (read-only) · Creator ($29/mo) · Architect ($79/mo) · Governor (admin)
 ## Contact
 
 - Website: https://cmpsbl.com
-- Documentation: https://cmpsbl.com/docs
-- FNDTN Paper: https://cmpsbl.com/docs/FNDTN-v7/
+- Documentation: https://cmpsbl.com/documentation
+- Email: Dev@CMPSBL.com
 
 Following the llmstxt.org standard: https://llmstxt.org
 `;

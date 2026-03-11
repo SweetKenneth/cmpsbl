@@ -51,7 +51,7 @@ To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/03/10
+Last update: 2026/03/11
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
@@ -75,22 +75,48 @@ We believe in:
 - Security through behavioral analysis
 - Persistent memory and dream cycles
 
-/* SUBSTRATE NODES */
+/* SUBSTRATE NODES (40 Nodes / 12 Sectors) */
 
-BRAIN: Memory, learning, reflection cycles
-DECODE: Epistemic conversation interpreter
-DEFENSE: Security and threat detection
-NEXUS: AI provider routing
-VISION: Observability and telemetry
-DREAM: Memory consolidation engine
-CORE: Scheduling & lifecycle management
-RIPPLE: Event bus & integration
-ACCESS: Identity & permissions
-SYSTEM: Orchestration & coordination
-EVOLUTION: Self-upgrade pipelines
-INTEGRATION: External connectors
-INCLUSIVE: Accessibility compliance
-CORTEX: Policy orchestration
+CORE: Kernel boot sequencing & lifecycle authority
+SYSTEM: Configuration management & diagnostics
+BRAIN: 4-tier persistent memory & learning cycles
+MEMORY: Context retrieval & session state
+DREAM: Memory consolidation & heuristic synthesis
+RIPPLE: Event bus & pub/sub messaging
+ACCESS: Authentication & API keys
+IDENTITY: User & entity resolution
+RELAY: Cross-module message routing
+AUDIT: Immutable logging & compliance
+NERVE: Operational signaling & coordination
+DECODE: Natural language understanding & intent parsing
+ENCODE: Content generation & code pipelines
+VISION: Observability & telemetry
+CORTEX: Pipeline composition & agency orchestration
+NEXUS: 14-provider AI routing authority
+ECONOMY: Cost tracking & budget governance
+SANDBOX: Isolated execution environment
+INCLUSIVE: Accessibility & WCAG compliance
+MEDIC: Self-healing diagnostics
+SOVEREIGN: Jurisdictional authority & data sovereignty
+ORACLE: Predictive analytics & forecasting
+CONSCIENCE: Ethical decision boundaries
+FORGE: Artifact production & template manufacturing
+LINGUA: Multi-language processing & translation
+COMPASS: Location-aware processing & geospatial
+ECHO: Signal reflection & distributed tracing
+TREATY: Agreement & SLA enforcement
+HARVEST: Data pipeline ingestion
+REFLEX: Real-time reactive processing
+EVOLUTION: Version management & shadow-run promotion
+SHADOW: Shadow testing & adversarial validation
+PHANTOM: Phantom operations & stealth probes
+IMMUNITY: Threat adaptation & resilience hardening
+INTENT: Purpose alignment & goal tracking
+GOVERNANCE: Action legitimacy & doctrine enforcement
+DEFENSE: Terminal boundary enforcement & cognitive firewall
+INTEGRATION: External service connectivity
+ATLAS: Capability mapping & topology awareness
+ENGINEER: Engine & meta-engine maintenance intelligence
 
 /* COLOPHON */
 
@@ -98,7 +124,7 @@ CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
 40 Nodes • 12 Sectors • 675+ Capabilities
 WCAG 2.2 Accessibility via INCLUSIVE Node
 
-CMPSBL® — Where Machines Learn To Think.
+CMPSBL® — Where Machines Learn To Dream.
 
 /* STANDARD */
 This file follows the humans.txt standard from humanstxt.org
