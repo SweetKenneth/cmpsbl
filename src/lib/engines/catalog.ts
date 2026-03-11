@@ -11,6 +11,8 @@ import {
   Cog, Sparkles, Radio, Castle, Lock, Globe, Cpu,
   Diamond, Hammer, Network, Fingerprint, Waypoints, FlaskConical,
   Flame, Swords, Skull, BookOpen, ShieldAlert, Landmark, Bird, Router, Clock, Bot,
+  Atom, Battery, ShieldHalf, Cable, FlaskRound, IterationCw, Merge, Database, Heart, Blocks,
+  Crown, Layers, Orbit, Gem,
 } from "lucide-react";
 
 export interface Engine {
