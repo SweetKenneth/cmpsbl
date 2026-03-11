@@ -33,6 +33,7 @@ import {
   ExternalLink,
   Mail,
   Package,
+  FlaskConical,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -109,7 +110,7 @@ export function CmpsblNav() {
       name: "Products",
       icon: Sparkles,
       items: [
-        { name: "Engines", href: "/engines", description: "20 sealed runtime engines", icon: Shield, badge: "20", highlight: true },
+        { name: "CodeLab", href: "/codelab", description: "Blueprint forge & signal synthesis", icon: FlaskConical, badge: "NEW FEATURES", highlight: true },
         { name: "Artifact packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
         { name: "Composable agents", href: "/composable-cognitives", description: "Pre-built AI agents", icon: Zap },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
@@ -439,7 +440,7 @@ export function CmpsblNav() {
                 {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
                   { name: "Upgrade", href: "/upgrade", icon: Zap },
-                  { name: "Engines", href: "/engines", icon: Shield, badge: "20" },
+                  { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
                   { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW" },
                 ].map((item) => (
                   <Link
