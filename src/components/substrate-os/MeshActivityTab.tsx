@@ -158,7 +158,7 @@ export function MeshActivityTab() {
     setRunningPipeline(pipeline.id);
     try {
       const result = await runSavedPipeline(pipeline);
-      toast.success(`Pipeline "${pipeline.name}" executed: ${result.resolversResponded} resolvers in ${result.totalDurationMs}ms`);
+      toast.success(`Memory "${pipeline.name}" executed: ${result.resolversResponded} resolvers in ${result.totalDurationMs}ms`);
     } catch {
       toast.error('Pipeline execution failed');
     } finally {
