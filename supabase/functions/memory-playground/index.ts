@@ -46,9 +46,11 @@ serve(async (req) => {
         const { data, error } = await supabase
           .from("brain_memory_hot")
           .insert({
-            content: content.substring(0, 1000), // Limit for demo
+            content: content.substring(0, 1000),
+            context: metadata.context || "playground-demo",
             importance_score: importanceScore,
-            source: "playground",
+            source_module: "playground",
+            memory_type: "playground",
             tags: metadata.tags || ["demo", "playground"],
             access_count: 1,
           })
@@ -142,7 +144,7 @@ serve(async (req) => {
           .from("brain_memory_hot")
           .delete()
           .eq("id", memoryId)
-          .eq("source", "playground"); // Only allow deleting playground memories
+          .eq("source_module", "playground"); // Only allow deleting playground memories
 
         if (error) throw error;
 
