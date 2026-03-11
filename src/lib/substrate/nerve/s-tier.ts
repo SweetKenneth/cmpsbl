@@ -3,7 +3,15 @@
  * Consensus heartbeat, partition detection, quorum, state sync, mesh topology, gossip
  */
 export * from '@/crownjewels/s-tier/005-consensus-heartbeat-protocol';
-export * from '@/crownjewels/s-tier/018-consensus-engine';
+// consensus-engine has ConsensusResult collision with nexus/028
+export {
+  createConsensusEngine,
+  type VotingStrategy,
+  type Voter,
+  type Vote,
+  type ConsensusResult as NerveConsensusResult,
+  type ConsensusConfig,
+} from '@/crownjewels/s-tier/018-consensus-engine';
 export * from '@/crownjewels/s-tier/039-distributed-consensus-mesh';
 export * from '@/crownjewels/s-tier/043-partition-detection';
 export * from '@/crownjewels/s-tier/071-resilient-communication-backbone';

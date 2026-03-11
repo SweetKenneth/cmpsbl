@@ -5,7 +5,12 @@
 
 export * from '@/crownjewels/s-tier/002-fleet-intelligence-orchestrator';
 export * from '@/crownjewels/s-tier/006-cost-aware-routing-engine';
-export * from '@/crownjewels/s-tier/017-pipeline-engine';
+// pipeline-engine has createPipeline collision with cortex/020
+export {
+  createPipeline as createNexusPipeline,
+  type StageResult as NexusStageResult,
+  type PipelineStats as NexusPipelineStats,
+} from '@/crownjewels/s-tier/017-pipeline-engine';
 export * from '@/crownjewels/s-tier/028-multi-model-consensus';
 export * from '@/crownjewels/s-tier/045-provider-health-monitor';
 export * from '@/crownjewels/s-tier/078-fallback-chain-architect';
