@@ -11,3 +11,5 @@ export * from '@/crownjewels/s-tier/111-honeypot-intelligence-advanced';
 export * from '@/crownjewels/s-tier/123-intelligence-containment';
 export * from '@/crownjewels/s-tier/124-emergent-threat-anticipator';
 export * from '@/crownjewels/s-tier/174-adversarial-simulation';
+export * from '@/crownjewels/s-tier/072-zero-trust-verification';
+export * from '@/crownjewels/s-tier/167-cascade-prevention';

@@ -11,3 +11,4 @@ export * from '@/crownjewels/s-tier/098-terminal-command-parser';
 export * from '@/crownjewels/s-tier/129-intent-drift-tracker';
 export * from '@/crownjewels/s-tier/131-friction-auto-removal';
 export * from '@/crownjewels/s-tier/209-adaptive-interface-compiler';
+export * from '@/crownjewels/s-tier/041-conversational-intent-compiler';
