@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { getFunctionalDescription, getEnrichedDescription } from '@/lib/pipeline-descriptions';
-import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
