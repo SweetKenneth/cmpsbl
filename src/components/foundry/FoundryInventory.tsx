@@ -112,10 +112,10 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
           <Fingerprint className="w-7 h-7 text-primary/40" />
         </div>
         <div className="text-foreground font-mono text-sm font-bold mb-2">
-          No pipelines crystallized yet
+          No memories crystallized yet
         </div>
         <div className="text-xs text-muted-foreground/60 max-w-xs mx-auto leading-relaxed">
-          Switch to the Crystallize tab and pull your first pipeline from the Memory Stream
+          Switch to the Crystallize tab and pull your first memory from the Memory Stream
         </div>
       </div>
     );
