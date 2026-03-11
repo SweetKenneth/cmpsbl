@@ -221,7 +221,7 @@ export function MeshActivityTab() {
                 onClick={() => setActiveView('pipelines')}
                 className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
               >
-                <Layers className="w-3 h-3 inline mr-1" />Pipelines ({savedPipelines.length})
+                <Layers className="w-3 h-3 inline mr-1" />Memories ({savedPipelines.length})
               </button>
               <button 
                 onClick={() => setActiveView('proposals')}

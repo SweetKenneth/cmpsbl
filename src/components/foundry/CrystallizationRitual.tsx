@@ -18,7 +18,7 @@ const PHASES = [
   'Extracting raw signal data…',
   'Condensing topology graph…',
   'Forming crystalline lattice…',
-  'Annealing pipeline structure…',
+  'Annealing memory structure…',
   'Crystal locked.',
 ];
 

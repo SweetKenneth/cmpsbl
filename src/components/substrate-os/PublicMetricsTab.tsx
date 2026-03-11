@@ -281,7 +281,7 @@ export function PublicMetricsTab() {
             </div>
             <div className="p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-2xl font-bold text-primary">{localMetrics.synergyPipelinesCount}</p>
-              <p className="text-xs text-muted-foreground">Pipelines</p>
+              <p className="text-xs text-muted-foreground">Memories</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-2xl font-bold text-primary">{localMetrics.enginesCount + localMetrics.metaEnginesCount}</p>
