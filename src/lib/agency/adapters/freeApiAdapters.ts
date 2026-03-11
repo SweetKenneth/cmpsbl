@@ -261,13 +261,13 @@ export const FREE_API_ADAPTERS: Record<string, ApiAdapter> = {
     category: 'content',
     rateLimit: { requests: 20, windowMs: 60000 },
     fetch: async (params) => {
-      // Note: This would need a backend service to properly extract
-      // For now, return placeholder
+      // YouTube transcript extraction requires server-side processing
+      // Graceful degradation: returns structured error with remediation path
       return {
         success: false,
         data: null,
         source: 'youtube_transcript',
-        error: 'Requires backend implementation with Firecrawl or dedicated service',
+        error: 'YouTube transcript extraction requires a backend function. Use agency task delegation instead.',
       };
     },
   },
