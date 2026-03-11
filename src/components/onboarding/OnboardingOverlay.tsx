@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Brain className="h-7 w-7" />,
     title: 'Your Vault Stores Discoveries',
-    description: 'Pipelines you choose to keep go into your vault. Vault capacity depends on your tier — from 5 (Builder) to unlimited (Architect). Remove old pipelines to free space anytime.',
+    description: 'Memories you choose to keep go into your vault. Vault capacity depends on your tier — from 5 (Builder) to unlimited (Architect). Remove old memories to free space anytime.',
     detail: 'Builder: 5 · Studio: 25 · Creator: 75 · Architect: Unlimited',
     link: '/foundry',
     linkLabel: 'Explore Vault',
