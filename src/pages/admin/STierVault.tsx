@@ -156,8 +156,9 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
 
     const codeReady = registryEntries.filter(e => e.hasCode).length;
     const approved = registryEntries.filter(e => e.approved).length;
-    const moduleCoverage = Object.keys(byModule).length;
-    const totalModules = (registryData.canonicalModules as string[]).length;
+    const canonicalSet = new Set(registryData.canonicalModules as string[]);
+    const totalModules = canonicalSet.size;
+    const moduleCoverage = Math.min(Object.keys(byModule).filter(m => canonicalSet.has(m)).length, totalModules);
 
     return {
       byModule, byTier, totalRegValue, promByCategory, totalPromValue,
