@@ -56,7 +56,7 @@ const priorArtDocs = [
   { title: "Release Abstract", desc: "System overview and publication purpose", icon: FileText, slug: "release-abstract", num: "01" },
   { title: "System Overview", desc: "Clockless cognitive substrate infrastructure", icon: Layers, slug: "system-overview", num: "02" },
   { title: "Memory Stream & Foundry", desc: "Signal → discovery → crystallization architecture", icon: Brain, slug: "memory-stream", num: "03" },
-  { title: "Pipeline Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
+  { title: "Memory Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
   { title: "Universal Export", desc: "Cross-language export and portable runtime", icon: Globe, slug: "universal-export", num: "05" },
   { title: "Governance & Safety", desc: "Shadow verification, bounded autonomy, auditability", icon: Shield, slug: "governance-safety", num: "06" },
   { title: "IRONCLAD Hardening", desc: "Circuit breakers, subsystem healing, safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
