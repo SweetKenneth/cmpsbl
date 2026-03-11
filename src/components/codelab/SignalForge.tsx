@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";

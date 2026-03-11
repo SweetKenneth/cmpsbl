@@ -6,7 +6,7 @@
  * Mobile-first: 44px touch targets, responsive spacing, safe-area aware
  */
 import { useState, useCallback, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Pickaxe, Loader2 } from 'lucide-react';
 import { MEMORY_STREAM_QUALITY_NOTE } from '@/lib/branding/memory-stream';
 import { PipelineProvenance } from './PipelineProvenance';
