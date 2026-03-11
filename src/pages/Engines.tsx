@@ -17,18 +17,21 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const TIER_COLORS: Record<string, string> = {
+  META: "from-amber-500/20 to-yellow-500/10 border-amber-500/30",
   APEX: "from-red-500/20 to-orange-500/10 border-red-500/30",
   ELITE: "from-purple-500/20 to-blue-500/10 border-purple-500/30",
   CORE: "from-cyan-500/20 to-green-500/10 border-cyan-500/30",
 };
 
 const TIER_BADGE: Record<string, string> = {
+  META: "bg-amber-500/15 text-amber-400 border-amber-500/25",
   APEX: "bg-red-500/15 text-red-400 border-red-500/25",
   ELITE: "bg-purple-500/15 text-purple-400 border-purple-500/25",
   CORE: "bg-cyan-500/15 text-cyan-400 border-cyan-500/25",
 };
 
 const TIER_GLOW: Record<string, string> = {
+  META: "hover:shadow-amber-500/8",
   APEX: "hover:shadow-red-500/8",
   ELITE: "hover:shadow-purple-500/8",
   CORE: "hover:shadow-cyan-500/8",
