@@ -1,5 +1,5 @@
 /**
- * FoundryInventory — User's vault of crystallized pipelines with export & removal
+ * FoundryInventory — User's vault of crystallized memories with export & removal
  * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
