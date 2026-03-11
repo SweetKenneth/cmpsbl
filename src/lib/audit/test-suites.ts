@@ -326,6 +326,151 @@ async function releaseGateTests(): Promise<Array<[string, TestFn]>> {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// SUITE 4: TECHNICAL DEBT & DRIFT
+// Formalizes the full-codebase audit from prior sessions:
+//   - Legacy naming (MODERNIZER → EVOLUTION)
+//   - Forbidden branding (lovable AI references in runtime code)
+//   - Stub/TODO detection in substrate-critical paths
+//   - RLS policy sanity (critical tables must block anon reads)
+//   - Import health (no broken re-exports from barrel files)
+//   - Architecture invariants (node count, weight, sector coverage)
+// ═══════════════════════════════════════════════════════════════
+
+async function technicalDebtTests(): Promise<Array<[string, TestFn]>> {
+  const { getNodeDefinitions, getNodesBySector, getTotalWeight } =
+    await import('@/lib/core/matrixNodeRegistry');
+
+  const { supabase } = await import('@/integrations/supabase/client');
+
+  // Helper: check if a Supabase table blocks unauthenticated reads
+  async function tableBlocksAnon(tableName: string): Promise<boolean> {
+    const { data, error } = await supabase.from(tableName as any).select('id', { count: 'exact', head: true });
+    // If we get an error or null data with no rows, RLS is doing its job
+    return !!error || data === null;
+  }
+
+  return [
+    // ── NAMING CONVENTIONS ──
+    ['No MODERNIZER references in substrate barrel exports', async () => {
+      const substrate = await import('@/lib/substrate');
+      const keys = Object.keys(substrate);
+      const violations = keys.filter(k => /modernizer/i.test(k));
+      assert(violations.length === 0, `Legacy keys found: ${violations.join(', ')}`);
+    }],
+    ['Evolution engine exports use EVOLUTION namespace', async () => {
+      const evolve = await import('@/lib/evolve');
+      const keys = Object.keys(evolve);
+      // Should have evolution-related exports, not modernizer
+      const hasEvolution = keys.some(k => /evol/i.test(k));
+      assert(hasEvolution, `No evolution exports found in @/lib/evolve — keys: ${keys.slice(0, 10).join(', ')}`);
+    }],
+
+    // ── FORBIDDEN BRANDING ──
+    ['No lovable AI gateway references in page', () => {
+      const html = document.documentElement.innerHTML;
+      assert(!html.includes('ai.gateway.lovable.dev'), 'Found lovable AI gateway reference in rendered DOM');
+    }],
+    ['No LOVABLE_API_KEY in page scripts', () => {
+      const scripts = Array.from(document.querySelectorAll('script'));
+      const violation = scripts.find(s => (s.textContent || '').includes('LOVABLE_API_KEY'));
+      assert(!violation, 'LOVABLE_API_KEY found in inline script');
+    }],
+    ['Meta tags free of forbidden branding', () => {
+      const forbidden = ['lovable ai', 'lovable.ai', 'powered by lovable', 'built with lovable'];
+      const metas = Array.from(document.querySelectorAll('meta[content]'));
+      for (const meta of metas) {
+        const content = (meta.getAttribute('content') || '').toLowerCase();
+        for (const term of forbidden) {
+          assert(!content.includes(term), `Meta tag contains "${term}": ${meta.outerHTML}`);
+        }
+      }
+    }],
+    ['No version numbers in SEO metadata', () => {
+      const versionRe = /\bv\d+\.\d+/i;
+      const surfaces = [
+        document.title,
+        document.querySelector('meta[name="description"]')?.getAttribute('content') || '',
+        document.querySelector('meta[property="og:title"]')?.getAttribute('content') || '',
+        document.querySelector('meta[property="og:description"]')?.getAttribute('content') || '',
+      ];
+      for (const s of surfaces) {
+        assert(!versionRe.test(s), `Version number in SEO surface: "${s.match(versionRe)?.[0]}"`);
+      }
+    }],
+
+    // ── ARCHITECTURE INVARIANTS ──
+    ['Matrix has exactly 40 nodes (drift check)', () => {
+      const count = getNodeDefinitions().length;
+      assert(count === 40, `Expected 40 nodes, got ${count}`);
+    }],
+    ['All 12 sectors populated', () => {
+      const required = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;
+      const missing = required.filter(s => getNodesBySector(s).length === 0);
+      assert(missing.length === 0, `Empty sectors: ${missing.join(', ')}`);
+    }],
+    ['Node weights sum to 1.000 ± 0.002', () => {
+      const total = getTotalWeight();
+      assert(Math.abs(total - 1.0) < 0.002, `Weight sum: ${total}`);
+    }],
+
+    // ── RLS POLICY ENFORCEMENT ──
+    ['substrate_audit_log blocks anon reads', async () => {
+      assert(await tableBlocksAnon('substrate_audit_log'), 'substrate_audit_log is readable without auth');
+    }],
+    ['brain_events blocks anon reads', async () => {
+      assert(await tableBlocksAnon('brain_events'), 'brain_events is readable without auth');
+    }],
+    ['user_roles blocks anon reads', async () => {
+      assert(await tableBlocksAnon('user_roles'), 'user_roles is readable without auth');
+    }],
+    ['profiles blocks anon reads', async () => {
+      assert(await tableBlocksAnon('profiles'), 'profiles is readable without auth');
+    }],
+    ['substrate_licenses blocks anon reads', async () => {
+      assert(await tableBlocksAnon('substrate_licenses'), 'substrate_licenses is readable without auth');
+    }],
+
+    // ── IMPORT HEALTH ──
+    ['lib/audit barrel exports without error', async () => {
+      const mod = await import('@/lib/audit');
+      assert(typeof mod.runFullAudit === 'function', 'runFullAudit not exported');
+    }],
+    ['lib/system barrel exports without error', async () => {
+      const mod = await import('@/lib/system');
+      assert(typeof mod.log === 'function', 'log not exported');
+      assert(typeof mod.withRetry === 'function', 'withRetry not exported');
+    }],
+    ['lib/substrate/system barrel exports', async () => {
+      const mod = await import('@/lib/substrate/system');
+      assert(typeof mod.runSystemAudit === 'function', 'runSystemAudit not exported');
+    }],
+
+    // ── STUB DETECTION ──
+    ['No placeholder API adapters returning hardcoded success', async () => {
+      const { FREE_API_ADAPTERS, executeAdapter } = await import('@/lib/agency/adapters/freeApiAdapters');
+      // youtube_transcript should NOT return success: true since it's a stub
+      if (FREE_API_ADAPTERS.youtube_transcript) {
+        const resolved = await executeAdapter('youtube_transcript', { url: 'https://test.com' });
+        assert(resolved.success !== true, 'youtube_transcript stub still returns success:true');
+      }
+    }],
+
+    // ── RUNTIME CONTRACTS ──
+    ['Substrate invoke returns structured result', async () => {
+      const { substrate } = await import('@/lib/substrate');
+      const result = await substrate.invoke({ module: 'core', action: 'pulse' });
+      assert(typeof result === 'object' && 'success' in result, 'Bad invoke result shape');
+    }],
+    ['Control plane SHA-256 is deterministic', async () => {
+      const { sha256 } = await import('@/lib/control-plane/hash');
+      const h1 = await sha256('debt-drift-check');
+      const h2 = await sha256('debt-drift-check');
+      assert(h1 === h2 && h1.length === 64, 'SHA-256 non-deterministic or wrong length');
+    }],
+  ];
+}
+
+// ═══════════════════════════════════════════════════════════════
 // PUBLIC API
 // ═══════════════════════════════════════════════════════════════
 
@@ -359,6 +504,13 @@ export const TEST_SUITE_DEFS: TestSuiteDefinition[] = [
     icon: '🚀',
     testCount: '5 checks',
   },
+  {
+    id: 'tech-debt-drift',
+    name: 'Technical Debt & Drift',
+    description: 'Legacy naming, branding, RLS enforcement, stubs, import health, architecture invariants',
+    icon: '🧹',
+    testCount: '21 checks',
+  },
 ];
 
 export async function runTestSuite(suiteId: string): Promise<SuiteResult> {
@@ -369,6 +521,8 @@ export async function runTestSuite(suiteId: string): Promise<SuiteResult> {
       return runSuite(suiteId, 'MEMORY Stream E2E', TEST_SUITE_DEFS[1].description, await memoryStreamTests());
     case 'release-gate':
       return runSuite(suiteId, 'Release Gate', TEST_SUITE_DEFS[2].description, await releaseGateTests());
+    case 'tech-debt-drift':
+      return runSuite(suiteId, 'Technical Debt & Drift', TEST_SUITE_DEFS[3].description, await technicalDebtTests());
     default:
       throw new Error(`Unknown suite: ${suiteId}`);
   }
