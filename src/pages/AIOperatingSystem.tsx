@@ -40,7 +40,7 @@ const faqItems = [
   },
   {
     question: "What is the Memory Stream?",
-    answer: "The Memory Stream is the substrate's autonomous discovery pipeline. Every interaction flows through it — the system discovers, packages, and exports reusable software pipelines. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
+    answer: "The Memory Stream is the substrate's autonomous memory formation engine. Every interaction flows through it — the system forms memories of successful solutions, packages them, and exports them as capability memories. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
   },
   {
     question: "What problems does CMPSBL solve?",
