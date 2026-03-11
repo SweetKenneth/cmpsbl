@@ -36,7 +36,7 @@ export default function SignalToSilicon() {
       </figure>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Silicon</h2>
-      <p>The ultimate destination is deployment. A crystallized pipeline is executable. Export it as a JSON artifact, deploy it to your infrastructure, run it without the substrate if you want to. The substrate discovered it, crystallized it, and scored it. But you own it.</p>
+      <p>The ultimate destination is deployment. A crystallized memory is executable. Export it as a JSON artifact, deploy it to your infrastructure, run it without the substrate if you want to. The substrate discovered it, crystallized it, and scored it. But you own it.</p>
       <p>This is the philosophical core: infrastructure that discovers software for you. Not software-as-a-service — software-as-a-discovery. Built on <Link to="/blog/accessibility-is-infrastructure" className="text-primary hover:underline">accessible</Link>, <Link to="/blog/cybersecurity-through-cognition" className="text-primary hover:underline">secure</Link>, <Link to="/blog/protocols-for-machines" className="text-primary hover:underline">protocol-compliant</Link> infrastructure, rebuilt from the ground up during <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA</Link>.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What's Next</h2>

@@ -150,7 +150,7 @@ export function MemoryStreamExplainer() {
           <div className="inline-block bg-card/50 border border-border/20 rounded-xl px-6 sm:px-8 py-4 sm:py-5 max-w-lg shadow-lg shadow-primary/5">
             <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
               The Memory Stream has already produced{' '}
-              <span className="text-foreground font-bold">1,143 crystallized pipelines</span> across{' '}
+              <span className="text-foreground font-bold">1,143 crystallized memories</span> across{' '}
               <span className="text-foreground font-bold">9 capability domains</span> — autonomously,
               in under 9 hours.
             </p>

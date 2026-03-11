@@ -74,7 +74,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Terminal className="h-7 w-7" />,
     title: 'Build & Command',
-    description: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. Creator and Architect tiers can equip discovered pipelines directly into custom runtime slots.',
+    description: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. Creator and Architect tiers can equip discovered memories directly into custom runtime slots.',
     detail: 'Studio ($29) · Creator ($49) · Architect ($79) — depth, not feature walls.',
     link: '/workspace',
     linkLabel: 'Open Terminal',

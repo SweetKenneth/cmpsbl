@@ -1,5 +1,5 @@
 /**
- * SlotCapacityIndicator — Persistent UI showing pipeline slot usage
+ * SlotCapacityIndicator — Persistent UI showing memory slot usage
  * Dynamic color shift at 80% capacity. Tooltip explains model.
  */
 import { Package } from 'lucide-react';
