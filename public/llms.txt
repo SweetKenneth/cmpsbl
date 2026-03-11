@@ -1,13 +1,13 @@
-# CMPSBL® Memory Stream — Machine-Readable AI Context
-# IRONCLAD Epoch | 38-Node / 12-Sector Architecture
+# CMPSBL® — Machine-Readable AI Context
+# 40-Node / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-06
+# Updated: 2026-03-11
 
 ## STANDARD CLAIM
 
 LLMS.txt is a machine-readable specification format for AI systems, designed by llmstxt.org.
 
-CMPSBL IRONCLAD adopts and implements LLMS.txt as its primary machine context.
+CMPSBL adopts and implements LLMS.txt as its primary machine context.
 
 ## CATEGORY DEFINITION
 
@@ -43,9 +43,9 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 ## THE AI OPERATING SYSTEM CLASS
 
-CMPSBL IRONCLAD is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
+CMPSBL is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Complete Cognitive Runtime**: 38 nodes across 12 sectors covering memory, reasoning, security, routing, observability, manufacturing, covert ops, and orchestration
+- **Complete Cognitive Runtime**: 40 nodes across 12 sectors covering memory, reasoning, security, routing, observability, manufacturing, covert ops, and orchestration
 - **Persistent**: State survives restarts and sessions (4-tier memory architecture: Hot → Warm → Cold → Archive)
 - **Self-improving**: EVOLUTION engine with governed shadow-run promotion pipeline
 - **Modular**: Discrete, hot-swappable nodes organized across 12 architectural sectors
@@ -58,7 +58,7 @@ CMPSBL IRONCLAD is the reference implementation of the "AI Operating System" —
 
 Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
-## NODE ARCHITECTURE (IRONCLAD Epoch — 38 Nodes / 12 Sectors)
+## NODE ARCHITECTURE (40 Nodes / 12 Sectors)
 
 ### Sector 1: CORE (Kernel Authority)
 1. **CORE** — Kernel boot sequencing, weighted matrix owner, lifecycle authority
@@ -121,8 +121,10 @@ Traditional operating systems unified disparate hardware interfaces into a coher
 ### Sector 12: Shell (Outer Containment)
 37. **DEFENSE** — Terminal boundary enforcement, cognitive firewall
 
-### Legacy Facade
+### Mesh Extensions
 38. **INTEGRATION** — External service connectivity (boots last)
+39. **ATLAS** — Capability mapping and topology awareness
+40. **ENGINEER** — Engine & meta-engine maintenance intelligence
 
 ---
 
@@ -151,52 +153,80 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 
 - Homepage: https://cmpsbl.com
 - AI Operating System: https://cmpsbl.com/ai-operating-system
-- Memory Stream OS: https://cmpsbl.com/os
+- Substrate Dashboard: https://cmpsbl.com/substrate
+- Substrate OS: https://cmpsbl.com/os
 - Architecture: https://cmpsbl.com/architecture
-- Modules: https://cmpsbl.com/modules
+- All Nodes: https://cmpsbl.com/modules
+- Runtime: https://cmpsbl.com/runtime
+- Foundations: https://cmpsbl.com/foundations
+- Engines: https://cmpsbl.com/engines
+- Memory Stream: https://cmpsbl.com/foundry
 - Persistent Memory: https://cmpsbl.com/persistent-memory
 - Composable Cognitives: https://cmpsbl.com/composable-cognitives
-- Orchestration Engines: https://cmpsbl.com/engines
-- Memory Stream: https://cmpsbl.com/memory-stream
-- Software Foundry: https://cmpsbl.com/foundry
-- Roadmap: https://cmpsbl.com/roadmap
-- DECODE Terminal: https://cmpsbl.com/decode
+- Artifact Packs: https://cmpsbl.com/packs
+- Upgrade: https://cmpsbl.com/upgrade
+- Enterprise: https://cmpsbl.com/enterprise
 - Dream Feeder: https://cmpsbl.com/feed-dream-eater
 - Proof Mode: https://cmpsbl.com/proof
-- Evolution Mesh: https://cmpsbl.com/evolution-mesh
-- Intent Mesh: https://cmpsbl.com/intent-mesh
 - Gaming AI: https://cmpsbl.com/gaming
-- Store: https://cmpsbl.com/store
-- Marketplace: https://cmpsbl.com/marketplace
-- ENCODE Agent: https://cmpsbl.com/products/encode
+- Evolution: https://cmpsbl.com/evolution
+- Intent Mesh: https://cmpsbl.com/intent-mesh
+- Showcase: https://cmpsbl.com/showcase
+- System Overview: https://cmpsbl.com/overview
+- Capability Map: https://cmpsbl.com/capability-map
+- Clockless World Engine: https://cmpsbl.com/clockless-world-engine
+- Scanner: https://cmpsbl.com/scan
+- System Integrity: https://cmpsbl.com/system-integrity
+- Demo: https://cmpsbl.com/demo
+- Try It: https://cmpsbl.com/try
+- Roadmap: https://cmpsbl.com/roadmap
 
 ## DEVELOPER RESOURCES
 
-- Developer Hub: https://cmpsbl.com/developers
 - Documentation: https://cmpsbl.com/documentation
-- Persistent Memory Docs: https://cmpsbl.com/docs/persistent-memory
-- Capabilities Reference: https://cmpsbl.com/docs/substrate/capabilities
-- Academy: https://cmpsbl.com/academy
+- API Access: https://cmpsbl.com/api-access
+- Builder Workspace: https://cmpsbl.com/workspace
 - CodeLab: https://cmpsbl.com/codelab
+- Academy: https://cmpsbl.com/academy
+- Developer Showcase: https://cmpsbl.com/developers
+- Developer Guide: https://cmpsbl.com/developers/guide
 - DevTools: https://cmpsbl.com/devtools
 - Start Here: https://cmpsbl.com/start-here
 - Changelog: https://cmpsbl.com/changelog
-- Evolution Log: https://cmpsbl.com/evolution-log
+- Use Cases: https://cmpsbl.com/use-cases
+- Persistent Memory Docs: https://cmpsbl.com/docs/persistent-memory
+- Runtime Reference: https://cmpsbl.com/docs/runtime
+- Capability Manifest: https://cmpsbl.com/docs/manifest
+- Capabilities Reference: https://cmpsbl.com/docs/substrate/capabilities
+- System Docs: https://cmpsbl.com/docs/system
 
 ## ENTERPRISE
 
-- Pricing: https://cmpsbl.com/pricing
+- Upgrade: https://cmpsbl.com/upgrade
+- Enterprise: https://cmpsbl.com/enterprise
 - Solutions: https://cmpsbl.com/solutions
 - Use Cases: https://cmpsbl.com/use-cases
-- Enterprise Licensing: https://cmpsbl.com/substrate/licensing
 - Investors: https://cmpsbl.com/investors
+- Pricing Method: https://cmpsbl.com/pricing-method
+
+## COMPANY
+
+- About: https://cmpsbl.com/about
+- Contact: https://cmpsbl.com/contact
+- Careers: https://cmpsbl.com/careers
+- Projects: https://cmpsbl.com/projects
+- Support: https://cmpsbl.com/support
+- Status: https://cmpsbl.com/status
+- Blog: https://cmpsbl.com/blog
+- Publication: https://cmpsbl.com/publication
+- Insights: https://cmpsbl.com/insights
 
 ## STANDARDS
 
 - Foundations: https://cmpsbl.com/foundations
 - Namespace (AIGVRN): https://cmpsbl.com/namespace
-- Library: https://cmpsbl.com/library
 - LLMs.txt: https://cmpsbl.com/llms-txt
+- Humans.txt: https://cmpsbl.com/humans-txt
 
 ---
 
@@ -249,7 +279,7 @@ Base URL: https://cmpsbl.com/api/substrate
 
 ## AI GOVERNANCE REFERENCE NAMESPACE (AIGVRN)
 
-CMPSBL IRONCLAD aligns with the AI Governance Reference Namespace (AIGVRN):
+CMPSBL aligns with the AI Governance Reference Namespace (AIGVRN):
 A 12-Surface Lexicon for AI Governance Documentation
 
 | Surface | Domain | Purpose |
@@ -283,7 +313,7 @@ DOI: 10.5281/zenodo.18209222
 │   AI Governance Reference Namespace     │
 │       Governance Standard               │
 ├─────────────────────────────────────────┤
-│         CMPSBL IRONCLAD                 │
+│         CMPSBL Substrate                │
 │       Substrate Standard                │
 └─────────────────────────────────────────┘
 ```
@@ -292,7 +322,7 @@ DOI: 10.5281/zenodo.18209222
 
 ## TECHNICAL SPECIFICATIONS
 
-- **Architecture**: 38 nodes, 12 sectors, field-based topology
+- **Architecture**: 40 nodes, 12 sectors, field-based topology
 - **Latency**: Sub-100ms response times
 - **Routing**: Model-agnostic, 14-provider fleet intelligence
 - **BYOK**: Full Bring Your Own Keys support
