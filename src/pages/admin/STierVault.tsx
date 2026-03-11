@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { getFunctionalDescription, getEnrichedDescription } from '@/lib/pipeline-descriptions';
-import { estimateMarketValue, formatMarketValue } from '@/lib/pipeline-valuation';
+import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -96,10 +96,12 @@ function getCJPIColor(cjpi: number): string {
 }
 
 function getTierLabel(cjpi: number): string {
-  if (cjpi >= 95) return 'Apex';
-  if (cjpi >= 85) return 'Enterprise';
-  if (cjpi >= 70) return 'Architect';
-  return 'Creator';
+  if (cjpi >= 100) return 'Apex';
+  if (cjpi >= 94) return 'Mythic';
+  if (cjpi >= 90) return 'Relic';
+  if (cjpi >= 80) return 'Prime';
+  if (cjpi >= 68) return 'Mint';
+  return 'Raw';
 }
 
 const LANGUAGES = getAllLanguages();
@@ -131,7 +133,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
   const stats = useMemo(() => {
     // Registry stats
     const byModule: Record<string, number> = {};
-    const byTier = { Apex: 0, Enterprise: 0, Architect: 0, Creator: 0 };
+    const byTier = { Apex: 0, Mythic: 0, Relic: 0, Prime: 0, Mint: 0, Raw: 0 };
     let totalRegValue = 0;
     for (const e of registryEntries) {
       byModule[e.module] = (byModule[e.module] ?? 0) + 1;
@@ -154,8 +156,9 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
 
     const codeReady = registryEntries.filter(e => e.hasCode).length;
     const approved = registryEntries.filter(e => e.approved).length;
-    const moduleCoverage = Object.keys(byModule).length;
-    const totalModules = (registryData.canonicalModules as string[]).length;
+    const canonicalSet = new Set(registryData.canonicalModules as string[]);
+    const totalModules = canonicalSet.size;
+    const moduleCoverage = Math.min(Object.keys(byModule).filter(m => canonicalSet.has(m)).length, totalModules);
 
     return {
       byModule, byTier, totalRegValue, promByCategory, totalPromValue,
@@ -796,12 +799,13 @@ export default function STierVault() {
         source: 'vault-export',
       }));
 
+      const exportChain = (d.module_chain && d.module_chain.length > 0) ? d.module_chain : [d.category.toUpperCase()];
       const detailsHTML = generatePipelineDetailsHTML({
         name: d.name,
         score: d.cjpi,
-        tier: d.cjpi >= 90 ? 'Apex' : d.cjpi >= 75 ? 'Enterprise' : d.cjpi >= 55 ? 'Architect' : 'Creator',
+        tier: getTierFromScore(d.cjpi),
         category: d.category,
-        systemChain: d.module_chain || [],
+        systemChain: exportChain,
         description: d.description,
         exportLanguages: languages.map(l => l.language),
         source: 'vault-export',
