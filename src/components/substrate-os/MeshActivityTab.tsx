@@ -142,7 +142,7 @@ export function MeshActivityTab() {
     setSavingId(receipt.id || '');
     try {
       await savePipelineFromReceipt(receipt, name);
-      toast.success(`Pipeline "${name}" saved from mesh discovery`);
+      toast.success(`Memory "${name}" saved from mesh discovery`);
       setPipelineName('');
       setSavingId(null);
       const p = await getSavedPipelines();
