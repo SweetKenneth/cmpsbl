@@ -388,11 +388,8 @@ export default function SubstrateOS() {
         {/* Mobile Sheet */}
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetContent side="left" className="p-0 w-[280px] bg-background">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border/20">
+            <div className="flex items-center px-4 py-3 border-b border-border/20">
               <h3 className="font-semibold text-sm">Navigation</h3>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setSidebarOpen(false)}>
-                <X className="w-4 h-4" />
-              </Button>
             </div>
             <DashboardSidebar
               tabs={tabs}
