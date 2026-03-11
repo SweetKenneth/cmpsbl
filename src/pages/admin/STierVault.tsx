@@ -531,24 +531,13 @@ export default function STierVault() {
   const pricingEngine = usePricingEngine();
 
   const handleRepriceAll = useCallback(async () => {
-    // Build artifacts from registry entries + promoted discoveries — only unpriced
+    // Only reprice promoted discoveries from vault_promotions that are UNPRICED.
+    // Registry entries are static JS objects with no vault_id — pricing them
+    // wastes API calls since results can never persist to the database.
     const artifacts: PricingArtifact[] = [];
 
-    // Registry entries (static S-Tier Crown Jewels) — skip if already priced
-    for (const entry of entries) {
-      if ((entry as any).recommended_resale_price != null) continue;
-      artifacts.push({
-        pipeline_name: entry.name,
-        pipeline_score: entry.cjpi,
-        pipeline_tier: 'Apex',
-        pipeline_category: entry.type,
-        system_chain: [entry.module],
-        valuation_display: null,
-      });
-    }
-
-    // Promoted discoveries from vault_promotions — skip if already priced
     for (const d of promoted) {
+      // Skip items that already have a price — no redundant computation
       if ((d as any).recommended_resale_price != null) continue;
       artifacts.push({
         vault_id: d.id,
@@ -567,9 +556,12 @@ export default function STierVault() {
       return;
     }
 
+    toast.info(`Pricing ${artifacts.length} unpriced items (skipping ${promoted.length - artifacts.length} already priced)...`);
     const result = await pricingEngine.repriceAll(artifacts);
     toast.success(`Priced ${result.success} new artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
-  }, [promoted, entries, pricingEngine]);
+    // Reload promoted to pick up new prices
+    await loadPromoted();
+  }, [promoted, pricingEngine]);
 
   // Discovered tab filters
   const [discCategoryFilter, setDiscCategoryFilter] = useState<string | null>(null);
