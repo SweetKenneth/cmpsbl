@@ -799,12 +799,13 @@ export default function STierVault() {
         source: 'vault-export',
       }));
 
+      const exportChain = (d.module_chain && d.module_chain.length > 0) ? d.module_chain : [d.category.toUpperCase()];
       const detailsHTML = generatePipelineDetailsHTML({
         name: d.name,
         score: d.cjpi,
-        tier: d.cjpi >= 90 ? 'Apex' : d.cjpi >= 75 ? 'Enterprise' : d.cjpi >= 55 ? 'Architect' : 'Creator',
+        tier: getTierFromScore(d.cjpi),
         category: d.category,
-        systemChain: d.module_chain || [],
+        systemChain: exportChain,
         description: d.description,
         exportLanguages: languages.map(l => l.language),
         source: 'vault-export',

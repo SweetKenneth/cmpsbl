@@ -34,6 +34,7 @@ export function estimateMarketValue(cjpi: number, category: string, moduleChainL
 
 /** Format a numeric value as a human-readable USD string */
 export function formatMarketValue(value: number): string {
+  if (value >= 1000000000) return `$${(value / 1000000000).toFixed(2)}B`;
   if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
   if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`;
   return `$${value}`;
