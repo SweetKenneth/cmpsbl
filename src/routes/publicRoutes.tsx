@@ -7,6 +7,7 @@ import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
 import { PackGate } from "@/components/slots/PackGate";
 
 // Core pages
+const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
 const DomainAwareHome = lazy(() => import("@/components/routing/DomainAwareHome"));
 const FeedDreamEater = lazy(() => import("@/pages/FeedDreamEater"));
 const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology"));
