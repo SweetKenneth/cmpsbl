@@ -9,9 +9,10 @@ export {
   clearRules as clearCausalRules,
   propagate,
   getChain,
+  getAllChains,
   getStats as getCausalStats,
-  type CausalRule,
+  type PropagationRule,
   type CausalEvent,
-  type PropagationChain,
+  type CausalChain,
 } from '@/crownjewels/s-tier/034-causal-event-propagation';
 export * from '@/crownjewels/s-tier/186-temporal-ripple-analyzer';
