@@ -1,6 +1,6 @@
 /**
  * MeshActivityTab — Real-time Intent Mesh dashboard
- * v10.1 — Live realtime feed, replay integration, pipeline crystallization
+ * v10.1 — Live realtime feed, replay integration, memory crystallization
  */
 
 
