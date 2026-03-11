@@ -312,6 +312,88 @@ async function flushGapDetection(): Promise<void> {
 export { flushGapDetection };
 
 /**
+ * Emit real comm events to the mesh_comms table for the live feed.
+ * Translates each resolver response into an INTENT-voice event.
+ */
+async function emitCommEvents(
+  intent: Omit<MeshIntent, 'id' | 'timestamp'>,
+  responses: ResolverResponse[],
+  resolvedBy: string[]
+): Promise<void> {
+  try {
+    const { createCommEvent } = await import('./intent-voice');
+    const events: Array<Record<string, unknown>> = [];
+
+    // Source module broadcasts processing
+    const sourceEvent = createCommEvent(intent.sourceModule.toUpperCase(), 'processing', {
+      targetModule: responses[0]?.module,
+      resolverId: responses[0]?.resolverId,
+    });
+    events.push({
+      source_module: sourceEvent.sourceModule,
+      target_module: sourceEvent.targetModule,
+      raw_signal: sourceEvent.rawSignal,
+      translated_voice: sourceEvent.translatedVoice,
+      category: sourceEvent.category,
+      resolver_id: sourceEvent.resolverId,
+      personality_trait: sourceEvent.personality?.trait,
+      personality_icon: sourceEvent.personality?.icon,
+    });
+
+    // Each responding resolver emits a completion/denial signal
+    for (const resp of responses) {
+      const signal = resp.success ? 'complete' : 'denied';
+      const ev = createCommEvent(resp.module, signal, {
+        targetModule: intent.sourceModule.toUpperCase(),
+        resolverId: resp.resolverId,
+      });
+      events.push({
+        source_module: ev.sourceModule,
+        target_module: ev.targetModule,
+        raw_signal: ev.rawSignal,
+        translated_voice: ev.translatedVoice,
+        category: ev.category,
+        resolver_id: ev.resolverId,
+        personality_trait: ev.personality?.trait,
+        personality_icon: ev.personality?.icon,
+      });
+    }
+
+    if (events.length > 0) {
+      await supabase.from('mesh_comms').insert(events as any[]);
+    }
+  } catch (err) {
+    console.warn('[IntentMesh] Failed to emit comm events:', err);
+  }
+}
+
+/**
+ * Persist a comm event directly (for non-router mesh activity)
+ */
+export async function persistCommEvent(
+  sourceModule: string,
+  rawSignal: string,
+  opts?: { targetModule?: string; resolverId?: string }
+): Promise<void> {
+  try {
+    const { createCommEvent } = await import('./intent-voice');
+    const ev = createCommEvent(sourceModule, rawSignal, opts);
+    await supabase.from('mesh_comms').insert([{
+      source_module: ev.sourceModule,
+      target_module: ev.targetModule,
+      raw_signal: ev.rawSignal,
+      translated_voice: ev.translatedVoice,
+      category: ev.category,
+      resolver_id: ev.resolverId,
+      personality_trait: ev.personality?.trait,
+      personality_icon: ev.personality?.icon,
+    }] as any[]);
+  } catch (err) {
+    console.warn('[IntentMesh] Failed to persist comm event:', err);
+  }
+}
+
+/**
  * Log a mesh receipt to the database
  */
 async function logReceipt(receipt: MeshReceipt): Promise<void> {
