@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { generateTemplateBatch, type GeneratedTemplate } from "@/lib/discovery/template-generator";
+import { forgeSignalBatch, SIGNAL_FORGE_PRIMITIVE } from "@/lib/substrate/forge/signal-forge";
+import type { GeneratedTemplate } from "@/lib/discovery/template-generator";
 import { Link } from "react-router-dom";
 
 // Rate limit: 5 downloads per day per user
