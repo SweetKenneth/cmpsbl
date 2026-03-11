@@ -135,7 +135,7 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
             <div className="flex items-center gap-3 flex-1">
               <Layers className="w-5 h-5 text-cyan-400 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Crystallized Pipelines</p>
+                <p className="text-sm font-medium">Crystallized Memories</p>
                 <p className="text-xs text-muted-foreground">
                   {pipelines.length} saved resolver chains • Searchable by module, domain, or intent
                 </p>
