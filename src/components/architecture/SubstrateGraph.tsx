@@ -32,7 +32,7 @@ const NODE_MAP: Record<string, NodeMeta> = {
   AUDIT:       { id: 'audit',       label: 'AUDIT',       sector: 'ocg',       sectorLabel: 'Compliance/OCG',     weight: 0.025, description: 'Integrity ledger — immutable logging, chain-of-custody.' },
   NERVE:       { id: 'nerve',       label: 'NERVE',       sector: 'ocg',       sectorLabel: 'Compliance/OCG',     weight: 0.025, description: 'Operational signaling, consensus repair, inter-node coordination.' },
   DECODE:      { id: 'decode',      label: 'DECODE',      sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'Epistemic interpreter — prompt parsing, intent extraction, NLU.' },
-  ENCODE:      { id: 'encode',      label: 'ENCODE',      sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'Code generation pipeline — fix generation, output formatting.' },
+  ENCODE:      { id: 'encode',      label: 'ENCODE',      sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'Code generation engine — fix generation, output formatting.' },
   VISION:      { id: 'vision',      label: 'VISION',      sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'Observability & telemetry — health aggregation, metric visualization.' },
   CORTEX:      { id: 'cortex',      label: 'CORTEX',      sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'Autonomous orchestrator — multi-surface coordination, task routing.' },
   NEXUS:       { id: 'nexus',       label: 'NEXUS',       sector: 'execution', sectorLabel: 'Execution',          weight: 0.023, description: 'AI provider routing gateway — model selection, fallback chains.' },
