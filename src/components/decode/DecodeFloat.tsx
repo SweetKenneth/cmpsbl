@@ -81,12 +81,24 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
       const orbRect = orbRef.current?.getBoundingClientRect();
       if (!orbRect) return;
       const elements = document.querySelectorAll(INTERACTIVE_SELECTOR);
-      let needsDodge = false;
+
+      // Batch ALL layout reads upfront to avoid forced reflows
+      const rects: DOMRect[] = [];
+      const validIndices: number[] = [];
+      let idx = 0;
       for (const el of elements) {
-        if (el === orbRef.current || orbRef.current?.contains(el) || el.closest('[data-decode-panel]')) continue;
+        if (el === orbRef.current || orbRef.current?.contains(el) || el.closest('[data-decode-panel]')) { idx++; continue; }
         const r = el.getBoundingClientRect();
-        if (r.width === 0 || r.height === 0) continue;
-        const pad = 8;
+        if (r.width === 0 || r.height === 0) { idx++; continue; }
+        rects.push(r);
+        validIndices.push(idx);
+        idx++;
+      }
+
+      // Check overlap using cached rects (no further layout reads)
+      let needsDodge = false;
+      const pad = 8;
+      for (const r of rects) {
         if (orbRect.left - pad < r.right && orbRect.right + pad > r.left && orbRect.top - pad < r.bottom && orbRect.bottom + pad > r.top) {
           needsDodge = true;
           break;
@@ -102,10 +114,7 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
           for (const candidate of candidates) {
             const cRect = { left: candidate.x, right: candidate.x + ORB_SIZE, top: candidate.y, bottom: candidate.y + ORB_SIZE };
             let clean = true;
-            for (const el of elements) {
-              if (el === orbRef.current || orbRef.current?.contains(el) || el.closest('[data-decode-panel]')) continue;
-              const r = el.getBoundingClientRect();
-              if (r.width === 0 || r.height === 0) continue;
+            for (const r of rects) {
               if (cRect.left - 8 < r.right && cRect.right + 8 > r.left && cRect.top - 8 < r.bottom && cRect.bottom + 8 > r.top) { clean = false; break; }
             }
             if (clean) return candidate;
