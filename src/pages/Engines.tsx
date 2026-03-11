@@ -186,7 +186,7 @@ export default function Engines() {
         <section className="pb-24">
           <div className="container mx-auto px-3 sm:px-4 flex items-center justify-between mb-6">
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-              {(["APEX", "ELITE", "CORE"] as const).map((tier) => (
+              {(["META", "APEX", "ELITE", "CORE"] as const).map((tier) => (
                 <Badge key={tier} variant="outline" className={cn("text-[11px] font-mono", TIER_BADGE[tier])}>
                   {tier} · {ENGINES.filter(e => e.tier === tier).length}
                 </Badge>
