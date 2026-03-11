@@ -239,7 +239,7 @@ export function CmpsblNav() {
               className="relative group flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
               aria-label="CMPSBL Home"
             >
-              <CmpsblLogo size="sm" className="transition-transform duration-300 group-hover:scale-105" />
+              <CmpsblLogo size="sm" priority className="transition-transform duration-300 group-hover:scale-105" />
               <div className="hidden sm:flex flex-col">
                 <span className="text-lg font-bold tracking-tight leading-none">Memory Stream</span>
                 <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
