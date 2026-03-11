@@ -307,7 +307,7 @@ await cmpsbl.integration.execute({
     icon: Code,
     layer: "Admin",
     title: "INCLUSIVE A11y",
-    description: "Human compatibility & accessibility pipeline",
+    description: "Human compatibility & accessibility engine",
     color: "text-pink-500",
     gradient: "from-pink-500 to-rose-600",
     code: `// Scan a target for accessibility issues
