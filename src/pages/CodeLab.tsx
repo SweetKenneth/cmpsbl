@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { TEMPLATES, ALL_TEMPLATES, Template, getTemplateTier } from "@/data/templates";
 
 // Components
+import { SignalForge } from "@/components/codelab/SignalForge";
 import { ExplorerCards } from "@/components/codelab/ExplorerCards";
 import { CodeWorkbench } from "@/components/codelab/CodeWorkbench";
 import { ProjectStarter } from "@/components/codelab/ProjectStarter";
