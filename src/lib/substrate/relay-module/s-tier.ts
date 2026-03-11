@@ -6,3 +6,4 @@
 export * from '@/crownjewels/s-tier/064-priority-aware-relay';
 export * from '@/crownjewels/s-tier/198-cross-zone-relay-bridge';
 export * from '@/crownjewels/s-tier/224-event-storm-dampener';
+export { DeadLetterIntelligenceEngine } from '@/crownjewels/s-tier/229-232-cjpi90-batch';
