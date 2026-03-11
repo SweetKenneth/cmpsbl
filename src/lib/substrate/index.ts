@@ -1361,6 +1361,9 @@ export * from './reflex/s-tier';
 export * from './shadow-module/s-tier';
 export * from './harvest/s-tier';
 export * from './atlas/s-tier';
+export * from './defense/s-tier';
+export * from './immunity/s-tier';
+export * from './observer/s-tier';
 
 // Vault Primitive Loader — 1,894 dynamic capabilities
 export {

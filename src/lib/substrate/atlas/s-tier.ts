@@ -6,3 +6,4 @@ export * from '@/crownjewels/s-tier/074-capability-gate-engine';
 export * from '@/crownjewels/s-tier/112-entitlement-resolution';
 export * from '@/crownjewels/s-tier/133-capability-impact-forecaster';
 export * from '@/crownjewels/s-tier/140-recursive-capability-discoverer';
+export * from '@/crownjewels/s-tier/200-entitlement-cascade-resolver';

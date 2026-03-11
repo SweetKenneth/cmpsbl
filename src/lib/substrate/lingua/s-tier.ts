@@ -4,3 +4,4 @@
 export * from '@/crownjewels/s-tier/194-cultural-context-adapter';
 export * from '@/crownjewels/s-tier/213-domain-terminology-forge';
 export * from '@/crownjewels/s-tier/223-polyglot-translation-matrix';
+export { IntentPreservingSummarizer } from '@/crownjewels/s-tier/233-238-cjpi89-batch';
