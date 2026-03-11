@@ -382,6 +382,11 @@ export function createEvolutionProposal(
   };
 }
 
+/** @deprecated Use EvolutionProposal */
+export type ModernizerProposal = EvolutionProposal;
+/** @deprecated Use createEvolutionProposal */
+export const createModernizerProposal = createEvolutionProposal;
+
 // ═══════════════════════════════════════════════════════════════
 // TEMPLATE PIPELINE — Compliance Gate
 // ═══════════════════════════════════════════════════════════════
