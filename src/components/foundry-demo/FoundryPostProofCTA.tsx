@@ -32,10 +32,10 @@ export function FoundryPostProofCTA() {
             Start Mining Pipelines
           </button>
           <button
-            onClick={() => navigate('/foundry')}
+            onClick={() => navigate('/pipelines')}
             className="w-full sm:w-auto px-8 sm:px-10 py-4 border border-border/30 text-foreground rounded-xl font-mono text-sm sm:text-base font-medium hover:bg-muted/20 transition-all duration-200 min-h-[52px]"
           >
-            Explore the Foundry
+            View Discovered Pipelines
           </button>
         </div>
         <p className="mt-6 text-xs font-mono text-muted-foreground/40">
