@@ -110,7 +110,7 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', minTier: 'studio' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers', minTier: 'studio' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code pipeline', minTier: 'studio' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', minTier: 'studio' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
     // ── Architect tier ──
     { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution pipeline', minTier: 'architect' },
