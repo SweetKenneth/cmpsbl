@@ -1929,7 +1929,7 @@ export const dream = substrate.dream;
 export const ripple = substrate.ripple;
 export const access = substrate.access;
 export const system = substrate.system;
-export const evolutionMod = substrate.evolution;
+
 export const evolutionClient = substrate.evolution;
 export const integration = substrate.integration;
 export const inclusive = substrate.inclusive;
