@@ -97,21 +97,20 @@ export function SignalForge() {
 
   const handleForge = useCallback(() => {
     setIsForging(true);
-    // Use requestAnimationFrame to allow UI to update before heavy computation
     requestAnimationFrame(() => {
       setTimeout(() => {
-        const batch = generateTemplateBatch({
+        const result = forgeSignalBatch({
           batchSize: 12,
           minModules: 2,
           maxModules: 5,
           minCjpiTarget: 80,
           biasHighValue: true,
         });
-        setForgedTemplates(batch);
+        setForgedTemplates(result.templates);
         setSelectedTemplate(null);
         setIsForging(false);
-        toast.success(`Forged ${batch.length} templates from the substrate`);
-      }, 600); // Brief delay for dramatic effect
+        toast.success(`Forged ${result.templates.length} templates in ${result.executionMs}ms [${result.batchId}]`);
+      }, 600);
     });
   }, []);
 
