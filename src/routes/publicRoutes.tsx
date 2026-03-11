@@ -159,6 +159,8 @@ export const publicRoutes = (
     <Route path="/operatives/:slug" element={<Navigate to="/engines" replace />} />
     <Route path="/engines" element={<Engines />} />
     <Route path="/engines/:slug" element={<EngineDetail />} />
+    <Route path="/discovered-pipelines" element={<DiscoveredPipelines />} />
+    <Route path="/pipelines" element={<DiscoveredPipelines />} />
     <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
     <Route path="/scan/results/:id" element={<ScanResult />} />
     <Route path="/scan" element={<Scanner />} />
