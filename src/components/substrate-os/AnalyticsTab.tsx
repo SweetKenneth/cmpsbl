@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { SiteAnalyticsSection } from './SiteAnalyticsSection';
 import { UserBehaviorSection } from './UserBehaviorSection';
+import { DevMetricsSection } from './DevMetricsSection';
 
 interface TelemetryData {
   brainEvents: number;
@@ -42,7 +43,7 @@ export function AnalyticsTab() {
   const [data, setData] = useState<TelemetryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('7d');
-  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate' | 'behavior'>('traffic');
+  const [activeSection, setActiveSection] = useState<'traffic' | 'substrate' | 'behavior' | 'devs'>('traffic');
 
   const fetchTelemetry = useCallback(async () => {
     setLoading(true);
@@ -263,6 +264,17 @@ export function AnalyticsTab() {
           >
             <Users className="w-4 h-4" /> User Behavior
           </button>
+          <button
+            onClick={() => setActiveSection('devs')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSection === 'devs'
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/40"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Network className="w-4 h-4" /> Dev Metrics
+          </button>
         </div>
         <a
           href="/admin/analytics"
@@ -277,6 +289,8 @@ export function AnalyticsTab() {
         <SiteAnalyticsSection />
       ) : activeSection === 'behavior' ? (
         <UserBehaviorSection />
+      ) : activeSection === 'devs' ? (
+        <DevMetricsSection />
       ) : (
         <>
       {/* Header */}

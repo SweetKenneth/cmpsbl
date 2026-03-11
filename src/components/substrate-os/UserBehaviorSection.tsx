@@ -380,6 +380,11 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
         const firstEvent = sorted[0];
         const lastEvent = sorted[sorted.length - 1];
         const durationMs = new Date(lastEvent.created_at).getTime() - new Date(firstEvent.created_at).getTime();
+        const entryPage = pages[0] || '(direct)';
+        const exitPage = pages[pages.length - 1] || '(none)';
+        const hasConversion = sorted.some(e => e.category === 'conversion');
+        const hasAuth = sorted.some(e => e.category === 'auth');
+        const hasScan = sorted.some(e => e.category === 'scan');
 
         return {
           sessionId,
@@ -390,6 +395,12 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
           durationMs,
           startTime: firstEvent.created_at,
           categories: [...new Set(sorted.map(e => e.category))],
+          entryPage,
+          exitPage,
+          hasConversion,
+          hasAuth,
+          hasScan,
+          depth: uniquePages.length,
         };
       })
       .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())
@@ -402,37 +413,109 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
     return `${(ms / 3600000).toFixed(1)}h`;
   };
 
-  return (
-    <div className="space-y-3">
-      <p className="text-xs text-muted-foreground">{sessions.length} sessions tracked</p>
+  // Summary metrics
+  const totalSessions = sessions.length;
+  const avgDepth = totalSessions > 0 ? (sessions.reduce((s, x) => s + x.depth, 0) / totalSessions).toFixed(1) : '0';
+  const avgDuration = totalSessions > 0 ? fmtDuration(sessions.reduce((s, x) => s + x.durationMs, 0) / totalSessions) : '0s';
+  const conversionSessions = sessions.filter(s => s.hasConversion).length;
+  const bounceSessions = sessions.filter(s => s.depth <= 1 && s.eventCount <= 2).length;
+  const bounceRate = totalSessions > 0 ? Math.round((bounceSessions / totalSessions) * 100) : 0;
 
+  // Top entry pages
+  const entryMap = new Map<string, number>();
+  sessions.forEach(s => entryMap.set(s.entryPage, (entryMap.get(s.entryPage) || 0) + 1));
+  const topEntries = Array.from(entryMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  return (
+    <div className="space-y-4">
+      {/* Journey Summary Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        {[
+          { label: 'Sessions', value: totalSessions.toString(), sub: 'tracked journeys', color: 'text-violet-400' },
+          { label: 'Avg Depth', value: avgDepth, sub: 'pages per session', color: 'text-blue-400' },
+          { label: 'Avg Duration', value: avgDuration, sub: 'time on site', color: 'text-cyan-400' },
+          { label: 'Conversions', value: conversionSessions.toString(), sub: `${totalSessions > 0 ? Math.round((conversionSessions / totalSessions) * 100) : 0}% of sessions`, color: 'text-green-400' },
+          { label: 'Bounce Rate', value: `${bounceRate}%`, sub: `${bounceSessions} single-page`, color: bounceRate > 60 ? 'text-red-400' : 'text-amber-400' },
+        ].map((card, idx) => (
+          <motion.div
+            key={card.label}
+            className="p-3 rounded-xl border border-border/30 bg-card/50"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.04 }}
+          >
+            <span className="text-[10px] text-muted-foreground font-mono uppercase block">{card.label}</span>
+            <span className={cn("text-xl font-bold font-mono", card.color)}>{card.value}</span>
+            <span className="text-[10px] text-muted-foreground block">{card.sub}</span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Top Entry Pages */}
+      {topEntries.length > 0 && (
+        <motion.div
+          className="p-4 rounded-xl border border-border/30 bg-card/50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
+            <ChevronRight className="w-3.5 h-3.5 text-green-400" /> Top Entry Points
+          </h4>
+          <div className="flex gap-2 flex-wrap">
+            {topEntries.map(([page, count]) => (
+              <Badge key={page} variant="outline" className="text-[10px] font-mono gap-1">
+                {page} <span className="text-green-400 font-bold">{count}</span>
+              </Badge>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Session List */}
+      <p className="text-xs text-muted-foreground">{sessions.length} sessions • most recent first</p>
       <div className="space-y-2">
         {sessions.map((s, idx) => (
           <motion.div
             key={s.sessionId}
-            className="rounded-xl border border-border/30 bg-card/50 p-4"
+            className={cn(
+              "rounded-xl border bg-card/50 p-4",
+              s.hasConversion ? "border-green-500/30" : s.hasAuth ? "border-amber-500/30" : "border-border/30"
+            )}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.03 }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+            {/* Session header */}
+            <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm font-medium text-foreground">{s.userName}</span>
                 <Badge variant="outline" className="text-[10px] font-mono">{s.eventCount} events</Badge>
                 <Badge variant="outline" className="text-[10px] font-mono">{fmtDuration(s.durationMs)}</Badge>
+                <Badge variant="outline" className="text-[10px] font-mono">{s.depth} pages</Badge>
+                {s.hasConversion && <Badge className="text-[9px] bg-green-500/20 text-green-400 border border-green-500/40">CONVERTED</Badge>}
+                {s.hasAuth && !s.hasConversion && <Badge className="text-[9px] bg-amber-500/20 text-amber-400 border border-amber-500/40">SIGNED UP</Badge>}
+                {s.hasScan && <Badge className="text-[9px] bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">SCANNED</Badge>}
               </div>
               <span className="text-[10px] text-muted-foreground font-mono">
                 {new Date(s.startTime).toLocaleString()}
               </span>
             </div>
 
-            {/* Page flow visualization */}
+            {/* Visual page flow with entry/exit indicators */}
             <div className="flex items-center gap-1 flex-wrap">
               {s.uniquePages.map((page, i) => (
                 <div key={`${page}-${i}`} className="flex items-center gap-1">
                   {i > 0 && <span className="text-muted-foreground/40 text-xs">→</span>}
-                  <span className="px-2 py-0.5 rounded-md bg-muted/30 border border-border/20 text-[10px] font-mono text-foreground">
-                    {page}
+                  <span className={cn(
+                    "px-2 py-0.5 rounded-md border text-[10px] font-mono",
+                    i === 0
+                      ? "bg-green-500/10 border-green-500/30 text-green-400"
+                      : i === s.uniquePages.length - 1
+                        ? "bg-red-500/10 border-red-500/30 text-red-400"
+                        : "bg-muted/30 border-border/20 text-foreground"
+                  )}>
+                    {i === 0 && '▶ '}{page}{i === s.uniquePages.length - 1 && s.uniquePages.length > 1 && ' ◼'}
                   </span>
                 </div>
               ))}
