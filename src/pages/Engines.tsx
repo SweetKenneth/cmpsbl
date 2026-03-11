@@ -223,7 +223,7 @@ export default function Engines() {
                 and lifetime access to the sealed runtime binary. 3 engines are completely free.
               </p>
               <p className="text-[10px] sm:text-xs font-mono text-muted-foreground/50">
-                3 free · CORE $199 · ELITE $399 · APEX $599 · 20 S-TIER sealed runtimes · 40% off bundled with agent
+                3 free · CORE $199 · ELITE $399 · APEX $599 · 30 S-TIER · 4 META $1,999 · 40% off bundled with agent
               </p>
               <div className="flex gap-3 mt-2">
                 <Button asChild variant="outline" size="sm" className="gap-1">
