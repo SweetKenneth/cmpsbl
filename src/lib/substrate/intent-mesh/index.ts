@@ -41,6 +41,7 @@ export {
   getRecentReceipts,
   getMeshStats,
   flushGapDetection,
+  persistCommEvent,
 } from './router';
 
 // Toggle — kill switch
