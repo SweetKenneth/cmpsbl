@@ -143,7 +143,7 @@ serve(async (req) => {
           .from("brain_memory_hot")
           .delete()
           .eq("id", memoryId)
-          .eq("source", "playground"); // Only allow deleting playground memories
+          .eq("source_module", "playground"); // Only allow deleting playground memories
 
         if (error) throw error;
 
