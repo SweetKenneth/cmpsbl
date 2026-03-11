@@ -145,7 +145,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="20 black-boxed, tamper-proof composable engines. APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent. Own the tool. Own the outcome." />
+        <meta name="description" content="30 black-boxed, tamper-proof composable engines. 10 S-TIER at $999, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
