@@ -84,22 +84,16 @@ export function LiveStatsBar() {
           <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
         </div>
 
-        {/* Stats — 3-col grid on mobile, horizontal row on desktop */}
-        <div className="grid grid-cols-3 gap-x-3 gap-y-2 sm:flex sm:items-center sm:justify-center sm:gap-6 md:gap-8">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06, duration: 0.3 }}
-              className="flex items-center gap-1 sm:gap-1.5 justify-center sm:justify-start shrink-0"
-            >
-              <stat.icon className={cn("w-3 h-3 shrink-0", stat.color)} />
-              <span className={cn("text-[11px] sm:text-sm font-black tabular-nums leading-none", stat.color)}>{stat.value}</span>
-              <span className="text-[8px] sm:text-[10px] text-muted-foreground/60 font-medium uppercase tracking-wider whitespace-nowrap leading-none">{stat.label}</span>
-            </motion.div>
-          ))}
-        </div>
+        {/* Design space narrative */}
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto"
+        >
+          Built from <span className="text-foreground/90 font-medium">endless capabilities</span> across{' '}
+          <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, it explores a design space a million times larger than the stars in the observable universe.
+        </motion.p>
       </div>
     </section>
   );
