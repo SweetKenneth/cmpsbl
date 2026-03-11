@@ -124,7 +124,7 @@ function MemoryStreamSection() {
         </div>
 
         <div className="mt-10 p-6 rounded-xl border border-border bg-card">
-          <h3 className="text-base font-semibold text-foreground mb-4">Pipeline Quality Tiers</h3>
+          <h3 className="text-base font-semibold text-foreground mb-4">Memory Quality Tiers</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
               { name: 'Mint', range: '68–79', color: 'text-emerald-500', desc: 'Production-viable' },

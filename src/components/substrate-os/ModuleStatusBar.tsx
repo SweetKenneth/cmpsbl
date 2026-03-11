@@ -33,7 +33,7 @@ const MODULES: ModuleConfig[] = [
   { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'grid', icon: GitBranch, description: 'Grid — autonomous orchestrator', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
   // Field (Execution surfaces / Matrix Nodes)
   { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'field', icon: MessageSquare, description: 'Field — epistemic interpreter', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
-  { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'field', icon: Code, description: 'Field — code generation pipeline', color: 'text-lime-400', glowColor: 'bg-lime-500' },
+  { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'field', icon: Code, description: 'Field — code generation engine', color: 'text-lime-400', glowColor: 'bg-lime-500' },
   { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'field', icon: Eye, description: 'Field — observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
   { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'field', icon: Zap, description: 'Field — AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
   { id: 'economy', name: 'ECONOMY', shortName: 'ECN', layer: 'field', icon: DollarSign, description: 'Field — metering & billing', color: 'text-yellow-400', glowColor: 'bg-yellow-500' },

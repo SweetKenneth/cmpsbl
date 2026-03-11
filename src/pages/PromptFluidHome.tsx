@@ -363,7 +363,7 @@ export default function PromptFluidHome() {
                 {[
                   { value: "24", label: "Modules" },
                   { value: "525+", label: "Capabilities" },
-                  { value: "300", label: "Pipelines" },
+                  { value: "300", label: "Memories" },
                   { value: "100", label: "Engines" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">

@@ -367,8 +367,8 @@ export default function AIOperatingSystem() {
             <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
               {[
                 { icon: Eye, title: "Observe", desc: "Every interaction is captured — model calls, latency patterns, cost signals, failure modes." },
-                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously packaged into exportable software pipelines." },
-                { icon: Cpu, title: "Export", desc: "Pipelines ship as sealed runtimes. The rarest become silicon chip specifications." },
+                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously packaged into exportable capability memories." },
+                { icon: Cpu, title: "Export", desc: "Memories ship as sealed runtimes. The rarest become silicon chip specifications." },
               ].map((step, i) => (
                 <motion.div
                   key={step.title}

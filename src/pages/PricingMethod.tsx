@@ -143,7 +143,7 @@ export default function PricingMethod() {
             <ul className="space-y-2 mb-4">
               {[
                 'Module count and integration depth',
-                'Pipeline crystallization quality',
+                'Memory crystallization quality',
                 'System chain complexity',
                 'Export target breadth',
                 'Hardware compatibility signals',

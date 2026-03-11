@@ -77,7 +77,7 @@ const systemMetrics = [
 const priorArtClaims = [
   "Clockless cognitive orchestration with weighted integrity scoring",
   "Memory stream architecture with signal-to-discovery crystallization",
-  "Pipeline crystallization with structural fingerprinting and replay verification",
+  "Memory crystallization with structural fingerprinting and replay verification",
   "Universal cross-language export with embedded micro-substrate runtime",
   "Shadow-mode governance with bounded autonomy tiers",
   "IRONCLAD resilience fabric with per-module bulkhead isolation",

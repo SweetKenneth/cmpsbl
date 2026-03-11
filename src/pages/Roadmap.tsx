@@ -75,11 +75,11 @@ const PHASES = [
     tagline: "Self-Improving Architecture",
     status: "Research",
     color: "primary",
-    description: "Pipelines that rewrite themselves. Genetic-style mutation, fitness scoring, and governed selection produce increasingly capable systems — autonomously.",
+    description: "Memories that rewrite themselves. Genetic-style mutation, fitness scoring, and governed selection produce increasingly capable systems — autonomously.",
     capabilities: [
       "Architecture mutation with fitness scoring",
       "Governed selection & rollback safety",
-      "Cross-pipeline trait inheritance",
+      "Cross-memory trait inheritance",
       "Autonomous code modernization & hardening",
     ],
     icon: GitBranch,

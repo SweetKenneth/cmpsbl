@@ -433,8 +433,8 @@ const stratumSparta: Specimen[] = [
     origin: "governance",
     stimulus: "Upgrades had no governed path to production — users could skip validation and apply directly",
     adaptations: [
-      "Multi-gate promotion pipeline: validation → shadow testing → application — all gates enforced sequentially",
-      "Pipeline blocks promotion if any validation or shadow test fails",
+      "Multi-gate promotion process: validation → shadow testing → application — all gates enforced sequentially",
+      "Process blocks promotion if any validation or shadow test fails",
     ],
     phenotype: [
       "No upgrade reaches production without passing both validation and shadow tests",
