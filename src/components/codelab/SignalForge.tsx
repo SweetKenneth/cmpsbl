@@ -390,17 +390,17 @@ export function SignalForge() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="container mx-auto px-4 py-8 md:py-12"
+            className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12"
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div>
-                <h2 className="text-xl font-bold">Forged Blueprints</h2>
-                <p className="text-sm text-muted-foreground">{forgedTemplates.length} unique pipeline architectures</p>
+                <h2 className="text-lg sm:text-xl font-bold">Forged Blueprints</h2>
+                <p className="text-xs sm:text-sm text-muted-foreground">{forgedTemplates.length} autonomous discoveries — validated architectures</p>
               </div>
-              <Badge variant="outline" className="text-[10px] font-mono">CJPI VALIDATED</Badge>
+              <Badge variant="outline" className="text-[9px] sm:text-[10px] font-mono">CJPI VALIDATED</Badge>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {forgedTemplates.map((template, index) => {
                 const Icon = CATEGORY_ICONS[template.category] || Zap;
                 const cjpi = avgCjpi(template);
