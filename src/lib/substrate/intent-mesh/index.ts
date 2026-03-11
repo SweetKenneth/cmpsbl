@@ -180,3 +180,14 @@ export {
   type FederationConfig,
   type FederationStats,
 } from './mesh-federation';
+
+// INTENT Voice — signal-to-voice translation layer
+export {
+  translateSignal,
+  translateSignalWithSource,
+  getSignalCategory,
+  createCommEvent,
+  generateLiveCommEvent,
+  type MeshCommEvent,
+  type SignalCategory,
+} from './intent-voice';

@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Shield, Zap, AlertTriangle, RotateCcw } from "lucide-react";
 import { ActionButton } from "@/components/admin/ui/ActionButton";
+import { IntentMeshCommsFeed } from "@/components/admin/IntentMeshCommsFeed";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { PILOT_EXECUTORS, EXECUTOR_MODULE_META, type PilotExecutorId } from "@/immune/pilotExecutors";
@@ -75,6 +76,9 @@ export default function ShadowMeshPage() {
 
       {/* Toggle */}
       <ShadowMeshToggle />
+
+      {/* Mesh Communications Feed */}
+      <IntentMeshCommsFeed />
 
       {/* Analytics */}
       <ShadowMeshAnalytics key={analyticsKey} />
