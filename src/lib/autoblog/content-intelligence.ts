@@ -456,7 +456,7 @@ brain.tier          # Trigger memory tiering
 brain.recall <q>    # Query knowledge graph`,
     evolutionPatterns: `evolve.status       # Current evolution state
 evolve.receipts     # View audit trail
-modernizer.omega    # Deep system analysis`,
+evolution.omega     # Deep system analysis`,
     practicalInsights: `system.status       # Global health check
 vision.stream       # Real-time telemetry
 circuit.status      # Circuit breaker states`,
