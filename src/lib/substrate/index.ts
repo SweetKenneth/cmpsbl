@@ -1315,6 +1315,10 @@ export {
 // S-Tier Runtime Primitives — 233 capabilities across 40 nodes
 // ═══════════════════════════════════════════════════════════════
 
+// Kernel & Infrastructure
+export * from './system/s-tier';
+export * from './events/s-tier';
+
 // Execution Nodes
 export * from './nexus-primitives';
 export * from './immunity-primitives';
@@ -1324,6 +1328,9 @@ export * from './medic/s-tier';
 export * from './cognitive-capabilities/s-tier';
 export * from './nerve/s-tier';
 export * from './inclusive/s-tier';
+export * from './relay-module/s-tier';
+export * from './encode-module/s-tier';
+export * from './sandbox-module/s-tier';
 
 // Core Nodes
 export * from './neural/s-tier';
@@ -1334,7 +1341,11 @@ export * from './evolution/s-tier';
 export * from './economy-module/s-tier';
 export * from './dream/s-tier';
 export * from './identity-module/s-tier';
+export * from './identity-module/access-s-tier';
 export * from './integration-module/s-tier';
+export * from './audit-module/s-tier';
+export * from './intent-mesh/s-tier';
+export * from './engineer/s-tier';
 
 // Expansion Zones
 export * from './sovereign/s-tier';
