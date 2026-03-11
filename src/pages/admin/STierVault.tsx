@@ -133,7 +133,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
   const stats = useMemo(() => {
     // Registry stats
     const byModule: Record<string, number> = {};
-    const byTier = { Apex: 0, Enterprise: 0, Architect: 0, Creator: 0 };
+    const byTier = { Apex: 0, Mythic: 0, Relic: 0, Prime: 0, Mint: 0, Raw: 0 };
     let totalRegValue = 0;
     for (const e of registryEntries) {
       byModule[e.module] = (byModule[e.module] ?? 0) + 1;
