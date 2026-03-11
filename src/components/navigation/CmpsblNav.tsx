@@ -110,7 +110,7 @@ export function CmpsblNav() {
       name: "Products",
       icon: Sparkles,
       items: [
-        { name: "Engines", href: "/engines", description: "20 sealed runtime engines", icon: Shield, badge: "20", highlight: true },
+        { name: "CodeLab", href: "/codelab", description: "Blueprint forge & signal synthesis", icon: FlaskConical, badge: "NEW FEATURES", highlight: true },
         { name: "Artifact packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
         { name: "Composable agents", href: "/composable-cognitives", description: "Pre-built AI agents", icon: Zap },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
