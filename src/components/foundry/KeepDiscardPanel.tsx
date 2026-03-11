@@ -1,6 +1,6 @@
 /**
  * KeepDiscardPanel — Post-crystallization decision UI
- * Shows rarity messaging + Keep / Discard actions per pipeline
+ * Shows rarity messaging + Keep / Discard actions per memory
  * 
  * Mobile-first: 44px touch targets, responsive text, stacked layout on small screens
  * Uses semantic design tokens (neon-amber, neon-purple) from design system
