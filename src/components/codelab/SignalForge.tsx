@@ -384,7 +384,7 @@ export function SignalForge() {
                 {user ? (
                   <span className="font-mono text-neon-green">{remaining} exports remaining today</span>
                 ) : (
-                  <>Forge freely · <Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to export</>
+                  <><span className="font-medium">CodeLab — </span><Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to export blueprints</>
                 )}
               </p>
             </motion.div>
