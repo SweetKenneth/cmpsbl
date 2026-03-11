@@ -5,5 +5,5 @@
 
 export * from '@/crownjewels/s-tier/009-tamper-evident-chain';
 export * from '@/crownjewels/s-tier/084-compliance-attestation';
-export * from '@/crownjewels/s-tier/105-forensic-replay';
+// forensic-replay also exported from echo/s-tier.ts — AUDIT is primary home
 export * from '@/crownjewels/s-tier/136-audit-grade-decision-ledger';
