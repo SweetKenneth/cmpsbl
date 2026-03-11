@@ -1,6 +1,6 @@
 /**
  * INCLUSIVE Glue Layer — Cross-Module Integration
- * Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, MODERNIZER, TEMPLATES, MARKETPLACE
+ * Wires INCLUSIVE to SYSTEM, VISION, DEFENSE, EVOLUTION, TEMPLATES, MARKETPLACE
  *
  * @origin(cmptbl) — Human Compatibility Pipeline (14th Substrate Module)
  * Developed by CMPSBL® as part of the cognitive orchestration substrate.
