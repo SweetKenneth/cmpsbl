@@ -190,7 +190,6 @@ export {
   getNodePersonality,
   getAllPersonalities,
   createCommEvent,
-  generateLiveCommEvent,
   type MeshCommEvent,
   type SignalCategory,
   type NodePersonality,
