@@ -447,11 +447,10 @@ async function technicalDebtTests(): Promise<Array<[string, TestFn]>> {
 
     // ── STUB DETECTION ──
     ['No placeholder API adapters returning hardcoded success', async () => {
-      const { freeApiAdapters } = await import('@/lib/agency/adapters/freeApiAdapters');
+      const { FREE_API_ADAPTERS, executeAdapter } = await import('@/lib/agency/adapters/freeApiAdapters');
       // youtube_transcript should NOT return success: true since it's a stub
-      if (freeApiAdapters.youtube_transcript) {
-        const result = freeApiAdapters.youtube_transcript({ url: 'https://test.com' });
-        const resolved = result instanceof Promise ? await result : result;
+      if (FREE_API_ADAPTERS.youtube_transcript) {
+        const resolved = await executeAdapter('youtube_transcript', { url: 'https://test.com' });
         assert(resolved.success !== true, 'youtube_transcript stub still returns success:true');
       }
     }],
