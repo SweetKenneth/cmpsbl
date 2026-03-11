@@ -320,7 +320,7 @@ function PipelineCard({ pipeline, enabled, onRun, running, index, category }: {
             ) : (
               <Play className="h-3 w-3" />
             )}
-            Replay Pipeline
+            Replay Memory
           </Button>
         </CardContent>
       </Card>

@@ -633,7 +633,7 @@ export default function EvolutionMeshDashboard() {
             ) : proposals.length === 0 ? (
               <EmptyState
                 icon={Rocket}
-                title="No mutations in the pipeline"
+                title="No mutations in the formation queue"
                 description="Mutations appear here when executors create change artifacts and proposals. Enable 'Mutation Intake' above to start accepting proposals."
               />
             ) : (

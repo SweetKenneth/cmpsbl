@@ -1,5 +1,5 @@
 /**
- * ArtifactExportPanel — Tiered language export for user-owned crystallized pipelines.
+ * ArtifactExportPanel — Tiered language export for user-owned crystallized memories.
  * Score determines which export languages are unlocked, aligned to rarity tiers.
  */
 import { useState, useMemo } from 'react';

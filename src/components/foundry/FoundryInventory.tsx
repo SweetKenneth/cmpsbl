@@ -149,7 +149,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
       <div className="flex flex-col gap-3 mb-6 pb-4 border-b border-border/10">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-xs font-mono text-muted-foreground">
-            {inventory.length} pipeline{inventory.length !== 1 ? 's' : ''}
+            {inventory.length} memor{inventory.length !== 1 ? 'ies' : 'y'}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <div className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">

@@ -79,7 +79,7 @@ export default function CapabilityManifest() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Capability Manifest — CMPSBL Developer Reference"
-        description="Browse and download the full CMPSBL capability manifest. Every system, capability, and pipeline — organized by tier and category."
+        description="Browse and download the full CMPSBL capability manifest. Every system, capability, and memory — organized by tier and category."
       />
       <PublicNav />
 

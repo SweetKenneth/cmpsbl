@@ -135,7 +135,7 @@ function ProvenanceBody({
         <div className="flex items-center gap-2">
           <Diamond className={`w-4 h-4 ${tierColor(cjpi)}`} />
           <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground">
-            Pipeline Provenance
+            Memory Provenance
           </span>
         </div>
         {!isMobile && (
