@@ -271,11 +271,11 @@ export function SignalForge() {
 
         <div className="container mx-auto px-4 sm:px-6 pt-8 pb-8 sm:pt-12 sm:pb-10 md:pt-20 md:pb-16 relative">
           <div className="max-w-2xl mx-auto text-center">
-            {/* System badge */}
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-4 sm:mb-5">
+            {/* Zone badge */}
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-3 sm:mb-4">
               <Badge variant="outline" className="gap-1.5 px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
                 <Hexagon className="w-3 h-3" />
-                Autonomous Discovery · {DAILY_LIMIT} exports / day
+                CodeLab Zone
               </Badge>
             </motion.div>
 
@@ -284,8 +284,10 @@ export function SignalForge() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-[1.75rem] leading-[1.1] sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight mb-3 sm:mb-4"
+              className="text-[1.75rem] leading-[1.1] sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight mb-2 sm:mb-3"
             >
+              <span className="text-foreground">CodeLab</span>
+              <span className="text-muted-foreground mx-2">—</span>
               <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
                 SIGNAL FORGE
               </span>
@@ -316,6 +318,13 @@ export function SignalForge() {
               a system that runs continuously, retiring exhausted combinations and evolving 
               toward higher-value pipeline configurations.
             </motion.p>
+
+            {/* Limits badge */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.14 }} className="flex justify-center mb-4 sm:mb-6">
+              <Badge variant="outline" className="text-[9px] sm:text-[10px] font-mono border-muted text-muted-foreground">
+                {DAILY_LIMIT} exports / day · Autonomous Discovery
+              </Badge>
+            </motion.div>
 
             {/* Pipeline flow — responsive */}
             <motion.div
