@@ -97,7 +97,7 @@ export async function broadcastIntent(intent: Omit<MeshIntent, 'id' | 'timestamp
   }).catch(() => {}); // Non-blocking
 
   // Emit real comm events for the mesh feed (fire-and-forget)
-  emitCommEvents(intent, responses, resolvedBy).catch(() => {});
+  emitCommEvents(intent, responses).catch(() => {});
 
   // Auto-discovery: if resolution was partial/failed, queue gap analysis
   const isPartial = resolvedBy.length < externalResolvers.length;
@@ -313,50 +313,52 @@ export { flushGapDetection };
 
 /**
  * Emit real comm events to the mesh_comms table for the live feed.
- * Translates each resolver response into an INTENT-voice event.
+ * Translates each resolver response into an INTENT-voice event with
+ * signal variety based on actual resolution outcomes.
  */
 async function emitCommEvents(
   intent: Omit<MeshIntent, 'id' | 'timestamp'>,
-  responses: ResolverResponse[],
-  resolvedBy: string[]
+  responses: ResolverResponse[]
 ): Promise<void> {
   try {
     const { createCommEvent } = await import('./intent-voice');
     const events: Array<Record<string, unknown>> = [];
+    const source = intent.sourceModule.toUpperCase();
 
-    // Source module broadcasts processing
-    const sourceEvent = createCommEvent(intent.sourceModule.toUpperCase(), 'processing', {
+    // Source module broadcasts its intent
+    const sourceSignal = responses.length > 0 ? 'processing' : 'heartbeat';
+    const sourceEvent = createCommEvent(source, sourceSignal, {
       targetModule: responses[0]?.module,
       resolverId: responses[0]?.resolverId,
     });
-    events.push({
-      source_module: sourceEvent.sourceModule,
-      target_module: sourceEvent.targetModule,
-      raw_signal: sourceEvent.rawSignal,
-      translated_voice: sourceEvent.translatedVoice,
-      category: sourceEvent.category,
-      resolver_id: sourceEvent.resolverId,
-      personality_trait: sourceEvent.personality?.trait,
-      personality_icon: sourceEvent.personality?.icon,
-    });
+    events.push(commEventToRow(sourceEvent));
 
-    // Each responding resolver emits a completion/denial signal
+    // Each responding resolver emits a signal based on outcome
     for (const resp of responses) {
-      const signal = resp.success ? 'complete' : 'denied';
+      let signal: string;
+      if (resp.success && resp.data?._fallback) {
+        signal = 'acknowledged';
+      } else if (resp.success) {
+        signal = resp.durationMs > 3000 ? 'resolved' : 'complete';
+      } else if (resp.error?.includes('timed out')) {
+        signal = 'warning';
+      } else {
+        signal = 'denied';
+      }
+
       const ev = createCommEvent(resp.module, signal, {
-        targetModule: intent.sourceModule.toUpperCase(),
+        targetModule: source,
         resolverId: resp.resolverId,
       });
-      events.push({
-        source_module: ev.sourceModule,
-        target_module: ev.targetModule,
-        raw_signal: ev.rawSignal,
-        translated_voice: ev.translatedVoice,
-        category: ev.category,
-        resolver_id: ev.resolverId,
-        personality_trait: ev.personality?.trait,
-        personality_icon: ev.personality?.icon,
+      events.push(commEventToRow(ev));
+    }
+
+    // Source emits completion ack if all resolvers succeeded
+    if (responses.length > 0 && responses.every(r => r.success)) {
+      const ackEvent = createCommEvent(source, 'confirmed', {
+        targetModule: responses[responses.length - 1]?.module,
       });
+      events.push(commEventToRow(ackEvent));
     }
 
     if (events.length > 0) {
@@ -365,6 +367,20 @@ async function emitCommEvents(
   } catch (err) {
     console.warn('[IntentMesh] Failed to emit comm events:', err);
   }
+}
+
+/** Convert a MeshCommEvent to a DB row shape */
+function commEventToRow(ev: { sourceModule: string; targetModule?: string; rawSignal: string; translatedVoice: string; category: string; resolverId?: string; personality?: { trait: string; icon: string } }): Record<string, unknown> {
+  return {
+    source_module: ev.sourceModule,
+    target_module: ev.targetModule ?? null,
+    raw_signal: ev.rawSignal,
+    translated_voice: ev.translatedVoice,
+    category: ev.category,
+    resolver_id: ev.resolverId ?? null,
+    personality_trait: ev.personality?.trait ?? null,
+    personality_icon: ev.personality?.icon ?? null,
+  };
 }
 
 /**
@@ -378,16 +394,7 @@ export async function persistCommEvent(
   try {
     const { createCommEvent } = await import('./intent-voice');
     const ev = createCommEvent(sourceModule, rawSignal, opts);
-    await supabase.from('mesh_comms').insert([{
-      source_module: ev.sourceModule,
-      target_module: ev.targetModule,
-      raw_signal: ev.rawSignal,
-      translated_voice: ev.translatedVoice,
-      category: ev.category,
-      resolver_id: ev.resolverId,
-      personality_trait: ev.personality?.trait,
-      personality_icon: ev.personality?.icon,
-    }] as any[]);
+    await supabase.from('mesh_comms').insert([commEventToRow(ev)] as any[]);
   } catch (err) {
     console.warn('[IntentMesh] Failed to persist comm event:', err);
   }
