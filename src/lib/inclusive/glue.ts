@@ -251,7 +251,7 @@ export function shouldTriggerDefenseAlert(issues: InclusiveIssue[]): boolean {
 // EVOLUTION INTEGRATION — Proposal Triggers
 // ═══════════════════════════════════════════════════════════════
 
-export interface ModernizerProposal {
+export interface EvolutionProposal {
   type: 'fix_accessibility';
   source: 'inclusive';
   tag: 'human_compatibility';
@@ -340,11 +340,11 @@ export function getRegressions(hours = 24): RegressionRecord[] {
 }
 
 /**
- * Create modernizer proposal from regressions
+ * Create evolution proposal from regressions
  */
-export function createModernizerProposal(
+export function createEvolutionProposal(
   regressions: RegressionRecord[]
-): ModernizerProposal | null {
+): EvolutionProposal | null {
   if (regressions.length === 0) {
     return null;
   }
@@ -381,6 +381,11 @@ export function createModernizerProposal(
     created_at: new Date().toISOString(),
   };
 }
+
+/** @deprecated Use EvolutionProposal */
+export type ModernizerProposal = EvolutionProposal;
+/** @deprecated Use createEvolutionProposal */
+export const createModernizerProposal = createEvolutionProposal;
 
 // ═══════════════════════════════════════════════════════════════
 // TEMPLATE PIPELINE — Compliance Gate

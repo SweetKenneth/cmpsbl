@@ -94,7 +94,7 @@ const FAILURE_DISCIPLINE: Array<{ name: string; command: string }> = [
   { name: 'Usage guard - system.heal', command: 'system.heal' },
   { name: 'Safe denial - defense.quarantine', command: 'defense.quarantine' },
   { name: 'Safe denial - integration.connect', command: 'integration.connect' },
-  { name: 'Safe denial - modernizer.apply', command: 'modernizer.apply' },
+  { name: 'Safe denial - evolution.apply', command: 'evolution.apply' },
 ];
 
 const UNKNOWN_NAMESPACE: Array<{ name: string; command: string }> = [
