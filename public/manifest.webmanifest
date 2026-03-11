@@ -36,11 +36,11 @@
   ],
   "screenshots": [
     {
-      "src": "/og-default.jpg",
-      "sizes": "1200x630",
+      "src": "/og-memory-stream.jpg",
+      "sizes": "1280x853",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "CMPSBL Cognitive Substrate Dashboard"
+      "label": "CMPSBL Memory Stream - AI Software Discovery"
     }
   ],
   "shortcuts": [
