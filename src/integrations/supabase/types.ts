@@ -6329,6 +6329,75 @@ export type Database = {
         }
         Relationships: []
       }
+      discovered_pipelines: {
+        Row: {
+          capability_chain: Json
+          category: string
+          codename: string
+          created_at: string
+          cross_sector_count: number | null
+          curated: boolean
+          description: string | null
+          discovery_method: string
+          estimated_value_usd: number | null
+          id: string
+          name: string
+          node_chain: string[]
+          pipeline_score: number
+          rank: number | null
+          stage_count: number
+          status: string
+          synergy_rating: number | null
+          tier: string
+          unique_nodes: number | null
+          updated_at: string
+        }
+        Insert: {
+          capability_chain?: Json
+          category: string
+          codename: string
+          created_at?: string
+          cross_sector_count?: number | null
+          curated?: boolean
+          description?: string | null
+          discovery_method?: string
+          estimated_value_usd?: number | null
+          id?: string
+          name: string
+          node_chain?: string[]
+          pipeline_score?: number
+          rank?: number | null
+          stage_count?: number
+          status?: string
+          synergy_rating?: number | null
+          tier?: string
+          unique_nodes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          capability_chain?: Json
+          category?: string
+          codename?: string
+          created_at?: string
+          cross_sector_count?: number | null
+          curated?: boolean
+          description?: string | null
+          discovery_method?: string
+          estimated_value_usd?: number | null
+          id?: string
+          name?: string
+          node_chain?: string[]
+          pipeline_score?: number
+          rank?: number | null
+          stage_count?: number
+          status?: string
+          synergy_rating?: number | null
+          tier?: string
+          unique_nodes?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       discoveries: {
         Row: {
           category: string
