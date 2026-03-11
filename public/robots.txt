@@ -1,6 +1,6 @@
 # CMPSBL® Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-03-07
+# Last updated: 2026-03-11
 
 # =============================================================
 # DEFAULT: Allow all crawlers
@@ -11,9 +11,6 @@ Crawl-delay: 0.5
 
 # Sitemap locations
 Sitemap: https://cmpsbl.com/sitemap.xml
-Sitemap: https://cmpsbl.com/sitemap-index.xml
-Sitemap: https://cmpsbl.com/sitemap-blog.xml
-Sitemap: https://cmpsbl.com/sitemap-products.xml
 
 # LLM Context Files
 Allow: /llms.txt
@@ -28,79 +25,81 @@ Allow: /.well-known/security.txt
 # =============================================================
 Allow: /os
 Allow: /substrate
-Allow: /intelligence
 Allow: /engines
 Allow: /ai-operating-system
+Allow: /architecture
 Allow: /modules
 Allow: /modules/*
+Allow: /runtime
+Allow: /foundations
 Allow: /demo
-Allow: /demos
-Allow: /marketplace
-Allow: /marketplace/*
-Allow: /capabilities
-Allow: /capabilities/*
-Allow: /decode
-Allow: /system-feed
-Allow: /proof
+Allow: /try
 Allow: /composable-cognitives
 Allow: /persistent-memory
-Allow: /architecture
-Allow: /evolution-mesh
-Allow: /evolution-log
+Allow: /packs
+Allow: /upgrade
+Allow: /enterprise
+Allow: /evolution
 Allow: /intent-mesh
 Allow: /gaming
-Allow: /products/encode
-Allow: /store
-Allow: /memory-stream
 Allow: /foundry
-Allow: /explore
+Allow: /feed-dream-eater
+Allow: /dream-eater/archaeology
+Allow: /dream-eater/artifacts
+Allow: /proof
+Allow: /showcase
+Allow: /clockless-world-engine
+Allow: /capability-map
+Allow: /scan
+Allow: /scanner
+Allow: /system-integrity
+Allow: /pricing-method
+Allow: /overview
+Allow: /status
 
 # =============================================================
-# STANDARDS SECTION
+# STANDARDS
 # =============================================================
 Allow: /foundations
 Allow: /namespace
-Allow: /library
-Allow: /library/*
 
 # =============================================================
 # DOCUMENTATION & DEVELOPER RESOURCES
 # =============================================================
 Allow: /documentation
 Allow: /docs/*
-Allow: /dev-portal
 Allow: /devtools
 Allow: /developers
+Allow: /developers/guide
 Allow: /changelog
 Allow: /use-cases
 Allow: /academy
 Allow: /codelab
+Allow: /workspace
+Allow: /api-access
 Allow: /start-here
-Allow: /lab
 
 # =============================================================
 # PROTECTED AREAS: Block sensitive routes
 # =============================================================
-Disallow: /dashboard
 Disallow: /auth
 Disallow: /admin
+Disallow: /admin/*
 Disallow: /api/
-Disallow: /settings
-Disallow: /diagnostics
-Disallow: /repair
-Disallow: /deployment
-Disallow: /_next/
+Disallow: /a/
+Disallow: /checkout/redirect
+Disallow: /composable-cognitives/success
+Disallow: /composable-cognitives/download
+Disallow: /marketplace/success
+Disallow: /substrate/licensing/success
+Disallow: /clear-cache
+Disallow: /pf-clear-cache
 Disallow: /*.json$
 Disallow: /*?*preview=
 Disallow: /*?*draft=
-Disallow: /a/
-Disallow: /clear-cache
-Disallow: /register
-Disallow: /checkout-redirect
-Disallow: /diligence
 
 # =============================================================
-# PRIORITY CONTENT: Blog Origin Story (40 chapters)
+# CONTENT: Blog & Company
 # =============================================================
 Allow: /blog/
 Allow: /blog/*
@@ -113,9 +112,8 @@ Allow: /projects
 Allow: /roadmap
 Allow: /insights
 Allow: /publication
-Allow: /sitemap.xml
-Allow: /rss.xml
-Allow: /feed-dream-eater
+Allow: /careers
+Allow: /promptfluid
 
 # =============================================================
 # GOOGLE CRAWLERS
@@ -145,21 +143,16 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
-Allow: /marketplace
 Allow: /engines
-Allow: /intelligence
 Allow: /substrate
 Allow: /persistent-memory
 Allow: /composable-cognitives
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
-Allow: /evolution-mesh
-Allow: /intent-mesh
-Allow: /memory-stream
 Allow: /foundry
-Allow: /explore
+Allow: /architecture
+Allow: /runtime
 
 User-agent: Google-InspectionTool
 Allow: /
@@ -190,10 +183,7 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
-Allow: /marketplace
 Allow: /engines
-Allow: /intelligence
 Allow: /substrate
 Allow: /llms.txt
 Allow: /ai-operating-system
@@ -201,17 +191,17 @@ Allow: /modules
 Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
-Allow: /evolution-mesh
-Allow: /intent-mesh
-Allow: /decode
+Allow: /foundry
+Allow: /architecture
+Allow: /runtime
+Allow: /upgrade
+Allow: /enterprise
+Allow: /packs
 Allow: /proof
 Allow: /gaming
-Allow: /architecture
-Allow: /memory-stream
-Allow: /foundry
-Allow: /explore
+Allow: /codelab
+Allow: /workspace
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /api/
 
 User-agent: ChatGPT-User
@@ -221,15 +211,14 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
 Allow: /engines
 Allow: /persistent-memory
 Allow: /composable-cognitives
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
-Allow: /memory-stream
-Allow: /explore
+Allow: /foundry
+Allow: /architecture
 
 # Anthropic Claude Crawlers
 User-agent: anthropic-ai
@@ -239,7 +228,6 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
 Allow: /engines
 Allow: /substrate
 Allow: /ai-operating-system
@@ -247,10 +235,9 @@ Allow: /modules
 Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
-Allow: /evolution-mesh
 Allow: /architecture
-Allow: /memory-stream
-Allow: /explore
+Allow: /foundry
+Allow: /runtime
 
 User-agent: Claude-Web
 Crawl-delay: 5
@@ -259,10 +246,9 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
 Allow: /engines
 Allow: /persistent-memory
-Allow: /explore
+Allow: /foundry
 
 User-agent: ClaudeBot
 Crawl-delay: 5
@@ -271,14 +257,13 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
 Allow: /engines
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
-Allow: /explore
+Allow: /foundry
 
 # Perplexity AI
 User-agent: PerplexityBot
@@ -288,16 +273,13 @@ Allow: /about
 Allow: /solutions
 Allow: /foundations
 Allow: /namespace
-Allow: /library
 Allow: /engines
-Allow: /intelligence
 Allow: /ai-operating-system
 Allow: /modules
 Allow: /modules/*
 Allow: /persistent-memory
 Allow: /composable-cognitives
-Allow: /evolution-mesh
-Allow: /explore
+Allow: /foundry
 
 # Google Gemini
 User-agent: Google-Safety
@@ -316,7 +298,7 @@ Allow: /foundations
 Allow: /namespace
 Allow: /engines
 Allow: /persistent-memory
-Allow: /explore
+Allow: /foundry
 
 # Cohere AI
 User-agent: cohere-ai
@@ -336,7 +318,6 @@ Allow: /solutions
 Allow: /foundations
 Allow: /engines
 Disallow: /admin
-Disallow: /dashboard
 
 # Amazon/Alexa
 User-agent: Amazonbot
