@@ -1,74 +1,11 @@
 /**
- * Live Stats Bar — Real-time system metrics pulled from DB
- * Displays at the top of the homepage for social proof and trust
+ * Live Stats Bar — Design space narrative with live indicator
  */
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Activity, Brain, Zap, Shield, Users, Clock, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
-import { getMetric } from "@/stores/publicMetricsStore";
 
-interface LiveStat {
-  icon: React.ElementType;
-  value: string;
-  label: string;
-  color: string;
-}
-
-function useLiveStats() {
-  const [stats, setStats] = useState<LiveStat[]>([
-    { icon: Activity, value: "—", label: "Stream Events", color: "text-cyan-400" },
-    { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
-    { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
-    { icon: Brain, value: "—", label: "Crystallized", color: "text-violet-400" },
-    { icon: Users, value: "—", label: "API Calls Today", color: "text-cyan-400" },
-    { icon: CheckCircle2, value: "—", label: "Probes Passed", color: "text-emerald-400" },
-  ]);
-
-  useEffect(() => {
-    async function fetchLiveStats() {
-      try {
-        const { data, error } = await supabase.rpc("get_public_live_stats");
-
-        if (error || !data) {
-          console.warn("[LiveStats] RPC failed:", error?.message);
-          return;
-        }
-
-        const stats = data as { brain_events: number; memories: number; api_calls: number; total_probes: number };
-
-        const formatNum = (n: number | null): string => {
-          if (!n) return "0";
-          if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-          if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-          return n.toLocaleString();
-        };
-
-        setStats([
-          { icon: Activity, value: formatNum(stats.brain_events), label: "Stream Events", color: "text-cyan-400" },
-          { icon: Shield, value: "99.9%", label: "Stream Uptime", color: "text-emerald-400" },
-          { icon: Zap, value: String(getMetric('modulesCount')), label: "Active Systems", color: "text-amber-400" },
-          { icon: Brain, value: formatNum(stats.memories), label: "Crystallized", color: "text-violet-400" },
-          { icon: Users, value: formatNum(stats.api_calls), label: "API Calls Today", color: "text-cyan-400" },
-          { icon: CheckCircle2, value: formatNum(stats.total_probes), label: "Probes Run", color: "text-emerald-400" },
-        ]);
-      } catch {
-        // Silent — show defaults
-      }
-    }
-
-    fetchLiveStats();
-    const interval = setInterval(fetchLiveStats, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return stats;
-}
 
 export function LiveStatsBar() {
-  const stats = useLiveStats();
 
   return (
     <section className="relative z-10 py-3 sm:py-4 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 backdrop-blur-sm overflow-hidden">
@@ -84,22 +21,16 @@ export function LiveStatsBar() {
           <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
         </div>
 
-        {/* Stats — 3-col grid on mobile, horizontal row on desktop */}
-        <div className="grid grid-cols-3 gap-x-3 gap-y-2 sm:flex sm:items-center sm:justify-center sm:gap-6 md:gap-8">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06, duration: 0.3 }}
-              className="flex items-center gap-1 sm:gap-1.5 justify-center sm:justify-start shrink-0"
-            >
-              <stat.icon className={cn("w-3 h-3 shrink-0", stat.color)} />
-              <span className={cn("text-[11px] sm:text-sm font-black tabular-nums leading-none", stat.color)}>{stat.value}</span>
-              <span className="text-[8px] sm:text-[10px] text-muted-foreground/60 font-medium uppercase tracking-wider whitespace-nowrap leading-none">{stat.label}</span>
-            </motion.div>
-          ))}
-        </div>
+        {/* Design space narrative */}
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto"
+        >
+          Built from <span className="text-foreground/90 font-medium">endless capabilities</span> across{' '}
+          <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, it explores a design space a million times larger than the stars in the observable universe.
+        </motion.p>
       </div>
     </section>
   );
