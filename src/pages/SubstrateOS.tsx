@@ -549,7 +549,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'forge' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production pipeline with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production engine with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
                 <PanelContainer id="forge">
                   <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
                 </PanelContainer>

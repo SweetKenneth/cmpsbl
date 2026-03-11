@@ -72,9 +72,9 @@ export default function Packs() {
               <Package className="w-3 h-3 mr-1.5 inline" />
               Pack Management
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">Artifact Packs</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">Memory Packs</h1>
             <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-              24 artifact packs across 6 strategic domains. Every pack = 1 slot. Activate what you need, swap anytime.
+              24 memory packs across 6 strategic domains. Every pack = 1 slot. Activate what you need, swap anytime.
             </p>
           </motion.div>
 

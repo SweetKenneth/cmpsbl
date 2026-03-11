@@ -504,7 +504,7 @@ console.log(result.output, result.metrics);`,
     description: "Code generation & execution intelligence",
     color: "text-yellow-500",
     gradient: "from-yellow-500 to-lime-600",
-    code: `// Generate code from intent (via DECODE pipeline)
+    code: `// Generate code from intent (via DECODE memory formation)
 const result = await cmpsbl.encode.generate({
   intent: "Create a REST API endpoint for user profiles",
   language: "typescript",

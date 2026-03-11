@@ -11,7 +11,7 @@ import { SEO } from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SUGGESTIONS = [
-  { name: "Memory Stream", href: "/foundry", description: "Crystallize pipelines from the stream" },
+  { name: "Memory Stream", href: "/foundry", description: "Crystallize memories from the stream" },
   { name: "Documentation", href: "/documentation", description: "API reference & guides" },
   { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers" },
   { name: "Composable Agents", href: "/composable-cognitives", description: "Pre-built AI agents" },
