@@ -264,6 +264,17 @@ export function AnalyticsTab() {
           >
             <Users className="w-4 h-4" /> User Behavior
           </button>
+          <button
+            onClick={() => setActiveSection('devs')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+              activeSection === 'devs'
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/40"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Network className="w-4 h-4" /> Dev Metrics
+          </button>
         </div>
         <a
           href="/admin/analytics"
