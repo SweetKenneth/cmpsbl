@@ -9935,6 +9935,45 @@ export type Database = {
           },
         ]
       }
+      mesh_comms: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          personality_icon: string | null
+          personality_trait: string | null
+          raw_signal: string
+          resolver_id: string | null
+          source_module: string
+          target_module: string | null
+          translated_voice: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          personality_icon?: string | null
+          personality_trait?: string | null
+          raw_signal: string
+          resolver_id?: string | null
+          source_module: string
+          target_module?: string | null
+          translated_voice: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          personality_icon?: string | null
+          personality_trait?: string | null
+          raw_signal?: string
+          resolver_id?: string | null
+          source_module?: string
+          target_module?: string | null
+          translated_voice?: string
+        }
+        Relationships: []
+      }
       mesh_discovery_gaps: {
         Row: {
           available_resolvers: number
