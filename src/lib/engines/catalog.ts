@@ -10,6 +10,7 @@ import {
   Shield, Ghost, Brain, Eye, Zap, GitBranch, Scale,
   Cog, Sparkles, Radio, Castle, Lock, Globe, Cpu,
   Diamond, Hammer, Network, Fingerprint, Waypoints, FlaskConical,
+  Flame, Swords, Skull, BookOpen, ShieldAlert, Landmark, Bird, Router, Clock, Bot,
 } from "lucide-react";
 
 export interface Engine {
