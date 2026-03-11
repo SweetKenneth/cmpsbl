@@ -26,7 +26,7 @@ export interface Engine {
   priceId: string;
   icon: React.ElementType;
   color: string;
-  tier: "APEX" | "ELITE" | "CORE";
+  tier: "APEX" | "ELITE" | "CORE" | "META";
   edition: string;
   briefing: string;
   capabilities: string[];
