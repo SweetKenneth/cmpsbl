@@ -266,92 +266,112 @@ export function SignalForge() {
       {/* Hero */}
       <div className="relative border-b border-border/50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] rounded-full bg-primary/6 blur-[100px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] md:w-[600px] h-[200px] md:h-[300px] rounded-full bg-primary/6 blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-[200px] h-[200px] rounded-full bg-neon-cyan/4 blur-[80px]" />
 
-        <div className="container mx-auto px-5 pt-10 pb-10 md:pt-20 md:pb-14 relative">
+        <div className="container mx-auto px-4 sm:px-6 pt-8 pb-8 sm:pt-12 sm:pb-10 md:pt-20 md:pb-16 relative">
           <div className="max-w-2xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-6">
-              <Badge variant="outline" className="gap-1.5 px-3 py-1 text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
+            {/* System badge */}
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-4 sm:mb-5">
+              <Badge variant="outline" className="gap-1.5 px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
                 <Hexagon className="w-3 h-3" />
-                Free · {DAILY_LIMIT} exports / day
+                Autonomous Discovery · {DAILY_LIMIT} exports / day
               </Badge>
             </motion.div>
 
+            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-[2.25rem] leading-[1.08] sm:text-5xl md:text-6xl font-black tracking-tight mb-4"
+              className="text-[1.75rem] leading-[1.1] sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight mb-3 sm:mb-4"
             >
               <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
                 SIGNAL FORGE
               </span>
             </motion.h1>
 
+            {/* Tagline — the vibe */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 }}
+              className="text-sm sm:text-base md:text-lg font-semibold text-foreground/90 mb-2 sm:mb-3"
+            >
+              The system discovered working software architectures.
+            </motion.p>
+
+            {/* Detailed description */}
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-[15px] sm:text-base text-muted-foreground leading-relaxed mb-8 max-w-md mx-auto"
+              transition={{ delay: 0.12 }}
+              className="text-[13px] sm:text-sm md:text-[15px] text-muted-foreground leading-relaxed mb-6 sm:mb-8 max-w-lg mx-auto"
             >
-              Production-grade pipeline blueprints, synthesized from the substrate's 
-              autonomous discovery engine. Not demos — deployable architecture.
+              Every blueprint below was autonomously synthesized — not hand-authored. 
+              The substrate's discovery engine maps the full combinatorial space of{' '}
+              <span className="text-foreground font-medium">31 nodes × 20 categories</span>, 
+              scores each topology against CJPI integrity thresholds, and surfaces only 
+              architectures that survive validation. What you're forging is the output of 
+              a system that runs continuously, retiring exhausted combinations and evolving 
+              toward higher-value pipeline configurations.
             </motion.p>
 
-            {/* Pipeline flow */}
+            {/* Pipeline flow — responsive */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="mb-9 mx-auto"
+              transition={{ delay: 0.18 }}
+              className="mb-6 sm:mb-8 mx-auto"
             >
-              <div className="flex items-center justify-center gap-1 sm:gap-2">
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
                 {STEPS.map((step, i) => (
                   <div key={i} className="flex items-center gap-1 sm:gap-2">
-                    <div className="flex flex-col items-center gap-1">
+                    <div className="flex flex-col items-center gap-0.5 sm:gap-1">
                       <div className={cn(
-                        "w-10 h-10 sm:w-11 sm:h-11 rounded-lg border border-border/60 bg-card/80",
+                        "w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-lg border border-border/60 bg-card/80",
                         "flex items-center justify-center transition-transform hover:scale-110"
                       )}>
-                        <step.icon className={cn("w-4 h-4 sm:w-5 sm:h-5", step.color)} />
+                        <step.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5", step.color)} />
                       </div>
-                      <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground">{step.label}</span>
+                      <span className="text-[9px] sm:text-[10px] md:text-[11px] font-medium text-muted-foreground">{step.label}</span>
                     </div>
                     {i < STEPS.length - 1 && (
-                      <ArrowRight className="w-3 h-3 text-border mt-[-14px] shrink-0" />
+                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-border mt-[-12px] sm:mt-[-14px] shrink-0" />
                     )}
                   </div>
                 ))}
               </div>
             </motion.div>
 
+            {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-3"
+              transition={{ delay: 0.22 }}
+              className="space-y-2.5 sm:space-y-3"
             >
               <Button
                 size="lg"
                 onClick={handleForge}
                 disabled={isForging}
-                className="gap-3 px-8 h-13 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="gap-2.5 sm:gap-3 px-6 sm:px-8 h-11 sm:h-13 text-sm sm:text-base font-bold shadow-xl shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <Dices className="w-5 h-5" />
+                <Dices className="w-4 h-4 sm:w-5 sm:h-5" />
                 Forge Blueprints
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Button>
 
               {forgedTemplates.length > 0 && (
                 <div>
-                  <Button variant="ghost" size="sm" onClick={handleForge} disabled={isForging} className="gap-2 text-muted-foreground">
-                    <RefreshCw className="w-3.5 h-3.5" />
+                  <Button variant="ghost" size="sm" onClick={handleForge} disabled={isForging} className="gap-2 text-muted-foreground text-xs sm:text-sm">
+                    <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     Re-Forge
                   </Button>
                 </div>
               )}
 
-              <p className="text-xs text-muted-foreground">
+              <p className="text-[11px] sm:text-xs text-muted-foreground">
                 {user ? (
                   <span className="font-mono text-neon-green">{remaining} exports remaining today</span>
                 ) : (
