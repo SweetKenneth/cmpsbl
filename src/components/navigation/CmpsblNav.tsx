@@ -107,6 +107,8 @@ export function CmpsblNav() {
         { name: "All nodes", href: "/modules", description: "40 nodes across 12 sectors", icon: Layers },
         { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
+        { name: "Capability map", href: "/capability-map", description: "Visual node & primitive atlas", icon: Map },
+        { name: "EVOLUTION", href: "/evolution", description: "Self-upgrade & lifecycle mesh", icon: GitBranch },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
         { name: "Foundations", href: "/foundations", description: "Core primitives", icon: Shield },
       ]
@@ -120,6 +122,7 @@ export function CmpsblNav() {
         { name: "Composable agents", href: "/composable-cognitives", description: "Pre-built AI agents", icon: Zap },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
+        { name: "Pricing", href: "/pricing-method", description: "Transparent pricing methodology", icon: CreditCard },
         { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers", icon: Rocket, highlight: true },
       ]
     },
@@ -131,6 +134,7 @@ export function CmpsblNav() {
         { name: "Api access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
         { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
         { name: "Codelab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "Namespace", href: "/namespace", description: "Module registry & identifiers", icon: Layers },
         { name: "Academy", href: "/academy", description: "Interactive tutorials", icon: GraduationCap },
         { name: "Developer guide", href: "/developers/guide", description: "SDK setup & integration", icon: BookOpen },
       ]
@@ -139,12 +143,15 @@ export function CmpsblNav() {
       name: "Explore",
       icon: Globe,
       items: [
+        { name: "Try it", href: "/try", description: "Live demo — no signup required", icon: Play, badge: "LIVE", highlight: true },
+        { name: "Demo", href: "/demo", description: "Interactive system walkthrough", icon: Activity },
+        { name: "Experiment Lab", href: "/lab", description: "Sandbox for testing primitives", icon: FlaskConical },
         { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW" },
-        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "LIVE", highlight: true },
+        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "LIVE" },
+        { name: "About", href: "/about", description: "Mission, team & philosophy", icon: Info },
         { name: "Use cases", href: "/use-cases", description: "Industry applications", icon: Globe },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "System overview", href: "/overview", description: "The full picture", icon: Globe },
       ]
     },
   ];
