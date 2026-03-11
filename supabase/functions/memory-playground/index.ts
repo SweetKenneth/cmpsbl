@@ -48,7 +48,8 @@ serve(async (req) => {
           .insert({
             content: content.substring(0, 1000), // Limit for demo
             importance_score: importanceScore,
-            source: "playground",
+            source_module: "playground",
+            memory_type: "playground",
             tags: metadata.tags || ["demo", "playground"],
             access_count: 1,
           })
