@@ -22,7 +22,7 @@ const WORLD_FIRSTS = [
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
   { title: "40-Node Memory Stream", desc: "First cognitive infrastructure with 40 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
   { title: "Intent Mesh Crystallization", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
-  { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
+  { title: "DECODE → ENCODE Process", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
   { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
   { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN to all systems via relevance scoring", badge: "CLM" },
