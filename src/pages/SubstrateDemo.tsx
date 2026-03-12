@@ -89,7 +89,7 @@ const DEMO_SCENARIOS = [
     icon: Zap,
   },
   {
-    name: 'Security Pipeline',
+    name: 'Security Chain',
     sequence: ['defense', 'vision', 'brain', 'governance'],
     description: 'Detect threats → Observe patterns → Store intel → Enforce ethics',
     icon: Shield,
