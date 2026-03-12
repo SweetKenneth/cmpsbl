@@ -59,7 +59,7 @@ export default function PricingMethod() {
                   <div className="text-3xl font-bold text-primary mb-1">55%</div>
                   <div className="font-semibold text-foreground mb-2">Market Consensus</div>
                   <p className="text-sm text-muted-foreground">
-                    Multiple AI models independently evaluate the artifact against comparable software products, tools, and libraries. We take the median estimate after rejecting outliers.
+                    Multiple AI models independently evaluate the capability against comparable software products, tools, and libraries. We take the median estimate after rejecting outliers.
                   </p>
                 </CardContent>
               </Card>
