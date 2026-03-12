@@ -198,7 +198,7 @@ function ExportEcosystem() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Export Ecosystem</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mb-10">
-            Every crystallized pipeline includes a standalone Micro-Substrate runtime and functional test harness. Export languages are gated by quality score.
+            Every crystallized memory includes a standalone Micro-Substrate runtime and functional test harness. Export languages are gated by quality score.
           </p>
         </motion.div>
 
