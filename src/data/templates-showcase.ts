@@ -316,7 +316,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Fingerprint,
     category: 'interaction',
     rarity: 'mythic',
-    crownJewelFeature: 'Sovereign Identity Federation',
+    apexFeature: 'Sovereign Identity Federation',
     buildTime: '~30 min',
     tags: ['IDENTITY'],
   },
