@@ -179,7 +179,7 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     return () => clearTimeout(timeout);
   }, [pos]);
 
-  return { pos, onPointerDown, onPointerMove, onPointerUp, isDragging };
+  return { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging };
 }
 
 // ─── Quick Actions by Mode ──────────────────────────────────────
