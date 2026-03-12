@@ -283,7 +283,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Target,
     category: 'interaction',
     rarity: 'great',
-    crownJewelFeature: 'Intent Evolution Tracker',
+    apexFeature: 'Intent Evolution Tracker',
     buildTime: '~20 min',
     tags: ['DECODE'],
   },
