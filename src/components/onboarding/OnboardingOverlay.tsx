@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const ONBOARDING_KEY = 'cmpsbl_onboarded';
+const ONBOARDING_KEY = 'cmpsbl_onboarded_v2';
 
 interface OnboardingStep {
   icon: React.ReactNode;
@@ -98,10 +98,6 @@ export function useOnboarding() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const path = window.location.pathname;
-    const suppressOnFoundry = path.startsWith('/foundry') || path.startsWith('/memory-stream');
-    if (suppressOnFoundry) return;
-
     const seen = localStorage.getItem(ONBOARDING_KEY);
     if (!seen) setShow(true);
   }, []);
