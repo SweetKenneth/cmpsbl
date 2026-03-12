@@ -226,7 +226,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Eye,
     category: 'data',
     rarity: 'great',
-    crownJewelFeature: 'Anomaly Precognition',
+    apexFeature: 'Anomaly Precognition',
     buildTime: '~20 min',
     tags: ['VISION'],
   },
