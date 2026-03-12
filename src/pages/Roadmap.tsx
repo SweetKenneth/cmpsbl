@@ -91,8 +91,8 @@ const DOMAIN_NODES = [
     domain: "Bioinformatics",
     icon: Heart,
     signal: "DNA sequences",
-    description: "Genomic pattern recognition, protein folding pipelines, drug interaction modeling. Crystallize from NCBI, UniProt, and clinical trial feeds.",
-    opportunities: ["Precision medicine pipelines", "Gene therapy target discovery", "Clinical trial optimization"],
+    description: "Genomic pattern recognition, protein folding processes, drug interaction modeling. Crystallize from NCBI, UniProt, and clinical trial feeds.",
+    opportunities: ["Precision medicine memories", "Gene therapy target discovery", "Clinical trial optimization"],
   },
   {
     domain: "Finance",
