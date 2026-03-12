@@ -66,7 +66,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Zap,
     category: 'intelligence',
     rarity: 'great',
-    crownJewelFeature: 'End-to-End Reasoning',
+    apexFeature: 'End-to-End Reasoning',
     buildTime: '~25 min',
     tags: ['NEXUS', 'BRAIN'],
   },
