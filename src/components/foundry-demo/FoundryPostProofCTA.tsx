@@ -18,7 +18,7 @@ export function FoundryPostProofCTA() {
         className="max-w-2xl mx-auto relative text-center"
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4 leading-tight">
-          Want to discover pipelines yourself?
+          Want to discover memories yourself?
         </h2>
         <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
           Create an account to access the Foundry and explore discoveries
@@ -29,13 +29,13 @@ export function FoundryPostProofCTA() {
             onClick={() => navigate('/auth?redirect=/foundry')}
             className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-primary text-primary-foreground rounded-xl font-mono text-sm sm:text-base font-bold hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 hover:-translate-y-0.5 min-h-[52px] crystallize-glow"
           >
-            Start Mining Pipelines
+            Start Mining Memories
           </button>
           <button
             onClick={() => navigate('/pipelines')}
             className="w-full sm:w-auto px-8 sm:px-10 py-4 border border-border/30 text-foreground rounded-xl font-mono text-sm sm:text-base font-medium hover:bg-muted/20 transition-all duration-200 min-h-[52px]"
           >
-            View Discovered Pipelines
+            View Discovered Memories
           </button>
         </div>
         <p className="mt-6 text-xs font-mono text-muted-foreground/40">

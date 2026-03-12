@@ -50,14 +50,14 @@ export const NARRATIVE = {
   
   // What things are called
   terminology: {
-    artifact: 'Crystallized Pipeline',
-    artifacts: 'Crystallized Pipelines',
+    artifact: 'Crystallized Memory',
+    artifacts: 'Crystallized Memories',
     module: 'System',             // NEVER use "module" publicly
     modules: 'Systems',
-    pack: 'Pipeline Pack',
-    packs: 'Pipeline Packs',
-    slot: 'Pipeline Slot',
-    slots: 'Pipeline Slots',
+    pack: 'Memory Pack',
+    packs: 'Memory Packs',
+    slot: 'Memory Slot',
+    slots: 'Memory Slots',
     foundry: 'Memory Stream',
     mining: 'Crystallization',
     crownJewel: 'Apex Discovery',
@@ -218,7 +218,7 @@ export const MARKETING = {
   sections: {
     whySubstrate: { badge: '9 Systems', title: 'The Stream' },
     differentiation: { badge: 'What Makes This Different', title: 'Intelligence That Crystallizes' },
-    packs: { badge: 'Pipeline Packs', title: 'Activate What You Need' },
+    packs: { badge: 'Memory Packs', title: 'Activate What You Need' },
     agents: { badge: '20 Sealed Black-Box Agents', title: 'Black-Boxed. Always Learning.' },
     useCases: { badge: 'What You Can Build', title: 'From Today To Tomorrow' },
     industry: { badge: 'Universal Infrastructure', title: 'One Substrate, Every Industry' },
@@ -230,7 +230,7 @@ export const MARKETING = {
   cta: {
     signUp: 'Start Free — 3 Slots',
     explore: 'Explore the Memory Stream',
-    crystallize: 'Crystallize Pipeline',
+    crystallize: 'Crystallize Memory',
     upgrade: 'Upgrade Your Stream',
     docs: 'Read the Docs',
     sdk: 'Not a vibe coder? Use SDK',

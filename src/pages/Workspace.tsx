@@ -96,7 +96,7 @@ export default function Workspace() {
     <>
       <SEO
         title="Workspace — Build on the Substrate | CMPSBL"
-        description="Your personal builder space. Access SDKs, crystallize pipelines, and build on the cognitive substrate — free tier included."
+        description="Your personal builder space. Access SDKs, crystallize memories, and build on the cognitive substrate — free tier included."
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
@@ -208,7 +208,7 @@ export default function Workspace() {
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Crystallize pipelines. Rare finds on every tier.</p>
+                  <p className="text-xs text-muted-foreground mt-1">Crystallize memories. Rare finds on every tier.</p>
                   <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
                 </Card>
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/documentation')}>

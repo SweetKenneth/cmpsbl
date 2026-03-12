@@ -85,7 +85,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Rocket className="h-7 w-7" />,
     title: 'Upgrade When You\'re Ready',
-    description: 'Paid tiers unlock more daily pulls, larger vaults, artifact export, custom pipeline slots, and priority NEXUS routing. The substrate runs the same for everyone — tiers govern capacity, not capability.',
+    description: 'Paid tiers unlock more daily pulls, larger vaults, artifact export, custom memory slots, and priority NEXUS routing. The substrate runs the same for everyone — tiers govern capacity, not capability.',
     link: '/upgrade',
     linkLabel: 'View Plans',
     gradient: 'from-rose-500/20 via-pink-500/10 to-transparent',

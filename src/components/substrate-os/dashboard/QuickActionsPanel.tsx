@@ -120,7 +120,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
     },
     {
       id: 'crystallize', label: 'Memory Stream', icon: Sparkles,
-      description: 'Crystallize pipelines',
+      description: 'Crystallize memories',
       borderClass: 'border-sky-500/15 hover:border-sky-500/40',
       bgGradient: 'from-sky-500/[0.06]', glowBg: 'bg-sky-500/10',
       iconGradient: 'bg-gradient-to-br from-sky-500 to-indigo-600',

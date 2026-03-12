@@ -1,5 +1,5 @@
 /**
- * Discovered Pipelines — Top 100 autonomous compositions from the Memory Stream
+ * Discovered Memories — Top 100 autonomous compositions from the Memory Stream
  * The substrate's most valuable execution paths, scored and ranked.
  */
 import { Helmet } from 'react-helmet-async';
@@ -38,8 +38,8 @@ export default function DiscoveredPipelines() {
   return (
     <>
       <Helmet>
-        <title>Discovered Pipelines — Autonomous Compositions from the Memory Stream</title>
-        <meta name="description" content="The substrate's highest-scoring autonomous pipeline compositions. Scored, ranked, and ready for deployment." />
+        <title>Discovered Memories — Autonomous Compositions from the Memory Stream</title>
+        <meta name="description" content="The substrate's highest-scoring autonomous memory compositions. Scored, ranked, and ready for deployment." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -58,13 +58,13 @@ export default function DiscoveredPipelines() {
                 AUTONOMOUS DISCOVERY
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
-                Discovered Pipelines
+                Discovered Memories
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-8">
                 The Memory Stream autonomously composed and scored these execution paths from{' '}
                 <span className="text-foreground font-medium">940+ capabilities</span> across{' '}
-                <span className="text-foreground font-medium">40 nodes</span>. Each pipeline chains
-                multiple Apex Discoveries into unified superpipelines — ranked by synergy,
+                <span className="text-foreground font-medium">40 nodes</span>. Each memory chains
+                multiple Apex Discoveries into unified super-memories — ranked by synergy,
                 node diversity, and aggregate quality.
               </p>
 
@@ -131,7 +131,7 @@ export default function DiscoveredPipelines() {
         <section className="px-5 sm:px-6 pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <p className="text-muted-foreground text-sm mb-6">
-              These pipelines represent a fraction of the <span className="text-foreground font-mono font-bold">10²⁹</span> possible execution paths.
+              These memories represent a fraction of the <span className="text-foreground font-mono font-bold">10²⁹</span> possible execution paths.
             </p>
             <Button asChild size="lg" className="gap-2">
               <Link to="/foundry">

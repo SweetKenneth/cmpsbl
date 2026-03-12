@@ -66,7 +66,7 @@ const quickStarts = [
   { icon: Brain, text: "Add persistent memory to any AI agent", link: "/persistent-memory" },
   { icon: Moon, text: "Enable DREAM cycles for offline synthesis", link: "/documentation" },
   { icon: Zap, text: "Download a Mind — a production AI agent you own", link: "/composable-cognitives" },
-  { icon: Code, text: "Activate pipeline packs for advanced capabilities", link: "/foundry" },
+  { icon: Code, text: "Activate memory packs for advanced capabilities", link: "/foundry" },
   { icon: Shield, text: "Deploy with governed evolution and rollback", link: "/evolution" },
   { icon: BookOpen, text: "Explore the full technical documentation", link: "/documentation" },
 ];
@@ -215,7 +215,7 @@ export default function StartHere() {
           <motion.div {...stagger(0.4)} className="callout-accent rounded-xl p-5 mb-8">
             <p className="text-foreground font-semibold text-base sm:text-lg flex items-center gap-2.5">
               <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-              Free users are first-class builders here. 3 pipeline slots. Full runtime. No credit card.
+              Free users are first-class builders here. 3 memory slots. Full runtime. No credit card.
             </p>
           </motion.div>
 
