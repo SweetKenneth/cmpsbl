@@ -111,9 +111,9 @@ const SECTORS: SectorDef[] = [
     label: "Expansion Manufacturing Zone",
     tag: "EMZ",
     nodes: [
-      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing pipelines." },
+      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing processes." },
       { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
-      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL pipelines." },
+      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
     ],
   },
   {
