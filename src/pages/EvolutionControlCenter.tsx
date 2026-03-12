@@ -494,7 +494,7 @@ export default function EvolutionControlCenter() {
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               The{" "}
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                governed pipeline
+                governed process
               </span>
             </h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-lg mx-auto">
