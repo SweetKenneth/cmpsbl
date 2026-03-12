@@ -14,7 +14,6 @@ import {
   createAdminClient,
   EdgeError,
 } from "../_shared/edge-middleware.ts";
-import JSZip from "npm:jszip@3.10.1";
 
 /** Max wall-clock time budget (ms). Edge functions timeout at ~150s; we stop at 130s. */
 const TIME_BUDGET_MS = 130_000;
