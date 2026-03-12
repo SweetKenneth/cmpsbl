@@ -89,9 +89,9 @@ RELAY: Cross-module message routing
 AUDIT: Immutable logging & compliance
 NERVE: Operational signaling & coordination
 DECODE: Natural language understanding & intent parsing
-ENCODE: Content generation & code pipelines
+ENCODE: Content generation & code synthesis
 VISION: Observability & telemetry
-CORTEX: Pipeline composition & agency orchestration
+CORTEX: Memory composition & agency orchestration
 NEXUS: 14-provider AI routing authority
 ECONOMY: Cost tracking & budget governance
 SANDBOX: Isolated execution environment
