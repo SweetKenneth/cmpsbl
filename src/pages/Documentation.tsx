@@ -285,8 +285,8 @@ function ArchitectureSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Weighted Matrix</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Every module in the substrate holds a weight in the system matrix. These weights determine health contribution,
-          failure impact radius, and circuit-breaker sensitivity. CORE manages the matrix and recalculates weights during
+          Every node in the substrate holds a weight in the system matrix. These weights determine health contribution,
+          failure impact radius, and safety-switch sensitivity. CORE manages the matrix and recalculates weights during
           boot, evolution promotions, and manual rebalance events.
         </p>
         <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
@@ -295,8 +295,8 @@ HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
 STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
 AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
-// Health score = Σ(module_health × weight) / Σ(weights)
-// Circuit breaker trips when module health < 0.3`}</CodeBlock>
+// Health score = Σ(node_health × weight) / Σ(weights)
+// Safety switch trips when node health < 0.3`}</CodeBlock>
       </div>
 
       {/* Circuit breakers */}
