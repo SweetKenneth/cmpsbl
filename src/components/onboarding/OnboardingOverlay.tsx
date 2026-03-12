@@ -276,7 +276,7 @@ const staggerItem = {
   hidden: { opacity: 0, y: 12, filter: 'blur(4px)' },
   show: { 
     opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { type: 'spring', damping: 20, stiffness: 200 },
+    transition: { type: 'spring' as const, damping: 20, stiffness: 200 },
   },
 };
 
