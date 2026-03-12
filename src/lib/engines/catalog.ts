@@ -37,6 +37,12 @@ export interface Engine {
   externalPath?: string;
   /** True if engine is free (no checkout required) */
   isFree?: boolean;
+  /** True if engine should be featured prominently */
+  isFeatured?: boolean;
+  /** True if engine is free for subscribers (Creator+ tier) */
+  freeForSubscribers?: boolean;
+  /** Extended description for the detail page */
+  longDescription?: string;
 }
 
 export const ENGINES: Engine[] = [
