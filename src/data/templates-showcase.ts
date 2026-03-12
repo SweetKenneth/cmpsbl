@@ -248,7 +248,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Database,
     category: 'data',
     rarity: 'great',
-    crownJewelFeature: 'Event Dedup Intelligence',
+    apexFeature: 'Event Dedup Intelligence',
     buildTime: '~15 min',
     tags: ['RIPPLE'],
   },
