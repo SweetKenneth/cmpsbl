@@ -205,7 +205,7 @@ const rootMarkdown = import.meta.glob('/{README.md,LICENSE.md}', {
 // PUBLIC ASSETS (non-binary text files)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const publicTextFiles = import.meta.glob('/public/**/*.{json,xml,txt,svg,webmanifest,ico}', {
+const publicTextFiles = import.meta.glob('/public/**/*.{json,xml,txt,svg,webmanifest,js,css,html,md,ts}', {
   as: 'raw',
 }) as RawGlob;
 
