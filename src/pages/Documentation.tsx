@@ -705,10 +705,10 @@ function DefenseSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Module</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Node</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Enterprise-grade security built into the substrate core. DEFENSE is the terminal boundary —
-          the outermost shell that every request must pass through before reaching any other module.
+          the outermost shell that every request must pass through before reaching any other node.
         </p>
       </div>
 
