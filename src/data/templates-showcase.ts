@@ -145,7 +145,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Activity,
     category: 'security',
     rarity: 'mythic',
-    crownJewelFeature: 'Self-Healing Neural Mesh',
+    apexFeature: 'Self-Healing Neural Mesh',
     buildTime: '~35 min',
     tags: ['DEFENSE', 'BRAIN'],
   },
