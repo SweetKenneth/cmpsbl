@@ -351,7 +351,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Code,
     category: 'infrastructure',
     rarity: 'mythic',
-    crownJewelFeature: 'Semantic Refactoring',
+    apexFeature: 'Semantic Refactoring',
     buildTime: '~25 min',
     tags: ['ENCODE'],
   },
