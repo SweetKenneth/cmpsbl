@@ -12,7 +12,7 @@ export default function PricingMethod() {
     <>
       <Helmet>
         <title>Our Pricing Method | CMPSBL®</title>
-        <meta name="description" content="How CMPSBL® systematically prices software artifacts using multi-model consensus, CJPI scoring, and market-grounded analysis." />
+        <meta name="description" content="How CMPSBL® systematically prices software capabilities using multi-model consensus, CJPI scoring, and market-grounded analysis." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
