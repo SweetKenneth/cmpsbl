@@ -95,7 +95,7 @@ export function SynergyDepotCTA() {
                   </motion.div>
                   <div className="flex-1">
                     <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
-                      Synergy Pipelines
+                      Synergy Memories
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Multi-module orchestration workflows that chain capabilities across your substrate.

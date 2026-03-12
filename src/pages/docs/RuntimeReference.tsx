@@ -213,8 +213,8 @@ export default function RuntimeReference() {
                       body: 'The substrate operates as a single coherent runtime for all users. There are no stripped-down versions. The free tier and the enterprise tier execute the same runtime. Systems compose freely without version fragmentation.',
                     },
                     {
-                      title: 'Pipeline Slots',
-                      body: 'Each pipeline pack consumes exactly 1 slot. Plans differ in slot capacity: Builder (3), Operator (6), Architect (12). All 24 packs are visible to all users — there is no tier-based gating on pack visibility.',
+                      title: 'Memory Slots',
+                      body: 'Each memory pack consumes exactly 1 slot. Plans differ in slot capacity: Builder (3), Operator (6), Architect (12). All 24 packs are visible to all users — there is no tier-based gating on pack visibility.',
                     },
                     {
                       title: 'Capability Registry',
