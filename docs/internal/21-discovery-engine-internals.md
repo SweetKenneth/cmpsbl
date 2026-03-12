@@ -136,6 +136,7 @@ Portable version of the reactor:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | System | Initial discovery engine internals — v13.1.0 |
+| 2026-03-12 | System | Updated to 40-node matrix, MINDGAMES epoch — v14.2.0 |
 
 ---
 
