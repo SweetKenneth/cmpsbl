@@ -448,7 +448,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-emerald-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
