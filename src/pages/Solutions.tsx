@@ -63,7 +63,7 @@ const solutions = [
   },
   {
     icon: Package,
-    name: "Artifact Packs",
+    name: "Capability Packs",
     tagline: "Modular Capability Upgrades",
     description: "24 activatable packs across 6 strategic domains. Each pack = 1 slot. Choose the exact capabilities your AI needs — swap anytime.",
     features: ["24 packs across 6 domains", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Domain-organized catalog", "Builder to Architect scaling"],
