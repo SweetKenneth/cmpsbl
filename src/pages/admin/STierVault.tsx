@@ -872,7 +872,7 @@ export default function STierVault() {
         estimatedValue: formatMarketValue(estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length)),
       })),
       summary: {
-        registryArtifacts: entries.length,
+        registryDiscoveries: entries.length,
         promotedDiscoveries: promoted.length,
         totalSoftware: entries.length + promoted.length,
         tiers: {
@@ -888,9 +888,9 @@ export default function STierVault() {
         categories: [...new Set(promoted.map(d => d.category))].sort(),
       },
       instructions: {
-        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software artifact. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
+        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
         howToRebuild: 'Import this manifest into any CMPSBL Substrate instance, or use the standalone-runtime.ts and standalone-discovery-engine.ts (included in any full ZIP export) to re-score and re-tier all entries.',
-        howToExport: 'Each artifact can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
+        howToExport: 'Each discovery can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
       },
     };
 

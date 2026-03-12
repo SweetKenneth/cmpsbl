@@ -187,9 +187,9 @@ function getQuickActions(mode: DecodeMode) {
   ];
   if (mode === 'governor') return [
     { icon: "📡", title: "Node Status", prompt: "Report full 40-node health status across all 12 sectors." },
-    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and circuit breaker states." },
+    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and safety switch states." },
     { icon: "🩺", title: "System Heal", prompt: "Run a diagnostic and heal any degraded nodes." },
-    { icon: "📊", title: "Pipeline Metrics", prompt: "Show pipeline scoring and foundry reactor metrics." },
+    { icon: "📊", title: "Memory Metrics", prompt: "Show memory scoring and foundry reactor metrics." },
   ];
   return [
     { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },

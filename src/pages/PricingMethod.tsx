@@ -138,7 +138,7 @@ export default function PricingMethod() {
               What CJPI Contributes
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The Crown Jewel Pipeline Index (CJPI) is our proprietary technical scoring system. It evaluates:
+              The Apex Discovery Index (CJPI) is our proprietary technical scoring system. It evaluates:
             </p>
             <ul className="space-y-2 mb-4">
               {[
