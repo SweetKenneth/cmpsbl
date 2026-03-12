@@ -13,7 +13,7 @@ This document describes the Autonomous Software Foundry — the substrate's recu
 
 The Foundry is a closed-loop reactor that:
 
-1. **Discovers** latent capabilities by combinatorially exploring the 38-node topology
+1. **Discovers** latent capabilities by combinatorially exploring the 40-node topology
 2. **Scores** each discovered capability using CJPI (Crown Jewel Pipeline Index)
 3. **Tiers** discoveries into S/A/B/C/D quality bands
 4. **Ranks** discoveries within each tier by composite score
