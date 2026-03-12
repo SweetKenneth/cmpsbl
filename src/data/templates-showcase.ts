@@ -191,7 +191,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Radio,
     category: 'automation',
     rarity: 'great',
-    crownJewelFeature: 'Webhook Intelligence Chain',
+    apexFeature: 'Webhook Intelligence Chain',
     buildTime: '~15 min',
     tags: ['RELAY', 'RIPPLE'],
   },
