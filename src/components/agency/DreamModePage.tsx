@@ -240,7 +240,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
             <CardHeader>
               <CardTitle>Local Agency Improvements</CardTitle>
               <CardDescription>
-                Learned from your agency's task patterns, errors, and artifacts
+                Learned from your agency's task patterns, errors, and discoveries
               </CardDescription>
             </CardHeader>
             <CardContent>

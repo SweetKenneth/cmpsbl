@@ -165,7 +165,7 @@ export function MaintenanceTab() {
           <div>
             <h2 className="text-lg font-bold">MAINTENANCE</h2>
             <p className="text-xs text-muted-foreground font-mono">
-              Circuit breakers · Repairs · Health checks
+              Safety switches · Repairs · Health checks
             </p>
           </div>
         </div>
@@ -254,7 +254,7 @@ export function MaintenanceTab() {
           </TabsTrigger>
         </TabsList>
 
-        {/* Circuit Breakers */}
+        {/* Safety Switches */}
         <TabsContent value="status" className="space-y-4 mt-4">
           {isLoadingCB ? (
             <div className="flex items-center justify-center py-12">

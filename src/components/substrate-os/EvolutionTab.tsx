@@ -2,7 +2,7 @@
  * Evolution Tab — Self-Evolution Control Panel
  * Living Substrate Orchestration
  * 
- * Shadow-to-production execution pipeline with governance gating
+ * Shadow-to-production execution chain with governance gating
  */
 
 import { useState } from 'react';

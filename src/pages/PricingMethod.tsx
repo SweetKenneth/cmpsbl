@@ -12,7 +12,7 @@ export default function PricingMethod() {
     <>
       <Helmet>
         <title>Our Pricing Method | CMPSBL®</title>
-        <meta name="description" content="How CMPSBL® systematically prices software artifacts using multi-model consensus, CJPI scoring, and market-grounded analysis." />
+        <meta name="description" content="How CMPSBL® systematically prices software capabilities using multi-model consensus, CJPI scoring, and market-grounded analysis." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -43,7 +43,7 @@ export default function PricingMethod() {
               Software doesn't have material costs. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. A single library might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each artifact against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
+              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
             </p>
           </section>
 
@@ -59,7 +59,7 @@ export default function PricingMethod() {
                   <div className="text-3xl font-bold text-primary mb-1">55%</div>
                   <div className="font-semibold text-foreground mb-2">Market Consensus</div>
                   <p className="text-sm text-muted-foreground">
-                    Multiple AI models independently evaluate the artifact against comparable software products, tools, and libraries. We take the median estimate after rejecting outliers.
+                    Multiple AI models independently evaluate the capability against comparable software products, tools, and libraries. We take the median estimate after rejecting outliers.
                   </p>
                 </CardContent>
               </Card>
@@ -94,7 +94,7 @@ export default function PricingMethod() {
               Multi-Model Consensus Pricing
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the artifact's technical profile, and returns an independent market analysis.
+              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the capability's technical profile, and returns an independent market analysis.
             </p>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
@@ -219,7 +219,7 @@ export default function PricingMethod() {
               Indie / Standard / Enterprise Ranges
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every artifact receives three pricing tiers derived from the recommended price:
+              Every capability receives three pricing tiers derived from the recommended price:
             </p>
             <div className="grid sm:grid-cols-3 gap-3">
               <Card>
@@ -256,7 +256,7 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4">Fairness & Consistency</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every artifact, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
+              Every capability, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
             </p>
             <div className="bg-muted/30 border border-border/50 rounded-lg p-4 text-sm text-muted-foreground">
               <strong className="text-foreground">Important:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair market value, not guaranteed sale prices. Actual market outcomes depend on demand, distribution, packaging, and timing.

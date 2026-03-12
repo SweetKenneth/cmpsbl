@@ -35,7 +35,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "System Integrity", href: "/system-integrity", section: "Platform", icon: Shield, keywords: ["diagnostics"] },
   
   // Product
-  { name: "Artifact Packs", href: "/packs", section: "Product", icon: Package, keywords: ["activate", "capabilities", "slots"] },
+  { name: "Capability Packs", href: "/packs", section: "Product", icon: Package, keywords: ["activate", "capabilities", "slots"] },
   { name: "Composable Agents", href: "/composable-cognitives", section: "Product", icon: Zap, keywords: ["cognitives", "AI agents", "cognitive"] },
   { name: "Persistent Memory", href: "/persistent-memory", section: "Product", icon: Brain, keywords: ["memory", "agent memory", "recall"] },
   { name: "Enterprise", href: "/enterprise", section: "Product", icon: Shield, keywords: ["scale", "governed", "organization"] },
