@@ -62,7 +62,7 @@ const TIERS: {
     description: 'Full runtime access with baseline technology.',
     accent: 'from-emerald-500 to-emerald-600',
     icon: Unlock,
-    capacity: { slots: 3, vault: '5 pipelines', pulls: '3 per day', exportEnabled: false, customSlots: false },
+    capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
       'Full baseline runtime',
       'All 24 packs visible',
