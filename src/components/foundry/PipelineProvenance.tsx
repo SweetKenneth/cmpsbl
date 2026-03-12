@@ -86,7 +86,7 @@ function ProvenanceBody({
       const recomputed = await generatePipelineFingerprint({ steps });
       setVerified(recomputed === fingerprint);
       if (recomputed === fingerprint) {
-        toast.success('Artifact verified — structural fingerprint matches');
+        toast.success('Discovery verified — structural fingerprint matches');
       } else {
         toast.error('Fingerprint mismatch — artifact may have been modified');
       }
