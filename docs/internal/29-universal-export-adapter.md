@@ -7,7 +7,7 @@
 
 ## 1. Purpose
 
-The Universal Export Adapter enables any Crown Jewel discovery to be exported to 25 distinct target languages. Every export is delivered as a complete, plug-and-play ZIP package with build tooling, test harnesses, and the standalone Micro-Substrate runtime.
+The Universal Export Adapter enables any Crown Jewel discovery to be exported to 25 distinct target languages. Every export is delivered as a complete, plug-and-play ZIP package with build tooling, test harnesses, and the CMPSBL® Mini-Runtime™ Engine.
 
 ## 2. Target Languages
 
