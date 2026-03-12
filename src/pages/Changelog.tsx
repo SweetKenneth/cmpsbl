@@ -417,7 +417,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Consumed nodes lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
     adaptations: [
       "Zone architecture introduced: consumed nodes became individually addressable zones with independent fault isolation",
-      "Convergence layers split into clearly delineated zones with individual circuit breakers",
+      "Convergence layers split into clearly delineated zones with individual safety switches",
       "Hot-swap capability enabled for surgical zone replacement without affecting siblings",
     ],
     phenotype: [
