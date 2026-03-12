@@ -402,7 +402,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Learning engine was throttled by artificial limits — cognition cycles sat idle despite available capacity",
     adaptations: [
       "Learning engine upgraded to full-intensity continuous operation — artificial throttling removed",
-      "Distribution pipeline verified end-to-end with live synchronization",
+      "Distribution chain verified end-to-end with live synchronization",
     ],
     phenotype: [
       "Continuous learning runs at full intensity with no artificial throttling",
