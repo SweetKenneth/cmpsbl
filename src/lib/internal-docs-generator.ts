@@ -680,7 +680,7 @@ export function generateFoundryDoc(): string {
     </div>
     <div class="card">
       <h4 style="margin-top:0;">Export</h4>
-      <p>ZIP packages with manifest, standalone runtime, standalone discovery engine, and README.</p>
+      <p>ZIP packages with manifest, CMPSBL® Mini-Runtime™ Engine, Discovery Engine, and README.</p>
     </div>
   </div>
 
