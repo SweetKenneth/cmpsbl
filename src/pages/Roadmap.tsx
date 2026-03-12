@@ -60,11 +60,11 @@ const PHASES = [
     tagline: "Autonomous Simulation & Synthesis",
     status: "Planned",
     color: "primary",
-    description: "The substrate dreams. Off-cycle simulation generates synthetic data, stress-tests pipelines, and surfaces latent patterns humans never asked for.",
+    description: "The substrate dreams. Off-cycle simulation generates synthetic data, stress-tests memories, and surfaces latent patterns humans never asked for.",
     capabilities: [
       "Dream cycle scheduling & resource allocation",
       "Synthetic data generation for domain nodes",
-      "Autonomous pipeline stress-testing",
+      "Autonomous memory stress-testing",
       "Emergent pattern surfacing & flagging",
     ],
     icon: Moon,
