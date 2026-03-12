@@ -27,10 +27,13 @@ const TIME_BUDGET_MS = 120_000;
 const FINALIZE_RESERVE_MS = 10_000;
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
+const MIN_PAGE_SIZE = 50;
+const QUERY_RETRIES = 2;
+const RETRY_DELAY_MS = 250;
 
 /**
- * Tables to skip — large telemetry/event tables that bloat the backup
- * and can be regenerated. These are ordered by typical row count descending.
+ * Tables to skip — high-volume telemetry/event/report tables that bloat backups
+ * and are safe to regenerate from runtime activity.
  */
 const SKIP_TABLES = new Set([
   // High-volume telemetry — regenerable
@@ -73,7 +76,23 @@ const SKIP_TABLES = new Set([
   'error_logs',
   'health_checks',
   'cron_job_logs',
+  // Generated long-form report content (reproducible)
+  'owner_reports',
 ]);
+
+const SKIP_TABLE_PATTERNS: RegExp[] = [
+  /_events?$/,
+  /_logs?$/,
+  /_traces?$/,
+  /_telemetry$/,
+  /_snapshots?$/,
+  /_receipts?$/,
+  /_audit(_|$)/,
+  /_metrics(_|$)/,
+  /_queue$/,
+  /_usage$/,
+  /_quotas?$/,
+];
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -156,11 +175,11 @@ Deno.serve(async (req: Request) => {
         let tablesExported = 0;
 
         // Separate skipped tables and exportable tables
-        const skippedTables = tableNames.filter(t => SKIP_TABLES.has(t));
-        const exportTables = tableNames.filter(t => !SKIP_TABLES.has(t));
+        const skippedTables = tableNames.filter(shouldSkipTable);
+        const exportTables = tableNames.filter((t) => !shouldSkipTable(t));
 
         if (skippedTables.length > 0) {
-          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry tables: ${skippedTables.join(', ')}`);
+          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry/report tables`);
           for (const t of skippedTables) {
             tableSummary[t] = -3; // -3 = intentionally skipped
             tableParts[t] = 0;
@@ -183,6 +202,7 @@ Deno.serve(async (req: Request) => {
             let rowCount = 0;
             let offset = 0;
             let partCount = 0;
+            let pageSize = table === 'owner_reports' ? 100 : PAGE_SIZE;
 
             while (true) {
               if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
@@ -190,12 +210,17 @@ Deno.serve(async (req: Request) => {
                 break;
               }
 
-              const { data, error } = await admin
-                .from(table)
-                .select('*')
-                .range(offset, offset + PAGE_SIZE - 1);
+              const { data, error } = await fetchTablePageWithRetry(admin, table, offset, pageSize);
 
               if (error) {
+                const isStatementTimeout = /statement timeout/i.test(error.message || '');
+                if (isStatementTimeout && pageSize > MIN_PAGE_SIZE) {
+                  const nextPageSize = Math.max(MIN_PAGE_SIZE, Math.floor(pageSize / 2));
+                  errors.push(`${table}: statement timeout at page size ${pageSize}, retrying with ${nextPageSize}`);
+                  pageSize = nextPageSize;
+                  continue;
+                }
+
                 errors.push(`${table}: ${error.message}`);
                 break;
               }
@@ -207,8 +232,8 @@ Deno.serve(async (req: Request) => {
               await zip.addTextFile(partName, JSON.stringify(data));
 
               rowCount += data.length;
-              if (data.length < PAGE_SIZE) break;
-              offset += PAGE_SIZE;
+              if (data.length < pageSize) break;
+              offset += pageSize;
             }
 
             tableSummary[table] = rowCount;
@@ -473,6 +498,42 @@ class ZipStreamWriter {
   async abort(reason: unknown): Promise<void> {
     await this.writer.abort(reason);
   }
+}
+
+function shouldSkipTable(tableName: string): boolean {
+  if (SKIP_TABLES.has(tableName)) return true;
+  return SKIP_TABLE_PATTERNS.some((pattern) => pattern.test(tableName));
+}
+
+async function fetchTablePageWithRetry(
+  admin: ReturnType<typeof createClient>,
+  table: string,
+  offset: number,
+  pageSize: number,
+): Promise<{ data: Record<string, unknown>[] | null; error: { message: string } | null }> {
+  for (let attempt = 0; attempt <= QUERY_RETRIES; attempt++) {
+    const { data, error } = await admin
+      .from(table)
+      .select('*')
+      .range(offset, offset + pageSize - 1);
+
+    if (!error) {
+      return { data: (data as Record<string, unknown>[] | null) ?? null, error: null };
+    }
+
+    const retryable = /statement timeout|canceling statement|deadlock|timeout/i.test(error.message || '');
+    if (!retryable || attempt === QUERY_RETRIES) {
+      return { data: null, error: { message: error.message } };
+    }
+
+    await sleep(RETRY_DELAY_MS * (attempt + 1));
+  }
+
+  return { data: null, error: { message: 'Unknown fetch retry error' } };
+}
+
+async function sleep(ms: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function listAllStorageFiles(
