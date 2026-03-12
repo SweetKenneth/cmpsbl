@@ -313,7 +313,7 @@ export default function Upgrade() {
             className="max-w-2xl mx-auto mt-8 text-center sm:text-left bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
           >
             <p className="text-sm text-muted-foreground leading-relaxed">
-              The <strong className="text-foreground">Memory Stream</strong> continuously generates new pipelines.
+              The <strong className="text-foreground">Memory Stream</strong> continuously forms new memories.
               Each day you can <strong className="text-foreground">crystallize</strong> a limited number of discoveries depending on your plan.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
