@@ -27,7 +27,7 @@ export default function TheMarketplace() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed"><Link to="/blog/from-thought-to-artifact" className="text-primary hover:underline">FORGE</Link> could produce artifacts. But they sat in databases, invisible. Customers couldn't browse what the substrate had produced. They couldn't compare, preview, or deploy without talking to us directly.</p>
+      <p className="text-lg leading-relaxed"><Link to="/blog/from-thought-to-artifact" className="text-primary hover:underline">FORGE</Link> could produce discoveries. But they sat in databases, invisible. Customers couldn't browse what the substrate had produced. They couldn't compare, preview, or deploy without talking to us directly.</p>
 
       <p>We had built a factory with no storefront. FORGE was producing hundreds of artifacts weekly — security tools, accessibility fixers, data processors, content generators — and most of them were used once by the customer who commissioned them and then forgotten. Meanwhile, other customers were requesting almost identical artifacts. We were duplicating work because there was no way to discover what already existed.</p>
 
