@@ -177,7 +177,7 @@ const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every node carries a governance weight. The sum across all 40 nodes is exactly 1.000 — no single node can dominate decisions." },
   { title: "Clockless Coordination", desc: "Nodes share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
   { title: "Circuit Breaker Isolation", desc: "Every node has independent failure tracking with automatic circuit breakers. Degradation never cascades across sectors." },
-  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow pipeline before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
   { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
   { title: "Graceful Degradation", desc: "When individual nodes fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
