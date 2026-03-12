@@ -119,7 +119,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
       icon: Palette
     },
     free: { 
-      label: 'FREE', 
+      label: 'BUILDER', 
       color: 'bg-gradient-to-r from-cyan-500 to-blue-600', 
       border: 'border-cyan-500/50',
       text: 'text-cyan-400',
