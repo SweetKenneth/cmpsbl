@@ -176,6 +176,13 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
               <span className="text-2xl font-black tracking-tight">{engine.priceDisplay}</span>
               {engine.isFree ? (
                 <span className="text-xs text-emerald-400 font-semibold ml-1">No card required</span>
+              ) : engine.freeForSubscribers ? (
+                <>
+                  <span className="text-xs text-muted-foreground ml-1">one-time</span>
+                  <span className="block text-xs text-emerald-400 font-semibold mt-0.5">
+                    Free with Creator+ subscription
+                  </span>
+                </>
               ) : engine.isSubscription ? (
                 <span className="text-xs text-muted-foreground ml-1">/ year</span>
               ) : (
