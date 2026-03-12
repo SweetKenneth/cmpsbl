@@ -57,7 +57,7 @@ export function FoundryHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
-          A recursive discovery engine that surfaces production-grade software pipelines
+          A recursive discovery engine that surfaces production-grade software memories
           directly from silicon.{' '}
           <span className="text-foreground font-semibold">1,143 programs discovered in under 9 hours.</span>
           {' '}The stream never stops.
