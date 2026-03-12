@@ -20,7 +20,7 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
     { icon: BookOpen, label: 'Developer Academy', href: '/academy', description: 'Learn the patterns behind this research' },
   ],
   changelog: [
-    { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and artifacts' },
+    { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and capabilities' },
     { icon: Layers, label: 'Nodes', href: '/modules', description: 'Full substrate architecture' },
   ],
   release: [

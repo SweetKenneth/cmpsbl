@@ -31,7 +31,7 @@ const INTENT_PATTERNS: Array<{
   {
     patterns: [/resilience/i, /circuit.*breaker/i, /circuits/i, /open.*circuit/i, /heal.*attempts/i],
     command: 'system.resilience',
-    explanation: 'Resilience snapshot with circuit breakers and heal history',
+    explanation: 'Resilience snapshot with safety switches and heal history',
   },
   {
     patterns: [/quick.*check/i, /pulse/i, /heartbeat/i, /alive/i],
@@ -235,7 +235,7 @@ const INTENT_PATTERNS: Array<{
   {
     patterns: [/circuit.*breaker/i, /subscriber.*circuit/i, /ripple.*circuit/i],
     command: 'ripple.circuits',
-    explanation: 'View subscriber circuit breakers',
+    explanation: 'View subscriber safety switches',
   },
 
   // System Management

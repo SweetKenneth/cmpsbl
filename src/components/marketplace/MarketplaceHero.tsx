@@ -272,7 +272,7 @@ export function MarketplaceHero() {
           >
             <div className="flex items-center gap-2">
               <Lock className="w-4 h-4 text-emerald-500" />
-              <span>Licensed artifacts</span>
+              <span>Licensed capabilities</span>
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-amber-500" />

@@ -214,6 +214,6 @@ const PIPELINE_STAGES = [
   'Pattern Selection',
   'Code Generation',
   'Guard Validation',
-  'Artifact Sealing',
+  'Discovery Sealing',
   'Brain Writeback',
 ];

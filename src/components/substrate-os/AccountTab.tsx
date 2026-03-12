@@ -50,7 +50,7 @@ const QUICK_LINKS = [
   { label: 'Documentation', href: '/docs', icon: FileText, description: 'Full API & architecture reference', color: 'from-purple-500/15 to-violet-500/10 border-purple-500/20' },
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
   { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
-  { label: 'System Integrity', href: '/integrity', icon: Shield, description: 'Health checks & circuit breakers', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
+  { label: 'System Integrity', href: '/integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
   { label: 'Memories', href: '/blog/the-first-line-of-code', icon: Brain, description: 'Read the origin story & build log', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
 ];
 

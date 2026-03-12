@@ -185,7 +185,7 @@ export function DepotSEO({ totalCount }: DepotSEOProps) {
     'threat detection',
     'compliance automation',
     'WCAG auditing',
-    'circuit breaker',
+    'safety switch',
     'rate limiting',
     'free AI tools',
     ...allTags.slice(0, 20)

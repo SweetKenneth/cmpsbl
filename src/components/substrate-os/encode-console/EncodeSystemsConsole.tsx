@@ -207,7 +207,7 @@ export function EncodeSystemsConsole() {
         '   3. 🧩 Pattern selection',
         '   4. ⚙️  Code generation ready',
         '   5. 🛡️ Guard validation pending',
-        '   6. 🔒 Artifact sealing pending',
+        '   6. 🔒 Discovery sealing pending',
         '   7. 🧠 Brain writeback pending',
         '',
         `ENCODE is ready to execute. Route intent with /execute ${latestPlan.plan_id}`,
