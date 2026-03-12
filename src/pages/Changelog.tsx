@@ -265,7 +265,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-004",
     fossilized: "2026-03-03",
     origin: "cognition",
-    stimulus: "Content quality pipeline had no drift awareness — posts could slowly diverge from the substrate's domain without detection",
+    stimulus: "Content quality chain had no drift awareness — posts could slowly diverge from the substrate's domain without detection",
     adaptations: [
       "Introduced a semantic drift engine that compares every draft against recent published content for topical coherence",
       "Drift scoring and directional analysis applied to every draft before publication",
