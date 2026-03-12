@@ -16,7 +16,7 @@ This document covers the internal architecture of the Discovery Engine — the r
 The discovery reactor operates as a bounded recursive search:
 
 ```
-Input:  38-node topology graph
+Input:  40-node topology graph
 Output: Scored, tiered, deduplicated capability manifest
 
 1. Generate candidate pool from module combinations (depth 2–5)
