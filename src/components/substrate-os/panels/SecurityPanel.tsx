@@ -5,10 +5,11 @@
 
 import { useState, lazy, Suspense } from 'react';
 import {
-  Shield, Network, FileText, HardDrive, Loader2,
+  Shield, Network, FileText, HardDrive, Loader2, Download,
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
+import { FullBackupButton } from '@/components/admin/FullBackupButton';
 
 const DefenseAnalytics = lazy(() => import('@/components/substrate-os/DefenseAnalytics').then(m => ({ default: m.DefenseAnalytics })));
 const ShadowMeshToggle = lazy(() => import('@/components/admin/ShadowMeshToggle').then(m => ({ default: m.ShadowMeshToggle })));
