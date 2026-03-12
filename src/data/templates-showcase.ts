@@ -123,7 +123,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Flame,
     category: 'security',
     rarity: 'great',
-    crownJewelFeature: 'Chaos Resilience Engine',
+    apexFeature: 'Chaos Resilience Engine',
     buildTime: '~30 min',
     tags: ['DEFENSE'],
   },
