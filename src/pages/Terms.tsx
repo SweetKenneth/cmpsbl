@@ -25,7 +25,7 @@ const sections = [
     list: [
       "CMPSBL Substrate — Layered cognitive orchestration with persistent memory",
       "Composable Minds — Downloadable AI agents with persistent memory",
-      "Artifact Packs — Capabilities, templates, and pipelines via the unified store",
+      "Capability Packs — Capabilities, templates, and memories via the unified store",
       "NEXUS — Multi-provider AI routing with BYOK architecture",
       "DEFENSE — Enterprise-grade threat detection and bot protection overlay",
       "DECODE — Conversational AI interface with memory-backed context",
@@ -33,7 +33,7 @@ const sections = [
       "INCLUSIVE — Human compatibility system with WCAG scanning and AI remediation",
       "Persistent Memory — Drop-in memory layer for any AI agent",
       "Evolution Mesh — Self-learning immune system for software",
-      "Composable Cognitive Infrastructure — Templates, capabilities, and orchestration pipelines",
+      "Composable Cognitive Infrastructure — Templates, capabilities, and orchestration chains",
     ],
   },
   {
