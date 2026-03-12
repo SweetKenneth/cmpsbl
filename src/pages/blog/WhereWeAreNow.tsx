@@ -48,7 +48,7 @@ export default function WhereWeAreNow() {
       <p>We're still analyzing it. The signal is strong enough that two engineers are working on it full time. We're not ready to say what it means. But if it's what it looks like — if the substrate has discovered a way to compose its own capabilities in ways we didn't design — that changes the roadmap entirely.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What Comes Next</h2>
-      <p>We have three priorities on the roadmap. Deeper gaming integration — the demand from game studios has outpaced our current infrastructure. Expanding the Store to support third-party artifacts. And building the "substrate for substrates" — an orchestration layer that lets multiple deployments communicate across organizational boundaries.</p>
+      <p>We have three priorities on the roadmap. Deeper gaming integration — the demand from game studios has outpaced our current infrastructure. Expanding the Store to support third-party discoveries. And building the "substrate for substrates" — an orchestration layer that lets multiple deployments communicate across organizational boundaries.</p>
 
       <p>But honestly? The DREAM signal might change all of that. When your infrastructure starts suggesting its own evolution, you either follow the thread or pretend you didn't see it.</p>
 
