@@ -49,7 +49,7 @@ export function UnifiedAdminSidebar() {
   }, []);
 
   const isActive = (path: string) => {
-    if (path === "/admin/dashboard") {
+    if (path === "/admin/intel") {
       return location.pathname === path || location.pathname === "/admin";
     }
     return location.pathname === path || location.pathname.startsWith(path + "/");
