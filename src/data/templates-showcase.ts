@@ -1,6 +1,6 @@
 /**
  * Template Showcase — Free public templates for the /templates page
- * Each template includes one Crown Jewel capability for high perceived value.
+ * Each template includes one Apex Discovery capability for high perceived value.
  * Quality: Baseline Great, sometimes Mythic drops.
  */
 
