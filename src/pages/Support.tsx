@@ -83,21 +83,21 @@ const FAQ_ITEMS = [
     answer: "CLM is the autonomous background learning engine that runs on 30-minute cycles. It uses a 70/30 weighting between global topics (system stability) and node-specific topics, achieving up to 14,400 AI calls per day for continuous knowledge acquisition.",
   },
 
-  // Artifact Packs
+  // Capability Packs
   {
-    category: "Artifact Packs",
+    category: "Capability Packs",
     question: "What are Composable Cognitives?",
-    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as Sealed Runtimes. Each comes with 3–5 Apex Discovery powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
-    category: "Artifact Packs",
+    category: "Capability Packs",
     question: "What are Engines?",
     answer: "Engines are the 20 specialized processing nodes in the substrate — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
-    category: "Artifact Packs",
-    question: "Can I create custom artifacts?",
-    answer: "Yes. The Artifact Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
+    category: "Capability Packs",
+    question: "Can I create custom capability packs?",
+    answer: "Yes. The Capability Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All packs are namespaced to your account with hard isolation from other users.",
   },
 
   // Exports
