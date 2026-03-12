@@ -1,5 +1,5 @@
 /**
- * Packs — Manage artifact pack activations
+ * Packs — Manage capability pack activations
  * Horizontal scroll rows grouped by strategic domain.
  * Click any pack card for full details modal.
  */
