@@ -516,12 +516,12 @@ const stratumInfra: Specimen[] = [
     origin: "governance",
     stimulus: "High-value capabilities were ungoverned — competitive moat at risk across nodes",
     adaptations: [
-      "Comprehensive capability audit identified and classified crown jewel capabilities across all tiers",
+      "Comprehensive capability audit identified and classified apex discovery capabilities across all tiers",
       "All high-value capabilities crystallized as permanently governed resources",
       "Tier-gated access ensures capabilities are discoverable but access-controlled",
     ],
     phenotype: [
-      "Every node has governed crown jewel capabilities — full competitive coverage",
+      "Every node has governed apex discovery capabilities — full competitive coverage",
       "Capabilities are tiered: discoverable by all, accessible by entitlement",
       "Significant increase in governed capabilities in a single cycle",
     ],

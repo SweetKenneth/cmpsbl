@@ -176,7 +176,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
           <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{registryEntries.length}</div>
-          <div className="text-[10px] text-muted-foreground">Registry Artifacts</div>
+          <div className="text-[10px] text-muted-foreground">Registry Discoveries</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
@@ -250,7 +250,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
   );
 }
 
-// ─── Artifact Card (Mobile-first, no truncation) ────────────────────
+// ─── Discovery Card (Mobile-first, no truncation) ────────────────────
 
 function ArtifactCard({
   entry, onViewCode, onExport, loadingCode, expanded, onToggle,
@@ -558,7 +558,7 @@ export default function STierVault() {
 
     toast.info(`Pricing ${artifacts.length} unpriced items (skipping ${promoted.length - artifacts.length} already priced)...`);
     const result = await pricingEngine.repriceAll(artifacts);
-    toast.success(`Priced ${result.success} new artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+    toast.success(`Priced ${result.success} new discoveries${result.failed ? ` (${result.failed} failed)` : ''}`);
     // Reload promoted to pick up new prices
     await loadPromoted();
   }, [promoted, pricingEngine]);
@@ -872,7 +872,7 @@ export default function STierVault() {
         estimatedValue: formatMarketValue(estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length)),
       })),
       summary: {
-        registryArtifacts: entries.length,
+        registryDiscoveries: entries.length,
         promotedDiscoveries: promoted.length,
         totalSoftware: entries.length + promoted.length,
         tiers: {
@@ -888,9 +888,9 @@ export default function STierVault() {
         categories: [...new Set(promoted.map(d => d.category))].sort(),
       },
       instructions: {
-        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software artifact. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
+        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
         howToRebuild: 'Import this manifest into any CMPSBL Substrate instance, or use the standalone-runtime.ts and standalone-discovery-engine.ts (included in any full ZIP export) to re-score and re-tier all entries.',
-        howToExport: 'Each artifact can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
+        howToExport: 'Each discovery can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
       },
     };
 

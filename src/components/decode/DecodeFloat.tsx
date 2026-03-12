@@ -33,7 +33,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode
 const MODE_GREETINGS: Record<DecodeMode, string> = {
   assistant: "Hello. I'm DECODE — the interface between you and the CMPSBL substrate.\n\nI can answer questions, guide you through the system, or help troubleshoot issues.\n\nIf you need support, just ask.",
   support: "Hello — I'm DECODE. I translate intent between you and the CMPSBL substrate.\n\nYou're currently in **support mode**. Tell me what you need help with.\n\nI can troubleshoot issues, explain features, walk you through setup, or escalate to a human at support@cmpsbl.com.",
-  builder: "DECODE online — builder mode active.\n\nReady to assist with substrate configuration, pipeline setup, and capability integration.\n\nState your objective.",
+  builder: "DECODE online — builder mode active.\n\nReady to assist with substrate configuration, memory setup, and capability integration.\n\nState your objective.",
   governor: "DECODE online — **governor mode** active.\n\nFull substrate telemetry and governance controls are available.\n\nAll 40 nodes across 12 sectors reporting. Awaiting directive.",
 };
 
@@ -187,9 +187,9 @@ function getQuickActions(mode: DecodeMode) {
   ];
   if (mode === 'governor') return [
     { icon: "📡", title: "Node Status", prompt: "Report full 40-node health status across all 12 sectors." },
-    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and circuit breaker states." },
+    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and safety switch states." },
     { icon: "🩺", title: "System Heal", prompt: "Run a diagnostic and heal any degraded nodes." },
-    { icon: "📊", title: "Pipeline Metrics", prompt: "Show pipeline scoring and foundry reactor metrics." },
+    { icon: "📊", title: "Memory Metrics", prompt: "Show memory scoring and foundry reactor metrics." },
   ];
   return [
     { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },

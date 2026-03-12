@@ -2208,9 +2208,9 @@ function EncodeTrainingPanel() {
   const voice = useSubstrateVoice();
 
   const trainingModules = [
-    { id: 'modules', label: 'Module Refactoring', icon: '🧩', desc: 'Practice refactoring and improving substrate modules' },
+    { id: 'modules', label: 'Node Refactoring', icon: '🧩', desc: 'Practice refactoring and improving substrate nodes' },
     { id: 'brain', label: 'Brain Operations', icon: '🧠', desc: 'Train on memory tiering, recall, and event processing' },
-    { id: 'resilience', label: 'Resilience Patterns', icon: '🛡️', desc: 'Error handling, retry logic, circuit breakers' },
+    { id: 'resilience', label: 'Resilience Patterns', icon: '🛡️', desc: 'Error handling, retry logic, safety switches' },
     { id: 'security', label: 'Security Hardening', icon: '🔒', desc: 'RLS policies, input validation, secret management' },
     { id: 'performance', label: 'Performance Optimization', icon: '⚡', desc: 'Query optimization, caching, batch processing' },
     { id: 'website', label: 'Website & UI', icon: '🎨', desc: 'Component architecture, accessibility, responsive design' },

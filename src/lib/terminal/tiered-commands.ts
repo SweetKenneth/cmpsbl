@@ -60,7 +60,7 @@ export const TIERED_COMMANDS: TieredCommand[] = [
   { command: 'cortex suggest', description: 'Get optimization suggestions', tier: 'studio', category: 'analytics' },
   { command: 'encode generate', description: 'Generate code from a spec', tier: 'studio', category: 'build' },
   { command: 'encode audit', description: 'Audit a code artifact', tier: 'studio', category: 'build' },
-  { command: 'maintenance breakers', description: 'View circuit breaker states', tier: 'studio', category: 'system' },
+  { command: 'maintenance breakers', description: 'View safety switch states', tier: 'studio', category: 'system' },
   { command: 'maintenance repair', description: 'Trigger auto-repair cycle', tier: 'studio', category: 'system' },
   { command: 'mesh activity', description: 'View mesh overlay activity', tier: 'studio', category: 'mesh' },
   { command: 'mesh synergies', description: 'List active synergy pipelines', tier: 'studio', category: 'mesh' },

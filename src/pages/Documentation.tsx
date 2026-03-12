@@ -299,7 +299,7 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 // Safety switch trips when node health < 0.3`}</CodeBlock>
       </div>
 
-      {/* Circuit breakers */}
+      {/* Safety switches */}
       <div>
         <h3 className="font-semibold text-foreground mb-4">Safety Switches</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
