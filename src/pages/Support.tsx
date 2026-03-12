@@ -97,7 +97,7 @@ const FAQ_ITEMS = [
   {
     category: "Artifact Packs",
     question: "Can I create custom artifacts?",
-    answer: "Yes. The Artifact Store allows you to compose custom pipeline packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
+    answer: "Yes. The Artifact Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
   },
 
   // Exports
