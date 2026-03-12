@@ -202,7 +202,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Sparkles,
     category: 'automation',
     rarity: 'mythic',
-    crownJewelFeature: 'Creative Evolution Engine',
+    apexFeature: 'Creative Evolution Engine',
     buildTime: '~20 min',
     tags: ['DREAM', 'ENCODE'],
   },
