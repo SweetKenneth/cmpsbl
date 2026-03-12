@@ -55,7 +55,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Search,
     category: 'intelligence',
     rarity: 'great',
-    crownJewelFeature: 'Knowledge Graph Topology',
+    apexFeature: 'Knowledge Graph Topology',
     buildTime: '~15 min',
     tags: ['BRAIN', 'DECODE'],
   },
