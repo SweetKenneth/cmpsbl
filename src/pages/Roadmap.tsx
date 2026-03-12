@@ -126,7 +126,7 @@ const DOMAIN_NODES = [
     domain: "Cybersecurity",
     icon: Shield,
     signal: "Network packets",
-    description: "Threat detection, vulnerability assessment, and incident response automation. Real-time packet analysis with governed response pipelines.",
+    description: "Threat detection, vulnerability assessment, and incident response automation. Real-time packet analysis with governed response memories.",
     opportunities: ["Zero-day detection meshes", "Automated incident response", "Compliance audit automation"],
   },
 ];
