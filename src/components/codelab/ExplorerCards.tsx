@@ -51,7 +51,7 @@ const modules: ModuleConfig[] = [
   {
     id: "core",
     name: "Core",
-    description: "Kernel scheduling, lifecycle, circuit breakers, routing",
+    description: "Kernel scheduling, lifecycle, safety switches, routing",
     icon: Settings,
     color: "text-slate-400",
     bgColor: "bg-slate-500/10",
