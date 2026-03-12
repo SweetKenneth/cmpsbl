@@ -985,7 +985,7 @@ const result = await substrate.agents.run(
 // → { consensus: true, conclusion: "...", rounds: 2, agent_positions: [...] }
 
 // Run with chain pattern
-const pipeline = await substrate.agents.run(
+const chain = await substrate.agents.run(
   [researcher.id, analyst.id],
   'Research quantum computing trends, then analyze market impact',
   { pattern: 'chain' }
