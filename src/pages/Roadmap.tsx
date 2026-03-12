@@ -45,7 +45,7 @@ const PHASES = [
     tagline: "Sealed Runtime Execution",
     status: "In Progress",
     color: "primary",
-    description: "Domain-specific execution engines that run pipelines at production scale. Sealed, optimized, and governed — not general-purpose containers.",
+    description: "Domain-specific execution engines that run memories at production scale. Sealed, optimized, and governed — not general-purpose containers.",
     capabilities: [
       "20 sealed runtime engines across verticals",
       "Hot-swappable execution zones",
