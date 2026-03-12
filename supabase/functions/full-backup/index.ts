@@ -18,7 +18,7 @@ import JSZip from "npm:jszip@3.10.1";
 /** Max wall-clock time budget (ms). Edge functions timeout at ~150s; we stop at 140s. */
 const TIME_BUDGET_MS = 140_000;
 /** How many tables to export concurrently */
-const CONCURRENCY = 10;
+const CONCURRENCY = 25;
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
