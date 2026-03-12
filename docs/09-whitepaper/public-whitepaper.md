@@ -15,20 +15,22 @@ Current AI systems are stateless, ungoverned, and fragile. They lack:
 - **Multi-agent coordination** with economic accountability.
 - **Security architecture** designed for adversarial environments.
 - **Continuous learning** that compounds knowledge over time.
+- **Disaster recovery** that enables full system reconstruction from a single archive.
 
 These gaps make AI systems unsuitable for production infrastructure, enterprise deployment, and regulated environments.
 
 ## 3. System Thesis
 
-The CMPSBL substrate solves these problems by providing a **38-module cognitive kernel** organized into a weighted topology across 12 sectors:
+The CMPSBL substrate solves these problems by providing a **40-node cognitive kernel** organized into a weighted topology across 12 sectors:
 
 - A **Spine** for core reasoning and memory (CORE, SYSTEM, CCR).
 - An **Operational Compliance Grid** (OCG) for boundary enforcement (6 nodes: ACCESS, IDENTITY, AUDIT, NERVE, RELAY, RIPPLE).
-- An **Execution layer** for public-facing capabilities (10 nodes: DECODE, ENCODE, NEXUS, CORTEX, ECONOMY, VISION, BRAIN, SANDBOX, INCLUSIVE, INTEGRATION).
+- An **Execution layer** for public-facing capabilities (10 nodes: DECODE, ENCODE, NEXUS, CORTEX, ECONOMY, VISION, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION).
 - **Expansion Sovereignty Zone** (ESZ) for compliance, prediction, ethics, and contracts.
 - **Expansion Perception Zone** (EPZ) for simulation, geospatial awareness, and edge computing.
 - **Expansion Manufacturing Zone** (EMZ) for artifact production, translation, and data ingestion.
 - **Covert Systems Zone** (CSZ) for evolution, shadow testing, and phantom operations.
+- **Meta sector** (ATLAS, ENGINEER) for capability mapping and maintenance intelligence.
 - **Fields** that permeate all layers for immunity and intent alignment.
 - A **Governance Plane** that supervises every action.
 - A **Defense Shell** that enforces the outermost trust boundary.
@@ -39,7 +41,7 @@ Every module has independent health monitoring, circuit-breaker isolation, and a
 
 ### Cognitive Engine System
 
-The substrate consolidates 675+ individual capabilities into **76 compound engines** and **24 meta-engines** across 18 categories (Cognitive, Operational, Intelligence, Governance, Security, Evolution, Communication, Integration, Analytics, Experience, Knowledge, Autonomy, Creativity, Perception, Resource, Workflow, Enhancement, Orchestration). Engines provide 2–8x synergy amplification over individual capabilities.
+The substrate consolidates 675+ individual capabilities into **76 compound engines** and **24 meta-engines** across 18 categories. Engines provide 2–8x synergy amplification over individual capabilities. A productized arsenal of 54 total premium engines is available across four price tiers (META, APEX, ELITE, CORE).
 
 ### Constant Learning Mode (CLM)
 
@@ -56,6 +58,18 @@ Every change to production behavior passes through 7 validation gates including 
 ### AutoBlog Quality Pipeline
 
 Autonomous content generation with confidence scoring, contradiction detection, semantic drift monitoring, and split-brain evaluation (Reader vs. Skeptic). An adaptive publish governor controls output cadence.
+
+### First-Party Visitor Intelligence
+
+Native analytics layer with cohort retention analysis, churn risk scoring, journey flow mapping, and feature adoption tracking — all without third-party dependencies or data leakage.
+
+### Developer API Portal
+
+Self-service developer registration, API key generation with scoped permissions, per-key usage metering, and module-level consumption heatmaps for ecosystem visibility.
+
+### One-Click Disaster Recovery
+
+Full system state captured as a single portable archive from the admin dashboard. Includes all data, schema, storage manifest, and an AI-ready restoration guide enabling any coding agent to reconstruct the system from scratch.
 
 ### Universal Export Adapter
 
@@ -89,11 +103,12 @@ This positions CMPSBL uniquely among AI orchestration platforms: it is the only 
 | EPZ | 3 | Simulation, geospatial, edge computing |
 | EMZ | 3 | Manufacturing, translation, data |
 | CSZ | 3 | Evolution, shadow testing, phantom ops |
+| Meta | 2 | Capability mapping, maintenance intelligence |
 | Fields | 2 | Cross-cutting concerns (immunity, intent) |
 | Plane | 1 | Governance supervision |
 | Shell | 1 | Security boundary |
 
-**Total: 38 nodes across 12 sectors, Σ(weight) = 1.000**
+**Total: 40 nodes across 12 sectors, Σ(weight) = 1.000**
 
 The architecture is **BYOK** (Bring Your Own Keys): operators supply their own AI provider keys, database, and infrastructure. No data leaves the operator's environment.
 
@@ -105,21 +120,24 @@ The substrate includes a first-class control plane:
 - **ENGINEER**: Internal maintenance node scanning 76 engines + 24 meta-engines, generating findings and proposals.
 - **INTENT Mesh**: Affinity matrix tracking module co-resolution success; translates technical signals to governance requests.
 - **Ironclad Fabric**: Unified resilience layer with per-module rate limiting, bulkhead isolation, and 30-second auto-restore health loop.
+- **ATLAS**: Capability mapping and topology awareness across all 40 nodes.
 
 ## 8. Competitive Framing
 
 | Capability | CMPSBL | Typical AI Platform |
 |-----------|--------|-------------------|
-| Persistent memory | Multi-tier, governed, CLM-compounded | Stateless or session-only |
+| Persistent memory | Multi-tier, governed, CLM-compounded, capacity-enforced | Stateless or session-only |
 | Governance | Architectural, immutable, 4-mode | Optional, configurable |
 | Evolution | 7-gate SEBA with TSAC | Manual deployment |
 | Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only |
-| Security | Defense-in-depth, 38-node zone-shielded, Ironclad | Perimeter only |
+| Security | Defense-in-depth, 40-node zone-shielded, Ironclad | Perimeter only |
 | Observability | Weighted health matrix, INTEL pipeline | Logs and metrics |
 | Audit | Tamper-evident, chain-of-custody | Append-only logs |
 | Learning | CLM — 14,400 calls/day continuous | None |
 | Export | 25 target languages, standalone runtime | None |
 | Content | AutoBlog with quality pipeline | None |
+| Analytics | First-party visitor intelligence, developer adoption | Third-party dependent |
+| Disaster Recovery | One-click full backup with AI-ready restoration | Manual or none |
 
 ## 9. Future Roadmap Direction
 

@@ -111,6 +111,7 @@ Any → Self-Hosted: License agreement + infrastructure setup
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added engine marketplace (54 premium engines across 4 tiers), disaster recovery as admin feature |
 | 2026-03-03 | System | Added agent marketplace pricing, CLM tiers, AutoBlog quotas, Evolution CC access, Scanner tiers, Universal Export tiers, Ironclad burst buffers |
 | 2026-03-03 | System | Verified licensing model for v13.1.0 |
 | 2026-03-01 | System | Initial canonical licensing model |

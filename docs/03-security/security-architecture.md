@@ -10,6 +10,7 @@ The CMPSBL substrate operates in an adversarial environment where threats origin
 - **Internal drift**: Configuration errors, unvalidated promotions, governance gaps.
 - **Agent runtime escape**: Cognitive agents attempting to breach sealed isolation.
 - **Evolution poisoning**: Malicious proposals designed to weaken system integrity.
+- **Backup interception**: Unauthorized access to disaster recovery archives.
 
 The security model assumes **zero trust** at every boundary. No component is implicitly trusted; every action is verified.
 
@@ -37,6 +38,11 @@ graph LR
         CSZ_Z[CSZ — EVOLUTION, SHADOW, PHANTOM]
     end
 
+    subgraph Meta
+        ATLAS_Z[ATLAS — Topology & Governance Hub]
+        ENGINEER_Z[ENGINEER — Maintenance Intelligence]
+    end
+
     subgraph Restricted
         GOVERNANCE_Z[GOVERNANCE Plane]
         INTEL_Z[INTEL Aggregation]
@@ -51,6 +57,8 @@ graph LR
     GOVERNANCE_Z -.- OCG_Z
     INTEL_Z -.- OCG_Z
     CSZ_Z -.- CORE_Z
+    ATLAS_Z -.- CORE_Z
+    ENGINEER_Z -.- CORE_Z
     EXTAPI --> INTEGRATION
 ```
 
@@ -68,6 +76,7 @@ graph LR
 | Session Token | Browser/interactive access | 1 hour (refresh available) |
 | Admin Credential | Operator access | 30 minutes (no refresh) |
 | Agent JWT | Agent Connect (Evolution CC) | Per-session, scoped to agent |
+| Developer Portal Key | External developer API access | Until revoked, scoped per module |
 
 ## 4. Authorization Model (RBAC Matrix)
 
@@ -92,6 +101,7 @@ graph LR
 - **Audit**: Tenant-scoped audit trails; no cross-tenant log visibility.
 - **Agents**: Memory-isolated per agency; no cross-agency state sharing.
 - **DREAM Pool**: Consent-gated sharing with configurable privacy levels.
+- **Backups**: Disaster recovery archives require authenticated admin session; no anonymous access.
 
 ## 6. Data Encryption Model
 
@@ -100,7 +110,7 @@ graph LR
 | At Rest | AES-256 (database-level) | Managed by infrastructure |
 | In Transit | TLS 1.3 | Certificate rotation via provider |
 | Secrets Vault | AES-GCM | Per-module scoping, operator-managed |
-| Backup | Encrypted snapshots | Same key hierarchy |
+| Backup Archives | Encrypted snapshots + authenticated download | Session-scoped access |
 | Agent State | Encrypted per-agent namespace | Sealed runtime keys |
 
 ## 7. Secrets Management
@@ -146,6 +156,8 @@ Rate limits are enforced at both the NEXUS gateway level and per-module via Iron
 | Webhook Endpoints | Public | Signature verification, replay protection |
 | Agent Runtimes | Isolated | Sealed execution, source-blocked, memory-isolated |
 | Evolution Pipeline | Internal | SEBA 7-gate validation, TSAC verification |
+| Developer Portal | Authenticated | API key scoping, per-key rate limits, usage metering |
+| Backup Endpoint | Admin-only | Session auth required, no anonymous access |
 
 ## 10. Logging & Forensics
 
@@ -155,6 +167,7 @@ Rate limits are enforced at both the NEXUS gateway level and per-module via Iron
 - Forensic queries support time-range, actor, action, and resource filtering.
 - DEFENSE threat events include full request fingerprint for pattern analysis.
 - INTEL aggregation pipeline enriches security signals into IntelCards for governor review.
+- First-party analytics track visitor behavior without third-party data leakage.
 
 ## 11. Incident Response Workflow
 
@@ -219,11 +232,13 @@ The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
 | Zero-day in runtime environment | Accepted | Mitigated by regular patching; detection via DEFENSE behavioral analysis |
 | Social engineering of operator | Accepted | Mitigated by MFA and audit trail; human factor not fully eliminable |
 | Agent sealed runtime escape | Accepted | Mitigated by memory isolation + source blocking; theoretically possible in runtime bugs |
+| Backup archive interception | Accepted | Mitigated by session-only access and HTTPS transport; archive is point-in-time data only |
 
 ## 15. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added ATLAS/ENGINEER to trust zones, developer portal security, backup endpoint security, first-party analytics |
 | 2026-03-03 | System | Added Ironclad fabric, CSZ security, agent isolation, INTEL/Scanner integration, consensus routing |
 | 2026-03-03 | System | Verified against 38-node topology and zone-shielded architecture |
 | 2026-03-01 | System | Initial canonical security architecture |

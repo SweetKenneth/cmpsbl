@@ -6,7 +6,7 @@ This document defines the governance model, autonomy boundaries, and escalation 
 
 ## 2. Scope
 
-This doctrine applies to all 38 nodes across 12 sectors, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
+This doctrine applies to all 40 nodes across 12 sectors, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
 
 ## 3. Autonomy Model
 
@@ -14,24 +14,24 @@ The substrate operates under a **supervised autonomy** model:
 
 | Autonomy Level | Description | Examples |
 |----------------|-------------|---------|
-| **Full Autonomy** | System acts without approval | Health monitoring, telemetry collection, cache management, CLM topic cycling, ENGINEER health scans |
+| **Full Autonomy** | System acts without approval | Health monitoring, telemetry collection, cache management, CLM topic cycling, ENGINEER health scans, memory tier enforcement |
 | **Guided Autonomy** | System acts with soft constraints | NEXUS routing decisions, provider selection, cost optimization, INTENT affinity scoring |
 | **Supervised** | System proposes, human approves | Configuration changes, capability promotion, policy updates, ENGINEER proposals via Node Inbox |
-| **Restricted** | Human initiates, system executes | Credential rotation, tier changes, data deletion, governance mode switching (ATLAS) |
+| **Restricted** | Human initiates, system executes | Credential rotation, tier changes, data deletion, governance mode switching (ATLAS), disaster recovery backup |
 | **Forbidden** | No execution path exists | Disabling AUDIT, bypassing DEFENSE, modifying GOVERNANCE logic |
 
 ## 4. ATLAS Governance Hub
 
-ATLAS v2.0.0 (Prometheus) serves as the unified governance UI with 7 tabs:
+ATLAS serves as the unified governance UI with 7 tabs:
 
 | Tab | Purpose |
 |-----|---------|
-| Topology | 38-node matrix visualization and health |
+| Topology | 40-node matrix visualization and health |
 | Node Inbox | Approval queue for ENGINEER proposals and INTENT requests |
 | Evolution | SEBA pipeline, shadow runs, promotion history |
 | Scanner | Finding priority, regression detection, coverage gaps |
 | Agents | Marketplace, sealed runtime management |
-| Analytics | System economics, cost tracking |
+| Analytics | System economics, cost tracking, developer adoption metrics |
 | Settings | Governance mode, thresholds, alert configuration |
 
 ### Governance Modes
@@ -59,6 +59,9 @@ ATLAS v2.0.0 (Prometheus) serves as the unified governance UI with 7 tabs:
 - Score INTENT affinity matrix entries.
 - Execute Scanner Orchestrator scans and regression detection.
 - AutoBlog: generate drafts, run confidence/contradiction engines, detect semantic drift.
+- Enforce memory tier capacity limits (hot → warm → cold cascade).
+- Track first-party visitor analytics without external dependencies.
+- Manage developer API key quotas and usage metering.
 
 ## 6. Explicit Forbidden Behaviors
 
@@ -192,7 +195,7 @@ The ENGINEER node (Mechanist) operates with guided autonomy:
 
 | Risk | Severity | Likelihood | Mitigation | Owner |
 |------|----------|-----------|-----------|-------|
-| CORE failure | Critical | Low | Redundant boot, snapshot recovery | CORE |
+| CORE failure | Critical | Low | Redundant boot, snapshot recovery, disaster backup | CORE |
 | Cascade chain | High | Medium | RIPPLE detection, circuit breakers, Ironclad bulkheads | RIPPLE |
 | Data breach | Critical | Low | RLS, encryption, DEFENSE | DEFENSE |
 | Governance bypass | Critical | Very Low | Immutable logic, audit trail | GOVERNANCE |
@@ -201,11 +204,13 @@ The ENGINEER node (Mechanist) operates with guided autonomy:
 | Shadow run divergence | Low | Medium | TSAC validation, deviation reports | SHADOW |
 | Evolution regression | Medium | Low | Scanner Orchestrator regression detection | EVOLUTION |
 | Agent runtime escape | High | Very Low | Sealed runtime, memory isolation | DEFENSE |
+| Full infrastructure loss | Critical | Very Low | One-click disaster recovery backup with AI-ready restoration guide | CORE |
 
 ## 17. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery governance, developer API metering, memory tier enforcement, visitor analytics |
 | 2026-03-03 | System | Added ATLAS governance hub, 7-gate SEBA pipeline, ENGINEER governance, Ironclad references, INTENT/INTEL/SHADOW integration |
 | 2026-03-03 | System | Updated to 38-node topology; added AutoBlog autonomous governance |
 | 2026-03-01 | System | Initial canonical doctrine |

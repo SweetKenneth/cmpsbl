@@ -2,7 +2,7 @@
 
 ## 1. Data Architecture Overview
 
-The substrate's data layer is built on PostgreSQL with Row-Level Security (RLS), providing per-user data isolation, real-time subscriptions, and transactional guarantees. The memory system operates across three tiers to balance performance, cost, and durability.
+The substrate's data layer is built on PostgreSQL with Row-Level Security (RLS), providing per-user data isolation, real-time subscriptions, and transactional guarantees. The memory system operates across three tiers to balance performance, cost, and durability. Automated tier enforcement cascades entries from hot → warm → cold → pruned → expired.
 
 ## 2. ER Diagram
 
@@ -40,26 +40,30 @@ erDiagram
     AUTOBLOG_POSTS ||--o{ SPLIT_BRAIN : evaluates
     AUTOBLOG_POSTS ||--o{ MEMORY_REPORTS : analyzes
     AUTOBLOG_SCHEDULE ||--o{ PUBLISH_CYCLE : governs
+
+    DEVELOPERS ||--o{ DEV_API_KEYS : generates
+    DEVELOPERS ||--o{ DEV_SUBSCRIPTIONS : subscribes
+    DEV_API_KEYS ||--o{ DEV_QUOTAS : meters
+    DEV_API_KEYS ||--o{ DEV_USAGE : tracks
 ```
 
 ## 3. Schema Registry
 
 | Table Family | Tables | Purpose |
 |-------------|--------|---------|
-| Access Control | `access_api_keys`, `access_developers`, `access_products`, `access_subscriptions`, `access_quotas`, `access_usage` | Authentication, authorization, billing |
+| Access Control | `access_api_keys`, `access_developers`, `access_products`, `access_subscriptions`, `access_quotas`, `access_usage`, `access_scans` | Authentication, authorization, billing, developer API access |
 | Agency Core | `agencies`, `agency_members`, `agency_tasks`, `agency_settings`, `agency_economics`, `agency_task_logs`, `agency_task_artifacts`, `agency_task_deliverables`, `agency_purchases`, `agency_templates` | Multi-agent orchestration and commerce |
 | Agency Extended | `agency_dream_pool`, `agency_dream_memory`, `agency_dream_consent`, `agency_scheduled_tasks`, `agency_email_queue`, `agency_agent_telemetry`, `agency_api_calls` | DREAM synthesis, automation, telemetry |
 | AI Operations | `ai_usage_log`, `ai_daily_quota`, `ai_learning_data` | Provider usage, quotas, learning |
-| Analytics | `analytics_events`, `analytics_snapshots` | System telemetry and reporting |
-| Audit | `audit_logs` | Immutable event logging |
+| Analytics | `analytics_events`, `analytics_snapshots`, `analytics_excluded_fingerprints` | System telemetry, visitor analytics, owner exclusion |
+| Audit | `audit_logs`, `audit_chain_anchors`, `activation_audit_log` | Immutable event logging, tamper-evident chains |
 | AutoBlog Core | `auto_blog_posts`, `auto_blog_schedule` | Automated content generation |
 | AutoBlog Quality | `autoblog_queue`, `autoblog_drafts`, `autoblog_assumptions`, `autoblog_memory_reports`, `autoblog_split_brain_audits`, `autoblog_confidence_weights`, `autoblog_topic_seeds`, `autoblog_publish_cycle`, `autoblog_publish_governor_state`, `autoblog_publish_governor_logs` | Quality pipeline, confidence engine, contradiction engine, semantic drift detection, adaptive governance |
 | Cognitive | `cognitive_registry`, `agent_competency` | Agent identity and skill tracking |
 | Capabilities | `atlas_capabilities` | Feature flag and capability registry |
-| Scanning | `access_scans`, `accessibility_scans` | Security and accessibility scanning |
-| Activation | `activation_audit_log` | Pack activation tracking |
+| Scanning | `accessibility_scans` | Accessibility scanning |
 
-**Total: 50+ tables across 12 families.**
+**Total: 60+ tables across 11 families.**
 
 ## 4. CLM (Constant Learning Mode) Data Model
 
@@ -95,22 +99,25 @@ CLM operates as a high-velocity training pipeline generating data across existin
 | AutoBlog quality audits | 6 months | Confidence calibration |
 | INTEL signals | 30 days | Aggregation pipeline throughput |
 | Scanner findings | 12 months | Regression detection baseline |
+| Visitor analytics | 6 months | Behavioral intelligence |
+| Developer usage metrics | 12 months | API adoption tracking |
 
 ## 7. Memory Tier Definitions
 
-| Tier | Storage | Access Time | Use Case |
-|------|---------|------------|----------|
-| **Hot** | In-memory (runtime state) | < 1ms | Active session context, circuit breaker state, routing cache, INTENT affinity matrix |
-| **Warm** | PostgreSQL (indexed) | < 50ms | Recent memory, active tasks, current subscriptions, CLM active topics |
-| **Cold** | PostgreSQL (archived) | < 500ms | Historical analytics, completed tasks, expired sessions, distilled knowledge |
+| Tier | Storage | Access Time | Use Case | Capacity Limit |
+|------|---------|------------|----------|----------------|
+| **Hot** | In-memory (runtime state) | < 1ms | Active session context, circuit breaker state, routing cache, INTENT affinity matrix | 500 entries |
+| **Warm** | PostgreSQL (indexed) | < 50ms | Recent memory, active tasks, current subscriptions, CLM active topics | 5,000 entries |
+| **Cold** | PostgreSQL (archived) | < 500ms | Historical analytics, completed tasks, expired sessions, distilled knowledge | 50,000 entries |
 
 ### Tier Transitions
 
-- Hot → Warm: On session end or after 15 minutes of inactivity.
+- Hot → Warm: On session end, after 15 minutes of inactivity, or when capacity limit exceeded.
 - Warm → Cold: After retention policy threshold (varies by data category).
 - Cold → Warm: On-demand retrieval with caching for repeated access.
 - Cold → Deletion: After retention period expires (automated cleanup).
 - CLM Distillation: Warm learning data → compressed Cold knowledge → MEMORY module integration.
+- **Emergency cascade**: When any tier exceeds 2x capacity, bulk demotion activates automatically.
 
 ## 8. DREAM Synthesis Data Model
 
@@ -139,6 +146,18 @@ The agency DREAM system manages self-improvement cycles:
 | Configuration | Version-controlled files | On change | 0 (git) | < 5 minutes |
 | Secrets | Encrypted export | Weekly | 7 days | < 15 minutes |
 | Control Plane | WAL + revision stamps | Every commit | < 1 revision | < 10 minutes |
+| **Full System** | **One-click disaster recovery ZIP** | **On-demand (admin)** | **Point-in-time** | **< 2 hours** |
+
+### Disaster Recovery Backup
+
+The substrate includes a one-click full backup system accessible from the admin dashboard:
+
+- Exports all database tables as paginated JSON (handles >1,000 row tables).
+- Captures OpenAPI schema spec for column types and relationships.
+- Inventories all storage buckets and file metadata.
+- Generates an AI-ready `RESTORE.md` with step-by-step reconstruction instructions.
+- Archives are timestamped (`cmpsbl-full-backup-YYYY-MM-DD-HH-MM-SS.zip`) for point-in-time identification.
+- Any coding agent can restore the full system from the archive without external dependencies.
 
 ## 11. Multi-Tenant Strategy
 
@@ -166,6 +185,7 @@ Creation → Validation → Storage → Active Use → Archival → Deletion
 - **Archival**: Moved to cold tier after retention threshold.
 - **Deletion**: Purged after retention period or on tenant deletion.
 - **Distillation**: CLM-learned knowledge compressed and promoted to permanent MEMORY.
+- **Backup**: Full system state captured on-demand for disaster recovery.
 
 ## 13. Data Integrity Guarantees
 
@@ -179,11 +199,13 @@ Creation → Validation → Storage → Active Use → Archival → Deletion
 | Isolation | RLS, per-request scoped context |
 | Auditability | Append-only audit log with checksums |
 | Snapshot integrity | SHA-256 content-addressable hashes |
+| Tier capacity | Automated enforcement with bulk demotion |
 
 ## 14. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery backup system, memory tier capacity enforcement, developer API data model, visitor analytics tables, 60+ tables |
 | 2026-03-03 | System | Added CLM data model, DREAM synthesis, INTEL retention, control plane persistence, expanded schema registry to 50+ tables |
 | 2026-03-03 | System | Added AutoBlog quality pipeline tables |
 | 2026-03-01 | System | Initial canonical data and memory model |

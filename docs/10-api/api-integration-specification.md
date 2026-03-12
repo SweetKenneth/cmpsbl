@@ -168,6 +168,7 @@ Webhooks are signed with HMAC-SHA256. Consumers must verify signatures before pr
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added developer portal self-service, per-key usage metering |
 | 2026-03-03 | System | v13.1.0 — Added expansion zone endpoints (FORGE, LINGUA, HARVEST, ORACLE, COMPASS, SOVEREIGN, MEDIC), consensus routing |
 | 2026-03-03 | System | Verified API contracts for v13.1.0 |
 | 2026-03-01 | System | Initial canonical API specification |

@@ -10,15 +10,23 @@ Evolution is a system property, not a deployment event.
 
 | Component | Format | Example |
 |-----------|--------|---------|
-| Epoch (major) | vN.0.0 | v13.0.0 |
-| Minor release | vN.M.0 | v13.2.0 |
-| Patch | vN.M.P | v13.2.3 |
-| Epoch name | ALL CAPS word | IRONCLAD |
+| Epoch (major) | vN.0.0 | v14.0.0 |
+| Minor release | vN.M.0 | v14.1.0 |
+| Patch | vN.M.P | v14.1.3 |
+| Epoch name | ALL CAPS word | MINDGAMES |
 
 - Epochs represent architectural boundaries and may introduce breaking changes.
 - Minor versions maintain backward compatibility within the epoch.
 - Patches contain fixes only — no behavioral changes.
 - Epoch names are chosen for thematic significance, not marketing.
+
+### Epoch History
+
+| Epoch | Version Range | Significance |
+|-------|--------------|--------------|
+| INFRASTRUCTURE | v1.0–v12.x | The substrate grew organs |
+| IRONCLAD | v13.0–v13.x | The substrate grew armor |
+| MINDGAMES | v14.0–current | The substrate opened its eyes and saw users |
 
 ## 3. Evolution Architecture (CSZ)
 
@@ -187,8 +195,8 @@ Every promoted change receives an immutable revision stamp:
 ```json
 {
   "revision_id": "uuid",
-  "epoch": "IRONCLAD",
-  "version": "13.1.0",
+  "epoch": "MINDGAMES",
+  "version": "14.1.0",
   "promoted_at": "ISO-8601",
   "confidence_score": 0.97,
   "shadow_cycles": 14,
@@ -217,8 +225,9 @@ The Scanner Orchestrator provides continuous evolution quality monitoring:
 |-------------|-----------|--------------|-------------------|
 | v12.x → v13.0 | Epoch boundary | Breaking changes possible | Yes |
 | v13.0 → v13.1 | Minor | Backward compatible | Schema migration only |
-| v13.1 → v13.1.x | Patch | Fully compatible | No |
-| v13.x → v14.0 | Epoch boundary | Breaking changes possible | Yes |
+| v13.x → v14.0 | Epoch boundary (MINDGAMES) | Breaking changes possible | Yes |
+| v14.0 → v14.1 | Minor | Backward compatible | Schema migration only |
+| v14.1 → v14.1.x | Patch | Fully compatible | No |
 
 ## 14. Deprecation Policy
 
@@ -233,6 +242,7 @@ The Scanner Orchestrator provides continuous evolution quality monitoring:
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated epoch history, compatibility matrix, revision stamp example to MINDGAMES epoch, 40-node references |
 | 2026-03-03 | System | Added 7-gate SEBA pipeline, TSAC, CSZ architecture, Evolution Control Center, ENGINEER integration, Scanner Orchestrator, Ironclad references |
 | 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor |
 | 2026-03-01 | System | Initial canonical evolution and versioning framework |
