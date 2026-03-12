@@ -101,7 +101,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Shield,
     category: 'security',
     rarity: 'mythic',
-    crownJewelFeature: 'Emergent Threat Anticipator',
+    apexFeature: 'Emergent Threat Anticipator',
     buildTime: '~25 min',
     tags: ['DEFENSE', 'VISION'],
   },
