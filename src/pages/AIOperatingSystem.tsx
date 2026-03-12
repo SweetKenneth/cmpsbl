@@ -40,7 +40,7 @@ const faqItems = [
   },
   {
     question: "What is the Memory Stream?",
-    answer: "The Memory Stream is the substrate's autonomous memory formation engine. Every interaction flows through it — the system forms memories of successful solutions, packages them, and exports them as capability memories. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
+    answer: "The Memory Stream is the substrate's autonomous memory formation engine. Every interaction flows through it — the system crystallizes memories of successful solutions, packages them, and exports them as capabilities. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
   },
   {
     question: "What problems does CMPSBL solve?",
@@ -367,7 +367,7 @@ export default function AIOperatingSystem() {
             <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
               {[
                 { icon: Eye, title: "Observe", desc: "Every interaction is captured — model calls, latency patterns, cost signals, failure modes." },
-                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously packaged into exportable capability memories." },
+                { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously crystallized into memories and packaged as exportable capabilities." },
                 { icon: Cpu, title: "Export", desc: "Memories ship as sealed runtimes. The rarest become silicon chip specifications." },
               ].map((step, i) => (
                 <motion.div
