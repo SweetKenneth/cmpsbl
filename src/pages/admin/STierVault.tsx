@@ -744,9 +744,9 @@ export default function STierVault() {
     coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
     coreFolder.file('standalone-discovery-engine.ts', (engineMod as any).default);
     coreFolder.file('README.md', [
-      '# CMPSBL® Standalone Discovery Engine',
+      '# CMPSBL® Mini-Runtime™ Engine',
       '',
-      'This directory contains the fully portable discovery reactor.',
+      'This directory contains the fully portable CMPSBL® Mini-Runtime™ Engine and Discovery Engine.',
       'It requires **zero external dependencies** — no substrate, no database, no infrastructure.',
       '',
       '## Quick Start',
