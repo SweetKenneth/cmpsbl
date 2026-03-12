@@ -218,7 +218,7 @@ export default function RuntimeReference() {
                     },
                     {
                       title: 'Capability Registry',
-                      body: 'An internal registry tracks all capabilities with metadata including risk classification, reversibility, module assignment, confidence scores, and invocation counts. The registry is the single source of truth for system capability.',
+                      body: 'An internal registry tracks all capabilities with metadata including risk classification, reversibility, node assignment, confidence scores, and invocation counts. The registry is the single source of truth for system capability.',
                     },
                     {
                       title: 'Governed Invocation',
