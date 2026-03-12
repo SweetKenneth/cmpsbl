@@ -176,7 +176,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
           <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{registryEntries.length}</div>
-          <div className="text-[10px] text-muted-foreground">Registry Artifacts</div>
+          <div className="text-[10px] text-muted-foreground">Registry Discoveries</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
