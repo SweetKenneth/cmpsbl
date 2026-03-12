@@ -245,6 +245,9 @@ export default function EngineDetail() {
               <div>
                 <h2 className="text-xs font-mono text-muted-foreground tracking-[0.2em] uppercase mb-3">MISSION BRIEFING</h2>
                 <p className="text-foreground leading-relaxed text-base">{engine.briefing}</p>
+                {engine.longDescription && (
+                  <p className="text-foreground/80 leading-relaxed text-sm mt-4">{engine.longDescription}</p>
+                )}
               </div>
 
               <div>
