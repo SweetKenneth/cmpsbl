@@ -5,6 +5,9 @@
  * 
  * Memory-optimized: processes tables sequentially, streams JSON strings
  * directly into ZIP to minimize peak memory usage.
+ *
+ * v2.4: Reduced time budget, skip bloated telemetry tables, reserve
+ * finalization window so the ZIP always has a valid central directory.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -15,10 +18,35 @@ import {
   EdgeError,
 } from "../_shared/edge-middleware.ts";
 
-/** Max wall-clock time budget (ms). Edge functions timeout at ~150s; we stop at 130s. */
-const TIME_BUDGET_MS = 130_000;
+/**
+ * Time budget: Edge functions have ~150s wall-clock but much less CPU time.
+ * We reserve 10s at the end for ZIP finalization (central directory + EOCD).
+ */
+const TIME_BUDGET_MS = 80_000;
+const FINALIZE_RESERVE_MS = 10_000;
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
+
+/**
+ * Tables to skip — large telemetry/event tables that bloat the backup
+ * and can be regenerated. These are ordered by typical row count descending.
+ */
+const SKIP_TABLES = new Set([
+  'brain_events',
+  'mesh_comms',
+  'analytics_events',
+  'ai_usage_log',
+  'ai_learning_data',
+  'brain_event_logs',
+  'agency_task_logs',
+  'agency_api_calls',
+  'agency_agent_telemetry',
+  'autoblog_runs',
+  'autoblog_publish_governor_logs',
+  'access_usage',
+  'access_quotas',
+  'audit_chain_anchors',
+]);
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
