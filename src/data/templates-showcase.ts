@@ -329,7 +329,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Server,
     category: 'infrastructure',
     rarity: 'great',
-    crownJewelFeature: 'Proactive Cache',
+    apexFeature: 'Proactive Cache',
     buildTime: '~20 min',
     tags: ['BRAIN', 'MEMORY'],
   },
