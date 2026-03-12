@@ -85,6 +85,7 @@ const stratumIronclad: Specimen[] = [
     affectedNodes: ["SYSTEM", "BRAIN", "MEMORY", "OBSERVER"],
   },
   {
+    id: "IRNC-015",
     fossilized: "2026-03-06",
     origin: "architecture",
     stimulus: "Subpages lacked cohesive visual polish — interactions felt flat, navigation lacked animated feedback, and sections blended together without rhythm",
