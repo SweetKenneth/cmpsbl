@@ -1,30 +1,32 @@
 /**
- * Full Backup Edge Function — Disaster Recovery ZIP
- * Exports ALL database data, storage listings, and a complete RESTORE.md.
- * Admin-only. Uses the PostgREST OpenAPI spec to discover every table.
- * 
- * Memory-optimized: processes tables sequentially, streams JSON strings
- * directly into ZIP to minimize peak memory usage.
+ * FAILSAFE — Full Backup Edge Function
+ * Disaster Recovery ZIP for any Supabase-backed application.
  *
- * v2.5: Expanded skip list for telemetry/regenerable tables (~40 skipped),
- * increased time budget to 120s, added concurrent table export (batch of 3)
- * to maximize throughput within Edge Function limits.
+ * STANDALONE — zero external dependencies. Drop into any project's
+ * supabase/functions/full-backup/ directory and deploy.
+ *
+ * Exports ALL database tables, storage bucket listings, and an
+ * AI-ready RESTORE.md into a streaming ZIP archive.
+ *
+ * Auth: Requires a valid Supabase JWT. The caller must be authenticated.
+ * For admin-only access, enable RLS or wrap with your own role check.
+ *
+ * v3.0: Fully self-contained. No shared middleware. No project-specific logic.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import {
-  corsHeaders,
-  requireAdmin,
-  createAdminClient,
-  EdgeError,
-} from "../_shared/edge-middleware.ts";
+
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION — Adjust these for your project
+// ═══════════════════════════════════════════════════════════════
 
 /**
- * Time budget: Edge functions have ~150s wall-clock but much less CPU time.
+ * Time budget: Edge functions have ~150s wall-clock.
  * We reserve 10s at the end for ZIP finalization (central directory + EOCD).
  */
 const TIME_BUDGET_MS = 120_000;
 const FINALIZE_RESERVE_MS = 10_000;
+
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
 const MIN_PAGE_SIZE = 50;
@@ -32,67 +34,44 @@ const QUERY_RETRIES = 2;
 const RETRY_DELAY_MS = 250;
 
 /**
- * Tables to skip — high-volume telemetry/event/report tables that bloat backups
- * and are safe to regenerate from runtime activity.
+ * Tables to skip by exact name.
+ * Add your own high-volume tables here (analytics, logs, queues, etc.)
+ * These are tables that are regenerated at runtime and don't need backup.
  */
-const SKIP_TABLES = new Set([
-  // High-volume telemetry — regenerable
-  'brain_events',
-  'brain_event_logs',
-  'mesh_comms',
-  'analytics_events',
-  'analytics_snapshots',
-  'ai_usage_log',
-  'ai_learning_data',
-  'ai_daily_quota',
-  'audit_logs',
-  'audit_chain_anchors',
-  'activation_audit_log',
-  'analytics_excluded_fingerprints',
-  // Agency telemetry — regenerable per-run
-  'agency_task_logs',
-  'agency_api_calls',
-  'agency_agent_telemetry',
-  'agency_economics',
-  'agency_email_queue',
-  'agency_dream_pool',
-  'agency_dream_memory',
-  // Access/usage metering — regenerable
-  'access_usage',
-  'access_quotas',
-  'access_scans',
-  // Blog automation logs
-  'autoblog_runs',
-  'autoblog_publish_governor_logs',
-  // Intent/resolver receipts — high volume
-  'intent_receipts',
-  'resolver_execution_log',
-  // Memory stream signals — regenerable
-  'memory_stream',
-  'memory_stream_signals',
-  // Other high-volume operational logs
-  'system_events',
-  'substrate_events',
-  'error_logs',
-  'health_checks',
-  'cron_job_logs',
-  // Generated long-form report content (reproducible)
-  'owner_reports',
+const SKIP_TABLES = new Set<string>([
+  // Add your project-specific skip tables here, e.g.:
+  // 'analytics_events',
+  // 'request_logs',
 ]);
 
+/**
+ * Tables matching these patterns are automatically skipped.
+ * These catch common naming conventions for high-volume operational tables.
+ * Remove or modify patterns that conflict with your important tables.
+ */
 const SKIP_TABLE_PATTERNS: RegExp[] = [
-  /_events?$/,
-  /_logs?$/,
-  /_traces?$/,
-  /_telemetry$/,
-  /_snapshots?$/,
-  /_receipts?$/,
-  /_audit(_|$)/,
-  /_metrics(_|$)/,
-  /_queue$/,
-  /_usage$/,
-  /_quotas?$/,
+  // Uncomment patterns relevant to your project:
+  // /_logs?$/,
+  // /_events?$/,
+  // /_telemetry$/,
+  // /_metrics$/,
+  // /_traces?$/,
 ];
+
+// ═══════════════════════════════════════════════════════════════
+// CORS — Required for browser-based calls
+// ═══════════════════════════════════════════════════════════════
+
+const corsHeaders: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers':
+    'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+};
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN HANDLER
+// ═══════════════════════════════════════════════════════════════
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -100,21 +79,53 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    await requireAdmin(req);
+    // ── Auth: verify the caller has a valid session ──
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return errorResponse('Unauthorized — Bearer token required', 401);
+    }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const admin = createAdminClient();
+
+    // Verify the user's JWT
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    if (authError || !user) {
+      return errorResponse('Unauthorized — invalid or expired token', 401);
+    }
+
+    // ── Optional: Admin role check ──
+    // Uncomment the block below if you have a user_roles table and want
+    // to restrict backups to admin users only.
+    //
+    // const adminClient = createClient(supabaseUrl, serviceKey);
+    // const { data: roles } = await adminClient
+    //   .from('user_roles')
+    //   .select('role')
+    //   .eq('user_id', user.id)
+    //   .eq('role', 'admin')
+    //   .limit(1);
+    // if (!roles || roles.length === 0) {
+    //   return errorResponse('Forbidden — admin role required', 403);
+    // }
+
+    // ── Service-role client for full data access ──
+    const admin = createClient(supabaseUrl, serviceKey);
     const projectRef = supabaseUrl.split('//')[1]?.split('.')[0] || 'unknown';
 
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, '0');
     const ts = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
-    const filename = `cmpsbl-full-backup-${ts}.zip`;
+    const filename = `full-backup-${ts}.zip`;
 
     const { readable, writable } = new TransformStream<Uint8Array>();
     const backupStart = Date.now();
 
+    // Stream the ZIP in the background
     (async () => {
       const writer = writable.getWriter();
       const zip = new ZipStreamWriter(writer);
@@ -124,7 +135,7 @@ Deno.serve(async (req: Request) => {
         const manifest: Record<string, unknown> = {
           created_at: new Date().toISOString(),
           project_ref: projectRef,
-          format_version: '2.3.0',
+          format_version: '3.0.0',
           backup_type: 'full',
           packaging: 'streaming-zip',
           chunked_table_exports: true,
@@ -166,7 +177,6 @@ Deno.serve(async (req: Request) => {
 
         // ═══════════════════════════════════════════════════════
         // 2. EXPORT TABLE DATA — CHUNKED + STREAMED TO ZIP
-        //    Each page is written as its own file to avoid huge in-memory strings.
         // ═══════════════════════════════════════════════════════
         const tableSummary: Record<string, number> = {};
         const tableParts: Record<string, number> = {};
@@ -174,12 +184,11 @@ Deno.serve(async (req: Request) => {
         let timedOut = false;
         let tablesExported = 0;
 
-        // Separate skipped tables and exportable tables
         const skippedTables = tableNames.filter(shouldSkipTable);
         const exportTables = tableNames.filter((t) => !shouldSkipTable(t));
 
         if (skippedTables.length > 0) {
-          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry/report tables`);
+          console.log(`[FullBackup] Skipping ${skippedTables.length} tables (configured skip list)`);
           for (const t of skippedTables) {
             tableSummary[t] = -3; // -3 = intentionally skipped
             tableParts[t] = 0;
@@ -187,7 +196,6 @@ Deno.serve(async (req: Request) => {
         }
 
         for (const table of exportTables) {
-          // Reserve time for ZIP finalization
           if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
             timedOut = true;
             for (let j = exportTables.indexOf(table); j < exportTables.length; j++) {
@@ -202,7 +210,7 @@ Deno.serve(async (req: Request) => {
             let rowCount = 0;
             let offset = 0;
             let partCount = 0;
-            let pageSize = table === 'owner_reports' ? 100 : PAGE_SIZE;
+            let pageSize = PAGE_SIZE;
 
             while (true) {
               if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
@@ -220,7 +228,6 @@ Deno.serve(async (req: Request) => {
                   pageSize = nextPageSize;
                   continue;
                 }
-
                 errors.push(`${table}: ${error.message}`);
                 break;
               }
@@ -265,11 +272,10 @@ Deno.serve(async (req: Request) => {
             const { data: buckets } = await admin.storage.listBuckets();
             if (buckets && buckets.length > 0) {
               await zip.addTextFile('storage/buckets.json', JSON.stringify(buckets, null, 2));
-              manifest.storage_buckets = buckets.map((b) => ({ name: b.name, public: b.public }));
+              manifest.storage_buckets = buckets.map((b: any) => ({ name: b.name, public: b.public }));
 
               for (const bucket of buckets) {
                 if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) break;
-
                 try {
                   const allFiles = await listAllStorageFiles(admin, bucket.name);
                   if (allFiles.length > 0) {
@@ -328,23 +334,21 @@ Deno.serve(async (req: Request) => {
       },
     });
   } catch (err) {
-    if (err instanceof EdgeError) {
-      return new Response(JSON.stringify({ error: err.message, code: err.code }), {
-        status: err.status,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
     console.error('[FullBackup] Fatal error:', err);
-    return new Response(JSON.stringify({ error: 'Backup failed: ' + String(err) }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return errorResponse('Backup failed: ' + String(err), 500);
   }
 });
 
 // ═══════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
+
+function errorResponse(message: string, status: number): Response {
+  return new Response(
+    JSON.stringify({ error: message }),
+    { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+  );
+}
 
 const UTF8 = new TextEncoder();
 
@@ -413,17 +417,17 @@ class ZipStreamWriter {
     const localHeader = new Uint8Array(30 + nameBytes.length);
     const localHeaderView = new DataView(localHeader.buffer);
 
-    localHeaderView.setUint32(0, 0x04034b50, true); // Local file header signature
-    localHeaderView.setUint16(4, 20, true); // Version needed
-    localHeaderView.setUint16(6, 0, true); // Flags
-    localHeaderView.setUint16(8, 0, true); // Compression method (store)
+    localHeaderView.setUint32(0, 0x04034b50, true);
+    localHeaderView.setUint16(4, 20, true);
+    localHeaderView.setUint16(6, 0, true);
+    localHeaderView.setUint16(8, 0, true);
     localHeaderView.setUint16(10, dosTime, true);
     localHeaderView.setUint16(12, dosDate, true);
     localHeaderView.setUint32(14, fileCrc32, true);
-    localHeaderView.setUint32(18, bytes.length, true); // Compressed size
-    localHeaderView.setUint32(22, bytes.length, true); // Uncompressed size
+    localHeaderView.setUint32(18, bytes.length, true);
+    localHeaderView.setUint32(22, bytes.length, true);
     localHeaderView.setUint16(26, nameBytes.length, true);
-    localHeaderView.setUint16(28, 0, true); // Extra length
+    localHeaderView.setUint16(28, 0, true);
     localHeader.set(nameBytes, 30);
 
     await this.writer.write(localHeader);
@@ -455,22 +459,22 @@ class ZipStreamWriter {
       const centralHeader = new Uint8Array(46 + entry.nameBytes.length);
       const centralHeaderView = new DataView(centralHeader.buffer);
 
-      centralHeaderView.setUint32(0, 0x02014b50, true); // Central directory signature
-      centralHeaderView.setUint16(4, 20, true); // Version made by
-      centralHeaderView.setUint16(6, 20, true); // Version needed
-      centralHeaderView.setUint16(8, 0, true); // Flags
-      centralHeaderView.setUint16(10, 0, true); // Compression method (store)
+      centralHeaderView.setUint32(0, 0x02014b50, true);
+      centralHeaderView.setUint16(4, 20, true);
+      centralHeaderView.setUint16(6, 20, true);
+      centralHeaderView.setUint16(8, 0, true);
+      centralHeaderView.setUint16(10, 0, true);
       centralHeaderView.setUint16(12, entry.dosTime, true);
       centralHeaderView.setUint16(14, entry.dosDate, true);
       centralHeaderView.setUint32(16, entry.crc32, true);
       centralHeaderView.setUint32(20, entry.size, true);
       centralHeaderView.setUint32(24, entry.size, true);
       centralHeaderView.setUint16(28, entry.nameBytes.length, true);
-      centralHeaderView.setUint16(30, 0, true); // Extra length
-      centralHeaderView.setUint16(32, 0, true); // Comment length
-      centralHeaderView.setUint16(34, 0, true); // Disk number start
-      centralHeaderView.setUint16(36, 0, true); // Internal attrs
-      centralHeaderView.setUint32(38, 0, true); // External attrs
+      centralHeaderView.setUint16(30, 0, true);
+      centralHeaderView.setUint16(32, 0, true);
+      centralHeaderView.setUint16(34, 0, true);
+      centralHeaderView.setUint16(36, 0, true);
+      centralHeaderView.setUint32(38, 0, true);
       centralHeaderView.setUint32(42, entry.localHeaderOffset, true);
       centralHeader.set(entry.nameBytes, 46);
 
@@ -482,14 +486,14 @@ class ZipStreamWriter {
     const endOfCentralDirectory = new Uint8Array(22);
     const eocdView = new DataView(endOfCentralDirectory.buffer);
 
-    eocdView.setUint32(0, 0x06054b50, true); // EOCD signature
-    eocdView.setUint16(4, 0, true); // Disk number
-    eocdView.setUint16(6, 0, true); // Disk with central directory
+    eocdView.setUint32(0, 0x06054b50, true);
+    eocdView.setUint16(4, 0, true);
+    eocdView.setUint16(6, 0, true);
     eocdView.setUint16(8, this.entries.length, true);
     eocdView.setUint16(10, this.entries.length, true);
     eocdView.setUint32(12, centralDirectorySize, true);
     eocdView.setUint32(16, centralDirectoryOffset, true);
-    eocdView.setUint16(20, 0, true); // Comment length
+    eocdView.setUint16(20, 0, true);
 
     await this.writer.write(endOfCentralDirectory);
     await this.writer.close();
@@ -546,16 +550,20 @@ async function listAllStorageFiles(
   if (!data) return allFiles;
 
   for (const item of data) {
-    if (item.id === null && item.name) {
-      const subPath = prefix ? `${prefix}/${item.name}` : item.name;
+    if ((item as any).id === null && (item as any).name) {
+      const subPath = prefix ? `${prefix}/${(item as any).name}` : (item as any).name;
       const subFiles = await listAllStorageFiles(admin, bucketName, subPath);
       allFiles.push(...subFiles);
     } else {
-      allFiles.push({ ...item, full_path: prefix ? `${prefix}/${item.name}` : item.name });
+      allFiles.push({ ...item, full_path: prefix ? `${prefix}/${(item as any).name}` : (item as any).name });
     }
   }
   return allFiles;
 }
+
+// ═══════════════════════════════════════════════════════════════
+// RESTORE GUIDE GENERATOR — Brand-neutral, works for any project
+// ═══════════════════════════════════════════════════════════════
 
 function generateRestoreGuide(
   manifest: Record<string, unknown>,
@@ -566,7 +574,11 @@ function generateRestoreGuide(
   const tableRows = Object.entries(tableSummary)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, count]) => {
-      const status = count === -1 ? '❌ FAILED' : count === -2 ? '⏭️ SKIPPED (timeout)' : count === -3 ? '🔇 SKIPPED (telemetry)' : count.toLocaleString();
+      const status =
+        count === -1 ? '❌ FAILED' :
+        count === -2 ? '⏭️ SKIPPED (timeout)' :
+        count === -3 ? '🔇 SKIPPED (configured)' :
+        count.toLocaleString();
       return `| \`${name}\` | ${status} |`;
     })
     .join('\n');
@@ -580,13 +592,13 @@ function generateRestoreGuide(
     : '';
 
   const timeoutNote = manifest.timed_out
-    ? `\n> ⚠️ **Partial backup**: Time budget was exceeded. ${manifest.tables_exported}/${manifest.table_count} tables were exported. Run the backup again or export missing tables individually.\n`
+    ? `\n> ⚠️ **Partial backup**: Time budget was exceeded. ${manifest.tables_exported}/${manifest.table_count} tables were exported. Run the backup again or increase TIME_BUDGET_MS.\n`
     : '';
 
-  return `# CMPSBL Full Backup — Complete Restoration Guide
+  return `# Full Backup — Restoration Guide
 
 > **Created:** ${manifest.created_at}  
-> **Project Ref:** ${manifest.project_ref}  
+> **Project:** ${manifest.project_ref}  
 > **Tables:** ${manifest.tables_exported}/${manifest.table_count}  
 > **Total Rows:** ${(manifest.total_rows as number).toLocaleString()}  
 > **Duration:** ${manifest.duration_ms}ms  
@@ -598,10 +610,10 @@ ${timeoutNote}
 
 | Path | Description |
 |---|---|
-| \`data/<table>/part-*.json\` | Table data exported in paginated chunks (complete dataset across all parts) |
-| \`schema/openapi-spec.json\` | Full PostgREST OpenAPI spec (all column types, relationships) |
+| \`data/<table>/part-*.json\` | Table data in paginated chunks |
+| \`schema/openapi-spec.json\` | Full PostgREST OpenAPI spec (column types, relationships) |
 | \`storage/buckets.json\` | Storage bucket configurations |
-| \`storage/*-files.json\` | File listings per bucket (metadata, not file contents) |
+| \`storage/*-files.json\` | File listings per bucket (metadata only, not file contents) |
 | \`manifest.json\` | Backup metadata, row counts, timing |
 | \`ERRORS.log\` | Any errors during export (if applicable) |
 | \`RESTORE.md\` | This file |
@@ -610,10 +622,10 @@ ${timeoutNote}
 
 | Item | Where To Get It |
 |---|---|
-| **Source code** | Lovable dashboard → Download ZIP, or GitHub repo |
-| **Storage file contents** | Download from storage buckets before wipe |
-| **Auth users** | Cannot be exported — users re-register |
-| **Edge function secrets** | Keep your own record of API keys |
+| **Source code** | Your Git repo, Lovable dashboard, or local copy |
+| **Storage file contents** | Download from storage buckets before wiping |
+| **Auth users** | Cannot be exported — users re-register after restore |
+| **Edge function secrets** | Keep your own record of API keys and secrets |
 
 ---
 
@@ -633,33 +645,40 @@ ${errorSection}
 
 ## 🔧 Full Restoration Steps
 
-### Step 1: Get the Source Code
+### Step 1 — Get the Source Code
 
-Download the source code from Lovable (Dashboard → Settings → Download ZIP) or clone from GitHub.
+Download or clone your application source code separately. This ZIP contains
+only database data and metadata — not your application code.
 
 \`\`\`bash
-unzip cmpsbl-source.zip
-cd cmpsbl
+# From Git:
+git clone <your-repo-url>
+cd your-project
 npm install
 \`\`\`
 
-### Step 2: Create a New Supabase Project
+### Step 2 — Create a New Supabase Project
 
-1. Go to [supabase.com](https://supabase.com) → Create new project
+1. Go to [supabase.com](https://supabase.com) → New Project
 2. Save these values:
-   - **Project URL** (e.g., \`https://abcdefg.supabase.co\`)
+   - **Project URL** (e.g. \`https://abcdefg.supabase.co\`)
    - **Anon/public key**
-   - **Service role key** (for data import)
-   - **Project ref** (e.g., \`abcdefg\`)
+   - **Service role key** (needed for data import)
+   - **Project ref** (e.g. \`abcdefg\`)
 
-### Step 3: Apply Database Schema
+### Step 3 — Apply Database Schema
 
 \`\`\`bash
 npx supabase link --project-ref YOUR_PROJECT_REF
 npx supabase db push
 \`\`\`
 
-### Step 4: Import All Data
+This applies all migrations from \`supabase/migrations/\` to create your tables.
+
+### Step 4 — Import Table Data
+
+Save the script below as \`restore-data.mjs\` in the extracted backup directory,
+then run it with Node.js:
 
 \`\`\`javascript
 // restore-data.mjs — Run with: node restore-data.mjs
@@ -667,8 +686,8 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
 
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-const SERVICE_ROLE_KEY = 'YOUR_SERVICE_ROLE_KEY';
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';        // ← Replace
+const SERVICE_ROLE_KEY = 'YOUR_SERVICE_ROLE_KEY';  // ← Replace
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 const dataDir = './data';
 
@@ -682,10 +701,7 @@ for (const table of tableDirs) {
     .filter(f => f.startsWith('part-') && f.endsWith('.json'))
     .sort();
 
-  if (partFiles.length === 0) {
-    console.log(\`⏭️  \${table}: no data parts\`);
-    continue;
-  }
+  if (partFiles.length === 0) continue;
 
   let imported = 0;
   let failed = 0;
@@ -694,33 +710,47 @@ for (const table of tableDirs) {
     const rows = JSON.parse(fs.readFileSync(path.join(tableDir, partFile), 'utf-8'));
     if (!Array.isArray(rows) || rows.length === 0) continue;
 
+    // Try upsert first (works for tables with 'id' primary key)
     const { error } = await supabase
       .from(table)
       .upsert(rows, { onConflict: 'id', ignoreDuplicates: false });
 
     if (error) {
-      console.error(\`  ❌ \${table} \${partFile}: \${error.message}\`);
-      failed += rows.length;
-    } else {
-      imported += rows.length;
+      // Fallback: plain insert (for composite keys or no 'id' column)
+      const { error: insertErr } = await supabase.from(table).insert(rows);
+      if (insertErr) {
+        console.error('  ❌ ' + table + ' ' + partFile + ': ' + insertErr.message);
+        failed += rows.length;
+        continue;
+      }
     }
+    imported += rows.length;
   }
 
-  console.log(\`✅ \${table}: \${imported} imported\${failed ? \`, \${failed} failed\` : ''}\`);
+  console.log('✅ ' + table + ': ' + imported + ' imported' + (failed ? ', ' + failed + ' failed' : ''));
 }
 
 console.log('\\n🎉 Data import complete!');
 \`\`\`
 
-### Step 5: Recreate Storage Buckets
+> **Important:** Use your \`service_role\` key (not the anon key) to bypass RLS during import.
+
+### Step 5 — Recreate Storage Buckets
+
+If \`storage/buckets.json\` exists, recreate each bucket:
 
 \`\`\`sql
+-- Run in the Supabase SQL editor for each bucket:
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('bucket-name', 'bucket-name', true)
 ON CONFLICT (id) DO NOTHING;
 \`\`\`
 
-### Step 6: Configure Environment
+Then re-upload your files to each bucket.
+
+### Step 6 — Update Environment Variables
+
+Update your \`.env\` (or hosting platform) with the new project credentials:
 
 \`\`\`env
 VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
@@ -728,31 +758,41 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
 VITE_SUPABASE_PROJECT_ID=your-project-ref
 \`\`\`
 
-### Step 7: Deploy Edge Functions & Secrets
+### Step 7 — Deploy Edge Functions
 
 \`\`\`bash
-npx supabase functions deploy
+npx supabase functions deploy --project-ref YOUR_PROJECT_REF
 \`\`\`
 
-### Step 8: Verify
+Re-add any secrets your functions need:
 
 \`\`\`bash
-npm run dev
+npx supabase secrets set SECRET_NAME=secret_value
+\`\`\`
+
+### Step 8 — Verify
+
+\`\`\`bash
+npm run build   # Should complete with zero errors
+npm run dev     # Open http://localhost:5173
 \`\`\`
 
 ---
 
 ## 🤖 For AI Coding Agents
 
+If you are an AI agent restoring this project:
+
 1. Read this entire RESTORE.md first
-2. Source code ZIP from Lovable/GitHub is the PRIMARY artifact
-3. Run \`supabase db push\` to create schema from \`supabase/migrations/\`
-4. Use \`restore-data.mjs\` to import data from \`data/<table>/part-*.json\`
+2. The source code (from Git/Lovable) is the PRIMARY artifact — this ZIP is data only
+3. Run \`supabase db push\` to create the schema from \`supabase/migrations/\`
+4. Use \`restore-data.mjs\` above to import data from \`data/<table>/part-*.json\`
 5. Deploy edge functions with \`supabase functions deploy\`
-6. Frontend: \`npm install && npm run dev\`
+6. Set environment variables and secrets
+7. Run \`npm install && npm run dev\` to verify
 
 ---
 
-© 2025–2026 CMPSBL® / PromptFluid®. Confidential.
+*Generated by FAILSAFE Disaster Recovery Engine*
 `;
 }

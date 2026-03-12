@@ -2,7 +2,7 @@
 ## FAILSAFE Disaster Recovery Engine · Machine-Readable Instructions
 
 **Format:** Structured restore protocol for autonomous AI agents  
-**Version:** 1.0.0  
+**Version:** 3.0.0  
 **Compatibility:** Any Supabase-backed web application  
 
 ---
@@ -76,23 +76,23 @@ Adjust variable names if your project uses different env var naming conventions.
 ### STEP 4 — Apply Database Schema
 
 ```bash
-supabase link --project-ref <PROJECT_REF>
-supabase db push
+npx supabase link --project-ref <PROJECT_REF>
+npx supabase db push
 ```
 
 This applies all migrations from `supabase/migrations/` in chronological order.
 
 **If migration fails:**
 1. Check the error output for the specific failing migration
-2. Run individually: `supabase migration up --include <filename>`
+2. Run individually: `npx supabase migration up --include <filename>`
 3. Common cause: object already exists → safe to skip
 4. Resolve conflicts before proceeding
 
-**Verify:** `supabase db diff` returns empty output.
+**Verify:** `npx supabase db diff` returns empty output.
 
 ### STEP 5 — Import Table Data
 
-The backup's auto-generated `RESTORE.md` (inside the ZIP, not this file) contains a ready-to-run import script tailored to your exact data. **Use that script if available.**
+The backup's auto-generated `RESTORE.md` (inside the ZIP) contains a ready-to-run import script tailored to your exact data. **Use that script if available.**
 
 Otherwise, create `restore-data.mjs`:
 
@@ -116,10 +116,7 @@ for (const table of tableDirs) {
     .filter(f => f.startsWith('part-') && f.endsWith('.json'))
     .sort();
 
-  if (partFiles.length === 0) {
-    console.log(`⏭️  ${table}: no data parts`);
-    continue;
-  }
+  if (partFiles.length === 0) continue;
 
   let imported = 0;
   let failed = 0;
@@ -182,13 +179,13 @@ Then re-upload your storage files from your separate backup of those assets.
 If your project uses Supabase Edge Functions:
 
 ```bash
-supabase functions deploy --project-ref <PROJECT_REF>
+npx supabase functions deploy --project-ref <PROJECT_REF>
 ```
 
 Reconfigure any required secrets:
 
 ```bash
-supabase secrets set SECRET_NAME=secret_value
+npx supabase secrets set SECRET_NAME=secret_value
 ```
 
 ### STEP 8 — Set Up Users & Permissions
@@ -236,7 +233,7 @@ npm run dev
 
 | Symptom | Diagnosis | Fix |
 |---------|-----------|-----|
-| `relation does not exist` | Schema not applied | Run `supabase db push` |
+| `relation does not exist` | Schema not applied | Run `npx supabase db push` |
 | `violates foreign key constraint` | Import order issue | Import the referenced table first, retry |
 | `onConflict` or `column "id" not found` | Composite primary key | Script auto-falls back to `insert` |
 | `JWT expired` / `invalid token` | Wrong key in .env | Check credentials from Supabase dashboard |
@@ -252,7 +249,7 @@ npm run dev
 
 Contains metadata about the backup:
 - `created_at` — when the backup was taken
-- `tables` — row counts per table (`-1` = failed, `-2` = skipped due to timeout, `-3` = intentionally skipped)
+- `tables` — row counts per table (`-1` = failed, `--2` = skipped due to timeout, `-3` = intentionally skipped)
 - `table_parts` — number of part files per table
 - `total_rows` — total rows exported
 - `timed_out` — whether the backup hit the time limit
