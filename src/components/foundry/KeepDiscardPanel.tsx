@@ -99,7 +99,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     <Sparkles className="w-4 h-4 text-neon-purple shrink-0 mt-0.5" />
                   </motion.div>
                   <div>
-                    <div className="text-xs sm:text-sm font-bold text-neon-purple">Mythic Pipeline Discovered</div>
+                    <div className="text-xs sm:text-sm font-bold text-neon-purple">Mythic Memory Discovered</div>
                     <div className="text-[10px] sm:text-xs text-neon-purple/70 leading-relaxed">
                       One of the rarest outcomes in the Memory Stream.
                     </div>
