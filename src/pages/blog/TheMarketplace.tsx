@@ -47,7 +47,7 @@ export default function TheMarketplace() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Discovery and Recommendation</h2>
       <p>The Store isn't just a catalog — it's an intelligent discovery engine. Based on your usage patterns, subscription tier, and industry vertical, it recommends capabilities you might not know you need. A customer using DEFENSE for security scanning gets recommended the compliance reporting capability. A customer running content Agencies gets recommended the SEO optimizer capability. These recommendations drive 35% of Store deployments — higher than manual browsing.</p>
 
-      <p>The Store changed our business model. We went from selling API access to selling outcomes. Customers don't care how many NEXUS calls they make — they care that the security audit artifact catches real vulnerabilities. <Link to="/blog/packing-intelligence" className="text-primary hover:underline">Packs</Link> took this further by bundling related artifacts together.</p>
+      <p>The Store changed our business model. We went from selling API access to selling outcomes. Customers don't care how many NEXUS calls they make — they care that the security audit capability catches real vulnerabilities. <Link to="/blog/packing-intelligence" className="text-primary hover:underline">Packs</Link> took this further by bundling related capabilities together.</p>
     </BlogArticleLayout>
   );
 }

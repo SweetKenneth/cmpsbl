@@ -34,7 +34,7 @@ export default function TeamsOfMachines() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Scheduled Operations</h2>
       <p>Real business operations aren't one-shots — they're recurring. The Agency system supports scheduled tasks: daily competitive monitoring, weekly market reports, monthly compliance audits. Each scheduled execution benefits from everything the Agency learned in previous runs. A weekly market report Agency doesn't start from scratch each Monday — it remembers last week's analysis, detects changes, and focuses its compute on what's actually different. This makes recurring tasks progressively cheaper and better over time.</p>
-      <p>Agencies were where the substrate stopped being infrastructure and started being a product. Not "here are nodes" but "here is a team that does your job." The artifacts those teams produce needed somewhere to go — which led to <Link to="/blog/from-thought-to-artifact" className="text-primary hover:underline">FORGE</Link>.</p>
+      <p>Agencies were where the substrate stopped being infrastructure and started being a product. Not "here are nodes" but "here is a team that does your job." The discoveries those teams produce needed somewhere to go — which led to <Link to="/blog/from-thought-to-artifact" className="text-primary hover:underline">FORGE</Link>.</p>
     </BlogArticleLayout>
   );
 }
