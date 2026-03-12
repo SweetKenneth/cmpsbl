@@ -45,7 +45,7 @@ const PHASES = [
     tagline: "Sealed Runtime Execution",
     status: "In Progress",
     color: "primary",
-    description: "Domain-specific execution engines that run pipelines at production scale. Sealed, optimized, and governed — not general-purpose containers.",
+    description: "Domain-specific execution engines that run memories at production scale. Sealed, optimized, and governed — not general-purpose containers.",
     capabilities: [
       "20 sealed runtime engines across verticals",
       "Hot-swappable execution zones",
@@ -60,11 +60,11 @@ const PHASES = [
     tagline: "Autonomous Simulation & Synthesis",
     status: "Planned",
     color: "primary",
-    description: "The substrate dreams. Off-cycle simulation generates synthetic data, stress-tests pipelines, and surfaces latent patterns humans never asked for.",
+    description: "The substrate dreams. Off-cycle simulation generates synthetic data, stress-tests memories, and surfaces latent patterns humans never asked for.",
     capabilities: [
       "Dream cycle scheduling & resource allocation",
       "Synthetic data generation for domain nodes",
-      "Autonomous pipeline stress-testing",
+      "Autonomous memory stress-testing",
       "Emergent pattern surfacing & flagging",
     ],
     icon: Moon,
@@ -91,8 +91,8 @@ const DOMAIN_NODES = [
     domain: "Bioinformatics",
     icon: Heart,
     signal: "DNA sequences",
-    description: "Genomic pattern recognition, protein folding pipelines, drug interaction modeling. Crystallize from NCBI, UniProt, and clinical trial feeds.",
-    opportunities: ["Precision medicine pipelines", "Gene therapy target discovery", "Clinical trial optimization"],
+    description: "Genomic pattern recognition, protein folding processes, drug interaction modeling. Crystallize from NCBI, UniProt, and clinical trial feeds.",
+    opportunities: ["Precision medicine memories", "Gene therapy target discovery", "Clinical trial optimization"],
   },
   {
     domain: "Finance",
@@ -105,7 +105,7 @@ const DOMAIN_NODES = [
     domain: "Astronomy",
     icon: Satellite,
     signal: "Satellite telemetry",
-    description: "Deep-sky object classification, exoplanet detection, and gravitational wave analysis. Process petabytes of observatory data into actionable pipelines.",
+    description: "Deep-sky object classification, exoplanet detection, and gravitational wave analysis. Process petabytes of observatory data into actionable memories.",
     opportunities: ["Exoplanet characterization", "Space debris tracking", "Multi-messenger event correlation"],
   },
   {
@@ -113,20 +113,20 @@ const DOMAIN_NODES = [
     icon: Cpu,
     signal: "Sensor fusion",
     description: "Multi-modal perception, path planning, and real-time control loops. Crystallize navigation and manipulation primitives from simulation data.",
-    opportunities: ["Autonomous navigation stacks", "Manipulation skill transfer", "Sim-to-real pipeline bridges"],
+    opportunities: ["Autonomous navigation stacks", "Manipulation skill transfer", "Sim-to-real bridges"],
   },
   {
     domain: "Climate",
     icon: Wind,
     signal: "Weather data",
-    description: "Atmospheric modeling, carbon tracking, and extreme event prediction. Ingest NOAA, ERA5, and satellite feeds into governed climate pipelines.",
+    description: "Atmospheric modeling, carbon tracking, and extreme event prediction. Ingest NOAA, ERA5, and satellite feeds into governed climate memories.",
     opportunities: ["Extreme weather prediction", "Carbon offset verification", "Agricultural yield optimization"],
   },
   {
     domain: "Cybersecurity",
     icon: Shield,
     signal: "Network packets",
-    description: "Threat detection, vulnerability assessment, and incident response automation. Real-time packet analysis with governed response pipelines.",
+    description: "Threat detection, vulnerability assessment, and incident response automation. Real-time packet analysis with governed response memories.",
     opportunities: ["Zero-day detection meshes", "Automated incident response", "Compliance audit automation"],
   },
 ];
@@ -394,7 +394,7 @@ export default function Roadmap() {
             Build on the Evolution
           </h2>
           <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
-            Start at DISCOVERY. Your pipelines carry forward through every phase — compounding capability, autonomy, and value.
+            Start at DISCOVERY. Your memories carry forward through every phase — compounding capability, autonomy, and value.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/auth">

@@ -22,10 +22,10 @@ export function FoundryMidCTA() {
             Ready to see for yourself?
           </div>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground mb-3 sm:mb-4">
-            Every pipeline is <span className="text-primary">yours to explore</span>
+            Every memory is <span className="text-primary">yours to explore</span>
           </h3>
           <p className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
-            Create a free account and start crystallizing pipelines from the Memory Stream.
+            Create a free account and start crystallizing memories from the Memory Stream.
             No credit card. No setup. Just pull.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

@@ -206,7 +206,7 @@ export default function Foundry() {
                 className="text-muted-foreground/70 max-w-lg mx-auto text-sm leading-relaxed"
               >
                 The Memory Stream is a continuous substrate of evolving software systems.
-                The engine samples the stream and crystallizes viable pipelines.
+                The engine samples the stream and crystallizes viable memories.
                 Quality floor: 68+. No filler. Only stable systems survive.
               </motion.p>
             </div>

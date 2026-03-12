@@ -107,7 +107,7 @@ export function LiveDiscoveryStream({ discoveries }: LiveDiscoveryStreamProps) {
             Live Discovery Feed
           </h2>
           <p className="text-muted-foreground/70 text-sm sm:text-base mt-1">
-            New pipelines appear here as the Memory Stream explores system combinations.
+            New memories appear here as the Memory Stream explores system combinations.
           </p>
         </motion.div>
 

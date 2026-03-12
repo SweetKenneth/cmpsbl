@@ -49,7 +49,7 @@ const buildCapabilities = [
   {
     icon: TrendingUp,
     title: "EVOLVE",
-    description: "Every interaction feeds back. Pipelines crystallize into reusable intelligence. Your infrastructure gets smarter over time.",
+    description: "Every interaction feeds back. Memories crystallize into reusable intelligence. Your infrastructure gets smarter over time.",
     color: "text-amber-500",
     bg: "bg-amber-500/10",
   },
@@ -181,7 +181,7 @@ export default function StartHere() {
                   <h2 className="text-xl sm:text-2xl font-bold text-foreground">The Memory Stream</h2>
                 </div>
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                  The Memory Stream is the continuous output of the substrate — a river of crystallized software, scored pipelines, and compounding intelligence.
+                  The Memory Stream is the continuous output of the substrate — a river of crystallized software, scored memories, and compounding intelligence.
                 </p>
                 <div className="space-y-3">
                   {quickStarts.map((item, idx) => (

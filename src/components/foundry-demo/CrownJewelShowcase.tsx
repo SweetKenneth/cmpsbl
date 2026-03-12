@@ -19,7 +19,7 @@ const TOP_DISCOVERIES: ApexDiscovery[] = [
   { name: 'Autonomous Threat Response Engine', score: 97, tier: 'MYTHIC', category: 'SECURITY', systems: ['DEFENSE', 'NERVE', 'IMMUNITY', 'SYSTEM'], capability: 'Detects, classifies, and neutralizes threats autonomously — from anomalous traffic to zero-day exploit patterns — without human intervention.', whatItDoes: 'Automatically detects and responds to security threats in real time, isolating compromised components before damage spreads.' },
   { name: 'Predictive Infrastructure Scaler', score: 96, tier: 'MYTHIC', category: 'INFRASTRUCTURE', systems: ['ANALYTICS', 'BRAIN', 'NERVE', 'SYSTEM'], capability: 'Forecasts resource demand using historical patterns and live telemetry, scaling infrastructure preemptively to prevent bottlenecks.', whatItDoes: 'Predicts traffic spikes and auto-scales servers, databases, and compute before demand hits — zero downtime.' },
   { name: 'Compliance Audit Automator', score: 94, tier: 'MYTHIC', category: 'COMPLIANCE', systems: ['AUDIT', 'GOVERNANCE', 'MEMORY', 'SOVEREIGN'], capability: 'Continuously audits system operations against regulatory frameworks (SOC2, GDPR, HIPAA), generating verifiable compliance reports automatically.', whatItDoes: 'Runs continuous compliance checks and produces audit-ready reports — replacing weeks of manual review with real-time validation.' },
-  { name: 'Intelligent Data Pipeline Orchestrator', score: 93, tier: 'RELIC', category: 'DATA', systems: ['CORTEX', 'DECODE', 'INTEGRATION', 'RELAY'], capability: 'Coordinates complex multi-source data pipelines with automatic schema detection, transformation, and delivery across heterogeneous systems.', whatItDoes: 'Connects any data source to any destination with automatic format conversion, error recovery, and delivery guarantees.' },
+  { name: 'Intelligent Data Orchestrator', score: 93, tier: 'RELIC', category: 'DATA', systems: ['CORTEX', 'DECODE', 'INTEGRATION', 'RELAY'], capability: 'Coordinates complex multi-source data flows with automatic schema detection, transformation, and delivery across heterogeneous systems.', whatItDoes: 'Connects any data source to any destination with automatic format conversion, error recovery, and delivery guarantees.' },
 ];
 
 /** @deprecated Use ApexDiscoveryShowcase instead */
@@ -42,11 +42,11 @@ export function ApexDiscoveryShowcase() {
             Top Discoveries — What the Memory Stream Surfaces
           </h2>
           <p className="text-center text-foreground/90 mb-2 max-w-2xl mx-auto text-sm sm:text-base px-2 leading-relaxed font-medium">
-            The highest-value software pipelines discovered by the substrate.
+            The highest-value software memories discovered by the substrate.
             Each solves a real problem teams face every day.
           </p>
           <p className="text-center text-muted-foreground/60 mb-12 sm:mb-16 max-w-2xl mx-auto text-xs sm:text-sm px-2 leading-relaxed font-mono">
-            Pipelines are executable software architectures automatically discovered
+            Memories are executable software architectures automatically discovered
             by combining substrate systems in novel configurations.
           </p>
         </motion.div>

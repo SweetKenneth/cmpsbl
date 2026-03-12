@@ -22,7 +22,7 @@ const WORLD_FIRSTS = [
   { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
   { title: "40-Node Memory Stream", desc: "First cognitive infrastructure with 40 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
   { title: "Intent Mesh Crystallization", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
-  { title: "DECODE → ENCODE Pipeline", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
+  { title: "DECODE → ENCODE Process", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
   { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
   { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN to all systems via relevance scoring", badge: "CLM" },
@@ -86,13 +86,13 @@ export default function InvestorsPublic() {
     { icon: Eye, name: "VISION", subtitle: "Stream Observability", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 stream nodes." },
     { icon: Shield, name: "DEFENSE", subtitle: "Stream Security", description: "Bot protection, threat detection, and governance guardrails — outermost protective shell of the Memory Stream." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system pipelines autonomously from the Memory Stream." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE process with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system memories autonomously from the Memory Stream." },
   ];
 
   const highlights = [
     { icon: Rocket, title: "Memory Stream Infrastructure", description: `40 stream nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
-    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + pipeline marketplace + sealed engine licensing. 90%+ gross margins." },
+    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + memory marketplace + sealed engine licensing. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated crystallization + 12-sector topology = a technical gap that widens daily. Can't be replicated." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];

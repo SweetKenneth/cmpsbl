@@ -57,7 +57,7 @@ export function FoundryHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
-          A recursive discovery engine that surfaces production-grade software pipelines
+          A recursive discovery engine that surfaces production-grade software memories
           directly from silicon.{' '}
           <span className="text-foreground font-semibold">1,143 programs discovered in under 9 hours.</span>
           {' '}The stream never stops.
@@ -105,7 +105,7 @@ export function FoundryHero() {
         >
           <div className="text-center">
             <div className="text-2xl sm:text-3xl md:text-5xl font-black text-foreground tracking-tight">1,143</div>
-            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Pipelines Crystallized</div>
+            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Memories Crystallized</div>
           </div>
           <div className="w-px h-10 sm:h-12 bg-border/20" />
           <div className="text-center">

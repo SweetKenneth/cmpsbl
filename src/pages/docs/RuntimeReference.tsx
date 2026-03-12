@@ -233,8 +233,8 @@ export default function RuntimeReference() {
                       body: 'Memory is organized into Hot (active recall), Warm (recent context), Cold (archived), and Archive (permanent) tiers. Adaptive limits scale based on user activity patterns. SM-2 spaced repetition governs review scheduling.',
                     },
                     {
-                      title: 'Pipeline Orchestration',
-                      body: 'Capabilities compose into pipelines executed via DAG coordination. Execution modes include cascade (sequential), parallel, adaptive (runtime-determined), and staged (phased rollout). Meta-engines orchestrate multiple engines into compound workflows.',
+                      title: 'Memory Orchestration',
+                      body: 'Capabilities compose into memories executed via DAG coordination. Execution modes include cascade (sequential), parallel, adaptive (runtime-determined), and staged (phased rollout). Meta-engines orchestrate multiple engines into compound workflows.',
                     },
                   ].map(concept => (
                     <Card key={concept.title} className="border-border/40 not-prose">
