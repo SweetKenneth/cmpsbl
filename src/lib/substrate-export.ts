@@ -177,11 +177,11 @@ const rootConfigFiles = import.meta.glob('/{vite.config.ts,vitest.config.ts,tsco
 // DOCUMENTATION, SCRIPTS, PLUGINS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const docFiles = import.meta.glob('/docs/**/*.{md,txt,json}', {
+const docFiles = import.meta.glob('/docs/**/*.{md,txt,json,html}', {
   as: 'raw',
 }) as RawGlob;
 
-const scriptFiles = import.meta.glob('/scripts/**/*.{ts,js,sh,json}', {
+const scriptFiles = import.meta.glob('/scripts/**/*.{ts,js,mjs,sh,json}', {
   as: 'raw',
 }) as RawGlob;
 
