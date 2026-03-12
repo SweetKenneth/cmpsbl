@@ -310,7 +310,7 @@ export default function AIOperatingSystem() {
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
                 The CMPSBL Substrate organizes 40 specialized nodes across 12 sectors. Each node holds a weight in the system matrix (Σ = 1.000),
-                managed by CORE. Circuit breakers prevent cascading failures. DREAM cycles optimize autonomously.
+                managed by CORE. Safety switches prevent cascading failures. DREAM cycles optimize autonomously.
               </p>
             </motion.div>
 

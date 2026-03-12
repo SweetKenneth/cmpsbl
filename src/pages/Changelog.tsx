@@ -669,7 +669,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "External Developer Metrics panel built into the analytics layer with live data from the developer registry",
       "Real-time API key tracking, usage-per-developer breakdowns, and revenue attribution from metered calls",
-      "Module-level usage heatmaps show which substrate capabilities attract the most external consumption",
+      "Node-level usage heatmaps show which substrate capabilities attract the most external consumption",
     ],
     phenotype: [
       "The substrate can now observe its own developer ecosystem in real time",

@@ -485,7 +485,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'engines' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with circuit breakers. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
+              <TierGate requiredTier="studio" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with safety switches. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
                 <PanelContainer id="engines">
                   <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
                 </PanelContainer>
