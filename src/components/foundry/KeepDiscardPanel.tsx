@@ -123,7 +123,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                 </motion.div>
               )}
 
-              {/* Pipeline info — responsive layout */}
+              {/* Memory info — responsive layout */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
