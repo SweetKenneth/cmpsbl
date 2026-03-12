@@ -22,7 +22,7 @@ import {
  * Time budget: Edge functions have ~150s wall-clock but much less CPU time.
  * We reserve 10s at the end for ZIP finalization (central directory + EOCD).
  */
-const TIME_BUDGET_MS = 80_000;
+const TIME_BUDGET_MS = 120_000;
 const FINALIZE_RESERVE_MS = 10_000;
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
