@@ -175,11 +175,11 @@ Deno.serve(async (req: Request) => {
         let tablesExported = 0;
 
         // Separate skipped tables and exportable tables
-        const skippedTables = tableNames.filter(t => SKIP_TABLES.has(t));
-        const exportTables = tableNames.filter(t => !SKIP_TABLES.has(t));
+        const skippedTables = tableNames.filter(shouldSkipTable);
+        const exportTables = tableNames.filter((t) => !shouldSkipTable(t));
 
         if (skippedTables.length > 0) {
-          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry tables: ${skippedTables.join(', ')}`);
+          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry/report tables`);
           for (const t of skippedTables) {
             tableSummary[t] = -3; // -3 = intentionally skipped
             tableParts[t] = 0;
@@ -202,6 +202,7 @@ Deno.serve(async (req: Request) => {
             let rowCount = 0;
             let offset = 0;
             let partCount = 0;
+            let pageSize = table === 'owner_reports' ? 100 : PAGE_SIZE;
 
             while (true) {
               if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
@@ -209,12 +210,17 @@ Deno.serve(async (req: Request) => {
                 break;
               }
 
-              const { data, error } = await admin
-                .from(table)
-                .select('*')
-                .range(offset, offset + PAGE_SIZE - 1);
+              const { data, error } = await fetchTablePageWithRetry(admin, table, offset, pageSize);
 
               if (error) {
+                const isStatementTimeout = /statement timeout/i.test(error.message || '');
+                if (isStatementTimeout && pageSize > MIN_PAGE_SIZE) {
+                  const nextPageSize = Math.max(MIN_PAGE_SIZE, Math.floor(pageSize / 2));
+                  errors.push(`${table}: statement timeout at page size ${pageSize}, retrying with ${nextPageSize}`);
+                  pageSize = nextPageSize;
+                  continue;
+                }
+
                 errors.push(`${table}: ${error.message}`);
                 break;
               }
@@ -226,8 +232,8 @@ Deno.serve(async (req: Request) => {
               await zip.addTextFile(partName, JSON.stringify(data));
 
               rowCount += data.length;
-              if (data.length < PAGE_SIZE) break;
-              offset += PAGE_SIZE;
+              if (data.length < pageSize) break;
+              offset += pageSize;
             }
 
             tableSummary[table] = rowCount;
