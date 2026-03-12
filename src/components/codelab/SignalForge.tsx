@@ -167,103 +167,115 @@ export function SignalForge() {
         {showRitual && <BlueprintForgeRitual onComplete={handleRitualComplete} />}
       </AnimatePresence>
 
-      {/* Hero */}
+      {/* CodeLab Hero */}
       <div className="relative border-b border-border/50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] md:w-[600px] h-[200px] md:h-[300px] rounded-full bg-primary/6 blur-[100px]" />
-        <div className="absolute bottom-0 right-0 w-[200px] h-[200px] rounded-full bg-neon-cyan/4 blur-[80px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] md:w-[700px] h-[250px] md:h-[350px] rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[200px] h-[200px] rounded-full bg-neon-cyan/4 blur-[80px]" />
+        <div className="absolute top-1/3 left-0 w-[150px] h-[150px] rounded-full bg-neon-purple/4 blur-[60px]" />
 
-        <div className="container mx-auto px-4 sm:px-6 pt-8 pb-8 sm:pt-12 sm:pb-10 md:pt-20 md:pb-16 relative">
-          <div className="max-w-2xl mx-auto text-center">
+        <div className="container mx-auto px-4 sm:px-6 pt-10 pb-10 sm:pt-14 sm:pb-12 md:pt-24 md:pb-20 relative">
+          <div className="max-w-3xl mx-auto text-center">
             {/* Zone badge */}
-            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-3 sm:mb-4">
-              <Badge variant="outline" className="gap-1.5 px-2.5 sm:px-3 py-1 text-[10px] sm:text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
-                <Hexagon className="w-3 h-3" />
-                CodeLab Zone
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-4 sm:mb-5">
+              <Badge variant="outline" className="gap-1.5 px-3 py-1.5 text-[10px] sm:text-[11px] font-mono border-primary/25 bg-primary/5 text-primary uppercase tracking-wider">
+                <Terminal className="w-3 h-3" />
+                Free Developer Playground
               </Badge>
             </motion.div>
 
-            {/* Title */}
+            {/* Title — CodeLab is the star */}
             <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="text-[1.75rem] leading-[1.1] sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black tracking-tight mb-2 sm:mb-3"
+              className="text-[2rem] leading-[1.08] sm:text-4xl md:text-5xl lg:text-[3.75rem] font-black tracking-tight mb-3 sm:mb-4"
             >
-              <span className="text-foreground">CodeLab</span>
-              <span className="text-muted-foreground mx-2">—</span>
-              <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
-                SIGNAL FORGE
+              <span className="bg-gradient-to-r from-primary via-neon-cyan to-primary bg-clip-text text-transparent">
+                CodeLab
               </span>
             </motion.h1>
 
-            {/* Tagline — the vibe */}
+            {/* Tagline */}
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.08 }}
-              className="text-sm sm:text-base md:text-lg font-semibold text-foreground/90 mb-2 sm:mb-3"
+              className="text-base sm:text-lg md:text-xl font-semibold text-foreground/90 mb-3 sm:mb-4 max-w-xl mx-auto"
             >
-              The system discovered working software architectures.
+              Build, explore, and launch on the cognitive substrate — for free.
             </motion.p>
 
-            {/* Detailed description */}
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.12 }}
-              className="text-[13px] sm:text-sm md:text-[15px] text-muted-foreground leading-relaxed mb-6 sm:mb-8 max-w-lg mx-auto"
+              className="text-[13px] sm:text-sm md:text-[15px] text-muted-foreground leading-relaxed mb-8 sm:mb-10 max-w-lg mx-auto"
             >
-              Every blueprint below was autonomously synthesized — not hand-authored. 
-              The substrate's discovery engine maps the full combinatorial space of{' '}
-              <span className="text-foreground font-medium">31 nodes × 20 categories</span>, 
-              scores each topology against CJPI integrity thresholds, and surfaces only 
-              architectures that survive validation. What you're forging is the output of 
-              a system that runs continuously, retiring exhausted combinations and evolving 
-              toward higher-value pipeline configurations.
+              Production-ready templates, interactive SDK workbench, live API playground, 
+              and <span className="text-foreground font-medium">Signal Forge</span> — 
+              the autonomous blueprint synthesis engine that discovers working architectures 
+              across {' '}
+              <span className="text-foreground font-medium">31 nodes × 20 categories</span>.
             </motion.p>
 
-            {/* Limits badge */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.14 }} className="flex justify-center mb-4 sm:mb-6">
-              <Badge variant="outline" className="text-[9px] sm:text-[10px] font-mono border-muted text-muted-foreground">
-                {DAILY_LIMIT} exports / day · Autonomous Discovery
-              </Badge>
-            </motion.div>
-
-            {/* Pipeline flow — responsive */}
+            {/* What you get — 4 pillars */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.18 }}
-              className="mb-6 sm:mb-8 mx-auto"
+              transition={{ delay: 0.16 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-10 max-w-2xl mx-auto"
             >
-              <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
+              {[
+                { icon: Package, label: 'Free Templates', value: `${FREE_TEMPLATES.length}+`, color: 'text-neon-cyan' },
+                { icon: Terminal, label: 'Live Workbench', value: 'SDK', color: 'text-neon-green' },
+                { icon: Sparkles, label: 'Signal Forge', value: 'Auto', color: 'text-neon-purple' },
+                { icon: Download, label: 'Export', value: 'Free', color: 'text-neon-amber' },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-1.5 p-3 sm:p-4 rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm">
+                  <item.icon className={cn("w-4 h-4 sm:w-5 sm:h-5", item.color)} />
+                  <span className="text-xs sm:text-sm font-bold font-mono">{item.value}</span>
+                  <span className="text-[10px] sm:text-[11px] text-muted-foreground">{item.label}</span>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Signal Forge CTA section */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="relative p-5 sm:p-6 rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/[0.04] via-transparent to-neon-cyan/[0.03] mb-6"
+            >
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Hexagon className="w-4 h-4 text-primary" />
+                <span className="text-xs sm:text-sm font-bold text-primary uppercase tracking-wider">Signal Forge</span>
+              </div>
+              <p className="text-[11px] sm:text-xs text-muted-foreground mb-4 max-w-md mx-auto">
+                Autonomously synthesized blueprints — CJPI validated, production-grade, exportable.
+              </p>
+
+              {/* Flow steps */}
+              <div className="flex items-center justify-center gap-1.5 sm:gap-2.5 mb-5">
                 {STEPS.map((step, i) => (
                   <div key={i} className="flex items-center gap-1 sm:gap-2">
                     <div className="flex flex-col items-center gap-0.5 sm:gap-1">
                       <div className={cn(
-                        "w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 rounded-lg border border-border/60 bg-card/80",
+                        "w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-lg border border-border/60 bg-card/80",
                         "flex items-center justify-center transition-transform hover:scale-110"
                       )}>
-                        <step.icon className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5", step.color)} />
+                        <step.icon className={cn("w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4", step.color)} />
                       </div>
-                      <span className="text-[9px] sm:text-[10px] md:text-[11px] font-medium text-muted-foreground">{step.label}</span>
+                      <span className="text-[8px] sm:text-[9px] md:text-[10px] font-medium text-muted-foreground">{step.label}</span>
                     </div>
                     {i < STEPS.length - 1 && (
-                      <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-border mt-[-12px] sm:mt-[-14px] shrink-0" />
+                      <ArrowRight className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-border mt-[-10px] sm:mt-[-12px] shrink-0" />
                     )}
                   </div>
                 ))}
               </div>
-            </motion.div>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.22 }}
-              className="space-y-2.5 sm:space-y-3"
-            >
               <Button
                 size="lg"
                 onClick={handleForge}
@@ -276,7 +288,7 @@ export function SignalForge() {
               </Button>
 
               {forgedTemplates.length > 0 && (
-                <div>
+                <div className="mt-2">
                   <Button variant="ghost" size="sm" onClick={handleForge} disabled={isForging} className="gap-2 text-muted-foreground text-xs sm:text-sm">
                     <RefreshCw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     Re-Forge
@@ -284,13 +296,20 @@ export function SignalForge() {
                 </div>
               )}
 
-              <p className="text-[11px] sm:text-xs text-muted-foreground">
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground mt-2">
                 {user ? (
                   <span className="font-mono text-neon-green">{remaining} exports remaining today</span>
                 ) : (
-                  <><span className="font-medium">CodeLab — </span><Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to export blueprints</>
+                  <><Link to="/auth" className="text-primary hover:underline font-medium">Sign in</Link> to export blueprints</>
                 )}
               </p>
+            </motion.div>
+
+            {/* Limits */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.24 }} className="flex justify-center">
+              <Badge variant="outline" className="text-[9px] sm:text-[10px] font-mono border-muted text-muted-foreground">
+                {DAILY_LIMIT} exports / day · All templates free · MIT license
+              </Badge>
             </motion.div>
           </div>
         </div>
