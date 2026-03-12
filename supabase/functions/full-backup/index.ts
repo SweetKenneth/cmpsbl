@@ -543,22 +543,43 @@ const SERVICE_ROLE_KEY = 'YOUR_SERVICE_ROLE_KEY';
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 const dataDir = './data';
 
-const files = fs.readdirSync(dataDir).filter(f => f.endsWith('.json')).sort();
+const tableDirs = fs.readdirSync(dataDir)
+  .filter(name => fs.statSync(path.join(dataDir, name)).isDirectory())
+  .sort();
 
-for (const file of files) {
-  const table = path.basename(file, '.json');
-  const rows = JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf-8'));
-  if (rows.length === 0) { console.log(\`⏭️  \${table}: empty\`); continue; }
+for (const table of tableDirs) {
+  const tableDir = path.join(dataDir, table);
+  const partFiles = fs.readdirSync(tableDir)
+    .filter(f => f.startsWith('part-') && f.endsWith('.json'))
+    .sort();
 
-  let imported = 0, failed = 0;
-  for (let i = 0; i < rows.length; i += 500) {
-    const batch = rows.slice(i, i + 500);
-    const { error } = await supabase.from(table).upsert(batch, { onConflict: 'id', ignoreDuplicates: false });
-    if (error) { console.error(\`  ❌ \${table} batch \${i}: \${error.message}\`); failed += batch.length; }
-    else { imported += batch.length; }
+  if (partFiles.length === 0) {
+    console.log(\`⏭️  \${table}: no data parts\`);
+    continue;
   }
-  console.log(\`✅ \${table}: \${imported} imported\${failed ? \`, \${failed} failed\` : ''}\`);
+
+  let imported = 0;
+  let failed = 0;
+
+  for (const partFile of partFiles) {
+    const rows = JSON.parse(fs.readFileSync(path.join(tableDir, partFile), 'utf-8'));
+    if (!Array.isArray(rows) || rows.length === 0) continue;
+
+    const { error } = await supabase
+      .from(table)
+      .upsert(rows, { onConflict: 'id', ignoreDuplicates: false });
+
+    if (error) {
+      console.error(\`  ❌ \${table} \${partFile}: \${error.message}\`);
+      failed += rows.length;
+    } else {
+      imported += rows.length;
+    }
+  }
+
+  console.log(\`✅ \${table}: \${imported} imported\${failed ? \, \${failed} failed\` : ''}\`);
 }
+
 console.log('\\n🎉 Data import complete!');
 \`\`\`
 
