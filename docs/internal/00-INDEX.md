@@ -60,7 +60,7 @@ This library is the single source of truth for all internal knowledge required t
 ## Terminology
 
 - Module names are always written in ALL CAPS (e.g., NEXUS, CORE, DEFENSE).
-- The system is called "Clockless" — a Cognitive Reality System powered by the CMPSBL Substrate.
+- The system is called "Clockless" — a Cognitive Reality System powered by the CMPSBL Substrate (40-node matrix, 12 sectors).
 
 ---
 
