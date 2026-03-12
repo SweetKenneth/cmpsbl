@@ -47,7 +47,7 @@ Key parameters:
 
 ### 3.2 CJPI Scoring Model
 
-The Crown Jewel Pipeline Index is a 0–100 composite score:
+The CJPI (Crown Jewel Pipeline Index, internally "Apex Discovery Index") is a 0–100 composite score:
 
 | Factor | Weight | Description |
 |--------|--------|-------------|
