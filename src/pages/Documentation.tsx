@@ -946,7 +946,7 @@ function AgentsSection() {
         <DocTable
           headers={["Pattern", "Behavior", "Best For"]}
           rows={[
-            ["Chain", "Sequential execution — output of one feeds into the next", "Multi-step workflows, data pipelines"],
+            ["Chain", "Sequential execution — output of one feeds into the next", "Multi-step workflows, data chains"],
             ["Parallel", "Concurrent execution — all agents run simultaneously", "Independent subtasks, speed-critical operations"],
             ["Supervisor", "Manager agent delegates to and reviews workers", "Quality-sensitive tasks, oversight required"],
             ["Debate", "Agents argue positions, consensus emerges", "Complex decisions, risk assessment"],
