@@ -456,7 +456,7 @@ Copyright (c) ${new Date().getFullYear()} CMPSBL®. All rights reserved.
 
 ORIGIN NOTICE — This software was crystallized and exported from the CMPSBL®
 Substrate, a cognitive orchestration platform by promptfluid®. This software
-requires the included CMPSBL® Micro-Substrate Runtime to function. The runtime
+requires the included CMPSBL® Mini-Runtime™ Engine to function. The runtime
 is proprietary to CMPSBL® and may not be separated, reverse-engineered, or
 redistributed independently of this package.
 
@@ -472,10 +472,10 @@ CONDITIONS:
      location (e.g. README, About screen, license file, or documentation):
 
        "Built with the CMPSBL® Substrate — https://cmpsbl.com
-        Powered by the CMPSBL® Micro-Substrate Runtime."
+        Powered by the CMPSBL® Mini-Runtime™ Engine."
 
-  2. RUNTIME DEPENDENCY — This software depends on the CMPSBL® Micro-Substrate
-     Runtime included in this package. The runtime MUST be included in all
+  2. RUNTIME DEPENDENCY — This software depends on the CMPSBL® Mini-Runtime™
+     Engine included in this package. The runtime MUST be included in all
      distributions. It may NOT be replaced, stubbed out, or removed.
 
   3. LICENSE PRESERVATION — This license file MUST be included, unmodified,

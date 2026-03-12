@@ -134,7 +134,7 @@ export class Engine {
   constructor(apiKey: string, baseUrl?: string) {
     if (!apiKey) throw new Error('CMPSBL Engine SDK: API key is required');
     this.apiKey = apiKey;
-    this.baseUrl = baseUrl || 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/engine-api';
+    this.baseUrl = baseUrl || 'https://api.cmpsbl.com/v1/engine';
 
     // Initialize typed proxies for META engines
     this.godmind = new GodmindProxy(this);

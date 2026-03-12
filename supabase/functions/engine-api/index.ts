@@ -16,7 +16,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-engine-key',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-engine-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
@@ -241,7 +241,8 @@ Deno.serve(async (req: Request) => {
     // Filter stages if requested
     let stages = engineDef.stages;
     if (requestedStages && Array.isArray(requestedStages)) {
-      stages = stages.filter(s => requestedStages.includes(s.name.toLowerCase()));
+      const lowerRequested = requestedStages.map((s: string) => s.toLowerCase());
+      stages = stages.filter(s => lowerRequested.includes(s.name.toLowerCase()));
       if (stages.length === 0) stages = engineDef.stages; // fallback to all
     }
 
