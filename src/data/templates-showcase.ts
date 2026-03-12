@@ -112,7 +112,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Lock,
     category: 'security',
     rarity: 'great',
-    crownJewelFeature: 'Behavioral Fingerprinting',
+    apexFeature: 'Behavioral Fingerprinting',
     buildTime: '~20 min',
     tags: ['DEFENSE', 'IDENTITY'],
   },
