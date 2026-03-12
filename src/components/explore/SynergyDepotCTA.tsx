@@ -105,7 +105,7 @@ export function SynergyDepotCTA() {
 
                 {/* Stats */}
                 <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-violet-500/5 to-purple-500/5 border border-violet-500/10">
-                  <StatBadge value="300" label="Pipelines" />
+                  <StatBadge value="300" label="Memories" />
                   <div className="w-px bg-violet-500/20" />
                   <StatBadge value="10" label="Entities" />
                   <div className="w-px bg-violet-500/20" />
