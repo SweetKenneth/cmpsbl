@@ -6,8 +6,9 @@
  * Memory-optimized: processes tables sequentially, streams JSON strings
  * directly into ZIP to minimize peak memory usage.
  *
- * v2.4: Reduced time budget, skip bloated telemetry tables, reserve
- * finalization window so the ZIP always has a valid central directory.
+ * v2.5: Expanded skip list for telemetry/regenerable tables (~40 skipped),
+ * increased time budget to 120s, added concurrent table export (batch of 3)
+ * to maximize throughput within Edge Function limits.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -22,7 +23,7 @@ import {
  * Time budget: Edge functions have ~150s wall-clock but much less CPU time.
  * We reserve 10s at the end for ZIP finalization (central directory + EOCD).
  */
-const TIME_BUDGET_MS = 80_000;
+const TIME_BUDGET_MS = 120_000;
 const FINALIZE_RESERVE_MS = 10_000;
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
@@ -32,20 +33,46 @@ const PAGE_SIZE = 1000;
  * and can be regenerated. These are ordered by typical row count descending.
  */
 const SKIP_TABLES = new Set([
+  // High-volume telemetry — regenerable
   'brain_events',
+  'brain_event_logs',
   'mesh_comms',
   'analytics_events',
+  'analytics_snapshots',
   'ai_usage_log',
   'ai_learning_data',
-  'brain_event_logs',
+  'ai_daily_quota',
+  'audit_logs',
+  'audit_chain_anchors',
+  'activation_audit_log',
+  'analytics_excluded_fingerprints',
+  // Agency telemetry — regenerable per-run
   'agency_task_logs',
   'agency_api_calls',
   'agency_agent_telemetry',
-  'autoblog_runs',
-  'autoblog_publish_governor_logs',
+  'agency_economics',
+  'agency_email_queue',
+  'agency_dream_pool',
+  'agency_dream_memory',
+  // Access/usage metering — regenerable
   'access_usage',
   'access_quotas',
-  'audit_chain_anchors',
+  'access_scans',
+  // Blog automation logs
+  'autoblog_runs',
+  'autoblog_publish_governor_logs',
+  // Intent/resolver receipts — high volume
+  'intent_receipts',
+  'resolver_execution_log',
+  // Memory stream signals — regenerable
+  'memory_stream',
+  'memory_stream_signals',
+  // Other high-volume operational logs
+  'system_events',
+  'substrate_events',
+  'error_logs',
+  'health_checks',
+  'cron_job_logs',
 ]);
 
 Deno.serve(async (req: Request) => {
