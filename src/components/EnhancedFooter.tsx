@@ -37,6 +37,7 @@ export function EnhancedFooter() {
         { name: "How it works", href: "/ai-operating-system" },
         { name: "Runtime", href: "/runtime" },
         { name: "Foundations", href: "/foundations" },
+        { name: "Capability map", href: "/capability-map" },
         { name: "Proof mode", href: "/proof" },
         { name: "System status", href: "/status" },
         { name: "Scanner", href: "/scanner" },
@@ -53,6 +54,7 @@ export function EnhancedFooter() {
         { name: "World engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },
         { name: "Clockless engine", href: "/clockless-world-engine" },
+        { name: "CodeLab", href: "/codelab", highlight: true },
       ]
     },
     {
@@ -66,6 +68,7 @@ export function EnhancedFooter() {
         { name: "System integrity", href: "/system-integrity", highlight: true },
         { name: "Developer showcase", href: "/developers" },
         { name: "Use cases", href: "/use-cases" },
+        { name: "Experiment Lab", href: "/lab" },
       ]
     },
     {
@@ -73,13 +76,13 @@ export function EnhancedFooter() {
       links: [
         { name: "Memory Stream", href: "/foundry", highlight: true },
         { name: "Agent memory", href: "/persistent-memory", highlight: true },
-        { name: "Memories", href: "/blog/the-first-line-of-code" },
         { name: "Blog", href: "/blog" },
         { name: "Showcase", href: "/showcase" },
         { name: "System overview", href: "/overview" },
         { name: "Publication", href: "/publication" },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Changelog", href: "/changelog" },
+        { name: "About", href: "/about" },
       ]
     },
   ];
