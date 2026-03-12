@@ -626,3 +626,4 @@ npm run dev
 
 © 2025–2026 CMPSBL® / PromptFluid®. Confidential.
 `;
+}
