@@ -66,7 +66,7 @@ const pillars = [
   { icon: Shield, title: "AI-Native Security", desc: "DEFENSE wraps the outer shell. Prompt injection detection, adversarial filtering, bot detection, and rate limiting — built in.", link: "/modules/defense" },
   { icon: Moon, title: "DREAM Cycles", desc: "Autonomous optimization during idle periods. Consolidate memory, generate heuristics, and surface lateral insights overnight.", link: "/modules/dream" },
   { icon: Workflow, title: "Meta-Orchestration", desc: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy memories discover emergent capabilities.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots 40 nodes in dependency order with circuit breakers, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots 40 nodes in dependency order with safety switches, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
 ];
 
 const sectors = [
