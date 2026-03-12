@@ -44,7 +44,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Brain,
     category: 'intelligence',
     rarity: 'mythic',
-    crownJewelFeature: 'Associative Recall Synthesis',
+    apexFeature: 'Associative Recall Synthesis',
     buildTime: '~20 min',
     tags: ['BRAIN', 'MEMORY', 'DECODE'],
   },
