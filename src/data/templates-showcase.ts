@@ -237,7 +237,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Gauge,
     category: 'data',
     rarity: 'great',
-    crownJewelFeature: 'Usage Forecasting',
+    apexFeature: 'Usage Forecasting',
     buildTime: '~15 min',
     tags: ['ECONOMY'],
   },
