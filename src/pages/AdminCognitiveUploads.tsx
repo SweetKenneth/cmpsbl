@@ -1,5 +1,5 @@
 /**
- * Admin Cognitive Uploads — Manage ZIP artifacts for each cognitive SKU
+ * Admin Cognitive Uploads — Manage ZIP packages for each cognitive SKU
  */
 import { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
