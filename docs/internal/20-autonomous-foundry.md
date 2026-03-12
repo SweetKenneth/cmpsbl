@@ -107,14 +107,14 @@ The Universal Export Adapter can export any discovery to 25 target languages:
 - 18 software languages (TypeScript, Python, Rust, Go, Java, C#, etc.)
 - 7 hardware/HDL targets (VHDL, Verilog, SystemVerilog, etc.)
 
-## 5. Standalone Discovery Engine (`src/lib/export/standalone-discovery-engine.ts`)
+## 5. CMPSBL® Mini-Runtime™ Engine & Standalone Discovery Engine
 
-A fully portable version of the discovery reactor that operates without the full substrate:
+A fully portable runtime and discovery engine that operate without the full substrate:
 
-- Packaged as a single TypeScript file
-- Pairs with `standalone-runtime.ts` for CJPI scoring
-- Can re-score, re-tier, and re-rank any discovery manifest
-- Included in every S-Tier Vault ZIP export
+- **CMPSBL® Mini-Runtime™ Engine** (`standalone-runtime.ts`) — 8-subsystem portable micro-substrate (see internal doc 41)
+- **Standalone Discovery Engine** (`standalone-discovery-engine.ts`) — Portable scorer/re-ranker
+- Both packaged in every S-Tier Vault ZIP export
+- Zero dependencies. Pure TypeScript. Drop-in ready.
 
 ## 6. Production Metrics
 
