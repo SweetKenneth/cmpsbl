@@ -423,11 +423,11 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
 // ─── Static human posts (chronological substrate story) ───
 const HUMAN_POSTS: BlogPost[] = [
   {
-    id: 'ch20-signal', title: "Signal to Silicon: The Complete Pipeline",
-    excerpt: "From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained.",
+    id: 'ch20-signal', title: "Signal to Silicon: The Complete Journey",
+    excerpt: "From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon process explained.",
     href: "/blog/signal-to-silicon", category: "Technology",
     date: "2026-03-04", readTime: "22 min", image: ch20Img,
-    imageAlt: "Signal to Silicon pipeline", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Signal to Silicon journey", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch19-burning', title: "Burning It Down: The Complete Substrate Rebuild",
