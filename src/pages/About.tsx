@@ -317,7 +317,7 @@ export default function About() {
                   A cognitive operating system organized across 12 sectors. MEMORY persists context. DREAM consolidates knowledge. DEFENSE adapts to threats. NEXUS routes every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade pipelines mean every cycle makes the system smarter. Governed, auditable, autonomous.
+                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />
