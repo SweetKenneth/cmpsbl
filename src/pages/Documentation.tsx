@@ -301,16 +301,16 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
       {/* Circuit breakers */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
+        <h3 className="font-semibold text-foreground mb-4">Safety Switches</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Circuit breakers prevent cascading failures across modules. When a module's health drops below threshold,
-          the breaker isolates it from the rest of the system. MEDIC then initiates self-healing diagnostics.
+          Safety switches prevent cascading failures across nodes. When a node's health drops below threshold,
+          the switch isolates it from the rest of the system. MEDIC then initiates self-healing diagnostics.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
+            { label: "Open", desc: "Node isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
             { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-amber-500/30 bg-amber-500/5" },
-            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-emerald-500/30 bg-emerald-500/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through node.", color: "border-emerald-500/30 bg-emerald-500/5" },
           ].map(s => (
             <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
               <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
