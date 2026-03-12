@@ -858,7 +858,7 @@ const stratumMindgames: Specimen[] = [
     origin: "survival",
     stimulus: "Memory stream lacked persistence — crystallized knowledge disappeared between sessions",
     adaptations: [
-      "Memory crystallization pipeline writes durable entries to the persistence layer",
+      "Memory crystallization chain writes durable entries to the persistence layer",
       "Recall patterns use spaced repetition to surface high-value memories at optimal intervals",
       "Memory categories enable domain-specific retrieval without full-corpus search",
     ],
