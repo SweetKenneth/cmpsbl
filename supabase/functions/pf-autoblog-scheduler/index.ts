@@ -342,7 +342,7 @@ serve(async (req) => {
         category: selectedTopic.category,
         posts_today: (postsToday || 0) + 1,
         posts_this_week: (postsThisWeek || 0) + 1,
-        ai_generated: !!lovableKey,
+        ai_provider: aiProvider,
         execution_ms: Date.now() - startMs,
       },
       outcome: 'completed',
