@@ -483,7 +483,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           top: pos.y,
           zIndex: 10001,
           contain: "layout",
-          transition: isDragging.current ? "none" : "left 0.35s cubic-bezier(0.22,1,0.36,1), top 0.35s cubic-bezier(0.22,1,0.36,1)",
+          transition: dragging ? "none" : "left 0.35s cubic-bezier(0.22,1,0.36,1), top 0.35s cubic-bezier(0.22,1,0.36,1)",
           willChange: "left, top",
         }}
       >
