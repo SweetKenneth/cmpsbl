@@ -310,7 +310,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
     architectureEpoch: `${getMetric('epoch')} v${getMetric('version')}`,
     categories: counts,
     totalFiles,
-    note: 'Full substrate backup. Binary assets (images, fonts) in src/assets/ and public/ require separate backup via Git. Auto-generated files (types.ts, .env) are included for reference but will be regenerated.',
+    note: 'Full substrate backup. Binary assets (PNG/JPG/WEBP/MP4 in src/assets/ and public/) are not included — back those up via Git. Text-based assets (SVG, JSON) ARE included. Auto-generated files (types.ts, .env) are included for reference but will be regenerated.',
   };
 
   // Add manifest to ZIP
