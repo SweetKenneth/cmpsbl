@@ -1,5 +1,5 @@
 /**
- * Chapter 28: From Thought to Artifact — October 2025
+ * Chapter 28: From Thought to Discovery — October 2025
  */
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
