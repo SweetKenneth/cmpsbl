@@ -104,7 +104,7 @@ const FAQ_ITEMS = [
   {
     category: "Exports",
     question: "Can I export my work as software?",
-    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes artifact export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
+    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
   },
   {
     category: "Exports",
