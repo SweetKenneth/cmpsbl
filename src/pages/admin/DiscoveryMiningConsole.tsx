@@ -434,11 +434,11 @@ function TemplateComposer() {
         </CardContent>
       </Card>
 
-      {/* Module Chain */}
+      {/* Node Chain */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Module Chain</CardTitle>
-          <CardDescription className="text-xs">Select 2–5 modules (order matters)</CardDescription>
+          <CardTitle className="text-base">Node Chain</CardTitle>
+          <CardDescription className="text-xs">Select 2–5 nodes (order matters)</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-1.5">
@@ -665,7 +665,7 @@ function AutoMinerTab() {
                 disabled={isRunning} />
             </div>
             <div>
-              <Label className="text-xs">Module Range</Label>
+              <Label className="text-xs">Node Range</Label>
               <div className="flex gap-1 items-center">
                 <Input type="number" value={config.minModules} min={2} max={4} className="w-16"
                   onChange={e => setConfig(c => ({ ...c, minModules: parseInt(e.target.value) || 2 }))}

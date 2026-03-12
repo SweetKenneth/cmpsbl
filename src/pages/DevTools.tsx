@@ -295,9 +295,9 @@ export default function DevTools() {
                 </CardContent>
               </Card>
 
-              {/* Module Overview */}
+              {/* Node Overview */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Available Modules</h2>
+                <h2 className="text-xl font-semibold mb-4">Available Nodes</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {MODULES.map((mod) => {
                     const Icon = mod.icon;
@@ -357,7 +357,7 @@ export default function DevTools() {
                       { title: "Persistent Memory Guide", href: "/docs/persistent-memory", desc: "Complete memory SDK docs", badge: "Popular" },
                       { title: "Getting Started", href: "/documentation", desc: "Setup and configuration" },
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
-                      { title: "Explore", href: "/explore", desc: "Browse artifacts and templates" },
+                      { title: "Explore", href: "/explore", desc: "Browse capabilities and templates" },
                       { title: "CodeLab", href: "/codelab", desc: "Live API playground" },
                       { title: "Changelog", href: "/changelog", desc: "System evolution" },
                     ].map((link) => (
@@ -382,10 +382,10 @@ export default function DevTools() {
                 </CardContent>
               </Card>
 
-              {/* Module Quick Reference */}
+              {/* Node Quick Reference */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Module Quick Reference</CardTitle>
+                  <CardTitle>Node Quick Reference</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">

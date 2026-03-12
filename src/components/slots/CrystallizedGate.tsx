@@ -46,7 +46,7 @@ export function CrystallizedGate({ assetKey, children, fallback, silent }: Cryst
             <p className="text-xs text-muted-foreground">
               {isReserved
                 ? 'This capability is reserved for a future release.'
-                : 'Activate the required artifact pack to unlock this capability.'}
+                : 'Activate the required capability pack to unlock this capability.'}
             </p>
           </div>
         </div>

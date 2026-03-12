@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 const ENCODE_COMMANDS = [
   { cmd: '/analyze system', desc: 'Run full architecture audit' },
   { cmd: '/build <system>', desc: 'Generate new system scaffolding' },
-  { cmd: '/modify <module>', desc: 'Propose modification to existing module' },
+  { cmd: '/modify <node>', desc: 'Propose modification to existing node' },
   { cmd: '/evolve <memory>', desc: 'Evolve a memory with learned patterns' },
   { cmd: '/instantiate <artifact>', desc: 'Create artifact from template' },
   { cmd: '/export <artifact>', desc: 'Package artifact for distribution' },

@@ -221,7 +221,7 @@ export default function GovernorPanel() {
             <CardContent className="px-4 sm:px-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 {[
-                  { key: 'mesh', label: 'Intent Mesh', desc: 'Cross-module routing', icon: Network, color: 'text-amber-500', checked: meshToggle.enabled, toggle: () => { meshToggle.toggle(); toast.success(meshToggle.enabled ? 'Mesh disabled' : 'Mesh enabled'); } },
+                  { key: 'mesh', label: 'Intent Mesh', desc: 'Cross-node routing', icon: Network, color: 'text-amber-500', checked: meshToggle.enabled, toggle: () => { meshToggle.toggle(); toast.success(meshToggle.enabled ? 'Mesh disabled' : 'Mesh enabled'); } },
                   { key: 'defense_enabled', label: 'DEFENSE', desc: 'Threat detection', icon: Shield, color: 'text-red-500', checked: killSwitches.defense_enabled, toggle: () => toggleKs('defense_enabled') },
                   { key: 'seba_enabled', label: 'SEBA Agent', desc: 'Autonomous evolution', icon: Zap, color: 'text-purple-500', checked: killSwitches.seba_enabled, toggle: () => toggleKs('seba_enabled') },
                   { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },

@@ -2,9 +2,9 @@
  * CMPSBL Pricing — Three Tiers
  * 
  * Three tiers. Clean hierarchy. Zero IP leakage.
- *   Builder    → $0/mo   (3 artifact slots, full runtime, 30 free templates)
- *   Creator    → $29/mo  (6 artifact slots, expanded memory, executable capabilities)
- *   Architect  → $79/mo  (12 artifact slots, governance, self-hosted deployment, compliance)
+ *   Builder    → $0/mo   (3 capability slots, full runtime, 30 free templates)
+ *   Creator    → $29/mo  (6 capability slots, expanded memory, executable capabilities)
+ *   Architect  → $79/mo  (12 capability slots, governance, self-hosted deployment, compliance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.
@@ -18,13 +18,13 @@ export const UNIFIED_TIERS = {
     interval: 'month' as const,
     name: 'Free',
     tagline: 'Build real things — zero cost',
-    description: 'Core templates, starter artifacts, bounded memory, and shared runtime. Not a trial — a real tier.',
+    description: 'Core templates, starter capabilities, bounded memory, and shared runtime. Not a trial — a real tier.',
     features: [
-      'Artifact Store access (Free catalog)',
+      'Capability Store access (Free catalog)',
       'Core templates (starter pack)',
       'Basic capabilities (read + compose)',
       'Limited persistent memory (per-user)',
-      'Basic pipelines & missions',
+      'Basic memories & missions',
       'Shared Nexus routing (with quotas)',
       'Dashboard + Terminal (Free mode)',
       'Community support',
@@ -41,10 +41,10 @@ export const UNIFIED_TIERS = {
     description: 'Expanded catalog, executable capabilities, private memory, light automation — everything in Free plus real power.',
     features: [
       'Everything in Free, plus:',
-      'Expanded Artifact Store (Creator catalog)',
+      'Expanded Capability Store (Creator catalog)',
       'More + higher-quality templates',
       'Executable capabilities (run + compose)',
-      'Multi-module synergy pipelines',
+      'Multi-node synergy chains',
       'Stronger persistent memory (bigger limits)',
       'Higher Nexus quotas + better routing',
       'Scheduled tasks + simple automations',
@@ -59,15 +59,15 @@ export const UNIFIED_TIERS = {
     interval: 'month' as const,
     name: 'Creator',
     tagline: '9 template packs with expanded depth',
-    description: '9 artifact slots, expanded memory, template packs, trace exports, and high-priority Nexus routing.',
+    description: '9 capability slots, expanded memory, template packs, trace exports, and high-priority Nexus routing.',
     features: [
       'Everything in Studio, plus:',
-      '9 Artifact Slots',
+      '9 Capability Slots',
       '9 template packs included',
       'Expanded memory partitions',
       'Trace & audit exports',
       'High-priority Nexus routing',
-      'Advanced automation pipelines',
+      'Advanced automation chains',
       'Priority email support',
     ],
     checkout_enabled: true,
@@ -79,10 +79,10 @@ export const UNIFIED_TIERS = {
     interval: 'month' as const,
     name: 'Architect',
     tagline: 'Full control, governance, and deployment sovereignty',
-    description: 'Everything in Creator plus 12 artifact slots, org workspaces, compliance exports, dedicated memory, SLA-aware controls, and self-hosted deployment.',
+    description: 'Everything in Creator plus 12 capability slots, org workspaces, compliance exports, dedicated memory, SLA-aware controls, and self-hosted deployment.',
     features: [
       'Everything in Creator, plus:',
-      '12 Artifact Slots',
+      '12 Capability Slots',
       'Dedicated memory partitions',
       'Self-hosted deployment (LNCHBL)',
       'Full governance authority',

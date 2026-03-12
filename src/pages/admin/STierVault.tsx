@@ -200,7 +200,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
           <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
-          <div className="text-[10px] text-muted-foreground">Module Coverage</div>
+          <div className="text-[10px] text-muted-foreground">Node Coverage</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
@@ -314,7 +314,7 @@ function ArtifactCard({
               <div><span className="text-muted-foreground">ID:</span> <code className="font-mono">{entry.id}</code></div>
               <div><span className="text-muted-foreground">Rank:</span> #{entry.rank}</div>
               <div><span className="text-muted-foreground">CJPI:</span> {entry.cjpi}</div>
-              <div><span className="text-muted-foreground">Module:</span> {entry.module}</div>
+              <div><span className="text-muted-foreground">Node:</span> {entry.module}</div>
               <div><span className="text-muted-foreground">Type:</span> {entry.type}</div>
               <div><span className="text-muted-foreground">Export:</span> {entry.exportMode}</div>
               <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(entryValue)}</span></div>
