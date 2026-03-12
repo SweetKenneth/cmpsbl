@@ -136,11 +136,11 @@ export default function EngineDetail() {
       return;
     }
 
-    // Engines with freeForSubscribers use their own checkout function
+    // Engines with freeForSubscribers use a dedicated checkout function
     if (engine.freeForSubscribers) {
       setLoading(true);
       try {
-        const { data, error } = await supabase.functions.invoke('failsafe-engine-checkout', {
+        const { data, error } = await supabase.functions.invoke(`${engine.slug}-engine-checkout`, {
           body: { engine_slug: engine.slug },
         });
         if (error) throw error;
