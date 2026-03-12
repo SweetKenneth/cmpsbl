@@ -102,7 +102,7 @@ const TIERS: {
     icon: Layers,
     popular: true,
     stripeTier: 'studio' as EngineSubscriptionTier,
-    capacity: { slots: 9, vault: '75 pipelines', pulls: '9 per day', exportEnabled: true, customSlots: true },
+    capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
       '9 template packs included',
       'Expanded memory partitions',
