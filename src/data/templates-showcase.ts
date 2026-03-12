@@ -340,7 +340,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Zap,
     category: 'infrastructure',
     rarity: 'great',
-    crownJewelFeature: 'Latency Prediction',
+    apexFeature: 'Latency Prediction',
     buildTime: '~15 min',
     tags: ['NEXUS'],
   },
