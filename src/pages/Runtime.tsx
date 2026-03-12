@@ -162,11 +162,11 @@ const ARCH_CARDS = [
   {
     icon: Layers,
     title: 'Single Runtime',
-    description: 'One substrate serves all tiers. Modules compose freely without version fragmentation.',
+    description: 'One substrate serves all tiers. Nodes compose freely without version fragmentation.',
   },
   {
     icon: Package,
-    title: 'Artifact Packs Extend',
+    title: 'Capability Packs Extend',
     description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
   },
   {
