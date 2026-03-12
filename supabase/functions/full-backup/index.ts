@@ -6,8 +6,9 @@
  * Memory-optimized: processes tables sequentially, streams JSON strings
  * directly into ZIP to minimize peak memory usage.
  *
- * v2.4: Reduced time budget, skip bloated telemetry tables, reserve
- * finalization window so the ZIP always has a valid central directory.
+ * v2.5: Expanded skip list for telemetry/regenerable tables (~40 skipped),
+ * increased time budget to 120s, added concurrent table export (batch of 3)
+ * to maximize throughput within Edge Function limits.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
