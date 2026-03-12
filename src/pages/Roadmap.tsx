@@ -113,7 +113,7 @@ const DOMAIN_NODES = [
     icon: Cpu,
     signal: "Sensor fusion",
     description: "Multi-modal perception, path planning, and real-time control loops. Crystallize navigation and manipulation primitives from simulation data.",
-    opportunities: ["Autonomous navigation stacks", "Manipulation skill transfer", "Sim-to-real pipeline bridges"],
+    opportunities: ["Autonomous navigation stacks", "Manipulation skill transfer", "Sim-to-real bridges"],
   },
   {
     domain: "Climate",
