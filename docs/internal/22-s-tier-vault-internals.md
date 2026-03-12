@@ -97,7 +97,7 @@ Provides independently verifiable proof:
 The adapter (`src/lib/export/universal-adapter.ts`) can export any discovery to 25 targets:
 
 ### 5.1 Software Languages (18)
-TypeScript, JavaScript, Python, Rust, Go, Java, Kotlin, Swift, C#, C++, Ruby, PHP, Dart, Scala, Elixir, Haskell, Lua, R
+TypeScript, Python, Go, Rust, Java, C#, Ruby, PHP, Swift, Kotlin, Elixir, Lua, C, C++, Dart, Zig, Scala, Haskell
 
 ### 5.2 Hardware/HDL Targets (7)
 VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Clash, Amaranth
