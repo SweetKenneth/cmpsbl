@@ -48,9 +48,9 @@ function seedSystemMessages() {
   }> = [
     {
       node: 'ENGINEER', codename: 'Mechanist', type: 'proposal', priority: 'medium',
-      title: 'Consolidate redundant circuit breaker instances',
-      summary: 'Three modules share identical circuit breaker configs. Merging them into a shared breaker pool would reduce memory usage by ~12% and simplify maintenance.',
-      detail: 'Modules: DEFENSE, NEXUS, CORTEX — identical thresholds (5 failures / 60s). Propose shared CircuitBreakerPool.',
+      title: 'Consolidate redundant safety switch instances',
+      summary: 'Three nodes share identical safety switch configs. Merging them into a shared switch pool would reduce memory usage by ~12% and simplify maintenance.',
+      detail: 'Nodes: DEFENSE, NEXUS, CORTEX — identical thresholds (5 failures / 60s). Propose shared SafetySwitchPool.',
       impact: 'Reduces memory footprint and centralizes failure tracking for better observability.',
       action: true, tags: ['engine-maintenance', 'optimization'],
     },
