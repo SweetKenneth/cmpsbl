@@ -49,7 +49,7 @@ const buildCapabilities = [
   {
     icon: TrendingUp,
     title: "EVOLVE",
-    description: "Every interaction feeds back. Pipelines crystallize into reusable intelligence. Your infrastructure gets smarter over time.",
+    description: "Every interaction feeds back. Memories crystallize into reusable intelligence. Your infrastructure gets smarter over time.",
     color: "text-amber-500",
     bg: "bg-amber-500/10",
   },
