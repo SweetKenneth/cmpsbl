@@ -94,7 +94,7 @@ export default function PricingMethod() {
               Multi-Model Consensus Pricing
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the artifact's technical profile, and returns an independent market analysis.
+              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the capability's technical profile, and returns an independent market analysis.
             </p>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
