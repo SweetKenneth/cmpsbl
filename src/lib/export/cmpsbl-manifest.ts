@@ -49,7 +49,7 @@ export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManife
     cjpi,
     modules: input.modules ?? ['SYSTEM'],
     exported: new Date().toISOString().slice(0, 10),
-    runtime: 'cmpsbl-mini',
+    runtime: 'cmpsbl-mini-runtime-engine',
     targets: input.targets ?? ['typescript'],
     version: input.version ?? '1.0.0',
     ...(input.category ? { category: input.category } : {}),

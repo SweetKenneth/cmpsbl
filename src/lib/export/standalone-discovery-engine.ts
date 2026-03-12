@@ -1,8 +1,8 @@
 /**
- * CMPSBL® Standalone Discovery Engine
+ * CMPSBL® Mini-Runtime™ Discovery Engine
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Fully portable capability discovery reactor.
- * Uses ONLY the Standalone Runtime — zero external dependencies.
+ * Powered by the CMPSBL® Mini-Runtime™ Engine — zero external dependencies.
  *
  * This is the same reactor that powers the CMPSBL Autonomous Software Foundry,
  * packaged for standalone operation outside the substrate.
