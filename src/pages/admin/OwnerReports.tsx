@@ -163,7 +163,8 @@ export default function OwnerReports() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <AdminLayout>
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
