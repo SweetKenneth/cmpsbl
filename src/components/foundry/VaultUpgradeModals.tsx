@@ -191,7 +191,7 @@ export function MythicDiscoveryModal({
                 </motion.div>
               </ModalIconBadge>
               <DialogTitle className="text-center text-lg sm:text-xl font-bold tracking-tight">
-                Mythic Pipeline Discovered
+                Mythic Discovery Found
               </DialogTitle>
               <DialogDescription className="text-center text-sm leading-relaxed max-w-xs mx-auto">
                 One of the rarest outcomes in the Memory Stream.
