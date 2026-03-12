@@ -127,7 +127,7 @@ export default function About() {
         faq={[
           { question: 'What is the CMPSBL substrate?', answer: 'A composable cognitive operating system with persistent memory, dream cycles, intelligent routing, and governed orchestration.' },
           { question: 'What are DREAM cycles?', answer: 'Offline synthesis periods where the substrate consolidates memory, extracts patterns, and generates novel insights without active compute.' },
-          { question: 'Can I build on the substrate?', answer: 'Yes. Activate pipeline packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 pipeline slots.' },
+          { question: 'Can I build on the substrate?', answer: 'Yes. Activate memory packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 memory slots.' },
         ]}
       />
 
