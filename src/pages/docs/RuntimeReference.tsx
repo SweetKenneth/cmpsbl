@@ -139,7 +139,7 @@ export default function RuntimeReference() {
               <TabsContent value="baseline" className="space-y-6">
                 <p className="text-sm text-muted-foreground">
                   These capabilities are always active for every user on every plan. They form the 
-                  foundational runtime that pipeline packs build upon.
+                  foundational runtime that memory packs build upon.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {BASELINE_PILLARS.map(pillar => {
