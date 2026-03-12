@@ -367,7 +367,7 @@ const stratumSparta: Specimen[] = [
     origin: "cognition",
     stimulus: "The substrate was generating significant learning volume but downstream nodes couldn't access any of it",
     adaptations: [
-      "Knowledge transfer pipeline created: the parent learns, downstream nodes receive synthesized learnings automatically",
+      "Knowledge transfer chain created: the parent learns, downstream nodes receive synthesized learnings automatically",
       "Periodic brain sync harvests high-value memories and distributes them to child nodes",
       "On-demand knowledge dumps available for initial bootstrapping of new nodes",
     ],
