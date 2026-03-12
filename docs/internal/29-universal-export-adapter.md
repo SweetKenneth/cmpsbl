@@ -1,7 +1,7 @@
 # 29 — Universal Export Adapter
 
 **Classification:** 🔒 INTERNAL  
-**Version:** v13.1.0 — IRONCLAD Epoch
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
