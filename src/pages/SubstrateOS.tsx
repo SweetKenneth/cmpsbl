@@ -106,10 +106,10 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', minTier: 'creator' },
     ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
     // ── Studio tier ──
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Module mesh & governance', minTier: 'studio' },
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Node mesh & governance', minTier: 'studio' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', minTier: 'studio' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
-    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & circuit breakers', minTier: 'studio' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & safety switches', minTier: 'studio' },
     { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', minTier: 'studio' },
     { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
     // ── Architect tier ──
