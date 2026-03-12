@@ -409,19 +409,19 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center shrink-0">
             <Database className="w-4 h-4 text-blue-400" />
           </div>
-          <div>
-            <h2 className="text-lg font-semibold">Backup & Restore</h2>
-            <p className="text-xs text-muted-foreground font-mono">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-semibold">Backup & Restore</h2>
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono truncate">
               portable exports • retention policy • permanent failsafe
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"

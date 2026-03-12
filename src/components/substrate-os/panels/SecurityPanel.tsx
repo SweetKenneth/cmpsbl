@@ -47,8 +47,8 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
+        <div className="overflow-x-auto -mx-3 px-3 sm:-mx-4 sm:px-4 md:mx-0 md:px-0 scrollbar-none">
+          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max min-w-full sm:w-auto">
             <TabsTrigger value="defense" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Defense
             </TabsTrigger>
