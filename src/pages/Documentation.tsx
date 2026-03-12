@@ -1020,7 +1020,7 @@ function IntegrationsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Integrations</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Connect external services through the INTEGRATION module. Manage credentials, invoke APIs,
+          Connect external services through the INTEGRATION node. Manage credentials, invoke APIs,
           and receive webhooks — all within the substrate's governance and audit boundaries.
         </p>
       </div>
