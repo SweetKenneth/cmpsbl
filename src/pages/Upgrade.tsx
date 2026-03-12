@@ -571,14 +571,14 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ ARTIFACT PACKS BY DOMAIN ═══ */}
+        {/* ═══ CAPABILITY PACKS BY DOMAIN ═══ */}
         <section className="mt-24">
           <div className="container mx-auto px-4 text-center mb-12">
             <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
               <Package className="w-3 h-3 mr-1.5 inline" />
               All 24 Packs
             </Badge>
-            <h2 className="text-3xl font-bold">Artifact Packs by Domain</h2>
+            <h2 className="text-3xl font-bold">Capability Packs by Domain</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
               Every pack = 1 slot. All visible to all plans. Scroll each category to explore.
             </p>
