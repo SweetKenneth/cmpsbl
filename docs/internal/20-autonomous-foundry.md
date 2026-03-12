@@ -158,6 +158,7 @@ The `/foundry` page is a cinematic presentation layer showing proof metrics only
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | System | Initial foundry internal documentation — v13.1.0 |
+| 2026-03-12 | System | Updated to 40-node matrix, 294 vault entries, Mini-Runtime™ branding, Engines catalog — v14.2.0 |
 
 ---
 
