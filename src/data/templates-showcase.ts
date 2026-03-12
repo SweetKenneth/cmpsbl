@@ -215,7 +215,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: TrendingUp,
     category: 'data',
     rarity: 'great',
-    crownJewelFeature: 'Value Attribution Engine',
+    apexFeature: 'Value Attribution Engine',
     buildTime: '~25 min',
     tags: ['ECONOMY', 'VISION'],
   },
