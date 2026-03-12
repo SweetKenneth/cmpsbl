@@ -241,7 +241,8 @@ Deno.serve(async (req: Request) => {
     // Filter stages if requested
     let stages = engineDef.stages;
     if (requestedStages && Array.isArray(requestedStages)) {
-      stages = stages.filter(s => requestedStages.includes(s.name.toLowerCase()));
+      const lowerRequested = requestedStages.map((s: string) => s.toLowerCase());
+      stages = stages.filter(s => lowerRequested.includes(s.name.toLowerCase()));
       if (stages.length === 0) stages = engineDef.stages; // fallback to all
     }
 
