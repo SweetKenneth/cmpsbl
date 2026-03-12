@@ -500,6 +500,42 @@ class ZipStreamWriter {
   }
 }
 
+function shouldSkipTable(tableName: string): boolean {
+  if (SKIP_TABLES.has(tableName)) return true;
+  return SKIP_TABLE_PATTERNS.some((pattern) => pattern.test(tableName));
+}
+
+async function fetchTablePageWithRetry(
+  admin: ReturnType<typeof createClient>,
+  table: string,
+  offset: number,
+  pageSize: number,
+): Promise<{ data: Record<string, unknown>[] | null; error: { message: string } | null }> {
+  for (let attempt = 0; attempt <= QUERY_RETRIES; attempt++) {
+    const { data, error } = await admin
+      .from(table)
+      .select('*')
+      .range(offset, offset + pageSize - 1);
+
+    if (!error) {
+      return { data: (data as Record<string, unknown>[] | null) ?? null, error: null };
+    }
+
+    const retryable = /statement timeout|canceling statement|deadlock|timeout/i.test(error.message || '');
+    if (!retryable || attempt === QUERY_RETRIES) {
+      return { data: null, error: { message: error.message } };
+    }
+
+    await sleep(RETRY_DELAY_MS * (attempt + 1));
+  }
+
+  return { data: null, error: { message: 'Unknown fetch retry error' } };
+}
+
+async function sleep(ms: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function listAllStorageFiles(
   admin: ReturnType<typeof createClient>,
   bucketName: string,
