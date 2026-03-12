@@ -36,7 +36,8 @@ Deno.serve(async (req: Request) => {
   try {
     log('Starting nightly backup...');
 
-    // ── Step 1: Call the full-backup function internally ──
+    // ── Step 1: Call the full-backup function with service role key ──
+    // Service role key bypasses JWT verification in full-backup
     const backupUrl = `${supabaseUrl}/functions/v1/full-backup`;
     const backupRes = await fetch(backupUrl, {
       method: 'POST',
