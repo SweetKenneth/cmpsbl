@@ -130,7 +130,7 @@ const TIERS: {
       'Full governance authority',
       'Compliance & audit exports',
       'Organization workspaces',
-      'Custom pipeline slots',
+      'Custom memory slots',
       'Dedicated support channel',
     ],
   },
