@@ -208,7 +208,7 @@ Deno.serve(async (req: Request) => {
         // 3. STORAGE — list buckets and files (skip if timed out)
         // ═══════════════════════════════════════════════════════
         const storageSummary: Record<string, number> = {};
-        if (!timedOut) {
+        if (!timedOut && (Date.now() - backupStart < TIME_BUDGET_MS - FINALIZE_RESERVE_MS)) {
           try {
             const { data: buckets } = await admin.storage.listBuckets();
             if (buckets && buckets.length > 0) {
@@ -216,7 +216,7 @@ Deno.serve(async (req: Request) => {
               manifest.storage_buckets = buckets.map((b) => ({ name: b.name, public: b.public }));
 
               for (const bucket of buckets) {
-                if (Date.now() - backupStart > TIME_BUDGET_MS) break;
+                if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) break;
 
                 try {
                   const allFiles = await listAllStorageFiles(admin, bucket.name);
