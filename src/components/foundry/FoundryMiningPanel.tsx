@@ -102,7 +102,7 @@ export function FoundryMiningPanel({
       const { success, error } = await onKeepPipeline(result);
       setKeepLoading(null);
       if (!success) {
-        toast.error(error || 'Failed to store pipeline');
+        toast.error(error || 'Failed to store memory');
         return;
       }
     }
