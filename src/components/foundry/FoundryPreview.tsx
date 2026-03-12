@@ -49,7 +49,7 @@ export function FoundryPreview() {
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-foreground leading-[0.9] mb-4">
           Crystallize
           <br />
-          <span className="section-gradient-text">Pipelines</span>
+          <span className="section-gradient-text">Memories</span>
         </h1>
 
         <motion.p
@@ -103,7 +103,7 @@ export function FoundryPreview() {
           className="flex items-center justify-center gap-4 sm:gap-8 font-mono mb-12"
         >
           {[
-            { value: '1,143+', label: 'Pipelines', color: 'text-foreground' },
+            { value: '1,143+', label: 'Memories', color: 'text-foreground' },
             { value: '68+', label: 'Quality Floor', color: 'text-primary' },
             { value: '5', label: 'Tiers', color: 'text-foreground' },
           ].map((stat, i) => (
@@ -136,7 +136,7 @@ export function FoundryPreview() {
           transition={{ delay: 0.9 }}
           className="mt-8 text-xs font-mono text-muted-foreground/40"
         >
-          Every pipeline is real, scored, and independently verifiable
+          Every memory is real, scored, and independently verifiable
         </motion.div>
       </motion.div>
     </div>

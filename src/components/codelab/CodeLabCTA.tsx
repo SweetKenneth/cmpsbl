@@ -69,7 +69,7 @@ export function CodeLabCTA() {
                 </h2>
                 
                 <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                   Free SDK, 30 production templates, orchestration pipelines, and persistent memory — 
+                   Free SDK, 30 production templates, orchestration memories, and persistent memory — 
                    no paywall between you and shipping AI that remembers.
                  </p>
                 

@@ -39,7 +39,7 @@ export default function AccessibilityIsInfrastructure() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Free Tier</h2>
       <p>INCLUSIVE is available on the free tier. Accessibility shouldn't be a premium feature. Every application built on the substrate gets basic scanning at no cost via <Link to="/blog/identity-at-every-layer" className="text-primary hover:underline">ACCESS</Link> entitlements. Premium tiers add automated remediation, continuous monitoring, and regression alerts.</p>
 
-      <p>This isn't charity — it's infrastructure. Accessible software is better software. It has better SEO, better usability, better legal standing. The <Link to="/blog/signal-to-silicon" className="text-primary hover:underline">complete pipeline</Link> treats accessibility as a first-class quality dimension, right alongside security, performance, and reliability.</p>
+      <p>This isn't charity — it's infrastructure. Accessible software is better software. It has better SEO, better usability, better legal standing. The <Link to="/blog/signal-to-silicon" className="text-primary hover:underline">complete system</Link> treats accessibility as a first-class quality dimension, right alongside security, performance, and reliability.</p>
     </BlogArticleLayout>
   );
 }

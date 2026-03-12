@@ -1,6 +1,6 @@
 /**
  * SEBA Evolution Hero — Self-Evolving Bounded Agent Visualization
- * A stunning 5-phase cognitive evolution pipeline with animated data flows
+ * A stunning 5-phase cognitive evolution flow with animated data flows
  * Completely unique, S-tier visual centerpiece
  */
 
@@ -651,9 +651,9 @@ export function SEBAEvolutionHero() {
         </div>
       </motion.div>
       
-      {/* Phase pipeline */}
+      {/* Phase flow */}
       <div className="relative overflow-visible">
-        {/* Desktop: Horizontal pipeline */}
+        {/* Desktop: Horizontal flow */}
         <div className="hidden sm:flex items-start justify-center gap-0 px-2 py-8 overflow-visible">
           {sebaPhases.map((phase, index) => (
             <React.Fragment key={phase.id}>

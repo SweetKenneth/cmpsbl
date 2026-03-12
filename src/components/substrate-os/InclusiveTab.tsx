@@ -203,7 +203,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
           </div>
           <div>
             <h2 className="text-lg sm:text-xl font-bold">INCLUSIVE Module</h2>
-            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">human compatibility pipeline • WCAG 2.2</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">human compatibility engine • WCAG 2.2</p>
           </div>
         </div>
         <div className="flex items-center gap-2">

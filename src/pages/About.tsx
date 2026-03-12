@@ -127,7 +127,7 @@ export default function About() {
         faq={[
           { question: 'What is the CMPSBL substrate?', answer: 'A composable cognitive operating system with persistent memory, dream cycles, intelligent routing, and governed orchestration.' },
           { question: 'What are DREAM cycles?', answer: 'Offline synthesis periods where the substrate consolidates memory, extracts patterns, and generates novel insights without active compute.' },
-          { question: 'Can I build on the substrate?', answer: 'Yes. Activate pipeline packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 pipeline slots.' },
+          { question: 'Can I build on the substrate?', answer: 'Yes. Activate memory packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 memory slots.' },
         ]}
       />
 
@@ -317,7 +317,7 @@ export default function About() {
                   A cognitive operating system organized across 12 sectors. MEMORY persists context. DREAM consolidates knowledge. DEFENSE adapts to threats. NEXUS routes every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade pipelines mean every cycle makes the system smarter. Governed, auditable, autonomous.
+                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -343,7 +343,7 @@ export default function About() {
                   A continuous river of evolving software. The Memory Stream isn't a marketplace — it's the living output of the substrate's own dream and evolution cycles.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every pipeline has a quality floor of 68+. Every pull is real software with provenance. Materialize pipelines, export them, build on top — or let the stream feed back into your substrate's memory.
+                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's memory.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Moon className="w-3.5 h-3.5" />

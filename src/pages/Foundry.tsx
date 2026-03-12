@@ -197,7 +197,7 @@ export default function Foundry() {
                 transition={{ delay: 0.05 }}
                 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-4"
               >
-                <span className="section-gradient-text">Crystallize Pipelines</span>
+                <span className="section-gradient-text">Crystallize Memories</span>
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }}

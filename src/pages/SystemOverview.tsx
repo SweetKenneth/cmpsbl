@@ -84,8 +84,8 @@ function MemoryStreamSection() {
     { icon: Eye, label: 'Signal Capture', desc: 'The substrate observes inputs, conversations, and environmental data continuously.', color: 'text-sky-500' },
     { icon: Brain, label: 'Memory Formation', desc: 'Signals are compressed into persistent memory traces across isolated namespaces.', color: 'text-amber-500' },
     { icon: Sparkles, label: 'Crystallization', desc: 'The autonomous engine discovers viable software patterns and scores them (CJPI 68–100).', color: 'text-primary' },
-    { icon: Code2, label: 'Software Export', desc: 'Crystallized pipelines export to 20+ languages with a standalone runtime and test harness.', color: 'text-emerald-500' },
-    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier pipelines (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-purple-500' },
+    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 20+ languages with a standalone runtime and test harness.', color: 'text-emerald-500' },
+    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier memories (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-purple-500' },
   ];
 
   return (
@@ -198,7 +198,7 @@ function ExportEcosystem() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Export Ecosystem</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mb-10">
-            Every crystallized pipeline includes a standalone Micro-Substrate runtime and functional test harness. Export languages are gated by quality score.
+            Every crystallized memory includes a standalone Micro-Substrate runtime and functional test harness. Export languages are gated by quality score.
           </p>
         </motion.div>
 
@@ -234,7 +234,7 @@ function PricingSection() {
     {
       name: 'Free', price: '$0', interval: 'forever',
       desc: 'Explore the substrate. Full runtime access.',
-      features: ['3 pipeline slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
+      features: ['3 memory slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
       cta: 'Get Started', href: '/auth', highlight: false,
     },
     {
@@ -337,7 +337,7 @@ function InvestorHighlights() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Infrastructure, Not an App</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mb-10">
             CMPSBL is a defensible cognitive infrastructure layer. The substrate's 40-node architecture, autonomous discovery engine, 
-            and silicon export pipeline represent a replacement cost of $18M–$42M in engineering effort.
+            and silicon export process represent a replacement cost of $18M–$42M in engineering effort.
           </p>
         </motion.div>
 
@@ -401,7 +401,7 @@ function ClosingCTA() {
             The substrate is running.
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-            Start free. Crystallize your first pipeline. See real software emerge from the Memory Stream — scored, exportable, and yours.
+            Start free. Crystallize your first memory. See real software emerge from the Memory Stream — scored, exportable, and yours.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/auth" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">

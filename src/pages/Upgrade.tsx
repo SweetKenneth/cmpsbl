@@ -301,7 +301,7 @@ export default function Upgrade() {
               Memory Stream
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-center">
-              The system <strong className="text-foreground">discovers pipelines</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
+              The system <strong className="text-foreground">discovers memories</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
             </p>
           </motion.div>
 
@@ -313,7 +313,7 @@ export default function Upgrade() {
             className="max-w-2xl mx-auto mt-8 text-center sm:text-left bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
           >
             <p className="text-sm text-muted-foreground leading-relaxed">
-              The <strong className="text-foreground">Memory Stream</strong> continuously generates new pipelines.
+              The <strong className="text-foreground">Memory Stream</strong> continuously forms new memories.
               Each day you can <strong className="text-foreground">crystallize</strong> a limited number of discoveries depending on your plan.
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -330,12 +330,12 @@ export default function Upgrade() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Each crystallization reveals a pipeline you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.{' '}
-              <strong className="text-foreground">Rare discoveries</strong> occasionally appear. If a <strong className="text-foreground">Mythic pipeline</strong> is discovered and your vault is full,
+              Each crystallization reveals a memory you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.{' '}
+              <strong className="text-foreground">Rare discoveries</strong> occasionally appear. If a <strong className="text-foreground">Mythic memory</strong> is discovered and your vault is full,
               you will be prompted to upgrade immediately so the discovery is not lost.
             </p>
             <p className="text-xs text-muted-foreground/70">
-              <strong className="text-foreground">Slots</strong> control how many pipelines run simultaneously.{' '}
+              <strong className="text-foreground">Slots</strong> control how many memories run simultaneously.{' '}
               <strong className="text-foreground">Vault capacity</strong> controls how many discoveries you can store.
             </p>
           </motion.div>

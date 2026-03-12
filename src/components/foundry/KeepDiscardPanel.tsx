@@ -99,7 +99,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     <Sparkles className="w-4 h-4 text-neon-purple shrink-0 mt-0.5" />
                   </motion.div>
                   <div>
-                    <div className="text-xs sm:text-sm font-bold text-neon-purple">Mythic Pipeline Discovered</div>
+                    <div className="text-xs sm:text-sm font-bold text-neon-purple">Mythic Memory Discovered</div>
                     <div className="text-[10px] sm:text-xs text-neon-purple/70 leading-relaxed">
                       One of the rarest outcomes in the Memory Stream.
                     </div>
@@ -123,7 +123,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                 </motion.div>
               )}
 
-              {/* Pipeline info — responsive layout */}
+              {/* Memory info — responsive layout */}
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
@@ -172,7 +172,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     ) : (
                       <Check className="w-4 h-4" />
                     )}
-                    {isSaving ? 'Saving...' : 'Keep Pipeline'}
+                    {isSaving ? 'Saving...' : 'Keep Memory'}
                   </Button>
                   <Button
                     size="sm"
