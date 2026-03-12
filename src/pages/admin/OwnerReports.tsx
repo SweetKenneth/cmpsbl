@@ -13,6 +13,7 @@ function sanitizeReportHtml(html: string): string {
 }
 
 import { useState } from "react";
+import { FullBackupButton } from "@/components/admin/FullBackupButton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
