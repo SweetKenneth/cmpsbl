@@ -75,6 +75,12 @@ export default function EngineDocsPage() {
   if (!engine) return <Navigate to="/engines" replace />;
 
   const handleDownload = () => {
+    // FAILSAFE has a dedicated INSTALL.md guide
+    if (engine.slug === 'failsafe') {
+      window.open('/docs/engines/failsafe/INSTALL.md', '_blank');
+      toast.success('FAILSAFE installation guide opened');
+      return;
+    }
     const content = generateEngineDoc(engine);
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
