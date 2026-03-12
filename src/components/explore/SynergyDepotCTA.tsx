@@ -43,7 +43,7 @@ export function SynergyDepotCTA() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Star className="w-3 h-3 mr-1" />
-            Pipelines & Artifacts
+            Memories & Artifacts
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             Extend Your{" "}
