@@ -1,5 +1,5 @@
 /**
- * Discovered Pipelines — Top 100 autonomous compositions from the Memory Stream
+ * Discovered Memories — Top 100 autonomous compositions from the Memory Stream
  * The substrate's most valuable execution paths, scored and ranked.
  */
 import { Helmet } from 'react-helmet-async';
