@@ -35,7 +35,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 ## Architecture (40 Nodes / 12 Sectors)
 
 ### CORE (Kernel)
-- CORE — Boot sequencing, circuit breakers, config, job scheduling
+- CORE — Boot sequencing, safety switches, config, job scheduling
 
 ### SYSTEM
 - SYSTEM — Lifecycle administration

@@ -510,9 +510,9 @@ export default function SubstrateDashboard() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Substrate Dashboard — CMPSBL"
-        description="Cognitive orchestration substrate control center. Production modules, protective layers, and advanced governance for AI systems."
+        description="Cognitive orchestration substrate control center. Production nodes, protective layers, and advanced governance for AI systems."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "module architecture", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "node architecture", "cortex"]}
       />
 
       <PublicNav />

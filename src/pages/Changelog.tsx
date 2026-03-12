@@ -323,7 +323,7 @@ const stratumIronclad: Specimen[] = [
     stimulus: "Nodes ran without containment — a single fault could cascade through the entire cognitive mesh",
     adaptations: [
       "Every node grew a hardened containment shell with enterprise-grade fault isolation",
-      "Circuit breakers, rate limiters, anomaly detectors, and integrity validators installed across all nodes",
+      "Safety switches, rate limiters, anomaly detectors, and integrity validators installed across all nodes",
       "The control plane gained new operational capabilities for maintenance, message routing, and governance mode switching",
       "Terminal surface expanded to full operational coverage for diagnostics and containment",
       "Unified health aggregation provides a single-pane view of system integrity",
@@ -417,7 +417,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Consumed nodes lost individual identity — faults were ambiguous within convergence layers, no way to hot-swap individual zones",
     adaptations: [
       "Zone architecture introduced: consumed nodes became individually addressable zones with independent fault isolation",
-      "Convergence layers split into clearly delineated zones with individual circuit breakers",
+      "Convergence layers split into clearly delineated zones with individual safety switches",
       "Hot-swap capability enabled for surgical zone replacement without affecting siblings",
     ],
     phenotype: [
@@ -669,7 +669,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "External Developer Metrics panel built into the analytics layer with live data from the developer registry",
       "Real-time API key tracking, usage-per-developer breakdowns, and revenue attribution from metered calls",
-      "Module-level usage heatmaps show which substrate capabilities attract the most external consumption",
+      "Node-level usage heatmaps show which substrate capabilities attract the most external consumption",
     ],
     phenotype: [
       "The substrate can now observe its own developer ecosystem in real time",
