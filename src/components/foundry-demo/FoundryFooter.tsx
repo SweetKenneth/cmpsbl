@@ -67,7 +67,7 @@ export function FoundryFooter() {
             The question isn't whether it works
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-6 sm:mb-8 leading-[0.93]">
-            1,143&nbsp;pipelines.
+            1,143&nbsp;memories.
             <br />
             95&nbsp;perfect&nbsp;scores.
             <br />

@@ -132,7 +132,7 @@ export function SynergyDepotCTA() {
                 {/* CTA */}
                 <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:opacity-90 shadow-lg shadow-violet-500/20 transition-all">
                   <Link to="/explore">
-                    Explore Pipelines
+                    Explore Memories
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>

@@ -42,11 +42,11 @@ export function ApexDiscoveryShowcase() {
             Top Discoveries — What the Memory Stream Surfaces
           </h2>
           <p className="text-center text-foreground/90 mb-2 max-w-2xl mx-auto text-sm sm:text-base px-2 leading-relaxed font-medium">
-            The highest-value software pipelines discovered by the substrate.
+            The highest-value software memories discovered by the substrate.
             Each solves a real problem teams face every day.
           </p>
           <p className="text-center text-muted-foreground/60 mb-12 sm:mb-16 max-w-2xl mx-auto text-xs sm:text-sm px-2 leading-relaxed font-mono">
-            Pipelines are executable software architectures automatically discovered
+            Memories are executable software architectures automatically discovered
             by combining substrate systems in novel configurations.
           </p>
         </motion.div>
