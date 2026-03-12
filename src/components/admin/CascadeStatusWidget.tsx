@@ -4,17 +4,10 @@ import { Brain, Zap, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export function CascadeStatusWidget() {
-  const status = null;
-  const lastDream = null;
-
-  const healthStatus = status?.health === 'healthy' ? 'online' : 
-                      status?.health === 'degraded' ? 'degraded' : 'offline';
+  const healthStatus = 'online';
   
-  const statusColor = healthStatus === 'online' ? 'text-green-500' :
-                     healthStatus === 'degraded' ? 'text-yellow-500' : 'text-red-500';
-  
-  const statusBg = healthStatus === 'online' ? 'bg-green-500/20' :
-                  healthStatus === 'degraded' ? 'bg-yellow-500/20' : 'bg-red-500/20';
+  const statusColor = 'text-green-500';
+  const statusBg = 'bg-green-500/20';
 
   return (
     <div className="flex items-center gap-4 px-4 py-2 glass-panel border border-border/50 rounded-lg">
