@@ -94,7 +94,7 @@ Zero external dependencies — runs in any TypeScript/Node environment.
 2. Map module chain to target language primitives
 3. Generate language-specific scaffold with CJPI metadata embedded
 4. Generate test harness for the target language
-5. Include standalone runtime (TypeScript; other languages get stubs)
+5. Include Mini-Runtime™ Engine (TypeScript; other languages get stubs)
 6. Package with build configuration and license
 7. Deliver as ZIP download
 8. Log export to AUDIT trail
