@@ -60,7 +60,7 @@ export function SynergyDepotCTA() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-             Pre-built orchestration memories and downloadable capability artifacts — ready for production AI systems.
+             Pre-built orchestration memories and downloadable capability discoveries — ready for production AI systems.
            </p>
         </motion.div>
 
