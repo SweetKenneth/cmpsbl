@@ -509,7 +509,7 @@ export default function EvolutionControlCenter() {
           >
             <img 
               src={evolutionHero} 
-              alt="EVOLUTION system architecture — governed AI improvement pipeline showing scan, dry-run, apply, and rollback stages" 
+              alt="EVOLUTION system architecture — governed AI improvement process showing scan, dry-run, apply, and rollback stages" 
               className="w-full h-auto object-cover"
               loading="lazy"
             />
