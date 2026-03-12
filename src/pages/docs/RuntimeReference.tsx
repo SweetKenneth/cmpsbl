@@ -174,8 +174,8 @@ export default function RuntimeReference() {
               {/* Pack-Enabled Tab */}
               <TabsContent value="packs" className="space-y-8">
                 <p className="text-sm text-muted-foreground">
-                  These capabilities are activated when their corresponding pipeline pack is enabled. 
-                  Each pack consumes exactly 1 pipeline slot.
+                  These capabilities are activated when their corresponding memory pack is enabled. 
+                  Each pack consumes exactly 1 memory slot.
                 </p>
                 {STRATEGIC_DOMAINS.map(domain => {
                   const packs = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
