@@ -479,7 +479,7 @@ export const MemoryRiver = memo(function MemoryRiver({
         <RiverChannel />
         {particles.map((p) => <Particle key={p.id} {...p} />)}
 
-        {/* Ghost pipeline drift */}
+        {/* Ghost memory drift */}
         {ghostPipelines.map(p => (
           <div
             key={p.id}

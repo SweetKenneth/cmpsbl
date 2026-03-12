@@ -23,7 +23,7 @@ const TIER_CONFIG = [
   {
     id: "META" as const,
     label: "META",
-    subtitle: "Recursive superpipelines",
+    subtitle: "Recursive super-memories",
     price: "$1,999",
     bg: "bg-amber-500/10",
     text: "text-amber-400",
@@ -233,7 +233,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="54 composable engines including 4 META superpipelines at $1,999, 30 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
+        <meta name="description" content="54 composable engines including 4 META super-memories at $1,999, 30 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
       </Helmet>
 
       <div className="min-h-screen bg-background">

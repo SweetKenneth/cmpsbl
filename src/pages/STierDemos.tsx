@@ -142,7 +142,7 @@ function SelfHealingDemo() {
     setPhase('detecting');
     await delay(900);
     addLog(`[VISION] Anomaly detected in ${faultModule}: health < 20%`, 'warn');
-    addLog(`[CORTEX] Triggering diagnostic pipeline...`, 'info');
+    addLog(`[CORTEX] Triggering diagnostic sequence...`, 'info');
     
     setPhase('diagnosing');
     await delay(1500);

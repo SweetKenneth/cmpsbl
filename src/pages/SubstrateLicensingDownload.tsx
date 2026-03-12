@@ -71,7 +71,7 @@ const LICENSE_TIERS = [
       "12 Artifact Slots · Unlimited Vault · 12 Pulls/day",
       "Dedicated memory partitions",
       "Self-hosted deployment (LNCHBL)",
-      "Full governance authority + custom pipeline slots",
+      "Full governance authority + custom memory slots",
       "Compliance & audit exports",
       "Organization workspaces",
       "Dedicated support channel",

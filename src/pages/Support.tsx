@@ -48,7 +48,7 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "How do I get started?",
-    answer: "Sign up for a free Builder account. From the dashboard, you can explore the systems, create your first Pipeline Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
+    answer: "Sign up for a free Builder account. From the dashboard, you can explore the systems, create your first Memory Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
   },
   {
     category: "Getting Started",
@@ -61,24 +61,24 @@ const FAQ_ITEMS = [
     answer: "DECODE is the unified conversational interface for CMPSBL. It handles support, system guidance, builder assistance, and governance — all through natural language. You can reach DECODE from anywhere in the platform by clicking the chat icon.",
   },
 
-  // Pipelines & Foundry
+  // Memories & Foundry
   {
-    category: "Pipelines & Foundry",
-    question: "What are Pipeline Packs?",
-    answer: "Pipeline Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
+    category: "Memories & Foundry",
+    question: "What are Memory Packs?",
+    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "What is the Foundry?",
-    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring software pipelines and lets you crystallize, store, and export them.",
+    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring crystallized memories and lets you store and export them.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "How does the Memory Stream work?",
-    answer: "The Memory Stream continuously generates scored pipelines. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each pipeline. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
+    answer: "The Memory Stream continuously forms scored memories. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each memory. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "What is CLM (Constant Learning Mode)?",
     answer: "CLM is the autonomous background learning engine that runs on 30-minute cycles. It uses a 70/30 weighting between global topics (system stability) and node-specific topics, achieving up to 14,400 AI calls per day for continuous knowledge acquisition.",
   },
@@ -97,14 +97,14 @@ const FAQ_ITEMS = [
   {
     category: "Artifact Packs",
     question: "Can I create custom artifacts?",
-    answer: "Yes. The Artifact Store allows you to compose custom pipeline packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
+    answer: "Yes. The Artifact Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All artifacts are namespaced to your account with hard isolation from other users.",
   },
 
   // Exports
   {
     category: "Exports",
     question: "Can I export my work as software?",
-    answer: "Yes. Pipeline Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes artifact export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
+    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes artifact export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
   },
   {
     category: "Exports",
@@ -116,7 +116,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "What subscription tiers are available?",
-    answer: "Builder (Free) — Full runtime, 3 pipeline slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom pipelines, SLA.",
+    answer: "Builder (Free) — Full runtime, 3 memory slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom memories, SLA.",
   },
   {
     category: "Account & Access",
@@ -137,7 +137,7 @@ const FAQ_ITEMS = [
 
 const CATEGORY_ICONS: Record<string, typeof Rocket> = {
   "Getting Started": Rocket,
-  "Pipelines & Foundry": Layers,
+  "Memories & Foundry": Layers,
   "Artifact Packs": Package,
   "Exports": Monitor,
   "Account & Access": KeyRound,
@@ -264,7 +264,7 @@ export default function Support() {
                 <Input
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
-                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'pipeline'..."
+                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'packs'..."
                   className="pl-10 bg-card/50 border-border/40 backdrop-blur-sm"
                 />
               </div>
