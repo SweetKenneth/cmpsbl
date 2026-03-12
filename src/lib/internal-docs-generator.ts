@@ -686,11 +686,11 @@ export function generateFoundryDoc(): string {
 
   <div class="stream-line"></div>
 
-  <h2 id="standalone">6. Standalone Packaging</h2>
+   <h2 id="standalone">6. CMPSBL® Mini-Runtime™ Engine</h2>
   <p>A fully portable version of the discovery reactor operates without the full substrate:</p>
   <ul class="checklist">
     <li>Packaged as a single TypeScript file</li>
-    <li>Pairs with standalone runtime for CJPI scoring</li>
+    <li>Pairs with the CMPSBL® Mini-Runtime™ Engine for CJPI scoring</li>
     <li>Can re-score, re-tier, and re-rank any discovery manifest</li>
     <li>Included in every S-Tier Vault ZIP export</li>
   </ul>
