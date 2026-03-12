@@ -409,7 +409,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     {
       id: 'harvest', name: 'HARVEST', layer: 'infrastructure' as const, icon: Database,
-      description: 'Data pipeline & ingestion',
+      description: 'Data ingestion & ETL',
       gradient: 'bg-gradient-to-r from-lime-400 to-green-500', accentColor: 'bg-lime-400',
       status: harvestStatus,
       metrics: [{ label: 'Pipeline', value: harvestStatus.data?.success ? 'Active' : 'Checking' }],

@@ -61,11 +61,11 @@ export default function RuntimeReference() {
     content += `\nRUNTIME CONCEPTS\n`;
     content += `${'─'.repeat(40)}\n\n`;
     content += `• Unified Runtime: Single substrate for all tiers. No system gating.\n`;
-    content += `• Pipeline Slots: Each pack = 1 slot. Plans differ in slot capacity (3/6/12).\n`;
+    content += `• Memory Slots: Each pack = 1 slot. Plans differ in slot capacity (3/6/12).\n`;
     content += `• Capability Registry: Internal registry tracks all capabilities with metadata.\n`;
     content += `• Governed Invocation: Every capability call passes through safety guards.\n`;
     content += `• Confidence Scoring: Exponential moving average tracks capability reliability.\n`;
-    content += `• Pipeline Orchestration: DAG-based execution with cascade/parallel/adaptive modes.\n`;
+    content += `• Memory Orchestration: DAG-based execution with cascade/parallel/adaptive modes.\n`;
     content += `• Memory Tiering: Hot → Warm → Cold → Archive with adaptive limits.\n`;
     content += `\n© ${new Date().getFullYear()} CMPSBL®. All rights reserved.\n`;
 

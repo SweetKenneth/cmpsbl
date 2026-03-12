@@ -238,7 +238,7 @@ const moduleConfig: Record<SubstrateModule, {
   harvest: {
     icon: Wheat,
     label: 'HARVEST',
-    description: 'Data collection & ETL pipelines',
+    description: 'Data collection & ETL processes',
     color: 'text-lime-600',
   },
   reflex: {

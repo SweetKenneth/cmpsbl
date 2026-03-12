@@ -223,7 +223,7 @@ export default function Architecture() {
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
                   A layered orchestration architecture that boots deterministically, coordinates without a shared clock,
-                  heals autonomously, and evolves through a shadow-first mutation pipeline — all governed by a tamper-evident audit chain.
+                  heals autonomously, and evolves through a shadow-first mutation process — all governed by a tamper-evident audit chain.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
                   40 nodes across 12 sectors. Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
