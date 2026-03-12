@@ -142,7 +142,7 @@ export default function CapabilityMap() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Capability Map — CMPSBL"
-        description="Explore every capability: baseline nodes, artifact packs, and reserved internals. See what's always on, what's activatable, and what's coming."
+        description="Explore every capability: baseline nodes, capability packs, and reserved internals. See what's always on, what's activatable, and what's coming."
       />
       <PublicNav />
 

@@ -162,11 +162,11 @@ const ARCH_CARDS = [
   {
     icon: Layers,
     title: 'Single Runtime',
-    description: 'One substrate serves all tiers. Modules compose freely without version fragmentation.',
+    description: 'One substrate serves all tiers. Nodes compose freely without version fragmentation.',
   },
   {
     icon: Package,
-    title: 'Artifact Packs Extend',
+    title: 'Capability Packs Extend',
     description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
   },
   {
@@ -266,13 +266,13 @@ export default function Runtime() {
           })}
         </div>
 
-        {/* ═══ ARTIFACT PACKS CTA ═══ */}
+        {/* ═══ CAPABILITY PACKS CTA ═══ */}
         <section className="container mx-auto px-4 mb-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">How Artifact Packs Extend the Runtime</h3>
+            <h3 className="text-2xl font-bold">How Capability Packs Extend the Runtime</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Artifact packs compose multiple baseline capabilities into purpose-built workflows.
+              Capability packs compose multiple baseline capabilities into purpose-built workflows.
               They don't replace the baseline — they amplify it.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6">

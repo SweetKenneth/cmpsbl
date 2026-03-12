@@ -281,7 +281,7 @@ export default function Upgrade() {
       </div>
       <SEO
         title="Pricing — CMPSBL"
-        description="Memory Stream capacity plans. Daily pulls, vault storage, and artifact slots. Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
+        description="Memory Stream capacity plans. Daily pulls, vault storage, and capability slots. Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
@@ -571,14 +571,14 @@ export default function Upgrade() {
           </div>
         </section>
 
-        {/* ═══ ARTIFACT PACKS BY DOMAIN ═══ */}
+        {/* ═══ CAPABILITY PACKS BY DOMAIN ═══ */}
         <section className="mt-24">
           <div className="container mx-auto px-4 text-center mb-12">
             <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
               <Package className="w-3 h-3 mr-1.5 inline" />
               All 24 Packs
             </Badge>
-            <h2 className="text-3xl font-bold">Artifact Packs by Domain</h2>
+            <h2 className="text-3xl font-bold">Capability Packs by Domain</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
               Every pack = 1 slot. All visible to all plans. Scroll each category to explore.
             </p>
@@ -649,8 +649,8 @@ export default function Upgrade() {
               { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously forms new memories. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
               { q: 'What is the vault?', a: 'The vault stores memories you choose to keep after crystallization. Each tier has different vault capacity — from 5 (Builder) to unlimited (Architect). Remove old memories to free space.' },
               { q: 'What happens with Mythic discoveries?', a: 'Mythic memories are among the rarest outcomes. If your vault is full when one appears, you will be prompted to upgrade or manage your vault to keep it.' },
-              { q: 'Can I export my discoveries?', a: 'Studio and above can export full artifact packs including runtime, memory implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
-              { q: 'What are custom memory slots?', a: 'Creator and Architect tiers can equip discovered memories directly into runtime slots. Lower tiers can only activate prebuilt artifact packs.' },
+              { q: 'Can I export my discoveries?', a: 'Studio and above can export full capability packs including runtime, memory implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
+              { q: 'What are custom memory slots?', a: 'Creator and Architect tiers can equip discovered memories directly into runtime slots. Lower tiers can only activate prebuilt capability packs.' },
               { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more.' },
               { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
             ].map(faq => (

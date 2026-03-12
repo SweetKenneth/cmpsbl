@@ -25,7 +25,7 @@ const sections = [
     list: [
       "CMPSBL Substrate — Layered cognitive orchestration with persistent memory",
       "Composable Minds — Downloadable AI agents with persistent memory",
-      "Artifact Packs — Capabilities, templates, and pipelines via the unified store",
+      "Capability Packs — Capabilities, templates, and memories via the unified store",
       "NEXUS — Multi-provider AI routing with BYOK architecture",
       "DEFENSE — Enterprise-grade threat detection and bot protection overlay",
       "DECODE — Conversational AI interface with memory-backed context",
@@ -33,7 +33,7 @@ const sections = [
       "INCLUSIVE — Human compatibility system with WCAG scanning and AI remediation",
       "Persistent Memory — Drop-in memory layer for any AI agent",
       "Evolution Mesh — Self-learning immune system for software",
-      "Composable Cognitive Infrastructure — Templates, capabilities, and orchestration pipelines",
+      "Composable Cognitive Infrastructure — Templates, capabilities, and orchestration chains",
     ],
   },
   {
@@ -65,15 +65,15 @@ const sections = [
   {
     id: "ip",
     title: "5. Intellectual Property",
-    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration pipelines, artifact packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.",
+    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration systems, capability packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.",
   },
   {
     id: "purchases",
     title: "6. Composable Cognitives & Engine Purchases",
-    content: "Composable Cognitives and engines are delivered as downloadable artifacts. Upon purchase:",
+    content: "Composable Cognitives and engines are delivered as downloadable capability packs. Upon purchase:",
     list: [
       "You receive a perpetual, non-transferable license for personal or organizational use",
-      "You may not redistribute, sublicense, or resell purchased artifacts",
+      "You may not redistribute, sublicense, or resell purchased capability packs",
       "Refunds are handled according to our refund policy",
       "CMPSBL retains all intellectual property rights in the underlying technology",
     ],

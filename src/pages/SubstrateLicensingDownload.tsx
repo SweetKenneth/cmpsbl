@@ -28,7 +28,7 @@ const LICENSE_TIERS = [
     popular: false,
     comingSoon: false,
     features: [
-      "3 Artifact Slots · 5 Vault · 3 Pulls/day",
+      "3 Capability Slots · 5 Vault · 3 Pulls/day",
       "Full baseline runtime",
       "30 free templates",
       "Persistent Memory (project-scoped)",
@@ -48,9 +48,9 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Builder",
-      "6 Artifact Slots · 25 Vault · 6 Pulls/day",
+      "6 Capability Slots · 25 Vault · 6 Pulls/day",
       "Expanded memory depth",
-      "Executable capabilities + artifact export",
+      "Executable capabilities + capability pack export",
       "Priority routing",
       "Email support",
     ],
@@ -68,7 +68,7 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Creator",
-      "12 Artifact Slots · Unlimited Vault · 12 Pulls/day",
+      "12 Capability Slots · Unlimited Vault · 12 Pulls/day",
       "Dedicated memory partitions",
       "Self-hosted deployment (LNCHBL)",
       "Full governance authority + custom memory slots",
@@ -227,9 +227,9 @@ export default function SubstrateLicensingDownload() {
         <section className="py-16 border-t border-border/50 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Black-Box Protected Artifacts</h2>
+              <h2 className="text-3xl font-bold mb-4">Black-Box Protected Capability Packs</h2>
               <p className="text-muted-foreground">
-                Experience Apex Discoveries are delivered as sealed artifacts — you get the full power without exposing the underlying architecture. Your data stays local. Your execution stays private.
+                Experience Apex Discoveries are delivered as sealed capability packs — you get the full power without exposing the underlying architecture. Your data stays local. Your execution stays private.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
