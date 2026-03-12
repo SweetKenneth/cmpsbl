@@ -23,7 +23,7 @@ const TIER_CONFIG = [
   {
     id: "META" as const,
     label: "META",
-    subtitle: "Recursive superpipelines",
+    subtitle: "Recursive super-memories",
     price: "$1,999",
     bg: "bg-amber-500/10",
     text: "text-amber-400",
