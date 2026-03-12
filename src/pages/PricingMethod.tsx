@@ -219,7 +219,7 @@ export default function PricingMethod() {
               Indie / Standard / Enterprise Ranges
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every artifact receives three pricing tiers derived from the recommended price:
+              Every capability receives three pricing tiers derived from the recommended price:
             </p>
             <div className="grid sm:grid-cols-3 gap-3">
               <Card>
