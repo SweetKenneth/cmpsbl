@@ -169,7 +169,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Workflow,
     category: 'automation',
     rarity: 'great',
-    crownJewelFeature: 'Semantic Event Routing',
+    apexFeature: 'Semantic Event Routing',
     buildTime: '~25 min',
     tags: ['CORTEX', 'RIPPLE'],
   },
