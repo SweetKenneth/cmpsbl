@@ -218,7 +218,7 @@ export const MARKETING = {
   sections: {
     whySubstrate: { badge: '9 Systems', title: 'The Stream' },
     differentiation: { badge: 'What Makes This Different', title: 'Intelligence That Crystallizes' },
-    packs: { badge: 'Pipeline Packs', title: 'Activate What You Need' },
+    packs: { badge: 'Memory Packs', title: 'Activate What You Need' },
     agents: { badge: '20 Sealed Black-Box Agents', title: 'Black-Boxed. Always Learning.' },
     useCases: { badge: 'What You Can Build', title: 'From Today To Tomorrow' },
     industry: { badge: 'Universal Infrastructure', title: 'One Substrate, Every Industry' },
