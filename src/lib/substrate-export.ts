@@ -1,8 +1,9 @@
 /**
- * CMPSBL® Substrate Export
+ * CMPSBL® Substrate Export — Full Backup
  * 
- * Builds a ZIP archive of the substrate backend + core libs + shared components
- * + theme for deployment to downstream distributions (e.g. LNCHBL).
+ * Builds a comprehensive ZIP archive of the ENTIRE substrate:
+ * all source code, edge functions, migrations, configs, assets,
+ * docs, scripts, and root configuration files.
  * 
  * Uses Vite's import.meta.glob to embed file contents at build time.
  * JSZip creates the downloadable archive at runtime.
@@ -16,9 +17,13 @@ import { getMetric } from '@/stores/publicMetricsStore';
 // IMPORTANT:
 // We intentionally keep these globs **non-eager** so production builds do not
 // inline the entire repository as giant raw strings (which can break publish).
-// The contents are only loaded when the user clicks “Export ZIP”.
+// The contents are only loaded when the user clicks "Export ZIP".
 
 type RawGlob = Record<string, () => Promise<string>>;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SUPABASE BACKEND
+// ═══════════════════════════════════════════════════════════════════════════════
 
 // Edge functions (exclude _archived)
 const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/index.ts', {
@@ -35,33 +40,172 @@ const migrationFiles = import.meta.glob('/supabase/migrations/**/*.sql', {
   as: 'raw',
 }) as RawGlob;
 
-// Substrate core libs
+// Supabase config
+const supabaseConfigFiles = import.meta.glob('/supabase/config.toml', {
+  as: 'raw',
+}) as RawGlob;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SOURCE CODE — ALL DIRECTORIES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Core libs
 const coreLibFiles = import.meta.glob('/src/lib/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
 
-// Shared components
+// Components (includes UI, substrate-os, home, etc.)
 const componentFiles = import.meta.glob('/src/components/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
 
-// Config files
-const configFiles = import.meta.glob('/supabase/config.toml', {
+// Pages (ALL routes — critical for restore!)
+const pageFiles = import.meta.glob('/src/pages/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
 
-// Theme files
-const indexCss = import.meta.glob('/src/index.css', {
+// Hooks
+const hookFiles = import.meta.glob('/src/hooks/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
+
+// Contexts
+const contextFiles = import.meta.glob('/src/contexts/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Stores (zustand, public metrics, etc.)
+const storeFiles = import.meta.glob('/src/stores/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Crown Jewels (S-tier implementations)
+const crownJewelFiles = import.meta.glob('/src/crownjewels/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Core module
+const coreModuleFiles = import.meta.glob('/src/core/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Config
+const srcConfigFiles = import.meta.glob('/src/config/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Data
+const dataFiles = import.meta.glob('/src/data/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Immune system
+const immuneFiles = import.meta.glob('/src/immune/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Packages
+const packageFiles = import.meta.glob('/src/packages/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Release
+const releaseFiles = import.meta.glob('/src/release/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Routes
+const routeFiles = import.meta.glob('/src/routes/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Services
+const serviceFiles = import.meta.glob('/src/services/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Substrate
+const substrateFiles = import.meta.glob('/src/substrate/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Utils
+const utilFiles = import.meta.glob('/src/utils/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Styles
+const styleFiles = import.meta.glob('/src/styles/**/*.{ts,tsx,css}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Tests (src/test)
+const srcTestFiles = import.meta.glob('/src/test/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Integrations (client — types.ts is auto-generated but include for reference)
+const integrationFiles = import.meta.glob('/src/integrations/**/*.{ts,tsx}', {
+  as: 'raw',
+}) as RawGlob;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ROOT SOURCE FILES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const rootSrcFiles = import.meta.glob('/src/*.{ts,tsx,css}', {
+  as: 'raw',
+}) as RawGlob;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// THEME & CONFIG
+// ═══════════════════════════════════════════════════════════════════════════════
 
 const tailwindConfig = import.meta.glob('/tailwind.config.ts', {
   as: 'raw',
 }) as RawGlob;
 
-// UI components (shadcn) — kept for future category splitting
-// (note: coreLibFiles/componentFiles already cover these)
-const uiComponentFiles = import.meta.glob('/src/components/ui/**/*.{ts,tsx}', {
+// ═══════════════════════════════════════════════════════════════════════════════
+// ROOT CONFIG FILES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const rootConfigFiles = import.meta.glob('/{vite.config.ts,vitest.config.ts,tsconfig.json,tsconfig.app.json,tsconfig.node.json,postcss.config.js,eslint.config.js,components.json,jest.config.js,index.html,package.json}', {
+  as: 'raw',
+}) as RawGlob;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOCUMENTATION, SCRIPTS, PLUGINS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const docFiles = import.meta.glob('/docs/**/*.{md,txt,json}', {
+  as: 'raw',
+}) as RawGlob;
+
+const scriptFiles = import.meta.glob('/scripts/**/*.{ts,js,sh,json}', {
+  as: 'raw',
+}) as RawGlob;
+
+const pluginFiles = import.meta.glob('/plugins/**/*.{ts,js,json}', {
+  as: 'raw',
+}) as RawGlob;
+
+const rootTestFiles = import.meta.glob('/tests/**/*.{ts,tsx,js}', {
+  as: 'raw',
+}) as RawGlob;
+
+const githubFiles = import.meta.glob('/.github/**/*.{yml,yaml,md}', {
+  as: 'raw',
+}) as RawGlob;
+
+const rootMarkdown = import.meta.glob('/{README.md,LICENSE.md}', {
+  as: 'raw',
+}) as RawGlob;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PUBLIC ASSETS (non-binary text files)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const publicTextFiles = import.meta.glob('/public/**/*.{json,xml,txt,svg,webmanifest,ico}', {
   as: 'raw',
 }) as RawGlob;
 
@@ -75,188 +219,102 @@ function isArchived(path: string): boolean {
   return path.includes('/_archived/') || path.includes('_archived/');
 }
 
-// ─── Cleanup Manifest ───────────────────────────────────────────────────────
-
-/**
- * Files and directories that LNCHBL should DELETE before extracting the ZIP.
- * These are legacy artifacts from pre-SPARTA / pre-v11 architecture that
- * would conflict with the current 9-module system.
- */
-const CLEANUP_MANIFEST = {
-  version: getMetric('version'),
-  description: 'Delete these files/directories in the LNCHBL project BEFORE extracting the substrate ZIP. This ensures no legacy artifacts remain.',
-  instructions: [
-    '1. Back up your LNCHBL landing page files (e.g. src/pages/Index.tsx, src/pages/Landing.tsx) — these are NOT included in the ZIP',
-    '2. Delete all directories listed in "directories_to_delete"',
-    '3. Delete all files listed in "files_to_delete"',
-    '4. Extract the ZIP into the project root',
-    '5. Restore your LNCHBL landing page files',
-    '6. Run migrations in order against the LNCHBL database',
-  ],
-  directories_to_delete: [
-    // Full replacement targets
-    'src/lib/',
-    'src/components/',
-    'supabase/functions/',
-    'supabase/migrations/',
-
-    // Legacy module directories (pre-SPARTA, pre-9-module)
-    'src/lib/modules/',
-    'src/lib/entities/',
-    'src/lib/workers/',
-
-    // Legacy 21-module system artifacts
-    'src/components/modules/',
-    'src/components/entities/',
-
-    // Old documentation
-    'docs/archive/',
-  ],
-  files_to_delete: [
-    // Legacy config / manifests
-    'src/lib/moduleManifest.ts',
-    'src/lib/entityManifest.ts',
-    'src/lib/workerRegistry.ts',
-    'src/lib/legacyModules.ts',
-
-    // Old distribution configs
-    'src/lib/distribution-legacy.ts',
-
-    // Pre-SPARTA boot files
-    'src/lib/initializeModules.ts',
-    'src/lib/initializeEntities.ts',
-
-    // Legacy theme files (will be replaced)
-    'src/index.css',
-    'tailwind.config.ts',
-    'tailwind.config.js',
-  ],
-  preserve: [
-    'src/pages/',
-    'src/App.tsx',
-    'src/main.tsx',
-    'src/integrations/',
-    'public/',
-    '.env',
-    'package.json',
-    'vite.config.ts',
-    'tsconfig.json',
-    'README.md',
-  ],
-};
+/** Add all files from a glob to the ZIP, incrementing counts */
+async function addGlob(
+  zip: JSZip,
+  glob: RawGlob,
+  options: { skipArchived?: boolean } = {},
+): Promise<number> {
+  let count = 0;
+  for (const [path, load] of Object.entries(glob)) {
+    if (options.skipArchived && isArchived(path)) continue;
+    try {
+      const content = await load();
+      zip.file(cleanPath(path), content);
+      count++;
+    } catch (err) {
+      console.warn(`[export] Failed to load ${path}:`, err);
+    }
+  }
+  return count;
+}
 
 // ─── Export Categories ──────────────────────────────────────────────────────
 
 export interface ExportManifest {
   exportedAt: string;
   distribution: string;
-  targetDistribution: string;
   architectureEpoch: string;
-  categories: {
-    edgeFunctions: number;
-    edgeShared: number;
-    migrations: number;
-    coreLibs: number;
-    components: number;
-    config: number;
-    theme: number;
-  };
+  categories: Record<string, number>;
   totalFiles: number;
+  note: string;
 }
 
 export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: ExportManifest }> {
   const zip = new JSZip();
-  let totalFiles = 0;
+  const counts: Record<string, number> = {};
 
-  const counts = {
-    edgeFunctions: 0,
-    edgeShared: 0,
-    migrations: 0,
-    coreLibs: 0,
-    components: 0,
-    config: 0,
-    theme: 0,
-  };
+  // ── Supabase backend ──
+  counts.edgeFunctions = await addGlob(zip, edgeFunctionFiles, { skipArchived: true });
+  counts.edgeShared = await addGlob(zip, edgeSharedFiles, { skipArchived: true });
+  counts.migrations = await addGlob(zip, migrationFiles);
+  counts.supabaseConfig = await addGlob(zip, supabaseConfigFiles);
 
-  // Edge functions (skip archived)
-  for (const [path, load] of Object.entries(edgeFunctionFiles)) {
-    if (isArchived(path)) continue;
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.edgeFunctions++;
-    totalFiles++;
-  }
+  // ── Source code — all directories ──
+  counts.coreLibs = await addGlob(zip, coreLibFiles);
+  counts.components = await addGlob(zip, componentFiles);
+  counts.pages = await addGlob(zip, pageFiles);
+  counts.hooks = await addGlob(zip, hookFiles);
+  counts.contexts = await addGlob(zip, contextFiles);
+  counts.stores = await addGlob(zip, storeFiles);
+  counts.crownJewels = await addGlob(zip, crownJewelFiles);
+  counts.core = await addGlob(zip, coreModuleFiles);
+  counts.srcConfig = await addGlob(zip, srcConfigFiles);
+  counts.data = await addGlob(zip, dataFiles);
+  counts.immune = await addGlob(zip, immuneFiles);
+  counts.packages = await addGlob(zip, packageFiles);
+  counts.release = await addGlob(zip, releaseFiles);
+  counts.routes = await addGlob(zip, routeFiles);
+  counts.services = await addGlob(zip, serviceFiles);
+  counts.substrate = await addGlob(zip, substrateFiles);
+  counts.utils = await addGlob(zip, utilFiles);
+  counts.styles = await addGlob(zip, styleFiles);
+  counts.srcTests = await addGlob(zip, srcTestFiles);
+  counts.integrations = await addGlob(zip, integrationFiles);
 
-  // Shared backend-function utils
-  for (const [path, load] of Object.entries(edgeSharedFiles)) {
-    if (isArchived(path)) continue;
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.edgeShared++;
-    totalFiles++;
-  }
+  // ── Root source files (App.tsx, main.tsx, index.css, etc.) ──
+  counts.rootSrc = await addGlob(zip, rootSrcFiles);
 
-  // Migrations
-  for (const [path, load] of Object.entries(migrationFiles)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.migrations++;
-    totalFiles++;
-  }
+  // ── Theme & config ──
+  counts.tailwindConfig = await addGlob(zip, tailwindConfig);
+  counts.rootConfig = await addGlob(zip, rootConfigFiles);
 
-  // Core libs
-  for (const [path, load] of Object.entries(coreLibFiles)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.coreLibs++;
-    totalFiles++;
-  }
+  // ── Docs, scripts, plugins, tests ──
+  counts.docs = await addGlob(zip, docFiles);
+  counts.scripts = await addGlob(zip, scriptFiles);
+  counts.plugins = await addGlob(zip, pluginFiles);
+  counts.rootTests = await addGlob(zip, rootTestFiles);
+  counts.github = await addGlob(zip, githubFiles);
+  counts.rootMarkdown = await addGlob(zip, rootMarkdown);
 
-  // Components
-  for (const [path, load] of Object.entries(componentFiles)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.components++;
-    totalFiles++;
-  }
+  // ── Public assets (text-based) ──
+  counts.publicAssets = await addGlob(zip, publicTextFiles);
 
-  // Config
-  for (const [path, load] of Object.entries(configFiles)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.config++;
-    totalFiles++;
-  }
-
-  // Theme: index.css
-  for (const [path, load] of Object.entries(indexCss)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.theme++;
-    totalFiles++;
-  }
-
-  // Theme: tailwind.config.ts
-  for (const [path, load] of Object.entries(tailwindConfig)) {
-    const content = await load();
-    zip.file(cleanPath(path), content);
-    counts.theme++;
-    totalFiles++;
-  }
+  // Total
+  const totalFiles = Object.values(counts).reduce((a, b) => a + b, 0);
 
   // Build manifest
   const manifest: ExportManifest = {
     exportedAt: new Date().toISOString(),
     distribution: 'CMPSBL',
-    targetDistribution: 'LNCHBL',
     architectureEpoch: `${getMetric('epoch')} v${getMetric('version')}`,
     categories: counts,
     totalFiles,
+    note: 'Full substrate backup. Binary assets (images, fonts) in src/assets/ and public/ require separate backup via Git. Auto-generated files (types.ts, .env) are included for reference but will be regenerated.',
   };
 
-  // Add manifests to ZIP
+  // Add manifest to ZIP
   zip.file('SUBSTRATE_MANIFEST.json', JSON.stringify(manifest, null, 2));
-  zip.file('CLEANUP_MANIFEST.json', JSON.stringify(CLEANUP_MANIFEST, null, 2));
 
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
   return { blob, manifest };
