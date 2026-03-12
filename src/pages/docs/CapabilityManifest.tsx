@@ -1,5 +1,5 @@
 /**
- * Capability & Pipeline Manifest — Downloadable developer reference
+ * Capability & Memory Manifest — Downloadable developer reference
  * Shows all public-safe capabilities grouped by tier and system
  */
 
