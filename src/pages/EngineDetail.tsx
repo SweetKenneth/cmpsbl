@@ -135,6 +135,33 @@ export default function EngineDetail() {
       setLicensed(true);
       return;
     }
+
+    // Engines with freeForSubscribers use their own checkout function
+    if (engine.freeForSubscribers) {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('failsafe-engine-checkout', {
+          body: { engine_slug: engine.slug },
+        });
+        if (error) throw error;
+        // If subscriber, they get free access
+        if ((data as any)?.free_access) {
+          toast.success(`Included with your subscription! ${engine.codename} is ready to download.`);
+          setLicensed(true);
+          return;
+        }
+        // Otherwise redirect to Stripe checkout
+        if ((data as any)?.url) {
+          window.location.href = (data as any).url;
+        }
+      } catch {
+        toast.error("Checkout failed. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     setLoading(true);
     try {
       const checkoutFn = engine.isSubscription ? "cmpsbl-engine-checkout" : "standalone-engine-checkout";
