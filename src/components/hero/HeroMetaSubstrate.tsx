@@ -379,7 +379,7 @@ export function HeroMetaSubstrate() {
           {[
             { icon: Sparkles, label: "Free to Start", href: "/auth" },
             { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
-            { icon: Layers, label: "24 Pipeline Packs", href: "/packs" },
+            { icon: Layers, label: "24 Memory Packs", href: "/packs" },
             { icon: Shield, label: "Governed Runtime", href: "/documentation" },
           ].map((item, index) => (
             <motion.div
