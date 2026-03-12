@@ -84,8 +84,8 @@ function MemoryStreamSection() {
     { icon: Eye, label: 'Signal Capture', desc: 'The substrate observes inputs, conversations, and environmental data continuously.', color: 'text-sky-500' },
     { icon: Brain, label: 'Memory Formation', desc: 'Signals are compressed into persistent memory traces across isolated namespaces.', color: 'text-amber-500' },
     { icon: Sparkles, label: 'Crystallization', desc: 'The autonomous engine discovers viable software patterns and scores them (CJPI 68–100).', color: 'text-primary' },
-    { icon: Code2, label: 'Software Export', desc: 'Crystallized pipelines export to 20+ languages with a standalone runtime and test harness.', color: 'text-emerald-500' },
-    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier pipelines (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-purple-500' },
+    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 20+ languages with a standalone runtime and test harness.', color: 'text-emerald-500' },
+    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier memories (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-purple-500' },
   ];
 
   return (
