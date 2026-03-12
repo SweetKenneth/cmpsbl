@@ -1,7 +1,7 @@
 # 20 — Autonomous Software Foundry
 
 **Classification:** 🔒 INTERNAL — Trade Secret  
-**Version:** v13.1.0 — IRONCLAD Epoch
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
