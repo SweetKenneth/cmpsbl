@@ -272,7 +272,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: MessageSquare,
     category: 'interaction',
     rarity: 'mythic',
-    crownJewelFeature: 'Adaptive Personality Engine',
+    apexFeature: 'Adaptive Personality Engine',
     buildTime: '~25 min',
     tags: ['DECODE', 'BRAIN'],
   },
