@@ -191,7 +191,7 @@ function EvolutionDiagram() {
       >
         <div className="flex items-center gap-2">
           <GitBranch className="w-4 h-4 text-primary" />
-          <span className="text-xs sm:text-sm font-semibold text-foreground">Governed Pipeline</span>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Governed Process</span>
         </div>
         <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">Every step auditable</span>
       </motion.div>
