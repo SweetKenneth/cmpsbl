@@ -251,7 +251,7 @@ export function HeroMetaSubstrate() {
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
                 Every interaction flows through the{' '}
                 <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
-                discovers and packages working, exportable software pipelines automatically.
+                discovers and packages working, exportable capability memories automatically.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
                 The rarest discoveries don't stop at software. They become designs for{' '}
