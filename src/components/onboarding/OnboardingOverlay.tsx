@@ -52,8 +52,8 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Crown className="h-7 w-7" />,
     title: 'Builder Tier — Free Forever',
-    description: 'You get 3 daily pulls, 5 vault slots, 3 artifact slots, persistent memory, and full module telemetry — all at $0. Every tier can discover Relic and Mythic-grade software.',
-    detail: '3 pulls/day · 5 vault capacity · 3 artifact slots · No export',
+    description: 'You get 3 daily pulls, 5 vault slots, 3 capability slots, persistent memory, and full node telemetry — all at $0. Every tier can discover Relic and Mythic-grade software.',
+    detail: '3 pulls/day · 5 vault capacity · 3 capability slots · No export',
     link: '/workspace',
     linkLabel: 'Open Workspace',
     gradient: 'from-emerald-500/20 via-emerald-500/5 to-transparent',

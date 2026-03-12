@@ -320,7 +320,7 @@ export default function SystemIntegrity() {
             <div>
               <p className="text-sm font-semibold text-red-400">Integrity Degraded</p>
               <p className="text-xs text-muted-foreground">
-                {breakerSummary.open} circuit breaker{breakerSummary.open !== 1 ? 's' : ''} open
+                {breakerSummary.open} safety switch{breakerSummary.open !== 1 ? 'es' : ''} open
                 {breakerSummary.unhealthy.length > 0 && ` · Affected: ${breakerSummary.unhealthy.join(', ')}`}
               </p>
             </div>

@@ -1,5 +1,5 @@
 /**
- * SlotCapacityMeter — Visual capacity meter for artifact slots
+ * SlotCapacityMeter — Visual capacity meter for capability slots
  * Shows activeCount / maxSlots with color-coded progress
  */
 

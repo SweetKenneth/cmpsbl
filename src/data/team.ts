@@ -69,7 +69,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Junior Developer & DevOps",
     department: "Engineering",
     photo: priyaNakamuraPhoto,
-    bio: "Priya Nakamura is a junior developer and DevOps engineer at CMPSBL, working on CI/CD pipelines, artifact pack tooling, and developer experience. She contributes to the EVOLUTION module's self-upgrade capabilities and maintains the substrate's deployment infrastructure.",
+    bio: "Priya Nakamura is a junior developer and DevOps engineer at CMPSBL, working on CI/CD chains, capability pack tooling, and developer experience. She contributes to the EVOLUTION node's self-upgrade capabilities and maintains the substrate's deployment infrastructure.",
     email: "devops@CMPSBL.com",
     expertise: ["DevOps", "CI/CD", "Developer Experience", "Automation"],
   },

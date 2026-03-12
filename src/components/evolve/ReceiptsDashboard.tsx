@@ -199,7 +199,7 @@ export function ReceiptsDashboard() {
       </div>
 
       <div className="grid grid-cols-2 gap-6">
-        {/* Circuit Breaker */}
+        {/* Safety Switch */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -208,7 +208,7 @@ export function ReceiptsDashboard() {
               ) : (
                 <Shield className="h-5 w-5 text-green-500" />
               )}
-              Circuit Breaker
+              Safety Switch
             </CardTitle>
             <CardDescription>
               {circuit?.is_blocking 

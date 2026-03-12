@@ -74,7 +74,7 @@ function seedSystemMessages() {
       node: 'NEXUS', codename: 'Router', type: 'report', priority: 'info',
       title: 'Fleet routing summary — last 24h',
       summary: 'Processed 847 requests across 9 providers. 99.6% success rate. Average latency: 312ms. Zero paid API calls.',
-      detail: 'Top providers: Groq (412 req), Cerebras (198 req), Google (127 req). 3 circuit breaker trips (all recovered).',
+      detail: 'Top providers: Groq (412 req), Cerebras (198 req), Google (127 req). 3 safety switch trips (all recovered).',
       impact: 'Fleet operating within normal parameters. Cost: $0.00.',
       action: false, tags: ['fleet', 'daily-summary'],
     },

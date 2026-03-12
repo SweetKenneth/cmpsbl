@@ -59,7 +59,7 @@ const modules: ModuleConfig[] = [
       { name: "status", description: "Get core kernel status" },
       { name: "schedule", description: "Schedule a task", params: [{ name: "task", type: "string", required: true }, { name: "delay_ms", type: "string", placeholder: "1000" }] },
       { name: "boot", description: "Boot sequence status" },
-      { name: "circuit", description: "Circuit breaker status" },
+      { name: "circuit", description: "Safety switch status" },
     ],
   },
   {

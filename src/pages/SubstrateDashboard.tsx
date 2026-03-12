@@ -423,7 +423,7 @@ const modulesByLayer = {
     {
       id: "immunity",
       name: "IMMUNITY",
-      description: "Threat isolation, circuit-breaker mesh",
+      description: "Threat isolation, safety-switch mesh",
       icon: Shield,
       color: "text-red-300",
       bg: "bg-red-300/10",

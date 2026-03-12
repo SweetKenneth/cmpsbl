@@ -137,7 +137,7 @@ export function generateStub(componentId: string): string {
     `// TODO: Requires pack activation for '${componentId}'`,
     `// Stub: returns baseline-safe fallback`,
     `function ${componentId.replace(/-/g, '_')}_stub(...args: unknown[]) {`,
-    `  console.warn('[PackGate] ${componentId} requires an active artifact pack.');`,
+    `  console.warn('[PackGate] ${componentId} requires an active capability pack.');`,
     `  return null;`,
     `}`,
   ].join('\n');

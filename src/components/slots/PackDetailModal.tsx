@@ -1,5 +1,5 @@
 /**
- * PackDetailModal — Two-step mobile-first modal system for artifact packs.
+ * PackDetailModal — Two-step mobile-first modal system for capability packs.
  * Step 1: Overview card (name, description, activation toggle)
  * Step 2: Full details (components, use case, emergence clause)
  */

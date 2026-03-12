@@ -270,11 +270,11 @@ export default function LlmsTxt() {
           </CardContent>
         </Card>
 
-        {/* Module Grid */}
+        {/* Node Grid */}
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Featured Modules in CMPSBL LLMS.txt</h2>
+          <h2 className="text-lg font-semibold mb-4">Featured Nodes in CMPSBL LLMS.txt</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {modules.map((mod) => (
+            {nodes.map((mod) => (
               <Card key={mod.name} className="border-border/50">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center ${mod.color}`}>

@@ -392,7 +392,7 @@ export function NexusTab() {
                 <div>
                   <h3 className="font-semibold text-sm text-emerald-400">100% Free-Tier Stack</h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Nexus routes all AI calls through 9 free-tier providers with enterprise-grade circuit breakers,
+                    Nexus routes all AI calls through 9 free-tier providers with enterprise-grade safety switches,
                     auto-healing, and graceful degradation. Zero cost, maximum reliability.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-2">

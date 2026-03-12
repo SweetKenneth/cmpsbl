@@ -75,7 +75,7 @@ const enterpriseFeatures = [
   "DREAM cycles with configurable consolidation schedules",
   "DEFENSE outer shell with bot detection & prompt injection defense",
   "NEXUS routing across 14+ AI providers with BYOK",
-  "Circuit breakers prevent cascading failures across nodes",
+  "Safety switches prevent cascading failures across nodes",
   "AUDIT immutable logging with Merkle receipt chains",
   "GOVERNANCE plane with 4 operational modes",
   "Zero-downtime hot reload via CORE kernel",
