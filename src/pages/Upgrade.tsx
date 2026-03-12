@@ -281,7 +281,7 @@ export default function Upgrade() {
       </div>
       <SEO
         title="Pricing — CMPSBL"
-        description="Memory Stream capacity plans. Daily pulls, vault storage, and artifact slots. Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
+        description="Memory Stream capacity plans. Daily pulls, vault storage, and capability slots. Builder (free), Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo)."
       />
       <PublicNav />
 
