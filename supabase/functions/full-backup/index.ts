@@ -469,7 +469,7 @@ ${timeoutNote}
 
 | Path | Description |
 |---|---|
-| \`data/*.json\` | Every row from every database table (paginated, complete) |
+| \`data/<table>/part-*.json\` | Table data exported in paginated chunks (complete dataset across all parts) |
 | \`schema/openapi-spec.json\` | Full PostgREST OpenAPI spec (all column types, relationships) |
 | \`storage/buckets.json\` | Storage bucket configurations |
 | \`storage/*-files.json\` | File listings per bucket (metadata, not file contents) |
