@@ -105,7 +105,7 @@ const DOMAIN_NODES = [
     domain: "Astronomy",
     icon: Satellite,
     signal: "Satellite telemetry",
-    description: "Deep-sky object classification, exoplanet detection, and gravitational wave analysis. Process petabytes of observatory data into actionable pipelines.",
+    description: "Deep-sky object classification, exoplanet detection, and gravitational wave analysis. Process petabytes of observatory data into actionable memories.",
     opportunities: ["Exoplanet characterization", "Space debris tracking", "Multi-messenger event correlation"],
   },
   {
