@@ -59,7 +59,7 @@ export function EnhancedFooter() {
       title: "Developers",
       links: [
         { name: "Documentation", href: "/documentation" },
-        { name: "Api access", href: "/api-access" },
+        { name: "API access", href: "/api-access" },
         { name: "Builder workspace", href: "/workspace" },
         { name: "Academy", href: "/academy" },
         { name: "Developer guide", href: "/developers/guide" },
