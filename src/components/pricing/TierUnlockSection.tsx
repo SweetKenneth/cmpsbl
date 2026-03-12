@@ -28,7 +28,7 @@ export function TierUnlockSection() {
           </Badge>
           <h2 className="text-3xl font-bold mb-4">Every Pack = 1 Slot</h2>
           <p className="text-muted-foreground">
-            All 24 artifact packs are visible to every plan. Your subscription controls how many you can activate — not which ones you can see.
+            All 24 capability packs are visible to every plan. Your subscription controls how many you can activate — not which ones you can see.
           </p>
         </div>
 

@@ -42,7 +42,7 @@ const LABEL_MAP: Record<string, string> = {
   "architecture": "Architecture",
   "evolution": "EVOLUTION",
   "scanner": "Scanner",
-  "packs": "Artifact Packs",
+  "packs": "Capability Packs",
   "gaming": "World Engine",
   "pricing": "Pricing",
   "about": "About",

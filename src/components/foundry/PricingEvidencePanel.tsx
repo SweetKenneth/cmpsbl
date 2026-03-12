@@ -1,6 +1,6 @@
 /**
  * PricingEvidencePanel — Expandable panel showing per-provider pricing estimates
- * and consensus computation details for artifact detail views.
+ * and consensus computation details for capability detail views.
  */
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, CheckCircle2, XCircle, AlertTriangle, ExternalLink } from 'lucide-react';
