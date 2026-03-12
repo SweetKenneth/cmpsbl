@@ -122,7 +122,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: Route,
     title: "Pattern Recognition",
-    desc: "Detects recurring interaction patterns and crystallizes them into optimized pipelines for faster future resolution.",
+    desc: "Detects recurring interaction patterns and crystallizes them into optimized memories for faster future resolution.",
   },
 ];
 
