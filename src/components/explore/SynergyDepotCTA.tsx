@@ -67,7 +67,7 @@ export function SynergyDepotCTA() {
         {/* Two-Column Cards */}
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
           
-          {/* Synergy Pipelines */}
+          {/* Synergy Memories */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
