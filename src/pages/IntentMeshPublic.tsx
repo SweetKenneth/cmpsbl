@@ -32,7 +32,7 @@ const ARCHITECTURE_LAYERS = [
   { icon: Lightbulb, name: "Discovery", desc: "Autonomous capability gap detection and proposal" },
   { icon: RefreshCw, name: "Refinement", desc: "Multi-turn resolution with quality scoring" },
   { icon: Activity, name: "Live Analysis", desc: "Real-time gap detection with auto-proposals" },
-  { icon: Route, name: "Pattern Intelligence", desc: "Sequential pattern detection with pipeline optimization" },
+  { icon: Route, name: "Pattern Intelligence", desc: "Sequential pattern detection with memory optimization" },
 ];
 
 const MODULE_GROUPS = [
