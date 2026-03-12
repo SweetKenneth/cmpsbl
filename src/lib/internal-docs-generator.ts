@@ -680,17 +680,17 @@ export function generateFoundryDoc(): string {
     </div>
     <div class="card">
       <h4 style="margin-top:0;">Export</h4>
-      <p>ZIP packages with manifest, standalone runtime, standalone discovery engine, and README.</p>
+      <p>ZIP packages with manifest, CMPSBL® Mini-Runtime™ Engine, Discovery Engine, and README.</p>
     </div>
   </div>
 
   <div class="stream-line"></div>
 
-  <h2 id="standalone">6. Standalone Packaging</h2>
+   <h2 id="standalone">6. CMPSBL® Mini-Runtime™ Engine</h2>
   <p>A fully portable version of the discovery reactor operates without the full substrate:</p>
   <ul class="checklist">
     <li>Packaged as a single TypeScript file</li>
-    <li>Pairs with standalone runtime for CJPI scoring</li>
+    <li>Pairs with the CMPSBL® Mini-Runtime™ Engine for CJPI scoring</li>
     <li>Can re-score, re-tier, and re-rank any discovery manifest</li>
     <li>Included in every S-Tier Vault ZIP export</li>
   </ul>
@@ -863,14 +863,14 @@ CJPI = (0.25 × novelty + 0.30 × utility + 0.20 × complexity + 0.25 × composa
 
   <div class="stream-line"></div>
 
-  <h2 id="standalone">7. Standalone Packaging</h2>
+  <h2 id="standalone">7. CMPSBL® Mini-Runtime™ Engine</h2>
   <div class="card-grid">
     <div class="card">
-      <h4 style="margin-top:0;">Standalone Runtime</h4>
-      <p>Micro-substrate providing CJPI scoring, auto-tiering, and sequential chain execution. Zero external dependencies.</p>
+      <h4 style="margin-top:0;">Mini-Runtime™ Engine</h4>
+      <p>The official CMPSBL® portable runtime providing CJPI scoring, auto-tiering, and sequential chain execution. Zero external dependencies.</p>
     </div>
     <div class="card">
-      <h4 style="margin-top:0;">Standalone Discovery Engine</h4>
+      <h4 style="margin-top:0;">Mini-Runtime™ Discovery Engine</h4>
       <p>Portable reactor that can ingest a manifest and re-score/re-tier. Included in every Vault ZIP export.</p>
     </div>
   </div>
@@ -1448,8 +1448,8 @@ export function generateVaultDoc(): string {
   <pre><code>cmpsbl-vault-export-{timestamp}/
 ├── manifest.json                    # Complete discovery data
 ├── _discovery-engine/
-│   ├── standalone-runtime.ts        # CJPI scoring + orchestration
-│   ├── standalone-discovery-engine.ts  # Portable reactor
+│   ├── standalone-runtime.ts        # CMPSBL® Mini-Runtime™ Engine
+│   ├── standalone-discovery-engine.ts  # Mini-Runtime™ Discovery Engine
 │   └── README.md
 └── metadata.json                    # Export metadata + fingerprint</code></pre>
 
@@ -1482,7 +1482,7 @@ export function generateVaultDoc(): string {
     <li>Map system chain to target language primitives</li>
     <li>Generate language-specific scaffold with CJPI metadata</li>
     <li>Package with build configuration (Makefile, package.json, Cargo.toml, etc.)</li>
-    <li>Include standalone runtime (TypeScript native, others generate stubs)</li>
+    <li>Include CMPSBL® Mini-Runtime™ Engine (TypeScript native, others generate stubs)</li>
   </ol>
 
   <div class="stream-line"></div>

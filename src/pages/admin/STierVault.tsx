@@ -744,9 +744,9 @@ export default function STierVault() {
     coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
     coreFolder.file('standalone-discovery-engine.ts', (engineMod as any).default);
     coreFolder.file('README.md', [
-      '# CMPSBL® Standalone Discovery Engine',
+      '# CMPSBL® Mini-Runtime™ Engine',
       '',
-      'This directory contains the fully portable discovery reactor.',
+      'This directory contains the fully portable CMPSBL® Mini-Runtime™ Engine and Discovery Engine.',
       'It requires **zero external dependencies** — no substrate, no database, no infrastructure.',
       '',
       '## Quick Start',
@@ -889,7 +889,7 @@ export default function STierVault() {
       },
       instructions: {
         howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
-        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance, or use the standalone-runtime.ts and standalone-discovery-engine.ts (included in any full ZIP export) to re-score and re-tier all entries.',
+        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance, or use the CMPSBL® Mini-Runtime™ Engine (standalone-runtime.ts and standalone-discovery-engine.ts, included in any full ZIP export) to re-score and re-tier all entries.',
         howToExport: 'Each discovery can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the Universal Export Adapter. The export adapter is included in every ZIP download from the vault.',
       },
     };

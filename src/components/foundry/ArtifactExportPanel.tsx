@@ -197,7 +197,7 @@ export function ArtifactExportPanel({ artifact, subscriptionTier }: ArtifactExpo
                   {publicTier}
                 </span>
               )}
-              Each export includes source code, test harness, Makefile, and standalone runtime as a ZIP package.
+              Each export includes source code, test harness, Makefile, and the CMPSBL® Mini-Runtime™ Engine as a ZIP package.
             </div>
           </motion.div>
         )}

@@ -1,8 +1,9 @@
 /**
- * CMPSBL® Standalone Discovery Runtime
+ * CMPSBL® Mini-Runtime™ Engine
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * A self-contained micro-substrate that provides everything the Discovery
- * Engine needs to run WITHOUT the full substrate infrastructure.
+ * The official CMPSBL® portable runtime engine — a self-contained
+ * micro-substrate that provides everything the Discovery Engine needs
+ * to run WITHOUT the full substrate infrastructure.
  *
  * Includes:
  *   - CJPI scoring engine (weighted 6-axis evaluation)

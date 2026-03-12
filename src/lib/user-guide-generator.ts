@@ -213,7 +213,7 @@ export function generateUserGuideHTML(): string {
     <li><strong>Pipeline</strong> — A scored, tiered piece of production software crystallized from the stream</li>
     <li><strong>Vault</strong> — Your personal inventory of crystallized pipelines</li>
     <li><strong>Quality Floor</strong> — Every pipeline scores 68+ (CJPI score). No filler. Only stable systems survive.</li>
-    <li><strong>Materialization</strong> — Exporting a pipeline into a standalone runtime you own</li>
+    <li><strong>Materialization</strong> — Exporting a pipeline into the CMPSBL® Mini-Runtime™ Engine you own</li>
   </ul>
 </div>
 
@@ -333,9 +333,9 @@ export function generateUserGuideHTML(): string {
   </div>
 
   <h2 id="export">7. Materializing Pipelines</h2>
-  <p><strong>Materialization</strong> is the process of exporting a crystallized pipeline into a standalone runtime you own. Every materialized pipeline includes:</p>
+  <p><strong>Materialization</strong> is the process of exporting a crystallized pipeline into the CMPSBL® Mini-Runtime™ Engine you own. Every materialized pipeline includes:</p>
   <ul class="checklist">
-    <li>The <strong>Micro-Substrate</strong> standalone runtime</li>
+    <li>The <strong>CMPSBL® Mini-Runtime™ Engine</strong> — portable runtime</li>
     <li>A functional <strong>test harness</strong></li>
     <li>Full <strong>provenance metadata</strong> (CJPI score, crystallization timestamp, tier)</li>
     <li>Language-appropriate <strong>build configuration</strong></li>

@@ -2379,8 +2379,8 @@ without requiring the full CMPSBL® Substrate infrastructure.
 
 | File | Purpose |
 |------|---------|
-| \`standalone-runtime.ts\` | Micro-substrate runtime providing CJPI scoring, auto-tiering, and pipeline orchestration |
-| \`standalone-discovery-engine.ts\` | Portable discovery engine for artifact analysis outside the main substrate |
+| \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, and pipeline orchestration |
+| \`standalone-discovery-engine.ts\` | CMPSBL® Mini-Runtime™ Discovery Engine — portable reactor for artifact analysis |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
 | \`*_test.*\` / \`tb_*.*\` | Test harnesses / testbenches for validation |
@@ -2391,14 +2391,14 @@ All pipeline logic (state machines, FIFO buffers, transform stages) is **embedde
 directly in each exported source file** — there are no external runtime dependencies
 at the language level.
 
-The \`standalone-runtime.ts\` file provides **optional** higher-level orchestration
-if you want to:
+The \`standalone-runtime.ts\` file (the **CMPSBL® Mini-Runtime™ Engine**) provides
+**optional** higher-level orchestration if you want to:
 - Score and tier artifacts using the CJPI algorithm
 - Chain multiple Crown Jewels into a discovery pipeline
 - Use the built-in circuit breaker and error recovery strategies
 
-> **TL;DR:** Each source file compiles and runs independently. The runtime is included
-> for advanced pipeline orchestration but is not required for basic usage.
+> **TL;DR:** Each source file compiles and runs independently. The Mini-Runtime™ Engine
+> is included for advanced pipeline orchestration but is not required for basic usage.
 ${hasSW ? `
 ## Quick Start (Software)
 
@@ -2416,7 +2416,7 @@ engine = ${cls}()
 result = engine.execute({"key": "value"})
 \`\`\`
 
-### Using the Standalone Runtime (Advanced)
+### Using the CMPSBL® Mini-Runtime™ Engine (Advanced)
 \`\`\`typescript
 import { createRuntime } from './standalone-runtime';
 import { createDiscoveryEngine } from './standalone-discovery-engine';

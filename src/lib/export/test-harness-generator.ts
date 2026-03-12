@@ -485,7 +485,7 @@ CONDITIONS:
      entirely by you or any party other than CMPSBL®. The substrate origin
      must be acknowledged.
 
-RUNTIME LICENSE — The CMPSBL® Micro-Substrate Runtime (standalone-runtime.ts
+RUNTIME LICENSE — The CMPSBL® Mini-Runtime™ Engine (standalone-runtime.ts
 and standalone-discovery-engine.ts) is licensed solely for use with software
 exported from the CMPSBL® Substrate. It may not be used, copied, or
 distributed for any other purpose.
