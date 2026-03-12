@@ -77,7 +77,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Moon,
     category: 'intelligence',
     rarity: 'mythic',
-    crownJewelFeature: 'Dream Pattern Crystallizer',
+    apexFeature: 'Dream Pattern Crystallizer',
     buildTime: '~30 min',
     tags: ['DREAM', 'BRAIN'],
   },
