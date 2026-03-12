@@ -250,7 +250,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
   );
 }
 
-// ─── Artifact Card (Mobile-first, no truncation) ────────────────────
+// ─── Discovery Card (Mobile-first, no truncation) ────────────────────
 
 function ArtifactCard({
   entry, onViewCode, onExport, loadingCode, expanded, onToggle,
