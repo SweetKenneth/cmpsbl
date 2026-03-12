@@ -148,7 +148,7 @@ function ProvenanceBody({
         )}
       </div>
 
-      {/* Pipeline name + score */}
+      {/* Memory name + score */}
       <div className="px-5 pb-4">
         <h3 className="text-lg font-mono font-black text-foreground leading-tight">
           {pipeline.name}
