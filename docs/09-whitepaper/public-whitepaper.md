@@ -73,7 +73,7 @@ Full system state captured as a single portable archive from the admin dashboard
 
 ### Universal Export Adapter
 
-Export the substrate to 25 target languages (18 software, 7 hardware/HDL) with standalone Micro-Substrate runtime, test harnesses, and ZIP bundling.
+Export the substrate to 25 target languages (18 software, 7 hardware/HDL) with the CMPSBL® Mini-Runtime™ Engine, test harnesses, and ZIP bundling.
 
 ## 5. Governance Positioning
 
