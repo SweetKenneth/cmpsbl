@@ -47,10 +47,10 @@ const QUICK_LINKS = [
   { label: 'Memory Foundry', href: '/foundry', icon: Flame, description: 'Discover & crystallize software artifacts', color: 'from-orange-500/15 to-amber-500/10 border-orange-500/20' },
   { label: 'Developer Academy', href: '/academy', icon: BookOpen, description: 'Master the substrate with guided learning', color: 'from-blue-500/15 to-cyan-500/10 border-blue-500/20' },
   { label: 'CodeLab', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-emerald-500/15 to-green-500/10 border-emerald-500/20' },
-  { label: 'Documentation', href: '/docs', icon: FileText, description: 'Full API & architecture reference', color: 'from-purple-500/15 to-violet-500/10 border-purple-500/20' },
+  { label: 'Documentation', href: '/documentation', icon: FileText, description: 'Full API & architecture reference', color: 'from-purple-500/15 to-violet-500/10 border-purple-500/20' },
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
   { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
-  { label: 'System Integrity', href: '/integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
+  { label: 'System Integrity', href: '/system-integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
   { label: 'Memories', href: '/blog/the-first-line-of-code', icon: Brain, description: 'Read the origin story & build log', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
 ];
 
@@ -442,8 +442,8 @@ export function AccountTab() {
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Tier', value: (tier || role || 'free').toUpperCase(), icon: Crown },
-                { label: 'Role', value: (role || 'free').toUpperCase(), icon: Shield },
+                { label: 'Tier', value: ((tier || role || 'free') === 'free' ? 'BUILDER' : (tier || role || 'free').toUpperCase()), icon: Crown },
+                { label: 'Role', value: ((role || 'free') === 'free' ? 'BUILDER' : (role || 'free').toUpperCase()), icon: Shield },
                 { label: 'Email', value: user?.email?.split('@')[0] ?? '—', icon: Mail },
                 { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—', icon: Calendar },
               ].map(stat => (
