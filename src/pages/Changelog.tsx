@@ -301,7 +301,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-002",
     fossilized: "2026-03-03",
     origin: "survival",
-    stimulus: "Content quality pipeline was effective but lacked adversarial depth — no contradiction testing or assumption tracking",
+    stimulus: "Content quality chain was effective but lacked adversarial depth — no contradiction testing or assumption tracking",
     adaptations: [
       "Multi-factor confidence scoring now drives tone and depth modifiers for every draft",
       "Adversarial contradiction testing challenges content credibility before publication",
