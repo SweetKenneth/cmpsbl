@@ -180,7 +180,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Code,
     category: 'automation',
     rarity: 'great',
-    crownJewelFeature: 'Mutation Testing Engine',
+    apexFeature: 'Mutation Testing Engine',
     buildTime: '~20 min',
     tags: ['ENCODE'],
   },
