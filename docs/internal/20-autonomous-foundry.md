@@ -1,7 +1,7 @@
 # 20 — Autonomous Software Foundry
 
 **Classification:** 🔒 INTERNAL — Trade Secret  
-**Version:** v13.1.0 — IRONCLAD Epoch
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
@@ -13,7 +13,7 @@ This document describes the Autonomous Software Foundry — the substrate's recu
 
 The Foundry is a closed-loop reactor that:
 
-1. **Discovers** latent capabilities by combinatorially exploring the 38-node topology
+1. **Discovers** latent capabilities by combinatorially exploring the 40-node topology
 2. **Scores** each discovered capability using CJPI (Crown Jewel Pipeline Index)
 3. **Tiers** discoveries into S/A/B/C/D quality bands
 4. **Ranks** discoveries within each tier by composite score
@@ -40,14 +40,14 @@ while (budget_remaining && candidates_exist) {
 ```
 
 Key parameters:
-- **Exploration breadth:** All 38 nodes × combinatorial module chains
+- **Exploration breadth:** All 40 nodes × combinatorial module chains
 - **Scoring:** CJPI composite (novelty, utility, complexity, composability)
 - **Deduplication:** Semantic similarity threshold (cosine > 0.92 = duplicate)
 - **Time budget:** Configurable, typically 8–12 hours for full sweep
 
 ### 3.2 CJPI Scoring Model
 
-The Crown Jewel Pipeline Index is a 0–100 composite score:
+The CJPI (Crown Jewel Pipeline Index, internally "Apex Discovery Index") is a 0–100 composite score:
 
 | Factor | Weight | Description |
 |--------|--------|-------------|
@@ -72,7 +72,7 @@ Each module autonomously discovers its own latent capabilities through introspec
 
 ## 4. S-Tier Vault (`/admin/s-tier-vault`)
 
-The S-Tier Vault is the admin-only repository of validated Crown Jewel discoveries.
+The S-Tier Vault is the admin-only repository of validated Apex Discoveries (294 entries across the 40-node matrix).
 
 ### 4.1 Features
 
@@ -107,24 +107,26 @@ The Universal Export Adapter can export any discovery to 25 target languages:
 - 18 software languages (TypeScript, Python, Rust, Go, Java, C#, etc.)
 - 7 hardware/HDL targets (VHDL, Verilog, SystemVerilog, etc.)
 
-## 5. Standalone Discovery Engine (`src/lib/export/standalone-discovery-engine.ts`)
+## 5. CMPSBL® Mini-Runtime™ Engine & Standalone Discovery Engine
 
-A fully portable version of the discovery reactor that operates without the full substrate:
+A fully portable runtime and discovery engine that operate without the full substrate:
 
-- Packaged as a single TypeScript file
-- Pairs with `standalone-runtime.ts` for CJPI scoring
-- Can re-score, re-tier, and re-rank any discovery manifest
-- Included in every S-Tier Vault ZIP export
+- **CMPSBL® Mini-Runtime™ Engine** (`standalone-runtime.ts`) — 8-subsystem portable micro-substrate (see internal doc 41)
+- **Standalone Discovery Engine** (`standalone-discovery-engine.ts`) — Portable scorer/re-ranker
+- Both packaged in every S-Tier Vault ZIP export
+- Zero dependencies. Pure TypeScript. Drop-in ready.
 
 ## 6. Production Metrics
 
 | Metric | Value |
 |--------|-------|
 | Total discoveries (all time) | 1,143+ |
-| S-Tier discoveries | ~120 |
+| S-Tier Vault entries | 294 |
+| Composable Engines | 54 (4 META, 10 APEX, 16 ELITE, 24 CORE) |
 | Discovery rate | ~130/hour at full throttle |
 | Average CJPI (S-Tier) | 89.2 |
-| Unique module chains | 400+ |
+| Unique module chains | 940+ |
+| Node coverage | 40/40 (100%) |
 
 ## 7. Security Classification
 
@@ -156,6 +158,7 @@ The `/foundry` page is a cinematic presentation layer showing proof metrics only
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | System | Initial foundry internal documentation — v13.1.0 |
+| 2026-03-12 | System | Updated to 40-node matrix, 294 vault entries, Mini-Runtime™ branding, Engines catalog — v14.2.0 |
 
 ---
 

@@ -1,12 +1,13 @@
 # 01 — Topology & Module Registry
 
-**Classification:** 🔒 INTERNAL
+**Classification:** 🔒 INTERNAL  
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
 ## 1. Purpose
 
-This document defines the complete 38-node architecture of the CMPSBL Substrate, including every module's layer assignment, boot order, dependencies, and responsibility boundary.
+This document defines the complete 40-node architecture of the CMPSBL Substrate (including expansion nodes ENGINEER #39 and ATLAS #40), organized into 12 canonical sectors, with every node's sector assignment, boot order, dependencies, and responsibility boundary.
 
 ## 2. System Topology
 

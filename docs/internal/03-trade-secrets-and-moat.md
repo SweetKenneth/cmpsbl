@@ -1,6 +1,7 @@
 # 03 — Trade Secrets & Competitive Moat
 
-**Classification:** 🔒 INTERNAL — Trade Secret
+**Classification:** 🔒 INTERNAL — Trade Secret  
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
@@ -17,7 +18,7 @@ This document enumerates the strategic differentiators that constitute the subst
 | Clockless execution model | Event-driven, demand-pulled, no timers | Eliminates idle compute, prevents false health signals |
 | Triple-deferred boot | Three-stage initialization ensuring dependency correctness | Prevents cascade failures during cold start |
 | Weighted Matrix Integrity | `I = Σ(hᵢ × wᵢ)` with enforced weight sum = 1.000 | Single-number system health that is mathematically deterministic |
-| 24-module topology coherence | Six-zone architecture with field permeation | No competitor has this topological completeness |
+| 40-node / 12-sector topology coherence | Full-matrix architecture with field permeation | No competitor has this topological completeness |
 | Governance-gated self-evolution | SEBA with 7-gate promotion pipeline | Autonomous improvement without human bottleneck, with safety |
 
 ### 2.2 Experience Crown Jewels
