@@ -254,9 +254,8 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   const zip = new JSZip();
   const counts: Record<string, number> = {};
 
-  // ── Supabase backend ──
+  // ── Supabase backend (single glob catches all .ts including _shared) ──
   counts.edgeFunctions = await addGlob(zip, edgeFunctionFiles, { skipArchived: true });
-  counts.edgeShared = await addGlob(zip, edgeSharedFiles, { skipArchived: true });
   counts.migrations = await addGlob(zip, migrationFiles);
   counts.supabaseConfig = await addGlob(zip, supabaseConfigFiles);
 
@@ -281,6 +280,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   counts.styles = await addGlob(zip, styleFiles);
   counts.srcTests = await addGlob(zip, srcTestFiles);
   counts.integrations = await addGlob(zip, integrationFiles);
+  counts.assetText = await addGlob(zip, assetTextFiles);
 
   // ── Root source files (App.tsx, main.tsx, index.css, etc.) ──
   counts.rootSrc = await addGlob(zip, rootSrcFiles);
