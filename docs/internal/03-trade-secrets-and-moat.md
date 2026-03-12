@@ -1,6 +1,7 @@
 # 03 — Trade Secrets & Competitive Moat
 
-**Classification:** 🔒 INTERNAL — Trade Secret
+**Classification:** 🔒 INTERNAL — Trade Secret  
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
