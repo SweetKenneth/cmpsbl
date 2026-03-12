@@ -493,15 +493,17 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 bg-white/5">
-          <TabsTrigger value="backups">Backups</TabsTrigger>
-          <TabsTrigger value="packages" className="gap-1">
-            <ShoppingBag className="w-3 h-3" />
-            Packages
-          </TabsTrigger>
-          <TabsTrigger value="export">Export/Import</TabsTrigger>
-          <TabsTrigger value="retention">Retention</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0 scrollbar-none">
+          <TabsList className="grid w-max min-w-full sm:w-full grid-cols-4 bg-white/5">
+            <TabsTrigger value="backups" className="text-xs sm:text-sm px-2 sm:px-3">Backups</TabsTrigger>
+            <TabsTrigger value="packages" className="gap-1 text-xs sm:text-sm px-2 sm:px-3">
+              <ShoppingBag className="w-3 h-3 hidden sm:block" />
+              Packages
+            </TabsTrigger>
+            <TabsTrigger value="export" className="text-xs sm:text-sm px-2 sm:px-3">Export/Import</TabsTrigger>
+            <TabsTrigger value="retention" className="text-xs sm:text-sm px-2 sm:px-3">Retention</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Backups Tab */}
         <TabsContent value="backups" className="space-y-4">
