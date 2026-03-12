@@ -75,8 +75,8 @@ const DEMOS: DemoConfig[] = [
     subtitle: 'See the system regulate itself.',
     icon: Activity,
     color: 'text-cyan-400',
-    description: 'A real-time visualization of the substrate in motion. Observe module activation, signal flow, and adaptive response as the system processes live input.',
-    capabilities: ['Live Telemetry', 'Module Pulse', 'Cognitive Flow Mapping'],
+    description: 'A real-time visualization of the substrate in motion. Observe node activation, signal flow, and adaptive response as the system processes live input.',
+    capabilities: ['Live Telemetry', 'Node Pulse', 'Cognitive Flow Mapping'],
     investorHook: 'You\'re not watching an animation. You\'re watching metabolism.',
   },
   {

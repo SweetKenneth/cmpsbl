@@ -200,7 +200,7 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
           <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{stats.moduleCoverage}/{stats.totalModules}</div>
-          <div className="text-[10px] text-muted-foreground">Module Coverage</div>
+          <div className="text-[10px] text-muted-foreground">Node Coverage</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">

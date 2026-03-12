@@ -382,10 +382,10 @@ export default function DevTools() {
                 </CardContent>
               </Card>
 
-              {/* Module Quick Reference */}
+              {/* Node Quick Reference */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Module Quick Reference</CardTitle>
+                  <CardTitle>Node Quick Reference</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">

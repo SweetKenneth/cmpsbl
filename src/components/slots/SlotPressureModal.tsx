@@ -48,7 +48,7 @@ export function SlotPressureModal({
           <DialogDescription>
             {packName
               ? `You tried to activate "${packName}" but all ${currentSlots} slots are in use.`
-              : `All ${currentSlots} artifact slots are currently active.`}
+              : `All ${currentSlots} capability slots are currently active.`}
           </DialogDescription>
         </DialogHeader>
 

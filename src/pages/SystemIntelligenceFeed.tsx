@@ -388,7 +388,7 @@ function ObserverGate() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             {[
               { icon: Radio, label: "Live Feed", desc: "Real-time intelligence" },
-              { icon: Orbit, label: "Module Orbit", desc: "14 learning modules" },
+              { icon: Orbit, label: "Node Orbit", desc: "14 learning nodes" },
               { icon: Waves, label: "Analysis Stream", desc: "Self-improvement cycles" },
             ].map((feat, i) => (
               <motion.div

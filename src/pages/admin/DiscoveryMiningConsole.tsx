@@ -665,7 +665,7 @@ function AutoMinerTab() {
                 disabled={isRunning} />
             </div>
             <div>
-              <Label className="text-xs">Module Range</Label>
+              <Label className="text-xs">Node Range</Label>
               <div className="flex gap-1 items-center">
                 <Input type="number" value={config.minModules} min={2} max={4} className="w-16"
                   onChange={e => setConfig(c => ({ ...c, minModules: parseInt(e.target.value) || 2 }))}
