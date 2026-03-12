@@ -1,7 +1,7 @@
 /**
  * SIGNAL FORGE — Blueprint Synthesis Engine
  * 
- * Generates production-ready pipeline blueprints from the substrate's
+ * Generates production-ready memory blueprints from the substrate's
  * combinatorial space. Auth-gated downloads with daily rate limits.
  */
 

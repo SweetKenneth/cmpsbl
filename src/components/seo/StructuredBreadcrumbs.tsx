@@ -19,7 +19,7 @@ const LABEL_MAP: Record<string, string> = {
   'feed-dream-eater': 'Dream Eater',
   decode: 'DECODE',
   upgrade: 'Pricing',
-  packs: 'Pipeline Packs',
+  packs: 'Memory Packs',
   store: 'Store',
   solutions: 'Solutions',
   about: 'About',

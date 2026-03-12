@@ -539,7 +539,7 @@ export default function About() {
                   Ready to Build?
                 </h2>
                 <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-xl mx-auto mb-8 leading-relaxed">
-                  Start free with 3 pipeline slots. Activate packs, trigger DREAM cycles, and let the substrate evolve.
+                  Start free with 3 memory slots. Activate packs, trigger DREAM cycles, and let the substrate evolve.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button

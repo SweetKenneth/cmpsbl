@@ -148,7 +148,7 @@ export function CmpsblNav() {
         { name: "Demo", href: "/demo", description: "Interactive system walkthrough", icon: Activity },
         { name: "Experiment Lab", href: "/lab", description: "Sandbox for testing primitives", icon: FlaskConical },
         { name: "Roadmap", href: "/roadmap", description: "Five-phase evolution timeline", icon: Rocket, badge: "NEW" },
-        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize pipelines", icon: Sparkles, badge: "LIVE" },
+        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize memories", icon: Sparkles, badge: "LIVE" },
         { name: "About", href: "/about", description: "Mission, team & philosophy", icon: Info },
         { name: "Use cases", href: "/use-cases", description: "Industry applications", icon: Globe },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },

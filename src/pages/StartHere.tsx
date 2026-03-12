@@ -215,7 +215,7 @@ export default function StartHere() {
           <motion.div {...stagger(0.4)} className="callout-accent rounded-xl p-5 mb-8">
             <p className="text-foreground font-semibold text-base sm:text-lg flex items-center gap-2.5">
               <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-              Free users are first-class builders here. 3 pipeline slots. Full runtime. No credit card.
+              Free users are first-class builders here. 3 memory slots. Full runtime. No credit card.
             </p>
           </motion.div>
 
