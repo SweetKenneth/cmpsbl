@@ -16,23 +16,23 @@ The Universal Export Adapter enables any Crown Jewel discovery to be exported to
 | Language | Build Tool | Test Framework |
 |----------|-----------|----------------|
 | TypeScript | tsc + esbuild | Vitest |
-| JavaScript | esbuild | Jest |
 | Python | pip + setuptools | pytest |
-| Rust | Cargo | built-in |
 | Go | go build | go test |
+| Rust | Cargo | built-in |
 | Java | Maven | JUnit |
-| Kotlin | Gradle | JUnit |
-| Swift | Swift Package Manager | XCTest |
 | C# | dotnet | xUnit |
-| C++ | CMake | Google Test |
 | Ruby | Bundler | RSpec |
 | PHP | Composer | PHPUnit |
-| Dart | pub | dart test |
-| Scala | sbt | ScalaTest |
+| Swift | Swift Package Manager | XCTest |
+| Kotlin | Gradle | JUnit |
 | Elixir | mix | ExUnit |
-| Haskell | Stack | HSpec |
 | Lua | LuaRocks | busted |
-| R | devtools | testthat |
+| C | CMake | Google Test |
+| C++ | CMake | Google Test |
+| Dart | pub | dart test |
+| Zig | zig build | built-in |
+| Scala | sbt | ScalaTest |
+| Haskell | Stack | HSpec |
 
 ### 2.2 Hardware/HDL Targets (7)
 
