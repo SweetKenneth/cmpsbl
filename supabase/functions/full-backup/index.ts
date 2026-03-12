@@ -577,7 +577,7 @@ for (const table of tableDirs) {
     }
   }
 
-  console.log(\`✅ \${table}: \${imported} imported\${failed ? \, \${failed} failed\` : ''}\`);
+  console.log(\`✅ \${table}: \${imported} imported\${failed ? \`, \${failed} failed\` : ''}\`);
 }
 
 console.log('\\n🎉 Data import complete!');
