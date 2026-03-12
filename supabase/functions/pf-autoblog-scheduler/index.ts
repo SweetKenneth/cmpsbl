@@ -288,12 +288,17 @@ serve(async (req) => {
       evolutions: evolutionStats.count || 0,
     };
 
-    // 11. Generate content via AI or fallback
+    // 11. Generate content via NEXUS (full fleet failover) with fallback
     let content: { title: string; body: string };
+    let aiProvider = 'fallback';
 
-    if (lovableKey) {
-      content = await generateWithAI(lovableKey, selectedTopic, systemContext);
-    } else {
+    try {
+      const result = await generateWithNexus(selectedTopic, systemContext);
+      content = result;
+      aiProvider = 'nexus';
+      console.log(`🧠 NEXUS generated content successfully`);
+    } catch (nexusErr) {
+      console.warn('⚠️ NEXUS generation failed, using fallback:', nexusErr);
       content = generateFallbackContent(selectedTopic, systemContext);
     }
 
