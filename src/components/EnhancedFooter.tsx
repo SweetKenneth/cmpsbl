@@ -93,6 +93,7 @@ export function EnhancedFooter() {
     { name: "Contact", href: "/contact" },
     { name: "Investors", href: "/investors" },
     { name: "Solutions", href: "/solutions" },
+    { name: "Memories", href: "/blog/the-first-line-of-code" },
     { name: "Support", href: "/support" },
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
