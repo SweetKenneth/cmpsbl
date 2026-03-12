@@ -25,13 +25,8 @@ type RawGlob = Record<string, () => Promise<string>>;
 // SUPABASE BACKEND
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Edge functions (exclude _archived)
-const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/index.ts', {
-  as: 'raw',
-}) as RawGlob;
-
-// Shared backend-function utils
-const edgeSharedFiles = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
+// Edge functions — ALL .ts files (not just index.ts)
+const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/*.ts', {
   as: 'raw',
 }) as RawGlob;
 
@@ -134,8 +129,13 @@ const utilFiles = import.meta.glob('/src/utils/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
 
-// Styles
+// Styles (CSS and TS/TSX)
 const styleFiles = import.meta.glob('/src/styles/**/*.{ts,tsx,css}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Assets — text-safe files only (SVG, JSON)
+const assetTextFiles = import.meta.glob('/src/assets/**/*.{svg,json}', {
   as: 'raw',
 }) as RawGlob;
 
@@ -153,7 +153,7 @@ const integrationFiles = import.meta.glob('/src/integrations/**/*.{ts,tsx}', {
 // ROOT SOURCE FILES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const rootSrcFiles = import.meta.glob('/src/*.{ts,tsx,css}', {
+const rootSrcFiles = import.meta.glob('/src/*.{ts,tsx,css,json}', {
   as: 'raw',
 }) as RawGlob;
 
@@ -177,11 +177,11 @@ const rootConfigFiles = import.meta.glob('/{vite.config.ts,vitest.config.ts,tsco
 // DOCUMENTATION, SCRIPTS, PLUGINS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const docFiles = import.meta.glob('/docs/**/*.{md,txt,json}', {
+const docFiles = import.meta.glob('/docs/**/*.{md,txt,json,html}', {
   as: 'raw',
 }) as RawGlob;
 
-const scriptFiles = import.meta.glob('/scripts/**/*.{ts,js,sh,json}', {
+const scriptFiles = import.meta.glob('/scripts/**/*.{ts,js,mjs,sh,json}', {
   as: 'raw',
 }) as RawGlob;
 
@@ -205,7 +205,7 @@ const rootMarkdown = import.meta.glob('/{README.md,LICENSE.md}', {
 // PUBLIC ASSETS (non-binary text files)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const publicTextFiles = import.meta.glob('/public/**/*.{json,xml,txt,svg,webmanifest,ico}', {
+const publicTextFiles = import.meta.glob('/public/**/*.{json,xml,txt,svg,webmanifest,js,css,html,md,ts}', {
   as: 'raw',
 }) as RawGlob;
 
@@ -254,9 +254,8 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   const zip = new JSZip();
   const counts: Record<string, number> = {};
 
-  // ── Supabase backend ──
+  // ── Supabase backend (single glob catches all .ts including _shared) ──
   counts.edgeFunctions = await addGlob(zip, edgeFunctionFiles, { skipArchived: true });
-  counts.edgeShared = await addGlob(zip, edgeSharedFiles, { skipArchived: true });
   counts.migrations = await addGlob(zip, migrationFiles);
   counts.supabaseConfig = await addGlob(zip, supabaseConfigFiles);
 
@@ -281,6 +280,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
   counts.styles = await addGlob(zip, styleFiles);
   counts.srcTests = await addGlob(zip, srcTestFiles);
   counts.integrations = await addGlob(zip, integrationFiles);
+  counts.assetText = await addGlob(zip, assetTextFiles);
 
   // ── Root source files (App.tsx, main.tsx, index.css, etc.) ──
   counts.rootSrc = await addGlob(zip, rootSrcFiles);
@@ -310,7 +310,7 @@ export async function buildSubstrateZip(): Promise<{ blob: Blob; manifest: Expor
     architectureEpoch: `${getMetric('epoch')} v${getMetric('version')}`,
     categories: counts,
     totalFiles,
-    note: 'Full substrate backup. Binary assets (images, fonts) in src/assets/ and public/ require separate backup via Git. Auto-generated files (types.ts, .env) are included for reference but will be regenerated.',
+    note: 'Full substrate backup. Binary assets (PNG/JPG/WEBP/MP4 in src/assets/ and public/) are not included — back those up via Git. Text-based assets (SVG, JSON) ARE included. Auto-generated files (types.ts, .env) are included for reference but will be regenerated.',
   };
 
   // Add manifest to ZIP
