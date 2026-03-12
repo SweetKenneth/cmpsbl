@@ -197,7 +197,7 @@ export default function Architecture() {
         faq={[
           { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-node substrate organized into 12 sectors. CORE boots all sectors in a deterministic sequence and maintains a weighted node registry where all weights sum to exactly 1.000.' },
           { question: 'What are the 12 sectors?', answer: 'Kernel (SPINE), CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, and Shell. Each sector groups related nodes with distinct operational responsibilities.' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation pipeline: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
         ]}
       />
 
