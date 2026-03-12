@@ -409,19 +409,19 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center shrink-0">
             <Database className="w-4 h-4 text-blue-400" />
           </div>
-          <div>
-            <h2 className="text-lg font-semibold">Backup & Restore</h2>
-            <p className="text-xs text-muted-foreground font-mono">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-semibold">Backup & Restore</h2>
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono truncate">
               portable exports • retention policy • permanent failsafe
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"
@@ -448,7 +448,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-emerald-500/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
@@ -493,15 +493,17 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 bg-white/5">
-          <TabsTrigger value="backups">Backups</TabsTrigger>
-          <TabsTrigger value="packages" className="gap-1">
-            <ShoppingBag className="w-3 h-3" />
-            Packages
-          </TabsTrigger>
-          <TabsTrigger value="export">Export/Import</TabsTrigger>
-          <TabsTrigger value="retention">Retention</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0 scrollbar-none">
+          <TabsList className="grid w-max min-w-full sm:w-full grid-cols-4 bg-white/5">
+            <TabsTrigger value="backups" className="text-xs sm:text-sm px-2 sm:px-3">Backups</TabsTrigger>
+            <TabsTrigger value="packages" className="gap-1 text-xs sm:text-sm px-2 sm:px-3">
+              <ShoppingBag className="w-3 h-3 hidden sm:block" />
+              Packages
+            </TabsTrigger>
+            <TabsTrigger value="export" className="text-xs sm:text-sm px-2 sm:px-3">Export/Import</TabsTrigger>
+            <TabsTrigger value="retention" className="text-xs sm:text-sm px-2 sm:px-3">Retention</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Backups Tab */}
         <TabsContent value="backups" className="space-y-4">

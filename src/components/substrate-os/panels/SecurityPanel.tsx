@@ -5,10 +5,11 @@
 
 import { useState, lazy, Suspense } from 'react';
 import {
-  Shield, Network, FileText, HardDrive, Loader2,
+  Shield, Network, FileText, HardDrive, Loader2, Download,
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
+import { FullBackupButton } from '@/components/admin/FullBackupButton';
 
 const DefenseAnalytics = lazy(() => import('@/components/substrate-os/DefenseAnalytics').then(m => ({ default: m.DefenseAnalytics })));
 const ShadowMeshToggle = lazy(() => import('@/components/admin/ShadowMeshToggle').then(m => ({ default: m.ShadowMeshToggle })));
@@ -46,8 +47,8 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
+        <div className="overflow-x-auto -mx-3 px-3 sm:-mx-4 sm:px-4 md:mx-0 md:px-0 scrollbar-none">
+          <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max min-w-full sm:w-auto">
             <TabsTrigger value="defense" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Defense
             </TabsTrigger>
@@ -95,7 +96,21 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
           </ModuleErrorBoundary>
         </TabsContent>
 
-        <TabsContent value="backups" className="mt-4">
+        <TabsContent value="backups" className="mt-4 space-y-4">
+          {/* Full System Backup — disaster recovery ZIP */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg border border-blue-500/20 bg-blue-500/5">
+            <div className="min-w-0">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
+                <Download className="w-4 h-4 text-blue-400 shrink-0" />
+                Full System Backup
+              </h3>
+              <p className="text-[11px] text-muted-foreground mt-0.5">
+                One-click disaster recovery — downloads all tables, schema & restoration guide as ZIP
+              </p>
+            </div>
+            <FullBackupButton />
+          </div>
+
           <ModuleErrorBoundary moduleName="Backups">
             <Suspense fallback={<Loader />}><BackupRestorePanel enabled={isOperator} /></Suspense>
           </ModuleErrorBoundary>

@@ -13,6 +13,7 @@ function sanitizeReportHtml(html: string): string {
 }
 
 import { useState } from "react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { FullBackupButton } from "@/components/admin/FullBackupButton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -162,21 +163,24 @@ export default function OwnerReports() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <AdminLayout>
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/os">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Brain className="h-5 w-5 text-primary" />
-          <div>
-            <h1 className="text-lg font-semibold">Owner Reports</h1>
-            <p className="text-xs text-muted-foreground">DECODE Mode B — 3-Hour Intelligence Cycle</p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
+          <div className="flex items-center gap-3">
+            <Link to="/os">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Brain className="h-5 w-5 text-primary shrink-0" />
+            <div>
+              <h1 className="text-lg font-semibold">Owner Reports</h1>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">DECODE Mode B — 3-Hour Intelligence Cycle</p>
+            </div>
           </div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-0 sm:ml-auto flex items-center gap-2 flex-wrap">
             <FullBackupButton />
             <Badge variant="outline" className="text-[10px]">
               {reports.length} report{reports.length !== 1 ? "s" : ""}
@@ -300,5 +304,6 @@ export default function OwnerReports() {
         </DialogContent>
       </Dialog>
     </div>
+    </AdminLayout>
   );
 }
