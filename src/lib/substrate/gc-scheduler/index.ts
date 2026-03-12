@@ -5,7 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { runMemoryGC } from '../memory-gc';
+import { runMemoryGC } from '../memory-gc/index';
 
 interface GCSchedulerConfig {
   intervalMs: number;       // Default: 6 hours

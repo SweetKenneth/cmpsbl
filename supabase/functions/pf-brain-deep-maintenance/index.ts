@@ -504,7 +504,114 @@ Deno.serve(async (req: Request) => {
     console.log(`[DeepMaint] DREAM: cross_insights=${crossInsightsGenerated}`);
 
     // ═══════════════════════════════════════════════════
-    // PHASE 7: UPDATE META + FINAL REPORT
+    // PHASE 7: STORAGE RECLAMATION — Clean auxiliary tables
+    // ═══════════════════════════════════════════════════
+    let auxTablesCleaned = 0;
+    let auxRowsRemoved = 0;
+    let dupsRemoved = 0;
+    let orphanEdgesRemoved = 0;
+
+    if (timeLeft()) {
+      // 7a. Clean stale analytics_events (>14 days)
+      const analyticsCutoff = new Date(Date.now() - 14 * 86_400_000).toISOString();
+      const analyticsRemoved = await batchPrune("analytics_events", analyticsCutoff, 10);
+      if (analyticsRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += analyticsRemoved; }
+
+      // 7b. Clean stale ai_usage_log (>14 days)
+      if (timeLeft()) {
+        const aiLogRemoved = await batchPrune("ai_usage_log", analyticsCutoff, 10);
+        if (aiLogRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += aiLogRemoved; }
+      }
+
+      // 7c. Clean stale ai_learning_data (>30 days)
+      if (timeLeft()) {
+        const learnCutoff30 = new Date(Date.now() - 30 * 86_400_000).toISOString();
+        const aiLearnRemoved = await batchPrune("ai_learning_data", learnCutoff30, 5);
+        if (aiLearnRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += aiLearnRemoved; }
+      }
+
+      // 7d. Cap analytics_snapshots at 500
+      if (timeLeft()) {
+        const { count: snapCount } = await supabase
+          .from("analytics_snapshots")
+          .select("*", { count: "exact", head: true });
+        if ((snapCount ?? 0) > 500) {
+          const snapExcess = (snapCount ?? 0) - 500;
+          const { data: oldSnaps } = await supabase
+            .from("analytics_snapshots")
+            .select("id")
+            .order("created_at", { ascending: true })
+            .limit(Math.min(snapExcess, 1000));
+          if (oldSnaps?.length) {
+            for (let i = 0; i < oldSnaps.length; i += 500) {
+              const chunk = oldSnaps.slice(i, i + 500).map((r: any) => r.id);
+              await supabase.from("analytics_snapshots").delete().in("id", chunk);
+            }
+            auxRowsRemoved += oldSnaps.length;
+            auxTablesCleaned++;
+          }
+        }
+      }
+
+      // 7e. Deduplicate HOT tier — same content+module within batch
+      if (timeLeft()) {
+        const { data: hotMems } = await supabase
+          .from("brain_memory_hot")
+          .select("id, content, source_module")
+          .order("created_at", { ascending: false })
+          .limit(1000);
+
+        if (hotMems && hotMems.length > 1) {
+          const seen = new Map<string, string>();
+          const toDelete: string[] = [];
+          for (const mem of hotMems) {
+            const key = `${mem.source_module}:${(mem.content || "").substring(0, 80)}`;
+            if (seen.has(key)) toDelete.push(mem.id);
+            else seen.set(key, mem.id);
+          }
+          if (toDelete.length > 0) {
+            for (let i = 0; i < toDelete.length; i += 500) {
+              await supabase.from("brain_memory_hot").delete().in("id", toDelete.slice(i, i + 500));
+            }
+            dupsRemoved += toDelete.length;
+          }
+        }
+      }
+
+      // 7f. Remove orphaned graph edges
+      if (timeLeft()) {
+        const { data: edges } = await supabase
+          .from("brain_graph_edges")
+          .select("id, source_id, target_id")
+          .limit(500);
+
+        if (edges?.length) {
+          const nodeIds = new Set<string>();
+          for (const e of edges) { nodeIds.add(e.source_id); nodeIds.add(e.target_id); }
+
+          const { data: existingNodes } = await supabase
+            .from("brain_graph_nodes")
+            .select("id")
+            .in("id", Array.from(nodeIds));
+
+          const existingSet = new Set((existingNodes ?? []).map((n: any) => n.id));
+          const orphans = edges.filter((e: any) => !existingSet.has(e.source_id) || !existingSet.has(e.target_id));
+
+          if (orphans.length > 0) {
+            await supabase.from("brain_graph_edges").delete().in("id", orphans.map((e: any) => e.id));
+            orphanEdgesRemoved += orphans.length;
+          }
+        }
+      }
+    }
+
+    (report.phases as any).storage = { auxTablesCleaned, auxRowsRemoved, dupsRemoved, orphanEdgesRemoved };
+    console.log(
+      `[DeepMaint] STORAGE: tables=${auxTablesCleaned} rows=${auxRowsRemoved} dups=${dupsRemoved} orphanEdges=${orphanEdgesRemoved}`,
+    );
+
+    // ═══════════════════════════════════════════════════
+    // PHASE 8: UPDATE META + FINAL REPORT
     // ═══════════════════════════════════════════════════
     const [fHot, fWarm, fCold] = await Promise.all([
       supabase.from("brain_memory_hot").select("*",  { count: "exact", head: true }),
@@ -549,30 +656,32 @@ Deno.serve(async (req: Request) => {
       details:      report,
     });
 
-    // Record as brain event (schema: data, not details)
+    // Record as brain event
     await supabase.from("brain_events").insert({
       event_type: "deep_maintenance_complete",
       module:     "brain",
       outcome:    "success",
       data: {
-        events_pruned:     eventsPruned,
-        reflections_pruned: reflectionsPruned,
+        events_pruned:       eventsPruned,
+        reflections_pruned:  reflectionsPruned,
         learning_logs_pruned: learningLogsPruned,
-        hot_demoted:       hotDemoted,
-        warm_demoted:      warmDemoted,
-        cold_archived:     coldArchived,
-        crystals_formed:   crystalsFormed,
-        graph_nodes:       graphNodesCreated,
-        graph_edges:       graphEdgesCreated,
-        cross_insights:    crossInsightsGenerated,
-        final_counts:      finalCounts,
-        duration_ms:       elapsed(),
+        hot_demoted:         hotDemoted,
+        warm_demoted:        warmDemoted,
+        cold_archived:       coldArchived,
+        crystals_formed:     crystalsFormed,
+        graph_nodes:         graphNodesCreated,
+        graph_edges:         graphEdgesCreated,
+        cross_insights:      crossInsightsGenerated,
+        storage_reclaimed:   { auxTablesCleaned, auxRowsRemoved, dupsRemoved, orphanEdgesRemoved },
+        final_counts:        finalCounts,
+        duration_ms:         elapsed(),
       },
     });
 
     console.log(
       `[DeepMaint] COMPLETE in ${elapsed()}ms — ` +
-      `HOT: ${audit.hot}→${finalCounts.hot} | WARM: ${audit.warm}→${finalCounts.warm} | COLD: ${audit.cold}→${finalCounts.cold}`,
+      `HOT: ${audit.hot}→${finalCounts.hot} | WARM: ${audit.warm}→${finalCounts.warm} | COLD: ${audit.cold}→${finalCounts.cold} | ` +
+      `STORAGE: ${auxRowsRemoved} aux rows + ${dupsRemoved} dups + ${orphanEdgesRemoved} orphans freed`,
     );
 
     return new Response(JSON.stringify({ success: true, report }), {
