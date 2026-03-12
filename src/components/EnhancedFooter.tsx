@@ -73,6 +73,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Memory Stream", href: "/foundry", highlight: true },
         { name: "Agent memory", href: "/persistent-memory", highlight: true },
+        { name: "Memories", href: "/blog/the-first-line-of-code" },
         { name: "Blog", href: "/blog" },
         { name: "Showcase", href: "/showcase" },
         { name: "System overview", href: "/overview" },
