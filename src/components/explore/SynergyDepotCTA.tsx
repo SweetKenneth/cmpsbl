@@ -171,7 +171,7 @@ export function SynergyDepotCTA() {
                       Capabilities Depot
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Downloadable artifacts and capabilities you deploy on your own infrastructure.
+                      Downloadable discoveries and capabilities you deploy on your own infrastructure.
                     </p>
                   </div>
                 </div>
