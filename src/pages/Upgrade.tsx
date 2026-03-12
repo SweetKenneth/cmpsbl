@@ -97,7 +97,7 @@ const TIERS: {
     annualPrice: '$39',
     period: '/mo',
     tagline: '9 template packs. Maximum creative output.',
-    description: 'Trace exports, high-priority NEXUS routing, custom pipeline slots.',
+    description: 'Trace exports, high-priority NEXUS routing, custom memory slots.',
     accent: 'from-blue-500 to-indigo-500',
     icon: Layers,
     popular: true,
