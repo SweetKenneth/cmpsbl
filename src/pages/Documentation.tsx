@@ -812,7 +812,7 @@ Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
           Automatic post-restore health verification. All rollback events are audited.
         </InfoCard>
         <InfoCard icon={Activity} title="Scan Trend Dashboard">
-          Visualizes health over time with trend lines, technical debt reduction curves, module-by-module breakdown,
+          Visualizes health over time with trend lines, technical debt reduction curves, node-by-node breakdown,
           and alert threshold markers. Identifies patterns in evolution success rates.
         </InfoCard>
         <InfoCard icon={GitBranch} title="Shadow Testing">
