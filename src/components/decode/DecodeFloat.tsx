@@ -152,7 +152,10 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     const dx = e.clientX - dragStart.current.x;
     const dy = e.clientY - dragStart.current.y;
     if (!isDragging.current && Math.abs(dx) + Math.abs(dy) < 5) return;
-    isDragging.current = true;
+    if (!isDragging.current) {
+      isDragging.current = true;
+      setDragging(true);
+    }
     setPos(clamp(dragStart.current.orbX + dx, dragStart.current.orbY + dy));
   }, [clamp]);
 
