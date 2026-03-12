@@ -65,7 +65,7 @@ const sections = [
   {
     id: "ip",
     title: "5. Intellectual Property",
-    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration pipelines, artifact packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.",
+    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration systems, capability packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.",
   },
   {
     id: "purchases",
