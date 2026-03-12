@@ -863,14 +863,14 @@ CJPI = (0.25 × novelty + 0.30 × utility + 0.20 × complexity + 0.25 × composa
 
   <div class="stream-line"></div>
 
-  <h2 id="standalone">7. Standalone Packaging</h2>
+  <h2 id="standalone">7. CMPSBL® Mini-Runtime™ Engine</h2>
   <div class="card-grid">
     <div class="card">
-      <h4 style="margin-top:0;">Standalone Runtime</h4>
-      <p>Micro-substrate providing CJPI scoring, auto-tiering, and sequential chain execution. Zero external dependencies.</p>
+      <h4 style="margin-top:0;">Mini-Runtime™ Engine</h4>
+      <p>The official CMPSBL® portable runtime providing CJPI scoring, auto-tiering, and sequential chain execution. Zero external dependencies.</p>
     </div>
     <div class="card">
-      <h4 style="margin-top:0;">Standalone Discovery Engine</h4>
+      <h4 style="margin-top:0;">Mini-Runtime™ Discovery Engine</h4>
       <p>Portable reactor that can ingest a manifest and re-score/re-tier. Included in every Vault ZIP export.</p>
     </div>
   </div>
