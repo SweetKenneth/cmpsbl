@@ -81,7 +81,7 @@ const TIERS: {
     accent: 'from-violet-500 to-purple-500',
     icon: Sparkles,
     stripeTier: 'creator' as EngineSubscriptionTier,
-    capacity: { slots: 6, vault: '25 pipelines', pulls: '6 per day', exportEnabled: true, customSlots: false },
+    capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
       'Expanded memory depth',
       'All 24 packs visible',
