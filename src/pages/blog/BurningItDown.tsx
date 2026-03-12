@@ -40,7 +40,7 @@ export default function BurningItDown() {
       <p>But in the month after SPARTA, we shipped more features than the previous quarter. Deployment time went from 45 minutes to 8 minutes. Deployment frequency tripled. Bug reports dropped 60%. New engineer onboarding went from two weeks to three days because the codebase was finally comprehensible. The velocity improvement more than compensated for the pause.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Lesson</h2>
-      <p>Technical debt is real debt. Pay it down before it pays you down. SPARTA wasn't a luxury — it was survival. We'd reached the point where adding any feature required modifying three other nodes, which introduced regressions, which required hotfixes, which introduced more debt. The rebuild broke that cycle. The <Link to="/blog/signal-to-silicon" className="text-primary hover:underline">complete pipeline</Link> that followed would not have been possible without it.</p>
+      <p>Technical debt is real debt. Pay it down before it pays you down. SPARTA wasn't a luxury — it was survival. We'd reached the point where adding any feature required modifying three other nodes, which introduced regressions, which required hotfixes, which introduced more debt. The rebuild broke that cycle. The <Link to="/blog/signal-to-silicon" className="text-primary hover:underline">complete system</Link> that followed would not have been possible without it.</p>
     </BlogArticleLayout>
   );
 }
