@@ -29,7 +29,7 @@ export function FoundryPostProofCTA() {
             onClick={() => navigate('/auth?redirect=/foundry')}
             className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-primary text-primary-foreground rounded-xl font-mono text-sm sm:text-base font-bold hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 hover:-translate-y-0.5 min-h-[52px] crystallize-glow"
           >
-            Start Mining Pipelines
+            Start Mining Memories
           </button>
           <button
             onClick={() => navigate('/pipelines')}
