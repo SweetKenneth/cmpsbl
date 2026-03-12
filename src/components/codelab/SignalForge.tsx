@@ -13,7 +13,8 @@ import { Card } from "@/components/ui/card";
 import { 
   Sparkles, Dices, Download, Zap, Brain, Shield, Moon, Eye, 
   MessageSquare, Settings, Cpu, Globe, ArrowRight, Check, 
-  Copy, Lock, Network, Flame, RefreshCw, LogIn, Hexagon
+  Copy, Lock, Network, Flame, RefreshCw, LogIn, Hexagon,
+  Terminal, Package
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
