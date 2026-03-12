@@ -71,7 +71,7 @@ const INDUSTRY_PRESETS = [
     id: 'software',
     name: 'Software Development',
     icon: Code,
-    description: 'RAG pipelines, AI agents, chatbots, and cognitive applications',
+    description: 'RAG systems, AI agents, chatbots, and cognitive applications',
     color: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
     enabledModules: ['core', 'ripple', 'access', 'brain', 'decode', 'nexus', 'defense', 'system'],
     tagline: 'Apps that think and learn',

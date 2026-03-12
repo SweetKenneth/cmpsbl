@@ -363,7 +363,7 @@ const modulesByLayer = {
     {
       id: "harvest",
       name: "HARVEST",
-      description: "Data ingestion, ETL pipelines, enrichment",
+      description: "Data ingestion, ETL processes, enrichment",
       icon: Wheat,
       color: "text-green-300",
       bg: "bg-green-300/10",
@@ -375,7 +375,7 @@ const modulesByLayer = {
     {
       id: "evolution",
       name: "EVOLUTION",
-      description: "Self-improvement lifecycle, mutation pipeline",
+      description: "Self-improvement lifecycle, mutation process",
       icon: Dna,
       color: "text-fuchsia-500",
       bg: "bg-fuchsia-500/10",

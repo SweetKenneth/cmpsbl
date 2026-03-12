@@ -36,7 +36,7 @@ const PRINCIPLES = [
   { title: "Governed Autonomy", desc: "Every mutating action passes through GOVERNANCE. Autonomy exists within deterministic policy boundaries.", icon: ScrollText },
   { title: "Immutable Audit", desc: "AUDIT records cannot be deleted, modified, or suppressed. Chain-of-custody checksums on every entry.", icon: Lock },
   { title: "Sealed Agents", desc: "Cognitive agents operate in isolated, source-blocked runtimes. No escape from designated capabilities.", icon: Shield },
-  { title: "Validated Evolution", desc: "Changes reach production only after passing the 7-gate SEBA pipeline with TSAC truth arbitration.", icon: Zap },
+  { title: "Validated Evolution", desc: "Changes reach production only after passing the 7-gate SEBA process with TSAC truth arbitration.", icon: Zap },
   { title: "Continuous Learning", desc: "CLM runs 14,400 learning cycles per day. Knowledge compounds — the system accelerates over time.", icon: Brain },
 ];
 
@@ -161,7 +161,7 @@ export default function Foundations() {
                 <Layers className="w-6 h-6 text-primary mb-3" />
                 <h3 className="font-bold mb-2">Substrate Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  The architectural specification — 40 nodes, 12 sectors, layered execution, mesh overlays, and synergy pipelines.
+                  The architectural specification — 40 nodes, 12 sectors, layered execution, mesh overlays, and synergy memories.
                 </p>
                 <Link to="/substrate" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
                   Explore Substrate <ArrowRight className="w-3.5 h-3.5" />

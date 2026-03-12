@@ -196,14 +196,14 @@ export default function Explore() {
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
               <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-                Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 pipeline slots.
+                Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 memory slots.
               </p>
               
               {/* Mini stats row */}
               <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
                  {[
                    { value: "40", label: "Substrate Nodes" },
-                   { value: "24", label: "Pipeline Packs" },
+                   { value: "24", label: "Memory Packs" },
                    { value: "20", label: "Sealed Engines" },
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (

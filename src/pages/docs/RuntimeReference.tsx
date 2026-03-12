@@ -41,7 +41,7 @@ export default function RuntimeReference() {
       content += `\n`;
     });
 
-    content += `\nPIPELINE PACKS (Pack-Enabled)\n`;
+    content += `\nMEMORY PACKS (Pack-Enabled)\n`;
     content += `${'─'.repeat(40)}\n\n`;
     STRATEGIC_DOMAINS.forEach(domain => {
       const packs = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
@@ -61,11 +61,11 @@ export default function RuntimeReference() {
     content += `\nRUNTIME CONCEPTS\n`;
     content += `${'─'.repeat(40)}\n\n`;
     content += `• Unified Runtime: Single substrate for all tiers. No system gating.\n`;
-    content += `• Pipeline Slots: Each pack = 1 slot. Plans differ in slot capacity (3/6/12).\n`;
+    content += `• Memory Slots: Each pack = 1 slot. Plans differ in slot capacity (3/6/12).\n`;
     content += `• Capability Registry: Internal registry tracks all capabilities with metadata.\n`;
     content += `• Governed Invocation: Every capability call passes through safety guards.\n`;
     content += `• Confidence Scoring: Exponential moving average tracks capability reliability.\n`;
-    content += `• Pipeline Orchestration: DAG-based execution with cascade/parallel/adaptive modes.\n`;
+    content += `• Memory Orchestration: DAG-based execution with cascade/parallel/adaptive modes.\n`;
     content += `• Memory Tiering: Hot → Warm → Cold → Archive with adaptive limits.\n`;
     content += `\n© ${new Date().getFullYear()} CMPSBL®. All rights reserved.\n`;
 
@@ -82,7 +82,7 @@ export default function RuntimeReference() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Developer Reference — Substrate Capabilities"
-        description="Complete developer reference for baseline capabilities, pipeline packs, usage examples, and runtime concepts."
+        description="Complete developer reference for baseline capabilities, memory packs, usage examples, and runtime concepts."
       />
       <PublicNav />
 
@@ -139,7 +139,7 @@ export default function RuntimeReference() {
               <TabsContent value="baseline" className="space-y-6">
                 <p className="text-sm text-muted-foreground">
                   These capabilities are always active for every user on every plan. They form the 
-                  foundational runtime that pipeline packs build upon.
+                  foundational runtime that memory packs build upon.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {BASELINE_PILLARS.map(pillar => {
@@ -174,8 +174,8 @@ export default function RuntimeReference() {
               {/* Pack-Enabled Tab */}
               <TabsContent value="packs" className="space-y-8">
                 <p className="text-sm text-muted-foreground">
-                  These capabilities are activated when their corresponding pipeline pack is enabled. 
-                  Each pack consumes exactly 1 pipeline slot.
+                  These capabilities are activated when their corresponding memory pack is enabled. 
+                  Each pack consumes exactly 1 memory slot.
                 </p>
                 {STRATEGIC_DOMAINS.map(domain => {
                   const packs = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
@@ -213,8 +213,8 @@ export default function RuntimeReference() {
                       body: 'The substrate operates as a single coherent runtime for all users. There are no stripped-down versions. The free tier and the enterprise tier execute the same runtime. Systems compose freely without version fragmentation.',
                     },
                     {
-                      title: 'Pipeline Slots',
-                      body: 'Each pipeline pack consumes exactly 1 slot. Plans differ in slot capacity: Builder (3), Operator (6), Architect (12). All 24 packs are visible to all users — there is no tier-based gating on pack visibility.',
+                      title: 'Memory Slots',
+                      body: 'Each memory pack consumes exactly 1 slot. Plans differ in slot capacity: Builder (3), Operator (6), Architect (12). All 24 packs are visible to all users — there is no tier-based gating on pack visibility.',
                     },
                     {
                       title: 'Capability Registry',

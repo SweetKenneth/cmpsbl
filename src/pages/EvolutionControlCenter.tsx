@@ -191,7 +191,7 @@ function EvolutionDiagram() {
       >
         <div className="flex items-center gap-2">
           <GitBranch className="w-4 h-4 text-primary" />
-          <span className="text-xs sm:text-sm font-semibold text-foreground">Governed Pipeline</span>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Governed Process</span>
         </div>
         <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">Every step auditable</span>
       </motion.div>
@@ -494,7 +494,7 @@ export default function EvolutionControlCenter() {
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               The{" "}
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                governed pipeline
+                governed process
               </span>
             </h2>
             <p className="text-sm text-muted-foreground mt-2 max-w-lg mx-auto">
@@ -509,14 +509,14 @@ export default function EvolutionControlCenter() {
           >
             <img 
               src={evolutionHero} 
-              alt="EVOLUTION system architecture — governed AI improvement pipeline showing scan, dry-run, apply, and rollback stages" 
+              alt="EVOLUTION system architecture — governed AI improvement process showing scan, dry-run, apply, and rollback stages" 
               className="w-full h-auto object-cover"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6">
               <Badge variant="outline" className="bg-background/80 backdrop-blur-sm border-primary/30 text-primary text-[10px] sm:text-xs">
-                <Cpu className="w-3 h-3 mr-1" /> Governed Evolution Pipeline
+                <Cpu className="w-3 h-3 mr-1" /> Governed Evolution Process
               </Badge>
             </div>
           </motion.div>

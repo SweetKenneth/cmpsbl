@@ -57,7 +57,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - DECODE — Intent parsing, entity extraction
 - ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
-- CORTEX — Pipeline orchestration, multi-stage workflows
+- CORTEX — Memory orchestration, multi-stage workflows
 - NEXUS — Multi-provider AI routing (14 providers)
 - ECONOMY — Cost attribution, budgeting
 - SANDBOX — Isolated execution environments
@@ -74,7 +74,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 ### EPZ — Enterprise Perception Zone (3)
 - COMPASS — Geospatial awareness, location intelligence
 - ECHO — Simulation, scenario modeling
-- LINGUA — Localization, translation pipelines
+- LINGUA — Localization, translation processes
 
 ### EMZ — Enterprise Manufacturing Zone (3)
 - TREATY — Agreement & SLA enforcement

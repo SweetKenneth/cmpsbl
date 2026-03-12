@@ -77,7 +77,7 @@ const SECTORS: SectorDef[] = [
     tag: "EXE",
     nodes: [
       { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
-      { name: "ENCODE", icon: Code2, desc: "Code generation pipeline — 7-stage execution chain, output formatting." },
+      { name: "ENCODE", icon: Code2, desc: "Code generation engine — 7-stage execution chain, output formatting." },
       { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
       { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
       { name: "NEXUS", icon: Zap, desc: "AI provider routing gateway — model selection, fallback chains, cost tracking." },
@@ -111,16 +111,16 @@ const SECTORS: SectorDef[] = [
     label: "Expansion Manufacturing Zone",
     tag: "EMZ",
     nodes: [
-      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing pipelines." },
+      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing processes." },
       { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
-      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL pipelines." },
+      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
     ],
   },
   {
     label: "Covert Sovereignty Zone",
     tag: "CSZ",
     nodes: [
-      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate pipeline, fitness scoring, shadow A/B." },
+      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B." },
       { name: "SHADOW", icon: Shield, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
       { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization." },
     ],
@@ -177,7 +177,7 @@ const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every node carries a governance weight. The sum across all 40 nodes is exactly 1.000 — no single node can dominate decisions." },
   { title: "Clockless Coordination", desc: "Nodes share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
   { title: "Circuit Breaker Isolation", desc: "Every node has independent failure tracking with automatic circuit breakers. Degradation never cascades across sectors." },
-  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow pipeline before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
   { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
   { title: "Graceful Degradation", desc: "When individual nodes fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
@@ -197,7 +197,7 @@ export default function Architecture() {
         faq={[
           { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-node substrate organized into 12 sectors. CORE boots all sectors in a deterministic sequence and maintains a weighted node registry where all weights sum to exactly 1.000.' },
           { question: 'What are the 12 sectors?', answer: 'Kernel (SPINE), CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, and Shell. Each sector groups related nodes with distinct operational responsibilities.' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation pipeline: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
         ]}
       />
 
@@ -223,7 +223,7 @@ export default function Architecture() {
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
                   A layered orchestration architecture that boots deterministically, coordinates without a shared clock,
-                  heals autonomously, and evolves through a shadow-first mutation pipeline — all governed by a tamper-evident audit chain.
+                  heals autonomously, and evolves through a shadow-first mutation process — all governed by a tamper-evident audit chain.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
                   40 nodes across 12 sectors. Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
