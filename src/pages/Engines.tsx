@@ -154,6 +154,11 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
             <Badge variant="outline" className={cn("text-[11px] font-mono", tierConfig.badgeClass)}>
               {engine.tier}
             </Badge>
+            {engine.isFeatured && (
+              <Badge className="text-[10px] font-mono bg-primary/15 text-primary border-primary/25">
+                FEATURED
+              </Badge>
+            )}
           </div>
 
           {/* Title & tagline */}
