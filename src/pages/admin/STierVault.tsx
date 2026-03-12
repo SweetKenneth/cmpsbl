@@ -558,7 +558,7 @@ export default function STierVault() {
 
     toast.info(`Pricing ${artifacts.length} unpriced items (skipping ${promoted.length - artifacts.length} already priced)...`);
     const result = await pricingEngine.repriceAll(artifacts);
-    toast.success(`Priced ${result.success} new artifacts${result.failed ? ` (${result.failed} failed)` : ''}`);
+    toast.success(`Priced ${result.success} new discoveries${result.failed ? ` (${result.failed} failed)` : ''}`);
     // Reload promoted to pick up new prices
     await loadPromoted();
   }, [promoted, pricingEngine]);
