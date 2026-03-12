@@ -103,7 +103,7 @@ export function FoundryPreview() {
           className="flex items-center justify-center gap-4 sm:gap-8 font-mono mb-12"
         >
           {[
-            { value: '1,143+', label: 'Pipelines', color: 'text-foreground' },
+            { value: '1,143+', label: 'Memories', color: 'text-foreground' },
             { value: '68+', label: 'Quality Floor', color: 'text-primary' },
             { value: '5', label: 'Tiers', color: 'text-foreground' },
           ].map((stat, i) => (
