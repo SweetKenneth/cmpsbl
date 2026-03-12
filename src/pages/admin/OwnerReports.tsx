@@ -304,5 +304,6 @@ export default function OwnerReports() {
         </DialogContent>
       </Dialog>
     </div>
+    </AdminLayout>
   );
 }
