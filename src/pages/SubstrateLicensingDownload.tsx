@@ -68,7 +68,7 @@ const LICENSE_TIERS = [
     comingSoon: false,
     features: [
       "Everything in Creator",
-      "12 Artifact Slots · Unlimited Vault · 12 Pulls/day",
+      "12 Capability Slots · Unlimited Vault · 12 Pulls/day",
       "Dedicated memory partitions",
       "Self-hosted deployment (LNCHBL)",
       "Full governance authority + custom memory slots",
