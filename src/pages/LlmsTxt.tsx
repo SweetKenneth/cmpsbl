@@ -57,7 +57,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - DECODE — Intent parsing, entity extraction
 - ENCODE — Code generation, transformation
 - VISION — Observability, metrics, alerting
-- CORTEX — Pipeline orchestration, multi-stage workflows
+- CORTEX — Memory orchestration, multi-stage workflows
 - NEXUS — Multi-provider AI routing (14 providers)
 - ECONOMY — Cost attribution, budgeting
 - SANDBOX — Isolated execution environments
