@@ -1,7 +1,7 @@
 # 21 — Discovery Engine Internals
 
 **Classification:** 🔒 INTERNAL — Trade Secret  
-**Version:** v13.1.0 — IRONCLAD Epoch
+**Version:** v14.2.0 — MINDGAMES Epoch
 
 ---
 
