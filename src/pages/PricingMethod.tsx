@@ -68,7 +68,7 @@ export default function PricingMethod() {
                   <div className="text-3xl font-bold text-foreground mb-1">25%</div>
                   <div className="font-semibold text-foreground mb-2">CJPI Technical Premium</div>
                   <p className="text-sm text-muted-foreground">
-                    The Crown Jewel Pipeline Index measures technical sophistication — module complexity, pipeline depth, system integration quality. Higher CJPI scores unlock premium multipliers.
+                    The Apex Discovery Index measures technical sophistication — node complexity, memory depth, system integration quality. Higher CJPI scores unlock premium multipliers.
                   </p>
                 </CardContent>
               </Card>
