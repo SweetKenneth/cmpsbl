@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This library is the single source of truth for all internal knowledge required to operate, maintain, and govern the CMPSBL Substrate. It covers every algorithm, every trade secret, every maintenance procedure, and every governance protocol that a system governor must know.
+This library is the single source of truth for all internal knowledge required to operate, maintain, and govern the CMPSBL Substrate. It covers every algorithm, every trade secret, every maintenance procedure, and every governance protocol that a system governor must know. Current version: **v14.2.0 — MINDGAMES Epoch** · **40-node matrix** · **12 canonical sectors**.
 
 ## Library Pages
 
