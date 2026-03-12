@@ -6,9 +6,9 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const NAV_COLUMNS = [
   {
-    title: 'Substrate',
+    title: 'Platform',
     links: [
-      { label: 'Overview', to: '/substrate' },
+      { label: 'Substrate', to: '/substrate' },
       { label: 'Runtime', to: '/runtime' },
       { label: 'Engines', to: '/engines' },
       { label: 'Upgrade', to: '/upgrade' },
@@ -18,17 +18,17 @@ const NAV_COLUMNS = [
     title: 'Discover',
     links: [
       { label: 'Memory Stream', to: '/foundry' },
-      { label: 'Cognitive Showcase', to: '/showcase' },
-      { label: 'Engineering Proof', to: '/proof' },
-      { label: 'Documentation', to: '/documentation' },
+      { label: 'Showcase', to: '/showcase' },
+      { label: 'Proof Mode', to: '/proof' },
+      { label: 'Blog', to: '/blog' },
     ],
   },
   {
     title: 'Company',
     links: [
       { label: 'About', to: '/about' },
-      { label: 'Blog', to: '/blog' },
       { label: 'Investors', to: '/investors' },
+      { label: 'Careers', to: '/careers' },
       { label: 'Contact', to: '/contact' },
     ],
   },
@@ -36,7 +36,7 @@ const NAV_COLUMNS = [
     title: 'Resources',
     links: [
       { label: 'Documentation', to: '/documentation' },
-      { label: 'API Reference', to: '/docs/runtime' },
+      { label: 'API Access', to: '/api-access' },
       { label: 'Privacy', to: '/privacy' },
       { label: 'Terms', to: '/terms' },
     ],
