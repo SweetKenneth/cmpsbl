@@ -158,7 +158,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Users,
     category: 'automation',
     rarity: 'mythic',
-    crownJewelFeature: 'Dream Pool Federation',
+    apexFeature: 'Dream Pool Federation',
     buildTime: '~35 min',
     tags: ['AGENCY', 'BRAIN'],
   },
