@@ -303,6 +303,7 @@ This is what it looks like when software is engineered, not generated.
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology, 675+ capabilities, 60+ tables, added disaster recovery, developer portal, visitor intelligence, engine marketplace |
 | 2026-03-03 | System | v13.1.0 — Updated to 38-node/12-sector topology, 675+ capabilities, 50+ tables |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial publication |
 

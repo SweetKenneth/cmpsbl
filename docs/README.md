@@ -81,7 +81,7 @@ Sector-based module documentation.
 - Diagrams use Mermaid syntax for portability.
 - Tone is neutral, technical, and OS-manual grade.
 - No marketing language in Tier 1 or Tier 2 documents.
-- Version: v13.1.0 — IRONCLAD Epoch
+- Version: v14.1.0 — MINDGAMES Epoch
 
 ## Reference
 

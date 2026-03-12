@@ -122,6 +122,7 @@ The substrate can operate with:
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added one-click disaster recovery backup as survival guarantee, memory tier self-enforcement |
 | 2026-03-03 | System | Added system self-sufficiency guarantees, CLM/ENGINEER/INTEL/Ironclad continuity, agent JWT transfer, 34-page library reference, ATLAS governance mode default |
 | 2026-03-03 | System | Verified succession protocol for v13.1.0 |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial survivability and succession protocol |
