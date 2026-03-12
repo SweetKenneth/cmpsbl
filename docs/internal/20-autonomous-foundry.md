@@ -40,7 +40,7 @@ while (budget_remaining && candidates_exist) {
 ```
 
 Key parameters:
-- **Exploration breadth:** All 38 nodes × combinatorial module chains
+- **Exploration breadth:** All 40 nodes × combinatorial module chains
 - **Scoring:** CJPI composite (novelty, utility, complexity, composability)
 - **Deduplication:** Semantic similarity threshold (cosine > 0.92 = duplicate)
 - **Time budget:** Configurable, typically 8–12 hours for full sweep
