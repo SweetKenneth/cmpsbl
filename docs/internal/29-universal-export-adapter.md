@@ -77,7 +77,7 @@ Auto-generates language-appropriate tests:
 
 ## 5. CMPSBL® Mini-Runtime™ Engine
 
-The Mini-Runtime™ (`standalone-runtime.ts`) provides:
+The CMPSBL® Mini-Runtime™ Engine (`standalone-runtime.ts`) provides:
 
 | Capability | Description |
 |------------|-------------|
@@ -85,8 +85,12 @@ The Mini-Runtime™ (`standalone-runtime.ts`) provides:
 | Auto-tiering | S/A/B/C/D tier assignment |
 | Pipeline orchestration | Sequential chain execution |
 | Manifest parsing | Import/export discovery manifests |
+| Finite state machine | Workflow lifecycle management |
+| Saga orchestrator | Compensating transactions |
+| Dependency graph | Topological sort with cycle detection |
+| Pluggable storage | In-memory default, swap to any DB |
 
-Zero external dependencies — runs in any TypeScript/Node environment.
+Zero external dependencies — runs in any TypeScript/Node environment. See internal doc 41 for full details.
 
 ## 6. Export Process
 

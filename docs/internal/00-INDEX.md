@@ -46,6 +46,10 @@ This library is the single source of truth for all internal knowledge required t
 | 36 | [Memory Persistence Deep Dive](./36-memory-persistence-deep-dive.md) | 3-tier lifecycle, salience scoring, neural substrate, auto-tiering, recall feedback |
 | 37 | [Orchestration Layer Deep Dive](./37-orchestration-layer-deep-dive.md) | Module Bus, Matrix Communication Bus, Orchestrator Engine, control planes, signal flow |
 | 38 | [ENCODE Deep Dive](./38-encode-deep-dive.md) | ENCODE architecture, DECODE+ENCODE pipeline, 25-point hardening, 31 skills, 150+ patterns, escalation cascade, trade secrets |
+| 39 | [Memory Stream & Discovery Bridge](./39-memory-stream-and-discovery-bridge.md) | Event-driven observation pipeline, salience scoring, ring buffer, learning bridge, synergy chains |
+| 40 | [Composable Engines & API Gateway](./40-engines-and-api-gateway.md) | 54 engines (META/APEX/ELITE/CORE), unified API gateway, SDK, FAILSAFE standalone exception |
+| 41 | [CMPSBL® Mini-Runtime™ Engine](./41-mini-runtime-engine.md) | Portable micro-substrate, 8 subsystems, pluggable storage, CJPI scoring, export branding |
+| 42 | [Disaster Recovery & FAILSAFE](./42-disaster-recovery-and-failsafe.md) | One-click backup, FAILSAFE standalone engine, restore procedures, automated scheduling |
 
 ## Classification Policy
 
