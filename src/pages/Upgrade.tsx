@@ -108,7 +108,7 @@ const TIERS: {
       'Expanded memory partitions',
       'Trace & audit exports',
       'High-priority NEXUS routing',
-      'Custom pipeline slots',
+      'Custom memory slots',
       'Priority email support',
     ],
   },
