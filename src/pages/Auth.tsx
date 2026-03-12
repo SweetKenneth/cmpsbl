@@ -462,7 +462,7 @@ export default function Auth() {
                         <CardHeader>
                         <CardTitle>Join the Memory Stream</CardTitle>
                           <CardDescription>
-                            Enter your email to begin. After verifying, you'll set up Face ID — then start crystallizing pipelines immediately.
+                            Enter your email to begin. After verifying, you'll set up Face ID — then start crystallizing memories immediately.
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
