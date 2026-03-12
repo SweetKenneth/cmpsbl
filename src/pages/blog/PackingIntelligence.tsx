@@ -18,12 +18,12 @@ export default function PackingIntelligence() {
       date="November 5, 2025"
       readTime="13 min read"
       heroImage={heroImg}
-      heroAlt="Artifact Packs bundling substrate capabilities"
+      heroAlt="Capability Packs bundling substrate capabilities"
       chapter={30}
       head={
         <>
-          <SEO title="Packing Intelligence — Artifact Packs" description="Packs bundle related capabilities into themed collections — curated, priced, and instantly deployable." type="article" image={heroImg} publishedTime="2025-11-05" keywords={["artifact packs", "bundled AI", "substrate bundles"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-platform" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Packing Intelligence", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
-          <BlogArticleJsonLd title="Packing Intelligence — Artifact Packs" description="Bundled AI capabilities in themed collections." slug={SLUG} datePublished="2025-11-05" imageUrl={heroImg} keywords={["packs", "bundles", "artifacts"]} />
+          <SEO title="Packing Intelligence — Capability Packs" description="Packs bundle related capabilities into themed collections — curated, priced, and instantly deployable." type="article" image={heroImg} publishedTime="2025-11-05" keywords={["capability packs", "bundled AI", "substrate bundles"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-platform" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Packing Intelligence", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+          <BlogArticleJsonLd title="Packing Intelligence — Capability Packs" description="Bundled AI capabilities in themed collections." slug={SLUG} datePublished="2025-11-05" imageUrl={heroImg} keywords={["packs", "bundles", "capabilities"]} />
         </>
       }
     >
