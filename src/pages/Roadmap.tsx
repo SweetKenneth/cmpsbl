@@ -119,7 +119,7 @@ const DOMAIN_NODES = [
     domain: "Climate",
     icon: Wind,
     signal: "Weather data",
-    description: "Atmospheric modeling, carbon tracking, and extreme event prediction. Ingest NOAA, ERA5, and satellite feeds into governed climate pipelines.",
+    description: "Atmospheric modeling, carbon tracking, and extreme event prediction. Ingest NOAA, ERA5, and satellite feeds into governed climate memories.",
     opportunities: ["Extreme weather prediction", "Carbon offset verification", "Agricultural yield optimization"],
   },
   {
