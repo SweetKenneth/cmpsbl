@@ -364,7 +364,7 @@ export function NexusTab() {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
                 <CircuitBoard className="w-4 h-4 text-cyan-500" />
-                Circuit Breaker Status
+                Safety Switch Status
               </CardTitle>
             </CardHeader>
             <CardContent>
