@@ -1325,9 +1325,9 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
           <div className="flex items-start gap-3">
             <Brain className="w-5 h-5 text-system-amber mt-0.5" />
             <div className="text-sm">
-              <p className="font-medium text-system-amber mb-1">v3.0 — Full Autonomous Pipeline</p>
+              <p className="font-medium text-system-amber mb-1">v3.0 — Full Autonomous Execution</p>
               <p className="text-xs text-muted-foreground">
-                Encoded v3 includes PR-style review queues, split-diff viewing, 6-stage deployment pipelines
+                Encoded v3 includes PR-style review queues, split-diff viewing, 6-stage deployment flows
                 (syntax → AST → style → performance → security → deploy), type-safe refactoring, and
                 multi-project pattern learning. Every change is validated before deployment.
               </p>

@@ -131,7 +131,7 @@ export default function DiscoveredPipelines() {
         <section className="px-5 sm:px-6 pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <p className="text-muted-foreground text-sm mb-6">
-              These pipelines represent a fraction of the <span className="text-foreground font-mono font-bold">10²⁹</span> possible execution paths.
+              These memories represent a fraction of the <span className="text-foreground font-mono font-bold">10²⁹</span> possible execution paths.
             </p>
             <Button asChild size="lg" className="gap-2">
               <Link to="/foundry">

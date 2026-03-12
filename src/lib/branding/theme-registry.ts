@@ -230,7 +230,7 @@ export const MARKETING = {
   cta: {
     signUp: 'Start Free — 3 Slots',
     explore: 'Explore the Memory Stream',
-    crystallize: 'Crystallize Pipeline',
+    crystallize: 'Crystallize Memory',
     upgrade: 'Upgrade Your Stream',
     docs: 'Read the Docs',
     sdk: 'Not a vibe coder? Use SDK',

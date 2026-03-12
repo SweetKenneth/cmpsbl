@@ -1,5 +1,5 @@
 /**
- * PipelinesExplorer — Blog/Composable Artifacts-style memory browser
+ * MemoriesExplorer — Blog/Composable Artifacts-style memory browser
  * Horizontal scroll carousels by category, search, mobile-friendly
  */
 
