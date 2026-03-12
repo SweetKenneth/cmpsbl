@@ -38,8 +38,8 @@ export default function DiscoveredPipelines() {
   return (
     <>
       <Helmet>
-        <title>Discovered Pipelines — Autonomous Compositions from the Memory Stream</title>
-        <meta name="description" content="The substrate's highest-scoring autonomous pipeline compositions. Scored, ranked, and ready for deployment." />
+        <title>Discovered Memories — Autonomous Compositions from the Memory Stream</title>
+        <meta name="description" content="The substrate's highest-scoring autonomous memory compositions. Scored, ranked, and ready for deployment." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
