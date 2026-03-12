@@ -120,7 +120,7 @@ const SECTORS: SectorDef[] = [
     label: "Covert Sovereignty Zone",
     tag: "CSZ",
     nodes: [
-      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate pipeline, fitness scoring, shadow A/B." },
+      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B." },
       { name: "SHADOW", icon: Shield, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
       { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization." },
     ],
