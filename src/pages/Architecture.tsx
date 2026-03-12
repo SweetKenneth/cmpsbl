@@ -77,7 +77,7 @@ const SECTORS: SectorDef[] = [
     tag: "EXE",
     nodes: [
       { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
-      { name: "ENCODE", icon: Code2, desc: "Code generation pipeline — 7-stage execution chain, output formatting." },
+      { name: "ENCODE", icon: Code2, desc: "Code generation engine — 7-stage execution chain, output formatting." },
       { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
       { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
       { name: "NEXUS", icon: Zap, desc: "AI provider routing gateway — model selection, fallback chains, cost tracking." },
