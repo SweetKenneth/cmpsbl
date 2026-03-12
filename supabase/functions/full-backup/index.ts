@@ -27,10 +27,13 @@ const TIME_BUDGET_MS = 120_000;
 const FINALIZE_RESERVE_MS = 10_000;
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
+const MIN_PAGE_SIZE = 50;
+const QUERY_RETRIES = 2;
+const RETRY_DELAY_MS = 250;
 
 /**
- * Tables to skip — large telemetry/event tables that bloat the backup
- * and can be regenerated. These are ordered by typical row count descending.
+ * Tables to skip — high-volume telemetry/event/report tables that bloat backups
+ * and are safe to regenerate from runtime activity.
  */
 const SKIP_TABLES = new Set([
   // High-volume telemetry — regenerable
@@ -73,7 +76,23 @@ const SKIP_TABLES = new Set([
   'error_logs',
   'health_checks',
   'cron_job_logs',
+  // Generated long-form report content (reproducible)
+  'owner_reports',
 ]);
+
+const SKIP_TABLE_PATTERNS: RegExp[] = [
+  /_events?$/,
+  /_logs?$/,
+  /_traces?$/,
+  /_telemetry$/,
+  /_snapshots?$/,
+  /_receipts?$/,
+  /_audit(_|$)/,
+  /_metrics(_|$)/,
+  /_queue$/,
+  /_usage$/,
+  /_quotas?$/,
+];
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
