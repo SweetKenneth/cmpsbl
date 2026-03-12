@@ -49,7 +49,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - RIPPLE — Event bus, signal propagation
 - ACCESS — Entitlements, API keys
 - IDENTITY — Session, actor attribution
-- RELAY — Cross-module message routing
+- RELAY — Cross-node message routing
 - AUDIT — Compliance logging, integrity ledger
 - NERVE — Inter-node signaling, stimulus routing
 
