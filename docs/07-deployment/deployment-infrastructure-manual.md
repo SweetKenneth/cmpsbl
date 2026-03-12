@@ -18,8 +18,8 @@ AI Providers (External, NEXUS-routed)
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
-| Database | PostgreSQL 15+ with pgvector | Persistent storage, RLS, real-time subscriptions, 50+ tables |
-| Edge Runtime | Deno | Module logic, API handlers, NEXUS router, agency executor |
+| Database | PostgreSQL 15+ with pgvector | Persistent storage, RLS, real-time subscriptions, 60+ tables |
+| Edge Runtime | Deno | Module logic, API handlers, NEXUS router, agency executor, disaster recovery |
 | Client | TypeScript / React / Vite | Terminal UI, admin dashboard (ATLAS), PWA support |
 | AI Providers | NEXUS-routed (BYOK) | LLM inference via consensus routing (OpenAI, Anthropic, Google, Mistral) |
 | 3D Visualization | Three.js / React Three Fiber | Topology visualization, namespace explorer |
@@ -35,6 +35,7 @@ AI Providers (External, NEXUS-routed)
 | `send-agency-email` | Agency email dispatch | Active |
 | `stripe-webhook` | Payment processing | Active |
 | `create-checkout` | Stripe checkout session creation | Active |
+| `full-backup` | One-click disaster recovery backup archive generation | Active |
 
 ## 4. CI/CD Flow
 
@@ -50,7 +51,7 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 | Staging Deploy | Successful deployment | Block production |
 | Smoke Tests | Critical paths verified | Block production |
 | Production Deploy | Zero-downtime deploy | Rollback |
-| Health Check | Integrity seals pass (38-node) | Rollback |
+| Health Check | Integrity seals pass (40-node) | Rollback |
 | Ironclad Monitor | Rate limits, bulkheads, auto-restore | Alert |
 
 ## 5. Environment Separation
@@ -79,7 +80,7 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 2. Initiate rollback via SYSTEM control plane or one-click rollback in Evolution CC.
 3. Restore previous edge function version.
 4. Apply database rollback migration if schema changed.
-5. Verify integrity seals post-rollback (38-node weighted sum = 1.000).
+5. Verify integrity seals post-rollback (40-node weighted sum = 1.000).
 6. Document incident in AUDIT.
 7. Scanner Orchestrator adds regression test for the failure.
 
@@ -100,9 +101,21 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 |----------|-----|-----|-----------|
 | Database corruption | < 1 minute | < 30 minutes | Point-in-time recovery |
 | Edge function failure | 0 | < 5 minutes | Rollback to previous version |
-| Full infrastructure loss | < 1 hour | < 4 hours | Restore from daily snapshot + WAL |
+| Full infrastructure loss | < 1 hour | < 2 hours | **One-click full backup restore** |
 | Provider outage | N/A | < 1 minute | NEXUS automatic provider failover |
 | Control plane corruption | < 1 revision | < 10 minutes | WAL replay + snapshot restore |
+
+### One-Click Disaster Recovery Backup
+
+The substrate includes a comprehensive disaster recovery system:
+
+1. **Trigger**: Admin dashboard button initiates the `full-backup` edge function.
+2. **Data Capture**: All 60+ database tables exported as paginated JSON (1,000-row batches via service role).
+3. **Schema Capture**: OpenAPI spec captured for column types, relationships, and constraints.
+4. **Storage Manifest**: All storage buckets inventoried with file metadata.
+5. **Restoration Guide**: AI-ready `RESTORE.md` included with step-by-step SQL and JavaScript instructions.
+6. **Archive Format**: Single ZIP file named `cmpsbl-full-backup-YYYY-MM-DD-HH-MM-SS.zip`.
+7. **Restoration**: Any coding agent can follow the included guide to reconstruct the full system from scratch.
 
 ## 10. PWA & Offline Support
 
@@ -124,23 +137,28 @@ The substrate client supports Progressive Web App deployment:
 | Incident Response Time | < 15 minutes (Critical), < 1 hour (High) |
 | Recovery Time | < 30 minutes (Critical), < 4 hours (High) |
 | Ironclad Auto-Restore | < 30 seconds per cycle |
+| Full Backup Generation | < 5 minutes |
 
 ## 12. Monitoring Stack
 
 | System | Monitored By | Frequency |
 |--------|-------------|-----------|
-| 38-node health matrix | CORE integrity seal | Continuous |
+| 40-node health matrix | CORE integrity seal | Continuous |
 | Circuit breaker states | Ironclad fabric | Every 30s |
 | NEXUS provider health | NEXUS cost ledger | Per-request |
 | Database performance | Analytics snapshots | Every 5 min |
 | Edge function latency | AUDIT telemetry | Per-request |
 | CLM throughput | ENGINEER node | Hourly |
 | AutoBlog quality | Confidence/contradiction engines | Per-post |
+| Memory tier capacity | MEMORY node | Every 15 min |
+| Visitor analytics | DECODE analytics layer | Real-time |
+| Developer API usage | ACCESS quotas | Per-request |
 
 ## 13. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added full-backup edge function, disaster recovery backup documentation, memory/visitor/developer monitoring, 60+ tables |
 | 2026-03-03 | System | Added edge function fleet, PWA support, Ironclad monitoring, Evolution CC rollback, Scanner integration, CLM/ENGINEER monitoring |
 | 2026-03-03 | System | Verified deployment topology for v13.1.0 |
 | 2026-03-01 | System | Initial canonical deployment manual |

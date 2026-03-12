@@ -6,14 +6,14 @@ This document defines the complete architectural specification for the CMPSBL su
 
 ## 2. System Thesis
 
-The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **38 modules** across a **12-sector** Spine / Grid / Zone / Field / Plane / Shell topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
+The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **40 nodes** across a **12-sector** Spine / Grid / Zone / Field / Plane / Shell topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
 
 The substrate is not an application — it is infrastructure. It provides the execution surface on which cognitive agents, memory systems, and compliance grids operate.
 
 ## 3. Architectural Principles
 
 - **Dependency-ordered boot**: Modules initialize in strict topological order.
-- **Weighted integrity**: System health is a deterministic weighted sum across all 38 nodes (Σ = 1.000).
+- **Weighted integrity**: System health is a deterministic weighted sum across all 40 nodes (Σ = 1.000).
 - **Circuit-breaker isolation**: Every module has independent failure tracking; open breakers force health to 0.
 - **Field permeation**: Fields (IMMUNITY, INTENT) cross-cut all layers rather than stacking.
 - **GOVERNANCE supervision**: Every mutating action requires legitimacy approval.
@@ -22,6 +22,7 @@ The substrate is not an application — it is infrastructure. It provides the ex
 - **Immutable audit trail**: AUDIT provides tamper-evident logging for all security-relevant events.
 - **BYOK sovereignty**: Operators own their keys, data, and infrastructure.
 - **Zone shielding**: Expansion modules are grouped into shielded zones (ESZ, EPZ, EMZ) with independent circuit breakers.
+- **Disaster recovery**: One-click full backup captures entire system state for portable restoration.
 
 ## 4. High-Level Topology Diagram
 
@@ -89,6 +90,11 @@ graph TD
         INTENT[INTENT]
     end
 
+    subgraph Meta[Meta - Operational Intelligence]
+        ATLAS[ATLAS - Capability Mapping]
+        ENGINEER[ENGINEER - Maintenance Intelligence]
+    end
+
     GOVERNANCE[GOVERNANCE - Supervisory Plane]
     DEFENSE[DEFENSE - Shell]
 
@@ -108,6 +114,8 @@ graph TD
     Fields -.- EPZ
     Fields -.- EMZ
     Fields -.- CSZ
+    Meta -.- EXL
+    Meta -.- CSZ
     GOVERNANCE -.- Spine
     GOVERNANCE -.- OCG
     GOVERNANCE -.- EXL
@@ -118,20 +126,21 @@ graph TD
 
 | Sector | Nodes | Weight | Responsibility Boundary |
 |--------|-------|--------|------------------------|
-| Spine: CORE | CORE | 0.120 | Kernel boot, matrix ownership, integrity calculation |
-| Spine: SYSTEM | SYSTEM | 0.040 | Lifecycle, configuration, environment management |
-| Spine: CCR | BRAIN, MEMORY, DREAM | 0.120 | Reasoning, persistent state, synthesis |
-| Grid: OCG | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE | 0.150 | Boundary enforcement, compliance, event routing, signaling |
-| Execution | 10 modules | 0.250 | Public-facing cognitive capabilities |
-| ESZ | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 0.080 | Governance expansion, compliance, ethics |
-| EPZ | COMPASS, ECHO, REFLEX | 0.060 | Perception, simulation, edge computing |
-| EMZ | FORGE, LINGUA, HARVEST | 0.050 | Manufacturing, translation, data |
-| CSZ | EVOLUTION, SHADOW, PHANTOM | 0.050 | Self-improvement, shadow testing, stealth |
+| Spine: CORE | CORE | 0.110 | Kernel boot, matrix ownership, integrity calculation |
+| Spine: SYSTEM | SYSTEM | 0.035 | Lifecycle, configuration, environment management |
+| Spine: CCR | BRAIN, MEMORY, DREAM | 0.115 | Reasoning, persistent state, synthesis |
+| Grid: OCG | RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE | 0.140 | Boundary enforcement, compliance, event routing, signaling |
+| Execution | 10 modules | 0.240 | Public-facing cognitive capabilities |
+| ESZ | SOVEREIGN, ORACLE, CONSCIENCE, TREATY | 0.075 | Governance expansion, compliance, ethics |
+| EPZ | COMPASS, ECHO, REFLEX | 0.055 | Perception, simulation, edge computing |
+| EMZ | FORGE, LINGUA, HARVEST | 0.045 | Manufacturing, translation, data |
+| CSZ | EVOLUTION, SHADOW, PHANTOM | 0.045 | Self-improvement, shadow testing, stealth |
 | Fields | IMMUNITY, INTENT | 0.040 | Cross-cutting transformation fabric |
+| Meta | ATLAS, ENGINEER | 0.040 | Capability mapping, maintenance intelligence |
 | Plane | GOVERNANCE | 0.030 | Supervisory legitimacy checks |
 | Shell | DEFENSE | 0.030 | Terminal containment boundary |
 
-**Total: 38 Matrix Nodes across 12 Sectors, Σ(weight) = 1.000**
+**Total: 40 Matrix Nodes across 12 Sectors, Σ(weight) = 1.000**
 
 ## 6. Component Registry
 
@@ -140,13 +149,14 @@ graph TD
 | CORE | Spine | Boot sequencing, integrity scoring | None (root) |
 | SYSTEM | Spine | Configuration, lifecycle hooks | CORE |
 | BRAIN | CCR | Reasoning, pattern recognition | SYSTEM |
-| MEMORY | CCR | State persistence, retrieval | SYSTEM |
+| MEMORY | CCR | State persistence, retrieval, tier enforcement | SYSTEM |
 | DREAM | CCR | Heuristic generation, synthesis | BRAIN, MEMORY |
 | RIPPLE | OCG | Event propagation, cascade detection | CORE |
 | ACCESS | OCG | Auth, billing, API key management | CORE |
 | IDENTITY | OCG | Entity resolution, session management | CORE |
 | RELAY | OCG | Cross-module messaging, webhooks | CORE |
 | AUDIT | OCG | Immutable logging, tamper detection | CORE |
+| NERVE | OCG | Inter-node signaling, consensus repair | CORE, RIPPLE |
 | DECODE | Execution | Natural language understanding, intent parsing | CORE |
 | ENCODE | Execution | Code generation, surgical patching | CORE, DECODE |
 | VISION | Execution | Telemetry, observability, anomaly detection | CORE |
@@ -156,7 +166,6 @@ graph TD
 | SANDBOX | Execution | Isolated execution, speculative runs | CORE |
 | INCLUSIVE | Execution | WCAG compliance, accessibility scanning | CORE |
 | MEDIC | Execution | Autonomous diagnostics, predictive failure | CORE, VISION |
-| NERVE | Execution | Inter-node signaling, consensus repair | CORE, RIPPLE |
 | INTEGRATION | Execution | External connectivity, adapters (boots last) | CORE |
 | SOVEREIGN | ESZ | Data sovereignty, jurisdictional compliance | CORE, DEFENSE, ACCESS |
 | ORACLE | ESZ | Predictive modeling, Bayesian inference | CORE, BRAIN, VISION |
@@ -167,11 +176,14 @@ graph TD
 | REFLEX | EPZ | Edge computing orchestration, low-latency loops | CORE, NEXUS, VISION |
 | FORGE | EMZ | Artifact synthesis, template generation | CORE, ENCODE |
 | LINGUA | EMZ | Translation, localization, multi-language | CORE, DECODE, NEXUS |
-| PHANTOM | EMZ | Privacy protection, PII masking, anonymization | CORE, DEFENSE, IDENTITY |
 | HARVEST | EMZ | Data acquisition, ETL pipelines | CORE, MEMORY, ECONOMY |
-| EVOLUTION | Field | Version management, shadow runs, canary deployment | Permeates all |
+| EVOLUTION | CSZ | Version management, shadow runs, canary deployment | Permeates all |
+| SHADOW | CSZ | Isolated shadow execution, divergence scoring | CORE, EVOLUTION |
+| PHANTOM | CSZ | Privacy protection, PII masking, decoy operations | CORE, DEFENSE, IDENTITY |
 | IMMUNITY | Field | Threat adaptation, cascade breaking, anomaly signatures | Permeates all |
 | INTENT | Field | Purpose alignment, goal decomposition | Permeates all |
+| ATLAS | Meta | Capability mapping, topology awareness, governance hub | CORE, VISION |
+| ENGINEER | Meta | Engine health scanning, maintenance proposals, CLM dispatch | CORE, BRAIN |
 | GOVERNANCE | Plane | Legitimacy supervision, veto authority | Supervises all |
 | DEFENSE | Shell | Boundary enforcement, threat response | Encloses all |
 
@@ -186,18 +198,23 @@ Governs compliance, ethics, and contractual obligations. Contains modules that e
 Handles predictive analysis, simulation, and edge-tier computation. These modules extend the substrate's awareness of future states and external environments. EPZ degradation reduces foresight but preserves core operations.
 
 ### EMZ — Expansion Manufacturing Zone
-Manages artifact production, translation, privacy, and data ingestion. These modules extend the substrate's ability to manufacture outputs and process inputs. EMZ degradation limits production capacity but preserves cognitive function.
+Manages artifact production, translation, and data ingestion. These modules extend the substrate's ability to manufacture outputs and process inputs. EMZ degradation limits production capacity but preserves cognitive function.
+
+### CSZ — Covert Systems Zone
+Houses evolution, shadow testing, and phantom operations. CSZ is zone-shielded from production — failures within it cannot propagate to live systems.
 
 ## 8. Execution Lifecycle
 
 ### Boot Sequence
 ```
-CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT)
-  → Execution (DECODE..NERVE) → INTEGRATION (boots last)
+CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE)
+  → Execution (DECODE..INTEGRATION)
   → ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY)
   → EPZ (COMPASS, ECHO, REFLEX)
-  → EMZ (FORGE, LINGUA, PHANTOM, HARVEST)
-  → Fields (EVOLUTION, IMMUNITY, INTENT) permeate
+  → EMZ (FORGE, LINGUA, HARVEST)
+  → CSZ (EVOLUTION, SHADOW, PHANTOM)
+  → Fields (IMMUNITY, INTENT) permeate
+  → Meta (ATLAS, ENGINEER) observe
   → Plane (GOVERNANCE) supervises
   → Shell (DEFENSE) encloses
 ```
@@ -213,7 +230,7 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 8. Response returns through NEXUS → DEFENSE → Client.
 
 ### State Transitions
-- **Boot** → CORE initializes → layers cascade → all 38 nodes online.
+- **Boot** → CORE initializes → layers cascade → all 40 nodes online.
 - **Steady State** → Request processing, health monitoring, periodic persistence.
 - **Degraded** → Circuit breaker open on one or more nodes; system continues with reduced capability.
 - **Zone Isolated** → Entire expansion zone (ESZ/EPZ/EMZ/CSZ) degraded; core operations continue.
@@ -221,8 +238,8 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 
 ## 9. Isolation Boundaries
 
-- Each of the 37 nodes operates within its own circuit-breaker boundary.
-- Expansion zones (ESZ, EPZ, EMZ) provide zone-level isolation — an entire zone can degrade gracefully.
+- Each of the 40 nodes operates within its own circuit-breaker boundary.
+- Expansion zones (ESZ, EPZ, EMZ, CSZ) provide zone-level isolation — an entire zone can degrade gracefully.
 - Module failure does not propagate unless RIPPLE detects a cascade chain.
 - SANDBOX provides execution isolation for untrusted code.
 - DEFENSE enforces the outermost trust boundary.
@@ -233,11 +250,12 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 | Domain | Scope | Impact | Recovery |
 |--------|-------|--------|----------|
 | Module Failure | Single node | Degraded capability | Circuit breaker reset |
-| Zone Failure | ESZ/EPZ/EMZ (3-4 nodes) | Zone capabilities offline | Zone-level recovery |
+| Zone Failure | ESZ/EPZ/EMZ/CSZ (3-4 nodes) | Zone capabilities offline | Zone-level recovery |
 | Cascade Chain | Multiple nodes | Significant degradation | Origin arrest, staged recovery |
 | Persistence Failure | Storage layer | Runtime continues, durability lost | WAL replay, snapshot restore |
 | Governance Conflict | Decision layer | Action blocked | Evaluation, manual override |
 | CORE Failure | System-critical | Full system halt | Restart from boot sequence |
+| Full Infrastructure Loss | All layers | Complete outage | One-click disaster recovery backup restore |
 
 ## 11. Control Planes
 
@@ -253,6 +271,8 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 | Sovereignty Control | ESZ | Jurisdictional compliance |
 | Perception Control | EPZ | Predictive awareness |
 | Manufacturing Control | EMZ | Artifact production |
+| Topology Control | ATLAS | Capability mapping, node discovery |
+| Maintenance Control | ENGINEER | Engine health, proposal generation |
 
 ## 12. Dependency Graph
 
@@ -267,6 +287,7 @@ CORE (root)
 ├── IDENTITY (OCG)
 ├── RELAY (OCG)
 ├── AUDIT (OCG)
+├── NERVE (OCG) → RIPPLE
 ├── DECODE (Execution)
 ├── ENCODE (Execution) → DECODE
 ├── VISION (Execution)
@@ -276,7 +297,6 @@ CORE (root)
 ├── SANDBOX (Execution)
 ├── INCLUSIVE (Execution)
 ├── MEDIC (Execution) → VISION
-├── NERVE (Execution) → RIPPLE
 ├── INTEGRATION (Execution, boots last)
 ├── SOVEREIGN (ESZ) → DEFENSE, ACCESS
 ├── ORACLE (ESZ) → BRAIN, VISION
@@ -287,9 +307,13 @@ CORE (root)
 ├── REFLEX (EPZ) → NEXUS, VISION
 ├── FORGE (EMZ) → ENCODE
 ├── LINGUA (EMZ) → DECODE, NEXUS
-├── PHANTOM (EMZ) → DEFENSE, IDENTITY
-└── HARVEST (EMZ) → MEMORY, ECONOMY
-Fields (EVOLUTION, IMMUNITY, INTENT) — permeate all sectors
+├── HARVEST (EMZ) → MEMORY, ECONOMY
+├── EVOLUTION (CSZ) — permeates all
+├── SHADOW (CSZ) → EVOLUTION
+├── PHANTOM (CSZ) → DEFENSE, IDENTITY
+├── ATLAS (Meta) → VISION
+├── ENGINEER (Meta) → BRAIN
+Fields (IMMUNITY, INTENT) — permeate all sectors
 GOVERNANCE — supervises all sectors
 DEFENSE — encloses all sectors
 ```
@@ -314,6 +338,7 @@ DEFENSE — encloses all sectors
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
 | 2026-03-03 | System | Expanded to 38-node architecture with ESZ/EPZ/EMZ/CSZ zone shielding |

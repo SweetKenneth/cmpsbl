@@ -14,6 +14,7 @@ This document defines the testing strategy, coverage expectations, and validatio
 | UI components | ≥ 70% | Rendering, user interactions, accessibility |
 | Integration adapters | ≥ 60% | API contract compliance, error mapping |
 | Control plane | ≥ 90% | WAL, persistence, snapshot hashing, rehydration |
+| Memory tier enforcement | ≥ 85% | Capacity limits, cascade demotion, emergency mode |
 
 ## 3. Integration Testing Layers
 
@@ -25,6 +26,8 @@ This document defines the testing strategy, coverage expectations, and validatio
 | SEBA Pipeline | Evolution shadow runs through 7 gates | End-to-end pipeline tests |
 | INTEL Pipeline | Signal ingestion → deduplication → IntelCard generation | Pipeline integration tests |
 | Agency Workflow | Task creation → execution → deliverable | Full workflow tests |
+| Developer API | Key generation → API call → usage metering → quota enforcement | End-to-end API tests |
+| Disaster Recovery | Backup generation → archive integrity → restore validation | Full backup/restore cycle test |
 | End-to-End | Full request lifecycle | Automated browser tests |
 
 ## 4. Regression Policy
@@ -46,6 +49,7 @@ This document defines the testing strategy, coverage expectations, and validatio
 | CPU usage | < 60% | < 80% | ≥ 80% |
 | NEXUS routing | < 50ms | < 200ms | ≥ 200ms |
 | CLM throughput | ≥ 10 calls/min | < 8 calls/min | < 5 calls/min |
+| Backup generation | < 5 min | < 10 min | ≥ 10 min |
 
 ## 6. Shadow Run Testing (SHADOW Module)
 
@@ -74,6 +78,8 @@ Shadow runs serve as the substrate's primary production-safety testing mechanism
 | Ironclad bulkhead breach | Exceed rate limits on single module | Bulkhead isolates; other modules unaffected |
 | CSZ isolation failure | Simulate shadow write to production | Write rejected; integrity seal verified |
 | Agent runtime escape | Attempt cross-agency data access | RLS blocks; sealed runtime prevents access |
+| Memory tier overflow | Exceed hot tier 2x capacity | Emergency cascade demotion activates |
+| Backup under load | Trigger full backup during peak traffic | Backup completes without impacting request latency |
 
 ## 8. Failure Injection Scenarios
 
@@ -87,6 +93,7 @@ Shadow runs serve as the substrate's primary production-safety testing mechanism
 | NEXUS provider cascade | All providers fail | Graceful degradation message, no hang |
 | EVOLUTION TSAC failure | TSAC validation | Proposal blocked, deviation report generated |
 | ENGINEER scan failure | Engine health scan | Partial findings reported, scan retried |
+| Backup function failure | full-backup edge function | Error response with clear message, no partial download |
 
 ## 9. Scanner Orchestrator Validation
 
@@ -112,11 +119,13 @@ The Scanner Orchestrator provides continuous quality validation:
 | Accessibility audit | All UI changes | WCAG 2.2 AA compliance |
 | SEBA pipeline pass | All evolution proposals | 7 gates cleared |
 | Scanner baseline | Post-promotion | No regression detected |
+| Backup integrity | Monthly | Full backup/restore cycle verified |
 
 ## 11. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery testing, memory tier overflow chaos test, developer API integration tests, backup load testing |
 | 2026-03-03 | System | Added SHADOW testing, SEBA pipeline gates, Scanner Orchestrator validation, chaos testing for Ironclad/CSZ/agents, engine coverage targets |
 | 2026-03-03 | System | Verified testing matrix for v13.1.0 |
 | 2026-03-01 | System | Initial canonical testing matrix |

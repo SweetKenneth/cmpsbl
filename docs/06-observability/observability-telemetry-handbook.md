@@ -11,10 +11,12 @@ This handbook defines the observability standards, telemetry schema, health scor
 | **System Health** | Integrity score, module health, breaker states | CORE |
 | **Performance** | Request latency (p50, p95, p99), throughput | NEXUS |
 | **Availability** | Uptime percentage, error rate, degraded windows | SYSTEM |
-| **Cognitive** | Reasoning accuracy, memory retrieval latency | BRAIN, MEMORY |
+| **Cognitive** | Reasoning accuracy, memory retrieval latency, tier capacity | BRAIN, MEMORY |
 | **Economic** | Cost per request, ROI, quota utilization | ECONOMY |
 | **Security** | Threat count, block rate, incident count | DEFENSE |
 | **Evolution** | Shadow run count, confidence scores, promotion rate | EVOLUTION |
+| **Visitor Intelligence** | Session count, page depth, bounce rate, churn risk | DECODE (Analytics) |
+| **Developer Adoption** | API key count, per-developer usage, module heatmaps | ACCESS |
 
 ## 3. Event Schema
 
@@ -24,7 +26,7 @@ All telemetry events follow a standardized schema:
 {
   "event_id": "uuid",
   "event_type": "string",
-  "category": "system|performance|security|cognitive|economic",
+  "category": "system|performance|security|cognitive|economic|visitor|developer",
   "timestamp": "ISO-8601",
   "module": "MODULE_NAME",
   "actor": "user_id|system",
@@ -39,10 +41,10 @@ All telemetry events follow a standardized schema:
 
 ## 4. Health Scoring Model
 
-System health is a deterministic weighted sum across all 38 matrix nodes:
+System health is a deterministic weighted sum across all 40 matrix nodes:
 
 ```
-health = Σ(node_weight × node_health) for all 38 nodes
+health = Σ(node_weight × node_health) for all 40 nodes
 ```
 
 | Health Range | Status | Action |
@@ -59,10 +61,11 @@ Node health is binary when circuit breaker is open: **0.000**.
 Integrity seals are deterministic checks that confirm system state validity:
 
 - **Matrix seal**: Weighted sum equals 1.000 ± 0.001.
-- **Node count seal**: Exactly 38 registered matrix nodes across 12 sectors.
+- **Node count seal**: Exactly 40 registered matrix nodes across 12 sectors.
 - **Boot seal**: All Spine modules initialized before Execution.
 - **Sector seal**: Zone shielding verified — expansion zones independently circuit-broken.
 - **Config seal**: Runtime configuration matches declared state.
+- **Memory seal**: Tier capacity limits enforced — no tier exceeds 2x capacity.
 
 Failed integrity seals trigger Level 2 escalation.
 
@@ -91,6 +94,7 @@ Failed integrity seals trigger Level 2 escalation.
 | Circuit breakers open | ≥ 1 | ≥ 3 |
 | DEFENSE block rate | > 10% | > 25% |
 | Quota utilization | > 80% | > 95% |
+| Memory tier overflow | > 1.5x capacity | > 2x capacity |
 
 ## 8. Diagnostic Flow
 
@@ -128,7 +132,7 @@ Failed integrity seals trigger Level 2 escalation.
 - Cross-module correlation is supported via `request_id` and `session_id`.
 - Audit queries support time-range, module, actor, and action filtering.
 
-## 10. Recent Additions (v13.1.0)
+## 10. Recent Additions (v14.1.0 MINDGAMES)
 
 | System | Observability Integration |
 |--------|--------------------------|
@@ -138,11 +142,16 @@ Failed integrity seals trigger Level 2 escalation.
 | Ironclad Hardening Fabric | Per-module rate limit utilization, auto-restore events, bulkhead pressure |
 | ENGINEER Node | Finding counts, proposal pipeline status, CLM topic health |
 | INTEL Aggregation | Signal volume, deduplication ratio, IntelCard generation rate |
+| Memory Tier Enforcement | Capacity utilization per tier, bulk demotion events, cascade triggers |
+| Visitor Intelligence | Session depth, bounce rate, retention cohorts (D1/D7/D14/D30), churn risk scoring |
+| Developer Adoption | Per-developer API usage, module-level heatmaps, revenue attribution |
+| Disaster Recovery | Backup initiation events, archive size, table export counts |
 
 ## 11. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added memory tier enforcement, visitor intelligence, developer adoption, disaster recovery observability |
 | 2026-03-03 | System | Added recent feature observability, updated node count seal to 38 nodes |
 | 2026-03-03 | System | Verified health scoring model matches 38-node weighted topology |
 | 2026-03-01 | System | Initial canonical observability handbook |
