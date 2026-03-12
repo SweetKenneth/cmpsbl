@@ -29,7 +29,7 @@ export default function TheMarketplace() {
     >
       <p className="text-lg leading-relaxed"><Link to="/blog/from-thought-to-artifact" className="text-primary hover:underline">FORGE</Link> could produce discoveries. But they sat in databases, invisible. Customers couldn't browse what the substrate had produced. They couldn't compare, preview, or deploy without talking to us directly.</p>
 
-      <p>We had built a factory with no storefront. FORGE was producing hundreds of artifacts weekly — security tools, accessibility fixers, data processors, content generators — and most of them were used once by the customer who commissioned them and then forgotten. Meanwhile, other customers were requesting almost identical artifacts. We were duplicating work because there was no way to discover what already existed.</p>
+      <p>We had built a factory with no storefront. FORGE was producing hundreds of discoveries weekly — security tools, accessibility fixers, data processors, content generators — and most of them were used once by the customer who commissioned them and then forgotten. Meanwhile, other customers were requesting almost identical discoveries. We were duplicating work because there was no way to discover what already existed.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Store</h2>
       <p>We built the Substrate Store as a discovery layer. Every artifact is categorized, scored, and previewable. Security tools, accessibility fixers, data enrichment systems, content generators — all browsable like an app store, but for AI-generated software components.</p>
