@@ -25,13 +25,8 @@ type RawGlob = Record<string, () => Promise<string>>;
 // SUPABASE BACKEND
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Edge functions (exclude _archived)
-const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/index.ts', {
-  as: 'raw',
-}) as RawGlob;
-
-// Shared backend-function utils
-const edgeSharedFiles = import.meta.glob('/supabase/functions/_shared/**/*.ts', {
+// Edge functions — ALL .ts files (not just index.ts)
+const edgeFunctionFiles = import.meta.glob('/supabase/functions/**/*.ts', {
   as: 'raw',
 }) as RawGlob;
 
