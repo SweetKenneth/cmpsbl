@@ -1448,8 +1448,8 @@ export function generateVaultDoc(): string {
   <pre><code>cmpsbl-vault-export-{timestamp}/
 ├── manifest.json                    # Complete discovery data
 ├── _discovery-engine/
-│   ├── standalone-runtime.ts        # CJPI scoring + orchestration
-│   ├── standalone-discovery-engine.ts  # Portable reactor
+│   ├── standalone-runtime.ts        # CMPSBL® Mini-Runtime™ Engine
+│   ├── standalone-discovery-engine.ts  # Mini-Runtime™ Discovery Engine
 │   └── README.md
 └── metadata.json                    # Export metadata + fingerprint</code></pre>
 
