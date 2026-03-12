@@ -61,21 +61,21 @@ const FAQ_ITEMS = [
     answer: "DECODE is the unified conversational interface for CMPSBL. It handles support, system guidance, builder assistance, and governance — all through natural language. You can reach DECODE from anywhere in the platform by clicking the chat icon.",
   },
 
-  // Pipelines & Foundry
+  // Memories & Foundry
   {
-    category: "Pipelines & Foundry",
-    question: "What are Pipeline Packs?",
-    answer: "Pipeline Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
+    category: "Memories & Foundry",
+    question: "What are Memory Packs?",
+    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "What is the Foundry?",
-    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring software pipelines and lets you crystallize, store, and export them.",
+    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring crystallized memories and lets you store and export them.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "How does the Memory Stream work?",
-    answer: "The Memory Stream continuously generates scored pipelines. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each pipeline. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
+    answer: "The Memory Stream continuously forms scored memories. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each memory. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
   },
   {
     category: "Pipelines & Foundry",
