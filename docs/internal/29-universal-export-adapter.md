@@ -75,9 +75,9 @@ Auto-generates language-appropriate tests:
 - Tests basic invocation and output shape
 - Includes performance benchmarks where applicable
 
-## 5. Micro-Substrate Runtime
+## 5. CMPSBL® Mini-Runtime™ Engine
 
-The standalone runtime (`standalone-runtime.ts`) provides:
+The Mini-Runtime™ (`standalone-runtime.ts`) provides:
 
 | Capability | Description |
 |------------|-------------|
