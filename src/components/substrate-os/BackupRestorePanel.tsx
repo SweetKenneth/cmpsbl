@@ -271,15 +271,15 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         .from('daily_backups')
         .insert({
           backup_id: backupId,
-          backup_date: new Date().toISOString(),
           backup_path: `downloaded/${filename}`,
+          snapshot: { type: 'full-zip-download', filename } as any,
           status: 'completed',
           is_permanent: true,
           backup_category: 'failsafe',
           notes: notes || `Full failsafe backup created at ${new Date().toISOString()}`,
           expires_at: null,
           substrate_version: 'full-backup-v2.1',
-          data_counts: { type: 'full-zip-download' },
+          data_counts: { type: 'full-zip-download' } as any,
         });
 
       if (insertError) {
