@@ -162,10 +162,6 @@ export const systemAdapter: ModuleAdapter = {
       },
       healthScore: Math.max(0, Math.min(100, healthScore)),
       lastUpdated: new Date().toISOString(),
-      metadata: {
-        effectiveConnectionType: effectiveType,
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 80) : 'unknown',
-      },
     };
   },
 };
