@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 const LLMS_TXT_CONTENT = `# CMPSBL® — Machine-Readable AI Context
 # 40-Node / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-11
+# Updated: 2026-03-12
 
 ## STANDARD CLAIM
 

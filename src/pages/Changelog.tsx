@@ -628,6 +628,40 @@ const stratumFormation: Specimen[] = [
 
 const stratumMindgames: Specimen[] = [
   {
+    id: "MNDG-018",
+    fossilized: "2026-03-12",
+    origin: "survival",
+    stimulus: "The substrate had no single-action disaster recovery path — a catastrophic failure would require manual reconstruction across dozens of systems",
+    adaptations: [
+      "One-click full backup downloads the entire system state as a single portable archive from the admin dashboard",
+      "Every table, every row, and every storage asset is captured automatically with no manual selection required",
+      "The archive includes an AI-ready restoration guide that any coding agent can follow to rebuild from scratch",
+      "Backup files are timestamped to the second for precise point-in-time recovery identification",
+    ],
+    phenotype: [
+      "The substrate can be fully reconstructed from a single downloaded file — zero external dependencies needed",
+      "Disaster recovery shifted from a multi-day manual process to a one-click operation",
+      "Any AI coding agent can restore the entire system by following the included step-by-step guide",
+    ],
+    affectedNodes: ["CORE", "SYSTEM", "AUDIT"],
+  },
+  {
+    id: "MNDG-017",
+    fossilized: "2026-03-12",
+    origin: "governance",
+    stimulus: "Operator reports lacked direct access to system preservation tools — backup controls were buried in separate workflows",
+    adaptations: [
+      "Disaster recovery controls integrated directly into the admin reporting surface",
+      "Visual backup status feedback shows progress, completion, and download readiness in real time",
+      "Archive naming follows a human-readable timestamp convention for easy identification across backup sets",
+    ],
+    phenotype: [
+      "System preservation is a first-class admin capability — visible and accessible alongside daily reports",
+      "Operators never have to leave their command surface to initiate or monitor a full system backup",
+    ],
+    affectedNodes: ["GOVERNANCE", "SYSTEM"],
+  },
+  {
     id: "MNDG-016",
     fossilized: "2026-03-11",
     origin: "distribution",
