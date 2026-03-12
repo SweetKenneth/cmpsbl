@@ -50,14 +50,14 @@ export const NARRATIVE = {
   
   // What things are called
   terminology: {
-    artifact: 'Crystallized Pipeline',
-    artifacts: 'Crystallized Pipelines',
+    artifact: 'Crystallized Memory',
+    artifacts: 'Crystallized Memories',
     module: 'System',             // NEVER use "module" publicly
     modules: 'Systems',
-    pack: 'Pipeline Pack',
-    packs: 'Pipeline Packs',
-    slot: 'Pipeline Slot',
-    slots: 'Pipeline Slots',
+    pack: 'Memory Pack',
+    packs: 'Memory Packs',
+    slot: 'Memory Slot',
+    slots: 'Memory Slots',
     foundry: 'Memory Stream',
     mining: 'Crystallization',
     crownJewel: 'Apex Discovery',
