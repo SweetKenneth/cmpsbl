@@ -253,6 +253,160 @@ Deno.serve(async (req: Request) => {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════
 
+const UTF8 = new TextEncoder();
+
+interface ZipEntry {
+  nameBytes: Uint8Array;
+  crc32: number;
+  size: number;
+  localHeaderOffset: number;
+  dosTime: number;
+  dosDate: number;
+}
+
+const CRC32_TABLE = (() => {
+  const table = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let j = 0; j < 8; j++) {
+      c = (c & 1) ? (0xedb88320 ^ (c >>> 1)) : (c >>> 1);
+    }
+    table[i] = c >>> 0;
+  }
+  return table;
+})();
+
+function crc32(bytes: Uint8Array): number {
+  let crc = 0xffffffff;
+  for (let i = 0; i < bytes.length; i++) {
+    crc = CRC32_TABLE[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function toDosDateTime(date = new Date()): { dosTime: number; dosDate: number } {
+  const year = Math.max(1980, Math.min(2107, date.getUTCFullYear()));
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const seconds = Math.floor(date.getUTCSeconds() / 2);
+
+  const dosTime = ((hours & 0x1f) << 11) | ((minutes & 0x3f) << 5) | (seconds & 0x1f);
+  const dosDate = (((year - 1980) & 0x7f) << 9) | ((month & 0x0f) << 5) | (day & 0x1f);
+
+  return { dosTime, dosDate };
+}
+
+class ZipStreamWriter {
+  private readonly writer: WritableStreamDefaultWriter<Uint8Array>;
+  private readonly entries: ZipEntry[] = [];
+  private offset = 0;
+
+  constructor(writer: WritableStreamDefaultWriter<Uint8Array>) {
+    this.writer = writer;
+  }
+
+  async addTextFile(path: string, content: string): Promise<void> {
+    await this.addBytesFile(path, UTF8.encode(content));
+  }
+
+  async addBytesFile(path: string, bytes: Uint8Array): Promise<void> {
+    const nameBytes = UTF8.encode(path);
+    const { dosTime, dosDate } = toDosDateTime();
+    const fileCrc32 = crc32(bytes);
+    const localHeaderOffset = this.offset;
+
+    const localHeader = new Uint8Array(30 + nameBytes.length);
+    const localHeaderView = new DataView(localHeader.buffer);
+
+    localHeaderView.setUint32(0, 0x04034b50, true); // Local file header signature
+    localHeaderView.setUint16(4, 20, true); // Version needed
+    localHeaderView.setUint16(6, 0, true); // Flags
+    localHeaderView.setUint16(8, 0, true); // Compression method (store)
+    localHeaderView.setUint16(10, dosTime, true);
+    localHeaderView.setUint16(12, dosDate, true);
+    localHeaderView.setUint32(14, fileCrc32, true);
+    localHeaderView.setUint32(18, bytes.length, true); // Compressed size
+    localHeaderView.setUint32(22, bytes.length, true); // Uncompressed size
+    localHeaderView.setUint16(26, nameBytes.length, true);
+    localHeaderView.setUint16(28, 0, true); // Extra length
+    localHeader.set(nameBytes, 30);
+
+    await this.writer.write(localHeader);
+    this.offset += localHeader.length;
+
+    if (bytes.length > 0) {
+      await this.writer.write(bytes);
+      this.offset += bytes.length;
+    }
+
+    this.entries.push({
+      nameBytes,
+      crc32: fileCrc32,
+      size: bytes.length,
+      localHeaderOffset,
+      dosTime,
+      dosDate,
+    });
+  }
+
+  async close(): Promise<void> {
+    if (this.entries.length > 65535) {
+      throw new Error('ZIP entry limit exceeded (ZIP64 not supported).');
+    }
+
+    const centralDirectoryOffset = this.offset;
+
+    for (const entry of this.entries) {
+      const centralHeader = new Uint8Array(46 + entry.nameBytes.length);
+      const centralHeaderView = new DataView(centralHeader.buffer);
+
+      centralHeaderView.setUint32(0, 0x02014b50, true); // Central directory signature
+      centralHeaderView.setUint16(4, 20, true); // Version made by
+      centralHeaderView.setUint16(6, 20, true); // Version needed
+      centralHeaderView.setUint16(8, 0, true); // Flags
+      centralHeaderView.setUint16(10, 0, true); // Compression method (store)
+      centralHeaderView.setUint16(12, entry.dosTime, true);
+      centralHeaderView.setUint16(14, entry.dosDate, true);
+      centralHeaderView.setUint32(16, entry.crc32, true);
+      centralHeaderView.setUint32(20, entry.size, true);
+      centralHeaderView.setUint32(24, entry.size, true);
+      centralHeaderView.setUint16(28, entry.nameBytes.length, true);
+      centralHeaderView.setUint16(30, 0, true); // Extra length
+      centralHeaderView.setUint16(32, 0, true); // Comment length
+      centralHeaderView.setUint16(34, 0, true); // Disk number start
+      centralHeaderView.setUint16(36, 0, true); // Internal attrs
+      centralHeaderView.setUint32(38, 0, true); // External attrs
+      centralHeaderView.setUint32(42, entry.localHeaderOffset, true);
+      centralHeader.set(entry.nameBytes, 46);
+
+      await this.writer.write(centralHeader);
+      this.offset += centralHeader.length;
+    }
+
+    const centralDirectorySize = this.offset - centralDirectoryOffset;
+    const endOfCentralDirectory = new Uint8Array(22);
+    const eocdView = new DataView(endOfCentralDirectory.buffer);
+
+    eocdView.setUint32(0, 0x06054b50, true); // EOCD signature
+    eocdView.setUint16(4, 0, true); // Disk number
+    eocdView.setUint16(6, 0, true); // Disk with central directory
+    eocdView.setUint16(8, this.entries.length, true);
+    eocdView.setUint16(10, this.entries.length, true);
+    eocdView.setUint32(12, centralDirectorySize, true);
+    eocdView.setUint32(16, centralDirectoryOffset, true);
+    eocdView.setUint16(20, 0, true); // Comment length
+
+    await this.writer.write(endOfCentralDirectory);
+    await this.writer.close();
+  }
+
+  async abort(reason: unknown): Promise<void> {
+    await this.writer.abort(reason);
+  }
+}
+
 async function listAllStorageFiles(
   admin: ReturnType<typeof createClient>,
   bucketName: string,
