@@ -36,7 +36,7 @@ const PRINCIPLES = [
   { title: "Governed Autonomy", desc: "Every mutating action passes through GOVERNANCE. Autonomy exists within deterministic policy boundaries.", icon: ScrollText },
   { title: "Immutable Audit", desc: "AUDIT records cannot be deleted, modified, or suppressed. Chain-of-custody checksums on every entry.", icon: Lock },
   { title: "Sealed Agents", desc: "Cognitive agents operate in isolated, source-blocked runtimes. No escape from designated capabilities.", icon: Shield },
-  { title: "Validated Evolution", desc: "Changes reach production only after passing the 7-gate SEBA pipeline with TSAC truth arbitration.", icon: Zap },
+  { title: "Validated Evolution", desc: "Changes reach production only after passing the 7-gate SEBA process with TSAC truth arbitration.", icon: Zap },
   { title: "Continuous Learning", desc: "CLM runs 14,400 learning cycles per day. Knowledge compounds — the system accelerates over time.", icon: Brain },
 ];
 
