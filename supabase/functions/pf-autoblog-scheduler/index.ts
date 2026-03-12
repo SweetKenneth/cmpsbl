@@ -18,11 +18,11 @@ const corsHeaders = {
 };
 
 const AUTO_CONFIG = {
-  TARGET_POSTS_PER_WEEK: 21,       // 3/day average
-  MAX_POSTS_PER_DAY: 5,
-  OPTIMAL_HOURS_UTC: [6, 8, 10, 12, 14, 16, 18, 20],  // wide window
-  COOLDOWN_HOURS: 2,               // reduced cooldown
-  WEEKEND_REDUCTION: 0.7,          // still post weekends, just slightly less
+  TARGET_POSTS_PER_WEEK: 5,        // 4-7 range, aim for ~5
+  MAX_POSTS_PER_DAY: 1,            // never more than 1/day
+  OPTIMAL_HOURS_UTC: [10, 14, 16], // fewer windows = more selective
+  COOLDOWN_HOURS: 20,              // ~20h minimum between posts
+  WEEKEND_REDUCTION: 0.4,          // mostly skip weekends
 };
 
 // ═══════════════════════════════════════════════════════════════
