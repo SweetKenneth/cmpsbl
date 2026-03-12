@@ -78,7 +78,7 @@ const FAQ_ITEMS = [
     answer: "The Memory Stream continuously forms scored memories. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each memory. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
   },
   {
-    category: "Pipelines & Foundry",
+    category: "Memories & Foundry",
     question: "What is CLM (Constant Learning Mode)?",
     answer: "CLM is the autonomous background learning engine that runs on 30-minute cycles. It uses a 70/30 weighting between global topics (system stability) and node-specific topics, achieving up to 14,400 AI calls per day for continuous knowledge acquisition.",
   },
