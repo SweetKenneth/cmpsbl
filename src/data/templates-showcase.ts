@@ -362,7 +362,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Cpu,
     category: 'infrastructure',
     rarity: 'great',
-    crownJewelFeature: 'Drift Correction',
+    apexFeature: 'Drift Correction',
     buildTime: '~20 min',
     tags: ['ENCODE'],
   },
