@@ -259,7 +259,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: FileText,
     category: 'data',
     rarity: 'mythic',
-    crownJewelFeature: 'Audit-Grade Decision Ledger',
+    apexFeature: 'Audit-Grade Decision Ledger',
     buildTime: '~25 min',
     tags: ['AUDIT', 'BRAIN'],
   },
