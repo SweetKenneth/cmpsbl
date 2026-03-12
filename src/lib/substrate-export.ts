@@ -129,8 +129,13 @@ const utilFiles = import.meta.glob('/src/utils/**/*.{ts,tsx}', {
   as: 'raw',
 }) as RawGlob;
 
-// Styles
+// Styles (CSS and TS/TSX)
 const styleFiles = import.meta.glob('/src/styles/**/*.{ts,tsx,css}', {
+  as: 'raw',
+}) as RawGlob;
+
+// Assets — text-safe files only (SVG, JSON)
+const assetTextFiles = import.meta.glob('/src/assets/**/*.{svg,json}', {
   as: 'raw',
 }) as RawGlob;
 
