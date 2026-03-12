@@ -198,10 +198,10 @@ function ProvenanceBody({
         </div>
       )}
 
-      {/* Pipeline steps (capability-level) */}
+      {/* Memory steps (capability-level) */}
       <div className="px-5 pb-4">
         <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground mb-3">
-          Pipeline Architecture
+          Memory Architecture
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           {steps.map((step, i) => (
