@@ -264,6 +264,50 @@ export function registerExecutionHandlers(): void {
     return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
   });
 
+  // ── evolution.* canonical aliases (MODERNIZER → EVOLUTION migration) ──
+  registerHandler('evolution.status', async () => {
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.status();
+  });
+
+  registerHandler('evolution.scan', async () => {
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.scan();
+  });
+
+  registerHandler('evolution.propose', async () => {
+    return { success: false, error: 'Usage: evolution.propose <description>' };
+  });
+
+  registerHandler('evolution.apply', async () => {
+    return { success: false, error: 'Usage: evolution.apply <plan_id>' };
+  });
+
+  registerHandler('evolution.verify', async () => {
+    return { success: false, error: 'Usage: evolution.verify <run_id>' };
+  });
+
+  registerHandler('evolution.plans', async () => {
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.jobs();
+  });
+
+  registerHandler('evolution.runs', async () => {
+    const { substrate } = await import('@/lib/substrate');
+    return await substrate.invoke({ module: 'evolution', action: 'runs' });
+  });
+
+  registerHandler('evolution.health', async () => {
+    const { evolutionClient } = await import('@/lib/substrate');
+    const status = await evolutionClient.status();
+    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
+  });
+
+  registerHandler('evolution.evolve', async () => {
+    const { evolutionClient } = await import('@/lib/substrate');
+    return await evolutionClient.scan();
+  });
+
   // ═══ HELP COMMANDS ═══
 
   registerHandler('decode.help', async () => ({
