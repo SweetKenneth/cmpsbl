@@ -363,7 +363,7 @@ const modulesByLayer = {
     {
       id: "harvest",
       name: "HARVEST",
-      description: "Data ingestion, ETL pipelines, enrichment",
+      description: "Data ingestion, ETL processes, enrichment",
       icon: Wheat,
       color: "text-green-300",
       bg: "bg-green-300/10",
