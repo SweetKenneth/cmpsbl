@@ -41,7 +41,7 @@ export default function RuntimeReference() {
       content += `\n`;
     });
 
-    content += `\nPIPELINE PACKS (Pack-Enabled)\n`;
+    content += `\nMEMORY PACKS (Pack-Enabled)\n`;
     content += `${'─'.repeat(40)}\n\n`;
     STRATEGIC_DOMAINS.forEach(domain => {
       const packs = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
