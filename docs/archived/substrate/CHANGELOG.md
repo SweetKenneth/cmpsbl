@@ -4,6 +4,32 @@
 
 ---
 
+## 2026-03-12 · v14.2.0 (MINDGAMES Epoch — Performance & Stability)
+
+⟨This entry describes substrate-wide performance optimizations targeting telemetry throughput, memory deduplication efficiency, DOM observability overhead, and database query acceleration.⟩
+
+### Telemetry Emission Optimization
+
+- **Event Deduplication Window** — Telemetry emitter now deduplicates repeated event types within a configurable time window. Critical events (errors, circuit trips, self-repair) bypass deduplication for instant visibility.
+- **Mesh Communication Sampling** — Intent mesh broadcast persistence reduced by 80% via probabilistic sampling, preserving full in-memory routing while minimizing database write volume.
+- **Analytics Batching** — Client-side analytics events are buffered and flushed in batches on interval or threshold, replacing per-event database inserts.
+
+### Memory Deduplication Engine
+
+- **Hash-Bucketed Duplicate Detection** — Replaced pairwise comparison with content fingerprinting and hash-bucketed grouping, reducing duplicate scan complexity from quadratic to amortized linear time across the memory tier.
+
+### Observability Overhead Reduction
+
+- **DOM Measurement Caching** — System health adapter now caches DOM node count and nesting depth calculations with a time-to-live window, eliminating repeated full-tree traversals during snapshot cycles.
+
+### Database Index Acceleration
+
+- **Mesh Communications** — Added composite indexes on source module, category, resolver, and source-target pairs for faster dashboard queries.
+- **Analytics Events** — Added partial index on session lookups for visitor intelligence queries.
+- **Brain Memory (HOT)** — Added temporal index on creation timestamp for deduplication and pruning operations.
+
+---
+
 ## 2026-02-17 · v10.5.4 (ARCHITECT Epoch — ENCODE, Capabilities, Pricing)
 
 ⟨This entry describes the ENCODE module integration, 21 Crown Jewel capabilities, Intent Mesh crystallization fix, mobile-first pricing redesign, World Firsts investor documentation, and unified tier model.⟩
