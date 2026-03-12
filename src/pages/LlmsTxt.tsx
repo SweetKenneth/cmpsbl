@@ -69,7 +69,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - SOVEREIGN — Jurisdiction classification, deployment sovereignty
 - ORACLE — Bayesian prediction, forecasting
 - CONSCIENCE — Bias detection, ethical scoring
-- FORGE — Artifact production, template manufacturing
+- FORGE — Discovery production, template manufacturing
 
 ### EPZ — Enterprise Perception Zone (3)
 - COMPASS — Geospatial awareness, location intelligence

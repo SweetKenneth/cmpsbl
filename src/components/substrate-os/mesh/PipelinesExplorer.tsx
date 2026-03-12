@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { MeshSavedPipeline } from '@/lib/substrate/intent-mesh/pipelines';
 
-// Category config matching the Composable Artifacts page style
+// Category config matching the Composable Capabilities page style
 const PIPELINE_CATEGORIES = [
   { id: 'security', label: 'Security', icon: Shield, text: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
   { id: 'identity', label: 'Identity', icon: Eye, text: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },

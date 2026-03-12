@@ -915,7 +915,7 @@ const stratumMindgames: Specimen[] = [
     ],
     phenotype: [
       "First epoch where the substrate exists FOR users rather than FOR itself",
-      "Memory Stream crystallization pipeline is the primary interaction surface",
+      "Memory Stream crystallization chain is the primary interaction surface",
       "Complete learning architecture with governed capability installation",
       "Generation-tagged node topology enabling evolutionary lineage tracking",
     ],
