@@ -3,7 +3,8 @@
  * Exports ALL database data, storage listings, and a complete RESTORE.md.
  * Admin-only. Uses the PostgREST OpenAPI spec to discover every table.
  * 
- * Optimized: parallel table exports with time budget to avoid timeout.
+ * Memory-optimized: processes tables sequentially, streams JSON strings
+ * directly into ZIP to minimize peak memory usage.
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -15,10 +16,10 @@ import {
 } from "../_shared/edge-middleware.ts";
 import JSZip from "npm:jszip@3.10.1";
 
-/** Max wall-clock time budget (ms). Edge functions timeout at ~150s; we stop at 140s. */
-const TIME_BUDGET_MS = 140_000;
-/** How many tables to export concurrently */
-const CONCURRENCY = 25;
+/** Max wall-clock time budget (ms). Edge functions timeout at ~150s; we stop at 130s. */
+const TIME_BUDGET_MS = 130_000;
+/** Page size for table exports */
+const PAGE_SIZE = 1000;
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -40,7 +41,7 @@ Deno.serve(async (req: Request) => {
     const manifest: Record<string, unknown> = {
       created_at: new Date().toISOString(),
       project_ref: projectRef,
-      format_version: '2.1.0',
+      format_version: '2.2.0',
       backup_type: 'full',
     };
 
@@ -58,13 +59,15 @@ Deno.serve(async (req: Request) => {
         },
       });
       if (openApiRes.ok) {
-        const spec = await openApiRes.json();
+        const specText = await openApiRes.text();
+        // Add spec to zip as string directly, don't keep parsed object
+        zip.folder('schema')!.file('openapi-spec.json', specText);
+        const spec = JSON.parse(specText);
         if (spec.paths) {
           tableNames = Object.keys(spec.paths)
             .map(p => p.replace(/^\//, ''))
             .filter(n => n && !n.includes('/') && !n.startsWith('rpc/'));
         }
-        zip.folder('schema')!.file('openapi-spec.json', JSON.stringify(spec, null, 2));
       } else {
         errors.push(`OpenAPI discovery failed: HTTP ${openApiRes.status}`);
         await openApiRes.text();
@@ -76,88 +79,88 @@ Deno.serve(async (req: Request) => {
     console.log(`[FullBackup] Discovered ${tableNames.length} tables`);
 
     // ═══════════════════════════════════════════════════════
-    // 2. EXPORT ALL TABLE DATA — PARALLEL with time budget
+    // 2. EXPORT TABLE DATA — SEQUENTIAL to minimize memory
+    //    Each table is serialized to JSON string immediately
+    //    and added to zip, then data is released.
     // ═══════════════════════════════════════════════════════
     const dataFolder = zip.folder('data')!;
     const tableSummary: Record<string, number> = {};
     let totalRows = 0;
     let timedOut = false;
-    const skippedTables: string[] = [];
+    let tablesExported = 0;
 
-    /** Export a single table with pagination */
-    async function exportTable(table: string): Promise<{ table: string; rows: unknown[]; error?: string }> {
-      const allRows: unknown[] = [];
-      let offset = 0;
-      const PAGE = 1000;
+    for (const table of tableNames) {
+      if (Date.now() - startTime > TIME_BUDGET_MS) {
+        timedOut = true;
+        // Mark remaining as skipped
+        for (let j = tableNames.indexOf(table); j < tableNames.length; j++) {
+          tableSummary[tableNames[j]] = -2;
+        }
+        errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${tableNames.length - tablesExported} tables.`);
+        break;
+      }
 
       try {
+        // Stream pages directly into a JSON string to avoid holding arrays
+        let rowCount = 0;
+        let offset = 0;
+        let jsonParts: string[] = ['['];
+        let first = true;
+
         while (true) {
-          // Check time budget before each page fetch
           if (Date.now() - startTime > TIME_BUDGET_MS) {
-            return { table, rows: allRows, error: 'time_budget_exceeded' };
+            timedOut = true;
+            break;
           }
 
           const { data, error } = await admin
             .from(table)
             .select('*')
-            .range(offset, offset + PAGE - 1);
+            .range(offset, offset + PAGE_SIZE - 1);
 
           if (error) {
-            return { table, rows: allRows, error: error.message };
+            errors.push(`${table}: ${error.message}`);
+            break;
           }
           if (!data || data.length === 0) break;
-          allRows.push(...data);
-          if (data.length < PAGE) break;
-          offset += PAGE;
+
+          // Append each row as JSON, building the string incrementally
+          for (const row of data) {
+            if (!first) jsonParts.push(',');
+            jsonParts.push(JSON.stringify(row));
+            first = false;
+          }
+
+          rowCount += data.length;
+          if (data.length < PAGE_SIZE) break;
+          offset += PAGE_SIZE;
         }
+
+        jsonParts.push(']');
+
+        if (rowCount > 0) {
+          // Join and add to zip, then release
+          dataFolder.file(`${table}.json`, jsonParts.join('\n'));
+        }
+        // Release references
+        jsonParts = [];
+
+        tableSummary[table] = rowCount;
+        totalRows += rowCount;
+        tablesExported++;
       } catch (e) {
-        return { table, rows: allRows, error: String(e) };
+        errors.push(`${table}: ${String(e)}`);
+        tableSummary[table] = -1;
+        tablesExported++;
       }
-      return { table, rows: allRows };
-    }
-
-    // Process tables in parallel batches
-    for (let i = 0; i < tableNames.length; i += CONCURRENCY) {
-      if (Date.now() - startTime > TIME_BUDGET_MS) {
-        timedOut = true;
-        const remaining = tableNames.slice(i);
-        skippedTables.push(...remaining);
-        errors.push(`Time budget exceeded after ${i} tables. Skipped ${remaining.length} tables.`);
-        break;
-      }
-
-      const batch = tableNames.slice(i, i + CONCURRENCY);
-      const results = await Promise.all(batch.map(exportTable));
-
-      for (const result of results) {
-        if (result.error === 'time_budget_exceeded') {
-          timedOut = true;
-          // Still save whatever rows we got
-        }
-
-        if (result.error && result.error !== 'time_budget_exceeded') {
-          errors.push(`${result.table}: ${result.error}`);
-        }
-
-        if (result.rows.length > 0) {
-          dataFolder.file(`${result.table}.json`, JSON.stringify(result.rows, null, 2));
-        }
-        tableSummary[result.table] = result.rows.length;
-        totalRows += result.rows.length;
-      }
-    }
-
-    // Mark skipped tables
-    for (const t of skippedTables) {
-      tableSummary[t] = -2; // -2 = skipped due to timeout
     }
 
     manifest.tables = tableSummary;
     manifest.table_count = tableNames.length;
-    manifest.tables_exported = tableNames.length - skippedTables.length;
+    manifest.tables_exported = tablesExported;
     manifest.total_rows = totalRows;
     manifest.timed_out = timedOut;
-    console.log(`[FullBackup] Exported ${totalRows} rows across ${tableNames.length - skippedTables.length}/${tableNames.length} tables`);
+    console.log(`[FullBackup] Exported ${totalRows} rows across ${tablesExported}/${tableNames.length} tables`);
 
     // ═══════════════════════════════════════════════════════
     // 3. STORAGE — list buckets and files (skip if timed out)
@@ -212,9 +215,13 @@ Deno.serve(async (req: Request) => {
     zip.file('RESTORE.md', generateRestoreGuide(manifest, tableSummary, storageSummary, errors));
 
     // ═══════════════════════════════════════════════════════
-    // GENERATE ZIP
+    // GENERATE ZIP — use STORE (no compression) to save CPU+memory
     // ═══════════════════════════════════════════════════════
-    const zipBytes = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+    console.log(`[FullBackup] Generating ZIP...`);
+    const zipBytes = await zip.generateAsync({
+      type: 'uint8array',
+      compression: 'STORE',  // No compression = much less memory + CPU
+    });
 
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, '0');
@@ -449,4 +456,3 @@ npm run dev
 
 © 2025–2026 CMPSBL® / PromptFluid®. Confidential.
 `;
-}
