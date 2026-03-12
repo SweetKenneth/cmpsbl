@@ -56,7 +56,7 @@ export default function Packs() {
         title="Memory Packs — Activate AI Capabilities | CMPSBL"
         description="Browse and activate 24 memory packs across 6 strategic domains. Each pack uses 1 slot — choose persistent memory, routing, defense, and more. Start free with 3 slots."
         canonical="https://cmpsbl.com/packs"
-        keywords={['artifact packs', 'AI capabilities', 'CMPSBL packs', 'composable AI systems', 'persistent memory pack', 'AI routing', 'defense pack']}
+        keywords={['capability packs', 'AI capabilities', 'CMPSBL packs', 'composable AI systems', 'persistent memory pack', 'AI routing', 'defense pack']}
       />
       <PublicNav />
 
