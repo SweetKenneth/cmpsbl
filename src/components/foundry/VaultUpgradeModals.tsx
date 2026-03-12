@@ -232,10 +232,10 @@ export function MythicDiscoveryModal({
       <AlertDialog open={confirmDiscard} onOpenChange={setConfirmDiscard}>
         <AlertDialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Discard Mythic Pipeline?</AlertDialogTitle>
+            <AlertDialogTitle>Discard Mythic Memory?</AlertDialogTitle>
             <AlertDialogDescription>
               This is one of the rarest discoveries in the Memory Stream. 
-              Once discarded, this pipeline cannot be recovered.
+              Once discarded, this memory cannot be recovered.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col gap-2 sm:flex-row">

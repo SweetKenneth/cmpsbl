@@ -61,7 +61,7 @@ export function ConversationStream({ messages, plans, systemMessages }: Conversa
             ))}
           </div>
           <div className="space-y-1 pt-2">
-            <p className="text-[10px] text-muted-foreground/25 uppercase tracking-wider">Pipeline</p>
+            <p className="text-[10px] text-muted-foreground/25 uppercase tracking-wider">Execution Flow</p>
             <p className="text-[10px] text-muted-foreground/30 font-mono">
               INTENT → DECODE → PLAN → APPROVAL → ENCODE → BRAIN
             </p>

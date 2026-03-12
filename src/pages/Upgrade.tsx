@@ -335,7 +335,7 @@ export default function Upgrade() {
               you will be prompted to upgrade immediately so the discovery is not lost.
             </p>
             <p className="text-xs text-muted-foreground/70">
-              <strong className="text-foreground">Slots</strong> control how many pipelines run simultaneously.{' '}
+              <strong className="text-foreground">Slots</strong> control how many memories run simultaneously.{' '}
               <strong className="text-foreground">Vault capacity</strong> controls how many discoveries you can store.
             </p>
           </motion.div>
