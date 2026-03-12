@@ -75,7 +75,7 @@ export function VaultCapacityModal({
             </DialogTitle>
             <DialogDescription className="text-center text-sm leading-relaxed max-w-xs mx-auto">
               Your vault is full and cannot store additional discoveries.
-              Remove an existing pipeline or upgrade your plan to expand vault capacity.
+              Remove an existing discovery or upgrade your plan to expand vault capacity.
             </DialogDescription>
           </DialogHeader>
         </div>
