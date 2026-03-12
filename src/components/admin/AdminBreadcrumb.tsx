@@ -15,7 +15,7 @@ export function AdminBreadcrumb() {
   return (
     <nav className="flex items-center gap-2 text-sm">
       <Link
-        to="/dashboard"
+        to="/os"
         className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
       >
         <Home className="w-4 h-4" />
