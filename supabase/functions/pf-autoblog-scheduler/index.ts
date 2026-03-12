@@ -10,6 +10,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
+import { nexusRoute } from "../_shared/nexus-route.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -171,7 +172,6 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
     const sb = createClient(supabaseUrl, supabaseKey);
 
     console.log('🤖 AutoBlog v3.0 Autonomous Scheduler starting...');
@@ -288,12 +288,17 @@ serve(async (req) => {
       evolutions: evolutionStats.count || 0,
     };
 
-    // 11. Generate content via AI or fallback
+    // 11. Generate content via NEXUS (full fleet failover) with fallback
     let content: { title: string; body: string };
+    let aiProvider = 'fallback';
 
-    if (lovableKey) {
-      content = await generateWithAI(lovableKey, selectedTopic, systemContext);
-    } else {
+    try {
+      const result = await generateWithNexus(selectedTopic, systemContext);
+      content = result;
+      aiProvider = 'nexus';
+      console.log(`🧠 NEXUS generated content successfully`);
+    } catch (nexusErr) {
+      console.warn('⚠️ NEXUS generation failed, using fallback:', nexusErr);
       content = generateFallbackContent(selectedTopic, systemContext);
     }
 
@@ -337,7 +342,7 @@ serve(async (req) => {
         category: selectedTopic.category,
         posts_today: (postsToday || 0) + 1,
         posts_this_week: (postsThisWeek || 0) + 1,
-        ai_generated: !!lovableKey,
+        ai_provider: aiProvider,
         execution_ms: Date.now() - startMs,
       },
       outcome: 'completed',
@@ -351,7 +356,7 @@ serve(async (req) => {
         posts_today: (postsToday || 0) + 1,
         posts_this_week: (postsThisWeek || 0) + 1,
         topics_remaining: freshTopics.length - 1,
-        ai_generated: !!lovableKey,
+        ai_provider: aiProvider,
         execution_ms: Date.now() - startMs,
       },
     });
@@ -366,15 +371,14 @@ serve(async (req) => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// AI Content Generation via Lovable AI Gateway
+// AI Content Generation via NEXUS Fleet Router
+// Full multi-provider failover with graceful degradation
 // ═══════════════════════════════════════════════════════════════
-async function generateWithAI(
-  apiKey: string,
+async function generateWithNexus(
   topic: { category: string; topic: string; angle: string },
   ctx: { memories: number; evolutions: number }
 ): Promise<{ title: string; body: string }> {
-  try {
-    const systemPrompt = `You are a senior technical writer at CMPSBL (pronounced "composable"), an AI operating system company. 
+  const systemPrompt = `You are a senior technical writer at CMPSBL (pronounced "composable"), an AI operating system company. 
 You write authoritative, insightful blog posts about AI infrastructure, cognitive architectures, and production AI systems.
 
 STYLE:
@@ -389,7 +393,7 @@ STYLE:
 
 CONTEXT: The CMPSBL substrate runs ${ctx.memories} active memories and ${ctx.evolutions} verified evolution cycles. It has 40 autonomous nodes, 12 sectors, and 940+ capabilities.`;
 
-    const userPrompt = `Write a deep, original blog post about: "${topic.topic}"
+  const userPrompt = `Write a deep, original blog post about: "${topic.topic}"
 Angle: ${topic.angle}
 Category: ${topic.category}
 
@@ -406,49 +410,33 @@ TITLE: [your title]
 ---
 [full markdown blog content]`;
 
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.8,
-        max_tokens: 4000,
-      }),
-    });
+  const result = await nexusRoute(userPrompt, {
+    systemPrompt,
+    taskType: 'generation',
+    temperature: 0.8,
+    maxTokens: 4000,
+    maxAttempts: 5,
+    minQualityLength: 500,
+    priority: 'normal',
+    timeoutMs: 60000,
+  });
 
-    if (!response.ok) {
-      console.error(`AI gateway error: ${response.status}`);
-      throw new Error(`AI gateway ${response.status}`);
-    }
-
-    const data = await response.json();
-    const fullContent = data.choices?.[0]?.message?.content || '';
-
-    // Parse title and body
-    const titleMatch = fullContent.match(/TITLE:\s*(.+)/);
-    const parts = fullContent.split('---');
-    const body = (parts.length > 1 ? parts.slice(1).join('---') : fullContent).trim();
-    const title = titleMatch?.[1]?.trim() || topic.topic;
-
-    if (body.length < 500) {
-      throw new Error('Content too short');
-    }
-
-    // Append footer
-    const footer = `\n\n---\n\n*This post was generated autonomously by the CMPSBL substrate's AutoBlog engine, drawing on live system data and real architectural patterns.*\n\n**Category**: ${mapCategoryLabel(topic.category)}  \n**Audience**: Engineers, Researchers, AI Practitioners`;
-
-    return { title, body: body + footer };
-  } catch (error) {
-    console.error('AI generation failed, using fallback:', error);
-    return generateFallbackContent(topic, ctx);
+  if (!result.content || result.content.length < 500) {
+    throw new Error(`NEXUS returned insufficient content (${result.content?.length || 0} chars, provider: ${result.provider})`);
   }
+
+  console.log(`🧠 NEXUS routed to ${result.provider}/${result.model} (${result.latencyMs}ms, ${result.attempts} attempts, quality: ${result.qualityScore.toFixed(2)})`);
+
+  // Parse title and body
+  const titleMatch = result.content.match(/TITLE:\s*(.+)/);
+  const parts = result.content.split('---');
+  const body = (parts.length > 1 ? parts.slice(1).join('---') : result.content).trim();
+  const title = titleMatch?.[1]?.trim() || topic.topic;
+
+  // Append footer with provenance
+  const footer = `\n\n---\n\n*This post was generated autonomously by the CMPSBL substrate's AutoBlog engine via NEXUS fleet routing (${result.provider}), drawing on live system data and real architectural patterns.*\n\n**Category**: ${mapCategoryLabel(topic.category)}  \n**Audience**: Engineers, Researchers, AI Practitioners`;
+
+  return { title, body: body + footer };
 }
 
 // ═══════════════════════════════════════════════════════════════
