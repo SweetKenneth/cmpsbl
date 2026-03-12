@@ -511,96 +511,117 @@ Deno.serve(async (req: Request) => {
     let dupsRemoved = 0;
     let orphanEdgesRemoved = 0;
 
+    // ── Retention-based pruning schedule ──
+    // Each entry: [table, retentionDays, maxPasses, timestampCol]
+    const RETENTION_RULES: [string, number, number, string][] = [
+      // Already existed
+      ["analytics_events",       14,  10, "created_at"],
+      ["ai_usage_log",           14,  10, "created_at"],
+      ["ai_learning_data",       30,   5, "created_at"],
+      // NEW: Large tables without pruning
+      ["owner_reports",          30,   5, "created_at"],
+      ["defense_events",         30,  10, "created_at"],
+      ["vault_promotions",       60,  10, "created_at"],
+      ["brain_metrics",          30,  10, "created_at"],
+      ["site_page_views",        30,  10, "created_at"],
+      ["pf_brain_anomalies",     30,  10, "created_at"],
+      ["cascade_dreams",         60,   5, "created_at"],
+      ["discovery_runs",         60,  10, "created_at"],
+      ["nexus_logs",             14,  10, "created_at"],
+      ["nexus_hourly_snapshots", 14,  10, "created_at"],
+      ["learning_queries",       30,  10, "created_at"],
+      ["brain_cross_insights",   30,  10, "created_at"],
+      ["client_error_log",       14,  10, "created_at"],
+      ["execution_traces",       14,  10, "created_at"],
+      ["decode_search_results",  14,  10, "created_at"],
+      ["cascade_conversations",  60,  10, "created_at"],
+      ["foundry_mine_events",    30,   5, "created_at"],
+      ["foundry_discovery_metrics", 60, 5, "created_at"],
+      ["brain_distillation_runs", 60,  5, "created_at"],
+      ["maintenance_reports",    60,   5, "created_at"],
+    ];
+
+    for (const [table, days, maxPasses, tsCol] of RETENTION_RULES) {
+      if (!timeLeft()) break;
+      const cutoff = new Date(Date.now() - days * 86_400_000).toISOString();
+      const removed = await batchPrune(table, cutoff, maxPasses);
+      if (removed > 0) {
+        auxTablesCleaned++;
+        auxRowsRemoved += removed;
+        console.log(`[DeepMaint] Pruned ${removed} rows from ${table} (>${days}d)`);
+      }
+    }
+
     if (timeLeft()) {
-      // 7a. Clean stale analytics_events (>14 days)
-      const analyticsCutoff = new Date(Date.now() - 14 * 86_400_000).toISOString();
-      const analyticsRemoved = await batchPrune("analytics_events", analyticsCutoff, 10);
-      if (analyticsRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += analyticsRemoved; }
-
-      // 7b. Clean stale ai_usage_log (>14 days)
-      if (timeLeft()) {
-        const aiLogRemoved = await batchPrune("ai_usage_log", analyticsCutoff, 10);
-        if (aiLogRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += aiLogRemoved; }
-      }
-
-      // 7c. Clean stale ai_learning_data (>30 days)
-      if (timeLeft()) {
-        const learnCutoff30 = new Date(Date.now() - 30 * 86_400_000).toISOString();
-        const aiLearnRemoved = await batchPrune("ai_learning_data", learnCutoff30, 5);
-        if (aiLearnRemoved > 0) { auxTablesCleaned++; auxRowsRemoved += aiLearnRemoved; }
-      }
-
-      // 7d. Cap analytics_snapshots at 500
-      if (timeLeft()) {
-        const { count: snapCount } = await supabase
+      // 7b. Cap analytics_snapshots at 500
+      const { count: snapCount } = await supabase
+        .from("analytics_snapshots")
+        .select("*", { count: "exact", head: true });
+      if ((snapCount ?? 0) > 500) {
+        const snapExcess = (snapCount ?? 0) - 500;
+        const { data: oldSnaps } = await supabase
           .from("analytics_snapshots")
-          .select("*", { count: "exact", head: true });
-        if ((snapCount ?? 0) > 500) {
-          const snapExcess = (snapCount ?? 0) - 500;
-          const { data: oldSnaps } = await supabase
-            .from("analytics_snapshots")
-            .select("id")
-            .order("created_at", { ascending: true })
-            .limit(Math.min(snapExcess, 1000));
-          if (oldSnaps?.length) {
-            for (let i = 0; i < oldSnaps.length; i += 500) {
-              const chunk = oldSnaps.slice(i, i + 500).map((r: any) => r.id);
-              await supabase.from("analytics_snapshots").delete().in("id", chunk);
-            }
-            auxRowsRemoved += oldSnaps.length;
-            auxTablesCleaned++;
+          .select("id")
+          .order("created_at", { ascending: true })
+          .limit(Math.min(snapExcess, 1000));
+        if (oldSnaps?.length) {
+          for (let i = 0; i < oldSnaps.length; i += 500) {
+            const chunk = oldSnaps.slice(i, i + 500).map((r: any) => r.id);
+            await supabase.from("analytics_snapshots").delete().in("id", chunk);
           }
+          auxRowsRemoved += oldSnaps.length;
+          auxTablesCleaned++;
         }
       }
+    }
 
-      // 7e. Deduplicate HOT tier — same content+module within batch
-      if (timeLeft()) {
-        const { data: hotMems } = await supabase
-          .from("brain_memory_hot")
-          .select("id, content, source_module")
-          .order("created_at", { ascending: false })
-          .limit(1000);
+    // 7c. Deduplicate HOT tier — same content+module within batch
+    if (timeLeft()) {
+      const { data: hotMems } = await supabase
+        .from("brain_memory_hot")
+        .select("id, content, source_module")
+        .order("created_at", { ascending: false })
+        .limit(1000);
 
-        if (hotMems && hotMems.length > 1) {
-          const seen = new Map<string, string>();
-          const toDelete: string[] = [];
-          for (const mem of hotMems) {
-            const key = `${mem.source_module}:${(mem.content || "").substring(0, 80)}`;
-            if (seen.has(key)) toDelete.push(mem.id);
-            else seen.set(key, mem.id);
+      if (hotMems && hotMems.length > 1) {
+        const seen = new Map<string, string>();
+        const toDelete: string[] = [];
+        for (const mem of hotMems) {
+          const key = `${mem.source_module}:${(mem.content || "").substring(0, 80)}`;
+          if (seen.has(key)) toDelete.push(mem.id);
+          else seen.set(key, mem.id);
+        }
+        if (toDelete.length > 0) {
+          for (let i = 0; i < toDelete.length; i += 500) {
+            await supabase.from("brain_memory_hot").delete().in("id", toDelete.slice(i, i + 500));
           }
-          if (toDelete.length > 0) {
-            for (let i = 0; i < toDelete.length; i += 500) {
-              await supabase.from("brain_memory_hot").delete().in("id", toDelete.slice(i, i + 500));
-            }
-            dupsRemoved += toDelete.length;
-          }
+          dupsRemoved += toDelete.length;
         }
       }
+    }
 
-      // 7f. Remove orphaned graph edges
-      if (timeLeft()) {
-        const { data: edges } = await supabase
-          .from("brain_graph_edges")
-          .select("id, source_id, target_id")
-          .limit(500);
+    // 7d. Remove orphaned graph edges
+    if (timeLeft()) {
+      const { data: edges } = await supabase
+        .from("brain_graph_edges")
+        .select("id, source_id, target_id")
+        .limit(500);
 
-        if (edges?.length) {
-          const nodeIds = new Set<string>();
-          for (const e of edges) { nodeIds.add(e.source_id); nodeIds.add(e.target_id); }
+      if (edges?.length) {
+        const nodeIds = new Set<string>();
+        for (const e of edges) { nodeIds.add(e.source_id); nodeIds.add(e.target_id); }
 
-          const { data: existingNodes } = await supabase
-            .from("brain_graph_nodes")
-            .select("id")
-            .in("id", Array.from(nodeIds));
+        const { data: existingNodes } = await supabase
+          .from("brain_graph_nodes")
+          .select("id")
+          .in("id", Array.from(nodeIds));
 
-          const existingSet = new Set((existingNodes ?? []).map((n: any) => n.id));
-          const orphans = edges.filter((e: any) => !existingSet.has(e.source_id) || !existingSet.has(e.target_id));
+        const existingSet = new Set((existingNodes ?? []).map((n: any) => n.id));
+        const orphans = edges.filter((e: any) => !existingSet.has(e.source_id) || !existingSet.has(e.target_id));
 
-          if (orphans.length > 0) {
-            await supabase.from("brain_graph_edges").delete().in("id", orphans.map((e: any) => e.id));
-            orphanEdgesRemoved += orphans.length;
-          }
+        if (orphans.length > 0) {
+          await supabase.from("brain_graph_edges").delete().in("id", orphans.map((e: any) => e.id));
+          orphanEdgesRemoved += orphans.length;
         }
       }
     }
