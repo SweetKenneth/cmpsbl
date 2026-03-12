@@ -478,7 +478,7 @@ function generateRestoreGuide(
   const tableRows = Object.entries(tableSummary)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, count]) => {
-      const status = count === -1 ? '❌ FAILED' : count === -2 ? '⏭️ SKIPPED (timeout)' : count.toLocaleString();
+      const status = count === -1 ? '❌ FAILED' : count === -2 ? '⏭️ SKIPPED (timeout)' : count === -3 ? '🔇 SKIPPED (telemetry)' : count.toLocaleString();
       return `| \`${name}\` | ${status} |`;
     })
     .join('\n');
