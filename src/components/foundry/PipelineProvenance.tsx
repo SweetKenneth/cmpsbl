@@ -88,7 +88,7 @@ function ProvenanceBody({
       if (recomputed === fingerprint) {
         toast.success('Discovery verified — structural fingerprint matches');
       } else {
-        toast.error('Fingerprint mismatch — artifact may have been modified');
+        toast.error('Fingerprint mismatch — discovery may have been modified');
       }
     } catch {
       setVerified(false);
