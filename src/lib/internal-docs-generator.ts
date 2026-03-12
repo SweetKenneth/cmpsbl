@@ -1482,7 +1482,7 @@ export function generateVaultDoc(): string {
     <li>Map system chain to target language primitives</li>
     <li>Generate language-specific scaffold with CJPI metadata</li>
     <li>Package with build configuration (Makefile, package.json, Cargo.toml, etc.)</li>
-    <li>Include standalone runtime (TypeScript native, others generate stubs)</li>
+    <li>Include CMPSBL® Mini-Runtime™ Engine (TypeScript native, others generate stubs)</li>
   </ol>
 
   <div class="stream-line"></div>

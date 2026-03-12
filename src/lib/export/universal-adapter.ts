@@ -2416,7 +2416,7 @@ engine = ${cls}()
 result = engine.execute({"key": "value"})
 \`\`\`
 
-### Using the Standalone Runtime (Advanced)
+### Using the CMPSBL® Mini-Runtime™ Engine (Advanced)
 \`\`\`typescript
 import { createRuntime } from './standalone-runtime';
 import { createDiscoveryEngine } from './standalone-discovery-engine';
