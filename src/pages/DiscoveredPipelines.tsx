@@ -58,13 +58,13 @@ export default function DiscoveredPipelines() {
                 AUTONOMOUS DISCOVERY
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
-                Discovered Pipelines
+                Discovered Memories
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-8">
                 The Memory Stream autonomously composed and scored these execution paths from{' '}
                 <span className="text-foreground font-medium">940+ capabilities</span> across{' '}
-                <span className="text-foreground font-medium">40 nodes</span>. Each pipeline chains
-                multiple Apex Discoveries into unified superpipelines — ranked by synergy,
+                <span className="text-foreground font-medium">40 nodes</span>. Each memory chains
+                multiple Apex Discoveries into unified super-memories — ranked by synergy,
                 node diversity, and aggregate quality.
               </p>
 
