@@ -57,7 +57,7 @@ cmpsbl-export-{language}-{timestamp}/
 ├── test/                         — Auto-generated test harness
 │   └── {discovery-name}_test.{ext}
 ├── _runtime/
-│   ├── standalone-runtime.ts     — Micro-Substrate runtime
+│   ├── standalone-runtime.ts     — CMPSBL® Mini-Runtime™ Engine
 │   └── standalone-discovery-engine.ts
 ├── Makefile                      — Build & test commands
 ├── {package-manifest}            — Language-specific (package.json, Cargo.toml, etc.)
