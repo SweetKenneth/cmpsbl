@@ -72,7 +72,7 @@ Each module autonomously discovers its own latent capabilities through introspec
 
 ## 4. S-Tier Vault (`/admin/s-tier-vault`)
 
-The S-Tier Vault is the admin-only repository of validated Crown Jewel discoveries.
+The S-Tier Vault is the admin-only repository of validated Apex Discoveries (294 entries across the 40-node matrix).
 
 ### 4.1 Features
 
