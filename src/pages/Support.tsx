@@ -137,7 +137,7 @@ const FAQ_ITEMS = [
 
 const CATEGORY_ICONS: Record<string, typeof Rocket> = {
   "Getting Started": Rocket,
-  "Pipelines & Foundry": Layers,
+  "Memories & Foundry": Layers,
   "Artifact Packs": Package,
   "Exports": Monitor,
   "Account & Access": KeyRound,
