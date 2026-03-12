@@ -191,7 +191,7 @@ export default function AIOperatingSystem() {
 
             <motion.p {...fadeUp(0.18)} className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed max-w-3xl italic">
               Every interaction flows through the <strong className="text-foreground not-italic">Memory Stream</strong> — where the system autonomously discovers,
-              packages, and exports reusable software pipelines. The rarest discoveries become specs for silicon computer chips.
+              packages, and exports reusable software memories. The rarest discoveries become specs for silicon computer chips.
             </motion.p>
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
