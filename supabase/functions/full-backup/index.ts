@@ -32,211 +32,207 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const admin = createAdminClient();
-    const zip = new JSZip();
-
     const projectRef = supabaseUrl.split('//')[1]?.split('.')[0] || 'unknown';
-    const startTime = Date.now();
-    const errors: string[] = [];
-
-    const manifest: Record<string, unknown> = {
-      created_at: new Date().toISOString(),
-      project_ref: projectRef,
-      format_version: '2.2.0',
-      backup_type: 'full',
-    };
-
-    console.log('[FullBackup] Starting backup...');
-
-    // ═══════════════════════════════════════════════════════
-    // 1. DISCOVER ALL TABLES via PostgREST OpenAPI spec
-    // ═══════════════════════════════════════════════════════
-    let tableNames: string[] = [];
-    try {
-      const openApiRes = await fetch(`${supabaseUrl}/rest/v1/`, {
-        headers: {
-          apikey: serviceKey,
-          Authorization: `Bearer ${serviceKey}`,
-        },
-      });
-      if (openApiRes.ok) {
-        const specText = await openApiRes.text();
-        // Add spec to zip as string directly, don't keep parsed object
-        zip.folder('schema')!.file('openapi-spec.json', specText);
-        const spec = JSON.parse(specText);
-        if (spec.paths) {
-          tableNames = Object.keys(spec.paths)
-            .map(p => p.replace(/^\//, ''))
-            .filter(n => n && !n.includes('/') && !n.startsWith('rpc/'));
-        }
-      } else {
-        errors.push(`OpenAPI discovery failed: HTTP ${openApiRes.status}`);
-        await openApiRes.text();
-      }
-    } catch (e) {
-      errors.push(`OpenAPI discovery error: ${String(e)}`);
-    }
-
-    console.log(`[FullBackup] Discovered ${tableNames.length} tables`);
-
-    // ═══════════════════════════════════════════════════════
-    // 2. EXPORT TABLE DATA — SEQUENTIAL to minimize memory
-    //    Each table is serialized to JSON string immediately
-    //    and added to zip, then data is released.
-    // ═══════════════════════════════════════════════════════
-    const dataFolder = zip.folder('data')!;
-    const tableSummary: Record<string, number> = {};
-    let totalRows = 0;
-    let timedOut = false;
-    let tablesExported = 0;
-
-    for (const table of tableNames) {
-      if (Date.now() - startTime > TIME_BUDGET_MS) {
-        timedOut = true;
-        // Mark remaining as skipped
-        for (let j = tableNames.indexOf(table); j < tableNames.length; j++) {
-          tableSummary[tableNames[j]] = -2;
-        }
-        errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${tableNames.length - tablesExported} tables.`);
-        break;
-      }
-
-      try {
-        // Stream pages directly into a JSON string to avoid holding arrays
-        let rowCount = 0;
-        let offset = 0;
-        let jsonParts: string[] = ['['];
-        let first = true;
-
-        while (true) {
-          if (Date.now() - startTime > TIME_BUDGET_MS) {
-            timedOut = true;
-            break;
-          }
-
-          const { data, error } = await admin
-            .from(table)
-            .select('*')
-            .range(offset, offset + PAGE_SIZE - 1);
-
-          if (error) {
-            errors.push(`${table}: ${error.message}`);
-            break;
-          }
-          if (!data || data.length === 0) break;
-
-          // Append each row as JSON, building the string incrementally
-          for (const row of data) {
-            if (!first) jsonParts.push(',');
-            jsonParts.push(JSON.stringify(row));
-            first = false;
-          }
-
-          rowCount += data.length;
-          if (data.length < PAGE_SIZE) break;
-          offset += PAGE_SIZE;
-        }
-
-        jsonParts.push(']');
-
-        if (rowCount > 0) {
-          // Join and add to zip, then release
-          dataFolder.file(`${table}.json`, jsonParts.join('\n'));
-        }
-        // Release references
-        jsonParts = [];
-
-        tableSummary[table] = rowCount;
-        totalRows += rowCount;
-        tablesExported++;
-      } catch (e) {
-        errors.push(`${table}: ${String(e)}`);
-        tableSummary[table] = -1;
-        tablesExported++;
-      }
-    }
-
-    manifest.tables = tableSummary;
-    manifest.table_count = tableNames.length;
-    manifest.tables_exported = tablesExported;
-    manifest.total_rows = totalRows;
-    manifest.timed_out = timedOut;
-    console.log(`[FullBackup] Exported ${totalRows} rows across ${tablesExported}/${tableNames.length} tables`);
-
-    // ═══════════════════════════════════════════════════════
-    // 3. STORAGE — list buckets and files (skip if timed out)
-    // ═══════════════════════════════════════════════════════
-    const storageFolder = zip.folder('storage')!;
-    const storageSummary: Record<string, number> = {};
-    if (!timedOut) {
-      try {
-        const { data: buckets } = await admin.storage.listBuckets();
-        if (buckets && buckets.length > 0) {
-          storageFolder.file('buckets.json', JSON.stringify(buckets, null, 2));
-          manifest.storage_buckets = buckets.map(b => ({ name: b.name, public: b.public }));
-
-          for (const bucket of buckets) {
-            if (Date.now() - startTime > TIME_BUDGET_MS) break;
-            try {
-              const allFiles = await listAllStorageFiles(admin, bucket.name);
-              if (allFiles.length > 0) {
-                storageFolder.file(`${bucket.name}-files.json`, JSON.stringify(allFiles, null, 2));
-              }
-              storageSummary[bucket.name] = allFiles.length;
-            } catch (e) {
-              errors.push(`storage/${bucket.name}: ${String(e)}`);
-              storageSummary[bucket.name] = -1;
-            }
-          }
-        }
-      } catch (e) {
-        errors.push(`Storage listing: ${String(e)}`);
-      }
-    }
-    manifest.storage_files = storageSummary;
-
-    // ═══════════════════════════════════════════════════════
-    // 4. EDGE FUNCTIONS NOTE
-    // ═══════════════════════════════════════════════════════
-    zip.file('edge-functions-note.txt', `Edge functions are deployed from supabase/functions/ in the source code.\nRedeploy with: npx supabase functions deploy\n`);
-
-    // ═══════════════════════════════════════════════════════
-    // 5. ERRORS LOG
-    // ═══════════════════════════════════════════════════════
-    if (errors.length > 0) {
-      zip.file('ERRORS.log', errors.join('\n'));
-      manifest.errors = errors.length;
-    }
-
-    // ═══════════════════════════════════════════════════════
-    // 6. MANIFEST + RESTORE.md
-    // ═══════════════════════════════════════════════════════
-    manifest.duration_ms = Date.now() - startTime;
-    zip.file('manifest.json', JSON.stringify(manifest, null, 2));
-    zip.file('RESTORE.md', generateRestoreGuide(manifest, tableSummary, storageSummary, errors));
-
-    // ═══════════════════════════════════════════════════════
-    // GENERATE ZIP — use STORE (no compression) to save CPU+memory
-    // ═══════════════════════════════════════════════════════
-    console.log(`[FullBackup] Generating ZIP...`);
-    const zipBytes = await zip.generateAsync({
-      type: 'uint8array',
-      compression: 'STORE',  // No compression = much less memory + CPU
-    });
 
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, '0');
     const ts = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
     const filename = `cmpsbl-full-backup-${ts}.zip`;
 
-    console.log(`[FullBackup] Complete. ${filename} (${(zipBytes.length / 1024 / 1024).toFixed(2)} MB) in ${Date.now() - startTime}ms`);
+    const { readable, writable } = new TransformStream<Uint8Array>();
+    const backupStart = Date.now();
 
-    return new Response(zipBytes, {
+    (async () => {
+      const writer = writable.getWriter();
+      const zip = new ZipStreamWriter(writer);
+
+      try {
+        const errors: string[] = [];
+        const manifest: Record<string, unknown> = {
+          created_at: new Date().toISOString(),
+          project_ref: projectRef,
+          format_version: '2.3.0',
+          backup_type: 'full',
+          packaging: 'streaming-zip',
+          chunked_table_exports: true,
+        };
+
+        console.log('[FullBackup] Starting backup...');
+
+        // ═══════════════════════════════════════════════════════
+        // 1. DISCOVER ALL TABLES via PostgREST OpenAPI spec
+        // ═══════════════════════════════════════════════════════
+        let tableNames: string[] = [];
+        try {
+          const openApiRes = await fetch(`${supabaseUrl}/rest/v1/`, {
+            headers: {
+              apikey: serviceKey,
+              Authorization: `Bearer ${serviceKey}`,
+            },
+          });
+
+          if (openApiRes.ok) {
+            const specText = await openApiRes.text();
+            await zip.addTextFile('schema/openapi-spec.json', specText);
+
+            const spec = JSON.parse(specText);
+            if (spec.paths) {
+              tableNames = Object.keys(spec.paths)
+                .map((p) => p.replace(/^\//, ''))
+                .filter((n) => n && !n.includes('/') && !n.startsWith('rpc/'));
+            }
+          } else {
+            errors.push(`OpenAPI discovery failed: HTTP ${openApiRes.status}`);
+            await openApiRes.text();
+          }
+        } catch (e) {
+          errors.push(`OpenAPI discovery error: ${String(e)}`);
+        }
+
+        console.log(`[FullBackup] Discovered ${tableNames.length} tables`);
+
+        // ═══════════════════════════════════════════════════════
+        // 2. EXPORT TABLE DATA — CHUNKED + STREAMED TO ZIP
+        //    Each page is written as its own file to avoid huge in-memory strings.
+        // ═══════════════════════════════════════════════════════
+        const tableSummary: Record<string, number> = {};
+        const tableParts: Record<string, number> = {};
+        let totalRows = 0;
+        let timedOut = false;
+        let tablesExported = 0;
+
+        for (const table of tableNames) {
+          if (Date.now() - backupStart > TIME_BUDGET_MS) {
+            timedOut = true;
+            for (let j = tableNames.indexOf(table); j < tableNames.length; j++) {
+              tableSummary[tableNames[j]] = -2;
+              tableParts[tableNames[j]] = 0;
+            }
+            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${tableNames.length - tablesExported} tables.`);
+            break;
+          }
+
+          try {
+            let rowCount = 0;
+            let offset = 0;
+            let partCount = 0;
+
+            while (true) {
+              if (Date.now() - backupStart > TIME_BUDGET_MS) {
+                timedOut = true;
+                break;
+              }
+
+              const { data, error } = await admin
+                .from(table)
+                .select('*')
+                .range(offset, offset + PAGE_SIZE - 1);
+
+              if (error) {
+                errors.push(`${table}: ${error.message}`);
+                break;
+              }
+
+              if (!data || data.length === 0) break;
+
+              partCount += 1;
+              const partName = `data/${table}/part-${String(partCount).padStart(5, '0')}.json`;
+              await zip.addTextFile(partName, JSON.stringify(data));
+
+              rowCount += data.length;
+              if (data.length < PAGE_SIZE) break;
+              offset += PAGE_SIZE;
+            }
+
+            tableSummary[table] = rowCount;
+            tableParts[table] = partCount;
+            totalRows += rowCount;
+            tablesExported += 1;
+          } catch (e) {
+            errors.push(`${table}: ${String(e)}`);
+            tableSummary[table] = -1;
+            tableParts[table] = 0;
+            tablesExported += 1;
+          }
+        }
+
+        manifest.tables = tableSummary;
+        manifest.table_parts = tableParts;
+        manifest.table_count = tableNames.length;
+        manifest.tables_exported = tablesExported;
+        manifest.total_rows = totalRows;
+        manifest.timed_out = timedOut;
+        console.log(`[FullBackup] Exported ${totalRows} rows across ${tablesExported}/${tableNames.length} tables`);
+
+        // ═══════════════════════════════════════════════════════
+        // 3. STORAGE — list buckets and files (skip if timed out)
+        // ═══════════════════════════════════════════════════════
+        const storageSummary: Record<string, number> = {};
+        if (!timedOut) {
+          try {
+            const { data: buckets } = await admin.storage.listBuckets();
+            if (buckets && buckets.length > 0) {
+              await zip.addTextFile('storage/buckets.json', JSON.stringify(buckets, null, 2));
+              manifest.storage_buckets = buckets.map((b) => ({ name: b.name, public: b.public }));
+
+              for (const bucket of buckets) {
+                if (Date.now() - backupStart > TIME_BUDGET_MS) break;
+
+                try {
+                  const allFiles = await listAllStorageFiles(admin, bucket.name);
+                  if (allFiles.length > 0) {
+                    await zip.addTextFile(`storage/${bucket.name}-files.json`, JSON.stringify(allFiles, null, 2));
+                  }
+                  storageSummary[bucket.name] = allFiles.length;
+                } catch (e) {
+                  errors.push(`storage/${bucket.name}: ${String(e)}`);
+                  storageSummary[bucket.name] = -1;
+                }
+              }
+            }
+          } catch (e) {
+            errors.push(`Storage listing: ${String(e)}`);
+          }
+        }
+        manifest.storage_files = storageSummary;
+
+        // ═══════════════════════════════════════════════════════
+        // 4. EDGE FUNCTIONS NOTE
+        // ═══════════════════════════════════════════════════════
+        await zip.addTextFile(
+          'edge-functions-note.txt',
+          'Edge functions are deployed from supabase/functions/ in the source code.\nRedeploy with: npx supabase functions deploy\n',
+        );
+
+        // ═══════════════════════════════════════════════════════
+        // 5. ERRORS LOG
+        // ═══════════════════════════════════════════════════════
+        if (errors.length > 0) {
+          await zip.addTextFile('ERRORS.log', errors.join('\n'));
+          manifest.errors = errors.length;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 6. MANIFEST + RESTORE.md
+        // ═══════════════════════════════════════════════════════
+        manifest.duration_ms = Date.now() - backupStart;
+        await zip.addTextFile('manifest.json', JSON.stringify(manifest, null, 2));
+        await zip.addTextFile('RESTORE.md', generateRestoreGuide(manifest, tableSummary, storageSummary, errors));
+
+        await zip.close();
+        console.log(`[FullBackup] Complete. ${filename} in ${Date.now() - backupStart}ms`);
+      } catch (streamErr) {
+        console.error('[FullBackup] Stream generation error:', streamErr);
+        await zip.abort(streamErr);
+      }
+    })();
+
+    return new Response(readable, {
       status: 200,
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': String(zipBytes.length),
       },
     });
   } catch (err) {
