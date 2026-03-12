@@ -128,14 +128,27 @@ Deno.serve(async (req: Request) => {
         let timedOut = false;
         let tablesExported = 0;
 
-        for (const table of tableNames) {
-          if (Date.now() - backupStart > TIME_BUDGET_MS) {
+        // Separate skipped tables and exportable tables
+        const skippedTables = tableNames.filter(t => SKIP_TABLES.has(t));
+        const exportTables = tableNames.filter(t => !SKIP_TABLES.has(t));
+
+        if (skippedTables.length > 0) {
+          console.log(`[FullBackup] Skipping ${skippedTables.length} telemetry tables: ${skippedTables.join(', ')}`);
+          for (const t of skippedTables) {
+            tableSummary[t] = -3; // -3 = intentionally skipped
+            tableParts[t] = 0;
+          }
+        }
+
+        for (const table of exportTables) {
+          // Reserve time for ZIP finalization
+          if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
             timedOut = true;
-            for (let j = tableNames.indexOf(table); j < tableNames.length; j++) {
-              tableSummary[tableNames[j]] = -2;
-              tableParts[tableNames[j]] = 0;
+            for (let j = exportTables.indexOf(table); j < exportTables.length; j++) {
+              tableSummary[exportTables[j]] = -2;
+              tableParts[exportTables[j]] = 0;
             }
-            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${tableNames.length - tablesExported} tables.`);
+            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${exportTables.length - tablesExported} remaining tables.`);
             break;
           }
 
@@ -145,7 +158,7 @@ Deno.serve(async (req: Request) => {
             let partCount = 0;
 
             while (true) {
-              if (Date.now() - backupStart > TIME_BUDGET_MS) {
+              if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
                 timedOut = true;
                 break;
               }
