@@ -176,9 +176,12 @@ export default function OwnerReports() {
             <h1 className="text-lg font-semibold">Owner Reports</h1>
             <p className="text-xs text-muted-foreground">DECODE Mode B — 3-Hour Intelligence Cycle</p>
           </div>
-          <Badge variant="outline" className="ml-auto text-[10px]">
-            {reports.length} report{reports.length !== 1 ? "s" : ""}
-          </Badge>
+          <div className="ml-auto flex items-center gap-2">
+            <FullBackupButton />
+            <Badge variant="outline" className="text-[10px]">
+              {reports.length} report{reports.length !== 1 ? "s" : ""}
+            </Badge>
+          </div>
         </div>
 
         {/* Report List */}
