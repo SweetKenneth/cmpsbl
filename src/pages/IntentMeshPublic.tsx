@@ -131,7 +131,7 @@ export default function IntentMeshPublic() {
     <>
       <SEO
         title="Intent Mesh — Module Intelligence | CMPSBL"
-        description="Autonomous cross-module capability discovery and composition across execution surfaces. Self-learning resolvers with pipeline crystallization."
+        description="Autonomous cross-module capability discovery and composition across execution surfaces. Self-learning resolvers with memory crystallization."
         image="https://cmpsbl.com/og/intent-mesh.jpg"
         keywords={['intent mesh', 'cross-module discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
         breadcrumbs={[

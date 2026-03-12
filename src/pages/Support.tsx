@@ -264,7 +264,7 @@ export default function Support() {
                 <Input
                   value={faqSearch}
                   onChange={(e) => setFaqSearch(e.target.value)}
-                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'pipeline'..."
+                  placeholder="Search FAQs — e.g. 'memory', 'pricing', 'packs'..."
                   className="pl-10 bg-card/50 border-border/40 backdrop-blur-sm"
                 />
               </div>

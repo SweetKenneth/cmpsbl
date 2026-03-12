@@ -30,7 +30,7 @@ export default function TheMemoryStream() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Feedback Loop</h2>
       <p>The Memory Stream closed the loop. Interactions produce signals. Signals crystallize into software. Software generates new interactions. The substrate became self-feeding — each cycle producing more value than the last. This is what we mean by <Link to="/blog/signal-to-silicon" className="text-primary hover:underline">Signal to Silicon</Link>.</p>
-      <p>We measured the compound effect over three months. In January, the Memory Stream produced 23 deployable artifacts from its crystallization pipeline. In February, 41. In March, 67. The acceleration comes from two sources: more signals entering the stream (as the substrate handles more traffic), and better crystallization efficiency (as the pipeline itself improves from its own learnings). The system that produces artifacts is itself improving at producing artifacts. It's recursive improvement — the kind of thing that sounds like science fiction until you watch it happen in your own logs.</p>
+      <p>We measured the compound effect over three months. In January, the Memory Stream produced 23 deployable artifacts from its crystallization process. In February, 41. In March, 67. The acceleration comes from two sources: more signals entering the stream (as the substrate handles more traffic), and better crystallization efficiency (as the process itself improves from its own learnings). The system that produces artifacts is itself improving at producing artifacts. It's recursive improvement — the kind of thing that sounds like science fiction until you watch it happen in your own logs.</p>
     </BlogArticleLayout>
   );
 }

@@ -218,12 +218,12 @@ export function FoundryMiningPanel({
             className="text-center py-8 sm:py-12"
           >
             <div className="text-muted-foreground/60 font-mono text-sm mb-2">
-              No new pipelines discovered this cycle.
+              No new memories discovered this cycle.
             </div>
             <div className="text-xs text-muted-foreground/40">
               {lastResult.rerollCredit
                 ? 'Reroll credit earned — try again'
-                : 'All current pipelines already in your vault'}
+                : 'All current memories already in your vault'}
             </div>
           </motion.div>
         )}

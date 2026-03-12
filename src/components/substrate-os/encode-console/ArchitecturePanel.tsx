@@ -160,12 +160,12 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shad
           />
         )}
 
-        {/* Execution Pipeline */}
+        {/* Execution Flow */}
         <Card className="border-border/20">
           <CardHeader className="py-2.5 px-3">
             <CardTitle className="text-xs font-semibold flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 text-primary" />
-              Execution Pipeline
+              Execution Flow
             </CardTitle>
           </CardHeader>
           <CardContent className="px-3 pb-3">

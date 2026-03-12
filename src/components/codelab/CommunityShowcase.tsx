@@ -116,7 +116,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
     description: "ETL memory with automatic schema detection, anomaly flagging, and self-healing capabilities. Learns optimal processing patterns over time.",
     author: "dataops",
     category: "data",
-    tags: ["data", "etl", "pipeline", "automation"],
+    tags: ["data", "etl", "memory", "automation"],
     modules: ["core", "vision", "brain", "evolution"],
     stars: 334,
     forks: 87,
