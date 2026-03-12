@@ -301,7 +301,7 @@ export default function Upgrade() {
               Memory Stream
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-center">
-              The system <strong className="text-foreground">discovers pipelines</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
+              The system <strong className="text-foreground">discovers memories</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
             </p>
           </motion.div>
 
