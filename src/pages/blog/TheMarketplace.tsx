@@ -14,7 +14,7 @@ export default function TheMarketplace() {
     <BlogArticleLayout
       slug={SLUG}
       title="The Marketplace"
-      subtitle="Discovery, preview, and deployment of substrate artifacts"
+      subtitle="Discovery, preview, and deployment of substrate discoveries"
       date="October 25, 2025"
       readTime="14 min read"
       heroImage={heroImg}
