@@ -234,7 +234,7 @@ function PricingSection() {
     {
       name: 'Free', price: '$0', interval: 'forever',
       desc: 'Explore the substrate. Full runtime access.',
-      features: ['3 pipeline slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
+      features: ['3 memory slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
       cta: 'Get Started', href: '/auth', highlight: false,
     },
     {
