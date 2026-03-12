@@ -31,7 +31,7 @@ const LINK_GRAPH: LinkNode[] = [
 
   // ── Products ─────────────────────────────────────────
   { path: '/composable-cognitives', label: 'Composable Agents', tags: ['agent', 'cognitive', 'ai', 'evolution'] },
-  { path: '/packs', label: 'Artifact Packs', tags: ['capabilities', 'store', 'templates', 'modules'] },
+  { path: '/packs', label: 'Capability Packs', tags: ['capabilities', 'store', 'templates', 'nodes'] },
   { path: '/enterprise', label: 'Enterprise', tags: ['enterprise', 'solutions', 'compliance', 'governance'] },
   { path: '/upgrade', label: 'Upgrade & Pricing', tags: ['pricing', 'plans', 'upgrade'] },
   { path: '/gaming', label: 'World Engine', tags: ['gaming', 'npc', 'memory', 'agent'] },

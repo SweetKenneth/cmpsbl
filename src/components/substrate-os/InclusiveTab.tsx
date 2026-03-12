@@ -5,9 +5,9 @@
  * Full glue layer integration across 40 nodes:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
- * - DEFENSE: severity → defense risk pipeline
+ * - DEFENSE: severity → defense risk chain
  * - EVOLUTION: regressions → proposals
- * - TEMPLATES: scan→repair→validate→approve pipeline
+ * - TEMPLATES: scan→repair→validate→approve chain
  * - MARKETPLACE: block publishing on critical violations
  * - ACCESS: Role-based capability gating
  */

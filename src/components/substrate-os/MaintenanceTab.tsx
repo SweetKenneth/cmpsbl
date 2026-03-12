@@ -254,7 +254,7 @@ export function MaintenanceTab() {
           </TabsTrigger>
         </TabsList>
 
-        {/* Circuit Breakers */}
+        {/* Safety Switches */}
         <TabsContent value="status" className="space-y-4 mt-4">
           {isLoadingCB ? (
             <div className="flex items-center justify-center py-12">

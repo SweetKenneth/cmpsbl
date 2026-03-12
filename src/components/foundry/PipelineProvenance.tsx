@@ -269,7 +269,7 @@ function ProvenanceBody({
             className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40 disabled:opacity-50"
           >
             <CheckCircle className="w-3 h-3" />
-            {verifying ? 'Verifying…' : 'Verify Artifact'}
+            {verifying ? 'Verifying…' : 'Verify Discovery'}
           </button>
         )}
         <button

@@ -256,7 +256,7 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4">Fairness & Consistency</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every artifact, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
+              Every capability, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
             </p>
             <div className="bg-muted/30 border border-border/50 rounded-lg p-4 text-sm text-muted-foreground">
               <strong className="text-foreground">Important:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair market value, not guaranteed sale prices. Actual market outcomes depend on demand, distribution, packaging, and timing.
