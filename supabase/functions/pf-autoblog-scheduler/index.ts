@@ -356,7 +356,7 @@ serve(async (req) => {
         posts_today: (postsToday || 0) + 1,
         posts_this_week: (postsThisWeek || 0) + 1,
         topics_remaining: freshTopics.length - 1,
-        ai_generated: !!lovableKey,
+        ai_provider: aiProvider,
         execution_ms: Date.now() - startMs,
       },
     });
