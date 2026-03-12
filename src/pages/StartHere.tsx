@@ -66,7 +66,7 @@ const quickStarts = [
   { icon: Brain, text: "Add persistent memory to any AI agent", link: "/persistent-memory" },
   { icon: Moon, text: "Enable DREAM cycles for offline synthesis", link: "/documentation" },
   { icon: Zap, text: "Download a Mind — a production AI agent you own", link: "/composable-cognitives" },
-  { icon: Code, text: "Activate pipeline packs for advanced capabilities", link: "/foundry" },
+  { icon: Code, text: "Activate memory packs for advanced capabilities", link: "/foundry" },
   { icon: Shield, text: "Deploy with governed evolution and rollback", link: "/evolution" },
   { icon: BookOpen, text: "Explore the full technical documentation", link: "/documentation" },
 ];
