@@ -121,10 +121,12 @@ A fully portable runtime and discovery engine that operate without the full subs
 | Metric | Value |
 |--------|-------|
 | Total discoveries (all time) | 1,143+ |
-| S-Tier discoveries | ~120 |
+| S-Tier Vault entries | 294 |
+| Composable Engines | 54 (4 META, 10 APEX, 16 ELITE, 24 CORE) |
 | Discovery rate | ~130/hour at full throttle |
 | Average CJPI (S-Tier) | 89.2 |
-| Unique module chains | 400+ |
+| Unique module chains | 940+ |
+| Node coverage | 40/40 (100%) |
 
 ## 7. Security Classification
 
