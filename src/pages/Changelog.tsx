@@ -840,9 +840,9 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-005",
     fossilized: "2026-03-07",
     origin: "governance",
-    stimulus: "The evolution pipeline needed a visual control surface — proposals, shadow runs, and promotions were terminal-only operations",
+    stimulus: "The evolution chain needed a visual control surface — proposals, shadow runs, and promotions were terminal-only operations",
     adaptations: [
-      "Evolution control center built with a 6-stage animated pipeline visualization",
+      "Evolution control center built with a 6-stage animated chain visualization",
       "One-click rollback and false-positive feedback integrated into the review flow",
       "Impact preview shows exactly what a proposal would change before any mutation occurs",
     ],
