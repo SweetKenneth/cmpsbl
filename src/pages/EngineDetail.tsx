@@ -135,6 +135,33 @@ export default function EngineDetail() {
       setLicensed(true);
       return;
     }
+
+    // Engines with freeForSubscribers use their own checkout function
+    if (engine.freeForSubscribers) {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('failsafe-engine-checkout', {
+          body: { engine_slug: engine.slug },
+        });
+        if (error) throw error;
+        // If subscriber, they get free access
+        if ((data as any)?.free_access) {
+          toast.success(`Included with your subscription! ${engine.codename} is ready to download.`);
+          setLicensed(true);
+          return;
+        }
+        // Otherwise redirect to Stripe checkout
+        if ((data as any)?.url) {
+          window.location.href = (data as any).url;
+        }
+      } catch {
+        toast.error("Checkout failed. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     setLoading(true);
     try {
       const checkoutFn = engine.isSubscription ? "cmpsbl-engine-checkout" : "standalone-engine-checkout";
@@ -218,6 +245,9 @@ export default function EngineDetail() {
               <div>
                 <h2 className="text-xs font-mono text-muted-foreground tracking-[0.2em] uppercase mb-3">MISSION BRIEFING</h2>
                 <p className="text-foreground leading-relaxed text-base">{engine.briefing}</p>
+                {engine.longDescription && (
+                  <p className="text-foreground/80 leading-relaxed text-sm mt-4">{engine.longDescription}</p>
+                )}
               </div>
 
               <div>
@@ -267,7 +297,14 @@ export default function EngineDetail() {
                     <p className="text-sm text-muted-foreground mt-1">
                       {engine.isFree ? "Free — no payment required" : engine.isSubscription ? "Annual subscription" : "One-time license — yours forever"}
                     </p>
-                    {!engine.isSubscription && !engine.isFree && (
+                    {engine.freeForSubscribers && (
+                      <div className="mt-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                        <p className="text-xs text-emerald-400 font-semibold">
+                          ✦ Free with Creator ($29/mo) or above subscription
+                        </p>
+                      </div>
+                    )}
+                    {!engine.isSubscription && !engine.isFree && !engine.freeForSubscribers && (
                       <p className="text-sm text-primary font-semibold mt-1.5">
                         {engine.bundleDisplay} when bundled with an agent (40% off)
                       </p>

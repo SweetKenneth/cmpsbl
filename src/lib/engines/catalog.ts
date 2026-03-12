@@ -37,6 +37,12 @@ export interface Engine {
   externalPath?: string;
   /** True if engine is free (no checkout required) */
   isFree?: boolean;
+  /** True if engine should be featured prominently */
+  isFeatured?: boolean;
+  /** True if engine is free for subscribers (Creator+ tier) */
+  freeForSubscribers?: boolean;
+  /** Extended description for the detail page */
+  longDescription?: string;
 }
 
 export const ENGINES: Engine[] = [
@@ -551,6 +557,26 @@ export const ENGINES: Engine[] = [
     briefing: "ETERNUS chains SOVEREIGN → SERAPH → MONOLITH → GOLEM into an autonomous governance superpipeline. SOVEREIGN provides policy-gated governance, SERAPH ensures every action meets ethical standards, MONOLITH maintains immutable state for full auditability, and GOLEM automates workflow execution — creating an autonomous system that governs itself ethically, transparently, and indefinitely.",
     capabilities: ["SOVEREIGN stage — policy-gated governance with regulatory compliance", "SERAPH stage — ethical constraint reasoning and value alignment", "MONOLITH stage — immutable state management for full audit trail", "GOLEM stage — autonomous workflow execution and goal tracking", "Compound synergy: 4 engines × 5-6 primitives = 22 primitives orchestrated", "Self-governing: operates indefinitely without human oversight while maintaining ethical alignment"],
     threatLevel: "TRANSCENDENT — META-GOVERNANCE", clearance: "LEVEL 11 — META-TIER",
+  },
+  // ─── FEATURED ──────────────────────────────────────────
+  {
+    slug: "failsafe", codename: "FAILSAFE", tagline: "Disaster Recovery Engine",
+    priceStandalone: 3900, priceBundled: 3900, priceDisplay: "$39", bundleDisplay: "$39",
+    priceId: "price_1TAFfAQ7FtTiAL4acetUfMuY", icon: Database, color: "150 70% 45%", tier: "CORE",
+    edition: "Edition 001 — Sealed Runtime",
+    briefing: "One-click disaster recovery for your entire AI system. FAILSAFE generates a complete, portable ZIP backup of your source code, configurations, migrations, and database state — with an AI-readable restore guide so any agent can reconstruct your environment from scratch.",
+    capabilities: [
+      "One-click full system backup to portable ZIP",
+      "Memory-efficient streaming compression for large codebases",
+      "Sequential table export with adaptive retry logic",
+      "AI-ready RESTORE.md for automated agent-driven reconstruction",
+      "Pattern-based exclusion of high-volume telemetry tables",
+      "Permanent metadata recording with backup audit trail",
+    ],
+    threatLevel: "CRITICAL — CONTINUITY OPS", clearance: "LEVEL 7 — RESTRICTED",
+    isFeatured: true,
+    freeForSubscribers: true,
+    longDescription: "FAILSAFE is your insurance policy against catastrophic data loss and provider lock-in. With a single click, it generates a complete, portable ZIP archive of your entire system — all source code, database configurations, migration history, and a full snapshot of your active data tables. The archive includes a detailed INSTALL.md guide written for both humans and AI agents, so reconstruction is as simple as handing the ZIP to your agent and saying 'set this up.' Whether you're migrating providers, creating a disaster recovery checkpoint, or archiving a production state, FAILSAFE ensures you're never locked in and never caught without a restore point. Free for all Creator ($29/mo) and above subscribers. $39 one-time for everyone else.",
   },
 ];
 
