@@ -1,5 +1,5 @@
 /**
- * INCLUSIVE Module Tab — Human Compatibility Pipeline
+ * INCLUSIVE Node Tab — Human Compatibility System
  * WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
  * Full glue layer integration across 40 nodes:
