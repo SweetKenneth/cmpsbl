@@ -116,7 +116,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "What subscription tiers are available?",
-    answer: "Builder (Free) — Full runtime, 3 pipeline slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom pipelines, SLA.",
+    answer: "Builder (Free) — Full runtime, 3 memory slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom memories, SLA.",
   },
   {
     category: "Account & Access",
