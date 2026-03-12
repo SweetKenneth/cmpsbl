@@ -65,7 +65,26 @@ interface Stratum {
 
 const stratumIronclad: Specimen[] = [
   {
-    id: "IRNC-015",
+    id: "IRNC-016",
+    fossilized: "2026-03-12",
+    origin: "survival",
+    stimulus: "Telemetry write volume and memory scan overhead were creating unnecessary database pressure — the substrate needed to become quieter without losing awareness",
+    adaptations: [
+      "Telemetry emitters gained temporal deduplication — repeated signals within a window are absorbed, while critical events always persist immediately",
+      "Mesh broadcast persistence reduced by 80% through probabilistic sampling, preserving full in-memory routing fidelity",
+      "Analytics events are now buffered client-side and flushed in batches, replacing per-event persistence",
+      "Memory duplicate detection replaced pairwise scanning with fingerprint-bucketed grouping, collapsing scan complexity from quadratic to linear",
+      "DOM health measurements are cached with a time-to-live window, eliminating repeated full-tree traversals during observation cycles",
+      "Six targeted database indexes added across high-traffic communication and memory tables for faster query paths",
+    ],
+    phenotype: [
+      "The substrate writes less but knows just as much — observation is decoupled from persistence",
+      "Memory self-maintenance scales linearly regardless of tier size",
+      "Infrastructure queries that previously scanned full tables now resolve through indexed lookups",
+    ],
+    affectedNodes: ["SYSTEM", "BRAIN", "MEMORY", "OBSERVER"],
+  },
+  {
     fossilized: "2026-03-06",
     origin: "architecture",
     stimulus: "Subpages lacked cohesive visual polish — interactions felt flat, navigation lacked animated feedback, and sections blended together without rhythm",
