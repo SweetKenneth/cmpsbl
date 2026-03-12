@@ -116,6 +116,23 @@ function scrubPII(data: Record<string, unknown>): Record<string, unknown> {
   return cleaned;
 }
 
+// ═══════════════════════════════════════════════════════════════
+// EMISSION THROTTLE — deduplicate by event type within a time window
+// Critical/rare events always persist; high-frequency events are sampled
+// ═══════════════════════════════════════════════════════════════
+
+const ALWAYS_PERSIST: Set<string> = new Set([
+  'evolution_run_created', 'evolution_run_aborted', 'evolution_run_failed',
+  'evolution_verified', 'evolution_receipt_created',
+  'production_execute_started', 'production_execute_completed', 'production_execute_failed',
+  'self_repair_started', 'self_repair_completed',
+  'circuit_tripped', 'circuit_reset',
+  'evolve_error',
+]);
+
+const DEDUPE_WINDOW_MS = 30_000; // 30s dedup window for non-critical events
+const lastEmitByType = new Map<string, number>();
+
 export function emitEvolveEvent(type: EvolveEventType, data: Record<string, unknown>): void {
   // Hardening 7: Scrub PII from telemetry data
   const cleanData = scrubPII(data);
@@ -126,7 +143,7 @@ export function emitEvolveEvent(type: EvolveEventType, data: Record<string, unkn
     data: cleanData,
   };
 
-  // Buffer locally
+  // Buffer locally (always — this is in-memory only)
   eventBuffer.push(event);
   if (eventBuffer.length > MAX_BUFFER_SIZE) {
     eventBuffer.shift();
@@ -136,6 +153,16 @@ export function emitEvolveEvent(type: EvolveEventType, data: Record<string, unkn
   if (typeof window !== 'undefined' && window.location?.hostname === 'localhost') {
     console.log(`[Evolve:${type}]`, cleanData);
   }
+
+  // Throttle DB persistence: critical events always persist, others deduped
+  const now = Date.now();
+  if (!ALWAYS_PERSIST.has(type)) {
+    const lastEmit = lastEmitByType.get(type);
+    if (lastEmit && now - lastEmit < DEDUPE_WINDOW_MS) {
+      return; // Skip DB write — same event type emitted recently
+    }
+  }
+  lastEmitByType.set(type, now);
 
   // Persist to database (non-blocking)
   persistEvent(event).catch(() => { /* silent */ });

@@ -316,10 +316,18 @@ export { flushGapDetection };
  * Translates each resolver response into an INTENT-voice event with
  * signal variety based on actual resolution outcomes.
  */
+// Sampling counter — only 1 in 5 intent broadcasts persist to mesh_comms
+let commSampleCounter = 0;
+const COMM_SAMPLE_RATE = 5; // persist every Nth intent
+
 async function emitCommEvents(
   intent: Omit<MeshIntent, 'id' | 'timestamp'>,
   responses: ResolverResponse[]
 ): Promise<void> {
+  // Sample: skip persistence for most intents to reduce DB write volume
+  commSampleCounter++;
+  if (commSampleCounter % COMM_SAMPLE_RATE !== 0) return;
+
   try {
     const { createCommEvent } = await import('./intent-voice');
     const events: Array<Record<string, unknown>> = [];

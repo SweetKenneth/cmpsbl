@@ -18,20 +18,46 @@ interface AnalyticsEvent {
 
 /**
  * Track an analytics event.
+ * Batched: events are buffered and flushed every 10s or when buffer hits 20 events.
  */
-export async function trackEvent(event: AnalyticsEvent): Promise<void> {
+const analyticsBuffer: Record<string, unknown>[] = [];
+const ANALYTICS_FLUSH_INTERVAL = 10_000;
+const ANALYTICS_MAX_BUFFER = 20;
+let analyticsFlushTimer: ReturnType<typeof setTimeout> | null = null;
+
+async function flushAnalyticsBuffer(): Promise<void> {
+  if (analyticsBuffer.length === 0) return;
+  const batch = analyticsBuffer.splice(0, analyticsBuffer.length);
   try {
-    await supabase.from('analytics_events').insert([{
-      event_type: event.eventType,
-      category: event.category,
-      label: event.label,
-      value: event.value,
-      page: event.page ?? (typeof window !== 'undefined' ? window.location.pathname : null),
-      metadata: event.metadata as any ?? null,
-      session_id: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('session_id') : null,
-    }]);
+    await supabase.from('analytics_events').insert(batch as any[]);
   } catch {
     // Silent fail
+  }
+}
+
+function scheduleFlush(): void {
+  if (analyticsFlushTimer) return;
+  analyticsFlushTimer = setTimeout(() => {
+    analyticsFlushTimer = null;
+    flushAnalyticsBuffer().catch(() => {});
+  }, ANALYTICS_FLUSH_INTERVAL);
+}
+
+export async function trackEvent(event: AnalyticsEvent): Promise<void> {
+  analyticsBuffer.push({
+    event_type: event.eventType,
+    category: event.category,
+    label: event.label,
+    value: event.value,
+    page: event.page ?? (typeof window !== 'undefined' ? window.location.pathname : null),
+    metadata: event.metadata as any ?? null,
+    session_id: typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('session_id') : null,
+  });
+
+  if (analyticsBuffer.length >= ANALYTICS_MAX_BUFFER) {
+    await flushAnalyticsBuffer();
+  } else {
+    scheduleFlush();
   }
 }
 
