@@ -72,7 +72,7 @@ export const BUILTIN_ALIASES: AliasDefinition[] = [
   { alias: 'rdl', expansion: 'ripple.dead_letter', description: 'Dead-letter queue' },
   { alias: 'rw', expansion: 'ripple.work', description: 'Work next job' },
   { alias: 'rd', expansion: 'ripple.drain', description: 'Drain queue' },
-  { alias: 'rc', expansion: 'ripple.circuits', description: 'Circuit breakers' },
+  { alias: 'rc', expansion: 'ripple.circuits', description: 'Safety switches' },
   
   // CLM (Constant Learning Mode) shortcuts
   { alias: 'clms', expansion: 'clm.status', description: 'CLM status' },

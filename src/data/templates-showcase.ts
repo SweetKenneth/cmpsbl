@@ -21,7 +21,7 @@ export interface ShowcaseTemplate {
   icon: LucideIcon;
   category: string;
   rarity: TemplateRarity;
-  crownJewelFeature: string;
+  apexFeature: string;
   buildTime: string;
   tags: string[];
 }

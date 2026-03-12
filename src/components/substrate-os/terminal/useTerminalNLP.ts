@@ -235,7 +235,7 @@ const INTENT_PATTERNS: Array<{
   {
     patterns: [/circuit.*breaker/i, /subscriber.*circuit/i, /ripple.*circuit/i],
     command: 'ripple.circuits',
-    explanation: 'View subscriber circuit breakers',
+    explanation: 'View subscriber safety switches',
   },
 
   // System Management

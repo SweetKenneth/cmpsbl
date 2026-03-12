@@ -1,5 +1,5 @@
 /**
- * MemoriesExplorer — Blog/Composable Artifacts-style memory browser
+ * MemoriesExplorer — Composable Capabilities-style memory browser
  * Horizontal scroll carousels by category, search, mobile-friendly
  */
 

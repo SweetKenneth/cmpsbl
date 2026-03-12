@@ -208,7 +208,7 @@ const moduleConfig: Record<SubstrateModule, {
   forge: {
     icon: Hammer,
     label: 'FORGE',
-    description: 'Artifact manufacturing & code generation',
+    description: 'Discovery manufacturing & code generation',
     color: 'text-orange-700',
   },
   lingua: {

@@ -17,7 +17,7 @@ import { useSubmitFindingFeedback, useFindingFeedback } from '@/hooks/useEvoluti
 // Sample findings (in production, these come from the latest scan)
 const SAMPLE_FINDINGS = [
   { fingerprint: 'missing-retry-wrapper:nexus', title: 'Missing retry wrapper on NEXUS provider calls', severity: 'warning', category: 'resilience' },
-  { fingerprint: 'stale-circuit-config:evolution', title: 'Stale circuit breaker configuration detected', severity: 'info', category: 'config' },
+  { fingerprint: 'stale-circuit-config:evolution', title: 'Stale safety switch configuration detected', severity: 'info', category: 'config' },
   { fingerprint: 'unhandled-edge-timeout:relay', title: 'Unhandled timeout in RELAY webhook delivery', severity: 'error', category: 'reliability' },
   { fingerprint: 'orphaned-migration:schema', title: 'Orphaned migration file detected', severity: 'info', category: 'cleanup' },
   { fingerprint: 'missing-rls:new-table', title: 'Table missing Row Level Security policy', severity: 'error', category: 'security' },

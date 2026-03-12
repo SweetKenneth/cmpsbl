@@ -388,7 +388,7 @@ try {
 
 ## Prevention Tips
 - Always wrap SDK calls in try/catch
-- Implement circuit breaker pattern for production
+- Implement safety switch pattern for production
 - Monitor usage dashboards for quota warnings`,
 
     doc_generator: `## Generated Documentation

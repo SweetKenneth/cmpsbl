@@ -234,7 +234,7 @@ const SDK_ACTIONS: SDKAction[] = [
   {
     module: "core",
     action: "circuit",
-    description: "Check circuit breaker status",
+    description: "Check safety switch status",
     example: `await substrate.core.circuit()`,
     returns: "{ breakers: CircuitBreaker[], open: number }",
     tags: ["circuit", "resilience", "health"]
