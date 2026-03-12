@@ -213,7 +213,7 @@ export function generateUserGuideHTML(): string {
     <li><strong>Pipeline</strong> — A scored, tiered piece of production software crystallized from the stream</li>
     <li><strong>Vault</strong> — Your personal inventory of crystallized pipelines</li>
     <li><strong>Quality Floor</strong> — Every pipeline scores 68+ (CJPI score). No filler. Only stable systems survive.</li>
-    <li><strong>Materialization</strong> — Exporting a pipeline into a standalone runtime you own</li>
+    <li><strong>Materialization</strong> — Exporting a pipeline into the CMPSBL® Mini-Runtime™ Engine you own</li>
   </ul>
 </div>
 
