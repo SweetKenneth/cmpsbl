@@ -156,7 +156,7 @@ export default function SubstrateDemo() {
       await new Promise(r => setTimeout(r, 200));
     }
 
-    addLog('SUBSTRATE', '← Pipeline complete', 'success');
+    addLog('SUBSTRATE', '← Sequence complete', 'success');
     setSystemHealth(prev => Math.min(100, prev + 1));
     setIsRunning(false);
     setCurrentStep(-1);

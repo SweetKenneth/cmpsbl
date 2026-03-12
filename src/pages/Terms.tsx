@@ -73,7 +73,7 @@ const sections = [
     content: "Composable Cognitives and engines are delivered as downloadable capability packs. Upon purchase:",
     list: [
       "You receive a perpetual, non-transferable license for personal or organizational use",
-      "You may not redistribute, sublicense, or resell purchased artifacts",
+      "You may not redistribute, sublicense, or resell purchased capability packs",
       "Refunds are handled according to our refund policy",
       "CMPSBL retains all intellectual property rights in the underlying technology",
     ],
