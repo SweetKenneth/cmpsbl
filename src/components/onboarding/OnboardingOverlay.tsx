@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const ONBOARDING_KEY = 'cmpsbl_onboarded';
+const ONBOARDING_KEY = 'cmpsbl_onboarded_v2';
 
 interface OnboardingStep {
   icon: React.ReactNode;
