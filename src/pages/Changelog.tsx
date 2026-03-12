@@ -876,7 +876,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "Cognitive registry browsable with filtering by specialization, skill level, and capability score",
       "Agency builder allows users to compose multi-cognitive teams with role assignments",
-      "Task execution pipeline routes work to the most capable cognitive for each task type",
+      "Task execution chain routes work to the most capable cognitive for each task type",
     ],
     phenotype: [
       "Users can assemble cognitive teams from a visual interface — no code, no configuration files",
