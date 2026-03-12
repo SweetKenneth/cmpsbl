@@ -1,6 +1,6 @@
 /**
  * SEBA Evolution Hero — Self-Evolving Bounded Agent Visualization
- * A stunning 5-phase cognitive evolution pipeline with animated data flows
+ * A stunning 5-phase cognitive evolution flow with animated data flows
  * Completely unique, S-tier visual centerpiece
  */
 
