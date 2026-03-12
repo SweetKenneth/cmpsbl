@@ -172,7 +172,6 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
     const sb = createClient(supabaseUrl, supabaseKey);
 
     console.log('🤖 AutoBlog v3.0 Autonomous Scheduler starting...');
