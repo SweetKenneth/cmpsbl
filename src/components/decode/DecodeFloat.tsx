@@ -253,7 +253,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     })();
   }, [user, setIdentityRole]);
 
-  const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging } = useSmartPosition(orbRef, isOpen);
+  const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging } = useSmartPosition(orbRef, isOpen);
 
   useEffect(() => { setMounted(true); }, []);
 
