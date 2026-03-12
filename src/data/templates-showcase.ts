@@ -134,7 +134,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: FileText,
     category: 'security',
     rarity: 'great',
-    crownJewelFeature: 'Forensic Timeline Reconstruction',
+    apexFeature: 'Forensic Timeline Reconstruction',
     buildTime: '~20 min',
     tags: ['AUDIT'],
   },
