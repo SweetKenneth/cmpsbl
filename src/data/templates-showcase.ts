@@ -305,7 +305,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Star,
     category: 'interaction',
     rarity: 'great',
-    crownJewelFeature: 'Contextual Humor',
+    apexFeature: 'Contextual Humor',
     buildTime: '~15 min',
     tags: ['DECODE'],
   },
