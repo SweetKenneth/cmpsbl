@@ -74,7 +74,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 ### EPZ — Enterprise Perception Zone (3)
 - COMPASS — Geospatial awareness, location intelligence
 - ECHO — Simulation, scenario modeling
-- LINGUA — Localization, translation pipelines
+- LINGUA — Localization, translation processes
 
 ### EMZ — Enterprise Manufacturing Zone (3)
 - TREATY — Agreement & SLA enforcement

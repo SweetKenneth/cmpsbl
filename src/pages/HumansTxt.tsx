@@ -105,7 +105,7 @@ LINGUA: Multi-language processing & translation
 COMPASS: Location-aware processing & geospatial
 ECHO: Signal reflection & distributed tracing
 TREATY: Agreement & SLA enforcement
-HARVEST: Data pipeline ingestion
+HARVEST: Data ingestion & ETL
 REFLEX: Real-time reactive processing
 EVOLUTION: Version management & shadow-run promotion
 SHADOW: Shadow testing & adversarial validation

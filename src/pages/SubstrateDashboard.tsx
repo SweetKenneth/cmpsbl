@@ -375,7 +375,7 @@ const modulesByLayer = {
     {
       id: "evolution",
       name: "EVOLUTION",
-      description: "Self-improvement lifecycle, mutation pipeline",
+      description: "Self-improvement lifecycle, mutation process",
       icon: Dna,
       color: "text-fuchsia-500",
       bg: "bg-fuchsia-500/10",

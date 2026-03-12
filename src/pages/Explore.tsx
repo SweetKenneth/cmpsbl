@@ -203,7 +203,7 @@ export default function Explore() {
               <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
                  {[
                    { value: "40", label: "Substrate Nodes" },
-                   { value: "24", label: "Pipeline Packs" },
+                   { value: "24", label: "Memory Packs" },
                    { value: "20", label: "Sealed Engines" },
                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (

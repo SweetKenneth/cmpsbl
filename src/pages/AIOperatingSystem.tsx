@@ -359,7 +359,7 @@ export default function AIOperatingSystem() {
                 The Memory Stream
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                The Memory Stream captures raw system behavior and crystallizes it into production-grade exportable software pipelines.
+                The Memory Stream captures raw system behavior and crystallizes it into production-grade exportable software memories.
                 The rarest discoveries become specs for silicon computer chips.
               </p>
             </motion.div>

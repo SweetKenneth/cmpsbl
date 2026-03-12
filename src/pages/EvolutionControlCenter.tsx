@@ -516,7 +516,7 @@ export default function EvolutionControlCenter() {
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6">
               <Badge variant="outline" className="bg-background/80 backdrop-blur-sm border-primary/30 text-primary text-[10px] sm:text-xs">
-                <Cpu className="w-3 h-3 mr-1" /> Governed Evolution Pipeline
+                <Cpu className="w-3 h-3 mr-1" /> Governed Evolution Process
               </Badge>
             </div>
           </motion.div>
