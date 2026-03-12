@@ -229,7 +229,7 @@ export function SignalForge() {
               className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-10 max-w-2xl mx-auto"
             >
               {[
-                { icon: Package, label: 'Free Templates', value: `${FREE_TEMPLATES.length}+`, color: 'text-neon-cyan' },
+                { icon: Package, label: 'Free Templates', value: '30+', color: 'text-neon-cyan' },
                 { icon: Terminal, label: 'Live Workbench', value: 'SDK', color: 'text-neon-green' },
                 { icon: Sparkles, label: 'Signal Forge', value: 'Auto', color: 'text-neon-purple' },
                 { icon: Download, label: 'Export', value: 'Free', color: 'text-neon-amber' },
