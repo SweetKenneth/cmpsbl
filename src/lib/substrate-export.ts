@@ -153,7 +153,7 @@ const integrationFiles = import.meta.glob('/src/integrations/**/*.{ts,tsx}', {
 // ROOT SOURCE FILES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const rootSrcFiles = import.meta.glob('/src/*.{ts,tsx,css}', {
+const rootSrcFiles = import.meta.glob('/src/*.{ts,tsx,css,json}', {
   as: 'raw',
 }) as RawGlob;
 
