@@ -43,7 +43,7 @@ export function SynergyDepotCTA() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <Star className="w-3 h-3 mr-1" />
-            Memories & Artifacts
+            Memories & Discoveries
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             Extend Your{" "}
@@ -60,7 +60,7 @@ export function SynergyDepotCTA() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-             Pre-built orchestration memories and downloadable capability artifacts — ready for production AI systems.
+             Pre-built orchestration memories and downloadable capability discoveries — ready for production AI systems.
            </p>
         </motion.div>
 
@@ -171,7 +171,7 @@ export function SynergyDepotCTA() {
                       Capabilities Depot
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Downloadable artifacts and capabilities you deploy on your own infrastructure.
+                      Downloadable discoveries and capabilities you deploy on your own infrastructure.
                     </p>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export function SynergyDepotCTA() {
                 {/* CTA */}
                 <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:opacity-90 shadow-lg shadow-emerald-500/20 transition-all">
                   <Link to="/explore">
-                    Browse Artifacts
+                    Browse Discoveries
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>

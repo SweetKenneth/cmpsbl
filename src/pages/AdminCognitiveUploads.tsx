@@ -1,5 +1,5 @@
 /**
- * Admin Cognitive Uploads — Manage ZIP artifacts for each cognitive SKU
+ * Admin Cognitive Uploads — Manage ZIP packages for each cognitive SKU
  */
 import { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
@@ -133,7 +133,7 @@ export default function AdminCognitiveUploads() {
           <div>
             <h1 className="text-2xl font-bold gradient-text">Cognitive Uploads</h1>
             <p className="text-muted-foreground text-sm mt-1">
-              Upload or replace ZIP artifacts for each cognitive SKU. New uploads overwrite the previous version.
+              Upload or replace ZIP packages for each cognitive SKU. New uploads overwrite the previous version.
             </p>
           </div>
           <Button variant="outline" size="sm" onClick={fetchInventory} disabled={loading}>

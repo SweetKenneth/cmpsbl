@@ -265,7 +265,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-004",
     fossilized: "2026-03-03",
     origin: "cognition",
-    stimulus: "Content quality pipeline had no drift awareness — posts could slowly diverge from the substrate's domain without detection",
+    stimulus: "Content quality chain had no drift awareness — posts could slowly diverge from the substrate's domain without detection",
     adaptations: [
       "Introduced a semantic drift engine that compares every draft against recent published content for topical coherence",
       "Drift scoring and directional analysis applied to every draft before publication",
@@ -301,7 +301,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-002",
     fossilized: "2026-03-03",
     origin: "survival",
-    stimulus: "Content quality pipeline was effective but lacked adversarial depth — no contradiction testing or assumption tracking",
+    stimulus: "Content quality chain was effective but lacked adversarial depth — no contradiction testing or assumption tracking",
     adaptations: [
       "Multi-factor confidence scoring now drives tone and depth modifiers for every draft",
       "Adversarial contradiction testing challenges content credibility before publication",
@@ -367,7 +367,7 @@ const stratumSparta: Specimen[] = [
     origin: "cognition",
     stimulus: "The substrate was generating significant learning volume but downstream nodes couldn't access any of it",
     adaptations: [
-      "Knowledge transfer pipeline created: the parent learns, downstream nodes receive synthesized learnings automatically",
+      "Knowledge transfer chain created: the parent learns, downstream nodes receive synthesized learnings automatically",
       "Periodic brain sync harvests high-value memories and distributes them to child nodes",
       "On-demand knowledge dumps available for initial bootstrapping of new nodes",
     ],
@@ -402,7 +402,7 @@ const stratumSparta: Specimen[] = [
     stimulus: "Learning engine was throttled by artificial limits — cognition cycles sat idle despite available capacity",
     adaptations: [
       "Learning engine upgraded to full-intensity continuous operation — artificial throttling removed",
-      "Distribution pipeline verified end-to-end with live synchronization",
+      "Distribution chain verified end-to-end with live synchronization",
     ],
     phenotype: [
       "Continuous learning runs at full intensity with no artificial throttling",
@@ -573,7 +573,7 @@ const stratumInfra: Specimen[] = [
     stimulus: "Brain knowledge was trapped in central storage — nodes couldn't access cross-domain insights, and learning required active sessions",
     adaptations: [
       "Continuous learning engine now runs autonomously — no active session required",
-      "Knowledge transfer pipeline routes high-value learnings to specialized nodes",
+      "Knowledge transfer chain routes high-value learnings to specialized nodes",
       "Memory tier management automated across all storage layers",
     ],
     phenotype: [
@@ -840,9 +840,9 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-005",
     fossilized: "2026-03-07",
     origin: "governance",
-    stimulus: "The evolution pipeline needed a visual control surface — proposals, shadow runs, and promotions were terminal-only operations",
+    stimulus: "The evolution chain needed a visual control surface — proposals, shadow runs, and promotions were terminal-only operations",
     adaptations: [
-      "Evolution control center built with a 6-stage animated pipeline visualization",
+      "Evolution control center built with a 6-stage animated chain visualization",
       "One-click rollback and false-positive feedback integrated into the review flow",
       "Impact preview shows exactly what a proposal would change before any mutation occurs",
     ],
@@ -858,7 +858,7 @@ const stratumMindgames: Specimen[] = [
     origin: "survival",
     stimulus: "Memory stream lacked persistence — crystallized knowledge disappeared between sessions",
     adaptations: [
-      "Memory crystallization pipeline writes durable entries to the persistence layer",
+      "Memory crystallization chain writes durable entries to the persistence layer",
       "Recall patterns use spaced repetition to surface high-value memories at optimal intervals",
       "Memory categories enable domain-specific retrieval without full-corpus search",
     ],
@@ -876,7 +876,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "Cognitive registry browsable with filtering by specialization, skill level, and capability score",
       "Agency builder allows users to compose multi-cognitive teams with role assignments",
-      "Task execution pipeline routes work to the most capable cognitive for each task type",
+      "Task execution chain routes work to the most capable cognitive for each task type",
     ],
     phenotype: [
       "Users can assemble cognitive teams from a visual interface — no code, no configuration files",
@@ -915,7 +915,7 @@ const stratumMindgames: Specimen[] = [
     ],
     phenotype: [
       "First epoch where the substrate exists FOR users rather than FOR itself",
-      "Memory Stream crystallization pipeline is the primary interaction surface",
+      "Memory Stream crystallization chain is the primary interaction surface",
       "Complete learning architecture with governed capability installation",
       "Generation-tagged node topology enabling evolutionary lineage tracking",
     ],
