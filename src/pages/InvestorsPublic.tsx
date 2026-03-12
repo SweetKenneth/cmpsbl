@@ -86,8 +86,8 @@ export default function InvestorsPublic() {
     { icon: Eye, name: "VISION", subtitle: "Stream Observability", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 stream nodes." },
     { icon: Shield, name: "DEFENSE", subtitle: "Stream Security", description: "Bot protection, threat detection, and governance guardrails — outermost protective shell of the Memory Stream." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE pipeline with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system pipelines autonomously from the Memory Stream." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE process with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system memories autonomously from the Memory Stream." },
   ];
 
   const highlights = [
