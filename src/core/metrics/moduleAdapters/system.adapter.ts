@@ -57,6 +57,23 @@ function getLongTaskCount(): number {
   } catch { return 0; }
 }
 
+// ── Cached DOM measurements (expensive — refresh at most every 10s) ──
+let _cachedDomNodes = 0;
+let _cachedDomDepth = 0;
+let _domCacheTs = 0;
+const DOM_CACHE_TTL_MS = 10_000;
+
+function getDomMetrics(): { domNodes: number; domDepth: number } {
+  const now = Date.now();
+  if (now - _domCacheTs < DOM_CACHE_TTL_MS) {
+    return { domNodes: _cachedDomNodes, domDepth: _cachedDomDepth };
+  }
+  _cachedDomNodes = typeof document !== 'undefined' ? document.querySelectorAll('*').length : 0;
+  _cachedDomDepth = typeof document !== 'undefined' ? getMaxDOMDepth(document.body) : 0;
+  _domCacheTs = now;
+  return { domNodes: _cachedDomNodes, domDepth: _cachedDomDepth };
+}
+
 export const systemAdapter: ModuleAdapter = {
   moduleId: 'system',
 
@@ -76,9 +93,8 @@ export const systemAdapter: ModuleAdapter = {
     const heapUtilization = heapLimitMB > 0 ? heapUsedMB / heapLimitMB : 0;
     const heapFragmentation = heapTotalMB > 0 ? 1 - (heapUsedMB / heapTotalMB) : 0;
 
-    // DOM complexity
-    const domNodes = typeof document !== 'undefined' ? document.querySelectorAll('*').length : 0;
-    const domDepth = typeof document !== 'undefined' ? getMaxDOMDepth(document.body) : 0;
+    // DOM complexity (cached)
+    const { domNodes, domDepth } = getDomMetrics();
 
     // Storage
     const storage = await getStorageEstimate();

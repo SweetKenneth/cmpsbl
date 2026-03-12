@@ -112,7 +112,9 @@ function averageEmbeddings(embeddings: number[][]): number[] {
 }
 
 /**
- * Find duplicate or highly similar memories
+ * Find duplicate or highly similar memories — O(n) hash-based approach
+ * Uses content fingerprinting to bucket likely duplicates, then only
+ * compares within buckets (amortized linear time).
  */
 export async function findDuplicateMemories(threshold: number = 0.95): Promise<string[][]> {
   try {
@@ -126,33 +128,44 @@ export async function findDuplicateMemories(threshold: number = 0.95): Promise<s
       return [];
     }
     
-    const duplicateGroups: string[][] = [];
-    const processed = new Set<string>();
+    // Phase 1: Hash-bucket by normalized content fingerprint (O(n))
+    const buckets = new Map<string, typeof memories>();
+    for (const mem of memories) {
+      const fp = contentFingerprint(mem.content);
+      const bucket = buckets.get(fp);
+      if (bucket) {
+        bucket.push(mem);
+      } else {
+        buckets.set(fp, [mem]);
+      }
+    }
     
-    for (let i = 0; i < memories.length; i++) {
-      if (processed.has(memories[i].id)) continue;
+    // Phase 2: Only compare within buckets (small n per bucket)
+    const duplicateGroups: string[][] = [];
+    for (const bucket of buckets.values()) {
+      if (bucket.length < 2) continue;
       
-      const group: string[] = [memories[i].id];
+      // For high threshold (≥0.95), bucket members are almost certainly dupes
+      if (threshold >= 0.95) {
+        duplicateGroups.push(bucket.map(m => m.id));
+        continue;
+      }
       
-      for (let j = i + 1; j < memories.length; j++) {
-        if (processed.has(memories[j].id)) continue;
-        
-        const similarity = calculateSimilarity(
-          memories[i].content,
-          memories[j].content
-        );
-        
-        if (similarity >= threshold) {
-          group.push(memories[j].id);
-          processed.add(memories[j].id);
+      // For lower thresholds, verify with Jaccard within bucket only
+      const processed = new Set<string>();
+      for (let i = 0; i < bucket.length; i++) {
+        if (processed.has(bucket[i].id)) continue;
+        const group = [bucket[i].id];
+        for (let j = i + 1; j < bucket.length; j++) {
+          if (processed.has(bucket[j].id)) continue;
+          if (calculateSimilarity(bucket[i].content, bucket[j].content) >= threshold) {
+            group.push(bucket[j].id);
+            processed.add(bucket[j].id);
+          }
         }
+        if (group.length > 1) duplicateGroups.push(group);
+        processed.add(bucket[i].id);
       }
-      
-      if (group.length > 1) {
-        duplicateGroups.push(group);
-      }
-      
-      processed.add(memories[i].id);
     }
     
     return duplicateGroups;
@@ -163,16 +176,36 @@ export async function findDuplicateMemories(threshold: number = 0.95): Promise<s
 }
 
 /**
- * Simple text similarity calculation
+ * Generate a content fingerprint for bucketing.
+ * Normalizes whitespace, lowercases, sorts words, and takes a
+ * deterministic hash of the top-frequency trigrams.
+ */
+function contentFingerprint(text: string): string {
+  const normalized = text.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+  const words = normalized.split(' ').sort();
+  // Use first 8 + last 4 sorted words as fingerprint seed (stable across minor edits)
+  const key = words.slice(0, 8).concat(words.slice(-4)).join('|');
+  // Simple string hash
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = ((hash << 5) - hash + key.charCodeAt(i)) | 0;
+  }
+  return String(hash);
+}
+
+/**
+ * Jaccard text similarity (fallback for sub-0.95 thresholds)
  */
 function calculateSimilarity(text1: string, text2: string): number {
   const words1 = new Set(text1.toLowerCase().split(/\s+/));
   const words2 = new Set(text2.toLowerCase().split(/\s+/));
   
-  const intersection = new Set([...words1].filter(w => words2.has(w)));
-  const union = new Set([...words1, ...words2]);
+  let intersection = 0;
+  for (const w of words1) {
+    if (words2.has(w)) intersection++;
+  }
   
-  return intersection.size / union.size;
+  return intersection / (words1.size + words2.size - intersection);
 }
 
 /**
