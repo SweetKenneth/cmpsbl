@@ -82,7 +82,7 @@ export default function RuntimeReference() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Developer Reference — Substrate Capabilities"
-        description="Complete developer reference for baseline capabilities, pipeline packs, usage examples, and runtime concepts."
+        description="Complete developer reference for baseline capabilities, memory packs, usage examples, and runtime concepts."
       />
       <PublicNav />
 
