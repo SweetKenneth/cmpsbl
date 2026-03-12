@@ -236,7 +236,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     {
       id: 'inclusive', name: 'INCLUSIVE', layer: 'admin' as const, icon: Accessibility,
-      description: 'Human compatibility pipeline',
+      description: 'Human compatibility layer',
       gradient: 'bg-gradient-to-r from-pink-500 to-rose-600', accentColor: 'bg-pink-500',
       status: inclusiveStatus,
       metrics: [{ label: 'Scanner', value: inclusiveStatus.data?.success ? 'Ready' : 'Checking' }],
