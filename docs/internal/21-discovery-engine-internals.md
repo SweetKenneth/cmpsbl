@@ -116,7 +116,7 @@ Portable version of the reactor:
 | Candidate generation rate | ~500/second |
 | CJPI scoring latency | ~2ms per candidate |
 | Deduplication check | ~5ms per candidate (embedding comparison) |
-| Full topology sweep (38 nodes, depth 5) | ~8–12 hours |
+| Full topology sweep (40 nodes, depth 5) | ~8–12 hours |
 | Incremental sweep (new modules only) | ~30 minutes |
 
 ## 6. Integration Points
