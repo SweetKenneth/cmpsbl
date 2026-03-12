@@ -88,7 +88,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Gauge,
     category: 'intelligence',
     rarity: 'great',
-    crownJewelFeature: 'Model Quality Scoring',
+    apexFeature: 'Model Quality Scoring',
     buildTime: '~15 min',
     tags: ['NEXUS'],
   },
