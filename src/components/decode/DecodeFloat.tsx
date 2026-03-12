@@ -161,8 +161,9 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     if (isDragging.current) {
-      userPlaced.current = true;
       isDragging.current = false;
+      setDragging(false);
+      userPlaced.current = true;
       e.preventDefault();
       e.stopPropagation();
       setPos(prev => {
