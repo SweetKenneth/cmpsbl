@@ -88,7 +88,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 
 ### Fields (2) + Plane (1) + Shell (1) — Mesh Overlays
 - IMMUNITY — Adaptive resilience, self-healing
-- INTENT — Cross-module intent routing
+- INTENT — Cross-node intent routing
 - GOVERNANCE — Ethical constraints, coherence
 - DEFENSE — AI-powered security perimeter
 
