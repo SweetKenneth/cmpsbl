@@ -373,7 +373,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Package,
     category: 'infrastructure',
     rarity: 'great',
-    crownJewelFeature: 'Capability Recommendation',
+    apexFeature: 'Capability Recommendation',
     buildTime: '~15 min',
     tags: ['ATLAS'],
   },
