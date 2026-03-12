@@ -618,7 +618,7 @@ npm run dev
 1. Read this entire RESTORE.md first
 2. Source code ZIP from Lovable/GitHub is the PRIMARY artifact
 3. Run \`supabase db push\` to create schema from \`supabase/migrations/\`
-4. Use \`restore-data.mjs\` to import data from \`data/*.json\`
+4. Use \`restore-data.mjs\` to import data from \`data/<table>/part-*.json\`
 5. Deploy edge functions with \`supabase functions deploy\`
 6. Frontend: \`npm install && npm run dev\`
 
