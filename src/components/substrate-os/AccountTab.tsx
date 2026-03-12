@@ -442,8 +442,8 @@ export function AccountTab() {
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Tier', value: (tier || role || 'free').toUpperCase(), icon: Crown },
-                { label: 'Role', value: (role || 'free').toUpperCase(), icon: Shield },
+                { label: 'Tier', value: ((tier || role || 'free') === 'free' ? 'BUILDER' : (tier || role || 'free').toUpperCase()), icon: Crown },
+                { label: 'Role', value: ((role || 'free') === 'free' ? 'BUILDER' : (role || 'free').toUpperCase()), icon: Shield },
                 { label: 'Email', value: user?.email?.split('@')[0] ?? '—', icon: Mail },
                 { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—', icon: Calendar },
               ].map(stat => (
