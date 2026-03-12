@@ -43,7 +43,7 @@ export default function PricingMethod() {
               Software doesn't have material costs. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. A single library might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each artifact against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
+              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
             </p>
           </section>
 
