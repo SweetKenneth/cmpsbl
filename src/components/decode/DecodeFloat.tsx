@@ -56,6 +56,7 @@ const INTERACTIVE_SELECTOR = 'a, button, [role="button"], input, select, textare
 
 function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, chatOpen: boolean) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
   const isDragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, orbX: 0, orbY: 0 });
   const userPlaced = useRef(false);
@@ -151,14 +152,18 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     const dx = e.clientX - dragStart.current.x;
     const dy = e.clientY - dragStart.current.y;
     if (!isDragging.current && Math.abs(dx) + Math.abs(dy) < 5) return;
-    isDragging.current = true;
+    if (!isDragging.current) {
+      isDragging.current = true;
+      setDragging(true);
+    }
     setPos(clamp(dragStart.current.orbX + dx, dragStart.current.orbY + dy));
   }, [clamp]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     if (isDragging.current) {
-      userPlaced.current = true;
       isDragging.current = false;
+      setDragging(false);
+      userPlaced.current = true;
       e.preventDefault();
       e.stopPropagation();
       setPos(prev => {
@@ -174,7 +179,7 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
     return () => clearTimeout(timeout);
   }, [pos]);
 
-  return { pos, onPointerDown, onPointerMove, onPointerUp, isDragging };
+  return { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging };
 }
 
 // ─── Quick Actions by Mode ──────────────────────────────────────
@@ -248,7 +253,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     })();
   }, [user, setIdentityRole]);
 
-  const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging } = useSmartPosition(orbRef, isOpen);
+  const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging } = useSmartPosition(orbRef, isOpen);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -478,7 +483,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           top: pos.y,
           zIndex: 10001,
           contain: "layout",
-          transition: isDragging.current ? "none" : "left 0.35s cubic-bezier(0.22,1,0.36,1), top 0.35s cubic-bezier(0.22,1,0.36,1)",
+          transition: dragging ? "none" : "left 0.35s cubic-bezier(0.22,1,0.36,1), top 0.35s cubic-bezier(0.22,1,0.36,1)",
           willChange: "left, top",
         }}
       >
