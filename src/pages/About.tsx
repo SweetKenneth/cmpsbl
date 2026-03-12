@@ -343,7 +343,7 @@ export default function About() {
                   A continuous river of evolving software. The Memory Stream isn't a marketplace — it's the living output of the substrate's own dream and evolution cycles.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every pipeline has a quality floor of 68+. Every pull is real software with provenance. Materialize pipelines, export them, build on top — or let the stream feed back into your substrate's memory.
+                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's memory.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Moon className="w-3.5 h-3.5" />

@@ -411,7 +411,7 @@ export function HeroMetaSubstrate() {
               "Signal",
               "Memory Stream",
               "Governed Runtime",
-              "Pipeline Packs",
+              "Memory Packs",
               "Sealed Engines",
               "Applications",
             ].map((step, i, arr) => (

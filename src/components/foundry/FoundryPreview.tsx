@@ -136,7 +136,7 @@ export function FoundryPreview() {
           transition={{ delay: 0.9 }}
           className="mt-8 text-xs font-mono text-muted-foreground/40"
         >
-          Every pipeline is real, scored, and independently verifiable
+          Every memory is real, scored, and independently verifiable
         </motion.div>
       </motion.div>
     </div>

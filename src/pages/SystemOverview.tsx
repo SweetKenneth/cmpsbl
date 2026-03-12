@@ -401,7 +401,7 @@ function ClosingCTA() {
             The substrate is running.
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-            Start free. Crystallize your first pipeline. See real software emerge from the Memory Stream — scored, exportable, and yours.
+            Start free. Crystallize your first memory. See real software emerge from the Memory Stream — scored, exportable, and yours.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/auth" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">

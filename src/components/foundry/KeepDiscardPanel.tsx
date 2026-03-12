@@ -172,7 +172,7 @@ export function KeepDiscardPanel({ results, onKeep, onDiscard, decisions, keepLo
                     ) : (
                       <Check className="w-4 h-4" />
                     )}
-                    {isSaving ? 'Saving...' : 'Keep Pipeline'}
+                    {isSaving ? 'Saving...' : 'Keep Memory'}
                   </Button>
                   <Button
                     size="sm"

@@ -85,7 +85,7 @@ const solutions = [
     icon: Terminal,
     name: "CodeLab",
     tagline: "Interactive Development Environment",
-    description: "Execute capabilities, remix templates, and test pipelines in real-time. The fastest way to prototype with CMPSBL's infrastructure.",
+    description: "Execute capabilities, remix templates, and test memories in real-time. The fastest way to prototype with CMPSBL's infrastructure.",
     features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
     metrics: ["FREE", "30 Templates", "Real-Time"],
     link: "/codelab",
