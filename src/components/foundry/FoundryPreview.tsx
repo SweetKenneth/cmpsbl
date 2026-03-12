@@ -49,7 +49,7 @@ export function FoundryPreview() {
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-foreground leading-[0.9] mb-4">
           Crystallize
           <br />
-          <span className="section-gradient-text">Pipelines</span>
+          <span className="section-gradient-text">Memories</span>
         </h1>
 
         <motion.p
