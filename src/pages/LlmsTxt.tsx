@@ -170,7 +170,7 @@ export default function LlmsTxt() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const modules = [
+  const nodes = [
     { name: "BRAIN", icon: Brain, color: "text-cyan-500", desc: "Memory & learning" },
     { name: "DECODE", icon: MessageSquare, color: "text-purple-500", desc: "Epistemic interpreter" },
     { name: "DEFENSE", icon: Shield, color: "text-amber-500", desc: "Security layer" },
