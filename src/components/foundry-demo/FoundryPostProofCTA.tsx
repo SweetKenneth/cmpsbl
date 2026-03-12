@@ -18,7 +18,7 @@ export function FoundryPostProofCTA() {
         className="max-w-2xl mx-auto relative text-center"
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4 leading-tight">
-          Want to discover pipelines yourself?
+          Want to discover memories yourself?
         </h2>
         <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
           Create an account to access the Foundry and explore discoveries
