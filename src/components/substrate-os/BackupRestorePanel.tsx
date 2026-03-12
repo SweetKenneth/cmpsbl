@@ -302,14 +302,36 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
     },
   });
 
-  // Prune backups mutation
+  // Prune backups mutation — client-side delete, skips permanent/failsafe
   const pruneBackups = useMutation({
     mutationFn: async (retentionCount: number = 3) => {
-      const { data, error } = await supabase.functions.invoke('pf-backup-prune', {
-        body: { action: 'prune', retention_count: retentionCount }
-      });
-      if (error) throw error;
-      return data;
+      // Fetch all non-permanent backups ordered by date
+      const { data: allBackups, error: fetchErr } = await supabase
+        .from('daily_backups')
+        .select('id, is_permanent, backup_category, created_at')
+        .order('created_at', { ascending: false });
+
+      if (fetchErr) throw fetchErr;
+
+      // Filter to only prunable (non-permanent, non-failsafe)
+      const prunable = (allBackups || []).filter(
+        (b) => !b.is_permanent && b.backup_category !== 'failsafe'
+      );
+
+      // Keep the most recent `retentionCount`, delete the rest
+      const toDelete = prunable.slice(retentionCount);
+      if (toDelete.length === 0) {
+        return { pruned_count: 0 };
+      }
+
+      const idsToDelete = toDelete.map((b) => b.id);
+      const { error: delErr } = await supabase
+        .from('daily_backups')
+        .delete()
+        .in('id', idsToDelete);
+
+      if (delErr) throw delErr;
+      return { pruned_count: idsToDelete.length };
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['substrate-backups'] });
