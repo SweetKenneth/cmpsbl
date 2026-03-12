@@ -835,7 +835,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
               {deployPipeline && (
                 <Badge variant="outline" className="text-[10px] border-system-green/40 text-system-green bg-system-green/10">
                   <Rocket className="w-3 h-3 mr-1" />
-                  Pipeline
+                  Deploy
                 </Badge>
               )}
             </h2>
