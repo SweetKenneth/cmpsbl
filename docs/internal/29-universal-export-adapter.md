@@ -104,7 +104,7 @@ Zero external dependencies — runs in any TypeScript/Node environment.
 - All exports include the CMPSBL® Proprietary License
 - Export events are audit-logged with user, timestamp, and discovery ID
 - Source code in exports is functional but does not expose internal algorithms
-- The standalone runtime is the only substrate code included
+- The CMPSBL® Mini-Runtime™ Engine is the only substrate code included
 
 ---
 
