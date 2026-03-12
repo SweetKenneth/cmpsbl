@@ -132,7 +132,7 @@ export function CmpsblNav() {
       icon: Code,
       items: [
         { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
-        { name: "Api access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
+        { name: "API access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
         { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
         { name: "Codelab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "Namespace", href: "/namespace", description: "Module registry & identifiers", icon: Layers },

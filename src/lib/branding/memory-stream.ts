@@ -27,7 +27,7 @@ export const MEMORY_STREAM_QUALITY_NOTE =
   "Quality floor: 68+ · Every pull is real software";
 
 export const MEMORY_STREAM_PROVENANCE =
-  "Crystallized Memory Stream Artifact";
+  "Crystallized Memory Stream Discovery";
 
 // ── Actions ─────────────────────────────────────────────────────
 export const MEMORY_STREAM_CTA_AUTH =
