@@ -294,7 +294,7 @@ export const SHOWCASE_TEMPLATES: ShowcaseTemplate[] = [
     icon: Bell,
     category: 'interaction',
     rarity: 'great',
-    crownJewelFeature: 'Sentiment Routing',
+    apexFeature: 'Sentiment Routing',
     buildTime: '~15 min',
     tags: ['DECODE', 'RELAY'],
   },
