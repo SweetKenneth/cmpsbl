@@ -49,7 +49,7 @@ export function UnifiedAdminSidebar() {
   }, []);
 
   const isActive = (path: string) => {
-    if (path === "/admin/dashboard") {
+    if (path === "/admin/intel") {
       return location.pathname === path || location.pathname === "/admin";
     }
     return location.pathname === path || location.pathname.startsWith(path + "/");
@@ -79,7 +79,7 @@ export function UnifiedAdminSidebar() {
         
         {/* Logo Section */}
         <div className="p-3 sm:p-4 border-b border-border/50 relative">
-          <NavLink to="/admin/dashboard" className="flex items-center gap-3" onClick={handleNavClick}>
+          <NavLink to="/admin/intel" className="flex items-center gap-3" onClick={handleNavClick}>
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center animate-signal-pulse flex-shrink-0">
               <Brain className="w-5 h-5 text-primary-foreground" />
             </div>
