@@ -211,7 +211,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
     },
   });
 
-  // Create failsafe mutation - creates a permanent protected backup
+  // Create failsafe mutation - triggers a REAL full-backup ZIP download (all tables, schema, storage)
   const createFailsafe = useMutation({
     mutationFn: async ({ notes, override }: { notes?: string; override?: boolean }) => {
       // If override, demote existing failsafe first
@@ -228,35 +228,65 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           console.error('Failed to demote existing failsafe:', demoteError);
         }
       }
-      
-      // Create a fresh backup
-      const backupResult = await system.backup({ include_data: true });
-      if (!backupResult.success) {
-        throw new Error(backupResult.error || 'Failed to create backup for failsafe');
+
+      // Call the real full-backup edge function for a true disaster recovery ZIP
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error('You must be logged in as an admin');
       }
-      
-      const backupData = backupResult.data as { backup_id?: string };
-      const backupId = backupData?.backup_id;
-      if (!backupId) {
-        throw new Error('Backup created but no ID returned');
+
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const url = `https://${projectId}.supabase.co/functions/v1/full-backup`;
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(err.error || `Backup failed: HTTP ${res.status}`);
       }
-      
-      // Mark it as permanent failsafe
-      const { error: updateError } = await supabase
+
+      // Download the ZIP
+      const blob = await res.blob();
+      const disposition = res.headers.get('Content-Disposition') || '';
+      const filenameMatch = disposition.match(/filename="(.+)"/);
+      const filename = filenameMatch?.[1] || `cmpsbl-failsafe-backup-${new Date().toISOString().slice(0, 10)}.zip`;
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+
+      // Record in daily_backups as permanent failsafe
+      const backupId = `failsafe-${Date.now()}`;
+      const { error: insertError } = await supabase
         .from('daily_backups')
-        .update({
+        .insert({
+          backup_id: backupId,
+          backup_path: `downloaded/${filename}`,
+          snapshot: { type: 'full-zip-download', filename } as any,
+          status: 'completed',
           is_permanent: true,
           backup_category: 'failsafe',
-          notes: notes || `Emergency failsafe created at ${new Date().toISOString()}`,
-          expires_at: null, // Never expires
-        })
-        .eq('backup_id', backupId);
-      
-      if (updateError) {
-        console.error('Failed to mark as failsafe:', updateError);
-        throw new Error('Backup created but failed to mark as permanent');
+          notes: notes || `Full failsafe backup created at ${new Date().toISOString()}`,
+          expires_at: null,
+          substrate_version: 'full-backup-v2.1',
+          data_counts: { type: 'full-zip-download' } as any,
+        });
+
+      if (insertError) {
+        console.error('Failed to record failsafe:', insertError);
+        // Don't throw — the ZIP was already downloaded successfully
       }
-      
+
       return { failsafe_id: backupId, success: true, wasOverride: override };
     },
     onSuccess: (data: any) => {
