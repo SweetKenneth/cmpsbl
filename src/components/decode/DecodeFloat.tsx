@@ -56,6 +56,7 @@ const INTERACTIVE_SELECTOR = 'a, button, [role="button"], input, select, textare
 
 function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, chatOpen: boolean) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
   const isDragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, orbX: 0, orbY: 0 });
   const userPlaced = useRef(false);
