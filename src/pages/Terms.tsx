@@ -70,7 +70,7 @@ const sections = [
   {
     id: "purchases",
     title: "6. Composable Cognitives & Engine Purchases",
-    content: "Composable Cognitives and engines are delivered as downloadable artifacts. Upon purchase:",
+    content: "Composable Cognitives and engines are delivered as downloadable capability packs. Upon purchase:",
     list: [
       "You receive a perpetual, non-transferable license for personal or organizational use",
       "You may not redistribute, sublicense, or resell purchased artifacts",
