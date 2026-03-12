@@ -269,9 +269,26 @@ export default function Engines() {
                 COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
-                Each Engine is a self-contained, obfuscated, tamper-proof runtime
-                forged from our highest-scoring Apex Discovery artifacts. You don't see the source. You see the results.
+                Engines are hosted cognitive runtimes that run on the CMPSBL substrate.
+                When you purchase an engine, you get an <strong className="text-foreground">API key + copy-paste SDK</strong> to
+                call it from your own stack — any language, any framework.
+                You don't see the source. You see the results.
               </p>
+
+              {/* SDK + FAILSAFE callout */}
+              <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                  <strong className="text-foreground">How it works:</strong> Every engine purchase includes a
+                  single-file TypeScript SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
+                  you copy into your project. The SDK calls the engine API — your code stays in your stack,
+                  the heavy compute runs on ours. No infrastructure to manage.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <strong className="text-emerald-400">⚡ Special: FAILSAFE</strong> is the only <em>standalone</em> engine —
+                  it's a self-contained edge function you deploy directly to your own Supabase project.
+                  No API key needed. No dependency on CMPSBL infrastructure. It runs entirely in your stack.
+                </p>
+              </div>
 
               {/* Stats pills */}
               <div className="flex flex-wrap justify-center gap-3 mb-4">
