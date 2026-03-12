@@ -230,7 +230,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <AlertTriangle className={cn("w-4 h-4", isPanic ? "text-red-400" : "text-amber-400")} />
-              Panic Circuit Breaker
+              Panic Safety Switch
             </CardTitle>
             <CardDescription className="text-xs">Emergency system halt</CardDescription>
           </CardHeader>

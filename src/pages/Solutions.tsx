@@ -63,7 +63,7 @@ const solutions = [
   },
   {
     icon: Package,
-    name: "Artifact Packs",
+    name: "Capability Packs",
     tagline: "Modular Capability Upgrades",
     description: "24 activatable packs across 6 strategic domains. Each pack = 1 slot. Choose the exact capabilities your AI needs — swap anytime.",
     features: ["24 packs across 6 domains", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Domain-organized catalog", "Builder to Architect scaling"],
@@ -103,7 +103,7 @@ export default function Solutions() {
 
       <SEO
         title="Solutions — Cognitive AI Infrastructure | CMPSBL"
-        description="Complete product suite: persistent memory, NEXUS routing, DREAM cycles, DEFENSE security, artifact packs, LNCHBL self-hosted deployment, and CodeLab. Built on 40 nodes across 12 sectors."
+        description="Complete product suite: persistent memory, NEXUS routing, DREAM cycles, DEFENSE security, capability packs, LNCHBL self-hosted deployment, and CodeLab. Built on 40 nodes across 12 sectors."
         canonical="https://cmpsbl.com/solutions"
         keywords={['AI solutions', 'cognitive infrastructure', 'persistent memory', 'AI routing', 'enterprise AI', 'self-hosted AI']}
       />

@@ -771,7 +771,7 @@ await cmpsbl.dream.cycle({
                 </h2>
                 <p className="text-white/80 text-base sm:text-lg max-w-xl mx-auto mb-8 px-2">
                   Get the World Engine for complete access, or start with a subscription plan 
-                  and activate artifact packs as you go.
+                  and activate capability packs as you go.
                 </p>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-2 sm:px-0">

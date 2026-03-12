@@ -49,7 +49,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - RIPPLE — Event bus, signal propagation
 - ACCESS — Entitlements, API keys
 - IDENTITY — Session, actor attribution
-- RELAY — Cross-module message routing
+- RELAY — Cross-node message routing
 - AUDIT — Compliance logging, integrity ledger
 - NERVE — Inter-node signaling, stimulus routing
 
@@ -88,7 +88,7 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 
 ### Fields (2) + Plane (1) + Shell (1) — Mesh Overlays
 - IMMUNITY — Adaptive resilience, self-healing
-- INTENT — Cross-module intent routing
+- INTENT — Cross-node intent routing
 - GOVERNANCE — Ethical constraints, coherence
 - DEFENSE — AI-powered security perimeter
 
@@ -170,7 +170,7 @@ export default function LlmsTxt() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const modules = [
+  const nodes = [
     { name: "BRAIN", icon: Brain, color: "text-cyan-500", desc: "Memory & learning" },
     { name: "DECODE", icon: MessageSquare, color: "text-purple-500", desc: "Epistemic interpreter" },
     { name: "DEFENSE", icon: Shield, color: "text-amber-500", desc: "Security layer" },
@@ -270,11 +270,11 @@ export default function LlmsTxt() {
           </CardContent>
         </Card>
 
-        {/* Module Grid */}
+        {/* Node Grid */}
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Featured Modules in CMPSBL LLMS.txt</h2>
+          <h2 className="text-lg font-semibold mb-4">Featured Nodes in CMPSBL LLMS.txt</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {modules.map((mod) => (
+            {nodes.map((mod) => (
               <Card key={mod.name} className="border-border/50">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center ${mod.color}`}>

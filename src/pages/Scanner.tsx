@@ -74,7 +74,7 @@ const EVOLUTION_PHASES = [
 const DEBT_TYPES = [
   { icon: GitBranch, label: 'Dead code & orphaned functions', desc: 'Infrastructure deployed but never called' },
   { icon: Shield, label: 'Missing security policies', desc: 'Tables without RLS, exposed endpoints' },
-  { icon: Radio, label: 'Broken circuit breakers', desc: 'Open circuits silently blocking execution' },
+  { icon: Radio, label: 'Broken safety switches', desc: 'Open switches silently blocking execution' },
   { icon: Gauge, label: 'Performance regression', desc: 'Latency creep, memory leaks, bloated bundles' },
   { icon: Lock, label: 'Auth flow gaps', desc: 'Permission leaks, missing guards, stale tokens' },
   { icon: Layers, label: 'Architectural drift', desc: 'Nodes diverging from intended design patterns' },

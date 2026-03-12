@@ -599,7 +599,7 @@ export default function UseCases() {
                   <Rocket className="w-8 h-8 text-primary" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  Ready-Made Artifact Packs by Industry
+                  Ready-Made Capability Packs by Industry
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Choose your industry — Gaming, Developer, or Enterprise — and activate only 

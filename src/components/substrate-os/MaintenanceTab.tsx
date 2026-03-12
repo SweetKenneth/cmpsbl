@@ -1,5 +1,5 @@
 /**
- * MaintenanceTab — Circuit breaker monitoring, repair logs, and system maintenance
+ * MaintenanceTab — Safety switch monitoring, repair logs, and system maintenance
  * Replaces legacy EnginesTab for the "Maintenance" sidebar entry
  */
 

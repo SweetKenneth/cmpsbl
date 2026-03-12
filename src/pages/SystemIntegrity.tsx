@@ -253,7 +253,7 @@ export default function SystemIntegrity() {
     <div className="min-h-screen bg-background">
       <SEO
         title="System Integrity — CMPSBL Substrate"
-        description="Real-time integrity map showing health, circuit breaker states, and zone isolation across all 40 nodes and 12 sectors of the CMPSBL substrate."
+        description="Real-time integrity map showing health, safety switch states, and zone isolation across all 40 nodes and 12 sectors of the CMPSBL substrate."
         noindex
       />
 
@@ -279,7 +279,7 @@ export default function SystemIntegrity() {
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
             Real-time structural health of the CMPSBL substrate. Each node reports availability, correctness, and performance 
-            through the 3-lane integrity model. Circuit breakers protect against cascade failures.
+            through the 3-lane integrity model. Safety switches protect against cascade failures.
           </p>
         </motion.div>
 
@@ -320,7 +320,7 @@ export default function SystemIntegrity() {
             <div>
               <p className="text-sm font-semibold text-red-400">Integrity Degraded</p>
               <p className="text-xs text-muted-foreground">
-                {breakerSummary.open} circuit breaker{breakerSummary.open !== 1 ? 's' : ''} open
+                {breakerSummary.open} safety switch{breakerSummary.open !== 1 ? 'es' : ''} open
                 {breakerSummary.unhealthy.length > 0 && ` · Affected: ${breakerSummary.unhealthy.join(', ')}`}
               </p>
             </div>
