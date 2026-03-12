@@ -22,8 +22,8 @@ export default function TheMarketplace() {
       chapter={29}
       head={
         <>
-          <SEO title="The Marketplace — Substrate Store" description="The Store became a discovery layer — browse, preview, purchase, and deploy substrate-generated software." type="article" image={heroImg} publishedTime="2025-10-25" keywords={["substrate store", "AI marketplace", "artifact discovery"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-platform" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "The Marketplace", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
-          <BlogArticleJsonLd title="The Marketplace — Substrate Store" description="Discovery, preview, and deployment of substrate artifacts." slug={SLUG} datePublished="2025-10-25" imageUrl={heroImg} keywords={["store", "marketplace", "artifacts"]} />
+          <SEO title="The Marketplace — Substrate Store" description="The Store became a discovery layer — browse, preview, purchase, and deploy substrate-generated software." type="article" image={heroImg} publishedTime="2025-10-25" keywords={["substrate store", "AI marketplace", "capability discovery"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-platform" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "The Marketplace", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+          <BlogArticleJsonLd title="The Marketplace — Substrate Store" description="Discovery, preview, and deployment of substrate capabilities." slug={SLUG} datePublished="2025-10-25" imageUrl={heroImg} keywords={["store", "marketplace", "capabilities"]} />
         </>
       }
     >
