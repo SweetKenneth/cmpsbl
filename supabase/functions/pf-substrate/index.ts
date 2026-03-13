@@ -1141,18 +1141,26 @@ async function handleUniversalModule(
   const startMs = Date.now();
 
   // ─── COMMON ACTIONS (all modules) ──────────────────────────
-  if (action === 'status' || action === 'pulse') {
-    // Real health: query primary table row count + recent activity
+  if (action === 'status' || action === 'pulse' || action === 'heartbeat') {
+    // Real health: query primary table row count + recent activity + latency
     let rowCount = 0;
     let recentActivity = 0;
+    let queryLatency = 0;
     try {
+      const qStart = Date.now();
       const { count } = await supabase.from(tableMap.primary).select('id', { count: 'exact', head: true });
+      queryLatency = Date.now() - qStart;
       rowCount = count || 0;
-      // Recent activity in last hour
       const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
       const { count: recent } = await supabase.from(tableMap.primary).select('id', { count: 'exact', head: true }).gte('created_at', oneHourAgo);
       recentActivity = recent || 0;
     } catch { /* table may not have created_at */ }
+
+    // Phase 3: Compute real health from live signals
+    const realHealth = await computeModuleHealth(supabase, module, tableMap, rowCount, recentActivity, queryLatency);
+
+    // Phase 3: Emit real heartbeat to mesh (fire-and-forget)
+    emitRealHeartbeat(supabase, module, personality, realHealth).catch(() => {});
 
     return jsonResponse({
       success: true,
@@ -1160,14 +1168,16 @@ async function handleUniversalModule(
       action,
       zone: tableMap.zone,
       personality: personality?.trait,
-      status: moduleState.status,
-      health: moduleState.healthScore,
+      status: realHealth.status,
+      health: realHealth.score,
       live_data: {
         primary_table: tableMap.primary,
         total_records: rowCount,
         recent_activity_1h: recentActivity,
         secondary_tables: tableMap.secondary,
+        query_latency_ms: queryLatency,
       },
+      diagnostics: realHealth.diagnostics,
       version: SUBSTRATE_VERSION,
       latency_ms: Date.now() - startMs,
       timestamp: new Date().toISOString(),
