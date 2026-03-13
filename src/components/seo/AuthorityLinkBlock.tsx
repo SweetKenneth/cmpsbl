@@ -29,7 +29,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Cognitive Infrastructure', href: '/' },
   // Priority: Key landing pages
   { label: 'EVOLUTION', href: '/evolution' },
-  { label: 'Memory Stream', href: '/memory-stream' },
+  { label: 'Memory Stream', href: '/foundry' },
   { label: 'Try CMPSBL Free', href: '/try' },
   // Core platform
   { label: 'Substrate Overview', href: '/substrate' },
