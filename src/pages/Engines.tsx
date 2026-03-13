@@ -17,6 +17,7 @@ import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 // ─── Tier config (styled like Blog categories) ───
