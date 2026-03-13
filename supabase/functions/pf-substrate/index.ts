@@ -2967,8 +2967,230 @@ async function emitGovernedSignal(
   });
 }
 
-// ─── HEARTBEAT EMITTER ───────────────────────────────────────
-// Emits a real mesh_comms event when a module is queried
+// ═══════════════════════════════════════════════════════════════
+// PHASE 3: REAL HEARTBEAT SIGNALS — Computed from live module data
+// ═══════════════════════════════════════════════════════════════
+
+interface ModuleHealthResult {
+  score: number;          // 0-100
+  status: 'healthy' | 'degraded' | 'critical' | 'offline';
+  diagnostics: Record<string, unknown>;
+}
+
+// Module-specific health computation from real DB signals
+// deno-lint-ignore no-explicit-any
+async function computeModuleHealth(
+  supabase: any,
+  module: string,
+  tableMap: { primary: string; secondary?: string[]; zone: string },
+  rowCount: number,
+  recentActivity: number,
+  queryLatencyMs: number,
+): Promise<ModuleHealthResult> {
+  let score = 100;
+  const diagnostics: Record<string, unknown> = {};
+
+  // Factor 1: Query latency (weight: 25%)
+  // Under 200ms = perfect, 200-500ms = minor penalty, 500ms+ = major
+  if (queryLatencyMs > 500) { score -= 25; diagnostics.latency = 'critical'; }
+  else if (queryLatencyMs > 200) { score -= 10; diagnostics.latency = 'slow'; }
+  else { diagnostics.latency = 'nominal'; }
+  diagnostics.query_latency_ms = queryLatencyMs;
+
+  // Factor 2: Data presence (weight: 15%)
+  if (rowCount === 0) { score -= 15; diagnostics.data = 'empty'; }
+  else { diagnostics.data = 'populated'; }
+  diagnostics.row_count = rowCount;
+
+  // Factor 3: Recent activity (weight: 20%)
+  // Modules that should have activity but don't are degraded
+  const activeModules = ['intent', 'nerve', 'audit', 'echo', 'economy', 'harvest'];
+  if (activeModules.includes(module) && recentActivity === 0) {
+    score -= 20; diagnostics.activity = 'stale';
+  } else {
+    diagnostics.activity = recentActivity > 0 ? 'active' : 'idle';
+  }
+  diagnostics.recent_activity_1h = recentActivity;
+
+  // Factor 4: Module-specific health checks (weight: 40%)
+  try {
+    switch (module) {
+      case 'evolution': {
+        const { count: staleCount } = await supabase.from('evolution_proposals')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'pending')
+          .lt('created_at', new Date(Date.now() - 7 * 86400000).toISOString());
+        if ((staleCount || 0) > 5) { score -= 15; diagnostics.stale_proposals = staleCount; }
+        const { count: rejectCount } = await supabase.from('evolution_proposals')
+          .select('id', { count: 'exact', head: true }).eq('status', 'rejected');
+        const { count: totalCount } = await supabase.from('evolution_proposals')
+          .select('id', { count: 'exact', head: true });
+        const rejectRate = (totalCount || 0) > 0 ? (rejectCount || 0) / (totalCount || 1) : 0;
+        if (rejectRate > 0.5) { score -= 15; diagnostics.rejection_rate = rejectRate; }
+        diagnostics.total_proposals = totalCount || 0;
+        break;
+      }
+      case 'immunity': {
+        const { count: conflictCount } = await supabase.from('immunity_rule_conflicts')
+          .select('id', { count: 'exact', head: true });
+        if ((conflictCount || 0) > 0) { score -= 10 * Math.min(3, conflictCount || 0); diagnostics.rule_conflicts = conflictCount; }
+        const { data: lastRun } = await supabase.from('immunity_mesh_runs')
+          .select('escalations, repaired, total_events')
+          .order('started_at', { ascending: false }).limit(1).maybeSingle();
+        if (lastRun?.escalations > 0) { score -= 10; diagnostics.escalations = lastRun.escalations; }
+        diagnostics.last_run = lastRun;
+        break;
+      }
+      case 'governance': {
+        const { data: mode } = await supabase.from('governance_mode')
+          .select('mode').order('changed_at', { ascending: false }).limit(1).maybeSingle();
+        if (mode?.mode === 'LOCKDOWN') { score -= 30; diagnostics.mode = 'LOCKDOWN'; }
+        else if (mode?.mode === 'DEGRADED') { score -= 15; diagnostics.mode = 'DEGRADED'; }
+        else if (mode?.mode === 'MAINTENANCE') { score -= 5; diagnostics.mode = 'MAINTENANCE'; }
+        else { diagnostics.mode = mode?.mode || 'ACTIVE'; }
+        break;
+      }
+      case 'economy': {
+        const today = new Date().toISOString().split('T')[0];
+        const { data: quotas } = await supabase.from('ai_daily_quota')
+          .select('calls_used, calls_budget').eq('date', today);
+        const totalUsed = (quotas || []).reduce((s: number, q: any) => s + (q.calls_used || 0), 0);
+        const totalBudget = (quotas || []).reduce((s: number, q: any) => s + (q.calls_budget || 0), 0);
+        const utilization = totalBudget > 0 ? totalUsed / totalBudget : 0;
+        if (utilization > 0.95) { score -= 25; diagnostics.budget = 'exhausted'; }
+        else if (utilization > 0.8) { score -= 10; diagnostics.budget = 'high_usage'; }
+        else { diagnostics.budget = 'within_limits'; }
+        diagnostics.utilization_pct = Math.round(utilization * 100);
+        break;
+      }
+      case 'memory': {
+        const { count: hotCount } = await supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true });
+        if ((hotCount || 0) > 450) { score -= 10; diagnostics.hot_tier = 'near_capacity'; }
+        const { count: contradictions } = await supabase.from('brain_memory_contradictions')
+          .select('id', { count: 'exact', head: true }).eq('resolution_status', 'unresolved');
+        if ((contradictions || 0) > 10) { score -= 10; diagnostics.unresolved_contradictions = contradictions; }
+        diagnostics.hot_count = hotCount || 0;
+        break;
+      }
+      case 'engineer': {
+        const { data: latest } = await supabase.from('system_metrics_history')
+          .select('success_rate, latency_p95, integrity_health_score')
+          .order('recorded_at', { ascending: false }).limit(1).maybeSingle();
+        if (latest) {
+          if (latest.success_rate < 90) { score -= 20; diagnostics.success_rate = latest.success_rate; }
+          if (latest.latency_p95 > 500) { score -= 15; diagnostics.p95_latency = latest.latency_p95; }
+          diagnostics.latest_metrics = latest;
+        }
+        break;
+      }
+      case 'shadow': {
+        const { count: diffCount } = await supabase.from('system_diffs')
+          .select('id', { count: 'exact', head: true });
+        if ((diffCount || 0) > 10) { score -= 10; diagnostics.active_diffs = diffCount; }
+        diagnostics.diff_count = diffCount || 0;
+        break;
+      }
+      case 'intent': {
+        const { data: recent } = await supabase.from('mesh_intents')
+          .select('success').order('created_at', { ascending: false }).limit(20);
+        const failCount = (recent || []).filter((r: any) => !r.success).length;
+        if (failCount > 5) { score -= 15; diagnostics.recent_failures = failCount; }
+        const { count: gapCount } = await supabase.from('mesh_discovery_gaps')
+          .select('id', { count: 'exact', head: true }).eq('status', 'open');
+        if ((gapCount || 0) > 10) { score -= 10; diagnostics.open_gaps = gapCount; }
+        diagnostics.resolution_failures = failCount;
+        break;
+      }
+      case 'nerve': {
+        const fiveMinAgo = new Date(Date.now() - 300000).toISOString();
+        const { count: warningCount } = await supabase.from('mesh_comms')
+          .select('id', { count: 'exact', head: true })
+          .eq('category', 'warning')
+          .gte('created_at', fiveMinAgo);
+        if ((warningCount || 0) > 5) { score -= 15; diagnostics.recent_warnings = warningCount; }
+        diagnostics.warning_burst = warningCount || 0;
+        break;
+      }
+      // Default: no additional penalty
+      default: break;
+    }
+  } catch (healthErr) {
+    // Health check failure itself is a signal
+    score -= 5;
+    diagnostics.health_check_error = healthErr instanceof Error ? healthErr.message : 'unknown';
+  }
+
+  // Clamp
+  score = Math.max(0, Math.min(100, score));
+
+  const status: ModuleHealthResult['status'] =
+    score >= 80 ? 'healthy' :
+    score >= 40 ? 'degraded' :
+    score > 0 ? 'critical' : 'offline';
+
+  return { score, status, diagnostics };
+}
+
+// Phase 3: Real heartbeat emitter with computed health + diagnostics
+// deno-lint-ignore no-explicit-any
+async function emitRealHeartbeat(
+  supabase: any,
+  module: string,
+  personality: { trait: string; icon: string } | undefined,
+  health: ModuleHealthResult,
+): Promise<void> {
+  const p = personality || { trait: 'Unknown', icon: '❓' };
+  const diag = health.diagnostics;
+
+  // Build context-aware voice line from real diagnostics
+  let voice: string;
+  switch (health.status) {
+    case 'healthy':
+      voice = `${p.icon} ${module.toUpperCase()} — all systems nominal. Score: ${health.score}/100.`;
+      // Add module-specific flavor
+      if (diag.row_count) voice += ` ${diag.row_count} records under management.`;
+      if (diag.recent_activity_1h) voice += ` ${diag.recent_activity_1h} operations in the last hour.`;
+      break;
+    case 'degraded': {
+      const issues: string[] = [];
+      if (diag.latency === 'slow') issues.push('elevated latency');
+      if (diag.activity === 'stale') issues.push('no recent activity');
+      if (diag.budget === 'high_usage') issues.push('budget pressure');
+      if (diag.stale_proposals) issues.push(`${diag.stale_proposals} stale proposals`);
+      if (diag.rule_conflicts) issues.push(`${diag.rule_conflicts} rule conflicts`);
+      if (diag.mode === 'DEGRADED') issues.push('governance in degraded mode');
+      if (diag.unresolved_contradictions) issues.push(`${diag.unresolved_contradictions} memory contradictions`);
+      voice = `${p.icon} ${module.toUpperCase()} — degraded (${health.score}/100). ${issues.length > 0 ? 'Issues: ' + issues.join(', ') + '.' : 'Monitoring closely.'}`;
+      break;
+    }
+    case 'critical': {
+      const crits: string[] = [];
+      if (diag.latency === 'critical') crits.push('query timeout risk');
+      if (diag.budget === 'exhausted') crits.push('budget exhausted');
+      if (diag.mode === 'LOCKDOWN') crits.push('system locked down');
+      if (diag.success_rate && typeof diag.success_rate === 'number' && diag.success_rate < 80) crits.push(`success rate ${diag.success_rate}%`);
+      voice = `${p.icon} ${module.toUpperCase()} — CRITICAL (${health.score}/100). ${crits.length > 0 ? crits.join(', ') + '. Requesting immediate attention.' : 'Requesting assistance.'}`;
+      break;
+    }
+    default:
+      voice = `${p.icon} ${module.toUpperCase()} — offline. No signal.`;
+  }
+
+  const signalType = health.status === 'healthy' ? 'heartbeat' : health.status === 'degraded' ? 'degraded' : 'critical';
+
+  await supabase.from('mesh_comms').insert({
+    source_module: module.toUpperCase(),
+    target_module: health.status !== 'healthy' ? 'MEDIC' : null,
+    raw_signal: signalType,
+    translated_voice: voice,
+    category: signalType === 'heartbeat' ? 'heartbeat' : 'warning',
+    resolver_id: null,
+    personality_trait: p.trait,
+    personality_icon: p.icon,
+  });
+}
+
+// Legacy heartbeat wrapper (for fallback paths)
 // deno-lint-ignore no-explicit-any
 async function emitHeartbeat(
   supabase: any,
@@ -2977,23 +3199,10 @@ async function emitHeartbeat(
   recordCount: number,
   healthScore: number,
 ): Promise<void> {
-  const p = personality || { trait: 'Unknown', icon: '❓' };
-  const signal = healthScore >= 80 ? 'heartbeat' : healthScore >= 40 ? 'degraded' : 'critical';
-  const voice = healthScore >= 80
-    ? `${p.icon} ${module.toUpperCase()} reporting — ${recordCount} records active, systems nominal.`
-    : healthScore >= 40
-    ? `${p.icon} ${module.toUpperCase()} reporting — health degraded (${healthScore}%). Monitoring closely.`
-    : `${p.icon} ${module.toUpperCase()} — critical health (${healthScore}%). Requesting assistance.`;
-
-  await supabase.from('mesh_comms').insert({
-    source_module: module.toUpperCase(),
-    target_module: null,
-    raw_signal: signal,
-    translated_voice: voice,
-    category: signal === 'heartbeat' ? 'heartbeat' : 'warning',
-    resolver_id: null,
-    personality_trait: p.trait,
-    personality_icon: p.icon,
+  await emitRealHeartbeat(supabase, module, personality, {
+    score: healthScore,
+    status: healthScore >= 80 ? 'healthy' : healthScore >= 40 ? 'degraded' : 'critical',
+    diagnostics: { row_count: recordCount, legacy: true },
   });
 }
 
