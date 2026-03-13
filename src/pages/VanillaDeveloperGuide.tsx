@@ -80,8 +80,8 @@ export default function VanillaDeveloperGuide() {
   return (
     <>
       <SEO
-        title="Developer Guide — Integrate the 40-Node Substrate"
-        description="Integrate the CMPSBL 40-node cognitive substrate into any TypeScript, Node.js, or JavaScript project. Full SDK reference, Memory Stream API, code examples, and quick-start guide."
+        title="Developer Guide — SDK Integration Steps | CMPSBL"
+        description="Integrate CMPSBL into any TypeScript or Node.js project: install the SDK, connect persistent memory, configure NEXUS routing, and trigger DREAM cycles. Full API reference and code examples."
         canonical="https://cmpsbl.com/developers/guide"
         keywords={['SDK', 'developer guide', 'TypeScript SDK', 'API integration', 'Node.js', 'REST API']}
       />

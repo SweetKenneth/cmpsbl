@@ -174,9 +174,9 @@ export default function SubstrateDemo() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO 
-        title="Interactive Demo — 40-Node AI Substrate | CMPSBL®"
-        description="Experience CMPSBL's 40-node cognitive substrate live. Watch execution surfaces, mesh overlays, Memory Stream crystallization, and 12 sectors orchestrate in real-time."
-        keywords={['AI demo', 'cognitive substrate demo', 'AI operating system demo', 'CMPSBL interactive', 'zone architecture']}
+        title="Live Demo — Try the Substrate Free | CMPSBL®"
+        description="Experience CMPSBL live: watch nodes execute, mesh overlays coordinate, Memory Stream signals crystallize, and DREAM consolidation run — all interactive, no signup required."
+        keywords={['CMPSBL demo', 'AI substrate demo', 'interactive AI demo', 'cognitive substrate live', 'try CMPSBL']}
       />
       <PublicNav />
 

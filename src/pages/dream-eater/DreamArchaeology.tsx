@@ -83,8 +83,8 @@ const DreamArchaeology = () => {
   return (
     <>
       <Helmet>
-        <title>Dream Archaeology — AI Pattern Discovery | CMPSBL</title>
-        <meta name="description" content="Explore the patterns and themes the Dream-Eater has absorbed from countless dreams and nightmares. Persistent memory archaeology powered by the DREAM consolidation module." />
+        <title>Dream Archaeology — Memory Pattern Explorer | CMPSBL</title>
+        <meta name="description" content="Dig into patterns the CMPSBL Dream-Eater has absorbed: mood distributions, recurring themes, mutation chains, and memory compression trends from thousands of user-submitted dreams." />
       </Helmet>
 
       <PublicNav />
