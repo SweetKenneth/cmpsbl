@@ -319,10 +319,16 @@ export default function About() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A cognitive operating system organized across 12 sectors. MEMORY persists context. DREAM consolidates knowledge. DEFENSE adapts to threats. NEXUS routes every call to the optimal provider.
+                  A cognitive operating system organized across{" "}
+                  <Link to="/architecture" className="text-primary hover:underline font-medium">12 sectors</Link>.{" "}
+                  MEMORY persists context via{" "}
+                  <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
+                  DREAM consolidates knowledge. <Link to="/engines" className="text-primary hover:underline font-medium">DEFENSE</Link>{" "}
+                  adapts to threats. NEXUS routes every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
+                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>.{" "}
+                  <Link to="/packs" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />
