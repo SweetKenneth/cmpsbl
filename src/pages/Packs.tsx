@@ -140,6 +140,7 @@ export default function Packs() {
         />
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
