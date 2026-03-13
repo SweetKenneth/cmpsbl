@@ -103,6 +103,7 @@ export default function TryIt() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
