@@ -110,12 +110,20 @@ export default function Enterprise() {
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
-              The complete CMPSBL substrate — 40 nodes across 12 sectors — deployed on your servers. 
-              DREAM cycles, governed ADAPT, persistent memory, DEFENSE shell, and NEXUS routing — 
-              configured for your compliance requirements.
+              The complete CMPSBL substrate —{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">40 nodes across 12 sectors</Link>{" "}
+              — deployed on your servers. DREAM cycles, governed ADAPT,{" "}
+              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
+              DEFENSE shell, and NEXUS routing — configured for your{" "}
+              <a href="https://gdpr.eu/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">GDPR</a>{" "}
+              and{" "}
+              <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOC 2</a>{" "}
+              compliance requirements.
             </p>
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-8">
-              Persistent memory is free for all users. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.
+              Persistent memory is free for all users. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
+              See <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>{" "}
+              or explore <Link to="/use-cases" className="text-primary hover:underline font-medium">real-world use cases</Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
