@@ -243,6 +243,7 @@ export default function Solutions() {
         </motion.div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

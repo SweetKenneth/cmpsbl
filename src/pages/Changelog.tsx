@@ -1201,6 +1201,7 @@ export default function Changelog() {
         </div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

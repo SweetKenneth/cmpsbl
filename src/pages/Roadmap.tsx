@@ -414,6 +414,7 @@ export default function Roadmap() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

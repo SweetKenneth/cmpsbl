@@ -334,6 +334,7 @@ await substrate('vision.health', {});`}
           </motion.div>
         </section>
       </main>
+      <RelatedCapabilities />
       <EnhancedFooter />
     </>
   );

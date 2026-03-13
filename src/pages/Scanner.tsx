@@ -408,6 +408,7 @@ export default function Scanner() {
         </motion.section>
       </main>
 
+      <RelatedCapabilities />
       <AuthorityLinkBlock currentPath="/scanner" />
       <EnhancedFooter />
     </div>

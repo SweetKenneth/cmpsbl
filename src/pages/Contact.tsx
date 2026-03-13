@@ -265,6 +265,7 @@ export default function Contact() {
         </motion.div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

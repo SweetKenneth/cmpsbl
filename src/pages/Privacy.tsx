@@ -223,6 +223,7 @@ export default function Privacy() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
