@@ -115,11 +115,11 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="About CMPSBL — Cognitive Infrastructure for AI"
-        description="Build on the substrate. CMPSBL is composable cognitive infrastructure with persistent memory, DREAM cycles, governed evolution, and the Memory Stream."
+        title="About CMPSBL — 40-Node AI Operating System"
+        description="Meet the team behind the first AI operating system. 40 autonomous nodes, 12 sectors, persistent Memory Stream, DREAM consolidation, and governed evolution — built in Dallas since 2009."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'cognitive infrastructure', 'AI substrate', 'dream cycles', 'governed evolution']}
+        keywords={['about CMPSBL', 'AI operating system', 'cognitive substrate', '40 node architecture', 'Memory Stream', 'Kenneth Sweet']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },

@@ -244,8 +244,8 @@ export default function Engines() {
   return (
     <>
       <Helmet>
-        <title>Composable Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="54 composable engines including 4 META super-memories at $1,999, 30 S-TIER sealed runtimes, APEX $599, ELITE $399, CORE $199, 3 Free. 40% off when bundled with agent." />
+        <title>54 AI Engines — Sealed Runtime Arsenal | CMPSBL</title>
+        <meta name="description" content="Browse 54 composable engines: 4 META super-memories ($1,999), 30 S-tier sealed runtimes, APEX, ELITE, and CORE tiers. 40% off with agent bundles. GODMIND chains recursively." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
