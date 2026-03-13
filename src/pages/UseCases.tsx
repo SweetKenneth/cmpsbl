@@ -437,8 +437,12 @@ export default function UseCases() {
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Persistent memory, intelligent routing, and adaptive security — 
-              CMPSBL powers AI applications from gaming to healthcare to enterprise ops.
+              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>,{" "}
+              intelligent routing, and <Link to="/engines" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
+              CMPSBL powers{" "}
+              <a href="https://en.wikipedia.org/wiki/Applications_of_artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
+              from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
+              to healthcare to <Link to="/enterprise" className="text-primary hover:underline font-medium">enterprise ops</Link>.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
