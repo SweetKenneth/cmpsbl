@@ -136,8 +136,11 @@ export default function Solutions() {
               }}>Needs to Think</span>
             </h1>
             <p className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
-              Persistent memory. Intelligent routing. Offline learning. Governed evolution. 
-              Self-hosted deployment. All production-ready. Built on the CMPSBL cognitive substrate.
+              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>.{" "}
+              Intelligent routing. Offline learning. Governed evolution.{" "}
+              <Link to="/enterprise" className="text-primary hover:underline font-medium">Self-hosted deployment</Link>.{" "}
+              All production-ready. Built on the{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL cognitive substrate</Link>.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">
