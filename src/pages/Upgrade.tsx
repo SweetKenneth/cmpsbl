@@ -9,6 +9,7 @@ import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
