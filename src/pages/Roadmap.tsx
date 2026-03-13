@@ -147,8 +147,8 @@ export default function Roadmap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Roadmap — From Discovery to Silicon | CMPSBL"
-        description="Five-phase roadmap for the 40-node cognitive substrate: Discovery, Evolution, Specialization, Federation, and Silicon. Domain-specific nodes across bioinformatics, finance, and robotics."
+        title="Roadmap — 5-Phase Plan to Silicon | CMPSBL"
+        description="CMPSBL's five-phase roadmap: Discovery (signal capture), Evolution (self-improvement), Specialization (domain nodes), Federation (multi-substrate), and Silicon (hardware export). What's next."
         canonical="https://cmpsbl.com/roadmap"
         keywords={["CMPSBL roadmap", "cognitive infrastructure", "AI evolution", "domain nodes", "self-improving software"]}
       />

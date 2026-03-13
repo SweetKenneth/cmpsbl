@@ -98,8 +98,8 @@ export default function Publication() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Academic Publication — Prior Art & Research | CMPSBL"
-        description="Defensive publication and prior-art documentation for the 40-node CMPSBL Substrate. MINDGAMES epoch, Zenodo-archived, DOI-registered cognitive orchestration research."
+        title="Publication — Zenodo-Archived Research | CMPSBL"
+        description="CMPSBL's defensive publication and prior-art record: DOI-registered cognitive orchestration research, Zenodo-archived MINDGAMES epoch documentation, and 14 verified world firsts."
         canonical="https://cmpsbl.com/publication"
         keywords={['CMPSBL', 'DOI', 'Zenodo', 'prior art', 'defensive publication', 'cognitive architecture', 'academic']}
         type="article"
