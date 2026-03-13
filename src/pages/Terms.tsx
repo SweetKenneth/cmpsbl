@@ -242,6 +242,7 @@ export default function Terms() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

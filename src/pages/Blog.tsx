@@ -1006,6 +1006,7 @@ export default function Blog() {
         </main>
 
         <AuthorityLinkBlock currentPath="/blog" />
+        <RelatedCapabilities />
         <EnhancedFooter />
       </div>
     </>
