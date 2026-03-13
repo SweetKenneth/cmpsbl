@@ -311,6 +311,21 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     setInput("");
     setShowMenu(false);
 
+    // ─── Governor Command Layer (async, real DB queries) ───
+    if (isCommand(userMessage) && identityRole === 'governor' && isGovernorCommand(userMessage)) {
+      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setIsLoading(true);
+      try {
+        const result = await routeGovernorCommand(userMessage);
+        setMessages(prev => [...prev, { role: 'assistant', content: result.output }]);
+      } catch (err) {
+        setMessages(prev => [...prev, { role: 'assistant', content: `⚠ Governor command failed: ${err instanceof Error ? err.message : 'Unknown error'}` }]);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
     // ─── Terminal Command Layer ───
     if (isCommand(userMessage)) {
       const { capabilities } = useDecodeStore.getState();
