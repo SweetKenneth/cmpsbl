@@ -1506,3 +1506,118 @@ All colors MUST be HSL.
     will-change: auto !important;
   }
 }
+
+/* ── Onboarding Overlay — Pure CSS Animations ─────────── */
+
+@keyframes ob-float {
+  0%, 100% { transform: translateY(0); opacity: 0.1; }
+  50% { transform: translateY(-30px); opacity: 0.4; }
+}
+@keyframes ob-stream {
+  0%, 100% { transform: translateX(-10%); }
+  50% { transform: translateX(10%); }
+}
+@keyframes ob-particle-rise {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  20% { opacity: 0.8; }
+  70% { opacity: 0.6; }
+  100% { transform: translateY(-130px) translateX(var(--ob-drift, 10px)); opacity: 0; }
+}
+@keyframes ob-glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.15); opacity: 0.1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+@keyframes ob-icon-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0px var(--glow-color, transparent); }
+  50% { box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color, transparent) 30%, transparent); }
+}
+@keyframes ob-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+@keyframes ob-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+@keyframes ob-bounce-x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+@keyframes ob-bounce-x-rev {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-2px); }
+}
+@keyframes ob-slide-in-r {
+  from { transform: translateX(60px); opacity: 0; filter: blur(6px); }
+  to { transform: translateX(0); opacity: 1; filter: blur(0); }
+}
+@keyframes ob-slide-in-l {
+  from { transform: translateX(-60px); opacity: 0; filter: blur(6px); }
+  to { transform: translateX(0); opacity: 1; filter: blur(0); }
+}
+@keyframes ob-slide-out-l {
+  from { transform: translateX(0); opacity: 1; filter: blur(0); }
+  to { transform: translateX(-60px); opacity: 0; filter: blur(6px); }
+}
+@keyframes ob-slide-out-r {
+  from { transform: translateX(0); opacity: 1; filter: blur(0); }
+  to { transform: translateX(60px); opacity: 0; filter: blur(6px); }
+}
+@keyframes ob-scale-in {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes ob-burst {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(2.5); opacity: 0; }
+}
+@keyframes ob-stagger-in {
+  from { transform: translateY(12px); opacity: 0; filter: blur(4px); }
+  to { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+@keyframes ob-fade-in-simple {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.ob-float-particle { animation: ob-float infinite ease-in-out; }
+.ob-stream-line { animation: ob-stream infinite ease-in-out; }
+.ob-header-particle {
+  --ob-drift: 10px;
+  animation: ob-particle-rise infinite ease-out;
+}
+.ob-glow-ring { animation: ob-glow-pulse 2s infinite ease-out; }
+.ob-icon-glow { animation: ob-icon-glow-pulse 2s infinite ease-in-out; }
+.ob-shimmer { animation: ob-shimmer 2s infinite linear; }
+.ob-wiggle { animation: ob-wiggle 1.5s infinite ease-in-out; display: inline-block; }
+.ob-bounce-x { animation: ob-bounce-x 1.5s infinite ease-in-out; display: inline-block; }
+.ob-bounce-x-reverse { animation: ob-bounce-x-rev 1.5s infinite ease-in-out; display: inline-block; }
+
+.ob-slide-in-right { animation: ob-slide-in-r 0.25s ease-out both; }
+.ob-slide-in-left { animation: ob-slide-in-l 0.25s ease-out both; }
+.ob-slide-out-left { animation: ob-slide-out-l 0.2s ease-in both; }
+.ob-slide-out-right { animation: ob-slide-out-r 0.2s ease-in both; }
+.ob-scale-in { animation: ob-scale-in 0.3s ease-out both; }
+.ob-fade-in { animation: ob-fade-in-simple 0.3s ease-out both; }
+.ob-burst-circle { animation: ob-burst 0.4s ease-out both; }
+
+.ob-card-pre { transform: scale(0.88) translateY(30px); opacity: 0; }
+.ob-card-enter { transform: scale(1) translateY(0); opacity: 1; }
+
+.ob-fade-in-delay { animation: ob-stagger-in 0.3s ease-out 0.3s both; }
+
+.ob-stagger-children .ob-stagger-item:nth-child(1) { animation: ob-stagger-in 0.3s ease-out 0.1s both; }
+.ob-stagger-children .ob-stagger-item:nth-child(2) { animation: ob-stagger-in 0.3s ease-out 0.18s both; }
+.ob-stagger-children .ob-stagger-item:nth-child(3) { animation: ob-stagger-in 0.3s ease-out 0.26s both; }
+.ob-stagger-children .ob-stagger-item:nth-child(4) { animation: ob-stagger-in 0.3s ease-out 0.34s both; }
+
+/* Disable onboarding animations for reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  [class*="ob-"] {
+    animation: none !important;
+    transition: none !important;
+  }
+  .ob-card-pre { transform: none; opacity: 1; }
+}
