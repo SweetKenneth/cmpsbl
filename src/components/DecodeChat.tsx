@@ -35,10 +35,10 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode
 const SESSION_STORAGE_KEY = 'decode_chat_messages';
 
 const MODE_GREETINGS: Record<DecodeMode, string> = {
-  assistant: "Hello. I'm DECODE — the interface between you and the CMPSBL substrate.\n\nI can answer questions, guide you through the system, or help troubleshoot issues.\n\nIf you need support, just ask.",
-  support: "Hello — I'm DECODE. I translate intent between you and the CMPSBL substrate.\n\nYou're currently in **support mode**. Tell me what you need help with.\n\nI can troubleshoot issues, explain features, walk you through setup, or escalate to a human at support@cmpsbl.com.",
-  builder: "DECODE online — builder mode active.\n\nReady to assist with substrate configuration, memory setup, and capability integration.\n\nState your objective.",
-  governor: "DECODE online — **governor mode** active.\n\nFull substrate telemetry and governance controls are available.\n\nAll 40 nodes across 12 sectors reporting. Awaiting directive.",
+  assistant: "Hey! 👋 I'm **DECODE** — your guide to everything CMPSBL.\n\nAsk me anything about the substrate, features, or how to get started. I'm here to help! ✨",
+  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nTell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
+  builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with substrate configuration, pipelines, and capability integration. What are we building?",
+  governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry and governance controls are live. All **40 nodes** across **12 sectors** reporting.\n\nUse slash commands like `/health`, `/caps`, `/govern` for live data — or just talk to me. What do you need, Governor?",
 };
 
 function persistMessages(msgs: Message[]) {
