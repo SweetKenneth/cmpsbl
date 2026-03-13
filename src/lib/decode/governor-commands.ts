@@ -230,36 +230,25 @@ const GOVERNOR_COMMANDS: Record<string, GovernorHandler> = {
     return formatBlock(`AUDIT LOG — LAST ${data.length} ENTRIES`, lines);
   },
 
-  /** Query intent_receipts for recent intent execution */
+  /** Query audit_logs filtered to intent-related actions */
   intents: async () => {
     const { data, error } = await supabase
-      .from('intent_receipts')
-      .select('intent_type, source_module, resolved_by, success, duration_ms, created_at')
+      .from('audit_logs')
+      .select('action, entity_type, entity_id, details, created_at')
+      .like('action', '%intent%')
       .order('created_at', { ascending: false })
       .limit(15);
 
     if (error || !data || data.length === 0) {
-      return formatBlock('INTENT RECEIPTS', ['No intent receipts found.']);
+      return formatBlock('INTENT ACTIVITY', ['No intent-related audit entries found.']);
     }
 
-    const successCount = data.filter(r => r.success).length;
-    const avgDuration = Math.round(data.reduce((s, r) => s + (r.duration_ms || 0), 0) / data.length);
-
     const lines = data.map(r => {
-      const icon = r.success ? '✓' : '✗';
-      return `  ${icon} ${(r.intent_type || '?').padEnd(16)} ${(r.source_module || '?').padEnd(10)} → ${(r.resolved_by || '?').padEnd(10)} ${r.duration_ms || '?'}ms`;
+      return `  ${timeAgo(r.created_at).padEnd(8)} ${(r.action || '?').padEnd(20)} ${r.entity_type || ''}`;
     });
 
-    return formatBlock(`INTENT MESH — LAST ${data.length} RECEIPTS`, [
-      `success rate:    ${Math.round((successCount / data.length) * 100)}%`,
-      `avg duration:    ${avgDuration}ms`,
-      '',
-      ...lines,
-    ]);
+    return formatBlock(`INTENT ACTIVITY — LAST ${data.length} ENTRIES`, lines);
   },
-
-  /** Toggle a capability in atlas_capabilities */
-  // Handled specially — see routeGovernorCommand
 };
 
 // ─── Governance Mode Setter ─────────────────────────────────────
