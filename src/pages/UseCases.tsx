@@ -149,7 +149,7 @@ export default function UseCases() {
       icon: Gamepad2,
       title: "Video Game Development",
       subtitle: "Gaming AI",
-      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives.",
+      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives. Powered by the CMPSBL persistent memory layer.",
       benefits: [
         "Persistent NPC memory across sessions",
         "Emotional state tracking & evolution",
@@ -437,8 +437,12 @@ export default function UseCases() {
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Persistent memory, intelligent routing, and adaptive security — 
-              CMPSBL powers AI applications from gaming to healthcare to enterprise ops.
+              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>,{" "}
+              intelligent routing, and <Link to="/engines" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
+              CMPSBL powers{" "}
+              <a href="https://en.wikipedia.org/wiki/Applications_of_artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
+              from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
+              to healthcare to <Link to="/enterprise" className="text-primary hover:underline font-medium">enterprise ops</Link>.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
@@ -477,7 +481,9 @@ export default function UseCases() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               From self-healing aircraft to kitchens that learn your taste — see what's possible 
-              when AI remembers, adapts, and improves over time.
+              when AI remembers, adapts, and improves over time. Powered by the{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">40-node substrate</Link>{" "}
+              and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IoT integration</a>.
             </p>
           </motion.div>
 
@@ -573,8 +579,11 @@ export default function UseCases() {
               Built for Every Industry
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              See how teams across sectors use persistent memory and intelligent routing 
-              to build AI applications that actually learn.
+              See how teams across sectors use <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>{" "}
+              and <Link to="/solutions" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
+              to build{" "}
+              <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
+              that actually learn.
             </p>
           </motion.div>
 
@@ -605,7 +614,8 @@ export default function UseCases() {
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Choose your industry — Gaming, Developer, or Enterprise — and activate only 
-                  the packs you need. No bloat, just the right capabilities.
+                  the <Link to="/packs" className="text-primary hover:underline font-medium">packs</Link> you need. No bloat, just the right capabilities.{" "}
+                  Start with our <Link to="/start-here" className="text-primary hover:underline font-medium">quickstart guide</Link>.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                   <Badge variant="outline" className="text-primary border-primary/30">

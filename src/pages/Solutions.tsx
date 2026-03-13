@@ -136,8 +136,11 @@ export default function Solutions() {
               }}>Needs to Think</span>
             </h1>
             <p className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
-              Persistent memory. Intelligent routing. Offline learning. Governed evolution. 
-              Self-hosted deployment. All production-ready. Built on the CMPSBL cognitive substrate.
+              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>.{" "}
+              Intelligent routing. Offline learning. Governed evolution.{" "}
+              <Link to="/enterprise" className="text-primary hover:underline font-medium">Self-hosted deployment</Link>.{" "}
+              All production-ready. Built on the{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL cognitive substrate</Link>.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">
@@ -207,8 +210,11 @@ export default function Solutions() {
               <Mail className="w-10 h-10 text-primary mx-auto mb-4" />
               <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Enterprise & Self-Hosted</h2>
               <p className="text-base sm:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Need dedicated infrastructure, air-gapped deployment via LNCHBL, compliance guarantees, or custom capacity? 
-                Contact our enterprise team for tailored pricing.
+                Need dedicated infrastructure, air-gapped deployment via LNCHBL,{" "}
+                <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOC 2</a>{" "}
+                compliance guarantees, or custom capacity?{" "}
+                See <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>{" "}
+                or contact our enterprise team for tailored pricing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="gap-2">
@@ -231,7 +237,10 @@ export default function Solutions() {
         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Start Building Today</h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-8">
-            Free tier. No credit card. Persistent memory in under an hour.
+            Free tier. No credit card. <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>{" "}
+            in under an hour. Explore the <Link to="/academy" className="text-primary hover:underline font-medium">Developer Academy</Link>{" "}
+            or read the{" "}
+            <a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LLM routing</a> docs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">

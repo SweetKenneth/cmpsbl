@@ -196,8 +196,11 @@ export default function About() {
             {...stagger(0.15)}
             className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
           >
-            CMPSBL is the substrate — composable cognitive infrastructure where your systems
-            dream, adapt, evolve, and remember. The Memory Stream captures what they learn.
+            CMPSBL is the substrate — composable{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
+            where your systems dream, adapt, evolve, and remember. The{" "}
+            <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
+            captures what they learn.
           </motion.p>
 
           {/* Stat chips — mobile-friendly horizontal scroll */}
@@ -316,10 +319,16 @@ export default function About() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A cognitive operating system organized across 12 sectors. MEMORY persists context. DREAM consolidates knowledge. DEFENSE adapts to threats. NEXUS routes every call to the optimal provider.
+                  A cognitive operating system organized across{" "}
+                  <Link to="/architecture" className="text-primary hover:underline font-medium">12 sectors</Link>.{" "}
+                  MEMORY persists context via{" "}
+                  <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
+                  DREAM consolidates knowledge. <Link to="/engines" className="text-primary hover:underline font-medium">DEFENSE</Link>{" "}
+                  adapts to threats. NEXUS routes every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>. Pattern mutation, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
+                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>.{" "}
+                  <Link to="/packs" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />
@@ -342,10 +351,14 @@ export default function About() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground">The Memory Stream</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A continuous river of evolving software. The Memory Stream isn't a marketplace — it's the living output of the substrate's own dream and evolution cycles.
+                  A continuous river of evolving software. The{" "}
+                  <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
+                  isn't a marketplace — it's the living output of the substrate's own dream and{" "}
+                  <Link to="/solutions" className="text-primary hover:underline font-medium">evolution cycles</Link>.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's memory.
+                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's{" "}
+                  <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Moon className="w-3.5 h-3.5" />
@@ -444,10 +457,15 @@ export default function About() {
               <div className="flex-1 min-w-0">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 text-foreground">About the Founder</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same infrastructure from scratch?
+                  I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same{" "}
+                  <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
+                  from scratch?
                 </p>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
-                  So I built the layer that should already exist — persistent memory, intelligent routing, adaptive security, DREAM cycles, and governed orchestration. One substrate. Every AI application.
+                  So I built the layer that should already exist —{" "}
+                  <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
+                  <Link to="/use-cases" className="text-primary hover:underline font-medium">intelligent routing</Link>, adaptive security, DREAM cycles, and{" "}
+                  <Link to="/documentation" className="text-primary hover:underline font-medium">governed orchestration</Link>. One substrate. Every AI application.
                 </p>
                 <blockquote className="border-l-2 border-primary/40 pl-4 my-4 italic text-sm sm:text-base text-foreground/80">
                   "AI should amplify human capability, not replace human judgment."
