@@ -7,6 +7,7 @@ import { DecodeStatusBar } from "./DecodeStatusBar";
 import { decode, substrate } from "@/lib/substrate";
 import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
 import { isCommand, routeCommand } from "@/lib/decode/command-router";
+import { isGovernorCommand, routeGovernorCommand } from "@/lib/decode/governor-commands";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
