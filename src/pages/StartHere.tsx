@@ -256,6 +256,7 @@ export default function StartHere() {
         </div>
         </PageTransition>
       </main>
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
