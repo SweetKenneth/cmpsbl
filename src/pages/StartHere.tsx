@@ -262,7 +262,11 @@ export default function StartHere() {
             {...stagger(0.55)}
           >
             <p className="text-sm text-muted-foreground italic leading-relaxed">
-              The substrate compounds because of the architecture — DREAM cycles synthesize, ADAPT governs, EVOLUTION improves, and the Memory Stream captures it all. Start with one build. See for yourself.
+              The substrate compounds because of the{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">architecture</Link>{" "}
+              — DREAM cycles synthesize, ADAPT governs, EVOLUTION improves, and the Memory Stream captures it all.{" "}
+              Read our <Link to="/about" className="text-primary hover:underline font-medium">founding story</Link>{" "}
+              or compare <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>. Start with one build. See for yourself.
             </p>
           </motion.div>
         </div>
