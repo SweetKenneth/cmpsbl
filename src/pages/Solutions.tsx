@@ -210,8 +210,11 @@ export default function Solutions() {
               <Mail className="w-10 h-10 text-primary mx-auto mb-4" />
               <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Enterprise & Self-Hosted</h2>
               <p className="text-base sm:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Need dedicated infrastructure, air-gapped deployment via LNCHBL, compliance guarantees, or custom capacity? 
-                Contact our enterprise team for tailored pricing.
+                Need dedicated infrastructure, air-gapped deployment via LNCHBL,{" "}
+                <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOC 2</a>{" "}
+                compliance guarantees, or custom capacity?{" "}
+                See <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>{" "}
+                or contact our enterprise team for tailored pricing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="gap-2">
