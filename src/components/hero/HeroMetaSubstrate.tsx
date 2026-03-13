@@ -266,7 +266,7 @@ export function HeroMetaSubstrate() {
 
             {/* Thesis line */}
             <FadeIn delay={0.3}
-              className="text-sm sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
+              className="text-base sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight leading-relaxed"
             >
               CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
             </FadeIn>
