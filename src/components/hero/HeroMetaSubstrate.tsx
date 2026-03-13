@@ -166,10 +166,10 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       className="relative text-center py-4 sm:py-5 group stat-card-glow animate-fade-in opacity-0"
       style={{ animationDelay: `${1.2 + delay * 0.06}s`, animationFillMode: "both" }}
     >
-      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
+      <div className="text-2xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
+      <div className="text-[11px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1.5 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
     </div>
   );
 }
@@ -205,7 +205,7 @@ export function HeroMetaSubstrate() {
   return (
     <section 
       aria-label="CMPSBL hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-6 pb-8 sm:pb-10 overflow-x-clip overflow-y-visible"
     >
       <HeroBackground />
 
@@ -246,7 +246,7 @@ export function HeroMetaSubstrate() {
 
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
-              <p className="text-xl sm:text-2xl md:text-3xl font-medium text-foreground/70 tracking-tight leading-snug mb-2">
+              <p className="text-lg sm:text-2xl md:text-3xl font-medium text-foreground/70 tracking-tight leading-snug mb-2">
                 Where machines learn how to
               </p>
               <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
@@ -266,19 +266,19 @@ export function HeroMetaSubstrate() {
 
             {/* Thesis line */}
             <FadeIn delay={0.3}
-              className="text-sm sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
+              className="text-base sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight leading-relaxed"
             >
               CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
             </FadeIn>
             
             {/* Subtitle — clear value prop */}
             <FadeIn delay={0.4} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9 space-y-4">
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+              <p className="text-[15px] sm:text-base text-muted-foreground/70 leading-[1.8]">
                 Every interaction flows through the{' '}
                 <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
                 crystallizes memories and packages them into working, exportable capabilities automatically.
               </p>
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+              <p className="text-[15px] sm:text-base text-muted-foreground/70 leading-[1.8]">
                 The rarest discoveries don't stop at software. They become designs for{' '}
                 <span className="text-primary font-medium">silicon computer chips</span>.{' '}
                 <span className="text-foreground/90 font-semibold">Start now — free.</span>
@@ -290,7 +290,7 @@ export function HeroMetaSubstrate() {
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2 px-8 sm:px-10 h-13 sm:h-13 text-base sm:text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Link to="/upgrade">
                   <Sparkles className="w-4 h-4" />
@@ -302,7 +302,7 @@ export function HeroMetaSubstrate() {
                 asChild 
                 variant="ghost" 
                 size="lg" 
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl hover:bg-muted/40 transition-all duration-300 active:scale-[0.98]"
+                className="gap-2 px-6 sm:px-8 h-13 sm:h-13 text-base sm:text-sm font-medium rounded-xl hover:bg-muted/40 transition-all duration-300 active:scale-[0.98]"
               >
                 <Link to="/foundry">
                   <Brain className="w-4 h-4 text-muted-foreground" />
@@ -367,8 +367,8 @@ export function HeroMetaSubstrate() {
                   key={item.label} 
                   className="rounded-lg border border-border/15 bg-card/25 p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover glass-edge"
                 >
-                  <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
-                  <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
+                  <div className="text-[10px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
+                  <div className="text-xs sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
                 </div>
               ))}
             </FadeIn>
@@ -395,7 +395,7 @@ export function HeroMetaSubstrate() {
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 shrink-0 hover:bg-card/60 hover:border-primary/25 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 active:scale-[0.97]"
               >
                 <item.icon className="w-3 h-3 text-muted-foreground/50" />
-                <span className="text-[11px] font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
+                <span className="text-xs sm:text-[11px] font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
               </Link>
             </FadeIn>
           ))}
