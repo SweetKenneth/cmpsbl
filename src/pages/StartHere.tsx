@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageTransition } from "@/components/PageTransition";
 import {
   ArrowRight, Sparkles, Brain, Code, Zap, BookOpen, CheckCircle2,

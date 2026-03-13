@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 import { COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 import { motion } from "framer-motion";

@@ -636,6 +636,7 @@ export default function UseCases() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

@@ -15,6 +15,7 @@ import {
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 // SEO handled via <SEO> component — find it in the return JSX
 import { Card, CardContent } from "@/components/ui/card";

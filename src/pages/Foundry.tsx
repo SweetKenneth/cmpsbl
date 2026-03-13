@@ -293,6 +293,7 @@ export default function Foundry() {
         )}
       </div>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </>
   );
