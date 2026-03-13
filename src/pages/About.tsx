@@ -570,6 +570,7 @@ export default function About() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
