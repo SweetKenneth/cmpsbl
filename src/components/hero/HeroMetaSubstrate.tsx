@@ -290,7 +290,7 @@ export function HeroMetaSubstrate() {
               <Button 
                 asChild 
                 size="lg" 
-                className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="gap-2 px-8 sm:px-10 h-13 sm:h-13 text-base sm:text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Link to="/upgrade">
                   <Sparkles className="w-4 h-4" />
