@@ -192,10 +192,14 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent." },
   ];
   if (mode === 'governor') return [
-    { icon: "📡", title: "Node Status", prompt: "Report full 40-node health status across all 12 sectors." },
-    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and safety switch states." },
-    { icon: "🩺", title: "System Heal", prompt: "Run a diagnostic and heal any degraded nodes." },
-    { icon: "📊", title: "Memory Metrics", prompt: "Show memory scoring and foundry reactor metrics." },
+    { icon: "📡", title: "Node Health", prompt: "/health" },
+    { icon: "🏛️", title: "Governance", prompt: "/govern" },
+    { icon: "⚡", title: "Capabilities", prompt: "/caps" },
+    { icon: "🔗", title: "Mesh Comms", prompt: "/comms" },
+    { icon: "🤖", title: "NEXUS Fleet", prompt: "/nexus" },
+    { icon: "💰", title: "AI Budget", prompt: "/budget" },
+    { icon: "📋", title: "Audit Log", prompt: "/audit" },
+    { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
   ];
   return [
     { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },
