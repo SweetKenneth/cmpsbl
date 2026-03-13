@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { ArrowRight, Heart, Sparkles, Globe, Zap, Users, Brain, Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
