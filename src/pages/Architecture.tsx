@@ -339,6 +339,7 @@ export default function Architecture() {
         </section>
       </main>
 
+      <RelatedCapabilities />
       <AuthorityLinkBlock currentPath="/architecture" />
       <EnhancedFooter />
     </div>
