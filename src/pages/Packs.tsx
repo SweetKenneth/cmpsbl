@@ -8,6 +8,7 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
