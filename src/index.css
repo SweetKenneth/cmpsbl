@@ -1425,3 +1425,84 @@ All colors MUST be HSL.
   color: hsl(var(--muted-foreground));
   text-align: center;
 }
+
+/* ─── Blink cursor for TypedText ─────────────────────────────── */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-blink-cursor {
+  animation: blink-cursor 0.8s linear infinite;
+}
+
+/* ─── Scroll bounce for hero indicator ───────────────────────── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+.animate-scroll-bounce {
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   REDUCED MOTION — Disable/simplify animations for older devices
+   and users who prefer reduced motion (accessibility + performance)
+   ════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Keep essential fade-in so content is visible (instant, no motion) */
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Kill expensive background orbs */
+  .animate-hero-orb-1,
+  .animate-hero-orb-2,
+  .animate-hero-orb-3 {
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  /* Kill flowing gradients */
+  .memory-stream-bar,
+  .divider-flow,
+  .clockless-river-text {
+    animation: none !important;
+  }
+
+  /* Kill backdrop-blur (extremely expensive on older GPUs) */
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-xl,
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Kill pulse animations */
+  .animate-pulse,
+  .animate-ping {
+    animation: none !important;
+  }
+
+  /* Kill glow orbs */
+  .animate-glow-orb-a,
+  .animate-glow-orb-b {
+    animation: none !important;
+  }
+
+  /* Disable will-change to free GPU memory */
+  [style*="will-change"],
+  .will-change-transform {
+    will-change: auto !important;
+  }
+}
