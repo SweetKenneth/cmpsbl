@@ -21154,9 +21154,4 @@ async function routeToProvider(
   };
 }
 
-function jsonResponse(data: Record<string, unknown>, headers: Record<string, string>, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { ...headers, "Content-Type": "application/json" },
-  });
-}
+// (jsonResponse already defined above — removed duplicate)
