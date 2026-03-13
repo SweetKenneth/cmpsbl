@@ -3,9 +3,9 @@
  * Item #25: Scan result caching for offline/slow connections
  */
 
-const CACHE_NAME = 'cmpsbl-v4';
-const SCAN_CACHE = 'cmpsbl-scans-v4';
-const STATIC_CACHE = 'cmpsbl-static-v4';
+const CACHE_NAME = 'cmpsbl-v3';
+const SCAN_CACHE = 'cmpsbl-scans-v3';
+const STATIC_CACHE = 'cmpsbl-static-v3';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [

@@ -130,7 +130,7 @@ export function EnhancedFooter() {
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
                 Signal → Silicon
               </p>
-              <p className="text-xs sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
+              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
                 The Memory Stream captures raw system behavior and crystallizes it into production-grade software — and when exceptional, into physical silicon.
               </p>
               <Link 
@@ -161,7 +161,7 @@ export function EnhancedFooter() {
             {footerSections.map((section) => (
               <div key={section.title} className="min-w-0">
                 <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide uppercase text-muted-foreground/80">{section.title}</h3>
-                <ul className="space-y-1.5 sm:space-y-2.5">
+                <ul className="space-y-2.5">
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
@@ -180,7 +180,7 @@ export function EnhancedFooter() {
                         <Link
                           to={link.href}
                           className={cn(
-                            "text-sm transition-all duration-300 inline-flex items-center min-h-[36px] sm:min-h-0 underline-reveal hover:translate-x-0.5",
+                            "text-sm transition-all duration-300 inline-block underline-reveal hover:translate-x-0.5",
                             link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
