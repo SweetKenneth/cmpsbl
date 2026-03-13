@@ -22,21 +22,23 @@ interface ExtLink {
 // ── Internal links (40 unique) — weighted toward / and /evolution ──
 
 const INTERNAL_LINKS: InternalLink[] = [
-  // Priority: Home
+  // Priority: Home (triple-weighted for hub authority)
   { label: 'CMPSBL Home', href: '/' },
   { label: 'Composable AI Platform', href: '/' },
-  // Priority: Evolution
+  { label: 'AI Operating System Home', href: '/' },
+  { label: 'Cognitive Infrastructure', href: '/' },
+  // Priority: Key landing pages
   { label: 'EVOLUTION', href: '/evolution' },
-  { label: 'Evolution Control Center', href: '/evolution' },
-  { label: 'Self-Improving Systems', href: '/evolution' },
+  { label: 'Memory Stream', href: '/memory-stream' },
+  { label: 'Try CMPSBL Free', href: '/try' },
   // Core platform
   { label: 'Substrate Overview', href: '/substrate' },
   { label: 'AI Operating System', href: '/ai-operating-system' },
   { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
   { label: 'All Nodes', href: '/modules' },
-  { label: 'DECODE Terminal', href: '/decode' },
-  { label: 'Proof Mode', href: '/proof' },
+  { label: '54 Composable Engines', href: '/engines' },
+  { label: 'Memory Stream Discovery', href: '/foundry' },
   // Products
   { label: 'Persistent Memory', href: '/persistent-memory' },
   { label: 'Capability Packs', href: '/packs' },
@@ -53,7 +55,6 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Academy', href: '/academy' },
   { label: 'CodeLab', href: '/codelab' },
   { label: 'API Access', href: '/api-access' },
-  { label: 'DevTools', href: '/devtools' },
   // Discovery
   { label: 'Evolution Scanner', href: '/scanner' },
   { label: 'Research Blog', href: '/blog' },
