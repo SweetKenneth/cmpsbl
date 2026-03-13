@@ -135,10 +135,10 @@ export default function AIOperatingSystem() {
   return (
     <>
       <Helmet>
-        <title>What is an AI Operating System? | CMPSBL — The First AI OS</title>
+        <title>AI Operating System — 40-Node Cognitive Runtime | CMPSBL</title>
         <meta
           name="description"
-          content="An AI Operating System unifies memory, routing, security, and orchestration into one cognitive runtime. CMPSBL is the first governed AI OS — 40 nodes, 12 sectors, self-improving."
+          content="The first AI operating system: 40 autonomous nodes across 12 sectors unifying memory, routing, security, and orchestration. Persistent Memory Stream, DREAM consolidation, governed evolution."
         />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />

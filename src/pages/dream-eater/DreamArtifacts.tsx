@@ -83,8 +83,8 @@ const DreamArtifacts = () => {
   return (
     <>
       <Helmet>
-        <title>Dream Artifacts | Crystallized Memories</title>
-        <meta name="description" content="Explore immutable artifacts generated from compressed dreams. Each day's visions crystallized into a single truth." />
+        <title>Dream Artifacts — Crystallized AI Memories | CMPSBL</title>
+        <meta name="description" content="Immutable artifacts generated from compressed dreams. Each day's visions crystallized into permanent, verifiable memories by the DREAM consolidation engine across 40 substrate nodes." />
       </Helmet>
 
       <PublicNav />

@@ -197,8 +197,8 @@ export default function HumansTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Humans.txt — Team & Philosophy | CMPSBL"
-        description="The CMPSBL team: six engineers, researchers, and communicators building cognitive infrastructure for AI. Led by Kenneth E Sweet Jr."
+        title="Humans.txt — The CMPSBL Collective | CMPSBL"
+        description="Meet the CMPSBL Collective: a decentralized assembly of humans and machines building the 40-node cognitive substrate. Led by Kenneth E Sweet Jr from Dallas, Texas."
         keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'cognitive AI team']}
         noindex
       />

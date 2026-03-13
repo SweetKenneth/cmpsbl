@@ -57,8 +57,8 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Contact CMPSBL — Get in Touch"
-        description="Reach the CMPSBL team for partnerships, enterprise inquiries, support, or press. Departments include Sales, Engineering, Research, Security, and PR."
+        title="Contact Us — Partnerships & Support | CMPSBL"
+        description="Reach the CMPSBL team for enterprise deployments, partnerships, technical support, or press inquiries. Sales, Engineering, Research, Security, and PR departments available."
         canonical="https://cmpsbl.com/contact"
         keywords={['contact CMPSBL', 'AI partnership inquiry', 'enterprise AI contact', 'CMPSBL support', 'Dallas AI company contact']}
       />

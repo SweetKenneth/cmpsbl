@@ -75,8 +75,8 @@ export default function StartHere() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Start Here — CMPSBL"
-        description="New to CMPSBL? Build on the substrate. Add persistent memory, DREAM cycles, governed evolution, and intelligent routing to any AI application — free."
+        title="Start Here — Get Started with CMPSBL Free"
+        description="New to the substrate? Add persistent memory, DREAM consolidation, governed evolution, and the Memory Stream to any AI application in minutes. Free tier with 3 capability slots."
         canonical="https://cmpsbl.com/start-here"
         keywords={['CMPSBL getting started', 'build on substrate', 'DREAM cycles', 'AI evolution', 'persistent memory', 'governed adaptation']}
       />

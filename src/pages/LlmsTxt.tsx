@@ -182,8 +182,8 @@ export default function LlmsTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="LLMS.txt — Machine-Readable AI Context"
-        description="LLMS.txt is a machine-readable context standard for AI systems. CMPSBL implements and recommends it for web designers and system architects."
+        title="LLMS.txt — Machine-Readable AI Context | CMPSBL"
+        description="LLMS.txt is the machine-readable context standard for AI systems. CMPSBL implements it for 40-node substrate discovery, enabling AI agents to understand cognitive architecture natively."
         keywords={['LLMS.txt', 'machine readable AI context', 'AI context standard', 'llmstxt protocol']}
       />
 

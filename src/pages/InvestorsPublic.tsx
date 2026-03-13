@@ -100,8 +100,8 @@ export default function InvestorsPublic() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Investor Relations — CMPSBL® Memory Stream"
-        description="CMPSBL: the Memory Stream — a cognitive OS where raw signal crystallizes into production software and silicon. 14 documented world firsts. Seeking seed investment."
+        title="Investor Relations — AI Operating System | CMPSBL®"
+        description="CMPSBL: the first AI operating system where raw signal crystallizes into production software and silicon. 40 nodes, 54 engines, 14 documented world firsts. Seeking seed investment."
         canonical="https://cmpsbl.com/investors"
         keywords={['CMPSBL investment', 'AI startup investment', 'memory stream', 'signal to silicon', 'seed investment AI']}
       />

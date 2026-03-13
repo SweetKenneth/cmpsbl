@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
+// SEO handled via <SEO> component — find it in the return JSX
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -186,8 +187,8 @@ export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Architecture | CMPSBL"
-        description="How CMPSBL works: 40 autonomous nodes across 12 sectors — deterministic boot, clockless coordination, shadow-first mutation, and tamper-evident audit."
+        title="40-Node Substrate Architecture — 12 Sectors | CMPSBL"
+        description="How CMPSBL works: 40 autonomous nodes across 12 sectors with deterministic boot, clockless coordination, Memory Stream crystallization, shadow-first mutation, and tamper-evident audit."
         image="https://cmpsbl.com/og/architecture.jpg"
         keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI nodes', 'cognitive substrate', 'AI infrastructure layers']}
         breadcrumbs={[

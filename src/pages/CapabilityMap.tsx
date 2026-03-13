@@ -141,8 +141,8 @@ export default function CapabilityMap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Capability Map — CMPSBL"
-        description="Explore every capability: baseline nodes, capability packs, and reserved internals. See what's always on, what's activatable, and what's coming."
+        title="Capability Map — 675+ AI Capabilities | CMPSBL"
+        description="Explore 675+ capabilities across 40 nodes: baseline always-on features, 24 activatable Memory Packs, and reserved internals. Visual atlas of the cognitive substrate."
       />
       <PublicNav />
 

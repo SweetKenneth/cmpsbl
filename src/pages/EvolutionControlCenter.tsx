@@ -239,7 +239,7 @@ export default function EvolutionControlCenter() {
   // ── SEO data ────────────────────────────────────────────
   const seoProps = {
     title: "EVOLUTION — Governed AI Code Improvement | CMPSBL",
-    description: "Connect your AI agent and evolve your codebase safely. Dry-run previews, one-click rollback, receipted changes, and governed self-improvement.",
+    description: "Evolve your codebase safely with 7-gate SEBA assessment, dry-run previews, one-click rollback, and cryptographic audit receipts. Governed self-improvement across 40 substrate nodes.",
     image: "https://cmpsbl.com/og/evolution.jpg",
     canonical: "https://cmpsbl.com/evolution",
     keywords: ['AI code evolution', 'governed self-improvement', 'codebase evolution', 'AI agent code improvement', 'dry-run preview', 'rollback safe'] as string[],

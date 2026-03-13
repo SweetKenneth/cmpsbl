@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { SEO } from "@/components/SEO";
+// SEO props defined in JSX
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -102,8 +103,8 @@ export default function Solutions() {
       </div>
 
       <SEO
-        title="Solutions — Cognitive AI Infrastructure | CMPSBL"
-        description="Complete product suite: persistent memory, NEXUS routing, DREAM cycles, DEFENSE security, capability packs, LNCHBL self-hosted deployment, and CodeLab. Built on 40 nodes across 12 sectors."
+        title="Solutions — 40-Node AI Product Suite | CMPSBL"
+        description="Complete cognitive product suite: persistent memory, NEXUS routing, DREAM consolidation, 54 engines, Memory Packs, LNCHBL self-hosted deployment, and CodeLab — all on the 40-node substrate."
         canonical="https://cmpsbl.com/solutions"
         keywords={['AI solutions', 'cognitive infrastructure', 'persistent memory', 'AI routing', 'enterprise AI', 'self-hosted AI']}
       />

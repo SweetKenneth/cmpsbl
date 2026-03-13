@@ -130,8 +130,8 @@ export default function IntentMeshPublic() {
   return (
     <>
       <SEO
-        title="Intent Mesh — Node Intelligence | CMPSBL"
-        description="Autonomous cross-node capability discovery and composition across execution surfaces. Self-learning capabilities with memory crystallization."
+        title="Intent Mesh — 40-Node AI Routing | CMPSBL"
+        description="Autonomous cross-node intelligence routing across 40 nodes and 12 sectors. Self-learning capability discovery, Memory Stream crystallization, and governed orchestration."
         image="https://cmpsbl.com/og/intent-mesh.jpg"
         keywords={['intent mesh', 'cross-node discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
         breadcrumbs={[

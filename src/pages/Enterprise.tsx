@@ -7,6 +7,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
+// SEO handled via <SEO> component
 import { ArrowRight, Building2, Shield, Layers, Zap, Globe, Lock, Brain, Server, Users, Mail, CheckCircle, Activity, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -85,8 +86,8 @@ export default function Enterprise() {
   return (
     <>
       <SEO
-        title="Enterprise Deployment — CMPSBL"
-        description="Deploy the CMPSBL 40-node cognitive substrate on your own infrastructure. Private deployment, SOC2 compliance, dedicated support, and custom node configuration."
+        title="Enterprise AI Deployment — Private 40-Node Substrate"
+        description="Deploy the full 40-node CMPSBL substrate on your infrastructure. Air-gapped, SOC2-compliant, with Memory Stream, DREAM consolidation, and dedicated engineering support."
         canonical="https://cmpsbl.com/enterprise"
         keywords={['enterprise AI', 'private deployment', 'on-premises AI', 'CMPSBL enterprise', 'governed AI', 'SOC2 AI']}
       />

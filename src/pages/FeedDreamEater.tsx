@@ -124,8 +124,8 @@ const FeedDreamEater = () => {
   return (
     <>
       <SEO 
-        title="Feed the Dream-Eater | Interactive AI Memory Demo | CMPSBL®"
-        description="Experience persistent AI memory in action. Feed dreams and nightmares to a living AI entity that evolves, mutates, and remembers."
+        title="Feed the Dream-Eater — Live AI Memory Demo | CMPSBL"
+        description="Experience persistent memory in action. Feed dreams and nightmares to a living AI entity that evolves, mutates, and crystallizes memories — powered by the 40-node substrate."
         canonical="https://cmpsbl.com/feed-dream-eater"
         image="https://cmpsbl.com/og-dream-eater.jpg"
         keywords={['AI memory demo', 'persistent memory', 'dream eater', 'interactive AI', 'AI consciousness', 'neural network demo', 'CMPSBL']}

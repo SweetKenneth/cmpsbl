@@ -130,8 +130,8 @@ export default function DeveloperShowcase() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Developer Hub — SDKs & APIs | CMPSBL"
-        description="Everything developers need: SDKs, REST APIs, webhooks, and integration guides for building on the 40-node composable AI substrate."
+        title="Developer Hub — SDKs, APIs & Guides | CMPSBL"
+        description="Everything developers need to build on the 40-node substrate: REST APIs, SDKs, webhooks, integration guides, and code examples for persistent memory, routing, and orchestration."
         canonical="https://cmpsbl.com/developers"
         keywords={["AI development", "cognitive architecture", "LLM infrastructure", "AI memory", "developer tools", "SDK"]}
       />
