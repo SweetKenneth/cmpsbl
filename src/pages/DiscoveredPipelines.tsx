@@ -38,8 +38,8 @@ export default function DiscoveredPipelines() {
   return (
     <>
       <Helmet>
-        <title>Discovered Memories — Autonomous Compositions from the Memory Stream</title>
-        <meta name="description" content="The substrate's highest-scoring autonomous memory compositions. Scored, ranked, and ready for deployment." />
+        <title>Discovered Memories — Memory Stream Compositions | CMPSBL</title>
+        <meta name="description" content="The substrate's highest-scoring autonomous Memory Stream compositions. CJPI-scored, tier-ranked from Mint to Apex, and ready for deployment across 40 nodes. Real crystallized software." />
       </Helmet>
 
       <div className="min-h-screen bg-background">

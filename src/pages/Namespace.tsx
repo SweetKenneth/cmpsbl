@@ -117,8 +117,8 @@ export default function Namespace() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="AI Governance Namespace — AIGVRN | CMPSBL"
-        description="AI Governance Reference Namespace: a 12-surface lexicon for AI governance documentation. Comprehensive domain portfolio for policy interoperability."
+        title="AI Governance Namespace — 12-Surface Lexicon | CMPSBL"
+        description="AIGVRN: a 12-surface lexicon for AI governance documentation covering policy, compliance, security, safety, sovereignty, and privacy. The governance standard for cognitive AI systems."
         keywords={['AIGVRN', 'AI governance namespace', 'AI governance lexicon', 'AI policy framework', 'AI compliance standards']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },

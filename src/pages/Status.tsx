@@ -242,8 +242,8 @@ export default function Status() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Memory Stream Status — CMPSBL"
-        description="Real-time operational status of the Memory Stream — all systems, protective layers, and signal zones."
+        title="System Status — 40-Node Health Monitor | CMPSBL"
+        description="Real-time operational status across all 40 nodes and 12 sectors. Memory Stream health, DREAM consolidation cycles, protective layers, and signal zone monitoring — updated live."
         canonical="https://cmpsbl.com/status"
         keywords={["memory stream status", "uptime", "CMPSBL status", "stream health"]}
       />

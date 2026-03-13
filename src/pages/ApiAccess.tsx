@@ -78,8 +78,8 @@ export default function ApiAccess() {
   return (
     <>
       <SEO
-        title="API Access — Get Your Free Developer Key | CMPSBL"
-        description="Claim your free API key and start building on the CMPSBL cognitive substrate. Persistent memory, AI routing, security, and observability — one endpoint, zero setup."
+        title="API Access — Free Developer Key for 40 Nodes | CMPSBL"
+        description="Get your free API key and build on the 40-node cognitive substrate. Persistent memory, AI routing, security, and observability — one unified endpoint, zero setup required."
         canonical="https://cmpsbl.com/api-access"
       />
       <PublicNav />

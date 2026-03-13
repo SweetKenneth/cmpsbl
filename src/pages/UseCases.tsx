@@ -394,8 +394,8 @@ export default function UseCases() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Use Cases — CMPSBL for Every Industry"
-        description="Explore how CMPSBL powers intelligent applications across gaming, enterprise, healthcare, legal, education, and more."
+        title="Use Cases — AI Applications Across Industries"
+        description="See how CMPSBL's 40-node substrate powers intelligent applications across gaming, enterprise, healthcare, legal, education, finance, and robotics with persistent memory and DREAM cycles."
         canonical="https://cmpsbl.com/use-cases"
         keywords={[
           "AI use cases",

@@ -462,8 +462,8 @@ export default function SystemIntelligenceFeed() {
   return (
     <>
       <Helmet>
-        <title>Observer Mode — System Intelligence Feed | CMPSBL</title>
-        <meta name="description" content="Observer Mode — Watch the CMPSBL Substrate's autonomous learning and Clockless Cognitive Reality engine in real-time." />
+        <title>Observer Mode — Live 40-Node Intelligence Feed | CMPSBL</title>
+        <meta name="description" content="Watch the 40-node cognitive substrate's autonomous learning and Clockless Cognitive Reality engine operate in real-time. Memory Stream crystallization, DREAM cycles, and node telemetry." />
       </Helmet>
 
       <div className="min-h-screen bg-background relative flex flex-col">

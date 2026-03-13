@@ -22,8 +22,8 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="Substrate Nodes — AI Architecture | CMPSBL"
-        description="Browse all substrate nodes — systems, mesh overlays, and hot-swappable zones powered by CORE kernel. Composable AI building blocks."
+        title="40 Substrate Nodes — AI Architecture | CMPSBL"
+        description="Browse all 40 autonomous nodes across 12 sectors: BRAIN, MEMORY, DREAM, DEFENSE, ORACLE, PHANTOM, and more. Hot-swappable cognitive building blocks for composable AI."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[

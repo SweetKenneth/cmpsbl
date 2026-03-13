@@ -28,8 +28,8 @@ const DeveloperAcademy = () => {
   return (
     <>
       <SEO
-        title="Developer Academy — AI Tutorials | CMPSBL"
-        description="Master the CMPSBL Substrate SDK with interactive tutorials, skill progression paths, sandbox environments, and AI-powered learning tools."
+        title="Developer Academy — AI Substrate Tutorials | CMPSBL"
+        description="Master the 40-node cognitive substrate with interactive tutorials, skill progression paths, sandbox environments, and AI-powered learning. From beginner to Governor tier."
         image="https://cmpsbl.com/og/academy.jpg"
         keywords={['AI developer academy', 'substrate SDK tutorials', 'interactive AI training', 'agentic AI course']}
         breadcrumbs={[

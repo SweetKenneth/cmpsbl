@@ -46,6 +46,7 @@ const sections: DocSection[] = [
   { id: "integrations",   label: "Integrations",    icon: Globe,      color: "text-sky-500" },
   { id: "api",            label: "API Reference",   icon: Terminal,   color: "text-primary" },
 ];
+// SEO is below in JSX
 
 /* ─── Code block with copy ─── */
 

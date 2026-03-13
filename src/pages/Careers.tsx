@@ -50,8 +50,8 @@ export default function Careers() {
   return (
     <>
       <SEO
-        title="Careers — CMPSBL"
-        description="Join the team building the cognitive substrate. We're looking for engineers, researchers, and dreamers who want to shape the future of AI systems."
+        title="Careers — Build the AI Operating System | CMPSBL"
+        description="Join the team building the first AI operating system. We're hiring engineers, researchers, and visionaries to shape 40-node cognitive infrastructure. Remote-first from Dallas, TX."
         canonical="https://cmpsbl.com/careers"
         keywords={['CMPSBL careers', 'AI jobs', 'cognitive infrastructure jobs', 'Dallas AI startup']}
       />
