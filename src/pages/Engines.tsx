@@ -478,6 +478,7 @@ export default function Engines() {
           </section>
         </main>
 
+        <RelatedCapabilities />
         <EnhancedFooter />
       </div>
     </>
