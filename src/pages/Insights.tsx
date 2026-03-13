@@ -256,6 +256,7 @@ export default function Insights() {
         </div>
       </main>
 
+      <PageSEOBlock path="/insights" title="System Insights" />
       <EnhancedFooter />
     </div>
   );

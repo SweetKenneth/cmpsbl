@@ -283,6 +283,7 @@ export default function ClocklessWorldEngine() {
         </section>
       </main>
 
+      <PageSEOBlock path="/gaming" title="Clockless World Engine" />
       <EnhancedFooter />
     </>
   );

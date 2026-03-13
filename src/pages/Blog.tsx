@@ -1006,6 +1006,7 @@ export default function Blog() {
           </section>
         </main>
 
+        <PageSEOBlock path="/blog" title="Research Blog" />
         <AuthorityLinkBlock currentPath="/blog" />
         <RelatedCapabilities />
         <EnhancedFooter />

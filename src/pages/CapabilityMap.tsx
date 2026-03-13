@@ -430,6 +430,7 @@ export default function CapabilityMap() {
         </div>
       </main>
 
+      <PageSEOBlock path="/capability-map" title="Capability Map" />
       <EnhancedFooter />
     </div>
   );

@@ -259,6 +259,10 @@ export default function StartHere() {
         </PageTransition>
       </main>
       <RelatedCapabilities />
+      <PageSEOBlock path="/start-here" title="Start Here" faq={[
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account to get 3 memory slots immediately. No credit card required. Full runtime access from day one." },
+        { question: "What do I get for free?", answer: "The Builder tier includes 3 memory slots, access to all baseline capabilities, full runtime, Memory Stream discovery, and DREAM cycle consolidation." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

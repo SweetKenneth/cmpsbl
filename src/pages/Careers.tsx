@@ -169,6 +169,7 @@ export default function Careers() {
           </motion.div>
         </section>
       </main>
+      <PageSEOBlock path="/careers" title="Careers" />
       <EnhancedFooter />
     </>
   );

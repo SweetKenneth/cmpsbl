@@ -309,6 +309,7 @@ await cmpsbl.dream.cycle({
         </div>
       </section>
 
+      <PageSEOBlock path="/developers" title="Developer Showcase" />
       <EnhancedFooter />
     </div>
   );

@@ -384,6 +384,7 @@ export default function Status() {
         </div>
       </main>
 
+      <PageSEOBlock path="/status" title="System Status" />
       <EnhancedFooter />
     </div>
   );

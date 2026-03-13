@@ -389,6 +389,7 @@ export default function Support() {
         </section>
       </main>
 
+      <PageSEOBlock path="/support" title="Support Center" />
       <EnhancedFooter />
     </div>
   );
