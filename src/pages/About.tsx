@@ -457,10 +457,15 @@ export default function About() {
               <div className="flex-1 min-w-0">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 text-foreground">About the Founder</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same infrastructure from scratch?
+                  I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same{" "}
+                  <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
+                  from scratch?
                 </p>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
-                  So I built the layer that should already exist — persistent memory, intelligent routing, adaptive security, DREAM cycles, and governed orchestration. One substrate. Every AI application.
+                  So I built the layer that should already exist —{" "}
+                  <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
+                  <Link to="/use-cases" className="text-primary hover:underline font-medium">intelligent routing</Link>, adaptive security, DREAM cycles, and{" "}
+                  <Link to="/documentation" className="text-primary hover:underline font-medium">governed orchestration</Link>. One substrate. Every AI application.
                 </p>
                 <blockquote className="border-l-2 border-primary/40 pl-4 my-4 italic text-sm sm:text-base text-foreground/80">
                   "AI should amplify human capability, not replace human judgment."

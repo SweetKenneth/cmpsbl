@@ -237,7 +237,10 @@ export default function Solutions() {
         <motion.div {...fadeUp} className="container mx-auto max-w-4xl text-center">
           <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Start Building Today</h2>
           <p className="text-base sm:text-xl text-muted-foreground mb-8">
-            Free tier. No credit card. Persistent memory in under an hour.
+            Free tier. No credit card. <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>{" "}
+            in under an hour. Explore the <Link to="/academy" className="text-primary hover:underline font-medium">Developer Academy</Link>{" "}
+            or read the{" "}
+            <a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LLM routing</a> docs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">

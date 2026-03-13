@@ -156,7 +156,9 @@ export default function StartHere() {
                   <h2 className="text-xl sm:text-2xl font-bold text-foreground">Build on the Substrate</h2>
                 </div>
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                  The substrate is the living engine underneath. Your systems don't just run — they dream, adapt, and evolve within governed boundaries.
+                  The substrate is the living engine underneath. Your systems don't just run — they dream, adapt, and evolve within{" "}
+                  <a href="https://en.wikipedia.org/wiki/AI_safety" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">governed boundaries</a>.{" "}
+                  See the <Link to="/upgrade" className="text-primary hover:underline font-medium">full plan comparison</Link>.
                 </p>
                 <div className="space-y-4">
                   {buildCapabilities.map((cap, idx) => (

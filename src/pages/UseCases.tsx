@@ -149,7 +149,7 @@ export default function UseCases() {
       icon: Gamepad2,
       title: "Video Game Development",
       subtitle: "Gaming AI",
-      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives.",
+      description: "NPCs that remember player interactions, learn from sessions, and create emergent narratives. Powered by the CMPSBL persistent memory layer.",
       benefits: [
         "Persistent NPC memory across sessions",
         "Emotional state tracking & evolution",
