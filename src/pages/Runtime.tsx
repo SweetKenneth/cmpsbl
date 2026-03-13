@@ -180,8 +180,8 @@ export default function Runtime() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Runtime — Always-On 40-Node Substrate | CMPSBL"
-        description="Every plan includes the full 40-node cognitive runtime. Persistent memory, intelligent routing, DREAM consolidation, runtime defense, and autonomous evolution — zero capability gating."
+        title="Baseline Runtime — What Every Plan Includes | CMPSBL"
+        description="Every CMPSBL plan includes the full 40-node cognitive runtime: persistent memory, NEXUS routing, DREAM consolidation, DEFENSE firewall, EVOLUTION engine, and governed orchestration. No gating."
       />
       <PublicNav />
 

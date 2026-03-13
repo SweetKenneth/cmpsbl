@@ -1269,8 +1269,8 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Documentation — CMPSBL"
-        description="Complete technical documentation for the CMPSBL substrate: persistent memory, DREAM cycles, NEXUS routing, EVOLUTION, and API reference."
+        title="Documentation — API & Node Reference | CMPSBL"
+        description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, DREAM cycles, DEFENSE rules, EVOLUTION promotion, terminal commands, SDK guides, and full 40-node integration reference."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
         keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'DREAM cycles docs', 'persistent memory API']}

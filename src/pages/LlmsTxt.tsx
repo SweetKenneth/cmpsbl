@@ -182,9 +182,9 @@ export default function LlmsTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="LLMS.txt — Machine-Readable AI Context | CMPSBL"
-        description="LLMS.txt is the machine-readable context standard for AI systems. CMPSBL implements it for 40-node substrate discovery, enabling AI agents to understand cognitive architecture natively."
-        keywords={['LLMS.txt', 'machine readable AI context', 'AI context standard', 'llmstxt protocol']}
+        title="LLMS.txt — Machine Context for AI Crawlers | CMPSBL"
+        description="CMPSBL's LLMS.txt file gives AI crawlers structured context: 40-node topology, 12 sectors, resolver catalog, API endpoints, memory tiers, and governance roles — per the llmstxt.org standard."
+        keywords={['LLMS.txt', 'machine readable AI context', 'AI crawler context', 'llmstxt standard', 'substrate discovery']}
       />
 
       <PublicNav />

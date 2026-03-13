@@ -113,9 +113,9 @@ export default function Privacy() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Privacy Policy — Data Protection | CMPSBL®"
-        description="CMPSBL privacy policy: how we collect, store, and protect your data across the 40-node substrate. GDPR-compliant, transparent data practices, and Memory Stream data governance."
-        keywords={['CMPSBL privacy policy', 'AI data privacy', 'GDPR compliant AI', 'data protection policy']}
+        title="Privacy Policy — Your Data Rights | CMPSBL®"
+        description="How CMPSBL collects, stores, and safeguards your data. Covers Memory Stream crystallization ownership, GDPR compliance, cookie usage, third-party sharing, and your right to deletion."
+        keywords={['CMPSBL privacy policy', 'AI data privacy', 'GDPR compliant AI', 'memory stream data rights']}
       />
       <PublicNav />
 

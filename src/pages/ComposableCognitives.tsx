@@ -194,8 +194,8 @@ export default function ComposableCognitives() {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>AI Agents — Sealed Runtime Cognitives | CMPSBL®</title>
-        <meta name="description" content="20 sealed runtime agents with DREAM synthesis, persistent memory, and autonomous learning. Tiered from free to $159 — own forever. Powered by the 40-node substrate." />
+        <title>Composable Agents — 20 AI Cognitives | CMPSBL®</title>
+        <meta name="description" content="20 composable AI agents with sealed runtimes, DREAM synthesis, and persistent memory. Own forever from free to $159. Each cognitive learns autonomously and consolidates memories overnight." />
       </Helmet>
 
       <PublicNav />

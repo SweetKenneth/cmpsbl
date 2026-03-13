@@ -94,8 +94,8 @@ export default function Scanner() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Evolution Scanner — AI Technical Debt Killer | CMPSBL"
-        description="Detect technical debt across your codebase. Diagnose root causes, generate governed evolution plans, and apply fixes with cryptographic proof — powered by the 40-node substrate."
+        title="Scanner — Detect & Fix Technical Debt | CMPSBL"
+        description="CMPSBL's Evolution Scanner detects technical debt, diagnoses root causes, generates governed fix plans with cryptographic proof, and tracks resolution across your entire codebase automatically."
         canonical="https://cmpsbl.com/scanner"
         keywords={['technical debt', 'evolution scanner', 'code quality', 'system evolution', 'AI diagnostics', 'vibe coding']}
       />

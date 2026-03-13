@@ -100,10 +100,10 @@ export default function InvestorsPublic() {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Investor Relations — AI Operating System | CMPSBL®"
-        description="CMPSBL: the first AI operating system where raw signal crystallizes into production software and silicon. 40 nodes, 54 engines, 14 documented world firsts. Seeking seed investment."
+        title="Investors — Seed Round Open | CMPSBL®"
+        description="Invest in CMPSBL: 14 documented world firsts, 54 engines, 90%+ gross margins, and compounding technical moat. Signal-to-silicon pipeline with Zenodo-verified IP. Seed round now open."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI startup investment', 'memory stream', 'signal to silicon', 'seed investment AI']}
+        keywords={['CMPSBL investment', 'AI seed round', 'signal to silicon', 'AI startup funding', 'memory stream investment']}
       />
       
       <PublicNav />

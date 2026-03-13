@@ -320,8 +320,8 @@ export default function SubstrateOS() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Memory Stream — AI Command Center | CMPSBL"
-        description="The CMPSBL Memory Stream command center: 40 autonomous nodes, 12 sectors, signal capture, crystallization engine, and silicon export — from raw observation to deployable software."
+        title="Substrate OS — Live Command Center | CMPSBL"
+        description="CMPSBL's live command center: monitor 40 nodes across 12 sectors, track Memory Stream crystallization, manage DREAM cycles, view mesh communications, and control governance settings in real time."
         canonical="https://cmpsbl.com/os"
         keywords={['CMPSBL', 'Memory Stream', 'Signal to Silicon', 'cognitive orchestration']}
       />

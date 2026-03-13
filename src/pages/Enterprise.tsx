@@ -86,8 +86,8 @@ export default function Enterprise() {
   return (
     <>
       <SEO
-        title="Enterprise AI Deployment — Private 40-Node Substrate"
-        description="Deploy the full 40-node CMPSBL substrate on your infrastructure. Air-gapped, SOC2-compliant, with Memory Stream, DREAM consolidation, and dedicated engineering support."
+        title="Enterprise — Self-Hosted Private Deployment | CMPSBL"
+        description="Deploy CMPSBL on your own infrastructure via LNCHBL. Air-gapped, SOC2-ready, with private Memory Stream, dedicated DREAM cycles, compliance exports, and organization-level governance controls."
         canonical="https://cmpsbl.com/enterprise"
         keywords={['enterprise AI', 'private deployment', 'on-premises AI', 'CMPSBL enterprise', 'governed AI', 'SOC2 AI']}
       />
