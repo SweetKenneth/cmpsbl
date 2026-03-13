@@ -666,8 +666,8 @@ export default function Blog() {
   return (
     <>
       <SEO
-        title="Blog — AI Research & Engineering | CMPSBL"
-        description="Research, deep-dives, and engineering insights on cognitive infrastructure, persistent memory, agentic AI, and composable systems."
+        title="Blog — AI OS Research & Deep Dives | CMPSBL"
+        description="Research, engineering deep-dives, and origin stories from the 40-node cognitive substrate. Memory Stream discoveries, DREAM consolidation, governed evolution, and composable AI systems."
         canonical="https://cmpsbl.com/blog"
         image="https://cmpsbl.com/og/blog.jpg"
         keywords={['CMPSBL blog', 'AI infrastructure research', 'cognitive AI insights', 'persistent memory AI', 'agentic AI engineering']}

@@ -39,8 +39,8 @@ export default function ClocklessWorldEngine() {
   return (
     <>
       <SEO
-        title="Clockless — A Cognitive Reality System | CMPSBL"
-        description="Clockless is the first production-grade Cognitive Reality — a persistent, governed environment where intelligence does not reset between interactions. A new category of intelligent systems."
+        title="Clockless Cognitive Reality — No Clock, Pure Flow"
+        description="The first production Cognitive Reality system. 40 autonomous nodes running without a clock — persistent, governed intelligence that never resets between interactions. A new computing paradigm."
         keywords={["Cognitive Reality", "Clockless", "CMPSBL", "persistent intelligence", "autonomous learning", "governed evolution", "AI infrastructure"]}
       />
 

@@ -1036,8 +1036,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="The Fossil Record — CMPSBL"
-        description="A geological record of evolutionary pressure and systemic adaptation. Not a changelog — a living document of why the substrate mutated."
+        title="The Fossil Record — Substrate Evolution Log | CMPSBL"
+        description="A geological record of evolutionary pressure across 40 autonomous nodes. Not a changelog — a living document of systemic adaptation from IRONCLAD to MINDGAMES epoch."
       />
       <PublicNav />
 
