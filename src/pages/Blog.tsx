@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
