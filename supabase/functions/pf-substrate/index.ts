@@ -901,188 +901,39 @@ serve(async (req) => {
           case "inclusive":
             return await handleInclusive(supabase, action, params, corsHeaders);
 
-          // SPARTA Epoch — ECONOMY & SANDBOX modules
+          // ═══════════════════════════════════════════════════════════
+          // UNIVERSAL RESOLVER — Real DB-backed handlers for ALL modules
+          // Every module queries live data instead of returning stubs
+          // ═══════════════════════════════════════════════════════════
           case "economy":
           case "sandbox":
-          case "encode": {
-            const moduleState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                action,
-                status: moduleState.status,
-                health: moduleState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // SPARTA Epoch — 5 Mesh Overlays (DEFENSE handled above, add remaining 4)
+          case "encode":
           case "immunity":
           case "evolution":
           case "intent":
-          case "governance": {
-            const meshOrder = { immunity: 2, evolution: 3, intent: 4, governance: 5 };
-            const meshState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "mesh_overlay",
-                order: meshOrder[module as keyof typeof meshOrder],
-                action,
-                status: meshState.status,
-                health: meshState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // CCR/CCL Zones (BRAIN, SYSTEM, DREAM handled above — add remaining zone facades)
+          case "governance":
           case "memory":
           case "relay":
           case "audit":
-          case "identity": {
-            const zoneState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "zone",
-                action,
-                status: zoneState.status,
-                health: zoneState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ ESZ — Expansion Sovereignty Zone ═══
+          case "identity":
           case "sovereign":
           case "oracle":
           case "conscience":
-          case "treaty": {
-            const eszState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "esz",
-                zone: "sovereignty",
-                action,
-                status: eszState.status,
-                health: eszState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ EPZ — Expansion Perception Zone ═══
+          case "treaty":
           case "compass":
           case "echo":
-          case "reflex": {
-            const epzState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "epz",
-                zone: "perception",
-                action,
-                status: epzState.status,
-                health: epzState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ EMZ — Expansion Manufacturing Zone ═══
+          case "reflex":
           case "forge":
           case "lingua":
-          case "harvest": {
-            const emzState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "emz",
-                zone: "manufacturing",
-                action,
-                status: emzState.status,
-                health: emzState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ CSZ — Covert/Shadow Zone ═══
+          case "harvest":
           case "shadow":
-          case "phantom": {
-            const cszState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "csz",
-                zone: "covert",
-                action,
-                status: cszState.status,
-                health: cszState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ Execution additions — MEDIC & NERVE ═══
+          case "phantom":
           case "medic":
-          case "nerve": {
-            const execState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module,
-                type: "execution",
-                action,
-                status: execState.status,
-                health: execState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-
-          // ═══ ENGINEER — Maintenance Node ═══
-          case "engineer": {
-            const engState = state.modules[module] || { healthScore: 100, status: 'healthy' };
-            return new Response(
-              JSON.stringify({
-                success: true,
-                module: "engineer",
-                type: "maintenance",
-                action,
-                status: engState.status,
-                health: engState.healthScore,
-                version: SUBSTRATE_VERSION,
-                timestamp: new Date().toISOString(),
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
+          case "nerve":
+          case "engineer":
+          case "atlas":
+          case "observer": {
+            return await handleUniversalModule(supabase, module, action, params, corsHeaders, state);
           }
           
           case "status":
