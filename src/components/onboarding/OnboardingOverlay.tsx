@@ -1,10 +1,9 @@
 /**
  * User Onboarding Flow — Memory Stream themed
- * Premium animated onboarding with morphing buttons, particles, and staggered reveals
+ * Pure CSS animations for zero-bundle-cost first paint
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, Brain, Zap, Terminal, X, ArrowRight, ChevronLeft,
@@ -117,169 +116,6 @@ export function useOnboarding() {
   return { show, dismiss };
 }
 
-/* ── Floating Particle ─────────────────────────────────── */
-function FloatingParticle({ delay, color }: { delay: number; color: string }) {
-  const x = Math.random() * 100;
-  const size = 2 + Math.random() * 3;
-  return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none"
-      style={{ 
-        left: `${x}%`, 
-        bottom: '-4px',
-        width: size, 
-        height: size, 
-        background: color,
-        boxShadow: `0 0 ${size * 2}px ${color}`,
-      }}
-      initial={{ y: 0, opacity: 0 }}
-      animate={{ 
-        y: -120 - Math.random() * 40,
-        opacity: [0, 0.8, 0.6, 0],
-        x: [0, (Math.random() - 0.5) * 30],
-      }}
-      transition={{ 
-        duration: 2.5 + Math.random() * 1.5, 
-        delay, 
-        repeat: Infinity,
-        ease: 'easeOut',
-      }}
-    />
-  );
-}
-
-/* ── Pulsing Glow Ring ─────────────────────────────────── */
-function GlowRing({ color }: { color: string }) {
-  return (
-    <motion.div
-      className="absolute inset-0 rounded-2xl pointer-events-none"
-      style={{ 
-        border: `1px solid ${color}`,
-        opacity: 0,
-      }}
-      animate={{ 
-        scale: [1, 1.15, 1.3],
-        opacity: [0.4, 0.15, 0],
-      }}
-      transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
-    />
-  );
-}
-
-/* ── Morphing Next Button ──────────────────────────────── */
-function MorphButton({ 
-  onClick, 
-  isNext, 
-  isLast, 
-  accentBg 
-}: { 
-  onClick: () => void; 
-  isNext: boolean; 
-  isLast: boolean;
-  accentBg: string;
-}) {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const handleClick = () => {
-    setIsPressed(true);
-    // The button "dissolves" then triggers the action
-    setTimeout(() => {
-      onClick();
-      setIsPressed(false);
-    }, 300);
-  };
-
-  if (isLast) {
-    return (
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: 'spring', damping: 12, stiffness: 200, delay: 0.15 }}
-      >
-        <Button 
-          size="sm" 
-          onClick={handleClick} 
-          className="gap-1.5 text-xs h-8 relative overflow-hidden group"
-        >
-          <motion.span
-            className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary-foreground/10 to-primary/0"
-            animate={{ x: ['-100%', '200%'] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-          />
-          <span className="relative z-10 flex items-center gap-1.5">
-            Start Building 
-            <motion.span
-              animate={{ rotate: [0, 15, -15, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Sparkles className="w-3 h-3" />
-            </motion.span>
-          </span>
-        </Button>
-      </motion.div>
-    );
-  }
-
-  return (
-    <AnimatePresence mode="wait">
-      {!isPressed ? (
-        <motion.div
-          key="button"
-          initial={{ scale: 0.9, opacity: 0, filter: 'blur(4px)' }}
-          animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
-          exit={{ 
-            scale: 0.3, 
-            opacity: 0, 
-            filter: 'blur(8px)',
-            y: -10,
-            rotate: 5,
-          }}
-          transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-        >
-          <Button 
-            size="sm" 
-            onClick={handleClick} 
-            className="text-xs h-8 relative overflow-hidden group active:scale-[0.92] transition-transform"
-          >
-            <span className="relative z-10">Next</span>
-            <motion.div
-              className="absolute right-2 z-10"
-              animate={{ x: [0, 3, 0] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <ArrowRight className="w-3 h-3" />
-            </motion.div>
-          </Button>
-        </motion.div>
-      ) : (
-        <motion.div
-          key="burst"
-          className={`w-8 h-8 rounded-full ${accentBg}`}
-          initial={{ scale: 1, opacity: 0.6 }}
-          animate={{ scale: 2.5, opacity: 0 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        />
-      )}
-    </AnimatePresence>
-  );
-}
-
-/* ── Stagger Children Helper ───────────────────────────── */
-const staggerContainer = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
-
-const staggerItem = {
-  hidden: { opacity: 0, y: 12, filter: 'blur(4px)' },
-  show: { 
-    opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { type: 'spring' as const, damping: 20, stiffness: 200 },
-  },
-};
-
 /* ── Main Overlay ──────────────────────────────────────── */
 interface OnboardingOverlayProps {
   onDismiss: () => void;
@@ -287,23 +123,39 @@ interface OnboardingOverlayProps {
 
 export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
   const [step, setStep] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
+  const [slideClass, setSlideClass] = useState('ob-slide-in-right');
+  const [visible, setVisible] = useState(false);
+  const [burstActive, setBurstActive] = useState(false);
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
+
+  // Fade in on mount
+  useEffect(() => {
+    requestAnimationFrame(() => setVisible(true));
+  }, []);
+
+  const animateStep = useCallback((newStep: number) => {
+    const dir = newStep > step ? 'right' : 'left';
+    setSlideClass(dir === 'right' ? 'ob-slide-out-left' : 'ob-slide-out-right');
+    setTimeout(() => {
+      setStep(newStep);
+      setSlideClass(dir === 'right' ? 'ob-slide-in-right' : 'ob-slide-in-left');
+    }, 200);
+  }, [step]);
 
   const goNext = useCallback(() => {
     if (isLast) {
       onDismiss();
     } else {
-      setDirection(1);
-      setStep(s => s + 1);
+      setBurstActive(true);
+      setTimeout(() => setBurstActive(false), 400);
+      animateStep(step + 1);
     }
-  }, [isLast, onDismiss]);
+  }, [isLast, onDismiss, animateStep, step]);
 
   const goBack = useCallback(() => {
-    setDirection(-1);
-    setStep(s => s - 1);
-  }, []);
+    animateStep(step - 1);
+  }, [animateStep, step]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -316,313 +168,260 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
     return () => window.removeEventListener('keydown', handler);
   }, [goNext, goBack, step, onDismiss]);
 
-  const slideVariants = {
-    enter: (dir: number) => ({ x: dir * 60, opacity: 0, filter: 'blur(6px)' }),
-    center: { x: 0, opacity: 1, filter: 'blur(0px)' },
-    exit: (dir: number) => ({ x: dir * -60, opacity: 0, filter: 'blur(6px)' }),
-  };
+  const progressWidth = `${((step + 1) / STEPS.length) * 100}%`;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-4"
+    <div
+      className={`fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+    >
+      {/* Ambient background particles — pure CSS */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-primary/20 ob-float-particle"
+            style={{
+              left: `${15 + i * 14}%`,
+              top: `${20 + (i % 3) * 25}%`,
+              animationDelay: `${i * 0.7}s`,
+              animationDuration: `${4 + i}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div
+        className={`relative bg-card border border-border/60 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transition-all duration-300 ${visible ? 'ob-card-enter' : 'ob-card-pre'}`}
       >
-        {/* Ambient background particles */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full bg-primary/20"
-              style={{ left: `${15 + i * 14}%`, top: `${20 + (i % 3) * 25}%` }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.1, 0.4, 0.1],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{ duration: 4 + i, repeat: Infinity, delay: i * 0.7 }}
-            />
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ scale: 0.88, opacity: 0, y: 30 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ type: 'spring', damping: 22, stiffness: 260, delay: 0.1 }}
-          className="relative bg-card border border-border/60 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden"
-        >
-          {/* Gradient header */}
-          <div className={`relative h-32 sm:h-36 bg-gradient-to-br ${current.gradient} overflow-hidden`}>
-            {/* Animated stream lines */}
-            <div className="absolute inset-0 overflow-hidden">
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
-                  style={{ top: `${20 + i * 15}%`, width: '120%', left: '-10%' }}
-                  animate={{ x: ['-10%', '10%', '-10%'] }}
-                  transition={{ duration: 4 + i, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-                />
-              ))}
-            </div>
-
-            {/* Floating particles in header */}
-            <div className="absolute inset-0 overflow-hidden">
-              {[...Array(8)].map((_, i) => (
-                <FloatingParticle key={`${step}-${i}`} delay={i * 0.4} color={current.particleColor} />
-              ))}
-            </div>
-
-            {/* Header label with typewriter feel */}
-            <div className="absolute top-3 left-4">
-              <motion.span 
-                className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/60"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                Memory Stream
-              </motion.span>
-            </div>
-
-            {/* Step counter */}
-            <div className="absolute top-3 right-12">
-              <motion.span
-                key={step}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-[10px] font-mono text-muted-foreground/40 tabular-nums"
-              >
-                {String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}
-              </motion.span>
-            </div>
-            
-            {/* Close button */}
-            <motion.button
-              onClick={onDismiss}
-              className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors"
-              aria-label="Close"
-              whileHover={{ scale: 1.1, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: 'spring', damping: 15 }}
-            >
-              <X className="h-4 w-4" />
-            </motion.button>
-
-            {/* Icon badge with glow */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={step}
-                initial={{ scale: 0, rotate: -30, y: 20 }}
-                animate={{ scale: 1, rotate: 0, y: 0 }}
-                exit={{ scale: 0, rotate: 30, y: -20 }}
-                transition={{ type: 'spring', damping: 12, stiffness: 200 }}
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-10"
-              >
-                <div className="relative">
-                  <GlowRing color={current.particleColor} />
-                  <motion.div 
-                    className={`p-4 rounded-2xl bg-card border border-border shadow-lg ${current.accentColor}`}
-                    animate={{ 
-                      boxShadow: [
-                        `0 0 0px ${current.particleColor}40`,
-                        `0 0 20px ${current.particleColor}30`,
-                        `0 0 0px ${current.particleColor}40`,
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    {current.icon}
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Content area */}
-          <div className="px-6 pt-12 pb-4">
-            {/* Progress dots — morphing width */}
-            <div className="flex items-center justify-center gap-1.5 mb-5">
-              {STEPS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setDirection(i > step ? 1 : -1);
-                    setStep(i);
-                  }}
-                  aria-label={`Step ${i + 1}`}
-                  className="relative"
-                >
-                  <motion.div
-                    className="h-1.5 rounded-full"
-                    animate={{
-                      width: i === step ? 32 : 6,
-                      backgroundColor: i === step 
-                        ? current.particleColor
-                        : i < step 
-                          ? 'hsl(var(--primary) / 0.3)' 
-                          : 'hsl(var(--muted-foreground) / 0.15)',
-                    }}
-                    whileHover={{ 
-                      scale: i !== step ? 1.5 : 1,
-                      backgroundColor: i !== step ? 'hsl(var(--muted-foreground) / 0.3)' : undefined,
-                    }}
-                    transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                  />
-                  {/* Completed checkmark flash */}
-                  {i < step && (
-                    <motion.div
-                      className="absolute inset-0 flex items-center justify-center"
-                      initial={false}
-                    >
-                      <div className="w-1 h-1 rounded-full bg-primary/40" />
-                    </motion.div>
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {/* Animated content with direction-aware slides */}
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={step}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              >
-                <motion.div
-                  className="text-center"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                >
-                  <motion.h3 
-                    variants={staggerItem}
-                    className="text-xl font-bold text-foreground mb-2"
-                  >
-                    {current.title}
-                  </motion.h3>
-                  
-                  <motion.p 
-                    variants={staggerItem}
-                    className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-sm mx-auto"
-                  >
-                    {current.description}
-                  </motion.p>
-
-                  {current.detail && (
-                    <motion.div 
-                      variants={staggerItem}
-                      className="mb-4"
-                    >
-                      <motion.p 
-                        className="text-xs font-mono text-primary/70 leading-relaxed max-w-sm mx-auto px-3 py-2 rounded-lg bg-primary/5 border border-primary/10"
-                        whileHover={{ 
-                          borderColor: 'hsl(var(--primary) / 0.3)',
-                          backgroundColor: 'hsl(var(--primary) / 0.08)',
-                        }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {current.detail}
-                      </motion.p>
-                    </motion.div>
-                  )}
-
-                  <motion.div variants={staggerItem}>
-                    <Link to={current.link} onClick={onDismiss}>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="gap-1.5 border-border/60 hover:border-primary/40 transition-all hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)] active:scale-[0.97]"
-                      >
-                        {current.linkLabel}
-                        <motion.span
-                          animate={{ x: [0, 4, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                        >
-                          <ArrowRight className="h-3.5 w-3.5" />
-                        </motion.span>
-                      </Button>
-                    </Link>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Navigation footer */}
-          <div className="px-6 pb-5 pt-2">
-            <div className="flex justify-between items-center">
-              {/* Skip — fades out on last step */}
-              <motion.button
-                onClick={onDismiss}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors px-1 py-1"
-                animate={{ 
-                  opacity: isLast ? 0 : 0.7,
-                  scale: isLast ? 0.8 : 1,
-                  filter: isLast ? 'blur(4px)' : 'blur(0px)',
+        {/* Gradient header */}
+        <div className={`relative h-32 sm:h-36 bg-gradient-to-br ${current.gradient} overflow-hidden`}>
+          {/* Animated stream lines — CSS only */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent ob-stream-line"
+                style={{
+                  top: `${20 + i * 15}%`,
+                  width: '120%',
+                  left: '-10%',
+                  animationDelay: `${i * 0.3}s`,
+                  animationDuration: `${4 + i}s`,
                 }}
-                disabled={isLast}
-                transition={{ duration: 0.3 }}
-                whileHover={!isLast ? { opacity: 1, x: -2 } : undefined}
-              >
-                Skip
-              </motion.button>
+              />
+            ))}
+          </div>
 
-              <div className="flex items-center gap-2">
-                {/* Back button — slides in from left */}
-                <AnimatePresence>
-                  {step > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20, width: 0 }}
-                      animate={{ opacity: 1, x: 0, width: 'auto' }}
-                      exit={{ opacity: 0, x: 20, width: 0 }}
-                      transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                    >
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={goBack} 
-                        className="gap-1 text-xs h-8 active:scale-[0.95] transition-transform"
-                      >
-                        <motion.span
-                          animate={{ x: [0, -2, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                        >
-                          <ChevronLeft className="w-3 h-3" />
-                        </motion.span>
-                        Back
-                      </Button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Next / Finish — the magic disappearing button */}
-                <MorphButton 
-                  onClick={goNext} 
-                  isNext={!isLast} 
-                  isLast={isLast}
-                  accentBg={current.accentBg}
+          {/* Floating particles in header — CSS only */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(8)].map((_, i) => {
+              const x = Math.random() * 100;
+              const size = 2 + Math.random() * 3;
+              return (
+                <div
+                  key={`${step}-${i}`}
+                  className="absolute rounded-full pointer-events-none ob-header-particle"
+                  style={{
+                    left: `${x}%`,
+                    bottom: '-4px',
+                    width: size,
+                    height: size,
+                    background: current.particleColor,
+                    boxShadow: `0 0 ${size * 2}px ${current.particleColor}`,
+                    animationDelay: `${i * 0.4}s`,
+                    animationDuration: `${2.5 + Math.random() * 1.5}s`,
+                  }}
                 />
+              );
+            })}
+          </div>
+
+          {/* Header label */}
+          <div className="absolute top-3 left-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/60 ob-fade-in-delay">
+              Memory Stream
+            </span>
+          </div>
+
+          {/* Step counter */}
+          <div className="absolute top-3 right-12">
+            <span className="text-[10px] font-mono text-muted-foreground/40 tabular-nums ob-fade-in-delay">
+              {String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}
+            </span>
+          </div>
+          
+          {/* Close button */}
+          <button
+            onClick={onDismiss}
+            className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-background/60 transition-all hover:scale-110 hover:rotate-90 active:scale-90"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
+          {/* Icon badge with glow */}
+          <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-10 ${slideClass}`}>
+            <div className="relative">
+              {/* Glow ring — CSS animation */}
+              <div
+                className="absolute inset-0 rounded-2xl pointer-events-none ob-glow-ring"
+                style={{ border: `1px solid ${current.particleColor}` }}
+              />
+              <div 
+                className={`p-4 rounded-2xl bg-card border border-border shadow-lg ${current.accentColor} ob-icon-glow`}
+                style={{ '--glow-color': current.particleColor } as React.CSSProperties}
+              >
+                {current.icon}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Bottom progress bar — fills across all steps */}
-          <div className="h-0.5 bg-muted/30">
-            <motion.div
-              className="h-full bg-gradient-to-r from-primary/60 to-primary"
-              animate={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            />
+        {/* Content area */}
+        <div className="px-6 pt-12 pb-4">
+          {/* Progress dots */}
+          <div className="flex items-center justify-center gap-1.5 mb-5">
+            {STEPS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => animateStep(i)}
+                aria-label={`Step ${i + 1}`}
+                className="relative"
+              >
+                <div
+                  className="h-1.5 rounded-full transition-all duration-300 hover:scale-150"
+                  style={{
+                    width: i === step ? 32 : 6,
+                    backgroundColor: i === step 
+                      ? current.particleColor
+                      : i < step 
+                        ? 'hsl(var(--primary) / 0.3)' 
+                        : 'hsl(var(--muted-foreground) / 0.15)',
+                  }}
+                />
+                {i < step && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-1 h-1 rounded-full bg-primary/40" />
+                  </div>
+                )}
+              </button>
+            ))}
           </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+
+          {/* Animated content — CSS slide transitions */}
+          <div className={`${slideClass}`}>
+            <div className="text-center ob-stagger-children">
+              <h3 className="text-xl font-bold text-foreground mb-2 ob-stagger-item">
+                {current.title}
+              </h3>
+              
+              <p className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-sm mx-auto ob-stagger-item">
+                {current.description}
+              </p>
+
+              {current.detail && (
+                <div className="mb-4 ob-stagger-item">
+                  <p className="text-xs font-mono text-primary/70 leading-relaxed max-w-sm mx-auto px-3 py-2 rounded-lg bg-primary/5 border border-primary/10 hover:border-primary/30 hover:bg-primary/[0.08] transition-colors duration-200">
+                    {current.detail}
+                  </p>
+                </div>
+              )}
+
+              <div className="ob-stagger-item">
+                <Link to={current.link} onClick={onDismiss}>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="gap-1.5 border-border/60 hover:border-primary/40 transition-all hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)] active:scale-[0.97]"
+                  >
+                    {current.linkLabel}
+                    <span className="ob-bounce-x">
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation footer */}
+        <div className="px-6 pb-5 pt-2">
+          <div className="flex justify-between items-center">
+            {/* Skip */}
+            <button
+              onClick={onDismiss}
+              className={`text-xs text-muted-foreground hover:text-foreground transition-all px-1 py-1 ${isLast ? 'opacity-0 scale-75 blur-sm pointer-events-none' : 'opacity-70 hover:opacity-100'}`}
+              disabled={isLast}
+            >
+              Skip
+            </button>
+
+            <div className="flex items-center gap-2">
+              {/* Back button */}
+              {step > 0 && (
+                <div className="ob-fade-in">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={goBack} 
+                    className="gap-1 text-xs h-8 active:scale-[0.95] transition-transform"
+                  >
+                    <span className="ob-bounce-x-reverse">
+                      <ChevronLeft className="w-3 h-3" />
+                    </span>
+                    Back
+                  </Button>
+                </div>
+              )}
+
+              {/* Next / Finish button */}
+              {isLast ? (
+                <div className="ob-scale-in">
+                  <Button 
+                    size="sm" 
+                    onClick={goNext} 
+                    className="gap-1.5 text-xs h-8 relative overflow-hidden group"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary-foreground/10 to-primary/0 ob-shimmer" />
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      Start Building 
+                      <span className="ob-wiggle">
+                        <Sparkles className="w-3 h-3" />
+                      </span>
+                    </span>
+                  </Button>
+                </div>
+              ) : (
+                <div className={burstActive ? 'ob-burst' : 'ob-fade-in'}>
+                  {burstActive ? (
+                    <div className={`w-8 h-8 rounded-full ${current.accentBg} ob-burst-circle`} />
+                  ) : (
+                    <Button 
+                      size="sm" 
+                      onClick={goNext} 
+                      className="text-xs h-8 relative overflow-hidden group active:scale-[0.92] transition-transform"
+                    >
+                      <span className="relative z-10">Next</span>
+                      <span className="absolute right-2 z-10 ob-bounce-x">
+                        <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom progress bar */}
+        <div className="h-0.5 bg-muted/30">
+          <div
+            className="h-full bg-gradient-to-r from-primary/60 to-primary transition-all duration-500 ease-out"
+            style={{ width: progressWidth }}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
