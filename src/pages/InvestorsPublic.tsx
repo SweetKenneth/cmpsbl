@@ -318,6 +318,7 @@ export default function InvestorsPublic() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
