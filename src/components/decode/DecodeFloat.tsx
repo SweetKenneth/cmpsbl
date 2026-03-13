@@ -7,6 +7,7 @@ import { DecodeStatusBar } from "./DecodeStatusBar";
 import { decode, substrate } from "@/lib/substrate";
 import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
 import { isCommand, routeCommand } from "@/lib/decode/command-router";
+import { isGovernorCommand, routeGovernorCommand } from "@/lib/decode/governor-commands";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -191,10 +192,14 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent." },
   ];
   if (mode === 'governor') return [
-    { icon: "📡", title: "Node Status", prompt: "Report full 40-node health status across all 12 sectors." },
-    { icon: "🔬", title: "Topology View", prompt: "Show me the current substrate topology and safety switch states." },
-    { icon: "🩺", title: "System Heal", prompt: "Run a diagnostic and heal any degraded nodes." },
-    { icon: "📊", title: "Memory Metrics", prompt: "Show memory scoring and foundry reactor metrics." },
+    { icon: "📡", title: "Node Health", prompt: "/health" },
+    { icon: "🏛️", title: "Governance", prompt: "/govern" },
+    { icon: "⚡", title: "Capabilities", prompt: "/caps" },
+    { icon: "🔗", title: "Mesh Comms", prompt: "/comms" },
+    { icon: "🤖", title: "NEXUS Fleet", prompt: "/nexus" },
+    { icon: "💰", title: "AI Budget", prompt: "/budget" },
+    { icon: "📋", title: "Audit Log", prompt: "/audit" },
+    { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
   ];
   return [
     { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },
@@ -305,6 +310,21 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     if (!userMessage || isLoading) return;
     setInput("");
     setShowMenu(false);
+
+    // ─── Governor Command Layer (async, real DB queries) ───
+    if (isCommand(userMessage) && identityRole === 'governor' && isGovernorCommand(userMessage)) {
+      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setIsLoading(true);
+      try {
+        const result = await routeGovernorCommand(userMessage);
+        setMessages(prev => [...prev, { role: 'assistant', content: result.output }]);
+      } catch (err) {
+        setMessages(prev => [...prev, { role: 'assistant', content: `⚠ Governor command failed: ${err instanceof Error ? err.message : 'Unknown error'}` }]);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
 
     // ─── Terminal Command Layer ───
     if (isCommand(userMessage)) {
