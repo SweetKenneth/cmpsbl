@@ -41,6 +41,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { cn } from "@/lib/utils";
 
 // Industry card
@@ -636,6 +637,7 @@ export default function UseCases() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

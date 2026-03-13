@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 import { SEO } from "@/components/SEO";
 import { cn } from "@/lib/utils";
@@ -1005,6 +1006,7 @@ export default function Blog() {
         </main>
 
         <AuthorityLinkBlock currentPath="/blog" />
+        <RelatedCapabilities />
         <EnhancedFooter />
       </div>
     </>

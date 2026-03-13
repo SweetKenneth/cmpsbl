@@ -23,6 +23,7 @@ import { FoundryTierLegend } from '@/components/foundry/FoundryTierLegend';
 import { MemoryRiver } from '@/components/hero/MemoryRiver';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { FoundryHero } from '@/components/foundry-demo/FoundryHero';
 import { FoundryDemoVideo } from '@/components/foundry-demo/FoundryDemoVideo';
 import { MemoryStreamExplainer } from '@/components/foundry-demo/MemoryStreamExplainer';
@@ -293,6 +294,7 @@ export default function Foundry() {
         )}
       </div>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </>
   );

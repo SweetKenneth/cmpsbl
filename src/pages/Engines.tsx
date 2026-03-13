@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 // ─── Tier config (styled like Blog categories) ───
@@ -478,6 +479,7 @@ export default function Engines() {
           </section>
         </main>
 
+        <RelatedCapabilities />
         <EnhancedFooter />
       </div>
     </>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -413,6 +414,7 @@ export default function Roadmap() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

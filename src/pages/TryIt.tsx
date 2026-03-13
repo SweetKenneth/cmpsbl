@@ -4,6 +4,7 @@
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { TryItChat } from "@/components/demo/TryItChat";
 import { InteractivePlayground } from "@/components/developer/InteractivePlayground";
 import { Badge } from "@/components/ui/badge";
@@ -103,6 +104,7 @@ export default function TryIt() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { SEO } from "@/components/SEO";
 import { useMetric } from "@/stores/publicMetricsStore";
 import { motion, AnimatePresence } from "framer-motion";
@@ -1404,6 +1405,7 @@ export default function Documentation() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

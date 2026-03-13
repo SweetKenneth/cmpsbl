@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
 import { Shield, ChevronRight } from "lucide-react";
@@ -222,6 +223,7 @@ export default function Privacy() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

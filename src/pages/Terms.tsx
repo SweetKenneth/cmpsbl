@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { SEO } from "@/components/SEO";
 import { Badge } from "@/components/ui/badge";
 import { FileText, ChevronRight } from "lucide-react";
@@ -241,6 +242,7 @@ export default function Terms() {
         </motion.div>
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );

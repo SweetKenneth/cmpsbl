@@ -7,6 +7,7 @@ import { useState, useMemo } from 'react';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
@@ -140,6 +141,7 @@ export default function Packs() {
         />
       </main>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
