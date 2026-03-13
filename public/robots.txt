@@ -1,6 +1,6 @@
 # CMPSBL® Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Last updated: 2026-03-11
+# Last updated: 2026-03-13
 
 # =============================================================
 # DEFAULT: Allow all crawlers

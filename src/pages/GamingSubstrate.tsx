@@ -360,8 +360,8 @@ export default function GamingSubstrate() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Gaming AI — NPCs That Dream & Remember | CMPSBL"
-        description="Build NPCs with persistent memory, DREAM cycles, and real personalities powered by 40 autonomous nodes. Clockless World Engine for cognitive game worlds — from $2,995."
+        title="Gaming AI — Cognitive NPCs & World Engine | CMPSBL"
+        description="Build game NPCs that remember players, dream overnight, and evolve personalities. CMPSBL's Clockless World Engine powers cognitive game worlds with persistent memory — starting at $2,995."
         canonical="https://cmpsbl.com/gaming"
         keywords={[
           "NPC AI", "game AI", "NPC memory", "persistent NPCs",

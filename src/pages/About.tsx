@@ -115,8 +115,8 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="About CMPSBL — 40-Node AI Operating System"
-        description="Meet the team behind the first AI operating system. 40 autonomous nodes, 12 sectors, persistent Memory Stream, DREAM consolidation, and governed evolution — built in Dallas since 2009."
+        title="About — The Team Behind CMPSBL"
+        description="Meet the CMPSBL Collective building the first AI operating system from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — 14 world firsts, Zenodo-verified IP, and open governance."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
         keywords={['about CMPSBL', 'AI operating system', 'cognitive substrate', '40 node architecture', 'Memory Stream', 'Kenneth Sweet']}

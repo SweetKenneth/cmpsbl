@@ -64,9 +64,9 @@ export default function Insights() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Substrate Insights — Observer Access | CMPSBL"
-        description="Observer-level access to the 40-node cognitive substrate. Read-only visibility into architecture, module specifications, Memory Stream activity, and system documentation."
-        keywords={['AI substrate insights', 'observer access', 'cognitive architecture visibility', 'AI documentation access']}
+        title="Insights — Observer-Level Architecture View | CMPSBL"
+        description="Read-only observer access to CMPSBL's cognitive substrate: browse node specifications, Memory Stream signals, architecture diagrams, resolver catalogs, and system documentation."
+        keywords={['CMPSBL insights', 'observer access', 'substrate architecture', 'node specifications', 'resolver catalog']}
       />
 
       <PublicNav />

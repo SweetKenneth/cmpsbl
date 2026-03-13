@@ -103,10 +103,10 @@ export default function Solutions() {
       </div>
 
       <SEO
-        title="Solutions — 40-Node AI Product Suite | CMPSBL"
-        description="Complete cognitive product suite: persistent memory, NEXUS routing, DREAM consolidation, 54 engines, Memory Packs, LNCHBL self-hosted deployment, and CodeLab — all on the 40-node substrate."
+        title="Solutions — Products & Deployment Options | CMPSBL"
+        description="CMPSBL's full product suite: free persistent memory, 54 sealed engines, 24 Memory Packs, composable agents with DREAM synthesis, CodeLab sandbox, and air-gapped LNCHBL self-hosted deployment."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['AI solutions', 'cognitive infrastructure', 'persistent memory', 'AI routing', 'enterprise AI', 'self-hosted AI']}
+        keywords={['AI solutions', 'persistent memory', 'composable agents', 'self-hosted AI', 'LNCHBL deployment', 'Memory Packs']}
       />
 
       <PublicNav />

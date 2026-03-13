@@ -315,9 +315,9 @@ export default function SubstrateCapabilitiesDocs() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Substrate Capabilities — 40-Node SDK Reference | CMPSBL"
-        description="Complete SDK reference for 675+ cognitive capabilities across 40 nodes. Memory, analysis, routing, security, DREAM consolidation, and Memory Stream crystallization with code examples."
-        keywords={["substrate capabilities", "SDK reference", "cognitive AI", "template features", "CMPSBL documentation"]}
+        title="Capabilities Reference — Full SDK Catalog | CMPSBL"
+        description="Complete reference for CMPSBL's 675+ capabilities: memory operations, DREAM triggers, NEXUS routing, DEFENSE rules, EVOLUTION promotions, and resolver patterns with inline code examples."
+        keywords={["capabilities reference", "SDK catalog", "CMPSBL documentation", "resolver patterns", "node capabilities"]}
       />
       
       <PublicNav />

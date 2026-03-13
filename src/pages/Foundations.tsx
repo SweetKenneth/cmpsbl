@@ -49,9 +49,9 @@ export default function Foundations() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Foundations — 40-Node Cognitive Standards | CMPSBL®"
-        description="The foundational reference for CMPSBL: 40-node architecture, 12 sectors, governed autonomy, Memory Stream crystallization, and three interconnected standards for cognitive AI systems."
-        keywords={['CMPSBL foundations', 'cognitive infrastructure', 'AI substrate', 'governed autonomy', 'persistent runtime']}
+        title="Foundations — Architecture & Standards | CMPSBL®"
+        description="CMPSBL's foundational reference: 40-node architecture, 12-sector topology, governed autonomy model, Memory Stream crystallization protocol, AIGVRN namespace, and LLMS.txt machine context."
+        keywords={['CMPSBL foundations', 'architecture reference', 'AIGVRN standard', 'governed autonomy', 'substrate topology']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Foundations', url: 'https://cmpsbl.com/foundations' },

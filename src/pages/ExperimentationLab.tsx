@@ -258,9 +258,9 @@ export default function ExperimentationLab() {
   return (
     <>
       <SEO
-        title="Experimentation Lab — Live AI Template Demos | CMPSBL"
-        description="See CMPSBL substrate templates in action. Try live demos of persistent memory chatbots, DREAM processors, and knowledge graphs — full source code included for the 40-node runtime."
-        keywords={["AI demos", "chatbot demo", "persistent memory", "dream processing", "knowledge graph", "live templates"]}
+        title="Lab — Live Template Demos & Source Code | CMPSBL"
+        description="Run CMPSBL templates live: persistent memory chatbot, DREAM processor, knowledge graph builder, and more. Full source code included — fork and deploy on the substrate runtime free."
+        keywords={["CMPSBL lab", "live demos", "persistent memory chatbot", "DREAM processor", "knowledge graph demo", "source code"]}
       />
 
       <div className="min-h-screen bg-background flex flex-col">

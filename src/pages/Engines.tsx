@@ -244,8 +244,8 @@ export default function Engines() {
   return (
     <>
       <Helmet>
-        <title>54 AI Engines — Sealed Runtime Arsenal | CMPSBL</title>
-        <meta name="description" content="Browse 54 composable engines: 4 META super-memories ($1,999), 30 S-tier sealed runtimes, APEX, ELITE, and CORE tiers. 40% off with agent bundles. GODMIND chains recursively." />
+        <title>54 Engines — META to CORE Tier Arsenal | CMPSBL</title>
+        <meta name="description" content="Browse CMPSBL's 54 composable engines across 4 tiers: META recursive super-memories like GODMIND, 30 S-tier sealed runtimes, APEX and ELITE units. 154 primitives, 40% agent bundle discount." />
       </Helmet>
 
       <div className="min-h-screen bg-background">

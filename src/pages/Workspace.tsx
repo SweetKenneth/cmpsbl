@@ -95,8 +95,8 @@ export default function Workspace() {
   return (
     <>
       <SEO
-        title="Builder Workspace — Your AI Substrate | CMPSBL"
-        description="Your personal builder space on the 40-node substrate. Access SDKs, crystallize Memory Stream discoveries, manage capability slots, and deploy — free tier included."
+        title="Workspace — Your Personal Builder Hub | CMPSBL"
+        description="Your CMPSBL builder workspace: manage active Memory Packs, view vault inventory, track crystallization stats, access SDK keys, and configure capability slots. Free tier included."
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />

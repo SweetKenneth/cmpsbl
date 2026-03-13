@@ -197,9 +197,9 @@ export default function HumansTxt() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Humans.txt — The CMPSBL Collective | CMPSBL"
-        description="Meet the CMPSBL Collective: a decentralized assembly of humans and machines building the 40-node cognitive substrate. Led by Kenneth E Sweet Jr from Dallas, Texas."
-        keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'cognitive AI team']}
+        title="Humans.txt — Who Built This Substrate | CMPSBL"
+        description="The CMPSBL Collective: a decentralized assembly of humans and machines. Founded by Kenneth E. Sweet Jr. in Dallas, TX. Meet the team, the node manifest, and the principles behind the substrate."
+        keywords={['CMPSBL team', 'humans.txt', 'Kenneth Sweet', 'AI collective', 'substrate founders']}
         noindex
       />
 

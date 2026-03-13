@@ -180,8 +180,8 @@ export default function Support() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Support — Help Center & Live AI Chat | CMPSBL"
-        description="Get help with CMPSBL through our FAQ, 40-node substrate documentation, or chat live with DECODE — the cognitive interface that answers questions and troubleshoots issues instantly."
+        title="Support — FAQ, Docs & Live AI Chat | CMPSBL"
+        description="Get help with CMPSBL: searchable FAQ, full substrate documentation, and live chat with DECODE — the cognitive interface. Troubleshoot memory, routing, DREAM cycles, and API issues instantly."
         canonical="https://cmpsbl.com/support"
         keywords={["CMPSBL support", "help center", "FAQ", "DECODE support"]}
       />

@@ -280,8 +280,8 @@ export default function Upgrade() {
         <div className="absolute bottom-40 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }} />
       </div>
       <SEO
-        title="Pricing Plans — Memory Stream Capacity | CMPSBL"
-        description="Scale your Memory Stream with capacity plans starting free. Builder, Studio ($29/mo), Creator ($49/mo), or Architect ($79/mo) — more pulls, vault slots, and 40-node access."
+        title="Pricing — Free to Architect Plans | CMPSBL"
+        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, unlimited). Every tier gets full 40-node runtime. Scale vault and Memory Stream pulls."
       />
       <PublicNav />
 
