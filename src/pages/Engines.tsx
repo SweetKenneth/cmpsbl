@@ -17,6 +17,7 @@ import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 // ─── Tier config (styled like Blog categories) ───
@@ -480,6 +481,11 @@ export default function Engines() {
         </main>
 
         <RelatedCapabilities />
+        <PageSEOBlock path="/engines" title="54 Composable Engines" faq={[
+          { question: "What are CMPSBL engines?", answer: "Engines are composable processing units within the CMPSBL substrate. 54 engines across 4 tiers (META, CORE, FLUX, SPEC) handle specific AI workloads from reasoning to code generation." },
+          { question: "How do engine tiers work?", answer: "Engines are organized into META (recursive super-memories), CORE (foundation processing), FLUX (adaptive routing), and SPEC (specialized workloads). Higher tiers unlock more advanced capabilities." },
+          { question: "Can I use engines without a paid plan?", answer: "Yes. The free Builder tier includes 3 memory slots and access to baseline engine capabilities. Premium engine tiers unlock with Studio, Creator, and Architect plans." },
+        ]} />
         <EnhancedFooter />
       </div>
     </>

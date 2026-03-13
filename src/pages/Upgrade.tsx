@@ -9,6 +9,7 @@ import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
@@ -663,6 +664,10 @@ export default function Upgrade() {
         </section>
       </main>
 
+      <PageSEOBlock path="/upgrade" title="Upgrade & Pricing" faq={[
+        { question: "Is there a free tier for CMPSBL?", answer: "Yes. The Builder tier is completely free with 3 memory slots, full runtime access, and no credit card required. Upgrade anytime to unlock more slots and premium capabilities." },
+        { question: "What plans does CMPSBL offer?", answer: "Four tiers: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($79/mo, 9 slots), and Architect ($199/mo, 12 slots). Enterprise custom plans also available." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

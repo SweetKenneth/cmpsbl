@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { cn } from "@/lib/utils";
 
 function FeatureCard({ icon: Icon, title, description, features, color, gradient, delay = 0 }: {
@@ -308,6 +309,7 @@ await cmpsbl.dream.cycle({
         </div>
       </section>
 
+      <PageSEOBlock path="/developers" title="Developer Showcase" />
       <EnhancedFooter />
     </div>
   );

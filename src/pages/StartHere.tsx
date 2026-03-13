@@ -8,6 +8,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { PageTransition } from "@/components/PageTransition";
 import {
   ArrowRight, Sparkles, Brain, Code, Zap, BookOpen, CheckCircle2,
@@ -258,6 +259,10 @@ export default function StartHere() {
         </PageTransition>
       </main>
       <RelatedCapabilities />
+      <PageSEOBlock path="/start-here" title="Start Here" faq={[
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account to get 3 memory slots immediately. No credit card required. Full runtime access from day one." },
+        { question: "What do I get for free?", answer: "The Builder tier includes 3 memory slots, access to all baseline capabilities, full runtime, Memory Stream discovery, and DREAM cycle consolidation." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

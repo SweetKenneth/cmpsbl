@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
 import { DEPARTMENTS, COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
@@ -266,6 +267,7 @@ export default function Contact() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/contact" title="Contact" />
       <EnhancedFooter />
     </div>
   );

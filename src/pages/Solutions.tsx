@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { SEO } from "@/components/SEO";
 // SEO props defined in JSX
 import { motion } from "framer-motion";
@@ -244,6 +245,7 @@ export default function Solutions() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/solutions" title="Solutions" />
       <EnhancedFooter />
     </div>
   );

@@ -9,6 +9,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { ArrowRight, Key, Terminal, Code, Zap, Shield, BookOpen, Hammer, Copy, Check, Rocket, Brain, Network, Eye, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -335,6 +336,10 @@ await substrate('vision.health', {});`}
         </section>
       </main>
       <RelatedCapabilities />
+      <PageSEOBlock path="/api-access" title="API Access" faq={[
+        { question: "How do I get a CMPSBL API key?", answer: "Create a free developer account at cmpsbl.com/api-access. API keys are generated instantly with configurable scopes and rate limits." },
+        { question: "What are the API rate limits?", answer: "Free tier includes generous rate limits. Higher tiers unlock increased throughput. Enterprise plans offer custom rate limits and dedicated endpoints." },
+      ]} />
       <EnhancedFooter />
     </>
   );

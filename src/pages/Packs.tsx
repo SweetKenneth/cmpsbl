@@ -8,6 +8,7 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
@@ -142,6 +143,10 @@ export default function Packs() {
       </main>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/packs" title="Capability Packs" faq={[
+        { question: "What are CMPSBL capability packs?", answer: "Capability packs are curated sets of engine capabilities across 6 strategic domains. Each pack uses exactly 1 memory slot. Choose packs that match your workload — swap anytime." },
+        { question: "How many packs can I activate?", answer: "Your plan controls how many memory slots you have: Builder (3), Studio (6), Creator (9), Architect (12). Each active pack uses one slot." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

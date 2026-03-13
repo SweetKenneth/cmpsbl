@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -415,6 +416,7 @@ export default function Roadmap() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/roadmap" title="Product Roadmap" />
       <EnhancedFooter />
     </div>
   );

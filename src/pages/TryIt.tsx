@@ -5,6 +5,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { TryItChat } from "@/components/demo/TryItChat";
 import { InteractivePlayground } from "@/components/developer/InteractivePlayground";
 import { Badge } from "@/components/ui/badge";
@@ -105,6 +106,10 @@ export default function TryIt() {
       </main>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/try" title="Try CMPSBL" faq={[
+        { question: "Can I try CMPSBL without signing up?", answer: "Yes. The Try It page offers a fully interactive demo with NEXUS routing, persistent memory, and AI conversation — zero signup required." },
+        { question: "What can I do in the CMPSBL demo?", answer: "Talk to the substrate live, test intelligent multi-provider routing, and experience persistent memory that remembers context across your conversation." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

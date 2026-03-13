@@ -13,6 +13,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
@@ -320,6 +321,10 @@ export default function InvestorsPublic() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/investors" title="Investor Overview" faq={[
+        { question: "What market does CMPSBL address?", answer: "CMPSBL targets the AI infrastructure market — the operating system layer between foundation models and applications. This is the fastest-growing segment of AI, projected to exceed $100B by 2028." },
+        { question: "What is CMPSBL's business model?", answer: "Usage-based SaaS with tiered plans. Free Builder tier drives adoption, with Studio, Creator, and Architect tiers for scaling. Enterprise custom deployments available." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

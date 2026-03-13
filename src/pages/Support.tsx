@@ -7,6 +7,7 @@ import { useState, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -388,6 +389,7 @@ export default function Support() {
         </section>
       </main>
 
+      <PageSEOBlock path="/support" title="Support Center" />
       <EnhancedFooter />
     </div>
   );

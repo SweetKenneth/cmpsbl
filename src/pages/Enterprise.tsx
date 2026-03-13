@@ -7,6 +7,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
 // SEO handled via <SEO> component
 import { ArrowRight, Building2, Shield, Layers, Zap, Globe, Lock, Brain, Server, Users, Mail, CheckCircle, Activity, Cpu } from "lucide-react";
@@ -204,6 +205,10 @@ export default function Enterprise() {
         </section>
       </main>
       <RelatedCapabilities />
+      <PageSEOBlock path="/enterprise" title="Enterprise" faq={[
+        { question: "Does CMPSBL offer enterprise deployment?", answer: "Yes. Enterprise plans include dedicated substrate infrastructure, custom SLAs, SOC 2 compliance, SSO, and priority support with a dedicated success manager." },
+        { question: "Can CMPSBL be deployed on-premise?", answer: "CMPSBL supports hybrid and dedicated cloud deployments. Contact our enterprise team for custom infrastructure requirements." },
+      ]} />
       <AuthorityLinkBlock currentPath="/enterprise" />
       <EnhancedFooter />
     </>
