@@ -180,7 +180,7 @@ export function EnhancedFooter() {
                         <Link
                           to={link.href}
                           className={cn(
-                            "text-sm transition-all duration-300 inline-block underline-reveal hover:translate-x-0.5",
+                            "text-sm transition-all duration-300 inline-flex items-center min-h-[36px] sm:min-h-0 underline-reveal hover:translate-x-0.5",
                             link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
