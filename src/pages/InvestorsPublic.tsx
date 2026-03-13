@@ -13,6 +13,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
