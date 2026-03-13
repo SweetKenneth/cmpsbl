@@ -1404,6 +1404,7 @@ export default function Documentation() {
         </div>
       </section>
 
+      <RelatedCapabilities />
       <EnhancedFooter />
     </div>
   );
