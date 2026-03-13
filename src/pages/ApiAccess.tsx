@@ -9,6 +9,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
+import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { ArrowRight, Key, Terminal, Code, Zap, Shield, BookOpen, Hammer, Copy, Check, Rocket, Brain, Network, Eye, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
