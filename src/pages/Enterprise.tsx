@@ -202,6 +202,7 @@ export default function Enterprise() {
           </motion.div>
         </section>
       </main>
+      <RelatedCapabilities />
       <AuthorityLinkBlock currentPath="/enterprise" />
       <EnhancedFooter />
     </>
