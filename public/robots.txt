@@ -395,7 +395,8 @@ User-agent: SemaltBot
 Disallow: /
 
 User-agent: AhrefsBot/7.0
-Disallow: /
+Crawl-delay: 10
+Allow: /
 
 User-agent: MegaIndex.ru
 Disallow: /
