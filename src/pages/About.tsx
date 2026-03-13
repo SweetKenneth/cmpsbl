@@ -196,8 +196,11 @@ export default function About() {
             {...stagger(0.15)}
             className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
           >
-            CMPSBL is the substrate — composable cognitive infrastructure where your systems
-            dream, adapt, evolve, and remember. The Memory Stream captures what they learn.
+            CMPSBL is the substrate — composable{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
+            where your systems dream, adapt, evolve, and remember. The{" "}
+            <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
+            captures what they learn.
           </motion.p>
 
           {/* Stat chips — mobile-friendly horizontal scroll */}
