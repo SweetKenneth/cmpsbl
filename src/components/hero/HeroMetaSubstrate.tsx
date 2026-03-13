@@ -273,12 +273,12 @@ export function HeroMetaSubstrate() {
             
             {/* Subtitle — clear value prop */}
             <FadeIn delay={0.4} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9 space-y-4">
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+              <p className="text-[15px] sm:text-base text-muted-foreground/70 leading-[1.8]">
                 Every interaction flows through the{' '}
                 <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
                 crystallizes memories and packages them into working, exportable capabilities automatically.
               </p>
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
+              <p className="text-[15px] sm:text-base text-muted-foreground/70 leading-[1.8]">
                 The rarest discoveries don't stop at software. They become designs for{' '}
                 <span className="text-primary font-medium">silicon computer chips</span>.{' '}
                 <span className="text-foreground/90 font-semibold">Start now — free.</span>
