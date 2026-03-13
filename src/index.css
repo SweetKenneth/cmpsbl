@@ -1621,3 +1621,100 @@ All colors MUST be HSL.
   }
   .ob-card-pre { transform: none; opacity: 1; }
 }
+
+/* =========================================
+ * MOBILE QA — Global sizing & spacing fixes
+ * Ensures legibility, tap targets, and spacing
+ * on screens ≤ 639px (xs/sm breakpoints).
+ * ========================================= */
+@media (max-width: 639px) {
+  /* ── Minimum body text ── */
+  body {
+    font-size: 16px; /* prevents iOS zoom on input focus */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ── All buttons: minimum 44px tap targets ── */
+  button,
+  [role="button"],
+  a.inline-flex,
+  .touch-target {
+    min-height: 44px;
+  }
+
+  /* ── Form inputs: prevent zoom, adequate sizing ── */
+  input, select, textarea {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* ── Headings: ensure mobile readability ── */
+  h1 { font-size: clamp(1.75rem, 8vw, 3rem); }
+  h2 { font-size: clamp(1.35rem, 6vw, 2rem); }
+  h3 { font-size: clamp(1.15rem, 5vw, 1.5rem); }
+
+  /* ── Body paragraphs: min 15px for readability ── */
+  p, li, dd, blockquote {
+    font-size: max(0.9375rem, 1em); /* 15px min */
+    line-height: 1.65;
+  }
+
+  /* ── Small/muted text: floor at 12px ── */
+  .text-xs, .text-\[10px\], .text-\[11px\], .text-\[9px\] {
+    font-size: max(0.75rem, 1em) !important; /* 12px floor */
+  }
+
+  /* ── Cards: comfortable padding ── */
+  .card-premium,
+  [class*="rounded-2xl"][class*="border"] {
+    padding: 1.25rem;
+  }
+
+  /* ── Footer links: bigger tap area ── */
+  footer a,
+  footer button {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  footer ul {
+    gap: 0.125rem;
+  }
+
+  footer li {
+    line-height: 1.4;
+  }
+
+  /* ── Stat cards: ensure numbers are readable ── */
+  .stat-card-glow .tabular-nums,
+  .stat-card-glow [class*="font-black"] {
+    font-size: max(1.25rem, 1em);
+  }
+
+  /* ── Section padding: comfortable vertical rhythm ── */
+  section {
+    padding-top: max(2rem, 5vw);
+    padding-bottom: max(2rem, 5vw);
+  }
+
+  /* ── Container: minimum 16px horizontal padding ── */
+  .container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  /* ── Badge/pill text ── */
+  [class*="rounded-full"][class*="border"][class*="px-"] {
+    font-size: max(0.75rem, 1em);
+    padding: 0.5rem 0.875rem;
+  }
+
+  /* ── Feature pill row: wrap instead of overflow ── */
+  .scrollbar-hide {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}

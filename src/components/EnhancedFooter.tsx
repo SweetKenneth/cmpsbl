@@ -130,7 +130,7 @@ export function EnhancedFooter() {
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
                 Signal → Silicon
               </p>
-              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
+              <p className="text-xs sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
                 The Memory Stream captures raw system behavior and crystallizes it into production-grade software — and when exceptional, into physical silicon.
               </p>
               <Link 

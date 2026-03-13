@@ -166,10 +166,10 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       className="relative text-center py-4 sm:py-5 group stat-card-glow animate-fade-in opacity-0"
       style={{ animationDelay: `${1.2 + delay * 0.06}s`, animationFillMode: "both" }}
     >
-      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
+      <div className="text-2xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
+      <div className="text-[11px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1.5 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
     </div>
   );
 }
