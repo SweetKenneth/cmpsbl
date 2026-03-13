@@ -224,12 +224,19 @@ export default function Architecture() {
                   How CMPSBL Works
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
-                  A layered orchestration architecture that boots deterministically, coordinates without a shared clock,
-                  heals autonomously, and evolves through a shadow-first mutation process — all governed by a tamper-evident audit chain.
+                  A layered{" "}
+                  <a href="https://en.wikipedia.org/wiki/Event-driven_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">orchestration architecture</a>{" "}
+                  that boots deterministically, coordinates without a shared clock,
+                  heals autonomously, and evolves through a shadow-first mutation process — all governed by a{" "}
+                  <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tamper-evident audit chain</a>.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
-                  40 nodes across 12 sectors. Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
-                  No single node can dominate system-level decisions without proportional representation.
+                  40 nodes across 12 sectors powering{" "}
+                  <Link to="/engines" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
+                  Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
+                  No single node can dominate system-level decisions without proportional representation.{" "}
+                  <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
+                  or use our hosted substrate.
                 </p>
                 <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
