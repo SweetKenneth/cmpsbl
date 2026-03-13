@@ -126,10 +126,20 @@ export default function StartHere() {
 
           {/* Intro — balanced narrative */}
           <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-3">
-            CMPSBL is composable cognitive infrastructure. You build on the substrate — adding persistent memory, DREAM cycles, governed evolution, and intelligent routing to any AI application.
+            CMPSBL is{" "}
+            <a href="https://en.wikipedia.org/wiki/Composability" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">composable</a>{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_computing" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>.{" "}
+            You build on the substrate — adding{" "}
+            <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
+            DREAM cycles, governed evolution, and{" "}
+            <Link to="/engines" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
+            to any AI application.
           </motion.p>
           <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
-            The Memory Stream captures and crystallizes what your systems learn. But the real power is what you build with it — systems that dream, adapt, and improve themselves over time. Everything below is free.
+            The <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
+            captures and crystallizes what your systems learn. But the real power is what you build with it — systems that dream, adapt, and improve themselves over time.{" "}
+            Explore the <Link to="/architecture" className="text-primary hover:underline font-medium">40-node topology</Link>{" "}
+            or browse <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>. Everything below is free.
           </motion.p>
 
           {/* ═══ TWO SIDES — Build + Stream ═══ */}
