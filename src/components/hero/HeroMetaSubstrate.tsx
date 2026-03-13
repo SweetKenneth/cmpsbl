@@ -367,8 +367,8 @@ export function HeroMetaSubstrate() {
                   key={item.label} 
                   className="rounded-lg border border-border/15 bg-card/25 p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover glass-edge"
                 >
-                  <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
-                  <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
+                  <div className="text-[10px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
+                  <div className="text-xs sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
                 </div>
               ))}
             </FadeIn>
