@@ -244,6 +244,7 @@ export default function Terms() {
       </main>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/terms" title="Terms of Service" />
       <EnhancedFooter />
     </div>
   );

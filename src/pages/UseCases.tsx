@@ -639,6 +639,7 @@ export default function UseCases() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/use-cases" title="Use Cases" />
       <EnhancedFooter />
     </div>
   );

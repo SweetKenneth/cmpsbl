@@ -267,6 +267,7 @@ export default function Contact() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/contact" title="Contact" />
       <EnhancedFooter />
     </div>
   );

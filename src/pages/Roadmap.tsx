@@ -416,6 +416,7 @@ export default function Roadmap() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/roadmap" title="Product Roadmap" />
       <EnhancedFooter />
     </div>
   );

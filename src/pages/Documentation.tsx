@@ -1407,6 +1407,11 @@ export default function Documentation() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/documentation" title="Documentation" faq={[
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com/start-here. You get 3 memory slots immediately with full runtime access. No credit card required." },
+        { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL substrate exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
+        { question: "What programming languages does CMPSBL support?", answer: "CMPSBL is language-agnostic. The API works with any language that can make HTTP requests. SDKs are available for JavaScript/TypeScript with more coming." },
+      ]} />
       <EnhancedFooter />
     </div>
   );

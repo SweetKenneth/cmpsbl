@@ -225,6 +225,7 @@ export default function Privacy() {
       </main>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/privacy" title="Privacy Policy" />
       <EnhancedFooter />
     </div>
   );

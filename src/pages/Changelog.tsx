@@ -1203,6 +1203,7 @@ export default function Changelog() {
       </main>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/changelog" title="Changelog" />
       <EnhancedFooter />
     </div>
   );

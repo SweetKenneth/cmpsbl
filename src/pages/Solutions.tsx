@@ -245,6 +245,7 @@ export default function Solutions() {
       </section>
 
       <RelatedCapabilities />
+      <PageSEOBlock path="/solutions" title="Solutions" />
       <EnhancedFooter />
     </div>
   );
