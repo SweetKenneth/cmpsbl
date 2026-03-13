@@ -285,9 +285,10 @@ export default function Engines() {
               <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
                 <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                   <strong className="text-foreground">How it works:</strong> Every engine purchase includes a
-                  single-file TypeScript SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
+                  single-file <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">TypeScript</a> SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
                   you copy into your project. The SDK calls the engine API — your code stays in your stack,
-                  the heavy compute runs on ours. No infrastructure to manage.
+                  the heavy compute runs on ours. No infrastructure to manage.{" "}
+                  See the <Link to="/documentation" className="text-primary hover:underline font-medium">full API docs</Link>.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   <strong className="text-emerald-400">⚡ Special: FAILSAFE</strong> is the only <em>standalone</em> engine —
