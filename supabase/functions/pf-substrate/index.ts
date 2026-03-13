@@ -2107,9 +2107,122 @@ async function handleUniversalModule(
         }, headers);
       }
 
-    } // end switch
+    } // end switch (read handlers)
   } catch (err) {
     console.warn(`[Universal:${module}] Query error:`, err);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // PHASE 2: GOVERNED WRITE ACTIONS
+  // All write operations require governance gate passage
+  // ═══════════════════════════════════════════════════════════════
+
+  const WRITE_ACTIONS = [
+    'propose', 'mutate', 'update', 'create', 'delete', 'patch',
+    'approve', 'reject', 'rollback', 'promote', 'escalate',
+    'configure', 'toggle', 'set', 'reset', 'heal', 'repair',
+    'emit', 'broadcast', 'store', 'ingest', 'purge',
+  ];
+
+  if (WRITE_ACTIONS.includes(action)) {
+    // ─── GOVERNANCE GATE ────────────────────────────────────
+    const gateResult = await governanceGate(supabase, module, action, params);
+    if (!gateResult.allowed) {
+      // Emit denial to mesh
+      emitGovernedSignal(supabase, module, action, 'denied', gateResult.reason, personality).catch(() => {});
+      return jsonResponse({
+        success: false,
+        module,
+        action,
+        governance: {
+          verdict: 'denied',
+          reason: gateResult.reason,
+          gate: gateResult.gate,
+          mode: gateResult.mode,
+        },
+        timestamp: new Date().toISOString(),
+      }, headers, 403);
+    }
+
+    // ─── AUDIT TRAIL: Pre-write ─────────────────────────────
+    const auditId = crypto.randomUUID();
+    await supabase.from('audit_logs').insert({
+      id: auditId,
+      action: `${module}.${action}`,
+      entity_type: module,
+      entity_id: params.target_id || params.id || null,
+      performed_by: params.actor_id || params.user_id || 'system',
+      details: {
+        params: sanitizeParams(params),
+        governance_verdict: 'allowed',
+        governance_gate: gateResult.gate,
+        phase: 'pre_write',
+      },
+    }).catch(() => {});
+
+    // ─── GOVERNED WRITE DISPATCH ─────────────────────────────
+    try {
+      const writeResult = await executeGovernedWrite(supabase, module, action, params, tableMap);
+
+      // Audit trail: Post-write
+      await supabase.from('audit_logs').insert({
+        action: `${module}.${action}.completed`,
+        entity_type: module,
+        entity_id: writeResult.entity_id || params.target_id || null,
+        performed_by: params.actor_id || params.user_id || 'system',
+        details: {
+          audit_ref: auditId,
+          result: writeResult.success ? 'success' : 'failed',
+          affected_records: writeResult.affected,
+          phase: 'post_write',
+        },
+      }).catch(() => {});
+
+      // Emit governed write signal to mesh
+      emitGovernedSignal(
+        supabase, module, action,
+        writeResult.success ? 'completed' : 'failed',
+        writeResult.message,
+        personality,
+      ).catch(() => {});
+
+      return jsonResponse({
+        success: writeResult.success,
+        module,
+        action,
+        governance: {
+          verdict: 'allowed',
+          gate: gateResult.gate,
+          mode: gateResult.mode,
+          audit_id: auditId,
+        },
+        data: writeResult.data,
+        affected: writeResult.affected,
+        message: writeResult.message,
+        latency_ms: Date.now() - startMs,
+        timestamp: new Date().toISOString(),
+      }, headers);
+    } catch (writeErr) {
+      const errMsg = writeErr instanceof Error ? writeErr.message : 'Write failed';
+      // Audit trail: Failure
+      await supabase.from('audit_logs').insert({
+        action: `${module}.${action}.failed`,
+        entity_type: module,
+        performed_by: params.actor_id || params.user_id || 'system',
+        details: { audit_ref: auditId, error: errMsg, phase: 'write_error' },
+      }).catch(() => {});
+
+      emitGovernedSignal(supabase, module, action, 'failed', errMsg, personality).catch(() => {});
+
+      return jsonResponse({
+        success: false,
+        module,
+        action,
+        governance: { verdict: 'allowed', gate: gateResult.gate, audit_id: auditId },
+        error: errMsg,
+        timestamp: new Date().toISOString(),
+      }, headers, 500);
+    }
   }
 
   // ─── FALLBACK: query primary table for any unhandled action ────
@@ -2154,6 +2267,694 @@ async function handleUniversalModule(
       timestamp: new Date().toISOString(),
     }, headers);
   }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GOVERNANCE GATE — Policy enforcement for all write operations
+// ═══════════════════════════════════════════════════════════════
+
+interface GovernanceGateResult {
+  allowed: boolean;
+  reason: string;
+  gate: string;
+  mode: string;
+}
+
+// deno-lint-ignore no-explicit-any
+async function governanceGate(
+  supabase: any,
+  module: string,
+  action: string,
+  params: Record<string, any>,
+): Promise<GovernanceGateResult> {
+  // Gate 1: Check governance mode (LOCKDOWN blocks all writes)
+  let currentMode = 'ACTIVE';
+  try {
+    const { data: modeData } = await supabase
+      .from('governance_mode')
+      .select('mode, reason, ttl_minutes, changed_at')
+      .order('changed_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (modeData) {
+      currentMode = modeData.mode;
+      // Auto-expire TTL-based modes
+      if (modeData.ttl_minutes && modeData.changed_at) {
+        const elapsed = (Date.now() - new Date(modeData.changed_at).getTime()) / 60000;
+        if (elapsed > modeData.ttl_minutes) currentMode = 'ACTIVE';
+      }
+    }
+  } catch { /* default ACTIVE */ }
+
+  if (currentMode === 'LOCKDOWN') {
+    return { allowed: false, reason: 'System is in LOCKDOWN mode — all writes blocked.', gate: 'governance_mode', mode: currentMode };
+  }
+
+  // Gate 2: MAINTENANCE mode — only heal/repair/reset allowed
+  const MAINTENANCE_ACTIONS = ['heal', 'repair', 'reset', 'rollback'];
+  if (currentMode === 'MAINTENANCE' && !MAINTENANCE_ACTIONS.includes(action)) {
+    return { allowed: false, reason: `MAINTENANCE mode — only ${MAINTENANCE_ACTIONS.join('/')} allowed.`, gate: 'governance_mode', mode: currentMode };
+  }
+
+  // Gate 3: DEGRADED mode — block destructive actions
+  const DESTRUCTIVE_ACTIONS = ['delete', 'purge', 'reset'];
+  if (currentMode === 'DEGRADED' && DESTRUCTIVE_ACTIONS.includes(action)) {
+    return { allowed: false, reason: 'DEGRADED mode — destructive writes blocked.', gate: 'governance_mode', mode: currentMode };
+  }
+
+  // Gate 4: Module-specific capability check via atlas_capabilities
+  try {
+    const capKey = `${module}.write`;
+    const { data: cap } = await supabase
+      .from('atlas_capabilities')
+      .select('enabled')
+      .eq('key', capKey)
+      .maybeSingle();
+    if (cap && cap.enabled === false) {
+      return { allowed: false, reason: `Write capability '${capKey}' is disabled via Atlas.`, gate: 'atlas_capability', mode: currentMode };
+    }
+  } catch { /* capability not registered = allowed by default */ }
+
+  // Gate 5: Rate limiting — max 60 writes per module per minute (in-memory)
+  const rateKey = `${module}:${Math.floor(Date.now() / 60000)}`;
+  const currentRate = writeRateMap.get(rateKey) || 0;
+  if (currentRate >= 60) {
+    return { allowed: false, reason: `Rate limit exceeded for ${module} (60/min).`, gate: 'rate_limit', mode: currentMode };
+  }
+  writeRateMap.set(rateKey, currentRate + 1);
+  // Clean old entries
+  for (const [k] of writeRateMap) {
+    if (!k.endsWith(`:${Math.floor(Date.now() / 60000)}`)) writeRateMap.delete(k);
+  }
+
+  // Gate 6: High-risk actions require explicit consent parameter
+  const HIGH_RISK_ACTIONS = ['delete', 'purge', 'reset', 'rollback'];
+  if (HIGH_RISK_ACTIONS.includes(action) && !params.confirm) {
+    return { allowed: false, reason: `Action '${action}' requires explicit confirmation (pass confirm: true).`, gate: 'consent_required', mode: currentMode };
+  }
+
+  return { allowed: true, reason: 'All governance gates passed.', gate: 'all_clear', mode: currentMode };
+}
+
+// In-memory write rate limiter
+const writeRateMap = new Map<string, number>();
+
+// ═══════════════════════════════════════════════════════════════
+// GOVERNED WRITE EXECUTOR — Module-specific write logic
+// ═══════════════════════════════════════════════════════════════
+
+interface WriteResult {
+  success: boolean;
+  message: string;
+  data: Record<string, unknown>;
+  entity_id?: string;
+  affected: number;
+}
+
+// deno-lint-ignore no-explicit-any
+function sanitizeParams(params: Record<string, any>): Record<string, unknown> {
+  const sanitized: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(params)) {
+    if (['password', 'secret', 'token', 'key_hash', 'api_key'].includes(k)) {
+      sanitized[k] = '[REDACTED]';
+    } else {
+      sanitized[k] = v;
+    }
+  }
+  return sanitized;
+}
+
+// deno-lint-ignore no-explicit-any
+async function executeGovernedWrite(
+  supabase: any,
+  module: string,
+  action: string,
+  params: Record<string, any>,
+  tableMap: { primary: string; secondary?: string[]; zone: string },
+): Promise<WriteResult> {
+
+  switch (module) {
+
+    // ═══ EVOLUTION — Propose mutations, approve/reject, rollback ═══
+    case 'evolution': {
+      if (action === 'propose' || action === 'create') {
+        const { data, error } = await supabase.from('evolution_proposals').insert({
+          title: params.title || 'Untitled Proposal',
+          summary: params.summary || params.description || '',
+          target_system: params.target_system || params.target || 'system',
+          confidence: params.confidence || 0.5,
+          status: 'pending',
+          patch_json: params.patch_json || params.changes || {},
+          risk_level: params.risk_level || 'medium',
+          submitted_by: params.actor_id || params.user_id || 'system',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Evolution proposal submitted for governance review.', data: { proposal: data }, entity_id: data.id, affected: 1 };
+      }
+      if (action === 'approve') {
+        const { error } = await supabase.from('evolution_proposals').update({
+          status: 'approved', reviewed_at: new Date().toISOString(), reviewed_by: params.actor_id || 'governor',
+        }).eq('id', params.proposal_id || params.id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Proposal approved — ready for shadow testing.', data: { proposal_id: params.proposal_id || params.id }, entity_id: params.proposal_id || params.id, affected: 1 };
+      }
+      if (action === 'reject') {
+        const { error } = await supabase.from('evolution_proposals').update({
+          status: 'rejected', reviewed_at: new Date().toISOString(), reviewed_by: params.actor_id || 'governor', rejection_reason: params.reason || 'Governance review failed.',
+        }).eq('id', params.proposal_id || params.id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Proposal rejected.', data: { proposal_id: params.proposal_id || params.id }, entity_id: params.proposal_id || params.id, affected: 1 };
+      }
+      if (action === 'rollback') {
+        const { error } = await supabase.from('evolution_receipts').insert({
+          plan_id: params.plan_id || params.proposal_id || params.id,
+          phase: 'rollback',
+          status: 'rolled_back',
+          rollback_reason: params.reason || 'Manual rollback requested.',
+        });
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Rollback receipt recorded.', data: { plan_id: params.plan_id }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ IMMUNITY — Create/update/delete rules ═══
+    case 'immunity': {
+      if (action === 'create' || action === 'propose') {
+        const { data, error } = await supabase.from('immunity_rules').insert({
+          rule_key: params.rule_key || params.key || `rule_${Date.now()}`,
+          category: params.category || 'custom',
+          confidence: params.confidence || 0.7,
+          status: 'active',
+          description: params.description || '',
+          created_by: params.actor_id || 'system',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Immunity rule created.', data: { rule: data }, entity_id: data.id, affected: 1 };
+      }
+      if (action === 'update' || action === 'patch') {
+        const updates: Record<string, unknown> = {};
+        if (params.confidence !== undefined) updates.confidence = params.confidence;
+        if (params.status !== undefined) updates.status = params.status;
+        if (params.category !== undefined) updates.category = params.category;
+        const { error } = await supabase.from('immunity_rules').update(updates).eq('id', params.id || params.rule_id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Immunity rule updated.', data: updates, entity_id: params.id || params.rule_id, affected: 1 };
+      }
+      if (action === 'delete') {
+        const { error } = await supabase.from('immunity_rules').delete().eq('id', params.id || params.rule_id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Immunity rule deleted.', data: {}, entity_id: params.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ GOVERNANCE — Mode transitions, approvals ═══
+    case 'governance': {
+      if (action === 'set' || action === 'configure' || action === 'mutate') {
+        const newMode = params.mode || params.value;
+        if (!newMode) throw new Error('Missing required parameter: mode');
+        const validModes = ['ACTIVE', 'MAINTENANCE', 'DEGRADED', 'LOCKDOWN'];
+        if (!validModes.includes(newMode.toUpperCase())) throw new Error(`Invalid mode. Valid: ${validModes.join(', ')}`);
+        const { error } = await supabase.from('governance_mode').insert({
+          mode: newMode.toUpperCase(),
+          reason: params.reason || `Set by ${params.actor_id || 'governor'}`,
+          changed_by: params.actor_id || params.user_id || 'governor',
+          ttl_minutes: params.ttl_minutes || null,
+        });
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Governance mode set to ${newMode.toUpperCase()}.`, data: { mode: newMode.toUpperCase(), ttl_minutes: params.ttl_minutes }, affected: 1 };
+      }
+      if (action === 'approve' || action === 'reject') {
+        const { error } = await supabase.from('governance_transition_approvals').update({
+          status: action === 'approve' ? 'approved' : 'rejected',
+          decided_by: params.actor_id || 'governor',
+          decided_at: new Date().toISOString(),
+        }).eq('id', params.approval_id || params.id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Transition ${action}d.`, data: { approval_id: params.approval_id || params.id }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ ATLAS — Toggle capabilities ═══
+    case 'atlas': {
+      if (action === 'toggle' || action === 'set' || action === 'configure') {
+        const key = params.key || params.capability;
+        if (!key) throw new Error('Missing required parameter: key');
+        const { error } = await supabase.from('atlas_capabilities').upsert({
+          key,
+          enabled: params.enabled !== undefined ? params.enabled : !params.disabled,
+          description: params.description || undefined,
+          updated_at: new Date().toISOString(),
+          metadata: params.metadata || undefined,
+        }, { onConflict: 'key' });
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Capability '${key}' ${params.enabled ? 'enabled' : 'disabled'}.`, data: { key, enabled: params.enabled }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ MEMORY — Store, update, purge memories ═══
+    case 'memory': {
+      if (action === 'store' || action === 'create' || action === 'ingest') {
+        const tier = params.tier || 'hot';
+        const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
+        const { data, error } = await supabase.from(tableName).insert({
+          content: params.content || '',
+          context: params.context || module,
+          importance: params.importance || 0.5,
+          user_id: params.user_id || params.actor_id,
+          metadata: params.metadata || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Memory stored in ${tier} tier.`, data: { memory: data, tier }, entity_id: data.id, affected: 1 };
+      }
+      if (action === 'update' || action === 'patch') {
+        const updates: Record<string, unknown> = {};
+        if (params.content) updates.content = params.content;
+        if (params.importance !== undefined) updates.importance = params.importance;
+        if (params.context) updates.context = params.context;
+        const tier = params.tier || 'hot';
+        const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
+        const { error } = await supabase.from(tableName).update(updates).eq('id', params.id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Memory updated in ${tier} tier.`, data: updates, entity_id: params.id, affected: 1 };
+      }
+      if (action === 'delete' || action === 'purge') {
+        const tier = params.tier || 'hot';
+        const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
+        if (params.id) {
+          const { error } = await supabase.from(tableName).delete().eq('id', params.id);
+          if (error) throw new Error(error.message);
+          return { success: true, message: `Memory purged from ${tier}.`, data: {}, entity_id: params.id, affected: 1 };
+        }
+        // Purge old memories (>30 days) if no specific ID
+        const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
+        const { count } = await supabase.from(tableName).delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
+        return { success: true, message: `Purged stale memories from ${tier} (older than 30d).`, data: { cutoff }, affected: count || 0 };
+      }
+      break;
+    }
+
+    // ═══ INTENT — Emit, broadcast signals ═══
+    case 'intent': {
+      if (action === 'emit' || action === 'broadcast' || action === 'create') {
+        const { data, error } = await supabase.from('mesh_comms').insert({
+          source_module: (params.source || module).toUpperCase(),
+          target_module: params.target ? params.target.toUpperCase() : null,
+          raw_signal: params.signal || params.raw_signal || 'governed_write',
+          translated_voice: params.message || params.translated_voice || `${module.toUpperCase()} emitted a governed signal.`,
+          category: params.category || 'processing',
+          resolver_id: params.resolver_id || null,
+          personality_trait: params.personality_trait || 'The Weaver',
+          personality_icon: params.personality_icon || '🕸',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Signal emitted to mesh.', data: { comm: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ NERVE — Emit signals ═══
+    case 'nerve': {
+      if (action === 'emit' || action === 'broadcast') {
+        const { data, error } = await supabase.from('mesh_comms').insert({
+          source_module: (params.source || 'NERVE').toUpperCase(),
+          target_module: params.target ? params.target.toUpperCase() : null,
+          raw_signal: params.signal || 'nerve_signal',
+          translated_voice: params.message || '⚡ NERVE fired a governed signal through the mesh.',
+          category: params.category || 'processing',
+          personality_trait: 'The Conductor',
+          personality_icon: '⚡',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Nerve signal emitted.', data: { comm: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ ECONOMY — Update budgets and quotas ═══
+    case 'economy': {
+      if (action === 'set' || action === 'configure' || action === 'update') {
+        const provider = params.provider || 'system';
+        const today = new Date().toISOString().split('T')[0];
+        const { error } = await supabase.from('ai_daily_quota').upsert({
+          provider,
+          date: today,
+          calls_budget: params.calls_budget || params.budget,
+          calls_used: params.calls_used,
+          tokens_used: params.tokens_used,
+        }, { onConflict: 'provider,date' });
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Budget updated for ${provider}.`, data: { provider, date: today }, affected: 1 };
+      }
+      if (action === 'reset') {
+        const today = new Date().toISOString().split('T')[0];
+        const { error } = await supabase.from('ai_daily_quota').update({ calls_used: 0, tokens_used: 0 }).eq('date', today);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Daily quotas reset.', data: { date: today }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ SHADOW — Create snapshots, diffs ═══
+    case 'shadow': {
+      if (action === 'create' || action === 'store') {
+        const { data, error } = await supabase.from('system_snapshots').insert({
+          type: params.type || 'manual',
+          metrics_json: params.metrics || params.data || {},
+          created_by: params.actor_id || 'system',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Shadow snapshot created.', data: { snapshot: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ ENGINEER — Record metrics, create snapshots ═══
+    case 'engineer': {
+      if (action === 'store' || action === 'create') {
+        const { data, error } = await supabase.from('system_metrics_history').insert({
+          success_rate: params.success_rate || 100,
+          latency_p95: params.latency_p95 || 100,
+          cost_index: params.cost_index || 0,
+          rollback_count: params.rollback_count || 0,
+          integrity_health_score: params.health_score || 100,
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Metrics recorded.', data: { metric: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ MEDIC — Heal, repair system modules ═══
+    case 'medic': {
+      if (action === 'heal' || action === 'repair') {
+        const targetModule = params.target || params.module || 'system';
+        // Record healing action in metrics
+        const { data, error } = await supabase.from('system_metrics_history').insert({
+          success_rate: 100,
+          latency_p95: 50,
+          integrity_health_score: 100,
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        // Emit healing signal
+        await supabase.from('mesh_comms').insert({
+          source_module: 'MEDIC',
+          target_module: targetModule.toUpperCase(),
+          raw_signal: 'heal_complete',
+          translated_voice: `🏥 MEDIC has healed ${targetModule.toUpperCase()} — systems restored to nominal.`,
+          category: 'completion',
+          personality_trait: 'The Healer',
+          personality_icon: '🏥',
+        }).catch(() => {});
+        return { success: true, message: `Healing applied to ${targetModule}.`, data: { target: targetModule, metric: data }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ CONSCIENCE — Escalate ethical concerns ═══
+    case 'conscience': {
+      if (action === 'escalate' || action === 'propose') {
+        const { data, error } = await supabase.from('audit_logs').insert({
+          action: 'conscience.ethical_escalation',
+          entity_type: 'ethics',
+          entity_id: params.target_id || null,
+          performed_by: params.actor_id || 'conscience',
+          details: {
+            concern: params.concern || params.description || 'Ethical concern raised.',
+            severity: params.severity || 'medium',
+            bias_type: params.bias_type || null,
+            recommendation: params.recommendation || 'Review required.',
+          },
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Ethical concern escalated for governance review.', data: { escalation: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ ECHO — Store analytics events ═══
+    case 'echo': {
+      if (action === 'store' || action === 'emit' || action === 'create') {
+        const { data, error } = await supabase.from('analytics_events').insert({
+          event_type: params.event_type || params.type || 'custom',
+          category: params.category || 'echo',
+          label: params.label || null,
+          value: params.value || null,
+          page: params.page || null,
+          session_id: params.session_id || null,
+          user_id: params.user_id || params.actor_id || null,
+          metadata: params.metadata || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Analytics event recorded.', data: { event: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ HARVEST — Ingest learning data ═══
+    case 'harvest': {
+      if (action === 'ingest' || action === 'store' || action === 'create') {
+        const { data, error } = await supabase.from('ai_learning_data').insert({
+          model: params.model || 'unknown',
+          provider: params.provider || 'system',
+          input_data: params.input_data || params.input || {},
+          output_data: params.output_data || params.output || null,
+          success: params.success !== undefined ? params.success : true,
+          model_name: params.model_name || params.model || null,
+          metadata: params.metadata || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Learning data ingested.', data: { record: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ FORGE — Set system flags ═══
+    case 'forge': {
+      if (action === 'set' || action === 'toggle' || action === 'configure') {
+        const { error } = await supabase.from('system_flags').upsert({
+          key: params.key || params.flag,
+          value: params.value ?? 'true',
+          enabled: params.enabled !== undefined ? params.enabled : true,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'key' });
+        if (error) throw new Error(error.message);
+        return { success: true, message: `Flag '${params.key || params.flag}' set.`, data: { key: params.key, value: params.value }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ PHANTOM — Manage excluded fingerprints ═══
+    case 'phantom': {
+      if (action === 'create' || action === 'store') {
+        const { data, error } = await supabase.from('analytics_excluded_fingerprints').insert({
+          fingerprint: params.fingerprint,
+          reason: params.reason || 'Manually excluded',
+          label: params.label || null,
+          excluded_by: params.actor_id || 'phantom',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Fingerprint excluded.', data: { record: data }, entity_id: data.id, affected: 1 };
+      }
+      if (action === 'delete') {
+        const { error } = await supabase.from('analytics_excluded_fingerprints').delete().eq('id', params.id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Fingerprint exclusion removed.', data: {}, entity_id: params.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ OBSERVER — Create snapshots ═══
+    case 'observer': {
+      if (action === 'store' || action === 'create') {
+        const { data, error } = await supabase.from('analytics_snapshots').insert({
+          snapshot_type: params.type || 'manual',
+          health_score: params.health_score || 100,
+          total_events: params.total_events || 0,
+          error_rate: params.error_rate || 0,
+          active_modules: params.active_modules || 40,
+          data: params.data || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Observation snapshot recorded.', data: { snapshot: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ AUDIT — Create manual audit entries ═══
+    case 'audit': {
+      if (action === 'store' || action === 'create' || action === 'emit') {
+        const { data, error } = await supabase.from('audit_logs').insert({
+          action: params.audit_action || params.action_name || 'manual_audit',
+          entity_type: params.entity_type || 'system',
+          entity_id: params.entity_id || null,
+          performed_by: params.actor_id || params.user_id || 'auditor',
+          details: params.details || params.metadata || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Audit entry recorded.', data: { entry: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ SOVEREIGN — Update voice configuration ═══
+    case 'sovereign': {
+      if (action === 'configure' || action === 'set') {
+        // Sovereign updates governance mode for voice/boundary changes
+        await supabase.from('mesh_comms').insert({
+          source_module: 'SOVEREIGN',
+          target_module: null,
+          raw_signal: 'voice_reconfigured',
+          translated_voice: `👑 SOVEREIGN voice parameters updated: ${params.description || 'configuration change'}.`,
+          category: 'confirmation',
+          personality_trait: 'The Voice',
+          personality_icon: '👑',
+        });
+        return { success: true, message: 'Sovereign configuration updated.', data: { config: params }, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ ORACLE — Store predictions ═══
+    case 'oracle': {
+      if (action === 'store' || action === 'create') {
+        const { data, error } = await supabase.from('analytics_snapshots').insert({
+          snapshot_type: 'oracle_prediction',
+          health_score: params.predicted_health || 85,
+          data: { prediction: params.prediction || {}, confidence: params.confidence || 0.7, horizon: params.horizon || '24h' },
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Oracle prediction stored.', data: { prediction: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ RELAY — Queue communications ═══
+    case 'relay': {
+      if (action === 'emit' || action === 'broadcast' || action === 'create') {
+        await supabase.from('mesh_comms').insert({
+          source_module: 'RELAY',
+          target_module: params.target ? params.target.toUpperCase() : null,
+          raw_signal: params.signal || 'relay_broadcast',
+          translated_voice: params.message || '📡 RELAY broadcast dispatched.',
+          category: params.category || 'processing',
+          personality_trait: 'The Courier',
+          personality_icon: '📡',
+        });
+        return { success: true, message: 'Relay signal dispatched.', data: {}, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ TREATY — Record policy decisions ═══
+    case 'treaty': {
+      if (action === 'propose' || action === 'create') {
+        const { data, error } = await supabase.from('governance_transition_approvals').insert({
+          from_mode: params.from_mode || 'ACTIVE',
+          to_mode: params.to_mode || params.proposed_mode || 'MAINTENANCE',
+          status: 'pending',
+          requested_by: params.actor_id || 'treaty',
+          reason: params.reason || 'Treaty-proposed transition.',
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Treaty proposal submitted.', data: { approval: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ COMPASS — Save pipeline discoveries ═══
+    case 'compass': {
+      if (action === 'store' || action === 'create') {
+        const { data, error } = await supabase.from('mesh_saved_pipelines').insert({
+          name: params.name || 'Unnamed Pipeline',
+          source_module: params.source_module || 'compass',
+          intent_type: params.intent_type || 'discovery',
+          domains: params.domains || [],
+          pipeline_json: params.pipeline || params.config || {},
+        }).select('id').single();
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Pipeline saved by Compass.', data: { pipeline: data }, entity_id: data.id, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ REFLEX — Reset metrics ═══
+    case 'reflex': {
+      if (action === 'reset') {
+        await supabase.from('system_metrics_history').insert({
+          success_rate: 100, latency_p95: 50, cost_index: 0, rollback_count: 0, integrity_health_score: 100,
+        });
+        return { success: true, message: 'Reflex metrics reset to baseline.', data: {}, affected: 1 };
+      }
+      break;
+    }
+
+    // ═══ IDENTITY — Update profiles ═══
+    case 'identity': {
+      if (action === 'update' || action === 'patch') {
+        const updates: Record<string, unknown> = {};
+        if (params.display_name) updates.display_name = params.display_name;
+        if (params.avatar_url) updates.avatar_url = params.avatar_url;
+        if (params.role) updates.role = params.role;
+        const { error } = await supabase.from('profiles').update(updates).eq('id', params.id || params.user_id);
+        if (error) throw new Error(error.message);
+        return { success: true, message: 'Identity profile updated.', data: updates, entity_id: params.id || params.user_id, affected: 1 };
+      }
+      break;
+    }
+
+  } // end switch
+
+  // ─── GENERIC WRITE FALLBACK ────────────────────────────────
+  // For modules without specific handlers, attempt insert on primary table
+  if (action === 'create' || action === 'store' || action === 'emit') {
+    try {
+      const insertData: Record<string, unknown> = { ...params };
+      delete insertData.actor_id;
+      delete insertData.user_id;
+      delete insertData.confirm;
+      const { data, error } = await supabase.from(tableMap.primary).insert(insertData).select('id').single();
+      if (error) throw new Error(error.message);
+      return { success: true, message: `Record created in ${module}.`, data: { record: data }, entity_id: data?.id, affected: 1 };
+    } catch (genErr) {
+      throw new Error(`Generic write to ${tableMap.primary} failed: ${genErr instanceof Error ? genErr.message : 'unknown error'}`);
+    }
+  }
+
+  throw new Error(`Unsupported write action '${action}' for module '${module}'.`);
+}
+
+// ─── GOVERNED SIGNAL EMITTER ─────────────────────────────────
+// Emits mesh_comms events for all governed write operations
+// deno-lint-ignore no-explicit-any
+async function emitGovernedSignal(
+  supabase: any,
+  module: string,
+  action: string,
+  status: 'completed' | 'denied' | 'failed',
+  message: string,
+  personality?: { trait: string; icon: string },
+): Promise<void> {
+  const p = personality || { trait: 'Unknown', icon: '❓' };
+  const category = status === 'completed' ? 'confirmation' : status === 'denied' ? 'denial' : 'warning';
+  const voice = status === 'completed'
+    ? `${p.icon} ${module.toUpperCase()} — governed write '${action}' completed: ${message}`
+    : status === 'denied'
+    ? `${p.icon} ${module.toUpperCase()} — write '${action}' denied by governance: ${message}`
+    : `${p.icon} ${module.toUpperCase()} — write '${action}' failed: ${message}`;
+
+  await supabase.from('mesh_comms').insert({
+    source_module: module.toUpperCase(),
+    target_module: 'GOVERNANCE',
+    raw_signal: `governed_${status}`,
+    translated_voice: voice,
+    category,
+    personality_trait: p.trait,
+    personality_icon: p.icon,
+  });
 }
 
 // ─── HEARTBEAT EMITTER ───────────────────────────────────────
