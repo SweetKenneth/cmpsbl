@@ -161,7 +161,7 @@ export function EnhancedFooter() {
             {footerSections.map((section) => (
               <div key={section.title} className="min-w-0">
                 <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wide uppercase text-muted-foreground/80">{section.title}</h3>
-                <ul className="space-y-2.5">
+                <ul className="space-y-1.5 sm:space-y-2.5">
                   {section.links.map((link) => (
                     <li key={link.href}>
                       {link.external ? (
