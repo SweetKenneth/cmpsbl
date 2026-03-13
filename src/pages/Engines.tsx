@@ -271,10 +271,14 @@ export default function Engines() {
                 COMPOSABLE <span className="text-primary">ENGINES</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
-                Engines are hosted cognitive runtimes that run on the CMPSBL substrate.
+                Engines are hosted{" "}
+                <a href="https://en.wikipedia.org/wiki/Runtime_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive runtimes</a>{" "}
+                that run on the <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL substrate</Link>.
                 When you purchase an engine, you get an <strong className="text-foreground">API key + copy-paste SDK</strong> to
                 call it from your own stack — any language, any framework.
-                You don't see the source. You see the results.
+                You don't see the source. You see the results.{" "}
+                Browse <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>{" "}
+                or <Link to="/start-here" className="text-primary hover:underline font-medium">start free</Link>.
               </p>
 
               {/* SDK + FAILSAFE callout */}
