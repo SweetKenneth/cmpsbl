@@ -351,10 +351,14 @@ export default function About() {
                   <h3 className="text-lg sm:text-xl font-bold text-foreground">The Memory Stream</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A continuous river of evolving software. The Memory Stream isn't a marketplace — it's the living output of the substrate's own dream and evolution cycles.
+                  A continuous river of evolving software. The{" "}
+                  <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
+                  isn't a marketplace — it's the living output of the substrate's own dream and{" "}
+                  <Link to="/solutions" className="text-primary hover:underline font-medium">evolution cycles</Link>.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's memory.
+                  Every memory has a quality floor of 68+. Every pull is real software with provenance. Materialize memories, export them, build on top — or let the stream feed back into your substrate's{" "}
+                  <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Moon className="w-3.5 h-3.5" />
