@@ -579,8 +579,11 @@ export default function UseCases() {
               Built for Every Industry
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              See how teams across sectors use persistent memory and intelligent routing 
-              to build AI applications that actually learn.
+              See how teams across sectors use <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>{" "}
+              and <Link to="/solutions" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
+              to build{" "}
+              <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
+              that actually learn.
             </p>
           </motion.div>
 
