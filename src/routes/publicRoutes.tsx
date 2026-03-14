@@ -209,6 +209,7 @@ export const publicRoutes = (
     <Route path="/auth" element={<Auth />} />
     <Route path="/privacy" element={<Privacy />} />
     <Route path="/terms" element={<Terms />} />
+    <Route path="/heritage-paper" element={<HeritagePaper />} />
 
     {/* Misc public */}
     <Route path="/evolution" element={<EvolutionControlCenter />} />

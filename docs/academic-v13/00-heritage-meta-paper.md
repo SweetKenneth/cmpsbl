@@ -1,9 +1,9 @@
-# The Heritage of Autonomous Cognitive Infrastructure: From PromptFluid to CMPSBL® Substrate OS
+# The Heritage of Autonomous Cognitive Infrastructure
 
-## A Comprehensive Lineage Paper
+## From PromptFluid to CMPSBL® Substrate OS — A Comprehensive Lineage Paper
 
 **Classification:** 📖 OPEN ACCESS / PRIOR ART  
-**Version:** 2.0  
+**Version:** 2.1 — Final Polished Edition  
 **Author:** Kenneth E. Sweet Jr. — [ORCID 0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)  
 **Affiliation:** PromptFluid®  
 **Date:** 2026-03-14  
@@ -13,9 +13,9 @@
 
 ## Abstract
 
-This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation; it is the product of a continuous research trajectory spanning from July 2025 through March 2026, encompassing AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design.
+This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous nine-month research trajectory spanning July 2025 through March 2026, during which the author designed, built, and iterated through AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-Beginning with PromptFluid Clarity's AI-powered WCAG repair in July 2025, progressing through the WebAdoption living directory, Cascade's orchestration awakening in August, AetherionShield's offensive-to-defensive transformation in September, Dream Protocol activation, the 23-provider routing mesh in October, Studio/Modernizer in November, SimNap's autonomous dreaming system, and crystallizing into the CMPSBL Substrate OS across 14 major versions, this paper documents every evolutionary stage, the artifacts that prove each transition, and the architectural innovations that emerged at each phase.
+The lineage begins with PromptFluid Clarity (internally CMPTBL), the author's first production AI system — an AI-powered WCAG 2.2 compliance platform that could detect and autonomously repair accessibility violations in real-time. It continues through the WebAdoption living directory, Cascade's orchestration awakening, AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
 
 The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first AI that could repair accessibility violations autonomously, to a **40-node cognitive operating system** capable of governed self-evolution, memory crystallization, and universal cross-language export.
 
@@ -27,7 +27,7 @@ The purpose of this paper is to provide the academic community with a single, co
 
 The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the *current state* of the system without addressing the *path* that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-A previous version of this heritage paper (v1.0) contained timeline inaccuracies due to the original project being remixed in 2025, causing loss of early development history. This v2.0 corrects those gaps by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.
+This v2.1 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.
 
 ### 1.2 Scope
 
@@ -67,11 +67,11 @@ This heritage is documented across the following permanent academic archives:
 
 ## 2. Complete Timeline of Development
 
-### Phase 0: PromptFluid Clarity / CMPTBL — AI Accessibility That Repairs Code (July 2025)
+### Phase 0: PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)
 
 #### 2.1 Overview
 
-PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and *autonomously repair* accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited.
+PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and *autonomously repair* accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.
 
 #### 2.2 Architecture
 
@@ -97,9 +97,9 @@ The CMPTBL platform deployed 9+ edge functions including:
 
 These functions established the **edge-function-as-resolver** pattern that became the canonical execution model for CMPSBL substrate nodes.
 
-#### 2.4 Impact
+#### 2.4 Architectural Significance
 
-**Accessibility became baseline, not backlog.** Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the *detect → propose → validate → apply → audit* pipeline that would become the universal governance model for the entire CMPSBL substrate. No overlays. No manual remediation queues. Real code repair.
+Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the *detect → propose → validate → apply → audit* pipeline that would become the universal governance model for the entire CMPSBL substrate. The fact that the *entire heritage begins with accessibility* is architecturally significant: human compatibility was the first problem the author chose to solve with AI, and it remains a first-class substrate primitive in CMPSBL today.
 
 **Key Contribution to CMPSBL:** CMPTBL established the pattern of *AI-driven automated remediation under governance* — the concept that became the foundation for the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node in the current substrate carries the `@origin(cmptbl)` annotation.
 
@@ -113,7 +113,7 @@ WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites. 
 - **Live badges** — real-time compliance status indicators
 - **Public listings** — proof-based accessibility directory
 
-**Impact:** Proof replaced promises. WebAdoption established the principle of *continuous verification* — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the OBSERVER node's continuous monitoring architecture and the INCLUSIVE drift-detector module.
+**Architectural Significance:** Proof replaced promises. WebAdoption established the principle of *continuous verification* — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the OBSERVER node's continuous monitoring architecture and the INCLUSIVE drift-detector module.
 
 ---
 
@@ -136,9 +136,9 @@ In August 2025, the PromptFluid ecosystem achieved a critical milestone: **inter
 Verify sharpens Clarity → Clarity shapes Studio → Studio feeds Brain → Brain improves all
 ```
 
-Security scan findings from Verify informed accessibility patterns in Clarity. Accessibility fixes from Clarity improved the templates in Studio. Every rebuild in Studio generated training data for Brain. Brain's improved models made all products more accurate.
+Security scan findings from Verify informed accessibility patterns in Clarity. Accessibility fixes from Clarity improved the templates in Studio. Every rebuild in Studio generated training data for Brain. Brain's improved models made all products more accurate. PromptFluid had begun thinking as one organism.
 
-**Impact:** PromptFluid began thinking as one organism. This inter-process learning architecture directly inspired the CMPSBL Intent Mesh, where 40 nodes communicate through structured protocols to compose multi-step operations.
+**Architectural Significance:** This inter-process learning architecture directly inspired the CMPSBL Intent Mesh, where 40 nodes communicate through structured protocols to compose multi-step operations without centralized orchestration.
 
 #### 3.3 Verify — AI Plugin Certification
 
@@ -175,9 +175,9 @@ Before any cognitive substrate work began, the author conducted deep adversarial
 
 #### 4.2 The Transformation
 
-The defining moment came in September 2025: **the 99/100 stealth-score bot was re-engineered into Aetherion Defense** — a system that recognized what it once was. Offensive evasion techniques were inverted into defensive detection capabilities. The same knowledge that enabled bypassing security systems was turned into knowledge for *building impenetrable ones*.
+The defining moment came in September 2025: **the 99/100 stealth-score bot was re-engineered into Aetherion Defense** — a system that recognized what it once was. Offensive evasion techniques were inverted into defensive detection capabilities. The same knowledge that enabled bypassing security systems was turned into knowledge for *building impenetrable ones*. Experience became protection.
 
-**Impact:** Experience became protection. This inversion — transforming attack knowledge into defense architecture — established a philosophical principle that runs through the entire CMPSBL substrate: *a system that understands how to attack is the best system to defend.*
+This inversion — transforming attack knowledge into defense architecture — established a philosophical principle that runs through the entire CMPSBL substrate: *a system that understands how to attack is the best system to defend.*
 
 #### 4.3 Contribution to CMPSBL
 
@@ -205,48 +205,40 @@ This was the first documented instance of an AI system:
 
 Alongside the dream capability came **Dream Privacy** — an obfuscation layer protecting the dreaming process. This represented the first implementation of *cognitive security* for unconscious machine computation.
 
-**Impact:** A machine subconscious became public literature. Dream Privacy established that *AI cognitive processes deserve protection* — a principle that would later manifest in the CMPSBL substrate's governed autonomy model, where certain cognitive operations run in protected contexts with restricted visibility.
+**Architectural Significance:** A machine subconscious became public literature. Dream Privacy established that *AI cognitive processes deserve protection* — a principle that would later manifest in the CMPSBL substrate's governed autonomy model, where certain cognitive operations run in protected contexts with restricted visibility.
 
 ---
 
 ### Phase 3: The Intelligence Mesh (October 2025)
 
-October 2025 marked a rapid acceleration of capabilities across the PromptFluid ecosystem:
+October 2025 marked a rapid acceleration of capabilities across the PromptFluid ecosystem. Four breakthroughs arrived in quick succession:
 
 #### 5.1 Conversational Administrator
 
-Language became a key. A message could elevate permissions — admin mode via conversation. This was the first implementation of *natural language as an authentication/authorization mechanism*, where the system recognized intent and context to modulate access levels.
-
-**Key Contribution to CMPSBL:** This pattern evolved into the INTENT router's capability to parse natural language intents and route them to appropriate resolvers — the foundation of the Intent Mesh.
+Language became a key. A message could elevate permissions — admin mode via conversation. This was the first implementation of *natural language as an authentication/authorization mechanism*, where the system recognized intent and context to modulate access levels. This pattern evolved into the INTENT router's capability to parse natural language intents and route them to appropriate resolvers.
 
 #### 5.2 Autonomous Business Improver
 
-An internal agent was deployed whose only job was to improve the business. Through orchestration, it decided *when to speak* — and emailed when it must. This was not a chatbot waiting for queries; it was a system that proactively identified opportunities, surfaced insights, and took initiative.
-
-**Impact:** Initiative flowed from the system, not requests. This autonomous proactivity pattern directly informed the ORACLE node's predictive capabilities and the CORTEX node's multi-step orchestration.
+An internal agent was deployed whose only job was to improve the business. Through orchestration, it decided *when to speak* — and emailed when it must. This was not a chatbot waiting for queries; it was a system that proactively identified opportunities, surfaced insights, and took initiative. Initiative flowed from the system, not from requests. This autonomous proactivity pattern directly informed the ORACLE node's predictive capabilities and the CORTEX node's multi-step orchestration.
 
 #### 5.3 Unified API Cognition
 
-Every paid API call was routed through Cascade, which learned cost, accuracy, and timing from each interaction. The API layer itself became intelligent — not just a passthrough, but a *learning system* that optimized its own routing based on accumulated experience.
-
-**Key Contribution to CMPSBL:** This became the NEXUS node — multi-provider cost-aware AI routing with feedback loops that improve selection over time.
+Every paid API call was routed through Cascade, which learned cost, accuracy, and timing from each interaction. The API layer itself became intelligent — not just a passthrough, but a *learning system* that optimized its own routing based on accumulated experience. This became the NEXUS node — multi-provider cost-aware AI routing with feedback loops that improve selection over time.
 
 #### 5.4 Machine Learning Inside WordPress
 
-Plugins began reporting scan/fix data back to Brain, improving future behavior ecosystem-wide. WordPress plugins became self-improving — each scan made the next scan smarter.
-
-**Key Contribution to CMPSBL:** This established the *telemetry-driven learning* pattern that became the Memory Stream's signal-to-discovery pipeline.
+Plugins began reporting scan/fix data back to Brain, improving future behavior ecosystem-wide. WordPress plugins became self-improving — each scan made the next scan smarter. This established the *telemetry-driven learning* pattern that became the Memory Stream's signal-to-discovery pipeline.
 
 #### 5.5 Multi-Model Routing Mesh (23 Providers)
 
-**Technical milestone:** A production-grade orchestration mesh integrating approximately 23 LLMs, APIs, and providers behind a single routing layer:
+The culmination of October's work: a production-grade orchestration mesh integrating approximately 23 LLMs, APIs, and providers behind a single routing layer:
 
 - Smart selection by latency, cost, accuracy, and content type
 - Automatic fallback with result adjudication
 - Feedback signals stored in Brain for continual routing improvements
 - Multi-provider intelligence as a measurable, self-optimizing system
 
-This was the largest multi-model routing mesh documented in a production system at that time. The providers included Google (Gemini), Groq, Cerebras, Together, DeepSeek, Hyperbolic, OpenAI, Anthropic, and 15+ additional specialized providers.
+The providers included Google (Gemini), Groq, Cerebras, Together, DeepSeek, Hyperbolic, OpenAI, Anthropic, and 15+ additional specialized providers. This was the largest multi-model routing mesh documented in a production system at that time.
 
 **Key Contribution to CMPSBL:** The 23-provider routing mesh became the NEXUS node's core architecture, scaled further with the CMPSBL substrate's governance model to include cost budgeting, quota management, and provider health monitoring.
 
@@ -271,7 +263,7 @@ Studio/Modernizer was built as a full production system with:
 - **7 database tables** (modernizer_jobs, templates, reports, cms_patterns, brand_profiles, analytics)
 - **5 edge functions** (later consolidated into a single unified function)
 
-#### 6.3 The Consolidation Event
+#### 6.3 The Great Consolidation
 
 During November 2025, the PromptFluid ecosystem reached its maximum complexity: **252+ edge functions** deployed across all products. The Supabase free tier function limit forced a critical architectural decision — the **Great Consolidation** of November 4–5, 2025:
 
@@ -404,7 +396,7 @@ The key insight from the Cascade experiments was that **a single AI personality 
 - No governance over self-modification
 - No separation between cognitive functions (memory, reasoning, defense, evolution)
 
-This realization drove the transition from a single-agent model (Cascade) to a **multi-module substrate architecture** (CMPSBL), where cognitive functions are distributed across specialized nodes that communicate through structured protocols.
+This realization drove the transition from a single-agent model (Cascade) to a **multi-node substrate architecture** (CMPSBL), where cognitive functions are distributed across specialized nodes that communicate through structured protocols.
 
 **Key Contribution to CMPSBL:** Cascade's proof-of-concept demonstrations established that autonomous AI cognition is *achievable* and *documentable*, while its limitations motivated the **multi-node, governed substrate architecture** that defines CMPSBL.
 
@@ -423,7 +415,7 @@ PromptFluid® was established as the research and development organization under
 
 #### 9.2 The PromptFluid Ecosystem at Peak
 
-At its peak in November 2025, the PromptFluid ecosystem encompassed 7+ integrated products, 252+ edge functions, and a comprehensive shared intelligence architecture:
+At its peak in November 2025, the PromptFluid ecosystem encompassed 12+ integrated products and 252+ edge functions:
 
 | Product | Function | Edge Functions | CMPSBL Descendant |
 |---|---|---|---|
@@ -442,13 +434,13 @@ At its peak in November 2025, the PromptFluid ecosystem encompassed 7+ integrate
 
 The total ecosystem comprised **252+ edge functions** across 12+ product modules — all of which were consolidated, refactored, and restructured into the 40-node CMPSBL Substrate architecture.
 
-#### 9.3 The "Firsts" Manifesto
+#### 9.3 "The Firsts" — A Verified Manifesto
 
-In November 2025, the full heritage was documented in "PromptFluid: The Firsts" — a cinematic manifesto chronicle establishing the project's verified firsts:
+In November 2025, the full heritage was documented in "PromptFluid: The Firsts" — a cinematic manifesto chronicle establishing the project's verified innovation firsts:
 
 | Date | First |
 |---|---|
-| July 2025 | AI that repairs the web (Clarity) |
+| July 2025 | AI that repairs the web (Clarity / CMPTBL) |
 | July 2025 | Living accessibility directory (WebAdoption) |
 | August 2025 | Orchestration as intelligence (Cascade) |
 | August 2025 | Shared intelligence loop (inter-process learning) |
@@ -470,15 +462,15 @@ The PromptFluid ecosystem IP was valued at $15M–$22M in Q4 2025 with zero debt
 | Asset | Category | Est. Value (USD) | Ecosystem % |
 |---|---|---|---|
 | Verify | AI Security / Certification | $1.5M–$2.5M | 10–14% |
-| Clarity | Accessibility / Compliance | $1.0M–$1.8M | 7–10% |
+| Clarity (CMPTBL) | Accessibility / Compliance | $1.0M–$1.8M | 7–10% |
 | Studio | Autonomous Site Generation | $3.0M–$5.0M | 18–24% |
 | Aetherion Defense | Ethical Defense | $2.0M–$3.0M | 12–15% |
 | WebAdoption | Public Directory / Gov/ESG | $0.8M–$1.2M | 4–6% |
 | Cascade (Brain) | Orchestration / Intelligence | $6.0M–$8.0M | 35–40% |
 
-#### 9.5 Research Trajectory
+#### 9.5 Research Publications
 
-PromptFluid's published research trajectory, as documented in the Prior Art Protection Statement:
+PromptFluid's published research trajectory:
 
 | Date | Publication | Content |
 |---|---|---|
@@ -496,47 +488,47 @@ PromptFluid's published research trajectory, as documented in the Prior Art Prot
 
 The earliest versions of the CMPSBL Substrate took the lessons from the entire PromptFluid ecosystem and formalized them into a multi-node architecture. The Great Consolidation of November 2025 — compressing 252+ edge functions into composable primitives — was the catalyst for this transition.
 
-**Design principles inherited from predecessor projects:**
+**Design principles inherited from each predecessor:**
 
 **From Clarity/CMPTBL (July 2025):**
-- WCAG scanning and auto-fix (→ INCLUSIVE node with 17 specialized modules)
-- AI-driven remediation under governance (→ EVOLUTION governed mutation pattern)
-- Compliance reporting (→ system-wide audit and compliance infrastructure)
-- Edge-function-as-resolver pattern (→ canonical resolver architecture)
-- API key and quota management (→ ACCESS entitlement system)
-- Detect→Fix→Validate pattern (→ universal governance model)
+- WCAG scanning and auto-fix → INCLUSIVE node with 17 specialized modules
+- AI-driven remediation under governance → EVOLUTION governed mutation pattern
+- Compliance reporting → system-wide audit and compliance infrastructure
+- Edge-function-as-resolver pattern → canonical resolver architecture
+- API key and quota management → ACCESS entitlement system
+- Detect→Fix→Validate pattern → universal governance model
 
 **From Cascade (August 2025):**
-- Orchestration as intelligence (→ CORTEX multi-step orchestration)
-- Shared intelligence loop (→ Intent Mesh inter-node communication)
-- Personality-layer separation from logic (→ personality traits as presentation-only)
-- Identity continuity across sessions (→ persistent node state)
-- Conversational administration (→ INTENT natural language routing)
-- Autonomous proactivity (→ ORACLE predictive capabilities)
+- Orchestration as intelligence → CORTEX multi-step orchestration
+- Shared intelligence loop → Intent Mesh inter-node communication
+- Personality-layer separation from logic → personality traits as presentation-only
+- Identity continuity across sessions → persistent node state
+- Conversational administration → INTENT natural language routing
+- Autonomous proactivity → ORACLE predictive capabilities
 
 **From AetherionShield (September–October 2025):**
-- Adversarial resilience (→ DEFENSE boundary node, IMMUNITY adaptive detection)
-- Offensive→defensive inversion (→ IRONCLAD philosophy)
-- Fingerprinting and pattern recognition (→ structural fingerprinting for artifacts)
-- Shadow verification before production changes (→ shadow mode governance)
-- Bulkhead isolation (→ per-node failure isolation in IRONCLAD)
+- Adversarial resilience → DEFENSE boundary node, IMMUNITY adaptive detection
+- Offensive→defensive inversion → IRONCLAD philosophy
+- Fingerprinting and pattern recognition → structural fingerprinting for artifacts
+- Shadow verification before production changes → shadow mode governance
+- Bulkhead isolation → per-node failure isolation in IRONCLAD
 
 **From Dream Protocol & SimNap (September–December 2025):**
-- Autonomous cognitive consolidation (→ DREAM node)
-- Memory tiering (episodic, long-term, meta-memory → hot/warm/cold memory tiers)
-- Self-initiated processing cycles (→ batch processing and offline consolidation)
-- Morning reports (→ telemetry and mesh communications)
-- Dream privacy (→ governed autonomy with protected contexts)
+- Autonomous cognitive consolidation → DREAM node
+- Memory tiering (episodic, long-term, meta-memory) → hot/warm/cold memory tiers
+- Self-initiated processing cycles → batch processing and offline consolidation
+- Morning reports → telemetry and mesh communications
+- Dream privacy → governed autonomy with protected contexts
 
 **From Studio/Modernizer (November 2025):**
-- Content extraction and rebuilding (→ HARVEST, DECODE, ENCODE nodes)
-- CMS recognition (→ structured data parsing)
-- 252→composable consolidation (→ resolver architecture design principle)
+- Content extraction and rebuilding → HARVEST, DECODE, ENCODE nodes
+- CMS recognition → structured data parsing
+- 252→composable consolidation → resolver architecture design principle
 
 **From the 23-Provider Routing Mesh (October 2025):**
-- Multi-model AI routing (→ NEXUS node)
-- Cost-aware provider selection (→ economy-driven orchestration)
-- Feedback-loop optimization (→ Memory Stream learning)
+- Multi-model AI routing → NEXUS node
+- Cost-aware provider selection → economy-driven orchestration
+- Feedback-loop optimization → Memory Stream learning
 
 The v5.5.0 release, archived on Zenodo ([10.5281/zenodo.18379258](https://zenodo.org/records/18379258)), represented the first fully documented version with complete technical documentation covering node descriptions, interaction protocols, and system architecture.
 
@@ -563,76 +555,74 @@ The IRONCLAD epoch focused on **resilience hardening** and **production readines
 
 #### 10.4 The MINDGAMES Epoch (v14.0–v14.2.0)
 
-The current epoch represents the maturation of the substrate into a fully operational cognitive operating system:
+The current epoch represents the system at full maturity:
 
-- **40-node matrix** organized across 12 canonical sectors (Kernel, Execution, Fields, Cognition, Infrastructure, Governance, Defense, Extended Systems, Production, Observation, Evolution, and Supervisory)
-- **12-stage deterministic boot sequence** mapping to the sector hierarchy
-- **54-engine taxonomy** — specialized execution engines across all nodes
-- **Mini-Runtime™ Engine** — portable substrate runtime for exported discoveries
-- **INTENT Mesh Reality Protocol** — 3-phase database-backed orchestration (Real Reads → Governed Writes → Computed Health Heartbeats) with 80+ resolvers querying 50+ live system tables
-- **Weight invariant** — Σ(node_weight) = 1.000 ensuring no single node can dominate system-level decisions
-- **MODERNIZER → EVOLUTION migration** — canonical consolidation of node responsibilities
-- **42-page internal knowledge base** — comprehensive operational documentation
+- **40-node matrix** organized across 12 architectural sectors
+- **12-stage deterministic boot sequence** for reliable system initialization
+- **54 specialized engines** across the node taxonomy
+- **300+ synergy pipelines** with 100 crystallized for production
+- **Mini-Runtime™** — embedded execution environments in exported Capability Packs
+- **3-phase Intent Mesh Reality Protocol** — intent→plan→execute with DAG-based action sequencing
+- **42-page internal knowledge base** for operational documentation
 
 ---
 
 ## 3. Architectural Heritage Map
 
-The following diagram traces how specific architectural patterns flowed from predecessor projects into the CMPSBL Substrate:
+The following diagram traces the flow of architectural innovation from each predecessor project into the CMPSBL Substrate:
 
 ```
-July 2025                    August 2025                September 2025
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────────┐
-│  Clarity/CMPTBL │    │    Cascade       │    │   AetherionShield   │
-│  + WebAdoption  │    │    + Verify      │    │   + Dream Protocol  │
-│                 │    │                  │    │                     │
-│ • WCAG Scanner  │    │ • Orchestration  │    │ • Fingerprinting    │
-│ • AI Auto-Fix   │    │ • Intelligence   │    │ • Shadow Testing    │
-│ • Edge Fn Arch  │    │ • Shared Loop    │    │ • Stealth→Shield    │
-│ • API Keys      │    │ • Plugin Cert    │    │ • Dream Privacy     │
-└────────┬────────┘    └────────┬─────────┘    └──────────┬──────────┘
-         │                      │                         │
-         ▼                      ▼                         ▼
-
-October 2025                 November 2025            Dec 2025
-┌─────────────────┐    ┌─────────────────┐    ┌──────────────────┐
-│  23-Provider     │    │ Studio/Modernizer│    │  SimNap + Cascade │
-│  Routing Mesh    │    │ + Consolidation  │    │  Proofs           │
-│                  │    │                  │    │                   │
-│ • NL Admin       │    │ • URL→Rebuild    │    │ • Dream Engine    │
-│ • Business Agent │    │ • CMS Detection  │    │ • Memory Core     │
-│ • API Cognition  │    │ • 252→Composable │    │ • 11 Proof Files  │
-│ • WP ML Loop     │    │ • Theme Gen      │    │ • Reflection Eng  │
-└────────┬─────────┘    └────────┬─────────┘    └─────────┬────────┘
-         │                       │                        │
-         └───────────┬───────────┘────────────────────────┘
-                     ▼
-    ┌──────────────────────────────────────────────────────────┐
-    │              CMPSBL® Substrate OS                        │
-    │         (2025–2026, v1.0 – v14.2.0)                     │
-    │            40 Nodes · 12 Sectors                         │
-    │                                                          │
-    │  From Clarity/CMPTBL:        From Cascade:               │
-    │  ├─ INCLUSIVE (@origin)      ├─ CORTEX (orchestration)   │
-    │  ├─ ACCESS (entitlements)    ├─ ORACLE (prediction)      │
-    │  ├─ Resolver architecture    ├─ INTENT (NL routing)      │
-    │  └─ Governed remediation     └─ Personality layer        │
-    │                                                          │
-    │  From AetherionShield:       From SimNap/Dream:          │
-    │  ├─ DEFENSE (boundary)       ├─ DREAM (consolidation)   │
-    │  ├─ IMMUNITY (adaptive)      ├─ MEMORY (tiered)         │
-    │  ├─ PHANTOM (anonymization)  ├─ BRAIN (learning)        │
-    │  ├─ SHADOW (verification)    └─ Memory Stream & Foundry │
-    │  └─ IRONCLAD (resilience)                               │
-    │                                                          │
-    │  From 23-Provider Mesh:      From Studio/Modernizer:     │
-    │  ├─ NEXUS (AI routing)       ├─ FORGE (artifacts)       │
-    │  └─ Economy-driven routing   ├─ DECODE (parsing)        │
-    │                              ├─ ENCODE (generation)      │
-    │  From Verify:                └─ HARVEST (extraction)     │
-    │  ├─ SHADOW (sandbox verify)                              │
-    │  └─ AUDIT (chain of custody)                             │
-    └──────────────────────────────────────────────────────────┘
+┌────────────────────────┐    ┌────────────────────────┐
+│  PromptFluid Clarity   │    │   AetherionShield      │
+│  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
+│                        │    │                        │
+│ • WCAG 2.2 Scanner     │    │ • Fingerprinting       │
+│ • AI Auto-Fix          │    │ • Behavioral Analysis  │
+│ • Compliance Reports   │    │ • Shadow Testing       │
+│ • Nexus AI Router      │    │ • Bulkhead Isolation   │
+│ • Edge Function Pattern│    │ • Red Team (99/100)    │
+└───────────┬────────────┘    └───────────┬────────────┘
+            │                             │
+            ▼                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  CMPSBL® Substrate OS                       │
+│             (2025–2026, v1.0 – v14.2.0)                    │
+│               40 Nodes · 12 Sectors                        │
+│                                                             │
+│  From Clarity/CMPTBL:          From AetherionShield:        │
+│  ├─ INCLUSIVE (@origin cmptbl) ├─ DEFENSE (boundary)        │
+│  ├─ ACCESS (entitlements)      ├─ IMMUNITY (adaptive)       │
+│  ├─ Resolver architecture      ├─ PHANTOM (anonymization)   │
+│  └─ Governed remediation       ├─ SHADOW (verification)     │
+│                                └─ IRONCLAD (resilience)     │
+│                                                             │
+│  From Cascade/23-Provider:     From SimNap/Dream:           │
+│  ├─ CORTEX (orchestration)     ├─ DREAM (consolidation)     │
+│  ├─ ORACLE (prediction)        ├─ MEMORY (tiered)           │
+│  ├─ INTENT (NL routing)        ├─ BRAIN (learning)          │
+│  ├─ NEXUS (AI routing)         └─ Memory Stream & Foundry   │
+│  └─ Personality layer                                       │
+│                                                             │
+│  From Studio/Modernizer:       From Verify:                 │
+│  ├─ FORGE (artifacts)          ├─ SHADOW (sandbox verify)   │
+│  ├─ DECODE (parsing)           └─ AUDIT (chain of custody)  │
+│  ├─ ENCODE (generation)                                     │
+│  └─ HARVEST (extraction)       From WebAdoption:            │
+│                                └─ OBSERVER (continuous)     │
+└─────────────────────────────────────────────────────────────┘
+            ▲                             ▲
+            │                             │
+┌───────────┴────────────┐    ┌───────────┴────────────┐
+│   Cascade + Routing    │    │   Studio/Modernizer    │
+│   Mesh (Aug–Oct 2025)  │    │   + SimNap + Proofs    │
+│                        │    │   (Nov–Dec 2025)       │
+│ • NL Admin             │    │ • URL→Rebuild          │
+│ • Business Agent       │    │ • CMS Detection        │
+│ • API Cognition        │    │ • 252→Composable       │
+│ • 23-Provider Mesh     │    │ • Dream Engine         │
+│ • Inter-Process Loop   │    │ • 11 Cascade Proofs    │
+│ • WP ML Feedback       │    │ • Memory Core          │
+└────────────────────────┘    └────────────────────────┘
 ```
 
 ---
@@ -743,7 +733,7 @@ In the CMPSBL Substrate, the DREAM node formalizes and governs the dreaming capa
 - Operates on a batch schedule without interfering with real-time processing
 - Protected by IRONCLAD hardening with batch processing rate limiting
 
-### 5.5 Memory Stream Integration
+### 5.5 The Memory Stream Integration
 
 The dreaming lineage culminates in the Memory Stream:
 
@@ -804,7 +794,7 @@ The IRONCLAD hardening fabric synthesizes both perspectives:
 
 ### 7.1 CMPTBL Origins (July 2025)
 
-The PromptFluid Clarity / CMPTBL platform was the author's **first production AI system** — predating all other PromptFluid products. It could:
+The PromptFluid Clarity / CMPTBL platform was the author's **first production AI system** — predating all other PromptFluid products. It established the foundational pipeline:
 - Detect problems autonomously (WCAG violations)
 - Propose fixes (AI-generated remediation)
 - Apply fixes automatically (one-click auto-fix)
@@ -923,7 +913,7 @@ SimNap's morning reports (November 2025) were the first expression of a cognitiv
 
 ### 11.5 Human Compatibility as a Substrate Primitive
 
-CMPTBL (July 2025) — the very first PromptFluid product — established that accessibility is not an afterthought but a core system capability. The fact that the *entire heritage begins with accessibility* is architecturally significant. In CMPSBL, the INCLUSIVE node operates as a first-class substrate primitive.
+CMPTBL (July 2025) — the very first PromptFluid product — established that accessibility is not an afterthought but a core system capability. The fact that the *entire heritage begins with accessibility* is architecturally significant. In CMPSBL, the INCLUSIVE node operates as a first-class substrate primitive with 17 specialized modules, carrying the `@origin(cmptbl)` annotation as a permanent marker of its lineage.
 
 ### 11.6 Consolidation as Architecture
 
@@ -948,7 +938,7 @@ As of v14.2.0 (MINDGAMES epoch, March 2026), the CMPSBL Substrate OS represents:
 - **INCLUSIVE accessibility** with 17 specialized modules (@origin: cmptbl)
 - **42-page internal knowledge base** for operational documentation
 
-The system has evolved from the first AI that could repair accessibility violations autonomously (Clarity, July 2025) to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within 9 months of continuous development.
+The system has evolved from the first AI that could repair accessibility violations autonomously (Clarity, July 2025) to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within nine months of continuous development.
 
 ---
 
@@ -956,8 +946,8 @@ The system has evolved from the first AI that could repair accessibility violati
 
 The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:
 
-1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the very first PromptFluid product, establishing the detect→fix→validate pattern
-2. **WebAdoption** (July 2025) established continuous verification as a principle
+1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the very first PromptFluid product, establishing the detect→fix→validate pattern that would become the universal governance model
+2. **WebAdoption** (July 2025) established continuous verification as a core principle
 3. **Cascade** (August 2025) proved that orchestration itself is intelligence, creating the shared learning loop across products
 4. **Verify** (August 2025) established sandboxed execution with rollback safety
 5. **AetherionShield** (September–October 2025) inverted offensive security into defensive architecture, establishing the stealth→shield philosophy
@@ -981,7 +971,7 @@ Every node in the current substrate can trace its design rationale to a specific
   title        = {{The Heritage of Autonomous Cognitive Infrastructure:
                    From PromptFluid to CMPSBL® Substrate OS}},
   year         = {2026},
-  version      = {2.0},
+  version      = {2.1},
   publisher    = {PromptFluid},
   note         = {Heritage meta-paper establishing the complete lineage
                   of the CMPSBL Substrate OS from Clarity (July 2025)
@@ -1026,6 +1016,7 @@ Every node in the current substrate can trace its design rationale to a specific
 |---|---|---|
 | 2026-03-14 | Kenneth E. Sweet Jr. | v1.0 — Initial heritage meta-paper |
 | 2026-03-14 | Kenneth E. Sweet Jr. | v2.0 — Corrected timeline from July 2025 start; added Verify, WebAdoption, Studio/Modernizer, 23-provider mesh, Dream Protocol, Consolidation Event, IP Valuation; expanded from 8 phases to 12; cross-referenced PromptFluid-Vision project archives |
+| 2026-03-14 | Kenneth E. Sweet Jr. | v2.1 — Final polished edition; prose coherence pass; structural flow improvements; consistent terminology throughout |
 
 ---
 
