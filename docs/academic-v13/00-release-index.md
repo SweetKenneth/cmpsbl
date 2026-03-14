@@ -59,6 +59,7 @@ All documents in this set carry one of the following classifications:
 
 | # | Document | Description |
 |---|---|---|
+| 00-H | Heritage Meta-Paper | Complete lineage from SimNap → Cascade → AetherionShield → CMPSBL |
 | 01 | Release Abstract | Overview of the system and purpose of publication |
 | 02 | System Overview | CMPSBL as cognitive substrate infrastructure |
 | 03 | Memory Stream & Foundry | Signal → discovery → crystallization architecture |
