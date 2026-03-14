@@ -94,6 +94,7 @@ const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
+const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 
 export const publicRoutes = (
   <>
