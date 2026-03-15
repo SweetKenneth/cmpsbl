@@ -135,6 +135,9 @@ const HeritagePaper = () => {
             </div>
           </section>
 
+          {/* ═══════════ TIMELINE DIAGRAM ═══════════ */}
+          <TimelineDiagram />
+
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
 
           {/* ═══════════ 1. INTRODUCTION ═══════════ */}
