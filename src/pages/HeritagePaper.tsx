@@ -426,6 +426,9 @@ const HeritagePaper = () => {
               Cascade's limitations — single points of failure, no governance, no separation of cognitive functions — motivated the transition from monolithic agent to <strong className="text-foreground">multi-node, governed substrate architecture</strong>.
             </ContributionBox>
 
+            {/* ═══════════ ECOSYSTEM DIAGRAM ═══════════ */}
+            <EcosystemDiagram />
+
             {/* Phase 7: PromptFluid Ecosystem */}
             <PhaseHeader num="7" title="The PromptFluid Ecosystem — Full Research Umbrella (2025–2026)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
