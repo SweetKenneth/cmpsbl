@@ -3,7 +3,7 @@
 ## From PromptFluid to CMPSBL® Substrate OS — A Comprehensive Lineage Paper
 
 **Classification:** 📖 OPEN ACCESS / PRIOR ART  
-**Version:** 2.1 — Final Polished Edition  
+**Version:** 2.2 — Extended Genesis Edition  
 **Author:** Kenneth E. Sweet Jr. — [ORCID 0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)  
 **Affiliation:** PromptFluid®  
 **Date:** 2026-03-14  
