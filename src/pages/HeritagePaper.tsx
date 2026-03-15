@@ -686,10 +686,11 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="conclusion" num="10" title="Conclusion" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:
+              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through March 2026:
             </p>
-            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2 mb-6">
-              <li><strong className="text-foreground">Clarity / CMPTBL</strong> (July 2025) — the first product, establishing detect→fix→validate governance</li>
+            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2 mb-6" start={0}>
+              <li><strong className="text-foreground">BRAIN — The Genesis</strong> (Jan–Jun 2025) — the neural substrate engine, first code written, still the cognitive core</li>
+              <li><strong className="text-foreground">Clarity / CMPTBL</strong> (July 2025) — first production system built on BRAIN, establishing detect→fix→validate governance</li>
               <li><strong className="text-foreground">WebAdoption</strong> (July 2025) — continuous verification as principle</li>
               <li><strong className="text-foreground">Cascade</strong> (August 2025) — orchestration as intelligence, inter-process learning</li>
               <li><strong className="text-foreground">Verify</strong> (August 2025) — sandboxed execution with rollback</li>
@@ -703,7 +704,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 nodes, 12 sectors, 54 engines, governed self-evolution</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. This paper establishes that provenance chain for the permanent academic record.
+              Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. This paper establishes that provenance chain for the permanent academic record.
             </p>
           </section>
 
