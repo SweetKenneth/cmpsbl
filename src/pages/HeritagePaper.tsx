@@ -597,7 +597,7 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="accessibility" num="6" title="The Accessibility Lineage: CMPTBL → INCLUSIVE" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The very first PromptFluid product established the <strong className="text-foreground">detect → propose → validate → apply → audit</strong> pattern. Every governed mutation in CMPSBL follows this same five-stage pattern first proven in the CMPTBL accessibility scanner in July 2025.
+              The very first PromptFluid product established the <strong className="text-foreground">detect → propose → validate → apply → audit</strong> pattern. Every governed mutation in CMPSBL follows this same five-stage pattern first proven in the CMPTBL accessibility scanner in July 2025 — itself powered by the BRAIN engine that had been under development since January.
             </p>
             <div className="overflow-x-auto mb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
               <table className="w-full text-xs border-collapse min-w-[350px]">
