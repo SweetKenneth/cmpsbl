@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Printer, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import {
+  EcosystemDiagram,
+  ConsolidationDiagram,
+  SectorTopologyDiagram,
+  TimelineDiagram,
+  LineageFlowDiagram,
+  IntentMeshDiagram,
+} from "@/components/heritage/ArchitectureDiagrams";
 
 /* ── Reusable sub-components ─────────────────────────────── */
 
@@ -126,6 +134,9 @@ const HeritagePaper = () => {
               </p>
             </div>
           </section>
+
+          {/* ═══════════ TIMELINE DIAGRAM ═══════════ */}
+          <TimelineDiagram />
 
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
 
@@ -415,6 +426,9 @@ const HeritagePaper = () => {
               Cascade's limitations — single points of failure, no governance, no separation of cognitive functions — motivated the transition from monolithic agent to <strong className="text-foreground">multi-node, governed substrate architecture</strong>.
             </ContributionBox>
 
+            {/* ═══════════ ECOSYSTEM DIAGRAM ═══════════ */}
+            <EcosystemDiagram />
+
             {/* Phase 7: PromptFluid Ecosystem */}
             <PhaseHeader num="7" title="The PromptFluid Ecosystem — Full Research Umbrella (2025–2026)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
@@ -471,6 +485,9 @@ const HeritagePaper = () => {
             </div>
 
             {/* Phase 8: CMPSBL */}
+            {/* ═══════════ CONSOLIDATION DIAGRAM ═══════════ */}
+            <ConsolidationDiagram />
+
             <PhaseHeader num="8" title="CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
@@ -497,7 +514,20 @@ const HeritagePaper = () => {
           {/* ═══════════ 3. HERITAGE MAP ═══════════ */}
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="heritage-map" num="3" title="Architectural Heritage Map" />
-            <pre className="bg-muted/50 rounded-lg p-3 sm:p-4 text-[8px] sm:text-[10px] font-mono text-foreground overflow-x-auto border border-border/50 leading-relaxed whitespace-pre">
+            
+            {/* Sector Topology Diagram */}
+            <SectorTopologyDiagram />
+
+            {/* Lineage Flow Diagram */}
+            <LineageFlowDiagram />
+
+            {/* Intent Mesh Execution */}
+            <IntentMeshDiagram />
+
+            {/* Original ASCII map preserved for print/accessibility */}
+            <details className="mt-6">
+              <summary className="text-xs font-mono text-muted-foreground cursor-pointer hover:text-foreground">View ASCII Heritage Map</summary>
+              <pre className="bg-muted/50 rounded-lg p-3 sm:p-4 text-[8px] sm:text-[10px] font-mono text-foreground overflow-x-auto border border-border/50 leading-relaxed whitespace-pre mt-2">
 {`┌────────────────────────┐    ┌────────────────────────┐
 │  PromptFluid Clarity   │    │   AetherionShield      │
 │  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
@@ -536,7 +566,8 @@ const HeritagePaper = () => {
 │ └─ HARVEST (extraction)    From WebAdoption:            │
 │                            └─ OBSERVER (continuous)     │
 └─────────────────────────────────────────────────────────┘`}
-            </pre>
+              </pre>
+            </details>
           </section>
 
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
