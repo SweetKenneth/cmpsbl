@@ -83,7 +83,7 @@ const HeritagePaper = () => {
           <header className="mb-8 sm:mb-10 pb-6 sm:pb-8 border-b-2 border-primary/30">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-2">
               <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] text-muted-foreground uppercase">CMPSBL® Academic Publication</span>
-              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art</span>
+              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v2.2</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3 sm:mb-4">
