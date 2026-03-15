@@ -485,6 +485,9 @@ const HeritagePaper = () => {
             </div>
 
             {/* Phase 8: CMPSBL */}
+            {/* ═══════════ CONSOLIDATION DIAGRAM ═══════════ */}
+            <ConsolidationDiagram />
+
             <PhaseHeader num="8" title="CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
