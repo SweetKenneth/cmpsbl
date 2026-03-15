@@ -586,7 +586,7 @@ Deno.serve(async (req: Request) => {
     for (const [table, days, maxPasses, tsCol] of RETENTION_RULES) {
       if (!timeLeft()) break;
       const cutoff = new Date(Date.now() - days * 86_400_000).toISOString();
-      const removed = await batchPrune(table, cutoff, maxPasses);
+      const removed = await batchPrune(table, cutoff, maxPasses, tsCol);
       if (removed > 0) {
         auxTablesCleaned++;
         auxRowsRemoved += removed;
@@ -594,26 +594,24 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    if (timeLeft()) {
-      // 7b. Cap analytics_snapshots at 500
-      const { count: snapCount } = await supabase
-        .from("analytics_snapshots")
-        .select("*", { count: "exact", head: true });
-      if ((snapCount ?? 0) > 500) {
-        const snapExcess = (snapCount ?? 0) - 500;
-        const { data: oldSnaps } = await supabase
-          .from("analytics_snapshots")
-          .select("id")
-          .order("created_at", { ascending: true })
-          .limit(Math.min(snapExcess, 1000));
-        if (oldSnaps?.length) {
-          for (let i = 0; i < oldSnaps.length; i += 500) {
-            const chunk = oldSnaps.slice(i, i + 500).map((r: any) => r.id);
-            await supabase.from("analytics_snapshots").delete().in("id", chunk);
-          }
-          auxRowsRemoved += oldSnaps.length;
-          auxTablesCleaned++;
-        }
+    // 7b. Capacity caps for tables that need absolute limits
+    const CAPACITY_CAPS: [string, number, string][] = [
+      ["analytics_snapshots",    500,  "created_at"],
+      ["brain_memories",        2000,  "created_at"],
+      ["brain_graph_edges",     5000,  "created_at"],
+      ["mesh_comms",            1000,  "created_at"],
+      ["discoveries",           5000,  "created_at"],
+      ["agency_task_logs",      1000,  "created_at"],
+      ["brain_transfer_heuristics", 200, "created_at"],
+    ];
+
+    for (const [table, maxRows, tsCol] of CAPACITY_CAPS) {
+      if (!timeLeft()) break;
+      const capped = await capTable(table, maxRows, tsCol);
+      if (capped > 0) {
+        auxTablesCleaned++;
+        auxRowsRemoved += capped;
+        console.log(`[DeepMaint] Capped ${table} by ${capped} rows (limit: ${maxRows})`);
       }
     }
 
