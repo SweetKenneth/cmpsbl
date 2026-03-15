@@ -65,12 +65,8 @@ const SKIP_TABLES = new Set<string>([
  * Remove or modify patterns that conflict with your important tables.
  */
 const SKIP_TABLE_PATTERNS: RegExp[] = [
-  // Uncomment patterns relevant to your project:
-  // /_logs?$/,
-  // /_events?$/,
-  // /_telemetry$/,
-  // /_metrics$/,
-  // /_traces?$/,
+  /_log$/,         // *_log tables (transient)
+  /_traces$/,      // *_traces tables
 ];
 
 // ═══════════════════════════════════════════════════════════════
