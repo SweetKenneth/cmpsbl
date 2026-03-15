@@ -50,7 +50,7 @@ const HeritagePaper = () => {
     <>
       <Helmet>
         <title>Heritage of Autonomous Cognitive Infrastructure — CMPSBL®</title>
-        <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL Substrate OS from PromptFluid Clarity through AetherionShield, SimNap, and Cascade to the 40-node cognitive operating system. Version 2.1." />
+        <meta name="description" content="Comprehensive lineage paper v2.3 (Clarity Edition) tracing the heritage of CMPSBL Substrate OS from BRAIN Genesis (January 2025) through the 40-node cognitive operating system. Open access academic publication." />
       </Helmet>
 
       {/* Sticky toolbar — hidden in print */}
