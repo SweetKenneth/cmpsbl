@@ -142,7 +142,8 @@ const HeritagePaper = () => {
             </p>
 
             <h3 className="text-base sm:text-lg font-semibold text-foreground mt-6 mb-3">1.2 Scope</h3>
-            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-4">
+            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-4" start={0}>
+              <li><strong className="text-foreground">BRAIN — The Genesis Engine</strong> (Jan–Jun 2025) — deterministic neural substrate, the first code written</li>
               <li><strong className="text-foreground">PromptFluid Clarity / CMPTBL</strong> (July 2025) — AI-powered WCAG 2.2 accessibility compliance</li>
               <li><strong className="text-foreground">WebAdoption</strong> (July 2025) — living directory of WCAG-verified sites</li>
               <li><strong className="text-foreground">Cascade</strong> (August 2025) — orchestration personality and intelligence routing</li>
