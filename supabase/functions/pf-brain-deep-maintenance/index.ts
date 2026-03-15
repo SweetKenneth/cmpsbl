@@ -543,31 +543,44 @@ Deno.serve(async (req: Request) => {
     // ── Retention-based pruning schedule ──
     // Each entry: [table, retentionDays, maxPasses, timestampCol]
     const RETENTION_RULES: [string, number, number, string][] = [
-      // Already existed
-      ["analytics_events",       14,  10, "created_at"],
-      ["ai_usage_log",           14,  10, "created_at"],
-      ["ai_learning_data",       30,   5, "created_at"],
-      // NEW: Large tables without pruning
-      ["owner_reports",          30,   5, "created_at"],
-      ["defense_events",         30,  10, "created_at"],
-      ["vault_promotions",       60,  10, "created_at"],
-      ["brain_metrics",          30,  10, "created_at"],
-      ["site_page_views",        30,  10, "created_at"],
-      ["pf_brain_anomalies",     30,  10, "created_at"],
-      ["cascade_dreams",         60,   5, "created_at"],
-      ["discovery_runs",         60,  10, "created_at"],
-      ["nexus_logs",             14,  10, "created_at"],
-      ["nexus_hourly_snapshots", 14,  10, "created_at"],
-      ["learning_queries",       30,  10, "created_at"],
-      ["brain_cross_insights",   30,  10, "created_at"],
-      ["client_error_log",       14,  10, "created_at"],
-      ["execution_traces",       14,  10, "created_at"],
-      ["decode_search_results",  14,  10, "created_at"],
-      ["cascade_conversations",  60,  10, "created_at"],
-      ["foundry_mine_events",    30,   5, "created_at"],
-      ["foundry_discovery_metrics", 60, 5, "created_at"],
-      ["brain_distillation_runs", 60,  5, "created_at"],
-      ["maintenance_reports",    60,   5, "created_at"],
+      // ── BRAIN / MEMORY Sector ──
+      ["brain_metrics",            7,  10, "created_at"],
+      ["brain_cross_insights",    14,  10, "created_at"],
+      ["brain_distillation_runs", 30,   5, "created_at"],
+      ["brain_reasoning_traces",  14,   5, "created_at"],
+      ["pf_brain_anomalies",      14,  10, "created_at"],
+      // ── DEFENSE / IMMUNITY Sector ──
+      ["defense_events",          14,  10, "detected_at"],
+      // ── NEXUS / ROUTING Sector ──
+      ["ai_usage_log",             7,  10, "created_at"],
+      ["ai_learning_data",        30,   5, "created_at"],
+      ["ai_daily_quota",          14,   5, "updated_at"],
+      ["nexus_logs",               7,  10, "created_at"],
+      ["nexus_hourly_snapshots",   7,  10, "created_at"],
+      ["nexus_traces",             7,  10, "created_at"],
+      // ── ANALYTICS / TELEMETRY Sector ──
+      ["analytics_events",        14,  10, "created_at"],
+      ["site_page_views",         14,  10, "created_at"],
+      ["site_sessions",           14,  10, "started_at"],
+      ["client_error_log",         7,  10, "created_at"],
+      ["execution_traces",         7,  10, "created_at"],
+      // ── DECODE / ENCODE Sector ──
+      ["decode_search_results",   14,  10, "created_at"],
+      ["learning_queries",        14,  10, "created_at"],
+      // ── DREAM / ORACLE Sector ──
+      ["cascade_dreams",          30,   5, "created_at"],
+      ["cascade_conversations",   30,  10, "created_at"],
+      // ── EVOLUTION / DISCOVERY Sector ──
+      ["discovery_runs",          30,  10, "created_at"],
+      ["foundry_mine_events",     14,   5, "created_at"],
+      ["foundry_discovery_metrics", 30,  5, "created_at"],
+      // ── GOVERNANCE / AUDIT Sector ──
+      ["owner_reports",           30,   5, "created_at"],
+      ["maintenance_reports",     30,   5, "created_at"],
+      ["substrate_audit_log",     30,   5, "created_at"],
+      // ── MESH / COMMS Sector ──
+      ["mesh_comms",              14,  10, "created_at"],
+      ["vault_promotions",        30,  10, "created_at"],
     ];
 
     for (const [table, days, maxPasses, tsCol] of RETENTION_RULES) {
