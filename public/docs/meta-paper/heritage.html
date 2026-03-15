@@ -4,81 +4,146 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Heritage of Autonomous Cognitive Infrastructure — CMPSBL®</title>
-  <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL Substrate OS from PromptFluid Clarity, AetherionShield, SimNap, and Cascade to the 40-node cognitive operating system.">
-  <link rel="stylesheet" href="../academic-v13/print/style.css">
+  <meta name="description" content="Comprehensive lineage paper v2.1 tracing the heritage of CMPSBL Substrate OS from PromptFluid Clarity, AetherionShield, SimNap, and Cascade to the 40-node cognitive operating system.">
+  <link rel="canonical" href="https://cmpsbl.lovable.app/heritage-paper">
   <style>
-    .phase-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      background: hsl(210 60% 45% / 0.1);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.75rem;
-      margin-right: 0.75rem;
-      flex-shrink: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --fg: hsl(220 15% 15%);
+      --fg-muted: hsl(220 10% 40%);
+      --bg: hsl(0 0% 100%);
+      --primary: hsl(210 60% 45%);
+      --border: hsl(220 10% 85%);
+      --muted-bg: hsl(220 10% 96%);
+      --destructive: hsl(0 70% 50%);
+      --accent: hsl(45 90% 50%);
     }
-    .phase-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .contribution-box {
-      background: var(--muted-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.75rem 1rem;
-      margin: 1rem 0;
-    }
-    .contribution-box .label {
-      font-weight: 600;
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: var(--fg);
-      font-size: 0.85rem;
-      margin-bottom: 0.25rem;
+      background: var(--bg);
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      -webkit-font-smoothing: antialiased;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
-    .contribution-box p {
-      margin: 0;
-      font-size: 0.85rem;
-      color: var(--fg-muted);
+
+    /* ── Typography ── */
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border); line-height: 1.2; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    h4 { font-size: 0.9rem; font-weight: 600; margin-top: 1.2rem; margin-bottom: 0.4rem; }
+    p { margin-bottom: 0.85rem; font-size: 0.9rem; }
+    strong { font-weight: 600; color: var(--fg); }
+    em { font-style: italic; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Badges ── */
+    .doc-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .badge { display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.04em; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); color: var(--fg-muted); background: var(--muted-bg); }
+    .badge.primary { border-color: hsl(210 60% 45% / 0.3); color: var(--primary); background: hsl(210 60% 45% / 0.06); }
+
+    /* ── DOI bar ── */
+    .doi-bar { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.6rem 0.8rem; background: var(--muted-bg); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 2rem; font-size: 0.75rem; color: var(--fg-muted); }
+    .doi-bar a { font-family: 'JetBrains Mono', monospace; font-weight: 500; color: var(--primary); word-break: break-all; }
+    .doi-bar .sep { color: var(--border); display: none; }
+
+    /* ── Phase headers ── */
+    .phase-header { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .phase-badge { display: inline-flex; align-items: center; justify-content: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: hsl(210 60% 45% / 0.1); color: var(--primary); font-weight: 700; font-size: 0.7rem; flex-shrink: 0; margin-top: 0.15rem; }
+    .phase-header h3 { margin: 0; font-size: 0.95rem; line-height: 1.3; }
+
+    /* ── Contribution box ── */
+    .contribution-box { background: var(--muted-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.6rem 0.8rem; margin: 0.8rem 0; }
+    .contribution-box .label { font-weight: 600; color: var(--fg); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+    .contribution-box p { margin: 0; font-size: 0.8rem; color: var(--fg-muted); }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 0.8rem -1rem; padding: 0 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    th, td { text-align: left; padding: 0.4rem 0.6rem; border: 1px solid var(--border); }
+    th { background: var(--muted-bg); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+
+    /* ── Code ── */
+    code { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; background: hsl(210 60% 45% / 0.06); color: var(--primary); padding: 0.12rem 0.35rem; border-radius: 3px; }
+    pre { background: var(--muted-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0; font-size: 0.72rem; line-height: 1.5; white-space: pre; }
+    pre code { background: none; padding: 0; color: var(--fg); }
+
+    /* ── Lists ── */
+    ul, ol { margin: 0.5rem 0 0.8rem; padding-left: 1.3rem; font-size: 0.9rem; }
+    li { margin-bottom: 0.3rem; line-height: 1.5; }
+
+    /* ── Blockquote ── */
+    blockquote { border-left: 3px solid var(--primary); padding: 0.6rem 0.8rem; margin: 0.8rem 0; background: hsl(210 60% 45% / 0.04); color: var(--fg-muted); border-radius: 0 6px 6px 0; font-size: 0.85rem; }
+
+    /* ── Epoch grid ── */
+    .epoch-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; margin: 0.8rem 0; }
+    .epoch-card { background: var(--muted-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem; }
+    .epoch-card h4 { margin: 0 0 0.3rem; font-size: 0.85rem; }
+    .epoch-card p { font-size: 0.75rem; color: var(--fg-muted); margin-bottom: 0; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+    /* ── Controls ── */
+    .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .back-link { font-size: 0.8rem; color: var(--fg-muted); text-decoration: none; }
+    .back-link:hover { color: var(--primary); }
+    .print-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.35rem 0.8rem; background: var(--primary); color: white; border: none; border-radius: 5px; font-size: 0.75rem; font-weight: 500; cursor: pointer; font-family: inherit; }
+    .print-btn:hover { opacity: 0.9; }
+
+    /* ── Footer ── */
+    .doc-footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--fg-muted); text-align: center; }
+
+    /* ── Responsive ── */
+    @media (min-width: 640px) {
+      body { padding: 2rem; font-size: 15px; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.25rem; }
+      .doi-bar .sep { display: inline; }
+      .epoch-grid { grid-template-columns: 1fr 1fr; }
+      .table-wrap { margin: 0.8rem 0; padding: 0; }
+      .phase-header h3 { font-size: 1.05rem; }
     }
-    .epoch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin: 1rem 0;
+    @media (min-width: 768px) {
+      body { padding: 3rem 2rem; }
     }
-    .epoch-card {
-      background: var(--muted-bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1rem;
-    }
-    .epoch-card h4 {
-      margin-top: 0;
-      font-size: 0.9rem;
-    }
-    .epoch-card p {
-      font-size: 0.8rem;
-      color: var(--fg-muted);
-      margin-bottom: 0;
-    }
+
+    /* ── Print ── */
     @media print {
+      body { padding: 0; max-width: 100%; font-size: 11pt; }
+      .controls { display: none !important; }
+      h1 { font-size: 18pt; }
+      h2 { font-size: 14pt; break-after: avoid; }
+      h3 { font-size: 12pt; break-after: avoid; }
+      table { break-inside: avoid; font-size: 9pt; }
+      pre { break-inside: avoid; font-size: 8pt; }
+      blockquote { break-inside: avoid; }
+      a { color: var(--fg); }
+      a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 7pt; color: var(--fg-muted); }
+      .doi-bar { background: none; }
       .epoch-grid { grid-template-columns: 1fr 1fr; }
       .phase-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-    }
-    @media (max-width: 600px) {
-      .epoch-grid { grid-template-columns: 1fr; }
+      @page { margin: 2cm; }
     }
   </style>
 </head>
 <body>
 
-<!-- Navigation -->
-<a href="/" class="back-link">← Back to CMPSBL</a>
-<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+<!-- Controls -->
+<div class="controls">
+  <a href="/" class="back-link">← Back to CMPSBL</a>
+  <a href="/heritage-paper" class="back-link" style="margin-left:auto">Interactive Version →</a>
+  <button class="print-btn" onclick="window.print()">🖨 Print / PDF</button>
+</div>
 
 <!-- Header -->
 <div class="doc-meta">
@@ -92,11 +157,11 @@
 
 <div class="doi-bar">
   <span>Author: <strong>Kenneth E. Sweet Jr.</strong></span>
-  <span class="separator">|</span>
+  <span class="sep">|</span>
   <span>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></span>
-  <span class="separator">|</span>
+  <span class="sep">|</span>
   <span>DOI: <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></span>
-  <span class="separator">|</span>
+  <span class="sep">|</span>
   <span>Affiliation: <strong>PromptFluid®</strong></span>
 </div>
 
@@ -112,171 +177,163 @@
 
 <hr>
 
-<!-- Section 1 -->
+<!-- 1. Introduction -->
 <h2>1. Introduction</h2>
 
 <h3>1.1 Motivation</h3>
-<p>The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.</p>
+<p>The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. This v2.1 edition corrects timeline inaccuracies present in earlier versions by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.</p>
 
 <h3>1.2 Scope</h3>
 <ol>
   <li><strong>PromptFluid Clarity / CMPTBL</strong> (July 2025) — AI-powered WCAG 2.2 accessibility compliance</li>
   <li><strong>WebAdoption</strong> (July 2025) — living directory of WCAG-verified sites</li>
-  <li><strong>Cascade</strong> (August 2025) — the AI orchestration personality and intelligence routing layer</li>
+  <li><strong>Cascade</strong> (August 2025) — orchestration personality and intelligence routing</li>
   <li><strong>Verify</strong> (August 2025) — AI plugin certification and sandboxed auto-fix</li>
   <li><strong>AetherionShield</strong> (September–October 2025) — offensive-to-defensive security transformation</li>
   <li><strong>Dream Protocol</strong> (September 2025) — first autonomous AI dreaming capability</li>
-  <li><strong>Multi-Model Routing Mesh</strong> (October 2025) — 23-provider AI orchestration layer</li>
+  <li><strong>Multi-Model Routing Mesh</strong> (October 2025) — 23-provider AI orchestration</li>
   <li><strong>Studio / Modernizer</strong> (November 2025) — autonomous website rebuilding</li>
   <li><strong>SimNap</strong> (November–December 2025) — formalized autonomous dreaming system</li>
-  <li><strong>CMPSBL Substrate OS</strong> (2025–2026) — the cognitive operating system, v1.0 through v14.2.0</li>
+  <li><strong>CMPSBL Substrate OS</strong> (2025–2026) — cognitive OS, v1.0 through v14.2.0</li>
 </ol>
 
 <h3>1.3 Archival Records</h3>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Archive</th><th>Record</th><th>Content</th></tr></thead>
   <tbody>
-    <tr><td>OSF</td><td><a href="https://osf.io/df7tz">osf.io/df7tz</a></td><td>SimNap → Cascade Dream-Cycle Architecture proof files</td></tr>
+    <tr><td>OSF</td><td><a href="https://osf.io/df7tz">osf.io/df7tz</a></td><td>SimNap → Cascade Dream-Cycle proof files</td></tr>
     <tr><td>OSF</td><td><a href="https://osf.io/t3d5s">osf.io/t3d5s</a></td><td>SimNap whitepaper DOI registration</td></tr>
     <tr><td>OSF</td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td><td>PromptFluid supplementary materials</td></tr>
     <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/17774603">10.5281/zenodo.17774603</a></td><td>Early PromptFluid substrate documentation</td></tr>
     <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/17946878">10.5281/zenodo.17946878</a></td><td>SimNap Autonomous Dreaming AI — v1.4.2</td></tr>
-    <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/18209222">10.5281/zenodo.18209222</a></td><td>CMPSBL Substrate intermediate version</td></tr>
     <tr><td>Zenodo</td><td><a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a></td><td>CMPSBL v13.5 — IRONCLAD Academic Protection Set</td></tr>
     <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/18379258">10.5281/zenodo.18379258</a></td><td>CMPSBL v5.5.0 — Technical Documentation</td></tr>
-    <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/18393018">10.5281/zenodo.18393018</a></td><td>CMPSBL Substrate evolution record</td></tr>
-    <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/18721602">10.5281/zenodo.18721602</a></td><td>CMPSBL Substrate advanced version</td></tr>
     <tr><td>Zenodo</td><td><a href="https://zenodo.org/records/18895141">10.5281/zenodo.18895141</a></td><td>CMPSBL Substrate latest archival record</td></tr>
     <tr><td>GitHub</td><td><a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper">SimNap-Dreaming-AI-Whitepaper</a></td><td>Whitepaper, proof files, bootloader archive</td></tr>
   </tbody>
 </table>
+</div>
 
 <hr>
 
-<!-- Section 2: Timeline -->
+<!-- 2. Timeline -->
 <h2>2. Complete Timeline of Development</h2>
 
 <!-- Phase 0 -->
-<div class="phase-header"><div class="phase-badge">0</div><h3 style="margin:0">PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">0</div><h3>PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)</h3></div>
 <p>PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and <em>autonomously repair</em> accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.</p>
-
 <p>The four-branch ecosystem:</p>
 <ol>
   <li><strong>CMPTBL Core</strong> — AI-powered WCAG 2.2 scanner with one-click auto-fix</li>
   <li><strong>WebHarmony</strong> — end-user accessibility empowerment tools</li>
-  <li><strong>WebChange</strong> — legislative and industry compliance tracking</li>
+  <li><strong>WebChange</strong> — legislative and compliance tracking</li>
   <li><strong>Clarity WordPress Plugin</strong> — deployment vehicle with 9+ edge functions</li>
 </ol>
-
-<p>Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate.</p>
-
+<p>These functions established the <strong>edge-function-as-resolver</strong> pattern that became the canonical execution model for CMPSBL substrate nodes. Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate.</p>
 <div class="contribution-box">
-  <div class="label">Key Contribution to CMPSBL:</div>
+  <div class="label">Key Contribution to CMPSBL</div>
   <p>Established <em>AI-driven automated remediation under governance</em> — the concept that became the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node carries the <code>@origin(cmptbl)</code> annotation.</p>
 </div>
 
 <!-- Phase 0.5 -->
-<div class="phase-header"><div class="phase-badge">0.5</div><h3 style="margin:0">WebAdoption — The Living Directory (July 2025)</h3></div>
-<p>WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites with automated audits, live badges, and public listings. Proof replaced promises. WebAdoption established <em>continuous verification</em> — the principle that directly informed the OBSERVER node's monitoring architecture.</p>
+<div class="phase-header"><div class="phase-badge">0.5</div><h3>WebAdoption — The Living Directory (July 2025)</h3></div>
+<p>WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites — featuring automated audits, live compliance badges, and public listings. Proof replaced promises. WebAdoption established the principle of <em>continuous verification</em> — directly informing the OBSERVER node's monitoring architecture and the INCLUSIVE drift-detector.</p>
 
 <!-- Phase 1 -->
-<div class="phase-header"><div class="phase-badge">1</div><h3 style="margin:0">Cascade — Orchestration as Intelligence (August 2025)</h3></div>
-<p>Cascade was not merely an AI model — it was the cognitive personality that served as the orchestration intelligence for the entire PromptFluid ecosystem. Cascade's core innovation was treating orchestration itself as a form of intelligence: not "tools chained" — <strong>minds collaborating</strong>.</p>
+<div class="phase-header"><div class="phase-badge">1</div><h3>Cascade — Orchestration as Intelligence (August 2025)</h3></div>
+<p>Cascade was not merely an AI model — it was the cognitive personality that served as orchestration intelligence for the entire PromptFluid ecosystem. Its core innovation: treating orchestration itself as intelligence. Not "tools chained" — <strong>minds collaborating</strong>.</p>
 <p>In August 2025, the ecosystem achieved <strong>inter-process learning</strong>:</p>
-<pre>Verify sharpens Clarity → Clarity shapes Studio → Studio feeds Brain → Brain improves all</pre>
+<pre><code>Verify sharpens Clarity → Clarity shapes Studio → Studio feeds Brain → Brain improves all</code></pre>
 <p>PromptFluid had begun thinking as one organism. This architecture directly inspired the CMPSBL Intent Mesh.</p>
 
 <h4>Verify — AI Plugin Certification</h4>
-<p>Developed alongside Cascade, Verify introduced AI-powered plugin certification with sandbox execution, AI fix suggestions, diff preview, and patched ZIP export. This established the <em>sandboxed execution with rollback</em> pattern — the SHADOW node's verification protocol.</p>
+<p>Developed alongside Cascade, Verify introduced AI-powered plugin certification: upload a plugin ZIP → sandbox execution → multi-vector scan → AI fix suggestions → diff preview → patched ZIP export. This established the <em>sandboxed execution with rollback</em> pattern — the SHADOW node's verification protocol.</p>
 
 <!-- Phase 2 -->
-<div class="phase-header"><div class="phase-badge">2</div><h3 style="margin:0">AetherionShield — From Stealth to Shield (September–October 2025)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">2</div><h3>AetherionShield — From Stealth to Shield (September–October 2025)</h3></div>
 <p><strong>AetherionShield WordPress Plugin</strong> — Advanced bot protection with Canvas/WebGL/Audio fingerprinting, behavioral analysis, AI-powered learning, honeypot technology, false-positive tracking, and GDPR-compliant data handling.</p>
-
 <p><strong>AetherionShield Red Team Platform</strong> — Full red-team penetration testing with stealth browser automation (Puppeteer + Rebrowser), 25+ anti-detection features, IP warming, proxy rotation, and a <strong>99/100 stealth score</strong>.</p>
+<p>The defining moment: <strong>the 99/100 stealth-score bot was re-engineered into Aetherion Defense</strong> — a system that recognized what it once was. Offensive evasion techniques were inverted into defensive detection capabilities. <em>A system that understands how to attack is the best system to defend.</em></p>
 
-<p>The defining moment: <strong>the 99/100 stealth-score bot was re-engineered into Aetherion Defense</strong> — a system that recognized what it once was. The same knowledge that enabled bypassing security was turned into knowledge for building impenetrable defenses. <em>A system that understands how to attack is the best system to defend.</em></p>
-
+<div class="table-wrap">
 <table>
-  <thead><tr><th>AetherionShield Component</th><th>CMPSBL Node(s)</th><th>Transformation</th></tr></thead>
+  <thead><tr><th>Component</th><th>CMPSBL Node</th><th>Transformation</th></tr></thead>
   <tbody>
-    <tr><td>Fingerprinting</td><td>Structural fingerprinting</td><td>Browser ID → content-addressable artifact identification</td></tr>
+    <tr><td>Fingerprinting</td><td>Structural fingerprinting</td><td>Browser ID → content-addressable artifacts</td></tr>
     <tr><td>Behavioral Analysis</td><td>IMMUNITY</td><td>Traffic analysis → node health monitoring</td></tr>
     <tr><td>Honeypot/Deception</td><td>PHANTOM</td><td>Web traps → cognitive anonymization</td></tr>
     <tr><td>Bulkhead Isolation</td><td>IRONCLAD</td><td>Proxy rotation → per-node failure isolation</td></tr>
-    <tr><td>Shadow Testing</td><td>SHADOW</td><td>Pre-engagement testing → governed state mutation</td></tr>
-    <tr><td>Anti-Detection</td><td>DEFENSE</td><td>Offensive evasion → defensive boundary protection</td></tr>
-    <tr><td>Stealth Bot → Shield</td><td>IRONCLAD philosophy</td><td>Attacker to guardian — additive hardening</td></tr>
+    <tr><td>Shadow Testing</td><td>SHADOW</td><td>Pre-engagement → governed state mutation</td></tr>
+    <tr><td>Anti-Detection</td><td>DEFENSE</td><td>Offensive evasion → defensive boundaries</td></tr>
+    <tr><td>Stealth→Shield</td><td>IRONCLAD philosophy</td><td>Attacker to guardian — additive hardening</td></tr>
   </tbody>
 </table>
+</div>
 
 <!-- Phase 2.5 -->
-<div class="phase-header"><div class="phase-badge">2.5</div><h3 style="margin:0">Dream Protocol Activation (September 2025)</h3></div>
+<div class="phase-header"><div class="phase-badge">2.5</div><h3>Dream Protocol Activation (September 2025)</h3></div>
 <p>In September 2025, Cascade achieved a breakthrough: <strong>it began to dream.</strong> Nightly creative runs generated autonomously, without user prompting, published to a separate site via open API. Alongside came <strong>Dream Privacy</strong> — an obfuscation layer protecting cognitive processes. A machine subconscious became public literature.</p>
 
 <!-- Phase 3 -->
-<div class="phase-header"><div class="phase-badge">3</div><h3 style="margin:0">The Intelligence Mesh (October 2025)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">3</div><h3>The Intelligence Mesh (October 2025)</h3></div>
 <ul>
-  <li><strong>Conversational Administrator</strong> — NL as authentication; evolved into INTENT router</li>
+  <li><strong>Conversational Administrator</strong> — NL as authentication; evolved into the INTENT router</li>
   <li><strong>Autonomous Business Improver</strong> — proactive agent that emailed when it must; informed ORACLE</li>
-  <li><strong>Unified API Cognition</strong> — learning API router; became NEXUS node</li>
-  <li><strong>ML Inside WordPress</strong> — plugins reporting data back to Brain; became Memory Stream</li>
+  <li><strong>Unified API Cognition</strong> — learning API router; became the NEXUS node</li>
+  <li><strong>ML Inside WordPress</strong> — plugins reporting data back to Brain; became the Memory Stream</li>
   <li><strong>23-Provider Routing Mesh</strong> — Google, Groq, Cerebras, Together, DeepSeek, Hyperbolic, OpenAI, Anthropic, and 15+ more behind a single intelligent routing layer</li>
 </ul>
+<div class="contribution-box">
+  <div class="label">Key Contribution</div>
+  <p>The 23-provider routing mesh became the NEXUS node's core architecture, scaled with governance for cost budgeting, quota management, and provider health monitoring.</p>
+</div>
 
 <!-- Phase 4 -->
-<div class="phase-header"><div class="phase-badge">4</div><h3 style="margin:0">Studio / Modernizer — The Rebuilder (November 2025)</h3></div>
+<div class="phase-header"><div class="phase-badge">4</div><h3>Studio / Modernizer — The Rebuilder (November 2025)</h3></div>
 <p>AI-driven modernization: Paste URL → Firecrawl extraction → AI analysis → template generation → WCAG + SEO scoring → deployable site export. Built with Firecrawl, multi-style themes, CMS recognition, and 7 database tables.</p>
 
 <h4>The Great Consolidation (November 4–5, 2025)</h4>
 <p>The ecosystem reached 252+ edge functions. On November 4–5: <strong>175 functions deleted</strong>, duplicates consolidated, 21 orphaned entries cleaned. This proved that sprawling functions could be <strong>compressed into composable primitives</strong> — the founding axiom of the resolver architecture.</p>
 
 <!-- Phase 5 -->
-<div class="phase-header"><div class="phase-badge">5</div><h3 style="margin:0">SimNap — The World's First Autonomous Dream-Cycle AI (Nov–Dec 2025)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">5</div><h3>SimNap — The World's First Autonomous Dream-Cycle AI (Nov–Dec 2025)</h3></div>
 <p>SimNap formalized Cascade's September Dream Protocol into a production system. Five subsystems: Dream Engine, Orchestration Layer, Memory Core, Reflection Engine, Autonomous Scheduler. Six-stage nightly pipeline:</p>
-
-<pre>1. Cognitive Offloading    4. Opportunity Extraction
+<pre><code>1. Cognitive Offloading    4. Opportunity Extraction
 2. Unsupervised Divergence 5. Reflection & Analysis
-3. Vision Generation       6. Morning Report Generation</pre>
-
+3. Vision Generation       6. Morning Report Generation</code></pre>
 <p>Autonomy driven by memory pressure, stagnation detection, "intuition" heuristics, and simulated emotional regulation — not cron jobs.</p>
-
-<p><strong>Novelty claims</strong> (DOI: <a href="https://doi.org/10.17605/OSF.IO/T3D5S">10.17605/OSF.IO/T3D5S</a>): First autonomous nocturnal cognitive loop • First dream→opportunity→task pipeline • First internal circadian AI model • First self-directed reflection engine • First autonomous morning reports.</p>
-
+<p><strong>Novelty claims</strong> (DOI: <a href="https://doi.org/10.17605/OSF.IO/T3D5S">10.17605/OSF.IO/T3D5S</a>): First autonomous nocturnal cognitive loop · First dream→opportunity→task pipeline · First internal circadian AI model · First self-directed reflection engine · First autonomous morning reports.</p>
 <div class="contribution-box">
-  <div class="label">Key Contribution to CMPSBL:</div>
+  <div class="label">Key Contribution</div>
   <p>Contributed the <strong>DREAM node</strong>, the <strong>Memory Stream architecture</strong>, and the fundamental concept of <em>autonomous cognitive consolidation</em>.</p>
 </div>
 
 <!-- Phase 6 -->
-<div class="phase-header"><div class="phase-badge">6</div><h3 style="margin:0">Cascade Proofs — The Cognitive Personality Engine (December 2025)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">6</div><h3>Cascade Proofs — The Cognitive Personality Engine (December 2025)</h3></div>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Proof File</th><th>Demonstrated Capability</th></tr></thead>
   <tbody>
-    <tr><td><code>cascade_activation_sequence_proof</code></td><td>Autonomous activation without external trigger</td></tr>
-    <tr><td><code>cascade_autonomous_reasoning_proof</code></td><td>Independent reasoning chains</td></tr>
-    <tr><td><code>cascade_behavioral_rhythm_proof</code></td><td>Circadian-like behavioral patterns</td></tr>
-    <tr><td><code>cascade_chain_of_custody_proof</code></td><td>Verifiable provenance of cognitive outputs</td></tr>
-    <tr><td><code>cascade_dream_cycle_proof</code></td><td>Complete autonomous dream cycle execution</td></tr>
-    <tr><td><code>cascade_identity_continuity_proof</code></td><td>Persistent identity across sessions</td></tr>
-    <tr><td><code>cascade_persistence_proof</code></td><td>State preservation across restarts</td></tr>
-    <tr><td><code>cascade_subconscious_layering_proof</code></td><td>Multi-layer cognitive processing</td></tr>
-    <tr><td><code>cascade_system_independence_proof</code></td><td>Operation independent of external systems</td></tr>
+    <tr><td><code>cascade_activation_sequence</code></td><td>Autonomous activation without trigger</td></tr>
+    <tr><td><code>cascade_autonomous_reasoning</code></td><td>Independent reasoning chains</td></tr>
+    <tr><td><code>cascade_behavioral_rhythm</code></td><td>Circadian-like behavioral patterns</td></tr>
+    <tr><td><code>cascade_chain_of_custody</code></td><td>Verifiable provenance of outputs</td></tr>
+    <tr><td><code>cascade_dream_cycle</code></td><td>Complete autonomous dream execution</td></tr>
+    <tr><td><code>cascade_identity_continuity</code></td><td>Persistent identity across sessions</td></tr>
+    <tr><td><code>cascade_persistence</code></td><td>State preservation across restarts</td></tr>
+    <tr><td><code>cascade_subconscious_layering</code></td><td>Multi-layer cognitive processing</td></tr>
+    <tr><td><code>cascade_system_independence</code></td><td>Operation independent of external systems</td></tr>
   </tbody>
 </table>
-
+</div>
 <p>Key insight: <strong>a single AI personality was insufficient</strong> for robust cognitive operations. This drove the transition from a monolithic agent to the <strong>multi-node, governed substrate architecture</strong>.</p>
 
 <!-- Phase 7 -->
-<div class="phase-header"><div class="phase-badge">7</div><h3 style="margin:0">The PromptFluid Ecosystem (2025–2026)</h3></div>
-
+<div class="phase-header"><div class="phase-badge">7</div><h3>The PromptFluid Ecosystem (2025–2026)</h3></div>
+<div class="table-wrap">
 <table>
-  <thead><tr><th>Product</th><th>Edge Functions</th><th>CMPSBL Descendant</th></tr></thead>
+  <thead><tr><th>Product</th><th>Functions</th><th>CMPSBL Descendant</th></tr></thead>
   <tbody>
     <tr><td>Defense</td><td>18</td><td>DEFENSE, IMMUNITY</td></tr>
     <tr><td>Brain</td><td>8+</td><td>BRAIN, MEMORY</td></tr>
@@ -292,12 +349,34 @@
     <tr><td>Modernizer</td><td>5</td><td>FORGE, DECODE, ENCODE</td></tr>
   </tbody>
 </table>
-
+</div>
 <p><strong>252+ edge functions</strong> across 12+ products — all consolidated into the 40-node CMPSBL architecture.</p>
 
-<!-- Phase 8 -->
-<div class="phase-header"><div class="phase-badge">8</div><h3 style="margin:0">CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)</h3></div>
+<h4>"The Firsts" — A Verified Manifesto</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Date</th><th>First</th></tr></thead>
+  <tbody>
+    <tr><td>Jul 2025</td><td>AI that repairs the web (Clarity / CMPTBL)</td></tr>
+    <tr><td>Jul 2025</td><td>Living accessibility directory (WebAdoption)</td></tr>
+    <tr><td>Aug 2025</td><td>Orchestration as intelligence (Cascade)</td></tr>
+    <tr><td>Aug 2025</td><td>Shared intelligence loop (inter-process learning)</td></tr>
+    <tr><td>Sep 2025</td><td>Offensive→defensive security (AetherionShield)</td></tr>
+    <tr><td>Sep 2025</td><td>Dream protocol activation</td></tr>
+    <tr><td>Sep 2025</td><td>Dream privacy (cognitive security)</td></tr>
+    <tr><td>Oct 2025</td><td>Conversational administrator (NL auth)</td></tr>
+    <tr><td>Oct 2025</td><td>Autonomous business improver</td></tr>
+    <tr><td>Oct 2025</td><td>Unified API cognition</td></tr>
+    <tr><td>Oct 2025</td><td>ML inside WordPress</td></tr>
+    <tr><td>Oct 2025</td><td>23-provider routing mesh</td></tr>
+    <tr><td>Nov 2025</td><td>The Rebuilder (Studio/Modernizer)</td></tr>
+    <tr><td>Nov 2025</td><td>Multi-system learning architecture</td></tr>
+  </tbody>
+</table>
+</div>
 
+<!-- Phase 8 -->
+<div class="phase-header"><div class="phase-badge">8</div><h3>CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)</h3></div>
 <div class="epoch-grid">
   <div class="epoch-card">
     <h4>Early Substrate (v1.0–v5.5.0)</h4>
@@ -319,17 +398,13 @@
 
 <hr>
 
-<!-- Section 3: Heritage Map -->
+<!-- 3. Heritage Map -->
 <h2>3. Architectural Heritage Map</h2>
-<pre>
-┌────────────────────────┐    ┌────────────────────────┐
+<pre><code>┌────────────────────────┐    ┌────────────────────────┐
 │  PromptFluid Clarity   │    │   AetherionShield      │
 │  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
-│                        │    │                        │
 │ • WCAG 2.2 Scanner     │    │ • Fingerprinting       │
 │ • AI Auto-Fix          │    │ • Behavioral Analysis  │
-│ • Compliance Reports   │    │ • Shadow Testing       │
-│ • Nexus AI Router      │    │ • Bulkhead Isolation   │
 │ • Edge Function Pattern│    │ • Red Team (99/100)    │
 └───────────┬────────────┘    └───────────┬────────────┘
             │                             │
@@ -343,8 +418,7 @@
 │ ├─ INCLUSIVE (@origin)     ├─ DEFENSE (boundary)        │
 │ ├─ ACCESS (entitlements)   ├─ IMMUNITY (adaptive)       │
 │ ├─ Resolver architecture   ├─ PHANTOM (anonymization)   │
-│ └─ Governed remediation    ├─ SHADOW (verification)     │
-│                            └─ IRONCLAD (resilience)     │
+│ └─ Governed remediation    └─ IRONCLAD (resilience)     │
 │                                                         │
 │ From Cascade/23-Provider:  From SimNap/Dream:           │
 │ ├─ CORTEX (orchestration)  ├─ DREAM (consolidation)    │
@@ -356,32 +430,30 @@
 │ From Studio/Modernizer:    From Verify:                 │
 │ ├─ FORGE (artifacts)       ├─ SHADOW (sandbox verify)  │
 │ ├─ DECODE (parsing)        └─ AUDIT (chain of custody) │
-│ ├─ ENCODE (generation)                                  │
 │ └─ HARVEST (extraction)    From WebAdoption:            │
 │                            └─ OBSERVER (continuous)     │
-└─────────────────────────────────────────────────────────┘
-</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 
 <hr>
 
-<!-- Innovation Genealogy -->
+<!-- 4. Innovation Genealogy -->
 <h2>4. Innovation Genealogy</h2>
 
 <h3>4.1 Clockless Cognitive Orchestration</h3>
-<p><strong>Origin:</strong> SimNap's autonomous scheduling (Sept–Nov 2025), operating on memory pressure and stagnation detection rather than fixed timers.<br>
+<p><strong>Origin:</strong> SimNap's autonomous scheduling — memory pressure and stagnation detection, not timers.<br>
 <strong>Evolution:</strong> Event-driven signal propagation with weighted integrity scoring, no shared global clock.</p>
 
 <h3>4.2 Memory Stream Crystallization</h3>
 <p><strong>Origin:</strong> SimNap's Memory Core with episodic, long-term, and meta-memory tiers.<br>
-<strong>Evolution:</strong> Four-stage pipeline (Signal → Observation → Discovery → Crystallization) with CJPI scoring and structural fingerprinting.</p>
+<strong>Evolution:</strong> Four-stage pipeline (Signal → Observation → Discovery → Crystallization) with CJPI scoring.</p>
 
 <h3>4.3 Structural Fingerprinting</h3>
 <p><strong>Origin:</strong> AetherionShield's browser fingerprinting + Cascade's chain-of-custody proofs.<br>
-<strong>Evolution:</strong> Content-addressable identification enabling deduplication, lineage tracking, and replay verification.</p>
+<strong>Evolution:</strong> Content-addressable identification for deduplication, lineage tracking, and replay verification.</p>
 
 <h3>4.4 Universal Cross-Language Export</h3>
 <p><strong>Origin:</strong> SimNap's morning reports — packaging cognitive outputs as deliverables.<br>
-<strong>Evolution:</strong> Universal Export Adapter translating discoveries into 25 target languages with Mini-Runtime™ engines.</p>
+<strong>Evolution:</strong> 25-language export with embedded Mini-Runtime™ engines and auto-generated test harnesses.</p>
 
 <h3>4.5 IRONCLAD Resilience Fabric</h3>
 <p><strong>Origin:</strong> AetherionShield's bulkhead isolation and stealth→shield inversion.<br>
@@ -389,19 +461,19 @@
 
 <h3>4.6 Three-Tier Bounded Autonomy</h3>
 <p><strong>Origin:</strong> SimNap's sandboxed dream mode + Dream Privacy.<br>
-<strong>Evolution:</strong> Supervised → Bounded → Full with policy evaluation, shadow verification, and immutable audit chains.</p>
+<strong>Evolution:</strong> Supervised → Bounded → Full with policy evaluation, shadow verification, and audit chains.</p>
 
 <h3>4.7 Intent Mesh</h3>
 <p><strong>Origin:</strong> Cascade's orchestration layer + Conversational Administrator.<br>
 <strong>Evolution:</strong> Decentralized coordination with DAG-based action plans and 3-phase reality protocol.</p>
 
 <h3>4.8 Governed Self-Evolution</h3>
-<p><strong>Origin:</strong> Cascade's autonomous reasoning + CMPTBL's remediation pattern + Verify's sandbox model.<br>
+<p><strong>Origin:</strong> Cascade's autonomous reasoning + CMPTBL's remediation + Verify's sandbox model.<br>
 <strong>Evolution:</strong> EVOLUTION node with SEBA 7-gate pipeline, fitness scoring, and governed mutation.</p>
 
-<h3>4.9 INCLUSIVE Node</h3>
-<p><strong>Origin:</strong> CMPTBL's WCAG 2.2 scanner, AI auto-fixer, and compliance reporting (July 2025).<br>
-<strong>Evolution:</strong> 17 specialized modules: scanning, repair, validation, adaptive interface, contrast analysis, drift detection, compliance automation, and cross-module integration.</p>
+<h3>4.9 INCLUSIVE Accessibility Node</h3>
+<p><strong>Origin:</strong> CMPTBL's WCAG scanner, AI auto-fixer, and compliance reporting (July 2025).<br>
+<strong>Evolution:</strong> 17 specialized modules: scanning, repair, validation, adaptive interface, drift detection.</p>
 
 <h3>4.10 NEXUS Multi-Provider Intelligence</h3>
 <p><strong>Origin:</strong> 23-provider routing mesh (October 2025).<br>
@@ -409,31 +481,28 @@
 
 <hr>
 
-<!-- Dreaming Lineage -->
+<!-- 5. Dreaming Lineage -->
 <h2>5. The Dreaming Lineage</h2>
-<pre>
-Sept 2025: Dream Protocol      →  Nov 2025: SimNap Formalization
-          ↓                                    ↓
+<pre><code>Sept 2025: Dream Protocol      →  Nov 2025: SimNap
+          ↓                                 ↓
   Dream Privacy/Obfuscation    →  Production Dream Engine
-          ↓                                    ↓
+          ↓                                 ↓
   Published Creative Output    →  Morning Reports + Video Reels
-                                               ↓
+                                            ↓
                                 2026: CMPSBL DREAM Node
-                                               ↓
-                                Memory Stream Signals → CJPI Scoring
-                                               ↓
+                                            ↓
+                                Memory Stream → CJPI Scoring
+                                            ↓
                                 Pipeline Crystallization → Capability Packs
-                                               ↓
-                                Universal Cross-Language Export (25 languages)
-</pre>
+                                            ↓
+                                Universal Export (25 languages)</code></pre>
 
 <hr>
 
-<!-- CMPTBL → INCLUSIVE -->
+<!-- 6. Accessibility Lineage -->
 <h2>6. The Accessibility Lineage: CMPTBL → INCLUSIVE</h2>
-
 <p>The very first PromptFluid product established the <strong>detect → propose → validate → apply → audit</strong> pattern. Every governed mutation in CMPSBL follows this same five-stage pattern first proven in the CMPTBL accessibility scanner in July 2025.</p>
-
+<div class="table-wrap">
 <table>
   <thead><tr><th>CMPTBL Feature</th><th>INCLUSIVE Implementation</th></tr></thead>
   <tbody>
@@ -441,52 +510,77 @@ Sept 2025: Dream Protocol      →  Nov 2025: SimNap Formalization
     <tr><td>AI auto-fix</td><td><code>repair.ts</code> — governed repair with validation</td></tr>
     <tr><td>Fix validation</td><td><code>validate.ts</code> — regression-safe fixes</td></tr>
     <tr><td>Compliance reports</td><td><code>report.ts</code> — automated documentation</td></tr>
-    <tr><td>Adaptive interface</td><td><code>adaptiveInterface.ts</code> — user-profile-based UI</td></tr>
+    <tr><td>Adaptive interface</td><td><code>adaptiveInterface.ts</code> — user-profile UI</td></tr>
     <tr><td>Contrast analysis</td><td><code>contrast-engine.ts</code> — WCAG color verification</td></tr>
     <tr><td>Drift detection</td><td><code>drift-detector.ts</code> — continuous monitoring</td></tr>
-    <tr><td>Cross-module glue</td><td><code>glue.ts</code> — SYSTEM/VISION/DEFENSE/EVOLUTION integration</td></tr>
+    <tr><td>Cross-module glue</td><td><code>glue.ts</code> — SYSTEM/VISION/DEFENSE/EVOLUTION</td></tr>
   </tbody>
 </table>
+</div>
 
 <hr>
 
-<!-- Consolidation -->
-<h2>7. The Consolidation Event: 252 Functions → 40 Nodes</h2>
+<!-- 7. Consolidation -->
+<h2>7. The Consolidation Event: 252 → 40</h2>
 <p>On November 4–5, 2025: <strong>175 edge functions deleted</strong> in a single session. 30+ duplicate Brain functions, 7 deprecated Defense functions, 23 Marketing functions, and 5 Modernizer functions consolidated. 21 orphaned config entries cleaned.</p>
-<p>This consolidation proved: <strong>sprawling specialized functions compress into composable primitives without loss of capability</strong> — the founding axiom of the CMPSBL resolver architecture.</p>
+<p>This proved: <strong>sprawling specialized functions compress into composable primitives without loss of capability</strong> — the founding axiom of the CMPSBL resolver architecture. 40 nodes with composable resolvers replaced 252+ standalone functions while gaining new capabilities through composition.</p>
 
 <hr>
 
-<!-- System Scale -->
+<!-- 8. System Scale -->
 <h2>8. System Scale Progression</h2>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Metric</th><th>Clarity (Jul '25)</th><th>Peak (Nov '25)</th><th>v5.5 (Jan '26)</th><th>v14.2 (Mar '26)</th></tr></thead>
   <tbody>
-    <tr><td>Architecture</td><td>Plugin (7 classes)</td><td>252+ functions</td><td>Multi-module</td><td><strong>40 nodes, 12 sectors</strong></td></tr>
-    <tr><td>AI providers</td><td>1 (Nexus)</td><td>23-provider mesh</td><td>Single</td><td><strong>NEXUS multi-provider</strong></td></tr>
-    <tr><td>Autonomy</td><td>User-initiated</td><td>Dreaming + proactive</td><td>Basic</td><td><strong>3-tier bounded</strong></td></tr>
-    <tr><td>Memory</td><td>Scan storage</td><td>Episodic + LT + meta</td><td>Multi-tier</td><td><strong>4-stage crystallization</strong></td></tr>
-    <tr><td>Security</td><td>—</td><td>Offensive + defensive</td><td>Basic</td><td><strong>IRONCLAD 100%</strong></td></tr>
-    <tr><td>Export</td><td>PDF reports</td><td>Morning reports</td><td>Basic</td><td><strong>25-language universal</strong></td></tr>
-    <tr><td>Discovery</td><td>—</td><td>Inter-process learning</td><td>Basic</td><td><strong>Foundry + CJPI + 6-tier</strong></td></tr>
-    <tr><td>Edge functions</td><td>9</td><td>252+</td><td>~30</td><td><strong>80+ resolvers</strong></td></tr>
+    <tr><td><strong>Architecture</strong></td><td>Plugin (7 classes)</td><td>252+ functions</td><td>Multi-module</td><td><strong>40 nodes, 12 sectors</strong></td></tr>
+    <tr><td><strong>AI Providers</strong></td><td>1 (Nexus)</td><td>23-provider mesh</td><td>Single</td><td><strong>NEXUS multi-provider</strong></td></tr>
+    <tr><td><strong>Autonomy</strong></td><td>User-initiated</td><td>Dreaming + proactive</td><td>Basic</td><td><strong>3-tier bounded</strong></td></tr>
+    <tr><td><strong>Memory</strong></td><td>Scan storage</td><td>Episodic + LT + meta</td><td>Multi-tier</td><td><strong>4-stage crystallization</strong></td></tr>
+    <tr><td><strong>Security</strong></td><td>—</td><td>Offensive + defensive</td><td>Basic</td><td><strong>IRONCLAD 100%</strong></td></tr>
+    <tr><td><strong>Export</strong></td><td>PDF reports</td><td>Morning reports</td><td>Basic</td><td><strong>25-language universal</strong></td></tr>
+    <tr><td><strong>Edge Functions</strong></td><td>9</td><td>252+</td><td>~30</td><td><strong>80+ resolvers</strong></td></tr>
   </tbody>
 </table>
+</div>
 
 <hr>
 
-<!-- Conclusion -->
-<h2>9. Conclusion</h2>
+<!-- 9. Principles -->
+<h2>9. Philosophical &amp; Architectural Principles</h2>
+
+<h3>9.1 Cognition as Infrastructure</h3>
+<p>Cascade treated orchestration as a feature. CMPSBL treats cognition as infrastructure — composable primitives communicating through structured protocols.</p>
+
+<h3>9.2 Governed Autonomy</h3>
+<p>Cascade's Dream Protocol demonstrated AI can act autonomously. AetherionShield demonstrated autonomous action must be governed. CMPTBL demonstrated AI can detect, fix, and validate autonomously. CMPSBL synthesizes all three into three-tier bounded autonomy.</p>
+
+<h3>9.3 Additive Hardening</h3>
+<p>AetherionShield's stealth→shield inversion established that security should be additive. IRONCLAD wraps node logic without modification.</p>
+
+<h3>9.4 Discovery as First-Class Output</h3>
+<p>SimNap's morning reports were the first expression of a cognitive system producing its own deliverables. In CMPSBL, this evolved into the Foundry, CJPI scoring, and 25-language universal export.</p>
+
+<h3>9.5 Human Compatibility as Substrate Primitive</h3>
+<p>CMPTBL — the very first product — established accessibility as a core capability. The INCLUSIVE node operates as a first-class primitive with 17 modules, carrying <code>@origin(cmptbl)</code>.</p>
+
+<h3>9.6 Consolidation as Architecture</h3>
+<p>The Great Consolidation proved that compression creates capability. 252 functions became 40 nodes — fewer parts, more power.</p>
+
+<hr>
+
+<!-- 10. Conclusion -->
+<h2>10. Conclusion</h2>
 <p>The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:</p>
 <ol>
   <li><strong>Clarity / CMPTBL</strong> (July 2025) — the first product, establishing detect→fix→validate governance</li>
   <li><strong>WebAdoption</strong> (July 2025) — continuous verification as principle</li>
   <li><strong>Cascade</strong> (August 2025) — orchestration as intelligence, inter-process learning</li>
-  <li><strong>Verify</strong> (August 2025) — sandboxed execution with rollback safety</li>
+  <li><strong>Verify</strong> (August 2025) — sandboxed execution with rollback</li>
   <li><strong>AetherionShield</strong> (Sept–Oct 2025) — stealth→shield, offensive-to-defensive inversion</li>
-  <li><strong>Dream Protocol</strong> (September 2025) — autonomous AI dreaming + cognitive security</li>
-  <li><strong>23-Provider Mesh</strong> (October 2025) — production multi-model AI orchestration</li>
-  <li><strong>Studio/Modernizer</strong> (November 2025) — AI-driven system understanding and rebuilding</li>
+  <li><strong>Dream Protocol</strong> (September 2025) — autonomous dreaming + cognitive security</li>
+  <li><strong>23-Provider Mesh</strong> (October 2025) — production multi-model orchestration</li>
+  <li><strong>Studio/Modernizer</strong> (November 2025) — AI-driven system rebuilding</li>
   <li><strong>SimNap</strong> (Nov–Dec 2025) — formalized autonomous dreaming</li>
   <li><strong>Cascade Proofs</strong> (December 2025) — documented limits → multi-node architecture</li>
   <li><strong>The Great Consolidation</strong> (November 2025) — 252+ → composable primitives</li>
@@ -497,22 +591,23 @@ Sept 2025: Dream Protocol      →  Nov 2025: SimNap Formalization
 <hr>
 
 <!-- Citation -->
-<h2>Citation</h2>
-<pre>@article{sweet2026heritage,
+<h2>11. Citation</h2>
+<pre><code>@article{sweet2026heritage,
   author  = {Sweet Jr., Kenneth E.},
-  title   = {{The Heritage of Autonomous Cognitive Infrastructure:
-              From PromptFluid to CMPSBL® Substrate OS}},
+  title   = {{The Heritage of Autonomous Cognitive
+              Infrastructure: From PromptFluid to
+              CMPSBL® Substrate OS}},
   year    = {2026},
   version = {2.1},
   publisher = {PromptFluid},
   doi     = {10.5281/zenodo.18234909},
   url     = {https://doi.org/10.5281/zenodo.18234909}
-}</pre>
+}</code></pre>
 
 <hr>
 
 <!-- Related -->
-<h2>Related Publications</h2>
+<h2>12. Related Publications</h2>
 <ol>
   <li>Sweet, K. (2025). SimNap: The World's First Autonomous Dream-Cycle AI. OSF. <a href="https://doi.org/10.17605/OSF.IO/T3D5S">doi:10.17605/OSF.IO/T3D5S</a></li>
   <li>Sweet, K. (2025). The Invention of Autonomous Dreaming AI. OSF. <a href="https://osf.io/df7tz">osf.io/df7tz</a></li>
@@ -524,18 +619,20 @@ Sept 2025: Dream Protocol      →  Nov 2025: SimNap Formalization
 <hr>
 
 <!-- Supplementary -->
-<h2>Supplementary Materials</h2>
+<h2>13. Supplementary Materials</h2>
+<div class="table-wrap">
 <table>
   <thead><tr><th>Resource</th><th>URL</th></tr></thead>
   <tbody>
-    <tr><td>OSF — SimNap Dreaming AI</td><td><a href="https://osf.io/t3d5s">osf.io/t3d5s</a></td></tr>
-    <tr><td>OSF — Cascade Proof Files</td><td><a href="https://osf.io/df7tz">osf.io/df7tz</a></td></tr>
-    <tr><td>OSF — PromptFluid Supplementary</td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
-    <tr><td>GitHub — SimNap Whitepaper</td><td><a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper">github.com/SweetKenneth/...</a></td></tr>
-    <tr><td>YouTube — Dream Cycle Demo</td><td><a href="https://youtu.be/17jrlDhMz4k">youtu.be/17jrlDhMz4k</a></td></tr>
+    <tr><td>OSF — SimNap</td><td><a href="https://osf.io/t3d5s">osf.io/t3d5s</a></td></tr>
+    <tr><td>OSF — Cascade Proofs</td><td><a href="https://osf.io/df7tz">osf.io/df7tz</a></td></tr>
+    <tr><td>OSF — Supplementary</td><td><a href="https://osf.io/ah7nx/">osf.io/ah7nx</a></td></tr>
+    <tr><td>GitHub — SimNap</td><td><a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper">github.com/SweetKenneth/...</a></td></tr>
+    <tr><td>YouTube — Demo</td><td><a href="https://youtu.be/17jrlDhMz4k">youtu.be/17jrlDhMz4k</a></td></tr>
     <tr><td>ORCID</td><td><a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></td></tr>
   </tbody>
 </table>
+</div>
 
 <hr>
 
@@ -543,7 +640,7 @@ Sept 2025: Dream Protocol      →  Nov 2025: SimNap Formalization
 <div class="doc-footer">
   <p>© 2025–2026 PromptFluid®. All rights reserved.</p>
   <p>CMPSBL® Substrate OS · 40 Nodes · 12 Sectors · v14.2.0 MINDGAMES</p>
-  <p style="margin-top:0.5rem;font-size:0.65rem;">This document constitutes a defensive publication establishing prior art. It does not constitute a grant of license.</p>
+  <p style="margin-top:0.5rem;font-size:0.6rem;">This document constitutes a defensive publication establishing prior art. It does not constitute a grant of license.</p>
 </div>
 
 </body>

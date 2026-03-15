@@ -60,7 +60,7 @@ export function EnhancedFooter() {
     {
       title: "Developers",
       links: [
-        { name: "Documentation", href: "/documentation" },
+        { name: "Heritage paper", href: "/heritage-paper" },
         { name: "API access", href: "/api-access" },
         { name: "Builder workspace", href: "/workspace" },
         { name: "Academy", href: "/academy" },

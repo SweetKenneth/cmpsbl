@@ -35,7 +35,7 @@ const NAV_COLUMNS = [
   {
     title: 'Resources',
     links: [
-      { label: 'Documentation', to: '/documentation' },
+      { label: 'Heritage Paper', to: '/heritage-paper' },
       { label: 'API Access', to: '/api-access' },
       { label: 'Privacy', to: '/privacy' },
       { label: 'Terms', to: '/terms' },
