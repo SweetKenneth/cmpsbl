@@ -91,6 +91,25 @@
     .epoch-card h4 { margin: 0 0 0.3rem; font-size: 0.85rem; }
     .epoch-card p { font-size: 0.75rem; color: var(--fg-muted); margin-bottom: 0; }
 
+    /* ── Diagrams ── */
+    .diagram-wrap { overflow-x: auto; margin: 1rem -1rem; padding: 0 1rem; }
+    .diagram-wrap svg { width: 100%; max-width: 680px; margin: 0 auto; display: block; }
+    .diagram-title { font-size: 0.85rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--fg); }
+    .diagram-caption { font-size: 0.7rem; color: var(--fg-muted); text-align: center; margin-top: 0.4rem; font-style: italic; font-family: 'JetBrains Mono', monospace; }
+    .d-node { fill: var(--muted-bg); stroke: var(--border); stroke-width: 1.5; }
+    .d-node-text { fill: var(--fg); font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+    .d-node-sub { fill: var(--fg-muted); font-size: 8px; font-family: 'JetBrains Mono', monospace; }
+    .d-arrow { stroke: var(--primary); stroke-width: 2; fill: none; }
+    .d-arrow-head { fill: var(--primary); }
+    .d-label { fill: var(--primary); font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .d-sector { fill-opacity: 0.06; stroke-opacity: 0.25; stroke-width: 1.5; }
+    .d-sector-primary { fill: var(--primary); stroke: var(--primary); }
+    .d-sector-accent { fill: var(--accent); stroke: var(--accent); }
+    .d-sector-destructive { fill: var(--destructive); stroke: var(--destructive); }
+    .d-sector-muted { fill: var(--fg-muted); stroke: var(--fg-muted); }
+    details summary { cursor: pointer; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--fg-muted); }
+    details summary:hover { color: var(--primary); }
+
     hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
     /* ── Controls ── */
@@ -174,6 +193,25 @@
 <p>The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-node substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.</p>
 <p>The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong>40-node cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.</p>
 </blockquote>
+
+<!-- Timeline Diagram -->
+<h3 class="diagram-title">Figure 4 — Development Timeline (January 2025 → March 2026)</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 700 180" role="img" aria-label="Development timeline">
+  <line x1="30" y1="90" x2="690" y2="90" stroke="var(--border)" stroke-width="2"/>
+  <g><line x1="30" y1="90" x2="30" y2="55" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="30" cy="90" r="5" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/><text x="30" y="40" text-anchor="middle" class="d-node-text">BRAIN</text><text x="30" y="51" text-anchor="middle" class="d-node-sub">Genesis</text><text x="30" y="30" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Jan '25</text></g>
+  <g><line x1="103" y1="90" x2="103" y2="105" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="103" cy="90" r="5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/><text x="103" y="130" text-anchor="middle" class="d-node-text">Clarity</text><text x="103" y="141" text-anchor="middle" class="d-node-sub">WCAG AI</text><text x="103" y="153" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Jul '25</text></g>
+  <g><line x1="176" y1="90" x2="176" y2="55" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="176" cy="90" r="5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/><text x="176" y="40" text-anchor="middle" class="d-node-text">Cascade</text><text x="176" y="51" text-anchor="middle" class="d-node-sub">Orchestration</text><text x="176" y="30" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Aug '25</text></g>
+  <g><line x1="249" y1="90" x2="249" y2="105" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="249" cy="90" r="5" fill="var(--destructive)" stroke="var(--bg)" stroke-width="2"/><text x="249" y="130" text-anchor="middle" class="d-node-text">Shield</text><text x="249" y="141" text-anchor="middle" class="d-node-sub">Stealth→Shield</text><text x="249" y="153" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Sep '25</text></g>
+  <g><line x1="322" y1="90" x2="322" y2="55" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="322" cy="90" r="5" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/><text x="322" y="40" text-anchor="middle" class="d-node-text">Dream</text><text x="322" y="51" text-anchor="middle" class="d-node-sub">Protocol</text><text x="322" y="30" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Sep '25</text></g>
+  <g><line x1="395" y1="90" x2="395" y2="105" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="395" cy="90" r="5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/><text x="395" y="130" text-anchor="middle" class="d-node-text">Nexus</text><text x="395" y="141" text-anchor="middle" class="d-node-sub">23 Providers</text><text x="395" y="153" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Oct '25</text></g>
+  <g><line x1="468" y1="90" x2="468" y2="55" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="468" cy="90" r="5" fill="var(--destructive)" stroke="var(--bg)" stroke-width="2"/><text x="468" y="40" text-anchor="middle" class="d-node-text">252→40</text><text x="468" y="51" text-anchor="middle" class="d-node-sub">Consolidation</text><text x="468" y="30" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Nov '25</text></g>
+  <g><line x1="541" y1="90" x2="541" y2="105" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="541" cy="90" r="5" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/><text x="541" y="130" text-anchor="middle" class="d-node-text">SimNap</text><text x="541" y="141" text-anchor="middle" class="d-node-sub">Dream System</text><text x="541" y="153" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Dec '25</text></g>
+  <g><line x1="614" y1="90" x2="614" y2="55" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="614" cy="90" r="5" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/><text x="614" y="40" text-anchor="middle" class="d-node-text">v5.5</text><text x="614" y="51" text-anchor="middle" class="d-node-sub">Substrate</text><text x="614" y="30" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Jan '26</text></g>
+  <g><line x1="690" y1="90" x2="690" y2="105" stroke="var(--border)" stroke-opacity="0.5"/><circle cx="690" cy="90" r="5" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/><text x="690" y="130" text-anchor="middle" class="d-node-text">v14.2</text><text x="690" y="141" text-anchor="middle" class="d-node-sub">MINDGAMES</text><text x="690" y="153" text-anchor="middle" style="fill:var(--fg-muted);fill-opacity:0.6;font-size:7px;font-family:'JetBrains Mono',monospace">Mar '26</text></g>
+</svg>
+</div>
+<p class="diagram-caption">15-month research trajectory from the first line of BRAIN code to the 40-node MINDGAMES epoch.</p>
 
 <hr>
 
@@ -348,6 +386,34 @@
 </div>
 <p>Key insight: <strong>a single AI personality was insufficient</strong> for robust cognitive operations. This drove the transition from a monolithic agent to the <strong>multi-node, governed substrate architecture</strong>.</p>
 
+<!-- Ecosystem Diagram -->
+<h3 class="diagram-title">Figure 1 — PromptFluid Ecosystem Architecture (July–November 2025)</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 680 400" role="img" aria-label="PromptFluid Ecosystem Architecture">
+  <!-- BRAIN center -->
+  <rect x="260" y="160" width="160" height="55" rx="8" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>
+  <text x="340" y="183" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-family:'JetBrains Mono',monospace;font-weight:700">BRAIN</text>
+  <text x="340" y="200" text-anchor="middle" class="d-node-sub">Genesis Engine · Jan 2025</text>
+  <!-- Cascade ring -->
+  <ellipse cx="340" cy="187" rx="225" ry="140" fill="none" stroke="var(--primary)" stroke-opacity="0.15" stroke-dasharray="4 4"/>
+  <text x="340" y="50" text-anchor="middle" style="fill:var(--primary);fill-opacity:0.4;font-size:10px;font-family:'JetBrains Mono',monospace">CASCADE ORCHESTRATION LAYER</text>
+  <!-- Product nodes -->
+  <g><rect x="80" y="55" width="115" height="38" rx="6" class="d-node"/><text x="137" y="72" text-anchor="middle" class="d-node-text">Clarity</text><text x="137" y="84" text-anchor="middle" class="d-node-sub">WCAG · 9 fn</text><line x1="137" y1="93" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="260" y="25" width="115" height="38" rx="6" class="d-node"/><text x="317" y="42" text-anchor="middle" class="d-node-text">WebAdoption</text><text x="317" y="54" text-anchor="middle" class="d-node-sub">Directory · 2 fn</text><line x1="317" y1="63" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="460" y="55" width="115" height="38" rx="6" class="d-node"/><text x="517" y="72" text-anchor="middle" class="d-node-text">Verify</text><text x="517" y="84" text-anchor="middle" class="d-node-sub">Certify · 4 fn</text><line x1="517" y1="93" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="550" y="130" width="115" height="38" rx="6" class="d-node"/><text x="607" y="147" text-anchor="middle" class="d-node-text">Defense</text><text x="607" y="159" text-anchor="middle" class="d-node-sub">Security · 18 fn</text><line x1="550" y1="149" x2="420" y2="175" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="550" y="225" width="115" height="38" rx="6" class="d-node"/><text x="607" y="242" text-anchor="middle" class="d-node-text">Red Team</text><text x="607" y="254" text-anchor="middle" class="d-node-sub">Offensive · 99/100</text><line x1="550" y1="244" x2="420" y2="200" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="460" y="305" width="115" height="38" rx="6" class="d-node"/><text x="517" y="322" text-anchor="middle" class="d-node-text">SimNap</text><text x="517" y="334" text-anchor="middle" class="d-node-sub">Dreams · 10+ fn</text><line x1="517" y1="305" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="260" y="335" width="115" height="38" rx="6" class="d-node"/><text x="317" y="352" text-anchor="middle" class="d-node-text">Modernizer</text><text x="317" y="364" text-anchor="middle" class="d-node-sub">Rebuild · 5 fn</text><line x1="317" y1="335" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="80" y="305" width="115" height="38" rx="6" class="d-node"/><text x="137" y="322" text-anchor="middle" class="d-node-text">Marketing</text><text x="137" y="334" text-anchor="middle" class="d-node-sub">Content · 23 fn</text><line x1="137" y1="305" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="15" y="225" width="115" height="38" rx="6" class="d-node"/><text x="72" y="242" text-anchor="middle" class="d-node-text">Ripple</text><text x="72" y="254" text-anchor="middle" class="d-node-sub">Events · 4 fn</text><line x1="130" y1="244" x2="260" y2="200" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="15" y="130" width="115" height="38" rx="6" class="d-node"/><text x="72" y="147" text-anchor="middle" class="d-node-text">Nexus</text><text x="72" y="159" text-anchor="middle" class="d-node-sub">23 Providers</text><line x1="130" y1="149" x2="260" y2="175" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="160" y="85" width="115" height="38" rx="6" class="d-node"/><text x="217" y="102" text-anchor="middle" class="d-node-text">Studio</text><text x="217" y="114" text-anchor="middle" class="d-node-sub">Builder · 6 fn</text><line x1="217" y1="123" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <text x="340" y="390" text-anchor="middle" style="fill:var(--fg-muted);font-size:10px;font-family:'JetBrains Mono',monospace">12+ Products · 252+ Edge Functions · 23 AI Providers</text>
+</svg>
+</div>
+<p class="diagram-caption">The PromptFluid ecosystem at peak scale (November 2025). All products fed learning data back to BRAIN.</p>
+
 <!-- Phase 7 -->
 <div class="phase-header"><div class="phase-badge">7</div><h3>The PromptFluid Ecosystem (2025–2026)</h3></div>
 <div class="table-wrap">
@@ -397,6 +463,45 @@
 </table>
 </div>
 
+<!-- Consolidation Diagram -->
+<h3 class="diagram-title">Figure 2 — The Great Consolidation (November 4–5, 2025)</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 680 260" role="img" aria-label="Great Consolidation: 252 functions to 40 nodes">
+  <!-- Left: sprawl -->
+  <rect x="20" y="25" width="200" height="180" rx="8" fill="var(--destructive)" fill-opacity="0.06" stroke="var(--destructive)" stroke-opacity="0.2" stroke-width="1.5"/>
+  <text x="120" y="20" text-anchor="middle" style="fill:var(--destructive);font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:700">BEFORE</text>
+  <g id="scatter"></g>
+  <text x="120" y="225" text-anchor="middle" style="fill:var(--fg-muted);font-size:10px;font-family:'JetBrains Mono',monospace">252+ edge functions</text>
+  <!-- Arrow -->
+  <line x1="240" y1="115" x2="320" y2="115" class="d-arrow"/>
+  <polygon points="320,111 330,115 320,119" class="d-arrow-head"/>
+  <text x="280" y="105" text-anchor="middle" class="d-label">175 deleted</text>
+  <text x="280" y="130" text-anchor="middle" class="d-node-sub">Nov 4–5</text>
+  <!-- Right: organized -->
+  <rect x="340" y="25" width="320" height="180" rx="8" fill="var(--primary)" fill-opacity="0.06" stroke="var(--primary)" stroke-opacity="0.2" stroke-width="1.5"/>
+  <text x="500" y="20" text-anchor="middle" style="fill:var(--primary);font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:700">AFTER</text>
+  <!-- Sectors -->
+  <rect x="350" y="35" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="385" y="50" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Kernel</text><text x="385" y="61" text-anchor="middle" class="d-node-sub">2 nodes</text>
+  <rect x="425" y="35" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="460" y="50" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">CCR</text><text x="460" y="61" text-anchor="middle" class="d-node-sub">3 nodes</text>
+  <rect x="500" y="35" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="535" y="50" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">OCG</text><text x="535" y="61" text-anchor="middle" class="d-node-sub">6 nodes</text>
+  <rect x="575" y="35" width="75" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="612" y="50" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Execution</text><text x="612" y="61" text-anchor="middle" class="d-node-sub">10 nodes</text>
+  <rect x="350" y="75" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="385" y="90" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">ESZ</text><text x="385" y="101" text-anchor="middle" class="d-node-sub">3 nodes</text>
+  <rect x="425" y="75" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="460" y="90" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">EPZ</text><text x="460" y="101" text-anchor="middle" class="d-node-sub">3 nodes</text>
+  <rect x="500" y="75" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="535" y="90" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">EMZ</text><text x="535" y="101" text-anchor="middle" class="d-node-sub">3 nodes</text>
+  <rect x="575" y="75" width="75" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="612" y="90" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">CSZ</text><text x="612" y="101" text-anchor="middle" class="d-node-sub">4 nodes</text>
+  <rect x="350" y="115" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="385" y="130" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Fields</text><text x="385" y="141" text-anchor="middle" class="d-node-sub">2 nodes</text>
+  <rect x="425" y="115" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="460" y="130" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Plane</text><text x="460" y="141" text-anchor="middle" class="d-node-sub">1 node</text>
+  <rect x="500" y="115" width="70" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="535" y="130" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Shell</text><text x="535" y="141" text-anchor="middle" class="d-node-sub">1 node</text>
+  <rect x="575" y="115" width="75" height="32" rx="4" fill="var(--primary)" fill-opacity="0.1" stroke="var(--primary)" stroke-opacity="0.3"/><text x="612" y="130" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">Harbor</text><text x="612" y="141" text-anchor="middle" class="d-node-sub">2 nodes</text>
+  <!-- Resolver bar -->
+  <rect x="350" y="160" width="300" height="35" rx="4" fill="var(--accent)" fill-opacity="0.08" stroke="var(--accent)" stroke-opacity="0.2"/>
+  <text x="500" y="176" text-anchor="middle" style="fill:var(--fg);font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:600">node.resolver_name → composable primitives</text>
+  <text x="500" y="189" text-anchor="middle" class="d-node-sub">80+ resolvers across 40 nodes</text>
+  <text x="500" y="245" text-anchor="middle" style="fill:var(--fg-muted);font-size:10px;font-family:'JetBrains Mono',monospace">40 nodes · 12 sectors · Σ(weight) = 1.000</text>
+</svg>
+</div>
+<p class="diagram-caption">The founding axiom: sprawling functions compress into composable primitives without loss of capability.</p>
+
 <!-- Phase 8 -->
 <div class="phase-header"><div class="phase-badge">8</div><h3>CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)</h3></div>
 <div class="epoch-grid">
@@ -422,6 +527,62 @@
 
 <!-- 3. Heritage Map -->
 <h2>3. Architectural Heritage Map</h2>
+
+<!-- Figure 5: Heritage Lineage Flow -->
+<h3 class="diagram-title">Figure 5 — Heritage Lineage: Product Origins → Substrate Nodes</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 680 330" role="img" aria-label="Heritage lineage mapping products to substrate nodes">
+  <text x="100" y="18" text-anchor="middle" class="d-label">ORIGIN</text>
+  <text x="340" y="18" text-anchor="middle" style="fill:var(--fg-muted);font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:700">KEY PATTERN</text>
+  <text x="570" y="18" text-anchor="middle" class="d-label">SUBSTRATE NODE</text>
+  <line x1="20" y1="25" x2="660" y2="25" stroke="var(--border)"/>
+  <!-- Rows -->
+  <rect x="20" y="34" width="640" height="30" rx="3" fill="var(--muted-bg)" fill-opacity="0.3"/>
+  <text x="100" y="53" text-anchor="middle" class="d-node-text">BRAIN (Jan '25)</text><line x1="180" y1="49" x2="230" y2="49" class="d-arrow"/><polygon points="230,46 236,49 230,52" class="d-arrow-head"/><text x="340" y="53" text-anchor="middle" class="d-node-sub">Zero-cost embeddings, crystallization</text><line x1="450" y1="49" x2="490" y2="49" class="d-arrow"/><polygon points="490,46 496,49 490,52" class="d-arrow-head"/><text x="570" y="53" text-anchor="middle" class="d-node-text">BRAIN · MEMORY</text>
+  <text x="100" y="83" text-anchor="middle" class="d-node-text">Clarity (Jul '25)</text><line x1="180" y1="79" x2="230" y2="79" class="d-arrow"/><polygon points="230,76 236,79 230,82" class="d-arrow-head"/><text x="340" y="83" text-anchor="middle" class="d-node-sub">Detect → fix → validate governance</text><line x1="450" y1="79" x2="490" y2="79" class="d-arrow"/><polygon points="490,76 496,79 490,82" class="d-arrow-head"/><text x="570" y="83" text-anchor="middle" class="d-node-text">INCLUSIVE · ACCESS</text>
+  <rect x="20" y="94" width="640" height="30" rx="3" fill="var(--muted-bg)" fill-opacity="0.3"/>
+  <text x="100" y="113" text-anchor="middle" class="d-node-text">Cascade (Aug '25)</text><line x1="180" y1="109" x2="230" y2="109" class="d-arrow"/><polygon points="230,106 236,109 230,112" class="d-arrow-head"/><text x="340" y="113" text-anchor="middle" class="d-node-sub">Orchestration as intelligence</text><line x1="450" y1="109" x2="490" y2="109" class="d-arrow"/><polygon points="490,106 496,109 490,112" class="d-arrow-head"/><text x="570" y="113" text-anchor="middle" class="d-node-text">CORTEX · ORACLE · INTENT</text>
+  <text x="100" y="143" text-anchor="middle" class="d-node-text">AetherionShield</text><line x1="180" y1="139" x2="230" y2="139" class="d-arrow"/><polygon points="230,136 236,139 230,142" class="d-arrow-head"/><text x="340" y="143" text-anchor="middle" class="d-node-sub">Stealth → shield inversion</text><line x1="450" y1="139" x2="490" y2="139" class="d-arrow"/><polygon points="490,136 496,139 490,142" class="d-arrow-head"/><text x="570" y="143" text-anchor="middle" class="d-node-text">DEFENSE · IMMUNITY · PHANTOM</text>
+  <rect x="20" y="154" width="640" height="30" rx="3" fill="var(--muted-bg)" fill-opacity="0.3"/>
+  <text x="100" y="173" text-anchor="middle" class="d-node-text">Dream Protocol</text><line x1="180" y1="169" x2="230" y2="169" class="d-arrow"/><polygon points="230,166 236,169 230,172" class="d-arrow-head"/><text x="340" y="173" text-anchor="middle" class="d-node-sub">Autonomous cognitive loops</text><line x1="450" y1="169" x2="490" y2="169" class="d-arrow"/><polygon points="490,166 496,169 490,172" class="d-arrow-head"/><text x="570" y="173" text-anchor="middle" class="d-node-text">DREAM</text>
+  <text x="100" y="203" text-anchor="middle" class="d-node-text">Nexus Mesh</text><line x1="180" y1="199" x2="230" y2="199" class="d-arrow"/><polygon points="230,196 236,199 230,202" class="d-arrow-head"/><text x="340" y="203" text-anchor="middle" class="d-node-sub">Multi-provider routing</text><line x1="450" y1="199" x2="490" y2="199" class="d-arrow"/><polygon points="490,196 496,199 490,202" class="d-arrow-head"/><text x="570" y="203" text-anchor="middle" class="d-node-text">NEXUS</text>
+  <rect x="20" y="214" width="640" height="30" rx="3" fill="var(--muted-bg)" fill-opacity="0.3"/>
+  <text x="100" y="233" text-anchor="middle" class="d-node-text">SimNap</text><line x1="180" y1="229" x2="230" y2="229" class="d-arrow"/><polygon points="230,226 236,229 230,232" class="d-arrow-head"/><text x="340" y="233" text-anchor="middle" class="d-node-sub">Pipeline discovery + Foundry</text><line x1="450" y1="229" x2="490" y2="229" class="d-arrow"/><polygon points="490,226 496,229 490,232" class="d-arrow-head"/><text x="570" y="233" text-anchor="middle" class="d-node-text">DREAM · Memory Stream</text>
+  <text x="100" y="263" text-anchor="middle" class="d-node-text">Studio</text><line x1="180" y1="259" x2="230" y2="259" class="d-arrow"/><polygon points="230,256 236,259 230,262" class="d-arrow-head"/><text x="340" y="263" text-anchor="middle" class="d-node-sub">Artifact generation</text><line x1="450" y1="259" x2="490" y2="259" class="d-arrow"/><polygon points="490,256 496,259 490,262" class="d-arrow-head"/><text x="570" y="263" text-anchor="middle" class="d-node-text">FORGE · DECODE · ENCODE</text>
+  <rect x="20" y="274" width="640" height="30" rx="3" fill="var(--muted-bg)" fill-opacity="0.3"/>
+  <text x="100" y="293" text-anchor="middle" class="d-node-text">Verify</text><line x1="180" y1="289" x2="230" y2="289" class="d-arrow"/><polygon points="230,286 236,289 230,292" class="d-arrow-head"/><text x="340" y="293" text-anchor="middle" class="d-node-sub">Sandboxed verification</text><line x1="450" y1="289" x2="490" y2="289" class="d-arrow"/><polygon points="490,286 496,289 490,292" class="d-arrow-head"/><text x="570" y="293" text-anchor="middle" class="d-node-text">SHADOW · AUDIT</text>
+</svg>
+</div>
+<p class="diagram-caption">Every substrate node traces its design to a predecessor project. No architecture emerged in isolation.</p>
+
+<!-- Figure 6: Intent Mesh -->
+<h3 class="diagram-title">Figure 6 — CMPSBL® Intent Mesh Execution Flow</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 680 200" role="img" aria-label="Intent Mesh execution flow">
+  <text x="340" y="50" text-anchor="middle" style="fill:var(--primary);font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:600">All system actions route through broadcastIntent()</text>
+  <!-- Flow boxes -->
+  <rect x="10" y="70" width="85" height="45" rx="6" class="d-node"/><text x="52" y="90" text-anchor="middle" class="d-node-text">User Action</text>
+  <line x1="97" y1="92" x2="112" y2="92" class="d-arrow"/><polygon points="112,89 117,92 112,95" class="d-arrow-head"/>
+  <rect x="120" y="70" width="95" height="45" rx="6" class="d-node"/><text x="167" y="87" text-anchor="middle" class="d-node-text">broadcast</text><text x="167" y="99" text-anchor="middle" class="d-node-sub">Intent()</text>
+  <line x1="217" y1="92" x2="232" y2="92" class="d-arrow"/><polygon points="232,89 237,92 232,95" class="d-arrow-head"/>
+  <rect x="240" y="70" width="85" height="45" rx="6" class="d-node"/><text x="282" y="87" text-anchor="middle" class="d-node-text">INTENT</text><text x="282" y="99" text-anchor="middle" class="d-node-sub">Router</text>
+  <line x1="327" y1="92" x2="342" y2="92" class="d-arrow"/><polygon points="342,89 347,92 342,95" class="d-arrow-head"/>
+  <rect x="350" y="70" width="90" height="45" rx="6" class="d-node"/><text x="395" y="87" text-anchor="middle" class="d-node-text">Resolvers</text><text x="395" y="99" text-anchor="middle" class="d-node-sub">node.resolver</text>
+  <line x1="442" y1="92" x2="457" y2="92" class="d-arrow"/><polygon points="457,89 462,92 457,95" class="d-arrow-head"/>
+  <rect x="465" y="70" width="85" height="45" rx="6" class="d-node"/><text x="507" y="87" text-anchor="middle" class="d-node-text">Mesh</text><text x="507" y="99" text-anchor="middle" class="d-node-sub">Comms</text>
+  <line x1="552" y1="92" x2="567" y2="92" class="d-arrow"/><polygon points="567,89 572,92 567,95" class="d-arrow-head"/>
+  <rect x="575" y="70" width="90" height="45" rx="6" class="d-node"/><text x="620" y="87" text-anchor="middle" class="d-node-text">Telemetry</text><text x="620" y="99" text-anchor="middle" class="d-node-sub">Dashboards</text>
+  <!-- Feedback loop -->
+  <path d="M620,115 L620,155 L52,155 L52,115" fill="none" stroke="var(--primary)" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <polygon points="52,115 48,122 56,122" fill="var(--primary)" fill-opacity="0.3"/>
+  <text x="340" y="170" text-anchor="middle" style="fill:var(--primary);fill-opacity:0.5;font-size:8px;font-family:'JetBrains Mono',monospace">MEMORY STREAM FEEDBACK → BRAIN CRYSTALLIZATION</text>
+</svg>
+</div>
+<p class="diagram-caption">The universal execution model inherited from Cascade's orchestration-as-intelligence pattern.</p>
+
+<!-- ASCII map preserved for accessibility -->
+<details>
+<summary>View ASCII Heritage Map</summary>
 <pre><code>┌────────────────────────┐
 │  BRAIN — The Genesis   │
 │  (January–June 2025)   │
@@ -466,6 +627,7 @@
 │ ├─ NEXUS (AI routing)      └─ OBSERVER (continuous)     │
 │ └─ Personality layer                                    │
 └─────────────────────────────────────────────────────────┘</code></pre>
+</details>
 
 <hr>
 
