@@ -479,6 +479,9 @@ In November 2025, the full heritage was documented in "PromptFluid: The Firsts" 
 
 | Date | First |
 |---|---|
+| January 2025 | Neural substrate engine — BRAIN, the first code ever written in the ecosystem |
+| January 2025 | Zero-cost deterministic embeddings (hash-embed-v1) |
+| January 2025 | Knowledge crystallization with confidence decay |
 | July 2025 | AI that repairs the web (Clarity / CMPTBL) |
 | July 2025 | Living accessibility directory (WebAdoption) |
 | August 2025 | Orchestration as intelligence (Cascade) |
