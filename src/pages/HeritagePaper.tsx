@@ -1,6 +1,7 @@
 /**
- * Heritage Meta-Paper v2.1 — Full academic paper, mobile-first
- * Complete lineage from PromptFluid Clarity (July 2025) to CMPSBL v14.2.0
+ * Heritage Meta-Paper v2.3 — Clarity Edition
+ * Complete lineage from BRAIN Genesis (Jan 2025) to CMPSBL v14.2.0
+ * Includes executive summary, reading guide, and architectural diagrams
  */
 
 import { useRef } from "react";
