@@ -8,6 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Printer, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import {
+  EcosystemDiagram,
+  ConsolidationDiagram,
+  SectorTopologyDiagram,
+  TimelineDiagram,
+  LineageFlowDiagram,
+  IntentMeshDiagram,
+} from "@/components/heritage/ArchitectureDiagrams";
 
 /* ── Reusable sub-components ─────────────────────────────── */
 
