@@ -386,6 +386,34 @@
 </div>
 <p>Key insight: <strong>a single AI personality was insufficient</strong> for robust cognitive operations. This drove the transition from a monolithic agent to the <strong>multi-node, governed substrate architecture</strong>.</p>
 
+<!-- Ecosystem Diagram -->
+<h3 class="diagram-title">Figure 1 — PromptFluid Ecosystem Architecture (July–November 2025)</h3>
+<div class="diagram-wrap">
+<svg viewBox="0 0 680 400" role="img" aria-label="PromptFluid Ecosystem Architecture">
+  <!-- BRAIN center -->
+  <rect x="260" y="160" width="160" height="55" rx="8" fill="var(--primary)" fill-opacity="0.15" stroke="var(--primary)" stroke-width="2"/>
+  <text x="340" y="183" text-anchor="middle" style="fill:var(--primary);font-size:13px;font-family:'JetBrains Mono',monospace;font-weight:700">BRAIN</text>
+  <text x="340" y="200" text-anchor="middle" class="d-node-sub">Genesis Engine · Jan 2025</text>
+  <!-- Cascade ring -->
+  <ellipse cx="340" cy="187" rx="225" ry="140" fill="none" stroke="var(--primary)" stroke-opacity="0.15" stroke-dasharray="4 4"/>
+  <text x="340" y="50" text-anchor="middle" style="fill:var(--primary);fill-opacity:0.4;font-size:10px;font-family:'JetBrains Mono',monospace">CASCADE ORCHESTRATION LAYER</text>
+  <!-- Product nodes -->
+  <g><rect x="80" y="55" width="115" height="38" rx="6" class="d-node"/><text x="137" y="72" text-anchor="middle" class="d-node-text">Clarity</text><text x="137" y="84" text-anchor="middle" class="d-node-sub">WCAG · 9 fn</text><line x1="137" y1="93" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="260" y="25" width="115" height="38" rx="6" class="d-node"/><text x="317" y="42" text-anchor="middle" class="d-node-text">WebAdoption</text><text x="317" y="54" text-anchor="middle" class="d-node-sub">Directory · 2 fn</text><line x1="317" y1="63" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="460" y="55" width="115" height="38" rx="6" class="d-node"/><text x="517" y="72" text-anchor="middle" class="d-node-text">Verify</text><text x="517" y="84" text-anchor="middle" class="d-node-sub">Certify · 4 fn</text><line x1="517" y1="93" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="550" y="130" width="115" height="38" rx="6" class="d-node"/><text x="607" y="147" text-anchor="middle" class="d-node-text">Defense</text><text x="607" y="159" text-anchor="middle" class="d-node-sub">Security · 18 fn</text><line x1="550" y1="149" x2="420" y2="175" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="550" y="225" width="115" height="38" rx="6" class="d-node"/><text x="607" y="242" text-anchor="middle" class="d-node-text">Red Team</text><text x="607" y="254" text-anchor="middle" class="d-node-sub">Offensive · 99/100</text><line x1="550" y1="244" x2="420" y2="200" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="460" y="305" width="115" height="38" rx="6" class="d-node"/><text x="517" y="322" text-anchor="middle" class="d-node-text">SimNap</text><text x="517" y="334" text-anchor="middle" class="d-node-sub">Dreams · 10+ fn</text><line x1="517" y1="305" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="260" y="335" width="115" height="38" rx="6" class="d-node"/><text x="317" y="352" text-anchor="middle" class="d-node-text">Modernizer</text><text x="317" y="364" text-anchor="middle" class="d-node-sub">Rebuild · 5 fn</text><line x1="317" y1="335" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="80" y="305" width="115" height="38" rx="6" class="d-node"/><text x="137" y="322" text-anchor="middle" class="d-node-text">Marketing</text><text x="137" y="334" text-anchor="middle" class="d-node-sub">Content · 23 fn</text><line x1="137" y1="305" x2="340" y2="215" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="15" y="225" width="115" height="38" rx="6" class="d-node"/><text x="72" y="242" text-anchor="middle" class="d-node-text">Ripple</text><text x="72" y="254" text-anchor="middle" class="d-node-sub">Events · 4 fn</text><line x1="130" y1="244" x2="260" y2="200" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="15" y="130" width="115" height="38" rx="6" class="d-node"/><text x="72" y="147" text-anchor="middle" class="d-node-text">Nexus</text><text x="72" y="159" text-anchor="middle" class="d-node-sub">23 Providers</text><line x1="130" y1="149" x2="260" y2="175" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <g><rect x="160" y="85" width="115" height="38" rx="6" class="d-node"/><text x="217" y="102" text-anchor="middle" class="d-node-text">Studio</text><text x="217" y="114" text-anchor="middle" class="d-node-sub">Builder · 6 fn</text><line x1="217" y1="123" x2="340" y2="160" stroke="var(--border)" stroke-opacity="0.3" stroke-dasharray="3 3"/></g>
+  <text x="340" y="390" text-anchor="middle" style="fill:var(--fg-muted);font-size:10px;font-family:'JetBrains Mono',monospace">12+ Products · 252+ Edge Functions · 23 AI Providers</text>
+</svg>
+</div>
+<p class="diagram-caption">The PromptFluid ecosystem at peak scale (November 2025). All products fed learning data back to BRAIN.</p>
+
 <!-- Phase 7 -->
 <div class="phase-header"><div class="phase-badge">7</div><h3>The PromptFluid Ecosystem (2025–2026)</h3></div>
 <div class="table-wrap">
