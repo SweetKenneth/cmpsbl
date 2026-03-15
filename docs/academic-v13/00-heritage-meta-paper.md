@@ -927,23 +927,23 @@ The following Zenodo records document the formal publication history of the proj
 
 ## 10. System Scale Progression
 
-| Metric | Clarity (Jul 2025) | PromptFluid Peak (Nov 2025) | CMPSBL v5.5 (Jan 2026) | CMPSBL v14.2 (Mar 2026) |
-|---|---|---|---|---|
-| Architecture model | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 nodes, 12 sectors |
-| AI providers | 1 (Nexus) | 23-provider routing mesh | Single provider | NEXUS multi-provider routing |
-| Autonomy model | User-initiated scans | Autonomous dreaming + proactive agents | Basic governance | 3-tier bounded autonomy |
-| Memory architecture | Scan result storage | Episodic + long-term + meta | Multi-tier | 4-stage crystallization pipeline |
-| Dreaming capability | N/A | Dream Protocol + SimNap | DREAM node | Governed DREAM with Foundry |
-| Security model | N/A | AetherionShield offensive+defensive | Basic defense | IRONCLAD 100% coverage |
-| Export capability | PDF compliance reports | Morning reports + video reels | Basic output | 25-language universal export |
-| Self-evolution | N/A | Brain feedback loop | EVOLUTION proposals | SEBA 7-gate governed evolution |
-| Discovery engine | N/A | Inter-process learning | Basic pipeline | Foundry with CJPI, 6-tier taxonomy |
-| Synergy pipelines | N/A | N/A | Early discovery | 300+ identified, 100 crystallized |
-| Resilience | WordPress error handling | Per-product error handling | Per-module breakers | IRONCLAD fabric |
-| Orchestration | Sequential scanning | Cascade intelligence routing | Centralized routing | Decentralized Intent Mesh |
-| Audit | Scan logs | Transparent logging | Basic logging | Immutable hash-linked audit chain |
-| Accessibility | WCAG 2.2 AA scanning | WCAG + WebAdoption directory | N/A | INCLUSIVE node (17 modules) |
-| Edge functions | 9 (CMPTBL) | 252+ (ecosystem peak) | ~30 | 80+ resolvers |
+| Metric | BRAIN Genesis (Jan '25) | Clarity (Jul 2025) | PromptFluid Peak (Nov 2025) | CMPSBL v5.5 (Jan 2026) | CMPSBL v14.2 (Mar 2026) |
+|---|---|---|---|---|---|
+| Architecture model | Single engine | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 nodes, 12 sectors |
+| AI providers | None (deterministic) | 1 (Nexus) | 23-provider routing mesh | Single provider | NEXUS multi-provider routing |
+| Autonomy model | N/A | User-initiated scans | Autonomous dreaming + proactive agents | Basic governance | 3-tier bounded autonomy |
+| Memory architecture | Hash-embed-v1, crystals | Scan result storage | Episodic + long-term + meta | Multi-tier | 4-stage crystallization pipeline |
+| Neural capabilities | Embeddings, confidence decay | BRAIN + scan patterns | Dream Protocol + SimNap | DREAM node | Governed DREAM with Foundry |
+| Security model | N/A | N/A | AetherionShield offensive+defensive | Basic defense | IRONCLAD 100% coverage |
+| Export capability | N/A | PDF compliance reports | Morning reports + video reels | Basic output | 25-language universal export |
+| Self-evolution | Confidence-based learning | Brain feedback loop | Brain + inter-process learning | EVOLUTION proposals | SEBA 7-gate governed evolution |
+| Discovery engine | N/A | N/A | Inter-process learning | Basic pipeline | Foundry with CJPI, 6-tier taxonomy |
+| Synergy pipelines | N/A | N/A | N/A | Early discovery | 300+ identified, 100 crystallized |
+| Resilience | N/A | WordPress error handling | Per-product error handling | Per-module breakers | IRONCLAD fabric |
+| Orchestration | N/A | Sequential scanning | Cascade intelligence routing | Centralized routing | Decentralized Intent Mesh |
+| Audit | N/A | Scan logs | Transparent logging | Basic logging | Immutable hash-linked audit chain |
+| Accessibility | N/A | WCAG 2.2 AA scanning | WCAG + WebAdoption directory | N/A | INCLUSIVE node (17 modules) |
+| Edge functions | 0 (local engine) | 9 (CMPTBL) | 252+ (ecosystem peak) | ~30 | 80+ resolvers |
 
 ---
 
