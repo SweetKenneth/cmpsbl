@@ -31,9 +31,9 @@ const COLD_LIMIT  = 10_000;
 const PRUNED_MAX  = 2_000;
 
 // ── Retention windows ──
-const EVENTS_RETAIN_DAYS          = 7;
-const REFLECTION_LOG_RETAIN_DAYS  = 30;
-const LEARNING_LOG_RETAIN_DAYS    = 30;
+const EVENTS_RETAIN_DAYS          = 3;
+const REFLECTION_LOG_RETAIN_DAYS  = 14;
+const LEARNING_LOG_RETAIN_DAYS    = 14;
 
 // ── Batch sizes ──
 const DELETE_BATCH     = 1000;
