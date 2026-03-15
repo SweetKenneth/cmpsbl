@@ -514,7 +514,20 @@ const HeritagePaper = () => {
           {/* ═══════════ 3. HERITAGE MAP ═══════════ */}
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="heritage-map" num="3" title="Architectural Heritage Map" />
-            <pre className="bg-muted/50 rounded-lg p-3 sm:p-4 text-[8px] sm:text-[10px] font-mono text-foreground overflow-x-auto border border-border/50 leading-relaxed whitespace-pre">
+            
+            {/* Sector Topology Diagram */}
+            <SectorTopologyDiagram />
+
+            {/* Lineage Flow Diagram */}
+            <LineageFlowDiagram />
+
+            {/* Intent Mesh Execution */}
+            <IntentMeshDiagram />
+
+            {/* Original ASCII map preserved for print/accessibility */}
+            <details className="mt-6">
+              <summary className="text-xs font-mono text-muted-foreground cursor-pointer hover:text-foreground">View ASCII Heritage Map</summary>
+              <pre className="bg-muted/50 rounded-lg p-3 sm:p-4 text-[8px] sm:text-[10px] font-mono text-foreground overflow-x-auto border border-border/50 leading-relaxed whitespace-pre mt-2">
 {`┌────────────────────────┐    ┌────────────────────────┐
 │  PromptFluid Clarity   │    │   AetherionShield      │
 │  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
@@ -553,7 +566,8 @@ const HeritagePaper = () => {
 │ └─ HARVEST (extraction)    From WebAdoption:            │
 │                            └─ OBSERVER (continuous)     │
 └─────────────────────────────────────────────────────────┘`}
-            </pre>
+              </pre>
+            </details>
           </section>
 
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
