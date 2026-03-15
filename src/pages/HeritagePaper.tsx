@@ -187,10 +187,36 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="timeline" num="2" title="Complete Timeline of Development" />
 
+            {/* Phase -1: The Genesis */}
+            <PhaseHeader num="G" title="The Genesis — BRAIN and the Ecosystem Foundation (January–June 2025)" />
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              Before any product was launched, before any public post, before Cascade had a name — there was BRAIN. In January 2025, the author began working on the fundamental question that would define the entire research trajectory: <em>How does an AI system learn, remember, and improve over time without relying on expensive external APIs?</em>
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              The answer became the <strong className="text-foreground">BRAIN engine</strong> — a deterministic character-level hashing system (<code className="bg-muted px-1 rounded text-xs font-mono">hash-embed-v1</code>) that produces 384-dimensional vectors for knowledge representation, entirely client-side, at zero cost. BRAIN was the first piece of code written in what would become the PromptFluid and CMPSBL ecosystem.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">During January–June 2025, the author developed:</p>
+            <ul className="text-sm leading-relaxed text-muted-foreground list-disc ml-5 space-y-1 mb-3">
+              <li><strong className="text-foreground">The BRAIN Engine</strong> — FNV-1a hashing to 384-dim vectors, zero external dependencies, sub-ms per embedding</li>
+              <li><strong className="text-foreground">Knowledge Crystallization Pipeline</strong> — raw signals progressively refined into durable, confidence-scored "crystals"</li>
+              <li><strong className="text-foreground">Confidence Decay Model</strong> — half-life scoring (doctrine: 90d, heuristic: 30d, conversation: 7d)</li>
+              <li><strong className="text-foreground">Early Cascade Concepts</strong> — initial architecture for multi-subsystem intelligence routing</li>
+              <li><strong className="text-foreground">Neural Component Self-Activation</strong> — capabilities that unlock as data accumulates (50 crystals → index, 100 traces → classifier, 200 → drift detector, 500 → synthesizer)</li>
+            </ul>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              The Genesis period established three foundational principles: <strong className="text-foreground">zero-cost intelligence</strong> (meaningful semantic ops without API calls), <strong className="text-foreground">progressive self-activation</strong> (components that grow smarter with experience), and <strong className="text-foreground">memory as infrastructure</strong> (learning is foundational, not a feature added later).
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              BRAIN is Node #3 in the current 40-node substrate, but it was the <em>first</em> node built — and it remains the cognitive core. Every other node depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
+            </p>
+            <ContributionBox>
+              Established the entire <strong className="text-foreground">neural substrate layer</strong> — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — the foundation upon which all other cognitive capabilities were built.
+            </ContributionBox>
+
             {/* Phase 0: Clarity/CMPTBL */}
             <PhaseHeader num="0" title="PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and <em>autonomously repair</em> accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.
+              PromptFluid Clarity (internally codenamed CMPTBL) was the author's first <em>production-facing</em> AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and <em>autonomously repair</em> accessibility violations in real-time. Critically, Clarity was built <em>on top of</em> BRAIN — scan patterns, fix heuristics, and compliance learnings were all stored as knowledge crystals in the Genesis-era engine, making Clarity the first external consumer of the neural substrate.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">The four-branch ecosystem:</p>
             <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-3">
@@ -200,10 +226,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">Clarity WordPress Plugin</strong> — deployment vehicle with 9+ edge functions</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              These edge functions established the <strong className="text-foreground">edge-function-as-resolver</strong> pattern that became the canonical execution model for CMPSBL substrate nodes.
-            </p>
-            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate. The fact that the <em>entire heritage begins with accessibility</em> is architecturally significant: human compatibility was the first problem the author chose to solve with AI, and it remains a first-class substrate primitive today.
+              These edge functions established the <strong className="text-foreground">edge-function-as-resolver</strong> pattern. Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate.
             </p>
             <ContributionBox>
               Established <em>AI-driven automated remediation under governance</em> — the concept that became the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node carries the <code className="bg-muted px-1 rounded text-xs font-mono">@origin(cmptbl)</code> annotation.
