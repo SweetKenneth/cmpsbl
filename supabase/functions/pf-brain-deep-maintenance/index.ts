@@ -101,11 +101,12 @@ Deno.serve(async (req: Request) => {
     let learningLogsPruned = 0;
     let prunedTableCleaned = 0;
 
-    // Helper: batch-delete rows older than cutoff
+    // Helper: batch-delete rows older than cutoff (supports custom timestamp column)
     async function batchPrune(
       table: string,
       cutoff: string,
       maxPasses: number,
+      tsCol = "created_at",
     ): Promise<number> {
       let pruned = 0;
       let pass   = 0;
@@ -113,7 +114,7 @@ Deno.serve(async (req: Request) => {
         const { data } = await supabase
           .from(table)
           .select("id")
-          .lt("created_at", cutoff)
+          .lt(tsCol, cutoff)
           .limit(DELETE_BATCH);
 
         if (!data?.length) break;
@@ -123,6 +124,34 @@ Deno.serve(async (req: Request) => {
         pass++;
       }
       return pruned;
+    }
+
+    // Helper: cap table at max rows by oldest first
+    async function capTable(
+      table: string,
+      maxRows: number,
+      tsCol = "created_at",
+    ): Promise<number> {
+      const { count } = await supabase
+        .from(table)
+        .select("*", { count: "exact", head: true });
+      if (!count || count <= maxRows) return 0;
+
+      const excess = count - maxRows;
+      const { data: old } = await supabase
+        .from(table)
+        .select("id")
+        .order(tsCol, { ascending: true })
+        .limit(Math.min(excess, 2000));
+
+      if (!old?.length) return 0;
+      let removed = 0;
+      for (let i = 0; i < old.length; i += 500) {
+        const chunk = old.slice(i, i + 500).map((r: any) => r.id);
+        await supabase.from(table).delete().in("id", chunk);
+        removed += chunk.length;
+      }
+      return removed;
     }
 
     if (timeLeft()) {
