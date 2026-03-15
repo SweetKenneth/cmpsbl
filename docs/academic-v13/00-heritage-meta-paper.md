@@ -1031,7 +1031,7 @@ Every node in the current substrate can trace its design rationale to a specific
   version      = {2.1},
   publisher    = {PromptFluid},
   note         = {Heritage meta-paper establishing the complete lineage
-                  of the CMPSBL Substrate OS from Clarity (July 2025)
+                  of the CMPSBL Substrate OS from BRAIN Genesis (January 2025)
                   through v14.2.0 MINDGAMES epoch (March 2026)},
   doi          = {10.5281/zenodo.18234909},
   url          = {https://doi.org/10.5281/zenodo.18234909}
