@@ -102,7 +102,7 @@ const HeritagePaper = () => {
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Publication</div>
                 <div className="text-foreground font-medium">PromptFluid®</div>
-                <div className="text-xs">March 14, 2026 · v2.1 Final</div>
+                <div className="text-xs">March 15, 2026 · v2.2 Extended Genesis</div>
               </div>
               <div className="sm:col-span-2">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Primary DOI</div>
