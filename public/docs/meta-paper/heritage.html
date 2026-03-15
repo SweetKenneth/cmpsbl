@@ -91,6 +91,25 @@
     .epoch-card h4 { margin: 0 0 0.3rem; font-size: 0.85rem; }
     .epoch-card p { font-size: 0.75rem; color: var(--fg-muted); margin-bottom: 0; }
 
+    /* ── Diagrams ── */
+    .diagram-wrap { overflow-x: auto; margin: 1rem -1rem; padding: 0 1rem; }
+    .diagram-wrap svg { width: 100%; max-width: 680px; margin: 0 auto; display: block; }
+    .diagram-title { font-size: 0.85rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--fg); }
+    .diagram-caption { font-size: 0.7rem; color: var(--fg-muted); text-align: center; margin-top: 0.4rem; font-style: italic; font-family: 'JetBrains Mono', monospace; }
+    .d-node { fill: var(--muted-bg); stroke: var(--border); stroke-width: 1.5; }
+    .d-node-text { fill: var(--fg); font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+    .d-node-sub { fill: var(--fg-muted); font-size: 8px; font-family: 'JetBrains Mono', monospace; }
+    .d-arrow { stroke: var(--primary); stroke-width: 2; fill: none; }
+    .d-arrow-head { fill: var(--primary); }
+    .d-label { fill: var(--primary); font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    .d-sector { fill-opacity: 0.06; stroke-opacity: 0.25; stroke-width: 1.5; }
+    .d-sector-primary { fill: var(--primary); stroke: var(--primary); }
+    .d-sector-accent { fill: var(--accent); stroke: var(--accent); }
+    .d-sector-destructive { fill: var(--destructive); stroke: var(--destructive); }
+    .d-sector-muted { fill: var(--fg-muted); stroke: var(--fg-muted); }
+    details summary { cursor: pointer; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--fg-muted); }
+    details summary:hover { color: var(--primary); }
+
     hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
     /* ── Controls ── */
