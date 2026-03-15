@@ -994,7 +994,7 @@ As of v14.2.0 (MINDGAMES epoch, March 2026), the CMPSBL Substrate OS represents:
 - **INCLUSIVE accessibility** with 17 specialized modules (@origin: cmptbl)
 - **42-page internal knowledge base** for operational documentation
 
-The system has evolved from the first AI that could repair accessibility violations autonomously (Clarity, July 2025) to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within nine months of continuous development.
+The system has evolved from the first neural learning engine built in January 2025, through the first AI that could repair accessibility violations autonomously (Clarity, July 2025), to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within fifteen months of continuous development.
 
 ---
 
