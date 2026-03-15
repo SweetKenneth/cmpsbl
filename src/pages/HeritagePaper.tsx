@@ -1,6 +1,7 @@
 /**
- * Heritage Meta-Paper v2.1 — Full academic paper, mobile-first
- * Complete lineage from PromptFluid Clarity (July 2025) to CMPSBL v14.2.0
+ * Heritage Meta-Paper v2.3 — Clarity Edition
+ * Complete lineage from BRAIN Genesis (Jan 2025) to CMPSBL v14.2.0
+ * Includes executive summary, reading guide, and architectural diagrams
  */
 
 import { useRef } from "react";
@@ -49,7 +50,7 @@ const HeritagePaper = () => {
     <>
       <Helmet>
         <title>Heritage of Autonomous Cognitive Infrastructure — CMPSBL®</title>
-        <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL Substrate OS from PromptFluid Clarity through AetherionShield, SimNap, and Cascade to the 40-node cognitive operating system. Version 2.1." />
+        <meta name="description" content="Comprehensive lineage paper v2.3 (Clarity Edition) tracing the heritage of CMPSBL Substrate OS from BRAIN Genesis (January 2025) through the 40-node cognitive operating system. Open access academic publication." />
       </Helmet>
 
       {/* Sticky toolbar — hidden in print */}
@@ -91,7 +92,7 @@ const HeritagePaper = () => {
           <header className="mb-8 sm:mb-10 pb-6 sm:pb-8 border-b-2 border-primary/30">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-2">
               <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] text-muted-foreground uppercase">CMPSBL® Academic Publication</span>
-              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v2.2</span>
+              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v2.3 Clarity Edition</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3 sm:mb-4">
@@ -110,7 +111,7 @@ const HeritagePaper = () => {
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Publication</div>
                 <div className="text-foreground font-medium">PromptFluid®</div>
-                <div className="text-xs">March 15, 2026 · v2.2 Extended Genesis</div>
+                <div className="text-xs">March 15, 2026 · v2.3 Clarity Edition</div>
               </div>
               <div className="sm:col-span-2">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Primary DOI</div>
@@ -118,6 +119,57 @@ const HeritagePaper = () => {
               </div>
             </div>
           </header>
+
+          {/* ═══════════ AT A GLANCE ═══════════ */}
+          <section className="mb-6 sm:mb-8">
+            <div className="bg-primary/5 rounded-xl p-4 sm:p-6 border-2 border-primary/20">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                <span className="text-primary">⚡</span> At a Glance
+              </h2>
+              <dl className="space-y-3 text-sm text-muted-foreground">
+                <div>
+                  <dt className="font-semibold text-foreground inline">What is CMPSBL? </dt>
+                  <dd className="inline">A 40-node cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-foreground inline">Where did it come from? </dt>
+                  <dd className="inline">Fifteen months of continuous R&D (January 2025 → March 2026) across 12 predecessor projects — each contributing a specific architectural pattern.</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-foreground inline">What was the first thing built? </dt>
+                  <dd className="inline">BRAIN — a zero-cost neural embedding engine — written in January 2025. It's still the cognitive core today.</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-foreground inline">Why does this paper exist? </dt>
+                  <dd className="inline">To establish a permanent, verifiable provenance chain — proving every innovation traces back to documented, working code.</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          {/* ═══════════ READING GUIDE ═══════════ */}
+          <section className="mb-8 sm:mb-10">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3">How to Read This Paper</h3>
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <table className="w-full text-xs border-collapse min-w-[350px]">
+                <thead>
+                  <tr className="bg-muted/50">
+                    <th className="text-left p-2 border border-border font-semibold text-foreground">If you want to…</th>
+                    <th className="text-left p-2 border border-border font-semibold text-foreground">Start at…</th>
+                  </tr>
+                </thead>
+                <tbody className="text-muted-foreground">
+                  <tr><td className="p-2 border border-border">Understand the full story chronologically</td><td className="p-2 border border-border font-mono text-primary">§2 — Complete Timeline</td></tr>
+                  <tr><td className="p-2 border border-border">See how each product became a substrate node</td><td className="p-2 border border-border font-mono text-primary">§3 — Heritage Map</td></tr>
+                  <tr><td className="p-2 border border-border">Trace a specific innovation to its origin</td><td className="p-2 border border-border font-mono text-primary">§4 — Innovation Genealogy</td></tr>
+                  <tr><td className="p-2 border border-border">Understand the dreaming research lineage</td><td className="p-2 border border-border font-mono text-primary">§5 — Dreaming Lineage</td></tr>
+                  <tr><td className="p-2 border border-border">See how 252 functions became 40 nodes</td><td className="p-2 border border-border font-mono text-primary">§7 — Consolidation Event</td></tr>
+                  <tr><td className="p-2 border border-border">Verify the academic record</td><td className="p-2 border border-border font-mono text-primary">§1.3 — Archival Records</td></tr>
+                  <tr><td className="p-2 border border-border">Cite this paper</td><td className="p-2 border border-border font-mono text-primary">§11 — Citation</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
 
           {/* ═══════════ ABSTRACT ═══════════ */}
           <section className="mb-8 sm:mb-10">

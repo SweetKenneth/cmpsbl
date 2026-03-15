@@ -31,9 +31,9 @@ const COLD_LIMIT  = 10_000;
 const PRUNED_MAX  = 2_000;
 
 // ── Retention windows ──
-const EVENTS_RETAIN_DAYS          = 7;
-const REFLECTION_LOG_RETAIN_DAYS  = 30;
-const LEARNING_LOG_RETAIN_DAYS    = 30;
+const EVENTS_RETAIN_DAYS          = 3;
+const REFLECTION_LOG_RETAIN_DAYS  = 14;
+const LEARNING_LOG_RETAIN_DAYS    = 14;
 
 // ── Batch sizes ──
 const DELETE_BATCH     = 1000;
@@ -101,11 +101,12 @@ Deno.serve(async (req: Request) => {
     let learningLogsPruned = 0;
     let prunedTableCleaned = 0;
 
-    // Helper: batch-delete rows older than cutoff
+    // Helper: batch-delete rows older than cutoff (supports custom timestamp column)
     async function batchPrune(
       table: string,
       cutoff: string,
       maxPasses: number,
+      tsCol = "created_at",
     ): Promise<number> {
       let pruned = 0;
       let pass   = 0;
@@ -113,7 +114,7 @@ Deno.serve(async (req: Request) => {
         const { data } = await supabase
           .from(table)
           .select("id")
-          .lt("created_at", cutoff)
+          .lt(tsCol, cutoff)
           .limit(DELETE_BATCH);
 
         if (!data?.length) break;
@@ -123,6 +124,34 @@ Deno.serve(async (req: Request) => {
         pass++;
       }
       return pruned;
+    }
+
+    // Helper: cap table at max rows by oldest first
+    async function capTable(
+      table: string,
+      maxRows: number,
+      tsCol = "created_at",
+    ): Promise<number> {
+      const { count } = await supabase
+        .from(table)
+        .select("*", { count: "exact", head: true });
+      if (!count || count <= maxRows) return 0;
+
+      const excess = count - maxRows;
+      const { data: old } = await supabase
+        .from(table)
+        .select("id")
+        .order(tsCol, { ascending: true })
+        .limit(Math.min(excess, 2000));
+
+      if (!old?.length) return 0;
+      let removed = 0;
+      for (let i = 0; i < old.length; i += 500) {
+        const chunk = old.slice(i, i + 500).map((r: any) => r.id);
+        await supabase.from(table).delete().in("id", chunk);
+        removed += chunk.length;
+      }
+      return removed;
     }
 
     if (timeLeft()) {
@@ -514,37 +543,50 @@ Deno.serve(async (req: Request) => {
     // ── Retention-based pruning schedule ──
     // Each entry: [table, retentionDays, maxPasses, timestampCol]
     const RETENTION_RULES: [string, number, number, string][] = [
-      // Already existed
-      ["analytics_events",       14,  10, "created_at"],
-      ["ai_usage_log",           14,  10, "created_at"],
-      ["ai_learning_data",       30,   5, "created_at"],
-      // NEW: Large tables without pruning
-      ["owner_reports",          30,   5, "created_at"],
-      ["defense_events",         30,  10, "created_at"],
-      ["vault_promotions",       60,  10, "created_at"],
-      ["brain_metrics",          30,  10, "created_at"],
-      ["site_page_views",        30,  10, "created_at"],
-      ["pf_brain_anomalies",     30,  10, "created_at"],
-      ["cascade_dreams",         60,   5, "created_at"],
-      ["discovery_runs",         60,  10, "created_at"],
-      ["nexus_logs",             14,  10, "created_at"],
-      ["nexus_hourly_snapshots", 14,  10, "created_at"],
-      ["learning_queries",       30,  10, "created_at"],
-      ["brain_cross_insights",   30,  10, "created_at"],
-      ["client_error_log",       14,  10, "created_at"],
-      ["execution_traces",       14,  10, "created_at"],
-      ["decode_search_results",  14,  10, "created_at"],
-      ["cascade_conversations",  60,  10, "created_at"],
-      ["foundry_mine_events",    30,   5, "created_at"],
-      ["foundry_discovery_metrics", 60, 5, "created_at"],
-      ["brain_distillation_runs", 60,  5, "created_at"],
-      ["maintenance_reports",    60,   5, "created_at"],
+      // ── BRAIN / MEMORY Sector ──
+      ["brain_metrics",            7,  10, "created_at"],
+      ["brain_cross_insights",    14,  10, "created_at"],
+      ["brain_distillation_runs", 30,   5, "created_at"],
+      ["brain_reasoning_traces",  14,   5, "created_at"],
+      ["pf_brain_anomalies",      14,  10, "created_at"],
+      // ── DEFENSE / IMMUNITY Sector ──
+      ["defense_events",          14,  10, "detected_at"],
+      // ── NEXUS / ROUTING Sector ──
+      ["ai_usage_log",             7,  10, "created_at"],
+      ["ai_learning_data",        30,   5, "created_at"],
+      ["ai_daily_quota",          14,   5, "updated_at"],
+      ["nexus_logs",               7,  10, "created_at"],
+      ["nexus_hourly_snapshots",   7,  10, "created_at"],
+      ["nexus_traces",             7,  10, "created_at"],
+      // ── ANALYTICS / TELEMETRY Sector ──
+      ["analytics_events",        14,  10, "created_at"],
+      ["site_page_views",         14,  10, "created_at"],
+      ["site_sessions",           14,  10, "started_at"],
+      ["client_error_log",         7,  10, "created_at"],
+      ["execution_traces",         7,  10, "created_at"],
+      // ── DECODE / ENCODE Sector ──
+      ["decode_search_results",   14,  10, "created_at"],
+      ["learning_queries",        14,  10, "created_at"],
+      // ── DREAM / ORACLE Sector ──
+      ["cascade_dreams",          30,   5, "created_at"],
+      ["cascade_conversations",   30,  10, "created_at"],
+      // ── EVOLUTION / DISCOVERY Sector ──
+      ["discovery_runs",          30,  10, "created_at"],
+      ["foundry_mine_events",     14,   5, "created_at"],
+      ["foundry_discovery_metrics", 30,  5, "created_at"],
+      // ── GOVERNANCE / AUDIT Sector ──
+      ["owner_reports",           30,   5, "created_at"],
+      ["maintenance_reports",     30,   5, "created_at"],
+      ["substrate_audit_log",     30,   5, "created_at"],
+      // ── MESH / COMMS Sector ──
+      ["mesh_comms",              14,  10, "created_at"],
+      ["vault_promotions",        30,  10, "created_at"],
     ];
 
     for (const [table, days, maxPasses, tsCol] of RETENTION_RULES) {
       if (!timeLeft()) break;
       const cutoff = new Date(Date.now() - days * 86_400_000).toISOString();
-      const removed = await batchPrune(table, cutoff, maxPasses);
+      const removed = await batchPrune(table, cutoff, maxPasses, tsCol);
       if (removed > 0) {
         auxTablesCleaned++;
         auxRowsRemoved += removed;
@@ -552,26 +594,24 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    if (timeLeft()) {
-      // 7b. Cap analytics_snapshots at 500
-      const { count: snapCount } = await supabase
-        .from("analytics_snapshots")
-        .select("*", { count: "exact", head: true });
-      if ((snapCount ?? 0) > 500) {
-        const snapExcess = (snapCount ?? 0) - 500;
-        const { data: oldSnaps } = await supabase
-          .from("analytics_snapshots")
-          .select("id")
-          .order("created_at", { ascending: true })
-          .limit(Math.min(snapExcess, 1000));
-        if (oldSnaps?.length) {
-          for (let i = 0; i < oldSnaps.length; i += 500) {
-            const chunk = oldSnaps.slice(i, i + 500).map((r: any) => r.id);
-            await supabase.from("analytics_snapshots").delete().in("id", chunk);
-          }
-          auxRowsRemoved += oldSnaps.length;
-          auxTablesCleaned++;
-        }
+    // 7b. Capacity caps for tables that need absolute limits
+    const CAPACITY_CAPS: [string, number, string][] = [
+      ["analytics_snapshots",    500,  "created_at"],
+      ["brain_memories",        2000,  "created_at"],
+      ["brain_graph_edges",     5000,  "created_at"],
+      ["mesh_comms",            1000,  "created_at"],
+      ["discoveries",           5000,  "created_at"],
+      ["agency_task_logs",      1000,  "created_at"],
+      ["brain_transfer_heuristics", 200, "created_at"],
+    ];
+
+    for (const [table, maxRows, tsCol] of CAPACITY_CAPS) {
+      if (!timeLeft()) break;
+      const capped = await capTable(table, maxRows, tsCol);
+      if (capped > 0) {
+        auxTablesCleaned++;
+        auxRowsRemoved += capped;
+        console.log(`[DeepMaint] Capped ${table} by ${capped} rows (limit: ${maxRows})`);
       }
     }
 

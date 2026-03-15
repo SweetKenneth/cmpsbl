@@ -3,7 +3,7 @@
 ## From PromptFluid to CMPSBL® Substrate OS — A Comprehensive Lineage Paper
 
 **Classification:** 📖 OPEN ACCESS / PRIOR ART  
-**Version:** 2.2 — Extended Genesis Edition  
+**Version:** 2.3 — Clarity Edition  
 **Author:** Kenneth E. Sweet Jr. — [ORCID 0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)  
 **Affiliation:** PromptFluid®  
 **Date:** 2026-03-15  
@@ -11,7 +11,31 @@
 
 ---
 
-## Abstract
+> ### At a Glance
+>
+> **What is CMPSBL?** A 40-node cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.
+>
+> **Where did it come from?** Fifteen months of continuous R&D (January 2025 → March 2026) across 12 predecessor projects — each contributing a specific architectural pattern to the final system.
+>
+> **What's the first thing that was built?** BRAIN — a zero-cost neural embedding engine — written in January 2025. It's still the cognitive core today.
+>
+> **Why does this paper exist?** To establish a permanent, verifiable provenance chain for the academic record — proving every innovation traces back to documented, working code.
+
+---
+
+## How to Read This Paper
+
+This paper is organized for both **linear reading** and **targeted reference**:
+
+| If you want to… | Start at… |
+|---|---|
+| Understand the full story chronologically | **§2 — Complete Timeline** |
+| See how each product became a substrate node | **§3 — Architectural Heritage Map** |
+| Trace a specific innovation to its origin | **§4 — Innovation Genealogy** |
+| Understand the dreaming research lineage | **§5 — The Dreaming Lineage** |
+| See how 252 functions became 40 nodes | **§8 — The Consolidation Event** |
+| Verify the academic record | **§1.3 — Archival Records** |
+| Cite this paper | **§14 — Citation** |
 
 This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
 
@@ -1075,8 +1099,10 @@ Every node in the current substrate can trace its design rationale to a specific
 | Date | Author | Change |
 |---|---|---|
 | 2026-03-14 | Kenneth E. Sweet Jr. | v1.0 — Initial heritage meta-paper |
-| 2026-03-14 | Kenneth E. Sweet Jr. | v2.0 — Corrected timeline from July 2025 start; added Verify, WebAdoption, Studio/Modernizer, 23-provider mesh, Dream Protocol, Consolidation Event, IP Valuation; expanded from 8 phases to 12; cross-referenced PromptFluid-Vision project archives |
-| 2026-03-14 | Kenneth E. Sweet Jr. | v2.1 — Final polished edition; prose coherence pass; structural flow improvements; consistent terminology throughout |
+| 2026-03-14 | Kenneth E. Sweet Jr. | v2.0 — Corrected timeline; added 8 additional projects; expanded from 8 to 12 phases |
+| 2026-03-14 | Kenneth E. Sweet Jr. | v2.1 — Prose coherence pass; structural flow improvements |
+| 2026-03-15 | Kenneth E. Sweet Jr. | v2.2 — Extended Genesis Edition; restored January 2025 BRAIN origins; added architectural diagrams |
+| 2026-03-15 | Kenneth E. Sweet Jr. | v2.3 — Clarity Edition; added executive summary and reading guide; comprehensive readability pass |
 
 ---
 
