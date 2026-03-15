@@ -1000,9 +1000,10 @@ The system has evolved from the first neural learning engine built in January 20
 
 ## 13. Conclusion
 
-The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:
+The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through March 2026:
 
-1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the very first PromptFluid product, establishing the detect→fix→validate pattern that would become the universal governance model
+0. **BRAIN — The Genesis** (January–June 2025) built the neural substrate layer — deterministic embeddings, knowledge crystallization, confidence decay — the first code written and still the cognitive core
+1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the first production-facing system, built on BRAIN, establishing the detect→fix→validate pattern that would become the universal governance model
 2. **WebAdoption** (July 2025) established continuous verification as a core principle
 3. **Cascade** (August 2025) proved that orchestration itself is intelligence, creating the shared learning loop across products
 4. **Verify** (August 2025) established sandboxed execution with rollback safety
