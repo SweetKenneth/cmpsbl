@@ -3,21 +3,21 @@
 ## From PromptFluid to CMPSBL® Substrate OS — A Comprehensive Lineage Paper
 
 **Classification:** 📖 OPEN ACCESS / PRIOR ART  
-**Version:** 2.1 — Final Polished Edition  
+**Version:** 2.2 — Extended Genesis Edition  
 **Author:** Kenneth E. Sweet Jr. — [ORCID 0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)  
 **Affiliation:** PromptFluid®  
-**Date:** 2026-03-14  
+**Date:** 2026-03-15  
 **Primary DOI:** [10.5281/zenodo.18234909](https://doi.org/10.5281/zenodo.18234909)
 
 ---
 
 ## Abstract
 
-This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous nine-month research trajectory spanning July 2025 through March 2026, during which the author designed, built, and iterated through AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
+This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-The lineage begins with PromptFluid Clarity (internally CMPTBL), the author's first production AI system — an AI-powered WCAG 2.2 compliance platform that could detect and autonomously repair accessibility violations in real-time. It continues through the WebAdoption living directory, Cascade's orchestration awakening, AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
+The lineage begins not with a product launch but with a question: *How does a machine learn and remember?* In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-node substrate today. From BRAIN, the author expanded into Cascade (the orchestration personality), PromptFluid Clarity (the first production-facing AI system), and the full constellation of tools and research that would eventually consolidate into CMPSBL. The lineage continues through AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
 
-The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first AI that could repair accessibility violations autonomously, to a **40-node cognitive operating system** capable of governed self-evolution, memory crystallization, and universal cross-language export.
+The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first neural learning engine built in a founder's development environment in January 2025, to a **40-node cognitive operating system** capable of governed self-evolution, memory crystallization, and universal cross-language export.
 
 ---
 
@@ -27,12 +27,13 @@ The purpose of this paper is to provide the academic community with a single, co
 
 The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the *current state* of the system without addressing the *path* that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-This v2.1 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.
+This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed — predating any public post or product launch.
 
 ### 1.2 Scope
 
 This paper covers the following projects and milestones in chronological order:
 
+0. **BRAIN — The Genesis Engine** (January–June 2025) — deterministic neural substrate, the first code ever written in the ecosystem
 1. **PromptFluid Clarity / CMPTBL** (July 2025) — AI-powered WCAG 2.2 accessibility compliance, the first production AI system
 2. **WebAdoption** (July 2025) — living directory of WCAG-verified sites with automated audits
 3. **Cascade** (August 2025) — the AI orchestration personality and intelligence routing layer
@@ -67,11 +68,49 @@ This heritage is documented across the following permanent academic archives:
 
 ## 2. Complete Timeline of Development
 
+### Phase -1: The Genesis — BRAIN and the Ecosystem Foundation (January–June 2025)
+
+#### 2.0 Origins
+
+Before any product was launched, before any public post, before Cascade had a name — there was BRAIN.
+
+In January 2025, the author began working on the fundamental question that would define the entire research trajectory: *How does an AI system learn, remember, and improve over time without relying on expensive external APIs?* The answer became the BRAIN engine — a deterministic character-level hashing system (`hash-embed-v1`) that produces 384-dimensional vectors for knowledge representation, entirely client-side, at zero cost.
+
+BRAIN was the first piece of code written in what would become the PromptFluid and CMPSBL ecosystem. It was not a product — it was an infrastructure conviction: that intelligence requires memory, and memory requires a substrate that is fast, deterministic, and cost-free at scale.
+
+#### 2.0.1 What Was Built (January–June 2025)
+
+During this six-month genesis period, the author developed:
+
+- **The BRAIN Engine** — FNV-1a character-level hashing to 384-dimensional vectors, zero external dependencies, sub-millisecond per embedding
+- **Knowledge Crystallization Pipeline** — the concept that raw signals should be progressively refined into durable, confidence-scored knowledge "crystals"
+- **Confidence Decay Model** — half-life-based confidence scoring where knowledge decays at rates proportional to its type (doctrine: 90 days, heuristic: 30 days, conversation: 7 days)
+- **Early Cascade Concepts** — the initial architecture for an orchestration layer that would route intelligence across multiple subsystems rather than centralizing it in one model
+- **Neural Component Self-Activation** — the design pattern where capabilities progressively unlock as training data accumulates (50 crystals → vector index, 100 traces → classifier, 200 traces → drift detector, 500 crystals → pattern synthesizer)
+
+These were not theoretical designs. They were working implementations iterated over six months of focused development.
+
+#### 2.0.2 Architectural Significance
+
+The Genesis period established three foundational principles that permeate the entire CMPSBL substrate:
+
+1. **Zero-cost intelligence** — BRAIN proved that meaningful semantic operations (embedding, recall, similarity matching) could be performed without API calls, establishing the cost-free intelligence pattern that distinguishes CMPSBL from systems dependent on external embedding providers
+2. **Progressive self-activation** — Components that grow smarter as they accumulate experience, rather than requiring upfront configuration, became a design philosophy applied across the entire 40-node substrate
+3. **Memory as infrastructure** — The conviction that memory and learning are not features to be added later but foundational infrastructure that everything else is built upon
+
+BRAIN is Node #3 in the current 40-node substrate, but it was the *first* node built — and it remains the cognitive core. Every other node in the system depends on BRAIN's embedding, crystallization, and recall capabilities. The `@origin(genesis-2025-01)` annotation marks it as the oldest continuous component in the architecture.
+
+**Key Contribution to CMPSBL:** BRAIN established the entire neural substrate layer — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — that became the foundation upon which all other cognitive capabilities were built.
+
+---
+
 ### Phase 0: PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)
 
 #### 2.1 Overview
 
-PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and *autonomously repair* accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.
+PromptFluid Clarity (internally codenamed CMPTBL) was the author's first *production-facing* AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and *autonomously repair* accessibility violations in real-time. While BRAIN had been under development since January, Clarity was the first system exposed to real users and real data. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.
+
+Critically, Clarity was built *on top of* BRAIN. The scan patterns, fix heuristics, and compliance learnings were all stored as knowledge crystals in the BRAIN engine, making Clarity the first external consumer of the neural substrate — and proving that the Genesis-era architecture could power production workloads.
 
 #### 2.2 Architecture
 
@@ -99,7 +138,7 @@ These functions established the **edge-function-as-resolver** pattern that becam
 
 #### 2.4 Architectural Significance
 
-Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the *detect → propose → validate → apply → audit* pipeline that would become the universal governance model for the entire CMPSBL substrate. The fact that the *entire heritage begins with accessibility* is architecturally significant: human compatibility was the first problem the author chose to solve with AI, and it remains a first-class substrate primitive in CMPSBL today.
+Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the *detect → propose → validate → apply → audit* pipeline that would become the universal governance model for the entire CMPSBL substrate. It also proved that the BRAIN engine built during the Genesis period could serve as the learning backbone for a production system, storing and recalling accessibility patterns with increasing accuracy over time.
 
 **Key Contribution to CMPSBL:** CMPTBL established the pattern of *AI-driven automated remediation under governance* — the concept that became the foundation for the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node in the current substrate carries the `@origin(cmptbl)` annotation.
 
@@ -440,6 +479,9 @@ In November 2025, the full heritage was documented in "PromptFluid: The Firsts" 
 
 | Date | First |
 |---|---|
+| January 2025 | Neural substrate engine — BRAIN, the first code ever written in the ecosystem |
+| January 2025 | Zero-cost deterministic embeddings (hash-embed-v1) |
+| January 2025 | Knowledge crystallization with confidence decay |
 | July 2025 | AI that repairs the web (Clarity / CMPTBL) |
 | July 2025 | Living accessibility directory (WebAdoption) |
 | August 2025 | Orchestration as intelligence (Cascade) |
@@ -572,6 +614,18 @@ The current epoch represents the system at full maturity:
 The following diagram traces the flow of architectural innovation from each predecessor project into the CMPSBL Substrate:
 
 ```
+┌────────────────────────┐
+│  BRAIN — The Genesis   │
+│  (January–June 2025)   │
+│                        │
+│ • Hash-Embed-v1 Engine │
+│ • Knowledge Crystals   │
+│ • Confidence Decay     │
+│ • Progressive Activatn │
+│ • First Code Written   │
+└───────────┬────────────┘
+            │
+            ▼
 ┌────────────────────────┐    ┌────────────────────────┐
 │  PromptFluid Clarity   │    │   AetherionShield      │
 │  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
@@ -581,6 +635,7 @@ The following diagram traces the flow of architectural innovation from each pred
 │ • Compliance Reports   │    │ • Shadow Testing       │
 │ • Nexus AI Router      │    │ • Bulkhead Isolation   │
 │ • Edge Function Pattern│    │ • Red Team (99/100)    │
+│ • Built ON BRAIN       │    │                        │
 └───────────┬────────────┘    └───────────┬────────────┘
             │                             │
             ▼                             ▼
@@ -589,25 +644,29 @@ The following diagram traces the flow of architectural innovation from each pred
 │             (2025–2026, v1.0 – v14.2.0)                    │
 │               40 Nodes · 12 Sectors                        │
 │                                                             │
-│  From Clarity/CMPTBL:          From AetherionShield:        │
-│  ├─ INCLUSIVE (@origin cmptbl) ├─ DEFENSE (boundary)        │
-│  ├─ ACCESS (entitlements)      ├─ IMMUNITY (adaptive)       │
-│  ├─ Resolver architecture      ├─ PHANTOM (anonymization)   │
-│  └─ Governed remediation       ├─ SHADOW (verification)     │
-│                                └─ IRONCLAD (resilience)     │
+│  From BRAIN Genesis:           From AetherionShield:        │
+│  ├─ BRAIN (Node #3, 1st built) ├─ DEFENSE (boundary)       │
+│  ├─ Knowledge crystallization  ├─ IMMUNITY (adaptive)       │
+│  ├─ Zero-cost embeddings       ├─ PHANTOM (anonymization)   │
+│  ├─ Confidence decay model     ├─ SHADOW (verification)     │
+│  └─ Progressive self-activation└─ IRONCLAD (resilience)     │
 │                                                             │
-│  From Cascade/23-Provider:     From SimNap/Dream:           │
-│  ├─ CORTEX (orchestration)     ├─ DREAM (consolidation)     │
-│  ├─ ORACLE (prediction)        ├─ MEMORY (tiered)           │
-│  ├─ INTENT (NL routing)        ├─ BRAIN (learning)          │
-│  ├─ NEXUS (AI routing)         └─ Memory Stream & Foundry   │
+│  From Clarity/CMPTBL:          From SimNap/Dream:           │
+│  ├─ INCLUSIVE (@origin cmptbl) ├─ DREAM (consolidation)     │
+│  ├─ ACCESS (entitlements)      ├─ MEMORY (tiered)           │
+│  ├─ Resolver architecture      └─ Memory Stream & Foundry   │
+│  └─ Governed remediation                                    │
+│                                                             │
+│  From Cascade/23-Provider:     From Studio/Modernizer:      │
+│  ├─ CORTEX (orchestration)     ├─ FORGE (artifacts)         │
+│  ├─ ORACLE (prediction)        ├─ DECODE (parsing)          │
+│  ├─ INTENT (NL routing)        ├─ ENCODE (generation)       │
+│  ├─ NEXUS (AI routing)         └─ HARVEST (extraction)      │
 │  └─ Personality layer                                       │
-│                                                             │
-│  From Studio/Modernizer:       From Verify:                 │
-│  ├─ FORGE (artifacts)          ├─ SHADOW (sandbox verify)   │
-│  ├─ DECODE (parsing)           └─ AUDIT (chain of custody)  │
-│  ├─ ENCODE (generation)                                     │
-│  └─ HARVEST (extraction)       From WebAdoption:            │
+│                                From Verify:                 │
+│                                ├─ SHADOW (sandbox verify)   │
+│                                └─ AUDIT (chain of custody)  │
+│                                From WebAdoption:            │
 │                                └─ OBSERVER (continuous)     │
 └─────────────────────────────────────────────────────────────┘
             ▲                             ▲
@@ -871,23 +930,23 @@ The following Zenodo records document the formal publication history of the proj
 
 ## 10. System Scale Progression
 
-| Metric | Clarity (Jul 2025) | PromptFluid Peak (Nov 2025) | CMPSBL v5.5 (Jan 2026) | CMPSBL v14.2 (Mar 2026) |
-|---|---|---|---|---|
-| Architecture model | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 nodes, 12 sectors |
-| AI providers | 1 (Nexus) | 23-provider routing mesh | Single provider | NEXUS multi-provider routing |
-| Autonomy model | User-initiated scans | Autonomous dreaming + proactive agents | Basic governance | 3-tier bounded autonomy |
-| Memory architecture | Scan result storage | Episodic + long-term + meta | Multi-tier | 4-stage crystallization pipeline |
-| Dreaming capability | N/A | Dream Protocol + SimNap | DREAM node | Governed DREAM with Foundry |
-| Security model | N/A | AetherionShield offensive+defensive | Basic defense | IRONCLAD 100% coverage |
-| Export capability | PDF compliance reports | Morning reports + video reels | Basic output | 25-language universal export |
-| Self-evolution | N/A | Brain feedback loop | EVOLUTION proposals | SEBA 7-gate governed evolution |
-| Discovery engine | N/A | Inter-process learning | Basic pipeline | Foundry with CJPI, 6-tier taxonomy |
-| Synergy pipelines | N/A | N/A | Early discovery | 300+ identified, 100 crystallized |
-| Resilience | WordPress error handling | Per-product error handling | Per-module breakers | IRONCLAD fabric |
-| Orchestration | Sequential scanning | Cascade intelligence routing | Centralized routing | Decentralized Intent Mesh |
-| Audit | Scan logs | Transparent logging | Basic logging | Immutable hash-linked audit chain |
-| Accessibility | WCAG 2.2 AA scanning | WCAG + WebAdoption directory | N/A | INCLUSIVE node (17 modules) |
-| Edge functions | 9 (CMPTBL) | 252+ (ecosystem peak) | ~30 | 80+ resolvers |
+| Metric | BRAIN Genesis (Jan '25) | Clarity (Jul 2025) | PromptFluid Peak (Nov 2025) | CMPSBL v5.5 (Jan 2026) | CMPSBL v14.2 (Mar 2026) |
+|---|---|---|---|---|---|
+| Architecture model | Single engine | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 nodes, 12 sectors |
+| AI providers | None (deterministic) | 1 (Nexus) | 23-provider routing mesh | Single provider | NEXUS multi-provider routing |
+| Autonomy model | N/A | User-initiated scans | Autonomous dreaming + proactive agents | Basic governance | 3-tier bounded autonomy |
+| Memory architecture | Hash-embed-v1, crystals | Scan result storage | Episodic + long-term + meta | Multi-tier | 4-stage crystallization pipeline |
+| Neural capabilities | Embeddings, confidence decay | BRAIN + scan patterns | Dream Protocol + SimNap | DREAM node | Governed DREAM with Foundry |
+| Security model | N/A | N/A | AetherionShield offensive+defensive | Basic defense | IRONCLAD 100% coverage |
+| Export capability | N/A | PDF compliance reports | Morning reports + video reels | Basic output | 25-language universal export |
+| Self-evolution | Confidence-based learning | Brain feedback loop | Brain + inter-process learning | EVOLUTION proposals | SEBA 7-gate governed evolution |
+| Discovery engine | N/A | N/A | Inter-process learning | Basic pipeline | Foundry with CJPI, 6-tier taxonomy |
+| Synergy pipelines | N/A | N/A | N/A | Early discovery | 300+ identified, 100 crystallized |
+| Resilience | N/A | WordPress error handling | Per-product error handling | Per-module breakers | IRONCLAD fabric |
+| Orchestration | N/A | Sequential scanning | Cascade intelligence routing | Centralized routing | Decentralized Intent Mesh |
+| Audit | N/A | Scan logs | Transparent logging | Basic logging | Immutable hash-linked audit chain |
+| Accessibility | N/A | WCAG 2.2 AA scanning | WCAG + WebAdoption directory | N/A | INCLUSIVE node (17 modules) |
+| Edge functions | 0 (local engine) | 9 (CMPTBL) | 252+ (ecosystem peak) | ~30 | 80+ resolvers |
 
 ---
 
@@ -938,15 +997,16 @@ As of v14.2.0 (MINDGAMES epoch, March 2026), the CMPSBL Substrate OS represents:
 - **INCLUSIVE accessibility** with 17 specialized modules (@origin: cmptbl)
 - **42-page internal knowledge base** for operational documentation
 
-The system has evolved from the first AI that could repair accessibility violations autonomously (Clarity, July 2025) to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within nine months of continuous development.
+The system has evolved from the first neural learning engine built in January 2025, through the first AI that could repair accessibility violations autonomously (Clarity, July 2025), to a full cognitive operating system capable of autonomous discovery, governed mutation, and production-grade artifact generation — all within fifteen months of continuous development.
 
 ---
 
 ## 13. Conclusion
 
-The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:
+The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through March 2026:
 
-1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the very first PromptFluid product, establishing the detect→fix→validate pattern that would become the universal governance model
+0. **BRAIN — The Genesis** (January–June 2025) built the neural substrate layer — deterministic embeddings, knowledge crystallization, confidence decay — the first code written and still the cognitive core
+1. **Clarity / CMPTBL** (July 2025) proved that AI-driven automated remediation under governance is viable — the first production-facing system, built on BRAIN, establishing the detect→fix→validate pattern that would become the universal governance model
 2. **WebAdoption** (July 2025) established continuous verification as a core principle
 3. **Cascade** (August 2025) proved that orchestration itself is intelligence, creating the shared learning loop across products
 4. **Verify** (August 2025) established sandboxed execution with rollback safety
@@ -974,7 +1034,7 @@ Every node in the current substrate can trace its design rationale to a specific
   version      = {2.1},
   publisher    = {PromptFluid},
   note         = {Heritage meta-paper establishing the complete lineage
-                  of the CMPSBL Substrate OS from Clarity (July 2025)
+                  of the CMPSBL Substrate OS from BRAIN Genesis (January 2025)
                   through v14.2.0 MINDGAMES epoch (March 2026)},
   doi          = {10.5281/zenodo.18234909},
   url          = {https://doi.org/10.5281/zenodo.18234909}

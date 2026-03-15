@@ -83,7 +83,7 @@ const HeritagePaper = () => {
           <header className="mb-8 sm:mb-10 pb-6 sm:pb-8 border-b-2 border-primary/30">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-2">
               <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] text-muted-foreground uppercase">CMPSBL® Academic Publication</span>
-              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art</span>
+              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v2.2</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3 sm:mb-4">
@@ -102,7 +102,7 @@ const HeritagePaper = () => {
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Publication</div>
                 <div className="text-foreground font-medium">PromptFluid®</div>
-                <div className="text-xs">March 14, 2026 · v2.1 Final</div>
+                <div className="text-xs">March 15, 2026 · v2.2 Extended Genesis</div>
               </div>
               <div className="sm:col-span-2">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Primary DOI</div>
@@ -116,13 +116,13 @@ const HeritagePaper = () => {
             <SectionTitle num="0" title="Abstract" />
             <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 rounded-lg p-4 sm:p-5 border border-border/50">
               <p className="mb-3">
-                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous nine-month research trajectory spanning July 2025 through March 2026, during which the author designed, built, and iterated through AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
+                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design.
               </p>
               <p className="mb-3">
-                The lineage begins with PromptFluid Clarity (internally CMPTBL), the author's first production AI system — an AI-powered WCAG 2.2 compliance platform that could detect and autonomously repair accessibility violations in real-time. It continues through the WebAdoption living directory, Cascade's orchestration awakening, AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
+                The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-node substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.
               </p>
               <p>
-                The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first AI that could repair accessibility violations autonomously, to a <strong className="text-foreground">40-node cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
+                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-node cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
               </p>
             </div>
           </section>
@@ -138,11 +138,12 @@ const HeritagePaper = () => {
               The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns refined and integrated into the final substrate.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              This v2.1 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.
+              This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed.
             </p>
 
             <h3 className="text-base sm:text-lg font-semibold text-foreground mt-6 mb-3">1.2 Scope</h3>
-            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-4">
+            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-4" start={0}>
+              <li><strong className="text-foreground">BRAIN — The Genesis Engine</strong> (Jan–Jun 2025) — deterministic neural substrate, the first code written</li>
               <li><strong className="text-foreground">PromptFluid Clarity / CMPTBL</strong> (July 2025) — AI-powered WCAG 2.2 accessibility compliance</li>
               <li><strong className="text-foreground">WebAdoption</strong> (July 2025) — living directory of WCAG-verified sites</li>
               <li><strong className="text-foreground">Cascade</strong> (August 2025) — orchestration personality and intelligence routing</li>
@@ -186,10 +187,36 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="timeline" num="2" title="Complete Timeline of Development" />
 
+            {/* Phase -1: The Genesis */}
+            <PhaseHeader num="G" title="The Genesis — BRAIN and the Ecosystem Foundation (January–June 2025)" />
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              Before any product was launched, before any public post, before Cascade had a name — there was BRAIN. In January 2025, the author began working on the fundamental question that would define the entire research trajectory: <em>How does an AI system learn, remember, and improve over time without relying on expensive external APIs?</em>
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              The answer became the <strong className="text-foreground">BRAIN engine</strong> — a deterministic character-level hashing system (<code className="bg-muted px-1 rounded text-xs font-mono">hash-embed-v1</code>) that produces 384-dimensional vectors for knowledge representation, entirely client-side, at zero cost. BRAIN was the first piece of code written in what would become the PromptFluid and CMPSBL ecosystem.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">During January–June 2025, the author developed:</p>
+            <ul className="text-sm leading-relaxed text-muted-foreground list-disc ml-5 space-y-1 mb-3">
+              <li><strong className="text-foreground">The BRAIN Engine</strong> — FNV-1a hashing to 384-dim vectors, zero external dependencies, sub-ms per embedding</li>
+              <li><strong className="text-foreground">Knowledge Crystallization Pipeline</strong> — raw signals progressively refined into durable, confidence-scored "crystals"</li>
+              <li><strong className="text-foreground">Confidence Decay Model</strong> — half-life scoring (doctrine: 90d, heuristic: 30d, conversation: 7d)</li>
+              <li><strong className="text-foreground">Early Cascade Concepts</strong> — initial architecture for multi-subsystem intelligence routing</li>
+              <li><strong className="text-foreground">Neural Component Self-Activation</strong> — capabilities that unlock as data accumulates (50 crystals → index, 100 traces → classifier, 200 → drift detector, 500 → synthesizer)</li>
+            </ul>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              The Genesis period established three foundational principles: <strong className="text-foreground">zero-cost intelligence</strong> (meaningful semantic ops without API calls), <strong className="text-foreground">progressive self-activation</strong> (components that grow smarter with experience), and <strong className="text-foreground">memory as infrastructure</strong> (learning is foundational, not a feature added later).
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              BRAIN is Node #3 in the current 40-node substrate, but it was the <em>first</em> node built — and it remains the cognitive core. Every other node depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
+            </p>
+            <ContributionBox>
+              Established the entire <strong className="text-foreground">neural substrate layer</strong> — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — the foundation upon which all other cognitive capabilities were built.
+            </ContributionBox>
+
             {/* Phase 0: Clarity/CMPTBL */}
             <PhaseHeader num="0" title="PromptFluid Clarity / CMPTBL — The First Production AI (July 2025)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              PromptFluid Clarity (internally codenamed CMPTBL) was the author's first production AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and <em>autonomously repair</em> accessibility violations in real-time. This was not a scanner that merely reported problems; it rewrote HTML toward WCAG 2.2 compliance as it audited. Accessibility became baseline, not backlog.
+              PromptFluid Clarity (internally codenamed CMPTBL) was the author's first <em>production-facing</em> AI system — an AI-powered WCAG 2.2 accessibility compliance platform that could scan, detect, and <em>autonomously repair</em> accessibility violations in real-time. Critically, Clarity was built <em>on top of</em> BRAIN — scan patterns, fix heuristics, and compliance learnings were all stored as knowledge crystals in the Genesis-era engine, making Clarity the first external consumer of the neural substrate.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">The four-branch ecosystem:</p>
             <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-1 mb-3">
@@ -199,10 +226,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">Clarity WordPress Plugin</strong> — deployment vehicle with 9+ edge functions</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              These edge functions established the <strong className="text-foreground">edge-function-as-resolver</strong> pattern that became the canonical execution model for CMPSBL substrate nodes.
-            </p>
-            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate. The fact that the <em>entire heritage begins with accessibility</em> is architecturally significant: human compatibility was the first problem the author chose to solve with AI, and it remains a first-class substrate primitive today.
+              These edge functions established the <strong className="text-foreground">edge-function-as-resolver</strong> pattern. Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate.
             </p>
             <ContributionBox>
               Established <em>AI-driven automated remediation under governance</em> — the concept that became the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node carries the <code className="bg-muted px-1 rounded text-xs font-mono">@origin(cmptbl)</code> annotation.
@@ -573,7 +597,7 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="accessibility" num="6" title="The Accessibility Lineage: CMPTBL → INCLUSIVE" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The very first PromptFluid product established the <strong className="text-foreground">detect → propose → validate → apply → audit</strong> pattern. Every governed mutation in CMPSBL follows this same five-stage pattern first proven in the CMPTBL accessibility scanner in July 2025.
+              The very first PromptFluid product established the <strong className="text-foreground">detect → propose → validate → apply → audit</strong> pattern. Every governed mutation in CMPSBL follows this same five-stage pattern first proven in the CMPTBL accessibility scanner in July 2025 — itself powered by the BRAIN engine that had been under development since January.
             </p>
             <div className="overflow-x-auto mb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
               <table className="w-full text-xs border-collapse min-w-[350px]">
@@ -617,19 +641,20 @@ const HeritagePaper = () => {
               <table className="w-full text-xs border-collapse min-w-[500px]">
                 <thead><tr className="bg-muted/50">
                   <th className="text-left p-2 border border-border font-semibold text-foreground">Metric</th>
+                  <th className="text-left p-2 border border-border font-semibold text-foreground">Genesis (Jan '25)</th>
                   <th className="text-left p-2 border border-border font-semibold text-foreground">Clarity (Jul '25)</th>
                   <th className="text-left p-2 border border-border font-semibold text-foreground">Peak (Nov '25)</th>
                   <th className="text-left p-2 border border-border font-semibold text-foreground">v5.5 (Jan '26)</th>
                   <th className="text-left p-2 border border-border font-semibold text-foreground">v14.2 (Mar '26)</th>
                 </tr></thead>
                 <tbody className="text-muted-foreground">
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 nodes, 12 sectors</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">AI Providers</td><td className="p-2 border border-border">1 (Nexus)</td><td className="p-2 border border-border">23-provider mesh</td><td className="p-2 border border-border">Single</td><td className="p-2 border border-border font-medium text-foreground">NEXUS multi-provider</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Autonomy</td><td className="p-2 border border-border">User-initiated</td><td className="p-2 border border-border">Dreaming + proactive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">3-tier bounded</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Memory</td><td className="p-2 border border-border">Scan storage</td><td className="p-2 border border-border">Episodic + LT + meta</td><td className="p-2 border border-border">Multi-tier</td><td className="p-2 border border-border font-medium text-foreground">4-stage crystallization</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Security</td><td className="p-2 border border-border">—</td><td className="p-2 border border-border">Offensive + defensive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">IRONCLAD 100%</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Export</td><td className="p-2 border border-border">PDF reports</td><td className="p-2 border border-border">Morning reports</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">25-language universal</td></tr>
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Edge Functions</td><td className="p-2 border border-border">9</td><td className="p-2 border border-border">252+</td><td className="p-2 border border-border">~30</td><td className="p-2 border border-border font-medium text-foreground">80+ resolvers</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 nodes, 12 sectors</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">AI Providers</td><td className="p-2 border border-border">None (deterministic)</td><td className="p-2 border border-border">1 (Nexus)</td><td className="p-2 border border-border">23-provider mesh</td><td className="p-2 border border-border">Single</td><td className="p-2 border border-border font-medium text-foreground">NEXUS multi-provider</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Autonomy</td><td className="p-2 border border-border">N/A</td><td className="p-2 border border-border">User-initiated</td><td className="p-2 border border-border">Dreaming + proactive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">3-tier bounded</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Memory</td><td className="p-2 border border-border">Hash-embed, crystals</td><td className="p-2 border border-border">Scan storage</td><td className="p-2 border border-border">Episodic + LT + meta</td><td className="p-2 border border-border">Multi-tier</td><td className="p-2 border border-border font-medium text-foreground">4-stage crystallization</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Security</td><td className="p-2 border border-border">—</td><td className="p-2 border border-border">—</td><td className="p-2 border border-border">Offensive + defensive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">IRONCLAD 100%</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Export</td><td className="p-2 border border-border">—</td><td className="p-2 border border-border">PDF reports</td><td className="p-2 border border-border">Morning reports</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">25-language universal</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Edge Functions</td><td className="p-2 border border-border">0 (local engine)</td><td className="p-2 border border-border">9</td><td className="p-2 border border-border">252+</td><td className="p-2 border border-border">~30</td><td className="p-2 border border-border font-medium text-foreground">80+ resolvers</td></tr>
                 </tbody>
               </table>
             </div>
@@ -661,10 +686,11 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="conclusion" num="10" title="Conclusion" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning July 2025 through March 2026:
+              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through March 2026:
             </p>
-            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2 mb-6">
-              <li><strong className="text-foreground">Clarity / CMPTBL</strong> (July 2025) — the first product, establishing detect→fix→validate governance</li>
+            <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2 mb-6" start={0}>
+              <li><strong className="text-foreground">BRAIN — The Genesis</strong> (Jan–Jun 2025) — the neural substrate engine, first code written, still the cognitive core</li>
+              <li><strong className="text-foreground">Clarity / CMPTBL</strong> (July 2025) — first production system built on BRAIN, establishing detect→fix→validate governance</li>
               <li><strong className="text-foreground">WebAdoption</strong> (July 2025) — continuous verification as principle</li>
               <li><strong className="text-foreground">Cascade</strong> (August 2025) — orchestration as intelligence, inter-process learning</li>
               <li><strong className="text-foreground">Verify</strong> (August 2025) — sandboxed execution with rollback</li>
@@ -678,7 +704,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 nodes, 12 sectors, 54 engines, governed self-evolution</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. This paper establishes that provenance chain for the permanent academic record.
+              Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. This paper establishes that provenance chain for the permanent academic record.
             </p>
           </section>
 
