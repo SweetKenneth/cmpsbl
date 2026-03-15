@@ -33,6 +33,7 @@ This v2.2 edition corrects timeline inaccuracies present in earlier versions (ca
 
 This paper covers the following projects and milestones in chronological order:
 
+0. **BRAIN — The Genesis Engine** (January–June 2025) — deterministic neural substrate, the first code ever written in the ecosystem
 1. **PromptFluid Clarity / CMPTBL** (July 2025) — AI-powered WCAG 2.2 accessibility compliance, the first production AI system
 2. **WebAdoption** (July 2025) — living directory of WCAG-verified sites with automated audits
 3. **Cascade** (August 2025) — the AI orchestration personality and intelligence routing layer
