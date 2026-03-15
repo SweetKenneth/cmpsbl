@@ -611,6 +611,18 @@ The current epoch represents the system at full maturity:
 The following diagram traces the flow of architectural innovation from each predecessor project into the CMPSBL Substrate:
 
 ```
+┌────────────────────────┐
+│  BRAIN — The Genesis   │
+│  (January–June 2025)   │
+│                        │
+│ • Hash-Embed-v1 Engine │
+│ • Knowledge Crystals   │
+│ • Confidence Decay     │
+│ • Progressive Activatn │
+│ • First Code Written   │
+└───────────┬────────────┘
+            │
+            ▼
 ┌────────────────────────┐    ┌────────────────────────┐
 │  PromptFluid Clarity   │    │   AetherionShield      │
 │  / CMPTBL (July 2025)  │    │   (Sept–Oct 2025)      │
@@ -620,6 +632,7 @@ The following diagram traces the flow of architectural innovation from each pred
 │ • Compliance Reports   │    │ • Shadow Testing       │
 │ • Nexus AI Router      │    │ • Bulkhead Isolation   │
 │ • Edge Function Pattern│    │ • Red Team (99/100)    │
+│ • Built ON BRAIN       │    │                        │
 └───────────┬────────────┘    └───────────┬────────────┘
             │                             │
             ▼                             ▼
@@ -628,25 +641,29 @@ The following diagram traces the flow of architectural innovation from each pred
 │             (2025–2026, v1.0 – v14.2.0)                    │
 │               40 Nodes · 12 Sectors                        │
 │                                                             │
-│  From Clarity/CMPTBL:          From AetherionShield:        │
-│  ├─ INCLUSIVE (@origin cmptbl) ├─ DEFENSE (boundary)        │
-│  ├─ ACCESS (entitlements)      ├─ IMMUNITY (adaptive)       │
-│  ├─ Resolver architecture      ├─ PHANTOM (anonymization)   │
-│  └─ Governed remediation       ├─ SHADOW (verification)     │
-│                                └─ IRONCLAD (resilience)     │
+│  From BRAIN Genesis:           From AetherionShield:        │
+│  ├─ BRAIN (Node #3, 1st built) ├─ DEFENSE (boundary)       │
+│  ├─ Knowledge crystallization  ├─ IMMUNITY (adaptive)       │
+│  ├─ Zero-cost embeddings       ├─ PHANTOM (anonymization)   │
+│  ├─ Confidence decay model     ├─ SHADOW (verification)     │
+│  └─ Progressive self-activation└─ IRONCLAD (resilience)     │
 │                                                             │
-│  From Cascade/23-Provider:     From SimNap/Dream:           │
-│  ├─ CORTEX (orchestration)     ├─ DREAM (consolidation)     │
-│  ├─ ORACLE (prediction)        ├─ MEMORY (tiered)           │
-│  ├─ INTENT (NL routing)        ├─ BRAIN (learning)          │
-│  ├─ NEXUS (AI routing)         └─ Memory Stream & Foundry   │
+│  From Clarity/CMPTBL:          From SimNap/Dream:           │
+│  ├─ INCLUSIVE (@origin cmptbl) ├─ DREAM (consolidation)     │
+│  ├─ ACCESS (entitlements)      ├─ MEMORY (tiered)           │
+│  ├─ Resolver architecture      └─ Memory Stream & Foundry   │
+│  └─ Governed remediation                                    │
+│                                                             │
+│  From Cascade/23-Provider:     From Studio/Modernizer:      │
+│  ├─ CORTEX (orchestration)     ├─ FORGE (artifacts)         │
+│  ├─ ORACLE (prediction)        ├─ DECODE (parsing)          │
+│  ├─ INTENT (NL routing)        ├─ ENCODE (generation)       │
+│  ├─ NEXUS (AI routing)         └─ HARVEST (extraction)      │
 │  └─ Personality layer                                       │
-│                                                             │
-│  From Studio/Modernizer:       From Verify:                 │
-│  ├─ FORGE (artifacts)          ├─ SHADOW (sandbox verify)   │
-│  ├─ DECODE (parsing)           └─ AUDIT (chain of custody)  │
-│  ├─ ENCODE (generation)                                     │
-│  └─ HARVEST (extraction)       From WebAdoption:            │
+│                                From Verify:                 │
+│                                ├─ SHADOW (sandbox verify)   │
+│                                └─ AUDIT (chain of custody)  │
+│                                From WebAdoption:            │
 │                                └─ OBSERVER (continuous)     │
 └─────────────────────────────────────────────────────────────┘
             ▲                             ▲
