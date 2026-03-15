@@ -27,7 +27,7 @@ The purpose of this paper is to provide the academic community with a single, co
 
 The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the *current state* of the system without addressing the *path* that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-This v2.1 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain.
+This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed — predating any public post or product launch.
 
 ### 1.2 Scope
 
