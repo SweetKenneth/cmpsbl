@@ -89,7 +89,7 @@ describe('Ascension Page Components', () => {
   describe('AscensionHero', () => {
     it('renders hero title and description', () => {
       render(<AscensionHero />, { wrapper });
-      expect(screen.getByText('Ascension')).toBeTruthy();
+      expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
       expect(screen.getByText(/Bring your software into the substrate/i)).toBeTruthy();
     });
 
