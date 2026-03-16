@@ -152,6 +152,24 @@ export function IngestPhase() {
   const handleRegisterNode = async () => {
     if (!parsedNode) return;
 
+    if (!user) {
+      toast({
+        title: 'Sign in required',
+        description: 'You need to sign in before candidate nodes can be registered and persisted.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (parsedNode.ingestedFiles.length === 0) {
+      toast({
+        title: 'No readable code found',
+        description: 'Upload at least one supported text-based source file so the candidate can ingest real code.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (!canUpload) {
       toast({
         title: 'Daily upload limit reached',
@@ -161,7 +179,6 @@ export function IngestPhase() {
       return;
     }
 
-    // Circuit breaker check
     if (!canAttempt(breakerStatus)) {
       const waitSec = Math.ceil((breakerStatus.cooldownMs - (Date.now() - breakerStatus.lastFailure)) / 1000);
       toast({
@@ -169,7 +186,6 @@ export function IngestPhase() {
         description: `Too many failures. Auto-retry in ~${waitSec}s. The system is self-healing.`,
         variant: 'destructive',
       });
-      // Auto-heal: schedule retry
       if (autoHealAttempt < 2) {
         setTimeout(() => {
           setAutoHealAttempt(prev => prev + 1);
@@ -186,6 +202,7 @@ export function IngestPhase() {
       await withRetry(async () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { error } = await (supabase as any).from('artifact_registry').insert({
+          user_id: user.id,
           name: `CANDIDATE_${parsedNode.name}`,
           slug: `candidate-${parsedNode.name.toLowerCase()}-${Date.now().toString(36)}`,
           tier: 'candidate',
@@ -199,17 +216,27 @@ export function IngestPhase() {
             size_kb: parsedNode.sizeKb,
             ingested_at: new Date().toISOString(),
             parse_warnings: parsedNode.parseWarnings,
+            unreadable_file_count: parsedNode.unreadableFileCount,
+            source_files: parsedNode.ingestedFiles.map(file => ({
+              name: file.name,
+              extension: file.extension,
+              language: file.language,
+              size_bytes: file.sizeBytes,
+              char_count: file.charCount,
+              truncated: file.truncated,
+              content: file.content,
+            })),
           },
         });
 
         if (error) throw error;
       });
 
-      setBreakerStatus(recordSuccess(breakerStatus));
+      setBreakerStatus(recordSuccess());
       setRegistered(true);
       setAutoHealAttempt(0);
       await refreshUsage();
-      toast({ title: 'Candidate node registered', description: `${parsedNode.name} is ready for Ascension` });
+      toast({ title: 'Candidate node registered', description: `${parsedNode.name} ingested successfully and is ready for Ascension` });
     } catch (err) {
       const newBreaker = recordFailure(breakerStatus);
       setBreakerStatus(newBreaker);
