@@ -229,6 +229,7 @@ serve(async (req: Request) => {
     if (userError || !userData?.user) {
       return jsonResponse({ success: false, error: 'Invalid or expired auth token' }, 401);
     }
+    const userId = userData.user.id;
 
     let body: Record<string, unknown>;
     try {
