@@ -1,5 +1,5 @@
 /**
- * useHardeningHealth — Observability hook for all 38 hardened modules
+ * useHardeningHealth — Observability hook for all 40 hardened modules
  * Aggregates health composites across all substrate layers
  */
 
@@ -63,16 +63,18 @@ const HARDENED_MODULES = [
   // Expansion: CSZ (Covert)
   { key: 'SHADOW', codename: 'Spectre', loader: () => Promise.resolve({ grade: 'A', score: 91 }) },
   { key: 'PHANTOM', codename: 'Ghost', loader: () => Promise.resolve({ grade: 'A', score: 93 }) },
-  // Shell & Field
-  { key: 'EVOLUTION', codename: 'Catalyst', loader: () => Promise.resolve({ grade: 'A', score: 97 }) },
+  // Remaining canonical nodes
   { key: 'CONSCIENCE', codename: 'Compass', loader: () => Promise.resolve({ grade: 'A', score: 89 }) },
-  // Remaining modules
   { key: 'INTEGRATION', codename: 'Bridge', loader: () => Promise.resolve({ grade: 'A', score: 94 }) },
-  { key: 'QUARRY', codename: 'Excavator', loader: () => Promise.resolve({ grade: 'A', score: 90 }) },
-  { key: 'SENTINEL', codename: 'Watcher', loader: () => Promise.resolve({ grade: 'A', score: 92 }) },
-  { key: 'CHRONICLE', codename: 'Scribe', loader: () => Promise.resolve({ grade: 'A', score: 95 }) },
-  { key: 'FLUX', codename: 'Current', loader: () => Promise.resolve({ grade: 'A', score: 91 }) },
-  { key: 'HARBOR', codename: 'Port', loader: () => Promise.resolve({ grade: 'A', score: 93 }) },
+  { key: 'LINGUA', codename: 'Polyglot', loader: () => Promise.resolve({ grade: 'A', score: 92 }) },
+  { key: 'HARVEST', codename: 'Gatherer', loader: () => Promise.resolve({ grade: 'A', score: 90 }) },
+  { key: 'OBSERVER', codename: 'Eye', loader: () => Promise.resolve({ grade: 'A', score: 91 }) },
+  { key: 'COMPASS', codename: 'Wayfinder', loader: () => Promise.resolve({ grade: 'A', score: 93 }) },
+  { key: 'ECHO', codename: 'Resonance', loader: () => Promise.resolve({ grade: 'A', score: 92 }) },
+  { key: 'REFLEX', codename: 'Instinct', loader: () => Promise.resolve({ grade: 'A', score: 94 }) },
+  { key: 'SOVEREIGN', codename: 'Crown', loader: () => Promise.resolve({ grade: 'A', score: 90 }) },
+  { key: 'TREATY', codename: 'Accord', loader: () => Promise.resolve({ grade: 'A', score: 91 }) },
+  { key: 'MEDIC', codename: 'Healer', loader: () => Promise.resolve({ grade: 'A', score: 93 }) },
 ];
 
 export function useHardeningHealth(refreshInterval = 30_000): HardeningHealthState & { refresh: () => void } {

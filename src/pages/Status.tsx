@@ -91,7 +91,6 @@ const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType
 function useSystemStatus() {
   const [modules, setModules] = useState<ModuleHealth[]>([]);
   const [overallStatus, setOverallStatus] = useState<ModuleStatus>("operational");
-  const [uptimeDays, setUptimeDays] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [recentIncidents, setRecentIncidents] = useState<Array<{ date: string; module: string; severity: string; resolved: boolean; description: string }>>([]);
 
@@ -124,7 +123,7 @@ function useSystemStatus() {
           layer: mod.layer,
           icon: mod.icon,
           status,
-          latencyMs: Math.round(8 + Math.random() * 35),
+          // No latency data available — omit rather than fabricate
           lastCheck: now.toISOString(),
         };
       });
@@ -134,8 +133,6 @@ function useSystemStatus() {
       if (moduleHealth.some(m => m.status === "outage")) setOverallStatus("outage");
       else if (moduleHealth.some(m => m.status === "degraded")) setOverallStatus("degraded");
       else setOverallStatus("operational");
-
-      setUptimeDays(Math.max(1, Math.floor((now.getTime() - new Date("2025-01-01").getTime()) / 86400000)));
 
       const incidents = escalationRows.slice(0, 5).map((e: any) => ({
         date: e.created_at,
@@ -153,10 +150,10 @@ function useSystemStatus() {
     return () => clearInterval(interval);
   }, []);
 
-  return { modules, overallStatus, uptimeDays, lastUpdated, recentIncidents };
+  return { modules, overallStatus, lastUpdated, recentIncidents };
 }
 
-function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; uptimeDays: number }) {
+function OverallStatusBanner({ status }: { status: ModuleStatus }) {
   const config = STATUS_CONFIG[status];
   const Icon = config.icon;
 
@@ -185,8 +182,7 @@ function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; upt
         </h2>
       </div>
       <p className="text-muted-foreground text-sm">
-        {uptimeDays > 0 ? `${uptimeDays} days of continuous operation` : "System status is being monitored"}
-        {" · "}Last checked just now
+        Continuously monitored · Last checked just now
       </p>
     </motion.div>
   );
@@ -228,7 +224,7 @@ function ModuleStatusCard({ module, index }: { module: ModuleHealth; index: numb
 }
 
 export default function Status() {
-  const { modules, overallStatus, uptimeDays, lastUpdated, recentIncidents } = useSystemStatus();
+  const { modules, overallStatus, lastUpdated, recentIncidents } = useSystemStatus();
 
   const groupedByLayer = useMemo(() => {
     const groups: Record<string, ModuleHealth[]> = {};
@@ -270,24 +266,30 @@ export default function Status() {
 
         {/* Overall Banner */}
         <div className="mb-8">
-          <OverallStatusBanner status={overallStatus} uptimeDays={uptimeDays} />
+          <OverallStatusBanner status={overallStatus} />
         </div>
 
-        {/* Uptime History Bar (90 days visual) */}
+        {/* Uptime History Bar (90 days) — based on real incident data */}
         <Card className="mb-8 border-border/50 overflow-hidden">
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
               90-Day Uptime History
-              <span className="ml-auto text-[10px] font-normal text-muted-foreground">99.9% uptime</span>
+              {recentIncidents.length === 0 && (
+                <span className="ml-auto text-[10px] font-normal text-muted-foreground">No incidents recorded</span>
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-0.5">
               {Array.from({ length: 90 }, (_, i) => {
                 const isToday = i === 89;
-                const hasIncident = i > 82 && recentIncidents.length > 0 && i % 17 === 0;
+                // Check if any real incident falls on this day
+                const dayDate = new Date();
+                dayDate.setDate(dayDate.getDate() - (89 - i));
+                const dayStr = dayDate.toISOString().slice(0, 10);
+                const hasIncident = recentIncidents.some(inc => inc.date?.slice(0, 10) === dayStr);
                 return (
                   <div
                     key={i}
@@ -298,7 +300,6 @@ export default function Status() {
                     )}
                     title={isToday ? "Today" : `${90 - i} days ago${hasIncident ? " — incident" : ""}`}
                   >
-                    {/* Hover tooltip */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-popover border border-border text-[9px] font-mono text-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-md">
                       {isToday ? "Today" : `${90 - i}d ago`}{hasIncident ? " · ⚠ incident" : ""}
                     </div>

@@ -124,9 +124,8 @@ export function ConsolidationDiagram() {
             { x: 500, y: 85, w: 70, h: 35, name: "EMZ", n: "3" },
             { x: 575, y: 85, w: 75, h: 35, name: "CSZ", n: "4" },
             { x: 350, y: 130, w: 70, h: 35, name: "Fields", n: "2" },
-            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "1" },
+            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "2" },
             { x: 500, y: 130, w: 70, h: 35, name: "Shell", n: "1" },
-            { x: 575, y: 130, w: 75, h: 35, name: "Harbor", n: "2" },
           ].map((s, i) => (
             <g key={i}>
               <rect x={s.x} y={s.y} width={s.w} height={s.h} rx="4" className="fill-[hsl(var(--primary))] fill-opacity-[0.1] stroke-[hsl(var(--primary))] stroke-opacity-[0.3] stroke-[1]" />
@@ -163,9 +162,8 @@ export function SectorTopologyDiagram() {
     { name: "EMZ", nodes: ["SOVEREIGN", "REFLEX", "TREATY"], x: 340, y: 170, w: 160, color: "accent" },
     { name: "CSZ", nodes: ["PHANTOM", "SHADOW", "NERVE", "CONSCIENCE"], x: 510, y: 170, w: 160, color: "destructive" },
     { name: "FIELDS", nodes: ["EVOLUTION", "IMMUNITY"], x: 20, y: 310, w: 150, color: "primary" },
-    { name: "PLANE", nodes: ["INTENT"], x: 180, y: 310, w: 150, color: "primary" },
+    { name: "PLANE", nodes: ["INTENT", "GOVERNANCE"], x: 180, y: 310, w: 150, color: "primary" },
     { name: "SHELL", nodes: ["DEFENSE"], x: 340, y: 310, w: 160, color: "destructive" },
-    { name: "HARBOR", nodes: ["MODERNIZE", "INCLUSIVE"], x: 510, y: 310, w: 160, color: "accent" },
   ];
 
   return (
