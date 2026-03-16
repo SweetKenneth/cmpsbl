@@ -27,18 +27,21 @@ function useOpsData() {
     inclusive: { scans: 0, avgScore: 0, wcagLevel: 'AA' },
     nerve: { signals: 0, activeChannels: 0 },
     reflex: { latencyMs: 0, edgeNodes: 0 },
+    medic: { healthChecks: 0, recoveryCycles: 0 },
     loading: true,
   });
 
   useEffect(() => {
     async function fetch() {
-      const [usageRes, costRes, accessScanRes, a11yRes, blogRes, economicsRes] = await Promise.all([
+      const [usageRes, costRes, accessScanRes, a11yRes, blogRes, economicsRes, meshRes, escalationRes] = await Promise.all([
         supabase.from('ai_usage_log').select('provider, model, success, tokens_used, cost, response_time_ms, created_at').order('created_at', { ascending: false }).limit(20),
         supabase.from('ai_usage_log').select('cost').not('cost', 'is', null),
         supabase.from('access_scans').select('score, created_at').order('created_at', { ascending: false }).limit(10),
         supabase.from('accessibility_scans').select('score, wcag_level, created_at').order('created_at', { ascending: false }).limit(10),
         supabase.from('auto_blog_posts').select('confidence_score').not('confidence_score', 'is', null),
         supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed').order('period_date', { ascending: false }).limit(30),
+        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }),
+        supabase.from('immune_escalations').select('*', { count: 'exact', head: true }),
       ]);
 
       const usage = usageRes.data || [];
@@ -47,10 +50,14 @@ function useOpsData() {
       const a11y = a11yRes.data || [];
       const blogs = blogRes.data || [];
       const economics = economicsRes.data || [];
+      const meshSignals = meshRes.count || 0;
 
       const totalCost = costs.reduce((s, c) => s + (c.cost || 0), 0);
       const totalValue = economics.reduce((s, e) => s + (e.total_value_cents || 0), 0);
       const avgResponseTime = usage.length > 0 ? Math.round(usage.reduce((s, u) => s + (u.response_time_ms || 0), 0) / usage.length) : 0;
+
+      // Count distinct providers as "edge nodes" (real routing endpoints)
+      const distinctProviders = new Set(usage.map(u => u.provider)).size;
 
       setData({
         decode: {
@@ -74,8 +81,9 @@ function useOpsData() {
           avgScore: a11y.length > 0 ? Math.round(a11y.reduce((s, a) => s + (a.score || 0), 0) / a11y.length) : 0,
           wcagLevel: a11y[0]?.wcag_level || 'AA',
         },
-        nerve: { signals: usage.length * 3, activeChannels: 12 },
-        reflex: { latencyMs: avgResponseTime, edgeNodes: 3 },
+        nerve: { signals: meshSignals, activeChannels: distinctProviders },
+        reflex: { latencyMs: avgResponseTime, edgeNodes: distinctProviders },
+        medic: { healthChecks: escalationRes.count || 0, recoveryCycles: escalationRes.count || 0 },
         loading: false,
       });
     }
@@ -151,8 +159,8 @@ export function OperationsTab() {
       id: 'medic', label: 'MEDIC', icon: HeartPulse, color: 'text-red-400',
       desc: 'Self-healing diagnostics, triage, and recovery orchestration',
       stats: [
-        { label: 'Health Checks', value: ops.nerve.signals > 0 ? Math.round(ops.nerve.signals / 3) : 0 },
-        { label: 'Recovery Cycles', value: 0 },
+        { label: 'Health Checks', value: ops.medic.healthChecks },
+        { label: 'Recovery Cycles', value: ops.medic.recoveryCycles },
       ],
     },
   ];

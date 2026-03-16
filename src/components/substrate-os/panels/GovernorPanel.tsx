@@ -87,14 +87,20 @@ export default function GovernorPanel() {
     autoblog_enabled: false,
     defense_enabled: true,
     clm_enabled: true,
+    auto_training_enabled: false,
+    shadow_mesh_enabled: false,
   });
   const [ksLoading, setKsLoading] = useState(true);
+
+  // Substrate module metrics
+  const [moduleHealth, setModuleHealth] = useState<{ module: string; ops: number; errors: number; health: number }[]>([]);
+  const [moduleHealthLoading, setModuleHealthLoading] = useState(true);
 
   useEffect(() => {
     supabase
       .from('system_flags')
       .select('key, enabled')
-      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled', 'clm_enabled'])
+      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled', 'clm_enabled', 'auto_training_enabled', 'shadow_mesh_enabled'])
       .then(({ data }) => {
         if (data) {
           const flags: Record<string, boolean> = {};
@@ -103,6 +109,36 @@ export default function GovernorPanel() {
         }
         setKsLoading(false);
       });
+
+    // Fetch real module metrics from immune_metrics and mesh_comms
+    Promise.all([
+      supabase.from('immune_metrics').select('executor, total, repaired, escalated, safe_fail').order('created_at', { ascending: false }).limit(100),
+      supabase.from('mesh_comms').select('source_module, category').order('created_at', { ascending: false }).limit(500),
+    ]).then(([imRes, meshRes]) => {
+      const modules = new Map<string, { ops: number; errors: number }>();
+      (imRes.data || []).forEach((row: any) => {
+        const existing = modules.get(row.executor) || { ops: 0, errors: 0 };
+        existing.ops += (row.total || 0);
+        existing.errors += (row.escalated || 0);
+        modules.set(row.executor, existing);
+      });
+      (meshRes.data || []).forEach((row: any) => {
+        const mod = row.source_module;
+        if (!mod) return;
+        const existing = modules.get(mod) || { ops: 0, errors: 0 };
+        existing.ops += 1;
+        if (row.category === 'escalation' || row.category === 'warning') existing.errors += 1;
+        modules.set(mod, existing);
+      });
+      const result = Array.from(modules.entries()).map(([module, data]) => ({
+        module,
+        ops: data.ops,
+        errors: data.errors,
+        health: data.ops > 0 ? Math.max(0, Math.round(100 - (data.errors / data.ops) * 50)) : 100,
+      })).sort((a, b) => b.ops - a.ops).slice(0, 12);
+      setModuleHealth(result);
+      setModuleHealthLoading(false);
+    });
   }, []);
 
   const toggleKs = async (key: string) => {
@@ -205,6 +241,9 @@ export default function GovernorPanel() {
             <TabsTrigger value="advisory" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Brain className="w-3.5 h-3.5 hidden sm:block" /> Signal
             </TabsTrigger>
+            <TabsTrigger value="metrics" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Metrics
+            </TabsTrigger>
           </TabsList>
         </div>
 
@@ -226,6 +265,8 @@ export default function GovernorPanel() {
                   { key: 'seba_enabled', label: 'SEBA Agent', desc: 'Autonomous evolution', icon: Zap, color: 'text-purple-500', checked: killSwitches.seba_enabled, toggle: () => toggleKs('seba_enabled') },
                   { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
                   { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-emerald-500', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
+                  { key: 'auto_training_enabled', label: 'IMMUNITY Training', desc: 'Shadow probe auto-training', icon: Shield, color: 'text-primary', checked: killSwitches.auto_training_enabled, toggle: () => toggleKs('auto_training_enabled') },
+                  { key: 'shadow_mesh_enabled', label: 'Shadow Mesh', desc: 'Adversarial shadow probes', icon: Eye, color: 'text-violet-500', checked: killSwitches.shadow_mesh_enabled, toggle: () => toggleKs('shadow_mesh_enabled') },
                 ].map(sw => (
                   <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px] transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
@@ -253,9 +294,9 @@ export default function GovernorPanel() {
                 color: 'text-amber-500',
                 desc: 'Autonomous decision authority & operational independence',
                 metrics: [
-                  { label: 'Authority Level', value: 'Full' },
-                  { label: 'Override Events', value: '0' },
-                  { label: 'Delegation Active', value: 'Yes' },
+                  { label: 'Authority Level', value: killSwitches.seba_enabled ? 'Full' : 'Limited' },
+                  { label: 'Override Events', value: String(telemetry.recentErrors) },
+                  { label: 'Delegation Active', value: killSwitches.clm_enabled ? 'Yes' : 'No' },
                 ],
               },
               {
@@ -264,9 +305,9 @@ export default function GovernorPanel() {
                 color: 'text-violet-500',
                 desc: 'Ethical decision boundaries & bias detection',
                 metrics: [
-                  { label: 'Ethics Checks', value: 'Active' },
-                  { label: 'Bias Alerts', value: '0' },
-                  { label: 'Boundary Status', value: 'Enforced' },
+                  { label: 'Ethics Checks', value: killSwitches.defense_enabled ? 'Active' : 'Disabled' },
+                  { label: 'Bias Alerts', value: String(telemetry.recentErrors) },
+                  { label: 'Boundary Status', value: killSwitches.defense_enabled ? 'Enforced' : 'Relaxed' },
                 ],
               },
               {
@@ -275,9 +316,9 @@ export default function GovernorPanel() {
                 color: 'text-cyan-500',
                 desc: 'SLA enforcement, contract compliance, agreement tracking',
                 metrics: [
-                  { label: 'Active Treaties', value: '3' },
-                  { label: 'Violations', value: '0' },
-                  { label: 'Compliance', value: '100%' },
+                  { label: 'Active Treaties', value: String(telemetry.totalUsers) },
+                  { label: 'Violations', value: String(telemetry.recentErrors) },
+                  { label: 'Compliance', value: telemetry.recentErrors === 0 ? '100%' : `${Math.max(0, Math.round(100 - (telemetry.recentErrors / Math.max(1, telemetry.totalApiCalls)) * 100))}%` },
                 ],
               },
             ].map((node) => (
@@ -451,6 +492,43 @@ export default function GovernorPanel() {
               </motion.div>
             ))}
           </div>
+        </TabsContent>
+
+        {/* Metrics Store */}
+        <TabsContent value="metrics" className="mt-4 space-y-4">
+          <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-primary shrink-0" />
+                Substrate Module Metrics
+              </CardTitle>
+              <CardDescription className="text-[11px]">Real-time health and throughput per module</CardDescription>
+            </CardHeader>
+            <CardContent className="px-4 sm:px-6">
+              {moduleHealthLoading ? (
+                <div className="space-y-2">{[1,2,3].map(i => <Skeleton key={i} className="h-10 w-full" />)}</div>
+              ) : moduleHealth.length > 0 ? (
+                <div className="space-y-2">
+                  {moduleHealth.map(m => (
+                    <div key={m.module} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                      <span className="text-[11px] font-mono font-bold w-24 truncate">{m.module}</span>
+                      <div className="flex-1 h-1.5 bg-muted/30 rounded-full overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full", m.health >= 80 ? "bg-emerald-500" : m.health >= 50 ? "bg-amber-500" : "bg-red-500")}
+                          style={{ width: `${m.health}%` }}
+                        />
+                      </div>
+                      <span className="text-[10px] font-mono tabular-nums w-10 text-right">{m.health}%</span>
+                      <span className="text-[9px] text-muted-foreground/50 font-mono w-16 text-right">{m.ops} ops</span>
+                      <span className="text-[9px] text-red-400/70 font-mono w-12 text-right">{m.errors} err</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground/40 text-center py-6">No module metrics recorded yet. Enable Shadow Mesh & IMMUNITY Training to begin.</p>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Signal Feed */}

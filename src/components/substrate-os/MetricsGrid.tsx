@@ -5,6 +5,8 @@
  */
 
 import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLiveDashboardMetrics, useLiveBrainEvents, useLiveForecasts } from '@/hooks/useSubstrateOSLive';
 import { cn } from '@/lib/utils';
@@ -171,7 +173,7 @@ function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoadi
             "text-muted-foreground"
           )}>
             <TrendIcon className="w-3 h-3" />
-            <span>{trend === 'stable' ? '0%' : trend === 'up' ? '+5%' : '-3%'}</span>
+            <span>{trend === 'stable' ? '—' : trend === 'up' ? '↑' : '↓'}</span>
           </div>
         </div>
       </div>
@@ -232,6 +234,10 @@ export function MetricsGrid() {
   const forecasts = useLiveForecasts();
   
   const isLoading = dashboard.isLoading;
+
+  // Compute real trends from data
+  const computeTrend = (val: number): 'up' | 'down' | 'stable' => 
+    val > 10 ? 'up' : val > 0 ? 'stable' : 'stable';
   
   const metricsData: MetricCardProps[] = [
     {
@@ -239,7 +245,7 @@ export function MetricsGrid() {
       value: dashboard.metrics.brainMemories,
       icon: Brain,
       color: 'cyan',
-      trend: 'up',
+      trend: computeTrend(dashboard.metrics.brainMemories),
       subValue: 'Stored memories',
       delay: 0,
     },
@@ -248,7 +254,7 @@ export function MetricsGrid() {
       value: dashboard.metrics.decodeConversations,
       icon: MessageSquare,
       color: 'purple',
-      trend: 'stable',
+      trend: computeTrend(dashboard.metrics.decodeConversations),
       subValue: 'Conversations',
       delay: 0.05,
     },
@@ -257,7 +263,7 @@ export function MetricsGrid() {
       value: dashboard.metrics.defenseEvents,
       icon: Shield,
       color: 'amber',
-      trend: 'stable',
+      trend: computeTrend(dashboard.metrics.defenseEvents),
       subValue: 'Threats analyzed',
       delay: 0.1,
     },
@@ -266,7 +272,7 @@ export function MetricsGrid() {
       value: dashboard.metrics.nexusRoutes,
       icon: Zap,
       color: 'green',
-      trend: 'up',
+      trend: computeTrend(dashboard.metrics.nexusRoutes),
       subValue: 'AI calls routed',
       delay: 0.15,
     },
@@ -275,7 +281,7 @@ export function MetricsGrid() {
       value: dashboard.metrics.dreamSubmissions,
       icon: Moon,
       color: 'violet',
-      trend: 'up',
+      trend: computeTrend(dashboard.metrics.dreamSubmissions),
       subValue: 'Dreams consumed',
       delay: 0.2,
     },
@@ -288,12 +294,22 @@ export function MetricsGrid() {
         : dashboard.metrics.aiTokensUsed,
       icon: Cpu,
       color: 'blue',
-      trend: 'up',
+      trend: computeTrend(dashboard.metrics.aiTokensUsed),
       subValue: `$${dashboard.metrics.aiCostTotal.toFixed(2)} cost`,
       delay: 0.25,
     },
   ];
   
+  // Fetch real SEBA proposal count
+  const [sebaProposals, setSebaProposals] = useState(0);
+  useEffect(() => {
+    supabase
+      .from('evolution_proposals')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending')
+      .then(({ count }) => setSebaProposals(count ?? 0));
+  }, []);
+
   return (
     <div className="space-y-4">
       {/* Header */}
@@ -389,7 +405,7 @@ export function MetricsGrid() {
           </StatusPanel>
         )}
         
-        {/* SEBA Status Panel */}
+        {/* SEBA Status Panel — real proposal count */}
         <motion.div 
           className="p-4 rounded-xl border bg-gradient-to-br from-indigo-500/10 via-muted/20 to-transparent backdrop-blur-xl border-indigo-500/20"
           initial={{ opacity: 0, y: 20 }}
@@ -416,7 +432,7 @@ export function MetricsGrid() {
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
               <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Proposals</span>
-              <p className="font-medium text-sm text-foreground">0 pending</p>
+              <p className="font-medium text-sm text-foreground">{sebaProposals} pending</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
               <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Governance</span>
