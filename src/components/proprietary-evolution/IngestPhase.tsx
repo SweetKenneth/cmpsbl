@@ -139,9 +139,25 @@ export function IngestPhase() {
     setParsing(true);
 
     try {
+      console.log('[INGEST] Analyzing', files.length, 'file(s):', files.map(f => f.name).join(', '));
       const analysis = await analyzeUploadedFiles(files);
+      console.log('[INGEST] Analysis complete:', {
+        name: analysis.name,
+        language: analysis.language,
+        ingested: analysis.ingestedFiles.length,
+        unreadable: analysis.unreadableFileCount,
+        warnings: analysis.parseWarnings,
+      });
       setParsedNode(analysis);
+      if (analysis.ingestedFiles.length === 0) {
+        toast({
+          title: 'No code could be extracted',
+          description: 'The files could not be read as text. Ensure they are valid source code files (not compiled binaries).',
+          variant: 'destructive',
+        });
+      }
     } catch (err) {
+      console.error('[INGEST] Analysis error:', err);
       toast({ title: 'Analysis failed', description: String(err), variant: 'destructive' });
     } finally {
       setParsing(false);
