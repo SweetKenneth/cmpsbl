@@ -177,8 +177,8 @@ describe('Ascension Page Components', () => {
 
     it('renders all 4 lifecycle steps', () => {
       render(<AscensionHero />, { wrapper });
-      expect(screen.getByText('Ingest')).toBeTruthy();
-      expect(screen.getByText('Crystallize')).toBeTruthy();
+      expect(screen.getByText('INGEST')).toBeInTheDocument();
+      expect(screen.getByText('CRYSTALLIZE')).toBeInTheDocument();
       expect(screen.getAllByText('Ascended Memory').length).toBeGreaterThanOrEqual(1);
     });
 

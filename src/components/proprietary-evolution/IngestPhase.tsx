@@ -133,6 +133,19 @@ const MAX_TEXT_ANALYSIS_BYTES = 1024 * 1024;
 
 type SupportedTextEncoding = 'utf-8' | 'utf-16le' | 'utf-16be';
 
+async function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  if (typeof blob.arrayBuffer === 'function') {
+    return blob.arrayBuffer();
+  }
+
+  return await new Promise<ArrayBuffer>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error('Failed to read blob'));
+    reader.onload = () => resolve(reader.result as ArrayBuffer);
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
 function detectTextEncoding(bytes: Uint8Array): SupportedTextEncoding {
   if (bytes.length >= 2) {
     if (bytes[0] === 0xff && bytes[1] === 0xfe) return 'utf-16le';
@@ -161,7 +174,6 @@ function detectTextEncoding(bytes: Uint8Array): SupportedTextEncoding {
 
 function isLikelyBinary(bytes: Uint8Array, encoding: SupportedTextEncoding): boolean {
   if (encoding === 'utf-16le' || encoding === 'utf-16be') return false;
-
   if (bytes.length === 0) return false;
 
   let suspiciousControls = 0;
@@ -184,7 +196,7 @@ function isLikelyBinary(bytes: Uint8Array, encoding: SupportedTextEncoding): boo
 async function safeReadText(file: File): Promise<string | null> {
   try {
     const sampleSize = Math.min(file.size, TEXT_SAMPLE_BYTES);
-    const sampleBuffer = await file.slice(0, sampleSize).arrayBuffer();
+    const sampleBuffer = await blobToArrayBuffer(file.slice(0, sampleSize));
     const sampleBytes = new Uint8Array(sampleBuffer);
     const encoding = detectTextEncoding(sampleBytes);
 
@@ -193,7 +205,7 @@ async function safeReadText(file: File): Promise<string | null> {
     const analysisSize = Math.min(file.size, MAX_TEXT_ANALYSIS_BYTES);
     const analysisBuffer = analysisSize === sampleSize
       ? sampleBuffer
-      : await file.slice(0, analysisSize).arrayBuffer();
+      : await blobToArrayBuffer(file.slice(0, analysisSize));
 
     const decoded = new TextDecoder(encoding, { fatal: false }).decode(analysisBuffer);
     return decoded.replace(/^\uFEFF/, '');
