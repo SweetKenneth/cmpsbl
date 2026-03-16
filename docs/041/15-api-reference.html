@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 — API Reference | CMPSBL Documentation</title>
+<style>:root{--bg:#fafafa;--fg:#111;--muted:#666;--border:#e0e0e0;--accent:#1a1a2e;--link:#2563eb;--code-bg:#f3f4f6;--table-stripe:#f9fafb}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter','Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg);line-height:1.7;max-width:860px;margin:0 auto;padding:2rem 1.5rem}h1{font-size:1.75rem;font-weight:700;margin:2rem 0 .5rem}h2{font-size:1.35rem;font-weight:600;margin:2rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--border)}h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}p{margin:.5rem 0}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}th,td{text-align:left;padding:.5rem .75rem;border:1px solid var(--border)}th{background:var(--accent);color:#fff;font-weight:600}tr:nth-child(even){background:var(--table-stripe)}code{background:var(--code-bg);padding:.15em .35em;border-radius:3px;font-size:.88em;font-family:'JetBrains Mono',monospace}pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;margin:1rem 0;font-size:.85rem}pre code{background:none;padding:0}ul,ol{margin:.5rem 0 .5rem 1.5rem}li{margin:.25rem 0}.meta{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}@media print{body{max-width:100%;padding:1cm}}</style>
+</head>
+<body>
+<h1>15 — API Reference</h1>
+<p class="meta">Documentation Epoch 041 &middot; Public &middot; Last Updated: 2026-03-16</p>
+
+<h2>Base URLs</h2>
+<table>
+<tr><th>Service</th><th>URL</th></tr>
+<tr><td>Substrate Gateway</td><td><code>POST https://api.cmpsbl.com/v1/substrate</code></td></tr>
+<tr><td>Engine Gateway</td><td><code>POST https://api.cmpsbl.com/v1/engine</code></td></tr>
+</table>
+
+<h2>BRAIN Module</h2>
+<h3>brain.query</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>prompt</td><td>string</td><td>Yes</td></tr><tr><td>context</td><td>object</td><td>No</td></tr><tr><td>systemPrompt</td><td>string</td><td>No</td></tr></table>
+
+<h2>MEMORY Module</h2>
+<h3>memory.store</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>content</td><td>string</td><td>Yes</td></tr><tr><td>tags</td><td>string[]</td><td>No</td></tr><tr><td>importance</td><td>number</td><td>No</td></tr></table>
+<h3>memory.semantic_search</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>query</td><td>string</td><td>Yes</td></tr><tr><td>limit</td><td>number</td><td>No</td></tr></table>
+
+<h2>DEFENSE Module</h2>
+<h3>defense.threat_score</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>content</td><td>string</td><td>Yes</td></tr></table>
+
+<h2>HARVEST Module</h2>
+<h3>harvest.discover</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>domain</td><td>string</td><td>No</td></tr><tr><td>minScore</td><td>number</td><td>No</td></tr></table>
+
+<h2>FORGE Module</h2>
+<h3>forge.signal_forge</h3>
+<table><tr><th>Field</th><th>Type</th><th>Required</th></tr><tr><td>seed</td><td>string</td><td>Yes</td></tr><tr><td>constraints</td><td>object</td><td>No</td></tr></table>
+
+<h2>Error Codes</h2>
+<table>
+<tr><th>Code</th><th>HTTP</th><th>Description</th></tr>
+<tr><td>AUTH_REQUIRED</td><td>401</td><td>Missing/invalid credentials</td></tr>
+<tr><td>RATE_LIMITED</td><td>429</td><td>Rate limit exceeded</td></tr>
+<tr><td>MODULE_NOT_FOUND</td><td>404</td><td>Invalid module</td></tr>
+<tr><td>GOVERNANCE_BLOCKED</td><td>403</td><td>Blocked by governance</td></tr>
+<tr><td>CONSENT_REQUIRED</td><td>403</td><td>Mutation needs approval</td></tr>
+</table>
+
+<h2>Related Documents</h2>
+<ul>
+<li><a href="09-sdk-and-api.html">SDK &amp; API</a></li>
+<li><a href="03-developer-guide.html">Developer Guide</a></li>
+</ul>
+<div class="footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>
