@@ -662,8 +662,8 @@ export default function SubstrateDashboard() {
                 <TabsTrigger value="zones" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
                   Expansion Zones (14)
                 </TabsTrigger>
-                <TabsTrigger value="mesh" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
-                  Mesh Overlays (4)
+                <TabsTrigger value="fields" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Fields · Plane · Shell (6)
                 </TabsTrigger>
                 <TabsTrigger value="api" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
                   API Reference
