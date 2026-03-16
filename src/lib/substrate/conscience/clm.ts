@@ -1,5 +1,5 @@
 /**
- * CONSCIENCE CLM — Continuous Learning Module
+ * CONSCIENCE CLM — Constant Learning Module
  * Monitors ethical score trends, bias detection rates, alignment drift, and blocked action frequency.
  */
 

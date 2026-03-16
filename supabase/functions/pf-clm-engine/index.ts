@@ -1,5 +1,5 @@
 /**
- * pf-clm-engine — High-Velocity Continuous Learning Engine
+ * pf-clm-engine — High-Velocity Constant Learning Engine
  * v5.0.0 SPARTA Epoch — Always-Burst Orchestrator
  * 
  * ALWAYS runs in burst mode. Every cron/manual invocation fires a full burst.
