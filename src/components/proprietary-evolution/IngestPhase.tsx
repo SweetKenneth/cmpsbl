@@ -1,14 +1,16 @@
 /**
  * INGEST Phase — Import developer code and create Candidate Node #41
  * Reverse of the Universal Export Adapter
+ * Tier-gated: uploads limited per day (3/6/9/12 by tier)
  */
 
 import { useState, useCallback } from 'react';
-import { Upload, FileCode2, CheckCircle2, AlertCircle, Loader2, Code2, Layers } from 'lucide-react';
+import { Upload, FileCode2, CheckCircle2, AlertCircle, Loader2, Code2, Layers, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 
 interface ParsedNode {
   name: string;
@@ -25,6 +27,7 @@ export function IngestPhase() {
   const [parsedNode, setParsedNode] = useState<ParsedNode | null>(null);
   const [registered, setRegistered] = useState(false);
   const { toast } = useToast();
+  const { canUpload, uploadsRemaining, evolutionUploadsPerDay, isLoading: limitsLoading, refreshUsage } = useEvolutionLimits();
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -48,7 +51,6 @@ export function IngestPhase() {
     setParsing(true);
 
     try {
-      // Analyze uploaded files to create candidate node profile
       const totalSize = files.reduce((sum, f) => sum + f.size, 0);
       const extensions = new Set(files.map(f => f.name.split('.').pop()?.toLowerCase()));
       
@@ -62,10 +64,9 @@ export function IngestPhase() {
         .map(ext => langMap[ext || ''])
         .filter(Boolean)[0] || 'Unknown';
 
-      // Count potential resolvers (exported functions/classes)
       let resolverEstimate = 0;
       for (const file of files) {
-        if (file.size < 500_000) { // Only parse files < 500KB
+        if (file.size < 500_000) {
           const text = await file.text();
           const exportMatches = text.match(/export\s+(function|class|const|default)/g);
           resolverEstimate += exportMatches?.length || 0;
@@ -88,14 +89,23 @@ export function IngestPhase() {
 
   const handleRegisterNode = async () => {
     if (!parsedNode) return;
+
+    if (!canUpload) {
+      toast({
+        title: 'Daily upload limit reached',
+        description: `You've used all ${evolutionUploadsPerDay} uploads for today. Upgrade your tier for more capacity.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setParsing(true);
 
     try {
-      // Register as candidate node in artifact registry
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert({
         name: `CANDIDATE_${parsedNode.name}`,
-        slug: `candidate-${parsedNode.name.toLowerCase()}`,
+        slug: `candidate-${parsedNode.name.toLowerCase()}-${Date.now().toString(36)}`,
         tier: 'candidate',
         category: 'proprietary-evolution',
         description: `Candidate Node #41 — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers)`,
@@ -111,6 +121,7 @@ export function IngestPhase() {
 
       if (error) throw error;
       setRegistered(true);
+      await refreshUsage();
       toast({ title: 'Node #41 registered', description: `${parsedNode.name} is ready for Discovery` });
     } catch (err) {
       toast({ title: 'Registration failed', description: String(err), variant: 'destructive' });
@@ -121,6 +132,19 @@ export function IngestPhase() {
 
   return (
     <div className="space-y-6">
+      {/* Upload Quota */}
+      <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
+        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+          Daily Uploads
+        </span>
+        <span className={cn(
+          "text-xs font-mono font-bold",
+          canUpload ? "text-primary" : "text-destructive"
+        )}>
+          {uploadsRemaining}/{evolutionUploadsPerDay} remaining
+        </span>
+      </div>
+
       {/* Drop Zone */}
       <div
         onDragOver={e => { e.preventDefault(); setDragOver(true); }}
@@ -128,30 +152,42 @@ export function IngestPhase() {
         onDrop={handleDrop}
         className={cn(
           "border-2 border-dashed rounded-xl p-8 text-center transition-all",
-          dragOver
-            ? "border-primary/60 bg-primary/5"
-            : "border-border/30 bg-card/30 hover:border-border/50"
+          !canUpload
+            ? "border-destructive/30 bg-destructive/5 opacity-60 pointer-events-none"
+            : dragOver
+              ? "border-primary/60 bg-primary/5"
+              : "border-border/30 bg-card/30 hover:border-border/50"
         )}
       >
-        <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
-        <p className="text-sm text-foreground font-medium">Drop source files here</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Supports TypeScript, Python, Rust, Go, Zig, SystemVerilog, and 12 more
+        {!canUpload ? (
+          <Lock className="w-8 h-8 mx-auto text-destructive/50 mb-3" />
+        ) : (
+          <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
+        )}
+        <p className="text-sm text-foreground font-medium">
+          {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
         </p>
-        <div className="mt-4">
-          <label className="cursor-pointer">
-            <input
-              type="file"
-              multiple
-              className="hidden"
-              onChange={handleFileSelect}
-              accept=".ts,.tsx,.js,.jsx,.py,.rs,.go,.java,.rb,.cs,.cpp,.c,.zig,.hs,.sv,.v"
-            />
-            <span className="text-xs text-primary hover:underline font-mono">
-              or click to browse
-            </span>
-          </label>
-        </div>
+        <p className="text-xs text-muted-foreground mt-1">
+          {!canUpload
+            ? 'Upgrade your tier for more daily uploads'
+            : 'Supports TypeScript, Python, Rust, Go, Zig, SystemVerilog, and 12 more'}
+        </p>
+        {canUpload && (
+          <div className="mt-4">
+            <label className="cursor-pointer">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                onChange={handleFileSelect}
+                accept=".ts,.tsx,.js,.jsx,.py,.rs,.go,.java,.rb,.cs,.cpp,.c,.zig,.hs,.sv,.v"
+              />
+              <span className="text-xs text-primary hover:underline font-mono">
+                or click to browse
+              </span>
+            </label>
+          </div>
+        )}
       </div>
 
       {/* File List */}
@@ -218,7 +254,7 @@ export function IngestPhase() {
           </div>
 
           {!registered && (
-            <Button onClick={handleRegisterNode} disabled={parsing} className="w-full gap-2">
+            <Button onClick={handleRegisterNode} disabled={parsing || !canUpload} className="w-full gap-2">
               {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
               Register as Candidate Node #41
             </Button>

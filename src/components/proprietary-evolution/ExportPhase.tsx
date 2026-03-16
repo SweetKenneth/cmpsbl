@@ -1,15 +1,28 @@
 /**
  * EXPORT Phase — Generate Capability Packs from crystallized memories
- * Includes Mini-Runtime™ for local execution + ZIP download + re-ingest loop
+ * Tier-gated: Builder can see but not export. Export limits enforced per day.
+ * HDL targets restricted to Studio+ tiers.
+ * Includes retirement prompt on export.
  */
 
 import { useState, useEffect } from 'react';
-import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface CrystallizedCapability {
   id: string;
@@ -18,19 +31,36 @@ interface CrystallizedCapability {
   tier: string;
   crystallizedAt: string;
   exported: boolean;
+  retired: boolean;
   chain: string[];
   fingerprint: string;
   moatSignature: string;
   capabilityType: string;
+  description: string;
+  category: string;
 }
 
-const EXPORT_TARGETS = [
-  { id: 'typescript', label: 'TypeScript', ext: '.ts' },
-  { id: 'python', label: 'Python', ext: '.py' },
-  { id: 'rust', label: 'Rust', ext: '.rs' },
-  { id: 'go', label: 'Go', ext: '.go' },
-  { id: 'zig', label: 'Zig', ext: '.zig' },
+const SOFTWARE_TARGETS = [
+  { id: 'typescript', label: 'TypeScript', ext: '.ts', hdl: false },
+  { id: 'python', label: 'Python', ext: '.py', hdl: false },
+  { id: 'rust', label: 'Rust', ext: '.rs', hdl: false },
+  { id: 'go', label: 'Go', ext: '.go', hdl: false },
+  { id: 'zig', label: 'Zig', ext: '.zig', hdl: false },
+  { id: 'java', label: 'Java', ext: '.java', hdl: false },
+  { id: 'csharp', label: 'C#', ext: '.cs', hdl: false },
+  { id: 'kotlin', label: 'Kotlin', ext: '.kt', hdl: false },
+  { id: 'swift', label: 'Swift', ext: '.swift', hdl: false },
+  { id: 'ruby', label: 'Ruby', ext: '.rb', hdl: false },
 ] as const;
+
+const HDL_TARGETS = [
+  { id: 'verilog', label: 'Verilog', ext: '.v', hdl: true },
+  { id: 'systemverilog', label: 'SystemVerilog', ext: '.sv', hdl: true },
+  { id: 'vhdl', label: 'VHDL', ext: '.vhd', hdl: true },
+  { id: 'systemc', label: 'SystemC', ext: '.cpp', hdl: true },
+] as const;
+
+const ALL_TARGETS = [...SOFTWARE_TARGETS, ...HDL_TARGETS];
 
 export function ExportPhase() {
   const [capabilities, setCapabilities] = useState<CrystallizedCapability[]>([]);
@@ -39,7 +69,19 @@ export function ExportPhase() {
   const [exporting, setExporting] = useState(false);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
   const [reingesting, setReingesting] = useState(false);
+  const [showRetirementDialog, setShowRetirementDialog] = useState(false);
   const { toast } = useToast();
+  const {
+    canExport,
+    canAccessHdl,
+    exportsRemaining,
+    evolutionExportsPerDay,
+    productTier,
+    isLoading: limitsLoading,
+    refreshUsage,
+  } = useEvolutionLimits();
+
+  const isBuilderTier = productTier === 'builder';
 
   useEffect(() => {
     loadCrystallized();
@@ -49,7 +91,7 @@ export function ExportPhase() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
-      .select('id, name, metadata, tier, created_at')
+      .select('id, name, metadata, tier, created_at, description, category')
       .eq('category', 'proprietary-crystallized')
       .order('created_at', { ascending: false })
       .limit(50);
@@ -64,23 +106,51 @@ export function ExportPhase() {
           tier: d.tier || 'mint',
           crystallizedAt: String(meta.crystallized_at || d.created_at),
           exported: meta.exported === true,
+          retired: meta.retired === true,
           chain: (meta.chain as string[]) || [],
           fingerprint: String(meta.structural_fingerprint || ''),
           moatSignature: String(meta.moat_signature || ''),
           capabilityType: String(meta.capability_type || 'collision'),
+          description: d.description || '',
+          category: d.category || 'proprietary-evolution',
         };
       }));
     }
     setLoading(false);
   };
 
-  const handleExport = async () => {
-    const eligible = capabilities.filter(c => !c.exported);
+  const eligible = capabilities.filter(c => !c.exported && !c.retired);
+  const selectedTargetIsHdl = HDL_TARGETS.some(t => t.id === selectedTarget);
+
+  const initiateExport = () => {
     if (eligible.length === 0) {
-      toast({ title: 'Nothing to export', description: 'All capabilities already exported' });
+      toast({ title: 'Nothing to export', description: 'All capabilities already exported or retired' });
       return;
     }
+    if (!canExport) {
+      toast({
+        title: isBuilderTier ? 'Upgrade required' : 'Daily export limit reached',
+        description: isBuilderTier
+          ? 'The Builder tier lets you discover capabilities for free, but exporting requires a paid tier.'
+          : `You've used all ${evolutionExportsPerDay} exports for today. Upgrade for more daily capacity.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (selectedTargetIsHdl && !canAccessHdl) {
+      toast({
+        title: 'HDL exports require Studio tier or above',
+        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Studio ($49/mo) and above.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    // Show retirement confirmation
+    setShowRetirementDialog(true);
+  };
 
+  const handleExport = async () => {
+    setShowRetirementDialog(false);
     setExporting(true);
     try {
       // 1. Call edge function to register export
@@ -109,9 +179,10 @@ export function ExportPhase() {
         fingerprint: c.fingerprint,
         moatSignature: c.moatSignature,
         capabilityType: c.capabilityType,
+        description: c.description,
+        category: c.category,
       }));
 
-      // Get candidate name from first chain entry
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
       await generateCapabilityPackZip({
@@ -121,8 +192,12 @@ export function ExportPhase() {
       });
 
       setExportResult({ packId: data.pack_id, count: eligible.length });
-      setCapabilities(prev => prev.map(c => ({ ...c, exported: true })));
-      toast({ title: 'Capability Pack downloaded', description: `${eligible.length} capabilities exported as ZIP` });
+      // Mark as exported + retired in local state
+      setCapabilities(prev => prev.map(c =>
+        eligible.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
+      ));
+      await refreshUsage();
+      toast({ title: 'Capability Pack downloaded', description: `${eligible.length} capabilities exported & retired. Future discovery runs will find new ones.` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -135,14 +210,13 @@ export function ExportPhase() {
     setReingesting(true);
 
     try {
-      // Register a new candidate node from the exported capabilities
       const combinedName = `EVOLVED_${capabilities[0]?.chain[0] || 'PACK'}_V${Date.now().toString(36).slice(-4).toUpperCase()}`;
-      const totalResolvers = capabilities.length * 3; // Each crystallized cap = ~3 resolvers
+      const totalResolvers = capabilities.length * 3;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert({
         name: `CANDIDATE_${combinedName}`,
-        slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}`,
+        slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}-${Date.now().toString(36)}`,
         tier: 'candidate',
         category: 'proprietary-evolution',
         description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
@@ -194,25 +268,58 @@ export function ExportPhase() {
 
   return (
     <div className="space-y-6">
+      {/* Tier Status Bar */}
+      <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+            Export Quota
+          </span>
+          {isBuilderTier ? (
+            <span className="text-xs font-mono text-destructive flex items-center gap-1">
+              <Lock className="w-3 h-3" /> Upgrade to export
+            </span>
+          ) : (
+            <span className={cn(
+              "text-xs font-mono font-bold",
+              canExport ? "text-primary" : "text-destructive"
+            )}>
+              {exportsRemaining}/{evolutionExportsPerDay} remaining today
+            </span>
+          )}
+        </div>
+        {!canAccessHdl && (
+          <span className="text-[9px] font-mono text-muted-foreground">
+            HDL: Studio+ only
+          </span>
+        )}
+      </div>
+
       {/* Export Config */}
-      <div className="border border-border/30 rounded-xl p-5 bg-card/40 space-y-4">
+      <div className={cn(
+        "border rounded-xl p-5 space-y-4",
+        isBuilderTier
+          ? "border-border/20 bg-card/20 opacity-75"
+          : "border-border/30 bg-card/40"
+      )}>
         <div className="flex items-center gap-2">
           <Cpu className="w-4 h-4 text-primary" />
           <span className="text-xs font-semibold text-foreground">Capability Pack Configuration</span>
         </div>
 
         <div className="space-y-2">
-          <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Target Language</p>
+          <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Software Targets</p>
           <div className="flex flex-wrap gap-2">
-            {EXPORT_TARGETS.map(t => (
+            {SOFTWARE_TARGETS.map(t => (
               <button
                 key={t.id}
                 onClick={() => setSelectedTarget(t.id)}
+                disabled={isBuilderTier}
                 className={cn(
                   "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
                   selectedTarget === t.id
                     ? "bg-primary/10 text-primary border-primary/30"
-                    : "text-muted-foreground border-border/20 hover:border-border/40"
+                    : "text-muted-foreground border-border/20 hover:border-border/40",
+                  isBuilderTier && "opacity-50 cursor-not-allowed"
                 )}
               >
                 {t.label}
@@ -221,23 +328,87 @@ export function ExportPhase() {
           </div>
         </div>
 
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">HDL Targets</p>
+            {!canAccessHdl && (
+              <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono">
+                Studio+
+              </span>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {HDL_TARGETS.map(t => (
+              <button
+                key={t.id}
+                onClick={() => canAccessHdl && setSelectedTarget(t.id)}
+                disabled={!canAccessHdl || isBuilderTier}
+                className={cn(
+                  "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
+                  selectedTarget === t.id
+                    ? "bg-primary/10 text-primary border-primary/30"
+                    : "text-muted-foreground border-border/20",
+                  (!canAccessHdl || isBuilderTier) && "opacity-30 cursor-not-allowed"
+                )}
+              >
+                {t.label}
+                {!canAccessHdl && <Lock className="w-2.5 h-2.5 ml-1 inline" />}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            Includes Mini-Runtime™ Engine ({selectedTarget === 'typescript' ? '~700' : '~900'} lines) •
-            ZIP bundle with tests, manifest & README
+            Includes Mini-Runtime™ Engine • License (HTML + MD) • README (HTML + MD) • Pipeline Details • Valuation • Manifest
           </span>
         </div>
 
-        <Button onClick={handleExport} disabled={exporting} className="w-full gap-2">
+        <Button
+          onClick={initiateExport}
+          disabled={exporting || isBuilderTier || !canExport}
+          className="w-full gap-2"
+        >
           {exporting ? (
             <Loader2 className="w-4 h-4 animate-spin" />
+          ) : isBuilderTier ? (
+            <Lock className="w-4 h-4" />
           ) : (
             <Download className="w-4 h-4" />
           )}
-          Generate & Download Capability Pack (.zip)
+          {isBuilderTier ? 'Upgrade to Export' : 'Generate & Download Capability Pack (.zip)'}
         </Button>
       </div>
+
+      {/* Retirement Confirmation Dialog */}
+      <AlertDialog open={showRetirementDialog} onOpenChange={setShowRetirementDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              Export & Retire Capabilities
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Exporting {eligible.length} capability{eligible.length !== 1 ? 'ies' : ''} will{' '}
+                <strong className="text-foreground">retire them from the discovery pool</strong>.
+              </p>
+              <p>
+                Retired capabilities are locked into your export bundle — future discovery runs
+                will explore fresh collision patterns and find new ones. This compounds your
+                proprietary advantage with each cycle.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleExport}>
+              Export & Retire
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Export Result */}
       {exportResult && (
@@ -245,7 +416,7 @@ export function ExportPhase() {
           <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
           <div className="flex-1">
             <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-              Pack downloaded — {exportResult.count} capabilities
+              Pack downloaded — {exportResult.count} capabilities exported & retired
             </p>
             <p className="text-[10px] text-green-600/70 dark:text-green-400/70 font-mono truncate">
               Pack ID: {exportResult.packId.slice(0, 8)}…
@@ -263,17 +434,25 @@ export function ExportPhase() {
           {capabilities.map(c => (
             <div
               key={c.id}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/10"
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-lg",
+                c.retired ? "bg-muted/5 opacity-50" : "bg-muted/10"
+              )}
             >
               <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
               <span className="text-xs text-foreground/80 truncate flex-1">{c.name}</span>
               <span className={cn(
                 "text-[10px] font-mono",
-                c.cjpiScore >= 85 ? "text-amber-400" : "text-muted-foreground"
+                c.cjpiScore >= 90 ? "text-amber-400" : "text-muted-foreground"
               )}>
                 CJPI {c.cjpiScore}
               </span>
-              {c.exported && <CheckCircle2 className="w-3 h-3 text-green-500" />}
+              {c.retired && (
+                <span className="text-[9px] font-mono text-muted-foreground/60 bg-muted/20 px-1.5 py-0.5 rounded">
+                  Retired
+                </span>
+              )}
+              {c.exported && !c.retired && <CheckCircle2 className="w-3 h-3 text-green-500" />}
             </div>
           ))}
         </div>

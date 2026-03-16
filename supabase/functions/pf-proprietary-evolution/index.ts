@@ -217,6 +217,19 @@ serve(async (req: Request) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Auth check — require authenticated user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return jsonResponse({ success: false, error: 'Authentication required' }, 401);
+    }
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const anonClient = createClient(supabaseUrl, anonKey);
+    const token = authHeader.replace('Bearer ', '');
+    const { data: userData, error: userError } = await anonClient.auth.getUser(token);
+    if (userError || !userData?.user) {
+      return jsonResponse({ success: false, error: 'Invalid or expired auth token' }, 401);
+    }
+
     let body: Record<string, unknown>;
     try {
       body = await req.json();
@@ -506,14 +519,16 @@ serve(async (req: Request) => {
           } : null,
         };
 
-        // Mark as exported
+        // Mark as exported AND retired
         for (const cap of capabilities) {
           const meta = (cap.metadata as Record<string, unknown>) || {};
           await supabase.from('artifact_registry').update({
             metadata: {
               ...meta,
               exported: true,
+              retired: true,
               exported_at: new Date().toISOString(),
+              retired_at: new Date().toISOString(),
               export_target: target_language,
               export_pack_id: packId,
             },

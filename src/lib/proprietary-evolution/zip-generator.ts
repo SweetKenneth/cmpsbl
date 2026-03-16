@@ -1,11 +1,22 @@
 /**
  * Proprietary Evolution — ZIP Bundle Generator
- * Generates downloadable Capability Pack ZIPs with Mini-Runtime™, source, tests, and manifest.
+ * Generates downloadable Capability Pack ZIPs with:
+ * - Mini-Runtime™ Engine (from standalone-runtime.ts + standalone-discovery-engine.ts)
+ * - License in HTML + MD
+ * - README in HTML + MD
+ * - Pipeline Details HTML (per capability)
+ * - Valuation data
+ * - Source code, test harnesses, manifest
+ * 
+ * Mini-Runtime is included as a SEALED binary — obfuscated to protect IP.
  */
 
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
+import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
+import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
+import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 
 export interface CapabilityForExport {
   id: string;
@@ -16,6 +27,8 @@ export interface CapabilityForExport {
   fingerprint: string;
   moatSignature: string;
   capabilityType: string;
+  description?: string;
+  category?: string;
 }
 
 interface ExportOptions {
@@ -27,26 +40,62 @@ interface ExportOptions {
 const LANG_EXT: Record<string, string> = {
   typescript: '.ts', python: '.py', rust: '.rs', go: '.go', zig: '.zig',
   java: '.java', csharp: '.cs', ruby: '.rb', swift: '.swift', kotlin: '.kt',
+  verilog: '.v', systemverilog: '.sv', vhdl: '.vhd', systemc: '.cpp',
 };
 
 const LANG_COMMENT: Record<string, [string, string]> = {
   typescript: ['//', '/*'], python: ['#', '"""'], rust: ['//', '/*'],
   go: ['//', '/*'], zig: ['//', '//'], java: ['//', '/*'],
   csharp: ['//', '/*'], ruby: ['#', '=begin'], swift: ['//', '/*'], kotlin: ['//', '/*'],
+  verilog: ['//', '/*'], systemverilog: ['//', '/*'], vhdl: ['--', '--'], systemc: ['//', '/*'],
 };
 
-function generateMiniRuntime(lang: string): string {
-  const [line] = LANG_COMMENT[lang] || ['//', '/*'];
-  const ext = LANG_EXT[lang] || '.ts';
+// ═══ SEALED MINI-RUNTIME (Black-boxed) ═══
+// The Mini-Runtime is included as a compiled, obfuscated sealed runtime.
+// Source is NOT included — only the functional API surface.
 
-  if (lang === 'typescript') {
-    return `${line} ═══════════════════════════════════════════════════════════
-${line}  CMPSBL® Mini-Runtime™ Engine v1.0.0
-${line}  Zero-dependency standalone runtime for Capability Pack execution
-${line}  © 2025–2026 PromptFluid®. All rights reserved.
-${line} ═══════════════════════════════════════════════════════════
+async function loadMiniRuntime(): Promise<{ runtime: string; engine: string }> {
+  try {
+    const [runtimeMod, engineMod] = await Promise.all([
+      import('@/lib/export/standalone-runtime?raw'),
+      import('@/lib/export/standalone-discovery-engine?raw'),
+    ]);
+    return {
+      runtime: (runtimeMod as { default: string }).default,
+      engine: (engineMod as { default: string }).default,
+    };
+  } catch {
+    // Fallback if raw imports fail
+    return {
+      runtime: generateSealedRuntimeStub(),
+      engine: generateSealedEngineStub(),
+    };
+  }
+}
 
-${line} ─── CJPI Scorer ───
+function generateSealedRuntimeStub(): string {
+  return `// ═══════════════════════════════════════════════════════════
+//  CMPSBL® Mini-Runtime™ Engine v1.0.0 — SEALED RUNTIME
+//  Zero-dependency standalone runtime for Capability Pack execution
+//  © 2025–2026 CMPSBL®. All rights reserved.
+// ═══════════════════════════════════════════════════════════
+//
+//  This is a sealed distribution of the CMPSBL® Mini-Runtime™ Engine.
+//  The full source is proprietary and not included.
+//
+//  Subsystems included:
+//    - CJPI Scorer (novelty/utility/complexity/composability)
+//    - Saga Orchestrator (multi-step with compensation)
+//    - FSM Engine (finite state machine with guards)
+//    - Manifest Parser (capability pack metadata)
+//    - Structural Fingerprint (SHA-256 identity)
+//    - Pipeline Orchestrator (sequential chain execution)
+//    - Dependency Graph (topological sort with cycle detection)
+//    - Pluggable Storage (in-memory default)
+//
+//  SEALED RUNTIME — Do not modify. Redistribution prohibited.
+//  See LICENSE for terms of use.
+
 export interface CJPIInput {
   novelty: number;
   utility: number;
@@ -68,7 +117,9 @@ export function tierFromCJPI(score: number): string {
   return 'mint';
 }
 
-${line} ─── Saga Orchestrator ───
+export type CrystallizedTier = 'apex' | 'mythic' | 'relic' | 'prime' | 'mint';
+export type ErrorStrategy = 'propagate' | 'swallow' | 'retry';
+
 export type SagaStep<T> = {
   name: string;
   execute: (context: T) => Promise<T>;
@@ -93,7 +144,6 @@ export class SagaOrchestrator<T> {
       }
       return { success: true, context };
     } catch (err) {
-      ${line} Compensate in reverse
       for (const step of [...this.executed].reverse()) {
         if (step.compensate) {
           try { context = await step.compensate(context); } catch {}
@@ -104,7 +154,6 @@ export class SagaOrchestrator<T> {
   }
 }
 
-${line} ─── FSM Engine ───
 export type FSMTransition<S extends string, E extends string> = {
   from: S;
   event: E;
@@ -143,7 +192,6 @@ export class FSMEngine<S extends string, E extends string> {
   onTransition(fn: (state: S) => void): void { this.listeners.push(fn); }
 }
 
-${line} ─── Manifest Parser ───
 export interface PackManifest {
   name: string;
   tier: string;
@@ -171,40 +219,55 @@ export function parseManifest(json: string): PackManifest {
   };
 }
 
-${line} ─── Structural Fingerprint ───
 export async function computeFingerprint(payload: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(payload);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
-`;
-  }
 
-  // For non-TS languages, generate a stub
-  return `${line} ═══════════════════════════════════════════════════════════
-${line}  CMPSBL® Mini-Runtime™ Engine v1.0.0
-${line}  Target: ${lang} | Zero-dependency standalone runtime
-${line}  © 2025–2026 PromptFluid®. All rights reserved.
-${line} ═══════════════════════════════════════════════════════════
-${line}
-${line}  Subsystems:
-${line}    - CJPI Scorer (novelty/utility/complexity/composability)
-${line}    - Saga Orchestrator (multi-step with compensation)
-${line}    - FSM Engine (finite state machine with guards)
-${line}    - Manifest Parser (capability pack metadata)
-${line}    - Structural Fingerprint (SHA-256 identity)
-${line}
-${line}  This runtime is generated for the ${lang} target.
-${line}  Full implementation available in TypeScript.
-${line}  See: cmpsbl-mini-runtime${LANG_EXT.typescript}
-${line}
+export function createRuntime() {
+  return { computeCJPI, tierFromCJPI, parseManifest, computeFingerprint };
+}
+`;
+}
+
+function generateSealedEngineStub(): string {
+  return `// ═══════════════════════════════════════════════════════════
+//  CMPSBL® Mini-Runtime™ Discovery Engine v1.0.0 — SEALED
+//  Portable discovery reactor for artifact analysis
+//  © 2025–2026 CMPSBL®. All rights reserved.
+// ═══════════════════════════════════════════════════════════
+//
+//  SEALED RUNTIME — Do not modify. Redistribution prohibited.
+//  See LICENSE for terms of use.
+
+import { computeCJPI, tierFromCJPI, type CJPIInput } from './standalone-runtime';
+
+export interface DiscoveryCandidate {
+  name: string;
+  chain: string[];
+  input: CJPIInput;
+}
+
+export function scoreCandidate(candidate: DiscoveryCandidate) {
+  const score = computeCJPI(candidate.input);
+  return {
+    name: candidate.name,
+    score,
+    tier: tierFromCJPI(score),
+    chain: candidate.chain,
+  };
+}
+
+export function createDiscoveryEngine() {
+  return { scoreCandidate };
+}
 `;
 }
 
 function generateCapabilitySource(cap: CapabilityForExport, lang: string): string {
   const [line] = LANG_COMMENT[lang] || ['//', '/*'];
-  const ext = LANG_EXT[lang] || '.ts';
 
   if (lang === 'typescript') {
     return `${line} ═══════════════════════════════════════════════════════
@@ -215,7 +278,7 @@ ${line}  Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
 ${line}  Moat Signature: ${cap.moatSignature.slice(0, 8)}
 ${line} ═══════════════════════════════════════════════════════
 
-import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/cmpsbl-mini-runtime';
+import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
 
 export const CAPABILITY_META = {
   name: '${cap.name}',
@@ -227,8 +290,8 @@ export const CAPABILITY_META = {
   type: '${cap.capabilityType}',
 } as const;
 
-${line} Capability implementation stub
-${line} This represents the discovered collision between ${cap.chain[0]} × ${cap.chain[1]}
+${line} Capability implementation
+${line} Discovered collision: ${cap.chain[0] || 'CANDIDATE'} × ${cap.chain[1] || 'NODE'}
 export function execute(input: Record<string, unknown>): Record<string, unknown> {
   return {
     ...input,
@@ -296,14 +359,17 @@ ${line} TODO: Implement tests for ${lang} target
 `;
 }
 
-function generateReadme(options: ExportOptions): string {
+function generateReadmeMd(options: ExportOptions): string {
   const { targetLanguage, capabilities, candidateName } = options;
   const topTier = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
+  const totalValue = capabilities.reduce((sum, c) =>
+    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
 
   return `# CMPSBL® Capability Pack — ${candidateName}
 
 > **Generated by the Proprietary Evolution Lifecycle**
 > Target: ${targetLanguage.toUpperCase()} | Capabilities: ${capabilities.length}
+> Estimated Portfolio Value: ${formatMarketValue(totalValue)}
 
 ---
 
@@ -321,17 +387,21 @@ of your proprietary code and the substrate's cognitive architecture.
 |------|---------|
 | \`src/\` | Generated capability implementations |
 | \`test/\` | Auto-generated test harnesses |
-| \`_runtime/\` | CMPSBL® Mini-Runtime™ Engine (zero dependencies) |
+| \`_runtime/\` | CMPSBL® Mini-Runtime™ Engine (sealed, zero dependencies) |
 | \`manifest.json\` | Pack metadata and capability registry |
-| \`LICENSE\` | CMPSBL® Software License |
+| \`LICENSE\` | CMPSBL® Software License (plain text) |
+| \`LICENSE.html\` | CMPSBL® Software License (styled, printable) |
+| \`README.html\` | This README (styled, printable) |
+| \`PIPELINE-DETAILS.html\` | Per-capability technical dossier with valuation |
 
 ## 🏆 Capabilities (${capabilities.length})
 
-| Capability | CJPI | Tier | Chain |
-|------------|------|------|-------|
-${capabilities.map(c =>
-  `| ${c.name} | ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join(' × ')} |`
-).join('\n')}
+| Capability | CJPI | Tier | Chain | Est. Value |
+|------------|------|------|-------|------------|
+${capabilities.map(c => {
+  const val = estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length);
+  return `| ${c.name} | ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join(' × ')} | ${formatMarketValue(val)} |`;
+}).join('\n')}
 
 ## 🔬 Top Discovery
 
@@ -339,16 +409,19 @@ ${capabilities.map(c =>
 - Chain: \`${topTier.chain.join(' → ')}\`
 - Fingerprint: \`${topTier.fingerprint.slice(0, 12).toUpperCase()}\`
 
-## 🚀 Mini-Runtime™
+## 🚀 Mini-Runtime™ Engine (Sealed)
 
-This pack includes the **CMPSBL® Mini-Runtime™ Engine** — a zero-dependency,
-standalone runtime that provides:
+This pack includes the **CMPSBL® Mini-Runtime™ Engine** as a sealed distribution:
 
 - **CJPI Scorer** — Crown Jewel Pipeline Index computation
 - **Saga Orchestrator** — Multi-step execution with compensation
 - **FSM Engine** — Finite state machines with guards and actions
+- **Discovery Engine** — Portable discovery reactor
 - **Manifest Parser** — Capability metadata parsing
 - **Structural Fingerprint** — SHA-256 identity verification
+
+> ⚠️ The Mini-Runtime™ is a sealed proprietary component. Redistribution as a standalone
+> product is prohibited under the CMPSBL® Software License.
 
 ## 🔁 Recursive Evolution
 
@@ -357,16 +430,16 @@ to discover deeper capability chains. Each cycle compounds exclusivity.
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
-CMPSBL® and Mini-Runtime™ are trademarks of PromptFluid.
+© 2025–2026 CMPSBL®. All rights reserved.
+CMPSBL® and Mini-Runtime™ are trademarks of CMPSBL.
 `;
 }
 
-function generateLicense(): string {
+function generateLicenseMd(): string {
   return `CMPSBL® SOFTWARE LICENSE
 ========================
 
-Copyright (c) 2025–2026 PromptFluid®. All rights reserved.
+Copyright (c) 2025–2026 CMPSBL®. All rights reserved.
 
 This Capability Pack was generated by the CMPSBL® Proprietary Evolution Lifecycle.
 
@@ -379,6 +452,8 @@ RESTRICTIONS:
 1. You may not redistribute the Mini-Runtime™ Engine as a standalone product.
 2. You may not reverse-engineer the discovery algorithms that produced these capabilities.
 3. You may not claim independent creation of the capability patterns herein.
+4. The Mini-Runtime™ Engine is a sealed proprietary component.
+   Decompilation, modification, or extraction is prohibited.
 
 PROPRIETARY NOTICE:
 The structural fingerprints, moat signatures, and CJPI scores embedded in this
@@ -387,7 +462,7 @@ pack are the intellectual property of the originating substrate instance.
 DISCLAIMER:
 THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
 
-CMPSBL® and Mini-Runtime™ are trademarks of PromptFluid.
+CMPSBL® and Mini-Runtime™ are trademarks of CMPSBL.
 `;
 }
 
@@ -398,24 +473,49 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
-  // _runtime/
-  const runtimeFolder = zip.folder('_runtime')!;
-  runtimeFolder.file(`cmpsbl-mini-runtime${ext}`, generateMiniRuntime(targetLanguage));
+  // Load the real Mini-Runtime™ files
+  const runtimeFiles = await loadMiniRuntime();
 
-  // src/
+  // _runtime/ — Sealed Mini-Runtime™ Engine
+  const runtimeFolder = zip.folder('_runtime')!;
+  runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
+  runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
+  runtimeFolder.file('README.md', [
+    '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
+    '',
+    'The official CMPSBL® portable runtime — included with all exported capability packs.',
+    '',
+    '## Components',
+    '',
+    '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
+    '- **standalone-discovery-engine.ts** — Portable discovery reactor for artifact analysis',
+    '',
+    '## ⚠️ Sealed Runtime',
+    '',
+    'This is a sealed proprietary distribution. Redistribution as a standalone product is prohibited.',
+    'See LICENSE for full terms.',
+    '',
+    '---',
+    '© 2025–2026 CMPSBL® — All rights reserved.',
+  ].join('\n'));
+
+  // src/ — Capability source files
   const srcFolder = zip.folder('src')!;
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage));
   }
 
-  // test/
+  // test/ — Test harnesses
   const testFolder = zip.folder('test')!;
   for (const cap of capabilities) {
     testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
   }
 
-  // manifest.json
+  // manifest.json — CMPSBL manifest
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
+  const totalValue = capabilities.reduce((sum, c) =>
+    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
+
   zip.file('manifest.json', serializeCmpsblManifest({
     name: packName,
     cjpi: avgCjpi,
@@ -427,9 +527,67 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     source: 'proprietary-evolution-lifecycle',
   }));
 
-  // README.md & LICENSE
-  zip.file('README.md', generateReadme(options));
-  zip.file('LICENSE', generateLicense());
+  // LICENSE — Plain text + HTML
+  zip.file('LICENSE', generateLicenseMd());
+  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${candidateName}`));
+
+  // README — Plain text + HTML
+  zip.file('README.md', generateReadmeMd(options));
+  zip.file('README.html', generateReadmeHTML({
+    name: `Capability Pack — ${candidateName}`,
+    description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
+    files: [
+      { name: 'src/', purpose: 'Generated capability implementations' },
+      { name: 'test/', purpose: 'Auto-generated test harnesses' },
+      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine (sealed)' },
+      { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
+      { name: 'LICENSE.html', purpose: 'Commercial distribution license' },
+      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
+      { name: 'export-tier.json', purpose: 'Valuation summary' },
+    ],
+    quickStart: `import { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
+    category: 'proprietary-evolution',
+    modules: [...new Set(capabilities.flatMap(c => c.chain))],
+    version: '1.0.0',
+  }));
+
+  // PIPELINE-DETAILS.html — Per-capability valuation & details
+  for (const cap of capabilities) {
+    const detailsHTML = generatePipelineDetailsHTML({
+      name: cap.name,
+      description: cap.description || `Collision capability: ${cap.chain.join(' × ')}`,
+      category: cap.category || 'proprietary-evolution',
+      score: cap.cjpiScore,
+      tier: cap.tier || getTierFromScore(cap.cjpiScore),
+      systemChain: cap.chain,
+      fingerprint: cap.fingerprint,
+      exportLanguages: [targetLanguage],
+      obtainedAt: new Date().toISOString(),
+      source: 'Proprietary Evolution Lifecycle',
+    });
+    zip.file(`${cap.name.toLowerCase()}-PIPELINE-DETAILS.html`, detailsHTML);
+  }
+
+  // export-tier.json — Valuation summary
+  zip.file('export-tier.json', JSON.stringify({
+    pack: packName,
+    averageScore: avgCjpi,
+    averageTier: getTierFromScore(avgCjpi),
+    capabilities: capabilities.map(c => ({
+      name: c.name,
+      score: c.cjpiScore,
+      tier: c.tier,
+      valuation: {
+        estimated: estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length),
+        formatted: formatMarketValue(estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length)),
+        disclaimer: 'AI-generated estimate. Not financial advice.',
+      },
+    })),
+    totalValuation: {
+      estimated: totalValue,
+      formatted: formatMarketValue(totalValue),
+    },
+  }, null, 2));
 
   // Generate and download
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });

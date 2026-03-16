@@ -29,6 +29,14 @@ export interface ProductLimits {
   crystallizedAssetCap: number;
   /** Radio listening limit in minutes per 24 hours. -1 = unlimited */
   radioMinutesPerDay: number;
+
+  // ═══ Proprietary Evolution Lifecycle Limits ═══
+  /** Max code uploads per day in the Evolution Lifecycle */
+  evolutionUploadsPerDay: number;
+  /** Max capability exports per day (0 = cannot export) */
+  evolutionExportsPerDay: number;
+  /** Whether HDL/hardware targets (Verilog, VHDL, SystemC, etc.) are available */
+  evolutionHdlAccess: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
@@ -42,6 +50,9 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     exportTraceAccess: false,
     crystallizedAssetCap: 12,
     radioMinutesPerDay: 5,
+    evolutionUploadsPerDay: 3,
+    evolutionExportsPerDay: 0,
+    evolutionHdlAccess: false,
   },
   operator: {
     maxMemoryNamespaces: 3,
@@ -53,6 +64,9 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     exportTraceAccess: false,
     crystallizedAssetCap: 30,
     radioMinutesPerDay: 30,
+    evolutionUploadsPerDay: 6,
+    evolutionExportsPerDay: 2,
+    evolutionHdlAccess: false,
   },
   studio: {
     maxMemoryNamespaces: 6,
@@ -64,6 +78,9 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     exportTraceAccess: true,
     crystallizedAssetCap: 45,
     radioMinutesPerDay: 45,
+    evolutionUploadsPerDay: 9,
+    evolutionExportsPerDay: 3,
+    evolutionHdlAccess: true,
   },
   architect: {
     maxMemoryNamespaces: 12,
@@ -75,6 +92,9 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     exportTraceAccess: true,
     crystallizedAssetCap: 60,
     radioMinutesPerDay: 60,
+    evolutionUploadsPerDay: 12,
+    evolutionExportsPerDay: 4,
+    evolutionHdlAccess: true,
   },
 };
 
