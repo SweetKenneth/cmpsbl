@@ -230,8 +230,8 @@ export function IngestPhase() {
                 Candidate: {parsedNode.name}
               </h3>
               <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                Node #41 • {parsedNode.language}
-              </p>
+                 Candidate Node • {parsedNode.language}
+               </p>
             </div>
             {registered ? (
               <CheckCircle2 className="w-5 h-5 text-green-500" />
