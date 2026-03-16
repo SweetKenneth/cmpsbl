@@ -28,6 +28,7 @@ const IntentMeshPublic = lazy(() => import("@/pages/IntentMeshPublic"));
 const Changelog = lazy(() => import("@/pages/Changelog"));
 const CodeLab = lazy(() => import("@/pages/CodeLab"));
 const AgencyPortal = lazy(() => import("@/pages/AgencyPortal"));
+const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const DevTools = lazy(() => import("@/pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("@/pages/DeveloperAcademy"));
 const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide"));
