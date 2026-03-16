@@ -33,8 +33,6 @@ export interface ProductLimits {
   // ═══ Proprietary Evolution Lifecycle Limits ═══
   /** Max code uploads per day in the Evolution Lifecycle */
   evolutionUploadsPerDay: number;
-  /** Max capability exports per day (0 = cannot export) */
-  evolutionExportsPerDay: number;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
