@@ -1,7 +1,7 @@
 /**
- * EXPORT Phase — Generate Capability Packs from crystallized memories
+ * ASCENDED MEMORY Phase — Generate portable capability artifacts
  * Tier-gated: Builder can see but not export. Export limits enforced per day.
- * HDL targets restricted to Studio+ tiers.
+ * HDL targets restricted to Creator+ tiers.
  * Includes retirement prompt on export.
  */
 
