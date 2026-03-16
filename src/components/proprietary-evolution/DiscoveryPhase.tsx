@@ -196,9 +196,9 @@ export function DiscoveryPhase() {
     return (
       <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
         <Zap className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
-        <p className="text-sm text-foreground font-medium">No Candidate Node registered</p>
+        <p className="text-sm text-foreground font-medium">No candidate node registered</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Complete the INGEST phase first to create Node #41
+          Complete the Ingest phase first to register a candidate
         </p>
       </div>
     );
