@@ -66,13 +66,13 @@ describe('Ascension Page Components', () => {
   describe('IngestPhase', () => {
     it('renders drop zone with 25-language support text', () => {
       render(<IngestPhase />, { wrapper });
-      expect(screen.getByText(/All 25 export languages supported/i)).toBeInTheDocument();
-      expect(screen.getByText(/or click to browse/i)).toBeInTheDocument();
+      expect(screen.getByText(/All 25 export languages supported/i)).toBeTruthy();
+      expect(screen.getByText(/or click to browse/i)).toBeTruthy();
     });
 
     it('shows upload quota', () => {
       render(<IngestPhase />, { wrapper });
-      expect(screen.getByText('3/6 remaining')).toBeInTheDocument();
+      expect(screen.getByText('3/6 remaining')).toBeTruthy();
     });
 
     it('renders file input with correct accept attribute', () => {
@@ -89,15 +89,15 @@ describe('Ascension Page Components', () => {
   describe('AscensionHero', () => {
     it('renders hero title and description', () => {
       render(<AscensionHero />, { wrapper });
-      expect(screen.getByText('Ascension')).toBeInTheDocument();
-      expect(screen.getByText(/Bring your software into the substrate/i)).toBeInTheDocument();
+      expect(screen.getByText('Ascension')).toBeTruthy();
+      expect(screen.getByText(/Bring your software into the substrate/i)).toBeTruthy();
     });
 
     it('renders all 4 lifecycle steps', () => {
       render(<AscensionHero />, { wrapper });
-      expect(screen.getByText('Ingest')).toBeInTheDocument();
-      expect(screen.getByText('Crystallize')).toBeInTheDocument();
-      expect(screen.getByText('Ascended Memory')).toBeInTheDocument();
+      expect(screen.getByText('Ingest')).toBeTruthy();
+      expect(screen.getByText('Crystallize')).toBeTruthy();
+      expect(screen.getByText('Ascended Memory')).toBeTruthy();
     });
 
     it('renders the orbital canvas', () => {
@@ -110,9 +110,8 @@ describe('Ascension Page Components', () => {
   describe('ExportPhase', () => {
     it('renders empty state when no capabilities', async () => {
       render(<ExportPhase />, { wrapper });
-      // Wait for loading to finish
       const emptyMsg = await screen.findByText(/No export-ready capabilities/i);
-      expect(emptyMsg).toBeInTheDocument();
+      expect(emptyMsg).toBeTruthy();
     });
   });
 });
