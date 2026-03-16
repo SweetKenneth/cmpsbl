@@ -50,7 +50,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 5,
     evolutionUploadsPerDay: 3,
     evolutionExportsPerDay: 0,
-    evolutionHdlAccess: false,
   },
   studio: {
     maxMemoryNamespaces: 3,
