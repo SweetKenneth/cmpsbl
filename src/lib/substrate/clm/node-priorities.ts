@@ -300,14 +300,7 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
   },
 
   // ═══════ CSZ — Cognitive Shadow Zone ════════════════════════════════════
-  {
-    node: 'evolution', displayName: 'EVOLUTION', sector: 'CSZ',
-    priorities: [
-      { capability: 'clm_shadow_validation', description: 'Safe code evolution via shadow-apply and canary deployment', priority: 89 },
-      { capability: 'clm_regression_detection', description: 'Behavioral testing and snapshot comparison for regressions', priority: 86 },
-    ],
-    acknowledged: true, generation: 1,
-  },
+  // NOTE: EVOLUTION lives in Execution sector above. CSZ contains SHADOW + PHANTOM only.
   {
     node: 'shadow', displayName: 'SHADOW', sector: 'CSZ',
     priorities: [
