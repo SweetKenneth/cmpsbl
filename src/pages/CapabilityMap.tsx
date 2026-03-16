@@ -142,8 +142,8 @@ export default function CapabilityMap() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Capability Map — Visual Atlas of 675+ Features"
-        description="Interactive map of CMPSBL's 675+ capabilities across 40 nodes. Filter by baseline, Memory Pack, or reserved status. See which capabilities are always-on and which activate with pack slots."
+        title="Capability Map — Visual Atlas of Features | CMPSBL"
+        description="Interactive map of CMPSBL's capabilities across every substrate node. Filter by baseline, Memory Pack, or reserved status. See which capabilities are always-on and which activate with pack slots."
       />
       <PublicNav />
 

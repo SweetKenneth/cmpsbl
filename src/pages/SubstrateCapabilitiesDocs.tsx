@@ -316,7 +316,7 @@ export default function SubstrateCapabilitiesDocs() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Capabilities Reference — Full SDK Catalog | CMPSBL"
-        description="Complete reference for CMPSBL's 675+ capabilities: memory operations, DREAM triggers, NEXUS routing, DEFENSE rules, EVOLUTION promotions, and resolver patterns with inline code examples."
+        description="Complete reference for CMPSBL's substrate capabilities: memory operations, DREAM triggers, NEXUS routing, DEFENSE rules, EVOLUTION promotions, and resolver patterns with inline code examples."
         keywords={["capabilities reference", "SDK catalog", "CMPSBL documentation", "resolver patterns", "node capabilities"]}
       />
       
