@@ -269,7 +269,7 @@ const App = () => {
                     } />
                   </Routes>
                 </BrowserRouter>
-              </TooltipProvider>
+              </DeferredTooltipProvider>
             </SubstrateProvider>
           </Suspense>
         </SEOProvider>
