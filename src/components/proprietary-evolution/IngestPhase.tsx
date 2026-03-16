@@ -128,29 +128,87 @@ function deadLetterLog(operation: string, context: Record<string, unknown>, erro
 }
 
 /* ═══ SAFE FILE READER ═══ */
+const TEXT_SAMPLE_BYTES = 64 * 1024;
+const MAX_TEXT_ANALYSIS_BYTES = 1024 * 1024;
+
+type SupportedTextEncoding = 'utf-8' | 'utf-16le' | 'utf-16be';
+
+async function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  if (typeof blob.arrayBuffer === 'function') {
+    return blob.arrayBuffer();
+  }
+
+  return await new Promise<ArrayBuffer>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error('Failed to read blob'));
+    reader.onload = () => resolve(reader.result as ArrayBuffer);
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
+function detectTextEncoding(bytes: Uint8Array): SupportedTextEncoding {
+  if (bytes.length >= 2) {
+    if (bytes[0] === 0xff && bytes[1] === 0xfe) return 'utf-16le';
+    if (bytes[0] === 0xfe && bytes[1] === 0xff) return 'utf-16be';
+  }
+
+  const pairCount = Math.floor(Math.min(bytes.length, 512) / 2);
+  if (pairCount < 8) return 'utf-8';
+
+  let evenNulls = 0;
+  let oddNulls = 0;
+
+  for (let i = 0; i < pairCount * 2; i += 2) {
+    if (bytes[i] === 0x00) evenNulls++;
+    if (bytes[i + 1] === 0x00) oddNulls++;
+  }
+
+  const evenRatio = evenNulls / pairCount;
+  const oddRatio = oddNulls / pairCount;
+
+  if (oddRatio > 0.3 && evenRatio < 0.05) return 'utf-16le';
+  if (evenRatio > 0.3 && oddRatio < 0.05) return 'utf-16be';
+
+  return 'utf-8';
+}
+
+function isLikelyBinary(bytes: Uint8Array, encoding: SupportedTextEncoding): boolean {
+  if (encoding === 'utf-16le' || encoding === 'utf-16be') return false;
+  if (bytes.length === 0) return false;
+
+  let suspiciousControls = 0;
+  let readableBytes = 0;
+
+  for (const byte of bytes) {
+    if (byte === 0x00) return true;
+
+    const isWhitespace = byte === 0x09 || byte === 0x0a || byte === 0x0d || byte === 0x0c;
+    const isControl = byte < 0x20 && !isWhitespace;
+    const isReadable = byte >= 0x20 || byte >= 0x80 || isWhitespace;
+
+    if (isControl) suspiciousControls++;
+    if (isReadable) readableBytes++;
+  }
+
+  return suspiciousControls / bytes.length > 0.02 && readableBytes / bytes.length < 0.9;
+}
+
 async function safeReadText(file: File): Promise<string | null> {
   try {
-    // Skip files > 2MB for text parsing (likely binary)
-    if (file.size > 2_000_000) return null;
+    const sampleSize = Math.min(file.size, TEXT_SAMPLE_BYTES);
+    const sampleBuffer = await blobToArrayBuffer(file.slice(0, sampleSize));
+    const sampleBytes = new Uint8Array(sampleBuffer);
+    const encoding = detectTextEncoding(sampleBytes);
 
-    // Read as ArrayBuffer first to check for true binary indicators
-    const buffer = await file.arrayBuffer();
-    const bytes = new Uint8Array(buffer.slice(0, 2048));
+    if (isLikelyBinary(sampleBytes, encoding)) return null;
 
-    // True binary detection: null bytes or high concentration of control chars (0x00-0x08)
-    let nullCount = 0;
-    let controlCount = 0;
-    const checkLen = Math.min(bytes.length, 2048);
-    for (let i = 0; i < checkLen; i++) {
-      if (bytes[i] === 0x00) nullCount++;
-      else if (bytes[i] < 0x09 && bytes[i] !== 0x07) controlCount++; // exclude BEL
-    }
-    // Any null bytes → binary; >5% control chars → binary
-    if (nullCount > 0 || (checkLen > 0 && controlCount / checkLen > 0.05)) return null;
+    const analysisSize = Math.min(file.size, MAX_TEXT_ANALYSIS_BYTES);
+    const analysisBuffer = analysisSize === sampleSize
+      ? sampleBuffer
+      : await blobToArrayBuffer(file.slice(0, analysisSize));
 
-    // Safe to decode as text
-    const decoder = new TextDecoder('utf-8', { fatal: false });
-    return decoder.decode(buffer);
+    const decoded = new TextDecoder(encoding, { fatal: false }).decode(analysisBuffer);
+    return decoded.replace(/^\uFEFF/, '');
   } catch {
     return null;
   }
@@ -229,7 +287,7 @@ export function IngestPhase() {
 
       for (const file of files) {
         const text = await safeReadText(file);
-        if (text) {
+        if (text !== null) {
           filesAnalyzed++;
           const exportMatches = text.match(/export\s+(function|class|const|default|async\s+function)/g);
           const moduleMatches = text.match(/module\s+\w+/g); // HDL modules
@@ -241,7 +299,7 @@ export function IngestPhase() {
       }
 
       if (filesFailed > 0) {
-        warnings.push(`${filesFailed} file(s) skipped (binary or too large for text analysis)`);
+        warnings.push(`${filesFailed} file(s) skipped (binary or unreadable text content)`);
       }
 
       const nodeName = files[0].name
