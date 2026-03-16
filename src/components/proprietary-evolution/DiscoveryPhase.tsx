@@ -1,7 +1,7 @@
 /**
- * DISCOVERY Phase — Collision Chamber
- * Bounces Candidate Node #41 against the 40-node substrate matrix
- * Runs until a capability with CJPI ≥ 90 is found, then stops.
+ * ASCENSION Phase — Discovery Engine
+ * Runs interaction cycles between the candidate node and the 40-node substrate matrix.
+ * Stops when a capability chain with CJPI ≥ 90 is discovered.
  * With real-time collision graph visualization.
  */
 
