@@ -17,70 +17,23 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- PWA manifest: disabled in editor preview to avoid auth-bridge/CORS loops -->
+    <!-- PWA manifest: deferred to avoid blocking FCP; disabled in editor preview -->
     <script>
-      (function () {
-        const qs = new URLSearchParams(location.search);
-        const host = location.hostname;
-
-        // Treat editor/preview as "preview" even when no token is present.
-        // (Mobile editor can use different origins.)
-        let isEmbedded = false;
-        try {
-          isEmbedded = window.self !== window.top;
-        } catch {
-          isEmbedded = true;
-        }
-
-        const isPreview =
-          qs.has("__lovable_token") ||
-          host.includes("lovableproject.com") ||
-          host.startsWith("id-preview--") ||
-          isEmbedded;
-
-        // In preview: aggressively block any manifest link creation/injection.
+      setTimeout(function () {
+        var qs = new URLSearchParams(location.search);
+        var host = location.hostname;
+        var isEmbedded = false;
+        try { isEmbedded = window.self !== window.top; } catch (e) { isEmbedded = true; }
+        var isPreview = qs.has("__lovable_token") || host.includes("lovableproject.com") || host.startsWith("id-preview--") || isEmbedded;
         if (isPreview) {
-          try {
-            // Remove any existing manifest link (some tooling may inject it).
-            const strip = () => {
-              document
-                .querySelectorAll('link[rel="manifest"]')
-                .forEach((n) => n.parentElement?.removeChild(n));
-            };
-
-            // Run immediately and a few more times (no MutationObserver).
-            strip();
-            setTimeout(strip, 50);
-            setTimeout(strip, 250);
-            setTimeout(strip, 1000);
-
-            // Block future injections via head.appendChild.
-            const head = document.head;
-            const origAppend = head.appendChild.bind(head);
-            head.appendChild = function (node) {
-              // @ts-ignore
-              if (node?.tagName === "LINK" && String(node.rel || "").toLowerCase() === "manifest") {
-                return node;
-              }
-              // @ts-ignore
-              return origAppend(node);
-            };
-          } catch {
-            // ignore
-          }
+          var strip = function () { document.querySelectorAll('link[rel="manifest"]').forEach(function (n) { n.parentElement && n.parentElement.removeChild(n); }); };
+          strip(); setTimeout(strip, 250); setTimeout(strip, 1000);
+          var head = document.head; var origAppend = head.appendChild.bind(head);
+          head.appendChild = function (node) { if (node && node.tagName === "LINK" && String(node.rel || "").toLowerCase() === "manifest") return node; return origAppend(node); };
           return;
         }
-
-        // Outside preview: add manifest normally.
-        try {
-          const link = document.createElement("link");
-          link.rel = "manifest";
-          link.href = "/manifest.webmanifest";
-          document.head.appendChild(link);
-        } catch {
-          // ignore
-        }
-      })();
+        try { var link = document.createElement("link"); link.rel = "manifest"; link.href = "/manifest.webmanifest"; document.head.appendChild(link); } catch (e) {}
+      }, 0);
     </script>
 
     <!-- 2026 SEO: Critical Resource Hints (ordered by priority) -->
