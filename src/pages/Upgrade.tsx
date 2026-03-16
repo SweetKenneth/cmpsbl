@@ -72,7 +72,7 @@ const TIERS: {
     ],
   },
   {
-    key: 'operator',
+    key: 'studio',
     name: 'Studio',
     price: '$29',
     annualPrice: '$23',
