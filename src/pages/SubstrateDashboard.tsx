@@ -493,7 +493,9 @@ const layerLabels: Record<string, { label: string; color: string }> = {
   epz: { label: "EPZ — ENGINE PERFORMANCE", color: "text-sky-300 border-sky-400/30" },
   emz: { label: "EMZ — EVOLUTION MANUFACTURING", color: "text-green-300 border-green-400/30" },
   csz: { label: "CSZ — COGNITIVE SHADOW", color: "text-fuchsia-400 border-fuchsia-500/30" },
-  mesh: { label: "MESH OVERLAYS", color: "text-rose-400 border-rose-500/30" },
+  fields: { label: "FIELDS", color: "text-red-300 border-red-400/30" },
+  plane: { label: "PLANE", color: "text-amber-300 border-amber-400/30" },
+  shell: { label: "SHELL", color: "text-rose-400 border-rose-500/30" },
 };
 
 export default function SubstrateDashboard() {

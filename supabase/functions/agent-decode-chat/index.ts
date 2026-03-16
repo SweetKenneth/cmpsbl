@@ -104,7 +104,7 @@ Standalone: Composable Cognitives ($39 each), Template Generator ($29 one-time)
 Memory Stream: Hot (7 days) → Warm (30 days) → Cold (permanent) → Legacy (unlimited)
 Pipeline Packs: 24 total, slot-activation system
 **NEXUS** Router: Multi-provider AI routing (OpenAI, Anthropic, Google, Mistral, open-source)
-CLM: Constant Learning Mode — 30-minute background cycles`,
+CLM: Constant Learning Mode — 24/7 background learning cycles on 30-minute intervals across all 40 nodes`,
 
   builder: `
 ## MODE: BUILDER 🏗️
