@@ -12,8 +12,10 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense, useRef } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
 
-// Lazy-load non-critical UI components to reduce initial JS
-const MotionConfigWrapper = lazy(() => import("framer-motion").then(m => ({ default: m.MotionConfig })));
+// Deferred providers — render children immediately, load library lazily
+// This prevents ~87KB of framer-motion + radix from blocking initial render
+import DeferredMotionConfig from "@/components/providers/DeferredMotionConfig";
+import DeferredTooltipProvider from "@/components/providers/DeferredTooltipProvider";
 const SmartToastRenderer = lazy(() => import("@/components/toast/SmartToastRenderer"));
 const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
