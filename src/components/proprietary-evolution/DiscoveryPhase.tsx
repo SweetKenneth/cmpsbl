@@ -1,11 +1,12 @@
 /**
  * DISCOVERY Phase — Collision Chamber
  * Bounces Candidate Node #41 against the 40-node substrate matrix
- * With real-time collision graph visualization
+ * Runs until a capability with CJPI ≥ 90 is found, then stops.
+ * With real-time collision graph visualization.
  */
 
-import { useState, useEffect } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,6 +30,8 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
+const CJPI_THRESHOLD = 90;
+
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
@@ -37,6 +40,8 @@ export function DiscoveryPhase() {
   const [results, setResults] = useState<CollisionResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentTarget, setCurrentTarget] = useState<string | null>(null);
+  const [discoveryHit, setDiscoveryHit] = useState<CollisionResult | null>(null);
+  const abortRef = useRef(false);
   const { toast } = useToast();
 
   // Load registered candidate node
@@ -69,7 +74,7 @@ export function DiscoveryPhase() {
         .limit(50);
 
       if (data) {
-        setResults((data as any[]).map((d: any) => {
+        const mapped = (data as any[]).map((d: any) => {
           const meta = d.metadata || {};
           return {
             nodeA: String(meta.node_a || 'CANDIDATE'),
@@ -78,7 +83,11 @@ export function DiscoveryPhase() {
             cjpiScore: Number(meta.cjpi_score || 0),
             tier: d.tier || 'mint',
           };
-        }));
+        });
+        setResults(mapped);
+        // Check if there's already a ≥90 hit
+        const existing90 = mapped.find(r => r.cjpiScore >= CJPI_THRESHOLD);
+        if (existing90) setDiscoveryHit(existing90);
       }
     })();
   }, []);
@@ -88,9 +97,13 @@ export function DiscoveryPhase() {
     setRunning(true);
     setProgress(0);
     setPermutations(0);
+    setDiscoveryHit(null);
+    abortRef.current = false;
 
     try {
       for (let i = 0; i < SUBSTRATE_NODES.length; i++) {
+        if (abortRef.current) break;
+
         const targetNode = SUBSTRATE_NODES[i];
         setCurrentTarget(targetNode);
         setPermutations(prev => prev + 1);
@@ -121,12 +134,28 @@ export function DiscoveryPhase() {
             tier: cap.tier,
           }));
           setResults(prev => [...newResults, ...prev]);
+
+          // Check for CJPI ≥ 90 hit — stop discovery
+          const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
+          if (hit) {
+            setDiscoveryHit(hit);
+            toast({
+              title: '🎯 High-value capability discovered',
+              description: `${hit.capability} scored CJPI ${hit.cjpiScore} — Discovery complete.`,
+            });
+            break;
+          }
         }
 
         await new Promise(r => setTimeout(r, 150));
       }
 
-      toast({ title: 'Collision sweep complete', description: `Tested ${SUBSTRATE_NODES.length} nodes` });
+      if (!abortRef.current && !discoveryHit) {
+        toast({
+          title: 'Collision sweep complete',
+          description: `Tested ${SUBSTRATE_NODES.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} capability found — try a deeper permutation or re-ingest evolved code.`,
+        });
+      }
     } catch (err) {
       console.error('Discovery error:', err);
       toast({ title: 'Discovery error', description: String(err), variant: 'destructive' });
@@ -134,6 +163,10 @@ export function DiscoveryPhase() {
       setRunning(false);
       setCurrentTarget(null);
     }
+  };
+
+  const stopDiscovery = () => {
+    abortRef.current = true;
   };
 
   const tierColor = (tier: string) => {
@@ -144,7 +177,6 @@ export function DiscoveryPhase() {
     return colors[tier] || 'text-muted-foreground';
   };
 
-  // Build collision events for the graph
   const collisionEvents = results.map(r => ({
     targetNode: r.nodeB,
     cjpiScore: r.cjpiScore,
@@ -174,6 +206,24 @@ export function DiscoveryPhase() {
 
   return (
     <div className="space-y-6">
+      {/* Discovery Hit Banner */}
+      {discoveryHit && !running && (
+        <div className="border border-amber-500/30 rounded-xl p-4 bg-amber-500/5 flex items-center gap-3">
+          <Trophy className="w-6 h-6 text-amber-400 shrink-0" />
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-foreground">
+              Capability Discovered — CJPI {discoveryHit.cjpiScore}
+            </p>
+            <p className="text-xs text-muted-foreground font-mono mt-0.5">
+              {discoveryHit.capability} • {discoveryHit.nodeA} × {discoveryHit.nodeB}
+            </p>
+          </div>
+          <span className={cn("text-xs font-mono font-bold uppercase", tierColor(discoveryHit.tier))}>
+            {discoveryHit.tier}
+          </span>
+        </div>
+      )}
+
       {/* Controls */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
@@ -182,25 +232,35 @@ export function DiscoveryPhase() {
           <span className="text-[10px] text-muted-foreground">× 40 nodes</span>
         </div>
 
+        <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">
+          <span className="text-[9px] font-mono text-muted-foreground">Target: CJPI ≥ {CJPI_THRESHOLD}</span>
+        </div>
+
         <div className="flex-1" />
 
-        <Button
-          size="sm"
-          onClick={startDiscovery}
-          disabled={running}
-          className="h-8 text-xs gap-1.5"
-        >
-          {running ? (
-            <><Pause className="w-3 h-3" /> Running...</>
-          ) : (
-            <><Play className="w-3 h-3" /> Start Collision Test</>
-          )}
-        </Button>
+        {running ? (
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={stopDiscovery}
+            className="h-8 text-xs gap-1.5"
+          >
+            <Pause className="w-3 h-3" /> Stop
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            onClick={startDiscovery}
+            className="h-8 text-xs gap-1.5"
+          >
+            <Play className="w-3 h-3" /> Start Collision Test
+          </Button>
+        )}
 
         <Button
           size="sm"
           variant="outline"
-          onClick={() => { setResults([]); setProgress(0); setPermutations(0); }}
+          onClick={() => { setResults([]); setProgress(0); setPermutations(0); setDiscoveryHit(null); }}
           className="h-8 text-xs gap-1.5"
         >
           <RotateCcw className="w-3 h-3" /> Reset
@@ -233,7 +293,7 @@ export function DiscoveryPhase() {
         {[
           { label: 'Permutations', value: permutations, icon: Activity },
           { label: 'Discoveries', value: results.length, icon: Zap },
-          { label: 'S-Tier Hits', value: results.filter(r => r.cjpiScore >= 85).length, icon: TrendingUp },
+          { label: `CJPI ≥ ${CJPI_THRESHOLD}`, value: results.filter(r => r.cjpiScore >= CJPI_THRESHOLD).length, icon: TrendingUp },
         ].map(s => (
           <div key={s.label} className="px-3 py-3 rounded-xl bg-card/40 border border-border/20 text-center">
             <s.icon className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
@@ -253,7 +313,12 @@ export function DiscoveryPhase() {
             {results.map((r, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/10 hover:bg-muted/20 transition-colors"
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+                  r.cjpiScore >= CJPI_THRESHOLD
+                    ? "bg-amber-500/10 border border-amber-500/20"
+                    : "bg-muted/10 hover:bg-muted/20"
+                )}
               >
                 <span className={cn("text-[10px] font-mono font-bold uppercase", tierColor(r.tier))}>
                   {r.tier}
@@ -264,7 +329,7 @@ export function DiscoveryPhase() {
                 </span>
                 <span className={cn(
                   "text-xs font-mono font-bold",
-                  r.cjpiScore >= 85 ? "text-amber-400" : r.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
+                  r.cjpiScore >= CJPI_THRESHOLD ? "text-amber-400" : r.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
                 )}>
                   {r.cjpiScore}
                 </span>
