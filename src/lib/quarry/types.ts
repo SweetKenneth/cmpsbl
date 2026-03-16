@@ -7,8 +7,8 @@ export type QuarryTier = 'free' | 'creator' | 'architect' | 'enterprise' | 'inte
 export type QuarryVisibility = 'hidden' | 'tier_exposed' | 'public_curated' | 'baseline';
 export type QuarryAssetType = 'capability' | 'engine' | 'meta_engine' | 'pipeline' | 'template' | 'agent' | 'deployment_right' | 'governance_tool' | 'artifact_pack';
 
-/** Product tiers — Builder / Operator / Studio / Architect */
-export type ProductTier = 'builder' | 'operator' | 'studio' | 'architect';
+/** Product tiers — Builder / Studio / Creator / Architect */
+export type ProductTier = 'builder' | 'studio' | 'creator' | 'architect';
 
 export interface ArtifactSlotConfig {
   tier: ProductTier;
@@ -26,15 +26,15 @@ export const PRODUCT_TIERS: Record<ProductTier, ArtifactSlotConfig> = {
     deploymentRights: false,
     governanceScope: 'basic',
   },
-  operator: {
-    tier: 'operator',
+  studio: {
+    tier: 'studio',
     slots: 6,
     memoryDepth: 'expanded',
     deploymentRights: false,
     governanceScope: 'advanced',
   },
-  studio: {
-    tier: 'studio',
+  creator: {
+    tier: 'creator',
     slots: 9,
     memoryDepth: 'expanded_plus',
     deploymentRights: false,
