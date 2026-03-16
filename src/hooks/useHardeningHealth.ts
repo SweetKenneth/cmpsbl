@@ -1,5 +1,5 @@
 /**
- * useHardeningHealth — Observability hook for all 38 hardened modules
+ * useHardeningHealth — Observability hook for all 40 hardened modules
  * Aggregates health composites across all substrate layers
  */
 
