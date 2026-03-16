@@ -254,6 +254,19 @@ function OrbitalCanvas() {
     ctx.fillStyle = 'hsla(185, 100%, 90%, 0.8)';
     ctx.fillText('YOUR CODE', bounce41.x, bounce41.y + (isMobile ? 9 : 8));
 
+    // ── Status label — centered in the lower section of the circle, above bottom nodes ──
+    const labelY = cy + orbitR * 0.62;
+    ctx.save();
+    ctx.font = `bold ${isMobile ? 9 : 8}px monospace`;
+    ctx.fillStyle = 'hsla(185, 80%, 70%, 0.6)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('40-NODE SUBSTRATE MATRIX', cx, labelY);
+    ctx.font = `${isMobile ? 7.5 : 6.5}px monospace`;
+    ctx.fillStyle = 'hsla(185, 80%, 70%, 0.4)';
+    ctx.fillText('CANDIDATE #41 ACTIVE', cx, labelY + (isMobile ? 14 : 12));
+    ctx.restore();
+
     frameRef.current = requestAnimationFrame(animate);
   }, []);
 

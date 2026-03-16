@@ -132,12 +132,25 @@ async function safeReadText(file: File): Promise<string | null> {
   try {
     // Skip files > 2MB for text parsing (likely binary)
     if (file.size > 2_000_000) return null;
-    const text = await file.text();
-    // Heuristic: if >10% non-printable chars, likely binary
-    const sample = text.slice(0, 1000);
-    const nonPrintable = (sample.match(/[^\x20-\x7E\t\n\r]/g) || []).length;
-    if (nonPrintable / sample.length > 0.1) return null;
-    return text;
+
+    // Read as ArrayBuffer first to check for true binary indicators
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer.slice(0, 2048));
+
+    // True binary detection: null bytes or high concentration of control chars (0x00-0x08)
+    let nullCount = 0;
+    let controlCount = 0;
+    const checkLen = Math.min(bytes.length, 2048);
+    for (let i = 0; i < checkLen; i++) {
+      if (bytes[i] === 0x00) nullCount++;
+      else if (bytes[i] < 0x09 && bytes[i] !== 0x07) controlCount++; // exclude BEL
+    }
+    // Any null bytes → binary; >5% control chars → binary
+    if (nullCount > 0 || (checkLen > 0 && controlCount / checkLen > 0.05)) return null;
+
+    // Safe to decode as text
+    const decoder = new TextDecoder('utf-8', { fatal: false });
+    return decoder.decode(buffer);
   } catch {
     return null;
   }
