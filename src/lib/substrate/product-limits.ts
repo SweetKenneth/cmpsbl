@@ -76,7 +76,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 45,
     evolutionUploadsPerDay: 9,
     evolutionExportsPerDay: 3,
-    evolutionHdlAccess: true,
   },
   architect: {
     maxMemoryNamespaces: 12,
