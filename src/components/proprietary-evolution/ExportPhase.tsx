@@ -40,7 +40,8 @@ export function ExportPhase() {
   }, []);
 
   const loadCrystallized = async () => {
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, created_at')
       .eq('category', 'proprietary-crystallized')
@@ -48,8 +49,8 @@ export function ExportPhase() {
       .limit(50);
 
     if (data) {
-      setCapabilities(data.map(d => {
-        const meta = d.metadata as Record<string, unknown> || {};
+      setCapabilities((data as any[]).map((d: any) => {
+        const meta = d.metadata || {};
         return {
           id: d.id,
           name: d.name,
