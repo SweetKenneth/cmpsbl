@@ -151,8 +151,8 @@ export const TIER_LABELS: Record<QuarryTier, string> = {
 
 export const PRODUCT_TIER_LABELS: Record<ProductTier, string> = {
   builder: 'Builder',
-  operator: 'Operator',
   studio: 'Studio',
+  creator: 'Creator',
   architect: 'Architect',
 };
 

@@ -115,8 +115,9 @@ export function resolveToProductTier(subscriptionTier?: string): ProductTier {
   if (!subscriptionTier) return 'builder';
   if (subscriptionTier === 'enterprise') return 'architect';
   if (['architect', 'pro'].includes(subscriptionTier)) return 'architect';
-  if (subscriptionTier === 'studio') return 'studio';
-  if (['operator', 'creator', 'builder'].includes(subscriptionTier)) return 'operator';
+  if (['creator'].includes(subscriptionTier)) return 'creator';
+  if (['studio', 'operator'].includes(subscriptionTier)) return 'studio';
+  if (['starter', 'builder', 'free'].includes(subscriptionTier)) return 'builder';
   return 'builder';
 }
 
