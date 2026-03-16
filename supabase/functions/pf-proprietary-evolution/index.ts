@@ -506,14 +506,16 @@ serve(async (req: Request) => {
           } : null,
         };
 
-        // Mark as exported
+        // Mark as exported AND retired
         for (const cap of capabilities) {
           const meta = (cap.metadata as Record<string, unknown>) || {};
           await supabase.from('artifact_registry').update({
             metadata: {
               ...meta,
               exported: true,
+              retired: true,
               exported_at: new Date().toISOString(),
+              retired_at: new Date().toISOString(),
               export_target: target_language,
               export_pack_id: packId,
             },
