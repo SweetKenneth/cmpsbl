@@ -443,6 +443,7 @@ serve(async (req: Request) => {
         const { data: discoveries } = await supabase
           .from('artifact_registry')
           .select('id, name, metadata, tier')
+          .eq('user_id', userId)
           .eq('category', 'proprietary-discovery')
           .order('created_at', { ascending: false })
           .limit(100);
@@ -468,7 +469,7 @@ serve(async (req: Request) => {
               structural_fingerprint: fingerprint,
               lock_version: 1,
             },
-          }).eq('id', d.id);
+          }).eq('id', d.id).eq('user_id', userId);
 
           if (!error) crystallized++;
         }
