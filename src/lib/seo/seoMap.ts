@@ -1507,15 +1507,15 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'Intent Mesh natural language substrate',
   },
   '/blog/thirty-eight-nodes-deep': {
-    title: 'Thirty-Eight Nodes Deep — Complete Architecture',
-    description: 'From one function to forty interconnected nodes. A technical map of the complete substrate architecture and how it connects.',
+    title: 'Forty Nodes Deep — Complete Architecture',
+    description: 'From one function to forty interconnected nodes. A technical map of the complete 40-node substrate architecture and how it connects.',
     ogTitle: 'Forty Nodes Deep — Architecture',
     ogDescription: 'Technical map of the complete 40-node substrate.',
     ogImage: OG_BLOG,
     keywords: ['substrate architecture', '40-node system', 'cognitive infrastructure map', 'system design'],
     schema: 'article',
     intent: 'Blog/Changelog/Updates',
-    primaryKeyword: 'thirty-eight node substrate architecture',
+    primaryKeyword: 'forty node substrate architecture',
   },
   '/blog/the-memory-stream': {
     title: 'The Memory Stream — Signal Crystallization',
