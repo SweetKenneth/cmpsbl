@@ -62,8 +62,6 @@ export function useEvolutionLimits() {
     [usage.exportsToday, limits.evolutionExportsPerDay]
   );
 
-  const canAccessHdl = limits.evolutionHdlAccess;
-
   const uploadsRemaining = Math.max(0, limits.evolutionUploadsPerDay - usage.uploadsToday);
   const exportsRemaining = limits.evolutionExportsPerDay > 0
     ? Math.max(0, limits.evolutionExportsPerDay - usage.exportsToday)
@@ -75,7 +73,6 @@ export function useEvolutionLimits() {
     loadingUsage,
     canUpload,
     canExport,
-    canAccessHdl,
     uploadsRemaining,
     exportsRemaining,
     refreshUsage: loadUsage,

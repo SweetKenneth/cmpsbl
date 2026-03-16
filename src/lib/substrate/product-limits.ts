@@ -35,8 +35,6 @@ export interface ProductLimits {
   evolutionUploadsPerDay: number;
   /** Max capability exports per day (0 = cannot export) */
   evolutionExportsPerDay: number;
-  /** Whether HDL/hardware targets (Verilog, VHDL, SystemC, etc.) are available */
-  evolutionHdlAccess: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
@@ -52,7 +50,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 5,
     evolutionUploadsPerDay: 3,
     evolutionExportsPerDay: 0,
-    evolutionHdlAccess: false,
   },
   studio: {
     maxMemoryNamespaces: 3,
@@ -66,7 +63,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 30,
     evolutionUploadsPerDay: 6,
     evolutionExportsPerDay: 2,
-    evolutionHdlAccess: false,
   },
   creator: {
     maxMemoryNamespaces: 6,
@@ -80,7 +76,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 45,
     evolutionUploadsPerDay: 9,
     evolutionExportsPerDay: 3,
-    evolutionHdlAccess: true,
   },
   architect: {
     maxMemoryNamespaces: 12,
@@ -94,7 +89,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 60,
     evolutionUploadsPerDay: 12,
     evolutionExportsPerDay: 4,
-    evolutionHdlAccess: true,
   },
 };
 
