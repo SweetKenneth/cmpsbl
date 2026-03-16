@@ -139,9 +139,25 @@ export function IngestPhase() {
     setParsing(true);
 
     try {
+      console.log('[INGEST] Analyzing', files.length, 'file(s):', files.map(f => f.name).join(', '));
       const analysis = await analyzeUploadedFiles(files);
+      console.log('[INGEST] Analysis complete:', {
+        name: analysis.name,
+        language: analysis.language,
+        ingested: analysis.ingestedFiles.length,
+        unreadable: analysis.unreadableFileCount,
+        warnings: analysis.parseWarnings,
+      });
       setParsedNode(analysis);
+      if (analysis.ingestedFiles.length === 0) {
+        toast({
+          title: 'No code could be extracted',
+          description: 'The files could not be read as text. Ensure they are valid source code files (not compiled binaries).',
+          variant: 'destructive',
+        });
+      }
     } catch (err) {
+      console.error('[INGEST] Analysis error:', err);
       toast({ title: 'Analysis failed', description: String(err), variant: 'destructive' });
     } finally {
       setParsing(false);
@@ -200,8 +216,7 @@ export function IngestPhase() {
 
     try {
       await withRetry(async () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase as any).from('artifact_registry').insert({
+        const payload = {
           user_id: user.id,
           name: `CANDIDATE_${parsedNode.name}`,
           slug: `candidate-${parsedNode.name.toLowerCase()}-${Date.now().toString(36)}`,
@@ -227,10 +242,17 @@ export function IngestPhase() {
               content: file.content,
             })),
           },
-        });
+        };
 
-        if (error) throw error;
-      });
+        console.log('[INGEST] Registering candidate node:', payload.name, 'files:', payload.metadata.source_files.length);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any).from('artifact_registry').insert(payload);
+
+        if (error) {
+          console.error('[INGEST] DB insert error:', error.message, error.code, error.details);
+          throw new Error(`DB: ${error.message}`);
+        }
+      }, 2); // Only 2 retries to fail faster
 
       setBreakerStatus(recordSuccess());
       setRegistered(true);
@@ -238,6 +260,7 @@ export function IngestPhase() {
       await refreshUsage();
       toast({ title: 'Candidate node registered', description: `${parsedNode.name} ingested successfully and is ready for Ascension` });
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
       const newBreaker = recordFailure(breakerStatus);
       setBreakerStatus(newBreaker);
       deadLetterLog('register_candidate_node', {
@@ -246,22 +269,11 @@ export function IngestPhase() {
         breakerState: newBreaker.state,
       }, err);
 
-      if (newBreaker.state === 'open') {
-        toast({
-          title: 'Registration failed — circuit breaker tripped',
-          description: `${newBreaker.failures} consecutive failures. Auto-healing in ${Math.round(newBreaker.cooldownMs / 1000)}s.`,
-          variant: 'destructive',
-        });
-        // Auto-heal: schedule retry after cooldown
-        if (autoHealAttempt < 2) {
-          setTimeout(() => {
-            setAutoHealAttempt(prev => prev + 1);
-            setBreakerStatus(prev => ({ ...prev, state: 'half-open' }));
-          }, newBreaker.cooldownMs);
-        }
-      } else {
-        toast({ title: 'Registration failed', description: `Attempt ${newBreaker.failures}/${MAX_FAILURES} — retrying automatically`, variant: 'destructive' });
-      }
+      toast({
+        title: 'Registration failed',
+        description: errMsg.includes('DB:') ? errMsg : `Unexpected error: ${errMsg}`,
+        variant: 'destructive',
+      });
     } finally {
       setRegistering(false);
     }

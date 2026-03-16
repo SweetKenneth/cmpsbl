@@ -12,8 +12,8 @@ export const LANG_MAP: Record<string, string> = {
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
 const TEXT_SAMPLE_BYTES = 64 * 1024;
 const MAX_TEXT_ANALYSIS_BYTES = 1024 * 1024;
-const MAX_STORED_CHARS_PER_FILE = 48_000;
-const MAX_STORED_TOTAL_CHARS = 240_000;
+const MAX_STORED_CHARS_PER_FILE = 16_000;
+const MAX_STORED_TOTAL_CHARS = 80_000;
 
 type SupportedTextEncoding = 'utf-8' | 'utf-16le' | 'utf-16be' | 'windows-1252';
 
@@ -162,14 +162,33 @@ function looksUnreadable(text: string): boolean {
 }
 
 export async function safeReadText(file: File): Promise<string | null> {
+  const knownSource = isKnownSourceFile(file);
+
+  // Fast path for known source extensions — always use file.text() directly.
+  // This avoids false-positive binary detection for PHP, Rust, Verilog, etc.
+  if (knownSource) {
+    try {
+      const text = await file.text();
+      return text.replace(/^\uFEFF/, '');
+    } catch {
+      // Fallback: try arrayBuffer → TextDecoder
+      try {
+        const buf = await blobToArrayBuffer(file.slice(0, MAX_TEXT_ANALYSIS_BYTES));
+        return new TextDecoder('utf-8', { fatal: false }).decode(buf).replace(/^\uFEFF/, '');
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  // Unknown extensions: probe for binary content
   try {
-    const knownSourceFile = isKnownSourceFile(file);
     const sampleSize = Math.min(file.size, TEXT_SAMPLE_BYTES);
     const sampleBuffer = await blobToArrayBuffer(file.slice(0, sampleSize));
     const sampleBytes = new Uint8Array(sampleBuffer);
     const detectedEncoding = detectTextEncoding(sampleBytes);
 
-    if (hasHardBinarySignature(sampleBytes, knownSourceFile, detectedEncoding)) {
+    if (hasHardBinarySignature(sampleBytes, false, detectedEncoding)) {
       return null;
     }
 
@@ -179,21 +198,13 @@ export async function safeReadText(file: File): Promise<string | null> {
       : await blobToArrayBuffer(file.slice(0, analysisSize));
 
     const decoded = decodeBestEffort(analysisBuffer, detectedEncoding);
-    if (decoded && (!looksUnreadable(decoded) || knownSourceFile)) {
+    if (decoded && !looksUnreadable(decoded)) {
       return decoded;
-    }
-
-    if (knownSourceFile) {
-      return (await file.text()).replace(/^\uFEFF/, '');
     }
 
     return null;
   } catch {
-    try {
-      return isKnownSourceFile(file) ? (await file.text()).replace(/^\uFEFF/, '') : null;
-    } catch {
-      return null;
-    }
+    return null;
   }
 }
 
