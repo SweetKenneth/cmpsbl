@@ -139,64 +139,8 @@ export function IngestPhase() {
     setParsing(true);
 
     try {
-      const warnings: string[] = [];
-      const totalSize = files.reduce((sum, f) => sum + f.size, 0);
-      const extensions = new Set<string>();
-
-      for (const file of files) {
-        const ext = file.name.split('.').pop()?.toLowerCase();
-        if (ext) extensions.add(ext);
-      }
-
-      // Detect language(s)
-      const detectedLangs = Array.from(extensions)
-        .map(ext => LANG_MAP[ext])
-        .filter(Boolean);
-      const primaryLang = detectedLangs[0] || 'Unknown';
-
-      if (detectedLangs.length === 0) {
-        warnings.push('No recognized language extensions — files will be analyzed as raw input');
-      }
-      if (detectedLangs.length > 3) {
-        warnings.push(`Mixed-language upload detected (${detectedLangs.length} languages)`);
-      }
-
-      // Count export points (resolvers) via safe text reading
-      let resolverEstimate = 0;
-      let filesAnalyzed = 0;
-      let filesFailed = 0;
-
-      for (const file of files) {
-        const text = await safeReadText(file);
-        if (text !== null) {
-          filesAnalyzed++;
-          const exportMatches = text.match(/export\s+(function|class|const|default|async\s+function)/g);
-          const moduleMatches = text.match(/module\s+\w+/g); // HDL modules
-          const entityMatches = text.match(/entity\s+\w+\s+is/gi); // VHDL entities
-          resolverEstimate += (exportMatches?.length || 0) + (moduleMatches?.length || 0) + (entityMatches?.length || 0);
-        } else {
-          filesFailed++;
-        }
-      }
-
-      if (filesFailed > 0) {
-        warnings.push(`${filesFailed} file(s) skipped (binary or unreadable text content)`);
-      }
-
-      const nodeName = files[0].name
-        .replace(/\.[^.]+$/, '')
-        .replace(/[^a-zA-Z0-9]/g, '_')
-        .toUpperCase()
-        .slice(0, 40);
-
-      setParsedNode({
-        name: nodeName,
-        fileCount: files.length,
-        resolverCount: Math.max(resolverEstimate, 1),
-        language: primaryLang + (detectedLangs.length > 1 ? ` +${detectedLangs.length - 1}` : ''),
-        sizeKb: Math.round(totalSize / 1024),
-        parseWarnings: warnings,
-      });
+      const analysis = await analyzeUploadedFiles(files);
+      setParsedNode(analysis);
     } catch (err) {
       toast({ title: 'Analysis failed', description: String(err), variant: 'destructive' });
     } finally {
