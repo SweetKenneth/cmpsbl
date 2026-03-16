@@ -397,12 +397,6 @@ export function AscensionHero() {
           {/* Outer glow ring */}
           <div className="absolute inset-[-15%] rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.06)_0%,_transparent_65%)]" />
           <OrbitalCanvas />
-          {/* Label */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
-            <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/50 tracking-widest uppercase">
-              40-Node Substrate Matrix • Candidate #41 Active
-            </span>
-          </div>
         </motion.div>
 
         {/* ═══ LIFECYCLE PIPELINE — 4 steps ═══ */}
