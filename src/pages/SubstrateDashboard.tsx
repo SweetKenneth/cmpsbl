@@ -400,39 +400,63 @@ const modulesByLayer = {
       actions: ["spawn", "mirror", "canary", "dissolve"],
     },
   ],
-  // ── Mesh Overlays ──
-  mesh: [
-    {
-      id: "governance",
-      name: "GOVERNANCE",
-      description: "Policy mesh, compliance enforcement",
-      icon: Gauge,
-      color: "text-amber-400",
-      bg: "bg-amber-400/10",
-      actions: ["enforce", "audit", "policy", "override"],
-    },
-    {
-      id: "intent",
-      name: "INTENT",
-      description: "Inter-module communication mesh",
-      icon: Orbit,
-      color: "text-blue-400",
-      bg: "bg-blue-400/10",
-      actions: ["route", "classify", "approve", "trace"],
-    },
+  // ── Fields ──
+  fields: [
     {
       id: "immunity",
       name: "IMMUNITY",
-      description: "Threat isolation, safety-switch mesh",
+      description: "Cascade breaking, anomaly signature training",
       icon: Shield,
       color: "text-red-300",
       bg: "bg-red-300/10",
       actions: ["isolate", "quarantine", "heal", "vaccinate"],
     },
     {
-      id: "defense_mesh",
+      id: "intent",
+      name: "INTENT",
+      description: "Goal decomposition, capability mesh routing",
+      icon: Orbit,
+      color: "text-blue-400",
+      bg: "bg-blue-400/10",
+      actions: ["route", "classify", "approve", "trace"],
+    },
+  ],
+  // ── Plane ──
+  plane: [
+    {
+      id: "governance",
+      name: "GOVERNANCE",
+      description: "Policy mesh, veto precision, compliance",
+      icon: Gauge,
+      color: "text-amber-400",
+      bg: "bg-amber-400/10",
+      actions: ["enforce", "audit", "policy", "override"],
+    },
+    {
+      id: "engineer",
+      name: "ENGINEER",
+      description: "Engine health scoring, maintenance scheduling",
+      icon: Settings,
+      color: "text-stone-400",
+      bg: "bg-stone-400/10",
+      actions: ["diagnose", "schedule", "optimize", "report"],
+    },
+    {
+      id: "atlas",
+      name: "ATLAS",
+      description: "Capability discovery, dependency mapping",
+      icon: Globe,
+      color: "text-cyan-300",
+      bg: "bg-cyan-300/10",
+      actions: ["discover", "map", "govern", "audit"],
+    },
+  ],
+  // ── Shell ──
+  shell: [
+    {
+      id: "defense",
       name: "DEFENSE",
-      description: "Perimeter security, anomaly detection overlay",
+      description: "Bot detection, behavioral fingerprinting, perimeter security",
       icon: Siren,
       color: "text-rose-500",
       bg: "bg-rose-500/10",
