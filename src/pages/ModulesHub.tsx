@@ -22,8 +22,8 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="All 40 Nodes — Browse the Full Topology | CMPSBL"
-        description="Explore every node in CMPSBL's substrate: BRAIN, MEMORY, DREAM, NEXUS, DEFENSE, ORACLE, PHANTOM, FORGE, and 32 more. Each node is an autonomous subsystem with dedicated resolvers and mesh links."
+        title="All Nodes — Browse the Full Topology | CMPSBL"
+        description="Explore every node in CMPSBL's substrate: BRAIN, MEMORY, DREAM, NEXUS, DEFENSE, ORACLE, PHANTOM, FORGE, and more. Each node is an autonomous subsystem with dedicated resolvers and mesh links."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
@@ -49,7 +49,7 @@ export default function ModulesHub() {
                 Substrate Architecture
               </span>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                40 Nodes.{" "}
+                Every Node.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One Intelligence.
                 </span>
