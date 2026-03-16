@@ -274,7 +274,7 @@ const App = () => {
           </Suspense>
         </SEOProvider>
         </QueryClientProvider>
-      </MotionConfigWrapper>
+      </DeferredMotionConfig>
       </Suspense>
       )}
 
