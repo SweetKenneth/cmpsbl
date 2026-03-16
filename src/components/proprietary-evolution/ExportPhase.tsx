@@ -289,7 +289,7 @@ export function ExportPhase() {
         </div>
         {!canAccessHdl && (
           <span className="text-[9px] font-mono text-muted-foreground">
-            HDL: Studio+ only
+            HDL: Creator+ only
           </span>
         )}
       </div>
