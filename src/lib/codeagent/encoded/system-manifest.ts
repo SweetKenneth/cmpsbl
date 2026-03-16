@@ -620,5 +620,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
-  return `CMPSBL Substrate: ${moduleCount} modules across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell), ${componentCount} registered UI components. 38 Matrix Nodes total. Σ(weight) = 1.000.`;
+  return `CMPSBL Substrate: ${moduleCount} modules across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell), ${componentCount} registered UI components. 40 Matrix Nodes total. Σ(weight) = 1.000.`;
 }
