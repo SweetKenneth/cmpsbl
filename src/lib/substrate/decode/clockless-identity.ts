@@ -40,11 +40,11 @@ export const COGNITIVE_REALITY_DEFINITION = 'A Cognitive Reality is a persistent
 
 /**
  * Canonical architecture breakdown.
- * 38 total nodes across 12 sectors.
+ * 40 total nodes across 12 sectors.
  */
 export const ARCHITECTURE = {
   /** Total active nodes in the substrate */
-  totalNodes: 38,
+  totalNodes: 40,
 
   /** 1 Kernel — the standalone boot authority */
   kernel: {
@@ -81,21 +81,21 @@ export const ARCHITECTURE = {
     description: 'Public-facing cognitive primitives that developers interact with directly.',
   },
 
-  /** ESZ — Ethical Sovereignty Zone */
+  /** ESZ — Expansion Sovereignty Zone */
   esz: {
     count: 4,
     names: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'] as const,
     description: 'Jurisdiction, prediction, ethics, and regulatory compliance.',
   },
 
-  /** EPZ — Environmental Perception Zone */
+  /** EPZ — Expansion Perception Zone */
   epz: {
     count: 3,
     names: ['COMPASS', 'ECHO', 'REFLEX'] as const,
     description: 'Geospatial awareness, simulation, and reactive autonomy.',
   },
 
-  /** EMZ — Emergent Manufacturing Zone */
+  /** EMZ — Expansion Manufacturing Zone */
   emz: {
     count: 3,
     names: ['FORGE', 'LINGUA', 'HARVEST'] as const,
@@ -116,11 +116,11 @@ export const ARCHITECTURE = {
     description: 'Cross-cutting behavioral layers that span all nodes.',
   },
 
-  /** Plane — supervisory governance blanket */
+  /** Plane — supervisory governance blanket (3 nodes) */
   plane: {
-    count: 1,
-    names: ['GOVERNANCE'] as const,
-    description: 'Supervisory governance blanket — ethical and coherence constraints.',
+    count: 3,
+    names: ['GOVERNANCE', 'ENGINEER', 'ATLAS'] as const,
+    description: 'Supervisory governance blanket — ethical constraints, meta-engine maintenance, and system cartography.',
   },
 
   /** Shell — outer containment boundary */

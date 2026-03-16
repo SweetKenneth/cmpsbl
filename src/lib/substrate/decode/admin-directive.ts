@@ -239,6 +239,8 @@ function getModuleActivity(moduleId: string): string {
     IMMUNITY: 'Anomaly detection and drift baseline monitoring',
     INTENT: 'Goal lifecycle management and resolution tracking',
     GOVERNANCE: 'Enforcing ethical constraints and coherence policies',
+    ENGINEER: 'Engine and meta-engine maintenance intelligence',
+    ATLAS: 'System cartography, capability registry, and governance authority',
     DEFENSE: 'Perimeter monitoring, threat detection, and response',
   };
   return activities[moduleId] || 'Operating within normal parameters';

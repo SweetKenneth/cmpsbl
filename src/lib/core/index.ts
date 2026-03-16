@@ -63,26 +63,23 @@ export const SUBSTRATE_MODULES = [
   'brain', 'memory', 'dream',
   // OCG Zones (Operational Compliance Grid — includes NERVE)
   'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
-  // Absorbed (routes to evolution field)
-  'evolution',
-  // 9 Execution Modules (NERVE moved to OCG)
+  // 10 Execution Modules (NERVE moved to OCG)
   'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive',
-  'medic',
-  // Fields (system-wide transformation fabric)
-  'immunity', 'intent',
-  // Overlay Plane (supervisory)
-  'governance',
-  // Shell (outer containment)
-  'defense',
-  // Module (boots last)
-  'integration',
-  // Expansion Modules (40-Node Architecture)
-  'sovereign', 'oracle', 'conscience', 'forge',
-  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
+  'medic', 'integration',
+  // ESZ — Expansion Sovereignty Zone
+  'sovereign', 'oracle', 'conscience', 'treaty',
+  // EPZ — Expansion Perception Zone
+  'compass', 'echo', 'reflex',
+  // EMZ — Expansion Manufacturing Zone
+  'forge', 'lingua', 'harvest',
   // CSZ — Covert Systems Zone
   'evolution', 'shadow', 'phantom',
-  // Plane additions (Nodes 39-40)
-  'engineer', 'atlas',
+  // Fields (system-wide transformation fabric)
+  'immunity', 'intent',
+  // Plane — supervisory (GOVERNANCE + ENGINEER + ATLAS)
+  'governance', 'engineer', 'atlas',
+  // Shell (outer containment)
+  'defense',
 ] as const;
 
 // Public-facing entity count (CORE + 8 Modules + INTEGRATION)
