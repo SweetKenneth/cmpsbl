@@ -266,7 +266,7 @@ export default function Status() {
 
         {/* Overall Banner */}
         <div className="mb-8">
-          <OverallStatusBanner status={overallStatus} uptimeDays={uptimeDays} />
+          <OverallStatusBanner status={overallStatus} />
         </div>
 
         {/* Uptime History Bar (90 days visual) */}
