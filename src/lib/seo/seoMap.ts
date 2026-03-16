@@ -1610,15 +1610,15 @@ export const seoMap: Record<string, PageSEO> = {
   // MISSING PAGES — Added to prevent fallback to homepage SEO
   // ═══════════════════════════════════════════════════
   '/substrate': {
-    title: 'Substrate Dashboard — 40-Node Control | CMPSBL',
-    description: 'Monitor and control all 40 nodes across 12 sectors. Real-time health, module actions, and telemetry for the cognitive substrate.',
-    ogTitle: 'Substrate Dashboard — 40-Node Control',
-    ogDescription: 'Real-time control across 40 nodes and 12 sectors.',
+    title: 'Substrate Dashboard — Live Control | CMPSBL',
+    description: 'Monitor and control every node across all sectors. Real-time health, node actions, and telemetry for the cognitive substrate.',
+    ogTitle: 'Substrate Dashboard — Live Control',
+    ogDescription: 'Real-time node control, health, and telemetry.',
     ogImage: OG_SUBSTRATE,
-    keywords: ['substrate dashboard', '40-node control', 'cognitive telemetry', 'module health', 'sector monitoring'],
+    keywords: ['substrate dashboard', 'cognitive telemetry', 'node health', 'sector monitoring', 'live control'],
     schema: 'feature',
     intent: 'Feature/Capability',
-    primaryKeyword: 'substrate 40-node dashboard',
+    primaryKeyword: 'substrate live dashboard control',
   },
   '/studio': {
     title: 'STUDIO — Autonomous Site Generator | CMPSBL',
