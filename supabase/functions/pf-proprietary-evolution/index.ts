@@ -229,6 +229,7 @@ serve(async (req: Request) => {
     if (userError || !userData?.user) {
       return jsonResponse({ success: false, error: 'Invalid or expired auth token' }, 401);
     }
+    const userId = userData.user.id;
 
     let body: Record<string, unknown>;
     try {
@@ -266,18 +267,24 @@ serve(async (req: Request) => {
         const { data: candidateData } = await supabase
           .from('artifact_registry')
           .select('name, metadata')
+          .eq('user_id', userId)
           .eq('category', 'proprietary-evolution')
           .eq('tier', 'candidate')
           .ilike('name', `%${candidate_node}%`)
           .limit(1)
           .maybeSingle();
 
-        const candidateMeta = (candidateData?.metadata as Record<string, unknown>) || {};
+        if (!candidateData) {
+          return jsonResponse({ success: false, error: 'Candidate node not found for this account' }, 404);
+        }
+
+        const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
         const results = collideNodes(candidate_node, candidateMeta, target_node, permutation_depth);
 
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
+            user_id: userId,
             name: result.name,
             slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
             tier: result.tier,
@@ -293,7 +300,7 @@ serve(async (req: Request) => {
               discovered_at: new Date().toISOString(),
               crystallized: false,
             },
-          }, { onConflict: 'slug' });
+          }, { onConflict: 'user_id,slug' });
         }
 
         return jsonResponse({
@@ -315,13 +322,18 @@ serve(async (req: Request) => {
         const { data: candidateData } = await supabase
           .from('artifact_registry')
           .select('name, metadata')
+          .eq('user_id', userId)
           .eq('category', 'proprietary-evolution')
           .eq('tier', 'candidate')
           .ilike('name', `%${candidate_node}%`)
           .limit(1)
           .maybeSingle();
 
-        const candidateMeta = (candidateData?.metadata as Record<string, unknown>) || {};
+        if (!candidateData) {
+          return jsonResponse({ success: false, error: 'Candidate node not found for this account' }, 404);
+        }
+
+        const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
         const allResults: CollisionResult[] = [];
 
         for (const node of SUBSTRATE_NODES) {
@@ -335,6 +347,7 @@ serve(async (req: Request) => {
         for (const result of topResults) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
+            user_id: userId,
             name: result.name,
             slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
             tier: result.tier,
@@ -350,7 +363,7 @@ serve(async (req: Request) => {
               discovered_at: new Date().toISOString(),
               crystallized: false,
             },
-          }, { onConflict: 'slug' });
+          }, { onConflict: 'user_id,slug' });
         }
 
         return jsonResponse({
@@ -377,6 +390,7 @@ serve(async (req: Request) => {
           .from('artifact_registry')
           .select('*')
           .eq('id', discovery_id)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (!discovery) {
@@ -405,7 +419,8 @@ serve(async (req: Request) => {
               lock_version: 1,
             },
           })
-          .eq('id', discovery_id);
+          .eq('id', discovery_id)
+          .eq('user_id', userId);
 
         if (error) {
           return jsonResponse({ success: false, error: error.message }, 500);
@@ -428,6 +443,7 @@ serve(async (req: Request) => {
         const { data: discoveries } = await supabase
           .from('artifact_registry')
           .select('id, name, metadata, tier')
+          .eq('user_id', userId)
           .eq('category', 'proprietary-discovery')
           .order('created_at', { ascending: false })
           .limit(100);
@@ -453,7 +469,7 @@ serve(async (req: Request) => {
               structural_fingerprint: fingerprint,
               lock_version: 1,
             },
-          }).eq('id', d.id);
+          }).eq('id', d.id).eq('user_id', userId);
 
           if (!error) crystallized++;
         }
@@ -487,6 +503,7 @@ serve(async (req: Request) => {
           .from('artifact_registry')
           .select('id, name, metadata, tier, description')
           .in('id', capability_ids)
+          .eq('user_id', userId)
           .eq('category', 'proprietary-crystallized');
 
         if (!capabilities || capabilities.length === 0) {
@@ -519,7 +536,6 @@ serve(async (req: Request) => {
           } : null,
         };
 
-        // Mark as exported AND retired
         for (const cap of capabilities) {
           const meta = (cap.metadata as Record<string, unknown>) || {};
           await supabase.from('artifact_registry').update({
@@ -532,14 +548,14 @@ serve(async (req: Request) => {
               export_target: target_language,
               export_pack_id: packId,
             },
-          }).eq('id', cap.id);
+          }).eq('id', cap.id).eq('user_id', userId);
         }
 
-        // Audit log
         await supabase.from('audit_logs').insert({
           action: 'proprietary_evolution_export',
           entity_type: 'capability_pack',
           entity_id: packId,
+          performed_by: userId,
           details: {
             target_language,
             capability_count: capabilities.length,
