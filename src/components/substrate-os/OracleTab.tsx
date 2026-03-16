@@ -38,9 +38,6 @@ function usePredictions() {
 
       const snapshots = healthRes.data || [];
       const usage = usageRes.data || [];
-      const errorCount = errorRes.count || 0;
-      const totalCalls = usage.length;
-      const successRate = totalCalls > 0 ? usage.filter(u => u.success).length / totalCalls : 1;
 
       // Derive ORACLE predictions from real data only
       const totalCalls = usage.length;

@@ -153,7 +153,7 @@ function useSystemStatus() {
   return { modules, overallStatus, lastUpdated, recentIncidents };
 }
 
-function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; uptimeDays: number }) {
+function OverallStatusBanner({ status }: { status: ModuleStatus }) {
   const config = STATUS_CONFIG[status];
   const Icon = config.icon;
 
@@ -182,8 +182,7 @@ function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; upt
         </h2>
       </div>
       <p className="text-muted-foreground text-sm">
-        {uptimeDays > 0 ? `${uptimeDays} days of continuous operation` : "System status is being monitored"}
-        {" · "}Last checked just now
+        Continuously monitored · Last checked just now
       </p>
     </motion.div>
   );
