@@ -92,7 +92,8 @@ export function IngestPhase() {
 
     try {
       // Register as candidate node in artifact registry
-      const { error } = await supabase.from('artifact_registry').insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from('artifact_registry').insert({
         name: `CANDIDATE_${parsedNode.name}`,
         slug: `candidate-${parsedNode.name.toLowerCase()}`,
         tier: 'candidate',

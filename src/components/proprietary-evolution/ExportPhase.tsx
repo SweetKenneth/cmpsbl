@@ -89,7 +89,8 @@ export function ExportPhase() {
 
       // Mark as exported
       for (const cap of eligible) {
-        await supabase.from('artifact_registry').update({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any).from('artifact_registry').update({
           metadata: {
             exported: true,
             exported_at: new Date().toISOString(),

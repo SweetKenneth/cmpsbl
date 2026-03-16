@@ -32,7 +32,8 @@ export function CrystallizationPhase() {
 
   const loadDiscoveries = async () => {
     setLoading(true);
-    const { data } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier')
       .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
@@ -40,8 +41,8 @@ export function CrystallizationPhase() {
       .limit(100);
 
     if (data) {
-      setDiscoveries(data.map(d => {
-        const meta = d.metadata as Record<string, unknown> || {};
+      setDiscoveries((data as any[]).map((d: any) => {
+        const meta = d.metadata || {};
         return {
           id: d.id,
           name: d.name,
@@ -59,7 +60,8 @@ export function CrystallizationPhase() {
   const crystallize = async (discovery: Discovery) => {
     setCrystallizing(discovery.id);
     try {
-      const { error } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any)
         .from('artifact_registry')
         .update({
           category: 'proprietary-crystallized',

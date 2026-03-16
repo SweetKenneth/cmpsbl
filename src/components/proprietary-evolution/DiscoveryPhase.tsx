@@ -37,7 +37,8 @@ export function DiscoveryPhase() {
   // Load registered candidate node
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (supabase as any)
         .from('artifact_registry')
         .select('name, slug')
         .eq('category', 'proprietary-evolution')
@@ -54,7 +55,8 @@ export function DiscoveryPhase() {
   // Load existing discovery results
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await (supabase as any)
         .from('artifact_registry')
         .select('name, metadata, tier')
         .eq('category', 'proprietary-discovery')
@@ -62,8 +64,8 @@ export function DiscoveryPhase() {
         .limit(50);
 
       if (data) {
-        setResults(data.map(d => {
-          const meta = d.metadata as Record<string, unknown> || {};
+        setResults((data as any[]).map((d: any) => {
+          const meta = d.metadata || {};
           return {
             nodeA: String(meta.node_a || 'CANDIDATE'),
             nodeB: String(meta.node_b || ''),
