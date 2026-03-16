@@ -122,7 +122,7 @@ export function IngestPhase() {
       if (error) throw error;
       setRegistered(true);
       await refreshUsage();
-      toast({ title: 'Node #41 registered', description: `${parsedNode.name} is ready for Discovery` });
+      toast({ title: 'Candidate node registered', description: `${parsedNode.name} is ready for Ascension` });
     } catch (err) {
       toast({ title: 'Registration failed', description: String(err), variant: 'destructive' });
     } finally {
