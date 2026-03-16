@@ -12,8 +12,10 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense, useRef } from "react";
 import { SEOProvider } from "@/contexts/SEOContext";
 
-// Lazy-load non-critical UI components to reduce initial JS
-const MotionConfigWrapper = lazy(() => import("framer-motion").then(m => ({ default: m.MotionConfig })));
+// Deferred providers — render children immediately, load library lazily
+// This prevents ~87KB of framer-motion + radix from blocking initial render
+import DeferredMotionConfig from "@/components/providers/DeferredMotionConfig";
+import DeferredTooltipProvider from "@/components/providers/DeferredTooltipProvider";
 const SmartToastRenderer = lazy(() => import("@/components/toast/SmartToastRenderer"));
 const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
@@ -31,7 +33,6 @@ const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m 
 // Critical providers — eagerly loaded to prevent app-crashing dynamic import failures
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { TooltipProvider } from "@/components/ui/tooltip";
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
 // Route modules — extracted from monolith (P2 gap analysis)
@@ -213,12 +214,12 @@ const App = () => {
         <MobilePreviewSafeMode />
       ) : (
         <Suspense fallback={null}>
-        <MotionConfigWrapper reducedMotion={isPreviewEnv ? "always" : "user"}>
+        <DeferredMotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
-                <TooltipProvider>
+                <DeferredTooltipProvider>
                   <SmartToastRenderer />
                   <SonnerToaster />
                    <BrowserRouter>
@@ -268,12 +269,12 @@ const App = () => {
                     } />
                   </Routes>
                 </BrowserRouter>
-              </TooltipProvider>
+              </DeferredTooltipProvider>
             </SubstrateProvider>
           </Suspense>
         </SEOProvider>
         </QueryClientProvider>
-      </MotionConfigWrapper>
+      </DeferredMotionConfig>
       </Suspense>
       )}
 
