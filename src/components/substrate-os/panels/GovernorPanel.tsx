@@ -494,6 +494,43 @@ export default function GovernorPanel() {
           </div>
         </TabsContent>
 
+        {/* Metrics Store */}
+        <TabsContent value="metrics" className="mt-4 space-y-4">
+          <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
+            <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-primary shrink-0" />
+                Substrate Module Metrics
+              </CardTitle>
+              <CardDescription className="text-[11px]">Real-time health and throughput per module</CardDescription>
+            </CardHeader>
+            <CardContent className="px-4 sm:px-6">
+              {moduleHealthLoading ? (
+                <div className="space-y-2">{[1,2,3].map(i => <Skeleton key={i} className="h-10 w-full" />)}</div>
+              ) : moduleHealth.length > 0 ? (
+                <div className="space-y-2">
+                  {moduleHealth.map(m => (
+                    <div key={m.module} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10">
+                      <span className="text-[11px] font-mono font-bold w-24 truncate">{m.module}</span>
+                      <div className="flex-1 h-1.5 bg-muted/30 rounded-full overflow-hidden">
+                        <div
+                          className={cn("h-full rounded-full", m.health >= 80 ? "bg-emerald-500" : m.health >= 50 ? "bg-amber-500" : "bg-red-500")}
+                          style={{ width: `${m.health}%` }}
+                        />
+                      </div>
+                      <span className="text-[10px] font-mono tabular-nums w-10 text-right">{m.health}%</span>
+                      <span className="text-[9px] text-muted-foreground/50 font-mono w-16 text-right">{m.ops} ops</span>
+                      <span className="text-[9px] text-red-400/70 font-mono w-12 text-right">{m.errors} err</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground/40 text-center py-6">No module metrics recorded yet. Enable Shadow Mesh & IMMUNITY Training to begin.</p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Signal Feed */}
         <TabsContent value="advisory" className="mt-4">
           <Suspense fallback={<Loader />}>
