@@ -200,8 +200,7 @@ export function IngestPhase() {
 
     try {
       await withRetry(async () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error } = await (supabase as any).from('artifact_registry').insert({
+        const payload = {
           user_id: user.id,
           name: `CANDIDATE_${parsedNode.name}`,
           slug: `candidate-${parsedNode.name.toLowerCase()}-${Date.now().toString(36)}`,
@@ -227,10 +226,17 @@ export function IngestPhase() {
               content: file.content,
             })),
           },
-        });
+        };
 
-        if (error) throw error;
-      });
+        console.log('[INGEST] Registering candidate node:', payload.name, 'files:', payload.metadata.source_files.length);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { error } = await (supabase as any).from('artifact_registry').insert(payload);
+
+        if (error) {
+          console.error('[INGEST] DB insert error:', error.message, error.code, error.details);
+          throw new Error(`DB: ${error.message}`);
+        }
+      }, 2); // Only 2 retries to fail faster
 
       setBreakerStatus(recordSuccess());
       setRegistered(true);
