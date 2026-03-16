@@ -462,7 +462,7 @@ export function ExportPhase() {
       <div className="border border-primary/20 rounded-xl p-5 bg-primary/5 space-y-3">
         <div className="flex items-center gap-2">
           <RefreshCw className="w-4 h-4 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Recursive Evolution Loop</span>
+          <span className="text-xs font-semibold text-foreground">Recursive Ascension Loop</span>
         </div>
         <p className="text-xs text-muted-foreground">
           Re-ingest your enhanced capabilities as a new candidate node.
