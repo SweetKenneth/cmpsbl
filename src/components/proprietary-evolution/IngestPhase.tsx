@@ -1,0 +1,239 @@
+/**
+ * INGEST Phase — Import developer code and create Candidate Node #41
+ * Reverse of the Universal Export Adapter
+ */
+
+import { useState, useCallback } from 'react';
+import { Upload, FileCode2, CheckCircle2, AlertCircle, Loader2, Code2, Layers } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface ParsedNode {
+  name: string;
+  fileCount: number;
+  resolverCount: number;
+  language: string;
+  sizeKb: number;
+}
+
+export function IngestPhase() {
+  const [dragOver, setDragOver] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [parsing, setParsing] = useState(false);
+  const [parsedNode, setParsedNode] = useState<ParsedNode | null>(null);
+  const [registered, setRegistered] = useState(false);
+  const { toast } = useToast();
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const dropped = Array.from(e.dataTransfer.files);
+    setFiles(dropped);
+    setParsedNode(null);
+    setRegistered(false);
+  }, []);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files));
+      setParsedNode(null);
+      setRegistered(false);
+    }
+  }, []);
+
+  const handleParse = async () => {
+    if (files.length === 0) return;
+    setParsing(true);
+
+    try {
+      // Analyze uploaded files to create candidate node profile
+      const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+      const extensions = new Set(files.map(f => f.name.split('.').pop()?.toLowerCase()));
+      
+      const langMap: Record<string, string> = {
+        ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
+        py: 'Python', rs: 'Rust', go: 'Go', java: 'Java', rb: 'Ruby', cs: 'C#',
+        cpp: 'C++', c: 'C', zig: 'Zig', hs: 'Haskell', sv: 'SystemVerilog', v: 'Verilog',
+      };
+      
+      const detectedLang = Array.from(extensions)
+        .map(ext => langMap[ext || ''])
+        .filter(Boolean)[0] || 'Unknown';
+
+      // Count potential resolvers (exported functions/classes)
+      let resolverEstimate = 0;
+      for (const file of files) {
+        if (file.size < 500_000) { // Only parse files < 500KB
+          const text = await file.text();
+          const exportMatches = text.match(/export\s+(function|class|const|default)/g);
+          resolverEstimate += exportMatches?.length || 0;
+        }
+      }
+
+      setParsedNode({
+        name: files[0].name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]/g, '_').toUpperCase(),
+        fileCount: files.length,
+        resolverCount: Math.max(resolverEstimate, 1),
+        language: detectedLang,
+        sizeKb: Math.round(totalSize / 1024),
+      });
+    } catch (err) {
+      toast({ title: 'Parse failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setParsing(false);
+    }
+  };
+
+  const handleRegisterNode = async () => {
+    if (!parsedNode) return;
+    setParsing(true);
+
+    try {
+      // Register as candidate node in artifact registry
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from('artifact_registry').insert({
+        name: `CANDIDATE_${parsedNode.name}`,
+        slug: `candidate-${parsedNode.name.toLowerCase()}`,
+        tier: 'candidate',
+        category: 'proprietary-evolution',
+        description: `Candidate Node #41 — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers)`,
+        metadata: {
+          phase: 'ingest',
+          language: parsedNode.language,
+          file_count: parsedNode.fileCount,
+          resolver_count: parsedNode.resolverCount,
+          size_kb: parsedNode.sizeKb,
+          ingested_at: new Date().toISOString(),
+        },
+      });
+
+      if (error) throw error;
+      setRegistered(true);
+      toast({ title: 'Node #41 registered', description: `${parsedNode.name} is ready for Discovery` });
+    } catch (err) {
+      toast({ title: 'Registration failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setParsing(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Drop Zone */}
+      <div
+        onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={handleDrop}
+        className={cn(
+          "border-2 border-dashed rounded-xl p-8 text-center transition-all",
+          dragOver
+            ? "border-primary/60 bg-primary/5"
+            : "border-border/30 bg-card/30 hover:border-border/50"
+        )}
+      >
+        <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
+        <p className="text-sm text-foreground font-medium">Drop source files here</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Supports TypeScript, Python, Rust, Go, Zig, SystemVerilog, and 12 more
+        </p>
+        <div className="mt-4">
+          <label className="cursor-pointer">
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleFileSelect}
+              accept=".ts,.tsx,.js,.jsx,.py,.rs,.go,.java,.rb,.cs,.cpp,.c,.zig,.hs,.sv,.v"
+            />
+            <span className="text-xs text-primary hover:underline font-mono">
+              or click to browse
+            </span>
+          </label>
+        </div>
+      </div>
+
+      {/* File List */}
+      {files.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-mono text-muted-foreground">
+              {files.length} file{files.length !== 1 ? 's' : ''} selected
+            </p>
+            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-7 text-xs gap-1.5">
+              {parsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Code2 className="w-3 h-3" />}
+              Analyze
+            </Button>
+          </div>
+
+          <div className="grid gap-1 max-h-40 overflow-y-auto">
+            {files.slice(0, 20).map((f, i) => (
+              <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/20 text-xs">
+                <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
+                <span className="text-foreground/80 truncate font-mono">{f.name}</span>
+                <span className="ml-auto text-muted-foreground">{(f.size / 1024).toFixed(1)}KB</span>
+              </div>
+            ))}
+            {files.length > 20 && (
+              <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Parsed Node Card */}
+      {parsedNode && (
+        <div className="border border-border/30 rounded-xl p-5 bg-card/40 space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <Layers className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-foreground">
+                Candidate: {parsedNode.name}
+              </h3>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5">
+                Node #41 • {parsedNode.language}
+              </p>
+            </div>
+            {registered ? (
+              <CheckCircle2 className="w-5 h-5 text-green-500" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-amber-500" />
+            )}
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Files', value: parsedNode.fileCount },
+              { label: 'Resolvers', value: parsedNode.resolverCount },
+              { label: 'Size', value: `${parsedNode.sizeKb}KB` },
+            ].map(stat => (
+              <div key={stat.label} className="px-3 py-2 rounded-lg bg-muted/20 text-center">
+                <p className="text-lg font-bold text-foreground">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground font-mono">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {!registered && (
+            <Button onClick={handleRegisterNode} disabled={parsing} className="w-full gap-2">
+              {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
+              Register as Candidate Node #41
+            </Button>
+          )}
+
+          {registered && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
+              <CheckCircle2 className="w-4 h-4 text-green-500" />
+              <span className="text-xs text-green-600 dark:text-green-400 font-mono">
+                Node registered — Ready for Discovery phase
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
