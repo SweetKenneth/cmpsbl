@@ -162,9 +162,8 @@ export function SectorTopologyDiagram() {
     { name: "EMZ", nodes: ["SOVEREIGN", "REFLEX", "TREATY"], x: 340, y: 170, w: 160, color: "accent" },
     { name: "CSZ", nodes: ["PHANTOM", "SHADOW", "NERVE", "CONSCIENCE"], x: 510, y: 170, w: 160, color: "destructive" },
     { name: "FIELDS", nodes: ["EVOLUTION", "IMMUNITY"], x: 20, y: 310, w: 150, color: "primary" },
-    { name: "PLANE", nodes: ["INTENT"], x: 180, y: 310, w: 150, color: "primary" },
+    { name: "PLANE", nodes: ["INTENT", "GOVERNANCE"], x: 180, y: 310, w: 150, color: "primary" },
     { name: "SHELL", nodes: ["DEFENSE"], x: 340, y: 310, w: 160, color: "destructive" },
-    { name: "HARBOR", nodes: ["MODERNIZE", "INCLUSIVE"], x: 510, y: 310, w: 160, color: "accent" },
   ];
 
   return (
