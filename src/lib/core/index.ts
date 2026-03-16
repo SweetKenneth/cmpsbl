@@ -159,7 +159,7 @@ export const MODULE_ENTITY_TYPES: Record<SubstrateModuleName, EntityType> = {
   shadow: 'zone-csz',
   phantom: 'zone-csz',
   // Plane additions (Nodes 39-40)
-  engineer: 'module',
+  engineer: 'plane',
   atlas: 'plane',
 };
 
