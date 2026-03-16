@@ -33,7 +33,6 @@ const DiagPanelLazy = lazy(() => import("@/components/system/DiagPanel").then(m 
 // Critical providers — eagerly loaded to prevent app-crashing dynamic import failures
 import { SubstrateProvider } from "./components/substrate/SubstrateProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { TooltipProvider } from "@/components/ui/tooltip";
 const RegisterPasskeyPrompt = lazy(() => import("@/components/auth/RegisterPasskey").then(m => ({ default: m.RegisterPasskeyPrompt })));
 
 // Route modules — extracted from monolith (P2 gap analysis)
