@@ -253,7 +253,7 @@ export function DiscoveryPhase() {
             onClick={startDiscovery}
             className="h-8 text-xs gap-1.5"
           >
-            <Play className="w-3 h-3" /> Start Collision Test
+            <Play className="w-3 h-3" /> Start Ascension Cycle
           </Button>
         )}
 

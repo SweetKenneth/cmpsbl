@@ -480,7 +480,7 @@ export function ExportPhase() {
           ) : (
             <RefreshCw className="w-4 h-4" />
           )}
-          Re-ingest as Evolved Candidate → Start New Cycle
+          Re-ingest as Evolved Candidate → Start New Ascension Cycle
         </Button>
       </div>
     </div>
