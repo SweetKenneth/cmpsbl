@@ -223,5 +223,6 @@ export const publicRoutes = (
     <Route path="/enterprise" element={<Enterprise />} />
     <Route path="/api-access" element={<ApiAccess />} />
     <Route path="/careers" element={<Careers />} />
+    <Route path="/x" element={<ProprietaryEvolution />} />
   </>
 );
