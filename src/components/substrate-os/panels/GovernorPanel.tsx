@@ -241,6 +241,9 @@ export default function GovernorPanel() {
             <TabsTrigger value="advisory" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Brain className="w-3.5 h-3.5 hidden sm:block" /> Signal
             </TabsTrigger>
+            <TabsTrigger value="metrics" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Metrics
+            </TabsTrigger>
           </TabsList>
         </div>
 
