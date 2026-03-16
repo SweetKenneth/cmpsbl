@@ -57,7 +57,7 @@ function generateEngineDoc(engine: Engine): string {
     `  • Memory-isolated: Each instance runs in its own sandbox`,
     `  • Version-pinned: Your minted version never changes`,
     `  • Auto-healing: Built-in circuit breaking and recovery`,
-    `  • CLM-enabled: Continuous Learning Mode improves over time`,
+    `  • CLM-enabled: Constant Learning Mode improves over time`,
     ``,
     `── SUPPORT ──────────────────────────────────────────`,
     `  Email: Dev@CMPSBL.com`,
