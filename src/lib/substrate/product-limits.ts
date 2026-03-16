@@ -59,7 +59,6 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 30,
     radioMinutesPerDay: 30,
     evolutionUploadsPerDay: 6,
-    evolutionExportsPerDay: 2,
   },
   creator: {
     maxMemoryNamespaces: 6,
