@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface CollisionResult {
   nodeA: string;
@@ -33,6 +34,7 @@ export function DiscoveryPhase() {
   const [permutations, setPermutations] = useState(0);
   const [results, setResults] = useState<CollisionResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   // Load registered candidate node
   useEffect(() => {
@@ -91,8 +93,7 @@ export function DiscoveryPhase() {
         setPermutations(prev => prev + 1);
         setProgress(Math.round(((i + 1) / SUBSTRATE_NODES.length) * 100));
 
-        // Invoke discovery engine via edge function
-        const { data, error } = await supabase.functions.invoke('pf-substrate', {
+        const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
           body: {
             module: 'discovery',
             action: 'collide',
@@ -120,10 +121,13 @@ export function DiscoveryPhase() {
         }
 
         // Small delay to avoid hammering
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 150));
       }
+
+      toast({ title: 'Collision sweep complete', description: `Tested ${SUBSTRATE_NODES.length} nodes` });
     } catch (err) {
       console.error('Discovery error:', err);
+      toast({ title: 'Discovery error', description: String(err), variant: 'destructive' });
     } finally {
       setRunning(false);
     }
