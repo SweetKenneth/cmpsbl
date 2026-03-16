@@ -365,6 +365,16 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
     ],
     acknowledged: true, generation: 1,
   },
+
+  // ═══════ ATLAS — Capability Discovery ══════════════════════════════════
+  {
+    node: 'atlas', displayName: 'ATLAS', sector: 'Plane',
+    priorities: [
+      { capability: 'clm_capability_discovery', description: 'Auto-discover and catalog node capabilities in real-time', priority: 90 },
+      { capability: 'clm_dependency_mapping', description: 'Live dependency graph maintenance across all 40 nodes', priority: 87 },
+    ],
+    acknowledged: true, generation: 2,
+  },
 ];
 
 // ─── Registration ───────────────────────────────────────────────────────────
