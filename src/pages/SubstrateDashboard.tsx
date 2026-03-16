@@ -130,13 +130,13 @@ const modulesByLayer = {
   ],
   operational: [
     {
-      id: "defense",
-      name: "DEFENSE",
-      description: "Bot detection, threat analysis",
-      icon: Shield,
-      color: "text-red-500",
-      bg: "bg-red-500/10",
-      actions: ["analyze", "reputation", "block", "status"],
+      id: "nerve",
+      name: "NERVE",
+      description: "Signal propagation, consensus repair",
+      icon: Activity,
+      color: "text-rose-400",
+      bg: "bg-rose-400/10",
+      actions: ["propagate", "consensus", "repair", "status"],
     },
     {
       id: "nexus",
