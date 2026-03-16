@@ -197,7 +197,7 @@ export function ExportPhase() {
         eligible.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
       ));
       await refreshUsage();
-      toast({ title: 'Capability Pack downloaded', description: `${eligible.length} capabilities exported & retired. Future discovery runs will find new ones.` });
+      toast({ title: 'Ascended Memory exported', description: `${eligible.length} capabilities exported & retired. Future Ascension cycles will discover new ones.` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
