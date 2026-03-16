@@ -256,7 +256,7 @@ export function IngestPhase() {
           {!registered && (
             <Button onClick={handleRegisterNode} disabled={parsing || !canUpload} className="w-full gap-2">
               {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
-              Register as Candidate Node #41
+              Register as Candidate Node
             </Button>
           )}
 
