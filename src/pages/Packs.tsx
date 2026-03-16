@@ -29,7 +29,9 @@ export default function Packs() {
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
-    ['architect', 'pro', 'creator', 'builder'].includes(currentTier) ? 'operator' :
+    ['architect', 'pro'].includes(currentTier) ? 'architect' :
+    ['creator'].includes(currentTier) ? 'creator' :
+    ['studio', 'operator'].includes(currentTier) ? 'studio' :
     'builder';
 
   const slotState = useArtifactSlots(currentTier);
