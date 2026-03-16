@@ -87,14 +87,20 @@ export default function GovernorPanel() {
     autoblog_enabled: false,
     defense_enabled: true,
     clm_enabled: true,
+    auto_training_enabled: false,
+    shadow_mesh_enabled: false,
   });
   const [ksLoading, setKsLoading] = useState(true);
+
+  // Substrate module metrics
+  const [moduleHealth, setModuleHealth] = useState<{ module: string; ops: number; errors: number; health: number }[]>([]);
+  const [moduleHealthLoading, setModuleHealthLoading] = useState(true);
 
   useEffect(() => {
     supabase
       .from('system_flags')
       .select('key, enabled')
-      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled', 'clm_enabled'])
+      .in('key', ['seba_enabled', 'autoblog_enabled', 'defense_enabled', 'clm_enabled', 'auto_training_enabled', 'shadow_mesh_enabled'])
       .then(({ data }) => {
         if (data) {
           const flags: Record<string, boolean> = {};
@@ -103,6 +109,36 @@ export default function GovernorPanel() {
         }
         setKsLoading(false);
       });
+
+    // Fetch real module metrics from immune_metrics and mesh_comms
+    Promise.all([
+      supabase.from('immune_metrics').select('executor, total, repaired, escalated, safe_fail').order('created_at', { ascending: false }).limit(100),
+      supabase.from('mesh_comms').select('source_module, category').order('created_at', { ascending: false }).limit(500),
+    ]).then(([imRes, meshRes]) => {
+      const modules = new Map<string, { ops: number; errors: number }>();
+      (imRes.data || []).forEach((row: any) => {
+        const existing = modules.get(row.executor) || { ops: 0, errors: 0 };
+        existing.ops += (row.total || 0);
+        existing.errors += (row.escalated || 0);
+        modules.set(row.executor, existing);
+      });
+      (meshRes.data || []).forEach((row: any) => {
+        const mod = row.source_module;
+        if (!mod) return;
+        const existing = modules.get(mod) || { ops: 0, errors: 0 };
+        existing.ops += 1;
+        if (row.category === 'escalation' || row.category === 'warning') existing.errors += 1;
+        modules.set(mod, existing);
+      });
+      const result = Array.from(modules.entries()).map(([module, data]) => ({
+        module,
+        ops: data.ops,
+        errors: data.errors,
+        health: data.ops > 0 ? Math.max(0, Math.round(100 - (data.errors / data.ops) * 50)) : 100,
+      })).sort((a, b) => b.ops - a.ops).slice(0, 12);
+      setModuleHealth(result);
+      setModuleHealthLoading(false);
+    });
   }, []);
 
   const toggleKs = async (key: string) => {
