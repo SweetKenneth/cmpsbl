@@ -57,7 +57,7 @@ function generateEngineDoc(engine: Engine): string {
     `  • Memory-isolated: Each instance runs in its own sandbox`,
     `  • Version-pinned: Your minted version never changes`,
     `  • Auto-healing: Built-in circuit breaking and recovery`,
-    `  • CLM-enabled: Continuous Learning Mode improves over time`,
+    `  • CLM-enabled: Constant Learning Mode improves over time`,
     ``,
     `── SUPPORT ──────────────────────────────────────────`,
     `  Email: Dev@CMPSBL.com`,
@@ -213,7 +213,7 @@ const result = await engine.execute({
                   { icon: Shield, text: "Memory-isolated: Each instance runs in its own sandbox" },
                   { icon: FileText, text: "Version-pinned: Your minted version never changes" },
                   { icon: Sparkles, text: "Auto-healing: Built-in circuit breaking and recovery" },
-                  { icon: BookOpen, text: "CLM-enabled: Continuous Learning Mode improves over time" },
+                  { icon: BookOpen, text: "CLM-enabled: Constant Learning Mode improves over time" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm">
                     <div className="w-8 h-8 rounded-lg bg-muted/50 flex items-center justify-center">

@@ -1,5 +1,5 @@
 /**
- * ATLAS CLM — Continuous Learning Module
+ * ATLAS CLM — Constant Learning Module
  * Monitors governance decision quality, pending backlog, mode drift,
  * proposal throughput, and decision latency.
  */

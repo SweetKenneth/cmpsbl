@@ -130,13 +130,13 @@ const modulesByLayer = {
   ],
   operational: [
     {
-      id: "defense",
-      name: "DEFENSE",
-      description: "Bot detection, threat analysis",
-      icon: Shield,
-      color: "text-red-500",
-      bg: "bg-red-500/10",
-      actions: ["analyze", "reputation", "block", "status"],
+      id: "nerve",
+      name: "NERVE",
+      description: "Signal propagation, consensus repair",
+      icon: Activity,
+      color: "text-rose-400",
+      bg: "bg-rose-400/10",
+      actions: ["propagate", "consensus", "repair", "status"],
     },
     {
       id: "nexus",
@@ -400,39 +400,63 @@ const modulesByLayer = {
       actions: ["spawn", "mirror", "canary", "dissolve"],
     },
   ],
-  // ── Mesh Overlays ──
-  mesh: [
-    {
-      id: "governance",
-      name: "GOVERNANCE",
-      description: "Policy mesh, compliance enforcement",
-      icon: Gauge,
-      color: "text-amber-400",
-      bg: "bg-amber-400/10",
-      actions: ["enforce", "audit", "policy", "override"],
-    },
-    {
-      id: "intent",
-      name: "INTENT",
-      description: "Inter-module communication mesh",
-      icon: Orbit,
-      color: "text-blue-400",
-      bg: "bg-blue-400/10",
-      actions: ["route", "classify", "approve", "trace"],
-    },
+  // ── Fields ──
+  fields: [
     {
       id: "immunity",
       name: "IMMUNITY",
-      description: "Threat isolation, safety-switch mesh",
+      description: "Cascade breaking, anomaly signature training",
       icon: Shield,
       color: "text-red-300",
       bg: "bg-red-300/10",
       actions: ["isolate", "quarantine", "heal", "vaccinate"],
     },
     {
-      id: "defense_mesh",
+      id: "intent",
+      name: "INTENT",
+      description: "Goal decomposition, capability mesh routing",
+      icon: Orbit,
+      color: "text-blue-400",
+      bg: "bg-blue-400/10",
+      actions: ["route", "classify", "approve", "trace"],
+    },
+  ],
+  // ── Plane ──
+  plane: [
+    {
+      id: "governance",
+      name: "GOVERNANCE",
+      description: "Policy mesh, veto precision, compliance",
+      icon: Gauge,
+      color: "text-amber-400",
+      bg: "bg-amber-400/10",
+      actions: ["enforce", "audit", "policy", "override"],
+    },
+    {
+      id: "engineer",
+      name: "ENGINEER",
+      description: "Engine health scoring, maintenance scheduling",
+      icon: Settings,
+      color: "text-stone-400",
+      bg: "bg-stone-400/10",
+      actions: ["diagnose", "schedule", "optimize", "report"],
+    },
+    {
+      id: "atlas",
+      name: "ATLAS",
+      description: "Capability discovery, dependency mapping",
+      icon: Globe,
+      color: "text-cyan-300",
+      bg: "bg-cyan-300/10",
+      actions: ["discover", "map", "govern", "audit"],
+    },
+  ],
+  // ── Shell ──
+  shell: [
+    {
+      id: "defense",
       name: "DEFENSE",
-      description: "Perimeter security, anomaly detection overlay",
+      description: "Bot detection, behavioral fingerprinting, perimeter security",
       icon: Siren,
       color: "text-rose-500",
       bg: "bg-rose-500/10",
@@ -453,7 +477,9 @@ const allModules = [
   ...modulesByLayer.epz,
   ...modulesByLayer.emz,
   ...modulesByLayer.csz,
-  ...modulesByLayer.mesh,
+  ...modulesByLayer.fields,
+  ...modulesByLayer.plane,
+  ...modulesByLayer.shell,
 ];
 
 const layerLabels: Record<string, { label: string; color: string }> = {
@@ -467,7 +493,9 @@ const layerLabels: Record<string, { label: string; color: string }> = {
   epz: { label: "EPZ — ENGINE PERFORMANCE", color: "text-sky-300 border-sky-400/30" },
   emz: { label: "EMZ — EVOLUTION MANUFACTURING", color: "text-green-300 border-green-400/30" },
   csz: { label: "CSZ — COGNITIVE SHADOW", color: "text-fuchsia-400 border-fuchsia-500/30" },
-  mesh: { label: "MESH OVERLAYS", color: "text-rose-400 border-rose-500/30" },
+  fields: { label: "FIELDS", color: "text-red-300 border-red-400/30" },
+  plane: { label: "PLANE", color: "text-amber-300 border-amber-400/30" },
+  shell: { label: "SHELL", color: "text-rose-400 border-rose-500/30" },
 };
 
 export default function SubstrateDashboard() {
@@ -634,8 +662,8 @@ export default function SubstrateDashboard() {
                 <TabsTrigger value="zones" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
                   Expansion Zones (14)
                 </TabsTrigger>
-                <TabsTrigger value="mesh" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
-                  Mesh Overlays (4)
+                <TabsTrigger value="fields" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
+                  Fields · Plane · Shell (6)
                 </TabsTrigger>
                 <TabsTrigger value="api" className="px-3 py-2 text-xs md:text-sm whitespace-nowrap">
                   API Reference
@@ -773,14 +801,14 @@ export default function SubstrateDashboard() {
             </div>
           </TabsContent>
 
-          {/* Mesh Overlays tab */}
-          <TabsContent value="mesh" className="mt-6">
+          {/* Fields + Plane + Shell tabs */}
+          <TabsContent value="fields" className="mt-6">
             <div className="mb-6">
-              <Badge variant="outline" className={layerLabels.mesh.color}>MESH OVERLAYS</Badge>
-              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 40 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
+              <Badge variant="outline" className={layerLabels.fields.color}>FIELDS · PLANE · SHELL</Badge>
+              <p className="text-sm text-muted-foreground mt-2">Cross-cutting layers: immunity isolation, intent routing, governance policy, maintenance intelligence, capability discovery, and perimeter defense.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {modulesByLayer.mesh.map((module) => (
+              {[...modulesByLayer.fields, ...modulesByLayer.plane, ...modulesByLayer.shell].map((module) => (
                 <Card key={module.id} className="p-5 hover:border-primary/30 transition-all duration-300 card-lift">
                   <div className="flex items-start gap-3 mb-3">
                     <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>

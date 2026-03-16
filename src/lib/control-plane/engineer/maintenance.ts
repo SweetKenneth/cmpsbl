@@ -154,7 +154,7 @@ async function runMaintenanceBattery(): Promise<{
         category: 'health',
         severity: 'high',
         title: 'CLM Kill Switch Active',
-        description: 'The Continuous Learning Mode kill switch is engaged. No learning cycles are executing.',
+        description: 'The Constant Learning Mode kill switch is engaged. No learning cycles are executing.',
         source_node: 'CLM',
         evidence: { kill_switch: true, budget_used: clmStatus.budget_used },
       });

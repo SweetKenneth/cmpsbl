@@ -92,7 +92,7 @@ export async function gatherIntel(
         summaries.push({
           module: 'clm',
           type: 'clm',
-          title: 'Continuous Learning Mode',
+          title: 'Constant Learning Mode',
           summary: `Enabled: ${clmStatus.enabled}, Topics: ${clmStatus.topics_count}, Running: ${clmStatus.running}`,
           confidence: 0.9,
           timestamp: new Date().toISOString(),

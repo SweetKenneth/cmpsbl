@@ -1507,15 +1507,15 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'Intent Mesh natural language substrate',
   },
   '/blog/thirty-eight-nodes-deep': {
-    title: 'Thirty-Eight Nodes Deep — Complete Architecture',
-    description: 'From one function to forty interconnected nodes. A technical map of the complete substrate architecture and how it connects.',
+    title: 'Forty Nodes Deep — Complete Architecture',
+    description: 'From one function to forty interconnected nodes. A technical map of the complete 40-node substrate architecture and how it connects.',
     ogTitle: 'Forty Nodes Deep — Architecture',
     ogDescription: 'Technical map of the complete 40-node substrate.',
     ogImage: OG_BLOG,
     keywords: ['substrate architecture', '40-node system', 'cognitive infrastructure map', 'system design'],
     schema: 'article',
     intent: 'Blog/Changelog/Updates',
-    primaryKeyword: 'thirty-eight node substrate architecture',
+    primaryKeyword: 'forty node substrate architecture',
   },
   '/blog/the-memory-stream': {
     title: 'The Memory Stream — Signal Crystallization',
@@ -1604,6 +1604,43 @@ export const seoMap: Record<string, PageSEO> = {
     schema: 'article',
     intent: 'Blog/Changelog/Updates',
     primaryKeyword: 'substrate current production state',
+  },
+
+  // ═══════════════════════════════════════════════════
+  // MISSING PAGES — Added to prevent fallback to homepage SEO
+  // ═══════════════════════════════════════════════════
+  '/substrate': {
+    title: 'Substrate Dashboard — 40-Node Control | CMPSBL',
+    description: 'Monitor and control all 40 nodes across 12 sectors. Real-time health, module actions, and telemetry for the cognitive substrate.',
+    ogTitle: 'Substrate Dashboard — 40-Node Control',
+    ogDescription: 'Real-time control across 40 nodes and 12 sectors.',
+    ogImage: OG_SUBSTRATE,
+    keywords: ['substrate dashboard', '40-node control', 'cognitive telemetry', 'module health', 'sector monitoring'],
+    schema: 'feature',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'substrate 40-node dashboard',
+  },
+  '/studio': {
+    title: 'STUDIO — Autonomous Site Generator | CMPSBL',
+    description: 'Generate production-ready applications using cognitive pipelines, design intelligence, and continuous deployment across the 40-node substrate.',
+    ogTitle: 'STUDIO — Autonomous Site Generator',
+    ogDescription: 'Production-ready apps via cognitive pipelines and design AI.',
+    ogImage: OG_FEATURE,
+    keywords: ['autonomous site generator', 'cognitive web builder', 'design intelligence', 'STUDIO module', 'AI app builder'],
+    schema: 'feature',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'autonomous site generator studio',
+  },
+  '/status': {
+    title: 'System Status — Live Health | CMPSBL',
+    description: 'Live operational status for all 40 substrate nodes, edge functions, API endpoints, and infrastructure services across 12 sectors.',
+    ogTitle: 'System Status — Live Health',
+    ogDescription: 'Live operational status for all substrate services.',
+    ogImage: OG_SUBSTRATE,
+    keywords: ['system status', 'live health monitoring', 'node status', 'infrastructure uptime', 'service health'],
+    schema: 'feature',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'substrate system status monitoring',
   },
 };
 

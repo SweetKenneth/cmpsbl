@@ -939,7 +939,7 @@ function AgentsSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Multi-Agent Orchestration</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Create and coordinate AI agents using five built-in orchestration patterns. Each agent has its own
-          persistent memory, CLM (Continuous Learning Mode) training, and sealed runtime environment.
+          persistent memory, CLM (Constant Learning Mode) training, and sealed runtime environment.
         </p>
       </div>
 
@@ -1000,7 +1000,7 @@ const chain = await substrate.agents.run(
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { label: "Auto-Tiering Memory", desc: "Each agent has its own 4-tier memory that auto-manages itself" },
-            { label: "CLM Training", desc: "Continuous Learning Mode — agents improve 24/7 from every interaction" },
+            { label: "CLM Training", desc: "Constant Learning Mode — agents improve 24/7 from every interaction" },
             { label: "RIPPLE Orchestrator", desc: "Internal event bus for coordination between agents" },
             { label: "Version Minting", desc: "Purchase an agent and receive a unique snapshot of its learned state" },
             { label: "DECODE Channel", desc: "Natural language interface for direct agent interaction" },
