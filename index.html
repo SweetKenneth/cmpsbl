@@ -103,8 +103,7 @@
       .skeleton{animation:skeleton-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;background:hsl(var(--muted));will-change:opacity}
     </style>
     
-    <!-- Preload critical fonts for LCP optimization -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7W0Q5n-wU.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Font preload removed: display=swap handles FOUT; preload competes for bandwidth on mobile -->
     
     <!-- Fonts with display swap for CLS optimization -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
