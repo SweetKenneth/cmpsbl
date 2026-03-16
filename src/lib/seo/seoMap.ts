@@ -1633,7 +1633,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/status': {
     title: 'System Status — Live Health | CMPSBL',
-    description: 'Live operational status for all 40 substrate nodes, edge functions, API endpoints, and infrastructure services across 12 sectors.',
+    description: 'Live operational status for all substrate nodes, edge functions, API endpoints, and infrastructure services across every sector.',
     ogTitle: 'System Status — Live Health',
     ogDescription: 'Live operational status for all substrate services.',
     ogImage: OG_SUBSTRATE,
