@@ -390,6 +390,7 @@ serve(async (req: Request) => {
           .from('artifact_registry')
           .select('*')
           .eq('id', discovery_id)
+          .eq('user_id', userId)
           .maybeSingle();
 
         if (!discovery) {
@@ -418,7 +419,8 @@ serve(async (req: Request) => {
               lock_version: 1,
             },
           })
-          .eq('id', discovery_id);
+          .eq('id', discovery_id)
+          .eq('user_id', userId);
 
         if (error) {
           return jsonResponse({ success: false, error: error.message }, 500);
