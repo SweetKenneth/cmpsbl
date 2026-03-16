@@ -29,6 +29,14 @@ export interface ProductLimits {
   crystallizedAssetCap: number;
   /** Radio listening limit in minutes per 24 hours. -1 = unlimited */
   radioMinutesPerDay: number;
+
+  // ═══ Proprietary Evolution Lifecycle Limits ═══
+  /** Max code uploads per day in the Evolution Lifecycle */
+  evolutionUploadsPerDay: number;
+  /** Max capability exports per day (0 = cannot export) */
+  evolutionExportsPerDay: number;
+  /** Whether HDL/hardware targets (Verilog, VHDL, SystemC, etc.) are available */
+  evolutionHdlAccess: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
