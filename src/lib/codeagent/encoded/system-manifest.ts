@@ -304,6 +304,27 @@ export const SYSTEM_MODULES: Record<string, ModuleEntry> = {
     dependents: [],
   },
 
+  // ─── Plane Additions (Nodes 39-40) ─────────────────────────────────────────
+  engineer: {
+    id: 'engineer',
+    name: 'ENGINEER',
+    layer: 'operational',
+    description: 'Engine and meta-engine maintenance intelligence, P95 latency tracking, runtime optimization.',
+    corePath: 'src/lib/substrate/engineer-module/',
+    dependencies: ['core', 'vision'],
+    dependents: [],
+  },
+  atlas: {
+    id: 'atlas',
+    name: 'ATLAS',
+    layer: 'operational',
+    description: 'System cartography, capability registry, governance authority, and 80-capability map.',
+    corePath: 'src/lib/substrate/atlas/',
+    hookPath: 'src/hooks/substrate/useAtlas.ts',
+    dependencies: ['core'],
+    dependents: [],
+  },
+
   // ─── INTEGRATION (Module — boots last) ──────────────────────────────────
   integration: {
     id: 'integration',
@@ -599,5 +620,5 @@ export function getDependencyChain(moduleId: string, visited = new Set<string>()
 export function getSystemSummary(): string {
   const componentCount = Object.keys(SYSTEM_COMPONENTS).length;
   const moduleCount = Object.keys(SYSTEM_MODULES).length;
-  return `CMPSBL Substrate: ${moduleCount} modules across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell), ${componentCount} registered UI components. 38 Matrix Nodes total. Σ(weight) = 1.000.`;
+  return `CMPSBL Substrate: ${moduleCount} modules across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell), ${componentCount} registered UI components. 40 Matrix Nodes total. Σ(weight) = 1.000.`;
 }

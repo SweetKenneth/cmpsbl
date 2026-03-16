@@ -1890,7 +1890,7 @@ export const substrate = SubstrateClient.getInstance();
 // ═══════════════════════════════════════════════════════════════
 
 export const matrix = {
-  /** List all 24 Matrix Nodes with sector, weight, and health */
+  /** List all 40 Matrix Nodes with sector, weight, and health */
   nodes: async () => {
     const { buildMatrixNodes, getNodeDefinitions } = await import('./core/matrixNodeRegistry');
     const healthData: Record<string, number> = {};
