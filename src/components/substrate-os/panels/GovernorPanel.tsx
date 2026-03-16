@@ -262,6 +262,8 @@ export default function GovernorPanel() {
                   { key: 'seba_enabled', label: 'SEBA Agent', desc: 'Autonomous evolution', icon: Zap, color: 'text-purple-500', checked: killSwitches.seba_enabled, toggle: () => toggleKs('seba_enabled') },
                   { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
                   { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-emerald-500', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
+                  { key: 'auto_training_enabled', label: 'IMMUNITY Training', desc: 'Shadow probe auto-training', icon: Shield, color: 'text-primary', checked: killSwitches.auto_training_enabled, toggle: () => toggleKs('auto_training_enabled') },
+                  { key: 'shadow_mesh_enabled', label: 'Shadow Mesh', desc: 'Adversarial shadow probes', icon: Eye, color: 'text-violet-500', checked: killSwitches.shadow_mesh_enabled, toggle: () => toggleKs('shadow_mesh_enabled') },
                 ].map(sw => (
                   <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px] transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
