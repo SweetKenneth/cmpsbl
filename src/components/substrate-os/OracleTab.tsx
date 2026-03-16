@@ -42,60 +42,93 @@ function usePredictions() {
       const totalCalls = usage.length;
       const successRate = totalCalls > 0 ? usage.filter(u => u.success).length / totalCalls : 1;
 
-      // Derive ORACLE predictions from real data
+      // Derive ORACLE predictions from real data only
+      const totalCalls = usage.length;
+      const successCount = usage.filter(u => u.success).length;
+      const failCount = totalCalls - successCount;
+      const successRate = totalCalls > 0 ? successCount / totalCalls : 1;
+      const errorCount = errorRes.count || 0;
+
+      // Calculate total tokens used
+      const totalTokens = usage.reduce((sum, u) => sum + (u.tokens_used || 0), 0);
+
+      // Provider distribution
+      const providerCounts: Record<string, number> = {};
+      usage.forEach(u => { providerCounts[u.provider] = (providerCounts[u.provider] || 0) + 1; });
+      const providerCount = Object.keys(providerCounts).length;
+
       const predictions = [
         {
           id: 'capacity',
-          title: 'Fleet Capacity Forecast',
-          confidence: Math.round(successRate * 100),
+          title: 'Fleet Success Rate',
+          confidence: totalCalls > 0 ? Math.round(successRate * 100) : null,
           horizon: '24h',
           signal: successRate > 0.9 ? 'stable' : successRate > 0.7 ? 'caution' : 'critical',
-          detail: `${Math.round(successRate * 100)}% success rate across ${totalCalls} recent calls`,
+          detail: totalCalls > 0
+            ? `${Math.round(successRate * 100)}% success across ${totalCalls} recent calls (${failCount} failures)`
+            : 'No recent call data available',
         },
         {
           id: 'error-trend',
-          title: 'Error Rate Trajectory',
-          confidence: Math.min(95, 70 + Math.round(Math.random() * 25)),
+          title: 'Error Rate',
+          confidence: totalCalls > 0 ? Math.round(((totalCalls - errorCount) / Math.max(totalCalls, 1)) * 100) : null,
           horizon: '7d',
           signal: errorCount < 5 ? 'stable' : errorCount < 20 ? 'caution' : 'critical',
-          detail: `${errorCount} total errors detected — ${errorCount < 5 ? 'well within tolerance' : 'trending upward'}`,
+          detail: `${errorCount} total errors detected — ${errorCount < 5 ? 'within tolerance' : 'elevated'}`,
         },
         {
-          id: 'cost',
-          title: 'Cost Efficiency Projection',
-          confidence: 82,
-          horizon: '30d',
-          signal: 'stable',
-          detail: 'Token utilization ratio remains optimal across fleet',
+          id: 'token-usage',
+          title: 'Token Utilization',
+          confidence: totalCalls > 0 ? Math.min(100, Math.round((totalTokens / Math.max(totalCalls, 1)) / 40)) : null,
+          horizon: '24h',
+          signal: totalTokens > 0 ? 'stable' : 'caution',
+          detail: totalCalls > 0
+            ? `${totalTokens.toLocaleString()} tokens across ${totalCalls} calls (avg ${Math.round(totalTokens / totalCalls)}/call)`
+            : 'No token usage data',
         },
         {
-          id: 'saturation',
-          title: 'Provider Saturation Risk',
-          confidence: 68,
+          id: 'provider-diversity',
+          title: 'Provider Distribution',
+          confidence: providerCount > 1 ? Math.round((1 - (Math.max(...Object.values(providerCounts)) / Math.max(totalCalls, 1))) * 100) : null,
           horizon: '48h',
-          signal: 'caution',
-          detail: 'Primary provider approaching rate threshold during peak hours',
+          signal: providerCount > 2 ? 'stable' : providerCount > 1 ? 'caution' : 'critical',
+          detail: providerCount > 0
+            ? `${providerCount} provider${providerCount > 1 ? 's' : ''} active: ${Object.entries(providerCounts).map(([p, c]) => `${p} (${c})`).join(', ')}`
+            : 'No provider data',
         },
       ];
 
-      // COMPASS simulations
+      // COMPASS simulations — outcomes derived from real metrics
       const simulations = [
-        { id: 'failover', name: 'Primary Provider Down', outcome: 'Fleet reroutes in <200ms via NEXUS cascade', risk: 'low', coverage: 98 },
-        { id: 'surge', name: '10x Traffic Surge', outcome: 'Rate limiters engage, queue depth stays <50', risk: 'medium', coverage: 85 },
-        { id: 'key-revoke', name: 'API Key Revocation', outcome: 'DEFENSE triggers rotation, <30s downtime', risk: 'low', coverage: 95 },
-        { id: 'model-deprecation', name: 'Model Deprecation Event', outcome: 'NEXUS auto-remaps to equivalent provider', risk: 'medium', coverage: 78 },
+        { id: 'failover', name: 'Primary Provider Down', outcome: providerCount > 1 ? `${providerCount - 1} backup provider${providerCount > 2 ? 's' : ''} available for failover` : 'No backup providers configured', risk: providerCount > 1 ? 'low' : 'high', coverage: providerCount > 1 ? Math.round((1 - Math.max(...Object.values(providerCounts)) / Math.max(totalCalls, 1)) * 100) : 0 },
+        { id: 'surge', name: '10x Traffic Surge', outcome: successRate > 0.9 ? 'Current success rate suggests capacity headroom' : 'Current error rate indicates limited surge capacity', risk: successRate > 0.9 ? 'medium' : 'high', coverage: Math.round(successRate * 100) },
+        { id: 'error-cascade', name: 'Error Cascade', outcome: `${errorCount} errors in window — ${errorCount < 5 ? 'cascade risk minimal' : 'monitor for correlated failures'}`, risk: errorCount < 5 ? 'low' : errorCount < 20 ? 'medium' : 'high', coverage: Math.max(0, 100 - errorCount * 5) },
       ];
 
-      // ECHO pattern detections from usage data
-      const providerCounts: Record<string, number> = {};
-      usage.forEach(u => { providerCounts[u.provider] = (providerCounts[u.provider] || 0) + 1; });
-      
-      const echoPatterns = [
-        { id: 'affinity', type: 'Affinity Drift', description: `${Object.keys(providerCounts).length} providers active — checking for routing bias`, severity: 'info', recurrence: 3 },
-        { id: 'latency-spike', type: 'Latency Clustering', description: 'Periodic latency spikes detected at UTC 14:00–16:00', severity: 'warn', recurrence: 7 },
-        { id: 'token-waste', type: 'Token Waste Pattern', description: 'Prompt compression could save ~12% on verbose inputs', severity: 'info', recurrence: 12 },
-        { id: 'error-correlation', type: 'Error Correlation', description: 'Timeout errors cluster with >4k token requests', severity: 'warn', recurrence: 5 },
-      ];
+      // ECHO pattern detections from real usage data
+      const echoPatterns: { id: string; type: string; description: string; severity: string; recurrence: number }[] = [];
+
+      // Detect provider routing bias
+      if (providerCount > 1) {
+        const maxProvider = Object.entries(providerCounts).sort((a, b) => b[1] - a[1])[0];
+        const dominance = maxProvider ? Math.round((maxProvider[1] / Math.max(totalCalls, 1)) * 100) : 0;
+        if (dominance > 80) {
+          echoPatterns.push({ id: 'affinity', type: 'Routing Bias', description: `${maxProvider[0]} handles ${dominance}% of calls — consider rebalancing`, severity: 'warn', recurrence: totalCalls });
+        } else {
+          echoPatterns.push({ id: 'affinity', type: 'Routing Balance', description: `${providerCount} providers with balanced distribution (max ${dominance}%)`, severity: 'info', recurrence: totalCalls });
+        }
+      }
+
+      // Detect error patterns
+      if (errorCount > 0) {
+        echoPatterns.push({ id: 'error-pattern', type: 'Error Signal', description: `${errorCount} failed calls detected in recent window`, severity: errorCount > 10 ? 'warn' : 'info', recurrence: errorCount });
+      }
+
+      // Token efficiency
+      if (totalCalls > 5) {
+        const avgTokens = Math.round(totalTokens / totalCalls);
+        echoPatterns.push({ id: 'token-efficiency', type: 'Token Efficiency', description: `Average ${avgTokens} tokens/call across ${totalCalls} requests`, severity: avgTokens > 4000 ? 'warn' : 'info', recurrence: totalCalls });
+      }
 
       setData({ predictions, simulations, echoPatterns, loading: false });
     }

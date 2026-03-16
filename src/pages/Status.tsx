@@ -91,7 +91,6 @@ const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType
 function useSystemStatus() {
   const [modules, setModules] = useState<ModuleHealth[]>([]);
   const [overallStatus, setOverallStatus] = useState<ModuleStatus>("operational");
-  const [uptimeDays, setUptimeDays] = useState(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [recentIncidents, setRecentIncidents] = useState<Array<{ date: string; module: string; severity: string; resolved: boolean; description: string }>>([]);
 
@@ -124,7 +123,7 @@ function useSystemStatus() {
           layer: mod.layer,
           icon: mod.icon,
           status,
-          latencyMs: Math.round(8 + Math.random() * 35),
+          // No latency data available — omit rather than fabricate
           lastCheck: now.toISOString(),
         };
       });
@@ -134,8 +133,6 @@ function useSystemStatus() {
       if (moduleHealth.some(m => m.status === "outage")) setOverallStatus("outage");
       else if (moduleHealth.some(m => m.status === "degraded")) setOverallStatus("degraded");
       else setOverallStatus("operational");
-
-      setUptimeDays(Math.max(1, Math.floor((now.getTime() - new Date("2025-01-01").getTime()) / 86400000)));
 
       const incidents = escalationRows.slice(0, 5).map((e: any) => ({
         date: e.created_at,
@@ -153,7 +150,7 @@ function useSystemStatus() {
     return () => clearInterval(interval);
   }, []);
 
-  return { modules, overallStatus, uptimeDays, lastUpdated, recentIncidents };
+  return { modules, overallStatus, lastUpdated, recentIncidents };
 }
 
 function OverallStatusBanner({ status, uptimeDays }: { status: ModuleStatus; uptimeDays: number }) {
