@@ -105,6 +105,7 @@ export function IngestPhase() {
   const [breakerStatus, setBreakerStatus] = useState<CircuitBreaker>(BREAKER_DEFAULTS);
   const [autoHealAttempt, setAutoHealAttempt] = useState(0);
   const { toast } = useToast();
+  const { user } = useAuth();
   const {
     canUpload, uploadsRemaining, evolutionUploadsPerDay,
     refreshUsage,
