@@ -267,18 +267,24 @@ serve(async (req: Request) => {
         const { data: candidateData } = await supabase
           .from('artifact_registry')
           .select('name, metadata')
+          .eq('user_id', userId)
           .eq('category', 'proprietary-evolution')
           .eq('tier', 'candidate')
           .ilike('name', `%${candidate_node}%`)
           .limit(1)
           .maybeSingle();
 
-        const candidateMeta = (candidateData?.metadata as Record<string, unknown>) || {};
+        if (!candidateData) {
+          return jsonResponse({ success: false, error: 'Candidate node not found for this account' }, 404);
+        }
+
+        const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
         const results = collideNodes(candidate_node, candidateMeta, target_node, permutation_depth);
 
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
+            user_id: userId,
             name: result.name,
             slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
             tier: result.tier,
@@ -294,7 +300,7 @@ serve(async (req: Request) => {
               discovered_at: new Date().toISOString(),
               crystallized: false,
             },
-          }, { onConflict: 'slug' });
+          }, { onConflict: 'user_id,slug' });
         }
 
         return jsonResponse({
