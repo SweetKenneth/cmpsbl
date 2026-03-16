@@ -801,14 +801,14 @@ export default function SubstrateDashboard() {
             </div>
           </TabsContent>
 
-          {/* Mesh Overlays tab */}
-          <TabsContent value="mesh" className="mt-6">
+          {/* Fields + Plane + Shell tabs */}
+          <TabsContent value="fields" className="mt-6">
             <div className="mb-6">
-              <Badge variant="outline" className={layerLabels.mesh.color}>MESH OVERLAYS</Badge>
-              <p className="text-sm text-muted-foreground mt-2">Cross-cutting mesh layers that wrap all 40 nodes — governance, intent routing, immunity isolation, and defense perimeter.</p>
+              <Badge variant="outline" className={layerLabels.fields.color}>FIELDS · PLANE · SHELL</Badge>
+              <p className="text-sm text-muted-foreground mt-2">Cross-cutting layers: immunity isolation, intent routing, governance policy, maintenance intelligence, capability discovery, and perimeter defense.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {modulesByLayer.mesh.map((module) => (
+              {[...modulesByLayer.fields, ...modulesByLayer.plane, ...modulesByLayer.shell].map((module) => (
                 <Card key={module.id} className="p-5 hover:border-primary/30 transition-all duration-300 card-lift">
                   <div className="flex items-start gap-3 mb-3">
                     <div className={`w-10 h-10 rounded-xl ${module.bg} flex items-center justify-center shrink-0`}>
