@@ -533,18 +533,23 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
 
   // README — Plain text + HTML
   zip.file('README.md', generateReadmeMd(options));
-  zip.file('README.html', generateReadmeHTML(
-    `Capability Pack — ${candidateName}`,
-    `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
-    [
-      `Target: ${targetLanguage.toUpperCase()}`,
-      `Capabilities: ${capabilities.length}`,
-      `Average CJPI: ${avgCjpi}`,
-      `Estimated Value: ${formatMarketValue(totalValue)}`,
-      `Mini-Runtime™: Sealed distribution included`,
-      `Fingerprint: ${capabilities[0]?.fingerprint?.slice(0, 12).toUpperCase() || 'N/A'}`,
-    ]
-  ));
+  zip.file('README.html', generateReadmeHTML({
+    name: `Capability Pack — ${candidateName}`,
+    description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
+    files: [
+      { name: 'src/', purpose: 'Generated capability implementations' },
+      { name: 'test/', purpose: 'Auto-generated test harnesses' },
+      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine (sealed)' },
+      { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
+      { name: 'LICENSE.html', purpose: 'Commercial distribution license' },
+      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
+      { name: 'export-tier.json', purpose: 'Valuation summary' },
+    ],
+    quickStart: `import { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
+    category: 'proprietary-evolution',
+    modules: [...new Set(capabilities.flatMap(c => c.chain))],
+    version: '1.0.0',
+  }));
 
   // PIPELINE-DETAILS.html — Per-capability valuation & details
   for (const cap of capabilities) {
