@@ -477,7 +477,9 @@ const allModules = [
   ...modulesByLayer.epz,
   ...modulesByLayer.emz,
   ...modulesByLayer.csz,
-  ...modulesByLayer.mesh,
+  ...modulesByLayer.fields,
+  ...modulesByLayer.plane,
+  ...modulesByLayer.shell,
 ];
 
 const layerLabels: Record<string, { label: string; color: string }> = {
