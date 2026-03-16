@@ -244,6 +244,7 @@ export function IngestPhase() {
       await refreshUsage();
       toast({ title: 'Candidate node registered', description: `${parsedNode.name} ingested successfully and is ready for Ascension` });
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
       const newBreaker = recordFailure(breakerStatus);
       setBreakerStatus(newBreaker);
       deadLetterLog('register_candidate_node', {
@@ -252,22 +253,11 @@ export function IngestPhase() {
         breakerState: newBreaker.state,
       }, err);
 
-      if (newBreaker.state === 'open') {
-        toast({
-          title: 'Registration failed — circuit breaker tripped',
-          description: `${newBreaker.failures} consecutive failures. Auto-healing in ${Math.round(newBreaker.cooldownMs / 1000)}s.`,
-          variant: 'destructive',
-        });
-        // Auto-heal: schedule retry after cooldown
-        if (autoHealAttempt < 2) {
-          setTimeout(() => {
-            setAutoHealAttempt(prev => prev + 1);
-            setBreakerStatus(prev => ({ ...prev, state: 'half-open' }));
-          }, newBreaker.cooldownMs);
-        }
-      } else {
-        toast({ title: 'Registration failed', description: `Attempt ${newBreaker.failures}/${MAX_FAILURES} — retrying automatically`, variant: 'destructive' });
-      }
+      toast({
+        title: 'Registration failed',
+        description: errMsg.includes('DB:') ? errMsg : `Unexpected error: ${errMsg}`,
+        variant: 'destructive',
+      });
     } finally {
       setRegistering(false);
     }
