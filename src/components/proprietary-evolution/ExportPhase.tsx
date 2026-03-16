@@ -333,7 +333,7 @@ export function ExportPhase() {
             <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">HDL Targets</p>
             {!canAccessHdl && (
               <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono">
-                Studio+
+                Creator+
               </span>
             )}
           </div>
