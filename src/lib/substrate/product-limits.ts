@@ -35,8 +35,6 @@ export interface ProductLimits {
   evolutionUploadsPerDay: number;
   /** Max capability exports per day (0 = cannot export) */
   evolutionExportsPerDay: number;
-  /** Whether HDL/hardware targets (Verilog, VHDL, SystemC, etc.) are available */
-  evolutionHdlAccess: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
