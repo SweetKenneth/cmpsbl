@@ -1,6 +1,6 @@
 /**
- * INGEST Phase — Import developer code and create Candidate Node #41
- * Reverse of the Universal Export Adapter
+ * INGEST Phase — Import developer code and register as a candidate node
+ * First stage of the Ascension lifecycle
  * Tier-gated: uploads limited per day (3/6/9/12 by tier)
  */
 
@@ -122,7 +122,7 @@ export function IngestPhase() {
       if (error) throw error;
       setRegistered(true);
       await refreshUsage();
-      toast({ title: 'Node #41 registered', description: `${parsedNode.name} is ready for Discovery` });
+      toast({ title: 'Candidate node registered', description: `${parsedNode.name} is ready for Ascension` });
     } catch (err) {
       toast({ title: 'Registration failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -230,8 +230,8 @@ export function IngestPhase() {
                 Candidate: {parsedNode.name}
               </h3>
               <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                Node #41 • {parsedNode.language}
-              </p>
+                 Candidate Node • {parsedNode.language}
+               </p>
             </div>
             {registered ? (
               <CheckCircle2 className="w-5 h-5 text-green-500" />
@@ -256,7 +256,7 @@ export function IngestPhase() {
           {!registered && (
             <Button onClick={handleRegisterNode} disabled={parsing || !canUpload} className="w-full gap-2">
               {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
-              Register as Candidate Node #41
+              Register as Candidate Node
             </Button>
           )}
 
@@ -264,7 +264,7 @@ export function IngestPhase() {
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
               <CheckCircle2 className="w-4 h-4 text-green-500" />
               <span className="text-xs text-green-600 dark:text-green-400 font-mono">
-                Node registered — Ready for Discovery phase
+                Node registered — Ready for Ascension phase
               </span>
             </div>
           )}

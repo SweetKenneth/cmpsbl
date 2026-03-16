@@ -19,13 +19,13 @@ export const VAULT_TIER_LIMITS: Record<ProductTier, VaultTierConfig> = {
     exportEnabled: false,
     customPipelineSlotsEnabled: false,
   },
-  operator: {
+  studio: {
     pullsPerDay: 6,
     vaultCapacity: 25,
     exportEnabled: true,
     customPipelineSlotsEnabled: false,
   },
-  studio: {
+  creator: {
     pullsPerDay: 9,
     vaultCapacity: 75,
     exportEnabled: true,

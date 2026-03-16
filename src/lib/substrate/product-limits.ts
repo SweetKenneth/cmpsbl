@@ -54,7 +54,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     evolutionExportsPerDay: 0,
     evolutionHdlAccess: false,
   },
-  operator: {
+  studio: {
     maxMemoryNamespaces: 3,
     memoryDepth: 'expanded',
     allowBackgroundOptimization: true,
@@ -68,7 +68,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     evolutionExportsPerDay: 2,
     evolutionHdlAccess: false,
   },
-  studio: {
+  creator: {
     maxMemoryNamespaces: 6,
     memoryDepth: 'expanded_plus',
     allowBackgroundOptimization: true,
@@ -115,8 +115,9 @@ export function resolveToProductTier(subscriptionTier?: string): ProductTier {
   if (!subscriptionTier) return 'builder';
   if (subscriptionTier === 'enterprise') return 'architect';
   if (['architect', 'pro'].includes(subscriptionTier)) return 'architect';
-  if (subscriptionTier === 'studio') return 'studio';
-  if (['operator', 'creator', 'builder'].includes(subscriptionTier)) return 'operator';
+  if (['creator'].includes(subscriptionTier)) return 'creator';
+  if (['studio', 'operator'].includes(subscriptionTier)) return 'studio';
+  if (['starter', 'builder', 'free'].includes(subscriptionTier)) return 'builder';
   return 'builder';
 }
 

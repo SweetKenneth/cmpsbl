@@ -1,7 +1,7 @@
 /**
- * EXPORT Phase — Generate Capability Packs from crystallized memories
+ * ASCENDED MEMORY Phase — Generate portable capability artifacts
  * Tier-gated: Builder can see but not export. Export limits enforced per day.
- * HDL targets restricted to Studio+ tiers.
+ * HDL targets restricted to Creator+ tiers.
  * Includes retirement prompt on export.
  */
 
@@ -139,8 +139,8 @@ export function ExportPhase() {
     }
     if (selectedTargetIsHdl && !canAccessHdl) {
       toast({
-        title: 'HDL exports require Studio tier or above',
-        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Studio ($49/mo) and above.',
+        title: 'HDL exports require Creator tier or above',
+        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Creator ($49/mo) and above.',
         variant: 'destructive',
       });
       return;
@@ -197,7 +197,7 @@ export function ExportPhase() {
         eligible.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
       ));
       await refreshUsage();
-      toast({ title: 'Capability Pack downloaded', description: `${eligible.length} capabilities exported & retired. Future discovery runs will find new ones.` });
+      toast({ title: 'Ascended Memory exported', description: `${eligible.length} capabilities exported & retired. Future Ascension cycles will discover new ones.` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -289,7 +289,7 @@ export function ExportPhase() {
         </div>
         {!canAccessHdl && (
           <span className="text-[9px] font-mono text-muted-foreground">
-            HDL: Studio+ only
+            HDL: Creator+ only
           </span>
         )}
       </div>
@@ -333,7 +333,7 @@ export function ExportPhase() {
             <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">HDL Targets</p>
             {!canAccessHdl && (
               <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono">
-                Studio+
+                Creator+
               </span>
             )}
           </div>
@@ -462,7 +462,7 @@ export function ExportPhase() {
       <div className="border border-primary/20 rounded-xl p-5 bg-primary/5 space-y-3">
         <div className="flex items-center gap-2">
           <RefreshCw className="w-4 h-4 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Recursive Evolution Loop</span>
+          <span className="text-xs font-semibold text-foreground">Recursive Ascension Loop</span>
         </div>
         <p className="text-xs text-muted-foreground">
           Re-ingest your enhanced capabilities as a new candidate node.
@@ -480,7 +480,7 @@ export function ExportPhase() {
           ) : (
             <RefreshCw className="w-4 h-4" />
           )}
-          Re-ingest as Evolved Candidate → Start New Cycle
+          Re-ingest as Evolved Candidate → Start New Ascension Cycle
         </Button>
       </div>
     </div>

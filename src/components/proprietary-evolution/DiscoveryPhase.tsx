@@ -1,7 +1,7 @@
 /**
- * DISCOVERY Phase — Collision Chamber
- * Bounces Candidate Node #41 against the 40-node substrate matrix
- * Runs until a capability with CJPI ≥ 90 is found, then stops.
+ * ASCENSION Phase — Discovery Engine
+ * Runs interaction cycles between the candidate node and the 40-node substrate matrix.
+ * Stops when a capability chain with CJPI ≥ 90 is discovered.
  * With real-time collision graph visualization.
  */
 
@@ -196,9 +196,9 @@ export function DiscoveryPhase() {
     return (
       <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
         <Zap className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
-        <p className="text-sm text-foreground font-medium">No Candidate Node registered</p>
+        <p className="text-sm text-foreground font-medium">No candidate node registered</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Complete the INGEST phase first to create Node #41
+          Complete the Ingest phase first to register a candidate
         </p>
       </div>
     );
@@ -253,7 +253,7 @@ export function DiscoveryPhase() {
             onClick={startDiscovery}
             className="h-8 text-xs gap-1.5"
           >
-            <Play className="w-3 h-3" /> Start Collision Test
+            <Play className="w-3 h-3" /> Start Ascension Cycle
           </Button>
         )}
 
