@@ -124,9 +124,8 @@ export function ConsolidationDiagram() {
             { x: 500, y: 85, w: 70, h: 35, name: "EMZ", n: "3" },
             { x: 575, y: 85, w: 75, h: 35, name: "CSZ", n: "4" },
             { x: 350, y: 130, w: 70, h: 35, name: "Fields", n: "2" },
-            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "1" },
+            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "2" },
             { x: 500, y: 130, w: 70, h: 35, name: "Shell", n: "1" },
-            { x: 575, y: 130, w: 75, h: 35, name: "Harbor", n: "2" },
           ].map((s, i) => (
             <g key={i}>
               <rect x={s.x} y={s.y} width={s.w} height={s.h} rx="4" className="fill-[hsl(var(--primary))] fill-opacity-[0.1] stroke-[hsl(var(--primary))] stroke-opacity-[0.3] stroke-[1]" />
