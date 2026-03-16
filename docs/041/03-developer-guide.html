@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 — Developer Guide | CMPSBL Documentation</title>
+<style>:root{--bg:#fafafa;--fg:#111;--muted:#666;--border:#e0e0e0;--accent:#1a1a2e;--link:#2563eb;--code-bg:#f3f4f6;--table-stripe:#f9fafb}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter','Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg);line-height:1.7;max-width:860px;margin:0 auto;padding:2rem 1.5rem}h1{font-size:1.75rem;font-weight:700;margin:2rem 0 .5rem}h2{font-size:1.35rem;font-weight:600;margin:2rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--border)}h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}p{margin:.5rem 0}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}th,td{text-align:left;padding:.5rem .75rem;border:1px solid var(--border)}th{background:var(--accent);color:#fff;font-weight:600}tr:nth-child(even){background:var(--table-stripe)}code{background:var(--code-bg);padding:.15em .35em;border-radius:3px;font-size:.88em;font-family:'JetBrains Mono',monospace}pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;margin:1rem 0;font-size:.85rem}pre code{background:none;padding:0}ul,ol{margin:.5rem 0 .5rem 1.5rem}li{margin:.25rem 0}.meta{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}@media print{body{max-width:100%;padding:1cm}}</style>
+</head>
+<body>
+<h1>03 — Developer Guide</h1>
+<p class="meta">Documentation Epoch 041 &middot; Public &middot; Last Updated: 2026-03-16</p>
+
+<h2>1. Two Development Pathways</h2>
+<h3>Pathway 1: Build on the Substrate</h3>
+<p>Build applications, agents, chatbots, or workflows directly on the substrate.</p>
+<h3>Pathway 2: Ascension</h3>
+<p>Introduce external software into the substrate as a Candidate Node for discovery cycles.</p>
+
+<h2>2. Getting Started</h2>
+<ol>
+<li>Navigate to the API Access page (<code>/api-access</code>)</li>
+<li>Complete the developer registration form</li>
+<li>Copy your generated API key</li>
+</ol>
+<pre><code>curl -X POST https://api.cmpsbl.com/v1/substrate \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "module": "brain", "action": "query", "input": { ... } }'</code></pre>
+
+<h2>3. Unified API Gateway</h2>
+<pre><code>POST https://api.cmpsbl.com/v1/substrate</code></pre>
+
+<h2>4. Building on the Substrate</h2>
+<h3>Using Persistent Memory</h3>
+<pre><code>// Store a memory
+await substrate('memory', 'store', {
+  content: 'User prefers dark mode',
+  tags: ['preferences'], importance: 0.8,
+});
+
+// Recall relevant memories
+const results = await substrate('memory', 'semantic_search', {
+  query: 'user interface preferences', limit: 5,
+});</code></pre>
+
+<h2>5. Running Ascension</h2>
+<pre><code>External Software → Ingest → Candidate Node → Ascension Cycle → Discovery → Crystallization → Ascended Memory → Export</code></pre>
+<table>
+<tr><th>Plan</th><th>Uploads Per Day</th></tr>
+<tr><td>Builder</td><td>0 (upgrade required)</td></tr>
+<tr><td>Studio</td><td>3</td></tr>
+<tr><td>Creator</td><td>6</td></tr>
+<tr><td>Architect</td><td>12</td></tr>
+</table>
+
+<h2>6. Subscription Tiers</h2>
+<table>
+<tr><th>Feature</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th></tr>
+<tr><td>API Access</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Ascension Uploads</td><td>—</td><td>3/day</td><td>6/day</td><td>12/day</td></tr>
+<tr><td>Capability Exports</td><td>—</td><td>Vault limits</td><td>Vault limits</td><td>Vault limits</td></tr>
+<tr><td>Memory Stream Access</td><td>Read</td><td>Read/Write</td><td>Full</td><td>Full</td></tr>
+</table>
+
+<h2>7. Best Practices</h2>
+<ol>
+<li>Use semantic memory — Store meaningful context, not raw data</li>
+<li>Leverage discovery — Let the Memory Stream surface patterns</li>
+<li>Start with the API — Simplest integration path</li>
+<li>Check receipts — Every operation returns an auditable receipt</li>
+<li>Respect governance — Mutations require consent</li>
+</ol>
+
+<h2>Related Documents</h2>
+<ul>
+<li><a href="13-substrate-development.html">Substrate Development</a></li>
+<li><a href="14-building-agents-and-apps.html">Building Agents &amp; Apps</a></li>
+<li><a href="15-api-reference.html">API Reference</a></li>
+<li><a href="20-ascension.html">Ascension</a></li>
+</ul>
+
+<div class="footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

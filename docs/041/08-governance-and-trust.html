@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 — Governance &amp; Trust | CMPSBL Documentation</title>
+<style>:root{--bg:#fafafa;--fg:#111;--muted:#666;--border:#e0e0e0;--accent:#1a1a2e;--link:#2563eb;--code-bg:#f3f4f6;--table-stripe:#f9fafb}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter','Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg);line-height:1.7;max-width:860px;margin:0 auto;padding:2rem 1.5rem}h1{font-size:1.75rem;font-weight:700;margin:2rem 0 .5rem}h2{font-size:1.35rem;font-weight:600;margin:2rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--border)}h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}p{margin:.5rem 0}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}th,td{text-align:left;padding:.5rem .75rem;border:1px solid var(--border)}th{background:var(--accent);color:#fff;font-weight:600}tr:nth-child(even){background:var(--table-stripe)}code{background:var(--code-bg);padding:.15em .35em;border-radius:3px;font-size:.88em;font-family:'JetBrains Mono',monospace}pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;margin:1rem 0;font-size:.85rem}pre code{background:none;padding:0}ul,ol{margin:.5rem 0 .5rem 1.5rem}li{margin:.25rem 0}.meta{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}@media print{body{max-width:100%;padding:1cm}}</style>
+</head>
+<body>
+<h1>08 — Governance &amp; Trust</h1>
+<p class="meta">Documentation Epoch 041 &middot; Public &middot; Last Updated: 2026-03-16</p>
+
+<h2>1. Governance Philosophy</h2>
+<p><strong>Governed evolution:</strong> The system can learn, adapt, and discover, but every mutation requires explicit consent and passes through deterministic safety gates.</p>
+
+<h2>2. Governance Modes</h2>
+<table>
+<tr><th>Mode</th><th>Behavior</th></tr>
+<tr><td>ACTIVE</td><td>Full operation with governance enforcement</td></tr>
+<tr><td>OBSERVE</td><td>Read-only monitoring; no mutations</td></tr>
+<tr><td>LOCKDOWN</td><td>Emergency mode; all evolution halted</td></tr>
+<tr><td>EVOLVE</td><td>Controlled mutation window with enhanced monitoring</td></tr>
+</table>
+
+<h2>3. The 7-Gate Mutation Pipeline</h2>
+<ol>
+<li><strong>Lint</strong> — Structural and syntactic validation</li>
+<li><strong>Test</strong> — Behavioral verification</li>
+<li><strong>Review</strong> — Automated risk assessment</li>
+<li><strong>Stage</strong> — Staging deployment</li>
+<li><strong>Consent</strong> — Mandatory user approval</li>
+<li><strong>Deploy</strong> — Production deployment</li>
+<li><strong>Prod</strong> — Post-deployment verification</li>
+</ol>
+
+<h2>4. Safety Boundaries</h2>
+<table>
+<tr><th>Measure</th><th>Description</th></tr>
+<tr><td>Shadow-store limits</td><td>MAX_ENTRIES 50, 1MB cap</td></tr>
+<tr><td>PII scrubbing</td><td>Automated personal data removal</td></tr>
+<tr><td>Task timeout</td><td>5-minute hard limit</td></tr>
+<tr><td>DAG sequencing</td><td>Dependency-ordered execution</td></tr>
+<tr><td>Diligence probes</td><td>Hard gate — failed probes block advancement</td></tr>
+</table>
+
+<h2>5. Auditability</h2>
+<p>Every operation produces a tamper-evident receipt. Receipts are hash-linked into a verifiable audit chain with periodic anchoring.</p>
+
+<h2>6. Public vs. Sealed Mechanisms</h2>
+<p><strong>Public:</strong> Architecture, node matrix, intent routing, governance model, capability registry, export system.</p>
+<p><strong>Sealed:</strong> CJPI formula, scoring internals, routing algorithm specifics, security heuristics.</p>
+
+<h2>7. Developer Trust Model</h2>
+<p>Authenticated API access, scoped permissions, rate limiting, usage tracking, and verifiable receipts.</p>
+
+<h2>Related Documents</h2>
+<ul>
+<li><a href="07-architecture-overview.html">Architecture Overview</a></li>
+<li><a href="02-how-cmpsbl-works.html">How CMPSBL Works</a></li>
+<li><a href="01-core-concepts.html">Core Concepts</a></li>
+</ul>
+
+<div class="footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>
