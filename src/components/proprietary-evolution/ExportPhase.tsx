@@ -137,10 +137,10 @@ export function ExportPhase() {
     }
     if (!canExport) {
       toast({
-        title: isBuilderTier ? 'Upgrade required' : 'Daily export limit reached',
+        title: isBuilderTier ? 'Upgrade required' : 'Export not available',
         description: isBuilderTier
           ? 'The Builder tier lets you discover capabilities for free, but exporting requires a paid tier.'
-          : `You've used all ${evolutionExportsPerDay} exports for today. Upgrade for more daily capacity.`,
+          : 'Exports are not enabled for your current plan.',
         variant: 'destructive',
       });
       return;
