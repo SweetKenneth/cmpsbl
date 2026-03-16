@@ -506,7 +506,7 @@ export const pipelineBuilder = new IntentMeshPipelineBuilder();`
   {
     id: 'clm-learning-journal',
     name: 'CLM Learning Journal',
-    description: 'Continuous Learning Mode journal — track what the substrate learns, when, and from which interactions',
+    description: 'Constant Learning Mode journal — track what the substrate learns, when, and from which interactions',
     icon: Brain,
     category: 'brain',
     difficulty: 'intermediate',

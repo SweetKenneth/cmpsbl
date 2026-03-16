@@ -1,5 +1,5 @@
 /**
- * PHANTOM CLM — Continuous Learning Module
+ * PHANTOM CLM — Constant Learning Module
  * Monitors privacy budget consumption, anonymization quality, and fidelity drift.
  */
 
