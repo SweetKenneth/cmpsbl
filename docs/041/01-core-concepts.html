@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 — Core Concepts | CMPSBL Documentation</title>
+<style>:root{--bg:#fafafa;--fg:#111;--muted:#666;--border:#e0e0e0;--accent:#1a1a2e;--link:#2563eb;--code-bg:#f3f4f6;--table-stripe:#f9fafb}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter','Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg);line-height:1.7;max-width:860px;margin:0 auto;padding:2rem 1.5rem}h1{font-size:1.75rem;font-weight:700;margin:2rem 0 .5rem}h2{font-size:1.35rem;font-weight:600;margin:2rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--border)}h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}p{margin:.5rem 0}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}th,td{text-align:left;padding:.5rem .75rem;border:1px solid var(--border)}th{background:var(--accent);color:#fff;font-weight:600}tr:nth-child(even){background:var(--table-stripe)}code{background:var(--code-bg);padding:.15em .35em;border-radius:3px;font-size:.88em;font-family:'JetBrains Mono',monospace}pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;margin:1rem 0;font-size:.85rem}pre code{background:none;padding:0}ul,ol{margin:.5rem 0 .5rem 1.5rem}li{margin:.25rem 0}.meta{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}@media print{body{max-width:100%;padding:1cm}}</style>
+</head>
+<body>
+<h1>01 — Core Concepts</h1>
+<p class="meta">Documentation Epoch 041 &middot; Public &middot; Last Updated: 2026-03-16</p>
+
+<h2>1. Substrate</h2>
+<p>The substrate is the foundational cognitive runtime beneath all CMPSBL operations. It is a self-evolving operating system layer between AI models and applications, managing memory, orchestration, governance, and capability execution.</p>
+
+<h2>2. Nodes</h2>
+<p>A node is an autonomous subsystem inside the CMPSBL operating system. Each node represents a specialized system capability. CMPSBL operates a 40-node matrix across 12 sectors.</p>
+<table>
+<tr><th>Node</th><th>Personality</th><th>Role</th></tr>
+<tr><td>BRAIN</td><td>The Thinker</td><td>Reasoning and analysis</td></tr>
+<tr><td>MEMORY</td><td>The Archivist</td><td>Persistent storage and recall</td></tr>
+<tr><td>DEFENSE</td><td>The Guardian</td><td>Threat detection and response</td></tr>
+<tr><td>CORTEX</td><td>The Orchestrator</td><td>Multi-node coordination</td></tr>
+<tr><td>EVOLUTION</td><td>The Catalyst</td><td>System mutation and modernization</td></tr>
+<tr><td>ORACLE</td><td>The Prophet</td><td>Predictive analysis</td></tr>
+<tr><td>PHANTOM</td><td>The Ghost</td><td>Shadow verification</td></tr>
+<tr><td>HARVEST</td><td>The Collector</td><td>Discovery aggregation</td></tr>
+<tr><td>FORGE</td><td>The Smith</td><td>Blueprint synthesis</td></tr>
+<tr><td>IMMUNITY</td><td>The Sentinel</td><td>Anomaly detection</td></tr>
+</table>
+
+<h2>3. Resolvers</h2>
+<p>A resolver is an executable capability owned by a node. Naming convention: <code>node.resolver_name</code></p>
+<ul>
+<li><code>brain.reasoning_context</code> — Contextual reasoning</li>
+<li><code>memory.semantic_search</code> — Vector-based memory recall</li>
+<li><code>defense.threat_score</code> — Threat evaluation</li>
+<li><code>evolution.upgrade_readiness</code> — Mutation readiness check</li>
+<li><code>forge.signal_forge</code> — Blueprint synthesis</li>
+</ul>
+
+<h2>4. INTENT Routing</h2>
+<p>The INTENT protocol coordinates all execution. Every action is expressed as an intent, routed to resolvers, and logged with a receipt.</p>
+<pre><code>User Action → broadcastIntent() → Intent Router → Resolver Execution → Response → Telemetry</code></pre>
+
+<h2>5. Capabilities</h2>
+<p>A capability is a discrete, invocable function registered in the substrate's capability registry. The substrate maintains 940+ capabilities across its 40-node matrix.</p>
+
+<h2>6. Memory</h2>
+<p><strong>Persistent Memory</strong> — Long-term storage with vector search, spaced repetition, and contradiction detection.</p>
+<p><strong>Memory Stream</strong> — The continuous discovery engine that observes system behavior and generates new capabilities.</p>
+<p><strong>Crystallized Memory</strong> — A deterministic, exportable capability artifact produced through the crystallization process.</p>
+<p><strong>Ascended Memory</strong> — A class of crystallized memory produced through Ascension cycles involving developer software.</p>
+
+<h2>7. Discovery</h2>
+<p>Discoveries are scored via the CJPI and classified into tiers:</p>
+<table>
+<tr><th>Tier</th><th>CJPI Range</th><th>Description</th></tr>
+<tr><td>Apex</td><td>96–100</td><td>Rarest, highest-value discoveries</td></tr>
+<tr><td>Mythic</td><td>94–95</td><td>Exceptional capability chains</td></tr>
+<tr><td>Relic</td><td>90–93</td><td>Premium, production-grade</td></tr>
+<tr><td>Prime</td><td>80–89</td><td>High-quality, broadly useful</td></tr>
+<tr><td>Mint</td><td>68–79</td><td>Quality baseline for export</td></tr>
+<tr><td>Raw</td><td>&lt; 68</td><td>Below export threshold</td></tr>
+</table>
+
+<h2>8. Crystallization</h2>
+<p>Crystallization converts a discovery into a portable, deterministic capability artifact.</p>
+<pre><code>Discovery → Sampling → Condensing → Crystallizing → Capability Pack</code></pre>
+
+<h2>9. Ascension</h2>
+<p>Ascension is the process where external developer software enters the substrate and participates in discovery cycles. Resulting capabilities become <strong>Ascended Memories</strong>.</p>
+
+<h2>10. Capability Packs</h2>
+<p>The complete export artifact: pipeline implementation, Mini Runtime, documentation, license, test bench, build config, and manifest.</p>
+
+<h2>11. Mini Runtime</h2>
+<p>The Mini Runtime™ Engine is a zero-dependency, pure TypeScript in-memory runtime bundled with every capability export.</p>
+
+<h2>12. Universal Export Adapter</h2>
+<p><strong>Software Languages (18):</strong> TypeScript, JavaScript, Python, Go, Rust, C, C++, Java, Kotlin, Swift, Ruby, PHP, Lua, Elixir, Scala, Haskell, Zig, Dart</p>
+<p><strong>Hardware Description Languages (7):</strong> Verilog, VHDL, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL</p>
+
+<h2>13. Mesh Communications</h2>
+<p>Node-to-node signals powering system observability. Signal categories include acknowledgement, discovery, escalation, processing, completion, warning, and heartbeat.</p>
+
+<h2>14. Governance</h2>
+<p>Server-enforced rules controlling system behavior under a mandatory consent protocol. Modes: ACTIVE, OBSERVE, LOCKDOWN, EVOLVE.</p>
+
+<h2>15. CJPI Score</h2>
+<p>Scores discoveries on four dimensions: Novelty, Utility, Complexity, and Composability. Range: 0–100. Export floor: 68+. Formula is sealed.</p>
+
+<h2>Related Documents</h2>
+<ul>
+<li><a href="02-how-cmpsbl-works.html">How CMPSBL Works</a></li>
+<li><a href="19-crystallized-memories.html">Crystallized Memories</a></li>
+<li><a href="20-ascension.html">Ascension</a></li>
+<li><a href="21-glossary.html">Glossary</a></li>
+</ul>
+
+<div class="footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>

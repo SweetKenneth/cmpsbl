@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMPSBL Documentation — Start Here</title>
+<style>
+:root{--bg:#fafafa;--fg:#111;--muted:#666;--border:#e0e0e0;--accent:#1a1a2e;--link:#2563eb;--code-bg:#f3f4f6;--table-stripe:#f9fafb}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;color:var(--fg);background:var(--bg);line-height:1.7;max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+h1{font-size:1.75rem;font-weight:700;margin:2rem 0 .5rem;letter-spacing:-.02em}
+h2{font-size:1.35rem;font-weight:600;margin:2rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--border)}
+h3{font-size:1.1rem;font-weight:600;margin:1.5rem 0 .5rem}
+p{margin:.5rem 0}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+th,td{text-align:left;padding:.5rem .75rem;border:1px solid var(--border)}
+th{background:var(--accent);color:#fff;font-weight:600}
+tr:nth-child(even){background:var(--table-stripe)}
+code{background:var(--code-bg);padding:.15em .35em;border-radius:3px;font-size:.88em;font-family:'JetBrains Mono','Fira Code',monospace}
+pre{background:var(--code-bg);padding:1rem;border-radius:6px;overflow-x:auto;margin:1rem 0;font-size:.85rem;line-height:1.5}
+pre code{background:none;padding:0}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+blockquote{border-left:3px solid var(--accent);padding-left:1rem;margin:1rem 0;color:var(--muted)}
+ul,ol{margin:.5rem 0 .5rem 1.5rem}
+li{margin:.25rem 0}
+.meta{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;text-align:center}
+@media print{body{max-width:100%;padding:1cm}h2{break-after:avoid}table{font-size:.8rem}}
+</style>
+</head>
+<body>
+<h1>CMPSBL Documentation — Start Here</h1>
+<p class="meta">Documentation Epoch 041 &middot; Public &middot; Last Updated: 2026-03-16</p>
+
+<h2>Welcome</h2>
+<p>CMPSBL (pronounced "composable") is a cognitive substrate — a runtime operating system that sits between AI models and applications. It provides persistent memory, autonomous discovery, governed mutation, and capability export.</p>
+<p>This documentation library is the canonical reference for the CMPSBL platform. It covers architecture, developer workflows, product surfaces, API access, and the conceptual foundations of the system.</p>
+
+<h2>Who This Documentation Is For</h2>
+<table>
+<tr><th>Audience</th><th>Start With</th></tr>
+<tr><td><strong>Developers</strong></td><td><a href="03-developer-guide.html">Developer Guide</a>, <a href="15-api-reference.html">API Reference</a></td></tr>
+<tr><td><strong>Users</strong></td><td><a href="02-how-cmpsbl-works.html">How CMPSBL Works</a>, <a href="01-core-concepts.html">Core Concepts</a></td></tr>
+<tr><td><strong>Investors</strong></td><td><a href="07-architecture-overview.html">Architecture Overview</a>, <a href="10-use-cases.html">Use Cases</a></td></tr>
+<tr><td><strong>Researchers</strong></td><td><a href="11-research-and-prior-art.html">Research &amp; Prior Art</a>, <a href="01-core-concepts.html">Core Concepts</a></td></tr>
+</table>
+
+<h2>Documentation Map</h2>
+
+<h3>Foundations</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>00</td><td><a href="00-start-here.html">Start Here</a></td><td>This document</td></tr>
+<tr><td>01</td><td><a href="01-core-concepts.html">Core Concepts</a></td><td>Vocabulary and mental model</td></tr>
+<tr><td>02</td><td><a href="02-how-cmpsbl-works.html">How CMPSBL Works</a></td><td>System operation walkthrough</td></tr>
+</table>
+
+<h3>Developer Guides</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>03</td><td><a href="03-developer-guide.html">Developer Guide</a></td><td>Quickstart and integration paths</td></tr>
+<tr><td>13</td><td><a href="13-substrate-development.html">Substrate Development</a></td><td>Building directly on the substrate</td></tr>
+<tr><td>14</td><td><a href="14-building-agents-and-apps.html">Building Agents &amp; Apps</a></td><td>Apps, chatbots, copilots, agents</td></tr>
+<tr><td>15</td><td><a href="15-api-reference.html">API Reference</a></td><td>Endpoint documentation</td></tr>
+</table>
+
+<h3>System Deep Dives</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>04</td><td><a href="04-memory-stream.html">Memory Stream</a></td><td>Continuous discovery engine</td></tr>
+<tr><td>05</td><td><a href="05-capability-export-system.html">Capability Export System</a></td><td>How capabilities become portable</td></tr>
+<tr><td>06</td><td><a href="06-mini-runtime.html">Mini Runtime</a></td><td>Condensed execution layer</td></tr>
+<tr><td>07</td><td><a href="07-architecture-overview.html">Architecture Overview</a></td><td>Full system architecture</td></tr>
+<tr><td>08</td><td><a href="08-governance-and-trust.html">Governance &amp; Trust</a></td><td>Safety, auditability, trust model</td></tr>
+<tr><td>09</td><td><a href="09-sdk-and-api.html">SDK &amp; API</a></td><td>Integration surface</td></tr>
+</table>
+
+<h3>Product Surfaces</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>16</td><td><a href="16-codelab.html">CodeLab</a></td><td>Interactive development environment</td></tr>
+<tr><td>17</td><td><a href="17-dev-academy.html">Dev Academy</a></td><td>Education and onboarding</td></tr>
+<tr><td>18</td><td><a href="18-signal-forge.html">Signal Forge</a></td><td>Blueprint synthesis engine</td></tr>
+</table>
+
+<h3>Reference</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>10</td><td><a href="10-use-cases.html">Use Cases</a></td><td>Practical applications</td></tr>
+<tr><td>11</td><td><a href="11-research-and-prior-art.html">Research &amp; Prior Art</a></td><td>Academic lineage</td></tr>
+<tr><td>12</td><td><a href="12-faq.html">FAQ</a></td><td>Common questions</td></tr>
+</table>
+
+<h3>Supplementary</h3>
+<table>
+<tr><th>#</th><th>Document</th><th>Description</th></tr>
+<tr><td>19</td><td><a href="19-crystallized-memories.html">Crystallized Memories</a></td><td>Deterministic capability artifacts</td></tr>
+<tr><td>20</td><td><a href="20-ascension.html">Ascension</a></td><td>Software evolution lifecycle</td></tr>
+<tr><td>21</td><td><a href="21-glossary.html">Glossary</a></td><td>Complete terminology reference</td></tr>
+</table>
+
+<h2>Quick Orientation</h2>
+<p><strong>What is CMPSBL?</strong><br>A cognitive substrate that provides AI-native infrastructure: persistent memory, autonomous capability discovery, governed evolution, and portable runtime exports.</p>
+<p><strong>What is the Memory Stream?</strong><br>The system's continuous discovery engine. It observes behavior, scores findings, and crystallizes reusable capabilities.</p>
+<p><strong>What is a Crystallized Memory?</strong><br>A deterministic, portable capability artifact produced by the crystallization process. It runs independently via the Mini Runtime.</p>
+<p><strong>What is Ascension?</strong><br>The process where external developer software enters the substrate, participates in discovery cycles, and produces Ascended Memories — a class of crystallized memory tied to the developer's original code.</p>
+
+<h2>Conventions Used in This Library</h2>
+<ul>
+<li><strong>ALL CAPS</strong> names refer to system nodes (e.g., BRAIN, DEFENSE, MEMORY)</li>
+<li>Code examples use TypeScript unless otherwise noted</li>
+<li>API endpoints reference the unified substrate gateway</li>
+<li>Architecture diagrams use Mermaid syntax</li>
+<li>Sealed mechanisms are noted but not exposed</li>
+</ul>
+
+<h2>Publication Information</h2>
+<table>
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td>Publisher</td><td>PromptFluid®</td></tr>
+<tr><td>System Version</td><td>v14.2.0 — MINDGAMES Epoch</td></tr>
+<tr><td>Documentation Epoch</td><td>041</td></tr>
+<tr><td>License</td><td>© 2025–2026 PromptFluid®. All rights reserved.</td></tr>
+</table>
+
+<div class="footer">© 2025–2026 PromptFluid®. All rights reserved.</div>
+</body>
+</html>
