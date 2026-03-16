@@ -1,14 +1,15 @@
 /**
  * EXPORT Phase — Generate Capability Packs from crystallized memories
- * Includes Mini-Runtime™ for local execution
+ * Includes Mini-Runtime™ for local execution + ZIP download + re-ingest loop
  */
 
 import { useState, useEffect } from 'react';
-import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2 } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
 
 interface CrystallizedCapability {
   id: string;
@@ -17,6 +18,10 @@ interface CrystallizedCapability {
   tier: string;
   crystallizedAt: string;
   exported: boolean;
+  chain: string[];
+  fingerprint: string;
+  moatSignature: string;
+  capabilityType: string;
 }
 
 const EXPORT_TARGETS = [
@@ -33,6 +38,7 @@ export function ExportPhase() {
   const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
   const [exporting, setExporting] = useState(false);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
+  const [reingesting, setReingesting] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -58,6 +64,10 @@ export function ExportPhase() {
           tier: d.tier || 'mint',
           crystallizedAt: String(meta.crystallized_at || d.created_at),
           exported: meta.exported === true,
+          chain: (meta.chain as string[]) || [],
+          fingerprint: String(meta.structural_fingerprint || ''),
+          moatSignature: String(meta.moat_signature || ''),
+          capabilityType: String(meta.capability_type || 'collision'),
         };
       }));
     }
@@ -73,6 +83,7 @@ export function ExportPhase() {
 
     setExporting(true);
     try {
+      // 1. Call edge function to register export
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
           module: 'export',
@@ -88,13 +99,76 @@ export function ExportPhase() {
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Export failed');
 
+      // 2. Generate actual ZIP for download
+      const capsForExport: CapabilityForExport[] = eligible.map(c => ({
+        id: c.id,
+        name: c.name,
+        cjpiScore: c.cjpiScore,
+        tier: c.tier,
+        chain: c.chain,
+        fingerprint: c.fingerprint,
+        moatSignature: c.moatSignature,
+        capabilityType: c.capabilityType,
+      }));
+
+      // Get candidate name from first chain entry
+      const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
+
+      await generateCapabilityPackZip({
+        targetLanguage: selectedTarget,
+        capabilities: capsForExport,
+        candidateName,
+      });
+
       setExportResult({ packId: data.pack_id, count: eligible.length });
       setCapabilities(prev => prev.map(c => ({ ...c, exported: true })));
-      toast({ title: 'Capability Pack generated', description: `${eligible.length} capabilities exported` });
+      toast({ title: 'Capability Pack downloaded', description: `${eligible.length} capabilities exported as ZIP` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
       setExporting(false);
+    }
+  };
+
+  const handleReingest = async () => {
+    if (capabilities.length === 0) return;
+    setReingesting(true);
+
+    try {
+      // Register a new candidate node from the exported capabilities
+      const combinedName = `EVOLVED_${capabilities[0]?.chain[0] || 'PACK'}_V${Date.now().toString(36).slice(-4).toUpperCase()}`;
+      const totalResolvers = capabilities.length * 3; // Each crystallized cap = ~3 resolvers
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any).from('artifact_registry').insert({
+        name: `CANDIDATE_${combinedName}`,
+        slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}`,
+        tier: 'candidate',
+        category: 'proprietary-evolution',
+        description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
+        metadata: {
+          phase: 'ingest',
+          language: 'TypeScript/Evolved',
+          file_count: capabilities.length,
+          resolver_count: totalResolvers,
+          size_kb: capabilities.length * 15,
+          ingested_at: new Date().toISOString(),
+          evolution_cycle: 2,
+          parent_capabilities: capabilities.map(c => c.id),
+          parent_avg_cjpi: Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length),
+        },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Re-ingested as evolved candidate',
+        description: `${combinedName} registered — return to Discovery to run deeper collision chains`,
+      });
+    } catch (err) {
+      toast({ title: 'Re-ingest failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setReingesting(false);
     }
   };
 
@@ -150,7 +224,8 @@ export function ExportPhase() {
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            Includes Mini-Runtime™ Engine ({selectedTarget === 'typescript' ? '~700' : '~900'} lines)
+            Includes Mini-Runtime™ Engine ({selectedTarget === 'typescript' ? '~700' : '~900'} lines) •
+            ZIP bundle with tests, manifest & README
           </span>
         </div>
 
@@ -160,7 +235,7 @@ export function ExportPhase() {
           ) : (
             <Download className="w-4 h-4" />
           )}
-          Generate Capability Pack
+          Generate & Download Capability Pack (.zip)
         </Button>
       </div>
 
@@ -170,7 +245,7 @@ export function ExportPhase() {
           <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
           <div className="flex-1">
             <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-              Pack ready — {exportResult.count} capabilities
+              Pack downloaded — {exportResult.count} capabilities
             </p>
             <p className="text-[10px] text-green-600/70 dark:text-green-400/70 font-mono truncate">
               Pack ID: {exportResult.packId.slice(0, 8)}…
@@ -204,13 +279,30 @@ export function ExportPhase() {
         </div>
       </div>
 
-      {/* Re-ingest CTA */}
-      <div className="border border-dashed border-border/30 rounded-xl p-4 text-center bg-card/20">
+      {/* Recursive Loop CTA */}
+      <div className="border border-primary/20 rounded-xl p-5 bg-primary/5 space-y-3">
+        <div className="flex items-center gap-2">
+          <RefreshCw className="w-4 h-4 text-primary" />
+          <span className="text-xs font-semibold text-foreground">Recursive Evolution Loop</span>
+        </div>
         <p className="text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">Recursive Loop:</span>{' '}
-          Re-ingest your enhanced stack to discover deeper chains.
-          Each cycle compounds exclusivity.
+          Re-ingest your enhanced capabilities as a new candidate node.
+          The Discovery engine will find <strong className="text-foreground">deeper collision chains</strong> —
+          each cycle compounds exclusivity and raises the CJPI floor.
         </p>
+        <Button
+          variant="outline"
+          onClick={handleReingest}
+          disabled={reingesting}
+          className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/10"
+        >
+          {reingesting ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <RefreshCw className="w-4 h-4" />
+          )}
+          Re-ingest as Evolved Candidate → Start New Cycle
+        </Button>
       </div>
     </div>
   );

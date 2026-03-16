@@ -5,6 +5,7 @@
  *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes
  *   - discovery.batch: Run full collision sweep across all 40 nodes
  *   - crystallize.lock: Lock a discovered capability into deterministic memory
+ *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
  *   - export.capability-pack: Generate capability pack from crystallized memories
  * 
  * @classification FOUNDER EYES ONLY
@@ -18,6 +19,40 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+// ═══ RATE LIMITING ═══
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string, maxPerMinute = 30): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + 60_000 });
+    return true;
+  }
+  entry.count++;
+  return entry.count <= maxPerMinute;
+}
+
+// ═══ INPUT VALIDATION ═══
+function validateString(val: unknown, maxLen = 200): string | null {
+  if (typeof val !== 'string') return null;
+  return val.trim().slice(0, maxLen).replace(/[^\w\s\-_.]/g, '') || null;
+}
+
+function validateStringArray(val: unknown, maxLen = 50, maxItems = 100): string[] {
+  if (!Array.isArray(val)) return [];
+  return val
+    .filter((v): v is string => typeof v === 'string')
+    .slice(0, maxItems)
+    .map(v => v.trim().slice(0, maxLen));
+}
+
+function validatePositiveInt(val: unknown, max = 100): number {
+  const n = Number(val);
+  if (!Number.isFinite(n) || n < 1) return 1;
+  return Math.min(Math.floor(n), max);
+}
+
 // ═══ SUBSTRATE NODE MATRIX ═══
 const SUBSTRATE_NODES = [
   'CORE','BRAIN','MEMORY','NERVE','DECODE','ENCODE','CORTEX','DEFENSE','ORACLE',
@@ -27,8 +62,9 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
+const VALID_NODES = new Set(SUBSTRATE_NODES);
+
 // ═══ NODE CAPABILITY SIGNATURES ═══
-// Each node has characteristic capabilities that can collide with candidate code
 const NODE_CAPABILITIES: Record<string, string[]> = {
   CORE: ['init', 'pulse', 'heartbeat', 'lifecycle'],
   BRAIN: ['reasoning', 'inference', 'semantic_embed', 'context_window'],
@@ -72,6 +108,14 @@ const NODE_CAPABILITIES: Record<string, string[]> = {
   NEXUS: ['route_ai', 'failover', 'cost_track', 'provider_select'],
 };
 
+const VALID_MODULES = new Set(['discovery', 'crystallize', 'export']);
+const VALID_ACTIONS: Record<string, Set<string>> = {
+  discovery: new Set(['collide', 'batch']),
+  crystallize: new Set(['lock', 'batch-lock']),
+  export: new Set(['capability-pack']),
+};
+const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin']);
+
 // ═══ COLLISION SCORING ═══
 
 interface CollisionResult {
@@ -91,10 +135,6 @@ function scoreTier(cjpi: number): string {
   return 'mint';
 }
 
-/**
- * Collision Engine — Bounce candidate node against a substrate node
- * Generates capability hypotheses with CJPI scoring
- */
 function collideNodes(
   candidateName: string,
   candidateMeta: Record<string, unknown>,
@@ -109,56 +149,47 @@ function collideNodes(
   const results: CollisionResult[] = [];
 
   for (const cap of capabilities) {
-    // Deterministic scoring based on candidate properties + node capability
     const nameHash = hashString(`${candidateName}:${targetNode}:${cap}`);
-    const baseCjpi = 30 + (nameHash % 60); // 30-89 base range
+    let cjpi = 30 + (nameHash % 60);
 
-    // Bonuses based on candidate characteristics
-    let cjpi = baseCjpi;
-    if (candidateResolvers > 10) cjpi += 5;   // Complex codebases discover more
-    if (candidateSize > 100) cjpi += 3;        // Larger = more collision surface
-    if (candidateLanguage.includes('TypeScript')) cjpi += 2; // Native substrate lang bonus
+    if (candidateResolvers > 10) cjpi += 5;
+    if (candidateSize > 100) cjpi += 3;
+    if (candidateLanguage.includes('TypeScript')) cjpi += 2;
     
-    // Depth bonus — deeper permutations occasionally find gems
     for (let d = 1; d < permutationDepth; d++) {
       const depthHash = hashString(`${candidateName}:${targetNode}:${cap}:depth${d}`);
-      if (depthHash % 10 === 0) cjpi += 5; // 10% chance of depth bonus per level
+      if (depthHash % 10 === 0) cjpi += 5;
     }
 
     cjpi = Math.min(cjpi, 99);
-    const tier = scoreTier(cjpi);
 
-    // Only report capabilities above noise floor
     if (cjpi >= 40) {
       const capName = `${candidateName}_${targetNode}_${cap}`.toUpperCase();
       results.push({
         name: capName,
         description: `Collision capability: ${candidateName} × ${targetNode}.${cap}`,
         cjpi_score: cjpi,
-        tier,
+        tier: scoreTier(cjpi),
         chain: [candidateName, targetNode],
         capability_type: cap,
       });
     }
   }
 
-  // Sort by CJPI descending, take top results based on depth
   results.sort((a, b) => b.cjpi_score - a.cjpi_score);
   return results.slice(0, Math.min(results.length, permutationDepth + 1));
 }
 
-/** Simple deterministic hash for consistent scoring */
 function hashString(s: string): number {
   let hash = 0;
   for (let i = 0; i < s.length; i++) {
     const char = s.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    hash = hash & hash;
   }
   return Math.abs(hash);
 }
 
-/** Generate structural fingerprint for a capability */
 async function generateFingerprint(chain: string[], epoch: string): Promise<string> {
   const payload = JSON.stringify({ steps: chain.map(m => ({ module: m, capability: 'collision' })), epoch });
   const encoder = new TextEncoder();
@@ -175,26 +206,50 @@ serve(async (req: Request) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Rate limiting
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (!checkRateLimit(clientIp, 60)) {
+    return jsonResponse({ success: false, error: 'Rate limit exceeded. Try again in a minute.' }, 429);
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const body = await req.json();
-    const { module, action, input } = body;
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return jsonResponse({ success: false, error: 'Invalid JSON body' }, 400);
+    }
+
+    const module = validateString(body.module, 50);
+    const action = validateString(body.action, 50);
+    const input = (typeof body.input === 'object' && body.input !== null) ? body.input as Record<string, unknown> : {};
+
+    if (!module || !VALID_MODULES.has(module)) {
+      return jsonResponse({ success: false, error: `Invalid module: ${module}` }, 400);
+    }
+    if (!action || !VALID_ACTIONS[module]?.has(action)) {
+      return jsonResponse({ success: false, error: `Invalid action: ${module}.${action}` }, 400);
+    }
 
     // ═══ DISCOVERY MODULE ═══
     if (module === 'discovery') {
       
-      // --- Collide: Single node collision ---
       if (action === 'collide') {
-        const { candidate_node, target_node, permutation_depth = 3 } = input || {};
+        const candidate_node = validateString(input.candidate_node, 100);
+        const target_node = validateString(input.target_node, 50);
+        const permutation_depth = validatePositiveInt(input.permutation_depth, 10);
         
-        if (!candidate_node || !target_node) {
-          return jsonResponse({ success: false, error: 'Missing candidate_node or target_node' }, 400);
+        if (!candidate_node) {
+          return jsonResponse({ success: false, error: 'Missing or invalid candidate_node' }, 400);
+        }
+        if (!target_node || !VALID_NODES.has(target_node)) {
+          return jsonResponse({ success: false, error: `Invalid target_node: ${target_node}` }, 400);
         }
 
-        // Load candidate metadata from artifact_registry
         const { data: candidateData } = await supabase
           .from('artifact_registry')
           .select('name, metadata')
@@ -207,15 +262,14 @@ serve(async (req: Request) => {
         const candidateMeta = (candidateData?.metadata as Record<string, unknown>) || {};
         const results = collideNodes(candidate_node, candidateMeta, target_node, permutation_depth);
 
-        // Persist discoveries to artifact_registry
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
             name: result.name,
-            slug: result.name.toLowerCase().replace(/_/g, '-'),
+            slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
             tier: result.tier,
             category: 'proprietary-discovery',
-            description: result.description,
+            description: result.description.slice(0, 500),
             metadata: {
               node_a: candidate_node,
               node_b: target_node,
@@ -237,12 +291,12 @@ serve(async (req: Request) => {
         });
       }
 
-      // --- Batch: Run all 40 node collisions ---
       if (action === 'batch') {
-        const { candidate_node, permutation_depth = 3 } = input || {};
+        const candidate_node = validateString(input.candidate_node, 100);
+        const permutation_depth = validatePositiveInt(input.permutation_depth, 10);
         
         if (!candidate_node) {
-          return jsonResponse({ success: false, error: 'Missing candidate_node' }, 400);
+          return jsonResponse({ success: false, error: 'Missing or invalid candidate_node' }, 400);
         }
 
         const { data: candidateData } = await supabase
@@ -262,7 +316,6 @@ serve(async (req: Request) => {
           allResults.push(...results);
         }
 
-        // Sort all by CJPI and persist top discoveries
         allResults.sort((a, b) => b.cjpi_score - a.cjpi_score);
         const topResults = allResults.slice(0, 50);
 
@@ -270,10 +323,10 @@ serve(async (req: Request) => {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
             name: result.name,
-            slug: result.name.toLowerCase().replace(/_/g, '-'),
+            slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
             tier: result.tier,
             category: 'proprietary-discovery',
-            description: result.description,
+            description: result.description.slice(0, 500),
             metadata: {
               node_a: result.chain[0],
               node_b: result.chain[1],
@@ -302,12 +355,11 @@ serve(async (req: Request) => {
     if (module === 'crystallize') {
       
       if (action === 'lock') {
-        const { discovery_id } = input || {};
+        const discovery_id = validateString(input.discovery_id, 100);
         if (!discovery_id) {
-          return jsonResponse({ success: false, error: 'Missing discovery_id' }, 400);
+          return jsonResponse({ success: false, error: 'Missing or invalid discovery_id' }, 400);
         }
 
-        // Load discovery
         const { data: discovery } = await supabase
           .from('artifact_registry')
           .select('*')
@@ -319,11 +371,14 @@ serve(async (req: Request) => {
         }
 
         const meta = (discovery.metadata as Record<string, unknown>) || {};
+        if (meta.crystallized === true) {
+          return jsonResponse({ success: false, error: 'Already crystallized' }, 409);
+        }
+
         const chain = (meta.chain as string[]) || [];
         const fingerprint = await generateFingerprint(chain, 'SPARTA');
         const moatSignature = crypto.randomUUID();
 
-        // Update to crystallized state
         const { error } = await supabase
           .from('artifact_registry')
           .update({
@@ -354,9 +409,8 @@ serve(async (req: Request) => {
         });
       }
 
-      // --- Batch crystallize all eligible (CJPI >= threshold) ---
       if (action === 'batch-lock') {
-        const { min_cjpi = 70 } = input || {};
+        const min_cjpi = validatePositiveInt(input.min_cjpi, 99) || 70;
 
         const { data: discoveries } = await supabase
           .from('artifact_registry')
@@ -376,7 +430,7 @@ serve(async (req: Request) => {
           const chain = (meta.chain as string[]) || [];
           const fingerprint = await generateFingerprint(chain, 'SPARTA');
 
-          await supabase.from('artifact_registry').update({
+          const { error } = await supabase.from('artifact_registry').update({
             category: 'proprietary-crystallized',
             metadata: {
               ...meta,
@@ -387,7 +441,8 @@ serve(async (req: Request) => {
               lock_version: 1,
             },
           }).eq('id', d.id);
-          crystallized++;
+
+          if (!error) crystallized++;
         }
 
         return jsonResponse({
@@ -403,13 +458,18 @@ serve(async (req: Request) => {
     if (module === 'export') {
       
       if (action === 'capability-pack') {
-        const { capability_ids = [], target_language = 'typescript', include_mini_runtime = true } = input || {};
+        const capability_ids = validateStringArray(input.capability_ids, 100, 100);
+        const target_language = validateString(input.target_language, 30) || 'typescript';
+        const include_mini_runtime = input.include_mini_runtime !== false;
 
         if (capability_ids.length === 0) {
-          return jsonResponse({ success: false, error: 'No capability_ids provided' }, 400);
+          return jsonResponse({ success: false, error: 'No valid capability_ids provided' }, 400);
         }
 
-        // Load crystallized capabilities
+        if (!VALID_LANGUAGES.has(target_language)) {
+          return jsonResponse({ success: false, error: `Unsupported target language: ${target_language}` }, 400);
+        }
+
         const { data: capabilities } = await supabase
           .from('artifact_registry')
           .select('id, name, metadata, tier, description')
@@ -417,10 +477,9 @@ serve(async (req: Request) => {
           .eq('category', 'proprietary-crystallized');
 
         if (!capabilities || capabilities.length === 0) {
-          return jsonResponse({ success: false, error: 'No crystallized capabilities found' }, 404);
+          return jsonResponse({ success: false, error: 'No crystallized capabilities found for provided IDs' }, 404);
         }
 
-        // Build capability pack manifest
         const packId = crypto.randomUUID();
         const manifest = {
           pack_id: packId,
@@ -461,7 +520,7 @@ serve(async (req: Request) => {
           }).eq('id', cap.id);
         }
 
-        // Log to audit
+        // Audit log
         await supabase.from('audit_logs').insert({
           action: 'proprietary_evolution_export',
           entity_type: 'capability_pack',
@@ -477,7 +536,6 @@ serve(async (req: Request) => {
           success: true,
           pack_id: packId,
           manifest,
-          download_url: `capability-pack-${packId.slice(0, 8)}.zip`,
           timestamp: new Date().toISOString(),
         });
       }
@@ -488,7 +546,7 @@ serve(async (req: Request) => {
   } catch (err) {
     console.error('[proprietary-evolution] Error:', err);
     return new Response(
-      JSON.stringify({ success: false, error: String(err) }),
+      JSON.stringify({ success: false, error: 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
