@@ -1742,6 +1742,45 @@ export type Database = {
         }
         Relationships: []
       }
+      artifact_registry: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json
+          name: string
+          slug: string
+          tier: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          name: string
+          slug: string
+          tier?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          name?: string
+          slug?: string
+          tier?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       atlas_capabilities: {
         Row: {
           created_at: string
