@@ -1622,11 +1622,11 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/studio': {
     title: 'STUDIO — Autonomous Site Generator | CMPSBL',
-    description: 'Generate production-ready applications using cognitive pipelines, design intelligence, and continuous deployment across the 40-node substrate.',
+    description: 'Generate production-ready applications using cognitive pipelines, design intelligence, and continuous deployment across the substrate.',
     ogTitle: 'STUDIO — Autonomous Site Generator',
     ogDescription: 'Production-ready apps via cognitive pipelines and design AI.',
     ogImage: OG_FEATURE,
-    keywords: ['autonomous site generator', 'cognitive web builder', 'design intelligence', 'STUDIO module', 'AI app builder'],
+    keywords: ['autonomous site generator', 'cognitive web builder', 'design intelligence', 'STUDIO node', 'AI app builder'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous site generator studio',
