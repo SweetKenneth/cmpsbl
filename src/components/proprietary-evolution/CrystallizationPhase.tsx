@@ -60,23 +60,16 @@ export function CrystallizationPhase() {
   const crystallize = async (discovery: Discovery) => {
     setCrystallizing(discovery.id);
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any)
-        .from('artifact_registry')
-        .update({
-          category: 'proprietary-crystallized',
-          metadata: {
-            node_a: discovery.nodeA,
-            node_b: discovery.nodeB,
-            cjpi_score: discovery.cjpiScore,
-            crystallized: true,
-            crystallized_at: new Date().toISOString(),
-            moat_signature: crypto.randomUUID(), // Unique structural lock
-          },
-        })
-        .eq('id', discovery.id);
+      const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
+        body: {
+          module: 'crystallize',
+          action: 'lock',
+          input: { discovery_id: discovery.id },
+        },
+      });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Crystallization failed');
 
       setDiscoveries(prev =>
         prev.map(d => d.id === discovery.id ? { ...d, crystallized: true } : d)
@@ -90,9 +83,26 @@ export function CrystallizationPhase() {
   };
 
   const crystallizeAll = async () => {
-    const eligible = discoveries.filter(d => !d.crystallized && d.cjpiScore >= 70);
-    for (const d of eligible) {
-      await crystallize(d);
+    setCrystallizing('batch');
+    try {
+      const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
+        body: {
+          module: 'crystallize',
+          action: 'batch-lock',
+          input: { min_cjpi: 70 },
+        },
+      });
+
+      if (error) throw error;
+      toast({
+        title: 'Batch crystallization complete',
+        description: `${data?.crystallized_count || 0} capabilities locked`,
+      });
+      await loadDiscoveries();
+    } catch (err) {
+      toast({ title: 'Batch crystallization failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setCrystallizing(null);
     }
   };
 
@@ -147,7 +157,12 @@ export function CrystallizationPhase() {
           disabled={!!crystallizing}
           className="h-7 text-xs gap-1.5"
         >
-          <Diamond className="w-3 h-3" /> Crystallize All (CJPI≥70)
+          {crystallizing === 'batch' ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : (
+            <Diamond className="w-3 h-3" />
+          )}
+          Crystallize All (CJPI≥70)
         </Button>
       </div>
 
@@ -188,7 +203,7 @@ export function CrystallizationPhase() {
                 size="sm"
                 variant="outline"
                 onClick={() => crystallize(d)}
-                disabled={crystallizing === d.id}
+                disabled={!!crystallizing}
                 className="h-7 text-[10px] gap-1"
               >
                 {crystallizing === d.id ? (

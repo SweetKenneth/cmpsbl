@@ -32,7 +32,7 @@ export function ExportPhase() {
   const [loading, setLoading] = useState(true);
   const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
   const [exporting, setExporting] = useState(false);
-  const [exportResult, setExportResult] = useState<string | null>(null);
+  const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function ExportPhase() {
 
     setExporting(true);
     try {
-      const { data, error } = await supabase.functions.invoke('pf-substrate', {
+      const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
           module: 'export',
           action: 'capability-pack',
@@ -86,20 +86,9 @@ export function ExportPhase() {
       });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Export failed');
 
-      // Mark as exported
-      for (const cap of eligible) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any).from('artifact_registry').update({
-          metadata: {
-            exported: true,
-            exported_at: new Date().toISOString(),
-            export_target: selectedTarget,
-          },
-        }).eq('id', cap.id);
-      }
-
-      setExportResult(data?.download_url || 'Export completed');
+      setExportResult({ packId: data.pack_id, count: eligible.length });
       setCapabilities(prev => prev.map(c => ({ ...c, exported: true })));
       toast({ title: 'Capability Pack generated', description: `${eligible.length} capabilities exported` });
     } catch (err) {
@@ -180,9 +169,11 @@ export function ExportPhase() {
         <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20">
           <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
           <div className="flex-1">
-            <p className="text-xs text-green-600 dark:text-green-400 font-medium">Pack ready</p>
+            <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+              Pack ready — {exportResult.count} capabilities
+            </p>
             <p className="text-[10px] text-green-600/70 dark:text-green-400/70 font-mono truncate">
-              {exportResult}
+              Pack ID: {exportResult.packId.slice(0, 8)}…
             </p>
           </div>
         </div>
