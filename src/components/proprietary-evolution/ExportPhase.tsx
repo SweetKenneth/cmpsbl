@@ -214,11 +214,16 @@ export function ExportPhase() {
     setReingesting(true);
 
     try {
+      const { data: authData } = await supabase.auth.getUser();
+      const currentUser = authData.user;
+      if (!currentUser) throw new Error('Authentication required');
+
       const combinedName = `EVOLVED_${capabilities[0]?.chain[0] || 'PACK'}_V${Date.now().toString(36).slice(-4).toUpperCase()}`;
       const totalResolvers = capabilities.length * 3;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert({
+        user_id: currentUser.id,
         name: `CANDIDATE_${combinedName}`,
         slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}-${Date.now().toString(36)}`,
         tier: 'candidate',

@@ -503,6 +503,7 @@ serve(async (req: Request) => {
           .from('artifact_registry')
           .select('id, name, metadata, tier, description')
           .in('id', capability_ids)
+          .eq('user_id', userId)
           .eq('category', 'proprietary-crystallized');
 
         if (!capabilities || capabilities.length === 0) {
@@ -535,7 +536,6 @@ serve(async (req: Request) => {
           } : null,
         };
 
-        // Mark as exported AND retired
         for (const cap of capabilities) {
           const meta = (cap.metadata as Record<string, unknown>) || {};
           await supabase.from('artifact_registry').update({
@@ -548,14 +548,14 @@ serve(async (req: Request) => {
               export_target: target_language,
               export_pack_id: packId,
             },
-          }).eq('id', cap.id);
+          }).eq('id', cap.id).eq('user_id', userId);
         }
 
-        // Audit log
         await supabase.from('audit_logs').insert({
           action: 'proprietary_evolution_export',
           entity_type: 'capability_pack',
           entity_id: packId,
+          performed_by: userId,
           details: {
             target_language,
             capability_count: capabilities.length,
