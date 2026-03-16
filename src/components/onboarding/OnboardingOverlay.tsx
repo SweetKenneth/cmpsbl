@@ -400,11 +400,13 @@ export function OnboardingOverlay({ onDismiss }: OnboardingOverlayProps) {
                     <Button 
                       size="sm" 
                       onClick={goNext} 
-                      className="text-xs h-8 relative overflow-hidden group active:scale-[0.92] transition-transform"
+                      className="gap-1.5 text-xs h-8 relative overflow-hidden group active:scale-[0.92] transition-transform"
                     >
-                      <span className="relative z-10">Next</span>
-                      <span className="absolute right-2 z-10 ob-bounce-x">
-                        <ArrowRight className="w-3 h-3" />
+                      <span className="relative z-10 flex items-center gap-1.5">
+                        Next
+                        <span className="ob-bounce-x">
+                          <ArrowRight className="w-3 h-3" />
+                        </span>
                       </span>
                     </Button>
                   )}
