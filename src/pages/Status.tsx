@@ -224,7 +224,7 @@ function ModuleStatusCard({ module, index }: { module: ModuleHealth; index: numb
 }
 
 export default function Status() {
-  const { modules, overallStatus, uptimeDays, lastUpdated, recentIncidents } = useSystemStatus();
+  const { modules, overallStatus, lastUpdated, recentIncidents } = useSystemStatus();
 
   const groupedByLayer = useMemo(() => {
     const groups: Record<string, ModuleHealth[]> = {};
