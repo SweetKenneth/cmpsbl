@@ -283,11 +283,8 @@ export function ExportPhase() {
               <Lock className="w-3 h-3" /> Upgrade to export
             </span>
           ) : (
-            <span className={cn(
-              "text-xs font-mono font-bold",
-              canExport ? "text-primary" : "text-destructive"
-            )}>
-              {exportsRemaining}/{evolutionExportsPerDay} remaining today
+            <span className="text-xs font-mono font-bold text-primary">
+              Exports enabled
             </span>
           )}
         </div>
