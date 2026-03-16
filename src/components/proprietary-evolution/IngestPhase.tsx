@@ -1,6 +1,6 @@
 /**
- * INGEST Phase — Import developer code and create Candidate Node #41
- * Reverse of the Universal Export Adapter
+ * INGEST Phase — Import developer code and register as a candidate node
+ * First stage of the Ascension lifecycle
  * Tier-gated: uploads limited per day (3/6/9/12 by tier)
  */
 
