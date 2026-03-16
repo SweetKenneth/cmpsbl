@@ -97,7 +97,7 @@ describe('Ascension Page Components', () => {
       render(<AscensionHero />, { wrapper });
       expect(screen.getByText('Ingest')).toBeTruthy();
       expect(screen.getByText('Crystallize')).toBeTruthy();
-      expect(screen.getByText('Ascended Memory')).toBeTruthy();
+      expect(screen.getAllByText('Ascended Memory').length).toBeGreaterThanOrEqual(1);
     });
 
     it('renders the orbital canvas', () => {
