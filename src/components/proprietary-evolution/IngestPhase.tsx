@@ -2,6 +2,7 @@
  * INGEST Phase — Import developer code and register as a candidate node
  * First stage of the Ascension lifecycle
  * Tier-gated: uploads limited per day (3/6/9/12 by tier)
+ * Accepts all 25 export languages
  */
 
 import { useState, useCallback } from 'react';
@@ -19,6 +20,51 @@ interface ParsedNode {
   language: string;
   sizeKb: number;
 }
+
+/** All 25 languages matching the export targets */
+const ACCEPTED_EXTENSIONS = [
+  '.ts', '.tsx', '.js', '.jsx',         // TypeScript / JavaScript
+  '.py',                                 // Python
+  '.go',                                 // Go
+  '.rs',                                 // Rust
+  '.java',                               // Java
+  '.cs',                                 // C#
+  '.rb',                                 // Ruby
+  '.php',                                // PHP
+  '.swift',                              // Swift
+  '.kt', '.kts',                         // Kotlin
+  '.ex', '.exs',                         // Elixir
+  '.lua',                                // Lua
+  '.c', '.h',                            // C
+  '.cpp', '.cc', '.cxx', '.hpp',         // C++
+  '.dart',                               // Dart
+  '.zig',                                // Zig
+  '.scala', '.sc',                       // Scala
+  '.hs', '.lhs',                         // Haskell
+  '.v',                                  // Verilog
+  '.vhd', '.vhdl',                       // VHDL
+  '.sv', '.svh',                         // SystemVerilog
+  '.scala',                              // Chisel (Scala-based)
+  '.py',                                 // Amaranth (Python-based)
+  '.cir', '.sp', '.spice',              // SPICE
+  '.cpp', '.h',                          // SystemC (C++-based)
+];
+
+const ACCEPT_STRING = ACCEPTED_EXTENSIONS.join(',');
+
+const LANG_MAP: Record<string, string> = {
+  ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
+  py: 'Python', rs: 'Rust', go: 'Go', java: 'Java', rb: 'Ruby', cs: 'C#',
+  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++', c: 'C', h: 'C/C++',
+  zig: 'Zig', hs: 'Haskell', lhs: 'Haskell',
+  sv: 'SystemVerilog', svh: 'SystemVerilog', v: 'Verilog',
+  vhd: 'VHDL', vhdl: 'VHDL',
+  swift: 'Swift', kt: 'Kotlin', kts: 'Kotlin',
+  php: 'PHP', lua: 'Lua', dart: 'Dart',
+  scala: 'Scala', sc: 'Scala',
+  ex: 'Elixir', exs: 'Elixir',
+  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE',
+};
 
 export function IngestPhase() {
   const [dragOver, setDragOver] = useState(false);
@@ -54,14 +100,8 @@ export function IngestPhase() {
       const totalSize = files.reduce((sum, f) => sum + f.size, 0);
       const extensions = new Set(files.map(f => f.name.split('.').pop()?.toLowerCase()));
       
-      const langMap: Record<string, string> = {
-        ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
-        py: 'Python', rs: 'Rust', go: 'Go', java: 'Java', rb: 'Ruby', cs: 'C#',
-        cpp: 'C++', c: 'C', zig: 'Zig', hs: 'Haskell', sv: 'SystemVerilog', v: 'Verilog',
-      };
-      
       const detectedLang = Array.from(extensions)
-        .map(ext => langMap[ext || ''])
+        .map(ext => LANG_MAP[ext || ''])
         .filter(Boolean)[0] || 'Unknown';
 
       let resolverEstimate = 0;
@@ -151,7 +191,7 @@ export function IngestPhase() {
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
         className={cn(
-          "border-2 border-dashed rounded-xl p-8 text-center transition-all",
+          "border-2 border-dashed rounded-xl p-8 sm:p-10 text-center transition-all",
           !canUpload
             ? "border-destructive/30 bg-destructive/5 opacity-60 pointer-events-none"
             : dragOver
@@ -164,13 +204,13 @@ export function IngestPhase() {
         ) : (
           <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         )}
-        <p className="text-sm text-foreground font-medium">
+        <p className="text-sm sm:text-base text-foreground font-medium">
           {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
         </p>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
           {!canUpload
             ? 'Upgrade your tier for more daily uploads'
-            : 'Supports TypeScript, Python, Rust, Go, Zig, SystemVerilog, and 12 more'}
+            : 'All 25 export languages supported — TypeScript, Python, Rust, Go, C/C++, Zig, Verilog, VHDL, SystemVerilog, Chisel, SPICE, SystemC, and more'}
         </p>
         {canUpload && (
           <div className="mt-4">
@@ -180,7 +220,7 @@ export function IngestPhase() {
                 multiple
                 className="hidden"
                 onChange={handleFileSelect}
-                accept=".ts,.tsx,.js,.jsx,.py,.rs,.go,.java,.rb,.cs,.cpp,.c,.zig,.hs,.sv,.v"
+                accept={ACCEPT_STRING}
               />
               <span className="text-xs text-primary hover:underline font-mono">
                 or click to browse
@@ -197,7 +237,7 @@ export function IngestPhase() {
             <p className="text-xs font-mono text-muted-foreground">
               {files.length} file{files.length !== 1 ? 's' : ''} selected
             </p>
-            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-7 text-xs gap-1.5">
+            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-8 min-h-[44px] text-xs gap-1.5">
               {parsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Code2 className="w-3 h-3" />}
               Analyze
             </Button>
@@ -254,7 +294,7 @@ export function IngestPhase() {
           </div>
 
           {!registered && (
-            <Button onClick={handleRegisterNode} disabled={parsing || !canUpload} className="w-full gap-2">
+            <Button onClick={handleRegisterNode} disabled={parsing || !canUpload} className="w-full gap-2 min-h-[44px]">
               {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
               Register as Candidate Node
             </Button>
