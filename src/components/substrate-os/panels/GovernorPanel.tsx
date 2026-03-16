@@ -294,9 +294,9 @@ export default function GovernorPanel() {
                 color: 'text-amber-500',
                 desc: 'Autonomous decision authority & operational independence',
                 metrics: [
-                  { label: 'Authority Level', value: 'Full' },
-                  { label: 'Override Events', value: '0' },
-                  { label: 'Delegation Active', value: 'Yes' },
+                  { label: 'Authority Level', value: killSwitches.seba_enabled ? 'Full' : 'Limited' },
+                  { label: 'Override Events', value: String(telemetry.recentErrors) },
+                  { label: 'Delegation Active', value: killSwitches.clm_enabled ? 'Yes' : 'No' },
                 ],
               },
               {
@@ -305,9 +305,9 @@ export default function GovernorPanel() {
                 color: 'text-violet-500',
                 desc: 'Ethical decision boundaries & bias detection',
                 metrics: [
-                  { label: 'Ethics Checks', value: 'Active' },
-                  { label: 'Bias Alerts', value: '0' },
-                  { label: 'Boundary Status', value: 'Enforced' },
+                  { label: 'Ethics Checks', value: killSwitches.defense_enabled ? 'Active' : 'Disabled' },
+                  { label: 'Bias Alerts', value: String(telemetry.recentErrors) },
+                  { label: 'Boundary Status', value: killSwitches.defense_enabled ? 'Enforced' : 'Relaxed' },
                 ],
               },
               {
@@ -316,9 +316,9 @@ export default function GovernorPanel() {
                 color: 'text-cyan-500',
                 desc: 'SLA enforcement, contract compliance, agreement tracking',
                 metrics: [
-                  { label: 'Active Treaties', value: '3' },
-                  { label: 'Violations', value: '0' },
-                  { label: 'Compliance', value: '100%' },
+                  { label: 'Active Treaties', value: String(telemetry.totalUsers) },
+                  { label: 'Violations', value: String(telemetry.recentErrors) },
+                  { label: 'Compliance', value: telemetry.recentErrors === 0 ? '100%' : `${Math.max(0, Math.round(100 - (telemetry.recentErrors / Math.max(1, telemetry.totalApiCalls)) * 100))}%` },
                 ],
               },
             ].map((node) => (
