@@ -139,8 +139,8 @@ export function ExportPhase() {
     }
     if (selectedTargetIsHdl && !canAccessHdl) {
       toast({
-        title: 'HDL exports require Studio tier or above',
-        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Studio ($49/mo) and above.',
+        title: 'HDL exports require Creator tier or above',
+        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Creator ($49/mo) and above.',
         variant: 'destructive',
       });
       return;
