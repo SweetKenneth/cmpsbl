@@ -1,11 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 // Mock supabase
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
-    auth: { getSession: vi.fn().mockResolvedValue({ data: { session: null } }), onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }) },
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
     from: vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
@@ -21,9 +24,14 @@ vi.mock('@/integrations/supabase/client', () => ({
           }),
         }),
       }),
+      insert: vi.fn().mockResolvedValue({ error: null }),
     }),
     functions: { invoke: vi.fn().mockResolvedValue({ data: { success: true }, error: null }) },
   },
+}));
+
+vi.mock('@/hooks/use-toast', () => ({
+  useToast: () => ({ toast: vi.fn() }),
 }));
 
 // Mock auth context
@@ -62,27 +70,101 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <MemoryRouter>{children}</MemoryRouter>
 );
 
+const createUtf16LeFile = (name: string, content: string) => {
+  const bytes = new Uint8Array(2 + content.length * 2);
+  bytes[0] = 0xff;
+  bytes[1] = 0xfe;
+
+  for (let i = 0; i < content.length; i++) {
+    const code = content.charCodeAt(i);
+    bytes[2 + i * 2] = code & 0xff;
+    bytes[3 + i * 2] = code >> 8;
+  }
+
+  return new File([bytes], name, { type: 'text/plain' });
+};
+
+beforeAll(() => {
+  Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
+    value: vi.fn(() => ({
+      clearRect: vi.fn(),
+      save: vi.fn(),
+      restore: vi.fn(),
+      beginPath: vi.fn(),
+      closePath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      arc: vi.fn(),
+      fill: vi.fn(),
+      stroke: vi.fn(),
+      fillText: vi.fn(),
+      measureText: vi.fn(() => ({ width: 120 })),
+      setLineDash: vi.fn(),
+      createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+      globalAlpha: 1,
+      lineWidth: 1,
+      strokeStyle: '',
+      fillStyle: '',
+      font: '',
+      textAlign: 'center',
+      textBaseline: 'middle',
+      shadowBlur: 0,
+      shadowColor: '',
+    })),
+    configurable: true,
+  });
+});
+
 describe('Ascension Page Components', () => {
   describe('IngestPhase', () => {
-    it('renders drop zone with 25-language support text', () => {
+    it('renders drop zone with source upload messaging', () => {
       render(<IngestPhase />, { wrapper });
-      expect(screen.getByText(/All 25 export languages supported/i)).toBeTruthy();
-      expect(screen.getByText(/or click to browse/i)).toBeTruthy();
+      expect(screen.getByText(/Drop source files here/i)).toBeInTheDocument();
+      expect(screen.getByText(/All languages accepted/i)).toBeInTheDocument();
+      expect(screen.getByText(/click or drag to upload/i)).toBeInTheDocument();
     });
 
     it('shows upload quota', () => {
       render(<IngestPhase />, { wrapper });
-      expect(screen.getByText('3/6 remaining')).toBeTruthy();
+      expect(screen.getByText('3/6 remaining')).toBeInTheDocument();
     });
 
-    it('renders file input with correct accept attribute', () => {
+    it('renders unrestricted multi-file input', () => {
       render(<IngestPhase />, { wrapper });
       const input = document.querySelector('input[type="file"]') as HTMLInputElement;
       expect(input).toBeTruthy();
-      // Should accept HDL extensions
-      expect(input.accept).toContain('.sv');
-      expect(input.accept).toContain('.vhd');
-      expect(input.accept).toContain('.spice');
+      expect(input.multiple).toBe(true);
+      expect(input.accept).toBe('');
+    });
+
+    it('analyzes a large PHP source file without skipping it as binary', async () => {
+      render(<IngestPhase />, { wrapper });
+      const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+      const phpSource = `<?php\n${'function collide_$x() { return $x; }\n'.repeat(75000)}`;
+      const file = new File([phpSource], 'collider.php', { type: 'application/x-httpd-php' });
+
+      fireEvent.change(input, { target: { files: [file] } });
+      fireEvent.click(screen.getByRole('button', { name: /analyze/i }));
+
+      await screen.findByText(/Candidate: COLLIDER/i);
+      expect(screen.getByText(/Candidate Node • PHP/i)).toBeInTheDocument();
+      expect(screen.queryByText(/skipped \(binary or unreadable text content\)/i)).not.toBeInTheDocument();
+    });
+
+    it('analyzes a UTF-16 Rust source file without skipping it as binary', async () => {
+      render(<IngestPhase />, { wrapper });
+      const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+      const file = createUtf16LeFile('engine.rs', 'pub fn collide() -> u32 { 41 }\n');
+
+      fireEvent.change(input, { target: { files: [file] } });
+      fireEvent.click(screen.getByRole('button', { name: /analyze/i }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/Candidate: ENGINE/i)).toBeInTheDocument();
+      });
+      expect(screen.getByText(/Candidate Node • Rust/i)).toBeInTheDocument();
+      expect(screen.queryByText(/skipped \(binary or unreadable text content\)/i)).not.toBeInTheDocument();
     });
   });
 
@@ -90,7 +172,7 @@ describe('Ascension Page Components', () => {
     it('renders hero title and description', () => {
       render(<AscensionHero />, { wrapper });
       expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
-      expect(screen.getByText(/Bring your software into the substrate/i)).toBeTruthy();
+      expect(screen.getByText(/Your code becomes Node #41/i)).toBeInTheDocument();
     });
 
     it('renders all 4 lifecycle steps', () => {

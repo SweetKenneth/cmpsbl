@@ -275,7 +275,7 @@ export function IngestPhase() {
 
       for (const file of files) {
         const text = await safeReadText(file);
-        if (text) {
+        if (text !== null) {
           filesAnalyzed++;
           const exportMatches = text.match(/export\s+(function|class|const|default|async\s+function)/g);
           const moduleMatches = text.match(/module\s+\w+/g); // HDL modules
@@ -287,7 +287,7 @@ export function IngestPhase() {
       }
 
       if (filesFailed > 0) {
-        warnings.push(`${filesFailed} file(s) skipped (binary or too large for text analysis)`);
+        warnings.push(`${filesFailed} file(s) skipped (binary or unreadable text content)`);
       }
 
       const nodeName = files[0].name
