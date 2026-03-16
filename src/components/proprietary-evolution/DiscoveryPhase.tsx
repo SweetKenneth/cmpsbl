@@ -1,6 +1,7 @@
 /**
  * DISCOVERY Phase — Collision Chamber
  * Bounces Candidate Node #41 against the 40-node substrate matrix
+ * With real-time collision graph visualization
  */
 
 import { useState, useEffect } from 'react';
@@ -10,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { CollisionGraph } from './CollisionGraph';
 
 interface CollisionResult {
   nodeA: string;
@@ -34,6 +36,7 @@ export function DiscoveryPhase() {
   const [permutations, setPermutations] = useState(0);
   const [results, setResults] = useState<CollisionResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentTarget, setCurrentTarget] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Load registered candidate node
@@ -87,9 +90,9 @@ export function DiscoveryPhase() {
     setPermutations(0);
 
     try {
-      // Run collision testing against each of the 40 nodes
       for (let i = 0; i < SUBSTRATE_NODES.length; i++) {
         const targetNode = SUBSTRATE_NODES[i];
+        setCurrentTarget(targetNode);
         setPermutations(prev => prev + 1);
         setProgress(Math.round(((i + 1) / SUBSTRATE_NODES.length) * 100));
 
@@ -120,7 +123,6 @@ export function DiscoveryPhase() {
           setResults(prev => [...newResults, ...prev]);
         }
 
-        // Small delay to avoid hammering
         await new Promise(r => setTimeout(r, 150));
       }
 
@@ -130,6 +132,7 @@ export function DiscoveryPhase() {
       toast({ title: 'Discovery error', description: String(err), variant: 'destructive' });
     } finally {
       setRunning(false);
+      setCurrentTarget(null);
     }
   };
 
@@ -140,6 +143,14 @@ export function DiscoveryPhase() {
     };
     return colors[tier] || 'text-muted-foreground';
   };
+
+  // Build collision events for the graph
+  const collisionEvents = results.map(r => ({
+    targetNode: r.nodeB,
+    cjpiScore: r.cjpiScore,
+    tier: r.tier,
+    active: false,
+  }));
 
   if (loading) {
     return (
@@ -200,11 +211,21 @@ export function DiscoveryPhase() {
       {running && (
         <div className="space-y-2">
           <div className="flex justify-between text-xs text-muted-foreground font-mono">
-            <span>Colliding: {permutations}/{SUBSTRATE_NODES.length}</span>
+            <span>Colliding: {currentTarget || '...'} ({permutations}/{SUBSTRATE_NODES.length})</span>
             <span>{progress}%</span>
           </div>
           <Progress value={progress} className="h-1.5" />
         </div>
+      )}
+
+      {/* Collision Graph Visualization */}
+      {(running || results.length > 0) && (
+        <CollisionGraph
+          candidateNode={candidateNode}
+          collisions={collisionEvents}
+          running={running}
+          currentTarget={currentTarget}
+        />
       )}
 
       {/* Stats */}
