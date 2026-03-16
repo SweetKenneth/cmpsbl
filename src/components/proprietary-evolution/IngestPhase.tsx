@@ -22,38 +22,11 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
+import { useAuth } from '@/contexts/AuthContext';
+import { analyzeUploadedFiles, type CandidateAnalysis, LANG_MAP } from './ingest-utils';
 
 /* ═══ TYPES ═══ */
-interface ParsedNode {
-  name: string;
-  fileCount: number;
-  resolverCount: number;
-  language: string;
-  sizeKb: number;
-  parseWarnings: string[];
-}
-
-/* ═══ LANGUAGE DETECTION MAP ═══ */
-const LANG_MAP: Record<string, string> = {
-  // Software
-  ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
-  py: 'Python', rs: 'Rust', go: 'Go', java: 'Java', rb: 'Ruby', cs: 'C#',
-  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++ Header', c: 'C', h: 'C/C++ Header',
-  zig: 'Zig', hs: 'Haskell', lhs: 'Haskell',
-  swift: 'Swift', kt: 'Kotlin', kts: 'Kotlin',
-  php: 'PHP', lua: 'Lua', dart: 'Dart',
-  scala: 'Scala', sc: 'Scala',
-  ex: 'Elixir', exs: 'Elixir',
-  // HDL / Silicon
-  v: 'Verilog', sv: 'SystemVerilog', svh: 'SystemVerilog',
-  vhd: 'VHDL', vhdl: 'VHDL',
-  bsv: 'Bluespec', // Bluespec SystemVerilog
-  // SPICE / SystemC
-  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE',
-  // Data / Config (still parseable)
-  json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
-  md: 'Markdown', txt: 'Text',
-};
+type ParsedNode = CandidateAnalysis;
 
 /* ═══ CIRCUIT BREAKER ═══ */
 type BreakerState = 'closed' | 'open' | 'half-open';
@@ -69,7 +42,7 @@ const BREAKER_DEFAULTS: CircuitBreaker = {
   state: 'closed',
   failures: 0,
   lastFailure: 0,
-  cooldownMs: 15_000, // 15s initial cooldown
+  cooldownMs: 15_000,
 };
 
 const MAX_FAILURES = 3;
@@ -81,10 +54,10 @@ function canAttempt(breaker: CircuitBreaker): boolean {
   if (breaker.state === 'open') {
     return Date.now() - breaker.lastFailure > breaker.cooldownMs;
   }
-  return true; // half-open allows one attempt
+  return true;
 }
 
-function recordSuccess(breaker: CircuitBreaker): CircuitBreaker {
+function recordSuccess(): CircuitBreaker {
   return { ...BREAKER_DEFAULTS };
 }
 
@@ -95,17 +68,13 @@ function recordFailure(breaker: CircuitBreaker): CircuitBreaker {
       state: 'open',
       failures,
       lastFailure: Date.now(),
-      cooldownMs: Math.min(breaker.cooldownMs * 2, 120_000), // exponential up to 2min
+      cooldownMs: Math.min(breaker.cooldownMs * 2, 120_000),
     };
   }
   return { ...breaker, failures, lastFailure: Date.now() };
 }
 
-/** Retry with exponential backoff + jitter */
-async function withRetry<T>(
-  fn: () => Promise<T>,
-  retries = MAX_RETRIES,
-): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, retries = MAX_RETRIES): Promise<T> {
   let lastError: unknown;
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -121,97 +90,8 @@ async function withRetry<T>(
   throw lastError;
 }
 
-/** Dead-letter log for operations that exhaust all retries */
 function deadLetterLog(operation: string, context: Record<string, unknown>, error: unknown) {
   console.error(`[INGEST DLQ] ${operation}`, { context, error: String(error), ts: new Date().toISOString() });
-  // In production this would write to a dead_letter_queue table
-}
-
-/* ═══ SAFE FILE READER ═══ */
-const TEXT_SAMPLE_BYTES = 64 * 1024;
-const MAX_TEXT_ANALYSIS_BYTES = 1024 * 1024;
-
-type SupportedTextEncoding = 'utf-8' | 'utf-16le' | 'utf-16be';
-
-async function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
-  if (typeof blob.arrayBuffer === 'function') {
-    return blob.arrayBuffer();
-  }
-
-  return await new Promise<ArrayBuffer>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(reader.error ?? new Error('Failed to read blob'));
-    reader.onload = () => resolve(reader.result as ArrayBuffer);
-    reader.readAsArrayBuffer(blob);
-  });
-}
-
-function detectTextEncoding(bytes: Uint8Array): SupportedTextEncoding {
-  if (bytes.length >= 2) {
-    if (bytes[0] === 0xff && bytes[1] === 0xfe) return 'utf-16le';
-    if (bytes[0] === 0xfe && bytes[1] === 0xff) return 'utf-16be';
-  }
-
-  const pairCount = Math.floor(Math.min(bytes.length, 512) / 2);
-  if (pairCount < 8) return 'utf-8';
-
-  let evenNulls = 0;
-  let oddNulls = 0;
-
-  for (let i = 0; i < pairCount * 2; i += 2) {
-    if (bytes[i] === 0x00) evenNulls++;
-    if (bytes[i + 1] === 0x00) oddNulls++;
-  }
-
-  const evenRatio = evenNulls / pairCount;
-  const oddRatio = oddNulls / pairCount;
-
-  if (oddRatio > 0.3 && evenRatio < 0.05) return 'utf-16le';
-  if (evenRatio > 0.3 && oddRatio < 0.05) return 'utf-16be';
-
-  return 'utf-8';
-}
-
-function isLikelyBinary(bytes: Uint8Array, encoding: SupportedTextEncoding): boolean {
-  if (encoding === 'utf-16le' || encoding === 'utf-16be') return false;
-  if (bytes.length === 0) return false;
-
-  let suspiciousControls = 0;
-  let readableBytes = 0;
-
-  for (const byte of bytes) {
-    if (byte === 0x00) return true;
-
-    const isWhitespace = byte === 0x09 || byte === 0x0a || byte === 0x0d || byte === 0x0c;
-    const isControl = byte < 0x20 && !isWhitespace;
-    const isReadable = byte >= 0x20 || byte >= 0x80 || isWhitespace;
-
-    if (isControl) suspiciousControls++;
-    if (isReadable) readableBytes++;
-  }
-
-  return suspiciousControls / bytes.length > 0.02 && readableBytes / bytes.length < 0.9;
-}
-
-async function safeReadText(file: File): Promise<string | null> {
-  try {
-    const sampleSize = Math.min(file.size, TEXT_SAMPLE_BYTES);
-    const sampleBuffer = await blobToArrayBuffer(file.slice(0, sampleSize));
-    const sampleBytes = new Uint8Array(sampleBuffer);
-    const encoding = detectTextEncoding(sampleBytes);
-
-    if (isLikelyBinary(sampleBytes, encoding)) return null;
-
-    const analysisSize = Math.min(file.size, MAX_TEXT_ANALYSIS_BYTES);
-    const analysisBuffer = analysisSize === sampleSize
-      ? sampleBuffer
-      : await blobToArrayBuffer(file.slice(0, analysisSize));
-
-    const decoded = new TextDecoder(encoding, { fatal: false }).decode(analysisBuffer);
-    return decoded.replace(/^\uFEFF/, '');
-  } catch {
-    return null;
-  }
 }
 
 /* ═══ COMPONENT ═══ */
