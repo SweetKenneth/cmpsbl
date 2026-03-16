@@ -262,9 +262,9 @@ export default function Upgrade() {
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
-    currentTier === 'studio' ? 'studio' :
     ['architect', 'pro'].includes(currentTier) ? 'architect' :
-    ['creator', 'builder'].includes(currentTier) ? 'operator' :
+    currentTier === 'creator' ? 'creator' :
+    ['studio', 'operator'].includes(currentTier) ? 'studio' :
     'builder';
 
   const slotState = useArtifactSlots(currentTier);

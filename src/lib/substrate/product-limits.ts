@@ -68,7 +68,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     evolutionExportsPerDay: 2,
     evolutionHdlAccess: false,
   },
-  studio: {
+  creator: {
     maxMemoryNamespaces: 6,
     memoryDepth: 'expanded_plus',
     allowBackgroundOptimization: true,
