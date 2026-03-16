@@ -56,8 +56,6 @@ export function ExportPhase() {
   const { toast } = useToast();
   const {
     canExport,
-    exportsRemaining,
-    evolutionExportsPerDay,
     productTier,
     isLoading: limitsLoading,
     refreshUsage,
@@ -139,10 +137,10 @@ export function ExportPhase() {
     }
     if (!canExport) {
       toast({
-        title: isBuilderTier ? 'Upgrade required' : 'Daily export limit reached',
+        title: isBuilderTier ? 'Upgrade required' : 'Export not available',
         description: isBuilderTier
           ? 'The Builder tier lets you discover capabilities for free, but exporting requires a paid tier.'
-          : `You've used all ${evolutionExportsPerDay} exports for today. Upgrade for more daily capacity.`,
+          : 'Exports are not enabled for your current plan.',
         variant: 'destructive',
       });
       return;
@@ -285,11 +283,8 @@ export function ExportPhase() {
               <Lock className="w-3 h-3" /> Upgrade to export
             </span>
           ) : (
-            <span className={cn(
-              "text-xs font-mono font-bold",
-              canExport ? "text-primary" : "text-destructive"
-            )}>
-              {exportsRemaining}/{evolutionExportsPerDay} remaining today
+            <span className="text-xs font-mono font-bold text-primary">
+              Exports enabled
             </span>
           )}
         </div>
