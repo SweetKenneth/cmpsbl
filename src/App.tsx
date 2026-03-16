@@ -219,7 +219,7 @@ const App = () => {
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
-                <TooltipProvider>
+                <DeferredTooltipProvider>
                   <SmartToastRenderer />
                   <SonnerToaster />
                    <BrowserRouter>
