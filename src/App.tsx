@@ -214,7 +214,7 @@ const App = () => {
         <MobilePreviewSafeMode />
       ) : (
         <Suspense fallback={null}>
-        <MotionConfigWrapper reducedMotion={isPreviewEnv ? "always" : "user"}>
+        <DeferredMotionConfig reducedMotion={isPreviewEnv ? "always" : "user"}>
           <QueryClientProvider client={queryClient}>
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
