@@ -97,8 +97,8 @@ export const CCR_ZONE_MODULES = ['brain', 'memory', 'dream'] as const;
 // OCG Zone modules (Operational Compliance Grid — formerly CCL, includes NERVE)
 export const OCG_ZONE_MODULES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
 
-// Absorbed (route to a field)
-export const ABSORBED_FACADES = ['evolution'] as const; // → evolution field
+// Legacy — kept for backward compat but no longer used
+export const ABSORBED_FACADES = [] as const;
 
 export type SubstrateModuleName = typeof SUBSTRATE_MODULES[number];
 
