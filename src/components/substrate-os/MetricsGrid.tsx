@@ -173,7 +173,7 @@ function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoadi
             "text-muted-foreground"
           )}>
             <TrendIcon className="w-3 h-3" />
-            <span>{trend === 'stable' ? '0%' : trend === 'up' ? '+5%' : '-3%'}</span>
+            <span>{trend === 'stable' ? '—' : trend === 'up' ? '↑' : '↓'}</span>
           </div>
         </div>
       </div>

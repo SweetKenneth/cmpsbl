@@ -159,8 +159,8 @@ export function OperationsTab() {
       id: 'medic', label: 'MEDIC', icon: HeartPulse, color: 'text-red-400',
       desc: 'Self-healing diagnostics, triage, and recovery orchestration',
       stats: [
-        { label: 'Health Checks', value: ops.nerve.signals > 0 ? Math.round(ops.nerve.signals / 3) : 0 },
-        { label: 'Recovery Cycles', value: 0 },
+        { label: 'Health Checks', value: ops.medic.healthChecks },
+        { label: 'Recovery Cycles', value: ops.medic.recoveryCycles },
       ],
     },
   ];
