@@ -1,22 +1,24 @@
 /**
  * useEvolutionLimits — Tier-gated limits for the Proprietary Evolution Lifecycle
- * Tracks daily usage (uploads, exports) against tier caps.
+ * Tracks daily upload usage against tier caps.
+ * Export access follows vault limits (exportEnabled) — same as crystallized memories.
  */
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useUserLimits } from '@/hooks/useUserLimits';
+import { getVaultLimits } from '@/lib/substrate/vault-limits';
 
 interface EvolutionUsage {
   uploadsToday: number;
-  exportsToday: number;
 }
 
 export function useEvolutionLimits() {
   const limits = useUserLimits();
-  const [usage, setUsage] = useState<EvolutionUsage>({ uploadsToday: 0, exportsToday: 0 });
+  const [usage, setUsage] = useState<EvolutionUsage>({ uploadsToday: 0 });
   const [loadingUsage, setLoadingUsage] = useState(true);
 
   const todayKey = new Date().toISOString().slice(0, 10);
+  const vaultLimits = useMemo(() => getVaultLimits(limits.tier), [limits.tier]);
 
   const loadUsage = useCallback(async () => {
     try {
@@ -29,17 +31,8 @@ export function useEvolutionLimits() {
         .eq('tier', 'candidate')
         .gte('created_at', `${todayKey}T00:00:00Z`);
 
-      // Count today's exports
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { count: exportCount } = await (supabase as any)
-        .from('audit_logs')
-        .select('id', { count: 'exact', head: true })
-        .eq('action', 'proprietary_evolution_export')
-        .gte('created_at', `${todayKey}T00:00:00Z`);
-
       setUsage({
         uploadsToday: uploadCount || 0,
-        exportsToday: exportCount || 0,
       });
     } catch (err) {
       console.error('Failed to load evolution usage:', err);
@@ -57,15 +50,10 @@ export function useEvolutionLimits() {
     [usage.uploadsToday, limits.evolutionUploadsPerDay]
   );
 
-  const canExport = useMemo(() =>
-    limits.evolutionExportsPerDay > 0 && usage.exportsToday < limits.evolutionExportsPerDay,
-    [usage.exportsToday, limits.evolutionExportsPerDay]
-  );
+  // Export access follows vault limits — same rule as crystallized memories
+  const canExport = vaultLimits.exportEnabled;
 
   const uploadsRemaining = Math.max(0, limits.evolutionUploadsPerDay - usage.uploadsToday);
-  const exportsRemaining = limits.evolutionExportsPerDay > 0
-    ? Math.max(0, limits.evolutionExportsPerDay - usage.exportsToday)
-    : 0;
 
   return {
     ...limits,
@@ -74,7 +62,7 @@ export function useEvolutionLimits() {
     canUpload,
     canExport,
     uploadsRemaining,
-    exportsRemaining,
+    vaultLimits,
     refreshUsage: loadUsage,
   };
 }

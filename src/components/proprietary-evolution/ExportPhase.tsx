@@ -56,8 +56,6 @@ export function ExportPhase() {
   const { toast } = useToast();
   const {
     canExport,
-    exportsRemaining,
-    evolutionExportsPerDay,
     productTier,
     isLoading: limitsLoading,
     refreshUsage,
