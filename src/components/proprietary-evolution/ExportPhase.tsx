@@ -1,11 +1,12 @@
 /**
  * ASCENDED MEMORY Phase — Generate portable capability artifacts
  * Tier-gated: Builder can see but not export. Export limits enforced per day.
- * HDL targets restricted to Creator+ tiers.
+ * Export languages are score-gated using the same LANGUAGE_UNLOCK_TIERS as crystallized memories.
+ * Only capabilities with CJPI ≥ 68 are surfaced. Silicon/HDL targets require 94+.
  * Includes retirement prompt on export.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
+import { LANGUAGE_UNLOCK_TIERS, getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,30 +42,11 @@ interface CrystallizedCapability {
   category: string;
 }
 
-const SOFTWARE_TARGETS = [
-  { id: 'typescript', label: 'TypeScript', ext: '.ts', hdl: false },
-  { id: 'python', label: 'Python', ext: '.py', hdl: false },
-  { id: 'rust', label: 'Rust', ext: '.rs', hdl: false },
-  { id: 'go', label: 'Go', ext: '.go', hdl: false },
-  { id: 'zig', label: 'Zig', ext: '.zig', hdl: false },
-  { id: 'java', label: 'Java', ext: '.java', hdl: false },
-  { id: 'csharp', label: 'C#', ext: '.cs', hdl: false },
-  { id: 'kotlin', label: 'Kotlin', ext: '.kt', hdl: false },
-  { id: 'swift', label: 'Swift', ext: '.swift', hdl: false },
-  { id: 'ruby', label: 'Ruby', ext: '.rb', hdl: false },
-] as const;
-
-const HDL_TARGETS = [
-  { id: 'verilog', label: 'Verilog', ext: '.v', hdl: true },
-  { id: 'systemverilog', label: 'SystemVerilog', ext: '.sv', hdl: true },
-  { id: 'vhdl', label: 'VHDL', ext: '.vhd', hdl: true },
-  { id: 'systemc', label: 'SystemC', ext: '.cpp', hdl: true },
-] as const;
-
-const ALL_TARGETS = [...SOFTWARE_TARGETS, ...HDL_TARGETS];
+/** Minimum CJPI score to surface a capability for export */
+const MIN_EXPORT_SCORE = 68;
 
 export function ExportPhase() {
-  const [capabilities, setCapabilities] = useState<CrystallizedCapability[]>([]);
+  const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
   const [exporting, setExporting] = useState(false);
@@ -73,7 +56,6 @@ export function ExportPhase() {
   const { toast } = useToast();
   const {
     canExport,
-    canAccessHdl,
     exportsRemaining,
     evolutionExportsPerDay,
     productTier,
@@ -82,6 +64,37 @@ export function ExportPhase() {
   } = useEvolutionLimits();
 
   const isBuilderTier = productTier === 'builder';
+
+  // Only surface capabilities ≥ 68 CJPI
+  const capabilities = useMemo(
+    () => allCapabilities.filter(c => c.cjpiScore >= MIN_EXPORT_SCORE),
+    [allCapabilities]
+  );
+
+  // Highest score among eligible (non-exported, non-retired) capabilities drives language unlock
+  const eligible = capabilities.filter(c => !c.exported && !c.retired);
+  const bestScore = useMemo(
+    () => eligible.reduce((max, c) => Math.max(max, c.cjpiScore), 0),
+    [eligible]
+  );
+
+  // Available languages based on the best CJPI score (same tiers as crystallized memories)
+  const unlockedLanguages = useMemo(() => getUnlockedLanguages(bestScore), [bestScore]);
+
+  // Group language tiers for display
+  const tierDisplay = useMemo(() => {
+    return LANGUAGE_UNLOCK_TIERS.filter(t => t.minScore >= MIN_EXPORT_SCORE).map(tier => ({
+      ...tier,
+      unlocked: bestScore >= tier.minScore,
+    }));
+  }, [bestScore]);
+
+  // Reset selected target if it becomes locked
+  useEffect(() => {
+    if (!unlockedLanguages.includes(selectedTarget as any) && unlockedLanguages.length > 0) {
+      setSelectedTarget(unlockedLanguages[0]);
+    }
+  }, [unlockedLanguages, selectedTarget]);
 
   useEffect(() => {
     loadCrystallized();
@@ -97,7 +110,7 @@ export function ExportPhase() {
       .limit(50);
 
     if (data) {
-      setCapabilities((data as any[]).map((d: any) => {
+      setAllCapabilities((data as any[]).map((d: any) => {
         const meta = d.metadata || {};
         return {
           id: d.id,
@@ -119,12 +132,9 @@ export function ExportPhase() {
     setLoading(false);
   };
 
-  const eligible = capabilities.filter(c => !c.exported && !c.retired);
-  const selectedTargetIsHdl = HDL_TARGETS.some(t => t.id === selectedTarget);
-
   const initiateExport = () => {
     if (eligible.length === 0) {
-      toast({ title: 'Nothing to export', description: 'All capabilities already exported or retired' });
+      toast({ title: 'Nothing to export', description: 'No capabilities at CJPI 68+ available for export' });
       return;
     }
     if (!canExport) {
@@ -137,15 +147,14 @@ export function ExportPhase() {
       });
       return;
     }
-    if (selectedTargetIsHdl && !canAccessHdl) {
+    if (!unlockedLanguages.includes(selectedTarget as any)) {
       toast({
-        title: 'HDL exports require Creator tier or above',
-        description: 'Verilog, SystemVerilog, VHDL, and SystemC targets are available at Creator ($49/mo) and above.',
+        title: 'Language locked',
+        description: `${selectedTarget} requires a higher CJPI score. Discover stronger capabilities to unlock it.`,
         variant: 'destructive',
       });
       return;
     }
-    // Show retirement confirmation
     setShowRetirementDialog(true);
   };
 
@@ -153,7 +162,6 @@ export function ExportPhase() {
     setShowRetirementDialog(false);
     setExporting(true);
     try {
-      // 1. Call edge function to register export
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
           module: 'export',
@@ -169,7 +177,6 @@ export function ExportPhase() {
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Export failed');
 
-      // 2. Generate actual ZIP for download
       const capsForExport: CapabilityForExport[] = eligible.map(c => ({
         id: c.id,
         name: c.name,
@@ -192,8 +199,7 @@ export function ExportPhase() {
       });
 
       setExportResult({ packId: data.pack_id, count: eligible.length });
-      // Mark as exported + retired in local state
-      setCapabilities(prev => prev.map(c =>
+      setAllCapabilities(prev => prev.map(c =>
         eligible.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
       ));
       await refreshUsage();
@@ -258,9 +264,9 @@ export function ExportPhase() {
     return (
       <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
         <Package className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
-        <p className="text-sm text-foreground font-medium">No crystallized capabilities</p>
+        <p className="text-sm text-foreground font-medium">No export-ready capabilities</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Complete the Crystallization phase to lock capabilities for export
+          Capabilities must reach CJPI 68+ to qualify for export. Complete deeper discovery cycles to raise scores.
         </p>
       </div>
     );
@@ -287,14 +293,12 @@ export function ExportPhase() {
             </span>
           )}
         </div>
-        {!canAccessHdl && (
-          <span className="text-[9px] font-mono text-muted-foreground">
-            HDL: Creator+ only
-          </span>
-        )}
+        <span className="text-[9px] font-mono text-muted-foreground">
+          Best CJPI: {bestScore} · {unlockedLanguages.length} languages
+        </span>
       </div>
 
-      {/* Export Config */}
+      {/* Export Config — Score-gated language tiers */}
       <div className={cn(
         "border rounded-xl p-5 space-y-4",
         isBuilderTier
@@ -306,57 +310,44 @@ export function ExportPhase() {
           <span className="text-xs font-semibold text-foreground">Capability Pack Configuration</span>
         </div>
 
-        <div className="space-y-2">
-          <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Software Targets</p>
-          <div className="flex flex-wrap gap-2">
-            {SOFTWARE_TARGETS.map(t => (
-              <button
-                key={t.id}
-                onClick={() => setSelectedTarget(t.id)}
-                disabled={isBuilderTier}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
-                  selectedTarget === t.id
-                    ? "bg-primary/10 text-primary border-primary/30"
-                    : "text-muted-foreground border-border/20 hover:border-border/40",
-                  isBuilderTier && "opacity-50 cursor-not-allowed"
-                )}
-              >
-                {t.label}
-              </button>
-            ))}
+        {tierDisplay.map(tier => (
+          <div key={tier.id} className="space-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                {tier.label} — {tier.minScore}+ CJPI
+              </p>
+              {!tier.unlocked && (
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5" /> Score {tier.minScore}+
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {tier.languages.map(lang => {
+                const isUnlocked = tier.unlocked;
+                return (
+                  <button
+                    key={`${tier.id}-${lang}`}
+                    onClick={() => isUnlocked && !isBuilderTier && setSelectedTarget(lang)}
+                    disabled={!isUnlocked || isBuilderTier}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
+                      selectedTarget === lang && isUnlocked
+                        ? "bg-primary/10 text-primary border-primary/30"
+                        : isUnlocked
+                          ? "text-muted-foreground border-border/20 hover:border-border/40"
+                          : "text-muted-foreground/40 border-border/10",
+                      (!isUnlocked || isBuilderTier) && "opacity-30 cursor-not-allowed"
+                    )}
+                  >
+                    {lang}
+                    {!isUnlocked && <Lock className="w-2.5 h-2.5 ml-1 inline" />}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">HDL Targets</p>
-            {!canAccessHdl && (
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono">
-                Creator+
-              </span>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {HDL_TARGETS.map(t => (
-              <button
-                key={t.id}
-                onClick={() => canAccessHdl && setSelectedTarget(t.id)}
-                disabled={!canAccessHdl || isBuilderTier}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
-                  selectedTarget === t.id
-                    ? "bg-primary/10 text-primary border-primary/30"
-                    : "text-muted-foreground border-border/20",
-                  (!canAccessHdl || isBuilderTier) && "opacity-30 cursor-not-allowed"
-                )}
-              >
-                {t.label}
-                {!canAccessHdl && <Lock className="w-2.5 h-2.5 ml-1 inline" />}
-              </button>
-            ))}
-          </div>
-        </div>
+        ))}
 
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
@@ -428,7 +419,7 @@ export function ExportPhase() {
       {/* Capability List */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          Crystallized Capabilities ({capabilities.length})
+          Export-Ready Capabilities ({capabilities.length} at CJPI 68+)
         </h3>
         <div className="space-y-1 max-h-64 overflow-y-auto">
           {capabilities.map(c => (
@@ -443,7 +434,10 @@ export function ExportPhase() {
               <span className="text-xs text-foreground/80 truncate flex-1">{c.name}</span>
               <span className={cn(
                 "text-[10px] font-mono",
-                c.cjpiScore >= 90 ? "text-amber-400" : "text-muted-foreground"
+                c.cjpiScore >= 94 ? "text-amber-400" :
+                c.cjpiScore >= 90 ? "text-orange-400" :
+                c.cjpiScore >= 80 ? "text-blue-400" :
+                "text-muted-foreground"
               )}>
                 CJPI {c.cjpiScore}
               </span>
