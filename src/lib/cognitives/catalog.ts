@@ -391,7 +391,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'devops',
-    displayName: 'DEVOPS Mind',
+    displayName: 'DEPLOYER',
     className: 'The Deployer',
     tagline: 'CI/CD pipelines. Infrastructure as code. Monitoring.',
     description: 'A reliability-obsessed deployer with DREAM Synthesis — designs CI/CD pipelines, generates IaC, and learns from deployment incidents to prevent future outages.',
