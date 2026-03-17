@@ -84,6 +84,7 @@ export const adminNavConfig: NavGroup[] = [
       { id: "governance", label: "Governance", path: "/admin/governance", icon: Shield },
       { id: "immunity-mesh", label: "Immunity Mesh", path: "/admin/immunity-mesh", icon: Shield },
       { id: "evolution", label: "Evolution", path: "/admin/evolution", icon: Zap },
+      { id: "ascension-nodes", label: "Ascension Nodes", path: "/admin/ascension-nodes", icon: Cpu, isNew: true },
       { id: "owner-reports", label: "Owner Reports", path: "/admin/owner-reports", icon: FileText },
       { id: "audit-center", label: "Audit Center", path: "/admin/audit-center", icon: ScrollText, isNew: true },
       { id: "email-list", label: "Email Lists", path: "/admin/email-list", icon: Activity, isNew: true },
