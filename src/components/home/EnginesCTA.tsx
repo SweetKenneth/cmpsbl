@@ -139,9 +139,9 @@ export function EnginesCTA() {
                 size="lg"
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                <Link to="/engines">
+                <Link to="/store">
                   <Shield className="w-4 h-4" />
-                  Browse All 20 Engines
+                  Browse the Store
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
