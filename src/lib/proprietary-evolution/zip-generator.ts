@@ -1067,6 +1067,8 @@ HANDLER_REGISTRY = {
     "NERVE": handle_nerve, "DECODE": handle_decode, "ENCODE": handle_encode,
     "ORACLE": handle_oracle, "IMMUNITY": handle_immunity, "ECHO": handle_echo,
     "EVOLUTION": handle_evolution, "DEFENSE": handle_defense, "SHADOW": handle_shadow,
+    "CORTEX": handle_cortex, "HARVEST": handle_harvest, "PHANTOM": handle_phantom,
+    "FORGE": handle_forge, "INTENT": handle_intent,
     "DEFAULT": handle_default,
 }
 
