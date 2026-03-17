@@ -162,7 +162,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Brand voice consistency', 'SEO optimization', 'Citation formatting', 'Outline-first generation'],
     priceCents: 7900, isFree: false, tier: 'starter', bundlePriceCents: bundlePrice(7900),
-    downloadAssetKey: 'cmpsbl-writer.zip', stripeProductName: 'CMPSBL Writer Mind', stripeLookupKey: 'cmpsbl_mind_writer_7900',
+    downloadAssetKey: 'cmpsbl-writer.zip', stripeProductName: 'CMPSBL ELOQUENCE', stripeLookupKey: 'cmpsbl_mind_writer_7900',
     accentColor: 'pink', imagePath: 'writer', version: 'v1.0', isPublic: true,
     category: 'Creative Force',
     personality: { archetype: 'The Wordsmith', tone: 'Eloquent, opinionated, and detail-obsessed', motto: '"Every word earns its place."', communicationStyle: 'Favors clarity over jargon. Pushes back on vague briefs. Delivers structured drafts with reasoning.' },
