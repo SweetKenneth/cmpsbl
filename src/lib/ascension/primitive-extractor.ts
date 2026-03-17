@@ -184,11 +184,11 @@ const EXTRACTION_PATTERNS: ExtractionPattern[] = [
 // §4 — CORE EXTRACTION ENGINE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-let primitiveCounter = 0;
-
+/** Generate collision-resistant primitive IDs without module-level state */
 function generatePrimitiveId(): string {
-  primitiveCounter++;
-  return `prim_${Date.now().toString(36)}_${primitiveCounter.toString(36)}`;
+  const ts = Date.now().toString(36);
+  const rand = Math.random().toString(36).slice(2, 8);
+  return `prim_${ts}_${rand}`;
 }
 
 function categorizeByName(name: string): PrimitiveCategory {

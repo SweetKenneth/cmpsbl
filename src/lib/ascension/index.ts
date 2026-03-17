@@ -62,6 +62,7 @@ export {
   logChainParticipation,
   logStatusChange,
   logDeletion,
+  logAuditEvent,
   getAuditTrail,
   type AuditEvent,
   type AuditEventType,
