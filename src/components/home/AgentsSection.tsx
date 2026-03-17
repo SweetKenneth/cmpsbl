@@ -190,10 +190,10 @@ export function AgentsSection() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Zap className="w-3 h-3 mr-1.5 text-primary" />
-            <span className="text-xs font-semibold">20 Sealed Black-Box Agents</span>
+            <span className="text-xs font-semibold">20 Sealed Runtime Agents</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
-            Black-Boxed.{" "}
+            Runtime Agents.{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
