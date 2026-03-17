@@ -523,6 +523,9 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       letter-spacing: -0.02em;
       color: var(--ink);
       margin-bottom: 0.3rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
     }
 
     h2 {

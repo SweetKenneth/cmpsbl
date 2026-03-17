@@ -1,13 +1,11 @@
 /**
  * ASCENDED MEMORY Phase — Generate portable capability artifacts
- * Tier-gated: Builder can see but not export. Export limits enforced per day.
- * Export languages are score-gated using the same LANGUAGE_UNLOCK_TIERS as crystallized memories.
- * Only capabilities with CJPI ≥ 68 are surfaced. Silicon/HDL targets require 94+.
- * Includes retirement prompt on export.
+ * Supports individual capability export AND download-all.
+ * Vault management: save/discard discoveries.
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, BookmarkPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
@@ -42,17 +40,18 @@ interface CrystallizedCapability {
   category: string;
 }
 
-/** Minimum CJPI score to surface a capability for export */
 const MIN_EXPORT_SCORE = 68;
 
 export function ExportPhase() {
   const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
-  const [exporting, setExporting] = useState(false);
+  const [exporting, setExporting] = useState<string | null>(null); // null or cap id or 'all'
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
   const [reingesting, setReingesting] = useState(false);
   const [showRetirementDialog, setShowRetirementDialog] = useState(false);
+  const [exportScope, setExportScope] = useState<'all' | string>('all'); // 'all' or single cap id
+  const [discarding, setDiscarding] = useState<string | null>(null);
   const { toast } = useToast();
   const {
     canExport,
@@ -63,23 +62,19 @@ export function ExportPhase() {
 
   const isBuilderTier = productTier === 'builder';
 
-  // Only surface capabilities ≥ 68 CJPI
   const capabilities = useMemo(
     () => allCapabilities.filter(c => c.cjpiScore >= MIN_EXPORT_SCORE),
     [allCapabilities]
   );
 
-  // Highest score among eligible (non-exported, non-retired) capabilities drives language unlock
   const eligible = capabilities.filter(c => !c.exported && !c.retired);
   const bestScore = useMemo(
     () => eligible.reduce((max, c) => Math.max(max, c.cjpiScore), 0),
     [eligible]
   );
 
-  // Available languages based on the best CJPI score (same tiers as crystallized memories)
   const unlockedLanguages = useMemo(() => getUnlockedLanguages(bestScore), [bestScore]);
 
-  // Group language tiers for display
   const tierDisplay = useMemo(() => {
     return LANGUAGE_UNLOCK_TIERS.filter(t => t.minScore >= MIN_EXPORT_SCORE).map(tier => ({
       ...tier,
@@ -87,16 +82,13 @@ export function ExportPhase() {
     }));
   }, [bestScore]);
 
-  // Reset selected target if it becomes locked
   useEffect(() => {
     if (!unlockedLanguages.includes(selectedTarget as any) && unlockedLanguages.length > 0) {
       setSelectedTarget(unlockedLanguages[0]);
     }
   }, [unlockedLanguages, selectedTarget]);
 
-  useEffect(() => {
-    loadCrystallized();
-  }, []);
+  useEffect(() => { loadCrystallized(); }, []);
 
   const loadCrystallized = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,9 +122,10 @@ export function ExportPhase() {
     setLoading(false);
   };
 
-  const initiateExport = () => {
-    if (eligible.length === 0) {
-      toast({ title: 'Nothing to export', description: 'No capabilities at CJPI 68+ available for export' });
+  const initiateExport = (scope: 'all' | string) => {
+    const targets = scope === 'all' ? eligible : eligible.filter(c => c.id === scope);
+    if (targets.length === 0) {
+      toast({ title: 'Nothing to export', description: 'No capabilities available for export' });
       return;
     }
     if (!canExport) {
@@ -146,26 +139,26 @@ export function ExportPhase() {
       return;
     }
     if (!unlockedLanguages.includes(selectedTarget as any)) {
-      toast({
-        title: 'Language locked',
-        description: `${selectedTarget} requires a higher CJPI score. Discover stronger capabilities to unlock it.`,
-        variant: 'destructive',
-      });
+      toast({ title: 'Language locked', description: `${selectedTarget} requires a higher CJPI score.`, variant: 'destructive' });
       return;
     }
+    setExportScope(scope);
     setShowRetirementDialog(true);
   };
 
   const handleExport = async () => {
     setShowRetirementDialog(false);
-    setExporting(true);
+    const targets = exportScope === 'all' ? eligible : eligible.filter(c => c.id === exportScope);
+    if (targets.length === 0) return;
+    
+    setExporting(exportScope);
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
           module: 'export',
           action: 'capability-pack',
           input: {
-            capability_ids: eligible.map(c => c.id),
+            capability_ids: targets.map(c => c.id),
             target_language: selectedTarget,
             include_mini_runtime: true,
           },
@@ -175,44 +168,50 @@ export function ExportPhase() {
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Export failed');
 
-      const capsForExport: CapabilityForExport[] = eligible.map(c => ({
-        id: c.id,
-        name: c.name,
-        cjpiScore: c.cjpiScore,
-        tier: c.tier,
-        chain: c.chain,
-        fingerprint: c.fingerprint,
-        moatSignature: c.moatSignature,
-        capabilityType: c.capabilityType,
-        description: c.description,
-        category: c.category,
+      const capsForExport: CapabilityForExport[] = targets.map(c => ({
+        id: c.id, name: c.name, cjpiScore: c.cjpiScore, tier: c.tier,
+        chain: c.chain, fingerprint: c.fingerprint, moatSignature: c.moatSignature,
+        capabilityType: c.capabilityType, description: c.description, category: c.category,
       }));
 
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
-      await generateCapabilityPackZip({
-        targetLanguage: selectedTarget,
-        capabilities: capsForExport,
-        candidateName,
-      });
+      await generateCapabilityPackZip({ targetLanguage: selectedTarget, capabilities: capsForExport, candidateName });
 
-      setExportResult({ packId: data.pack_id, count: eligible.length });
+      setExportResult({ packId: data.pack_id, count: targets.length });
       setAllCapabilities(prev => prev.map(c =>
-        eligible.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
+        targets.some(e => e.id === c.id) ? { ...c, exported: true, retired: true } : c
       ));
       await refreshUsage();
-      toast({ title: 'Ascended Memory exported', description: `${eligible.length} capabilities exported & retired. Future Ascension cycles will discover new ones.` });
+      toast({ title: 'Ascended Memory exported', description: `${targets.length} capability${targets.length > 1 ? 'ies' : ''} exported & retired.` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
-      setExporting(false);
+      setExporting(null);
+    }
+  };
+
+  const handleDiscard = async (capId: string) => {
+    setDiscarding(capId);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (supabase as any)
+        .from('artifact_registry')
+        .delete()
+        .eq('id', capId);
+      if (error) throw error;
+      setAllCapabilities(prev => prev.filter(c => c.id !== capId));
+      toast({ title: 'Capability discarded', description: 'Removed from your vault.' });
+    } catch (err) {
+      toast({ title: 'Discard failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setDiscarding(null);
     }
   };
 
   const handleReingest = async () => {
     if (capabilities.length === 0) return;
     setReingesting(true);
-
     try {
       const { data: authData } = await supabase.auth.getUser();
       const currentUser = authData.user;
@@ -230,24 +229,16 @@ export function ExportPhase() {
         category: 'proprietary-evolution',
         description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
         metadata: {
-          phase: 'ingest',
-          language: 'TypeScript/Evolved',
-          file_count: capabilities.length,
-          resolver_count: totalResolvers,
-          size_kb: capabilities.length * 15,
-          ingested_at: new Date().toISOString(),
-          evolution_cycle: 2,
+          phase: 'ingest', language: 'TypeScript/Evolved', file_count: capabilities.length,
+          resolver_count: totalResolvers, size_kb: capabilities.length * 15,
+          ingested_at: new Date().toISOString(), evolution_cycle: 2,
           parent_capabilities: capabilities.map(c => c.id),
           parent_avg_cjpi: Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length),
         },
       });
 
       if (error) throw error;
-
-      toast({
-        title: 'Re-ingested as evolved candidate',
-        description: `${combinedName} registered — return to Discovery to run deeper collision chains`,
-      });
+      toast({ title: 'Re-ingested as evolved candidate', description: `${combinedName} registered — return to Discovery to run deeper collision chains` });
     } catch (err) {
       toast({ title: 'Re-ingest failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -280,17 +271,13 @@ export function ExportPhase() {
       {/* Tier Status Bar */}
       <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-            Export Quota
-          </span>
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Quota</span>
           {isBuilderTier ? (
             <span className="text-xs font-mono text-destructive flex items-center gap-1">
               <Lock className="w-3 h-3" /> Upgrade to export
             </span>
           ) : (
-            <span className="text-xs font-mono font-bold text-primary">
-              Exports enabled
-            </span>
+            <span className="text-xs font-mono font-bold text-primary">Exports enabled</span>
           )}
         </div>
         <span className="text-[9px] font-mono text-muted-foreground">
@@ -301,13 +288,11 @@ export function ExportPhase() {
       {/* Export Config — Score-gated language tiers */}
       <div className={cn(
         "border rounded-xl p-5 space-y-4",
-        isBuilderTier
-          ? "border-border/20 bg-card/20 opacity-75"
-          : "border-border/30 bg-card/40"
+        isBuilderTier ? "border-border/20 bg-card/20 opacity-75" : "border-border/30 bg-card/40"
       )}>
         <div className="flex items-center gap-2">
           <Cpu className="w-4 h-4 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Capability Pack Configuration</span>
+          <span className="text-xs font-semibold text-foreground">Target Language</span>
         </div>
 
         {tierDisplay.map(tier => (
@@ -352,24 +337,27 @@ export function ExportPhase() {
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            Includes Mini-Runtime™ Engine • License (HTML + MD) • README (HTML + MD) • Pipeline Details • Valuation • Manifest
+            Includes Mini-Runtime™ Engine • License • README • Pipeline Details • Valuation • Manifest
           </span>
         </div>
 
-        <Button
-          onClick={initiateExport}
-          disabled={exporting || isBuilderTier || !canExport}
-          className="w-full gap-2"
-        >
-          {exporting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : isBuilderTier ? (
-            <Lock className="w-4 h-4" />
-          ) : (
-            <Download className="w-4 h-4" />
-          )}
-          {isBuilderTier ? 'Upgrade to Export' : 'Generate & Download Capability Pack (.zip)'}
-        </Button>
+        {/* Download All Button */}
+        {eligible.length > 1 && (
+          <Button
+            onClick={() => initiateExport('all')}
+            disabled={!!exporting || isBuilderTier || !canExport}
+            className="w-full gap-2"
+          >
+            {exporting === 'all' ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : isBuilderTier ? (
+              <Lock className="w-4 h-4" />
+            ) : (
+              <Download className="w-4 h-4" />
+            )}
+            {isBuilderTier ? 'Upgrade to Export' : `Download All ${eligible.length} Capabilities (.zip)`}
+          </Button>
+        )}
       </div>
 
       {/* Retirement Confirmation Dialog */}
@@ -378,25 +366,20 @@ export function ExportPhase() {
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-amber-500" />
-              Export & Retire Capabilities
+              Export & Retire
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
               <p>
-                Exporting {eligible.length} capability{eligible.length !== 1 ? 'ies' : ''} will{' '}
-                <strong className="text-foreground">retire them from the discovery pool</strong>.
+                Exporting will <strong className="text-foreground">retire {exportScope === 'all' ? 'all' : 'this'} capability from the discovery pool</strong>.
               </p>
               <p>
-                Retired capabilities are locked into your export bundle — future discovery runs
-                will explore fresh collision patterns and find new ones. This compounds your
-                proprietary advantage with each cycle.
+                Retired capabilities are locked into your export. Future runs find new ones.
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleExport}>
-              Export & Retire
-            </AlertDialogAction>
+            <AlertDialogAction onClick={handleExport}>Export & Retire</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -416,10 +399,10 @@ export function ExportPhase() {
         </div>
       )}
 
-      {/* Capability List with Descriptions */}
+      {/* Capability List — Individual export + discard */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          Export-Ready Capabilities ({capabilities.length} at CJPI 68+)
+          Your Vault ({capabilities.length} at CJPI 68+)
         </h3>
         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
           {capabilities.map(c => (
@@ -458,19 +441,15 @@ export function ExportPhase() {
                     Retired
                   </span>
                 )}
-                {c.exported && !c.retired && <CheckCircle2 className="w-3 h-3 text-green-500" />}
               </div>
-              {/* What This Software Does */}
+              {/* Description */}
               {c.description && (
-                <div className="px-4 pb-3 border-t border-border/10">
-                  <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-2 mb-1">
-                    What this capability does
-                  </p>
-                  <p className="text-xs text-foreground/70 leading-relaxed">
+                <div className="px-4 pb-2 border-t border-border/10">
+                  <p className="text-xs text-foreground/70 leading-relaxed mt-2">
                     {c.description}
                   </p>
                   {c.chain.length > 0 && (
-                    <div className="flex items-center gap-1.5 mt-2">
+                    <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                       <span className="text-[9px] font-mono text-muted-foreground/60">Chain:</span>
                       {c.chain.map((node, idx) => (
                         <span key={idx} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-primary/5 text-primary/70">
@@ -479,6 +458,39 @@ export function ExportPhase() {
                       ))}
                     </div>
                   )}
+                </div>
+              )}
+              {/* Per-capability actions */}
+              {!c.retired && !c.exported && (
+                <div className="flex items-center gap-2 px-4 pb-3 pt-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-[10px] gap-1 flex-1"
+                    disabled={!!exporting || isBuilderTier || !canExport}
+                    onClick={() => initiateExport(c.id)}
+                  >
+                    {exporting === c.id ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Download className="w-3 h-3" />
+                    )}
+                    Export this capability
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 text-[10px] gap-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    disabled={discarding === c.id}
+                    onClick={() => handleDiscard(c.id)}
+                  >
+                    {discarding === c.id ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-3 h-3" />
+                    )}
+                    Discard
+                  </Button>
                 </div>
               )}
             </div>

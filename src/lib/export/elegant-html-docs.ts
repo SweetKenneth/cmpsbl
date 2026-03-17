@@ -46,6 +46,9 @@ const DOCUMENT_STYLES = `
       font-weight: 600;
       letter-spacing: -0.01em;
       line-height: 1.2;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
     }
     .doc-subtitle {
       font-family: 'Cormorant Garamond', Georgia, serif;
