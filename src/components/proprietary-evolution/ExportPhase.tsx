@@ -416,37 +416,71 @@ export function ExportPhase() {
         </div>
       )}
 
-      {/* Capability List */}
+      {/* Capability List with Descriptions */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
           Export-Ready Capabilities ({capabilities.length} at CJPI 68+)
         </h3>
-        <div className="space-y-1 max-h-64 overflow-y-auto">
+        <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
           {capabilities.map(c => (
             <div
               key={c.id}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg",
-                c.retired ? "bg-muted/5 opacity-50" : "bg-muted/10"
+                "rounded-xl border transition-all",
+                c.retired
+                  ? "bg-muted/5 opacity-50 border-border/10"
+                  : "bg-card/30 border-border/20 hover:border-border/40"
               )}
             >
-              <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
-              <span className="text-xs text-foreground/80 truncate flex-1">{c.name}</span>
-              <span className={cn(
-                "text-[10px] font-mono",
-                c.cjpiScore >= 94 ? "text-amber-400" :
-                c.cjpiScore >= 90 ? "text-orange-400" :
-                c.cjpiScore >= 80 ? "text-blue-400" :
-                "text-muted-foreground"
-              )}>
-                CJPI {c.cjpiScore}
-              </span>
-              {c.retired && (
-                <span className="text-[9px] font-mono text-muted-foreground/60 bg-muted/20 px-1.5 py-0.5 rounded">
-                  Retired
+              <div className="flex items-center gap-3 px-4 py-2.5">
+                <FileCode2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                <span className="text-xs text-foreground font-medium truncate flex-1">{c.name}</span>
+                <span className={cn(
+                  "text-[10px] font-mono font-bold uppercase",
+                  c.cjpiScore >= 94 ? "text-amber-400" :
+                  c.cjpiScore >= 90 ? "text-orange-400" :
+                  c.cjpiScore >= 80 ? "text-blue-400" :
+                  "text-muted-foreground"
+                )}>
+                  {c.tier}
                 </span>
+                <span className={cn(
+                  "text-[10px] font-mono tabular-nums",
+                  c.cjpiScore >= 94 ? "text-amber-400" :
+                  c.cjpiScore >= 90 ? "text-orange-400" :
+                  c.cjpiScore >= 80 ? "text-blue-400" :
+                  "text-muted-foreground"
+                )}>
+                  CJPI {c.cjpiScore}
+                </span>
+                {c.retired && (
+                  <span className="text-[9px] font-mono text-muted-foreground/60 bg-muted/20 px-1.5 py-0.5 rounded">
+                    Retired
+                  </span>
+                )}
+                {c.exported && !c.retired && <CheckCircle2 className="w-3 h-3 text-green-500" />}
+              </div>
+              {/* What This Software Does */}
+              {c.description && (
+                <div className="px-4 pb-3 border-t border-border/10">
+                  <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mt-2 mb-1">
+                    What this capability does
+                  </p>
+                  <p className="text-xs text-foreground/70 leading-relaxed">
+                    {c.description}
+                  </p>
+                  {c.chain.length > 0 && (
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-[9px] font-mono text-muted-foreground/60">Chain:</span>
+                      {c.chain.map((node, idx) => (
+                        <span key={idx} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-primary/5 text-primary/70">
+                          {node}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
-              {c.exported && !c.retired && <CheckCircle2 className="w-3 h-3 text-green-500" />}
             </div>
           ))}
         </div>
