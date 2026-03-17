@@ -1,6 +1,6 @@
 /**
- * Agent Checkout — Handles purchases for 20 Sealed Runtime Agents
- * Tiered: Free $0, Starter $79, Pro $129, Elite $159
+ * Agent Checkout — Handles purchases for 5 Fused Meta-Agents
+ * Tiered: Free $0, Starter $79, Pro $129, Elite $159, Apex $249
  * 40% bundle discount with CMPSBL Engine
  */
 

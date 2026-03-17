@@ -376,7 +376,7 @@ export default function EngineDetail() {
               <Button asChild className="gap-2">
                 <Link to="/composable-cognitives">
                   <Brain className="w-4 h-4" />
-                  Browse 20 Runtime Agents
+                  Browse 5 Meta-Agents
                 </Link>
               </Button>
             </div>
