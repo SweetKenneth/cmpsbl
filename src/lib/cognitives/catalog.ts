@@ -169,7 +169,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'support',
-    displayName: 'SUPPORT Mind',
+    displayName: 'BASTION',
     className: 'The Resolver',
     tagline: 'Ticket triage. KB search. Escalation intelligence.',
     description: 'A calm, empathetic problem-solver with DREAM Synthesis — triages tickets, searches knowledge bases, and learns resolution patterns to close issues faster each cycle.',
