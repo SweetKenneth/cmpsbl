@@ -16,11 +16,10 @@ import {
 } from "lucide-react";
 
 export interface Engine {
-  slug: string;
-  codename: string;
-  tagline: string;
   /** Semantic version — shown to customers and used for support verification */
   version: string;
+  codename: string;
+  tagline: string;
   priceStandalone: number;
   priceBundled: number;
   priceDisplay: string;
