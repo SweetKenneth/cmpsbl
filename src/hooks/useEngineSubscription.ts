@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 
-export type SubscriptionTier = 'free' | 'starter' | 'creator' | 'studio' | 'builder' | 'pro' | 'architect' | 'enterprise';
+export type SubscriptionTier = 'free' | 'starter' | 'creator' | 'studio' | 'builder' | 'pro' | 'architect' | 'enterprise' | 'governor';
 
 interface EngineSubscriptionState {
   subscribed: boolean;
