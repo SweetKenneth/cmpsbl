@@ -108,7 +108,7 @@ export function GovernorDownloadsPanel() {
     try {
       const masterZip = new JSZip();
       for (const product of products) {
-        const blob = await generateProductZip(product);
+        const blob = await generateProductZipForGovernor(product);
         masterZip.file(`cmpsbl-${product.kind}-${product.slug}.zip`, blob);
       }
       const masterBlob = await masterZip.generateAsync({ type: 'blob' });
