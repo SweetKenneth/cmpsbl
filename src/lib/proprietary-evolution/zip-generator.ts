@@ -1123,7 +1123,8 @@ of your proprietary code and the substrate's cognitive architecture.
 
 | File | Purpose |
 |------|---------|
-| \`src/\` | Generated capability implementations |
+| \`src/\` | Executable capability implementations (callable classes/functions) |
+| \`src/runtime-bridge.*\` | **Runtime Binding Layer** — connects capabilities to pipeline execution |
 | \`test/\` | Auto-generated test harnesses |
 | \`_runtime/\` | CMPSBL® Mini-Runtime™ Engine (sealed, zero dependencies) |
 | \`manifest.json\` | Pack metadata and capability registry |
@@ -1131,6 +1132,26 @@ of your proprietary code and the substrate's cognitive architecture.
 | \`LICENSE.html\` | CMPSBL® Software License (styled, printable) |
 | \`README.html\` | This README (styled, printable) |
 | \`PIPELINE-DETAILS.html\` | Per-capability technical dossier with valuation |
+
+## ⚡ Quick Start
+
+\`\`\`
+// Each capability is a REAL execution entrypoint.
+// 1. Load the capability class
+// 2. Call execute(input) — runs the module chain pipeline
+// 3. Get structured output with trace and metadata
+\`\`\`
+
+**How it works:**
+
+1. The capability class loads manifest metadata
+2. It delegates to the **Runtime Bridge** (\`runtime-bridge.*\`)
+3. The bridge executes the module chain as a sequential pipeline
+4. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
+5. You get back: \`{ success, output, trace, metadata }\`
+
+> This is **deterministic pipeline execution** — not a simulation.
+> Every module modifies context, adds trace data, and reflects its behavioral intent.
 
 ## 🏆 Capabilities (${capabilities.length})
 
@@ -1146,6 +1167,18 @@ ${capabilities.map(c => {
 **${topTier.name}** — CJPI ${topTier.cjpiScore} (${topTier.tier.toUpperCase()})
 - Chain: \`${topTier.chain.join(' → ')}\`
 - Fingerprint: \`${topTier.fingerprint.slice(0, 12).toUpperCase()}\`
+
+## 🔗 Runtime Binding Layer (NEW)
+
+This pack includes a **language-native Runtime Bridge** that makes capabilities executable:
+
+- **Pipeline Execution** — Sequential module chain processing with context passing
+- **Module Handlers** — Each substrate module has a real handler that modifies execution context
+- **Trace & Observability** — Every execution produces per-stage timing, status, and signal data
+- **Error Recovery** — Exceptions are caught per-stage with full error trace
+
+The bridge is a wrapper, not the full substrate. Capability execution happens through
+the deterministic pipeline model. For the full cognitive runtime, use the CMPSBL substrate directly.
 
 ## 🚀 Mini-Runtime™ Engine (Sealed)
 
@@ -1165,6 +1198,13 @@ This pack includes the **CMPSBL® Mini-Runtime™ Engine** as a sealed distribut
 
 Re-ingest this enhanced codebase into the Proprietary Evolution Lifecycle
 to discover deeper capability chains. Each cycle compounds exclusivity.
+
+## ⚠️ Honest Limitations
+
+- This is a **v1 execution model** — sequential pipeline only, no async orchestration
+- The runtime bridge is a **portable wrapper**, not the full substrate
+- Module handlers implement **minimal behavioral contracts** — enough to be real, not enough to replace the full node
+- For production substrate capabilities, use the CMPSBL platform directly
 
 ---
 
