@@ -165,9 +165,10 @@ function collideNodes(
 
     if (cjpi >= 40) {
       const capName = `${candidateName}_${targetNode}_${cap}`.toUpperCase();
+      const desc = generateCapabilityDescription(candidateName, targetNode, cap, cjpi);
       results.push({
         name: capName,
-        description: `Collision capability: ${candidateName} × ${targetNode}.${cap}`,
+        description: desc,
         cjpi_score: cjpi,
         tier: scoreTier(cjpi),
         chain: [candidateName, targetNode],
