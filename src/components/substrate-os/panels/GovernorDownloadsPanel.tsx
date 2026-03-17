@@ -37,6 +37,7 @@ function buildProductList(): DownloadableProduct[] {
     price: e.priceDisplay,
     tier: e.tier,
     slug: e.slug,
+    version: e.version || '1.0.0',
   }));
 
   const agents: DownloadableProduct[] = STORE_AGENTS.map(a => ({
@@ -47,6 +48,7 @@ function buildProductList(): DownloadableProduct[] {
     price: a.priceDisplay,
     tier: a.tier,
     slug: a.id.replace('agent-', ''),
+    version: '1.0.0',
   }));
 
   return [...engines, ...agents];
