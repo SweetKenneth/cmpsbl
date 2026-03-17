@@ -1236,7 +1236,54 @@ export class CMPSBLRuntimeBridge {
 `;
 }
 
-function generateReadmeMd(options: ExportOptions): string {
+function generateGenericRuntimeBridge(lang: string, _caps: CapabilityForExport[]): string {
+  const [line] = LANG_COMMENT[lang] || ['//', '/*'];
+  const ext = LANG_EXT[lang] || '.txt';
+  return `${line} ═══════════════════════════════════════════════════════
+${line}  CMPSBL® Runtime Bridge — ${lang.toUpperCase()} v1.0
+${line}  Runtime Binding Layer (Reference Implementation)
+${line}
+${line}  Connects: Capability Pack → Mini Runtime → ${lang.toUpperCase()} Execution
+${line}
+${line}  EXECUTION MODEL:
+${line}  1. Load manifest.json to get module chain and metadata
+${line}  2. Initialize context = { _input: input, _data: input, _signals: [], _errors: [] }
+${line}  3. For each module in chain:
+${line}       context = applyModule(module, context, metadata)
+${line}  4. Return { success, output: context._data, trace, metadata }
+${line}
+${line}  MODULE HANDLERS (implement each for your language):
+${line}    CORE      → Set _pipeline_id, _initialized, _core_epoch
+${line}    BRAIN     → Set _reasoning with input analysis
+${line}    MEMORY    → Set _memory with retrieval status
+${line}    NERVE     → Set _nerve_routed with signal count
+${line}    DECODE    → Trim/sanitize string values, set _decoded
+${line}    ENCODE    → Set _encoded, _output_format
+${line}    ORACLE    → Set _prediction with confidence (cjpi/100)
+${line}    IMMUNITY  → Set _immunity with error count and fallback status
+${line}    ECHO      → Set _echo with replay snapshot
+${line}    EVOLUTION → Set _evolution with fitness score
+${line}    DEFENSE   → Set _defense with sanitization status
+${line}    SHADOW    → Set _shadow_audit with hash verification
+${line}    CORTEX    → Set _orchestration with stage coordination
+${line}    HARVEST   → Set _harvested with field count
+${line}    PHANTOM   → Set _phantom with anonymization status
+${line}    FORGE     → Set _forge with scaffolding status
+${line}    INTENT    → Set _intent_plan with step count
+${line}    DEFAULT   → Set _module_{name} with processed=true
+${line}
+${line}  Each handler MUST:
+${line}    - Modify context._data (add module-specific keys)
+${line}    - Append to context._signals (type, source, timestamp)
+${line}    - Return the modified context
+${line}
+${line}  See PHP/Python/TypeScript bridges for complete implementations.
+${line}  Port the handler logic 1:1 to ${lang.toUpperCase()} for full execution.
+${line} ═══════════════════════════════════════════════════════
+`;
+}
+
+
   const { targetLanguage, capabilities, candidateName } = options;
   const topTier = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const totalValue = capabilities.reduce((sum, c) =>
