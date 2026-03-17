@@ -473,7 +473,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'security',
-    displayName: 'SECURITY Mind',
+    displayName: 'OBSIDIAN',
     className: 'The Sentinel',
     tagline: 'Threat modeling. Vulnerability assessment. Incident response.',
     description: 'A vigilant guardian with DREAM Synthesis — models threats using STRIDE, scores vulnerabilities with CVSS, and learns your attack surface to harden defenses proactively.',
