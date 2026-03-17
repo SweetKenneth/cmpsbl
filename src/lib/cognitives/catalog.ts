@@ -107,7 +107,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'educator',
-    displayName: 'EDUCATOR Mind',
+    displayName: 'LEVITATION',
     className: 'The Sage',
     tagline: 'Curriculum design. Adaptive teaching. Knowledge gaps revealed.',
     description: 'A patient, Socratic mentor with DREAM Synthesis — builds personalized curricula, adapts difficulty in real-time, and remembers every learner\'s journey to guide them further.',
