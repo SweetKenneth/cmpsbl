@@ -30,6 +30,7 @@ import type { AuditReport } from '@/lib/audit/audit-types';
 
 const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
 const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
+const GovernorDownloadsPanel = lazy(() => import('./GovernorDownloadsPanel').then(m => ({ default: m.GovernorDownloadsPanel })));
 
 function Loader() {
   return (
