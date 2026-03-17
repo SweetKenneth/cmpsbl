@@ -6,15 +6,75 @@
  * © CMPSBL® — All rights reserved.
  */
 
+// Shared Types
+export {
+  ASCENSION_SCHEMA_VERSION,
+  ASCENSION_PREFIX,
+  RESERVED_MODULE_NAMES,
+  buildAscensionModuleName,
+  isAscensionModule,
+  generateCorrelationId,
+  migrateMetadata,
+  type PrimitiveCategory,
+  type ExtractedPrimitive,
+  type ExtractionResult,
+  type ExtractionStats,
+  type QualityReport,
+  type RejectedPrimitive,
+  type QualitySummary,
+  type AscensionNode,
+  type NodeStatus,
+  type NodeMode,
+  type NodeListFilters,
+  type NodeUpdatePayload,
+  type NodeMetadata,
+  type NodeSurface,
+  type NodePerformance,
+  type DeltaReport,
+  type DeltaSnapshot,
+  type DeltaComparison,
+  type InjectionResult,
+  type ChainParticipation,
+  type LearningEvent,
+  type LearningEventType,
+  type PatternFrequency,
+  type LearningInsights,
+  type AuditEvent,
+  type AuditEventType,
+} from './types';
+
 // Primitive Extraction
 export {
   extractPrimitives,
   buildPrimitiveHandler,
-  type ExtractedPrimitive,
-  type ExtractionResult,
-  type ExtractionStats,
-  type PrimitiveCategory,
 } from './primitive-extractor';
+
+// Quality Gate
+export {
+  runQualityGate,
+  scorePrimitive,
+  DEFAULT_QUALITY_CONFIG,
+  type QualityGateConfig,
+} from './quality-gate';
+
+// Language Post-Processing
+export {
+  postProcessPrimitives,
+  normalizeName,
+} from './language-postprocessor';
+
+// Deduplication
+export {
+  deduplicatePrimitives,
+  type DeduplicationResult,
+} from './deduplication';
+
+// Delta Measurement
+export {
+  captureSnapshot,
+  compareDelta,
+  buildDeltaReport,
+} from './delta-measurement';
 
 // Node Registry
 export {
@@ -24,11 +84,6 @@ export {
   updateNode,
   deleteNode,
   recordRunParticipation,
-  type AscensionNode,
-  type NodeStatus,
-  type NodeMode,
-  type NodeListFilters,
-  type NodeUpdatePayload,
 } from './node-registry';
 
 // Chain Injection
@@ -39,31 +94,29 @@ export {
   getNodeEffect,
   clearNodeEffects,
   getRegisteredNodeCount,
-  type InjectionResult,
-  type ChainParticipation,
 } from './chain-injection';
 
 // Brain Learning Bridge
 export {
   recordExtractionLearning,
   recordChainLearning,
+  recordDeltaLearning,
   recordLifecycleEvent,
   getPatternInsights,
+  getLearningInsights,
   getLearningHistory,
-  type LearningEvent,
-  type PatternFrequency,
 } from './brain-learning-bridge';
 
 // Audit Trail
 export {
   logUpload,
   logExtraction,
+  logQualityGate,
   logNodeCreated,
   logChainParticipation,
+  logDeltaMeasured,
   logStatusChange,
   logDeletion,
   logAuditEvent,
   getAuditTrail,
-  type AuditEvent,
-  type AuditEventType,
 } from './ingest-audit';

@@ -1,18 +1,8 @@
 /**
  * CMPSBL® Governor Node Dashboard
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Admin-only interface for managing all ingested Ascension Nodes (Node 41+).
- *
- * Features:
- *   - View all Node 41+ entries with status/mode
- *   - Inspect primitives extracted from each node
- *   - See usage history + performance metrics
- *   - Promote node → persistent
- *   - Set node → temporary (N runs limit)
- *   - Delete node completely
- *   - Re-run extraction
- *
- * NOT user-facing. Governor control surface only.
+ * Admin-only interface for managing Ascension Nodes (Node 41+).
+ * Governor control surface with strong loading/error states.
  */
 
 import { useState, useCallback } from 'react';
@@ -29,6 +19,7 @@ import {
   logStatusChange,
   logDeletion,
   logExtraction,
+  logQualityGate,
   getAuditTrail,
   type AscensionNode,
   type NodeStatus,
@@ -48,18 +39,23 @@ import {
   DialogTitle, DialogDescription,
 } from '@/components/ui/dialog';
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
   Select, SelectContent, SelectItem,
   SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import {
   Search, Trash2, ArrowUpCircle, ArrowDownCircle,
-  RefreshCw, Cpu, Zap, Clock, Loader2,
+  RefreshCw, Cpu, Zap, Clock, Loader2, Shield, AlertTriangle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STATUS BADGE HELPERS
+// STATUS / MODE CONFIG
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const STATUS_CONFIG: Record<NodeStatus, { label: string; className: string }> = {
@@ -85,18 +81,20 @@ export default function GovernorNodeDashboard() {
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<NodeStatus | 'all'>('all');
+  const [modeFilter, setModeFilter] = useState<NodeMode | 'all'>('all');
   const [selectedNode, setSelectedNode] = useState<AscensionNode | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
 
   // ── Fetch nodes ──
-  const { data: nodesData, isLoading } = useQuery({
-    queryKey: ['governor-nodes', user?.id, search, statusFilter],
+  const { data: nodesData, isLoading, error: fetchError } = useQuery({
+    queryKey: ['governor-nodes', user?.id, search, statusFilter, modeFilter],
     queryFn: async () => {
       if (!user?.id) return { nodes: [], total: 0 };
       return listNodes(user.id, {
         search: search || undefined,
         status: statusFilter !== 'all' ? statusFilter : undefined,
+        mode: modeFilter !== 'all' ? modeFilter : undefined,
         limit: 100,
       });
     },
@@ -141,6 +139,18 @@ export default function GovernorNodeDashboard() {
     onError: (e) => toast({ title: 'Archive failed', description: String(e), variant: 'destructive' }),
   });
 
+  const setTemporaryMutation = useMutation({
+    mutationFn: async ({ nodeId, runLimit }: { nodeId: string; runLimit: number }) => {
+      if (!user?.id) throw new Error('Not authenticated');
+      return updateNode(nodeId, user.id, { mode: 'temporary', runLimit });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['governor-nodes'] });
+      toast({ title: 'Node set to temporary mode' });
+    },
+    onError: (e) => toast({ title: 'Update failed', description: String(e), variant: 'destructive' }),
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async ({ nodeId, nodeName }: { nodeId: string; nodeName: string }) => {
       if (!user?.id) throw new Error('Not authenticated');
@@ -160,14 +170,18 @@ export default function GovernorNodeDashboard() {
     mutationFn: async (nodeId: string) => {
       if (!user?.id) throw new Error('Not authenticated');
       const result = await extractAndAttachPrimitives(nodeId, user.id);
-      logExtraction(nodeId, result.primitives.length, result.durationMs, user.id);
+      logExtraction(nodeId, result.primitives.length, result.quality.summary.totalAccepted, result.quality.summary.totalRejected, result.durationMs, user.id, result.correlationId);
+      logQualityGate(nodeId, result.quality.summary.avgQualityScore, result.quality.summary.totalAccepted, result.quality.summary.totalRejected, user.id, result.correlationId);
       const node = await getNode(nodeId, user.id);
       if (node) recordExtractionLearning(node, result).catch(() => {});
       return result;
     },
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ['governor-nodes'] });
-      toast({ title: 'Re-extraction complete', description: `${result.primitives.length} primitives extracted in ${result.durationMs.toFixed(0)}ms` });
+      toast({
+        title: 'Re-extraction complete',
+        description: `${result.quality.summary.totalAccepted} accepted / ${result.quality.summary.totalRejected} rejected in ${result.durationMs.toFixed(0)}ms`,
+      });
     },
     onError: (e) => toast({ title: 'Extraction failed', description: String(e), variant: 'destructive' }),
   });
@@ -176,8 +190,12 @@ export default function GovernorNodeDashboard() {
   const openDetail = useCallback(async (node: AscensionNode) => {
     setSelectedNode(node);
     setDetailOpen(true);
-    const trail = await getAuditTrail({ nodeId: node.id, limit: 20 });
-    setAuditEvents(trail);
+    try {
+      const trail = await getAuditTrail({ nodeId: node.id, limit: 20 });
+      setAuditEvents(trail);
+    } catch {
+      setAuditEvents([]);
+    }
   }, []);
 
   // ── Stats ──
@@ -200,18 +218,10 @@ export default function GovernorNodeDashboard() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <Badge variant="outline" className="text-xs font-mono">
-              {nodes.length} nodes
-            </Badge>
-            <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-xs">
-              {activeCount} active
-            </Badge>
-            <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">
-              {candidateCount} candidates
-            </Badge>
-            <Badge variant="outline" className="text-xs font-mono">
-              {totalPrimitives} primitives
-            </Badge>
+            <Badge variant="outline" className="text-xs font-mono">{nodes.length} nodes</Badge>
+            <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-xs">{activeCount} active</Badge>
+            <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">{candidateCount} candidates</Badge>
+            <Badge variant="outline" className="text-xs font-mono">{totalPrimitives} primitives</Badge>
           </div>
         </div>
 
@@ -219,17 +229,10 @@ export default function GovernorNodeDashboard() {
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search nodes..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10"
-            />
+            <Input placeholder="Search nodes..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
           </div>
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as NodeStatus | 'all')}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
+            <SelectTrigger className="w-40"><SelectValue placeholder="Status" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Statuses</SelectItem>
               <SelectItem value="candidate">Candidate</SelectItem>
@@ -238,7 +241,26 @@ export default function GovernorNodeDashboard() {
               <SelectItem value="rejected">Rejected</SelectItem>
             </SelectContent>
           </Select>
+          <Select value={modeFilter} onValueChange={(v) => setModeFilter(v as NodeMode | 'all')}>
+            <SelectTrigger className="w-40"><SelectValue placeholder="Mode" /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Modes</SelectItem>
+              <SelectItem value="temporary">Temporary</SelectItem>
+              <SelectItem value="persistent">Persistent</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+
+        {/* Error state */}
+        {fetchError && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-destructive" />
+            <div>
+              <p className="text-sm font-medium text-destructive">Failed to load nodes</p>
+              <p className="text-xs text-muted-foreground">{String(fetchError)}</p>
+            </div>
+          </div>
+        )}
 
         {/* Node Table */}
         <div className="rounded-lg border border-border/50 overflow-hidden">
@@ -250,6 +272,7 @@ export default function GovernorNodeDashboard() {
                 <TableHead className="font-semibold">Mode</TableHead>
                 <TableHead className="font-semibold">Language</TableHead>
                 <TableHead className="font-semibold text-right">Primitives</TableHead>
+                <TableHead className="font-semibold text-right">Quality</TableHead>
                 <TableHead className="font-semibold text-right">Runs</TableHead>
                 <TableHead className="font-semibold text-right">Avg CJPI</TableHead>
                 <TableHead className="font-semibold">Actions</TableHead>
@@ -258,13 +281,13 @@ export default function GovernorNodeDashboard() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center">
+                  <TableCell colSpan={9} className="h-24 text-center">
                     <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary" />
                   </TableCell>
                 </TableRow>
               ) : nodes.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={9} className="h-24 text-center text-muted-foreground">
                     No ascension nodes found
                   </TableCell>
                 </TableRow>
@@ -272,6 +295,7 @@ export default function GovernorNodeDashboard() {
                 nodes.map((node) => {
                   const statusCfg = STATUS_CONFIG[node.status];
                   const ModIcon = MODE_CONFIG[node.mode]?.icon || Clock;
+                  const avgQuality = node.qualitySummary?.avgQualityScore ?? 0;
 
                   return (
                     <TableRow
@@ -286,21 +310,20 @@ export default function GovernorNodeDashboard() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className={cn('text-xs', statusCfg.className)}>
-                          {statusCfg.label}
-                        </Badge>
+                        <Badge className={cn('text-xs', statusCfg.className)}>{statusCfg.label}</Badge>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
                           <ModIcon className="w-3 h-3" />
                           {MODE_CONFIG[node.mode]?.label || node.mode}
-                          {node.runLimit !== null && (
-                            <span className="ml-1 font-mono">({node.runLimit} left)</span>
-                          )}
+                          {node.runLimit !== null && <span className="ml-1 font-mono">({node.runLimit} left)</span>}
                         </div>
                       </TableCell>
                       <TableCell className="text-sm">{node.language}</TableCell>
                       <TableCell className="text-right font-mono text-sm">{node.primitives.length}</TableCell>
+                      <TableCell className="text-right font-mono text-sm">
+                        {avgQuality > 0 ? (avgQuality * 100).toFixed(0) + '%' : '—'}
+                      </TableCell>
                       <TableCell className="text-right font-mono text-sm">{node.totalRuns}</TableCell>
                       <TableCell className="text-right font-mono text-sm">
                         {node.performance.avgCjpi > 0 ? node.performance.avgCjpi.toFixed(1) : '—'}
@@ -308,49 +331,43 @@ export default function GovernorNodeDashboard() {
                       <TableCell onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           {node.status === 'candidate' && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-7 w-7 p-0 text-emerald-600 hover:text-emerald-700"
-                              onClick={() => promoteMutation.mutate(node.id)}
-                              disabled={promoteMutation.isPending}
-                              title="Promote to active"
-                            >
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-emerald-600 hover:text-emerald-700"
+                              onClick={() => promoteMutation.mutate(node.id)} disabled={promoteMutation.isPending} title="Promote">
                               <ArrowUpCircle className="w-4 h-4" />
                             </Button>
                           )}
                           {node.status === 'active' && (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-7 w-7 p-0 text-amber-600 hover:text-amber-700"
-                              onClick={() => archiveMutation.mutate(node.id)}
-                              disabled={archiveMutation.isPending}
-                              title="Archive"
-                            >
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-amber-600 hover:text-amber-700"
+                              onClick={() => archiveMutation.mutate(node.id)} disabled={archiveMutation.isPending} title="Archive">
                               <ArrowDownCircle className="w-4 h-4" />
                             </Button>
                           )}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-                            onClick={() => reExtractMutation.mutate(node.id)}
-                            disabled={reExtractMutation.isPending}
-                            title="Re-extract primitives"
-                          >
+                          <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                            onClick={() => reExtractMutation.mutate(node.id)} disabled={reExtractMutation.isPending} title="Re-extract">
                             <RefreshCw className={cn("w-4 h-4", reExtractMutation.isPending && "animate-spin")} />
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-7 w-7 p-0 text-destructive/70 hover:text-destructive"
-                            onClick={() => deleteMutation.mutate({ nodeId: node.id, nodeName: node.name })}
-                            disabled={deleteMutation.isPending}
-                            title="Delete permanently"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-destructive/70 hover:text-destructive" title="Delete">
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete node permanently?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This will permanently delete "{node.surface?.nodeName || node.name}" and all its primitives. This cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                  onClick={() => deleteMutation.mutate({ nodeId: node.id, nodeName: node.name })}
+                                >Delete</AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -376,6 +393,7 @@ export default function GovernorNodeDashboard() {
                   </DialogTitle>
                   <DialogDescription>
                     {selectedNode.language} · {selectedNode.primitives.length} primitives · {selectedNode.totalRuns} runs
+                    {selectedNode.qualitySummary && ` · ${(selectedNode.qualitySummary.avgQualityScore * 100).toFixed(0)}% quality`}
                   </DialogDescription>
                 </DialogHeader>
 
@@ -393,6 +411,29 @@ export default function GovernorNodeDashboard() {
                         Sector: <span className="font-mono">{selectedNode.surface.sector}</span> ·
                         Domain: <span className="font-mono">{selectedNode.surface.domain}</span>
                       </p>
+                    </div>
+                  )}
+
+                  {/* Quality Summary */}
+                  {selectedNode.qualitySummary && (
+                    <div className="rounded-lg border border-border/50 p-3">
+                      <h4 className="text-xs font-semibold uppercase text-muted-foreground mb-2 flex items-center gap-1">
+                        <Shield className="w-3 h-3" /> Quality Gate
+                      </h4>
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div>
+                          <p className="text-lg font-bold text-foreground">{selectedNode.qualitySummary.totalAccepted}</p>
+                          <p className="text-[10px] text-muted-foreground">Accepted</p>
+                        </div>
+                        <div>
+                          <p className="text-lg font-bold text-foreground">{selectedNode.qualitySummary.totalRejected}</p>
+                          <p className="text-[10px] text-muted-foreground">Rejected</p>
+                        </div>
+                        <div>
+                          <p className="text-lg font-bold text-foreground">{(selectedNode.qualitySummary.avgQualityScore * 100).toFixed(0)}%</p>
+                          <p className="text-[10px] text-muted-foreground">Avg Quality</p>
+                        </div>
+                      </div>
                     </div>
                   )}
 
@@ -433,9 +474,12 @@ export default function GovernorNodeDashboard() {
                             <div className="flex items-center gap-2">
                               <span className="font-mono font-medium text-foreground">{p.name}</span>
                               <Badge variant="outline" className="text-[10px]">{p.category}</Badge>
+                              {p.extractionTrust === 'high' && <span className="text-emerald-500 text-[10px]">✓</span>}
+                              {p.extractionTrust === 'heuristic' && <span className="text-amber-500 text-[10px]">~</span>}
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground">
-                              <span>{(p.confidence * 100).toFixed(0)}%</span>
+                              <span>{(p.qualityScore * 100).toFixed(0)}%q</span>
+                              <span>{(p.confidence * 100).toFixed(0)}%c</span>
                               <span>C{p.complexity}</span>
                             </div>
                           </div>
@@ -454,9 +498,7 @@ export default function GovernorNodeDashboard() {
                         auditEvents.map((evt, i) => (
                           <div key={i} className="flex items-center justify-between text-xs py-1 border-b border-border/20 last:border-0">
                             <span className="font-mono text-muted-foreground">{evt.type}</span>
-                            <span className="text-muted-foreground">
-                              {new Date(evt.timestamp).toLocaleString()}
-                            </span>
+                            <span className="text-muted-foreground">{new Date(evt.timestamp).toLocaleString()}</span>
                           </div>
                         ))
                       )}
@@ -464,38 +506,55 @@ export default function GovernorNodeDashboard() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex justify-end gap-2 pt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
+                  <div className="flex flex-wrap justify-end gap-2 pt-2">
+                    <Button variant="outline" size="sm"
                       onClick={() => reExtractMutation.mutate(selectedNode.id)}
-                      disabled={reExtractMutation.isPending}
-                    >
+                      disabled={reExtractMutation.isPending}>
                       <RefreshCw className={cn("w-4 h-4 mr-1", reExtractMutation.isPending && "animate-spin")} />
                       Re-Extract
                     </Button>
-                    {selectedNode.status !== 'active' && (
-                      <Button
-                        size="sm"
-                        onClick={() => {
-                          promoteMutation.mutate(selectedNode.id);
-                          setDetailOpen(false);
-                        }}
-                        disabled={promoteMutation.isPending}
-                      >
-                        <ArrowUpCircle className="w-4 h-4 mr-1" />
-                        Promote
+                    {(selectedNode.status === 'candidate' || selectedNode.status === 'archived') && (
+                      <Button size="sm" onClick={() => { promoteMutation.mutate(selectedNode.id); setDetailOpen(false); }}
+                        disabled={promoteMutation.isPending}>
+                        <ArrowUpCircle className="w-4 h-4 mr-1" /> Promote
                       </Button>
                     )}
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => deleteMutation.mutate({ nodeId: selectedNode.id, nodeName: selectedNode.name })}
-                      disabled={deleteMutation.isPending}
-                    >
-                      <Trash2 className="w-4 h-4 mr-1" />
-                      Delete
-                    </Button>
+                    {selectedNode.status === 'active' && (
+                      <Button variant="outline" size="sm"
+                        onClick={() => setTemporaryMutation.mutate({ nodeId: selectedNode.id, runLimit: 5 })}
+                        disabled={setTemporaryMutation.isPending}>
+                        <Clock className="w-4 h-4 mr-1" /> Set Temporary (5 runs)
+                      </Button>
+                    )}
+                    {selectedNode.status !== 'archived' && (
+                      <Button variant="outline" size="sm"
+                        onClick={() => { archiveMutation.mutate(selectedNode.id); setDetailOpen(false); }}
+                        disabled={archiveMutation.isPending}>
+                        <ArrowDownCircle className="w-4 h-4 mr-1" /> Archive
+                      </Button>
+                    )}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
+                          <Trash2 className="w-4 h-4 mr-1" /> Delete
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete node permanently?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently delete "{selectedNode.surface?.nodeName || selectedNode.name}" and all extracted primitives. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            onClick={() => deleteMutation.mutate({ nodeId: selectedNode.id, nodeName: selectedNode.name })}>
+                            Delete Permanently
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </>
