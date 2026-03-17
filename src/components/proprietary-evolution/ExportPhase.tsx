@@ -467,14 +467,14 @@ export function ExportPhase() {
           variant="outline"
           onClick={handleReingest}
           disabled={reingesting}
-          className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/10"
+          className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/10 whitespace-normal text-left leading-snug py-3 h-auto"
         >
           {reingesting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader2 className="w-4 h-4 animate-spin shrink-0" />
           ) : (
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4 shrink-0" />
           )}
-          Re-ingest as Evolved Candidate → Start New Ascension Cycle
+          <span>Re-ingest as Evolved Candidate → Start New Ascension Cycle</span>
         </Button>
       </div>
     </div>

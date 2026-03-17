@@ -59,7 +59,7 @@ export function useObserverMode(): ObserverModeState {
     requiredTier: SubstrateRole = 'creator'
   ) => {
     return (...args: Parameters<T>): ReturnType<T> | undefined => {
-      const tierOrder: SubstrateRole[] = ['free', 'creator', 'architect', 'governor'];
+      const tierOrder: SubstrateRole[] = ['free', 'creator', 'studio', 'architect', 'governor'];
       const requiredLevel = tierOrder.indexOf(requiredTier);
       const currentLevel = tierOrder.indexOf(role);
       

@@ -100,14 +100,29 @@ export function DiscoveryPhase() {
     setDiscoveryHit(null);
     abortRef.current = false;
 
+    // Randomize the node order so each run starts on a different node
+    const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
+
+    // Suspense delay: let the graph spin 5-14 seconds before first collision
+    const suspenseDelay = Math.floor(Math.random() * 10000) + 5000; // 5000-14000ms
+    await new Promise(r => setTimeout(r, suspenseDelay));
+    if (abortRef.current) { setRunning(false); return; }
+
     try {
-      for (let i = 0; i < SUBSTRATE_NODES.length; i++) {
+      for (let i = 0; i < shuffledNodes.length; i++) {
         if (abortRef.current) break;
 
-        const targetNode = SUBSTRATE_NODES[i];
+        const targetNode = shuffledNodes[i];
         setCurrentTarget(targetNode);
         setPermutations(prev => prev + 1);
-        setProgress(Math.round(((i + 1) / SUBSTRATE_NODES.length) * 100));
+        setProgress(Math.round(((i + 1) / shuffledNodes.length) * 100));
+
+        // Random inter-node delay (6-11 seconds) for first few nodes to build suspense
+        const interNodeDelay = i < 3
+          ? Math.floor(Math.random() * 6000) + 6000   // 6-11s for first 3 nodes
+          : Math.floor(Math.random() * 600) + 150;     // 150-750ms after warm-up
+        await new Promise(r => setTimeout(r, interNodeDelay));
+        if (abortRef.current) break;
 
         const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
           body: {
@@ -146,14 +161,12 @@ export function DiscoveryPhase() {
             break;
           }
         }
-
-        await new Promise(r => setTimeout(r, 150));
       }
 
       if (!abortRef.current && !discoveryHit) {
         toast({
           title: 'Collision sweep complete',
-          description: `Tested ${SUBSTRATE_NODES.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} capability found — try a deeper permutation or re-ingest evolved code.`,
+          description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} capability found — try a deeper permutation or re-ingest evolved code.`,
         });
       }
     } catch (err) {
