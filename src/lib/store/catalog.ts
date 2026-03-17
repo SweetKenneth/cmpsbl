@@ -65,9 +65,9 @@ const STORE_ENGINES: StoreItem[] = [
     description: "FAILSAFE is a standalone, zero-dependency disaster recovery and migration engine. Streaming ZIP output, adaptive page-sizing, integrity validation (magic bytes + EOCD), nightly scheduled backups with 7-day rolling rotation, a 9-step AI-agent restore protocol, and full platform migration support.",
     image: failsafeImg,
     icon: HardDrive,
-    tier: "starter",
-    priceCents: 3900,
-    priceDisplay: "$39",
+    tier: "free",
+    priceCents: 0,
+    priceDisplay: "FREE",
     gradient: "from-cyan-500 via-teal-500 to-emerald-500",
     glowColor: "rgba(6, 182, 212, 0.15)",
     capabilities: [

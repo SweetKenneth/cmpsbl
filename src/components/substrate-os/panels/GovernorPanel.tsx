@@ -9,7 +9,7 @@ import {
   ShieldAlert, Power, Activity, AlertTriangle, Loader2, Zap,
   Eye, BarChart3, Brain, Shield, FileText, Settings,
   ArrowRight, Lock, Cpu, Network, Crown, Scale, ScrollText,
-  Play, CheckCircle2, XCircle, AlertCircle,
+  Play, CheckCircle2, XCircle, AlertCircle, Package,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +30,7 @@ import type { AuditReport } from '@/lib/audit/audit-types';
 
 const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
 const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
+const GovernorDownloadsPanel = lazy(() => import('./GovernorDownloadsPanel').then(m => ({ default: m.GovernorDownloadsPanel })));
 
 function Loader() {
   return (
@@ -243,6 +244,9 @@ export default function GovernorPanel() {
             </TabsTrigger>
             <TabsTrigger value="metrics" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Metrics
+            </TabsTrigger>
+            <TabsTrigger value="downloads" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Package className="w-3.5 h-3.5 hidden sm:block" /> Downloads
             </TabsTrigger>
           </TabsList>
         </div>
@@ -535,6 +539,13 @@ export default function GovernorPanel() {
         <TabsContent value="advisory" className="mt-4">
           <Suspense fallback={<Loader />}>
             <SoundingBoard />
+          </Suspense>
+        </TabsContent>
+
+        {/* Downloads */}
+        <TabsContent value="downloads" className="mt-4">
+          <Suspense fallback={<Loader />}>
+            <GovernorDownloadsPanel />
           </Suspense>
         </TabsContent>
       </Tabs>
