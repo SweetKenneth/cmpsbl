@@ -87,7 +87,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   // ─── FREE TIER ───
   {
     sku: 'hybrid',
-    displayName: 'HYBRID Mind',
+    displayName: 'PRIMITIVE',
     className: 'The Chameleon',
     tagline: 'Adapts to any domain. Cross-task memory. Start here.',
     description: 'A shape-shifting generalist with DREAM Synthesis — learns your workflow patterns, routes to optimal strategies, and maintains context across every conversation. The perfect entry point.',
