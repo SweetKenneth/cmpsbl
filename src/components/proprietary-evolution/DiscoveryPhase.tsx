@@ -221,7 +221,7 @@ export function DiscoveryPhase() {
         }
       }
 
-      if (!abortRef.current && !discoveryHit) {
+      if (!abortRef.current && !foundHit) {
         toast({
           title: 'Collision sweep complete',
           description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} — try re-ingesting with richer code.`,
