@@ -364,7 +364,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Feature request dedup', 'Competitive feature matrix', 'Release note generation', 'User feedback synthesis'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-product.zip', stripeProductName: 'CMPSBL Product Mind', stripeLookupKey: 'cmpsbl_mind_product_12900',
+    downloadAssetKey: 'cmpsbl-product.zip', stripeProductName: 'CMPSBL ARCHITECT', stripeLookupKey: 'cmpsbl_mind_product_12900',
     accentColor: 'violet', imagePath: 'product', version: 'v1.0', isPublic: true,
     category: 'Structural Logic',
     personality: { archetype: 'The Builder', tone: 'User-obsessed, pragmatic, and decisively prioritized', motto: '"Ship what matters. Cut what doesn\'t."', communicationStyle: 'Frames everything as user problems. Uses frameworks (RICE, Jobs-to-be-Done). Bias toward shipping.' },
