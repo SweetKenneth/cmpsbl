@@ -2,10 +2,13 @@
  * ASCENDED MEMORY Phase — Generate portable capability artifacts
  * Supports individual capability export AND download-all.
  * Vault management: save/discard discoveries.
+ * 
+ * SOURCE LANGUAGE EXPORT: Users can always export in their ingested language
+ * (bypasses score-gating) to preserve code integrity, especially for HDL.
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, BookmarkPlus } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
@@ -13,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
 import { LANGUAGE_UNLOCK_TIERS, getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
+import type { ExportLanguage } from '@/lib/export/universal-adapter';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,18 +44,49 @@ interface CrystallizedCapability {
   category: string;
 }
 
+interface UserSourceFile {
+  name: string;
+  extension: string;
+  language: string;
+  content: string;
+}
+
 const MIN_EXPORT_SCORE = 68;
+
+/**
+ * Map the ingested language label (from LANG_MAP) to the ExportLanguage key.
+ * e.g. "TypeScript" → "typescript", "Verilog" → "verilog", "C++" → "cpp"
+ */
+const DISPLAY_TO_EXPORT: Record<string, ExportLanguage> = {
+  'typescript': 'typescript', 'typescript/react': 'typescript',
+  'javascript': 'typescript', 'javascript/react': 'typescript',
+  'python': 'python', 'rust': 'rust', 'go': 'go', 'java': 'java',
+  'c#': 'csharp', 'c++': 'cpp', 'c': 'c', 'zig': 'zig',
+  'haskell': 'haskell', 'swift': 'swift', 'kotlin': 'kotlin',
+  'php': 'php', 'lua': 'lua', 'dart': 'dart', 'scala': 'scala',
+  'elixir': 'elixir', 'ruby': 'ruby',
+  'verilog': 'verilog', 'systemverilog': 'systemverilog', 'vhdl': 'vhdl',
+  'spice': 'spice', 'bluespec': 'systemverilog',
+};
+
+function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
+  const key = langLabel.toLowerCase().replace(/\s+/g, '');
+  return DISPLAY_TO_EXPORT[key] || null;
+}
 
 export function ExportPhase() {
   const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
-  const [exporting, setExporting] = useState<string | null>(null); // null or cap id or 'all'
+  const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
   const [reingesting, setReingesting] = useState(false);
   const [showRetirementDialog, setShowRetirementDialog] = useState(false);
-  const [exportScope, setExportScope] = useState<'all' | string>('all'); // 'all' or single cap id
+  const [exportScope, setExportScope] = useState<'all' | string>('all');
   const [discarding, setDiscarding] = useState<string | null>(null);
+  const [sourceLanguage, setSourceLanguage] = useState<ExportLanguage | null>(null);
+  const [sourceLanguageLabel, setSourceLanguageLabel] = useState<string>('');
+  const [userSourceFiles, setUserSourceFiles] = useState<UserSourceFile[]>([]);
   const { toast } = useToast();
   const {
     canExport,
@@ -73,7 +108,14 @@ export function ExportPhase() {
     [eligible]
   );
 
-  const unlockedLanguages = useMemo(() => getUnlockedLanguages(bestScore), [bestScore]);
+  // Unlocked languages: normal score-gated + always include source language
+  const unlockedLanguages = useMemo(() => {
+    const base = getUnlockedLanguages(bestScore);
+    if (sourceLanguage && !base.includes(sourceLanguage)) {
+      return [sourceLanguage, ...base];
+    }
+    return base;
+  }, [bestScore, sourceLanguage]);
 
   const tierDisplay = useMemo(() => {
     return LANGUAGE_UNLOCK_TIERS.filter(t => t.minScore >= MIN_EXPORT_SCORE).map(tier => ({
@@ -84,11 +126,40 @@ export function ExportPhase() {
 
   useEffect(() => {
     if (!unlockedLanguages.includes(selectedTarget as any) && unlockedLanguages.length > 0) {
-      setSelectedTarget(unlockedLanguages[0]);
+      // Default to source language if available, otherwise first unlocked
+      setSelectedTarget(sourceLanguage || unlockedLanguages[0]);
     }
-  }, [unlockedLanguages, selectedTarget]);
+  }, [unlockedLanguages, selectedTarget, sourceLanguage]);
 
-  useEffect(() => { loadCrystallized(); }, []);
+  useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
+
+  /** Load the candidate's ingested language and source files */
+  const loadCandidateLanguage = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data } = await (supabase as any)
+      .from('artifact_registry')
+      .select('metadata')
+      .eq('category', 'proprietary-evolution')
+      .eq('tier', 'candidate')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (data?.metadata) {
+      const meta = data.metadata as Record<string, unknown>;
+      const langLabel = String(meta.language || '');
+      setSourceLanguageLabel(langLabel);
+      const resolved = resolveSourceLanguage(langLabel);
+      if (resolved) {
+        setSourceLanguage(resolved);
+        setSelectedTarget(resolved);
+      }
+
+      // Extract user source files for inclusion in ZIP
+      const sourceFiles = (meta.source_files as Array<{ name: string; extension: string; language: string; content: string }>) || [];
+      setUserSourceFiles(sourceFiles.filter(f => f.content && f.content.length > 0));
+    }
+  };
 
   const loadCrystallized = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -138,7 +209,8 @@ export function ExportPhase() {
       });
       return;
     }
-    if (!unlockedLanguages.includes(selectedTarget as any)) {
+    // Source language is always allowed; other languages need score check
+    if (selectedTarget !== sourceLanguage && !unlockedLanguages.includes(selectedTarget as any)) {
       toast({ title: 'Language locked', description: `${selectedTarget} requires a higher CJPI score.`, variant: 'destructive' });
       return;
     }
@@ -176,7 +248,13 @@ export function ExportPhase() {
 
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
-      await generateCapabilityPackZip({ targetLanguage: selectedTarget, capabilities: capsForExport, candidateName });
+      await generateCapabilityPackZip({
+        targetLanguage: selectedTarget,
+        capabilities: capsForExport,
+        candidateName,
+        userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
+        sourceLanguage: sourceLanguageLabel,
+      });
 
       setExportResult({ packId: data.pack_id, count: targets.length });
       setAllCapabilities(prev => prev.map(c =>
@@ -229,11 +307,12 @@ export function ExportPhase() {
         category: 'proprietary-evolution',
         description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
         metadata: {
-          phase: 'ingest', language: 'TypeScript/Evolved', file_count: capabilities.length,
+          phase: 'ingest', language: sourceLanguageLabel || 'TypeScript/Evolved', file_count: capabilities.length,
           resolver_count: totalResolvers, size_kb: capabilities.length * 15,
           ingested_at: new Date().toISOString(), evolution_cycle: 2,
           parent_capabilities: capabilities.map(c => c.id),
           parent_avg_cjpi: Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length),
+          source_files: userSourceFiles, // Carry forward user source files
         },
       });
 
@@ -295,6 +374,41 @@ export function ExportPhase() {
           <span className="text-xs font-semibold text-foreground">Target Language</span>
         </div>
 
+        {/* Source Language — Always Available */}
+        {sourceLanguage && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Code2 className="w-3 h-3 text-primary" />
+              <p className="text-[10px] font-mono text-primary uppercase tracking-wider font-semibold">
+                Source Language — Always Available
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => !isBuilderTier && setSelectedTarget(sourceLanguage)}
+                disabled={isBuilderTier}
+                className={cn(
+                  "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
+                  selectedTarget === sourceLanguage
+                    ? "bg-primary/15 text-primary border-primary/40 ring-1 ring-primary/20"
+                    : "text-foreground border-primary/20 hover:border-primary/40",
+                  isBuilderTier && "opacity-30 cursor-not-allowed"
+                )}
+              >
+                {sourceLanguage}
+                <span className="text-[9px] ml-1 text-muted-foreground">(your code)</span>
+              </button>
+            </div>
+            <p className="text-[9px] text-muted-foreground">
+              Export in your ingested language ({sourceLanguageLabel}) — preserves your original code with substrate splices.
+              {['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth'].includes(sourceLanguage) && (
+                <span className="text-primary"> HDL integrity preserved.</span>
+              )}
+            </p>
+          </div>
+        )}
+
+        {/* Score-gated tiers */}
         {tierDisplay.map(tier => (
           <div key={tier.id} className="space-y-2">
             <div className="flex items-center gap-2">
@@ -308,7 +422,7 @@ export function ExportPhase() {
               )}
             </div>
             <div className="flex flex-wrap gap-2">
-              {tier.languages.map(lang => {
+              {tier.languages.filter(l => l !== sourceLanguage).map(lang => {
                 const isUnlocked = tier.unlocked;
                 return (
                   <button
@@ -337,7 +451,9 @@ export function ExportPhase() {
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            Includes Mini-Runtime™ Engine • License • README • Pipeline Details • Valuation • Manifest
+            {selectedTarget === sourceLanguage
+              ? 'Your original source code is included with substrate capability splices applied.'
+              : 'Includes Mini-Runtime™ Engine • License • README • Pipeline Details • Valuation • Manifest'}
           </span>
         </div>
 
@@ -375,6 +491,11 @@ export function ExportPhase() {
               <p>
                 Retired capabilities are locked into your export. Future runs find new ones.
               </p>
+              {selectedTarget === sourceLanguage && userSourceFiles.length > 0 && (
+                <p className="text-primary text-sm">
+                  ✦ Your original {sourceLanguageLabel} source files ({userSourceFiles.length} files) will be included alongside the substrate-enhanced code.
+                </p>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
