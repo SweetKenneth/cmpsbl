@@ -32,56 +32,41 @@ export function EnhancedFooter() {
     {
       title: "Platform",
       links: [
-        { name: "Substrate", href: "/substrate" },
-        { name: "All nodes", href: "/modules" },
-        { name: "How it works", href: "/ai-operating-system" },
-        { name: "Runtime", href: "/runtime" },
         { name: "Foundations", href: "/foundations" },
         { name: "Capability map", href: "/capability-map" },
+        { name: "EVOLUTION", href: "/evolution" },
         { name: "Proof mode", href: "/proof" },
         { name: "System status", href: "/status" },
-        { name: "Scanner", href: "/scanner" },
       ]
     },
     {
       title: "Products",
       links: [
-        { name: "Store", href: "/store", highlight: true },
-        { name: "Capability packs", href: "/packs" },
-        { name: "Persistent memory", href: "/persistent-memory" },
         { name: "Dream eater", href: "/feed-dream-eater" },
         { name: "World engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },
         { name: "Clockless engine", href: "/clockless-world-engine" },
-        { name: "CodeLab", href: "/codelab", highlight: true },
+        { name: "Scanner", href: "/scanner" },
       ]
     },
     {
       title: "Developers",
       links: [
-        { name: "Heritage paper", href: "/heritage-paper" },
-        { name: "API access", href: "/api-access" },
-        { name: "Builder workspace", href: "/workspace" },
+        { name: "Heritage paper", href: "/heritage-paper", highlight: true },
         { name: "Academy", href: "/academy" },
-        { name: "Developer guide", href: "/developers/guide" },
+        { name: "Experiment Lab", href: "/lab" },
         { name: "System integrity", href: "/system-integrity", highlight: true },
         { name: "Developer showcase", href: "/developers" },
-        { name: "Use cases", href: "/use-cases" },
-        { name: "Experiment Lab", href: "/lab" },
       ]
     },
     {
-      title: "Explore",
+      title: "Company",
       links: [
-        { name: "Memory Stream", href: "/foundry", highlight: true },
-        { name: "Agent memory", href: "/persistent-memory", highlight: true },
-        { name: "Blog", href: "/blog" },
-        { name: "Showcase", href: "/showcase" },
-        { name: "System overview", href: "/overview" },
-        { name: "Publication", href: "/publication" },
+        { name: "About", href: "/about" },
         { name: "Roadmap", href: "/roadmap" },
         { name: "Changelog", href: "/changelog" },
-        { name: "About", href: "/about" },
+        { name: "Publication", href: "/publication" },
+        { name: "Careers", href: "/careers" },
       ]
     },
   ];
