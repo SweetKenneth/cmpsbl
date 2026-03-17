@@ -561,9 +561,10 @@ export const ENGINES: Engine[] = [
   // ─── FEATURED ──────────────────────────────────────────
   {
     slug: "failsafe", codename: "FAILSAFE", tagline: "Disaster Recovery & Platform Migration Engine",
-    priceStandalone: 3900, priceBundled: 3900, priceDisplay: "$39", bundleDisplay: "$39",
+    priceStandalone: 0, priceBundled: 0, priceDisplay: "FREE", bundleDisplay: "FREE",
     priceId: "price_1TAFfAQ7FtTiAL4acetUfMuY", icon: Database, color: "150 70% 45%", tier: "CORE",
     edition: "Edition 001 — Sealed Runtime",
+    isFree: true,
     briefing: "One-click disaster recovery for your website, app, or AI system. FAILSAFE generates a complete, portable ZIP backup of your source code, configurations, migrations, and database state — with an AI-readable restore guide so any developer or agent can reconstruct your environment from scratch. Perfect for migrating off Lovable Cloud, Supabase, or any hosted platform to your own infrastructure.",
     capabilities: [
       "One-click full system backup to portable ZIP",
@@ -575,8 +576,7 @@ export const ENGINES: Engine[] = [
     ],
     threatLevel: "CRITICAL — CONTINUITY OPS", clearance: "LEVEL 7 — RESTRICTED",
     isFeatured: true,
-    freeForSubscribers: true,
-    longDescription: "FAILSAFE is your insurance policy against catastrophic data loss and provider lock-in. With a single click, it generates a complete, portable ZIP archive of your entire system — all source code, database configurations, migration history, and a full snapshot of your active data tables. The archive includes a detailed INSTALL.md guide written for both humans and AI agents, so reconstruction is as simple as handing the ZIP to your agent and saying 'set this up.' Use it to transfer your project off Lovable Cloud to your own Supabase instance, migrate between hosting providers, create disaster recovery checkpoints, or archive a production state. You're never locked in and never caught without a restore point. Free for all Creator ($29/mo) and above subscribers. $39 one-time for everyone else.",
+    longDescription: "FAILSAFE is your insurance policy against catastrophic data loss and provider lock-in. With a single click, it generates a complete, portable ZIP archive of your entire system — all source code, database configurations, migration history, and a full snapshot of your active data tables. The archive includes a detailed INSTALL.md guide written for both humans and AI agents, so reconstruction is as simple as handing the ZIP to your agent and saying 'set this up.' Use it to transfer your project off Lovable Cloud to your own Supabase instance, migrate between hosting providers, create disaster recovery checkpoints, or archive a production state. You're never locked in and never caught without a restore point. Free for all authenticated users.",
   },
 ];
 
