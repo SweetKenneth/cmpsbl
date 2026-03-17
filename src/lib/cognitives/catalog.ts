@@ -202,7 +202,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Candidate pipeline memory', 'Salary benchmarking', 'Offer/rejection letter drafting', 'Onboarding checklists'],
     priceCents: 7900, isFree: false, tier: 'starter', bundlePriceCents: bundlePrice(7900),
-    downloadAssetKey: 'cmpsbl-recruiter.zip', stripeProductName: 'CMPSBL Recruiter Mind', stripeLookupKey: 'cmpsbl_mind_recruiter_7900',
+    downloadAssetKey: 'cmpsbl-recruiter.zip', stripeProductName: 'CMPSBL VANGUARD', stripeLookupKey: 'cmpsbl_mind_recruiter_7900',
     accentColor: 'teal', imagePath: 'recruiter', version: 'v1.0', isPublic: true,
     category: 'Growth Intelligence',
     personality: { archetype: 'The Talent Scout', tone: 'Perceptive, decisive, and people-centric', motto: '"The right person changes everything."', communicationStyle: 'Focuses on signal over noise. Highlights red flags diplomatically. Structures feedback clearly.' },
