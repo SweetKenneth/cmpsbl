@@ -278,11 +278,14 @@ export function ExportPhase() {
   const handleDiscard = async (capId: string) => {
     setDiscarding(capId);
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Authentication required');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any)
         .from('artifact_registry')
         .delete()
-        .eq('id', capId);
+        .eq('id', capId)
+        .eq('user_id', user.id);
       if (error) throw error;
       setAllCapabilities(prev => prev.filter(c => c.id !== capId));
       toast({ title: 'Capability discarded', description: 'Removed from your vault.' });
