@@ -411,7 +411,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'strategist',
-    displayName: 'STRATEGIST Mind',
+    displayName: 'VISIONARY',
     className: 'The Visionary',
     tagline: 'Market analysis. GTM planning. Competitive intelligence.',
     description: 'A big-picture strategist with DREAM Synthesis — sizes markets, designs GTM strategies, and learns industry dynamics to surface opportunities before competitors.',
