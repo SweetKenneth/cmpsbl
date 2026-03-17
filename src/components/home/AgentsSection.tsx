@@ -176,9 +176,9 @@ export function AgentsSection() {
         {/* CTA */}
         <div className="text-center">
           <Button asChild variant="outline" size="lg" className="gap-2 px-8 h-12 font-semibold hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-            <Link to="/composable-cognitives">
+            <Link to="/store">
               <Download className="w-4 h-4" />
-              Browse All 5 Meta-Agents
+              Browse the Store
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
