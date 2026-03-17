@@ -205,7 +205,7 @@ export function AgentsSection() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
+            Every Runtime Agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
           </p>
         </motion.div>
 
