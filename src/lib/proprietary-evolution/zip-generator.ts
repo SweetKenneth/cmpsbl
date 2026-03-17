@@ -1057,6 +1057,33 @@ def handle_shadow(ctx, mod, meta):
     ctx["_signals"].append({"type": "audit", "source": mod, "ts": time.time()})
     return ctx
 
+def handle_cortex(ctx, mod, meta):
+    chain = meta.get("chain", [])
+    ctx["_data"]["_orchestration"] = {"total_stages": len(chain), "current_signals": len(ctx["_signals"]), "status": "coordinated"}
+    ctx["_signals"].append({"type": "orchestrate", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_harvest(ctx, mod, meta):
+    ctx["_data"]["_harvested"] = {"fields": len(ctx["_data"]), "source": "pipeline-context"}
+    ctx["_signals"].append({"type": "harvest", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_phantom(ctx, mod, meta):
+    ctx["_data"]["_phantom"] = {"anonymized": True, "proxy_hops": 0}
+    ctx["_signals"].append({"type": "anonymize", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_forge(ctx, mod, meta):
+    ctx["_data"]["_forge"] = {"scaffolded": True, "template": "capability-pack"}
+    ctx["_signals"].append({"type": "scaffold", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_intent(ctx, mod, meta):
+    chain = meta.get("chain", [])
+    ctx["_data"]["_intent_plan"] = {"steps": len(chain), "resolved": True}
+    ctx["_signals"].append({"type": "plan", "source": mod, "ts": time.time()})
+    return ctx
+
 def handle_default(ctx, mod, meta):
     ctx["_data"][f"_module_{mod.lower()}"] = {"processed": True, "handler": "generic"}
     ctx["_signals"].append({"type": "process", "source": mod, "ts": time.time()})
