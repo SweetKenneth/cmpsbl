@@ -251,7 +251,7 @@ export default function StartHere() {
             <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-6 sm:px-8 h-12 sm:h-13">
               <Link to="/composable-cognitives">
                 <Zap className="w-4 h-4" />
-                Browse Minds
+                Browse Runtime Agents
               </Link>
             </Button>
           </motion.div>
