@@ -433,7 +433,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   // ─── ELITE TIER — $159 (Premium 5-power agents) ───
   {
     sku: 'coding',
-    displayName: 'CODING Mind',
+    displayName: 'WRAITH',
     className: 'The Ghost',
     tagline: 'Writes, debugs, and ships code with persistent memory.',
     description: 'A silent, lethal engineer with DREAM Synthesis — generates production-grade code, remembers every bug it\'s ever fixed, and evolves its coding standards from your codebase patterns.',
