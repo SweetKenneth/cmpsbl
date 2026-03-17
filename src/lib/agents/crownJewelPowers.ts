@@ -653,9 +653,9 @@ export const FOUR_TIER_MEMORY: MemoryTier[] = [
 
 export const MEMORY_SYSTEM_SUMMARY = {
   name: "4-Tier Auto-Tiering Memory System",
-  tagline: "Every agent remembers. Every session builds on the last. Zero maintenance.",
+  tagline: "Every Runtime Agent remembers. Every session builds on the last. Zero maintenance.",
   description:
-    "All 20 agents ship with a portable, zero-dependency memory system that auto-tiers knowledge across HOT, WARM, COOL, and COLD — with zero user maintenance. Promotion, demotion, compression, and archival happen autonomously via the RIPPLE Orchestrator. No external APIs required. Drop it into any stack.",
+    "All 20 Runtime Agents ship with a portable, zero-dependency memory system that auto-tiers knowledge across HOT, WARM, COOL, and COLD — with zero user maintenance. Promotion, demotion, compression, and archival happen autonomously via the RIPPLE Orchestrator. No external APIs required. Drop it into any stack.",
   tiers: FOUR_TIER_MEMORY,
   features: [
     "Auto-tiering — zero maintenance required",

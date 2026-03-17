@@ -1,5 +1,5 @@
 /**
- * Composable Minds — Product Catalog
+ * Runtime Agents — Product Catalog
  * 20 Sealed Runtime Agents with DREAM Synthesis
  * Tiered pricing: Free / $79 Starter / $129 Pro / $159 Elite
  * All agents public. Categorized by abstract role archetypes.
