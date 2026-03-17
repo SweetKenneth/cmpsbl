@@ -585,6 +585,7 @@ export {
   hasDeepEffect,
   registerEffect,
   getRegisteredEffects,
+  getRegisteredModuleCount,
   createPipelineContext,
   type PipelineContext,
   type StageTrace,
