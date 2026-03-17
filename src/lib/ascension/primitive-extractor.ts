@@ -150,34 +150,111 @@ interface ExtractionPattern {
 }
 
 const EXTRACTION_PATTERNS: ExtractionPattern[] = [
-  // TypeScript/JavaScript functions
+  // ── TypeScript / JavaScript ──────────────────────────────────────────────
   { regex: /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Arrow functions assigned to const/let
   { regex: /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_]\w{2,})\s*=\s*(?:async\s+)?\([^)]*\)\s*(?::\s*\w+\s*)?=>/g, method: 'function', nameGroup: 1 },
-  // Class declarations
   { regex: /(?:export\s+)?(?:abstract\s+)?class\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
-  // Python functions
+
+  // ── Python ───────────────────────────────────────────────────────────────
   { regex: /def\s+([a-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Python classes
   { regex: /class\s+([A-Z][A-Za-z_]\w{1,})\s*[:(]/g, method: 'class', nameGroup: 1 },
-  // Rust functions
+
+  // ── Rust ──────────────────────────────────────────────────────────────────
   { regex: /(?:pub\s+)?(?:async\s+)?fn\s+([a-z_]\w{2,})\s*(?:<[^>]*>)?\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Go functions
+  { regex: /(?:pub\s+)?struct\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+  { regex: /(?:pub\s+)?trait\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+  { regex: /(?:pub\s+)?enum\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── Go ────────────────────────────────────────────────────────────────────
   { regex: /func\s+(?:\([^)]*\)\s+)?([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Java/C# methods
+  { regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+struct\b/g, method: 'class', nameGroup: 1 },
+  { regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+interface\b/g, method: 'class', nameGroup: 1 },
+
+  // ── Java ──────────────────────────────────────────────────────────────────
   { regex: /(?:public|private|protected|static|final|override|virtual|async)\s+\w+(?:<[^>]*>)?\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // PHP functions
+  { regex: /(?:public|private|protected)?\s*(?:abstract\s+)?(?:class|interface|enum)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── C# ────────────────────────────────────────────────────────────────────
+  { regex: /(?:public|private|protected|internal)\s+(?:static\s+)?(?:async\s+)?(?:Task\s*<[^>]*>|void|\w+)\s+([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+
+  // ── PHP ───────────────────────────────────────────────────────────────────
   { regex: /(?:public|private|protected|static)?\s*function\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Ruby methods
+  { regex: /class\s+([A-Z][A-Za-z_]\w{1,})(?:\s+extends|\s+implements|\s*\{)/g, method: 'class', nameGroup: 1 },
+
+  // ── Ruby ──────────────────────────────────────────────────────────────────
   { regex: /def\s+(?:self\.)?([a-z_]\w{2,})(?:\(([^)]*)\))?/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Swift functions
+  { regex: /class\s+([A-Z][A-Za-z_]\w{1,})(?:\s*<\s*\w+)?/g, method: 'class', nameGroup: 1 },
+  { regex: /module\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'module', nameGroup: 1 },
+
+  // ── Swift ─────────────────────────────────────────────────────────────────
   { regex: /func\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Kotlin functions
+  { regex: /(?:class|struct|protocol|enum)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── Kotlin ────────────────────────────────────────────────────────────────
   { regex: /(?:fun|suspend\s+fun)\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  // Verilog/SystemVerilog modules
-  { regex: /module\s+([A-Za-z_]\w{2,})/g, method: 'module', nameGroup: 1 },
-  // VHDL entities
+  { regex: /(?:data\s+)?(?:class|object|interface)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── C / C++ ───────────────────────────────────────────────────────────────
+  { regex: /(?:static\s+)?(?:inline\s+)?(?:const\s+)?(?:unsigned\s+)?(?:void|int|float|double|char|bool|size_t|auto|\w+_t|\w+\s*\*)\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)\s*\{/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /(?:template\s*<[^>]*>\s*)?class\s+([A-Z][A-Za-z_]\w{1,})\s*(?::\s*(?:public|private|protected))?\s*\w*/g, method: 'class', nameGroup: 1 },
+  { regex: /namespace\s+([A-Za-z_]\w{2,})/g, method: 'module', nameGroup: 1 },
+
+  // ── Dart ──────────────────────────────────────────────────────────────────
+  { regex: /(?:static\s+)?(?:Future\s*<[^>]*>|void|\w+)\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)\s*(?:async\s*)?\{/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /(?:abstract\s+)?class\s+([A-Z][A-Za-z_]\w{1,})(?:\s+extends|\s+implements|\s+with|\s*\{)/g, method: 'class', nameGroup: 1 },
+
+  // ── Scala ─────────────────────────────────────────────────────────────────
+  { regex: /def\s+([a-zA-Z_]\w{2,})\s*(?:\[[^\]]*\])?\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /(?:case\s+)?(?:class|object|trait)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── Elixir ────────────────────────────────────────────────────────────────
+  { regex: /(?:def|defp)\s+([a-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /defmodule\s+([A-Z][A-Za-z_.]\w{1,})/g, method: 'module', nameGroup: 1 },
+  { regex: /defmacro\s+([a-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+
+  // ── Haskell ───────────────────────────────────────────────────────────────
+  { regex: /^([a-z_]\w{2,})\s+::\s+(.+)/gm, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /^([a-z_]\w{2,})\s+(?:[a-z_]\w*\s+)*=/gm, method: 'function', nameGroup: 1 },
+  { regex: /(?:data|newtype|type)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+  { regex: /class\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── Lua ───────────────────────────────────────────────────────────────────
+  { regex: /(?:local\s+)?function\s+(?:[\w.]+\.)?([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /(?:local\s+)?([a-zA-Z_]\w{2,})\s*=\s*function\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+
+  // ── R ─────────────────────────────────────────────────────────────────────
+  { regex: /([a-zA-Z_.]\w{2,})\s*<-\s*function\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /([a-zA-Z_.]\w{2,})\s*=\s*function\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /setClass\s*\(\s*["']([A-Za-z_]\w{2,})["']/g, method: 'class', nameGroup: 1 },
+
+  // ── Zig ───────────────────────────────────────────────────────────────────
+  { regex: /(?:pub\s+)?fn\s+([a-zA-Z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { regex: /const\s+([A-Z][A-Za-z_]\w{1,})\s*=\s*(?:struct|enum|union)\s*\{/g, method: 'class', nameGroup: 1 },
+
+  // ── HDL: Verilog / SystemVerilog ──────────────────────────────────────────
+  { regex: /module\s+([A-Za-z_]\w{2,})\s*(?:#\s*\([^)]*\))?\s*\(/g, method: 'module', nameGroup: 1 },
+  { regex: /(?:task|function)\s+(?:automatic\s+)?(?:\w+\s+)?([a-zA-Z_]\w{2,})/g, method: 'function', nameGroup: 1 },
+  { regex: /(?:class|interface|package)\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+
+  // ── HDL: VHDL ─────────────────────────────────────────────────────────────
   { regex: /entity\s+([A-Za-z_]\w{2,})\s+is/gi, method: 'module', nameGroup: 1 },
+  { regex: /architecture\s+(\w+)\s+of\s+([A-Za-z_]\w{2,})/gi, method: 'module', nameGroup: 2 },
+  { regex: /(?:procedure|function)\s+([A-Za-z_]\w{2,})\s*\(/gi, method: 'function', nameGroup: 1 },
+  { regex: /package\s+([A-Za-z_]\w{2,})\s+is/gi, method: 'module', nameGroup: 1 },
+
+  // ── HDL: Chisel (Scala-based) ─────────────────────────────────────────────
+  { regex: /class\s+([A-Z]\w{2,})\s+extends\s+(?:Module|Bundle|BlackBox|RawModule)/g, method: 'module', nameGroup: 1 },
+
+  // ── HDL: Amaranth (Python-based) ──────────────────────────────────────────
+  { regex: /class\s+([A-Z]\w{2,})\s*\(\s*(?:wiring\.)?(?:Component|Elaboratable)\s*\)/g, method: 'module', nameGroup: 1 },
+
+  // ── HDL: SPICE ────────────────────────────────────────────────────────────
+  { regex: /\.subckt\s+([A-Za-z_]\w{2,})\s+/gi, method: 'module', nameGroup: 1 },
+  { regex: /\.model\s+([A-Za-z_]\w{2,})\s+/gi, method: 'module', nameGroup: 1 },
+
+  // ── HDL: SystemC ──────────────────────────────────────────────────────────
+  { regex: /SC_MODULE\s*\(\s*([A-Za-z_]\w{2,})\s*\)/g, method: 'module', nameGroup: 1 },
+  { regex: /SC_(?:METHOD|THREAD|CTHREAD)\s*\(\s*([a-zA-Z_]\w{2,})\s*\)/g, method: 'function', nameGroup: 1 },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
