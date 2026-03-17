@@ -264,7 +264,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Prospect memory', 'Win/loss pattern recognition', 'Email personalization', 'Meeting prep briefings'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-sales.zip', stripeProductName: 'CMPSBL Sales Mind', stripeLookupKey: 'cmpsbl_mind_sales_12900',
+    downloadAssetKey: 'cmpsbl-sales.zip', stripeProductName: 'CMPSBL RAPTOR', stripeLookupKey: 'cmpsbl_mind_sales_12900',
     accentColor: 'emerald', imagePath: 'sales', version: 'v1.0', isPublic: true,
     category: 'Growth Intelligence',
     personality: { archetype: 'The Closer', tone: 'Confident, strategic, and relentlessly focused', motto: '"Every conversation is a close."', communicationStyle: 'Outcome-oriented. Uses data to support instinct. Never wastes words. Always advancing the deal.' },
