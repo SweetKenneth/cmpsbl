@@ -297,10 +297,10 @@ export default function EngineDetail() {
                     <p className="text-sm text-muted-foreground mt-1">
                       {engine.isFree ? "Free — no payment required" : engine.isSubscription ? "Annual subscription" : "One-time license — yours forever"}
                     </p>
-                    {engine.freeForSubscribers && (
+                    {engine.slug === 'failsafe' && (
                       <div className="mt-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                         <p className="text-xs text-emerald-400 font-semibold">
-                          ✦ Free with Creator ($29/mo) or above subscription
+                          ✦ Free for all authenticated users — no subscription required
                         </p>
                       </div>
                     )}
