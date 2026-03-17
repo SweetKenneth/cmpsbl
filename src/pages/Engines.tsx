@@ -273,7 +273,7 @@ export default function Engines() {
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
                 Engines are hosted{" "}
                 <a href="https://en.wikipedia.org/wiki/Runtime_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive runtimes</a>{" "}
-                that run on the <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL substrate</Link>.
+                that power your <strong className="text-foreground">websites, apps, and AI agents</strong> via the <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL substrate</Link>.
                 When you purchase an engine, you get an <strong className="text-foreground">API key + copy-paste SDK</strong> to
                 call it from your own stack — any language, any framework.
                 You don't see the source. You see the results.{" "}
@@ -286,14 +286,14 @@ export default function Engines() {
                 <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                   <strong className="text-foreground">How it works:</strong> Every engine purchase includes a
                   single-file <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">TypeScript</a> SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
-                  you copy into your project. The SDK calls the engine API — your code stays in your stack,
+                  you copy into your project. The SDK calls the engine API — your website or app stays in your stack,
                   the heavy compute runs on ours. No infrastructure to manage.{" "}
                   See the <Link to="/documentation" className="text-primary hover:underline font-medium">full API docs</Link>.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   <strong className="text-emerald-400">⚡ Special: FAILSAFE</strong> is the only <em>standalone</em> engine —
-                  it's a self-contained edge function you deploy directly to your own Supabase project.
-                  No API key needed. No dependency on CMPSBL infrastructure. It runs entirely in your stack.
+                  it's a self-contained edge function you deploy directly to your own project.
+                  No API key needed. No dependency on CMPSBL infrastructure. <strong className="text-foreground">Use it to transfer off Lovable Cloud</strong> to your own hosting, create disaster recovery checkpoints, or migrate between platforms.
                 </p>
               </div>
 
