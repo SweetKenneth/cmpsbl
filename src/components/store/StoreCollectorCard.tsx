@@ -6,10 +6,13 @@
  */
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Lock, Zap, ShoppingCart, Cpu, RotateCcw, ExternalLink } from "lucide-react";
+import { Lock, Zap, ShoppingCart, Cpu, RotateCcw, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import type { StoreItem } from "@/lib/store/catalog";
 import { TIER_META } from "@/lib/store/catalog";
 
@@ -21,8 +24,66 @@ interface StoreCollectorCardProps {
 
 export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollectorCardProps) {
   const [flipped, setFlipped] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const tier = TIER_META[item.tier];
   const isAgent = item.kind === "agent";
+
+  const handleAcquire = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Free items — instant activation
+    if (item.priceCents === 0) {
+      toast.success(`${item.name} activated! It's free — no payment required.`);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (isAgent) {
+        // Use agent-checkout edge function
+        const agentId = item.id.replace("agent-", "");
+        const { data, error } = await supabase.functions.invoke("agent-checkout", {
+          body: {
+            agent_id: agentId,
+            agent_name: item.name,
+          },
+        });
+        if (error) throw error;
+        if ((data as any)?.free) {
+          toast.success(`${item.name} activated for free!`);
+          if ((data as any)?.redirect) navigate((data as any).redirect);
+          return;
+        }
+        if ((data as any)?.url) {
+          window.location.href = (data as any).url;
+          return;
+        }
+        throw new Error("No checkout URL returned");
+      } else {
+        // Use marketplace-checkout for engines (price_data mode)
+        const { data, error } = await supabase.functions.invoke("marketplace-checkout", {
+          body: {
+            product_type: "core",
+            unit_amount_usd: Math.round(item.priceCents / 100),
+            item_name: `${item.name} Engine — Sealed Runtime`,
+          },
+        });
+        if (error) throw error;
+        if ((data as any)?.url) {
+          window.location.href = (data as any).url;
+          return;
+        }
+        throw new Error("No checkout URL returned");
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Checkout failed";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -213,7 +274,7 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
                 {isAgent ? "Crown Jewel Powers" : "Capabilities"}
               </h4>
               <div className="space-y-1.5">
-                {item.capabilities.map((cap, i) => (
+                {item.capabilities.map((cap) => (
                   <div
                     key={cap}
                     className="rounded-xl border border-border/20 bg-background/20 px-3.5 py-2.5 flex items-center gap-2"
@@ -238,10 +299,20 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
                 "hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]",
                 item.gradient
               )}
-              onClick={(e) => { e.stopPropagation(); }}
+              onClick={handleAcquire}
+              disabled={loading}
             >
-              <ShoppingCart className="w-4 h-4" />
-              {item.priceCents === 0 ? "Activate Free" : `Acquire · ${item.priceDisplay}`}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Preparing checkout…
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="w-4 h-4" />
+                  {item.priceCents === 0 ? "Activate Free" : `Acquire · ${item.priceDisplay}`}
+                </>
+              )}
             </Button>
             <Button
               variant="ghost"
