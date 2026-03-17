@@ -34,7 +34,7 @@ export function DownloadCeremonyOverlay({
     return () => timers.forEach(window.clearTimeout);
   }, [open]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
