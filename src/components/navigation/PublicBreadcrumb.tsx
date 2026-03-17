@@ -20,7 +20,7 @@ const LABEL_MAP: Record<string, string> = {
   "changelog": "Changelog",
   "developers": "Developers",
   "academy": "Academy",
-  "composable-cognitives": "Minds",
+  "composable-cognitives": "Runtime Agents",
   "persistent-memory": "MEMORY",
   "use-cases": "Use Cases",
   "auth": "Sign In",

@@ -30,7 +30,7 @@ const LINK_GRAPH: LinkNode[] = [
   { path: '/ai-operating-system', label: 'How It Works', tags: ['platform', 'architecture', 'ai', 'cognitive'] },
 
   // ── Products ─────────────────────────────────────────
-  { path: '/composable-cognitives', label: 'Composable Agents', tags: ['agent', 'cognitive', 'ai', 'evolution'] },
+  { path: '/composable-cognitives', label: 'Runtime Agents', tags: ['agent', 'runtime', 'ai', 'sealed'] },
   { path: '/packs', label: 'Capability Packs', tags: ['capabilities', 'store', 'templates', 'nodes'] },
   { path: '/enterprise', label: 'Enterprise', tags: ['enterprise', 'solutions', 'compliance', 'governance'] },
   { path: '/upgrade', label: 'Upgrade & Pricing', tags: ['pricing', 'plans', 'upgrade'] },

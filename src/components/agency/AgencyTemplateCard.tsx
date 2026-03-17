@@ -65,7 +65,7 @@ export function AgencyTemplateCard({ template, selected, onSelect }: AgencyTempl
           </p>
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="secondary" className="text-[10px] h-5 bg-background/50">
-              {memberCount} cognitives
+              {memberCount} agents
             </Badge>
             <Badge variant="outline" className="text-[10px] h-5 border-cyan-500/30 text-cyan-400">
               {template.dreamPoolMode.replace('_', ' ')}

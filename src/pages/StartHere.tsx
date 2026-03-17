@@ -67,7 +67,7 @@ const buildCapabilities = [
 const quickStarts = [
   { icon: Brain, text: "Add persistent memory to any AI agent", link: "/persistent-memory" },
   { icon: Moon, text: "Enable DREAM cycles for offline synthesis", link: "/documentation" },
-  { icon: Zap, text: "Download a Mind — a production AI agent you own", link: "/composable-cognitives" },
+  { icon: Zap, text: "Download a Runtime Agent — a production AI agent you own", link: "/composable-cognitives" },
   { icon: Code, text: "Activate memory packs for advanced capabilities", link: "/foundry" },
   { icon: Shield, text: "Deploy with governed evolution and rollback", link: "/evolution" },
   { icon: BookOpen, text: "Explore the full technical documentation", link: "/documentation" },
@@ -251,7 +251,7 @@ export default function StartHere() {
             <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-6 sm:px-8 h-12 sm:h-13">
               <Link to="/composable-cognitives">
                 <Zap className="w-4 h-4" />
-                Browse Minds
+                Browse Runtime Agents
               </Link>
             </Button>
           </motion.div>

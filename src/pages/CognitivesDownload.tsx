@@ -102,7 +102,7 @@ export default function CognitivesDownload() {
               <AlertDescription className="space-y-3">
                 <p>{error}</p>
                 <Button asChild variant="outline" size="sm">
-                  <Link to="/composable-cognitives">Back to Cognitives</Link>
+                  <Link to="/composable-cognitives">Back to Runtime Agents</Link>
                 </Button>
               </AlertDescription>
             </Alert>

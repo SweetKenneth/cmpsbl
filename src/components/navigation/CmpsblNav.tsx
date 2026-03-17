@@ -120,7 +120,7 @@ export function CmpsblNav() {
       items: [
         { name: "Engines", href: "/engines", description: "Core processing & orchestration", icon: Sparkles, highlight: true },
         { name: "Capability packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
-        { name: "Composable agents", href: "/composable-cognitives", description: "Pre-built AI agents", icon: Zap },
+        { name: "Runtime agents", href: "/composable-cognitives", description: "Sealed AI runtime agents", icon: Zap },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
         { name: "Pricing", href: "/pricing-method", description: "Transparent pricing methodology", icon: CreditCard },

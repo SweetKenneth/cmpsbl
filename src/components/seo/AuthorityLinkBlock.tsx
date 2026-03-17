@@ -42,7 +42,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   // Products
   { label: 'Persistent Memory', href: '/persistent-memory' },
   { label: 'Capability Packs', href: '/packs' },
-  { label: 'Composable Agents', href: '/composable-cognitives' },
+  { label: 'Runtime Agents', href: '/composable-cognitives' },
   { label: 'Dream Eater', href: '/feed-dream-eater' },
   { label: 'World Engine', href: '/gaming' },
   { label: 'Enterprise', href: '/enterprise' },

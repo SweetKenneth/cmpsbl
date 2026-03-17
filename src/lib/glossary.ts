@@ -71,9 +71,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     detail: "54 engines across 4 tiers (META, CORE, FLUX, SPEC) handle specific workloads from reasoning to code generation.",
   },
   "cognitive": {
-    term: "Cognitive",
-    short: "An AI agent identity within a CMPSBL agency.",
-    detail: "Cognitives have specializations, skill weights, and competency scores. They learn and evolve through task execution.",
+    term: "Runtime Agent",
+    short: "A sealed AI runtime instance within a CMPSBL agency.",
+    detail: "Runtime Agents have specializations, skill weights, and competency scores. They learn and evolve through task execution.",
   },
   "tier": {
     term: "Discovery Tier",

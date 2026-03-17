@@ -85,10 +85,10 @@ export type Specialization = typeof SPECIALIZATIONS[number]['id'];
 // MEMORY MODES
 // ============================================================================
 export const DREAM_POOL_MODES = [
-  { id: 'local_only', name: 'Local Only', description: 'Each cognitive maintains private memory' },
+  { id: 'local_only', name: 'Local Only', description: 'Each agent maintains private memory' },
   { id: 'local_shared', name: 'Local + Shared', description: 'Private memory with shared dream pool access' },
   { id: 'read_only_shared', name: 'Read-Only Shared', description: 'Can read shared pool but not contribute' },
-  { id: 'full_mesh', name: 'Full Mesh', description: 'Complete memory sharing across all cognitives' },
+  { id: 'full_mesh', name: 'Full Mesh', description: 'Complete memory sharing across all agents' },
 ] as const;
 
 export type DreamPoolMode = typeof DREAM_POOL_MODES[number]['id'];

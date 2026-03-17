@@ -476,7 +476,7 @@ export default function Engines() {
                 <div className="flex gap-3 mt-2">
                   <Button asChild variant="outline" size="sm" className="gap-1">
                     <Link to="/composable-cognitives">
-                      Browse 20 Agents — 40% off bundled
+                      Browse 20 Runtime Agents — 40% off bundled
                     </Link>
                   </Button>
                 </div>

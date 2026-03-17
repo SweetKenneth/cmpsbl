@@ -1,5 +1,5 @@
 /**
- * AgentsSection — 20 Black-Boxed Agents with Sealed Runtimes
+ * AgentsSection — 20 Sealed Runtime Agents
  * Features: Auto-tiering memory, RIPPLE Orchestrator, Always-on CLM,
  * Version Minting, DECODE Sovereign Channel, Sealed Black-Box Runtime.
  */
@@ -76,6 +76,8 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
             )}
           </div>
           <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 font-mono mt-0.5 break-words">{agent.subtitle}</p>
+          {/* Bio — always visible on the card face */}
+          <p className="text-[11px] sm:text-xs text-muted-foreground/80 mt-2 leading-relaxed line-clamp-2 max-w-2xl">{agent.bio}</p>
         </div>
 
         <ChevronDown className={cn(
@@ -188,10 +190,10 @@ export function AgentsSection() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Zap className="w-3 h-3 mr-1.5 text-primary" />
-            <span className="text-xs font-semibold">20 Sealed Black-Box Agents</span>
+            <span className="text-xs font-semibold">20 Sealed Runtime Agents</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
-            Black-Boxed.{" "}
+            Runtime Agents.{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
@@ -203,7 +205,7 @@ export function AgentsSection() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
+            Every Runtime Agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
           </p>
         </motion.div>
 
@@ -221,7 +223,7 @@ export function AgentsSection() {
               </div>
               <div>
                 <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
-                  Every Agent Ships With
+                  Every Runtime Agent Ships With
                 </h3>
                 <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
                   Sealed runtime · Zero maintenance · Always learning
@@ -331,7 +333,7 @@ export function AgentsSection() {
           <Button asChild variant="outline" size="lg" className="gap-2 px-8 h-12 font-semibold hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
             <Link to="/composable-cognitives">
               <Download className="w-4 h-4" />
-              Browse All 20 Agents
+              Browse All 20 Runtime Agents
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
