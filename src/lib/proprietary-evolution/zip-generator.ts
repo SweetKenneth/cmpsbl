@@ -1341,7 +1341,8 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     name: `Capability Pack — ${candidateName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
     files: [
-      { name: 'src/', purpose: 'Generated capability implementations' },
+      { name: 'src/', purpose: 'Executable capability implementations' },
+      { name: 'src/runtime-bridge.*', purpose: 'Runtime Binding Layer — pipeline execution engine' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
       { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine (sealed)' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
@@ -1349,7 +1350,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
       { name: 'export-tier.json', purpose: 'Valuation summary' },
     ],
-    quickStart: `import { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
+    quickStart: targetLanguage === 'php'
+      ? `require_once 'src/runtime-bridge.php';\\nrequire_once 'src/${(capabilities[0]?.name || 'capability').toLowerCase()}.php';\\n$cap = new CMPSBLCapability();\\n$result = $cap->execute(['key' => 'value']);`
+      : targetLanguage === 'python'
+      ? `from src.${(capabilities[0]?.name || 'capability').toLowerCase()} import CMPSBLCapability\\ncap = CMPSBLCapability()\\nresult = cap.execute({"key": "value"})`
+      : `import { CMPSBLRuntimeBridge } from './src/runtime-bridge';\\nimport { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
     category: 'proprietary-evolution',
     modules: [...new Set(capabilities.flatMap(c => c.chain))],
     version: '1.0.0',
