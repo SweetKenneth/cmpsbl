@@ -76,6 +76,8 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
             )}
           </div>
           <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 font-mono mt-0.5 break-words">{agent.subtitle}</p>
+          {/* Bio — always visible on the card face */}
+          <p className="text-[11px] sm:text-xs text-muted-foreground/80 mt-2 leading-relaxed line-clamp-2 max-w-2xl">{agent.bio}</p>
         </div>
 
         <ChevronDown className={cn(
