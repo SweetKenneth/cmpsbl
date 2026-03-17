@@ -143,6 +143,7 @@ export function DiscoveryPhase() {
     setExpandedIdx(null);
     abortRef.current = false;
 
+    let foundHit: CollisionResult | null = null;
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
 
     const suspenseDelay = Math.floor(Math.random() * 10000) + 5000;
