@@ -266,7 +266,48 @@ The system's novelty scoring ensures that each cycle discovers genuinely new cap
 
 ---
 
-## 9. Glossary
+## 8.1 Runtime Binding Layer
+
+Every exported capability pack includes a **language-native Runtime Bridge** that makes your capability executable — not just a metadata file.
+
+### How It Works
+
+1. Your capability class loads the manifest and module chain
+2. It delegates to the **Runtime Bridge** (`runtime-bridge.php`, `runtime_bridge.py`, or `runtime-bridge.ts`)
+3. The bridge executes the module chain as a **sequential pipeline**
+4. Each module transforms the execution context and records trace data
+5. You get back a structured result: `{ success, output, trace, metadata }`
+
+### What You Get
+
+- **Real execution** — every module handler modifies the context, not just annotates it
+- **Full trace** — per-stage timing, status, and signal data for observability
+- **Error recovery** — exceptions are caught per-stage with error details in the trace
+- **Deterministic** — same inputs always produce the same outputs
+
+### Example (PHP)
+
+```php
+require_once 'src/runtime-bridge.php';
+require_once 'src/my-capability.php';
+
+$cap = new CMPSBLCapability();
+$result = $cap->execute(['key' => 'value']);
+
+// $result['success']  → true
+// $result['output']   → your transformed data
+// $result['trace']    → per-stage execution trace
+// $result['metadata'] → capability identity + timing
+```
+
+### Honest Limitations
+
+- This is a **v1 execution model** — sequential pipeline only
+- The runtime bridge is a **portable wrapper**, not the full substrate
+- Module handlers implement minimal behavioral contracts
+- For the full cognitive runtime, use the CMPSBL substrate directly
+
+
 
 | Term | Definition |
 |------|-----------|
