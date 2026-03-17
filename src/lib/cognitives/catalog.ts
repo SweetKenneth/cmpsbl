@@ -209,7 +209,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'marketing',
-    displayName: 'MARKETING Mind',
+    displayName: 'TEMPEST',
     className: 'The Campaigner',
     tagline: 'Campaign strategy. Multi-channel copy. A/B test design.',
     description: 'A bold creative strategist with DREAM Synthesis — plans campaigns, generates multi-channel copy, and learns which messaging resonates from real performance data.',
