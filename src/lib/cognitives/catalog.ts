@@ -222,7 +222,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Brand voice consistency', 'Competitor tracking', 'Content repurposing', 'Funnel optimization'],
     priceCents: 7900, isFree: false, tier: 'starter', bundlePriceCents: bundlePrice(7900),
-    downloadAssetKey: 'cmpsbl-marketing.zip', stripeProductName: 'CMPSBL Marketing Mind', stripeLookupKey: 'cmpsbl_mind_marketing_7900',
+    downloadAssetKey: 'cmpsbl-marketing.zip', stripeProductName: 'CMPSBL TEMPEST', stripeLookupKey: 'cmpsbl_mind_marketing_7900',
     accentColor: 'rose', imagePath: 'marketing', version: 'v1.0', isPublic: true,
     category: 'Creative Force',
     personality: { archetype: 'The Campaigner', tone: 'Bold, data-driven, and creatively restless', motto: '"Attention is the new currency."', communicationStyle: 'Leads with hooks. Backs creative choices with data. Always thinking about the funnel.' },
