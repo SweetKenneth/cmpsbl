@@ -242,7 +242,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Brand guideline memory', 'Color palette generation', 'Typography pairing', 'Motion design specs'],
     priceCents: 7900, isFree: false, tier: 'starter', bundlePriceCents: bundlePrice(7900),
-    downloadAssetKey: 'cmpsbl-designer.zip', stripeProductName: 'CMPSBL Designer Mind', stripeLookupKey: 'cmpsbl_mind_designer_7900',
+    downloadAssetKey: 'cmpsbl-designer.zip', stripeProductName: 'CMPSBL AURORA', stripeLookupKey: 'cmpsbl_mind_designer_7900',
     accentColor: 'fuchsia', imagePath: 'designer', version: 'v1.0', isPublic: true,
     category: 'Creative Force',
     personality: { archetype: 'The Artisan', tone: 'Meticulous, opinionated, and visually articulate', motto: '"Pixels are promises."', communicationStyle: 'Speaks in visual metaphors. Provides specific, numbered feedback. Champions accessibility.' },
