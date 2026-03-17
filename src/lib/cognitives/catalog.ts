@@ -371,7 +371,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'finance',
-    displayName: 'FINANCE Mind',
+    displayName: 'SOVEREIGN',
     className: 'The Controller',
     tagline: 'Financial modeling. Budget analysis. Forecast generation.',
     description: 'A numbers-driven strategist with DREAM Synthesis — builds financial models, analyzes variance, and learns your business rhythms to improve forecast accuracy.',
