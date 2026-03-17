@@ -101,7 +101,7 @@ async function fetchSiteAnalytics(rangeKey: DateRangeKey): Promise<SiteAnalytics
   const totalSessions = core.total_sessions || 0;
   const totalPageViews = pageViewCount > 0 ? pageViewCount : (core.total_page_views || 0);
   const returningVisitors = core.returning_visitors || 0;
-  const newVisitors = Math.max(0, uniqueVisitors - returningVisitors);
+  const newVisitors = core.new_visitors || Math.max(0, uniqueVisitors - returningVisitors);
 
   // Build daily time series — fill gaps
   const dailyRaw: { day: string; views: number; sessions: number; visitors: number }[] = raw.daily || [];
