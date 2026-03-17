@@ -189,7 +189,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'recruiter',
-    displayName: 'RECRUITER Mind',
+    displayName: 'VANGUARD',
     className: 'The Talent Scout',
     tagline: 'Candidate screening. JD generation. Interview prep.',
     description: 'A sharp-eyed talent strategist with DREAM Synthesis — scores candidates, generates role-specific interview frameworks, and learns what "great" looks like for your team.',
