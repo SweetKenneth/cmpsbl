@@ -22,6 +22,7 @@ import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { generateProductZip } from "@/lib/export/product-zip";
 import { saveAs } from "file-saver";
+import { useDownloadCeremony } from "@/hooks/useDownloadCeremony";
 
 function getAgentBySlug(slug: string): AgentWithPowers | undefined {
   return AGENTS_WITH_POWERS.find(a => a.id === slug);
@@ -72,6 +73,7 @@ export default function AgentDetail() {
   const agent = getAgentBySlug(slug ?? "");
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { runWithCeremony, overlayElement } = useDownloadCeremony();
 
   if (!agent) return <Navigate to="/store" replace />;
 
@@ -89,19 +91,27 @@ export default function AgentDetail() {
       }
       setLoading(true);
       try {
-        const blob = await generateProductZip({
-          id: `agent-${agent.id}`,
-          kind: "agent",
-          name: agent.name,
-          subtitle: agent.subtitle,
-          price,
-          tier: tier.toLowerCase(),
-          slug: agent.id,
-          version: "1.0.0",
-          capabilities: agent.powers.map(p => p.name),
-        });
-        saveAs(blob, `cmpsbl-agent-${agent.id}.zip`);
-        toast.success(`${agent.name} downloaded successfully`);
+        await runWithCeremony(
+          {
+            itemName: agent.name,
+            kindLabel: "Meta-Agent",
+            note: "Your sealed agent bundle will begin downloading shortly.",
+          },
+          async () => {
+            const blob = await generateProductZip({
+              id: `agent-${agent.id}`,
+              kind: "agent",
+              name: agent.name,
+              subtitle: agent.subtitle,
+              price,
+              tier: tier.toLowerCase(),
+              slug: agent.id,
+              version: "1.0.0",
+              capabilities: agent.powers.map(p => p.name),
+            });
+            saveAs(blob, `cmpsbl-agent-${agent.id}.zip`);
+          }
+        );
       } catch {
         toast.error("Download failed. Please try again.");
       } finally {
@@ -151,6 +161,8 @@ export default function AgentDetail() {
           })}
         </script>
       </Helmet>
+
+      {overlayElement}
 
       <div className="min-h-screen bg-background">
         <PublicNav />
