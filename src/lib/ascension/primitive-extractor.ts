@@ -103,7 +103,7 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   load: 'storage', read: 'storage', fetch: 'storage', get: 'storage',
   // Routing
   route: 'routing', redirect: 'routing', forward: 'routing', navigate: 'routing',
-  dispatch: 'routing', broadcast: 'routing', emit: 'routing',
+  broadcast: 'routing', emit: 'routing',
   // Security
   encrypt: 'security', decrypt: 'security', authenticate: 'security',
   authorize: 'security', hash: 'security', sign: 'security',
