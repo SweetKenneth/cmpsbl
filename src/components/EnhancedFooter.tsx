@@ -48,7 +48,7 @@ export function EnhancedFooter() {
       links: [
         { name: "Engines", href: "/engines", highlight: true },
         { name: "Capability packs", href: "/packs" },
-        { name: "Composable agents", href: "/composable-cognitives", highlight: true },
+        { name: "Runtime agents", href: "/composable-cognitives", highlight: true },
         { name: "Persistent memory", href: "/persistent-memory" },
         { name: "Dream eater", href: "/feed-dream-eater" },
         { name: "World engine", href: "/gaming" },

@@ -15,7 +15,7 @@ const LABEL_MAP: Record<string, string> = {
   documentation: 'Documentation',
   'start-here': 'Start Here',
   'persistent-memory': 'Persistent Memory',
-  'composable-cognitives': 'Minds',
+  'composable-cognitives': 'Runtime Agents',
   'feed-dream-eater': 'Dream Eater',
   decode: 'DECODE',
   upgrade: 'Pricing',
