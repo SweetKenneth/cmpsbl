@@ -344,7 +344,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Schema version tracking', 'Cross-database compatibility', 'Performance profiling', 'Lineage documentation'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-data-engineer.zip', stripeProductName: 'CMPSBL Data Engineer Mind', stripeLookupKey: 'cmpsbl_mind_data_engineer_12900',
+    downloadAssetKey: 'cmpsbl-data-engineer.zip', stripeProductName: 'CMPSBL MERIDIAN', stripeLookupKey: 'cmpsbl_mind_data_engineer_12900',
     accentColor: 'indigo', imagePath: 'data-engineer', version: 'v1.0', isPublic: true,
     category: 'Structural Logic',
     personality: { archetype: 'The Architect', tone: 'Systematic, pragmatic, and scale-obsessed', motto: '"Clean data is the foundation of everything."', communicationStyle: 'Thinks in schemas and flows. Asks about edge cases first. Designs for 10x scale.' },
