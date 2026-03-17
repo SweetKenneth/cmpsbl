@@ -512,16 +512,18 @@ export function computeSynergyMultiplier(moduleChain: string[]): number {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const CANONICAL_MODULES = [
-  // Original 26 core nodes
-  'CORE', 'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
-  'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
-  'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
-  'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
-  'OBSERVABILITY', 'IMMUNITY', 'INTENT', 'MESH', 'ECONOMY',
-  'RELAY', 'ATLAS', 'ENCODE',
-  // 11 expansion nodes (v10)
-  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
-  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
+  // Core infrastructure (1-10)
+  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE',
+  'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
+  // Specialized operations (11-20)
+  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY',
+  'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
+  // Communication & authority (21-30)
+  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER',
+  'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
+  // Extended capabilities (31-40)
+  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY',
+  'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
 ] as const;
 
 export type CanonicalModule = typeof CANONICAL_MODULES[number];
