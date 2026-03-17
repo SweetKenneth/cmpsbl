@@ -17,6 +17,12 @@ import obsidianImg from "@/assets/agents/obsidian.png";
 import monolithImg from "@/assets/agents/monolith.png";
 import raptorImg from "@/assets/agents/raptor.png";
 
+import beaconImg from "@/assets/engines/beacon.png";
+import automatonImg from "@/assets/engines/automaton.png";
+import cortexImg from "@/assets/engines/cortex.png";
+import nexusImg from "@/assets/engines/nexus.png";
+import architectImg from "@/assets/engines/architect.png";
+
 // ═══════════════════════════════════════════════════════════════
 // UNIFIED STORE ITEM
 // ═══════════════════════════════════════════════════════════════
@@ -56,6 +62,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Observability & Monitoring Stack",
     bio: "Illuminates everything. Unified metrics, distributed tracing, structured logging, and real-time health dashboards — a single pane of glass for your entire stack.",
     description: "BEACON unifies metrics collection, distributed request tracing, structured log aggregation, and health monitoring. SLA tracking, alert management, and real-time dashboards.",
+    image: beaconImg,
     icon: Radio,
     tier: "free",
     priceCents: 0,
@@ -78,6 +85,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Workflow Automation Engine",
     bio: "Turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation — the boring stuff handled, brilliantly.",
     description: "AUTOMATON handles visual workflow composition, conditional branching, scheduled tasks, event-driven triggers, retry logic, and parallel execution paths.",
+    image: automatonImg,
     icon: Cog,
     tier: "starter",
     priceCents: 7900,
@@ -100,6 +108,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Agent Runtime & Orchestration",
     bio: "Gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together.",
     description: "CORTEX provides multi-agent task delegation, cognitive load balancing, shared memory coordination, agent competency tracking, automatic skill routing, and collaborative reasoning.",
+    image: cortexImg,
     icon: Brain,
     tier: "pro",
     priceCents: 12900,
@@ -122,6 +131,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Multi-Model AI Router",
     bio: "Routes every AI call to the optimal model in real time. Cost-aware, latency-based, quality-scored — best answer at the best price, always.",
     description: "NEXUS provides real-time model selection, cost-aware provider optimization, latency-based failover, response quality scoring, token budget management, and multi-provider load balancing.",
+    image: nexusImg,
     icon: Network,
     tier: "elite",
     priceCents: 15900,
@@ -144,6 +154,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "The Unified Mega-Engine",
     bio: "Orchestrates all 8 core pipelines into a single sealed runtime. Parse, Route, Execute, Heal, Defend, Learn, Observe, Audit — one import.",
     description: "ARCHITECT is the apex of the engine catalog. Unified 8-stage cognitive pipeline with self-healing, built-in security, real-time observability, intelligent routing, and continuous learning from every execution.",
+    image: architectImg,
     icon: Cpu,
     tier: "apex",
     priceCents: 24900,
