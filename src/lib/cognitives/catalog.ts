@@ -304,7 +304,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['SOP templates', 'Risk scoring', 'Scheduling guardrails', 'Incident response templates'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-ops.zip', stripeProductName: 'CMPSBL Ops Mind', stripeLookupKey: 'cmpsbl_mind_ops_12900',
+    downloadAssetKey: 'cmpsbl-ops.zip', stripeProductName: 'CMPSBL GARRISON', stripeLookupKey: 'cmpsbl_mind_ops_12900',
     accentColor: 'orange', imagePath: 'ops', version: 'v1.0', isPublic: true,
     category: 'Sovereign Defense',
     personality: { archetype: 'The Commander', tone: 'Decisive, structured, and accountability-driven', motto: '"Systems don\'t fail — processes do."', communicationStyle: 'Direct and action-oriented. Uses checklists and timelines. Zero tolerance for ambiguity.' },
