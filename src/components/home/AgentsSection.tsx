@@ -1,7 +1,6 @@
 /**
- * AgentsSection — 20 Sealed Runtime Agents
- * Features: Auto-tiering memory, RIPPLE Orchestrator, Always-on CLM,
- * Version Minting, DECODE Sovereign Channel, Sealed Black-Box Runtime.
+ * AgentsSection — 5 Fused Meta-Agents
+ * Sealed Runtime Agents with spy-vs-spy 2026 aesthetic.
  */
 
 import { useState } from "react";
@@ -10,14 +9,14 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight, Download, Zap, ChevronDown, Database, Clock,
   HardDrive, Archive, MessageSquare, Package, Waves, RefreshCcw,
-  Hash, Lock, Shield,
+  Hash, Lock, Shield, Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
   AGENTS_WITH_POWERS, MEMORY_SYSTEM_SUMMARY, FOUR_TIER_MEMORY,
-  STANDARD_CAPABILITIES, RIPPLE_ORCHESTRATOR, CLM_CONFIG, VERSION_MINTING,
+  STANDARD_CAPABILITIES,
   type AgentWithPowers,
 } from "@/lib/agents/crownJewelPowers";
 import { AgentChat } from "@/components/agents/AgentChat";
@@ -29,12 +28,24 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
   onToggle: () => void;
   onChat: () => void;
 }) {
+  const tierBadge = agent.isApex ? (
+    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-fuchsia-500/15 text-fuchsia-400 border border-fuchsia-500/25">$249 · APEX</span>
+  ) : agent.isElite ? (
+    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/25">$159 · ELITE</span>
+  ) : agent.isFlagship ? (
+    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">$129 · PRO</span>
+  ) : agent.priceCents ? (
+    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/25">$79</span>
+  ) : (
+    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">FREE</span>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.45 }}
+      transition={{ delay: Math.min(index * 0.08, 0.4), duration: 0.5 }}
       className={cn(
         "relative rounded-2xl border bg-card/60 backdrop-blur-sm overflow-hidden",
         "transition-all duration-500",
@@ -43,50 +54,54 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
       )}
       style={expanded ? { boxShadow: `0 0 50px -12px ${agent.glowColor}` } : undefined}
     >
-      {/* Accent bar */}
       <div className={cn("h-0.5 w-full bg-gradient-to-r", agent.gradient)} />
 
-      {/* Header */}
       <button
         onClick={onToggle}
-        className="w-full text-left p-5 sm:p-6 flex items-center gap-4 group cursor-pointer"
+        className="w-full text-left p-5 sm:p-6 flex items-start gap-4 group cursor-pointer"
       >
+        {/* Agent image */}
         <div className={cn(
-          "w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-md shrink-0",
+          "w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gradient-to-br shrink-0 border border-border/20",
           agent.gradient
         )}>
-          <agent.icon className="w-5 h-5 text-white" />
+          <img
+            src={agent.image}
+            alt={agent.name}
+            className="w-full h-full object-cover object-top"
+            loading="lazy"
+          />
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight">{agent.name}</h3>
-            {/* Sealed Runtime badge */}
+            <h3 className="text-lg sm:text-xl font-black text-foreground tracking-tight">{agent.name}</h3>
             <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-foreground/10 text-foreground/50 border border-foreground/15">
-              <Lock className="w-2 h-2 inline mr-0.5 -mt-0.5" />SEALED
+              <Lock className="w-2 h-2 inline mr-0.5 -mt-0.5" />META
             </span>
-            {agent.isFlagship ? (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">$129</span>
-            ) : agent.isElite ? (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/25">$159 · ELITE</span>
-            ) : agent.isFree ? (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/25">FREE</span>
-            ) : (
-              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">PRO</span>
-            )}
+            {tierBadge}
           </div>
           <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 font-mono mt-0.5 break-words">{agent.subtitle}</p>
-          {/* Bio — always visible on the card face */}
+          
+          {/* Bio */}
           <p className="text-[11px] sm:text-xs text-muted-foreground/80 mt-2 leading-relaxed line-clamp-2 max-w-2xl">{agent.bio}</p>
+
+          {/* Fused-from badges */}
+          <div className="flex flex-wrap gap-1 mt-2">
+            {agent.fusedFrom.map((name) => (
+              <span key={name} className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded bg-foreground/5 text-muted-foreground/50 border border-border/30">
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
 
         <ChevronDown className={cn(
-          "w-4 h-4 text-muted-foreground/40 shrink-0 transition-transform duration-300",
+          "w-4 h-4 text-muted-foreground/40 shrink-0 transition-transform duration-300 mt-2",
           expanded && "rotate-180"
         )} />
       </button>
 
-      {/* Expandable content */}
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
@@ -117,7 +132,7 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
                 </div>
               </div>
 
-              {/* Apex Discovery Powers */}
+              {/* Powers */}
               <div className={cn("grid gap-3", agent.powers.length > 3 ? "sm:grid-cols-3 lg:grid-cols-5" : "sm:grid-cols-3")}>
                 {agent.powers.map((power, pIdx) => (
                   <motion.div
@@ -141,7 +156,7 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
                 ))}
               </div>
 
-              {/* Chat + Version Mint info */}
+              {/* Actions */}
               <div className="mt-4 flex items-center gap-3 flex-wrap">
                 <Button
                   variant="outline"
@@ -166,7 +181,7 @@ function AgentCard({ agent, index, expanded, onToggle, onChat }: {
 }
 
 export function AgentsSection() {
-  const [expandedSet, setExpandedSet] = useState<Set<number>>(new Set([0, 1, 2]));
+  const [expandedSet, setExpandedSet] = useState<Set<number>>(new Set([0]));
   const [chatAgent, setChatAgent] = useState<AgentWithPowers | null>(null);
 
   const toggle = (idx: number) => {
@@ -190,10 +205,10 @@ export function AgentsSection() {
         >
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Zap className="w-3 h-3 mr-1.5 text-primary" />
-            <span className="text-xs font-semibold">20 Sealed Runtime Agents</span>
+            <span className="text-xs font-semibold">5 Fused Meta-Agents</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
-            Runtime Agents.{" "}
+            Meta-Agents.{" "}
             <span
               style={{
                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
@@ -201,15 +216,15 @@ export function AgentsSection() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Always Learning.
+              Fused Power.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every Runtime Agent is a sealed runtime with auto-tiering memory, an internal RIPPLE orchestrator, and always-on CLM that trains 24/7 — even offline. Purchase one and you mint a unique version of everything it has learned.
+            Each Meta-Agent is a sealed fusion of multiple specialized runtimes — with auto-tiering memory, RIPPLE orchestration, and always-on CLM. One agent. Many minds. Infinite learning.
           </p>
         </motion.div>
 
-        {/* ═══ STANDARD CAPABILITIES — WHAT EVERY AGENT SHIPS WITH ═══ */}
+        {/* Standard Capabilities */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -223,7 +238,7 @@ export function AgentsSection() {
               </div>
               <div>
                 <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
-                  Every Runtime Agent Ships With
+                  Every Meta-Agent Ships With
                 </h3>
                 <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
                   Sealed runtime · Zero maintenance · Always learning
@@ -248,7 +263,6 @@ export function AgentsSection() {
               ))}
             </div>
 
-            {/* Feature tags */}
             <div className="flex flex-wrap gap-2">
               {MEMORY_SYSTEM_SUMMARY.features.map((feat) => (
                 <span
@@ -262,7 +276,7 @@ export function AgentsSection() {
           </div>
         </motion.div>
 
-        {/* ═══ 4-TIER MEMORY ═══ */}
+        {/* 4-Tier Memory */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -314,8 +328,8 @@ export function AgentsSection() {
           </div>
         </motion.div>
 
-        {/* All 20 Agent Cards */}
-        <div className="space-y-3 mb-10">
+        {/* Meta-Agent Cards */}
+        <div className="space-y-4 mb-10">
           {AGENTS_WITH_POWERS.map((agent, idx) => (
             <AgentCard
               key={agent.id}
@@ -333,14 +347,13 @@ export function AgentsSection() {
           <Button asChild variant="outline" size="lg" className="gap-2 px-8 h-12 font-semibold hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
             <Link to="/composable-cognitives">
               <Download className="w-4 h-4" />
-              Browse All 20 Runtime Agents
+              Browse All 5 Meta-Agents
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
         </div>
       </div>
 
-      {/* DECODE Chat Overlay */}
       {chatAgent && (
         <AgentChat
           agent={chatAgent}

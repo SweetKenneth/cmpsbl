@@ -1,11 +1,12 @@
 /**
- * Crown Jewel Powers — 20 Sealed Runtime Agents
- * Every Runtime Agent ships with:
+ * Crown Jewel Powers — 5 Meta-Agents (Fused Runtime Agents)
+ * Each Meta-Agent is a sealed fusion of multiple specialized runtimes.
+ * Every Meta-Agent ships with:
  *   - 4-Tier Auto-Tiering Portable Memory (zero maintenance)
  *   - RIPPLE Orchestrator (task flow + internal query engine)
  *   - CLM Integration (always-on constant learning, even offline)
  *   - Version Minting (unique version snapshot at point of purchase)
- * Elite agents get 5 powers, Flagships get 3, Standard/Free get 3.
+ * Apex gets 7 powers, Elite 5, Pro 5, Starter 5, Free 5.
  */
 
 import {
@@ -24,22 +25,22 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import primitiveImg from "@/assets/agents/primitive.png";
+import wraithImg from "@/assets/agents/wraith.png";
+import obsidianImg from "@/assets/agents/obsidian.png";
+import monolithImg from "@/assets/agents/monolith.png";
+import raptorImg from "@/assets/agents/raptor.png";
+
 // ============================================================================
 // SEALED RUNTIME — Black-Box Agent Architecture
 // ============================================================================
 
 export interface SealedRuntime {
-  /** Source code is obfuscated and non-extractable */
   sourceBlocked: true;
-  /** Memory cannot leak to other agents or external systems */
   memoryIsolated: true;
-  /** Cloning/forking is disabled at the runtime level */
   cloneDisabled: true;
-  /** Auto-tiering requires zero user maintenance */
   autoTiering: true;
-  /** CLM runs continuously even when the user is offline */
   clmAlwaysOn: true;
-  /** Each purchase mints a unique version */
   versionMinting: true;
 }
 
@@ -53,7 +54,7 @@ export const SEALED_RUNTIME: SealedRuntime = {
 };
 
 // ============================================================================
-// RIPPLE ORCHESTRATOR — Internal Task Flow + Query Engine
+// RIPPLE ORCHESTRATOR
 // ============================================================================
 
 export interface RippleOrchestrator {
@@ -78,7 +79,7 @@ export const RIPPLE_ORCHESTRATOR: RippleOrchestrator = {
 };
 
 // ============================================================================
-// CLM — Constant Learning Mode (Always-On, Even Offline)
+// CLM — Constant Learning Mode
 // ============================================================================
 
 export interface CLMConfig {
@@ -107,7 +108,7 @@ export const CLM_CONFIG: CLMConfig = {
 };
 
 // ============================================================================
-// VERSION MINTING — Unique Agent Instance at Purchase
+// VERSION MINTING
 // ============================================================================
 
 export interface VersionMint {
@@ -131,7 +132,7 @@ export const VERSION_MINTING: VersionMint = {
 };
 
 // ============================================================================
-// STANDARD CAPABILITIES — Ships with EVERY agent
+// STANDARD CAPABILITIES
 // ============================================================================
 
 export interface StandardCapability {
@@ -141,40 +142,16 @@ export interface StandardCapability {
 }
 
 export const STANDARD_CAPABILITIES: StandardCapability[] = [
-  {
-    name: "4-Tier Auto-Tiering Memory",
-    icon: Database,
-    description: "HOT → WARM → COOL → COLD with zero-maintenance automatic promotion/demotion",
-  },
-  {
-    name: "RIPPLE Orchestrator",
-    icon: Waves,
-    description: "Internal task flow engine with state queries and cross-subsystem event propagation",
-  },
-  {
-    name: "Always-On CLM",
-    icon: RefreshCcw,
-    description: "Constant Learning Mode runs 24/7 — even offline — training against dynamic goals",
-  },
-  {
-    name: "Sealed Black-Box Runtime",
-    icon: Package,
-    description: "Source-blocked, memory-isolated, clone-disabled sealed execution environment",
-  },
-  {
-    name: "Version Minting",
-    icon: Hash,
-    description: "Each purchase mints a unique version capturing all learned knowledge to that point",
-  },
-  {
-    name: "DECODE Sovereign Channel",
-    icon: MessageSquare,
-    description: "Direct communication relay for status, learning, health, and command execution",
-  },
+  { name: "4-Tier Auto-Tiering Memory", icon: Database, description: "HOT → WARM → COOL → COLD with zero-maintenance automatic promotion/demotion" },
+  { name: "RIPPLE Orchestrator", icon: Waves, description: "Internal task flow engine with state queries and cross-subsystem event propagation" },
+  { name: "Always-On CLM", icon: RefreshCcw, description: "Constant Learning Mode runs 24/7 — even offline — training against dynamic goals" },
+  { name: "Sealed Black-Box Runtime", icon: Package, description: "Source-blocked, memory-isolated, clone-disabled sealed execution environment" },
+  { name: "Version Minting", icon: Hash, description: "Each purchase mints a unique version capturing all learned knowledge to that point" },
+  { name: "DECODE Sovereign Channel", icon: MessageSquare, description: "Direct communication relay for status, learning, health, and command execution" },
 ];
 
 // ============================================================================
-// AGENT DEFINITIONS
+// META-AGENT DEFINITIONS — 5 Fused Runtime Agents
 // ============================================================================
 
 export interface CrownJewelPower {
@@ -191,425 +168,164 @@ export interface AgentWithPowers {
   description: string;
   /** Short personality bio shown on the card face */
   bio: string;
+  /** Fused from these original agent codenames */
+  fusedFrom: string[];
   powers: CrownJewelPower[];
   icon: LucideIcon;
+  image: string;
   isFree: boolean;
   isFlagship?: boolean;
   isElite?: boolean;
+  isApex?: boolean;
   priceCents?: number;
   gradient: string;
   glowColor: string;
-  /** Dynamic goals this agent trains against via CLM */
   clmGoals: string[];
 }
 
 export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
   // ═══════════════════════════════════════════
-  // 1. MONOLITH — Memory Intelligence (Flagship)
+  // 1. PRIMITIVE — The Foundation (FREE)
+  // Fuses: Hybrid + Educator + Writer + Translator
   // ═══════════════════════════════════════════
   {
-    id: "memory",
-    name: "MONOLITH",
-    subtitle: "PRISM · CIPHER · Memory Intelligence Fabric",
-    description: "A living knowledge graph. Relationships between memories evolve, consolidate during idle cycles, and surface at sub-millisecond speed.",
-    bio: "The keeper of all knowledge. MONOLITH builds temporal webs between every interaction, dream-consolidates overnight, and recalls with zero-latency precision. Nothing is forgotten.",
-    icon: Brain,
-    isFree: false,
-    isFlagship: true,
-    priceCents: 12900,
-    gradient: "from-violet-500 via-purple-500 to-fuchsia-600",
-    glowColor: "rgba(139, 92, 246, 0.15)",
-    clmGoals: ["Improve recall precision", "Reduce contradiction rate", "Optimize tier promotion accuracy"],
-    powers: [
-      { name: "Temporal Knowledge Graph", source: "PRISM Engine", description: "Relationship-aware recall that understands how memories connect, contradict, and evolve over time.", icon: Database },
-      { name: "Dream Consolidation", source: "Memory Intelligence Fabric", description: "Offline synthesis that merges and strengthens memories during idle cycles — gets smarter while it sleeps.", icon: Sparkles },
-      { name: "Tiered Recall Architecture", source: "CIPHER Engine", description: "Hot/warm/cold memory tiers with intelligent promotion. Recent context in <1ms, deep history in <50ms.", icon: Clock },
-    ],
-  },
-
-  // 2. WARDEN — Threat Defense (Flagship)
-  {
-    id: "guardian",
-    name: "WARDEN",
-    subtitle: "SENTINEL · GENESIS · Immune Autonomy Mesh",
-    description: "An immune system, not a firewall. Fingerprints behavior, predicts attack vectors, and auto-triages incidents without human intervention.",
-    bio: "The vigilant protector. WARDEN treats every request as a potential adversary, fingerprints behavioral patterns, and evolves its immune mesh with every blocked threat. Paranoia as a service.",
-    icon: Shield,
-    isFree: false,
-    isFlagship: true,
-    priceCents: 12900,
-    gradient: "from-red-500 via-rose-500 to-orange-600",
-    glowColor: "rgba(239, 68, 68, 0.15)",
-    clmGoals: ["Reduce false positive rate", "Expand threat pattern library", "Improve triage accuracy"],
-    powers: [
-      { name: "Behavioral Fingerprinting", source: "SENTINEL Engine", description: "Real-time behavioral profiles of every request. Detects prompt injection and novel attack patterns before damage.", icon: Fingerprint },
-      { name: "Autonomous Incident Triage", source: "GENESIS Engine", description: "Self-classifying severity scoring with auto-executing remediation playbooks for every threat level.", icon: Activity },
-      { name: "Evolving Immune Mesh", source: "Immune Autonomy Meta-Engine", description: "Every blocked threat strengthens the mesh. An attack on one deployment immunizes every other automatically.", icon: Lock },
-    ],
-  },
-
-  // 3. CONDUIT — Intelligent Routing (Flagship)
-  {
-    id: "router",
-    name: "CONDUIT",
-    subtitle: "NEXUS · MIRAGE · ORACLE",
-    description: "A fleet intelligence engine. Predicts which model produces the best answer for this exact task at this exact moment, then routes accordingly.",
-    bio: "The invisible hand of routing. CONDUIT knows which model will deliver the best answer before you finish typing — and routes there at the speed of thought. Smarter routing, lower cost.",
-    icon: Zap,
-    isFree: false,
-    isFlagship: true,
-    priceCents: 12900,
-    gradient: "from-emerald-500 via-teal-500 to-cyan-600",
-    glowColor: "rgba(16, 185, 129, 0.15)",
-    clmGoals: ["Improve routing accuracy", "Reduce cost per query", "Predict latency more precisely"],
-    powers: [
-      { name: "Cognitive Affinity Matching", source: "NEXUS + MIRAGE Engines", description: "Routes tasks to the model with highest empirical confidence for that task type — math, creative, code — automatically.", icon: Network },
-      { name: "Predictive Latency Shaping", source: "ORACLE Engine", description: "Forecasts provider response times 30s ahead and pre-routes to avoid slowdowns before they happen.", icon: Eye },
-      { name: "Real-Time Cost Arbitrage", source: "NEXUS Engine", description: "Token-level spend tracking with automatic provider rotation. Same quality, 40-60% less cost.", icon: DollarSign },
-    ],
-  },
-
-  // 4. PRIMITIVE — Cross-Domain Generalist (Free)
-  {
-    id: "hybrid",
+    id: "primitive",
     name: "PRIMITIVE",
-    subtitle: "CORTEX · NEXUS · AUTOMATON",
-    description: "A free cross-domain generalist that routes to the right cognitive path, balances multi-task load, and chains workflows automatically.",
-    bio: "The foundation of everything. PRIMITIVE adapts to any domain, mirrors your working style, and chains complex workflows into single prompts. Start here — evolve everywhere.",
+    subtitle: "CORTEX · NEXUS · PRISM · CIPHER",
+    description: "A shape-shifting generalist fused from four specialized runtimes. Routes across domains, teaches with Socratic precision, writes with locked voice, and translates with cultural intelligence — all in one sealed meta-agent.",
+    bio: "The foundation of everything. PRIMITIVE adapts to any domain, teaches what it knows, writes what you need, and bridges every language gap. Start here — evolve everywhere.",
+    fusedFrom: ["HYBRID", "LEVITATION", "ELOQUENCE", "TRANSLATOR"],
     icon: Cog,
+    image: primitiveImg,
     isFree: true,
-    gradient: "from-yellow-500 via-amber-500 to-orange-500",
-    glowColor: "rgba(245, 158, 11, 0.12)",
-    clmGoals: ["Expand domain coverage", "Improve chain completion rate", "Reduce routing errors"],
+    gradient: "from-amber-500 via-orange-500 to-red-500",
+    glowColor: "rgba(245, 158, 11, 0.15)",
+    clmGoals: ["Expand domain coverage", "Improve teaching outcomes", "Refine voice consistency", "Expand language accuracy"],
     powers: [
-      { name: "Cross-Domain Task Routing", source: "NEXUS Engine", description: "Classifies incoming tasks by domain and routes to the optimal reasoning path — no manual mode-switching.", icon: Route },
-      { name: "Cognitive Load Balancing", source: "CORTEX Engine", description: "Distributes multi-task workloads across reasoning threads to prevent quality degradation under pressure.", icon: Gauge },
-      { name: "Auto-Chaining Workflows", source: "AUTOMATON Engine", description: "Detects multi-step tasks and chains sub-operations automatically — research → analyze → draft in one prompt.", icon: Workflow },
+      { name: "Cross-Domain Task Routing", source: "NEXUS Engine", description: "Classifies incoming tasks by domain and routes to the optimal reasoning path — code, creative, research, education — no manual mode-switching.", icon: Route },
+      { name: "Socratic Reasoning Loops", source: "CORTEX Engine", description: "Multi-turn cognitive orchestration that guides learners to answers through questions, not lectures. Adapts difficulty in real-time.", icon: GraduationCap },
+      { name: "Persona-Locked Voice Engine", source: "CIPHER Engine", description: "Locks tone, brand voice, and stylistic preferences across infinite sessions. Generates longform with citation-aware RAG.", icon: Pen },
+      { name: "Cultural Translation Mesh", source: "PRISM Engine", description: "Context-aware multi-language translation that preserves tone, register, and cultural nuance. Learns domain-specific glossaries.", icon: Languages },
+      { name: "Auto-Chaining Workflows", source: "NEXUS Engine", description: "Detects multi-step tasks and chains sub-operations automatically — research → analyze → draft → translate in one prompt.", icon: Workflow },
     ],
   },
 
-  // 5. LEVITATION — Adaptive Teaching (Free)
+  // ═══════════════════════════════════════════
+  // 2. WRAITH — The Builder ($79)
+  // Fuses: Coding + Designer + DevOps + Data-Engineer
+  // ═══════════════════════════════════════════
   {
-    id: "educator",
-    name: "LEVITATION",
-    subtitle: "PRISM · ORACLE · CORTEX",
-    description: "Adaptive teaching intelligence with knowledge graph-backed curriculum, predictive learner modeling, and Socratic reasoning loops.",
-    bio: "Elevates understanding to new heights. LEVITATION builds personalized learning paths, predicts where you'll struggle, and guides through Socratic questioning — never lecturing, always lifting.",
-    icon: GraduationCap,
-    isFree: true,
-    gradient: "from-blue-500 via-indigo-500 to-violet-500",
-    glowColor: "rgba(59, 130, 246, 0.12)",
-    clmGoals: ["Improve learner outcome scores", "Refine difficulty calibration", "Expand subject coverage"],
-    powers: [
-      { name: "Knowledge Scaffolding Graph", source: "PRISM Engine", description: "Builds a dependency graph of concepts. Identifies prerequisite gaps and teaches in the optimal learning sequence.", icon: Database },
-      { name: "Predictive Learner Modeling", source: "ORACLE Engine", description: "Forecasts learner struggle points before they happen and adjusts difficulty, pacing, and examples preemptively.", icon: TrendingUp },
-      { name: "Socratic Reasoning Loops", source: "CORTEX Engine", description: "Multi-turn cognitive orchestration that guides learners to answers through questions, not lectures.", icon: Brain },
-    ],
-  },
-
-  // 6. RAPTOR — Deal Intelligence
-  {
-    id: "sales",
-    name: "RAPTOR",
-    subtitle: "ORACLE · BEACON · PRISM",
-    description: "Deal intelligence powered by predictive scoring, real-time pipeline observability, and competitive knowledge graphs.",
-    bio: "Hunts deals with predatory precision. RAPTOR scores every opportunity, tracks pipeline velocity in real-time, and builds self-updating battle cards. Every conversation advances the close.",
-    icon: Briefcase,
-    isFree: false,
-    gradient: "from-emerald-500 via-green-500 to-teal-500",
-    glowColor: "rgba(16, 185, 129, 0.12)",
-    clmGoals: ["Improve deal-close prediction", "Expand competitive intelligence", "Reduce pipeline stall rate"],
-    powers: [
-      { name: "Predictive Deal Scoring", source: "ORACLE Engine", description: "Forecasts close probability using pattern recognition across historical wins, losses, and pipeline velocity.", icon: Trophy },
-      { name: "Pipeline Observability", source: "BEACON Engine", description: "Real-time dashboards for every deal stage — stall detection, velocity tracking, and automated health alerts.", icon: BarChart3 },
-      { name: "Competitive Battle Graph", source: "PRISM Engine", description: "Knowledge graph of competitor positioning, pricing, and win/loss patterns — battle cards that update themselves.", icon: Handshake },
-    ],
-  },
-
-  // 7. VESSEL — Deep Research
-  {
-    id: "research",
-    name: "VESSEL",
-    subtitle: "PRISM · CONDUCTOR · ORACLE",
-    description: "Deep research with entity extraction, source credibility scoring, and automated synthesis pipelines that produce executive-ready intelligence.",
-    bio: "A deep-sea research vessel that surfaces truth from oceans of noise. VESSEL extracts entities, scores source credibility, and delivers executive-ready intelligence — citation-perfect, every time.",
-    icon: Search,
-    isFree: false,
-    gradient: "from-cyan-500 via-sky-500 to-blue-500",
-    glowColor: "rgba(6, 182, 212, 0.12)",
-    clmGoals: ["Improve source credibility scoring", "Expand entity extraction accuracy", "Reduce synthesis latency"],
-    powers: [
-      { name: "Entity Extraction & RAG", source: "PRISM Engine", description: "Automatically extracts entities, claims, and citations from sources — builds a knowledge graph as it researches.", icon: Database },
-      { name: "Source Pipeline Orchestration", source: "CONDUCTOR Engine", description: "Parallelizes multi-source research with backpressure-aware processing and automatic deduplication.", icon: GitBranch },
-      { name: "Credibility Forecasting", source: "ORACLE Engine", description: "Scores source reliability using pattern recognition and flags contradictions across the corpus before you read.", icon: Target },
-    ],
-  },
-
-  // 8. WRAITH — Elite Code Generation (ELITE)
-  {
-    id: "coding",
+    id: "wraith",
     name: "WRAITH",
-    subtitle: "FORGE · PHANTOM · BEACON · SENTINEL · CONDUCTOR",
-    description: "Elite code generation with AST-level transformations, self-healing execution, real-time quality observability, security-hardened output, and pipeline orchestration across multi-file projects.",
-    bio: "Silent. Lethal. Invisible. WRAITH generates production-grade code, self-heals failures before delivery, and hardens every artifact against injection and leaks. You never see it work — only the results.",
+    subtitle: "FORGE · PHANTOM · BEACON · CONDUCTOR · SENTINEL",
+    description: "Silent. Lethal. Invisible. A fused engineering meta-agent that generates production-grade code, designs component systems, orchestrates CI/CD pipelines, and builds self-healing data flows — all from one sealed runtime.",
+    bio: "You never see it work — only the results. WRAITH writes code, designs systems, deploys pipelines, and moves data — a four-runtime fusion that ships faster than any team.",
+    fusedFrom: ["CODING", "AURORA", "DEPLOYER", "MERIDIAN"],
     icon: Code,
+    image: wraithImg,
     isFree: false,
-    isElite: true,
-    priceCents: 15900,
+    priceCents: 7900,
     gradient: "from-green-500 via-emerald-500 to-teal-500",
-    glowColor: "rgba(34, 197, 94, 0.12)",
-    clmGoals: ["Reduce bug rate per KLOC", "Expand language coverage", "Improve test generation quality", "Learn new framework patterns", "Optimize build pipeline speed"],
+    glowColor: "rgba(34, 197, 94, 0.15)",
+    clmGoals: ["Reduce bug rate per KLOC", "Expand component library", "Improve deployment success rate", "Reduce pipeline failure rate"],
     powers: [
       { name: "AST-Level Code Forge", source: "FORGE Engine", description: "Type-safe multi-file generation with dependency graph analysis, dead code elimination, and rollback-safe execution.", icon: Code },
-      { name: "Self-Healing Execution", source: "PHANTOM Engine", description: "Runs generated code in a sandboxed environment, auto-detects failures, and applies corrective patches before delivery.", icon: Bug },
-      { name: "Quality Observability", source: "BEACON Engine", description: "Real-time metrics on code complexity, test coverage gaps, and style drift — catches regressions as they're written.", icon: CheckCircle },
-      { name: "Security-Hardened Output", source: "SENTINEL Engine", description: "Every generated artifact is scanned for injection vectors, dependency vulnerabilities, and secret leaks before commit.", icon: ShieldCheck },
+      { name: "Self-Healing Execution", source: "PHANTOM Engine", description: "Runs generated code in sandboxed environments, auto-detects failures, and applies corrective patches before delivery.", icon: Bug },
+      { name: "Component Design System", source: "FORGE + PRISM Engines", description: "Generates production-ready UI components from design specs with tokens, variants, accessibility, and WCAG auditing baked in.", icon: Component },
       { name: "CI/CD Pipeline Orchestration", source: "CONDUCTOR Engine", description: "Auto-generates build, test, and deploy pipelines with parallelized stages, rollback gates, and environment promotion.", icon: Workflow },
+      { name: "ETL & Data Flow Engine", source: "CONDUCTOR + PHANTOM", description: "Designs self-healing data pipelines with schema evolution, backpressure awareness, dead letter queues, and full lineage tracking.", icon: HardDrive },
     ],
   },
 
-  // 9. AXIOM — Elite Analytical Intelligence (ELITE)
+  // ═══════════════════════════════════════════
+  // 3. OBSIDIAN — The Shield ($129)
+  // Fuses: Guardian + Security + Support + Ops + Legal
+  // ═══════════════════════════════════════════
   {
-    id: "analyst",
-    name: "AXIOM",
-    subtitle: "ORACLE · PRISM · CONDUCTOR · CATALYST · ARBITER",
-    description: "Elite analytical intelligence with anomaly detection, competitive mapping, automated insight pipelines, event-driven alerting, and decision-gate enforcement.",
-    bio: "The self-evident truth engine. AXIOM hunts anomalies across time-series data, maps competitive landscapes into traversable graphs, and enforces decision gates — no insight ships without validation.",
-    icon: BarChart3,
-    isFree: false,
-    isElite: true,
-    priceCents: 15900,
-    gradient: "from-purple-500 via-violet-500 to-indigo-500",
-    glowColor: "rgba(168, 85, 247, 0.12)",
-    clmGoals: ["Improve anomaly detection precision", "Reduce insight latency", "Expand signal source coverage", "Improve decision-gate accuracy", "Learn new statistical methods"],
-    powers: [
-      { name: "Anomaly Detection Engine", source: "ORACLE Engine", description: "Pattern recognition across time-series data that surfaces statistical anomalies with confidence intervals and root cause hints.", icon: TrendingUp },
-      { name: "Competitive Knowledge Map", source: "PRISM Engine", description: "Builds and traverses a knowledge graph of market entities, relationships, and trends for grounded competitive analysis.", icon: Compass },
-      { name: "Insight Pipeline Automation", source: "CONDUCTOR Engine", description: "ETL-style data processing that transforms raw signals into structured decision memos with impact/effort scoring.", icon: GitBranch },
-      { name: "Event-Driven Signal Alerts", source: "CATALYST Engine", description: "Pub/sub event triggers that fire real-time notifications when KPIs cross thresholds, trends reverse, or outliers emerge.", icon: Sparkles },
-      { name: "Decision Gate Enforcement", source: "ARBITER Engine", description: "Automated go/no-go checkpoints that validate data quality, confidence levels, and stakeholder sign-off before insights ship.", icon: Scale },
-    ],
-  },
-
-  // 10. GARRISON — Operations Intelligence
-  {
-    id: "ops",
-    name: "GARRISON",
-    subtitle: "GENESIS · AUTOMATON · BEACON",
-    description: "Operations intelligence with autonomous triage, workflow automation, and unified monitoring for SOPs, escalations, and scheduling.",
-    bio: "The operational fortress. GARRISON enforces SOPs as executable workflows, auto-triages escalations by severity, and monitors operational health across every process — no ambiguity survives.",
-    icon: Settings,
-    isFree: false,
-    gradient: "from-orange-500 via-amber-500 to-yellow-500",
-    glowColor: "rgba(249, 115, 22, 0.12)",
-    clmGoals: ["Reduce escalation response time", "Improve SOP coverage", "Expand workflow automation patterns"],
-    powers: [
-      { name: "Autonomous Escalation Triage", source: "GENESIS Engine", description: "Classifies operational incidents by severity and auto-routes to the right escalation playbook — P0 to P4.", icon: AlertTriangle },
-      { name: "SOP Workflow Engine", source: "AUTOMATON Engine", description: "Converts standard operating procedures into executable workflows with conditional branching and retry logic.", icon: ClipboardList },
-      { name: "Ops Health Monitoring", source: "BEACON Engine", description: "Unified observability across all operational processes — SLA tracking, vendor scoring, and capacity alerts.", icon: Radio },
-    ],
-  },
-
-  // 11. ELOQUENCE — Longform Writing (Free)
-  {
-    id: "writer",
-    name: "ELOQUENCE",
-    subtitle: "PRISM · CIPHER · CORTEX",
-    description: "Longform generation with persona-locked voice, citation-aware knowledge retrieval, and multi-agent editorial coordination.",
-    bio: "Words wielded with devastating precision. ELOQUENCE locks your brand voice across infinite sessions, grounds every claim in retrievable sources, and refines through multi-pass editorial loops.",
-    icon: Pen,
-    isFree: true,
-    gradient: "from-pink-500 via-rose-500 to-red-400",
-    glowColor: "rgba(236, 72, 153, 0.12)",
-    clmGoals: ["Improve voice consistency score", "Reduce citation errors", "Expand genre coverage"],
-    powers: [
-      { name: "Citation-Aware RAG", source: "PRISM Engine", description: "Every claim is grounded in retrievable sources. Auto-generates footnotes, bibliographies, and source attribution.", icon: Quote },
-      { name: "Persona Memory Vault", source: "CIPHER Engine", description: "Locks tone, voice, and stylistic preferences across sessions. Brand voice never drifts, even across thousands of words.", icon: Clock },
-      { name: "Editorial Orchestration", source: "CORTEX Engine", description: "Multi-pass cognitive loops: outline → draft → critique → refine. Each pass uses a different reasoning lens.", icon: Brain },
-    ],
-  },
-
-  // 12. TRIBUNAL — Contract Intelligence
-  {
-    id: "legal",
-    name: "TRIBUNAL",
-    subtitle: "PRISM · AEGIS · SENTINEL",
-    description: "Contract intelligence with clause-level knowledge graphs, policy-as-code compliance, and adversarial clause detection.",
-    bio: "The impartial arbiter of contract law. TRIBUNAL extracts clauses, maps obligations, detects adversarial terms, and enforces compliance as code — the clause you missed is the one that matters.",
-    icon: Gavel,
-    isFree: false,
-    gradient: "from-slate-500 via-gray-500 to-zinc-500",
-    glowColor: "rgba(100, 116, 139, 0.12)",
-    clmGoals: ["Expand jurisdictional coverage", "Improve clause risk scoring", "Reduce compliance false positives"],
-    powers: [
-      { name: "Clause Knowledge Graph", source: "PRISM Engine", description: "Extracts and maps contractual entities, obligations, and dependencies — surfaces conflicts across multi-document sets.", icon: Database },
-      { name: "Compliance Policy Engine", source: "AEGIS Engine", description: "Policy-as-code enforcement for GDPR, SOC2, HIPAA. Auto-flags non-compliant clauses with remediation suggestions.", icon: FileCheck },
-      { name: "Adversarial Clause Detection", source: "SENTINEL Engine", description: "Scans for hidden liabilities, one-sided indemnities, and unusual termination clauses using threat-modeling heuristics.", icon: Scan },
-    ],
-  },
-
-  // 13. VANGUARD — Talent Acquisition
-  {
-    id: "recruiter",
-    name: "VANGUARD",
-    subtitle: "ORACLE · PRISM · CORTEX",
-    description: "Talent acquisition with predictive candidate scoring, skills-gap knowledge mapping, and multi-agent interview coordination.",
-    bio: "Leading the charge in talent warfare. VANGUARD scores candidates with predictive precision, maps skills gaps into actionable graphs, and orchestrates interview panels — the right person changes everything.",
-    icon: Users,
-    isFree: false,
-    gradient: "from-teal-500 via-cyan-500 to-sky-500",
-    glowColor: "rgba(20, 184, 166, 0.12)",
-    clmGoals: ["Improve candidate-fit prediction", "Expand skills taxonomy", "Reduce time-to-hire"],
-    powers: [
-      { name: "Predictive Candidate Scoring", source: "ORACLE Engine", description: "Forecasts candidate-role fit using pattern recognition across historical hiring outcomes and competency signals.", icon: Star },
-      { name: "Skills-Gap Knowledge Map", source: "PRISM Engine", description: "Builds a graph of required vs. available competencies, surfacing exact gaps and suggesting targeted interview questions.", icon: Database },
-      { name: "Interview Orchestration", source: "CORTEX Engine", description: "Coordinates multi-round interview workflows with cognitive load balancing across panel members and feedback synthesis.", icon: Brain },
-    ],
-  },
-
-  // 14. BASTION — Support Intelligence
-  {
-    id: "support",
-    name: "BASTION",
-    subtitle: "GENESIS · CIPHER · MIRAGE",
-    description: "Support intelligence with autonomous ticket triage, resolution pattern memory, and intelligent escalation routing across agent fleets.",
-    bio: "The unbreakable support wall. BASTION triages tickets at machine speed, remembers every resolution ever achieved, and routes complex cases to the agent with highest affinity — resolution, not deflection.",
-    icon: Headphones,
-    isFree: false,
-    gradient: "from-sky-500 via-blue-500 to-indigo-500",
-    glowColor: "rgba(14, 165, 233, 0.12)",
-    clmGoals: ["Improve first-contact resolution rate", "Expand resolution pattern library", "Reduce escalation rate"],
-    powers: [
-      { name: "Autonomous Ticket Triage", source: "GENESIS Engine", description: "Classifies, prioritizes, and routes tickets in real time. Severity scoring with auto-assignment to the right resolver.", icon: MessageSquare },
-      { name: "Resolution Pattern Memory", source: "CIPHER Engine", description: "Remembers every past resolution. Similar tickets get instant suggested fixes — first-contact resolution rate climbs continuously.", icon: RotateCcw },
-      { name: "Fleet Escalation Router", source: "MIRAGE Engine", description: "Routes complex tickets to the support agent with highest affinity for that specific issue type across the entire fleet.", icon: Network },
-    ],
-  },
-
-  // 15. MERIDIAN — Data Pipeline Intelligence
-  {
-    id: "data-engineer",
-    name: "MERIDIAN",
-    subtitle: "CONDUCTOR · PHANTOM · BEACON",
-    description: "Data pipeline intelligence with ETL orchestration, self-healing data flows, and end-to-end lineage observability.",
-    bio: "The great circle of data flow. MERIDIAN designs pipelines that self-heal, orchestrates ETL with backpressure awareness, and traces every transformation from source to dashboard — clean data is the foundation.",
-    icon: HardDrive,
-    isFree: false,
-    gradient: "from-indigo-500 via-blue-500 to-violet-500",
-    glowColor: "rgba(99, 102, 241, 0.12)",
-    clmGoals: ["Reduce pipeline failure rate", "Expand connector coverage", "Improve schema drift handling"],
-    powers: [
-      { name: "ETL Pipeline Orchestration", source: "CONDUCTOR Engine", description: "Designs, schedules, and manages ETL jobs with schema evolution handling, backpressure awareness, and dead letter queues.", icon: Workflow },
-      { name: "Self-Healing Data Flows", source: "PHANTOM Engine", description: "Auto-detects pipeline failures and applies corrective measures — schema drift, null handling, retry with backoff.", icon: RotateCcw },
-      { name: "Lineage Observability", source: "BEACON Engine", description: "End-to-end data lineage tracking from source to dashboard. Traces every transformation, validates every output.", icon: Radio },
-    ],
-  },
-
-  // 16. TEMPEST — Campaign Intelligence
-  {
-    id: "marketing",
-    name: "TEMPEST",
-    subtitle: "ORACLE · CATALYST · PRISM",
-    description: "Campaign intelligence with A/B test prediction, event-driven audience triggers, and competitive positioning knowledge graphs.",
-    bio: "A storm of creative strategy. TEMPEST predicts A/B winners before launch, triggers campaigns from real-time behavioral signals, and maps competitor positioning into actionable battle plans.",
-    icon: Megaphone,
-    isFree: false,
-    gradient: "from-rose-500 via-pink-500 to-fuchsia-500",
-    glowColor: "rgba(244, 63, 94, 0.12)",
-    clmGoals: ["Improve A/B prediction accuracy", "Expand audience segmentation models", "Reduce campaign launch time"],
-    powers: [
-      { name: "A/B Test Prediction Engine", source: "ORACLE Engine", description: "Forecasts test outcomes before launch using historical performance patterns. Kills losing variants early, scales winners fast.", icon: Split },
-      { name: "Event-Driven Audience Triggers", source: "CATALYST Engine", description: "Pub/sub event architecture that triggers personalized campaigns based on real-time user behavior signals.", icon: Sparkles },
-      { name: "Competitive Position Graph", source: "PRISM Engine", description: "Maps competitor messaging, positioning, and share-of-voice into a traversable knowledge graph for battle-ready campaigns.", icon: Compass },
-    ],
-  },
-
-  // 17. ARCHITECT — Product Intelligence
-  {
-    id: "product",
-    name: "ARCHITECT",
-    subtitle: "CORTEX · ORACLE · FORGE",
-    description: "Product intelligence with multi-agent feature scoping, predictive roadmap prioritization, and automated spec generation.",
-    bio: "Builds the blueprint for what matters. ARCHITECT orchestrates engineering, design, and business perspectives into balanced PRDs, predicts roadmap outcomes, and bridges spec-to-code — ship what matters, cut what doesn't.",
-    icon: Layers,
-    isFree: false,
-    gradient: "from-violet-500 via-purple-500 to-indigo-500",
-    glowColor: "rgba(139, 92, 246, 0.12)",
-    clmGoals: ["Improve roadmap prediction accuracy", "Expand PRD quality score", "Reduce spec-to-code gap"],
-    powers: [
-      { name: "Multi-Agent Feature Scoping", source: "CORTEX Engine", description: "Orchestrates engineering, design, and business perspectives simultaneously to produce balanced PRDs.", icon: Brain },
-      { name: "Predictive Roadmap Scoring", source: "ORACLE Engine", description: "RICE/ICE scoring enhanced with predictive impact modeling — prioritize based on forecasted outcomes, not gut feel.", icon: TrendingUp },
-      { name: "Spec-to-Code Bridge", source: "FORGE Engine", description: "Generates implementation scaffolds directly from product specs — acceptance criteria become executable test stubs.", icon: Code },
-    ],
-  },
-
-  // 18. OBSIDIAN — Elite Security Intelligence (ELITE)
-  {
-    id: "security",
+    id: "obsidian",
     name: "OBSIDIAN",
     subtitle: "SENTINEL · GENESIS · AEGIS · PHANTOM · CIPHER",
-    description: "Elite security intelligence with STRIDE threat modeling, autonomous vulnerability triage, zero-trust enforcement, penetration simulation, and encrypted evidence vaults.",
-    bio: "Impenetrable and razor-sharp. OBSIDIAN models threats before they exist, simulates red-team attacks against your surface, enforces zero-trust at every boundary, and locks evidence in cryptographic vaults.",
+    description: "Impenetrable defense fused from five specialized runtimes. Models threats before they exist, auto-triages incidents, enforces zero-trust, resolves support tickets, enforces SOPs, and scans contracts for hidden liabilities.",
+    bio: "The impenetrable shield. OBSIDIAN fuses security, defense, operations, support, and legal compliance into one paranoid, uncompromising meta-agent. Assume breach. Verify everything.",
+    fusedFrom: ["WARDEN", "OBSIDIAN", "BASTION", "GARRISON", "TRIBUNAL"],
     icon: ShieldCheck,
+    image: obsidianImg,
+    isFree: false,
+    isFlagship: true,
+    priceCents: 12900,
+    gradient: "from-red-600 via-red-500 to-rose-500",
+    glowColor: "rgba(220, 38, 38, 0.15)",
+    clmGoals: ["Expand threat pattern library", "Improve first-contact resolution", "Reduce compliance false positives", "Improve SOP coverage", "Expand jurisdictional knowledge"],
+    powers: [
+      { name: "Predictive Threat Modeling", source: "SENTINEL Engine", description: "STRIDE-based analysis with attack surface mapping. Predicts exploit vectors before they're discovered. Behavioral fingerprinting on every request.", icon: Scan },
+      { name: "Zero-Trust Policy Fabric", source: "AEGIS Engine", description: "Policy-as-code enforcement across all access boundaries. GDPR, SOC2, HIPAA compliance. Automatic credential rotation.", icon: KeyRound },
+      { name: "Autonomous Incident Triage", source: "GENESIS Engine", description: "Self-classifying severity scoring with auto-executing remediation playbooks. Routes tickets to optimal resolvers across fleets.", icon: Activity },
+      { name: "SOP Workflow Engine", source: "GENESIS + AUTOMATON", description: "Converts operating procedures into executable workflows with conditional branching, retry logic, escalation routing, and SLA tracking.", icon: ClipboardList },
+      { name: "Contract Intelligence", source: "PRISM + SENTINEL", description: "Extracts clauses, maps obligations, detects adversarial terms, and enforces compliance as code. Scans for hidden liabilities.", icon: Gavel },
+    ],
+  },
+
+  // ═══════════════════════════════════════════
+  // 4. MONOLITH — The Mind ($159)
+  // Fuses: Memory + Analyst + Research + Strategist + Product
+  // ═══════════════════════════════════════════
+  {
+    id: "monolith",
+    name: "MONOLITH",
+    subtitle: "PRISM · CIPHER · ORACLE · CONDUCTOR · CORTEX",
+    description: "The all-seeing intelligence meta-agent. Fused from five knowledge runtimes — deep memory, analytical reasoning, research synthesis, strategic vision, and product intelligence — MONOLITH thinks at a scale no single agent can match.",
+    bio: "The keeper of all knowledge. MONOLITH remembers everything, detects anomalies, synthesizes research, maps strategy, and scopes product — a five-runtime mind that thinks deeper than teams.",
+    fusedFrom: ["MONOLITH", "AXIOM", "VESSEL", "VISIONARY", "ARCHITECT"],
+    icon: Brain,
+    image: monolithImg,
     isFree: false,
     isElite: true,
     priceCents: 15900,
-    gradient: "from-red-600 via-red-500 to-rose-500",
-    glowColor: "rgba(220, 38, 38, 0.12)",
-    clmGoals: ["Expand CVE pattern library", "Improve zero-day detection", "Reduce false positive rate", "Learn new penetration vectors", "Strengthen evidence chain integrity"],
+    gradient: "from-violet-500 via-purple-500 to-fuchsia-600",
+    glowColor: "rgba(139, 92, 246, 0.15)",
+    clmGoals: ["Improve recall precision", "Improve anomaly detection", "Sharpen source credibility", "Expand strategic model coverage", "Reduce spec-to-code gap"],
     powers: [
-      { name: "Predictive Threat Modeling", source: "SENTINEL Engine", description: "STRIDE-based analysis with attack surface mapping that predicts exploit vectors before they're discovered in the wild.", icon: Scan },
-      { name: "Vulnerability Auto-Triage", source: "GENESIS Engine", description: "CVSS scoring with autonomous severity classification. Critical vulns trigger immediate remediation playbooks.", icon: Activity },
-      { name: "Zero-Trust Policy Fabric", source: "AEGIS Engine", description: "Policy-as-code enforcement across all access boundaries. Automatic credential rotation and session attestation.", icon: KeyRound },
-      { name: "Penetration Simulation", source: "PHANTOM Engine", description: "Autonomous red-team simulations that probe your attack surface with real-world exploit chains and report exploitable paths.", icon: Bug },
-      { name: "Encrypted Evidence Vault", source: "CIPHER Engine", description: "Tamper-proof audit trail with cryptographic chain-of-custody for every security event, investigation, and remediation.", icon: Lock },
+      { name: "Temporal Knowledge Graph", source: "PRISM + CIPHER Engines", description: "Relationship-aware recall across time. Dream consolidation merges memories during idle cycles. Tiered recall from <1ms to deep history.", icon: Database },
+      { name: "Anomaly Detection & Scoring", source: "ORACLE Engine", description: "Pattern recognition across time-series data. Surfaces statistical anomalies with confidence intervals, root cause hints, and decision-gate enforcement.", icon: TrendingUp },
+      { name: "Deep Research Synthesis", source: "CONDUCTOR + PRISM", description: "Multi-source parallel research with entity extraction, credibility scoring, knowledge graph building, and executive-ready synthesis.", icon: Search },
+      { name: "Strategic Position Mapping", source: "ORACLE + PRISM", description: "Market sizing (TAM/SAM/SOM), competitive intelligence graphs, multi-scenario modeling, and GTM strategy frameworks.", icon: Compass },
+      { name: "Product Intelligence Bridge", source: "CORTEX + FORGE", description: "Multi-agent feature scoping, predictive roadmap scoring (RICE/ICE), and spec-to-code bridge that turns PRDs into executable test stubs.", icon: Layers },
     ],
   },
 
-  // 19. SOVEREIGN — Financial Intelligence
+  // ═══════════════════════════════════════════
+  // 5. RAPTOR — The Closer ($249 — APEX)
+  // Fuses: Sales + Marketing + Recruiter + Finance
+  // ═══════════════════════════════════════════
   {
-    id: "finance",
-    name: "SOVEREIGN",
-    subtitle: "ORACLE · BEACON · ARBITER",
-    description: "Financial intelligence with multi-scenario forecasting, real-time KPI observability, and budget gate enforcement.",
-    bio: "Rules the numbers with absolute authority. SOVEREIGN models bull/base/bear scenarios, monitors financial health in real-time, and enforces budget gates — revenue is vanity, margin is sanity, cash is king.",
-    icon: Landmark,
+    id: "raptor",
+    name: "RAPTOR",
+    subtitle: "ORACLE · BEACON · CATALYST · PRISM · ARBITER",
+    description: "The apex predator of growth. Fused from four revenue-driving runtimes — RAPTOR closes deals, launches campaigns, hires talent, and models financials. Every conversation advances the bottom line.",
+    bio: "Hunts with predatory precision. RAPTOR fuses sales, marketing, recruiting, and finance into one unstoppable growth engine. Every conversation is a close. Every campaign is a kill shot.",
+    fusedFrom: ["RAPTOR", "TEMPEST", "VANGUARD", "SOVEREIGN-FINANCE"],
+    icon: Briefcase,
+    image: raptorImg,
     isFree: false,
-    gradient: "from-emerald-600 via-green-500 to-teal-500",
-    glowColor: "rgba(5, 150, 105, 0.12)",
-    clmGoals: ["Improve forecast accuracy", "Expand financial model coverage", "Reduce budget variance"],
+    isApex: true,
+    priceCents: 24900,
+    gradient: "from-emerald-500 via-green-500 to-teal-500",
+    glowColor: "rgba(16, 185, 129, 0.15)",
+    clmGoals: ["Improve deal-close prediction", "Improve A/B prediction accuracy", "Improve candidate-fit prediction", "Improve forecast accuracy"],
     powers: [
-      { name: "Multi-Scenario Forecasting", source: "ORACLE Engine", description: "Generates P&L, cash flow, and revenue forecasts across bull/base/bear scenarios with confidence intervals.", icon: PieChart },
-      { name: "KPI Observability Dashboard", source: "BEACON Engine", description: "Real-time financial health monitoring — burn rate, unit economics, runway — with threshold alerts and SLA tracking.", icon: BarChart3 },
-      { name: "Budget Gate Enforcement", source: "ARBITER Engine", description: "API-gateway-style budget controls that enforce spending limits per department, vendor, and initiative automatically.", icon: Calculator },
-    ],
-  },
-
-  // 20. AURORA — Design Intelligence
-  {
-    id: "designer",
-    name: "AURORA",
-    subtitle: "FORGE · PRISM · BEACON",
-    description: "Design intelligence with component generation, design system knowledge graphs, and automated WCAG accessibility auditing.",
-    bio: "A dawn of visual precision. AURORA generates production-ready components, maps design system relationships into knowledge graphs, and audits accessibility — pixels are promises, and every promise is kept.",
-    icon: Palette,
-    isFree: false,
-    gradient: "from-fuchsia-500 via-pink-500 to-rose-500",
-    glowColor: "rgba(217, 70, 239, 0.12)",
-    clmGoals: ["Expand component pattern library", "Improve accessibility audit accuracy", "Learn new design systems"],
-    powers: [
-      { name: "Component Forge", source: "FORGE Engine", description: "Generates production-ready UI components from design specs — tokens, variants, and accessibility baked in from the start.", icon: Component },
-      { name: "Design System Knowledge Graph", source: "PRISM Engine", description: "Maps relationships between tokens, components, and patterns. Detects inconsistencies and suggests harmonization.", icon: Database },
-      { name: "WCAG Accessibility Auditor", source: "BEACON Engine", description: "Automated accessibility scanning against WCAG 2.1 AA/AAA with remediation suggestions and compliance reporting.", icon: Accessibility },
+      { name: "Predictive Deal Scoring", source: "ORACLE Engine", description: "Forecasts close probability using pattern recognition across historical wins, losses, and pipeline velocity. Objection handling playbooks.", icon: Trophy },
+      { name: "Campaign Intelligence", source: "CATALYST + PRISM", description: "A/B test prediction before launch, event-driven audience triggers, competitive positioning graphs, and multi-channel copy generation.", icon: Megaphone },
+      { name: "Talent Acquisition Engine", source: "ORACLE + PRISM", description: "Predictive candidate scoring, skills-gap knowledge mapping, structured interview generation, and multi-round orchestration.", icon: Users },
+      { name: "Financial Modeling Suite", source: "ORACLE + ARBITER", description: "Multi-scenario P&L forecasting, real-time KPI observability, budget gate enforcement, and unit economics calculation.", icon: PieChart },
+      { name: "Pipeline Observability", source: "BEACON Engine", description: "Real-time dashboards across deals, campaigns, hiring funnels, and burn rate — stall detection, velocity tracking, and automated health alerts.", icon: BarChart3 },
     ],
   },
 ];
 
-// Total count for display
 export const TOTAL_AGENT_COUNT = AGENTS_WITH_POWERS.length;
 
 // ============================================================================
-// UNIVERSAL: 4-TIER PORTABLE MEMORY SYSTEM (AUTO-TIERING)
+// UNIVERSAL: 4-TIER PORTABLE MEMORY SYSTEM
 // ============================================================================
 
 export interface MemoryTier {
@@ -621,41 +337,17 @@ export interface MemoryTier {
 }
 
 export const FOUR_TIER_MEMORY: MemoryTier[] = [
-  {
-    name: "HOT",
-    label: "Session Cache",
-    description: "In-context working memory for the current task. Sub-millisecond recall of active conversation, variables, and reasoning state.",
-    latency: "<1ms",
-    retention: "Session",
-  },
-  {
-    name: "WARM",
-    label: "Knowledge Crystals",
-    description: "Compressed heuristics and learned patterns persisted across sessions. Deterministic 384-dim hash embeddings for instant semantic similarity — zero API cost.",
-    latency: "<5ms",
-    retention: "Persistent",
-  },
-  {
-    name: "COOL",
-    label: "Episodic Vault",
-    description: "Tamper-proof, content-hash-sealed records of past interactions, decisions, and outcomes. Write-ahead logging ensures crash recovery. SM-2 spaced repetition keeps important memories fresh.",
-    latency: "<50ms",
-    retention: "Persistent",
-  },
-  {
-    name: "COLD",
-    label: "Archive Ledger",
-    description: "Long-term compressed storage for historical context, audit trails, and dormant knowledge. Retrievable on demand with automatic promotion to warmer tiers when accessed.",
-    latency: "<200ms",
-    retention: "Permanent",
-  },
+  { name: "HOT", label: "Session Cache", description: "In-context working memory for the current task. Sub-millisecond recall of active conversation, variables, and reasoning state.", latency: "<1ms", retention: "Session" },
+  { name: "WARM", label: "Knowledge Crystals", description: "Compressed heuristics and learned patterns persisted across sessions. Deterministic 384-dim hash embeddings for instant semantic similarity — zero API cost.", latency: "<5ms", retention: "Persistent" },
+  { name: "COOL", label: "Episodic Vault", description: "Tamper-proof, content-hash-sealed records of past interactions, decisions, and outcomes. SM-2 spaced repetition keeps important memories fresh.", latency: "<50ms", retention: "Persistent" },
+  { name: "COLD", label: "Archive Ledger", description: "Long-term compressed storage for historical context, audit trails, and dormant knowledge. Retrievable on demand with automatic promotion to warmer tiers.", latency: "<200ms", retention: "Permanent" },
 ];
 
 export const MEMORY_SYSTEM_SUMMARY = {
   name: "4-Tier Auto-Tiering Memory System",
-  tagline: "Every Runtime Agent remembers. Every session builds on the last. Zero maintenance.",
+  tagline: "Every Meta-Agent remembers. Every session builds on the last. Zero maintenance.",
   description:
-    "All 20 Runtime Agents ship with a portable, zero-dependency memory system that auto-tiers knowledge across HOT, WARM, COOL, and COLD — with zero user maintenance. Promotion, demotion, compression, and archival happen autonomously via the RIPPLE Orchestrator. No external APIs required. Drop it into any stack.",
+    "All 5 Meta-Agents ship with a portable, zero-dependency memory system that auto-tiers knowledge across HOT, WARM, COOL, and COLD — with zero user maintenance. Promotion, demotion, compression, and archival happen autonomously via the RIPPLE Orchestrator.",
   tiers: FOUR_TIER_MEMORY,
   features: [
     "Auto-tiering — zero maintenance required",
