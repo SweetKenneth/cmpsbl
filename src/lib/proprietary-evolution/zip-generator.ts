@@ -659,7 +659,8 @@ function generateRuntimeBridge(lang: string, capabilities: CapabilityForExport[]
   if (lang === 'php') return generatePhpRuntimeBridge(capabilities);
   if (lang === 'python') return generatePythonRuntimeBridge(capabilities);
   if (lang === 'typescript') return generateTypeScriptRuntimeBridge(capabilities);
-  return null;
+  // All other languages get a generic bridge as a structured pseudocode reference
+  return generateGenericRuntimeBridge(lang, capabilities);
 }
 
 function getRuntimeBridgeFilename(lang: string): string {
