@@ -328,13 +328,186 @@ export function validate(): boolean {
 `;
   }
 
-  return `${line} Capability: ${cap.name}
-${line} CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
-${line} Chain: ${cap.chain.join(' → ')}
-${line} Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+  if (lang === 'php') {
+    return generatePhpCapabilitySource(cap);
+  }
+
+  if (lang === 'python') {
+    return generatePythonCapabilitySource(cap);
+  }
+
+  // Other languages — structured metadata + execution stub with clear entrypoint
+  return `${line} ═══════════════════════════════════════════════════════
+${line}  Capability: ${cap.name}
+${line}  CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
+${line}  Chain: ${cap.chain.join(' → ')}
+${line}  Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+${line}  Moat Signature: ${cap.moatSignature.slice(0, 8)}
+${line} ═══════════════════════════════════════════════════════
 ${line}
-${line} Implementation stub for ${lang} target.
-${line} See TypeScript source for reference implementation.
+${line}  Execution model: Load manifest.json, instantiate runtime bridge,
+${line}  call execute(input) to run the module chain pipeline.
+${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the execution layer.
+${line}  See TypeScript reference implementation for full API surface.
+`;
+}
+
+// ═══ PHP CAPABILITY SOURCE (REAL EXECUTABLE) ═══
+
+function generatePhpCapabilitySource(cap: CapabilityForExport): string {
+  return `<?php
+/**
+ * ═══════════════════════════════════════════════════════
+ *  CMPSBL® Capability: ${cap.name}
+ *  CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
+ *  Chain: ${cap.chain.join(' → ')}
+ *  Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+ *  Moat Signature: ${cap.moatSignature.slice(0, 8)}
+ * ═══════════════════════════════════════════════════════
+ *
+ *  This is a REAL executable capability entrypoint.
+ *  Requires: runtime-bridge.php (included in this pack)
+ *
+ *  Usage:
+ *    require_once __DIR__ . '/runtime-bridge.php';
+ *    require_once __DIR__ . '/${cap.name.toLowerCase()}.php';
+ *    $cap = new CMPSBLCapability();
+ *    $result = $cap->execute(['key' => 'value']);
+ *    print_r($result);
+ */
+
+require_once __DIR__ . '/runtime-bridge.php';
+
+class CMPSBLCapability
+{
+    /** @var array Capability metadata */
+    private array $meta;
+
+    /** @var CMPSBLRuntimeBridge Runtime bridge instance */
+    private CMPSBLRuntimeBridge $bridge;
+
+    public function __construct(?string $manifestPath = null)
+    {
+        $this->meta = [
+            'name'          => '${cap.name}',
+            'cjpi'          => ${cap.cjpiScore},
+            'tier'          => '${cap.tier}',
+            'chain'         => ${JSON.stringify(cap.chain)},
+            'fingerprint'   => '${cap.fingerprint}',
+            'moatSignature' => '${cap.moatSignature}',
+            'type'          => '${cap.capabilityType}',
+        ];
+
+        // If a manifest path is provided, merge manifest data
+        if ($manifestPath !== null && file_exists($manifestPath)) {
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            if (is_array($manifest)) {
+                $this->meta = array_merge($this->meta, [
+                    'modules'  => $manifest['modules'] ?? $this->meta['chain'],
+                    'version'  => $manifest['version'] ?? '1.0.0',
+                    'exported' => $manifest['exported'] ?? date('Y-m-d'),
+                ]);
+            }
+        }
+
+        $this->bridge = new CMPSBLRuntimeBridge($this->meta);
+    }
+
+    /**
+     * Execute this capability against an input payload.
+     *
+     * @param  array $input  Arbitrary input data
+     * @return array         Structured result with output, trace, and metadata
+     */
+    public function execute(array $input = []): array
+    {
+        return $this->bridge->executePipeline($input);
+    }
+
+    /**
+     * Validate structural integrity of this capability.
+     *
+     * @return bool
+     */
+    public function validate(): bool
+    {
+        return $this->bridge->validateIntegrity();
+    }
+
+    /**
+     * Get capability metadata.
+     *
+     * @return array
+     */
+    public function getMeta(): array
+    {
+        return $this->meta;
+    }
+}
+`;
+}
+
+// ═══ PYTHON CAPABILITY SOURCE (REAL EXECUTABLE) ═══
+
+function generatePythonCapabilitySource(cap: CapabilityForExport): string {
+  return `"""
+═══════════════════════════════════════════════════════
+ CMPSBL® Capability: ${cap.name}
+ CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
+ Chain: ${cap.chain.join(' → ')}
+ Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+ Moat Signature: ${cap.moatSignature.slice(0, 8)}
+═══════════════════════════════════════════════════════
+
+ Usage:
+   from runtime_bridge import CMPSBLRuntimeBridge
+   from ${cap.name.toLowerCase()} import CMPSBLCapability
+   cap = CMPSBLCapability()
+   result = cap.execute({"key": "value"})
+   print(result)
+"""
+import json
+import os
+from runtime_bridge import CMPSBLRuntimeBridge
+
+CAPABILITY_META = {
+    "name": "${cap.name}",
+    "cjpi": ${cap.cjpiScore},
+    "tier": "${cap.tier}",
+    "chain": ${JSON.stringify(cap.chain)},
+    "fingerprint": "${cap.fingerprint}",
+    "moatSignature": "${cap.moatSignature}",
+    "type": "${cap.capabilityType}",
+}
+
+
+class CMPSBLCapability:
+    def __init__(self, manifest_path: str = None):
+        self.meta = dict(CAPABILITY_META)
+        if manifest_path and os.path.exists(manifest_path):
+            with open(manifest_path, "r") as f:
+                manifest = json.load(f)
+            self.meta["modules"] = manifest.get("modules", self.meta["chain"])
+            self.meta["version"] = manifest.get("version", "1.0.0")
+            self.meta["exported"] = manifest.get("exported", "")
+        self.bridge = CMPSBLRuntimeBridge(self.meta)
+
+    def execute(self, input_data: dict = None) -> dict:
+        """Execute this capability against an input payload."""
+        return self.bridge.execute_pipeline(input_data or {})
+
+    def validate(self) -> bool:
+        """Validate structural integrity."""
+        return self.bridge.validate_integrity()
+
+    def get_meta(self) -> dict:
+        return self.meta
+
+
+if __name__ == "__main__":
+    cap = CMPSBLCapability()
+    result = cap.execute({"test": True})
+    print(json.dumps(result, indent=2, default=str))
 `;
 }
 
