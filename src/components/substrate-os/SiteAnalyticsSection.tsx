@@ -344,7 +344,7 @@ export function SiteAnalyticsSection() {
               iconBg="bg-blue-500/20 border-blue-500/40"
             />
             <MetricCard
-              label="Pages / Session" value={data.avgPagesPerSession.toFixed(1)}
+              label="Pages / Visitor" value={data.avgPagesPerSession.toFixed(1)}
               sub="avg depth"
               icon={Layers} iconColor="text-purple-400"
               border="border-purple-500/30" bg="from-purple-500/10 to-purple-500/5"
