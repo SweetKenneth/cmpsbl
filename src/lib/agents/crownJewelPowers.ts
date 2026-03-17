@@ -189,6 +189,8 @@ export interface AgentWithPowers {
   name: string;
   subtitle: string;
   description: string;
+  /** Short personality bio shown on the card face */
+  bio: string;
   powers: CrownJewelPower[];
   icon: LucideIcon;
   isFree: boolean;
