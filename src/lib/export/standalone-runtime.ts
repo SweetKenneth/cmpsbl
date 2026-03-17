@@ -608,6 +608,7 @@ import {
   resolveModuleEffect as _resolveModuleEffect,
   hasDeepEffect as _hasDeepEffect,
   registerEffect as _registerEffect,
+  getRegisteredModuleCount as _getRegisteredModuleCount,
 } from './module-effects';
 
 export interface StandaloneRuntime {
