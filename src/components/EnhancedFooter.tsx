@@ -1,5 +1,6 @@
 /**
  * Enhanced Footer — Clean minimal dark design, no dead links
+ * 4 columns × 6 links each = 24 footer links (zero overlap with nav)
  * XCTBL link preserved per user request
  */
 
@@ -37,6 +38,7 @@ export function EnhancedFooter() {
         { name: "EVOLUTION", href: "/evolution" },
         { name: "Proof mode", href: "/proof" },
         { name: "System status", href: "/status" },
+        { name: "Namespace", href: "/namespace" },
       ]
     },
     {
@@ -47,6 +49,7 @@ export function EnhancedFooter() {
         { name: "Projects", href: "/projects" },
         { name: "Clockless engine", href: "/clockless-world-engine" },
         { name: "Scanner", href: "/scanner" },
+        { name: "Use cases", href: "/use-cases" },
       ]
     },
     {
@@ -57,6 +60,7 @@ export function EnhancedFooter() {
         { name: "Experiment Lab", href: "/lab" },
         { name: "System integrity", href: "/system-integrity", highlight: true },
         { name: "Developer showcase", href: "/developers" },
+        { name: "Start here", href: "/start-here" },
       ]
     },
     {
@@ -67,6 +71,7 @@ export function EnhancedFooter() {
         { name: "Changelog", href: "/changelog" },
         { name: "Publication", href: "/publication" },
         { name: "Careers", href: "/careers" },
+        { name: "Overview", href: "/overview" },
       ]
     },
   ];
@@ -118,7 +123,7 @@ export function EnhancedFooter() {
                 The Memory Stream captures raw system behavior and crystallizes it into production-grade software — and when exceptional, into physical silicon.
               </p>
               <Link 
-                to="/upgrade" 
+                to="/store?tab=plans" 
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors mb-4"
               >
                 View Plans → Builder (free) · Creator · Architect
@@ -179,7 +184,7 @@ export function EnhancedFooter() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar — UNTOUCHED per user request */}
         <div className="border-t border-border/50 bg-gradient-to-b from-muted/20 to-muted/30">
           <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-4">

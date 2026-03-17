@@ -1,25 +1,30 @@
 /**
- * Store — Unified product page for all purchasable items.
+ * Store — Unified product hub with tabs for Store, Plans, and Memories.
  * 5 Runtime Agents + 5 Composable Engines on a single pricing ladder.
  * Collector card style with flip, zoom, and swipe.
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { ShoppingBag, Cpu, Users, Lock, Sparkles, Zap } from "lucide-react";
+import { ShoppingBag, Cpu, Users, Lock, Sparkles, Zap, Rocket, Brain } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
+import { UpgradeContent } from "@/components/store/UpgradeContent";
+import { PacksContent } from "@/components/store/PacksContent";
 import {
   STORE_AGENTS, STORE_ENGINES, ALL_STORE_ITEMS, TIER_META,
   type StoreTier,
 } from "@/lib/store/catalog";
 
 type FilterMode = "all" | "agents" | "engines";
+type StoreTab = "store" | "plans" | "memories";
 
 const TIERS: StoreTier[] = ["free", "starter", "pro", "elite", "apex"];
 
@@ -32,8 +37,37 @@ const SEALED_FEATURES = [
   { label: "DECODE Channel", desc: "Direct owner-to-agent communication relay", icon: "📨" },
 ];
 
+const TAB_CONFIG = [
+  { value: "store" as const, label: "Store", icon: ShoppingBag },
+  { value: "plans" as const, label: "Plans", icon: Rocket },
+  { value: "memories" as const, label: "Memories", icon: Brain },
+];
+
 export default function Store() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab") as StoreTab | null;
+  const [activeTab, setActiveTab] = useState<StoreTab>(
+    tabParam && ["store", "plans", "memories"].includes(tabParam) ? tabParam : "store"
+  );
   const [filter, setFilter] = useState<FilterMode>("all");
+
+  // Sync URL params with tab state
+  useEffect(() => {
+    if (tabParam && ["store", "plans", "memories"].includes(tabParam) && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleTabChange = (value: string) => {
+    const tab = value as StoreTab;
+    setActiveTab(tab);
+    if (tab === "store") {
+      searchParams.delete("tab");
+    } else {
+      searchParams.set("tab", tab);
+    }
+    setSearchParams(searchParams, { replace: true });
+  };
 
   const items = filter === "agents" ? STORE_AGENTS
     : filter === "engines" ? STORE_ENGINES
@@ -42,8 +76,8 @@ export default function Store() {
   return (
     <>
       <Helmet>
-        <title>Store — CMPSBL Runtime Agents & Engines</title>
-        <meta name="description" content="10 products. One pricing ladder. Runtime Agents and Composable Engines — sealed, self-improving AI software you can own." />
+        <title>Store — CMPSBL Runtime Agents, Engines, Plans & Memories</title>
+        <meta name="description" content="10 products. One pricing ladder. Runtime Agents and Composable Engines — sealed, self-improving AI software you can own. Plans, pricing, and memory packs." />
       </Helmet>
 
       <PublicNav />
@@ -55,7 +89,7 @@ export default function Store() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
             <Badge variant="outline" className="mb-5 border-primary/30 px-4 py-1.5 inline-flex">
               <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
@@ -73,129 +107,164 @@ export default function Store() {
               Runtime Agents learn, adapt, and execute autonomously. Composable Engines power the
               infrastructure underneath. Pick your tier. Flip to inspect. Acquire what you need.
             </p>
+          </motion.div>
 
-            {/* Pricing ladder */}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
-              {TIERS.map((t) => {
-                const meta = TIER_META[t];
-                return (
-                  <div
-                    key={t}
+          {/* ═══ TABS ═══ */}
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <div className="flex justify-center mb-8 sm:mb-10">
+              <TabsList className="h-12 sm:h-14 p-1 sm:p-1.5 bg-muted/50 border border-border/50 rounded-xl gap-1">
+                {TAB_CONFIG.map(({ value, label, icon: Icon }) => (
+                  <TabsTrigger
+                    key={value}
+                    value={value}
                     className={cn(
-                      "px-3 py-1.5 rounded-full border text-[10px] sm:text-[11px] font-black tracking-wider",
-                      "transition-all duration-300 hover:scale-105",
-                      meta.bg, meta.color, meta.border
+                      "gap-2 px-4 sm:px-6 h-9 sm:h-10 rounded-lg text-xs sm:text-sm font-semibold transition-all min-w-[100px]",
+                      "data-[state=active]:bg-background data-[state=active]:shadow-md data-[state=active]:text-foreground",
+                      "data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground"
                     )}
                   >
-                    {meta.label} · {meta.price}
-                  </div>
-                );
-              })}
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
             </div>
 
-            {/* Filter tabs */}
-            <div className="flex items-center justify-center gap-2">
-              {([
-                { key: "all" as const, label: "All Products", shortLabel: "All", icon: ShoppingBag },
-                { key: "agents" as const, label: "Runtime Agents", shortLabel: "Agents", icon: Users },
-                { key: "engines" as const, label: "Engines", shortLabel: "Engines", icon: Cpu },
-              ]).map(({ key, label, shortLabel, icon: Icon }) => (
-                <Button
-                  key={key}
-                  variant={filter === key ? "default" : "outline"}
-                  size="sm"
-                  className={cn(
-                    "gap-1.5 text-xs font-bold min-h-[44px] px-3 sm:px-4",
-                    filter === key && "shadow-lg shadow-primary/20"
-                  )}
-                  onClick={() => setFilter(key)}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">{label}</span>
-                  <span className="sm:hidden">{shortLabel}</span>
-                </Button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ═══ COLLECTOR DECK ═══ */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <StoreCollectorDeck items={items} />
-          </motion.div>
-
-          {/* ═══ SEALED RUNTIME FEATURES ═══ */}
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6 }}
-            className="mt-16 sm:mt-24"
-          >
-            <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card/80 to-primary/5 backdrop-blur-sm p-5 sm:p-8">
-              <div className="flex items-start gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
-                  <Lock className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-base sm:text-lg font-black text-foreground tracking-tight">
-                    Every Product Ships Sealed
-                  </h2>
-                  <p className="text-xs sm:text-sm text-primary/80 font-semibold mt-0.5">
-                    Black-box runtime · Zero maintenance · Always learning
-                  </p>
-                </div>
+            {/* ═══ STORE TAB ═══ */}
+            <TabsContent value="store" className="mt-0">
+              {/* Pricing ladder */}
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
+                {TIERS.map((t) => {
+                  const meta = TIER_META[t];
+                  return (
+                    <div
+                      key={t}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full border text-[10px] sm:text-[11px] font-black tracking-wider",
+                        "transition-all duration-300 hover:scale-105",
+                        meta.bg, meta.color, meta.border
+                      )}
+                    >
+                      {meta.label} · {meta.price}
+                    </div>
+                  );
+                })}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {SEALED_FEATURES.map((feat) => (
-                  <div
-                    key={feat.label}
+              {/* Filter tabs */}
+              <div className="flex items-center justify-center gap-2 mb-10">
+                {([
+                  { key: "all" as const, label: "All Products", shortLabel: "All", icon: ShoppingBag },
+                  { key: "agents" as const, label: "Runtime Agents", shortLabel: "Agents", icon: Users },
+                  { key: "engines" as const, label: "Engines", shortLabel: "Engines", icon: Cpu },
+                ]).map(({ key, label, shortLabel, icon: Icon }) => (
+                  <Button
+                    key={key}
+                    variant={filter === key ? "default" : "outline"}
+                    size="sm"
                     className={cn(
-                      "rounded-xl border border-border/30 bg-background/30 p-4",
-                      "hover:border-primary/30 hover:-translate-y-0.5",
-                      "transition-all duration-300 shimmer-on-hover"
+                      "gap-1.5 text-xs font-bold min-h-[44px] px-3 sm:px-4",
+                      filter === key && "shadow-lg shadow-primary/20"
                     )}
+                    onClick={() => setFilter(key)}
                   >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-base">{feat.icon}</span>
-                      <h4 className="text-xs sm:text-sm font-bold text-foreground">{feat.label}</h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground/70 leading-relaxed">{feat.desc}</p>
-                  </div>
+                    <Icon className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{label}</span>
+                    <span className="sm:hidden">{shortLabel}</span>
+                  </Button>
                 ))}
               </div>
-            </div>
-          </motion.section>
 
-          {/* ═══ BOTTOM CTA ═══ */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mt-12 sm:mt-16 text-center pb-8"
-          >
-            <p className="text-xs text-muted-foreground/50 font-mono mb-3">
-              Every agent and engine runs on the CMPSBL Sealed Runtime
-            </p>
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <Button variant="outline" size="sm" className="gap-2 min-h-[44px]" asChild>
-                <a href="/upgrade">
-                  <Zap className="w-4 h-4" />
-                  Compare Plans
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" className="gap-2 min-h-[44px]" asChild>
-                <a href="/try">
-                  <Sparkles className="w-4 h-4" />
-                  Try Live Demo
-                </a>
-              </Button>
-            </div>
-          </motion.section>
+              {/* Collector Deck */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+              >
+                <StoreCollectorDeck items={items} />
+              </motion.div>
+
+              {/* Sealed Runtime Features */}
+              <motion.section
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6 }}
+                className="mt-16 sm:mt-24"
+              >
+                <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card/80 to-primary/5 backdrop-blur-sm p-5 sm:p-8">
+                  <div className="flex items-start gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+                      <Lock className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h2 className="text-base sm:text-lg font-black text-foreground tracking-tight">
+                        Every Product Ships Sealed
+                      </h2>
+                      <p className="text-xs sm:text-sm text-primary/80 font-semibold mt-0.5">
+                        Black-box runtime · Zero maintenance · Always learning
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {SEALED_FEATURES.map((feat) => (
+                      <div
+                        key={feat.label}
+                        className={cn(
+                          "rounded-xl border border-border/30 bg-background/30 p-4",
+                          "hover:border-primary/30 hover:-translate-y-0.5",
+                          "transition-all duration-300 shimmer-on-hover"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-base">{feat.icon}</span>
+                          <h4 className="text-xs sm:text-sm font-bold text-foreground">{feat.label}</h4>
+                        </div>
+                        <p className="text-xs text-muted-foreground/70 leading-relaxed">{feat.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.section>
+
+              {/* Bottom CTA */}
+              <motion.section
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="mt-12 sm:mt-16 text-center pb-8"
+              >
+                <p className="text-xs text-muted-foreground/50 font-mono mb-3">
+                  Every agent and engine runs on the CMPSBL Sealed Runtime
+                </p>
+                <div className="flex items-center justify-center gap-3 flex-wrap">
+                  <Button variant="outline" size="sm" className="gap-2 min-h-[44px]" onClick={() => handleTabChange("plans")}>
+                    <Zap className="w-4 h-4" />
+                    Compare Plans
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2 min-h-[44px]" asChild>
+                    <a href="/try">
+                      <Sparkles className="w-4 h-4" />
+                      Try Live Demo
+                    </a>
+                  </Button>
+                </div>
+              </motion.section>
+            </TabsContent>
+
+            {/* ═══ PLANS TAB ═══ */}
+            <TabsContent value="plans" className="mt-0">
+              <UpgradeContent />
+            </TabsContent>
+
+            {/* ═══ MEMORIES TAB ═══ */}
+            <TabsContent value="memories" className="mt-0">
+              <div className="max-w-6xl mx-auto">
+                <PacksContent />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
 
