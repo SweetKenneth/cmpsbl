@@ -6,7 +6,7 @@
 import {
   Cpu, Network, Brain, Cog, Radio,
   Shield, Code, ShieldCheck, Briefcase,
-  Lock,
+  Lock, HardDrive,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { AGENTS_WITH_POWERS, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
