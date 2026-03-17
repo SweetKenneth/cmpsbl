@@ -184,6 +184,23 @@ export default function EngineDetail() {
       <Helmet>
         <title>{engine.codename} Engine — Sealed Runtime | CMPSBL</title>
         <meta name="description" content={engine.briefing} />
+        <link rel="canonical" href={`https://cmpsbl.com/engines/${engine.slug}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: `${engine.codename} Engine`,
+            description: engine.briefing,
+            brand: { "@type": "Brand", name: "CMPSBL" },
+            offers: {
+              "@type": "Offer",
+              price: engine.isFree ? "0" : engine.priceStandalone / 100,
+              priceCurrency: "USD",
+              availability: "https://schema.org/InStock",
+              url: `https://cmpsbl.com/engines/${engine.slug}`,
+            },
+          })}
+        </script>
       </Helmet>
 
       <AnimatePresence>
