@@ -271,7 +271,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'research',
-    displayName: 'RESEARCH Mind',
+    displayName: 'VESSEL',
     className: 'The Oracle',
     tagline: 'Deep research. Verified sources. Executive-ready reports.',
     description: 'A tireless investigator with DREAM Synthesis — pursues multi-source deep research, builds knowledge graphs, and learns which sources yield the highest-quality insights.',
