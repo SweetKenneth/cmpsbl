@@ -1,5 +1,5 @@
 /**
- * AgentsSection — 20 Black-Boxed Agents with Sealed Runtimes
+ * AgentsSection — 20 Sealed Runtime Agents
  * Features: Auto-tiering memory, RIPPLE Orchestrator, Always-on CLM,
  * Version Minting, DECODE Sovereign Channel, Sealed Black-Box Runtime.
  */

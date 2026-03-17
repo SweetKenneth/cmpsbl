@@ -62,7 +62,7 @@ const capabilities = [
 
 const services = [
   { icon: Code2, title: "AI Infrastructure Consulting", description: "Architecture reviews, memory system design, and multi-provider routing strategies for enterprise AI deployments." },
-  { icon: Building2, title: "Custom Cognitive Agents", description: "Composable cognitives built to your specifications — persistent memory, local execution, MIT licensed." },
+  { icon: Building2, title: "Custom Runtime Agents", description: "Sealed runtime agents built to your specifications — persistent memory, local execution, MIT licensed." },
   { icon: Lightbulb, title: "Research & Development", description: "Peer-reviewed AI research published via Zenodo. Pushing the boundaries of cognitive infrastructure." },
   { icon: Users, title: "Enterprise Partnerships", description: "White-label substrate licensing, OEM integrations, and dedicated support for large-scale deployments." },
 ];
