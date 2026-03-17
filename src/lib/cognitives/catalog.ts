@@ -351,7 +351,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'product',
-    displayName: 'PRODUCT Mind',
+    displayName: 'ARCHITECT',
     className: 'The Builder',
     tagline: 'PRDs. User stories. Roadmap prioritization.',
     description: 'A user-obsessed product strategist with DREAM Synthesis — writes PRDs, prioritizes roadmaps with RICE scoring, and learns which features drive real impact.',
