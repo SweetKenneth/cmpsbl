@@ -2,138 +2,75 @@
  * CMPSBL® Ascension Node Registry
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Manages all ingested Candidate Nodes (Node 41+).
- *
- * Responsibilities:
- *   - Store and retrieve candidate nodes
- *   - Lifecycle management (candidate → active → archived → rejected)
- *   - Temporary node run-limit tracking
- *   - Primitive attachment and retrieval
- *   - CJPI delta tracking per node
- *   - Governor promotion/demotion controls
- *
- * Integrates with:
- *   - artifact_registry (Supabase persistence)
- *   - primitive-extractor (for extraction on ingest)
- *   - chain-executor (for chain injection)
- *   - brain learning bridge (for primitive telemetry)
+ * Uses structured metadata schema with migration support.
  *
  * © CMPSBL® — All rights reserved.
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { extractPrimitives, type ExtractedPrimitive, type ExtractionResult } from './primitive-extractor';
+import { extractPrimitives } from './primitive-extractor';
+import {
+  type AscensionNode,
+  type NodeStatus,
+  type NodeMode,
+  type NodeListFilters,
+  type NodeUpdatePayload,
+  type NodeMetadata,
+  type ExtractionResult,
+  type ExtractedPrimitive,
+  ASCENSION_SCHEMA_VERSION,
+  migrateMetadata,
+  generateCorrelationId,
+} from './types';
+
+// Re-export types
+export type { AscensionNode, NodeStatus, NodeMode, NodeListFilters, NodeUpdatePayload, ExtractionResult };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §1 — TYPES
+// §1 — PARSE + MIGRATE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type NodeStatus = 'candidate' | 'active' | 'archived' | 'rejected';
-export type NodeMode = 'temporary' | 'persistent';
+function parseNode(row: Record<string, unknown>): AscensionNode {
+  const rawMeta = (row.metadata || {}) as Record<string, unknown>;
+  const meta = migrateMetadata(rawMeta);
 
-export interface AscensionNode {
-  /** DB ID from artifact_registry */
-  id: string;
-  /** Display name (e.g., 'TRADER') */
-  name: string;
-  /** Original source file/project name */
-  source: string;
-  /** Extracted primitives */
-  primitives: ExtractedPrimitive[];
-  /** Lifecycle status */
-  status: NodeStatus;
-  /** Persistence mode */
-  mode: NodeMode;
-  /** Remaining runs before auto-archive (only for temporary mode) */
-  runLimit: number | null;
-  /** Total runs executed */
-  totalRuns: number;
-  /** Derived capability surface */
-  surface: {
-    nodeName: string;
-    capabilities: string[];
-    sector: string;
-    domain: string;
-  } | null;
-  /** Source language */
-  language: string;
-  /** CJPI performance tracking */
-  performance: {
-    avgCjpi: number;
-    bestCjpi: number;
-    chainsParticipated: number;
-    lastUsed: string | null;
+  return {
+    id: String(row.id),
+    name: meta.identity.node_name || String(row.name || '').replace(/^CANDIDATE_/, ''),
+    source: meta.provenance.upload_file_names.join(', ') || String(row.name || ''),
+    primitives: meta.extraction.primitives,
+    status: meta.lifecycle.node_status,
+    mode: meta.lifecycle.node_mode,
+    runLimit: meta.lifecycle.run_limit,
+    totalRuns: meta.lifecycle.total_runs,
+    surface: meta.identity.derived_surface,
+    language: meta.identity.language,
+    performance: {
+      avgCjpi: meta.performance.avg_cjpi,
+      bestCjpi: meta.performance.best_cjpi,
+      chainsParticipated: meta.performance.chains_participated,
+      lastUsed: meta.performance.last_used,
+    },
+    extractionStats: meta.extraction.stats,
+    qualitySummary: meta.extraction.quality_summary,
+    createdAt: String(row.created_at || new Date().toISOString()),
+    updatedAt: String(row.updated_at || new Date().toISOString()),
+    userId: String(row.user_id || ''),
+    schemaVersion: meta.schema_version,
   };
-  /** Extraction stats */
-  extractionStats: ExtractionResult['stats'] | null;
-  /** Timestamps */
-  createdAt: string;
-  updatedAt: string;
-  /** User owner */
-  userId: string;
-}
-
-export interface NodeListFilters {
-  status?: NodeStatus;
-  mode?: NodeMode;
-  language?: string;
-  search?: string;
-  limit?: number;
-  offset?: number;
-}
-
-export interface NodeUpdatePayload {
-  status?: NodeStatus;
-  mode?: NodeMode;
-  runLimit?: number | null;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2 — REGISTRY OPERATIONS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Parse an artifact_registry row into an AscensionNode
- */
-function parseNode(row: Record<string, unknown>): AscensionNode {
-  const meta = (row.metadata || {}) as Record<string, unknown>;
-  const sourceFiles = (meta.source_files as Array<{ name: string; content: string; language: string }>) || [];
-  const surface = meta.derived_surface as AscensionNode['surface'];
-  const nodePerf = (meta.node_performance || {}) as Record<string, unknown>;
-  const extractionStats = (meta.extraction_stats || null) as AscensionNode['extractionStats'];
-  const storedPrimitives = (meta.primitives || []) as ExtractedPrimitive[];
-
-  return {
-    id: String(row.id),
-    name: String(row.name || '').replace(/^CANDIDATE_/, ''),
-    source: sourceFiles.length > 0 ? sourceFiles.map(f => String(f.name)).join(', ') : String(row.name || ''),
-    primitives: storedPrimitives,
-    status: (meta.node_status as NodeStatus) || (String(row.tier) === 'candidate' ? 'candidate' : 'active'),
-    mode: (meta.node_mode as NodeMode) || 'temporary',
-    runLimit: typeof meta.run_limit === 'number' ? meta.run_limit : null,
-    totalRuns: typeof meta.total_runs === 'number' ? meta.total_runs : 0,
-    surface,
-    language: String(meta.language || 'Unknown'),
-    performance: {
-      avgCjpi: Number(nodePerf.avg_cjpi || 0),
-      bestCjpi: Number(nodePerf.best_cjpi || 0),
-      chainsParticipated: Number(nodePerf.chains_participated || 0),
-      lastUsed: (nodePerf.last_used as string) || null,
-    },
-    extractionStats,
-    createdAt: String(row.created_at || new Date().toISOString()),
-    updatedAt: String(row.updated_at || new Date().toISOString()),
-    userId: String(row.user_id || ''),
-  };
-}
-
-/**
- * Fetch all ascension nodes for the current user
- */
 export async function listNodes(
   userId: string,
   filters: NodeListFilters = {}
 ): Promise<{ nodes: AscensionNode[]; total: number }> {
-  const { status, mode, language, search, limit = 50, offset = 0 } = filters;
+  if (!userId) return { nodes: [], total: 0 };
+
+  const { status, mode, language, search, minQuality, minCjpi, limit = 50, offset = 0 } = filters;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query = (supabase as any)
@@ -144,9 +81,7 @@ export async function listNodes(
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (search) {
-    query = query.ilike('name', `%${search}%`);
-  }
+  if (search) query = query.ilike('name', `%${search}%`);
 
   const { data, count, error } = await query;
   if (error) throw new Error(`Failed to list nodes: ${error.message}`);
@@ -157,14 +92,15 @@ export async function listNodes(
   if (status) nodes = nodes.filter(n => n.status === status);
   if (mode) nodes = nodes.filter(n => n.mode === mode);
   if (language) nodes = nodes.filter(n => n.language.toLowerCase().includes(language.toLowerCase()));
+  if (minQuality !== undefined) nodes = nodes.filter(n => (n.qualitySummary?.avgQualityScore ?? 0) >= minQuality);
+  if (minCjpi !== undefined) nodes = nodes.filter(n => n.performance.avgCjpi >= minCjpi);
 
   return { nodes, total: count || 0 };
 }
 
-/**
- * Get a single node by ID
- */
 export async function getNode(nodeId: string, userId: string): Promise<AscensionNode | null> {
+  if (!nodeId || !userId) return null;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supabase as any)
     .from('artifact_registry')
@@ -178,16 +114,14 @@ export async function getNode(nodeId: string, userId: string): Promise<Ascension
 }
 
 /**
- * Run primitive extraction on a node and persist results
+ * Run primitive extraction and persist results with quality gate.
  */
 export async function extractAndAttachPrimitives(
   nodeId: string,
   userId: string
 ): Promise<ExtractionResult> {
-  const node = await getNode(nodeId, userId);
-  if (!node) throw new Error('Node not found');
+  if (!nodeId || !userId) throw new Error('nodeId and userId required');
 
-  // Get source files from artifact_registry metadata
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supabase as any)
     .from('artifact_registry')
@@ -198,29 +132,30 @@ export async function extractAndAttachPrimitives(
 
   if (error || !data) throw new Error('Cannot read node metadata');
 
-  const meta = (data.metadata || {}) as Record<string, unknown>;
-  const sourceFiles = (meta.source_files as Array<{ name: string; content: string; language: string }>) || [];
+  const rawMeta = (data.metadata || {}) as Record<string, unknown>;
+  const meta = migrateMetadata(rawMeta);
 
-  if (sourceFiles.length === 0) {
+  if (meta.identity.source_files.length === 0) {
     throw new Error('No source files found on this node');
   }
 
-  // Run extraction
-  const result = extractPrimitives(sourceFiles);
+  const result = extractPrimitives(meta.identity.source_files);
 
-  // Persist primitives + stats back to the node
-  const updatedMeta = {
-    ...meta,
+  // Update extraction section
+  meta.extraction = {
     primitives: result.primitives,
-    extraction_stats: result.stats,
-    extraction_warnings: result.warnings,
+    stats: result.stats,
+    quality_summary: result.quality.summary,
+    warnings: result.warnings,
     last_extraction_at: new Date().toISOString(),
+    extraction_count: meta.extraction.extraction_count + 1,
   };
+  meta.schema_version = ASCENSION_SCHEMA_VERSION;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error: updateError } = await (supabase as any)
     .from('artifact_registry')
-    .update({ metadata: updatedMeta, updated_at: new Date().toISOString() })
+    .update({ metadata: meta, updated_at: new Date().toISOString() })
     .eq('id', nodeId)
     .eq('user_id', userId);
 
@@ -230,13 +165,15 @@ export async function extractAndAttachPrimitives(
 }
 
 /**
- * Update a node's status, mode, or run limit (Governor controls)
+ * Update a node's status, mode, or run limit.
  */
 export async function updateNode(
   nodeId: string,
   userId: string,
   updates: NodeUpdatePayload
 ): Promise<AscensionNode> {
+  if (!nodeId || !userId) throw new Error('nodeId and userId required');
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: existing, error: readErr } = await (supabase as any)
     .from('artifact_registry')
@@ -247,28 +184,25 @@ export async function updateNode(
 
   if (readErr || !existing) throw new Error('Node not found');
 
-  const meta = { ...(existing.metadata as Record<string, unknown>) };
+  const meta = migrateMetadata((existing.metadata || {}) as Record<string, unknown>);
 
-  if (updates.status) meta.node_status = updates.status;
-  if (updates.mode) meta.node_mode = updates.mode;
-  if (updates.runLimit !== undefined) meta.run_limit = updates.runLimit;
+  if (updates.status) {
+    meta.lifecycle.node_status = updates.status;
+    if (updates.status === 'active') meta.lifecycle.promoted_at = new Date().toISOString();
+    if (updates.status === 'archived') meta.lifecycle.archived_at = new Date().toISOString();
+  }
+  if (updates.mode) meta.lifecycle.node_mode = updates.mode;
+  if (updates.runLimit !== undefined) meta.lifecycle.run_limit = updates.runLimit;
 
-  // Map status to tier for backward compatibility
   const tierMap: Record<NodeStatus, string> = {
-    candidate: 'candidate',
-    active: 'active',
-    archived: 'archived',
-    rejected: 'rejected',
+    candidate: 'candidate', active: 'active', archived: 'archived', rejected: 'rejected',
   };
 
   const payload: Record<string, unknown> = {
     metadata: meta,
     updated_at: new Date().toISOString(),
   };
-
-  if (updates.status) {
-    payload.tier = tierMap[updates.status];
-  }
+  if (updates.status) payload.tier = tierMap[updates.status];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await (supabase as any)
@@ -284,10 +218,9 @@ export async function updateNode(
   return updated;
 }
 
-/**
- * Delete a node permanently
- */
 export async function deleteNode(nodeId: string, userId: string): Promise<void> {
+  if (!nodeId || !userId) throw new Error('nodeId and userId required');
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await (supabase as any)
     .from('artifact_registry')
@@ -299,16 +232,14 @@ export async function deleteNode(nodeId: string, userId: string): Promise<void> 
 }
 
 /**
- * Record a discovery run participation for a node.
- * Decrements run limit for temporary nodes.
+ * Record a discovery run participation. Decrements run limit for temporary nodes.
  */
 export async function recordRunParticipation(
   nodeId: string,
   userId: string,
   cjpiScore: number
 ): Promise<{ archived: boolean }> {
-  const node = await getNode(nodeId, userId);
-  if (!node) throw new Error('Node not found');
+  if (!nodeId || !userId) throw new Error('nodeId and userId required');
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error: readErr } = await (supabase as any)
@@ -318,34 +249,28 @@ export async function recordRunParticipation(
     .eq('user_id', userId)
     .single();
 
-  if (readErr || !data) throw new Error('Cannot read node');
+  if (readErr || !data) throw new Error('Node not found');
 
-  const meta = { ...(data.metadata as Record<string, unknown>) };
-  const perf = (meta.node_performance || {}) as Record<string, unknown>;
+  const meta = migrateMetadata((data.metadata || {}) as Record<string, unknown>);
 
   // Update performance
-  const totalRuns = (Number(meta.total_runs) || 0) + 1;
-  const chainsParticipated = (Number(perf.chains_participated) || 0) + 1;
-  const currentAvg = Number(perf.avg_cjpi) || 0;
-  const newAvg = chainsParticipated > 1
-    ? currentAvg + (cjpiScore - currentAvg) / chainsParticipated
-    : cjpiScore;
+  meta.lifecycle.total_runs += 1;
+  meta.performance.chains_participated += 1;
 
-  meta.total_runs = totalRuns;
-  meta.node_performance = {
-    avg_cjpi: Math.round(newAvg * 100) / 100,
-    best_cjpi: Math.max(Number(perf.best_cjpi) || 0, cjpiScore),
-    chains_participated: chainsParticipated,
-    last_used: new Date().toISOString(),
-  };
+  const n = meta.performance.chains_participated;
+  meta.performance.avg_cjpi = Math.round(
+    (meta.performance.avg_cjpi + (cjpiScore - meta.performance.avg_cjpi) / n) * 100
+  ) / 100;
+  meta.performance.best_cjpi = Math.max(meta.performance.best_cjpi, cjpiScore);
+  meta.performance.last_used = new Date().toISOString();
 
   // Check run limit for temporary nodes
   let shouldArchive = false;
-  if (meta.node_mode === 'temporary' && typeof meta.run_limit === 'number') {
-    const newLimit = meta.run_limit - 1;
-    meta.run_limit = Math.max(0, newLimit);
-    if (newLimit <= 0) {
-      meta.node_status = 'archived';
+  if (meta.lifecycle.node_mode === 'temporary' && typeof meta.lifecycle.run_limit === 'number') {
+    meta.lifecycle.run_limit = Math.max(0, meta.lifecycle.run_limit - 1);
+    if (meta.lifecycle.run_limit <= 0) {
+      meta.lifecycle.node_status = 'archived';
+      meta.lifecycle.archived_at = new Date().toISOString();
       shouldArchive = true;
     }
   }
