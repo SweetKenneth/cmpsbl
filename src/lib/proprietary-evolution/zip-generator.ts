@@ -543,9 +543,112 @@ describe('${cap.name}', () => {
 `;
   }
 
+  if (lang === 'php') {
+    return `<?php
+// Test Harness for ${cap.name}
+// Run: php test/${cap.name.toLowerCase()}_test.php
+
+require_once __DIR__ . '/../src/runtime-bridge.php';
+require_once __DIR__ . '/../src/${cap.name.toLowerCase()}.php';
+
+function assert_true($condition, $msg) {
+    if (!$condition) { echo "FAIL: $msg\\n"; exit(1); }
+    echo "PASS: $msg\\n";
+}
+
+// Test 1: Metadata integrity
+$cap = new CMPSBLCapability();
+$meta = $cap->getMeta();
+assert_true($meta['cjpi'] === ${cap.cjpiScore}, 'CJPI score matches');
+assert_true($meta['tier'] === '${cap.tier}', 'Tier matches');
+assert_true(count($meta['chain']) > 0, 'Chain is non-empty');
+
+// Test 2: Execution produces output
+$result = $cap->execute(['test' => true]);
+assert_true($result['success'] === true, 'Execution succeeds');
+assert_true(!empty($result['output']), 'Output is non-empty');
+assert_true(!empty($result['trace']), 'Trace is non-empty');
+assert_true($result['metadata']['capability'] === '${cap.name}', 'Capability name in metadata');
+
+// Test 3: Trace has correct stage count
+$chain = $meta['chain'];
+assert_true(count($result['trace']) === count($chain), 'Trace stage count matches chain length');
+
+// Test 4: Each trace entry has required fields
+foreach ($result['trace'] as $entry) {
+    assert_true(isset($entry['stage']), 'Trace entry has stage');
+    assert_true(isset($entry['module']), 'Trace entry has module');
+    assert_true(isset($entry['status']), 'Trace entry has status');
+    assert_true(isset($entry['duration_ms']), 'Trace entry has duration_ms');
+}
+
+// Test 5: Structural validation
+assert_true($cap->validate(), 'Structural validation passes');
+
+echo "\\n✅ All tests passed for ${cap.name}\\n";
+`;
+  }
+
+  if (lang === 'python') {
+    return `"""Test Harness for ${cap.name}"""
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+from runtime_bridge import CMPSBLRuntimeBridge
+from ${cap.name.toLowerCase()} import CMPSBLCapability
+
+
+def test_metadata():
+    cap = CMPSBLCapability()
+    meta = cap.get_meta()
+    assert meta["cjpi"] == ${cap.cjpiScore}, f"CJPI mismatch: {meta['cjpi']}"
+    assert meta["tier"] == "${cap.tier}", f"Tier mismatch: {meta['tier']}"
+    assert len(meta["chain"]) > 0, "Chain is empty"
+    print("PASS: metadata integrity")
+
+
+def test_execution():
+    cap = CMPSBLCapability()
+    result = cap.execute({"test": True})
+    assert result["success"] is True, "Execution failed"
+    assert result["output"], "Output is empty"
+    assert result["trace"], "Trace is empty"
+    assert result["metadata"]["capability"] == "${cap.name}"
+    print("PASS: execution produces output")
+
+
+def test_trace_stages():
+    cap = CMPSBLCapability()
+    result = cap.execute({"test": True})
+    chain = cap.get_meta()["chain"]
+    assert len(result["trace"]) == len(chain), f"Trace count {len(result['trace'])} != chain {len(chain)}"
+    for entry in result["trace"]:
+        assert "stage" in entry
+        assert "module" in entry
+        assert "status" in entry
+        assert "duration_ms" in entry
+    print("PASS: trace stages correct")
+
+
+def test_validation():
+    cap = CMPSBLCapability()
+    assert cap.validate(), "Validation failed"
+    print("PASS: structural validation")
+
+
+if __name__ == "__main__":
+    test_metadata()
+    test_execution()
+    test_trace_stages()
+    test_validation()
+    print("\\n✅ All tests passed for ${cap.name}")
+`;
+  }
+
   return `${line} Test Harness for ${cap.name}
 ${line} Target: ${lang}
-${line} TODO: Implement tests for ${lang} target
+${line} Execute the capability and verify trace output.
+${line} See PHP/Python/TypeScript test harnesses for reference.
 `;
 }
 
