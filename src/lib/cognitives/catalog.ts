@@ -140,7 +140,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Project glossary memory', 'Translation memory persistence', 'Style guide compliance', 'Batch translation orchestration'],
     priceCents: 0, isFree: true, tier: 'free', bundlePriceCents: 0,
-    downloadAssetKey: 'cmpsbl-translator.zip', stripeProductName: 'CMPSBL Translator Mind', stripeLookupKey: 'cmpsbl_mind_translator_free',
+    downloadAssetKey: 'cmpsbl-translator.zip', stripeProductName: 'CMPSBL TRANSLATOR', stripeLookupKey: 'cmpsbl_mind_translator_free',
     accentColor: 'lime', imagePath: 'translator', version: 'v1.0', isPublic: true,
     category: 'Growth Intelligence',
     personality: { archetype: 'The Bridge', tone: 'Precise, culturally sensitive, and diplomatic', motto: '"Meaning transcends language."', communicationStyle: 'Clarifies ambiguity before translating. Explains cultural context. Preserves the author\'s voice.' },
