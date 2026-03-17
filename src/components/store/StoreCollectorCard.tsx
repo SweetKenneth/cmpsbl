@@ -30,15 +30,43 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
   const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
   const tier = TIER_META[item.tier];
   const isAgent = item.kind === "agent";
 
   const handleAcquire = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    // Free items — instant activation
+    // Free items — require auth then download ZIP bundle
     if (item.priceCents === 0) {
-      toast.success(`${item.name} activated! It's free — no payment required.`);
+      if (!user) {
+        toast.error("Create a free account to download — it only takes a moment.", {
+          action: { label: "Sign Up", onClick: () => navigate("/auth") },
+        });
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const slug = item.id.replace(/^(agent-|engine-)/, "");
+        const blob = await generateProductZip({
+          id: item.id,
+          kind: item.kind,
+          name: item.name,
+          subtitle: item.subtitle,
+          price: item.priceDisplay,
+          tier: item.tier,
+          slug,
+          version: "1.0.0",
+          capabilities: item.capabilities,
+        });
+        saveAs(blob, `cmpsbl-${item.kind}-${slug}.zip`);
+        toast.success(`${item.name} downloaded! Check your downloads folder.`);
+      } catch (err) {
+        toast.error("Failed to generate download bundle.");
+      } finally {
+        setLoading(false);
+      }
       return;
     }
 
@@ -46,7 +74,6 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
 
     try {
       if (isAgent) {
-        // Use agent-checkout edge function
         const agentId = item.id.replace("agent-", "");
         const { data, error } = await supabase.functions.invoke("agent-checkout", {
           body: {
@@ -66,7 +93,6 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
         }
         throw new Error("No checkout URL returned");
       } else {
-        // Use marketplace-checkout for engines (price_data mode)
         const { data, error } = await supabase.functions.invoke("marketplace-checkout", {
           body: {
             product_type: "core",
