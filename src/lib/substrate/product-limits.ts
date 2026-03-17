@@ -91,9 +91,27 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
  * Safe to call with any subscription tier string; falls back to builder.
  */
 export function getUserLimits(subscriptionTier?: string): ProductLimits {
+  // Governor tier = God Mode — unlimited everything
+  if (subscriptionTier === 'governor') {
+    return GOD_MODE_LIMITS;
+  }
   const tier = resolveToProductTier(subscriptionTier);
   return PRODUCT_LIMITS[tier];
 }
+
+/** God Mode limits — no caps anywhere */
+const GOD_MODE_LIMITS: ProductLimits = {
+  maxMemoryNamespaces: Infinity,
+  memoryDepth: 'dedicated',
+  allowBackgroundOptimization: true,
+  allowAutomationScheduling: true,
+  nexusRoutingPriority: 'highest',
+  safeEvolutionAccess: true,
+  exportTraceAccess: true,
+  crystallizedAssetCap: Infinity,
+  radioMinutesPerDay: -1,
+  evolutionUploadsPerDay: Infinity,
+};
 
 /**
  * resolveToProductTier — Map subscription tier strings to ProductTier.
@@ -101,6 +119,7 @@ export function getUserLimits(subscriptionTier?: string): ProductLimits {
  */
 export function resolveToProductTier(subscriptionTier?: string): ProductTier {
   if (!subscriptionTier) return 'builder';
+  if (subscriptionTier === 'governor') return 'architect'; // governor maps to highest product tier
   if (subscriptionTier === 'enterprise') return 'architect';
   if (['architect', 'pro'].includes(subscriptionTier)) return 'architect';
   if (['creator'].includes(subscriptionTier)) return 'creator';
