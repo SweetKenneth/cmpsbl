@@ -8,10 +8,10 @@
  *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
  *   - export.capability-pack: Generate capability pack from crystallized memories
  * 
- * Chain Discovery Engine:
- *   Instead of single-node collisions, the engine explores multi-node chains (2-6 nodes)
- *   where each additional node in the chain contributes synergy bonuses. Cross-sector
- *   chains receive higher CJPI because they combine fundamentally different capabilities.
+ * Node 41 Architecture:
+ *   The user's code is scanned to derive a CAPABILITY SURFACE — a set of 4 capability
+ *   verbs and a sector assignment — making it a first-class node in the collision engine.
+ *   Node 41 participates in synergy scoring identically to the 40 substrate nodes.
  * 
  * @classification FOUNDER EYES ONLY
  */
@@ -83,7 +83,6 @@ const NODE_SECTOR: Record<string, string> = {
   IMMUNITY: 'field', INTENT: 'field',
   GOVERNANCE: 'plane', ATLAS: 'plane', ENGINEER: 'plane',
   DEFENSE: 'shell',
-  // Extended nodes mapped to logical sectors
   OBSERVER: 'execution', GENESIS: 'core', ANCHOR: 'core', PRISM: 'execution',
   SENTRY: 'shell', SIGNAL: 'ocg', TENSOR: 'execution', ARBITER: 'plane',
   FLUX: 'execution', VECTOR: 'execution', SYNTH: 'emz',
@@ -164,30 +163,24 @@ async function generateFingerprint(chain: string[], epoch: string): Promise<stri
 }
 
 // ═══ CROSS-SECTOR SYNERGY MATRIX ═══
-// Certain sector combinations produce genuine emergent capabilities.
-// These bonuses represent real architectural value — not cosmetic inflation.
-
 const SECTOR_SYNERGY: Record<string, number> = {
-  'ccr+esz': 6,       // cognitive + sovereignty = predictive governance
-  'ccr+csz': 7,       // cognitive + covert = stealth reasoning
-  'ccr+execution': 4,  // cognitive + execution = intelligent automation
-  'ccr+shell': 5,      // cognitive + defense = adaptive threat modeling
-  'execution+esz': 4,  // execution + sovereignty = compliant automation
-  'execution+csz': 5,  // execution + covert = shadow execution
-  'execution+field': 3, // execution + field = resilient execution
-  'esz+csz': 8,        // sovereignty + covert = zero-knowledge compliance
-  'esz+shell': 5,      // sovereignty + defense = jurisdictional firewalling
-  'ocg+csz': 5,        // compliance grid + covert = auditable privacy
-  'ocg+esz': 4,        // compliance + sovereignty = treaty enforcement
-  'field+csz': 6,      // fields + covert = immune stealth mesh
-  'field+shell': 4,    // fields + defense = hardened resilience
-  'emz+ccr': 5,        // manufacturing + cognitive = intelligent synthesis
-  'emz+execution': 3,  // manufacturing + execution = build pipeline
-  'epz+ccr': 5,        // perception + cognitive = predictive awareness
-  'epz+csz': 6,        // perception + covert = stealth reconnaissance
-  'plane+csz': 5,      // governance plane + covert = shadow governance
-  'core+field': 4,     // core + field = substrate-level transformation
-  'core+plane': 3,     // core + plane = kernel governance
+  'ccr+esz': 6, 'ccr+csz': 7, 'ccr+execution': 4, 'ccr+shell': 5,
+  'execution+esz': 4, 'execution+csz': 5, 'execution+field': 3,
+  'esz+csz': 8, 'esz+shell': 5, 'ocg+csz': 5, 'ocg+esz': 4,
+  'field+csz': 6, 'field+shell': 4, 'emz+ccr': 5, 'emz+execution': 3,
+  'epz+ccr': 5, 'epz+csz': 6, 'plane+csz': 5, 'core+field': 4, 'core+plane': 3,
+  // User domain synergies — how user sectors interact with substrate sectors
+  'finance+ccr': 7, 'finance+shell': 6, 'finance+esz': 7, 'finance+execution': 5,
+  'finance+csz': 5, 'finance+ocg': 6, 'finance+field': 4,
+  'web+execution': 6, 'web+ccr': 4, 'web+shell': 5, 'web+emz': 5,
+  'data+ccr': 7, 'data+execution': 5, 'data+emz': 6, 'data+epz': 5,
+  'ml+ccr': 8, 'ml+execution': 5, 'ml+epz': 6, 'ml+csz': 5,
+  'security+shell': 7, 'security+csz': 7, 'security+field': 6, 'security+esz': 6,
+  'automation+execution': 6, 'automation+ocg': 5, 'automation+field': 5,
+  'iot+ocg': 6, 'iot+execution': 5, 'iot+shell': 5, 'iot+epz': 5,
+  'game+execution': 6, 'game+epz': 5, 'game+ccr': 4, 'game+emz': 5,
+  'api+execution': 6, 'api+ocg': 5, 'api+shell': 5, 'api+emz': 4,
+  'hardware+execution': 6, 'hardware+core': 5, 'hardware+field': 5, 'hardware+shell': 5,
 };
 
 function getSectorSynergy(sectors: string[]): number {
@@ -203,15 +196,11 @@ function getSectorSynergy(sectors: string[]): number {
     }
   }
   
-  // Diminishing returns for very long chains — but still rewarding
   const pairCount = (unique.length * (unique.length - 1)) / 2;
   return Math.floor(totalSynergy / Math.max(1, Math.sqrt(pairCount)));
 }
 
 // ═══ CHAIN COMPOUND DESCRIPTIONS ═══
-// These describe what COMBINATIONS of nodes produce — not individual node capabilities.
-// The key is "sorted sectors joined" → emergent capability description.
-
 const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   'BRAIN+ORACLE': [
     { name: 'Predictive_Reasoning_Engine', desc: 'Combines multi-step logical deduction with Bayesian forecasting to reason about future states — produces actionable predictions grounded in causal inference rather than pure correlation.' },
@@ -223,7 +212,6 @@ const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   ],
   'BRAIN+MEMORY': [
     { name: 'Associative_Reasoning_Fabric', desc: 'Chains logical deduction with semantic recall to build reasoning that remembers — each inference enriches the memory graph, each recall sharpens future reasoning.' },
-    { name: 'Knowledge_Amplification_Loop', desc: 'Creates a self-reinforcing cycle where reasoning discovers new knowledge and memory surfaces relevant context, producing compounding intelligence over time.' },
   ],
   'BRAIN+PHANTOM': [
     { name: 'Zero_Knowledge_Reasoner', desc: 'Performs complex multi-step inference over encrypted or anonymized data without ever exposing the raw inputs — privacy-preserving intelligence at scale.' },
@@ -293,35 +281,125 @@ const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   ],
 };
 
-// Generate a lookup key from a set of nodes (sorted for consistency)
 function chainKey(nodes: string[]): string {
   return [...nodes].sort().join('+');
 }
 
-// ═══ USER CODE IDENTITY EXTRACTION ═══
-// Scans the candidate's source files to extract recognizable components
-// so the user sees their code identity preserved in discovery descriptions.
+// ═══════════════════════════════════════════════════════════════════════
+// CAPABILITY SURFACE EXTRACTION — The heart of Node 41
+// Scans user code to derive a REAL capability profile:
+//   - nodeName: e.g. "TRADE_ENGINE"
+//   - capabilities: 4 verbs (like every substrate node)
+//   - sector: maps into the synergy matrix
+//   - description: human-readable label
+// ═══════════════════════════════════════════════════════════════════════
 
-interface UserCodeIdentity {
-  projectName: string;
-  language: string;
-  components: string[];      // function/class/module names extracted
-  dominantDomain: string;    // e.g. 'trading', 'web', 'data', 'automation'
-  fileCount: number;
-  resolverCount: number;
+interface CapabilitySurface {
+  nodeName: string;        // e.g. TRADE_ENGINE, DATA_PIPELINE
+  capabilities: string[];  // 4 verbs like substrate nodes
+  sector: string;          // maps into SECTOR_SYNERGY
+  description: string;     // e.g. "Algorithmic trade execution engine"
+  components: string[];    // extracted function/class names
+  domain: string;          // raw domain label
 }
 
-function extractUserCodeIdentity(candidateName: string, candidateMeta: Record<string, unknown>): UserCodeIdentity {
+// Domain → capability verb sets (same shape as NODE_CAPABILITIES)
+const DOMAIN_CAPABILITY_MAP: Record<string, { nodeName: string; capabilities: string[]; sector: string; description: string }> = {
+  trading:    { nodeName: 'TRADE_ENGINE',    capabilities: ['execute_trade', 'assess_risk', 'price_feed', 'rebalance'],     sector: 'finance',  description: 'Algorithmic trade execution engine' },
+  finance:    { nodeName: 'FINANCE_CORE',    capabilities: ['calculate', 'ledger_post', 'reconcile', 'audit_trail'],        sector: 'finance',  description: 'Financial computation and ledger core' },
+  web:        { nodeName: 'WEB_SERVICE',     capabilities: ['serve_request', 'route', 'authenticate', 'render'],            sector: 'web',      description: 'Web service request handler' },
+  api:        { nodeName: 'API_GATEWAY',     capabilities: ['route_request', 'validate', 'transform_payload', 'rate_gate'], sector: 'api',      description: 'API gateway and request pipeline' },
+  data:       { nodeName: 'DATA_PIPELINE',   capabilities: ['transform_data', 'pipeline', 'validate_schema', 'aggregate'], sector: 'data',     description: 'Data transformation pipeline' },
+  ml:         { nodeName: 'ML_ENGINE',       capabilities: ['train_model', 'predict', 'evaluate', 'feature_extract'],       sector: 'ml',       description: 'Machine learning inference engine' },
+  security:   { nodeName: 'SECURITY_CORE',   capabilities: ['encrypt', 'authenticate', 'authorize', 'audit_access'],       sector: 'security', description: 'Security and access control core' },
+  automation: { nodeName: 'AUTO_EXECUTOR',   capabilities: ['schedule', 'execute_task', 'monitor', 'retry_logic'],          sector: 'automation', description: 'Task automation executor' },
+  iot:        { nodeName: 'IOT_BRIDGE',      capabilities: ['sense', 'transmit', 'actuate', 'calibrate'],                   sector: 'iot',      description: 'IoT device bridge and telemetry' },
+  game:       { nodeName: 'GAME_RUNTIME',    capabilities: ['simulate', 'render_frame', 'handle_input', 'update_state'],    sector: 'game',     description: 'Game state and simulation runtime' },
+  hardware:   { nodeName: 'HDL_SYNTHESIZER', capabilities: ['synthesize', 'simulate_circuit', 'route_signal', 'verify_timing'], sector: 'hardware', description: 'Hardware description and synthesis engine' },
+  software:   { nodeName: 'CODE_MODULE',     capabilities: ['process', 'transform', 'validate', 'dispatch'],                sector: 'execution', description: 'General-purpose code module' },
+};
+
+// Verb extraction: extract the 4 most-frequent verbs from function names
+function extractVerbsFromCode(content: string): string[] {
+  const fnNames: string[] = [];
+  const patterns = [
+    /(?:export\s+)?(?:async\s+)?function\s+([a-zA-Z_]\w{2,})/g,
+    /(?:pub\s+)?fn\s+([a-z_]\w{2,})/g,
+    /def\s+([a-z_]\w{2,})/g,
+    /module\s+([A-Za-z_]\w{2,})/g,
+    /const\s+([a-zA-Z_]\w{2,})\s*=/g,
+  ];
+  for (const pat of patterns) {
+    let m;
+    while ((m = pat.exec(content)) !== null) {
+      fnNames.push(m[1]);
+    }
+  }
+  // Convert camelCase/snake_case to individual words, take verb-like first words
+  const verbs: Record<string, number> = {};
+  for (const name of fnNames) {
+    const words = name
+      .replace(/([a-z])([A-Z])/g, '$1_$2')
+      .toLowerCase()
+      .split('_')
+      .filter(w => w.length > 2);
+    if (words.length > 0) {
+      const verb = words[0];
+      verbs[verb] = (verbs[verb] || 0) + 1;
+    }
+  }
+  return Object.entries(verbs)
+    .sort(([,a],[,b]) => b - a)
+    .slice(0, 4)
+    .map(([v]) => v);
+}
+
+function deriveCapabilitySurface(candidateName: string, candidateMeta: Record<string, unknown>): CapabilitySurface {
   const sourceFiles = (candidateMeta.source_files as Array<{ name: string; content: string; language: string }>) || [];
   const language = String(candidateMeta.language || 'Unknown');
-  const fileCount = Number(candidateMeta.file_count || sourceFiles.length || 1);
-  const resolverCount = Number(candidateMeta.resolver_count || 1);
-
-  // Extract function/class/module names from user code
-  const components: string[] = [];
   const allContent = sourceFiles.map(f => f.content || '').join('\n');
+  const contentLower = allContent.toLowerCase();
+  const nameWords = candidateName.toLowerCase();
 
-  // Extract exported functions, classes, consts
+  // ─── Step 1: Detect domain from content signals ───
+  const domainSignals: Record<string, number> = {};
+  const signalChecks: [string, string[]][] = [
+    ['trading', ['trade', 'order', 'ticker', 'exchange', 'position', 'portfolio']],
+    ['finance', ['balance', 'ledger', 'payment', 'invoice', 'accounting']],
+    ['web', ['react', 'component', 'html', 'css', 'dom', 'render']],
+    ['api', ['endpoint', 'fetch', 'api', 'rest', 'graphql', 'request']],
+    ['data', ['dataframe', 'csv', 'transform', 'pipeline', 'etl', 'aggregate']],
+    ['ml', ['model', 'train', 'predict', 'tensor', 'neural', 'loss']],
+    ['security', ['encrypt', 'auth', 'token', 'jwt', 'certificate', 'firewall']],
+    ['automation', ['automat', 'schedule', 'cron', 'task', 'workflow', 'queue']],
+    ['iot', ['sensor', 'mqtt', 'gpio', 'device', 'telemetry', 'actuator']],
+    ['game', ['game', 'sprite', 'render', 'physics', 'collision', 'player']],
+    ['hardware', ['verilog', 'vhdl', 'module', 'wire', 'reg', 'clock', 'synthesis', 'fpga', 'signal', 'assign']],
+  ];
+
+  for (const [domain, keywords] of signalChecks) {
+    let score = 0;
+    for (const kw of keywords) {
+      if (contentLower.includes(kw)) score += 2;
+      if (nameWords.includes(kw)) score += 3;
+    }
+    if (score > 0) domainSignals[domain] = score;
+  }
+
+  // Also check language hints for HDL
+  const langLower = language.toLowerCase();
+  if (langLower.includes('verilog') || langLower.includes('vhdl') || langLower.includes('systemverilog') || langLower.includes('chisel') || langLower.includes('spice')) {
+    domainSignals.hardware = (domainSignals.hardware || 0) + 10;
+  }
+
+  const sortedDomains = Object.entries(domainSignals).sort(([,a],[,b]) => b - a);
+  const detectedDomain = sortedDomains.length > 0 ? sortedDomains[0][0] : 'software';
+
+  // ─── Step 2: Get base capability profile from domain ───
+  const baseProfile = DOMAIN_CAPABILITY_MAP[detectedDomain] || DOMAIN_CAPABILITY_MAP.software;
+
+  // ─── Step 3: Extract real function/class names from code ───
+  const components: string[] = [];
   const fnMatches = allContent.match(/(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_]\w{2,})/g) || [];
   const classMatches = allContent.match(/(?:export\s+)?class\s+([A-Za-z_]\w{2,})/g) || [];
   const defMatches = allContent.match(/def\s+([a-z_]\w{2,})/g) || [];
@@ -336,36 +414,39 @@ function extractUserCodeIdentity(candidateName: string, candidateMeta: Record<st
     if (components.length >= 12) break;
   }
 
-  // Detect dominant domain from file names and content
-  const contentLower = allContent.toLowerCase();
-  const nameWords = candidateName.toLowerCase();
-  let dominantDomain = 'software';
-  const domainSignals: Record<string, number> = {
-    trading: 0, web: 0, data: 0, automation: 0, game: 0,
-    api: 0, ml: 0, security: 0, finance: 0, iot: 0,
+  // ─── Step 4: Try to derive verbs from actual code if we have content ───
+  let capabilities = baseProfile.capabilities;
+  if (allContent.length > 50) {
+    const codeVerbs = extractVerbsFromCode(allContent);
+    if (codeVerbs.length >= 3) {
+      // Use the user's actual verbs, padded with domain defaults
+      capabilities = [...codeVerbs.slice(0, 4)];
+      while (capabilities.length < 4) {
+        const fallback = baseProfile.capabilities[capabilities.length];
+        if (fallback && !capabilities.includes(fallback)) {
+          capabilities.push(fallback);
+        } else {
+          capabilities.push('process');
+        }
+      }
+    }
+  }
+
+  // ─── Step 5: Build the node name from candidate + domain ───
+  // If the user code has a clear project name use it, otherwise use domain
+  const cleanName = candidateName.replace(/^CANDIDATE_/, '').replace(/_/g, ' ').trim();
+  const nodeName = cleanName.length > 2 && cleanName.length < 20
+    ? cleanName.toUpperCase().replace(/\s+/g, '_')
+    : baseProfile.nodeName;
+
+  return {
+    nodeName,
+    capabilities,
+    sector: baseProfile.sector,
+    description: `${baseProfile.description} — derived from ${language} source (${components.slice(0, 3).join(', ')}${components.length > 3 ? '…' : ''})`,
+    components,
+    domain: detectedDomain,
   };
-
-  if (contentLower.includes('trade') || contentLower.includes('order') || contentLower.includes('ticker') || nameWords.includes('trade') || nameWords.includes('bot'))
-    domainSignals.trading += 5;
-  if (contentLower.includes('fetch') || contentLower.includes('api') || contentLower.includes('endpoint'))
-    domainSignals.api += 3;
-  if (contentLower.includes('react') || contentLower.includes('component') || contentLower.includes('html'))
-    domainSignals.web += 3;
-  if (contentLower.includes('dataframe') || contentLower.includes('csv') || contentLower.includes('transform'))
-    domainSignals.data += 3;
-  if (contentLower.includes('model') || contentLower.includes('train') || contentLower.includes('predict'))
-    domainSignals.ml += 3;
-  if (contentLower.includes('encrypt') || contentLower.includes('auth') || contentLower.includes('token'))
-    domainSignals.security += 3;
-  if (contentLower.includes('price') || contentLower.includes('balance') || contentLower.includes('portfolio'))
-    domainSignals.finance += 3;
-  if (contentLower.includes('automat') || contentLower.includes('schedule') || contentLower.includes('cron'))
-    domainSignals.automation += 3;
-
-  const topDomain = Object.entries(domainSignals).sort(([,a],[,b]) => b - a)[0];
-  if (topDomain && topDomain[1] > 0) dominantDomain = topDomain[0];
-
-  return { projectName: candidateName, language, components, dominantDomain, fileCount, resolverCount };
 }
 
 // ═══ NODE CAPABILITY LABELS (human-readable) ═══
@@ -386,7 +467,7 @@ const NODE_CAPABILITY_LABELS: Record<string, string> = {
   NEXUS: 'AI routing failover',
 };
 
-// ═══ MULTI-NODE COLLISION ENGINE ═══
+// ═══ MULTI-NODE COLLISION ENGINE (Node 41 = First-Class Participant) ═══
 
 interface CollisionResult {
   name: string;
@@ -398,6 +479,7 @@ interface CollisionResult {
   chain_depth: number;
   synergy_bonus: number;
   sectors_crossed: number;
+  candidate_surface?: CapabilitySurface;
 }
 
 function scoreTier(cjpi: number): string {
@@ -409,24 +491,10 @@ function scoreTier(cjpi: number): string {
 }
 
 /**
- * Explore multi-node chain collisions with REALISTIC scoring distribution.
+ * Multi-node chain collisions where Node 41 is a REAL participant.
  * 
- * SCORING PHILOSOPHY: Most discoveries should be Prime or Relic tier.
- * Apex should be genuinely rare (< 5% of discoveries).
- * Mythic should appear ~15% of the time.
- * 
- * Chain scoring:
- *   base = hash-deterministic (20-48 range for 2-node, 15-38 for multi)
- *   + cross-sector synergy bonus (2-8 per unique sector pair, diminishing)
- *   + chain depth bonus (3 per node beyond 2)
- *   + candidate trait bonus (capped at 5)
- *   + variance factor (hash-based ±8 swing)
- * 
- * This means:
- *   - 2-node chains: typically 30-60 (prime to relic)
- *   - 3-node chains: typically 35-72 (prime to relic)
- *   - 4-node chains: typically 40-82 (relic to mythic, rarely apex)
- *   - 5-6 node chains: typically 45-88 (relic to mythic, very rarely apex)
+ * Key change: The candidate's sector and capabilities contribute to synergy
+ * scoring just like any substrate node. Node 41 is no longer a label.
  */
 function collideNodesMultiChain(
   candidateName: string,
@@ -434,38 +502,50 @@ function collideNodesMultiChain(
   targetNode: string,
   permutationDepth: number,
 ): CollisionResult[] {
+  // ═══ DERIVE NODE 41's CAPABILITY SURFACE ═══
+  const surface = deriveCapabilitySurface(candidateName, candidateMeta);
+  
+  // Register Node 41 into the local lookup tables for this collision
+  const node41Name = `Ψ₄₁ ${surface.nodeName}`;
   const candidateResolvers = Number(candidateMeta.resolver_count || 1);
-  const candidateLanguage = String(candidateMeta.language || 'Unknown');
   const candidateSize = Number(candidateMeta.size_kb || 0);
-  const userIdentity = extractUserCodeIdentity(candidateName, candidateMeta);
 
   const results: CollisionResult[] = [];
   
-  // Candidate trait bonus (capped at 5 — modest contribution)
+  // Candidate trait bonus (capped at 5)
   let traitBonus = 0;
   if (candidateResolvers > 15) traitBonus += 2;
   if (candidateSize > 100) traitBonus += 1;
-  if (candidateLanguage.includes('TypeScript') || candidateLanguage.includes('Rust') || candidateLanguage.includes('Python')) traitBonus += 1;
+  if (surface.capabilities.length >= 4) traitBonus += 1;
   if (candidateResolvers > 30) traitBonus += 1;
   traitBonus = Math.min(traitBonus, 5);
 
-  // ─── 2-node chains (Candidate + Target) ───
+  // ─── 2-node chains (Node 41 + Target) ───
+  // Now Node 41's sector participates in synergy!
   const targetCaps = NODE_CAPABILITIES[targetNode] || ['generic'];
+  const candidateSector = surface.sector;
+  const targetSector = NODE_SECTOR[targetNode] || 'unknown';
+  
   for (const cap of targetCaps) {
-    const nameHash = hashString(`${candidateName}:${targetNode}:${cap}:v3`);
-    const baseCjpi = 20 + (nameHash % 29); // 20-48 range for 2-node
-    const sectors = [NODE_SECTOR[targetNode] || 'unknown'];
-    const synergy = 0;
-    // Variance: hash-based swing of -4 to +4
+    const nameHash = hashString(`${surface.nodeName}:${targetNode}:${cap}:v4`);
+    const baseCjpi = 20 + (nameHash % 29); // 20-48 range
+    
+    // NEW: Node 41's sector creates real synergy with the target
+    const sectors = [candidateSector, targetSector];
+    const synergy = getSectorSynergy(sectors);
+    
     const variance = ((nameHash >> 8) % 9) - 4;
     let cjpi = baseCjpi + traitBonus + synergy + variance;
-    cjpi = Math.max(25, Math.min(cjpi, 68)); // 2-node hard cap at relic
+    cjpi = Math.max(25, Math.min(cjpi, 72)); // 2-node cap slightly higher now that synergy is real
 
     if (cjpi >= 30) {
-      const chain = [candidateName, targetNode];
-      const archetype = findArchetype(chain.slice(1));
-      const capName = archetype?.name || `${candidateName}_x_${targetNode}_${cap}`.toUpperCase();
-      const desc = archetype?.desc || generateUserAwareDescription(userIdentity, [targetNode], cap, cjpi);
+      const chain = [surface.nodeName, targetNode];
+      const archetype = findArchetype([targetNode]);
+      
+      // Build capability description using Node 41's real verbs
+      const capName = archetype?.name 
+        || `${surface.nodeName}_x_${targetNode}_${cap}`.toUpperCase();
+      const desc = generateNode41AwareDescription(surface, [targetNode], cap, cjpi);
       
       results.push({
         name: capName,
@@ -476,13 +556,13 @@ function collideNodesMultiChain(
         capability_type: cap,
         chain_depth: 2,
         synergy_bonus: synergy,
-        sectors_crossed: 1,
+        sectors_crossed: new Set(sectors).size,
+        candidate_surface: surface,
       });
     }
   }
 
-  // ─── 3-6 node chains (Candidate + Target + Partners) ───
-  const targetSector = NODE_SECTOR[targetNode] || 'unknown';
+  // ─── 3-6 node chains (Node 41 + Target + Partners) ───
   const crossSectorNodes = SUBSTRATE_NODES.filter(n => 
     n !== targetNode && (NODE_SECTOR[n] || 'unknown') !== targetSector
   );
@@ -498,9 +578,8 @@ function collideNodesMultiChain(
       const usedNodes = new Set([targetNode]);
       
       for (let p = 1; p < chainLen - 1; p++) {
-        const partnerHash = hashString(`${candidateName}:${targetNode}:chain${chainLen}:ci${ci}:p${p}:v3`);
-        // 65% chance cross-sector for diversity
-        const pool = (partnerHash % 10 < 65 / 10) ? crossSectorNodes : sameSectorNodes;
+        const partnerHash = hashString(`${surface.nodeName}:${targetNode}:chain${chainLen}:ci${ci}:p${p}:v4`);
+        const pool = (partnerHash % 10 < 7) ? crossSectorNodes : sameSectorNodes;
         const available = pool.filter(n => !usedNodes.has(n));
         if (available.length === 0) break;
         const partner = available[partnerHash % available.length];
@@ -510,42 +589,33 @@ function collideNodesMultiChain(
 
       if (partnerChain.length < chainLen - 1) continue;
 
-      const sectors = partnerChain.map(n => NODE_SECTOR[n] || 'unknown');
+      // Node 41's sector is included in sector calculations
+      const sectors = [candidateSector, ...partnerChain.map(n => NODE_SECTOR[n] || 'unknown')];
       const uniqueSectors = [...new Set(sectors)];
       const synergy = getSectorSynergy(sectors);
       
-      // Base score: lower floor, realistic ceiling
-      const chainHash = hashString(`${candidateName}:${partnerChain.join(':')}:v3`);
-      const baseScore = 15 + (chainHash % 24); // 15-38 base
-      
-      // Chain depth bonus: modest 3 per node beyond 2
+      const chainHash = hashString(`${surface.nodeName}:${partnerChain.join(':')}:v4`);
+      const baseScore = 15 + (chainHash % 24);
       const depthBonus = (chainLen - 2) * 3;
-      
-      // Cross-sector diversity: 2 per unique sector beyond first
       const diversityBonus = (uniqueSectors.length - 1) * 2;
-      
-      // Variance swing: -6 to +6
       const variance = ((chainHash >> 8) % 13) - 6;
       
       let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus + variance;
       
-      // Apply depth-appropriate caps — MUCH lower now
-      // 3-node max 78 (relic), 4-node max 86 (mythic), 5-node max 92 (barely apex), 6-node max 96
       const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : 96;
       cjpi = Math.max(30, Math.min(cjpi, maxForDepth));
 
       if (cjpi >= 35) {
-        const fullChain = [candidateName, ...partnerChain];
+        const fullChain = [surface.nodeName, ...partnerChain];
         const archetype = findArchetype(partnerChain);
         
         const capIdx = chainHash % targetCaps.length;
         const primaryCap = targetCaps[capIdx];
         
-        const capName = archetype?.name || generateChainName(candidateName, partnerChain, cjpi);
-        // Use user-aware descriptions that reference their code
+        const capName = archetype?.name || generateChainName(surface.nodeName, partnerChain, cjpi);
         const desc = archetype?.desc 
-          ? enrichArchetypeWithUserCode(archetype.desc, userIdentity, partnerChain)
-          : generateUserAwareDescription(userIdentity, partnerChain, primaryCap, cjpi);
+          ? enrichWithNode41(archetype.desc, surface, partnerChain)
+          : generateNode41AwareDescription(surface, partnerChain, primaryCap, cjpi);
 
         results.push({
           name: capName,
@@ -557,6 +627,7 @@ function collideNodesMultiChain(
           chain_depth: fullChain.length,
           synergy_bonus: synergy,
           sectors_crossed: uniqueSectors.length,
+          candidate_surface: surface,
         });
       }
     }
@@ -609,73 +680,74 @@ function generateChainName(candidate: string, nodes: string[], cjpi: number): st
 }
 
 /**
- * Generate descriptions that reference the USER'S code identity.
- * Shows what substrate capabilities are spliced in and what user code is retained.
+ * Generate descriptions where Node 41 is a PEER — described by its capabilities,
+ * not just as "your code". Shows the chain as a collaboration between equals.
  */
-function generateUserAwareDescription(
-  user: UserCodeIdentity, nodes: string[], primaryCap: string, cjpi: number
+function generateNode41AwareDescription(
+  surface: CapabilitySurface, nodes: string[], primaryCap: string, cjpi: number
 ): string {
   const chainLen = nodes.length;
-  const sectors = [...new Set(nodes.map(n => NODE_SECTOR[n] || 'unknown'))];
   
-  // Build capability annotations: "governed by GOVERNANCE, reasoned by BRAIN"
-  const capAnnotations = nodes
-    .map(n => `${NODE_CAPABILITY_LABELS[n] || n.toLowerCase()} via ${n}`)
-    .slice(0, 4);
+  // Build Node 41's capability label: "TRADE_ENGINE (execute_trade, assess_risk)"
+  const node41Label = `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')})`;
   
-  // Reference user code components
-  const userComponents = user.components.slice(0, 4);
-  const hasUserCode = userComponents.length > 0;
-  const domainLabel = user.dominantDomain !== 'software' ? user.dominantDomain : user.language.split('/')[0].toLowerCase();
+  // Build substrate node labels with their capabilities
+  const nodeLabels = nodes.slice(0, 3).map(n => {
+    const caps = NODE_CAPABILITIES[n];
+    const label = NODE_CAPABILITY_LABELS[n] || n.toLowerCase();
+    return `${n} ${label}`;
+  });
+  
+  // Reference specific user code components
+  const userComps = surface.components.slice(0, 3);
+  const hasComps = userComps.length > 0;
   
   let desc = '';
   
-  // Open with user code identity
-  if (hasUserCode) {
-    desc += `Your ${domainLabel} code (${userComponents.slice(0, 3).join(', ')}${userComponents.length > 3 ? '…' : ''}) is retained as the core execution logic. `;
-  } else {
-    desc += `Your ${domainLabel} ${user.language} application is preserved as the primary runtime. `;
+  // Open with the CHAIN as a collaboration — Node 41 is a peer
+  desc += `${node41Label} `;
+  if (hasComps) {
+    desc += `— retaining your ${surface.domain} logic (${userComps.join(', ')}${surface.components.length > 3 ? '…' : ''}) — `;
   }
   
-  // Describe what substrate capabilities are spliced in
-  desc += `Substrate capabilities spliced in: ${capAnnotations.join(', ')}. `;
-  
-  // Tier-specific framing
-  if (cjpi >= 80) {
-    desc += `This ${chainLen}-node fusion produces a compound capability where your original ${domainLabel} logic gains ${capAnnotations[0] || 'enhanced processing'} — `;
-    desc += `the substrate handles ${nodes.slice(0, 2).map(n => NODE_CAPABILITY_LABELS[n] || n.toLowerCase()).join(' and ')} while your code retains its functional identity and stack compatibility.`;
-  } else if (cjpi >= 65) {
-    desc += `Your code's core behavior is intact — the ${chainLen}-node chain adds ${capAnnotations[0] || 'processing'} as an enhancement layer. `;
-    desc += `You can drop this back into your existing stack with the added substrate features.`;
+  // Describe the chain interaction
+  if (chainLen === 1) {
+    desc += `fused with ${nodeLabels[0]}. `;
   } else {
-    desc += `A lightweight ${chainLen > 1 ? chainLen + '-node' : ''} enhancement that adds ${capAnnotations[0] || primaryCap.replace(/_/g, ' ')} to your existing ${domainLabel} codebase. `;
-    desc += `90%+ of your original code is preserved — the substrate splices are additive, not replacement.`;
+    desc += `chains through ${nodeLabels.join(' → ')}. `;
+  }
+  
+  // Describe the emergent result based on tier
+  if (cjpi >= 80) {
+    desc += `This ${chainLen + 1}-node fusion creates a compound capability: your ${surface.capabilities[0] || 'core'} logic gains ${NODE_CAPABILITY_LABELS[nodes[0]] || 'substrate processing'}, `;
+    desc += `producing emergent behavior neither system achieves alone. `;
+    desc += `Your code's functional identity and stack compatibility are preserved — the substrate amplifies, not replaces.`;
+  } else if (cjpi >= 65) {
+    desc += `Your ${surface.nodeName}'s ${surface.capabilities[0] || 'primary'} capability is enhanced with ${NODE_CAPABILITY_LABELS[nodes[0]] || 'substrate logic'}. `;
+    desc += `Drop-in compatible with your existing stack — substrate features are additive layers.`;
+  } else {
+    desc += `A lightweight enhancement splicing ${NODE_CAPABILITY_LABELS[nodes[0]] || primaryCap.replace(/_/g, ' ')} into your ${surface.domain} codebase. `;
+    desc += `90%+ of your original code is preserved — substrate capabilities are woven in as augmentations.`;
   }
   
   return desc;
 }
 
 /**
- * Enrich an archetype description with user code context
+ * Enrich archetype description with Node 41 context
  */
-function enrichArchetypeWithUserCode(archetypeDesc: string, user: UserCodeIdentity, nodes: string[]): string {
-  const userComponents = user.components.slice(0, 3);
-  const domainLabel = user.dominantDomain !== 'software' ? user.dominantDomain : user.language.split('/')[0].toLowerCase();
+function enrichWithNode41(archetypeDesc: string, surface: CapabilitySurface, nodes: string[]): string {
+  const userComps = surface.components.slice(0, 3);
   const capLabels = nodes.slice(0, 3).map(n => `${NODE_CAPABILITY_LABELS[n] || n.toLowerCase()} (${n})`);
   
   let prefix = '';
-  if (userComponents.length > 0) {
-    prefix = `Built on your ${domainLabel} code (${userComponents.join(', ')}), enhanced with ${capLabels.join(', ')}. `;
+  if (userComps.length > 0) {
+    prefix = `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')}) — built on your ${surface.domain} code (${userComps.join(', ')}), chains with ${capLabels.join(', ')}. `;
   } else {
-    prefix = `Your ${domainLabel} ${user.language} codebase gains ${capLabels.join(', ')}. `;
+    prefix = `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')}) gains ${capLabels.join(', ')}. `;
   }
   
   return prefix + archetypeDesc;
-}
-
-function generateFallbackDescription(candidate: string, nodes: string[], cap: string, cjpi: number): string {
-  const tierLabel = cjpi >= 80 ? 'mythic-tier' : cjpi >= 65 ? 'relic-tier' : cjpi >= 45 ? 'prime-tier' : 'emerging';
-  return `${tierLabel} collision capability discovered at the intersection of ${candidate} and ${nodes.join(' → ')}. Enables automated ${cap.replace(/_/g, ' ')} operations with substrate-level integration.`;
 }
 
 // ═══ MAIN HANDLER ═══
@@ -685,7 +757,6 @@ serve(async (req: Request) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Rate limiting
   const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
   if (!checkRateLimit(clientIp, 60)) {
     return jsonResponse({ success: false, error: 'Rate limit exceeded. Try again in a minute.' }, 429);
@@ -696,7 +767,6 @@ serve(async (req: Request) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Auth check
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return jsonResponse({ success: false, error: 'Authentication required' }, 401);
@@ -760,6 +830,8 @@ serve(async (req: Request) => {
         const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
         const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth);
 
+        // Persist results — include capability surface in metadata
+        const surface = results[0]?.candidate_surface;
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
@@ -770,7 +842,7 @@ serve(async (req: Request) => {
             category: 'proprietary-discovery',
             description: result.description.slice(0, 500),
             metadata: {
-              node_a: candidate_node,
+              node_a: result.chain[0],
               node_b: target_node,
               cjpi_score: result.cjpi_score,
               capability_type: result.capability_type,
@@ -781,13 +853,27 @@ serve(async (req: Request) => {
               fingerprint,
               discovered_at: new Date().toISOString(),
               crystallized: false,
+              candidate_surface: surface ? {
+                nodeName: surface.nodeName,
+                capabilities: surface.capabilities,
+                sector: surface.sector,
+                domain: surface.domain,
+              } : null,
             },
           }, { onConflict: 'user_id,slug' });
         }
 
         return jsonResponse({
           success: true,
-          capabilities: results,
+          capabilities: results.map(r => ({ ...r, candidate_surface: undefined })),
+          candidate_surface: surface ? {
+            nodeName: surface.nodeName,
+            capabilities: surface.capabilities,
+            sector: surface.sector,
+            description: surface.description,
+            domain: surface.domain,
+            components: surface.components.slice(0, 6),
+          } : null,
           collision: { candidate: candidate_node, target: target_node, depth: permutation_depth },
           timestamp: new Date().toISOString(),
         });
@@ -819,13 +905,14 @@ serve(async (req: Request) => {
         const allResults: CollisionResult[] = [];
 
         for (const node of SUBSTRATE_NODES) {
-          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth);
+          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutationDepth);
           allResults.push(...results);
         }
 
         allResults.sort((a, b) => b.cjpi_score - a.cjpi_score);
         const topResults = allResults.slice(0, 50);
 
+        const surface = topResults[0]?.candidate_surface;
         for (const result of topResults) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
           await supabase.from('artifact_registry').upsert({
@@ -847,6 +934,12 @@ serve(async (req: Request) => {
               fingerprint,
               discovered_at: new Date().toISOString(),
               crystallized: false,
+              candidate_surface: surface ? {
+                nodeName: surface.nodeName,
+                capabilities: surface.capabilities,
+                sector: surface.sector,
+                domain: surface.domain,
+              } : null,
             },
           }, { onConflict: 'user_id,slug' });
         }
@@ -855,7 +948,14 @@ serve(async (req: Request) => {
           success: true,
           total_collisions: SUBSTRATE_NODES.length,
           total_capabilities: allResults.length,
-          top_capabilities: topResults,
+          top_capabilities: topResults.map(r => ({ ...r, candidate_surface: undefined })),
+          candidate_surface: surface ? {
+            nodeName: surface.nodeName,
+            capabilities: surface.capabilities,
+            sector: surface.sector,
+            description: surface.description,
+            domain: surface.domain,
+          } : null,
           s_tier_count: allResults.filter(r => r.cjpi_score >= 85).length,
           apex_count: allResults.filter(r => r.cjpi_score >= 92).length,
           deepest_chain: Math.max(...allResults.map(r => r.chain_depth)),
@@ -1017,6 +1117,7 @@ serve(async (req: Request) => {
               fingerprint: String(meta.structural_fingerprint || '').slice(0, 12).toUpperCase(),
               moat_signature: meta.moat_signature,
               description: c.description,
+              candidate_surface: meta.candidate_surface || null,
             };
           }),
           mini_runtime: include_mini_runtime ? {

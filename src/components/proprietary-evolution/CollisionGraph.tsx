@@ -366,11 +366,12 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Label
-      ctx.font = 'bold 9px monospace';
+      // Label — show derived node name if short enough, else Ψ₄₁
+      ctx.font = 'bold 8px monospace';
       ctx.fillStyle = '#f1f5f9';
       ctx.textAlign = 'center';
-      ctx.fillText('#41', CX, CY + 3);
+      const label41 = candidateNode.length <= 12 ? `Ψ₄₁ ${candidateNode}` : 'Ψ₄₁';
+      ctx.fillText(label41, CX, CY + 3);
 
       // ═══ PARTICLES ═══
       const particles = particlesRef.current;

@@ -10,12 +10,15 @@
  * - Auto-heal on transient failures
  * - Graceful degradation on parse errors
  * - Dead-letter fallback logging
+ *
+ * POST-INGEST: Displays the derived Capability Surface (Node 41 identity)
  */
 
 import { useState, useCallback, useRef } from 'react';
 import {
   Upload, FileCode2, CheckCircle2, AlertCircle, Loader2,
   Code2, Layers, Lock, ShieldCheck, RefreshCw, AlertTriangle,
+  Cpu, Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -94,6 +97,81 @@ function deadLetterLog(operation: string, context: Record<string, unknown>, erro
   console.error(`[INGEST DLQ] ${operation}`, { context, error: String(error), ts: new Date().toISOString() });
 }
 
+// ═══ LOCAL CAPABILITY SURFACE DERIVATION (mirrors edge function logic) ═══
+interface LocalCapabilitySurface {
+  nodeName: string;
+  capabilities: string[];
+  sector: string;
+  domain: string;
+  description: string;
+}
+
+const DOMAIN_SIGNAL_CHECKS: [string, string[]][] = [
+  ['trading', ['trade', 'order', 'ticker', 'exchange', 'position', 'portfolio']],
+  ['finance', ['balance', 'ledger', 'payment', 'invoice', 'accounting']],
+  ['web', ['react', 'component', 'html', 'css', 'dom', 'render']],
+  ['api', ['endpoint', 'fetch', 'api', 'rest', 'graphql', 'request']],
+  ['data', ['dataframe', 'csv', 'transform', 'pipeline', 'etl', 'aggregate']],
+  ['ml', ['model', 'train', 'predict', 'tensor', 'neural', 'loss']],
+  ['security', ['encrypt', 'auth', 'token', 'jwt', 'certificate', 'firewall']],
+  ['automation', ['automat', 'schedule', 'cron', 'task', 'workflow', 'queue']],
+  ['iot', ['sensor', 'mqtt', 'gpio', 'device', 'telemetry', 'actuator']],
+  ['game', ['game', 'sprite', 'render', 'physics', 'collision', 'player']],
+  ['hardware', ['verilog', 'vhdl', 'module', 'wire', 'reg', 'clock', 'synthesis', 'fpga', 'signal', 'assign']],
+];
+
+const DOMAIN_PROFILES: Record<string, { nodeName: string; capabilities: string[]; sector: string; description: string }> = {
+  trading:    { nodeName: 'TRADE_ENGINE',    capabilities: ['execute_trade', 'assess_risk', 'price_feed', 'rebalance'],     sector: 'finance',    description: 'Algorithmic trade execution engine' },
+  finance:    { nodeName: 'FINANCE_CORE',    capabilities: ['calculate', 'ledger_post', 'reconcile', 'audit_trail'],        sector: 'finance',    description: 'Financial computation and ledger core' },
+  web:        { nodeName: 'WEB_SERVICE',     capabilities: ['serve_request', 'route', 'authenticate', 'render'],            sector: 'web',        description: 'Web service request handler' },
+  api:        { nodeName: 'API_GATEWAY',     capabilities: ['route_request', 'validate', 'transform_payload', 'rate_gate'], sector: 'api',        description: 'API gateway and request pipeline' },
+  data:       { nodeName: 'DATA_PIPELINE',   capabilities: ['transform_data', 'pipeline', 'validate_schema', 'aggregate'], sector: 'data',       description: 'Data transformation pipeline' },
+  ml:         { nodeName: 'ML_ENGINE',       capabilities: ['train_model', 'predict', 'evaluate', 'feature_extract'],       sector: 'ml',         description: 'Machine learning inference engine' },
+  security:   { nodeName: 'SECURITY_CORE',   capabilities: ['encrypt', 'authenticate', 'authorize', 'audit_access'],       sector: 'security',   description: 'Security and access control core' },
+  automation: { nodeName: 'AUTO_EXECUTOR',   capabilities: ['schedule', 'execute_task', 'monitor', 'retry_logic'],          sector: 'automation', description: 'Task automation executor' },
+  iot:        { nodeName: 'IOT_BRIDGE',      capabilities: ['sense', 'transmit', 'actuate', 'calibrate'],                   sector: 'iot',        description: 'IoT device bridge and telemetry' },
+  game:       { nodeName: 'GAME_RUNTIME',    capabilities: ['simulate', 'render_frame', 'handle_input', 'update_state'],    sector: 'game',       description: 'Game state and simulation runtime' },
+  hardware:   { nodeName: 'HDL_SYNTHESIZER', capabilities: ['synthesize', 'simulate_circuit', 'route_signal', 'verify_timing'], sector: 'hardware', description: 'Hardware description and synthesis engine' },
+  software:   { nodeName: 'CODE_MODULE',     capabilities: ['process', 'transform', 'validate', 'dispatch'],                sector: 'execution',  description: 'General-purpose code module' },
+};
+
+function deriveLocalSurface(analysis: CandidateAnalysis): LocalCapabilitySurface {
+  const allContent = analysis.ingestedFiles.map(f => f.content || '').join('\n').toLowerCase();
+  const nameWords = analysis.name.toLowerCase();
+  const langLower = analysis.language.toLowerCase();
+
+  const domainSignals: Record<string, number> = {};
+  for (const [domain, keywords] of DOMAIN_SIGNAL_CHECKS) {
+    let score = 0;
+    for (const kw of keywords) {
+      if (allContent.includes(kw)) score += 2;
+      if (nameWords.includes(kw)) score += 3;
+    }
+    if (score > 0) domainSignals[domain] = score;
+  }
+
+  if (langLower.includes('verilog') || langLower.includes('vhdl') || langLower.includes('systemverilog') || langLower.includes('chisel') || langLower.includes('spice')) {
+    domainSignals.hardware = (domainSignals.hardware || 0) + 10;
+  }
+
+  const sorted = Object.entries(domainSignals).sort(([,a],[,b]) => b - a);
+  const domain = sorted.length > 0 ? sorted[0][0] : 'software';
+  const profile = DOMAIN_PROFILES[domain] || DOMAIN_PROFILES.software;
+
+  const cleanName = analysis.name.replace(/_/g, ' ').trim();
+  const nodeName = cleanName.length > 2 && cleanName.length < 20
+    ? cleanName.toUpperCase().replace(/\s+/g, '_')
+    : profile.nodeName;
+
+  return {
+    nodeName,
+    capabilities: profile.capabilities,
+    sector: profile.sector,
+    domain,
+    description: profile.description,
+  };
+}
+
 /* ═══ COMPONENT ═══ */
 export function IngestPhase() {
   const [dragOver, setDragOver] = useState(false);
@@ -104,6 +182,7 @@ export function IngestPhase() {
   const [registering, setRegistering] = useState(false);
   const [breakerStatus, setBreakerStatus] = useState<CircuitBreaker>(BREAKER_DEFAULTS);
   const [autoHealAttempt, setAutoHealAttempt] = useState(0);
+  const [capSurface, setCapSurface] = useState<LocalCapabilitySurface | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
   const {
@@ -118,6 +197,7 @@ export function IngestPhase() {
     setParsedNode(null);
     setRegistered(false);
     setAutoHealAttempt(0);
+    setCapSurface(null);
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -139,16 +219,15 @@ export function IngestPhase() {
     setParsing(true);
 
     try {
-      console.log('[INGEST] Analyzing', files.length, 'file(s):', files.map(f => f.name).join(', '));
       const analysis = await analyzeUploadedFiles(files);
-      console.log('[INGEST] Analysis complete:', {
-        name: analysis.name,
-        language: analysis.language,
-        ingested: analysis.ingestedFiles.length,
-        unreadable: analysis.unreadableFileCount,
-        warnings: analysis.parseWarnings,
-      });
       setParsedNode(analysis);
+
+      // Derive capability surface locally for immediate display
+      if (analysis.ingestedFiles.length > 0) {
+        const surface = deriveLocalSurface(analysis);
+        setCapSurface(surface);
+      }
+
       if (analysis.ingestedFiles.length === 0) {
         toast({
           title: 'No code could be extracted',
@@ -164,44 +243,28 @@ export function IngestPhase() {
     }
   };
 
-  /* ═══ REGISTER NODE (with circuit breaker + retry + auto-heal) ═══ */
+  /* ═══ REGISTER NODE ═══ */
   const handleRegisterNode = async () => {
     if (!parsedNode) return;
 
     if (!user) {
-      toast({
-        title: 'Sign in required',
-        description: 'You need to sign in before candidate nodes can be registered and persisted.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Sign in required', description: 'You need to sign in before candidate nodes can be registered.', variant: 'destructive' });
       return;
     }
 
     if (parsedNode.ingestedFiles.length === 0) {
-      toast({
-        title: 'No readable code found',
-        description: 'Upload at least one supported text-based source file so the candidate can ingest real code.',
-        variant: 'destructive',
-      });
+      toast({ title: 'No readable code found', description: 'Upload at least one supported text-based source file.', variant: 'destructive' });
       return;
     }
 
     if (!canUpload) {
-      toast({
-        title: 'Daily upload limit reached',
-        description: `You've used all ${evolutionUploadsPerDay} uploads for today.`,
-        variant: 'destructive',
-      });
+      toast({ title: 'Daily upload limit reached', description: `You've used all ${evolutionUploadsPerDay} uploads for today.`, variant: 'destructive' });
       return;
     }
 
     if (!canAttempt(breakerStatus)) {
       const waitSec = Math.ceil((breakerStatus.cooldownMs - (Date.now() - breakerStatus.lastFailure)) / 1000);
-      toast({
-        title: 'Circuit breaker active',
-        description: `Too many failures. Auto-retry in ~${waitSec}s. The system is self-healing.`,
-        variant: 'destructive',
-      });
+      toast({ title: 'Circuit breaker active', description: `Too many failures. Auto-retry in ~${waitSec}s.`, variant: 'destructive' });
       if (autoHealAttempt < 2) {
         setTimeout(() => {
           setAutoHealAttempt(prev => prev + 1);
@@ -222,7 +285,9 @@ export function IngestPhase() {
           slug: `candidate-${parsedNode.name.toLowerCase()}-${Date.now().toString(36)}`,
           tier: 'candidate',
           category: 'proprietary-evolution',
-          description: `Candidate Node #41 — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers, ${parsedNode.sizeKb}KB)`,
+          description: capSurface
+            ? `Ψ₄₁ ${capSurface.nodeName} — ${capSurface.description} (${parsedNode.language}, ${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers)`
+            : `Candidate Node #41 — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers, ${parsedNode.sizeKb}KB)`,
           metadata: {
             phase: 'ingest',
             language: parsedNode.language,
@@ -232,6 +297,13 @@ export function IngestPhase() {
             ingested_at: new Date().toISOString(),
             parse_warnings: parsedNode.parseWarnings,
             unreadable_file_count: parsedNode.unreadableFileCount,
+            // Store derived capability surface for the edge function
+            derived_surface: capSurface ? {
+              nodeName: capSurface.nodeName,
+              capabilities: capSurface.capabilities,
+              sector: capSurface.sector,
+              domain: capSurface.domain,
+            } : null,
             source_files: parsedNode.ingestedFiles.map(file => ({
               name: file.name,
               extension: file.extension,
@@ -244,42 +316,30 @@ export function IngestPhase() {
           },
         };
 
-        console.log('[INGEST] Registering candidate node:', payload.name, 'files:', payload.metadata.source_files.length);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { error } = await (supabase as any).from('artifact_registry').insert(payload);
-
-        if (error) {
-          console.error('[INGEST] DB insert error:', error.message, error.code, error.details);
-          throw new Error(`DB: ${error.message}`);
-        }
-      }, 2); // Only 2 retries to fail faster
+        if (error) throw new Error(`DB: ${error.message}`);
+      }, 2);
 
       setBreakerStatus(recordSuccess());
       setRegistered(true);
       setAutoHealAttempt(0);
       await refreshUsage();
-      toast({ title: 'Candidate node registered', description: `${parsedNode.name} ingested successfully and is ready for Ascension` });
+      toast({
+        title: capSurface ? `Ψ₄₁ ${capSurface.nodeName} registered` : 'Candidate node registered',
+        description: `${parsedNode.name} ingested and ready for Ascension`,
+      });
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
       const newBreaker = recordFailure(breakerStatus);
       setBreakerStatus(newBreaker);
-      deadLetterLog('register_candidate_node', {
-        name: parsedNode.name,
-        attempt: autoHealAttempt,
-        breakerState: newBreaker.state,
-      }, err);
-
-      toast({
-        title: 'Registration failed',
-        description: errMsg.includes('DB:') ? errMsg : `Unexpected error: ${errMsg}`,
-        variant: 'destructive',
-      });
+      deadLetterLog('register_candidate_node', { name: parsedNode.name, attempt: autoHealAttempt, breakerState: newBreaker.state }, err);
+      toast({ title: 'Registration failed', description: errMsg.includes('DB:') ? errMsg : `Unexpected error: ${errMsg}`, variant: 'destructive' });
     } finally {
       setRegistering(false);
     }
   };
 
-  /* ═══ MANUAL RETRY (auto-heal trigger) ═══ */
   const handleManualRetry = () => {
     setBreakerStatus(prev => ({ ...prev, state: 'half-open', failures: Math.max(0, prev.failures - 1) }));
     setAutoHealAttempt(0);
@@ -307,8 +367,8 @@ export function IngestPhase() {
             </p>
             <p className="text-xs text-muted-foreground">
               {breakerStatus.state === 'open'
-                ? `${breakerStatus.failures} failures. Auto-heal scheduled. You can also retry manually.`
-                : 'Next operation will test connectivity. Success resets the breaker.'}
+                ? `${breakerStatus.failures} failures. Auto-heal scheduled.`
+                : 'Next operation will test connectivity.'}
             </p>
           </div>
           <Button size="sm" variant="outline" onClick={handleManualRetry} className="h-8 text-xs gap-1.5 shrink-0">
@@ -319,23 +379,16 @@ export function IngestPhase() {
 
       {/* Upload Quota */}
       <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
-        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-          Daily Uploads
-        </span>
+        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Daily Uploads</span>
         <div className="flex items-center gap-2">
-          {breakerStatus.state === 'closed' && (
-            <ShieldCheck className="w-3 h-3 text-neon-green" />
-          )}
-          <span className={cn(
-            "text-xs font-mono font-bold",
-            canUpload ? "text-primary" : "text-destructive"
-          )}>
+          {breakerStatus.state === 'closed' && <ShieldCheck className="w-3 h-3 text-neon-green" />}
+          <span className={cn("text-xs font-mono font-bold", canUpload ? "text-primary" : "text-destructive")}>
             {uploadsRemaining}/{evolutionUploadsPerDay} remaining
           </span>
         </div>
       </div>
 
-      {/* Drop Zone — accepts ALL file types */}
+      {/* Drop Zone */}
       <div
         onDragOver={e => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
@@ -350,47 +403,27 @@ export function IngestPhase() {
         )}
         onClick={() => canUpload && fileInputRef.current?.click()}
       >
-        {!canUpload ? (
-          <Lock className="w-8 h-8 mx-auto text-destructive/50 mb-3" />
-        ) : (
-          <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
-        )}
+        {!canUpload ? <Lock className="w-8 h-8 mx-auto text-destructive/50 mb-3" /> : <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />}
         <p className="text-sm sm:text-base text-foreground font-medium">
           {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
         </p>
         <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
-          {!canUpload
-            ? 'Upgrade your tier for more daily uploads'
-            : 'All languages accepted — TypeScript, Python, Rust, Go, C/C++, Zig, Verilog, VHDL, SystemVerilog, Chisel, SPICE, SystemC, and any source file'}
+          {!canUpload ? 'Upgrade your tier for more daily uploads' : 'All languages accepted — TypeScript, Python, Rust, Go, Verilog, VHDL, SystemVerilog, and any source file'}
         </p>
-        {canUpload && (
-          <p className="mt-3 text-xs text-primary font-mono">
-            click or drag to upload
-          </p>
-        )}
-        {/* Hidden file input — NO accept filter, allows everything */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          className="hidden"
-          onChange={handleFileSelect}
-        />
+        {canUpload && <p className="mt-3 text-xs text-primary font-mono">click or drag to upload</p>}
+        <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
       </div>
 
       {/* File List */}
       {files.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-mono text-muted-foreground">
-              {files.length} file{files.length !== 1 ? 's' : ''} selected
-            </p>
+            <p className="text-xs font-mono text-muted-foreground">{files.length} file{files.length !== 1 ? 's' : ''} selected</p>
             <Button size="sm" onClick={handleParse} disabled={parsing} className="h-8 min-h-[44px] text-xs gap-1.5">
               {parsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Code2 className="w-3 h-3" />}
               Analyze
             </Button>
           </div>
-
           <div className="grid gap-1 max-h-40 overflow-y-auto">
             {files.slice(0, 20).map((f, i) => {
               const ext = f.name.split('.').pop()?.toLowerCase() || '';
@@ -399,16 +432,12 @@ export function IngestPhase() {
                 <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/20 text-xs">
                   <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
                   <span className="text-foreground/80 truncate font-mono">{f.name}</span>
-                  {lang && (
-                    <span className="text-[9px] text-primary/60 font-mono shrink-0">{lang}</span>
-                  )}
+                  {lang && <span className="text-[9px] text-primary/60 font-mono shrink-0">{lang}</span>}
                   <span className="ml-auto text-muted-foreground shrink-0">{(f.size / 1024).toFixed(1)}KB</span>
                 </div>
               );
             })}
-            {files.length > 20 && (
-              <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>
-            )}
+            {files.length > 20 && <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>}
           </div>
         </div>
       )}
@@ -422,10 +451,10 @@ export function IngestPhase() {
             </div>
             <div className="flex-1">
               <h3 className="text-sm font-semibold text-foreground">
-                Candidate: {parsedNode.name}
+                {capSurface ? `Ψ₄₁ ${capSurface.nodeName}` : `Candidate: ${parsedNode.name}`}
               </h3>
               <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                Candidate Node • {parsedNode.language}
+                {capSurface ? capSurface.description : `Candidate Node • ${parsedNode.language}`}
               </p>
             </div>
             {registered ? (
@@ -434,6 +463,44 @@ export function IngestPhase() {
               <AlertCircle className="w-5 h-5 text-neon-amber" />
             )}
           </div>
+
+          {/* ═══ CAPABILITY SURFACE CARD ═══ */}
+          {capSurface && (
+            <div className="rounded-lg border border-primary/20 bg-primary/[0.03] p-3 space-y-2.5">
+              <div className="flex items-center gap-2">
+                <Cpu className="w-3.5 h-3.5 text-primary" />
+                <span className="text-[11px] font-mono text-primary font-semibold uppercase tracking-wider">
+                  Derived Capability Surface
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-mono text-foreground font-bold">
+                  Ψ₄₁ {capSurface.nodeName}
+                </span>
+                <span className="text-[9px] font-mono text-muted-foreground px-1.5 py-0.5 rounded bg-muted/30">
+                  {capSurface.sector} sector
+                </span>
+                <span className="text-[9px] font-mono text-muted-foreground px-1.5 py-0.5 rounded bg-muted/30">
+                  {capSurface.domain} domain
+                </span>
+              </div>
+
+              {/* Capability verbs */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {capSurface.capabilities.map((verb, i) => (
+                  <span key={i} className="text-[10px] font-mono text-primary/80 px-2 py-1 rounded-md bg-primary/10 border border-primary/15">
+                    <Zap className="w-2.5 h-2.5 inline mr-0.5 -mt-0.5" />
+                    {verb}
+                  </span>
+                ))}
+              </div>
+
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                This capability surface will be used as Node 41 in the collision engine — your code participates as a first-class peer alongside the 40 substrate nodes.
+              </p>
+            </div>
+          )}
 
           {/* Parse Warnings */}
           {parsedNode.parseWarnings.length > 0 && (
@@ -464,19 +531,23 @@ export function IngestPhase() {
             <Button
               onClick={handleRegisterNode}
               disabled={registering || !canUpload}
-              className="w-full gap-2 min-h-[44px]"
+              className="w-full gap-2"
             >
               {registering ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
-              Register as Candidate Node
+              {capSurface
+                ? `Register Ψ₄₁ ${capSurface.nodeName} as Node 41`
+                : 'Register as Candidate Node #41'}
             </Button>
           )}
 
           {registered && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-neon-green/10 border border-neon-green/20">
-              <CheckCircle2 className="w-4 h-4 text-neon-green" />
-              <span className="text-xs text-neon-green font-mono">
-                Node registered — Ready for Ascension phase
-              </span>
+            <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-neon-green/10 border border-neon-green/20">
+              <CheckCircle2 className="w-4 h-4 text-neon-green shrink-0" />
+              <p className="text-xs text-foreground">
+                {capSurface
+                  ? `Ψ₄₁ ${capSurface.nodeName} registered — proceed to Ascension to collide against 40 substrate nodes`
+                  : 'Node registered — proceed to Ascension'}
+              </p>
             </div>
           )}
         </div>
