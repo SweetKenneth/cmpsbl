@@ -595,6 +595,18 @@ export {
 // §13 — RUNTIME FACTORY — one-liner to boot everything
 // ═══════════════════════════════════════════════════════════════════════════════
 
+import {
+  executeChain as _executeChain,
+  dryRunChain as _dryRunChain,
+  formatExecutionSummary as _formatExecutionSummary,
+} from './chain-executor';
+
+import {
+  resolveModuleEffect as _resolveModuleEffect,
+  hasDeepEffect as _hasDeepEffect,
+  registerEffect as _registerEffect,
+} from './module-effects';
+
 export interface StandaloneRuntime {
   storage: StorageAdapter;
   graph: ReturnType<typeof createDependencyGraph>;
@@ -611,21 +623,17 @@ export interface StandaloneRuntime {
   CANONICAL_MODULES: typeof CANONICAL_MODULES;
   DISCOVERY_CATEGORIES: typeof DISCOVERY_CATEGORIES;
   /** Chain executor — run discovered module chains */
-  executeChain: typeof executeChain;
-  dryRunChain: typeof dryRunChain;
-  formatExecutionSummary: typeof formatExecutionSummary;
+  executeChain: typeof _executeChain;
+  dryRunChain: typeof _dryRunChain;
+  formatExecutionSummary: typeof _formatExecutionSummary;
   /** Module effect registry */
-  resolveModuleEffect: typeof resolveModuleEffect;
-  hasDeepEffect: typeof hasDeepEffect;
-  registerEffect: typeof registerEffect;
+  resolveModuleEffect: typeof _resolveModuleEffect;
+  hasDeepEffect: typeof _hasDeepEffect;
+  registerEffect: typeof _registerEffect;
 }
 
 /** Boot a complete standalone runtime — one line, zero infrastructure */
 export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
-  // Lazy imports to avoid circular reference at module scope
-  const chainExec = require('./chain-executor') as typeof import('./chain-executor');
-  const effects = require('./module-effects') as typeof import('./module-effects');
-
   return {
     storage: storage ?? createMemoryStorage(),
     graph: createDependencyGraph(),
@@ -641,11 +649,11 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     createSaga,
     CANONICAL_MODULES,
     DISCOVERY_CATEGORIES,
-    executeChain: chainExec.executeChain,
-    dryRunChain: chainExec.dryRunChain,
-    formatExecutionSummary: chainExec.formatExecutionSummary,
-    resolveModuleEffect: effects.resolveModuleEffect,
-    hasDeepEffect: effects.hasDeepEffect,
-    registerEffect: effects.registerEffect,
+    executeChain: _executeChain,
+    dryRunChain: _dryRunChain,
+    formatExecutionSummary: _formatExecutionSummary,
+    resolveModuleEffect: _resolveModuleEffect,
+    hasDeepEffect: _hasDeepEffect,
+    registerEffect: _registerEffect,
   };
 }
