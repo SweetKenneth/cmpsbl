@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Download, ShieldCheck, Sparkles, ArrowRight } from "lucide-react";
@@ -33,7 +34,7 @@ export function DownloadCeremonyOverlay({
     return () => timers.forEach(window.clearTimeout);
   }, [open]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -114,6 +115,7 @@ export function DownloadCeremonyOverlay({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
