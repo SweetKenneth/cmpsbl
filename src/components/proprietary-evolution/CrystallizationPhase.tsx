@@ -18,6 +18,8 @@ interface Discovery {
   nodeA: string;
   nodeB: string;
   crystallized: boolean;
+  description: string;
+  chain: string[];
 }
 
 export function CrystallizationPhase() {
@@ -35,7 +37,7 @@ export function CrystallizationPhase() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
-      .select('id, name, metadata, tier')
+      .select('id, name, metadata, tier, description')
       .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
       .order('created_at', { ascending: false })
       .limit(100);
@@ -51,6 +53,8 @@ export function CrystallizationPhase() {
           nodeA: String(meta.node_a || ''),
           nodeB: String(meta.node_b || ''),
           crystallized: meta.crystallized === true,
+          description: d.description || '',
+          chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
         };
       }));
     }
@@ -187,8 +191,15 @@ export function CrystallizationPhase() {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-foreground font-medium truncate">{d.name}</p>
               <p className="text-[10px] text-muted-foreground font-mono">
-                {d.nodeA} × {d.nodeB} • {d.tier}
+                {d.chain.length > 0
+                  ? d.chain.join(' → ')
+                  : `${d.nodeA} × ${d.nodeB}`} • {d.tier}
               </p>
+              {d.description && (
+                <p className="text-[10px] text-muted-foreground/70 mt-0.5 line-clamp-2 leading-relaxed">
+                  {d.description}
+                </p>
+              )}
             </div>
 
             <span className={cn(

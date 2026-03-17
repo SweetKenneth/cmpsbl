@@ -31,10 +31,21 @@ export interface CapabilityForExport {
   category?: string;
 }
 
-interface ExportOptions {
+interface UserSourceFile {
+  name: string;
+  extension: string;
+  language: string;
+  content: string;
+}
+
+export interface ExportOptions {
   targetLanguage: string;
   capabilities: CapabilityForExport[];
   candidateName: string;
+  /** User's original source files from ingest — included in ZIP when exporting in source language */
+  userSourceFiles?: UserSourceFile[];
+  /** Display label for the source language (e.g. "Verilog", "Python") */
+  sourceLanguage?: string;
 }
 
 const LANG_EXT: Record<string, string> = {
@@ -467,7 +478,7 @@ CMPSBL® and Mini-Runtime™ are trademarks of CMPSBL.
 }
 
 export async function generateCapabilityPackZip(options: ExportOptions): Promise<void> {
-  const { targetLanguage, capabilities, candidateName } = options;
+  const { targetLanguage, capabilities, candidateName, userSourceFiles, sourceLanguage } = options;
   const ext = LANG_EXT[targetLanguage] || '.ts';
   const zip = new JSZip();
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -509,6 +520,27 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const testFolder = zip.folder('test')!;
   for (const cap of capabilities) {
     testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
+  }
+
+  // original/ — User's original source files (included when exporting in source language)
+  if (userSourceFiles && userSourceFiles.length > 0) {
+    const originalFolder = zip.folder('original')!;
+    for (const file of userSourceFiles) {
+      originalFolder.file(file.name, file.content);
+    }
+    originalFolder.file('README.md', [
+      `# Original Source — ${sourceLanguage || 'Developer Code'}`,
+      '',
+      `These are your original ${sourceLanguage || ''} source files as ingested into the Ascension lifecycle.`,
+      `Your code is preserved here in its original form. The \`src/\` folder contains the substrate-enhanced versions.`,
+      '',
+      '## Files',
+      '',
+      ...userSourceFiles.map(f => `- **${f.name}** — ${f.language} (${f.content.length.toLocaleString()} chars)`),
+      '',
+      '---',
+      '© Your original work. Substrate enhancements © 2025–2026 CMPSBL®.',
+    ].join('\n'));
   }
 
   // manifest.json — CMPSBL manifest
