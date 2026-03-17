@@ -328,9 +328,9 @@ export default function ComposableCognitives() {
                 ]}
                 backCapabilities={item.capabilities}
                 backPrice={bundleMode && !item.isFree ? bundleLabel(item) : priceLabel(item)}
-                backPriceLabel={item.isFree ? 'No card required' : bundleMode ? '40% bundle discount' : `${bundleLabel(item)} w/ engine`}
+                backPriceLabel={item.isFree ? 'Free account required' : bundleMode ? '40% bundle discount' : `${bundleLabel(item)} w/ engine`}
                 backCta={{
-                  label: item.isFree ? 'Activate Free' : `Acquire — ${bundleMode ? bundleLabel(item) : priceLabel(item)}`,
+                  label: item.isFree ? 'Download Free' : `Acquire — ${bundleMode ? bundleLabel(item) : priceLabel(item)}`,
                 }}
                 onAction={() => handleBuy(item.sku)}
                 borderClass={catConfig.border}
