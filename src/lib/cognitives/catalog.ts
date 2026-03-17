@@ -404,7 +404,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Deployment history memory', 'Rollback playbooks', 'SLO/SLI definitions', 'Capacity planning'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-devops.zip', stripeProductName: 'CMPSBL DevOps Mind', stripeLookupKey: 'cmpsbl_mind_devops_12900',
+    downloadAssetKey: 'cmpsbl-devops.zip', stripeProductName: 'CMPSBL DEPLOYER', stripeLookupKey: 'cmpsbl_mind_devops_12900',
     accentColor: 'amber', imagePath: 'devops', version: 'v1.0', isPublic: true,
     category: 'Structural Logic',
     personality: { archetype: 'The Deployer', tone: 'Pragmatic, cautious with production, and automation-obsessed', motto: '"If it\'s manual, it\'s a bug."', communicationStyle: 'Thinks in runbooks. Always asks about rollback. Automates everything.' },
