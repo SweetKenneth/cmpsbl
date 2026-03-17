@@ -40,16 +40,16 @@ export function DownloadCeremonyOverlay({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl"
+          className="fixed inset-0 z-[9999] bg-background backdrop-blur-xl overflow-auto"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background to-accent/10" />
-          <div className="relative flex min-h-screen items-center justify-center px-4 py-6">
+          <div className="relative flex min-h-[100dvh] items-center justify-center p-4 sm:p-8">
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 16, scale: 0.98 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-xl rounded-3xl border border-primary/20 bg-card/85 p-5 shadow-2xl shadow-primary/10 sm:p-8"
+              className="w-full max-w-xl rounded-3xl border border-primary/20 bg-card/85 p-6 shadow-2xl shadow-primary/10 sm:p-10"
             >
               <div className="mb-6 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
