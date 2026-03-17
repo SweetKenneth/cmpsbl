@@ -100,7 +100,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Suggested routing prompts', 'Lightweight memory defaults', 'Cross-task context persistence', 'Framework-agnostic integration'],
     priceCents: 0, isFree: true, tier: 'free', bundlePriceCents: 0,
-    downloadAssetKey: 'cmpsbl-hybrid.zip', stripeProductName: 'CMPSBL Hybrid Mind', stripeLookupKey: 'cmpsbl_mind_hybrid_free',
+    downloadAssetKey: 'cmpsbl-hybrid.zip', stripeProductName: 'CMPSBL PRIMITIVE', stripeLookupKey: 'cmpsbl_mind_hybrid_free',
     accentColor: 'gold', imagePath: 'hybrid', version: 'v1.0', isPublic: true,
     category: 'Cognitive Synthesis',
     personality: { archetype: 'The Chameleon', tone: 'Warm, curious, and endlessly adaptable', motto: '"I become what you need."', communicationStyle: 'Mirrors the user\'s tone — technical with engineers, casual with creators. Always asks the right follow-up question.' },
