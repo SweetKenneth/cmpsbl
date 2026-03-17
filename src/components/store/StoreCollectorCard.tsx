@@ -339,8 +339,8 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
                 </>
               ) : (
                 <>
-                  <ShoppingCart className="w-4 h-4" />
-                  {item.priceCents === 0 ? "Activate Free" : `Acquire · ${item.priceDisplay}`}
+                  {item.priceCents === 0 ? <Download className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+                  {item.priceCents === 0 ? "Download Free" : `Acquire · ${item.priceDisplay}`}
                 </>
               )}
             </Button>

@@ -14,8 +14,7 @@ import { cn } from '@/lib/utils';
 import { ENGINES } from '@/lib/engines/catalog';
 import { STORE_AGENTS } from '@/lib/store/catalog';
 import { generateCmpsblManifest, serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { generateReadmeHTML, generateLicenseHTML } from '@/lib/export/elegant-html-docs';
-import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
+import { generateProductZip, type ProductZipInput } from '@/lib/export/product-zip';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
