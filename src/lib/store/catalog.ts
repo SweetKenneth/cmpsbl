@@ -22,6 +22,7 @@ import automatonImg from "@/assets/engines/automaton.png";
 import cortexImg from "@/assets/engines/cortex.png";
 import nexusImg from "@/assets/engines/nexus.png";
 import architectImg from "@/assets/engines/architect.png";
+import failsafeImg from "@/assets/engines/failsafe.png";
 
 // ═══════════════════════════════════════════════════════════════
 // UNIFIED STORE ITEM
