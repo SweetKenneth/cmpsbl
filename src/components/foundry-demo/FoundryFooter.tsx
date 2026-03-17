@@ -10,7 +10,7 @@ const NAV_COLUMNS = [
     links: [
       { label: 'Substrate', to: '/substrate' },
       { label: 'Runtime', to: '/runtime' },
-      { label: 'Engines', to: '/engines' },
+      { label: 'Store', to: '/store' },
       { label: 'Upgrade', to: '/upgrade' },
     ],
   },
