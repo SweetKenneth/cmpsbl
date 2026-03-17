@@ -4,7 +4,8 @@
  */
 
 import { useState } from 'react';
-import { Download, Package, Cpu, Bot, Loader2, CheckCircle2, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Download, Package, Cpu, Bot, Loader2, CheckCircle2, Search, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -137,17 +138,23 @@ export function GovernorDownloadsPanel() {
     const isDone = downloaded.has(product.id);
 
     return (
-      <div className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15 gap-3">
-        <div className="flex items-center gap-3 min-w-0 flex-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15 gap-2 sm:gap-3">
+        <div className="flex items-center gap-3 flex-1">
           <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", product.kind === 'engine' ? 'bg-cyan-500/10 border border-cyan-500/20' : 'bg-violet-500/10 border border-violet-500/20')}>
             {product.kind === 'engine' ? <Cpu className="w-4 h-4 text-cyan-400" /> : <Bot className="w-4 h-4 text-violet-400" />}
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-bold truncate">{product.name}</p>
-            <p className="text-[10px] text-muted-foreground/50 truncate">{product.subtitle}</p>
+          <div>
+            <Link
+              to={product.kind === 'engine' ? `/engines/${product.slug}` : `/agents/${product.slug}`}
+              className="text-sm font-bold hover:text-primary transition-colors inline-flex items-center gap-1.5"
+            >
+              {product.name}
+              <ExternalLink className="w-3 h-3 text-muted-foreground/40" />
+            </Link>
+            <p className="text-[10px] text-muted-foreground/50">{product.subtitle}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 pl-11 sm:pl-0">
           <span className="text-[10px] font-mono text-muted-foreground/60">v{product.version}</span>
           <Badge className={cn("text-[9px] px-1.5", tierColor(product.tier))}>{product.tier.toUpperCase()}</Badge>
           <span className="text-xs font-mono font-bold w-16 text-right">{product.price}</span>
