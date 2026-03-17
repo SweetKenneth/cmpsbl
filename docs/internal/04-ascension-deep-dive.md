@@ -413,7 +413,87 @@ The re-ingest process:
 
 ---
 
-## 9. Security Considerations
+## 8.1 Runtime Binding Layer (v1.0)
+
+As of v14.3.0, all exported capability packs include a **Runtime Binding Layer** — a language-native execution engine that makes capabilities callable, not just describable.
+
+### Architecture
+
+```
+Capability Class → Runtime Bridge → Module Handler Registry → Pipeline Execution → Structured Output
+```
+
+### Execution Model
+
+- **Sequential pipeline** — each module in the chain is a stage
+- **Context passing** — a mutable context object flows through all stages
+- **Module handlers** — every substrate module has a real handler that modifies context
+- **Trace production** — per-stage timing, status, signal count, and error capture
+- **Error isolation** — exceptions are caught per-stage; pipeline continues with error trace
+
+### Module Handler Map (PHP/Python/TypeScript)
+
+| Module | Handler Behavior |
+|--------|-----------------|
+| CORE | Initializes pipeline identity, sets epoch |
+| BRAIN | Attaches reasoning context (input analysis) |
+| MEMORY | Marks retrieval metadata |
+| NERVE | Routes and counts signals |
+| DECODE | Normalizes/trims string data |
+| ENCODE | Marks output format |
+| ORACLE | Attaches deterministic prediction (confidence = CJPI/100) |
+| IMMUNITY | Counts errors, engages fallback if needed |
+| ECHO | Snapshots context keys for replay |
+| EVOLUTION | Records fitness score from CJPI |
+| HARVEST | Counts context fields |
+| CORTEX | Orchestration status |
+| DEFENSE | Input sanitization marker |
+| PHANTOM | Anonymization marker |
+| SHADOW | SHA-256 verification hash of context |
+| INTENT | Action planning metadata |
+| FORGE | Build target assignment |
+| CANDIDATE | Pass-through preserving source identity |
+| DEFAULT | Generic module participation record |
+
+### Output Format
+
+```json
+{
+  "success": true,
+  "output": { ... modified context ... },
+  "trace": [
+    { "stage": 0, "module": "BRAIN", "status": "completed", "duration_ms": 0.042 },
+    { "stage": 1, "module": "ORACLE", "status": "completed", "duration_ms": 0.018 }
+  ],
+  "metadata": {
+    "capability": "...",
+    "cjpi": 82,
+    "tier": "mythic",
+    "chain": ["BRAIN", "ORACLE"],
+    "stages": 2,
+    "duration_ms": 0.091,
+    "runtime": "cmpsbl-runtime-bridge-php-v1",
+    "executed_at": "2026-03-17T..."
+  }
+}
+```
+
+### Languages with Full Runtime Bridge
+
+| Language | Bridge File | Handler Count |
+|----------|------------|---------------|
+| PHP | `runtime-bridge.php` | 19 named + DEFAULT |
+| Python | `runtime_bridge.py` | 12 named + DEFAULT |
+| TypeScript | `runtime-bridge.ts` | 12 named + DEFAULT |
+
+### Deliberate Limitations (v1)
+
+- No async orchestration — sequential only
+- No parallel pipelines
+- Module handlers implement **minimal behavioral contracts**, not full node logic
+- No substrate connection — offline execution only
+
+
 
 - All database queries filter by `user_id` — no cross-user data access
 - RLS enforced on `artifact_registry` with `auth.uid() = user_id`
