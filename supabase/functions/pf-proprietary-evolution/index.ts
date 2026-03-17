@@ -2,11 +2,16 @@
  * pf-proprietary-evolution — Proprietary Evolution Lifecycle Engine
  * 
  * Handles:
- *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes
- *   - discovery.batch: Run full collision sweep across all 40 nodes
+ *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-6 depth)
+ *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
  *   - crystallize.lock: Lock a discovered capability into deterministic memory
  *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
  *   - export.capability-pack: Generate capability pack from crystallized memories
+ * 
+ * Chain Discovery Engine:
+ *   Instead of single-node collisions, the engine explores multi-node chains (2-6 nodes)
+ *   where each additional node in the chain contributes synergy bonuses. Cross-sector
+ *   chains receive higher CJPI because they combine fundamentally different capabilities.
  * 
  * @classification FOUNDER EYES ONLY
  */
@@ -53,7 +58,7 @@ function validatePositiveInt(val: unknown, max = 100): number {
   return Math.min(Math.floor(n), max);
 }
 
-// ═══ SUBSTRATE NODE MATRIX ═══
+// ═══ SUBSTRATE NODE MATRIX (40 nodes) ═══
 const SUBSTRATE_NODES = [
   'CORE','BRAIN','MEMORY','NERVE','DECODE','ENCODE','CORTEX','DEFENSE','ORACLE',
   'CONSCIENCE','PHANTOM','HARVEST','EVOLUTION','SHADOW','IMMUNITY','INTENT',
@@ -64,47 +69,68 @@ const SUBSTRATE_NODES = [
 
 const VALID_NODES = new Set(SUBSTRATE_NODES);
 
+// ═══ SECTOR MAPPING — Used for cross-sector synergy scoring ═══
+const NODE_SECTOR: Record<string, string> = {
+  CORE: 'core', BRAIN: 'ccr', MEMORY: 'ccr', DREAM: 'ccr',
+  NERVE: 'ocg', RIPPLE: 'ocg', ACCESS: 'ocg', IDENTITY: 'ocg', RELAY: 'ocg', AUDIT: 'ocg',
+  DECODE: 'execution', ENCODE: 'execution', VISION: 'execution', CORTEX: 'execution',
+  NEXUS: 'execution', ECONOMY: 'execution', SANDBOX: 'execution', INCLUSIVE: 'execution',
+  MEDIC: 'execution', INTEGRATION: 'execution',
+  SOVEREIGN: 'esz', ORACLE: 'esz', CONSCIENCE: 'esz', TREATY: 'esz',
+  COMPASS: 'epz', ECHO: 'epz', REFLEX: 'epz',
+  FORGE: 'emz', LINGUA: 'emz', HARVEST: 'emz',
+  EVOLUTION: 'csz', SHADOW: 'csz', PHANTOM: 'csz',
+  IMMUNITY: 'field', INTENT: 'field',
+  GOVERNANCE: 'plane', ATLAS: 'plane', ENGINEER: 'plane',
+  DEFENSE: 'shell',
+  // Extended nodes mapped to logical sectors
+  OBSERVER: 'execution', GENESIS: 'core', ANCHOR: 'core', PRISM: 'execution',
+  SENTRY: 'shell', SIGNAL: 'ocg', TENSOR: 'execution', ARBITER: 'plane',
+  FLUX: 'execution', VECTOR: 'execution', SYNTH: 'emz',
+  SYSTEM: 'core',
+};
+
 // ═══ NODE CAPABILITY SIGNATURES ═══
 const NODE_CAPABILITIES: Record<string, string[]> = {
-  CORE: ['init', 'pulse', 'heartbeat', 'lifecycle'],
+  CORE: ['boot', 'pulse', 'orchestrate', 'config'],
   BRAIN: ['reasoning', 'inference', 'semantic_embed', 'context_window'],
   MEMORY: ['store', 'recall', 'semantic_search', 'consolidate'],
-  NERVE: ['signal_emit', 'signal_route', 'threshold_gate', 'cascade'],
+  NERVE: ['signal', 'consensus', 'heartbeat', 'gate'],
   DECODE: ['parse', 'interpret', 'nlp_extract', 'intent_classify'],
   ENCODE: ['code_gen', 'transform', 'compile', 'optimize'],
   CORTEX: ['orchestrate', 'coordinate', 'priority_queue', 'workflow'],
   DEFENSE: ['threat_score', 'anomaly_detect', 'rate_limit', 'quarantine'],
   ORACLE: ['predict', 'forecast', 'bayesian_update', 'monte_carlo'],
-  CONSCIENCE: ['bias_detect', 'ethic_check', 'fairness_score', 'alignment'],
+  CONSCIENCE: ['bias_detect', 'ethics_score', 'fairness', 'transparency'],
   PHANTOM: ['anonymize', 'proxy', 'obfuscate', 'stealth_route'],
-  HARVEST: ['crawl', 'extract', 'deduplicate', 'enrich'],
+  HARVEST: ['crawl', 'etl', 'deduplicate', 'enrich'],
   EVOLUTION: ['mutate', 'fitness_score', 'select', 'crossover'],
-  SHADOW: ['diff', 'snapshot', 'compare', 'rollback'],
-  IMMUNITY: ['adaptive_filter', 'whitelist', 'pattern_match', 'quarantine'],
-  INTENT: ['route', 'resolve', 'dag_plan', 'broadcast'],
-  GOVERNANCE: ['policy_check', 'approve', 'audit', 'compliance'],
-  ATLAS: ['registry_lookup', 'capability_map', 'topology', 'discover'],
+  SHADOW: ['diverge', 'shadow_mesh', 'verify', 'compare'],
+  IMMUNITY: ['resilience', 'adaptive_threshold', 'quarantine', 'recover'],
+  INTENT: ['discover', 'route', 'resolve', 'dag_plan'],
+  GOVERNANCE: ['policy', 'approve', 'audit_govern', 'escalate'],
+  ATLAS: ['registry', 'control', 'capability_map', 'govern'],
   FORGE: ['template', 'scaffold', 'generate', 'instantiate'],
-  LINGUA: ['translate', 'localize', 'sentiment', 'summarize'],
-  ECHO: ['replay', 'mirror', 'feedback_loop', 'amplify'],
-  SOVEREIGN: ['seal', 'license', 'entitle', 'verify'],
-  REFLEX: ['auto_respond', 'trigger', 'react', 'shortcut'],
-  TREATY: ['negotiate', 'contract', 'handshake', 'protocol'],
-  ENGINEER: ['debug', 'profile', 'benchmark', 'tech_debt'],
-  COMPASS: ['navigate', 'recommend', 'rank', 'prioritize'],
+  LINGUA: ['translate', 'localize', 'detect_lang', 'glossary'],
+  ECHO: ['replay', 'simulate', 'mirror', 'resonance'],
+  SOVEREIGN: ['jurisdiction', 'data_residency', 'encrypt', 'audit_sovereign'],
+  REFLEX: ['react', 'edge_compute', 'preempt', 'cache_warm'],
+  TREATY: ['negotiate', 'sla_enforce', 'contract', 'compliance'],
+  ENGINEER: ['maintain', 'optimize', 'upgrade', 'benchmark'],
+  COMPASS: ['navigate', 'locate', 'map', 'orient'],
   OBSERVER: ['monitor', 'telemetry', 'alert', 'dashboard'],
   GENESIS: ['bootstrap', 'seed', 'initialize', 'provision'],
   ANCHOR: ['persist', 'checkpoint', 'backup', 'restore'],
   PRISM: ['decompose', 'spectrum', 'facet', 'refract'],
   SENTRY: ['guard', 'validate', 'gatekeep', 'authorize'],
-  MEDIC: ['diagnose', 'heal', 'patch', 'recover'],
+  MEDIC: ['diagnose', 'repair', 'triage', 'health_check'],
   SIGNAL: ['emit', 'subscribe', 'broadcast', 'filter'],
   TENSOR: ['compute', 'matrix_op', 'gradient', 'transform'],
   ARBITER: ['judge', 'arbitrate', 'resolve_conflict', 'consensus'],
   FLUX: ['stream', 'buffer', 'throttle', 'backpressure'],
   VECTOR: ['embed', 'similarity', 'cluster', 'dimension_reduce'],
   SYNTH: ['synthesize', 'compose', 'blend', 'harmonize'],
-  RELAY: ['forward', 'proxy', 'load_balance', 'circuit_break'],
+  RELAY: ['webhook', 'dispatch', 'retry', 'transform'],
   NEXUS: ['route_ai', 'failover', 'cost_track', 'provider_select'],
 };
 
@@ -116,337 +142,7 @@ const VALID_ACTIONS: Record<string, Set<string>> = {
 };
 const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin', 'verilog', 'systemverilog', 'vhdl', 'systemc', 'elixir', 'lua', 'c', 'cpp', 'dart', 'scala', 'haskell', 'php', 'chisel', 'amaranth', 'spice']);
 
-// ═══ COLLISION SCORING ═══
-
-interface CollisionResult {
-  name: string;
-  description: string;
-  cjpi_score: number;
-  tier: string;
-  chain: string[];
-  capability_type: string;
-}
-
-function scoreTier(cjpi: number): string {
-  if (cjpi >= 92) return 'apex';
-  if (cjpi >= 80) return 'mythic';
-  if (cjpi >= 65) return 'relic';
-  if (cjpi >= 45) return 'prime';
-  return 'mint';
-}
-
-function collideNodes(
-  candidateName: string,
-  candidateMeta: Record<string, unknown>,
-  targetNode: string,
-  permutationDepth: number
-): CollisionResult[] {
-  const capabilities = NODE_CAPABILITIES[targetNode] || ['generic'];
-  const candidateResolvers = Number(candidateMeta.resolver_count || 1);
-  const candidateLanguage = String(candidateMeta.language || 'Unknown');
-  const candidateSize = Number(candidateMeta.size_kb || 0);
-
-  const results: CollisionResult[] = [];
-
-  for (const cap of capabilities) {
-    const nameHash = hashString(`${candidateName}:${targetNode}:${cap}`);
-    let cjpi = 30 + (nameHash % 60);
-
-    if (candidateResolvers > 10) cjpi += 5;
-    if (candidateSize > 100) cjpi += 3;
-    if (candidateLanguage.includes('TypeScript')) cjpi += 2;
-    
-    for (let d = 1; d < permutationDepth; d++) {
-      const depthHash = hashString(`${candidateName}:${targetNode}:${cap}:depth${d}`);
-      if (depthHash % 10 === 0) cjpi += 5;
-    }
-
-    cjpi = Math.min(cjpi, 99);
-
-    if (cjpi >= 40) {
-      const capName = `${candidateName}_${targetNode}_${cap}`.toUpperCase();
-      const desc = generateCapabilityDescription(candidateName, targetNode, cap, cjpi);
-      results.push({
-        name: capName,
-        description: desc,
-        cjpi_score: cjpi,
-        tier: scoreTier(cjpi),
-        chain: [candidateName, targetNode],
-        capability_type: cap,
-      });
-    }
-  }
-
-  results.sort((a, b) => b.cjpi_score - a.cjpi_score);
-  return results.slice(0, Math.min(results.length, permutationDepth + 1));
-}
-
-// ═══ CAPABILITY DESCRIPTION GENERATOR ═══
-
-const CAPABILITY_DESCRIPTIONS: Record<string, Record<string, string>> = {
-  CORE: {
-    boot: 'Kernel bootstrap sequence that initializes all substrate nodes in dependency-ordered phases with triple-deferred fault tolerance.',
-    pulse: 'System heartbeat generator that emits liveness probes across all sectors, triggering automatic recovery on missed beats.',
-    orchestrate: 'Root orchestration authority that coordinates cross-sector workflows and enforces execution ordering constraints.',
-    config: 'Dynamic configuration engine that hot-reloads runtime parameters without service interruption across the entire substrate.',
-  },
-  SYSTEM: {
-    lifecycle: 'Full lifecycle manager that handles graceful startup, rolling restarts, and coordinated shutdown across all 40 nodes.',
-    diagnostics: 'Deep diagnostics suite that performs health checks, dependency audits, and performance profiling across the substrate.',
-    config_sync: 'Configuration synchronization layer that propagates settings changes atomically across distributed node instances.',
-    telemetry: 'System-wide telemetry aggregator that collects, normalizes, and routes operational metrics to observability surfaces.',
-  },
-  BRAIN: {
-    reasoning: 'Autonomous reasoning engine that decomposes complex problems into inferential chains, enabling multi-step logical deduction across unstructured data.',
-    inference: 'Real-time inference pipeline that applies Bayesian updating to streaming inputs, producing confidence-weighted predictions with explainable reasoning paths.',
-    semantic_embed: 'Semantic embedding layer that maps arbitrary text into dense vector spaces, enabling similarity search and conceptual clustering at sub-millisecond latency.',
-    context_window: 'Dynamic context window manager that intelligently prioritizes and compresses information to maximize effective reasoning within token constraints.',
-  },
-  MEMORY: {
-    store: 'Persistent memory substrate that indexes and stores structured knowledge with automatic deduplication and version-aware conflict resolution.',
-    recall: 'Associative recall engine that retrieves contextually relevant memories using semantic proximity scoring and temporal decay weighting.',
-    semantic_search: 'Full-spectrum semantic search across the memory graph, supporting hybrid keyword + vector queries with re-ranking.',
-    consolidate: 'Memory consolidation pipeline that merges redundant entries, strengthens high-signal patterns, and prunes low-confidence fragments during idle cycles.',
-  },
-  DREAM: {
-    synthesize: 'Dream synthesis engine that recombines latent memory fragments into novel conceptual structures during low-activity cycles.',
-    explore: 'Exploratory ideation module that traverses the combinatorial space of existing knowledge to surface non-obvious connections.',
-    hallucinate: 'Controlled hallucination generator that produces speculative hypotheses for stress-testing existing assumptions and models.',
-    consolidate_dream: 'Dream consolidation pipeline that evaluates synthesized concepts against reality anchors before promoting to long-term memory.',
-  },
-  RIPPLE: {
-    propagate: 'Event propagation engine that cascades state changes across the substrate with configurable fan-out and dampening coefficients.',
-    signal_bus: 'High-throughput signal bus that routes typed events between nodes with guaranteed ordering and at-least-once delivery.',
-    cascade: 'Cascade controller that manages chain-reaction event sequences with circuit-breaker protection against amplification storms.',
-    debounce: 'Intelligent debounce layer that coalesces rapid-fire events into batched updates while preserving causal ordering.',
-  },
-  ACCESS: {
-    entitlements: 'Entitlement engine that evaluates feature access against subscription tiers, API key scopes, and dynamic policy rules in real-time.',
-    api_keys: 'API key lifecycle manager handling generation, rotation, revocation, and usage tracking with cryptographic hash verification.',
-    quotas: 'Quota enforcement system that tracks and limits resource consumption per entity with configurable burst allowances.',
-    scope_check: 'Scope validation layer that verifies operation permissions against granted capability sets before execution.',
-  },
-  IDENTITY: {
-    session: 'Session management engine that maintains authenticated state across distributed nodes with sliding expiration and anomaly detection.',
-    role_resolve: 'Role resolution system that computes effective permissions by merging user roles, group memberships, and contextual overrides.',
-    auth_flow: 'Authentication orchestrator supporting multi-factor, passwordless, and federated identity flows with adaptive challenge selection.',
-    context_bind: 'Context binding layer that associates execution threads with verified identity claims for end-to-end audit traceability.',
-  },
-  RELAY: {
-    webhook: 'Webhook dispatch engine that delivers signed payloads to external endpoints with exponential backoff retry and dead-letter queuing.',
-    dispatch: 'Event dispatch router that fans out notifications across multiple delivery channels with per-recipient format adaptation.',
-    retry: 'Intelligent retry orchestrator that classifies failures and applies strategy-specific recovery patterns including circuit-breaking.',
-    transform: 'Payload transformation pipeline that adapts outbound messages to target-specific schemas and encoding requirements.',
-  },
-  AUDIT: {
-    ledger: 'Immutable audit ledger that records every system operation with cryptographic hash chaining for tamper-evident verification.',
-    chain: 'Blockchain-inspired receipt chain that anchors periodic integrity proofs to prevent retroactive modification of audit history.',
-    compliance: 'Compliance checker that evaluates system operations against regulatory frameworks and flags policy violations in real-time.',
-    forensics: 'Forensic analysis engine that reconstructs operation timelines from audit records for incident investigation and root cause analysis.',
-  },
-  NERVE: {
-    signal: 'Inter-node signaling protocol that delivers typed messages with priority-based routing and guaranteed delivery semantics.',
-    consensus: 'Consensus repair mechanism that detects and resolves state divergence between nodes through quorum-based reconciliation.',
-    heartbeat: 'Heartbeat monitoring system that tracks node liveness and triggers automatic failover on detection of unresponsive components.',
-    gate: '4-gate signal emission controller that filters, prioritizes, batches, and routes signals through the nerve mesh.',
-  },
-  DECODE: {
-    parse: 'Universal parser that handles structured, semi-structured, and unstructured inputs with automatic schema inference and error recovery.',
-    interpret: 'Semantic interpreter that transforms raw parsed data into domain-specific knowledge representations with relationship extraction.',
-    nlp_extract: 'NLP extraction pipeline that identifies entities, relationships, sentiments, and intents from natural language with configurable precision/recall tradeoffs.',
-    intent_classify: 'Multi-label intent classifier that maps user inputs to actionable system operations with confidence scoring and disambiguation.',
-  },
-  ENCODE: {
-    code_gen: 'Multi-language code generation engine that translates abstract behavioral specifications into optimized, idiomatic source code.',
-    transform: 'AST transformation pipeline that restructures code patterns for performance optimization while preserving semantic equivalence.',
-    compile: 'Just-in-time compilation layer that converts dynamic capability chains into optimized native execution paths.',
-    optimize: 'Profile-guided optimizer that identifies hot paths and applies targeted optimizations including loop unrolling, dead code elimination, and constant folding.',
-  },
-  VISION: {
-    observe: 'Real-time observability layer that captures system behavior across all nodes with sub-millisecond event correlation.',
-    telemetry_stream: 'Streaming telemetry pipeline that aggregates metrics, traces, and logs into unified observability dashboards.',
-    anomaly_visual: 'Visual anomaly detector that identifies unusual patterns in system behavior through statistical heatmapping and trend analysis.',
-    dashboard: 'Dynamic dashboard engine that generates context-aware visualizations of substrate health, throughput, and resource utilization.',
-  },
-  CORTEX: {
-    orchestrate: 'Multi-agent orchestration layer that decomposes complex workflows into parallelizable sub-tasks with automatic dependency resolution and failure recovery.',
-    coordinate: 'Real-time coordination protocol that synchronizes concurrent processes through lock-free message passing and consensus-based state reconciliation.',
-    priority_queue: 'Adaptive priority scheduler that dynamically reorders execution queues based on urgency signals, resource availability, and downstream impact analysis.',
-    workflow: 'Declarative workflow engine that compiles high-level intent specifications into executable DAGs with built-in retry, compensation, and observability.',
-  },
-  NEXUS: {
-    route_ai: 'Intelligent AI model router that selects optimal providers based on task complexity, latency requirements, and cost constraints.',
-    failover: 'Multi-provider failover system with health-aware routing that maintains service continuity across provider outages.',
-    cost_track: 'Real-time cost tracking and budget enforcement layer that monitors token usage and applies spend limits per capability.',
-    provider_select: 'Dynamic provider selector that evaluates model capabilities against task requirements to minimize cost while meeting quality thresholds.',
-  },
-  ECONOMY: {
-    meter: 'Usage metering engine that tracks resource consumption at sub-operation granularity with real-time cost attribution.',
-    billing: 'Billing pipeline that transforms metered usage into invoiceable line items with support for tiered pricing and credits.',
-    budget: 'Budget enforcement layer that monitors spend against configurable limits and triggers throttling or alerts on threshold breaches.',
-    cost_optimize: 'Cost optimization advisor that identifies inefficient resource usage patterns and recommends allocation adjustments.',
-  },
-  SANDBOX: {
-    isolate: 'Execution isolation engine that spawns ephemeral sandboxed environments with strict resource limits and network policies.',
-    execute: 'Sandboxed code executor that runs untrusted operations with syscall filtering, memory caps, and wall-clock timeouts.',
-    teardown: 'Sandbox teardown manager that guarantees complete resource reclamation and state purging after isolated execution completes.',
-    policy: 'Security policy engine that defines and enforces sandbox boundaries including filesystem, network, and computation constraints.',
-  },
-  INCLUSIVE: {
-    wcag_audit: 'WCAG compliance auditor that scans generated outputs for accessibility violations across all conformance levels.',
-    adapt: 'Adaptive rendering engine that transforms content for diverse access needs including screen readers, high contrast, and keyboard navigation.',
-    aria: 'ARIA annotation system that automatically enriches UI components with semantic accessibility attributes.',
-    contrast: 'Color contrast analyzer that validates text-to-background ratios against WCAG AA/AAA thresholds with automatic correction suggestions.',
-  },
-  MEDIC: {
-    diagnose: 'Autonomous diagnostics engine that identifies root causes of system degradation through symptom correlation and dependency analysis.',
-    repair: 'Self-repair module that applies targeted fixes to detected issues including cache invalidation, connection recycling, and state reset.',
-    triage: 'Issue triage system that prioritizes detected problems by severity, blast radius, and recovery complexity for optimal remediation ordering.',
-    health_check: 'Comprehensive health checker that validates node functionality through synthetic probes and dependency verification.',
-  },
-  INTEGRATION: {
-    resolve: 'Dependency resolver that manages inter-node integration points with version compatibility checking and graceful degradation.',
-    connect: 'External integration connector that establishes and maintains connections to third-party services with automatic credential management.',
-    adapt: 'Protocol adaptation layer that translates between internal substrate protocols and external API conventions.',
-    sync: 'Bidirectional synchronization engine that maintains consistency between substrate state and external system records.',
-  },
-  SOVEREIGN: {
-    jurisdiction: 'Jurisdictional compliance engine that enforces data residency requirements and cross-border transfer restrictions in real-time.',
-    data_residency: 'Data residency controller that routes storage and processing operations to jurisdiction-appropriate infrastructure.',
-    encrypt: 'Sovereign encryption layer that applies jurisdiction-specific cryptographic policies including key escrow and algorithmic constraints.',
-    audit_sovereign: 'Sovereignty audit trail that documents all cross-jurisdictional data movements for regulatory reporting.',
-  },
-  ORACLE: {
-    predict: 'Predictive analytics engine that generates probabilistic forecasts by synthesizing historical patterns, real-time signals, and domain heuristics.',
-    forecast: 'Time-series forecasting module that models seasonal patterns, trend shifts, and external shocks to project future system behavior.',
-    bayesian_update: 'Live Bayesian updating framework that continuously refines probability distributions as new evidence arrives, maintaining calibrated uncertainty estimates.',
-    monte_carlo: 'Monte Carlo simulation engine that explores outcome spaces through stochastic sampling, producing risk-adjusted decision recommendations.',
-  },
-  CONSCIENCE: {
-    bias_detect: 'Multi-dimensional bias detector that scans outputs for demographic, cognitive, and statistical biases across 5 classification types.',
-    ethics_score: 'Ethical assessment engine that evaluates operations against configurable moral frameworks and flags potential harm vectors.',
-    fairness: 'Fairness auditor that measures outcome distributions across protected groups and enforces equitable treatment constraints.',
-    transparency: 'Transparency reporter that generates explainable audit trails documenting how decisions were reached and what factors were weighted.',
-  },
-  TREATY: {
-    negotiate: 'Contract negotiation engine that evaluates proposed terms against policy constraints and counter-proposes optimized agreements.',
-    sla_enforce: 'SLA enforcement layer that monitors compliance with service level agreements and triggers escalation on violation detection.',
-    contract: 'Smart contract manager that codifies inter-party obligations into executable rules with automatic enforcement and dispute resolution.',
-    compliance: 'Regulatory compliance mapper that tracks obligations across multiple jurisdictions and automates evidence collection for audits.',
-  },
-  COMPASS: {
-    navigate: 'Geospatial navigation engine that computes optimal paths through multi-dimensional solution spaces with constraint satisfaction.',
-    locate: 'Resource location service that maps data and compute assets across distributed infrastructure with latency-aware discovery.',
-    map: 'Topology mapping system that maintains real-time representations of system architecture and data flow patterns.',
-    orient: 'Contextual orientation module that provides situational awareness by correlating position within the problem space to available capabilities.',
-  },
-  ECHO: {
-    replay: 'Temporal replay engine that reconstructs past system states from audit logs for debugging and scenario analysis.',
-    simulate: 'Digital twin simulator that models system behavior under hypothetical conditions without affecting production state.',
-    mirror: 'State mirroring layer that maintains synchronized replicas of critical system components for instant failover.',
-    resonance: 'Resonance detector that identifies recurring behavioral patterns across time windows for predictive maintenance.',
-  },
-  REFLEX: {
-    react: 'Sub-millisecond reactive processor that handles latency-critical operations at the edge of the substrate mesh.',
-    edge_compute: 'Edge computing orchestrator that distributes computation to optimal proximity points for minimum-latency execution.',
-    preempt: 'Preemptive action engine that anticipates required operations and pre-executes them before explicit requests arrive.',
-    cache_warm: 'Predictive cache warmer that pre-loads likely-needed data based on access pattern analysis and intent forecasting.',
-  },
-  FORGE: {
-    template: 'Code template engine that generates language-idiomatic scaffolds from abstract specifications with embedded best practices and test harnesses.',
-    scaffold: 'Project scaffolding system that instantiates full application architectures from declarative blueprints, including CI/CD and deployment configs.',
-    generate: 'Generative code synthesis pipeline that translates natural language specifications into production-ready implementations with type safety guarantees.',
-    instantiate: 'Runtime instantiation engine that compiles abstract capability definitions into executable modules with automatic dependency injection.',
-  },
-  LINGUA: {
-    translate: 'Neural machine translation engine supporting 100+ language pairs with domain-specific terminology adaptation.',
-    localize: 'Full localization pipeline that adapts content for cultural context including date formats, currency, and idiomatic expressions.',
-    detect_lang: 'Language detection classifier that identifies source language from minimal text samples with 99%+ accuracy across 200 languages.',
-    glossary: 'Dynamic glossary manager that maintains domain-specific terminology databases for consistent translation across all outputs.',
-  },
-  HARVEST: {
-    crawl: 'Intelligent web crawler that navigates and extracts structured data from websites with automatic pagination and rate limiting.',
-    etl: 'ETL pipeline engine that extracts, transforms, and loads data across heterogeneous sources with schema evolution support.',
-    deduplicate: 'SHA-256 bloom filter deduplication system that identifies and eliminates redundant data at ingestion with near-zero false positives.',
-    enrich: 'Data enrichment pipeline that augments raw records with contextual metadata from multiple reference sources.',
-  },
-  EVOLUTION: {
-    mutate: 'Controlled mutation engine that introduces targeted variations into capability parameters to explore neighboring solution spaces.',
-    fitness_score: 'Multi-objective fitness evaluator that scores capability variants across performance, reliability, cost, and composability dimensions.',
-    select: 'Tournament selection mechanism that promotes high-fitness variants while maintaining population diversity for continued exploration.',
-    crossover: 'Capability crossover operator that recombines successful traits from multiple variants to produce hybrid capabilities with emergent properties.',
-  },
-  SHADOW: {
-    diverge: 'Divergence testing engine that runs candidate changes in parallel shadow environments to measure behavioral differences.',
-    shadow_mesh: 'Shadow mesh operator that maintains isolated parallel execution paths for safe experimentation without production impact.',
-    verify: 'TSAC verification system that validates shadow execution results against production baselines with statistical significance testing.',
-    compare: 'Behavioral comparison engine that quantifies differences between shadow and production outputs across multiple fidelity dimensions.',
-  },
-  PHANTOM: {
-    anonymize: 'Data anonymization engine that applies differential privacy techniques while preserving statistical utility for downstream analysis.',
-    proxy: 'Transparent proxy layer that routes operations through privacy-preserving intermediaries with automatic credential rotation.',
-    obfuscate: 'Code and data obfuscation system that protects intellectual property through semantic-preserving transformations.',
-    stealth_route: 'Stealth routing protocol that masks operation origins and patterns through randomized path selection and timing jitter.',
-  },
-  IMMUNITY: {
-    resilience: 'Resilience field generator that applies adaptive fault tolerance patterns across the entire substrate mesh.',
-    adaptive_threshold: 'Adaptive 3-sigma threshold engine that dynamically adjusts anomaly detection sensitivity based on observed variance.',
-    quarantine: 'Threat quarantine system that isolates compromised components while maintaining partial system availability.',
-    recover: 'Automated recovery orchestrator that executes multi-step healing procedures based on failure classification and severity.',
-  },
-  INTENT: {
-    discover: 'Capability discovery engine that maps user intentions to available substrate resolvers through semantic matching.',
-    route: 'Intent routing layer that decomposes high-level goals into executable resolver chains with optimal ordering.',
-    resolve: 'Intent resolution engine that evaluates multiple candidate execution plans and selects the highest-confidence path.',
-    dag_plan: 'DAG-based action planner that constructs dependency-aware execution graphs from abstract intent specifications.',
-  },
-  GOVERNANCE: {
-    policy: 'Policy enforcement engine that applies governance rules across all substrate operations with zero-latency inline checks.',
-    approve: 'Approval workflow manager that gates sensitive operations behind configurable multi-party authorization requirements.',
-    audit_govern: 'Governance audit layer that tracks all policy decisions and exceptions for compliance reporting.',
-    escalate: 'Escalation engine that routes unresolvable governance conflicts to appropriate authority levels with full context preservation.',
-  },
-  ATLAS: {
-    registry: '80-capability registry that catalogs all substrate capabilities with versioning, deprecation tracking, and dependency mapping.',
-    control: 'System control authority that manages node activation, deactivation, and configuration at the highest governance level.',
-    capability_map: 'Capability mapping engine that maintains a real-time graph of all available substrate functions and their relationships.',
-    govern: 'Meta-governance layer that oversees and adjusts governance policies themselves based on system-wide health metrics.',
-  },
-  ENGINEER: {
-    maintain: 'Engine maintenance intelligence that monitors runtime performance and schedules proactive optimization cycles.',
-    optimize: 'Performance optimization engine that applies P95 latency tracking and targeted tuning across substrate execution paths.',
-    upgrade: 'Rolling upgrade orchestrator that deploys capability updates across the mesh with zero-downtime migration strategies.',
-    benchmark: 'Continuous benchmarking system that validates performance characteristics against established baselines after every change.',
-  },
-  DEFENSE: {
-    threat_score: 'Behavioral threat scoring system that evaluates request patterns against learned attack signatures and anomaly baselines in real-time.',
-    anomaly_detect: 'Statistical anomaly detector that identifies deviations from established behavioral norms using adaptive thresholds and ensemble methods.',
-    rate_limit: 'Intelligent rate limiter with per-entity token bucket allocation that adapts quotas based on trust level and historical usage patterns.',
-    quarantine: 'Automated quarantine system that isolates suspicious operations into sandboxed execution environments for forensic analysis.',
-  },
-  SIGNAL: {
-    emit: 'High-throughput event emission system that publishes typed signals to subscriber networks with guaranteed delivery semantics.',
-    subscribe: 'Reactive subscription manager that enables fine-grained event filtering with backpressure-aware consumption.',
-    broadcast: 'Fan-out broadcast engine that efficiently distributes signals across distributed subscriber networks with configurable consistency levels.',
-    filter: 'Signal filtering pipeline that applies composable predicate chains to event streams for real-time pattern matching.',
-  },
-  VECTOR: {
-    embed: 'High-dimensional embedding engine that maps diverse data types into unified vector spaces for cross-modal similarity analysis.',
-    similarity: 'Vector similarity search with approximate nearest neighbor algorithms supporting billions of vectors at sub-millisecond latency.',
-    cluster: 'Dynamic clustering engine that discovers natural groupings in high-dimensional data with automatic cluster count estimation.',
-    dimension_reduce: 'Dimensionality reduction pipeline that projects complex data into interpretable low-dimensional representations while preserving topological structure.',
-  },
-};
-
-function generateCapabilityDescription(candidateName: string, targetNode: string, cap: string, cjpi: number): string {
-  const nodeDescs = CAPABILITY_DESCRIPTIONS[targetNode];
-  if (nodeDescs && nodeDescs[cap]) {
-    return nodeDescs[cap];
-  }
-  // Fallback with richer generic description
-  const tierLabel = cjpi >= 92 ? 'apex-tier' : cjpi >= 80 ? 'mythic-tier' : cjpi >= 65 ? 'relic-tier' : 'emerging';
-  return `${tierLabel} collision capability discovered at the intersection of ${candidateName} and ${targetNode}.${cap} — a proprietary behavioral pattern that enables automated ${cap.replace(/_/g, ' ')} operations with substrate-level integration.`;
-}
+// ═══ HASH & FINGERPRINT ═══
 
 function hashString(s: string): number {
   let hash = 0;
@@ -467,6 +163,410 @@ async function generateFingerprint(chain: string[], epoch: string): Promise<stri
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// ═══ CROSS-SECTOR SYNERGY MATRIX ═══
+// Certain sector combinations produce genuine emergent capabilities.
+// These bonuses represent real architectural value — not cosmetic inflation.
+
+const SECTOR_SYNERGY: Record<string, number> = {
+  'ccr+esz': 12,      // cognitive + sovereignty = predictive governance
+  'ccr+csz': 14,      // cognitive + covert = stealth reasoning
+  'ccr+execution': 8,  // cognitive + execution = intelligent automation
+  'ccr+shell': 10,     // cognitive + defense = adaptive threat modeling
+  'execution+esz': 9,  // execution + sovereignty = compliant automation
+  'execution+csz': 11, // execution + covert = shadow execution
+  'execution+field': 7, // execution + field = resilient execution
+  'esz+csz': 15,       // sovereignty + covert = zero-knowledge compliance
+  'esz+shell': 11,     // sovereignty + defense = jurisdictional firewalling
+  'ocg+csz': 10,       // compliance grid + covert = auditable privacy
+  'ocg+esz': 8,        // compliance + sovereignty = treaty enforcement
+  'field+csz': 12,     // fields + covert = immune stealth mesh
+  'field+shell': 9,    // fields + defense = hardened resilience
+  'emz+ccr': 10,       // manufacturing + cognitive = intelligent synthesis
+  'emz+execution': 7,  // manufacturing + execution = build pipeline
+  'epz+ccr': 11,       // perception + cognitive = predictive awareness
+  'epz+csz': 13,       // perception + covert = stealth reconnaissance
+  'plane+csz': 10,     // governance plane + covert = shadow governance
+  'core+field': 8,     // core + field = substrate-level transformation
+  'core+plane': 7,     // core + plane = kernel governance
+};
+
+function getSectorSynergy(sectors: string[]): number {
+  const unique = [...new Set(sectors)];
+  if (unique.length < 2) return 0;
+  
+  let totalSynergy = 0;
+  for (let i = 0; i < unique.length; i++) {
+    for (let j = i + 1; j < unique.length; j++) {
+      const key1 = `${unique[i]}+${unique[j]}`;
+      const key2 = `${unique[j]}+${unique[i]}`;
+      totalSynergy += SECTOR_SYNERGY[key1] || SECTOR_SYNERGY[key2] || 3;
+    }
+  }
+  
+  // Diminishing returns for very long chains — but still rewarding
+  const pairCount = (unique.length * (unique.length - 1)) / 2;
+  return Math.floor(totalSynergy / Math.max(1, Math.sqrt(pairCount)));
+}
+
+// ═══ CHAIN COMPOUND DESCRIPTIONS ═══
+// These describe what COMBINATIONS of nodes produce — not individual node capabilities.
+// The key is "sorted sectors joined" → emergent capability description.
+
+const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
+  'BRAIN+ORACLE': [
+    { name: 'Predictive_Reasoning_Engine', desc: 'Combines multi-step logical deduction with Bayesian forecasting to reason about future states — produces actionable predictions grounded in causal inference rather than pure correlation.' },
+    { name: 'Anticipatory_Cognition_Loop', desc: 'Fuses contextual reasoning with Monte Carlo simulation to pre-compute likely decision trees, enabling systems that think ahead rather than react.' },
+  ],
+  'BRAIN+DEFENSE': [
+    { name: 'Adversarial_Intelligence_Core', desc: 'Merges reasoning chains with threat modeling to construct adversarial simulations — thinks like an attacker to build unbreakable defenses.' },
+    { name: 'Cognitive_Threat_Profiler', desc: 'Applies semantic inference to behavioral anomaly streams, identifying sophisticated attack patterns that rule-based systems miss.' },
+  ],
+  'BRAIN+MEMORY': [
+    { name: 'Associative_Reasoning_Fabric', desc: 'Chains logical deduction with semantic recall to build reasoning that remembers — each inference enriches the memory graph, each recall sharpens future reasoning.' },
+    { name: 'Knowledge_Amplification_Loop', desc: 'Creates a self-reinforcing cycle where reasoning discovers new knowledge and memory surfaces relevant context, producing compounding intelligence over time.' },
+  ],
+  'BRAIN+PHANTOM': [
+    { name: 'Zero_Knowledge_Reasoner', desc: 'Performs complex multi-step inference over encrypted or anonymized data without ever exposing the raw inputs — privacy-preserving intelligence at scale.' },
+  ],
+  'BRAIN+EVOLUTION': [
+    { name: 'Self_Improving_Cognition', desc: 'Applies evolutionary mutation and fitness scoring to reasoning strategies themselves — the system doesn\'t just think, it evolves how it thinks.' },
+  ],
+  'ORACLE+DEFENSE': [
+    { name: 'Predictive_Threat_Shield', desc: 'Forecasts attack vectors before they materialize by combining Bayesian threat modeling with anomaly baselines — shifts security from reactive to preemptive.' },
+  ],
+  'ORACLE+EVOLUTION': [
+    { name: 'Fitness_Oracle', desc: 'Uses Monte Carlo simulation to evaluate evolutionary candidates before committing resources — predicts which mutations will succeed without running them all.' },
+  ],
+  'ORACLE+HARVEST': [
+    { name: 'Intelligence_Harvester', desc: 'Combines predictive modeling with data acquisition to identify and extract high-value information before competitors — proactive intelligence gathering.' },
+  ],
+  'MEMORY+EVOLUTION': [
+    { name: 'Adaptive_Memory_Genome', desc: 'Applies evolutionary pressure to memory consolidation strategies — memories that prove useful survive, ineffective recall patterns are eliminated.' },
+  ],
+  'MEMORY+ECHO': [
+    { name: 'Temporal_Memory_Replay', desc: 'Reconstructs past system states and replays them through the memory graph to discover insights that were missed in real-time processing.' },
+  ],
+  'DEFENSE+IMMUNITY': [
+    { name: 'Autonomous_Immune_Shield', desc: 'Combines outer perimeter defense with adaptive internal immunity — a dual-layer security system that hardens itself against every attack it encounters.' },
+  ],
+  'DEFENSE+PHANTOM': [
+    { name: 'Ghost_Defense_Mesh', desc: 'Makes the defense surface itself invisible — attackers can\'t target what they can\'t detect. Stealth routing meets behavioral threat scoring.' },
+  ],
+  'CORTEX+BRAIN': [
+    { name: 'Orchestrated_Reasoning_Pipeline', desc: 'Decomposes complex cognitive tasks into parallelized reasoning sub-chains, then orchestrates their convergence — distributed thinking at substrate speed.' },
+  ],
+  'CORTEX+FORGE': [
+    { name: 'Autonomous_Build_Orchestrator', desc: 'Orchestrates multi-step software generation pipelines with dependency-aware scheduling — from spec to deployed artifact without human intervention.' },
+  ],
+  'ENCODE+DECODE': [
+    { name: 'Full_Spectrum_Codec', desc: 'Bidirectional transformation engine that can ingest any format and produce any output — the universal translator between human intent and machine execution.' },
+  ],
+  'ENCODE+FORGE': [
+    { name: 'Generative_Manufacturing_Pipeline', desc: 'Chains code generation with artifact scaffolding to produce complete, deployable software packages from abstract behavioral specifications.' },
+  ],
+  'HARVEST+BRAIN+ORACLE': [
+    { name: 'Predictive_Data_Intelligence', desc: 'Acquires targeted data, reasons over it to extract meaning, then forecasts future trends — a complete intelligence pipeline from raw data to actionable foresight.' },
+  ],
+  'BRAIN+ORACLE+DEFENSE': [
+    { name: 'Cognitive_Threat_Oracle', desc: 'Three-node fusion: reasons about attack patterns, predicts future vectors, and deploys countermeasures — a thinking, predicting, defending intelligence.' },
+  ],
+  'BRAIN+MEMORY+EVOLUTION': [
+    { name: 'Self_Evolving_Knowledge_Engine', desc: 'Reasons to discover knowledge, stores it in associative memory, then evolves both reasoning and storage strategies — an intelligence that compounds on itself.' },
+  ],
+  'CORTEX+BRAIN+FORGE+ENCODE': [
+    { name: 'Autonomous_Software_Factory', desc: 'Orchestrates cognitive reasoning to design software, generates code, scaffolds artifacts, and compiles deployable packages — end-to-end autonomous software manufacturing.' },
+  ],
+  'DEFENSE+IMMUNITY+PHANTOM+SHADOW': [
+    { name: 'Invisible_Fortress', desc: 'Four-layer security architecture: outer defense shell, adaptive internal immunity, stealth obfuscation, and shadow-mesh divergence testing — attackable from no angle.' },
+  ],
+  'ORACLE+CONSCIENCE+TREATY': [
+    { name: 'Ethical_Forecast_Negotiator', desc: 'Predicts outcomes, evaluates them ethically, and negotiates compliant agreements — AI governance that looks ahead, checks its conscience, and codifies fair terms.' },
+  ],
+  'BRAIN+DECODE+LINGUA+HARVEST': [
+    { name: 'Multilingual_Intelligence_Extractor', desc: 'Crawls multilingual sources, translates and parses them, reasons over the unified knowledge — breaks language barriers in intelligence gathering.' },
+  ],
+  'MEMORY+ECHO+REFLEX+COMPASS': [
+    { name: 'Situational_Memory_Navigator', desc: 'Recalls relevant context, simulates scenarios, reacts at edge speed, and navigates optimal paths — real-time spatial-temporal awareness.' },
+  ],
+  'EVOLUTION+SHADOW+FORGE': [
+    { name: 'Shadow_Evolution_Forge', desc: 'Mutates capabilities in shadow environments, tests divergent variants, then forges the fittest into production artifacts — Darwinian software manufacturing.' },
+  ],
+};
+
+// Generate a lookup key from a set of nodes (sorted for consistency)
+function chainKey(nodes: string[]): string {
+  return [...nodes].sort().join('+');
+}
+
+// ═══ MULTI-NODE COLLISION ENGINE ═══
+
+interface CollisionResult {
+  name: string;
+  description: string;
+  cjpi_score: number;
+  tier: string;
+  chain: string[];
+  capability_type: string;
+  chain_depth: number;
+  synergy_bonus: number;
+  sectors_crossed: number;
+}
+
+function scoreTier(cjpi: number): string {
+  if (cjpi >= 92) return 'apex';
+  if (cjpi >= 80) return 'mythic';
+  if (cjpi >= 65) return 'relic';
+  if (cjpi >= 45) return 'prime';
+  return 'mint';
+}
+
+/**
+ * Explore multi-node chain collisions.
+ * 
+ * For a given target node, we don't just collide candidate ↔ target.
+ * We explore chains of 2-6 nodes by selecting synergistic partners
+ * based on the candidate's characteristics and the target's sector.
+ * 
+ * Chain scoring:
+ *   base = hash-deterministic (30-65 range for 2-node)
+ *   + cross-sector synergy bonus (3-15 per unique sector pair)
+ *   + chain depth bonus (deeper chains can unlock higher scores)
+ *   + candidate trait bonus (resolver count, language, size)
+ * 
+ * This means:
+ *   - 2-node chains: can reach ~75 max (relic tier)
+ *   - 3-node chains: can reach ~85 max (mythic tier)
+ *   - 4-node chains: can reach ~92 max (apex tier)
+ *   - 5-6 node chains: can reach 95+ (apex) if sectors are diverse
+ */
+function collideNodesMultiChain(
+  candidateName: string,
+  candidateMeta: Record<string, unknown>,
+  targetNode: string,
+  permutationDepth: number,
+): CollisionResult[] {
+  const candidateResolvers = Number(candidateMeta.resolver_count || 1);
+  const candidateLanguage = String(candidateMeta.language || 'Unknown');
+  const candidateSize = Number(candidateMeta.size_kb || 0);
+
+  const results: CollisionResult[] = [];
+  
+  // Candidate trait bonus (capped at 8)
+  let traitBonus = 0;
+  if (candidateResolvers > 10) traitBonus += 3;
+  if (candidateResolvers > 25) traitBonus += 2;
+  if (candidateSize > 100) traitBonus += 2;
+  if (candidateLanguage.includes('TypeScript') || candidateLanguage.includes('Rust')) traitBonus += 1;
+  traitBonus = Math.min(traitBonus, 8);
+
+  // ─── 2-node chains (Candidate + Target) ───
+  const targetCaps = NODE_CAPABILITIES[targetNode] || ['generic'];
+  for (const cap of targetCaps) {
+    const nameHash = hashString(`${candidateName}:${targetNode}:${cap}:v2`);
+    const baseCjpi = 30 + (nameHash % 36); // 30-65 range for 2-node
+    const sectors = [NODE_SECTOR[targetNode] || 'unknown'];
+    const synergy = 0; // single sector, no synergy
+    let cjpi = baseCjpi + traitBonus + synergy;
+    cjpi = Math.min(cjpi, 75); // 2-node hard cap
+
+    if (cjpi >= 35) {
+      const chain = [candidateName, targetNode];
+      const archetype = findArchetype(chain.slice(1)); // just the substrate nodes
+      const capName = archetype?.name || `${candidateName}_x_${targetNode}_${cap}`.toUpperCase();
+      const desc = archetype?.desc || generateFallbackDescription(candidateName, [targetNode], cap, cjpi);
+      
+      results.push({
+        name: capName,
+        description: desc,
+        cjpi_score: cjpi,
+        tier: scoreTier(cjpi),
+        chain,
+        capability_type: cap,
+        chain_depth: 2,
+        synergy_bonus: synergy,
+        sectors_crossed: 1,
+      });
+    }
+  }
+
+  // ─── 3-6 node chains (Candidate + Target + Partners) ───
+  // Select partner nodes based on hash-deterministic selection that favors cross-sector picks
+  const targetSector = NODE_SECTOR[targetNode] || 'unknown';
+  const crossSectorNodes = SUBSTRATE_NODES.filter(n => 
+    n !== targetNode && (NODE_SECTOR[n] || 'unknown') !== targetSector
+  );
+  const sameSectorNodes = SUBSTRATE_NODES.filter(n =>
+    n !== targetNode && (NODE_SECTOR[n] || 'unknown') === targetSector
+  );
+
+  for (let chainLen = 3; chainLen <= Math.min(6, permutationDepth + 2); chainLen++) {
+    // Generate multiple chain candidates at this depth
+    const chainCandidateCount = Math.min(4, chainLen);
+    
+    for (let ci = 0; ci < chainCandidateCount; ci++) {
+      const partnerChain: string[] = [targetNode];
+      const usedNodes = new Set([targetNode]);
+      
+      // Hash-deterministic partner selection
+      for (let p = 1; p < chainLen - 1; p++) {
+        const partnerHash = hashString(`${candidateName}:${targetNode}:chain${chainLen}:ci${ci}:p${p}`);
+        // 70% chance to pick cross-sector for diversity
+        const pool = (partnerHash % 10 < 7) ? crossSectorNodes : sameSectorNodes;
+        const available = pool.filter(n => !usedNodes.has(n));
+        if (available.length === 0) break;
+        const partner = available[partnerHash % available.length];
+        partnerChain.push(partner);
+        usedNodes.add(partner);
+      }
+
+      if (partnerChain.length < chainLen - 1) continue;
+
+      // Score the chain
+      const sectors = partnerChain.map(n => NODE_SECTOR[n] || 'unknown');
+      const uniqueSectors = [...new Set(sectors)];
+      const synergy = getSectorSynergy(sectors);
+      
+      // Base score for multi-chain: lower floor but higher ceiling
+      const chainHash = hashString(`${candidateName}:${partnerChain.join(':')}:v2`);
+      const baseScore = 25 + (chainHash % 30); // 25-54 base
+      
+      // Chain depth bonus: each additional node beyond 2 adds potential
+      const depthBonus = (chainLen - 2) * 6;
+      
+      // Cross-sector diversity bonus
+      const diversityBonus = (uniqueSectors.length - 1) * 4;
+      
+      let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus;
+      
+      // Apply depth-appropriate caps
+      const maxForDepth = chainLen === 3 ? 88 : chainLen === 4 ? 94 : chainLen === 5 ? 97 : 99;
+      cjpi = Math.min(cjpi, maxForDepth);
+
+      if (cjpi >= 40) {
+        const fullChain = [candidateName, ...partnerChain];
+        const archetype = findArchetype(partnerChain);
+        
+        // Pick a representative capability from the primary target
+        const capIdx = chainHash % targetCaps.length;
+        const primaryCap = targetCaps[capIdx];
+        
+        const capName = archetype?.name || generateChainName(candidateName, partnerChain, cjpi);
+        const desc = archetype?.desc || generateChainDescription(candidateName, partnerChain, primaryCap, cjpi);
+
+        results.push({
+          name: capName,
+          description: desc,
+          cjpi_score: cjpi,
+          tier: scoreTier(cjpi),
+          chain: fullChain,
+          capability_type: primaryCap,
+          chain_depth: fullChain.length,
+          synergy_bonus: synergy,
+          sectors_crossed: uniqueSectors.length,
+        });
+      }
+    }
+  }
+
+  // Sort by CJPI descending
+  results.sort((a, b) => b.cjpi_score - a.cjpi_score);
+  return results.slice(0, permutationDepth + 3);
+}
+
+function findArchetype(substrateNodes: string[]): { name: string; desc: string } | null {
+  const key = chainKey(substrateNodes);
+  const archetypes = CHAIN_ARCHETYPES[key];
+  if (archetypes && archetypes.length > 0) {
+    // Deterministic selection based on hash
+    const idx = hashString(key) % archetypes.length;
+    return archetypes[idx];
+  }
+  
+  // Try subset matching for longer chains — find the longest matching sub-chain
+  if (substrateNodes.length > 2) {
+    for (let len = substrateNodes.length; len >= 2; len--) {
+      for (let start = 0; start <= substrateNodes.length - len; start++) {
+        const subset = substrateNodes.slice(start, start + len);
+        const subKey = chainKey(subset);
+        const subArchetypes = CHAIN_ARCHETYPES[subKey];
+        if (subArchetypes && subArchetypes.length > 0) {
+          const arch = subArchetypes[hashString(subKey) % subArchetypes.length];
+          // Enhance the description to mention the full chain
+          const extra = substrateNodes.filter(n => !subset.includes(n));
+          if (extra.length > 0) {
+            return {
+              name: `${arch.name}_Plus_${extra.join('_')}`,
+              desc: `${arch.desc} Extended with ${extra.join(' → ')} for ${extra.length > 1 ? 'multi-dimensional' : 'enhanced'} capability reinforcement.`,
+            };
+          }
+          return arch;
+        }
+      }
+    }
+  }
+  
+  return null;
+}
+
+function generateChainName(candidate: string, nodes: string[], cjpi: number): string {
+  const tierPrefix = cjpi >= 92 ? 'APEX' : cjpi >= 80 ? 'MYTHIC' : cjpi >= 65 ? 'RELIC' : 'PRIME';
+  const primaryNode = nodes[0];
+  const lastNode = nodes[nodes.length - 1];
+  if (nodes.length === 1) {
+    return `${candidate}_x_${primaryNode}_${tierPrefix}`.toUpperCase();
+  }
+  return `${candidate}_x_${primaryNode}_${lastNode}_${tierPrefix}_CHAIN${nodes.length}`.toUpperCase();
+}
+
+function generateChainDescription(candidate: string, nodes: string[], primaryCap: string, cjpi: number): string {
+  const sectors = [...new Set(nodes.map(n => NODE_SECTOR[n] || 'unknown'))];
+  const sectorCount = sectors.length;
+  const chainLen = nodes.length;
+  
+  const sectorDescriptors: Record<string, string> = {
+    ccr: 'cognitive reasoning',
+    ocg: 'operational compliance',
+    execution: 'autonomous execution',
+    esz: 'sovereignty enforcement',
+    epz: 'perceptual awareness',
+    emz: 'artifact manufacturing',
+    csz: 'covert operations',
+    field: 'resilience field',
+    plane: 'governance authority',
+    shell: 'perimeter defense',
+    core: 'kernel orchestration',
+  };
+
+  const sectorPhrases = sectors
+    .map(s => sectorDescriptors[s] || s)
+    .slice(0, 3);
+
+  if (chainLen <= 2) {
+    return `Cross-domain collision between ${candidate} and ${nodes[0]} producing emergent ${primaryCap.replace(/_/g, ' ')} capability spanning ${sectorPhrases.join(' and ')}.`;
+  }
+
+  const nodeList = nodes.join(' → ');
+  
+  if (cjpi >= 90) {
+    return `Apex-tier ${chainLen}-node fusion chain (${nodeList}) that weaves ${sectorPhrases.join(', ')} into a unified ${primaryCap.replace(/_/g, ' ')} pipeline. This ${sectorCount}-sector collision produces a capability that none of the constituent nodes could achieve independently — emergent behavior at the intersection of ${sectorPhrases[0]} and ${sectorPhrases[sectorPhrases.length - 1]}.`;
+  }
+  
+  if (cjpi >= 80) {
+    return `Mythic-class ${chainLen}-node chain (${nodeList}) bridging ${sectorCount} substrate sectors. Fuses ${sectorPhrases.join(' with ')} to produce compound ${primaryCap.replace(/_/g, ' ')} behavior that amplifies each node's strengths through cross-sector resonance.`;
+  }
+  
+  if (cjpi >= 65) {
+    return `Relic-grade ${chainLen}-node chain spanning ${sectorPhrases.join(', ')}. Routes ${primaryCap.replace(/_/g, ' ')} operations through ${nodeList} with synergistic reinforcement at each handoff.`;
+  }
+
+  return `${chainLen}-node exploration chain (${nodeList}) across ${sectorCount} sector${sectorCount > 1 ? 's' : ''}. Combines ${sectorPhrases.join(' and ')} for compound ${primaryCap.replace(/_/g, ' ')} operations.`;
+}
+
+function generateFallbackDescription(candidate: string, nodes: string[], cap: string, cjpi: number): string {
+  const tierLabel = cjpi >= 80 ? 'mythic-tier' : cjpi >= 65 ? 'relic-tier' : cjpi >= 45 ? 'prime-tier' : 'emerging';
+  return `${tierLabel} collision capability discovered at the intersection of ${candidate} and ${nodes.join(' → ')}. Enables automated ${cap.replace(/_/g, ' ')} operations with substrate-level integration.`;
+}
+
 // ═══ MAIN HANDLER ═══
 
 serve(async (req: Request) => {
@@ -485,7 +585,7 @@ serve(async (req: Request) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Auth check — require authenticated user
+    // Auth check
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       return jsonResponse({ success: false, error: 'Authentication required' }, 401);
@@ -547,7 +647,7 @@ serve(async (req: Request) => {
         }
 
         const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
-        const results = collideNodes(candidate_node, candidateMeta, target_node, permutation_depth);
+        const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth);
 
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
@@ -564,6 +664,9 @@ serve(async (req: Request) => {
               cjpi_score: result.cjpi_score,
               capability_type: result.capability_type,
               chain: result.chain,
+              chain_depth: result.chain_depth,
+              synergy_bonus: result.synergy_bonus,
+              sectors_crossed: result.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
               crystallized: false,
@@ -605,7 +708,7 @@ serve(async (req: Request) => {
         const allResults: CollisionResult[] = [];
 
         for (const node of SUBSTRATE_NODES) {
-          const results = collideNodes(candidate_node, candidateMeta, node, permutation_depth);
+          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth);
           allResults.push(...results);
         }
 
@@ -627,6 +730,9 @@ serve(async (req: Request) => {
               cjpi_score: result.cjpi_score,
               capability_type: result.capability_type,
               chain: result.chain,
+              chain_depth: result.chain_depth,
+              synergy_bonus: result.synergy_bonus,
+              sectors_crossed: result.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
               crystallized: false,
@@ -640,6 +746,8 @@ serve(async (req: Request) => {
           total_capabilities: allResults.length,
           top_capabilities: topResults,
           s_tier_count: allResults.filter(r => r.cjpi_score >= 85).length,
+          apex_count: allResults.filter(r => r.cjpi_score >= 92).length,
+          deepest_chain: Math.max(...allResults.map(r => r.chain_depth)),
           timestamp: new Date().toISOString(),
         });
       }
@@ -792,9 +900,12 @@ serve(async (req: Request) => {
               name: c.name,
               tier: c.tier,
               cjpi_score: meta.cjpi_score,
+              chain: meta.chain,
+              chain_depth: meta.chain_depth || (meta.chain as string[] || []).length,
+              sectors_crossed: meta.sectors_crossed || 1,
               fingerprint: String(meta.structural_fingerprint || '').slice(0, 12).toUpperCase(),
               moat_signature: meta.moat_signature,
-              chain: meta.chain,
+              description: c.description,
             };
           }),
           mini_runtime: include_mini_runtime ? {
