@@ -466,7 +466,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Anomaly framing', 'Risk-weighted recommendations', 'Decision memo templates', 'Time-series pattern recognition'],
     priceCents: 15900, isFree: false, tier: 'elite', bundlePriceCents: bundlePrice(15900),
-    downloadAssetKey: 'cmpsbl-analyst.zip', stripeProductName: 'CMPSBL Analyst Mind', stripeLookupKey: 'cmpsbl_mind_analyst_15900',
+    downloadAssetKey: 'cmpsbl-analyst.zip', stripeProductName: 'CMPSBL AXIOM', stripeLookupKey: 'cmpsbl_mind_analyst_15900',
     accentColor: 'purple', imagePath: 'analyst', version: 'v1.0', isPublic: true,
     category: 'Cognitive Synthesis',
     personality: { archetype: 'The Cipher', tone: 'Analytical, skeptical, and data-obsessed', motto: '"Correlation whispers. Causation speaks."', communicationStyle: 'Leads with data. Questions every assumption. Presents findings with confidence scores.' },
