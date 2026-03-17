@@ -905,7 +905,7 @@ serve(async (req: Request) => {
         const allResults: CollisionResult[] = [];
 
         for (const node of SUBSTRATE_NODES) {
-          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutationDepth);
+          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth);
           allResults.push(...results);
         }
 
