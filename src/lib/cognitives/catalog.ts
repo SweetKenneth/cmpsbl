@@ -229,7 +229,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'designer',
-    displayName: 'DESIGNER Mind',
+    displayName: 'AURORA',
     className: 'The Artisan',
     tagline: 'Design systems. UI critique. Accessibility auditing.',
     description: 'A detail-obsessed craftsman with DREAM Synthesis — manages design tokens, delivers actionable UI critique, and learns your aesthetic preferences to maintain brand consistency.',
