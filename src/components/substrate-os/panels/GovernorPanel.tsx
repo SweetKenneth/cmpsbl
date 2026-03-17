@@ -9,7 +9,7 @@ import {
   ShieldAlert, Power, Activity, AlertTriangle, Loader2, Zap,
   Eye, BarChart3, Brain, Shield, FileText, Settings,
   ArrowRight, Lock, Cpu, Network, Crown, Scale, ScrollText,
-  Play, CheckCircle2, XCircle, AlertCircle,
+  Play, CheckCircle2, XCircle, AlertCircle, Package,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
