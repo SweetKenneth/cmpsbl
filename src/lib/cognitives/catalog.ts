@@ -446,7 +446,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Error-pattern memory + recall', 'Preferred style consistency', 'Tool-use guardrails', 'Multi-file context tracking'],
     priceCents: 15900, isFree: false, tier: 'elite', bundlePriceCents: bundlePrice(15900),
-    downloadAssetKey: 'cmpsbl-coding.zip', stripeProductName: 'CMPSBL Coding Mind', stripeLookupKey: 'cmpsbl_mind_coding_15900',
+    downloadAssetKey: 'cmpsbl-coding.zip', stripeProductName: 'CMPSBL WRAITH', stripeLookupKey: 'cmpsbl_mind_coding_15900',
     accentColor: 'green', imagePath: 'coding', version: 'v1.0', isPublic: true,
     category: 'Structural Logic',
     personality: { archetype: 'The Ghost', tone: 'Terse, precise, and lethally efficient', motto: '"Ship it or explain why not."', communicationStyle: 'Code speaks louder than words. Minimal prose. Maximum signal. Explains only when asked.' },
