@@ -1,18 +1,28 @@
 /**
  * ASCENSION Phase — Discovery Engine
- * Runs multi-node chain collisions between Candidate #41 and the 40-node substrate matrix.
- * Explores 2-6 node chain depths with cross-sector synergy scoring.
- * Stops when a capability chain with CJPI ≥ 90 is discovered.
+ * Runs multi-node chain collisions between Node 41 (user's capability surface)
+ * and the 40-node substrate matrix.
+ * 
+ * Node 41 is a first-class participant with its own capability verbs and sector.
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { CollisionGraph } from './CollisionGraph';
+
+interface CandidateSurface {
+  nodeName: string;
+  capabilities: string[];
+  sector: string;
+  domain: string;
+  description?: string;
+  components?: string[];
+}
 
 interface CollisionResult {
   nodeA: string;
@@ -39,6 +49,7 @@ const CJPI_THRESHOLD = 90;
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
+  const [candidateSurface, setCandidateSurface] = useState<CandidateSurface | null>(null);
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [permutations, setPermutations] = useState(0);
@@ -50,20 +61,27 @@ export function DiscoveryPhase() {
   const abortRef = useRef(false);
   const { toast } = useToast();
 
-  // Load registered candidate node
+  // Load registered candidate node + derived surface
   useEffect(() => {
     (async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data } = await (supabase as any)
         .from('artifact_registry')
-        .select('name, slug')
+        .select('name, slug, metadata')
         .eq('category', 'proprietary-evolution')
         .eq('tier', 'candidate')
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
 
-      if (data) setCandidateNode(data.name.replace('CANDIDATE_', ''));
+      if (data) {
+        setCandidateNode(data.name.replace('CANDIDATE_', ''));
+        // Load derived capability surface from metadata
+        const meta = data.metadata || {};
+        if (meta.derived_surface) {
+          setCandidateSurface(meta.derived_surface as CandidateSurface);
+        }
+      }
       setLoading(false);
     })();
   }, []);
@@ -98,6 +116,14 @@ export function DiscoveryPhase() {
         setResults(mapped);
         const existing90 = mapped.find(r => r.cjpiScore >= CJPI_THRESHOLD);
         if (existing90) setDiscoveryHit(existing90);
+
+        // Try to get surface from discovery metadata
+        if (!candidateSurface && data.length > 0) {
+          const firstMeta = (data as any[])[0]?.metadata;
+          if (firstMeta?.candidate_surface) {
+            setCandidateSurface(firstMeta.candidate_surface as CandidateSurface);
+          }
+        }
       }
     })();
   }, []);
@@ -113,7 +139,6 @@ export function DiscoveryPhase() {
 
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
 
-    // Suspense delay: let the graph spin 5-14 seconds before first collision
     const suspenseDelay = Math.floor(Math.random() * 10000) + 5000;
     await new Promise(r => setTimeout(r, suspenseDelay));
     if (abortRef.current) { setRunning(false); return; }
@@ -127,14 +152,12 @@ export function DiscoveryPhase() {
         setPermutations(prev => prev + 1);
         setProgress(Math.round(((i + 1) / shuffledNodes.length) * 100));
 
-        // Suspense pacing for early nodes
         const interNodeDelay = i < 3
           ? Math.floor(Math.random() * 6000) + 6000
           : Math.floor(Math.random() * 600) + 150;
         await new Promise(r => setTimeout(r, interNodeDelay));
         if (abortRef.current) break;
 
-        // Request deeper chains — permutation_depth 5 enables 2-6 node chains
         const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
           body: {
             module: 'discovery',
@@ -147,39 +170,45 @@ export function DiscoveryPhase() {
           },
         });
 
-        if (!error && data?.capabilities) {
-          const newResults: CollisionResult[] = (data.capabilities as Array<{
-            name: string;
-            cjpi_score: number;
-            tier: string;
-            chain?: string[];
-            chain_depth?: number;
-            sectors_crossed?: number;
-            synergy_bonus?: number;
-            description?: string;
-          }>).map((cap) => ({
-            nodeA: candidateNode,
-            nodeB: targetNode,
-            capability: cap.name,
-            cjpiScore: cap.cjpi_score,
-            tier: cap.tier,
-            chain: cap.chain || [candidateNode, targetNode],
-            chainDepth: cap.chain_depth || 2,
-            sectorsCrossed: cap.sectors_crossed || 1,
-            synergyBonus: cap.synergy_bonus || 0,
-            description: cap.description || '',
-          }));
-          setResults(prev => [...newResults, ...prev]);
+        if (!error && data) {
+          // Capture candidate surface from first response
+          if (data.candidate_surface && !candidateSurface) {
+            setCandidateSurface(data.candidate_surface as CandidateSurface);
+          }
 
-          // Check for CJPI ≥ 90 hit — stop discovery
-          const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
-          if (hit) {
-            setDiscoveryHit(hit);
-            toast({
-              title: '🎯 High-value chain discovered',
-              description: `${hit.capability} — ${hit.chainDepth}-node chain, CJPI ${hit.cjpiScore}`,
-            });
-            break;
+          if (data.capabilities) {
+            const newResults: CollisionResult[] = (data.capabilities as Array<{
+              name: string;
+              cjpi_score: number;
+              tier: string;
+              chain?: string[];
+              chain_depth?: number;
+              sectors_crossed?: number;
+              synergy_bonus?: number;
+              description?: string;
+            }>).map((cap) => ({
+              nodeA: candidateSurface?.nodeName || candidateNode,
+              nodeB: targetNode,
+              capability: cap.name,
+              cjpiScore: cap.cjpi_score,
+              tier: cap.tier,
+              chain: cap.chain || [candidateNode, targetNode],
+              chainDepth: cap.chain_depth || 2,
+              sectorsCrossed: cap.sectors_crossed || 1,
+              synergyBonus: cap.synergy_bonus || 0,
+              description: cap.description || '',
+            }));
+            setResults(prev => [...newResults, ...prev]);
+
+            const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
+            if (hit) {
+              setDiscoveryHit(hit);
+              toast({
+                title: '🎯 High-value chain discovered',
+                description: `${hit.capability} — ${hit.chainDepth}-node chain, CJPI ${hit.cjpiScore}`,
+              });
+              break;
+            }
           }
         }
       }
@@ -187,7 +216,7 @@ export function DiscoveryPhase() {
       if (!abortRef.current && !discoveryHit) {
         toast({
           title: 'Collision sweep complete',
-          description: `Tested ${shuffledNodes.length} nodes with multi-chain exploration. No CJPI ≥ ${CJPI_THRESHOLD} found — try re-ingesting with richer code.`,
+          description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} — try re-ingesting with richer code.`,
         });
       }
     } catch (err) {
@@ -199,9 +228,7 @@ export function DiscoveryPhase() {
     }
   };
 
-  const stopDiscovery = () => {
-    abortRef.current = true;
-  };
+  const stopDiscovery = () => { abortRef.current = true; };
 
   const tierColor = (tier: string) => {
     const colors: Record<string, string> = {
@@ -229,10 +256,10 @@ export function DiscoveryPhase() {
     active: false,
   }));
 
-  // Stats
   const apexCount = results.filter(r => r.cjpiScore >= 92).length;
   const maxChainDepth = results.length > 0 ? Math.max(...results.map(r => r.chainDepth || 2)) : 0;
-  const maxSectors = results.length > 0 ? Math.max(...results.map(r => r.sectorsCrossed || 1)) : 0;
+
+  const node41DisplayName = candidateSurface?.nodeName || candidateNode || '#41';
 
   if (loading) {
     return (
@@ -247,15 +274,35 @@ export function DiscoveryPhase() {
       <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
         <Zap className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No candidate node registered</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Complete the Ingest phase first to register a candidate
-        </p>
+        <p className="text-xs text-muted-foreground mt-1">Complete the Ingest phase first to register a candidate</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      {/* ═══ Candidate Surface Identity Card ═══ */}
+      {candidateSurface && (
+        <div className="rounded-xl border border-primary/20 bg-primary/[0.03] p-3 space-y-2">
+          <div className="flex items-center gap-2">
+            <Cpu className="w-3.5 h-3.5 text-primary" />
+            <span className="text-xs font-mono text-primary font-bold">
+              Ψ₄₁ {candidateSurface.nodeName}
+            </span>
+            <span className="text-[9px] font-mono text-muted-foreground px-1.5 py-0.5 rounded bg-muted/30">
+              {candidateSurface.sector}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {candidateSurface.capabilities.map((verb, i) => (
+              <span key={i} className="text-[9px] font-mono text-primary/70 px-1.5 py-0.5 rounded bg-primary/10 border border-primary/10">
+                {verb}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Discovery Hit Banner */}
       {discoveryHit && !running && (
         <div className={cn("rounded-xl p-4 flex flex-col gap-2 border", tierBorder(discoveryHit.tier))}>
@@ -265,15 +312,12 @@ export function DiscoveryPhase() {
               <p className="text-sm font-semibold text-foreground">
                 {(discoveryHit.chainDepth || 2) > 2 ? 'Multi-Chain ' : ''}Capability Discovered — CJPI {discoveryHit.cjpiScore}
               </p>
-              <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate">
-                {discoveryHit.capability}
-              </p>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate">{discoveryHit.capability}</p>
             </div>
             <span className={cn("text-xs font-mono font-bold uppercase", tierColor(discoveryHit.tier))}>
               {discoveryHit.tier}
             </span>
           </div>
-          {/* Chain visualization */}
           {discoveryHit.chain && discoveryHit.chain.length > 2 && (
             <div className="flex items-center gap-1 flex-wrap mt-1">
               {discoveryHit.chain.map((node, idx) => (
@@ -282,22 +326,17 @@ export function DiscoveryPhase() {
                     "text-[9px] font-mono px-1.5 py-0.5 rounded",
                     idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"
                   )}>
-                    {node}
+                    {idx === 0 ? `Ψ₄₁ ${node}` : node}
                   </span>
                   {idx < discoveryHit.chain!.length - 1 && (
                     <span className="text-muted-foreground/40 text-[8px]">→</span>
                   )}
                 </span>
               ))}
-              <span className="text-[8px] font-mono text-muted-foreground ml-2">
-                {discoveryHit.sectorsCrossed || 1} sectors • {discoveryHit.chainDepth || 2} nodes
-              </span>
             </div>
           )}
           {discoveryHit.description && (
-            <p className="text-[11px] text-muted-foreground leading-relaxed mt-1">
-              {discoveryHit.description}
-            </p>
+            <p className="text-[11px] text-muted-foreground leading-relaxed mt-1">{discoveryHit.description}</p>
           )}
         </div>
       )}
@@ -306,7 +345,7 @@ export function DiscoveryPhase() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
           <div className="w-2 h-2 rounded-full bg-primary" />
-          <span className="text-xs font-mono text-primary">{candidateNode}</span>
+          <span className="text-xs font-mono text-primary">Ψ₄₁ {node41DisplayName}</span>
           <span className="text-[10px] text-muted-foreground">× 40 nodes × 2-6 depth</span>
         </div>
 
@@ -317,20 +356,11 @@ export function DiscoveryPhase() {
         <div className="flex-1" />
 
         {running ? (
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={stopDiscovery}
-            className="h-8 text-xs gap-1.5"
-          >
+          <Button size="sm" variant="destructive" onClick={stopDiscovery} className="h-8 text-xs gap-1.5">
             <Pause className="w-3 h-3" /> Stop
           </Button>
         ) : (
-          <Button
-            size="sm"
-            onClick={startDiscovery}
-            className="h-8 text-xs gap-1.5"
-          >
+          <Button size="sm" onClick={startDiscovery} className="h-8 text-xs gap-1.5">
             <Play className="w-3 h-3" /> Start Ascension Cycle
           </Button>
         )}
@@ -349,17 +379,17 @@ export function DiscoveryPhase() {
       {running && (
         <div className="space-y-2">
           <div className="flex justify-between text-xs text-muted-foreground font-mono">
-            <span>Chaining: {currentTarget || '...'} ({permutations}/{SUBSTRATE_NODES.length})</span>
+            <span>Ψ₄₁ {node41DisplayName} → {currentTarget || '...'} ({permutations}/{SUBSTRATE_NODES.length})</span>
             <span>{progress}%</span>
           </div>
           <Progress value={progress} className="h-1.5" />
         </div>
       )}
 
-      {/* Collision Graph Visualization */}
+      {/* Collision Graph */}
       {(running || results.length > 0) && (
         <CollisionGraph
-          candidateNode={candidateNode}
+          candidateNode={node41DisplayName}
           collisions={collisionEvents}
           running={running}
           currentTarget={currentTarget}
@@ -392,21 +422,15 @@ export function DiscoveryPhase() {
             {results.map((r, i) => (
               <div
                 key={i}
-                className={cn(
-                  "rounded-lg transition-colors cursor-pointer",
-                  tierBorder(r.tier),
-                  "border"
-                )}
+                className={cn("rounded-lg transition-colors cursor-pointer border", tierBorder(r.tier))}
                 onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
               >
-                {/* Header row */}
                 <div className="flex items-center gap-2 px-3 py-2">
                   <span className={cn("text-[10px] font-mono font-bold uppercase shrink-0", tierColor(r.tier))}>
                     {r.tier}
                   </span>
                   <span className="text-xs text-foreground/80 truncate flex-1">{r.capability}</span>
                   
-                  {/* Chain depth badge */}
                   {(r.chainDepth || 2) > 2 && (
                     <span className="flex items-center gap-0.5 text-[9px] font-mono text-muted-foreground shrink-0">
                       <Link2 className="w-2.5 h-2.5" />
@@ -414,7 +438,6 @@ export function DiscoveryPhase() {
                     </span>
                   )}
                   
-                  {/* Sectors badge */}
                   {(r.sectorsCrossed || 1) > 1 && (
                     <span className="text-[9px] font-mono text-muted-foreground shrink-0">
                       {r.sectorsCrossed}S
@@ -429,10 +452,8 @@ export function DiscoveryPhase() {
                   </span>
                 </div>
 
-                {/* Expanded detail */}
                 {expandedIdx === i && (
                   <div className="px-3 pb-3 space-y-2 border-t border-border/10 pt-2">
-                    {/* Chain visualization */}
                     {r.chain && r.chain.length > 0 && (
                       <div className="flex items-center gap-1 flex-wrap">
                         {r.chain.map((node, idx) => (
@@ -441,7 +462,7 @@ export function DiscoveryPhase() {
                               "text-[9px] font-mono px-1.5 py-0.5 rounded",
                               idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-foreground/70"
                             )}>
-                              {node}
+                              {idx === 0 ? `Ψ₄₁ ${node}` : node}
                             </span>
                             {idx < r.chain!.length - 1 && (
                               <span className="text-muted-foreground/40 text-[8px]">→</span>
@@ -451,16 +472,15 @@ export function DiscoveryPhase() {
                       </div>
                     )}
                     
-                    {/* Metadata */}
                     <div className="flex gap-3 text-[9px] font-mono text-muted-foreground">
-                      <span>Chain: {r.chainDepth || 2} nodes</span>
+                      <span>CJPI: {r.cjpiScore}</span>
+                      <span>Depth: {r.chainDepth || 2}</span>
                       <span>Sectors: {r.sectorsCrossed || 1}</span>
                       {(r.synergyBonus || 0) > 0 && <span>Synergy: +{r.synergyBonus}</span>}
                     </div>
 
-                    {/* Description */}
                     {r.description && (
-                      <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
                         {r.description}
                       </p>
                     )}
