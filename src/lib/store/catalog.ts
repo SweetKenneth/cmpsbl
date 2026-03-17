@@ -85,6 +85,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Workflow Automation Engine",
     bio: "Turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation — the boring stuff handled, brilliantly.",
     description: "AUTOMATON handles visual workflow composition, conditional branching, scheduled tasks, event-driven triggers, retry logic, and parallel execution paths.",
+    image: automatonImg,
     icon: Cog,
     tier: "starter",
     priceCents: 7900,
