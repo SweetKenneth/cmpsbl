@@ -37,7 +37,7 @@ export function CrystallizationPhase() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
-      .select('id, name, metadata, tier')
+      .select('id, name, metadata, tier, description')
       .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
       .order('created_at', { ascending: false })
       .limit(100);
@@ -53,6 +53,8 @@ export function CrystallizationPhase() {
           nodeA: String(meta.node_a || ''),
           nodeB: String(meta.node_b || ''),
           crystallized: meta.crystallized === true,
+          description: d.description || '',
+          chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
         };
       }));
     }
