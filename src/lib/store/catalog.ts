@@ -108,6 +108,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Agent Runtime & Orchestration",
     bio: "Gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together.",
     description: "CORTEX provides multi-agent task delegation, cognitive load balancing, shared memory coordination, agent competency tracking, automatic skill routing, and collaborative reasoning.",
+    image: cortexImg,
     icon: Brain,
     tier: "pro",
     priceCents: 12900,
