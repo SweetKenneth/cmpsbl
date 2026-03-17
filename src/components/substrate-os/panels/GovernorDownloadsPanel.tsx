@@ -1,6 +1,7 @@
 /**
  * Governor Downloads Panel — Downloadable ZIPs of every product
  * Governor-only: inspect bundles, customer service, giveaways.
+ * Uses cinematic download ceremony for all downloads.
  */
 
 import { useState } from 'react';
@@ -17,6 +18,7 @@ import { STORE_AGENTS } from '@/lib/store/catalog';
 import { generateProductZip } from '@/lib/export/product-zip';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { useDownloadCeremony } from '@/hooks/useDownloadCeremony';
 
 interface DownloadableProduct {
   id: string;
@@ -55,8 +57,6 @@ function buildProductList(): DownloadableProduct[] {
   return [...engines, ...agents];
 }
 
-// ZIP generation now uses the shared generateProductZip from lib/export/product-zip.ts
-
 async function generateProductZipForGovernor(product: DownloadableProduct): Promise<Blob> {
   return generateProductZip({
     id: product.id,
@@ -80,6 +80,7 @@ export function GovernorDownloadsPanel() {
   const [downloading, setDownloading] = useState<string | null>(null);
   const [downloaded, setDownloaded] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
+  const { runWithCeremony, overlayElement } = useDownloadCeremony();
 
   const products = buildProductList();
   const filtered = search
@@ -92,10 +93,18 @@ export function GovernorDownloadsPanel() {
   const handleDownload = async (product: DownloadableProduct) => {
     setDownloading(product.id);
     try {
-      const blob = await generateProductZipForGovernor(product);
-      saveAs(blob, `cmpsbl-${product.kind}-${product.slug}.zip`);
+      await runWithCeremony(
+        {
+          itemName: product.name,
+          kindLabel: product.kind === 'engine' ? 'Engine' : 'Meta-Agent',
+          note: `Building ${product.name} ZIP bundle with docs, runtime, and manifest.`,
+        },
+        async () => {
+          const blob = await generateProductZipForGovernor(product);
+          saveAs(blob, `cmpsbl-${product.kind}-${product.slug}.zip`);
+        }
+      );
       setDownloaded(prev => new Set([...prev, product.id]));
-      toast.success(`${product.name} ZIP downloaded`);
     } catch (e: any) {
       toast.error(`Failed to generate ZIP: ${e?.message || 'Unknown error'}`);
     } finally {
@@ -106,14 +115,22 @@ export function GovernorDownloadsPanel() {
   const handleDownloadAll = async () => {
     setDownloading('all');
     try {
-      const masterZip = new JSZip();
-      for (const product of products) {
-        const blob = await generateProductZipForGovernor(product);
-        masterZip.file(`cmpsbl-${product.kind}-${product.slug}.zip`, blob);
-      }
-      const masterBlob = await masterZip.generateAsync({ type: 'blob' });
-      saveAs(masterBlob, `cmpsbl-all-products-${new Date().toISOString().slice(0, 10)}.zip`);
-      toast.success(`All ${products.length} products downloaded`);
+      await runWithCeremony(
+        {
+          itemName: "Full Product Catalog",
+          kindLabel: "Master Bundle",
+          note: `Assembling all ${products.length} products into one archive. This may take a moment.`,
+        },
+        async () => {
+          const masterZip = new JSZip();
+          for (const product of products) {
+            const blob = await generateProductZipForGovernor(product);
+            masterZip.file(`cmpsbl-${product.kind}-${product.slug}.zip`, blob);
+          }
+          const masterBlob = await masterZip.generateAsync({ type: 'blob' });
+          saveAs(masterBlob, `cmpsbl-all-products-${new Date().toISOString().slice(0, 10)}.zip`);
+        }
+      );
     } catch (e: any) {
       toast.error(`Failed: ${e?.message || 'Unknown error'}`);
     } finally {
@@ -175,6 +192,7 @@ export function GovernorDownloadsPanel() {
 
   return (
     <div className="space-y-4">
+      {overlayElement}
       <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
         <CardHeader className="pb-2 px-4 sm:px-6">
           <div className="flex items-center justify-between gap-3">

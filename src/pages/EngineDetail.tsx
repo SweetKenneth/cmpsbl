@@ -21,6 +21,9 @@ import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
+import { generateProductZip } from "@/lib/export/product-zip";
+import { saveAs } from "file-saver";
+import { useDownloadCeremony } from "@/hooks/useDownloadCeremony";
 
 const TIER_ACCENT: Record<string, string> = {
   APEX: "text-red-400",
@@ -107,6 +110,7 @@ export default function EngineDetail() {
   const [loading, setLoading] = useState(false);
   const [showCeremony, setShowCeremony] = useState(false);
   const [licensed, setLicensed] = useState(false);
+  const { runWithCeremony, overlayElement } = useDownloadCeremony();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -114,7 +118,6 @@ export default function EngineDetail() {
     const success = params.get("licensed");
     if (success === "true" && sessionId && engine) {
       setShowCeremony(true);
-      // Use the correct verify function based on engine type
       const verifyFn = engine.isSubscription ? "cmpsbl-engine-verify" : "standalone-engine-verify";
       supabase.functions.invoke(verifyFn, {
         body: { session_id: sessionId, engine_slug: engine.slug },
@@ -129,28 +132,91 @@ export default function EngineDetail() {
   if (!engine) return <Navigate to="/engines" replace />;
   if (engine.externalPath) return <Navigate to={engine.externalPath} replace />;
 
+  const handleFreeDownload = async () => {
+    if (!user) {
+      toast.error("Create a free account to download — it only takes a moment.", {
+        action: { label: "Sign Up", onClick: () => window.location.href = "/auth" },
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await runWithCeremony(
+        {
+          itemName: engine.codename,
+          kindLabel: "Engine",
+          note: "Your sealed engine bundle will begin downloading shortly.",
+        },
+        async () => {
+          const blob = await generateProductZip({
+            id: `engine-${engine.slug}`,
+            kind: "engine",
+            name: engine.codename,
+            subtitle: engine.tagline,
+            price: engine.priceDisplay,
+            tier: engine.tier.toLowerCase(),
+            slug: engine.slug,
+            version: engine.version || "1.0.0",
+            capabilities: engine.capabilities,
+          });
+          saveAs(blob, `cmpsbl-engine-${engine.slug}.zip`);
+        }
+      );
+      setLicensed(true);
+    } catch {
+      toast.error("Download failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePurchase = async () => {
     if (engine.isFree) {
-      toast.success(`${engine.codename} is free! Access documentation below.`);
-      setLicensed(true);
+      await handleFreeDownload();
       return;
     }
 
     // Engines with freeForSubscribers use a dedicated checkout function
     if (engine.freeForSubscribers) {
+      if (!user) {
+        toast.error("Sign in to check your subscription status.", {
+          action: { label: "Sign In", onClick: () => window.location.href = "/auth" },
+        });
+        return;
+      }
       setLoading(true);
       try {
         const { data, error } = await supabase.functions.invoke(`${engine.slug}-engine-checkout`, {
           body: { engine_slug: engine.slug },
         });
         if (error) throw error;
-        // If subscriber, they get free access
         if ((data as any)?.free_access) {
-          toast.success(`Included with your subscription! ${engine.codename} is ready to download.`);
+          // Subscriber gets free — trigger download ceremony
+          await runWithCeremony(
+            {
+              itemName: engine.codename,
+              kindLabel: "Engine",
+              note: "Included with your subscription. Your bundle is being prepared.",
+            },
+            async () => {
+              const blob = await generateProductZip({
+                id: `engine-${engine.slug}`,
+                kind: "engine",
+                name: engine.codename,
+                subtitle: engine.tagline,
+                price: "FREE",
+                tier: engine.tier.toLowerCase(),
+                slug: engine.slug,
+                version: engine.version || "1.0.0",
+                capabilities: engine.capabilities,
+              });
+              saveAs(blob, `cmpsbl-engine-${engine.slug}.zip`);
+            }
+          );
           setLicensed(true);
           return;
         }
-        // Otherwise redirect to Stripe checkout
         if ((data as any)?.url) {
           window.location.href = (data as any).url;
         }
@@ -202,6 +268,8 @@ export default function EngineDetail() {
           })}
         </script>
       </Helmet>
+
+      {overlayElement}
 
       <AnimatePresence>
         {showCeremony && (
@@ -333,24 +401,37 @@ export default function EngineDetail() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-primary text-sm font-semibold">
                         <Check className="w-4 h-4" />
-                        License Active
+                        License Active — Downloaded
                       </div>
-                      <Button asChild className="w-full h-12 rounded-xl font-semibold">
-                        <Link to={`/docs/engines/${engine.slug}`}>
+                      <Button
+                        className="w-full h-12 rounded-xl font-semibold"
+                        onClick={handleFreeDownload}
+                        disabled={loading}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Again
+                      </Button>
+                      <Button asChild variant="outline" className="w-full h-10 rounded-xl text-sm">
+                        <Link to="/support">
                           <FileText className="w-4 h-4 mr-2" />
-                          View Documentation
+                          Visit Support
                         </Link>
                       </Button>
                     </div>
-                  ) : engine.isFree ? (
+                  ) : engine.isFree || engine.freeForSubscribers ? (
                     <div className="space-y-3">
                       <Button
                         size="lg"
                         className="w-full h-13 text-base font-bold rounded-xl"
                         onClick={handlePurchase}
+                        disabled={loading}
                       >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download Free
+                        {loading ? "Preparing…" : (
+                          <>
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Free
+                          </>
+                        )}
                       </Button>
                       <p className="text-xs text-center text-muted-foreground">Free account required for download</p>
                     </div>
@@ -372,7 +453,7 @@ export default function EngineDetail() {
                   )}
 
                   <div className="pt-4 border-t border-border/30 space-y-2.5 text-xs text-muted-foreground">
-                    {["Instant delivery after purchase", "License emailed with docs link", "No account required", "Secure checkout via Stripe"].map(t => (
+                    {["Instant delivery after purchase", "Full ZIP bundle with docs & runtime", "Secure checkout via Stripe", "Visit /support for help"].map(t => (
                       <p key={t} className="flex items-center gap-2">
                         <Check className="w-3 h-3 text-primary/60" />
                         {t}
@@ -388,18 +469,17 @@ export default function EngineDetail() {
           <div className="mt-16 p-8 rounded-2xl border border-primary/20 bg-primary/5 text-center">
             <h3 className="text-lg font-black mb-2">Pair with a Composable Mind</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Bundle any agent with this engine and save 40% on the agent price. DREAM Synthesis + sealed engine = unstoppable.
+              Combine this engine with a meta-agent for maximum cognitive power.
             </p>
-            <div className="flex justify-center gap-3">
-              <Button asChild className="gap-2">
-                <Link to="/composable-cognitives">
-                  <Brain className="w-4 h-4" />
-                  Browse 5 Meta-Agents
-                </Link>
-              </Button>
-            </div>
+            <Button asChild className="gap-2">
+              <Link to="/store">
+                <Sparkles className="w-4 h-4" />
+                Browse the Store
+              </Link>
+            </Button>
           </div>
         </div>
+
         <EnhancedFooter />
       </div>
     </>
