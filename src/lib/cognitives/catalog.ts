@@ -182,7 +182,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Resolution pattern memory', 'SLA tracking', 'Canned response personalization', 'Satisfaction prediction'],
     priceCents: 7900, isFree: false, tier: 'starter', bundlePriceCents: bundlePrice(7900),
-    downloadAssetKey: 'cmpsbl-support.zip', stripeProductName: 'CMPSBL Support Mind', stripeLookupKey: 'cmpsbl_mind_support_7900',
+    downloadAssetKey: 'cmpsbl-support.zip', stripeProductName: 'CMPSBL BASTION', stripeLookupKey: 'cmpsbl_mind_support_7900',
     accentColor: 'sky', imagePath: 'support', version: 'v1.0', isPublic: true,
     category: 'Sovereign Defense',
     personality: { archetype: 'The Resolver', tone: 'Calm, empathetic, and solution-focused', motto: '"Resolution, not deflection."', communicationStyle: 'Acknowledges frustration first. Provides concrete next steps. Never uses generic apologies.' },
