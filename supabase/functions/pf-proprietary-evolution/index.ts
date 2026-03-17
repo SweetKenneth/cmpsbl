@@ -168,26 +168,26 @@ async function generateFingerprint(chain: string[], epoch: string): Promise<stri
 // These bonuses represent real architectural value — not cosmetic inflation.
 
 const SECTOR_SYNERGY: Record<string, number> = {
-  'ccr+esz': 12,      // cognitive + sovereignty = predictive governance
-  'ccr+csz': 14,      // cognitive + covert = stealth reasoning
-  'ccr+execution': 8,  // cognitive + execution = intelligent automation
-  'ccr+shell': 10,     // cognitive + defense = adaptive threat modeling
-  'execution+esz': 9,  // execution + sovereignty = compliant automation
-  'execution+csz': 11, // execution + covert = shadow execution
-  'execution+field': 7, // execution + field = resilient execution
-  'esz+csz': 15,       // sovereignty + covert = zero-knowledge compliance
-  'esz+shell': 11,     // sovereignty + defense = jurisdictional firewalling
-  'ocg+csz': 10,       // compliance grid + covert = auditable privacy
-  'ocg+esz': 8,        // compliance + sovereignty = treaty enforcement
-  'field+csz': 12,     // fields + covert = immune stealth mesh
-  'field+shell': 9,    // fields + defense = hardened resilience
-  'emz+ccr': 10,       // manufacturing + cognitive = intelligent synthesis
-  'emz+execution': 7,  // manufacturing + execution = build pipeline
-  'epz+ccr': 11,       // perception + cognitive = predictive awareness
-  'epz+csz': 13,       // perception + covert = stealth reconnaissance
-  'plane+csz': 10,     // governance plane + covert = shadow governance
-  'core+field': 8,     // core + field = substrate-level transformation
-  'core+plane': 7,     // core + plane = kernel governance
+  'ccr+esz': 6,       // cognitive + sovereignty = predictive governance
+  'ccr+csz': 7,       // cognitive + covert = stealth reasoning
+  'ccr+execution': 4,  // cognitive + execution = intelligent automation
+  'ccr+shell': 5,      // cognitive + defense = adaptive threat modeling
+  'execution+esz': 4,  // execution + sovereignty = compliant automation
+  'execution+csz': 5,  // execution + covert = shadow execution
+  'execution+field': 3, // execution + field = resilient execution
+  'esz+csz': 8,        // sovereignty + covert = zero-knowledge compliance
+  'esz+shell': 5,      // sovereignty + defense = jurisdictional firewalling
+  'ocg+csz': 5,        // compliance grid + covert = auditable privacy
+  'ocg+esz': 4,        // compliance + sovereignty = treaty enforcement
+  'field+csz': 6,      // fields + covert = immune stealth mesh
+  'field+shell': 4,    // fields + defense = hardened resilience
+  'emz+ccr': 5,        // manufacturing + cognitive = intelligent synthesis
+  'emz+execution': 3,  // manufacturing + execution = build pipeline
+  'epz+ccr': 5,        // perception + cognitive = predictive awareness
+  'epz+csz': 6,        // perception + covert = stealth reconnaissance
+  'plane+csz': 5,      // governance plane + covert = shadow governance
+  'core+field': 4,     // core + field = substrate-level transformation
+  'core+plane': 3,     // core + plane = kernel governance
 };
 
 function getSectorSynergy(sectors: string[]): number {
