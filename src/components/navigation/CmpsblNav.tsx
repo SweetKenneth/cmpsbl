@@ -118,9 +118,8 @@ export function CmpsblNav() {
       name: "Products",
       icon: Sparkles,
       items: [
-        { name: "Engines", href: "/engines", description: "Core processing & orchestration", icon: Sparkles, highlight: true },
+        { name: "Store", href: "/store", description: "Browse agents & engines", icon: Sparkles, highlight: true },
         { name: "Capability packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
-        { name: "Runtime agents", href: "/composable-cognitives", description: "Sealed AI runtime agents", icon: Zap },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
         { name: "Pricing", href: "/pricing-method", description: "Transparent pricing methodology", icon: CreditCard },
@@ -460,7 +459,7 @@ export function CmpsblNav() {
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
                   { name: "Upgrade", href: "/upgrade", icon: Zap },
                   { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
-                  { name: "Roadmap", href: "/roadmap", icon: Rocket, badge: "NEW" },
+                  { name: "Store", href: "/store", icon: Sparkles, badge: "NEW" },
                 ].map((item) => (
                   <Link
                     key={item.href}
