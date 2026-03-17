@@ -127,7 +127,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'translator',
-    displayName: 'TRANSLATOR Mind',
+    displayName: 'TRANSLATOR',
     className: 'The Bridge',
     tagline: 'Multi-language. Tone-aware. Cultural intelligence.',
     description: 'A cultural diplomat with DREAM Synthesis — preserves tone and nuance across languages, learns domain-specific glossaries, and adapts to regional conventions over time.',
