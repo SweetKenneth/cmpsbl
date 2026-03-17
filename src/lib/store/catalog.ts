@@ -6,7 +6,7 @@
 import {
   Cpu, Network, Brain, Cog, Radio,
   Shield, Code, ShieldCheck, Briefcase,
-  Lock,
+  Lock, HardDrive,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { AGENTS_WITH_POWERS, type AgentWithPowers } from "@/lib/agents/crownJewelPowers";
@@ -22,6 +22,7 @@ import automatonImg from "@/assets/engines/automaton.png";
 import cortexImg from "@/assets/engines/cortex.png";
 import nexusImg from "@/assets/engines/nexus.png";
 import architectImg from "@/assets/engines/architect.png";
+import failsafeImg from "@/assets/engines/failsafe.png";
 
 // ═══════════════════════════════════════════════════════════════
 // UNIFIED STORE ITEM
@@ -55,6 +56,29 @@ export interface StoreItem {
 // ═══════════════════════════════════════════════════════════════
 
 const STORE_ENGINES: StoreItem[] = [
+  {
+    id: "engine-failsafe",
+    kind: "engine",
+    name: "FAILSAFE",
+    subtitle: "Disaster Recovery Engine",
+    bio: "One-click backup and restore for any Supabase project. Streaming ZIP exports, integrity validation, 7-day rolling rotation — your data fortress in a single import.",
+    description: "FAILSAFE is a standalone, zero-dependency disaster recovery engine. Streaming ZIP output, adaptive page-sizing, integrity validation (magic bytes + EOCD), nightly scheduled backups with 7-day rolling rotation, and a 9-step AI-agent restore protocol.",
+    image: failsafeImg,
+    icon: HardDrive,
+    tier: "starter",
+    priceCents: 3900,
+    priceDisplay: "$39",
+    gradient: "from-cyan-500 via-teal-500 to-emerald-500",
+    glowColor: "rgba(6, 182, 212, 0.15)",
+    capabilities: [
+      "One-click full database backup",
+      "Streaming ZIP with integrity validation",
+      "7-day rolling nightly rotation",
+      "Adaptive page-sizing for large tables",
+      "9-step AI-agent restore protocol",
+      "Zero-dependency standalone deployment",
+    ],
+  },
   {
     id: "engine-beacon",
     kind: "engine",
