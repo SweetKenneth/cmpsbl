@@ -123,7 +123,7 @@ async function fetchSiteAnalytics(rangeKey: DateRangeKey): Promise<SiteAnalytics
     uniqueVisitors,
     totalPageViews,
     totalSessions,
-    avgPagesPerSession: core.avg_pages_per_session || 0,
+    avgPagesPerSession: core.avg_pages_per_visitor || core.avg_pages_per_session || 0,
     avgSessionDuration: core.avg_session_duration_ms || 0,
     bounceRate: core.bounce_rate || 0,
     uniqueFingerprints: core.unique_fingerprints || 0,
