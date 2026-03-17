@@ -1187,6 +1187,12 @@ const HANDLERS: Record<string, ModuleHandler> = {
   EVOLUTION: (ctx, mod, meta) => { ctx._data._evolution = { cycle: 1, fitness: ((meta.cjpi as number) ?? 0) / 100 }; ctx._signals.push({ type: 'evolution', source: mod, ts: Date.now() }); return ctx; },
   DEFENSE: (ctx, mod) => { ctx._data._defense = { sanitized: true, threats: 0 }; ctx._signals.push({ type: 'defense', source: mod, ts: Date.now() }); return ctx; },
   SHADOW: (ctx, mod) => { ctx._data._shadow_audit = { verified: true }; ctx._signals.push({ type: 'audit', source: mod, ts: Date.now() }); return ctx; },
+  CORTEX: (ctx, mod, meta) => { const chain = (meta.chain ?? []) as string[]; ctx._data._orchestration = { total_stages: chain.length, current_signals: ctx._signals.length, status: 'coordinated' }; ctx._signals.push({ type: 'orchestrate', source: mod, ts: Date.now() }); return ctx; },
+  HARVEST: (ctx, mod) => { ctx._data._harvested = { fields: Object.keys(ctx._data).length, source: 'pipeline-context' }; ctx._signals.push({ type: 'harvest', source: mod, ts: Date.now() }); return ctx; },
+  PHANTOM: (ctx, mod) => { ctx._data._phantom = { anonymized: true, proxy_hops: 0 }; ctx._signals.push({ type: 'anonymize', source: mod, ts: Date.now() }); return ctx; },
+  NERVE: (ctx, mod) => { ctx._data._nerve_routed = ctx._signals.length; ctx._signals.push({ type: 'route', source: mod, ts: Date.now() }); return ctx; },
+  FORGE: (ctx, mod) => { ctx._data._forge = { scaffolded: true, template: 'capability-pack' }; ctx._signals.push({ type: 'scaffold', source: mod, ts: Date.now() }); return ctx; },
+  INTENT: (ctx, mod, meta) => { const chain = (meta.chain ?? []) as string[]; ctx._data._intent_plan = { steps: chain.length, resolved: true }; ctx._signals.push({ type: 'plan', source: mod, ts: Date.now() }); return ctx; },
   DEFAULT: (ctx, mod) => { ctx._data[\`_module_\${mod.toLowerCase()}\`] = { processed: true, handler: 'generic' }; ctx._signals.push({ type: 'process', source: mod, ts: Date.now() }); return ctx; },
 };
 
