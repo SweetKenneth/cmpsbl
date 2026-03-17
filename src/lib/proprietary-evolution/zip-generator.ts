@@ -1283,7 +1283,12 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage));
   }
 
-  // test/ — Test harnesses
+  // src/ — Runtime Bridge (Runtime Binding Layer)
+  const bridgeCode = generateRuntimeBridge(targetLanguage, capabilities);
+  if (bridgeCode) {
+    srcFolder.file(getRuntimeBridgeFilename(targetLanguage), bridgeCode);
+  }
+
   const testFolder = zip.folder('test')!;
   for (const cap of capabilities) {
     testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
