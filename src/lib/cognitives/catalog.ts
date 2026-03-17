@@ -527,10 +527,10 @@ export const INTERNAL_AGENTS = COGNITIVES_CATALOG.filter((c) => !c.isPublic);
 
 /** Install snippets shown on the sales page */
 export const INSTALL_SNIPPETS = {
-  node: `import { CmpsblMind } from './dist/index.js';
+  node: `import { RuntimeAgent } from './dist/index.js';
 
-const agent = new CmpsblMind({
-  name: 'my-sales-agent',
+const agent = new RuntimeAgent({
+  name: 'my-raptor-agent',
   provider: 'openai', // or anthropic, groq, etc.
   apiKey: process.env.LLM_API_KEY,
 });
@@ -552,22 +552,22 @@ console.log(result.report);`,
 
   langchain: `import { CmpsblTool } from './dist/adapters/langchain.js';
 
-const salesTool = new CmpsblTool({
-  name: 'cmpsbl_sales',
-  mind: './dist/index.js',
+const raptorTool = new CmpsblTool({
+  name: 'cmpsbl_raptor',
+  agent: './dist/index.js',
 });
 
 // Use in any LangChain agent chain
-const agent = createReactAgent({ tools: [salesTool] });`,
+const agent = createReactAgent({ tools: [raptorTool] });`,
 
   crewai: `from cmpsbl_adapter import CmpsblCrewMember
 
-closer = CmpsblCrewMember(
+raptor = CmpsblCrewMember(
     role="Sales Strategist",
-    mind_path="./dist/index.js",
+    agent_path="./dist/index.js",
     goal="Pipeline analysis with deal scoring"
 )
 
 # Use in any CrewAI crew
-crew = Crew(agents=[closer], tasks=[...])`,
+crew = Crew(agents=[raptor], tasks=[...])`,
 };
