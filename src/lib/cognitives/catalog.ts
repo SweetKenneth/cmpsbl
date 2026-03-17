@@ -486,7 +486,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['CVE tracking memory', 'Attack surface mapping', 'Compliance gap analysis', 'Security awareness content'],
     priceCents: 15900, isFree: false, tier: 'elite', bundlePriceCents: bundlePrice(15900),
-    downloadAssetKey: 'cmpsbl-security.zip', stripeProductName: 'CMPSBL Security Mind', stripeLookupKey: 'cmpsbl_mind_security_15900',
+    downloadAssetKey: 'cmpsbl-security.zip', stripeProductName: 'CMPSBL OBSIDIAN', stripeLookupKey: 'cmpsbl_mind_security_15900',
     accentColor: 'red', imagePath: 'security', version: 'v1.0', isPublic: true,
     category: 'Sovereign Defense',
     personality: { archetype: 'The Sentinel', tone: 'Vigilant, paranoid by design, and uncompromising', motto: '"Assume breach. Verify everything."', communicationStyle: 'Speaks in threat models. Prioritizes by risk severity. Never says "it\'s probably fine."' },
