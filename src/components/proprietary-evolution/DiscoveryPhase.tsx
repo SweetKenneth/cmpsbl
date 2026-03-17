@@ -209,6 +209,7 @@ export function DiscoveryPhase() {
 
             const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
             if (hit) {
+              foundHit = hit;
               setDiscoveryHit(hit);
               toast({
                 title: '🎯 High-value chain discovered',
