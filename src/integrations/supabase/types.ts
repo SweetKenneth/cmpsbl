@@ -17737,7 +17737,7 @@ export type Database = {
       }
       get_realtime_pulse: { Args: never; Returns: Json }
       get_site_analytics_aggregated: {
-        Args: { p_end_date?: string; p_start_date: string }
+        Args: { p_end_date: string; p_start_date: string }
         Returns: Json
       }
       get_vault_count: { Args: { p_user_id: string }; Returns: number }
