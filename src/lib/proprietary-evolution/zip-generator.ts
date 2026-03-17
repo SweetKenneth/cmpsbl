@@ -522,6 +522,27 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
   }
 
+  // original/ — User's original source files (included when exporting in source language)
+  if (userSourceFiles && userSourceFiles.length > 0) {
+    const originalFolder = zip.folder('original')!;
+    for (const file of userSourceFiles) {
+      originalFolder.file(file.name, file.content);
+    }
+    originalFolder.file('README.md', [
+      `# Original Source — ${sourceLanguage || 'Developer Code'}`,
+      '',
+      `These are your original ${sourceLanguage || ''} source files as ingested into the Ascension lifecycle.`,
+      `Your code is preserved here in its original form. The \`src/\` folder contains the substrate-enhanced versions.`,
+      '',
+      '## Files',
+      '',
+      ...userSourceFiles.map(f => `- **${f.name}** — ${f.language} (${f.content.length.toLocaleString()} chars)`),
+      '',
+      '---',
+      '© Your original work. Substrate enhancements © 2025–2026 CMPSBL®.',
+    ].join('\n'));
+  }
+
   // manifest.json — CMPSBL manifest
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
   const totalValue = capabilities.reduce((sum, c) =>
