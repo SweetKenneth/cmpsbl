@@ -541,6 +541,13 @@ export default function GovernorPanel() {
             <SoundingBoard />
           </Suspense>
         </TabsContent>
+
+        {/* Downloads */}
+        <TabsContent value="downloads" className="mt-4">
+          <Suspense fallback={<Loader />}>
+            <GovernorDownloadsPanel />
+          </Suspense>
+        </TabsContent>
       </Tabs>
     </div>
   );
