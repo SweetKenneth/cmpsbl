@@ -15,7 +15,7 @@
  * NOT user-facing. Governor control surface only.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -24,22 +24,17 @@ import {
   updateNode,
   deleteNode,
   extractAndAttachPrimitives,
-  type AscensionNode,
-  type NodeStatus,
-  type NodeMode,
-  getPatternInsights,
-} from '@/lib/ascension';
-import {
   recordExtractionLearning,
   recordLifecycleEvent,
-} from '@/lib/ascension/brain-learning-bridge';
-import {
   logStatusChange,
   logDeletion,
   logExtraction,
   getAuditTrail,
+  type AscensionNode,
+  type NodeStatus,
+  type NodeMode,
   type AuditEvent,
-} from '@/lib/ascension/ingest-audit';
+} from '@/lib/ascension';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
