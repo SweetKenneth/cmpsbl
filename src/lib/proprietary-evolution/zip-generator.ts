@@ -1097,7 +1097,7 @@ export class CMPSBLRuntimeBridge {
 `;
 }
 
-
+function generateReadmeMd(options: ExportOptions): string {
   const { targetLanguage, capabilities, candidateName } = options;
   const topTier = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const totalValue = capabilities.reduce((sum, c) =>
