@@ -660,5 +660,6 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     resolveModuleEffect: _resolveModuleEffect,
     hasDeepEffect: _hasDeepEffect,
     registerEffect: _registerEffect,
+    getRegisteredModuleCount: _getRegisteredModuleCount,
   };
 }
