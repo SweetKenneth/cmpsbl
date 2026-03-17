@@ -25,6 +25,7 @@ interface DownloadableProduct {
   price: string;
   tier: string;
   slug: string;
+  version: string;
 }
 
 function buildProductList(): DownloadableProduct[] {
