@@ -454,6 +454,31 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   zip.file('package.json', generatePackageJson(config));
   zip.file('LICENSE', generateLicense());
   zip.file('LICENSE.html', generateLicenseHTML(config.name));
+  zip.file('README.html', generateReadmeHTML({
+    name: config.name,
+    description: `${config.class} cognitive bot — ${config.capabilities.join(', ')}`,
+    category: 'Cognitive Bot',
+    version: config.version,
+    modules: config.capabilities,
+    files: [
+      { name: 'bot.yaml', purpose: 'Bot configuration manifest' },
+      { name: 'README.md / README.html', purpose: 'Documentation and quick-start guide' },
+      { name: 'LICENSE / LICENSE.html', purpose: 'License terms' },
+      { name: 'DETAILS.html', purpose: 'Product specification certificate' },
+      { name: 'src/index.ts', purpose: 'Main bot entry point' },
+      { name: 'docs/', purpose: 'Usage and API documentation' },
+    ],
+    quickStart: `# Install\nnpm install\n\n# Run\nimport bot from './src/index';\nconst result = await bot.run('Your task here');`,
+  }));
+  zip.file('DETAILS.html', generateProductDetailsHTML({
+    name: config.name,
+    subtitle: `${config.class} cognitive bot with ${config.capabilities.length} capabilities`,
+    kind: 'agent',
+    tier: 'pro',
+    price: 'Included',
+    version: config.version,
+    capabilities: config.capabilities,
+  }));
   zip.file('manifest.json', serializeCmpsblManifest({
     name: config.name,
     targets: ['typescript'],
@@ -473,8 +498,12 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   const files = [
     'bot.yaml',
     'README.md',
+    'README.html',
     'package.json',
     'LICENSE',
+    'LICENSE.html',
+    'DETAILS.html',
+    'manifest.json',
     'docs/usage.md',
     'docs/api.md',
     'src/index.ts',
