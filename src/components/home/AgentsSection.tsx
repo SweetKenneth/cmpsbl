@@ -223,7 +223,7 @@ export function AgentsSection() {
               </div>
               <div>
                 <h3 className="text-sm sm:text-base font-black text-foreground tracking-tight">
-                  Every Agent Ships With
+                  Every Runtime Agent Ships With
                 </h3>
                 <p className="text-[10px] sm:text-xs text-primary/80 font-semibold">
                   Sealed runtime · Zero maintenance · Always learning
