@@ -47,6 +47,71 @@ export function RadioPlayer({ className }: { className?: string }) {
     fetchBroadcast();
   }, []);
 
+  // Wire up Media Session action handlers so lock screen / Control Center controls work.
+  // This also tells iOS Safari to keep the audio session alive in background.
+  const setupMediaSession = useCallback(() => {
+    if (!('mediaSession' in navigator) || !audioRef.current) return;
+    const audio = audioRef.current;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'CMPSBL Radio — Daily Broadcast',
+      artist: 'CMPSBL Substrate',
+      album: broadcast ? `Broadcast ${broadcast.broadcast_date}` : 'CMPSBL Radio',
+      artwork: [
+        { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      ],
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => {
+      audio.play();
+      setIsPlaying(true);
+      navigator.mediaSession.playbackState = 'playing';
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      audio.pause();
+      setIsPlaying(false);
+      navigator.mediaSession.playbackState = 'paused';
+    });
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      if (details.seekTime != null) {
+        audio.currentTime = details.seekTime;
+        setProgress(details.seekTime);
+      }
+    });
+    navigator.mediaSession.setActionHandler('seekbackward', () => {
+      audio.currentTime = Math.max(audio.currentTime - 10, 0);
+    });
+    navigator.mediaSession.setActionHandler('seekforward', () => {
+      audio.currentTime = Math.min(audio.currentTime + 10, audio.duration || 0);
+    });
+    navigator.mediaSession.setActionHandler('stop', () => {
+      audio.pause();
+      audio.currentTime = 0;
+      setIsPlaying(false);
+      setProgress(0);
+      navigator.mediaSession.playbackState = 'none';
+    });
+  }, [broadcast]);
+
+  // Keep Media Session position state in sync so the lock screen progress bar is accurate
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !audioRef.current || !isPlaying) return;
+    const audio = audioRef.current;
+    const sync = () => {
+      if (!isNaN(audio.duration)) {
+        navigator.mediaSession.setPositionState({
+          duration: audio.duration,
+          playbackRate: audio.playbackRate,
+          position: audio.currentTime,
+        });
+      }
+    };
+    const id = setInterval(sync, 1000);
+    sync();
+    return () => clearInterval(id);
+  }, [isPlaying]);
+
   const togglePlay = useCallback(() => {
     if (!broadcast?.audio_url) return;
 
@@ -59,29 +124,24 @@ export function RadioPlayer({ className }: { className?: string }) {
       audioRef.current.addEventListener('ended', () => {
         setIsPlaying(false);
         setProgress(0);
+        if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
       });
+      setupMediaSession();
     }
 
     if (isPlaying) {
       audioRef.current.pause();
       if (progressInterval.current) clearInterval(progressInterval.current);
+      if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
     } else {
       audioRef.current.play();
       progressInterval.current = setInterval(() => {
         if (audioRef.current) setProgress(audioRef.current.currentTime);
       }, 500);
-
-      // Media Session API
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: 'CMPSBL Radio — Daily Broadcast',
-          artist: 'CMPSBL Substrate',
-          album: `Broadcast ${broadcast.broadcast_date}`,
-        });
-      }
+      if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
     }
     setIsPlaying(!isPlaying);
-  }, [broadcast, isPlaying, volume]);
+  }, [broadcast, isPlaying, volume, setupMediaSession]);
 
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
