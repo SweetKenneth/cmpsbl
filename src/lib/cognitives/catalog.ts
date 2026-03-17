@@ -291,7 +291,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'ops',
-    displayName: 'OPS Mind',
+    displayName: 'GARRISON',
     className: 'The Commander',
     tagline: 'SOPs. Escalation playbooks. Vendor scoring. Scheduling.',
     description: 'A disciplined operations commander with DREAM Synthesis — enforces SOPs, manages escalation flows, and learns from incident patterns to prevent repeat failures.',
