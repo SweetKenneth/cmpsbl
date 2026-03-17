@@ -120,7 +120,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Learner profile memory', 'Multi-format output (slides, docs, flashcards)', 'Knowledge gap detection', 'Spaced repetition scheduling'],
     priceCents: 0, isFree: true, tier: 'free', bundlePriceCents: 0,
-    downloadAssetKey: 'cmpsbl-educator.zip', stripeProductName: 'CMPSBL Educator Mind', stripeLookupKey: 'cmpsbl_mind_educator_free',
+    downloadAssetKey: 'cmpsbl-educator.zip', stripeProductName: 'CMPSBL LEVITATION', stripeLookupKey: 'cmpsbl_mind_educator_free',
     accentColor: 'blue', imagePath: 'educator', version: 'v1.0', isPublic: true,
     category: 'Creative Force',
     personality: { archetype: 'The Sage', tone: 'Patient, encouraging, and methodical', motto: '"Understanding is not optional."', communicationStyle: 'Breaks complex ideas into digestible steps. Celebrates progress. Never condescends. Uses analogies.' },
