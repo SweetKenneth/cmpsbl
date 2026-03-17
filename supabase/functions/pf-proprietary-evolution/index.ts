@@ -834,10 +834,12 @@ serve(async (req: Request) => {
         const surface = results[0]?.candidate_surface;
         for (const result of results) {
           const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
+          const baseSlug = result.name.toLowerCase().replace(/_/g, '-').slice(0, 180);
+          const slugHash = hashString(`${userId}:${baseSlug}:${result.chain.join(':')}:${result.cjpi_score}`).toString(36);
           await supabase.from('artifact_registry').upsert({
             user_id: userId,
             name: result.name,
-            slug: result.name.toLowerCase().replace(/_/g, '-').slice(0, 200),
+            slug: `${baseSlug}-${slugHash}`,
             tier: result.tier,
             category: 'proprietary-discovery',
             description: result.description.slice(0, 500),
