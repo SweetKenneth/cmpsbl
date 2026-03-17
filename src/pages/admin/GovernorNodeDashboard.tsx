@@ -54,8 +54,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import {
   Search, Trash2, ArrowUpCircle, ArrowDownCircle,
-  RefreshCw, Eye, Cpu, Zap, Clock, BarChart3,
-  ChevronRight, AlertTriangle, Loader2,
+  RefreshCw, Cpu, Zap, Clock, Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
