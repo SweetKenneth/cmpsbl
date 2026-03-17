@@ -133,12 +133,15 @@ export function ExportPhase() {
 
   useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
 
-  /** Load the candidate's ingested language and source files */
+  /** Load the candidate's ingested language and source files (user-scoped) */
   const loadCandidateLanguage = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('metadata')
+      .eq('user_id', user.id)
       .eq('category', 'proprietary-evolution')
       .eq('tier', 'candidate')
       .order('created_at', { ascending: false })
