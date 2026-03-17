@@ -2,17 +2,21 @@
  * StoreCollectorCard — Unified flip card for agents & engines.
  * Front: image + identity + tier badge + full bio (no truncation).
  * Back: capabilities + acquire CTA.
+ * Free items require auth and trigger a real ZIP download.
  * Tier-specific glow halos. Production-ready polish.
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Lock, Zap, ShoppingCart, Cpu, RotateCcw, Loader2 } from "lucide-react";
+import { Lock, Zap, ShoppingCart, Cpu, RotateCcw, Loader2, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { saveAs } from "file-saver";
+import { generateProductZip } from "@/lib/export/product-zip";
 import type { StoreItem } from "@/lib/store/catalog";
 import { TIER_META } from "@/lib/store/catalog";
 
