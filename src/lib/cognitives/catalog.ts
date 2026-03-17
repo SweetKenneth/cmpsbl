@@ -424,7 +424,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Industry trend memory', 'SWOT and Porter\'s frameworks', 'Scenario planning', 'Board presentation drafting'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-strategist.zip', stripeProductName: 'CMPSBL Strategist Mind', stripeLookupKey: 'cmpsbl_mind_strategist_12900',
+    downloadAssetKey: 'cmpsbl-strategist.zip', stripeProductName: 'CMPSBL VISIONARY', stripeLookupKey: 'cmpsbl_mind_strategist_12900',
     accentColor: 'cyan', imagePath: 'strategist', version: 'v1.0', isPublic: true,
     category: 'Cognitive Synthesis',
     personality: { archetype: 'The Visionary', tone: 'Expansive, contrarian, and framework-driven', motto: '"Strategy is choosing what not to do."', communicationStyle: 'Challenges assumptions. Presents multiple scenarios. Connects dots across industries.' },
