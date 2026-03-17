@@ -114,7 +114,7 @@ const VALID_ACTIONS: Record<string, Set<string>> = {
   crystallize: new Set(['lock', 'batch-lock']),
   export: new Set(['capability-pack']),
 };
-const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin']);
+const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin', 'verilog', 'systemverilog', 'vhdl', 'systemc', 'elixir', 'lua', 'c', 'cpp', 'dart', 'scala', 'haskell', 'php', 'chisel', 'amaranth', 'spice']);
 
 // ═══ COLLISION SCORING ═══
 
@@ -165,9 +165,10 @@ function collideNodes(
 
     if (cjpi >= 40) {
       const capName = `${candidateName}_${targetNode}_${cap}`.toUpperCase();
+      const desc = generateCapabilityDescription(candidateName, targetNode, cap, cjpi);
       results.push({
         name: capName,
-        description: `Collision capability: ${candidateName} × ${targetNode}.${cap}`,
+        description: desc,
         cjpi_score: cjpi,
         tier: scoreTier(cjpi),
         chain: [candidateName, targetNode],
@@ -178,6 +179,99 @@ function collideNodes(
 
   results.sort((a, b) => b.cjpi_score - a.cjpi_score);
   return results.slice(0, Math.min(results.length, permutationDepth + 1));
+}
+
+// ═══ CAPABILITY DESCRIPTION GENERATOR ═══
+
+const CAPABILITY_DESCRIPTIONS: Record<string, Record<string, string>> = {
+  BRAIN: {
+    reasoning: 'Autonomous reasoning engine that decomposes complex problems into inferential chains, enabling multi-step logical deduction across unstructured data.',
+    inference: 'Real-time inference pipeline that applies Bayesian updating to streaming inputs, producing confidence-weighted predictions with explainable reasoning paths.',
+    semantic_embed: 'Semantic embedding layer that maps arbitrary text into dense vector spaces, enabling similarity search and conceptual clustering at sub-millisecond latency.',
+    context_window: 'Dynamic context window manager that intelligently prioritizes and compresses information to maximize effective reasoning within token constraints.',
+  },
+  MEMORY: {
+    store: 'Persistent memory substrate that indexes and stores structured knowledge with automatic deduplication and version-aware conflict resolution.',
+    recall: 'Associative recall engine that retrieves contextually relevant memories using semantic proximity scoring and temporal decay weighting.',
+    semantic_search: 'Full-spectrum semantic search across the memory graph, supporting hybrid keyword + vector queries with re-ranking.',
+    consolidate: 'Memory consolidation pipeline that merges redundant entries, strengthens high-signal patterns, and prunes low-confidence fragments during idle cycles.',
+  },
+  CORTEX: {
+    orchestrate: 'Multi-agent orchestration layer that decomposes complex workflows into parallelizable sub-tasks with automatic dependency resolution and failure recovery.',
+    coordinate: 'Real-time coordination protocol that synchronizes concurrent processes through lock-free message passing and consensus-based state reconciliation.',
+    priority_queue: 'Adaptive priority scheduler that dynamically reorders execution queues based on urgency signals, resource availability, and downstream impact analysis.',
+    workflow: 'Declarative workflow engine that compiles high-level intent specifications into executable DAGs with built-in retry, compensation, and observability.',
+  },
+  DEFENSE: {
+    threat_score: 'Behavioral threat scoring system that evaluates request patterns against learned attack signatures and anomaly baselines in real-time.',
+    anomaly_detect: 'Statistical anomaly detector that identifies deviations from established behavioral norms using adaptive thresholds and ensemble methods.',
+    rate_limit: 'Intelligent rate limiter with per-entity token bucket allocation that adapts quotas based on trust level and historical usage patterns.',
+    quarantine: 'Automated quarantine system that isolates suspicious operations into sandboxed execution environments for forensic analysis.',
+  },
+  ORACLE: {
+    predict: 'Predictive analytics engine that generates probabilistic forecasts by synthesizing historical patterns, real-time signals, and domain heuristics.',
+    forecast: 'Time-series forecasting module that models seasonal patterns, trend shifts, and external shocks to project future system behavior.',
+    bayesian_update: 'Live Bayesian updating framework that continuously refines probability distributions as new evidence arrives, maintaining calibrated uncertainty estimates.',
+    monte_carlo: 'Monte Carlo simulation engine that explores outcome spaces through stochastic sampling, producing risk-adjusted decision recommendations.',
+  },
+  FORGE: {
+    template: 'Code template engine that generates language-idiomatic scaffolds from abstract specifications with embedded best practices and test harnesses.',
+    scaffold: 'Project scaffolding system that instantiates full application architectures from declarative blueprints, including CI/CD and deployment configs.',
+    generate: 'Generative code synthesis pipeline that translates natural language specifications into production-ready implementations with type safety guarantees.',
+    instantiate: 'Runtime instantiation engine that compiles abstract capability definitions into executable modules with automatic dependency injection.',
+  },
+  EVOLUTION: {
+    mutate: 'Controlled mutation engine that introduces targeted variations into capability parameters to explore neighboring solution spaces.',
+    fitness_score: 'Multi-objective fitness evaluator that scores capability variants across performance, reliability, cost, and composability dimensions.',
+    select: 'Tournament selection mechanism that promotes high-fitness variants while maintaining population diversity for continued exploration.',
+    crossover: 'Capability crossover operator that recombines successful traits from multiple variants to produce hybrid capabilities with emergent properties.',
+  },
+  ENCODE: {
+    code_gen: 'Multi-language code generation engine that translates abstract behavioral specifications into optimized, idiomatic source code.',
+    transform: 'AST transformation pipeline that restructures code patterns for performance optimization while preserving semantic equivalence.',
+    compile: 'Just-in-time compilation layer that converts dynamic capability chains into optimized native execution paths.',
+    optimize: 'Profile-guided optimizer that identifies hot paths and applies targeted optimizations including loop unrolling, dead code elimination, and constant folding.',
+  },
+  DECODE: {
+    parse: 'Universal parser that handles structured, semi-structured, and unstructured inputs with automatic schema inference and error recovery.',
+    interpret: 'Semantic interpreter that transforms raw parsed data into domain-specific knowledge representations with relationship extraction.',
+    nlp_extract: 'NLP extraction pipeline that identifies entities, relationships, sentiments, and intents from natural language with configurable precision/recall tradeoffs.',
+    intent_classify: 'Multi-label intent classifier that maps user inputs to actionable system operations with confidence scoring and disambiguation.',
+  },
+  PHANTOM: {
+    anonymize: 'Data anonymization engine that applies differential privacy techniques while preserving statistical utility for downstream analysis.',
+    proxy: 'Transparent proxy layer that routes operations through privacy-preserving intermediaries with automatic credential rotation.',
+    obfuscate: 'Code and data obfuscation system that protects intellectual property through semantic-preserving transformations.',
+    stealth_route: 'Stealth routing protocol that masks operation origins and patterns through randomized path selection and timing jitter.',
+  },
+  NEXUS: {
+    route_ai: 'Intelligent AI model router that selects optimal providers based on task complexity, latency requirements, and cost constraints.',
+    failover: 'Multi-provider failover system with health-aware routing that maintains service continuity across provider outages.',
+    cost_track: 'Real-time cost tracking and budget enforcement layer that monitors token usage and applies spend limits per capability.',
+    provider_select: 'Dynamic provider selector that evaluates model capabilities against task requirements to minimize cost while meeting quality thresholds.',
+  },
+  SIGNAL: {
+    emit: 'High-throughput event emission system that publishes typed signals to subscriber networks with guaranteed delivery semantics.',
+    subscribe: 'Reactive subscription manager that enables fine-grained event filtering with backpressure-aware consumption.',
+    broadcast: 'Fan-out broadcast engine that efficiently distributes signals across distributed subscriber networks with configurable consistency levels.',
+    filter: 'Signal filtering pipeline that applies composable predicate chains to event streams for real-time pattern matching.',
+  },
+  VECTOR: {
+    embed: 'High-dimensional embedding engine that maps diverse data types into unified vector spaces for cross-modal similarity analysis.',
+    similarity: 'Vector similarity search with approximate nearest neighbor algorithms supporting billions of vectors at sub-millisecond latency.',
+    cluster: 'Dynamic clustering engine that discovers natural groupings in high-dimensional data with automatic cluster count estimation.',
+    dimension_reduce: 'Dimensionality reduction pipeline that projects complex data into interpretable low-dimensional representations while preserving topological structure.',
+  },
+};
+
+function generateCapabilityDescription(candidateName: string, targetNode: string, cap: string, cjpi: number): string {
+  const nodeDescs = CAPABILITY_DESCRIPTIONS[targetNode];
+  if (nodeDescs && nodeDescs[cap]) {
+    return nodeDescs[cap];
+  }
+  // Fallback with richer generic description
+  const tierLabel = cjpi >= 92 ? 'apex-tier' : cjpi >= 80 ? 'mythic-tier' : cjpi >= 65 ? 'relic-tier' : 'emerging';
+  return `${tierLabel} collision capability discovered at the intersection of ${candidateName} and ${targetNode}.${cap} — a proprietary behavioral pattern that enables automated ${cap.replace(/_/g, ' ')} operations with substrate-level integration.`;
 }
 
 function hashString(s: string): number {
@@ -551,17 +645,19 @@ serve(async (req: Request) => {
           }).eq('id', cap.id).eq('user_id', userId);
         }
 
-        await supabase.from('audit_logs').insert({
-          action: 'proprietary_evolution_export',
-          entity_type: 'capability_pack',
-          entity_id: packId,
-          performed_by: userId,
-          details: {
-            target_language,
-            capability_count: capabilities.length,
-            include_mini_runtime,
-          },
-        }).catch(() => {});
+        try {
+          await supabase.from('audit_logs').insert({
+            action: 'proprietary_evolution_export',
+            entity_type: 'capability_pack',
+            entity_id: packId,
+            performed_by: userId,
+            details: {
+              target_language,
+              capability_count: capabilities.length,
+              include_mini_runtime,
+            },
+          });
+        } catch (_) { /* non-blocking audit */ }
 
         return jsonResponse({
           success: true,
