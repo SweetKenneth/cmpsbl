@@ -31,10 +31,21 @@ export interface CapabilityForExport {
   category?: string;
 }
 
-interface ExportOptions {
+interface UserSourceFile {
+  name: string;
+  extension: string;
+  language: string;
+  content: string;
+}
+
+export interface ExportOptions {
   targetLanguage: string;
   capabilities: CapabilityForExport[];
   candidateName: string;
+  /** User's original source files from ingest — included in ZIP when exporting in source language */
+  userSourceFiles?: UserSourceFile[];
+  /** Display label for the source language (e.g. "Verilog", "Python") */
+  sourceLanguage?: string;
 }
 
 const LANG_EXT: Record<string, string> = {
