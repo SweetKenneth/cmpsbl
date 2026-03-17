@@ -13,8 +13,7 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { ENGINES } from '@/lib/engines/catalog';
 import { STORE_AGENTS } from '@/lib/store/catalog';
-import { generateCmpsblManifest, serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { generateProductZip, type ProductZipInput } from '@/lib/export/product-zip';
+import { generateProductZip } from '@/lib/export/product-zip';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
