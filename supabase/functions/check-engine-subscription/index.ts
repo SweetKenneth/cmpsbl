@@ -84,6 +84,21 @@ serve(async (req) => {
     const user = userData.user;
     logStep('User authenticated', { userId: user.id, email: user.email });
 
+    // ═══ GOD MODE: Governor override for system owner ═══
+    const GOD_MODE_EMAILS = ['kennethsweet214@gmail.com'];
+    if (GOD_MODE_EMAILS.includes(user.email!)) {
+      logStep('GOD MODE activated', { email: user.email });
+      return new Response(
+        JSON.stringify({
+          subscribed: true,
+          tier: 'governor',
+          subscription_end: null,
+          god_mode: true,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+      );
+    }
+
     // Initialize Stripe
     const stripe = new Stripe(stripeKey, { apiVersion: '2025-08-27.basil' as any });
 

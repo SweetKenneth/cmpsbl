@@ -105,15 +105,18 @@ export function useEngineSubscription() {
   }, []);
 
   const canAccessTier = useCallback((requiredTier: SubscriptionTier): boolean => {
+    // Governor = God Mode — always has access
+    if (state.tier === 'governor') return true;
     const tierPriority: Record<SubscriptionTier, number> = {
       free: 0,
-      starter: 0, // legacy alias
+      starter: 0,
       creator: 1,
-      builder: 1, // legacy alias
+      builder: 1,
       studio: 2,
       architect: 3,
-      pro: 3, // legacy alias
+      pro: 3,
       enterprise: 4,
+      governor: 5,
     };
     return (tierPriority[state.tier] ?? 0) >= (tierPriority[requiredTier] ?? 0);
   }, [state.tier]);
