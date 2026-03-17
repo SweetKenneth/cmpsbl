@@ -563,8 +563,49 @@ export function createLockManager() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §12 — RUNTIME FACTORY — one-liner to boot everything
+// §12 — RE-EXPORTS FROM CHAIN EXECUTOR & MODULE EFFECTS
 // ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  executeChain,
+  executeChainBatch,
+  dryRunChain,
+  formatExecutionSummary,
+  type ChainManifest,
+  type ChainExecutionResult,
+  type ChainExecutorOptions,
+  type EffectLogEntry,
+  type DepthReportEntry,
+} from './chain-executor';
+
+export {
+  resolveModuleEffect,
+  hasDeepEffect,
+  registerEffect,
+  getRegisteredEffects,
+  createPipelineContext,
+  type PipelineContext,
+  type StageTrace,
+  type RecoveryRecord,
+  type ModuleEffect,
+  type EffectVerb,
+} from './module-effects';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §13 — RUNTIME FACTORY — one-liner to boot everything
+// ═══════════════════════════════════════════════════════════════════════════════
+
+import {
+  executeChain as _executeChain,
+  dryRunChain as _dryRunChain,
+  formatExecutionSummary as _formatExecutionSummary,
+} from './chain-executor';
+
+import {
+  resolveModuleEffect as _resolveModuleEffect,
+  hasDeepEffect as _hasDeepEffect,
+  registerEffect as _registerEffect,
+} from './module-effects';
 
 export interface StandaloneRuntime {
   storage: StorageAdapter;
@@ -581,6 +622,14 @@ export interface StandaloneRuntime {
   createSaga: typeof createSaga;
   CANONICAL_MODULES: typeof CANONICAL_MODULES;
   DISCOVERY_CATEGORIES: typeof DISCOVERY_CATEGORIES;
+  /** Chain executor — run discovered module chains */
+  executeChain: typeof _executeChain;
+  dryRunChain: typeof _dryRunChain;
+  formatExecutionSummary: typeof _formatExecutionSummary;
+  /** Module effect registry */
+  resolveModuleEffect: typeof _resolveModuleEffect;
+  hasDeepEffect: typeof _hasDeepEffect;
+  registerEffect: typeof _registerEffect;
 }
 
 /** Boot a complete standalone runtime — one line, zero infrastructure */
@@ -600,5 +649,11 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     createSaga,
     CANONICAL_MODULES,
     DISCOVERY_CATEGORIES,
+    executeChain: _executeChain,
+    dryRunChain: _dryRunChain,
+    formatExecutionSummary: _formatExecutionSummary,
+    resolveModuleEffect: _resolveModuleEffect,
+    hasDeepEffect: _hasDeepEffect,
+    registerEffect: _registerEffect,
   };
 }
