@@ -191,8 +191,15 @@ export function CrystallizationPhase() {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-foreground font-medium truncate">{d.name}</p>
               <p className="text-[10px] text-muted-foreground font-mono">
-                {d.nodeA} × {d.nodeB} • {d.tier}
+                {d.chain.length > 0
+                  ? d.chain.join(' → ')
+                  : `${d.nodeA} × ${d.nodeB}`} • {d.tier}
               </p>
+              {d.description && (
+                <p className="text-[10px] text-muted-foreground/70 mt-0.5 line-clamp-2 leading-relaxed">
+                  {d.description}
+                </p>
+              )}
             </div>
 
             <span className={cn(
