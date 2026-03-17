@@ -647,6 +647,15 @@ export const ENGINES: Engine[] = [
   },
 ];
 
+// Apply versions from the centralized registry
+ENGINES.forEach(e => {
+  e.version = ENGINE_VERSIONS[e.slug] || '1.0.0';
+});
+
+/** Helper to get resolved version for any engine */
+export const getEngineVersion = (slug: string): string =>
+  ENGINE_VERSIONS[slug] || '1.0.0';
+
 export const getEngineBySlug = (slug: string): Engine | undefined =>
   ENGINES.find((e) => e.slug === slug);
 
