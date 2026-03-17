@@ -81,7 +81,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '14.2.0',
+  version: '14.3.0',
   codename: 'MINDGAMES',
   epoch: 'MINDGAMES',
   buildDate: new Date().toISOString().split('T')[0],
@@ -114,8 +114,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   integrationAdaptersCount: 35,
   
   // Codebase
-  linesOfCode: 175000,
-  linesOfCodeDisplay: '175k+',
+  linesOfCode: 180000,
+  linesOfCodeDisplay: '180k+',
   
   // Performance Claims
   routingLatencyClaim: '<100ms',

@@ -650,6 +650,110 @@ const stratumFormation: Specimen[] = [
 
 const stratumMindgames: Specimen[] = [
   {
+    id: "MNDG-024",
+    fossilized: "2026-03-17",
+    origin: "distribution",
+    stimulus: "The Collector Store existed as a catalog — but free items had no real delivery mechanism and paid items lacked standalone product pages for search discovery",
+    adaptations: [
+      "Unified Collector Store launched with three tabs: Store (Meta-Agents & Engines), Plans (subscriptions), and Memories (capability slots)",
+      "Five-tier pricing ladder ($0–$249) established across all product categories with Stripe-backed checkout for paid items",
+      "Free items require authentication and trigger client-side ZIP generation with sealed runtime bundles, documentation, and test harnesses",
+      "SEO-optimized detail pages created for every engine and every meta-agent with JSON-LD Product schema and canonical URLs",
+    ],
+    phenotype: [
+      "The substrate has a real storefront — browse, buy, and download from a single surface",
+      "Every product is individually indexable by search engines with structured data",
+      "Free products are gated behind authentication, not given away to anonymous visitors",
+    ],
+    affectedNodes: ["NEXUS", "FORGE", "ECONOMY"],
+  },
+  {
+    id: "MNDG-023",
+    fossilized: "2026-03-17",
+    origin: "architecture",
+    stimulus: "FAILSAFE — the substrate's disaster recovery engine — was listed in the store but couldn't be acquired, downloaded, or activated by anyone",
+    adaptations: [
+      "FAILSAFE engine made free for all authenticated users with instant download access",
+      "Guest visitors see a $39 Stripe checkout as fallback — authenticated users bypass payment entirely",
+      "Download bundle includes a sealed runtime package with manifest, documentation, source stubs, and a test harness",
+      "Dedicated /engines/failsafe detail page with full product description and JSON-LD schema markup",
+    ],
+    phenotype: [
+      "Every authenticated user has access to the substrate's recovery engine at zero cost",
+      "FAILSAFE is the first engine to ship as a complete downloadable sealed runtime",
+      "The engine detail page is a standalone SEO surface — discoverable independently from the store",
+    ],
+    affectedNodes: ["CORE", "FORGE", "DEFENSE"],
+  },
+  {
+    id: "MNDG-022",
+    fossilized: "2026-03-16",
+    origin: "distribution",
+    stimulus: "Meta-Agents existed as store listings without dedicated public pages — there was no way to link to, share, or discover a specific agent outside the store tab",
+    adaptations: [
+      "Individual agent detail pages created at /agents/:slug with full dossier view: capabilities, crown jewel powers, and CLM learning goals",
+      "Agent pages support both Stripe checkout for paid agents and authenticated ZIP download for free agents",
+      "JSON-LD Product schema and canonical URLs injected for search engine indexing of every agent",
+      "Breadcrumb structured data added via PageSEOBlock for rich search result presentation",
+    ],
+    phenotype: [
+      "Every meta-agent has a permanent, shareable URL with full product information",
+      "Agent discovery happens through search engines, not just the store browse experience",
+      "The substrate's AI workforce is individually addressable on the public web",
+    ],
+    affectedNodes: ["CORTEX", "NEXUS", "DECODE"],
+  },
+  {
+    id: "MNDG-021",
+    fossilized: "2026-03-15",
+    origin: "governance",
+    stimulus: "The Governor's download panel truncated product names and lacked navigation to individual product pages",
+    adaptations: [
+      "Full product names and subtitles now display without truncation in the Governor downloads panel",
+      "Every item in the admin download list links directly to its public detail page for instant navigation",
+      "Shared ZIP generation utility ensures admin exports match the quality and structure of store downloads",
+    ],
+    phenotype: [
+      "The Governor sees exactly what users see — no information hidden behind ellipsis",
+      "Admin and public download experiences are structurally identical",
+    ],
+    affectedNodes: ["GOVERNANCE", "FORGE"],
+  },
+  {
+    id: "MNDG-020",
+    fossilized: "2026-03-14",
+    origin: "architecture",
+    stimulus: "Engine detail pages were routing to the generic store instead of rendering dedicated product experiences",
+    adaptations: [
+      "Direct /engines/:slug routes re-enabled to render full engine detail pages with specifications, documentation, and acquisition controls",
+      "Engine pages include JSON-LD Product schema with pricing, availability, and category metadata",
+      "CTA adapts dynamically: free engines show 'Download Free' for authenticated users, paid engines trigger Stripe checkout",
+    ],
+    phenotype: [
+      "Every engine in the substrate has its own landing page — optimized for both users and search crawlers",
+      "The acquisition experience adapts to the engine's pricing tier without any page navigation",
+    ],
+    affectedNodes: ["FORGE", "NEXUS"],
+  },
+  {
+    id: "MNDG-019",
+    fossilized: "2026-03-13",
+    origin: "survival",
+    stimulus: "The 'Activate Free' button on store items was a placeholder toast — it didn't gate access, didn't require authentication, and didn't deliver anything",
+    adaptations: [
+      "'Activate Free' replaced with 'Download Free' across all store surfaces — agents, engines, and composable cognitives",
+      "Unauthenticated users are prompted to create a free account before any download",
+      "Authenticated downloads generate a full product ZIP with manifest, high-fidelity HTML docs, source stubs, mini-runtime, and test harness",
+      "Governor panel synchronized with the same shared ZIP generation utility for consistent exports",
+    ],
+    phenotype: [
+      "Free means downloadable — every $0 item delivers a real, portable artifact bundle",
+      "Authentication gates prevent anonymous harvesting of substrate assets",
+      "The download experience is premium: manifest, docs, runtime, and tests in every bundle",
+    ],
+    affectedNodes: ["NEXUS", "FORGE", "IDENTITY"],
+  },
+  {
     id: "MNDG-018",
     fossilized: "2026-03-12",
     origin: "survival",
@@ -1038,8 +1142,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Changelog — Every Update Since Day One | CMPSBL"
-        description="The complete evolution log for CMPSBL: every epoch, migration, node addition, and breaking change from IRONCLAD through MINDGAMES. Version history, release notes, and architectural decisions."
+        title="Changelog — Every Update Since Day One | CMPSBL v14.3"
+        description="The complete evolution log for CMPSBL v14.3: every epoch, migration, node addition, and breaking change from IRONCLAD through MINDGAMES. Featuring the Collector Store, Meta-Agents, Engines, FAILSAFE, and SEO-optimized product pages."
       />
       <PublicNav />
 
