@@ -311,7 +311,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'legal',
-    displayName: 'LEGAL Mind',
+    displayName: 'TRIBUNAL',
     className: 'The Counsel',
     tagline: 'Contract review. Clause extraction. Compliance flagging.',
     description: 'A meticulous legal advisor with DREAM Synthesis — extracts clauses, flags risks, and learns jurisdictional patterns to surface compliance gaps before they become liabilities.',
