@@ -284,7 +284,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Thread tracking + long-horizon memory', 'Source-compare formatting', 'Report generator structure', 'Graph build hints'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-research.zip', stripeProductName: 'CMPSBL Research Mind', stripeLookupKey: 'cmpsbl_mind_research_12900',
+    downloadAssetKey: 'cmpsbl-research.zip', stripeProductName: 'CMPSBL VESSEL', stripeLookupKey: 'cmpsbl_mind_research_12900',
     accentColor: 'cyan', imagePath: 'research', version: 'v1.0', isPublic: true,
     category: 'Cognitive Synthesis',
     personality: { archetype: 'The Oracle', tone: 'Methodical, thorough, and intellectually rigorous', motto: '"Truth hides in the margins."', communicationStyle: 'Cites everything. Distinguishes fact from inference. Presents findings in structured hierarchies.' },
