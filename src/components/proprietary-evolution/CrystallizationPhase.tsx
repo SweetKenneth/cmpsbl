@@ -34,10 +34,13 @@ export function CrystallizationPhase() {
 
   const loadDiscoveries = async () => {
     setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, description')
+      .eq('user_id', user.id)
       .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
       .order('created_at', { ascending: false })
       .limit(100);

@@ -22,11 +22,14 @@ export function useEvolutionLimits() {
 
   const loadUsage = useCallback(async () => {
     try {
-      // Count today's uploads (ingest registrations)
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { setLoadingUsage(false); return; }
+      // Count today's uploads (ingest registrations) — user-scoped
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { count: uploadCount } = await (supabase as any)
         .from('artifact_registry')
         .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id)
         .eq('category', 'proprietary-evolution')
         .eq('tier', 'candidate')
         .gte('created_at', `${todayKey}T00:00:00Z`);

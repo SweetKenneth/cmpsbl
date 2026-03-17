@@ -133,12 +133,15 @@ export function ExportPhase() {
 
   useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
 
-  /** Load the candidate's ingested language and source files */
+  /** Load the candidate's ingested language and source files (user-scoped) */
   const loadCandidateLanguage = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('metadata')
+      .eq('user_id', user.id)
       .eq('category', 'proprietary-evolution')
       .eq('tier', 'candidate')
       .order('created_at', { ascending: false })
@@ -162,10 +165,13 @@ export function ExportPhase() {
   };
 
   const loadCrystallized = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, created_at, description, category')
+      .eq('user_id', user.id)
       .eq('category', 'proprietary-crystallized')
       .order('created_at', { ascending: false })
       .limit(50);
@@ -272,11 +278,14 @@ export function ExportPhase() {
   const handleDiscard = async (capId: string) => {
     setDiscarding(capId);
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Authentication required');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any)
         .from('artifact_registry')
         .delete()
-        .eq('id', capId);
+        .eq('id', capId)
+        .eq('user_id', user.id);
       if (error) throw error;
       setAllCapabilities(prev => prev.filter(c => c.id !== capId));
       toast({ title: 'Capability discarded', description: 'Removed from your vault.' });
