@@ -19,6 +19,7 @@ const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
 const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
 const AuditCenterPage = lazy(() => import("@/pages/admin/AuditCenterPage"));
 const EmailListPanel = lazy(() => import("@/pages/admin/EmailListPanel"));
+const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashboard"));
 
 export const adminRoutes = (
   <>
@@ -40,6 +41,7 @@ export const adminRoutes = (
     <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
     <Route path="/admin/audit-center" element={<AdminRoute><AuditCenterPage /></AdminRoute>} />
     <Route path="/admin/email-list" element={<AdminRoute><EmailListPanel /></AdminRoute>} />
+    <Route path="/admin/ascension-nodes" element={<AdminRoute><GovernorNodeDashboard /></AdminRoute>} />
     <Route path="/audit" element={<Navigate to="/admin/audit-center" replace />} />
   </>
 );
