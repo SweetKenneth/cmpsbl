@@ -17,6 +17,12 @@ import obsidianImg from "@/assets/agents/obsidian.png";
 import monolithImg from "@/assets/agents/monolith.png";
 import raptorImg from "@/assets/agents/raptor.png";
 
+import beaconImg from "@/assets/engines/beacon.png";
+import automatonImg from "@/assets/engines/automaton.png";
+import cortexImg from "@/assets/engines/cortex.png";
+import nexusImg from "@/assets/engines/nexus.png";
+import architectImg from "@/assets/engines/architect.png";
+
 // ═══════════════════════════════════════════════════════════════
 // UNIFIED STORE ITEM
 // ═══════════════════════════════════════════════════════════════
