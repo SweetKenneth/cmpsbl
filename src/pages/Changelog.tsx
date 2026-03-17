@@ -1038,8 +1038,8 @@ export default function Changelog() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Changelog — Every Update Since Day One | CMPSBL"
-        description="The complete evolution log for CMPSBL: every epoch, migration, node addition, and breaking change from IRONCLAD through MINDGAMES. Version history, release notes, and architectural decisions."
+        title="Changelog — Every Update Since Day One | CMPSBL v14.3"
+        description="The complete evolution log for CMPSBL v14.3: every epoch, migration, node addition, and breaking change from IRONCLAD through MINDGAMES. Featuring the Collector Store, Meta-Agents, Engines, FAILSAFE, and SEO-optimized product pages."
       />
       <PublicNav />
 

@@ -114,8 +114,8 @@ export const DEFAULT_METRICS: PublicMetrics = {
   integrationAdaptersCount: 35,
   
   // Codebase
-  linesOfCode: 175000,
-  linesOfCodeDisplay: '175k+',
+  linesOfCode: 180000,
+  linesOfCodeDisplay: '180k+',
   
   // Performance Claims
   routingLatencyClaim: '<100ms',
