@@ -990,6 +990,11 @@ All colors MUST be HSL.
                 0 8px 16px -4px hsl(var(--foreground) / 0.04);
   }
 
+  /* Collector card perspective for 3D flip */
+  .collector-perspective {
+    perspective: 1000px;
+  }
+
   /* Gradient border reveal — animates in from left on hover */
   .gradient-border-reveal {
     position: relative;
