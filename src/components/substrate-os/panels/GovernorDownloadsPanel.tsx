@@ -25,6 +25,7 @@ interface DownloadableProduct {
   price: string;
   tier: string;
   slug: string;
+  version: string;
 }
 
 function buildProductList(): DownloadableProduct[] {
@@ -36,6 +37,7 @@ function buildProductList(): DownloadableProduct[] {
     price: e.priceDisplay,
     tier: e.tier,
     slug: e.slug,
+    version: e.version || '1.0.0',
   }));
 
   const agents: DownloadableProduct[] = STORE_AGENTS.map(a => ({
@@ -46,6 +48,7 @@ function buildProductList(): DownloadableProduct[] {
     price: a.priceDisplay,
     tier: a.tier,
     slug: a.id.replace('agent-', ''),
+    version: '1.0.0',
   }));
 
   return [...engines, ...agents];
@@ -124,6 +127,7 @@ async function generateProductZip(product: DownloadableProduct): Promise<Blob> {
   // Manifest
   folder.file('manifest.json', serializeCmpsblManifest({
     name: product.name,
+    version: product.version,
     cjpi: product.tier === 'apex' ? 95 : product.tier === 'elite' ? 80 : product.tier === 'pro' ? 65 : product.tier === 'starter' ? 45 : 30,
     modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
     targets: ['typescript'],
@@ -225,6 +229,7 @@ export function GovernorDownloadsPanel() {
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[10px] font-mono text-muted-foreground/60">v{product.version}</span>
           <Badge className={cn("text-[9px] px-1.5", tierColor(product.tier))}>{product.tier.toUpperCase()}</Badge>
           <span className="text-xs font-mono font-bold w-16 text-right">{product.price}</span>
           <Button

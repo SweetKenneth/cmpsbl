@@ -19,6 +19,8 @@ export interface Engine {
   slug: string;
   codename: string;
   tagline: string;
+  /** Semantic version — shown to customers and used for support verification */
+  version?: string;
   priceStandalone: number;
   priceBundled: number;
   priceDisplay: string;
@@ -44,6 +46,71 @@ export interface Engine {
   /** Extended description for the detail page */
   longDescription?: string;
 }
+
+/** Engine version registry — centralized version tracking for all engines */
+const ENGINE_VERSIONS: Record<string, string> = {
+  // APEX — Flagship
+  architect: '2.1.0',
+  sentinel: '1.2.0',
+  phantom: '1.1.0',
+  nexus: '1.3.0',
+  prism: '1.1.0',
+  // ELITE
+  cortex: '1.2.0',
+  forge: '1.1.0',
+  oracle: '1.0.0',
+  vanguard: '1.0.0',
+  conductor: '1.0.0',
+  arbiter: '1.0.0',
+  mirage: '1.0.0',
+  // CORE
+  automaton: '1.1.0',
+  catalyst: '1.0.0',
+  beacon: '1.0.0',
+  bastion: '1.0.0',
+  cipher: '1.0.0',
+  meridian: '1.0.0',
+  aegis: '1.0.0',
+  // APEX — Triage
+  genesis: '1.0.0',
+  // S-TIER Wave 1
+  sovereign: '1.0.0',
+  colossus: '1.0.0',
+  harbinger: '1.0.0',
+  prometheus: '1.0.0',
+  omniscient: '1.0.0',
+  leviathan: '1.0.0',
+  chimera: '1.0.0',
+  titan: '1.0.0',
+  wraith: '1.0.0',
+  'apex-one': '1.0.0',
+  // S-TIER Wave 2
+  pandora: '1.0.0',
+  hydra: '1.0.0',
+  specter: '1.0.0',
+  cerberus: '1.0.0',
+  'nexus-prime': '1.0.0',
+  chronos: '1.0.0',
+  golem: '1.0.0',
+  // S-TIER Wave 3 (Meta Feedstock)
+  axiom: '1.0.0',
+  dynamo: '1.0.0',
+  warden: '1.0.0',
+  synapse: '1.0.0',
+  crucible: '1.0.0',
+  echo: '1.0.0',
+  vortex: '1.0.0',
+  monolith: '1.0.0',
+  seraph: '1.0.0',
+  progenitor: '1.0.0',
+  // META-ENGINES
+  godmind: '1.0.0',
+  fortress: '1.0.0',
+  singularity: '1.0.0',
+  eternus: '1.0.0',
+  // FEATURED
+  failsafe: '3.0.0',
+};
 
 export const ENGINES: Engine[] = [
   {
@@ -579,6 +646,15 @@ export const ENGINES: Engine[] = [
     longDescription: "FAILSAFE is your insurance policy against catastrophic data loss and provider lock-in. With a single click, it generates a complete, portable ZIP archive of your entire system — all source code, database configurations, migration history, and a full snapshot of your active data tables. The archive includes a detailed INSTALL.md guide written for both humans and AI agents, so reconstruction is as simple as handing the ZIP to your agent and saying 'set this up.' Use it to transfer your project off Lovable Cloud to your own Supabase instance, migrate between hosting providers, create disaster recovery checkpoints, or archive a production state. You're never locked in and never caught without a restore point. Free for all authenticated users.",
   },
 ];
+
+// Apply versions from the centralized registry
+ENGINES.forEach(e => {
+  e.version = ENGINE_VERSIONS[e.slug] || '1.0.0';
+});
+
+/** Helper to get resolved version for any engine */
+export const getEngineVersion = (slug: string): string =>
+  ENGINE_VERSIONS[slug] || '1.0.0';
 
 export const getEngineBySlug = (slug: string): Engine | undefined =>
   ENGINES.find((e) => e.slug === slug);

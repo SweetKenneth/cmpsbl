@@ -226,6 +226,7 @@ export default function EngineDetail() {
             {/* Classification grid */}
             <div className={cn("rounded-xl border bg-muted/20 p-4 font-mono text-xs space-y-2", TIER_BORDER[engine.tier])}>
               {[
+                { label: "VERSION", value: `v${engine.version || '1.0.0'}` },
                 { label: "CLASSIFICATION", value: engine.threatLevel, accent: true },
                 { label: "CLEARANCE REQUIRED", value: engine.clearance },
                 { label: "ARTIFACT TYPE", value: "Sealed Runtime Binary" },
