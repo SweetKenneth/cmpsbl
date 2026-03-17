@@ -333,9 +333,9 @@ export default function EngineDetail() {
                         onClick={handlePurchase}
                       >
                         <Download className="w-4 h-4 mr-2" />
-                        Activate Free
+                        Download Free
                       </Button>
-                      <p className="text-xs text-center text-muted-foreground">No account or credit card required</p>
+                      <p className="text-xs text-center text-muted-foreground">Free account required for download</p>
                     </div>
                   ) : (
                     <Button

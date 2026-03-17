@@ -180,7 +180,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               onClick={(e) => { e.stopPropagation(); }}
             >
               <ShoppingCart className="w-3.5 h-3.5" />
-              {agent.isFree ? "Activate Free" : `Acquire · ${tier.price}`}
+              {agent.isFree ? "Download Free" : `Acquire · ${tier.price}`}
             </Button>
             <div className="flex gap-2">
               <Button
