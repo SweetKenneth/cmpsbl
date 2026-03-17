@@ -18,6 +18,8 @@ interface Discovery {
   nodeA: string;
   nodeB: string;
   crystallized: boolean;
+  description: string;
+  chain: string[];
 }
 
 export function CrystallizationPhase() {
