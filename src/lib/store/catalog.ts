@@ -62,6 +62,7 @@ const STORE_ENGINES: StoreItem[] = [
     subtitle: "Observability & Monitoring Stack",
     bio: "Illuminates everything. Unified metrics, distributed tracing, structured logging, and real-time health dashboards — a single pane of glass for your entire stack.",
     description: "BEACON unifies metrics collection, distributed request tracing, structured log aggregation, and health monitoring. SLA tracking, alert management, and real-time dashboards.",
+    image: beaconImg,
     icon: Radio,
     tier: "free",
     priceCents: 0,
