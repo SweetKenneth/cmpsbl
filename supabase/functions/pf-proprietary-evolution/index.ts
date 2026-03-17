@@ -551,17 +551,19 @@ serve(async (req: Request) => {
           }).eq('id', cap.id).eq('user_id', userId);
         }
 
-        await supabase.from('audit_logs').insert({
-          action: 'proprietary_evolution_export',
-          entity_type: 'capability_pack',
-          entity_id: packId,
-          performed_by: userId,
-          details: {
-            target_language,
-            capability_count: capabilities.length,
-            include_mini_runtime,
-          },
-        }).catch(() => {});
+        try {
+          await supabase.from('audit_logs').insert({
+            action: 'proprietary_evolution_export',
+            entity_type: 'capability_pack',
+            entity_id: packId,
+            performed_by: userId,
+            details: {
+              target_language,
+              capability_count: capabilities.length,
+              include_mini_runtime,
+            },
+          });
+        } catch (_) { /* non-blocking audit */ }
 
         return jsonResponse({
           success: true,
