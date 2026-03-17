@@ -92,7 +92,7 @@ export function GovernorDownloadsPanel() {
   const handleDownload = async (product: DownloadableProduct) => {
     setDownloading(product.id);
     try {
-      const blob = await generateProductZip(product);
+      const blob = await generateProductZipForGovernor(product);
       saveAs(blob, `cmpsbl-${product.kind}-${product.slug}.zip`);
       setDownloaded(prev => new Set([...prev, product.id]));
       toast.success(`${product.name} ZIP downloaded`);
