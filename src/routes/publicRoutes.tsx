@@ -156,23 +156,13 @@ export const publicRoutes = (
     <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
     <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
     <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/store" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/artifacts" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/operatives" element={<Navigate to="/engines" replace />} />
-    <Route path="/operatives/:slug" element={<Navigate to="/engines" replace />} />
-    <Route path="/engines" element={<Engines />} />
-    <Route path="/engines/:slug" element={<EngineDetail />} />
-    <Route path="/discovered-pipelines" element={<DiscoveredPipelines />} />
-    <Route path="/pipelines" element={<DiscoveredPipelines />} />
-    <Route path="/system-feed" element={<PhaseGateRoute><PackGate packId="pack-observability"><SystemIntelligenceFeed /></PackGate></PhaseGateRoute>} />
-    <Route path="/scan/results/:id" element={<ScanResult />} />
-    <Route path="/scan" element={<Scanner />} />
-    <Route path="/scanner" element={<Scanner />} />
-    <Route path="/status" element={<Status />} />
-    <Route path="/system-integrity" element={<PhaseGateRoute><SystemIntegrity /></PhaseGateRoute>} />
-    <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
-    <Route path="/cmpsbl-engine" element={<Navigate to="/" replace />} />
-    <Route path="/composable-cognitives" element={<ComposableCognitives />} />
+    <Route path="/store" element={<Store />} />
+    <Route path="/artifacts" element={<Navigate to="/store" replace />} />
+    <Route path="/operatives" element={<Navigate to="/store" replace />} />
+    <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
+    <Route path="/engines" element={<Navigate to="/store" replace />} />
+    <Route path="/engines/:slug" element={<Navigate to="/store" replace />} />
+    <Route path="/composable-cognitives" element={<Navigate to="/store" replace />} />
     <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
     <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
     <Route path="/admin/cognitive-uploads" element={<AdminCognitiveUploads />} />
