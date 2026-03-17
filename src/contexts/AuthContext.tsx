@@ -56,12 +56,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Navigate on successful sign-in — respect stored redirect or ?redirect param, fallback to /os
-        // IMPORTANT: Don't redirect if this is a token refresh (user already on an authenticated page)
+        // Navigate ONLY on a genuine new sign-in (not token refresh / tab-switch / reload).
+        // INITIAL_SESSION and TOKEN_REFRESHED fire on reload & visibility-change — never redirect for those.
         if (_event === 'SIGNED_IN' && session) {
           const currentPath = window.location.pathname;
-          const isAlreadyAuthenticated = currentPath.startsWith('/os') || currentPath.startsWith('/admin') || currentPath.startsWith('/evolution');
-          if (isAlreadyAuthenticated) return; // Don't redirect — user is already where they need to be
+          // If the user is already past the auth page, don't yank them away
+          if (currentPath !== '/auth' && currentPath !== '/login') return;
 
           const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
           if (storedRedirect) sessionStorage.removeItem('cmpsbl_auth_redirect');
