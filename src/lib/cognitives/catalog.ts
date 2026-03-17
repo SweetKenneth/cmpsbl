@@ -149,7 +149,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   // ─── STARTER TIER — $79 ───
   {
     sku: 'writer',
-    displayName: 'WRITER Mind',
+    displayName: 'ELOQUENCE',
     className: 'The Wordsmith',
     tagline: 'Persona-locked longform. Brand voice. Citation-aware.',
     description: 'A meticulous prose architect with DREAM Synthesis — locks your brand voice, generates outline-first longform, and learns your editorial preferences across every draft.',
