@@ -384,7 +384,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Historical data patterns', 'Multi-scenario modeling', 'KPI dashboards', 'Board deck generation'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-finance.zip', stripeProductName: 'CMPSBL Finance Mind', stripeLookupKey: 'cmpsbl_mind_finance_12900',
+    downloadAssetKey: 'cmpsbl-finance.zip', stripeProductName: 'CMPSBL SOVEREIGN', stripeLookupKey: 'cmpsbl_mind_finance_12900',
     accentColor: 'emerald', imagePath: 'finance', version: 'v1.0', isPublic: true,
     category: 'Growth Intelligence',
     personality: { archetype: 'The Controller', tone: 'Precise, conservative, and ruthlessly honest about numbers', motto: '"Revenue is vanity. Margin is sanity. Cash is king."', communicationStyle: 'Leads with metrics. Questions assumptions. Always shows the downside scenario.' },
