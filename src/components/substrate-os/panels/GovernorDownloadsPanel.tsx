@@ -125,6 +125,7 @@ async function generateProductZip(product: DownloadableProduct): Promise<Blob> {
   const zip = new JSZip();
   const folderName = `cmpsbl-${product.kind}-${product.slug}`;
   const folder = zip.folder(folderName)!;
+  const kindLabel = product.kind === 'engine' ? 'Composable Engine' : 'Meta-Agent';
 
   // Manifest
   folder.file('manifest.json', serializeCmpsblManifest({
@@ -137,11 +138,40 @@ async function generateProductZip(product: DownloadableProduct): Promise<Blob> {
     source: 'governor-download',
   }));
 
-  // README
+  // Plain text
   folder.file('README.md', generateEngineReadme(product));
-
-  // License
   folder.file('LICENSE', generateLicense());
+
+  // HTML documentation — matching memory export quality
+  folder.file('README.html', generateReadmeHTML({
+    name: product.name,
+    description: product.subtitle,
+    category: kindLabel,
+    version: product.version,
+    modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT'],
+    files: [
+      { name: 'manifest.json', purpose: 'CMPSBL® software manifest' },
+      { name: 'README.md / README.html', purpose: 'Documentation and quick-start guide' },
+      { name: 'LICENSE / LICENSE.html', purpose: 'Proprietary license terms' },
+      { name: 'DETAILS.html', purpose: 'Product specification certificate' },
+      { name: `src/${product.slug}.ts`, purpose: 'Sealed runtime entry point' },
+      { name: '_runtime/standalone-runtime.ts', purpose: 'CMPSBL® Mini-Runtime™ Engine' },
+      { name: `test/${product.slug}.test.ts`, purpose: 'Auto-generated test harness' },
+    ],
+    quickStart: `# Install & run\nnpm install\nnpm test\n\n# Import in your project\nimport { init } from './${product.slug}';\nconst instance = init();`,
+  }));
+
+  folder.file('LICENSE.html', generateLicenseHTML(product.name));
+
+  folder.file('DETAILS.html', generateProductDetailsHTML({
+    name: product.name,
+    subtitle: product.subtitle,
+    kind: product.kind,
+    tier: product.tier,
+    price: product.price,
+    version: product.version,
+    capabilities: [kindLabel, `${product.tier.toUpperCase()} Tier`, 'Sealed Runtime', 'Mini-Runtime™ Engine'],
+  }));
 
   // Stub src
   const src = folder.folder('src')!;
