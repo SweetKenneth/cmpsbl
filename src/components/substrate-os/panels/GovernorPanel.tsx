@@ -245,6 +245,9 @@ export default function GovernorPanel() {
             <TabsTrigger value="metrics" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Metrics
             </TabsTrigger>
+            <TabsTrigger value="downloads" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <Package className="w-3.5 h-3.5 hidden sm:block" /> Downloads
+            </TabsTrigger>
           </TabsList>
         </div>
 
