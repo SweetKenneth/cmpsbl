@@ -205,13 +205,14 @@ export interface AgentWithPowers {
 
 export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
   // ═══════════════════════════════════════════
-  // 1. MEMORY AGENT (Flagship)
+  // 1. MONOLITH — Memory Intelligence (Flagship)
   // ═══════════════════════════════════════════
   {
     id: "memory",
-    name: "MEMORY Agent",
+    name: "MONOLITH",
     subtitle: "PRISM · CIPHER · Memory Intelligence Fabric",
     description: "A living knowledge graph. Relationships between memories evolve, consolidate during idle cycles, and surface at sub-millisecond speed.",
+    bio: "The keeper of all knowledge. MONOLITH builds temporal webs between every interaction, dream-consolidates overnight, and recalls with zero-latency precision. Nothing is forgotten.",
     icon: Brain,
     isFree: false,
     isFlagship: true,
@@ -226,12 +227,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 2. GUARDIAN AGENT (Flagship)
+  // 2. WARDEN — Threat Defense (Flagship)
   {
     id: "guardian",
-    name: "GUARDIAN Agent",
+    name: "WARDEN",
     subtitle: "SENTINEL · GENESIS · Immune Autonomy Mesh",
     description: "An immune system, not a firewall. Fingerprints behavior, predicts attack vectors, and auto-triages incidents without human intervention.",
+    bio: "The vigilant protector. WARDEN treats every request as a potential adversary, fingerprints behavioral patterns, and evolves its immune mesh with every blocked threat. Paranoia as a service.",
     icon: Shield,
     isFree: false,
     isFlagship: true,
@@ -246,12 +248,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 3. ROUTER AGENT (Flagship)
+  // 3. CONDUIT — Intelligent Routing (Flagship)
   {
     id: "router",
-    name: "ROUTER Agent",
+    name: "CONDUIT",
     subtitle: "NEXUS · MIRAGE · ORACLE",
     description: "A fleet intelligence engine. Predicts which model produces the best answer for this exact task at this exact moment, then routes accordingly.",
+    bio: "The invisible hand of routing. CONDUIT knows which model will deliver the best answer before you finish typing — and routes there at the speed of thought. Smarter routing, lower cost.",
     icon: Zap,
     isFree: false,
     isFlagship: true,
@@ -266,12 +269,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 4. HYBRID MIND (Generalist)
+  // 4. PRIMITIVE — Cross-Domain Generalist (Free)
   {
     id: "hybrid",
-    name: "HYBRID Mind",
+    name: "PRIMITIVE",
     subtitle: "CORTEX · NEXUS · AUTOMATON",
     description: "A free cross-domain generalist that routes to the right cognitive path, balances multi-task load, and chains workflows automatically.",
+    bio: "The foundation of everything. PRIMITIVE adapts to any domain, mirrors your working style, and chains complex workflows into single prompts. Start here — evolve everywhere.",
     icon: Cog,
     isFree: true,
     gradient: "from-yellow-500 via-amber-500 to-orange-500",
@@ -284,12 +288,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 5. EDUCATOR MIND (Mentor)
+  // 5. LEVITATION — Adaptive Teaching (Free)
   {
     id: "educator",
-    name: "EDUCATOR Mind",
+    name: "LEVITATION",
     subtitle: "PRISM · ORACLE · CORTEX",
     description: "Adaptive teaching intelligence with knowledge graph-backed curriculum, predictive learner modeling, and Socratic reasoning loops.",
+    bio: "Elevates understanding to new heights. LEVITATION builds personalized learning paths, predicts where you'll struggle, and guides through Socratic questioning — never lecturing, always lifting.",
     icon: GraduationCap,
     isFree: true,
     gradient: "from-blue-500 via-indigo-500 to-violet-500",
@@ -302,12 +307,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 6. SALES MIND (Closer)
+  // 6. RAPTOR — Deal Intelligence
   {
     id: "sales",
-    name: "SALES Mind",
+    name: "RAPTOR",
     subtitle: "ORACLE · BEACON · PRISM",
     description: "Deal intelligence powered by predictive scoring, real-time pipeline observability, and competitive knowledge graphs.",
+    bio: "Hunts deals with predatory precision. RAPTOR scores every opportunity, tracks pipeline velocity in real-time, and builds self-updating battle cards. Every conversation advances the close.",
     icon: Briefcase,
     isFree: false,
     gradient: "from-emerald-500 via-green-500 to-teal-500",
@@ -320,12 +326,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 7. RESEARCH MIND (Investigator)
+  // 7. VESSEL — Deep Research
   {
     id: "research",
-    name: "RESEARCH Mind",
+    name: "VESSEL",
     subtitle: "PRISM · CONDUCTOR · ORACLE",
     description: "Deep research with entity extraction, source credibility scoring, and automated synthesis pipelines that produce executive-ready intelligence.",
+    bio: "A deep-sea research vessel that surfaces truth from oceans of noise. VESSEL extracts entities, scores source credibility, and delivers executive-ready intelligence — citation-perfect, every time.",
     icon: Search,
     isFree: false,
     gradient: "from-cyan-500 via-sky-500 to-blue-500",
@@ -338,12 +345,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 8. CODING MIND (Engineer) — ELITE
+  // 8. WRAITH — Elite Code Generation (ELITE)
   {
     id: "coding",
-    name: "CODING Mind",
+    name: "WRAITH",
     subtitle: "FORGE · PHANTOM · BEACON · SENTINEL · CONDUCTOR",
     description: "Elite code generation with AST-level transformations, self-healing execution, real-time quality observability, security-hardened output, and pipeline orchestration across multi-file projects.",
+    bio: "Silent. Lethal. Invisible. WRAITH generates production-grade code, self-heals failures before delivery, and hardens every artifact against injection and leaks. You never see it work — only the results.",
     icon: Code,
     isFree: false,
     isElite: true,
@@ -360,12 +368,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 9. ANALYST MIND (Strategist) — ELITE
+  // 9. AXIOM — Elite Analytical Intelligence (ELITE)
   {
     id: "analyst",
-    name: "ANALYST Mind",
+    name: "AXIOM",
     subtitle: "ORACLE · PRISM · CONDUCTOR · CATALYST · ARBITER",
     description: "Elite analytical intelligence with anomaly detection, competitive mapping, automated insight pipelines, event-driven alerting, and decision-gate enforcement.",
+    bio: "The self-evident truth engine. AXIOM hunts anomalies across time-series data, maps competitive landscapes into traversable graphs, and enforces decision gates — no insight ships without validation.",
     icon: BarChart3,
     isFree: false,
     isElite: true,
@@ -382,12 +391,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 10. OPS MIND (Operator)
+  // 10. GARRISON — Operations Intelligence
   {
     id: "ops",
-    name: "OPS Mind",
+    name: "GARRISON",
     subtitle: "GENESIS · AUTOMATON · BEACON",
     description: "Operations intelligence with autonomous triage, workflow automation, and unified monitoring for SOPs, escalations, and scheduling.",
+    bio: "The operational fortress. GARRISON enforces SOPs as executable workflows, auto-triages escalations by severity, and monitors operational health across every process — no ambiguity survives.",
     icon: Settings,
     isFree: false,
     gradient: "from-orange-500 via-amber-500 to-yellow-500",
@@ -400,12 +410,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 11. WRITER MIND (Scribe)
+  // 11. ELOQUENCE — Longform Writing (Free)
   {
     id: "writer",
-    name: "WRITER Mind",
+    name: "ELOQUENCE",
     subtitle: "PRISM · CIPHER · CORTEX",
     description: "Longform generation with persona-locked voice, citation-aware knowledge retrieval, and multi-agent editorial coordination.",
+    bio: "Words wielded with devastating precision. ELOQUENCE locks your brand voice across infinite sessions, grounds every claim in retrievable sources, and refines through multi-pass editorial loops.",
     icon: Pen,
     isFree: true,
     gradient: "from-pink-500 via-rose-500 to-red-400",
@@ -418,12 +429,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 12. LEGAL MIND (Counsel)
+  // 12. TRIBUNAL — Contract Intelligence
   {
     id: "legal",
-    name: "LEGAL Mind",
+    name: "TRIBUNAL",
     subtitle: "PRISM · AEGIS · SENTINEL",
     description: "Contract intelligence with clause-level knowledge graphs, policy-as-code compliance, and adversarial clause detection.",
+    bio: "The impartial arbiter of contract law. TRIBUNAL extracts clauses, maps obligations, detects adversarial terms, and enforces compliance as code — the clause you missed is the one that matters.",
     icon: Gavel,
     isFree: false,
     gradient: "from-slate-500 via-gray-500 to-zinc-500",
@@ -436,12 +448,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 13. RECRUITER MIND (Talent Scout)
+  // 13. VANGUARD — Talent Acquisition
   {
     id: "recruiter",
-    name: "RECRUITER Mind",
+    name: "VANGUARD",
     subtitle: "ORACLE · PRISM · CORTEX",
     description: "Talent acquisition with predictive candidate scoring, skills-gap knowledge mapping, and multi-agent interview coordination.",
+    bio: "Leading the charge in talent warfare. VANGUARD scores candidates with predictive precision, maps skills gaps into actionable graphs, and orchestrates interview panels — the right person changes everything.",
     icon: Users,
     isFree: false,
     gradient: "from-teal-500 via-cyan-500 to-sky-500",
@@ -454,12 +467,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 14. SUPPORT MIND (Resolver)
+  // 14. BASTION — Support Intelligence
   {
     id: "support",
-    name: "SUPPORT Mind",
+    name: "BASTION",
     subtitle: "GENESIS · CIPHER · MIRAGE",
     description: "Support intelligence with autonomous ticket triage, resolution pattern memory, and intelligent escalation routing across agent fleets.",
+    bio: "The unbreakable support wall. BASTION triages tickets at machine speed, remembers every resolution ever achieved, and routes complex cases to the agent with highest affinity — resolution, not deflection.",
     icon: Headphones,
     isFree: false,
     gradient: "from-sky-500 via-blue-500 to-indigo-500",
@@ -472,12 +486,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 15. DATA ENGINEER MIND (Architect)
+  // 15. MERIDIAN — Data Pipeline Intelligence
   {
     id: "data-engineer",
-    name: "DATA ENGINEER Mind",
+    name: "MERIDIAN",
     subtitle: "CONDUCTOR · PHANTOM · BEACON",
     description: "Data pipeline intelligence with ETL orchestration, self-healing data flows, and end-to-end lineage observability.",
+    bio: "The great circle of data flow. MERIDIAN designs pipelines that self-heal, orchestrates ETL with backpressure awareness, and traces every transformation from source to dashboard — clean data is the foundation.",
     icon: HardDrive,
     isFree: false,
     gradient: "from-indigo-500 via-blue-500 to-violet-500",
@@ -490,12 +505,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 16. MARKETING MIND (Campaigner)
+  // 16. TEMPEST — Campaign Intelligence
   {
     id: "marketing",
-    name: "MARKETING Mind",
+    name: "TEMPEST",
     subtitle: "ORACLE · CATALYST · PRISM",
     description: "Campaign intelligence with A/B test prediction, event-driven audience triggers, and competitive positioning knowledge graphs.",
+    bio: "A storm of creative strategy. TEMPEST predicts A/B winners before launch, triggers campaigns from real-time behavioral signals, and maps competitor positioning into actionable battle plans.",
     icon: Megaphone,
     isFree: false,
     gradient: "from-rose-500 via-pink-500 to-fuchsia-500",
@@ -508,12 +524,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 17. PRODUCT MIND (Builder)
+  // 17. ARCHITECT — Product Intelligence
   {
     id: "product",
-    name: "PRODUCT Mind",
+    name: "ARCHITECT",
     subtitle: "CORTEX · ORACLE · FORGE",
     description: "Product intelligence with multi-agent feature scoping, predictive roadmap prioritization, and automated spec generation.",
+    bio: "Builds the blueprint for what matters. ARCHITECT orchestrates engineering, design, and business perspectives into balanced PRDs, predicts roadmap outcomes, and bridges spec-to-code — ship what matters, cut what doesn't.",
     icon: Layers,
     isFree: false,
     gradient: "from-violet-500 via-purple-500 to-indigo-500",
@@ -526,12 +543,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 18. SECURITY MIND (Sentinel) — ELITE
+  // 18. OBSIDIAN — Elite Security Intelligence (ELITE)
   {
     id: "security",
-    name: "SECURITY Mind",
+    name: "OBSIDIAN",
     subtitle: "SENTINEL · GENESIS · AEGIS · PHANTOM · CIPHER",
     description: "Elite security intelligence with STRIDE threat modeling, autonomous vulnerability triage, zero-trust enforcement, penetration simulation, and encrypted evidence vaults.",
+    bio: "Impenetrable and razor-sharp. OBSIDIAN models threats before they exist, simulates red-team attacks against your surface, enforces zero-trust at every boundary, and locks evidence in cryptographic vaults.",
     icon: ShieldCheck,
     isFree: false,
     isElite: true,
@@ -548,12 +566,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 19. FINANCE MIND (Controller)
+  // 19. SOVEREIGN — Financial Intelligence
   {
     id: "finance",
-    name: "FINANCE Mind",
+    name: "SOVEREIGN",
     subtitle: "ORACLE · BEACON · ARBITER",
     description: "Financial intelligence with multi-scenario forecasting, real-time KPI observability, and budget gate enforcement.",
+    bio: "Rules the numbers with absolute authority. SOVEREIGN models bull/base/bear scenarios, monitors financial health in real-time, and enforces budget gates — revenue is vanity, margin is sanity, cash is king.",
     icon: Landmark,
     isFree: false,
     gradient: "from-emerald-600 via-green-500 to-teal-500",
@@ -566,12 +585,13 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     ],
   },
 
-  // 20. DESIGNER MIND (Craftsman)
+  // 20. AURORA — Design Intelligence
   {
     id: "designer",
-    name: "DESIGNER Mind",
+    name: "AURORA",
     subtitle: "FORGE · PRISM · BEACON",
     description: "Design intelligence with component generation, design system knowledge graphs, and automated WCAG accessibility auditing.",
+    bio: "A dawn of visual precision. AURORA generates production-ready components, maps design system relationships into knowledge graphs, and audits accessibility — pixels are promises, and every promise is kept.",
     icon: Palette,
     isFree: false,
     gradient: "from-fuchsia-500 via-pink-500 to-rose-500",
