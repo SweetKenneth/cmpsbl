@@ -634,6 +634,7 @@ export interface StandaloneRuntime {
   resolveModuleEffect: typeof _resolveModuleEffect;
   hasDeepEffect: typeof _hasDeepEffect;
   registerEffect: typeof _registerEffect;
+  getRegisteredModuleCount: typeof _getRegisteredModuleCount;
 }
 
 /** Boot a complete standalone runtime — one line, zero infrastructure */
