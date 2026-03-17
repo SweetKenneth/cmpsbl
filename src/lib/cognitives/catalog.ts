@@ -453,7 +453,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'analyst',
-    displayName: 'ANALYST Mind',
+    displayName: 'AXIOM',
     className: 'The Cipher',
     tagline: 'Anomaly detection. Decision memos. Impact-effort scoring.',
     description: 'A pattern-hunting analyst with DREAM Synthesis — detects anomalies, scores decisions with impact/effort frameworks, and learns which metrics actually matter for your business.',
