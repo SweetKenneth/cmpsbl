@@ -1,6 +1,6 @@
 /**
- * Crown Jewel Powers — 20 Black-Boxed Agents with Sealed Runtimes
- * Every agent ships with:
+ * Crown Jewel Powers — 20 Sealed Runtime Agents
+ * Every Runtime Agent ships with:
  *   - 4-Tier Auto-Tiering Portable Memory (zero maintenance)
  *   - RIPPLE Orchestrator (task flow + internal query engine)
  *   - CLM Integration (always-on constant learning, even offline)
