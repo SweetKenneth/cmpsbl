@@ -331,7 +331,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   },
   {
     sku: 'data-engineer',
-    displayName: 'DATA ENGINEER Mind',
+    displayName: 'MERIDIAN',
     className: 'The Architect',
     tagline: 'Pipeline design. Schema validation. ETL orchestration.',
     description: 'A systems architect with DREAM Synthesis — designs data pipelines, validates schemas, and learns your infrastructure patterns to suggest optimizations proactively.',
