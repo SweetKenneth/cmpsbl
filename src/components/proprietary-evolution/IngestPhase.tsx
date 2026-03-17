@@ -291,6 +291,8 @@ export function IngestPhase() {
           metadata: {
             phase: 'ingest',
             language: parsedNode.language,
+            // Normalized export language key — used to lock export to source language
+            source_export_language: resolveExportLanguageKey(parsedNode.language),
             file_count: parsedNode.fileCount,
             resolver_count: parsedNode.resolverCount,
             size_kb: parsedNode.sizeKb,
