@@ -143,6 +143,7 @@ export function DiscoveryPhase() {
     setExpandedIdx(null);
     abortRef.current = false;
 
+    let foundHit: CollisionResult | null = null;
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
 
     const suspenseDelay = Math.floor(Math.random() * 10000) + 5000;
@@ -208,6 +209,7 @@ export function DiscoveryPhase() {
 
             const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
             if (hit) {
+              foundHit = hit;
               setDiscoveryHit(hit);
               toast({
                 title: '🎯 High-value chain discovered',
@@ -219,7 +221,7 @@ export function DiscoveryPhase() {
         }
       }
 
-      if (!abortRef.current && !discoveryHit) {
+      if (!abortRef.current && !foundHit) {
         toast({
           title: 'Collision sweep complete',
           description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} — try re-ingesting with richer code.`,

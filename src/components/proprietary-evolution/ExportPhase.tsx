@@ -278,6 +278,15 @@ export function ExportPhase() {
       const combinedName = `EVOLVED_${capabilities[0]?.chain[0] || 'PACK'}_V${Date.now().toString(36).slice(-4).toUpperCase()}`;
       const totalResolvers = capabilities.length * 3;
 
+      // Build derived surface from best capability chain
+      const bestCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
+      const evolvedSurface = {
+        nodeName: bestCap.chain[0] || combinedName,
+        capabilities: [...new Set(capabilities.flatMap(c => c.chain))].slice(0, 4),
+        sector: 'execution',
+        domain: 'evolved',
+      };
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert({
         user_id: currentUser.id,
@@ -288,11 +297,15 @@ export function ExportPhase() {
         description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
         metadata: {
           phase: 'ingest', language: sourceLanguageLabel || 'TypeScript/Evolved', file_count: capabilities.length,
+          // Propagate source_export_language so export lock persists across recursive cycles
+          source_export_language: exportLanguage,
           resolver_count: totalResolvers, size_kb: capabilities.length * 15,
           ingested_at: new Date().toISOString(), evolution_cycle: 2,
           parent_capabilities: capabilities.map(c => c.id),
           parent_avg_cjpi: Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length),
           source_files: userSourceFiles, // Carry forward user source files
+          // Propagate derived surface so discovery identity card works after re-ingest
+          derived_surface: evolvedSurface,
         },
       });
 

@@ -659,7 +659,8 @@ function generateRuntimeBridge(lang: string, capabilities: CapabilityForExport[]
   if (lang === 'php') return generatePhpRuntimeBridge(capabilities);
   if (lang === 'python') return generatePythonRuntimeBridge(capabilities);
   if (lang === 'typescript') return generateTypeScriptRuntimeBridge(capabilities);
-  return null;
+  // All other languages get a generic bridge as a structured pseudocode reference
+  return generateGenericRuntimeBridge(lang, capabilities);
 }
 
 function getRuntimeBridgeFilename(lang: string): string {
@@ -1057,6 +1058,33 @@ def handle_shadow(ctx, mod, meta):
     ctx["_signals"].append({"type": "audit", "source": mod, "ts": time.time()})
     return ctx
 
+def handle_cortex(ctx, mod, meta):
+    chain = meta.get("chain", [])
+    ctx["_data"]["_orchestration"] = {"total_stages": len(chain), "current_signals": len(ctx["_signals"]), "status": "coordinated"}
+    ctx["_signals"].append({"type": "orchestrate", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_harvest(ctx, mod, meta):
+    ctx["_data"]["_harvested"] = {"fields": len(ctx["_data"]), "source": "pipeline-context"}
+    ctx["_signals"].append({"type": "harvest", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_phantom(ctx, mod, meta):
+    ctx["_data"]["_phantom"] = {"anonymized": True, "proxy_hops": 0}
+    ctx["_signals"].append({"type": "anonymize", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_forge(ctx, mod, meta):
+    ctx["_data"]["_forge"] = {"scaffolded": True, "template": "capability-pack"}
+    ctx["_signals"].append({"type": "scaffold", "source": mod, "ts": time.time()})
+    return ctx
+
+def handle_intent(ctx, mod, meta):
+    chain = meta.get("chain", [])
+    ctx["_data"]["_intent_plan"] = {"steps": len(chain), "resolved": True}
+    ctx["_signals"].append({"type": "plan", "source": mod, "ts": time.time()})
+    return ctx
+
 def handle_default(ctx, mod, meta):
     ctx["_data"][f"_module_{mod.lower()}"] = {"processed": True, "handler": "generic"}
     ctx["_signals"].append({"type": "process", "source": mod, "ts": time.time()})
@@ -1067,6 +1095,8 @@ HANDLER_REGISTRY = {
     "NERVE": handle_nerve, "DECODE": handle_decode, "ENCODE": handle_encode,
     "ORACLE": handle_oracle, "IMMUNITY": handle_immunity, "ECHO": handle_echo,
     "EVOLUTION": handle_evolution, "DEFENSE": handle_defense, "SHADOW": handle_shadow,
+    "CORTEX": handle_cortex, "HARVEST": handle_harvest, "PHANTOM": handle_phantom,
+    "FORGE": handle_forge, "INTENT": handle_intent,
     "DEFAULT": handle_default,
 }
 
@@ -1158,6 +1188,12 @@ const HANDLERS: Record<string, ModuleHandler> = {
   EVOLUTION: (ctx, mod, meta) => { ctx._data._evolution = { cycle: 1, fitness: ((meta.cjpi as number) ?? 0) / 100 }; ctx._signals.push({ type: 'evolution', source: mod, ts: Date.now() }); return ctx; },
   DEFENSE: (ctx, mod) => { ctx._data._defense = { sanitized: true, threats: 0 }; ctx._signals.push({ type: 'defense', source: mod, ts: Date.now() }); return ctx; },
   SHADOW: (ctx, mod) => { ctx._data._shadow_audit = { verified: true }; ctx._signals.push({ type: 'audit', source: mod, ts: Date.now() }); return ctx; },
+  CORTEX: (ctx, mod, meta) => { const chain = (meta.chain ?? []) as string[]; ctx._data._orchestration = { total_stages: chain.length, current_signals: ctx._signals.length, status: 'coordinated' }; ctx._signals.push({ type: 'orchestrate', source: mod, ts: Date.now() }); return ctx; },
+  HARVEST: (ctx, mod) => { ctx._data._harvested = { fields: Object.keys(ctx._data).length, source: 'pipeline-context' }; ctx._signals.push({ type: 'harvest', source: mod, ts: Date.now() }); return ctx; },
+  PHANTOM: (ctx, mod) => { ctx._data._phantom = { anonymized: true, proxy_hops: 0 }; ctx._signals.push({ type: 'anonymize', source: mod, ts: Date.now() }); return ctx; },
+  NERVE: (ctx, mod) => { ctx._data._nerve_routed = ctx._signals.length; ctx._signals.push({ type: 'route', source: mod, ts: Date.now() }); return ctx; },
+  FORGE: (ctx, mod) => { ctx._data._forge = { scaffolded: true, template: 'capability-pack' }; ctx._signals.push({ type: 'scaffold', source: mod, ts: Date.now() }); return ctx; },
+  INTENT: (ctx, mod, meta) => { const chain = (meta.chain ?? []) as string[]; ctx._data._intent_plan = { steps: chain.length, resolved: true }; ctx._signals.push({ type: 'plan', source: mod, ts: Date.now() }); return ctx; },
   DEFAULT: (ctx, mod) => { ctx._data[\`_module_\${mod.toLowerCase()}\`] = { processed: true, handler: 'generic' }; ctx._signals.push({ type: 'process', source: mod, ts: Date.now() }); return ctx; },
 };
 
@@ -1199,6 +1235,54 @@ export class CMPSBLRuntimeBridge {
 }
 `;
 }
+
+function generateGenericRuntimeBridge(lang: string, _caps: CapabilityForExport[]): string {
+  const [line] = LANG_COMMENT[lang] || ['//', '/*'];
+  const ext = LANG_EXT[lang] || '.txt';
+  return `${line} ═══════════════════════════════════════════════════════
+${line}  CMPSBL® Runtime Bridge — ${lang.toUpperCase()} v1.0
+${line}  Runtime Binding Layer (Reference Implementation)
+${line}
+${line}  Connects: Capability Pack → Mini Runtime → ${lang.toUpperCase()} Execution
+${line}
+${line}  EXECUTION MODEL:
+${line}  1. Load manifest.json to get module chain and metadata
+${line}  2. Initialize context = { _input: input, _data: input, _signals: [], _errors: [] }
+${line}  3. For each module in chain:
+${line}       context = applyModule(module, context, metadata)
+${line}  4. Return { success, output: context._data, trace, metadata }
+${line}
+${line}  MODULE HANDLERS (implement each for your language):
+${line}    CORE      → Set _pipeline_id, _initialized, _core_epoch
+${line}    BRAIN     → Set _reasoning with input analysis
+${line}    MEMORY    → Set _memory with retrieval status
+${line}    NERVE     → Set _nerve_routed with signal count
+${line}    DECODE    → Trim/sanitize string values, set _decoded
+${line}    ENCODE    → Set _encoded, _output_format
+${line}    ORACLE    → Set _prediction with confidence (cjpi/100)
+${line}    IMMUNITY  → Set _immunity with error count and fallback status
+${line}    ECHO      → Set _echo with replay snapshot
+${line}    EVOLUTION → Set _evolution with fitness score
+${line}    DEFENSE   → Set _defense with sanitization status
+${line}    SHADOW    → Set _shadow_audit with hash verification
+${line}    CORTEX    → Set _orchestration with stage coordination
+${line}    HARVEST   → Set _harvested with field count
+${line}    PHANTOM   → Set _phantom with anonymization status
+${line}    FORGE     → Set _forge with scaffolding status
+${line}    INTENT    → Set _intent_plan with step count
+${line}    DEFAULT   → Set _module_{name} with processed=true
+${line}
+${line}  Each handler MUST:
+${line}    - Modify context._data (add module-specific keys)
+${line}    - Append to context._signals (type, source, timestamp)
+${line}    - Return the modified context
+${line}
+${line}  See PHP/Python/TypeScript bridges for complete implementations.
+${line}  Port the handler logic 1:1 to ${lang.toUpperCase()} for full execution.
+${line} ═══════════════════════════════════════════════════════
+`;
+}
+
 
 function generateReadmeMd(options: ExportOptions): string {
   const { targetLanguage, capabilities, candidateName } = options;
