@@ -251,7 +251,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
   // ─── PROFESSIONAL TIER — $129 ───
   {
     sku: 'sales',
-    displayName: 'SALES Mind',
+    displayName: 'RAPTOR',
     className: 'The Closer',
     tagline: 'Pipeline intelligence. Objection handling. Deal scoring.',
     description: 'A relentless deal architect with DREAM Synthesis — tracks pipelines with memory, generates battle cards, and learns from win/loss patterns to sharpen close rates.',
