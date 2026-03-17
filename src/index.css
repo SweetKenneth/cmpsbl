@@ -1626,3 +1626,13 @@ All colors MUST be HSL.
   }
   .ob-card-pre { transform: none; opacity: 1; }
 }
+
+/* PWA standalone mode: add safe-area padding for Dynamic Island / notch */
+@media all and (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
