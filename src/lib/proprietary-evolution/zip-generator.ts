@@ -52,6 +52,9 @@ const LANG_EXT: Record<string, string> = {
   typescript: '.ts', python: '.py', rust: '.rs', go: '.go', zig: '.zig',
   java: '.java', csharp: '.cs', ruby: '.rb', swift: '.swift', kotlin: '.kt',
   verilog: '.v', systemverilog: '.sv', vhdl: '.vhd', systemc: '.cpp',
+  php: '.php', lua: '.lua', dart: '.dart', scala: '.scala', elixir: '.ex',
+  haskell: '.hs', c: '.c', cpp: '.cpp', spice: '.spice', chisel: '.scala',
+  amaranth: '.py',
 };
 
 const LANG_COMMENT: Record<string, [string, string]> = {
@@ -59,6 +62,9 @@ const LANG_COMMENT: Record<string, [string, string]> = {
   go: ['//', '/*'], zig: ['//', '//'], java: ['//', '/*'],
   csharp: ['//', '/*'], ruby: ['#', '=begin'], swift: ['//', '/*'], kotlin: ['//', '/*'],
   verilog: ['//', '/*'], systemverilog: ['//', '/*'], vhdl: ['--', '--'], systemc: ['//', '/*'],
+  php: ['//', '/*'], lua: ['--', '--[['], dart: ['//', '/*'], scala: ['//', '/*'],
+  elixir: ['#', '@doc """'], haskell: ['--', '{-'], c: ['//', '/*'], cpp: ['//', '/*'],
+  spice: ['*', '*'], chisel: ['//', '/*'], amaranth: ['#', '"""'],
 };
 
 // ═══ SEALED MINI-RUNTIME (Black-boxed) ═══

@@ -1090,6 +1090,28 @@ serve(async (req: Request) => {
           return jsonResponse({ success: false, error: `Unsupported target language: ${target_language}` }, 400);
         }
 
+        // Validate: export language must match the candidate's ingested language
+        const { data: candidateRow } = await supabase
+          .from('artifact_registry')
+          .select('metadata')
+          .eq('user_id', userId)
+          .eq('category', 'proprietary-evolution')
+          .eq('tier', 'candidate')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (candidateRow?.metadata) {
+          const candMeta = candidateRow.metadata as Record<string, unknown>;
+          const sourceExportKey = String(candMeta.source_export_language || '');
+          if (sourceExportKey && sourceExportKey !== target_language) {
+            return jsonResponse({ 
+              success: false, 
+              error: `Export language mismatch: you imported ${sourceExportKey}, cannot export as ${target_language}. Ascension exports must match your import language.` 
+            }, 400);
+          }
+        }
+
         const { data: capabilities } = await supabase
           .from('artifact_registry')
           .select('id, name, metadata, tier, description')

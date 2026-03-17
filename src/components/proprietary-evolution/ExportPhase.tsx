@@ -3,19 +3,18 @@
  * Supports individual capability export AND download-all.
  * Vault management: save/discard discoveries.
  * 
- * SOURCE LANGUAGE EXPORT: Users can always export in their ingested language
- * (bypasses score-gating) to preserve code integrity, especially for HDL.
+ * LOCKED EXPORT LANGUAGE: Ascension exports are always in the ingested language.
+ * Users import Python → export Python. No cross-language export.
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Package, Download, Loader2, FileCode2, Shield, Cpu, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
-import { LANGUAGE_UNLOCK_TIERS, getUnlockedLanguages } from '@/lib/export/language-unlock-tiers';
 import type { ExportLanguage } from '@/lib/export/universal-adapter';
 import {
   AlertDialog,
@@ -54,8 +53,7 @@ interface UserSourceFile {
 const MIN_EXPORT_SCORE = 68;
 
 /**
- * Map the ingested language label (from LANG_MAP) to the ExportLanguage key.
- * e.g. "TypeScript" → "typescript", "Verilog" → "verilog", "C++" → "cpp"
+ * Map the ingested language label to the ExportLanguage key.
  */
 const DISPLAY_TO_EXPORT: Record<string, ExportLanguage> = {
   'typescript': 'typescript', 'typescript/react': 'typescript',
@@ -77,7 +75,6 @@ function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
 export function ExportPhase() {
   const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedTarget, setSelectedTarget] = useState<string>('typescript');
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
   const [reingesting, setReingesting] = useState(false);
@@ -108,28 +105,8 @@ export function ExportPhase() {
     [eligible]
   );
 
-  // Unlocked languages: normal score-gated + always include source language
-  const unlockedLanguages = useMemo(() => {
-    const base = getUnlockedLanguages(bestScore);
-    if (sourceLanguage && !base.includes(sourceLanguage)) {
-      return [sourceLanguage, ...base];
-    }
-    return base;
-  }, [bestScore, sourceLanguage]);
-
-  const tierDisplay = useMemo(() => {
-    return LANGUAGE_UNLOCK_TIERS.filter(t => t.minScore >= MIN_EXPORT_SCORE).map(tier => ({
-      ...tier,
-      unlocked: bestScore >= tier.minScore,
-    }));
-  }, [bestScore]);
-
-  useEffect(() => {
-    if (!unlockedLanguages.includes(selectedTarget as any) && unlockedLanguages.length > 0) {
-      // Default to source language if available, otherwise first unlocked
-      setSelectedTarget(sourceLanguage || unlockedLanguages[0]);
-    }
-  }, [unlockedLanguages, selectedTarget, sourceLanguage]);
+  // The export language is ALWAYS the source language — no picker needed
+  const exportLanguage = sourceLanguage || 'typescript';
 
   useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
 
@@ -155,7 +132,6 @@ export function ExportPhase() {
       const resolved = resolveSourceLanguage(langLabel);
       if (resolved) {
         setSourceLanguage(resolved);
-        setSelectedTarget(resolved);
       }
 
       // Extract user source files for inclusion in ZIP
@@ -215,11 +191,6 @@ export function ExportPhase() {
       });
       return;
     }
-    // Source language is always allowed; other languages need score check
-    if (selectedTarget !== sourceLanguage && !unlockedLanguages.includes(selectedTarget as any)) {
-      toast({ title: 'Language locked', description: `${selectedTarget} requires a higher CJPI score.`, variant: 'destructive' });
-      return;
-    }
     setExportScope(scope);
     setShowRetirementDialog(true);
   };
@@ -237,7 +208,7 @@ export function ExportPhase() {
           action: 'capability-pack',
           input: {
             capability_ids: targets.map(c => c.id),
-            target_language: selectedTarget,
+            target_language: exportLanguage,
             include_mini_runtime: true,
           },
         },
@@ -255,7 +226,7 @@ export function ExportPhase() {
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
       await generateCapabilityPackZip({
-        targetLanguage: selectedTarget,
+        targetLanguage: exportLanguage,
         capabilities: capsForExport,
         candidateName,
         userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
@@ -354,6 +325,8 @@ export function ExportPhase() {
     );
   }
 
+  const isHdl = ['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth'].includes(exportLanguage);
+
   return (
     <div className="space-y-6">
       {/* Tier Status Bar */}
@@ -369,100 +342,47 @@ export function ExportPhase() {
           )}
         </div>
         <span className="text-[9px] font-mono text-muted-foreground">
-          Best CJPI: {bestScore} · {unlockedLanguages.length} languages
+          Best CJPI: {bestScore} · {eligible.length} eligible
         </span>
       </div>
 
-      {/* Export Config — Score-gated language tiers */}
+      {/* Export Language — Locked to Source */}
       <div className={cn(
         "border rounded-xl p-5 space-y-4",
         isBuilderTier ? "border-border/20 bg-card/20 opacity-75" : "border-border/30 bg-card/40"
       )}>
         <div className="flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Target Language</span>
+          <Code2 className="w-4 h-4 text-primary" />
+          <span className="text-xs font-semibold text-foreground">Export Language</span>
         </div>
 
-        {/* Source Language — Always Available */}
-        {sourceLanguage && (
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Code2 className="w-3 h-3 text-primary" />
-              <p className="text-[10px] font-mono text-primary uppercase tracking-wider font-semibold">
-                Source Language — Always Available
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => !isBuilderTier && setSelectedTarget(sourceLanguage)}
-                disabled={isBuilderTier}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
-                  selectedTarget === sourceLanguage
-                    ? "bg-primary/15 text-primary border-primary/40 ring-1 ring-primary/20"
-                    : "text-foreground border-primary/20 hover:border-primary/40",
-                  isBuilderTier && "opacity-30 cursor-not-allowed"
-                )}
-              >
-                {sourceLanguage}
-                <span className="text-[9px] ml-1 text-muted-foreground">(your code)</span>
-              </button>
-            </div>
-            <p className="text-[9px] text-muted-foreground">
-              Export in your ingested language ({sourceLanguageLabel}) — preserves your original code with substrate splices.
-              {['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth'].includes(sourceLanguage) && (
-                <span className="text-primary"> HDL integrity preserved.</span>
-              )}
+        <div className="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/[0.05] border border-primary/20">
+          <div className="w-8 h-8 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <Code2 className="w-4 h-4 text-primary" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-mono text-foreground font-bold">
+              {exportLanguage}
+            </p>
+            <p className="text-[10px] text-muted-foreground">
+              Locked to your ingested language{sourceLanguageLabel ? ` (${sourceLanguageLabel})` : ''}
             </p>
           </div>
-        )}
+          <span className="text-[9px] font-mono px-2 py-1 rounded-md bg-primary/10 text-primary border border-primary/15">
+            {isHdl ? 'HDL' : 'Software'}
+          </span>
+        </div>
 
-        {/* Score-gated tiers */}
-        {tierDisplay.map(tier => (
-          <div key={tier.id} className="space-y-2">
-            <div className="flex items-center gap-2">
-              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                {tier.label} — {tier.minScore}+ CJPI
-              </p>
-              {!tier.unlocked && (
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono flex items-center gap-1">
-                  <Lock className="w-2.5 h-2.5" /> Score {tier.minScore}+
-                </span>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {tier.languages.filter(l => l !== sourceLanguage).map(lang => {
-                const isUnlocked = tier.unlocked;
-                return (
-                  <button
-                    key={`${tier.id}-${lang}`}
-                    onClick={() => isUnlocked && !isBuilderTier && setSelectedTarget(lang)}
-                    disabled={!isUnlocked || isBuilderTier}
-                    className={cn(
-                      "px-3 py-1.5 rounded-lg text-xs font-mono transition-all border",
-                      selectedTarget === lang && isUnlocked
-                        ? "bg-primary/10 text-primary border-primary/30"
-                        : isUnlocked
-                          ? "text-muted-foreground border-border/20 hover:border-border/40"
-                          : "text-muted-foreground/40 border-border/10",
-                      (!isUnlocked || isBuilderTier) && "opacity-30 cursor-not-allowed"
-                    )}
-                  >
-                    {lang}
-                    {!isUnlocked && <Lock className="w-2.5 h-2.5 ml-1 inline" />}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        <p className="text-[10px] text-muted-foreground leading-relaxed">
+          Ascension exports match your import language — your code plugs back into your stack.
+          {isHdl && <span className="text-primary"> HDL integrity and timing constraints preserved.</span>}
+          {' '}Your original source files ({userSourceFiles.length}) are included alongside substrate-enhanced code.
+        </p>
 
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            {selectedTarget === sourceLanguage
-              ? 'Your original source code is included with substrate capability splices applied.'
-              : 'Includes Mini-Runtime™ Engine • License • README • Pipeline Details • Valuation • Manifest'}
+            Includes Mini-Runtime™ Engine • License • README • Pipeline Details • Valuation • Manifest
           </span>
         </div>
 
@@ -500,7 +420,7 @@ export function ExportPhase() {
               <p>
                 Retired capabilities are locked into your export. Future runs find new ones.
               </p>
-              {selectedTarget === sourceLanguage && userSourceFiles.length > 0 && (
+              {userSourceFiles.length > 0 && (
                 <p className="text-primary text-sm">
                   ✦ Your original {sourceLanguageLabel} source files ({userSourceFiles.length} files) will be included alongside the substrate-enhanced code.
                 </p>

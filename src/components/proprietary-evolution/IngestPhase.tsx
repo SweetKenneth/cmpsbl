@@ -106,6 +106,24 @@ interface LocalCapabilitySurface {
   description: string;
 }
 
+/** Normalize display language label → export language key (e.g. "C++" → "cpp") */
+const LANG_TO_EXPORT_KEY: Record<string, string> = {
+  'typescript': 'typescript', 'typescript/react': 'typescript',
+  'javascript': 'typescript', 'javascript/react': 'typescript',
+  'python': 'python', 'rust': 'rust', 'go': 'go', 'java': 'java',
+  'c#': 'csharp', 'c++': 'cpp', 'c': 'c', 'zig': 'zig',
+  'haskell': 'haskell', 'swift': 'swift', 'kotlin': 'kotlin',
+  'php': 'php', 'lua': 'lua', 'dart': 'dart', 'scala': 'scala',
+  'elixir': 'elixir', 'ruby': 'ruby',
+  'verilog': 'verilog', 'systemverilog': 'systemverilog', 'vhdl': 'vhdl',
+  'spice': 'spice', 'bluespec': 'systemverilog',
+};
+
+function resolveExportLanguageKey(langLabel: string): string {
+  const key = langLabel.toLowerCase().replace(/\s+/g, '');
+  return LANG_TO_EXPORT_KEY[key] || 'typescript';
+}
+
 const DOMAIN_SIGNAL_CHECKS: [string, string[]][] = [
   ['trading', ['trade', 'order', 'ticker', 'exchange', 'position', 'portfolio']],
   ['finance', ['balance', 'ledger', 'payment', 'invoice', 'accounting']],
@@ -291,6 +309,8 @@ export function IngestPhase() {
           metadata: {
             phase: 'ingest',
             language: parsedNode.language,
+            // Normalized export language key — used to lock export to source language
+            source_export_language: resolveExportLanguageKey(parsedNode.language),
             file_count: parsedNode.fileCount,
             resolver_count: parsedNode.resolverCount,
             size_kb: parsedNode.sizeKb,
