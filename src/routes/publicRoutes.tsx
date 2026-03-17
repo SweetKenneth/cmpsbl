@@ -46,6 +46,7 @@ const CheckoutRedirect = lazy(() => import("@/pages/CheckoutRedirect"));
 
 const Engines = lazy(() => import("@/pages/Engines"));
 const EngineDetail = lazy(() => import("@/pages/EngineDetail"));
+const Store = lazy(() => import("@/pages/Store"));
 const Upgrade = lazy(() => import("@/pages/Upgrade"));
 const Packs = lazy(() => import("@/pages/Packs"));
 const CapabilityMap = lazy(() => import("@/pages/CapabilityMap"));
