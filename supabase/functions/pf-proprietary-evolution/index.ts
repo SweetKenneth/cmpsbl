@@ -114,7 +114,7 @@ const VALID_ACTIONS: Record<string, Set<string>> = {
   crystallize: new Set(['lock', 'batch-lock']),
   export: new Set(['capability-pack']),
 };
-const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin']);
+const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin', 'verilog', 'systemverilog', 'vhdl', 'systemc', 'elixir', 'lua', 'c', 'cpp', 'dart', 'scala', 'haskell', 'php', 'chisel', 'amaranth', 'spice']);
 
 // ═══ COLLISION SCORING ═══
 
