@@ -103,19 +103,17 @@ export function CmpsblNav() {
         { name: "All nodes", href: "/modules", description: "Browse every substrate node", icon: Layers },
         { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
-        { name: "System overview", href: "https://cmpsbl.com/overview", description: "Interactive system explorer", icon: Globe, external: true },
       ]
     },
     {
       name: "Products",
       icon: Sparkles,
       items: [
-        { name: "Store", href: "/store", description: "Browse agents & engines", icon: Sparkles, highlight: true },
-        { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers", icon: Rocket, highlight: true },
+        { name: "Store", href: "/store", description: "Agents, engines, plans & memories", icon: Sparkles, highlight: true },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
         { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
-        { name: "Capability packs", href: "/packs", description: "Slot-based capabilities", icon: Package },
         { name: "Pricing", href: "/pricing-method", description: "Transparent pricing methodology", icon: CreditCard },
+        { name: "System overview", href: "https://cmpsbl.com/overview", description: "Interactive system explorer", icon: Globe, external: true },
       ]
     },
     {
@@ -127,7 +125,6 @@ export function CmpsblNav() {
         { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
         { name: "Codelab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
         { name: "Developer guide", href: "/developers/guide", description: "SDK setup & integration", icon: BookOpen },
-        { name: "Namespace", href: "/namespace", description: "Module registry & identifiers", icon: Layers },
       ]
     },
     {
@@ -139,7 +136,6 @@ export function CmpsblNav() {
         { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize memories", icon: Sparkles, badge: "LIVE" },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
-        { name: "Use cases", href: "/use-cases", description: "Industry applications", icon: Globe },
       ]
     },
   ];
