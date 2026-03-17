@@ -5,7 +5,8 @@
 
 import JSZip from 'jszip';
 import { BotClass, getClassById, MEMORY_MODES, LEARNING_MODES } from './botClasses';
-import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
+import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
+import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 
 export interface ExportConfig {
   id: string;
