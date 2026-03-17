@@ -563,7 +563,36 @@ export function createLockManager() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §12 — RUNTIME FACTORY — one-liner to boot everything
+// §12 — RE-EXPORTS FROM CHAIN EXECUTOR & MODULE EFFECTS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export {
+  executeChain,
+  executeChainBatch,
+  dryRunChain,
+  formatExecutionSummary,
+  type ChainManifest,
+  type ChainExecutionResult,
+  type ChainExecutorOptions,
+  type EffectLogEntry,
+  type DepthReportEntry,
+} from './chain-executor';
+
+export {
+  resolveModuleEffect,
+  hasDeepEffect,
+  registerEffect,
+  getRegisteredEffects,
+  createPipelineContext,
+  type PipelineContext,
+  type StageTrace,
+  type RecoveryRecord,
+  type ModuleEffect,
+  type EffectVerb,
+} from './module-effects';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §13 — RUNTIME FACTORY — one-liner to boot everything
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export interface StandaloneRuntime {
@@ -581,10 +610,22 @@ export interface StandaloneRuntime {
   createSaga: typeof createSaga;
   CANONICAL_MODULES: typeof CANONICAL_MODULES;
   DISCOVERY_CATEGORIES: typeof DISCOVERY_CATEGORIES;
+  /** Chain executor — run discovered module chains */
+  executeChain: typeof executeChain;
+  dryRunChain: typeof dryRunChain;
+  formatExecutionSummary: typeof formatExecutionSummary;
+  /** Module effect registry */
+  resolveModuleEffect: typeof resolveModuleEffect;
+  hasDeepEffect: typeof hasDeepEffect;
+  registerEffect: typeof registerEffect;
 }
 
 /** Boot a complete standalone runtime — one line, zero infrastructure */
 export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
+  // Lazy imports to avoid circular reference at module scope
+  const chainExec = require('./chain-executor') as typeof import('./chain-executor');
+  const effects = require('./module-effects') as typeof import('./module-effects');
+
   return {
     storage: storage ?? createMemoryStorage(),
     graph: createDependencyGraph(),
@@ -600,5 +641,11 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     createSaga,
     CANONICAL_MODULES,
     DISCOVERY_CATEGORIES,
+    executeChain: chainExec.executeChain,
+    dryRunChain: chainExec.dryRunChain,
+    formatExecutionSummary: chainExec.formatExecutionSummary,
+    resolveModuleEffect: effects.resolveModuleEffect,
+    hasDeepEffect: effects.hasDeepEffect,
+    registerEffect: effects.registerEffect,
   };
 }
