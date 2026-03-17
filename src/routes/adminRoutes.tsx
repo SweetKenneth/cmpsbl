@@ -19,6 +19,7 @@ const EncodeConsolePage = lazy(() => import("@/pages/admin/EncodeConsolePage"));
 const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard"));
 const AuditCenterPage = lazy(() => import("@/pages/admin/AuditCenterPage"));
 const EmailListPanel = lazy(() => import("@/pages/admin/EmailListPanel"));
+const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashboard"));
 
 export const adminRoutes = (
   <>
