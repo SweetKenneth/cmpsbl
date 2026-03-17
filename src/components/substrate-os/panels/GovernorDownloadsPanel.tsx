@@ -127,6 +127,7 @@ async function generateProductZip(product: DownloadableProduct): Promise<Blob> {
   // Manifest
   folder.file('manifest.json', serializeCmpsblManifest({
     name: product.name,
+    version: product.version,
     cjpi: product.tier === 'apex' ? 95 : product.tier === 'elite' ? 80 : product.tier === 'pro' ? 65 : product.tier === 'starter' ? 45 : 30,
     modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
     targets: ['typescript'],
