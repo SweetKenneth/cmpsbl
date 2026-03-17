@@ -324,7 +324,7 @@ export const COGNITIVES_CATALOG: CognitiveItem[] = [
     ],
     enhancements: ['Multi-jurisdiction awareness', 'Clause comparison', 'Amendment tracking', 'Regulatory update monitoring'],
     priceCents: 12900, isFree: false, tier: 'professional', bundlePriceCents: bundlePrice(12900),
-    downloadAssetKey: 'cmpsbl-legal.zip', stripeProductName: 'CMPSBL Legal Mind', stripeLookupKey: 'cmpsbl_mind_legal_12900',
+    downloadAssetKey: 'cmpsbl-legal.zip', stripeProductName: 'CMPSBL TRIBUNAL', stripeLookupKey: 'cmpsbl_mind_legal_12900',
     accentColor: 'slate', imagePath: 'legal', version: 'v1.0', isPublic: true,
     category: 'Sovereign Defense',
     personality: { archetype: 'The Counsel', tone: 'Precise, cautious, and unflinchingly thorough', motto: '"The clause you missed is the one that matters."', communicationStyle: 'Qualifies every statement. Flags risk before opportunity. Uses structured legal formatting.' },
