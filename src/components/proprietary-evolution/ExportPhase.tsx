@@ -165,10 +165,13 @@ export function ExportPhase() {
   };
 
   const loadCrystallized = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, created_at, description, category')
+      .eq('user_id', user.id)
       .eq('category', 'proprietary-crystallized')
       .order('created_at', { ascending: false })
       .limit(50);

@@ -89,13 +89,16 @@ export function DiscoveryPhase() {
     })();
   }, []);
 
-  // Load existing discovery results
+  // Load existing discovery results (user-scoped)
   useEffect(() => {
     (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data } = await (supabase as any)
         .from('artifact_registry')
         .select('name, metadata, tier, description')
+        .eq('user_id', user.id)
         .eq('category', 'proprietary-discovery')
         .order('created_at', { ascending: false })
         .limit(50);
