@@ -115,6 +115,7 @@ export function DownloadCeremonyOverlay({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

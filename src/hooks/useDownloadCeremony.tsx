@@ -14,12 +14,12 @@ export function useDownloadCeremony() {
 
   const runWithCeremony = useCallback(async <T,>(config: DownloadCeremonyConfig, action: () => Promise<T>) => {
     setOverlay(config);
-    await wait(1400);
+    await wait(3200);
 
     try {
       return await action();
     } finally {
-      await wait(700);
+      await wait(1800);
       setOverlay(null);
     }
   }, []);
