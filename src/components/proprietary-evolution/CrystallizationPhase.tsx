@@ -90,11 +90,11 @@ export function CrystallizationPhase() {
   };
 
   const ascendAll = async () => {
-    setCrystallizing('batch');
+    setAscending('batch');
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
-          module: 'crystallize',
+          module: 'ascend',
           action: 'batch-lock',
           input: { min_cjpi: 1 },
         },
