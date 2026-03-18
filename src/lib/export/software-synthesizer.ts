@@ -901,22 +901,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeKotlinProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        val stage${i} = mutableMapOf<String, Any?>()
-        for ((key, value) in currentData) {
-            val vs = value.toString()
-            val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
-            stage${i}["${m.toLowerCase()}_$key"] = mapOf(
-                "module" to "${m}", "op" to "${ops.verb}", "score" to entropy * confidence, "len" to vs.length
-            )
-        }
-        currentData.putAll(stage${i})
-        confidence = minOf(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeKotlinProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Elixir Full Synthesizer
