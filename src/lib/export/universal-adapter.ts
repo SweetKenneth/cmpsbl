@@ -1754,6 +1754,9 @@ void ${snake}_info(void) {
 
 function genCpp(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'C++', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeCpp(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 #include <string>
