@@ -1111,7 +1111,7 @@ serve(async (req: Request) => {
 
         return jsonResponse({
           success: true,
-          crystallized_count: crystallized,
+          ascended_count: ascended,
           threshold: min_cjpi,
           timestamp: new Date().toISOString(),
         });
