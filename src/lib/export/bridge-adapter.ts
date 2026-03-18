@@ -18,8 +18,8 @@
  */
 
 import type { SynthesisContext } from './logic-synthesizer';
-import type { BridgeType, RuntimeMode, RuntimeType } from './canonical-runtime-contract';
-import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT } from './canonical-runtime-contract';
+import type { BridgeType, RuntimeMode, RuntimeType, ExecutionIntegrityPayload } from './canonical-runtime-contract';
+import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash } from './canonical-runtime-contract';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — MODULE VERB MAPPING (shared across all bridge generators)
