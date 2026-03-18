@@ -50,7 +50,7 @@ interface UserSourceFile {
   content: string;
 }
 
-const MIN_EXPORT_SCORE = 68;
+// No minimum export score — all crystallized capabilities are exportable
 
 /**
  * Map the ingested language label to the ExportLanguage key.
