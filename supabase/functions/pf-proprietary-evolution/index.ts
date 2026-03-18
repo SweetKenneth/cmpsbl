@@ -605,7 +605,7 @@ function collideNodesMultiChain(
       
       let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus + variance;
       
-      const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : 96;
+      const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : chainLen === 6 ? 96 : chainLen === 7 ? 98 : 99;
       cjpi = Math.max(30, Math.min(cjpi, maxForDepth));
 
       if (cjpi >= 35) {
