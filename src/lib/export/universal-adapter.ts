@@ -2424,12 +2424,32 @@ This bundle follows the **CMPSBL® One Runtime, Many Bridges** architecture:
 - **All other languages**: Bridge adapters that route execution to the canonical runtime
   when configured, with deterministic local fallback for offline operation
 
+### Execution Integrity
+
+Every bridge request includes an **integrity payload** validated by the canonical runtime:
+- \`capabilityHash\` — stable hash of capability identity (name + chain + category)
+- \`moduleChainHash\` — independent chain tamper detection
+- \`canonicalVersion\` — version compatibility check
+- \`expectedCJPI\` — score consistency verification
+
+If validation fails, execution is marked **degraded** — never silently masked.
+
+### Runtime Health & Mode Switching
+
+Bridges maintain a rolling **health score** (0–100) that governs automatic mode switching:
+- **network**: Canonical runtime is healthy and stable (≥${5} consecutive successes)
+- **hybrid**: Remote usable but not fully trusted (default, or after intermittent failures)
+- **offline**: Remote unavailable, invalid, or too unhealthy (≥${3} consecutive failures)
+
+Validation failures are weighted **${2}×** more heavily than transport failures.
+Mode transitions are recorded, inspectable, and never hidden.
+
 ### Key Files
 
 | File | Purpose |
 |------|---------|
 | \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — the single canonical runtime |
-| \`*.py / *.go / *.rs / etc\` | Bridge adapters — metadata + remote-first + fallback |
+| \`*.py / *.go / *.rs / etc\` | Bridge adapters — metadata + integrity + remote-first + fallback |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
 | \`*_test.*\` / \`tb_*.*\` | Test harnesses / testbenches for validation |
@@ -2441,8 +2461,16 @@ All bridge adapters operate in one of three modes:
 - **hybrid**: Try canonical runtime first, then deterministic fallback (default)
 - **offline**: Deterministic local fallback only (no endpoint or unavailable)
 
+### Fallback Classification
+
+Fallback behavior is integrity-aware:
+- **normal**: Remote unavailable but metadata trusted
+- **degraded**: Remote validation/integrity mismatch or malformed response
+- **offline**: Endpoint intentionally unset or offline mode configured
+
 > **TL;DR:** TypeScript exports include the real runtime. All other language exports
-> are thin bridge adapters that delegate to the canonical runtime when available.
+> are thin bridge adapters that validate integrity, track health, and delegate to
+> the canonical runtime when available. Degraded execution is explicit, never hidden.
 
 > **Note:** The Discovery Engine is a substrate-exclusive capability and is not included
 > in any export. For discovery, use the CMPSBL® Substrate at https://cmpsbl.com
