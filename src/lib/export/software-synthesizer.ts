@@ -978,18 +978,15 @@ ${modules.map((m, i) => `      {"${moduleOps(m).verb}_${m.toLowerCase()}", "${m}
     ]
   end
 
+  def primitive_executor(mod_name, verb, _ctx, confidence) do
+    out = %{String.downcase(mod_name) <> "_result" => %{module: mod_name, verb: verb, confidence: confidence}}
+    %{data: out, confidence_delta: 0.02, signal: verb <> "_complete"}
+  end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  def stage_${i}_${m.toLowerCase()}(ctx, confidence) do
-    # ${m}: ${ops.desc}
-    out = ctx._data
-      |> Enum.map(fn {k, v} ->
-        vs = to_string(v)
-        entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
-        {"${m.toLowerCase()}_\#{k}", %{module: "${m}", op: "${ops.verb}", score: entropy * confidence, len: String.length(vs)}}
-      end)
-      |> Map.new()
-    %{data: out, confidence_delta: 0.03, signal: "${ops.verb}_complete"}
+    primitive_executor("${m}", "${ops.verb}", ctx, confidence)
   end`;
 }).join("\n\n")}
 
