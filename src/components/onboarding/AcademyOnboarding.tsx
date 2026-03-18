@@ -77,7 +77,8 @@ export function AcademyOnboarding() {
 
   useEffect(() => {
     const seen = localStorage.getItem(STORAGE_KEY);
-    if (!seen) setOpen(true);
+    const welcomeDone = localStorage.getItem('cmpsbl-welcomed');
+    if (!seen && welcomeDone) setOpen(true);
   }, []);
 
   useEffect(() => {
