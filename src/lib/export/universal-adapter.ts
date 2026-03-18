@@ -1993,7 +1993,7 @@ class ${cls}(config: ${cls}Config = ${cls}Config()) {
   private def process(input: Map[String, Any]): Map[String, Any] = {
     var currentData = input
     var confidence = 1.0
-${a.synthesisContext ? synthesizeScalaProcess(a.synthesisContext) : `    currentData = input.map { case (k, v) =>
+${a.synthesisContext ? synthesizeScala(a.synthesisContext) : `    currentData = input.map { case (k, v) =>
       val vs = v.toString
       val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
       s"processed_$$k" -> Map("score" -> entropy, "len" -> vs.length)
