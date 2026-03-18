@@ -881,6 +881,9 @@ end
 
 function genPHP(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'PHP', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return synthesizePHP(a.synthesisContext);
+  }
   const cls = className(a);
   return `<?php
 ${h}
