@@ -1742,21 +1742,7 @@ object ${cls} {
 `;
 }
 
-export function synthesizeScalaProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `      // Stage ${i}: ${m} — ${ops.desc}
-      val stage${i} = currentData.map { case (k, v) =>
-        val vs = v.toString
-        val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
-        s"${m.toLowerCase()}_$$k" -> Map[String, Any](
-          "module" -> "${m}", "op" -> "${ops.verb}", "score" -> (entropy * confidence), "len" -> vs.length
-        )
-      }
-      currentData = currentData ++ stage${i}
-      confidence = math.min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeScalaProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Haskell Full Synthesizer
