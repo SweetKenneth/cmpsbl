@@ -52,14 +52,10 @@ function getTieredSoftwareLanguages(score: number): ExportLanguage[] {
 }
 
 async function loadRuntimeFiles(): Promise<{ runtime: string; engine: string }> {
-  const [runtimeMod, engineMod] = await Promise.all([
-    import('./standalone-runtime?raw'),
-    import('./standalone-discovery-engine?raw'),
-  ]);
-
+  // Use SEALED versions — never bundle raw source with proprietary internals
   return {
-    runtime: (runtimeMod as { default: string }).default,
-    engine: (engineMod as { default: string }).default,
+    runtime: generateSealedRuntime(),
+    engine: generateSealedDiscoveryEngine(),
   };
 }
 
