@@ -20,10 +20,6 @@ import {
   synthesizeKotlin, synthesizeElixir, synthesizeLua,
   synthesizeC, synthesizeCpp, synthesizeDart,
   synthesizeZig, synthesizeScala, synthesizeHaskell,
-  synthesizeRubyProcess, synthesizePHPProcess, synthesizeSwiftProcess,
-  synthesizeKotlinProcess, synthesizeElixirProcess, synthesizeLuaProcess,
-  synthesizeCProcess, synthesizeCppProcess, synthesizeDartProcess,
-  synthesizeZigProcess, synthesizeScalaProcess, synthesizeHaskellProcess,
 } from './software-synthesizer';
 import {
   verilogPipelineTransform, vhdlPipelineTransform, svPipelineTransform,
