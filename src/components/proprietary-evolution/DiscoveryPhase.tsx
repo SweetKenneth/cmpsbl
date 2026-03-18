@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu, Trash2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
