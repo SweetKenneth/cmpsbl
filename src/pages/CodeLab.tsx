@@ -12,6 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
+import { CodeLabOnboarding } from "@/components/onboarding/CodeLabOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useMetric } from "@/stores/publicMetricsStore";
 import { 
