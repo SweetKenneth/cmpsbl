@@ -408,6 +408,18 @@ ${modules.map((m, i) => `            // Stage ${i}: ${m} — ${moduleOps(m).desc
             return new PipelineResult(true, data, null, sw.Elapsed.TotalMilliseconds, confidence, trace, completed, ${modules.length});
         }
 
+        private Dictionary<string, object> PrimitiveExecutor(string module, string verb, Dictionary<string, object> data, double confidence)
+        {
+            var result = new Dictionary<string, object>
+            {
+                [module.ToLower() + "_result"] = new { module, verb, confidence }
+            };
+            return new Dictionary<string, object>
+            {
+                ["data"] = result, ["confidence_delta"] = 0.02, ["signal"] = verb + "_complete"
+            };
+        }
+
         public Dictionary<string, object> Stats => new()
         {
             ["name"] = "${ctx.name}", ["cjpi"] = ${ctx.cjpi},
