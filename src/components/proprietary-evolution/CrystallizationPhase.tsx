@@ -180,7 +180,7 @@ export function CrystallizationPhase() {
             size="sm"
             variant="destructive"
             onClick={clearAll}
-            disabled={!!crystallizing}
+            disabled={!!ascending}
             className="h-7 text-xs gap-1.5"
           >
             <Trash2 className="w-3 h-3" />
