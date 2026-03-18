@@ -609,16 +609,19 @@ function collideNodesMultiChain(
         const fullChain = [surface.nodeName, ...partnerChain];
         const archetype = findArchetype(partnerChain);
         
+        // FILTER: Only surface discoveries with real archetype names.
+        // Generic chain names are noise — users want real emergent software, not labels.
+        if (!archetype) continue;
+        
         const capIdx = chainHash % targetCaps.length;
         const primaryCap = targetCaps[capIdx];
         
-        const capName = archetype?.name || generateChainName(surface.nodeName, partnerChain, cjpi);
-        const desc = archetype?.desc 
+        const desc = archetype.desc 
           ? enrichWithNode41(archetype.desc, surface, partnerChain)
           : generateNode41AwareDescription(surface, partnerChain, primaryCap, cjpi);
 
         results.push({
-          name: capName,
+          name: archetype.name,
           description: desc,
           cjpi_score: cjpi,
           tier: scoreTier(cjpi),
