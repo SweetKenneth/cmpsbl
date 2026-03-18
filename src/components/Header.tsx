@@ -92,10 +92,10 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
             variant="outline"
             size="sm"
             className="hidden lg:flex gap-2 min-h-[44px]"
-            onClick={() => navigate('/substrate')}
+            onClick={() => navigate('/ai-operating-system')}
           >
             <Map className="w-4 h-4" />
-            Substrate Overview
+            How It Works
           </Button>
 
           <Button
