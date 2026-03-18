@@ -227,7 +227,7 @@ export function DiscoveryPhase() {
       if (!abortRef.current && !foundHit) {
         toast({
           title: 'Collision sweep complete',
-          description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} — try re-ingesting with richer code.`,
+          description: `Tested ${shuffledNodes.length} nodes. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
         });
       }
     } catch (err) {
