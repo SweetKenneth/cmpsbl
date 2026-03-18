@@ -1393,25 +1393,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeCppProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        {
-            std::unordered_map<std::string, std::string> stage_out;
-            for (const auto& [key, val] : current_data) {
-                unsigned long entropy = 0;
-                for (char c : val) entropy += static_cast<unsigned char>(c);
-                double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1)) * confidence;
-                stage_out["${m.toLowerCase()}_" + key] = 
-                    "{\\"module\\":\\"${m}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":" + 
-                    std::to_string(score) + ",\\"len\\":" + std::to_string(val.size()) + "}";
-            }
-            for (auto& [k, v] : stage_out) current_data[k] = std::move(v);
-            confidence = std::min(1.0, confidence + 0.03);
-        }`;
-  }).join("\n");
-}
+// synthesizeCppProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Dart Full Synthesizer
