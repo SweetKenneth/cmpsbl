@@ -1685,6 +1685,9 @@ object ${cls}Driver extends App {
 
 function genC(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'C', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeC(a.synthesisContext)}`;
+  }
   const snake = snakeCase(a);
   return `${h}
 #include <stdio.h>
