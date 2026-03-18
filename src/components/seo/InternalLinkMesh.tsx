@@ -33,7 +33,7 @@ const LINK_GRAPH: LinkNode[] = [
   { path: '/composable-cognitives', label: 'Runtime Agents', tags: ['agent', 'runtime', 'ai', 'sealed'] },
   { path: '/packs', label: 'Capability Packs', tags: ['capabilities', 'store', 'templates', 'nodes'] },
   { path: '/enterprise', label: 'Enterprise', tags: ['enterprise', 'solutions', 'compliance', 'governance'] },
-  { path: '/upgrade', label: 'Upgrade & Pricing', tags: ['pricing', 'plans', 'upgrade'] },
+  { path: '/store', label: 'Store & Pricing', tags: ['pricing', 'plans', 'upgrade', 'store'] },
   { path: '/gaming', label: 'World Engine', tags: ['gaming', 'npc', 'memory', 'agent'] },
 
   // ── Developer surface ────────────────────────────────
