@@ -2020,6 +2020,9 @@ object ${cls} {
 
 function genHaskell(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Haskell', '--');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeHaskell(a.synthesisContext)}`;
+  }
   const mod = className(a);
   return `${h}
 module CMPSBL.${mod}
