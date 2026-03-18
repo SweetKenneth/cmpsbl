@@ -1012,8 +1012,8 @@ serve(async (req: Request) => {
       }
     }
 
-    // ═══ CRYSTALLIZE MODULE ═══
-    if (module === 'crystallize') {
+    // ═══ ASCEND MODULE ═══
+    if (module === 'ascend') {
       
       if (action === 'lock') {
         const discovery_id = validateString(input.discovery_id, 100);
