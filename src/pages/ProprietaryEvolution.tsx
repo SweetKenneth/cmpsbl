@@ -1,13 +1,14 @@
 /**
  * Ascension — /x
  * PIN-gated software evolution lifecycle within the CMPSBL cognitive substrate.
- * INGEST → ASCENSION → CRYSTALLIZATION → ASCENDED MEMORY
+ * Full-page step-by-step wizard: INGEST → ASCENSION → CRYSTALLIZATION → EXPORT
  */
 
 import { useState } from 'react';
 import { PinGate } from '@/components/gates/PinGate';
-import { ArrowRight, Upload, Zap, Diamond, Package } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
@@ -16,16 +17,42 @@ import { IngestPhase } from '@/components/proprietary-evolution/IngestPhase';
 import { DiscoveryPhase } from '@/components/proprietary-evolution/DiscoveryPhase';
 import { CrystallizationPhase } from '@/components/proprietary-evolution/CrystallizationPhase';
 import { ExportPhase } from '@/components/proprietary-evolution/ExportPhase';
+import { AscensionStepper } from '@/components/proprietary-evolution/AscensionStepper';
+import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
 
-const PHASES = [
-  { id: 'ingest', label: 'INGEST', icon: Upload, description: 'Introduce software into the substrate' },
-  { id: 'ascension', label: 'ASCENSION', icon: Zap, description: 'Discovery engine interaction cycles' },
-  { id: 'crystallize', label: 'CRYSTALLIZE', icon: Diamond, description: 'Lock successful capability chains' },
-  { id: 'export', label: 'ASCENDED MEMORY', icon: Package, description: 'Export portable capability artifacts' },
+const PHASE_LABELS = ['Ingest', 'Ascension', 'Crystallize', 'Export'] as const;
+
+const PHASE_DESCRIPTIONS = [
+  'Upload source files — your code becomes Node #41',
+  'Collide against 40 substrate nodes to discover capabilities',
+  'Lock successful interaction chains into deterministic memories',
+  'Export portable Ascended Memory packs',
 ] as const;
 
 export default function ProprietaryEvolution() {
-  const [activePhase, setActivePhase] = useState<string>('ingest');
+  const [activeStep, setActiveStep] = useState(0);
+  const [direction, setDirection] = useState(0); // -1 = back, 1 = forward
+
+  const goTo = (step: number) => {
+    if (step === activeStep) return;
+    setDirection(step > activeStep ? 1 : -1);
+    setActiveStep(step);
+  };
+
+  const next = () => {
+    if (activeStep < 3) goTo(activeStep + 1);
+  };
+
+  const back = () => {
+    if (activeStep > 0) goTo(activeStep - 1);
+  };
+
+  const phases = [
+    <IngestPhase key="ingest" />,
+    <DiscoveryPhase key="discovery" />,
+    <CrystallizationPhase key="crystallize" />,
+    <ExportPhase key="export" />,
+  ];
 
   return (
     <PinGate pin="041041" storageKey="gate-x-proprietary">
@@ -37,53 +64,88 @@ export default function ProprietaryEvolution() {
         />
 
         <PublicNav />
+        <AscensionOnboarding />
 
-        {/* ═══ CINEMATIC HERO ═══ */}
-        <AscensionHero />
+        {/* ═══ COMPACT HERO (only on step 0) ═══ */}
+        <AnimatePresence mode="wait">
+          {activeStep === 0 && (
+            <motion.div
+              key="hero"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <AscensionHero />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* ═══ PHASE ENGINE SECTION ═══ */}
-        <section className="relative">
-          {/* Subtle gradient transition from hero */}
-          <div className="absolute inset-0 bg-gradient-to-b from-neon-cyan/[0.02] via-background to-background pointer-events-none" />
+        {/* ═══ WIZARD SECTION ═══ */}
+        <section className="flex-1 flex flex-col">
+          {/* Sticky stepper + phase header */}
+          <div className="sticky top-0 z-30 bg-background/90 backdrop-blur-xl border-b border-border/10">
+            <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
+              <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
 
-          {/* Phase Navigation */}
-          <div className="relative border-b border-border/10 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
-            <div className="max-w-6xl mx-auto px-4 py-3">
-              <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-                <div className="flex items-center gap-1 min-w-max">
-                  {PHASES.map((phase, i) => (
-                    <div key={phase.id} className="flex items-center">
-                      <button
-                        onClick={() => setActivePhase(phase.id)}
-                        className={cn(
-                          "flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg text-xs font-mono transition-all whitespace-nowrap min-h-[44px]",
-                          activePhase === phase.id
-                            ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_12px_hsl(var(--primary)/0.1)]"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
-                        )}
-                      >
-                        <phase.icon className="w-3.5 h-3.5 shrink-0" />
-                        <span>{phase.label}</span>
-                      </button>
-                      {i < PHASES.length - 1 && (
-                        <ArrowRight className="w-3 h-3 text-primary/20 mx-1 shrink-0" />
-                      )}
-                    </div>
-                  ))}
-                </div>
+              {/* Phase title + description */}
+              <div className="text-center">
+                <h2 className="text-base sm:text-lg font-bold text-foreground">
+                  {PHASE_LABELS[activeStep]}
+                </h2>
+                <p className="text-xs text-muted-foreground font-mono mt-0.5">
+                  {PHASE_DESCRIPTIONS[activeStep]}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Phase Content */}
-          <main className="relative flex-1">
-            <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 lg:py-10">
-              {activePhase === 'ingest' && <IngestPhase />}
-              {activePhase === 'ascension' && <DiscoveryPhase />}
-              {activePhase === 'crystallize' && <CrystallizationPhase />}
-              {activePhase === 'export' && <ExportPhase />}
+          {/* Phase content — animated transitions */}
+          <main className="flex-1">
+            <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeStep}
+                  initial={{ opacity: 0, x: direction * 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction * -40 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                >
+                  {phases[activeStep]}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </main>
+
+          {/* Bottom navigation */}
+          <div className="sticky bottom-0 z-30 bg-background/90 backdrop-blur-xl border-t border-border/10">
+            <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={back}
+                disabled={activeStep === 0}
+                className="gap-1.5 text-xs h-9"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                Back
+              </Button>
+
+              <span className="text-[10px] font-mono text-muted-foreground">
+                Step {activeStep + 1} of 4
+              </span>
+
+              <Button
+                size="sm"
+                onClick={next}
+                disabled={activeStep === 3}
+                className="gap-1.5 text-xs h-9"
+              >
+                Next
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
+            </div>
+          </div>
         </section>
 
         <EnhancedFooter />
