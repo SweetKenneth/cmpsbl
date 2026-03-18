@@ -135,6 +135,26 @@ export function DiscoveryPhase() {
     })();
   }, []);
 
+  /** Clear all discoveries from the database */
+  const clearAllDiscoveries = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any)
+        .from('artifact_registry')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('category', 'proprietary-discovery');
+      setResults([]);
+      setDiscoveryHit(null);
+      setExpandedIdx(null);
+      toast({ title: 'Vault cleared', description: 'All discoveries removed.' });
+    } catch (err) {
+      toast({ title: 'Clear failed', description: String(err), variant: 'destructive' });
+    }
+  };
+
   const startDiscovery = async () => {
     if (!candidateNode) return;
     setRunning(true);
@@ -144,10 +164,10 @@ export function DiscoveryPhase() {
     setExpandedIdx(null);
     abortRef.current = false;
 
-    let foundHit: CollisionResult | null = null;
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
 
-    const suspenseDelay = Math.floor(Math.random() * 10000) + 5000;
+    // Shorter initial suspense
+    const suspenseDelay = Math.floor(Math.random() * 4000) + 2000;
     await new Promise(r => setTimeout(r, suspenseDelay));
     if (abortRef.current) { setRunning(false); return; }
 
@@ -160,76 +180,74 @@ export function DiscoveryPhase() {
         setPermutations(prev => prev + 1);
         setProgress(Math.round(((i + 1) / shuffledNodes.length) * 100));
 
+        // Shorter delays — first 3 nodes get 2-4s, rest get 100-400ms
         const interNodeDelay = i < 3
-          ? Math.floor(Math.random() * 6000) + 6000
-          : Math.floor(Math.random() * 600) + 150;
+          ? Math.floor(Math.random() * 2000) + 2000
+          : Math.floor(Math.random() * 300) + 100;
         await new Promise(r => setTimeout(r, interNodeDelay));
         if (abortRef.current) break;
 
-        const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
-          body: {
-            module: 'discovery',
-            action: 'collide',
-            input: {
-              candidate_node: candidateNode,
-              target_node: targetNode,
-              permutation_depth: 7,
+        try {
+          const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
+            body: {
+              module: 'discovery',
+              action: 'collide',
+              input: {
+                candidate_node: candidateNode,
+                target_node: targetNode,
+                permutation_depth: 7,
+              },
             },
-          },
-        });
+          });
 
-        if (!error && data) {
-          // Capture candidate surface from first response
-          if (data.candidate_surface && !candidateSurface) {
-            setCandidateSurface(data.candidate_surface as CandidateSurface);
-          }
+          if (!error && data) {
+            if (data.candidate_surface && !candidateSurface) {
+              setCandidateSurface(data.candidate_surface as CandidateSurface);
+            }
 
-          if (data.capabilities) {
-            const newResults: CollisionResult[] = (data.capabilities as Array<{
-              name: string;
-              cjpi_score: number;
-              tier: string;
-              chain?: string[];
-              chain_depth?: number;
-              sectors_crossed?: number;
-              synergy_bonus?: number;
-              description?: string;
-            }>).map((cap) => ({
-              nodeA: candidateSurface?.nodeName || candidateNode,
-              nodeB: targetNode,
-              capability: cap.name,
-              cjpiScore: cap.cjpi_score,
-              tier: cap.tier,
-              chain: cap.chain || [candidateNode, targetNode],
-              chainDepth: cap.chain_depth || 2,
-              sectorsCrossed: cap.sectors_crossed || 1,
-              synergyBonus: cap.synergy_bonus || 0,
-              description: cap.description || '',
-            }));
-            setResults(prev => [...newResults, ...prev]);
-
-            const hit = newResults.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
-            if (hit && hit.cjpiScore >= 70) {
-              foundHit = hit;
-              setDiscoveryHit(hit);
-              toast({
-                title: '🎯 High-value chain discovered',
-                description: `${hit.capability} — ${hit.chainDepth}-node chain, CJPI ${hit.cjpiScore}`,
-              });
-              break;
-            } else if (hit) {
-              setDiscoveryHit(prev => (!prev || hit.cjpiScore > prev.cjpiScore) ? hit : prev);
+            if (data.capabilities && (data.capabilities as any[]).length > 0) {
+              // Only take the top-1 weighted result from this collision
+              const allCaps = (data.capabilities as Array<{
+                name: string;
+                cjpi_score: number;
+                tier: string;
+                chain?: string[];
+                chain_depth?: number;
+                sectors_crossed?: number;
+                synergy_bonus?: number;
+                description?: string;
+              }>);
+              
+              const bestCap = allCaps.reduce((best, cap) => 
+                !best || cap.cjpi_score > best.cjpi_score ? cap : best, allCaps[0]);
+              
+              const topResult: CollisionResult = {
+                nodeA: candidateSurface?.nodeName || candidateNode,
+                nodeB: targetNode,
+                capability: bestCap.name,
+                cjpiScore: bestCap.cjpi_score,
+                tier: bestCap.tier,
+                chain: bestCap.chain || [candidateNode, targetNode],
+                chainDepth: bestCap.chain_depth || 2,
+                sectorsCrossed: bestCap.sectors_crossed || 1,
+                synergyBonus: bestCap.synergy_bonus || 0,
+                description: bestCap.description || '',
+              };
+              
+              setResults(prev => [topResult, ...prev]);
+              setDiscoveryHit(prev => (!prev || topResult.cjpiScore > prev.cjpiScore) ? topResult : prev);
             }
           }
+        } catch (fnErr) {
+          // Single node failure — continue to next node
+          console.warn(`Collision with ${targetNode} failed:`, fnErr);
         }
       }
 
-      if (!abortRef.current && !foundHit) {
-        toast({
-          title: 'Collision sweep complete',
-          description: `Tested ${shuffledNodes.length} nodes. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
-        });
-      }
+      toast({
+        title: 'Collision sweep complete',
+        description: `Tested ${shuffledNodes.length} nodes. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
+      });
     } catch (err) {
       console.error('Discovery error:', err);
       toast({ title: 'Discovery error', description: String(err), variant: 'destructive' });
