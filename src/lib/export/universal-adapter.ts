@@ -1,13 +1,18 @@
 /**
- * Universal Export Adapter System
- * Generates drop-in code for any S-Tier Crown Jewel across multiple languages/frameworks.
+ * CMPSBL® Universal Export Adapter System
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates exportable code across 25 languages/frameworks.
  * 
- * Supported targets:
- *   TypeScript (Node/Deno/Bun), Python, Go, Rust, Java, C#, Ruby,
- *   PHP, Swift, Kotlin, Elixir, Lua
+ * ARCHITECTURE: One Runtime, Many Bridges.
+ *   - TypeScript: Canonical runtime (full CJPI, tiering, FSM, saga)
+ *   - Python, Go: Bridge adapters (remote-first, deterministic fallback)
+ *   - All other software languages: Thin bridge adapters via software-synthesizer.ts
+ *   - HDL targets: Hardware synthesizers (not bridge-based)
  * 
- * Adapter wrappers:
- *   REST API, gRPC stub, CLI, Docker, WASM, SDK wrapper
+ * Non-TS software exports do NOT duplicate runtime internals.
+ * They embed capability metadata and route execution to the canonical runtime.
+ * 
+ * © CMPSBL® — All rights reserved.
  */
 
 import {
