@@ -1,10 +1,17 @@
 /**
- * Logic Synthesizer — Generates real, runnable process() implementations
- * for discovered artifacts based on their module chain, category, and capabilities.
+ * CMPSBL® Logic Synthesizer
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates executable implementations for discovered artifacts.
  * 
- * These are NOT stubs. Each category produces a fully functional pipeline
- * that performs real computation: validation, transformation, scoring,
- * state management, and output formatting.
+ * ARCHITECTURE: One Runtime, Many Bridges.
+ *   - TypeScript: CANONICAL RUNTIME — full pipeline with real computation
+ *   - Python: BRIDGE ADAPTER — routes to canonical runtime, deterministic fallback
+ *   - Go: BRIDGE ADAPTER — routes to canonical runtime, deterministic fallback
+ * 
+ * Non-TS languages do NOT duplicate CJPI weights, tier thresholds,
+ * saga orchestration, or dependency graph internals.
+ * 
+ * © CMPSBL® — All rights reserved.
  */
 
 export interface SynthesisContext {
