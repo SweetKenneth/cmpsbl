@@ -217,8 +217,12 @@ export function synthesizePython(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
   const snake = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
-  const CANONICAL_VERSION = '14.3.0';
-  const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
+
+  // Import shared utilities instead of hardcoding
+  const { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } = require('./canonical-runtime-contract');
+  const { moduleOps } = require('./bridge-adapter');
+  const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
+  const chainHash = computeModuleChainHash(modules);
 
   return `"""
 ${ctx.name} — CMPSBL® Bridge Adapter (Python)
@@ -232,12 +236,18 @@ Runtime logic lives in the canonical TypeScript Mini-Runtime™.
 This adapter routes execution to the canonical runtime when available,
 falling back to deterministic local output when offline.
 
-Canonical Runtime Version: ${CANONICAL_VERSION}
+Integrity: capabilityHash + moduleChainHash validated on every request
+Health: rolling health score governs automatic mode switching
+Degraded: integrity failures are explicit, never silently masked
+
+Canonical Runtime Version: ${CANONICAL_RUNTIME_VERSION}
 © CMPSBL® — All rights reserved.
 """
 
 import time
 import json
+import hashlib
+import uuid
 import urllib.request
 import urllib.error
 from dataclasses import dataclass, field
@@ -249,26 +259,23 @@ BRIDGE_META = {
     "category": "${ctx.category}",
     "module_chain": ${JSON.stringify(modules)},
     "bridge_type": "hybrid",
-    "canonical_version": "${CANONICAL_VERSION}",
+    "canonical_version": "${CANONICAL_RUNTIME_VERSION}",
     "default_endpoint": "${CANONICAL_ENDPOINT}",
     "offline_capable": True,
+    "capability_hash": "${capHash}",
+    "module_chain_hash": "${chainHash}",
 }
 
 STAGES = [
-${modules.map((m, i) => {
-  const verbs: Record<string, string> = {
-    BRAIN: 'analyze', MEMORY: 'persist', CORTEX: 'orchestrate', DREAM: 'synthesize',
-    DEFENSE: 'validate', ACCESS: 'authorize', ANALYTICS: 'aggregate', VISION: 'observe',
-    ORACLE: 'predict', EVOLUTION: 'evolve', GOVERNANCE: 'enforce', AUDIT: 'log',
-    DECODE: 'transform', NEXUS: 'route', NERVE: 'signal', IDENTITY: 'fingerprint',
-    FORGE: 'compose', LINGUA: 'translate', COMPASS: 'geolocate', ECHO: 'simulate',
-    TREATY: 'negotiate', HARVEST: 'ingest', REFLEX: 'react', SYSTEM: 'monitor',
-    MEDIC: 'heal', RIPPLE: 'propagate',
-  };
-  const verb = verbs[m] || 'process';
+${modules.map((m) => {
+  const verb = moduleOps(m).verb;
   return `    {"name": "${verb}_${m.toLowerCase()}", "module": "${m}", "verb": "${verb}"}`;
 }).join(',\n')}
 ]
+
+
+def _generate_execution_id() -> str:
+    return f"exec_{uuid.uuid4().hex[:12]}"
 
 
 @dataclass
@@ -277,7 +284,29 @@ class StageTrace:
     verb: str
     status: str
     duration_ms: float
-    depth: str  # "remote" | "local" | "fallback"
+    depth: str  # "remote" | "local" | "fallback" | "degraded"
+    validation: str = "skipped"  # "passed" | "warned" | "failed" | "skipped"
+    stage_source: str = "bridge-fallback"  # "canonical-runtime" | "bridge-fallback"
+    remote_latency_ms: Optional[float] = None
+    local_latency_ms: Optional[float] = None
+
+
+@dataclass
+class ExecutionEnvelopeMetadata:
+    execution_id: str = ""
+    bridge_language: str = "python"
+    bridge_type: str = "hybrid"
+    runtime_mode: str = "hybrid"
+    was_remote_attempted: bool = False
+    was_remote_used: bool = False
+    used_fallback: bool = True
+    fallback_reason: Optional[str] = None  # "normal" | "degraded" | "offline"
+    validation_result: str = "skipped"  # "passed" | "warned" | "failed"
+    health_score_at_execution: float = 50.0
+    mode_before_execution: str = "hybrid"
+    mode_after_execution: str = "hybrid"
+    canonical_version: str = "${CANONICAL_RUNTIME_VERSION}"
+    capability_hash: str = "${capHash}"
 
 
 @dataclass
@@ -292,6 +321,73 @@ class BridgeResult:
     total_stages: int = 0
     runtime_mode: str = "hybrid"
     bridge_type: str = "hybrid"
+    execution_id: str = ""
+    validated: bool = False
+    validation_errors: List[str] = field(default_factory=list)
+    validation_warnings: List[str] = field(default_factory=list)
+    degraded: bool = False
+    degraded_reasons: List[str] = field(default_factory=list)
+    envelope: Optional[ExecutionEnvelopeMetadata] = None
+
+
+class _HealthTracker:
+    """Lightweight rolling health tracker for canonical runtime endpoint."""
+    NETWORK_THRESHOLD = 5
+    OFFLINE_THRESHOLD = 3
+    HYBRID_THRESHOLD = 2
+    VALIDATION_FAILURE_WEIGHT = 2
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.consecutive_successes = 0
+        self.consecutive_failures = 0
+        self.total_remote_attempts = 0
+        self.total_remote_successes = 0
+        self.total_fallbacks = 0
+        self.total_validation_failures = 0
+        self._health_score = 50.0
+
+    @property
+    def health_score(self) -> float:
+        if self.total_remote_attempts == 0:
+            return 50.0
+        success_rate = (self.total_remote_successes / self.total_remote_attempts) * 100
+        val_penalty = (self.total_validation_failures / self.total_remote_attempts) * 100
+        raw = success_rate * 0.6 + (100 - val_penalty * 2) * 0.4
+        return max(0, min(100, round(raw, 1)))
+
+    def record_success(self):
+        self.total_remote_attempts += 1
+        self.total_remote_successes += 1
+        self.consecutive_successes += 1
+        self.consecutive_failures = 0
+
+    def record_failure(self):
+        self.total_remote_attempts += 1
+        self.consecutive_failures += 1
+        self.consecutive_successes = 0
+
+    def record_validation_failure(self):
+        self.total_remote_attempts += 1
+        self.total_validation_failures += 1
+        self.consecutive_failures += self.VALIDATION_FAILURE_WEIGHT
+        self.consecutive_successes = 0
+
+    def record_fallback(self):
+        self.total_fallbacks += 1
+
+    def evaluate_mode(self, current_mode: str) -> str:
+        if self.consecutive_failures >= self.OFFLINE_THRESHOLD:
+            return "offline"
+        if self.consecutive_successes >= self.NETWORK_THRESHOLD:
+            return "network"
+        if current_mode == "offline" and self.consecutive_successes >= self.HYBRID_THRESHOLD:
+            return "hybrid"
+        if current_mode == "network" and self.consecutive_failures > 0:
+            return "hybrid"
+        return current_mode
 
 
 class ${cls}:
@@ -302,32 +398,86 @@ class ${cls}:
         self._runtime_mode = "hybrid" if endpoint else "offline"
         self._execution_count = 0
         self._success_count = 0
+        self._health = _HealthTracker()
+        self._forced_mode: Optional[str] = None
 
     def configure_endpoint(self, url: Optional[str]) -> None:
         self._endpoint = url
         self._runtime_mode = "hybrid" if url else "offline"
 
+    def get_runtime_mode(self) -> str:
+        return self._forced_mode or self._runtime_mode
+
+    def get_health_score(self) -> float:
+        return self._health.health_score
+
+    def get_health_snapshot(self) -> Dict[str, Any]:
+        return {
+            "current_mode": self.get_runtime_mode(),
+            "health_score": self._health.health_score,
+            "consecutive_successes": self._health.consecutive_successes,
+            "consecutive_failures": self._health.consecutive_failures,
+            "total_remote_attempts": self._health.total_remote_attempts,
+            "total_remote_successes": self._health.total_remote_successes,
+            "total_fallbacks": self._health.total_fallbacks,
+            "total_validation_failures": self._health.total_validation_failures,
+            "mode_forced": self._forced_mode is not None,
+        }
+
+    def reset_health_state(self):
+        self._health.reset()
+        self._runtime_mode = "hybrid" if self._endpoint else "offline"
+        self._forced_mode = None
+
+    def force_mode(self, mode: Optional[str]):
+        self._forced_mode = mode
+
     @property
     def runtime_mode(self) -> str:
-        return self._runtime_mode
+        return self.get_runtime_mode()
+
+    def _build_integrity_payload(self) -> Dict[str, Any]:
+        return {
+            "canonicalVersion": BRIDGE_META["canonical_version"],
+            "bridgeType": "hybrid",
+            "runtimeType": "portable",
+            "executionMode": self.get_runtime_mode(),
+            "capabilityHash": BRIDGE_META["capability_hash"],
+            "moduleChainHash": BRIDGE_META["module_chain_hash"],
+            "expectedCJPI": BRIDGE_META["cjpi"],
+        }
 
     def execute(self, input_data: Dict[str, Any] = None) -> BridgeResult:
         if input_data is None:
             input_data = {}
         self._execution_count += 1
+        execution_id = _generate_execution_id()
+        mode_before = self.get_runtime_mode()
         start = time.perf_counter()
         data = dict(input_data)
         confidence = 1.0
         trace: List[StageTrace] = []
         completed = 0
+        was_remote_attempted = False
+        was_remote_used = False
+        used_fallback = False
+        fallback_reason: Optional[str] = None
+        validated = False
+        validation_errors: List[str] = []
+        validation_warnings: List[str] = []
+        degraded = False
+        degraded_reasons: List[str] = []
 
         # Attempt remote canonical runtime
-        if self._endpoint and self._runtime_mode != "offline":
+        current_mode = self.get_runtime_mode()
+        if self._endpoint and current_mode != "offline":
+            was_remote_attempted = True
             try:
                 payload = json.dumps({
                     "name": BRIDGE_META["name"],
                     "data": data,
                     "confidence": confidence,
+                    "integrity": self._build_integrity_payload(),
                     "meta": {
                         "runtimeType": "portable",
                         "version": BRIDGE_META["canonical_version"],
@@ -341,10 +491,43 @@ class ${cls}:
                 )
                 with urllib.request.urlopen(req, timeout=5) as resp:
                     if resp.status == 200:
-                        self._success_count += 1
-                        return BridgeResult(**json.loads(resp.read()))
-            except Exception:
-                pass  # Remote unavailable — fall through to local
+                        remote_result = json.loads(resp.read())
+                        # Validate response integrity
+                        resp_validated = remote_result.get("validated", False)
+                        resp_errors = remote_result.get("validationErrors", [])
+                        if resp_validated and not resp_errors:
+                            self._health.record_success()
+                            was_remote_used = True
+                            validated = True
+                            self._success_count += 1
+                            self._runtime_mode = self._health.evaluate_mode(self._runtime_mode)
+                            envelope = ExecutionEnvelopeMetadata(
+                                execution_id=execution_id,
+                                was_remote_attempted=True, was_remote_used=True,
+                                used_fallback=False, validation_result="passed",
+                                health_score_at_execution=self._health.health_score,
+                                mode_before_execution=mode_before,
+                                mode_after_execution=self.get_runtime_mode(),
+                            )
+                            result = BridgeResult(**remote_result)
+                            result.execution_id = execution_id
+                            result.envelope = envelope
+                            return result
+                        else:
+                            # Validation failed — mark degraded, do NOT silently fallback
+                            self._health.record_validation_failure()
+                            degraded = True
+                            degraded_reasons = [f"Remote validation failed: {e}" for e in resp_errors]
+                            validation_errors = resp_errors
+                            fallback_reason = "degraded"
+            except Exception as e:
+                self._health.record_failure()
+                fallback_reason = fallback_reason or "normal"
+
+        if not was_remote_used:
+            used_fallback = True
+            fallback_reason = fallback_reason or ("offline" if current_mode == "offline" else "normal")
+            self._health.record_fallback()
 
         # Deterministic local fallback
         for stage in STAGES:
@@ -354,25 +537,48 @@ class ${cls}:
                 "verb": stage["verb"],
                 "confidence": round(confidence, 4),
                 "bridge": "python",
-                "mode": self._runtime_mode,
+                "mode": self.get_runtime_mode(),
             }
             confidence = min(1.0, confidence + 0.02)
+            stage_duration = (time.perf_counter() - stage_start) * 1000
             trace.append(StageTrace(
                 module=stage["module"], verb=stage["verb"],
-                status="success",
-                duration_ms=round((time.perf_counter() - stage_start) * 1000, 3),
-                depth="fallback",
+                status="degraded" if degraded else "success",
+                duration_ms=round(stage_duration, 3),
+                depth="degraded" if degraded else "fallback",
+                validation="failed" if degraded else "skipped",
+                stage_source="bridge-fallback",
+                local_latency_ms=round(stage_duration, 3),
             ))
             completed += 1
 
         self._success_count += 1
         elapsed = (time.perf_counter() - start) * 1000
+        self._runtime_mode = self._health.evaluate_mode(self._runtime_mode)
+
+        envelope = ExecutionEnvelopeMetadata(
+            execution_id=execution_id,
+            was_remote_attempted=was_remote_attempted,
+            was_remote_used=was_remote_used,
+            used_fallback=used_fallback,
+            fallback_reason=fallback_reason,
+            validation_result="failed" if degraded else "skipped",
+            health_score_at_execution=self._health.health_score,
+            mode_before_execution=mode_before,
+            mode_after_execution=self.get_runtime_mode(),
+            runtime_mode=self.get_runtime_mode(),
+        )
 
         return BridgeResult(
-            success=True, data=data, latency_ms=round(elapsed, 2),
+            success=not degraded, data=data, latency_ms=round(elapsed, 2),
             confidence=confidence, trace=trace,
             stages_completed=completed, total_stages=len(STAGES),
-            runtime_mode=self._runtime_mode, bridge_type="hybrid",
+            runtime_mode=self.get_runtime_mode(), bridge_type="hybrid",
+            execution_id=execution_id,
+            validated=validated, validation_errors=validation_errors,
+            validation_warnings=validation_warnings,
+            degraded=degraded, degraded_reasons=degraded_reasons,
+            envelope=envelope,
         )
 
     def validate(self) -> bool:
@@ -380,7 +586,7 @@ class ${cls}:
 
     @property
     def meta(self) -> Dict[str, Any]:
-        return {**BRIDGE_META, "runtime_mode": self._runtime_mode}
+        return {**BRIDGE_META, "runtime_mode": self.get_runtime_mode()}
 
     @property
     def stats(self) -> Dict[str, Any]:
@@ -388,14 +594,16 @@ class ${cls}:
             "name": BRIDGE_META["name"],
             "cjpi": BRIDGE_META["cjpi"],
             "bridge_type": BRIDGE_META["bridge_type"],
-            "runtime_mode": self._runtime_mode,
+            "runtime_mode": self.get_runtime_mode(),
             "execution_count": self._execution_count,
             "success_rate": self._success_count / self._execution_count if self._execution_count > 0 else 0,
+            "health_score": self._health.health_score,
         }
 
     def reset(self):
         self._execution_count = 0
         self._success_count = 0
+        self._health.reset()
 
 
 def create_${snake}(endpoint=None):
@@ -414,6 +622,9 @@ if __name__ == "__main__":
         "total_stages": result.total_stages,
         "runtime_mode": result.runtime_mode,
         "bridge_type": result.bridge_type,
+        "execution_id": result.execution_id,
+        "validated": result.validated,
+        "degraded": result.degraded,
         "data": result.data, "error": result.error,
     }
     print(json.dumps(output, indent=2, default=str))
