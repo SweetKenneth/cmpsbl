@@ -232,6 +232,75 @@ export const OFFLINE_MODE_THRESHOLD = 3;
 /** Maximum telemetry buffer size */
 export const MAX_TELEMETRY_BUFFER = 500;
 
+/**
+ * Compute a stable capability hash from name + module_chain + category.
+ * Uses djb2 for synchronous, zero-dependency hashing in bridge contexts.
+ * Canonical runtime recomputes this identically for validation.
+ */
+export function computeCapabilityHash(name: string, moduleChain: string[], category: string): string {
+  const input = `${name}|${moduleChain.map(m => m.toUpperCase()).join(',')}|${category}`;
+  let hash = 5381;
+  for (let i = 0; i < input.length; i++) {
+    hash = ((hash << 5) + hash + input.charCodeAt(i)) >>> 0;
+  }
+  return hash.toString(16).padStart(8, '0');
+}
+
+/**
+ * Build the integrity payload for an outbound bridge request.
+ */
+export function buildIntegrityPayload(
+  name: string,
+  moduleChain: string[],
+  category: string,
+  expectedCJPI: number,
+  bridgeType: BridgeType,
+  executionMode: RuntimeMode,
+): ExecutionIntegrityPayload {
+  return {
+    canonicalVersion: CANONICAL_RUNTIME_VERSION,
+    bridgeType,
+    capabilityHash: computeCapabilityHash(name, moduleChain, category),
+    expectedCJPI,
+    executionMode,
+  };
+}
+
+/**
+ * Validate an inbound integrity payload on the canonical runtime side.
+ * Returns structured validation result — never throws.
+ */
+export function validateIntegrityPayload(
+  payload: ExecutionIntegrityPayload,
+  name: string,
+  moduleChain: string[],
+  category: string,
+): IntegrityValidationResult {
+  const errors: string[] = [];
+
+  // 1. Version match
+  if (payload.canonicalVersion !== CANONICAL_RUNTIME_VERSION) {
+    errors.push(
+      `Version mismatch: bridge=${payload.canonicalVersion}, runtime=${CANONICAL_RUNTIME_VERSION}`
+    );
+  }
+
+  // 2. Capability hash recomputation & comparison
+  const recomputedHash = computeCapabilityHash(name, moduleChain, category);
+  if (payload.capabilityHash !== recomputedHash) {
+    errors.push(
+      `Capability hash mismatch: bridge=${payload.capabilityHash}, recomputed=${recomputedHash}`
+    );
+  }
+
+  return {
+    validated: errors.length === 0,
+    validationErrors: errors,
+    recomputedHash,
+    runtimeVersion: CANONICAL_RUNTIME_VERSION,
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §5 — ANTI-DRIFT RULES (enforced by architecture tests)
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -135,6 +135,7 @@ export function classifyBridge(language: string, runtimeType: RuntimeType): Brid
 
 /** Generate the bridge metadata JSON string that gets embedded in exports */
 export function generateBridgeManifest(ctx: SynthesisContext, language: string, bridgeType: BridgeType): string {
+  const capabilityHash = computeCapabilityHash(ctx.name, ctx.moduleChain, ctx.category);
   return JSON.stringify({
     name: ctx.name,
     description: ctx.description,
@@ -146,11 +147,19 @@ export function generateBridgeManifest(ctx: SynthesisContext, language: string, 
     moduleChain: ctx.moduleChain,
     category: ctx.category,
     cjpi: ctx.cjpi,
+    capabilityHash,
     entryCapability: ctx.entryCapability,
     exitCapability: ctx.exitCapability,
     errorStrategy: ctx.errorStrategy,
     maxExecutionMs: ctx.maxExecutionMs,
     generatedAt: new Date().toISOString(),
+    integrityContract: {
+      canonicalVersion: CANONICAL_RUNTIME_VERSION,
+      bridgeType,
+      capabilityHash,
+      expectedCJPI: ctx.cjpi,
+      executionMode: bridgeType === 'offline-fallback' ? 'offline' : 'hybrid',
+    },
   }, null, 2);
 }
 
