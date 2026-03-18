@@ -730,40 +730,31 @@ export default function STierVault() {
     discoveries: typeof promoted, languages: ExportTarget[], filename: string, label: string
   ) => {
     if (discoveries.length === 0) return;
-    const [JSZipMod, runtimeMod, engineMod] = await Promise.all([
+    const [JSZipMod, runtimeMod] = await Promise.all([
       import('jszip'),
       import('@/lib/export/standalone-runtime?raw'),
-      import('@/lib/export/standalone-discovery-engine?raw'),
     ]);
     const JSZip = JSZipMod.default;
     const zip = new JSZip();
     const root = zip.folder(filename.replace('.zip', ''))!;
 
-    // Include the standalone discovery runtime + engine so the ZIP is fully self-contained
-    const coreFolder = root.folder('_discovery-engine')!;
+    // Include the sealed Mini-Runtime™ only — Discovery Engine is substrate-only
+    const coreFolder = root.folder('_runtime')!;
     coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
-    coreFolder.file('standalone-discovery-engine.ts', (engineMod as any).default);
     coreFolder.file('README.md', [
-      '# CMPSBL® Mini-Runtime™ Engine',
+      '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
       '',
-      'This directory contains the fully portable CMPSBL® Mini-Runtime™ Engine and Discovery Engine.',
+      'This directory contains the sealed CMPSBL® Mini-Runtime™ Engine.',
       'It requires **zero external dependencies** — no substrate, no database, no infrastructure.',
       '',
-      '## Quick Start',
+      '## Components',
       '',
-      '```typescript',
-      "import { createRuntime } from './standalone-runtime';",
-      "import { createDiscoveryEngine } from './standalone-discovery-engine';",
+      '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
       '',
-      'const runtime = createRuntime();',
-      'const engine = createDiscoveryEngine(runtime);',
-      'const result = await engine.run({ dryRun: false, topN: 50 });',
+      '## ⚠️ Discovery Engine Not Included',
       '',
-      'console.log(`Found ${result.acceptedCount} discoveries`);',
-      'for (const d of result.discoveries) {',
-      '  console.log(`  ${d.name} — CJPI: ${d.cjpi} — Tier: ${d.tier}`);',
-      '}',
-      '```',
+      'The Discovery Engine is a substrate-only capability and is not distributed.',
+      'For full discovery capabilities, use the CMPSBL® Substrate at https://cmpsbl.com',
       '',
       '---',
       '© CMPSBL® — All rights reserved.',
