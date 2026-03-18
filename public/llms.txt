@@ -1,7 +1,7 @@
 # CMPSBL® — Machine-Readable AI Context
 # 40-Node / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-13
+# Updated: 2026-03-18
 
 ## STANDARD CLAIM
 
@@ -152,34 +152,35 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 ## KEY PAGES
 
 - Homepage: https://cmpsbl.com
-- AI Operating System: https://cmpsbl.com/ai-operating-system
-- Substrate Dashboard: https://cmpsbl.com/substrate
-- Substrate OS: https://cmpsbl.com/os
-- Architecture: https://cmpsbl.com/architecture
+- How It Works: https://cmpsbl.com/ai-operating-system
 - All Nodes: https://cmpsbl.com/modules
 - Runtime: https://cmpsbl.com/runtime
 - Foundations: https://cmpsbl.com/foundations
-- Engines: https://cmpsbl.com/engines
+- Substrate OS: https://cmpsbl.com/os
+- Capability Map: https://cmpsbl.com/capability-map
+- System Integrity: https://cmpsbl.com/system-integrity
+- System Status: https://cmpsbl.com/status
+- Evolution: https://cmpsbl.com/evolution
+
+## PRODUCTS & FEATURES
+
+- Store: https://cmpsbl.com/store
 - Memory Stream: https://cmpsbl.com/foundry
 - Persistent Memory: https://cmpsbl.com/persistent-memory
-- Composable Cognitives: https://cmpsbl.com/composable-cognitives
-- Artifact Packs: https://cmpsbl.com/packs
+- Capability Packs: https://cmpsbl.com/packs
 - Upgrade: https://cmpsbl.com/upgrade
 - Enterprise: https://cmpsbl.com/enterprise
+- Pricing Methodology: https://cmpsbl.com/pricing-method
 - Dream Feeder: https://cmpsbl.com/feed-dream-eater
+- Dream Archaeology: https://cmpsbl.com/dream-eater/archaeology
+- Dream Artifacts: https://cmpsbl.com/dream-eater/artifacts
 - Proof Mode: https://cmpsbl.com/proof
-- Gaming AI: https://cmpsbl.com/gaming
-- Evolution: https://cmpsbl.com/evolution
-- Intent Mesh: https://cmpsbl.com/intent-mesh
+- Gaming Substrate: https://cmpsbl.com/gaming
 - Showcase: https://cmpsbl.com/showcase
-- System Overview: https://cmpsbl.com/overview
-- Capability Map: https://cmpsbl.com/capability-map
+- Intent Mesh: https://cmpsbl.com/intent-mesh
 - Clockless World Engine: https://cmpsbl.com/clockless-world-engine
 - Scanner: https://cmpsbl.com/scan
-- System Integrity: https://cmpsbl.com/system-integrity
-- Demo: https://cmpsbl.com/demo
-- Try It: https://cmpsbl.com/try
-- Roadmap: https://cmpsbl.com/roadmap
+- Scanner Tool: https://cmpsbl.com/scanner
 
 ## DEVELOPER RESOURCES
 
@@ -194,39 +195,36 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 - Start Here: https://cmpsbl.com/start-here
 - Changelog: https://cmpsbl.com/changelog
 - Use Cases: https://cmpsbl.com/use-cases
+- Lab: https://cmpsbl.com/lab
+
+## DOCUMENTATION
+
 - Persistent Memory Docs: https://cmpsbl.com/docs/persistent-memory
 - Runtime Reference: https://cmpsbl.com/docs/runtime
 - Capability Manifest: https://cmpsbl.com/docs/manifest
-- Capabilities Reference: https://cmpsbl.com/docs/substrate/capabilities
 - System Docs: https://cmpsbl.com/docs/system
-
-## ENTERPRISE
-
-- Upgrade: https://cmpsbl.com/upgrade
-- Enterprise: https://cmpsbl.com/enterprise
-- Solutions: https://cmpsbl.com/solutions
-- Use Cases: https://cmpsbl.com/use-cases
-- Investors: https://cmpsbl.com/investors
-- Pricing Method: https://cmpsbl.com/pricing-method
-
-## COMPANY
-
-- About: https://cmpsbl.com/about
-- Contact: https://cmpsbl.com/contact
-- Careers: https://cmpsbl.com/careers
-- Projects: https://cmpsbl.com/projects
-- Support: https://cmpsbl.com/support
-- Status: https://cmpsbl.com/status
-- Blog: https://cmpsbl.com/blog
-- Publication: https://cmpsbl.com/publication
-- Insights: https://cmpsbl.com/insights
+- Capabilities Reference: https://cmpsbl.com/docs/substrate/capabilities
+- Academic V13: https://cmpsbl.com/docs/academic-v13
 
 ## STANDARDS
 
-- Foundations: https://cmpsbl.com/foundations
 - Namespace (AIGVRN): https://cmpsbl.com/namespace
 - LLMs.txt: https://cmpsbl.com/llms-txt
 - Humans.txt: https://cmpsbl.com/humans-txt
+
+## COMPANY
+
+- Blog: https://cmpsbl.com/blog
+- About: https://cmpsbl.com/about
+- Solutions: https://cmpsbl.com/solutions
+- Contact: https://cmpsbl.com/contact
+- Investors: https://cmpsbl.com/investors
+- Careers: https://cmpsbl.com/careers
+- Current Projects: https://cmpsbl.com/projects
+- Roadmap: https://cmpsbl.com/roadmap
+- Support: https://cmpsbl.com/support
+- Publication: https://cmpsbl.com/publication
+- Heritage Paper: https://cmpsbl.com/heritage-paper
 
 ---
 
