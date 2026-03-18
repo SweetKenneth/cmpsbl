@@ -1070,7 +1070,7 @@ defmodule CMPSBL.${mod} do
   defp process(_engine, input) do
     current_data = input
     confidence = 1.0
-${a.synthesisContext ? synthesizeElixirProcess(a.synthesisContext) : `    result = input
+${a.synthesisContext ? synthesizeElixir(a.synthesisContext) : `    result = input
       |> Enum.map(fn {k, v} ->
         vs = to_string(v)
         entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
