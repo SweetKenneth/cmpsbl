@@ -291,6 +291,10 @@ export interface StandaloneRuntime {
   createSaga: typeof createSaga;
   CANONICAL_MODULES: typeof CANONICAL_MODULES;
   DISCOVERY_CATEGORIES: typeof DISCOVERY_CATEGORIES;
+  executePrimitive: typeof executePrimitive;
+  configureEndpoint: typeof configureEndpoint;
+  getRuntimeMode: typeof getRuntimeMode;
+  getExecutionTelemetry: typeof getExecutionTelemetry;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
