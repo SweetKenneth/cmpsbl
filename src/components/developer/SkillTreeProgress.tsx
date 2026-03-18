@@ -17,15 +17,8 @@ interface Skill {
   prerequisites: string[];
   unlocks: string[];
   icon: string;
-  progress?: {
-    xp_earned: number;
-    is_completed: boolean;
-  } | null;
+  progress?: { xp_earned: number; is_completed: boolean } | null;
   is_unlocked: boolean;
-}
-
-interface SkillTreeData {
-  skills: Skill[];
 }
 
 const TIER_STYLES: Record<number, { gradient: string; border: string; text: string }> = {
@@ -33,7 +26,7 @@ const TIER_STYLES: Record<number, { gradient: string; border: string; text: stri
   2: { gradient: 'from-accent/20 to-accent/5', border: 'border-accent/40', text: 'text-accent-foreground' },
   3: { gradient: 'from-secondary/30 to-secondary/10', border: 'border-secondary', text: 'text-secondary-foreground' },
   4: { gradient: 'from-muted to-muted/50', border: 'border-muted-foreground/40', text: 'text-muted-foreground' },
-  5: { gradient: 'from-primary/30 to-accent/20', border: 'border-primary/50', text: 'text-primary' }
+  5: { gradient: 'from-primary/30 to-accent/20', border: 'border-primary/50', text: 'text-primary' },
 };
 
 const TIER_NAMES: Record<number, string> = {
@@ -41,46 +34,53 @@ const TIER_NAMES: Record<number, string> = {
   2: 'Intermediate',
   3: 'Advanced',
   4: 'Expert',
-  5: 'Mastery'
+  5: 'Mastery',
 };
 
+const MOCK_SKILLS: Skill[] = [
+  // Tier 1 — Foundation
+  { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-node cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚', is_unlocked: true, progress: { xp_earned: 45, is_completed: false } },
+  { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠', is_unlocked: false, progress: null },
+  { skill_key: 'intent_routing', name: 'Intent Mesh', description: 'broadcastIntent(), resolver routing, receipt logging, and mesh telemetry', category: 'foundation', tier: 1, xp_required: 125, prerequisites: ['sdk_basics'], unlocks: ['resolver_patterns'], icon: '🔀', is_unlocked: false, progress: null },
+
+  // Tier 2 — Intermediate
+  { skill_key: 'nexus_routing', name: 'NEXUS Routing', description: 'Multi-provider AI routing with failover, budget controls, and latency optimization', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['memory_ops'], unlocks: ['defense_security'], icon: '🌐', is_unlocked: false, progress: null },
+  { skill_key: 'resolver_patterns', name: 'Resolver Patterns', description: 'Node.resolver naming, capability exposure, and cross-node communication', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['intent_routing'], unlocks: ['memory_stream'], icon: '⚡', is_unlocked: false, progress: null },
+  { skill_key: 'memory_stream', name: 'Memory Stream', description: 'Crystallization, CJPI scoring, tiering, and vault management', category: 'intermediate', tier: 2, xp_required: 225, prerequisites: ['resolver_patterns'], unlocks: ['ascension_basics'], icon: '✨', is_unlocked: false, progress: null },
+
+  // Tier 3 — Advanced
+  { skill_key: 'defense_security', name: 'DEFENSE & Security', description: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', category: 'advanced', tier: 3, xp_required: 300, prerequisites: ['nexus_routing'], unlocks: ['cjpi_scoring'], icon: '🛡️', is_unlocked: false, progress: null },
+  { skill_key: 'ascension_basics', name: 'Ascension Lifecycle', description: 'Node 41+ ingestion, primitive extraction, quality gates, and delta measurement', category: 'advanced', tier: 3, xp_required: 350, prerequisites: ['memory_stream'], unlocks: ['production_hardening'], icon: '🚀', is_unlocked: false, progress: null },
+  { skill_key: 'cjpi_scoring', name: 'CJPI Scoring', description: 'Novelty, utility, complexity, composability — discovery evaluation framework', category: 'advanced', tier: 3, xp_required: 275, prerequisites: ['defense_security'], unlocks: ['production_hardening'], icon: '🎯', is_unlocked: false, progress: null },
+
+  // Tier 4 — Expert
+  { skill_key: 'production_hardening', name: 'Production Patterns', description: 'Error handling, Forge protections, VOLVER handicapping, non-blocking telemetry', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['ascension_basics', 'cjpi_scoring'], unlocks: ['substrate_architect'], icon: '🔧', is_unlocked: false, progress: null },
+  { skill_key: 'dream_cycles', name: 'DREAM Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙', is_unlocked: false, progress: null },
+
+  // Tier 5 — Mastery
+  { skill_key: 'substrate_architect', name: 'Substrate Architect', description: 'Full system mastery: multi-node orchestration, governance, and capability export', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['production_hardening', 'dream_cycles'], unlocks: [], icon: '👑', is_unlocked: false, progress: null },
+];
+
 export function SkillTreeProgress() {
-  const [skillTree, setSkillTree] = useState<SkillTreeData | null>(null);
+  const [skillTree, setSkillTree] = useState<{ skills: Skill[] } | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [totalXp, setTotalXp] = useState(0);
   const [level, setLevel] = useState(1);
   const [developerId] = useState(() => `dev_${crypto.randomUUID().slice(0, 8)}`);
 
-  useEffect(() => {
-    loadSkillTree();
-  }, []);
+  useEffect(() => { loadSkillTree(); }, []);
 
   const loadSkillTree = async () => {
     try {
-      const { data } = await supabase.functions.invoke('developer-learning', {
-        body: { action: 'get_skill_tree', developer_id: developerId }
-      });
-      
+      const { data } = await supabase.functions.invoke('developer-learning', { body: { action: 'get_skill_tree', developer_id: developerId } });
       if (data?.data?.skills) {
         setSkillTree(data.data);
-        const xp = data.data.skills.reduce((sum: number, s: Skill) => 
-          sum + (s.progress?.xp_earned || 0), 0);
+        const xp = data.data.skills.reduce((sum: number, s: Skill) => sum + (s.progress?.xp_earned || 0), 0);
         setTotalXp(xp);
         setLevel(Math.floor(xp / 500) + 1);
       }
     } catch {
-      // Use mock data if backend unavailable
-      setSkillTree({
-        skills: [
-          { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize and configure the SDK', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'api_keys'], icon: '📚', is_unlocked: true, progress: { xp_earned: 45, is_completed: false } },
-          { skill_key: 'memory_ops', name: 'Memory Operations', description: 'Store, recall, and manage memories', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['context_windows'], icon: '🧠', is_unlocked: false, progress: null },
-          { skill_key: 'api_keys', name: 'API Key Management', description: 'Secure key generation and rotation', category: 'foundation', tier: 1, xp_required: 75, prerequisites: ['sdk_basics'], unlocks: ['rate_limiting'], icon: '🔑', is_unlocked: false, progress: null },
-          { skill_key: 'context_windows', name: 'Context Windows', description: 'Optimize context for LLMs', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['memory_ops'], unlocks: ['semantic_search'], icon: '🪟', is_unlocked: false, progress: null },
-          { skill_key: 'semantic_search', name: 'Semantic Search', description: 'Vector-based memory retrieval', category: 'advanced', tier: 3, xp_required: 300, prerequisites: ['context_windows'], unlocks: ['rag_patterns'], icon: '🔍', is_unlocked: false, progress: null },
-          { skill_key: 'rag_patterns', name: 'RAG Integration', description: 'Retrieval-augmented generation', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['semantic_search'], unlocks: ['production_patterns'], icon: '🔗', is_unlocked: false, progress: null },
-          { skill_key: 'production_patterns', name: 'Production Patterns', description: 'Production-ready architectures', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['rag_patterns'], unlocks: [], icon: '🚀', is_unlocked: false, progress: null },
-        ]
-      });
+      setSkillTree({ skills: MOCK_SKILLS });
       setTotalXp(45);
       setLevel(1);
     }
@@ -107,10 +107,7 @@ export function SkillTreeProgress() {
         </Card>
         <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
           <CardContent className="pt-6 text-center">
-            <div className="text-3xl font-bold flex items-center justify-center gap-1 text-accent-foreground">
-              <Star className="w-5 h-5" />
-              {totalXp.toLocaleString()}
-            </div>
+            <div className="text-3xl font-bold flex items-center justify-center gap-1 text-accent-foreground"><Star className="w-5 h-5" />{totalXp.toLocaleString()}</div>
             <div className="text-sm text-muted-foreground">Total XP</div>
           </CardContent>
         </Card>
@@ -122,9 +119,7 @@ export function SkillTreeProgress() {
         </Card>
         <Card className="bg-gradient-to-br from-secondary/30 to-secondary/10 border-secondary">
           <CardContent className="pt-6 text-center">
-            <div className="text-3xl font-bold flex items-center justify-center gap-1">
-              <Trophy className="w-5 h-5" />0
-            </div>
+            <div className="text-3xl font-bold flex items-center justify-center gap-1"><Trophy className="w-5 h-5" />0</div>
             <div className="text-sm text-muted-foreground">Certifications</div>
           </CardContent>
         </Card>
@@ -146,63 +141,33 @@ export function SkillTreeProgress() {
         {Object.entries(groupedByTier).map(([tier, skills]) => {
           const tierNum = Number(tier);
           const style = TIER_STYLES[tierNum] || TIER_STYLES[1];
-          
           return (
-            <motion.div 
-              key={tier} 
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: tierNum * 0.1 }}
-            >
+            <motion.div key={tier} className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: tierNum * 0.1 }}>
               <div className="flex items-center gap-3">
-                <Badge 
-                  variant="outline" 
-                  className={`bg-gradient-to-r ${style.gradient} ${style.border} px-4 py-1.5`}
-                >
-                  Tier {tier}
-                </Badge>
+                <Badge variant="outline" className={`bg-gradient-to-r ${style.gradient} ${style.border} px-4 py-1.5`}>Tier {tier}</Badge>
                 <h3 className="font-semibold text-lg">{TIER_NAMES[tierNum]}</h3>
+                <span className="text-xs text-muted-foreground">{skills.length} skills</span>
               </div>
-              
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {skills.map((skill) => {
-                  const progressPercent = skill.progress 
-                    ? Math.min(100, (skill.progress.xp_earned / skill.xp_required) * 100)
-                    : 0;
-                  
+                  const progressPercent = skill.progress ? Math.min(100, (skill.progress.xp_earned / skill.xp_required) * 100) : 0;
                   return (
                     <Card
                       key={skill.skill_key}
-                      className={`cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
-                        !skill.is_unlocked ? 'opacity-50' : ''
-                      } ${selectedSkill?.skill_key === skill.skill_key ? 'ring-2 ring-primary shadow-lg' : ''}`}
+                      className={`cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${!skill.is_unlocked ? 'opacity-50' : ''} ${selectedSkill?.skill_key === skill.skill_key ? 'ring-2 ring-primary shadow-lg' : ''}`}
                       onClick={() => setSelectedSkill(skill)}
                     >
                       <CardContent className="pt-6">
                         <div className="flex items-start justify-between mb-3">
                           <div className="text-3xl">{skill.icon}</div>
-                          {skill.progress?.is_completed ? (
-                            <CheckCircle2 className="w-5 h-5 text-primary" />
-                          ) : !skill.is_unlocked ? (
-                            <Lock className="w-5 h-5 text-muted-foreground" />
-                          ) : (
-                            <Badge variant="secondary" className="text-xs">
-                              {progressPercent.toFixed(0)}%
-                            </Badge>
-                          )}
+                          {skill.progress?.is_completed ? <CheckCircle2 className="w-5 h-5 text-primary" /> : !skill.is_unlocked ? <Lock className="w-5 h-5 text-muted-foreground" /> : <Badge variant="secondary" className="text-xs">{progressPercent.toFixed(0)}%</Badge>}
                         </div>
-                        
                         <h4 className="font-semibold mb-1">{skill.name}</h4>
                         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{skill.description}</p>
-                        
                         <Progress value={progressPercent} className="h-2 mb-2" />
-                        
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
                           <span>{skill.progress?.xp_earned || 0}/{skill.xp_required} XP</span>
-                          {skill.prerequisites.length > 0 && (
-                            <span>Requires: {skill.prerequisites.length} skill{skill.prerequisites.length > 1 ? 's' : ''}</span>
-                          )}
+                          {skill.prerequisites.length > 0 && <span>Req: {skill.prerequisites.length}</span>}
                         </div>
                       </CardContent>
                     </Card>
@@ -216,10 +181,7 @@ export function SkillTreeProgress() {
 
       {/* Selected Skill Detail */}
       {selectedSkill && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <Card className="bg-gradient-to-br from-muted/50 to-muted/20 border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
@@ -230,34 +192,20 @@ export function SkillTreeProgress() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">{selectedSkill.description}</p>
-              
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <h5 className="font-medium text-sm mb-2">Prerequisites</h5>
                   {selectedSkill.prerequisites.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedSkill.prerequisites.map(p => (
-                        <Badge key={p} variant="secondary">{p.replace(/_/g, ' ')}</Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-sm text-muted-foreground">None - Start here!</span>
-                  )}
+                    <div className="flex flex-wrap gap-2">{selectedSkill.prerequisites.map(p => <Badge key={p} variant="secondary">{p.replace(/_/g, ' ')}</Badge>)}</div>
+                  ) : <span className="text-sm text-muted-foreground">None — Start here!</span>}
                 </div>
                 <div>
                   <h5 className="font-medium text-sm mb-2">Unlocks</h5>
                   {selectedSkill.unlocks.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedSkill.unlocks.map(u => (
-                        <Badge key={u} variant="outline">{u.replace(/_/g, ' ')}</Badge>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="text-sm text-muted-foreground">Master skill - Final achievement!</span>
-                  )}
+                    <div className="flex flex-wrap gap-2">{selectedSkill.unlocks.map(u => <Badge key={u} variant="outline">{u.replace(/_/g, ' ')}</Badge>)}</div>
+                  ) : <span className="text-sm text-muted-foreground">Master skill — Final achievement!</span>}
                 </div>
               </div>
-
               <Button className="w-full" disabled={!selectedSkill.is_unlocked}>
                 <Zap className="w-4 h-4 mr-2" />
                 {selectedSkill.is_unlocked ? 'Start Learning' : 'Complete Prerequisites First'}
