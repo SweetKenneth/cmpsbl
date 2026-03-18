@@ -10,6 +10,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useNavigate } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
+import { WorkspaceOnboarding } from '@/components/onboarding/WorkspaceOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
