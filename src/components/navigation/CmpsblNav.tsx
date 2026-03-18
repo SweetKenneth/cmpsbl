@@ -95,7 +95,7 @@ export function CmpsblNav() {
 
   const navSections: NavSection[] = [
     {
-      name: "Infrastructure",
+      name: "Platform",
       icon: Layers,
       items: [
         { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
@@ -117,7 +117,7 @@ export function CmpsblNav() {
       ]
     },
     {
-      name: "Products",
+      name: "Marketplace",
       icon: Sparkles,
       items: [
         { name: "Store", href: "/store", description: "Agents, engines, plans & memories", icon: Sparkles, highlight: true },
@@ -128,7 +128,7 @@ export function CmpsblNav() {
       ]
     },
     {
-      name: "Discover",
+      name: "Explore",
       icon: Globe,
       items: [
         { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize memories", icon: Sparkles, badge: "LIVE", highlight: true },
