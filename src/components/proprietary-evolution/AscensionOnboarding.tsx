@@ -43,7 +43,7 @@ const STEPS = [
     icon: Package,
     title: '4. Export',
     subtitle: 'Ascended Memories',
-    body: 'Export crystallized capabilities as portable packs: source code in your original language, tests, documentation, and a Mini-Runtime™ engine.',
+    body: 'Export ascended capabilities as portable packs: source code in your original language, tests, documentation, and a Mini-Runtime™ engine.',
     color: 'neon-amber',
   },
 ];
