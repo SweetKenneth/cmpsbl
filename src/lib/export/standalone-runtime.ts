@@ -639,6 +639,8 @@ export interface StandaloneRuntime {
 
 /** Boot a complete standalone runtime — one line, zero infrastructure */
 export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
+  // Auto-register ascension primitive defaults on boot
+  try { import('@/lib/ascension/primitive-defaults').catch(() => {}); } catch { /* non-critical */ }
   return {
     storage: storage ?? createMemoryStorage(),
     graph: createDependencyGraph(),
