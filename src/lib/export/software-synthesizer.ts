@@ -1117,22 +1117,7 @@ return ${mod}
 `;
 }
 
-export function synthesizeLuaProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    -- Stage ${i}: ${m} — ${ops.desc}
-    for k, v in pairs(current_data) do
-        local vs = tostring(v)
-        local entropy = 0
-        for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
-        entropy = entropy / math.max(#vs, 1)
-        current_data["${m.toLowerCase()}_" .. k] = {
-            module = "${m}", op = "${ops.verb}", score = entropy * confidence, len = #vs
-        }
-    end
-    confidence = math.min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeLuaProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // C Full Synthesizer
