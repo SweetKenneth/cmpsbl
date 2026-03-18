@@ -16,6 +16,10 @@ import {
 } from './logic-synthesizer';
 import {
   synthesizeRust, synthesizeJava, synthesizeCSharp,
+  synthesizeRuby, synthesizePHP, synthesizeSwift,
+  synthesizeKotlin, synthesizeElixir, synthesizeLua,
+  synthesizeC, synthesizeCpp, synthesizeDart,
+  synthesizeZig, synthesizeScala, synthesizeHaskell,
   synthesizeRubyProcess, synthesizePHPProcess, synthesizeSwiftProcess,
   synthesizeKotlinProcess, synthesizeElixirProcess, synthesizeLuaProcess,
   synthesizeCProcess, synthesizeCppProcess, synthesizeDartProcess,
@@ -827,6 +831,9 @@ namespace CMPSBL.CrownJewels
 
 function genRuby(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Ruby', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeRuby(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 module CMPSBL
@@ -874,6 +881,9 @@ end
 
 function genPHP(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'PHP', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return synthesizePHP(a.synthesisContext);
+  }
   const cls = className(a);
   return `<?php
 ${h}
@@ -920,6 +930,9 @@ ${a.synthesisContext ? synthesizePHPProcess(a.synthesisContext) : `        forea
 
 function genSwift(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Swift', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeSwift(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 import Foundation
@@ -978,6 +991,9 @@ ${a.synthesisContext ? synthesizeSwiftProcess(a.synthesisContext) : `        for
 
 function genKotlin(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Kotlin', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeKotlin(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 data class ${cls}Config(val maxRetries: Int = 3, val timeoutMs: Int = 30000)
@@ -1025,6 +1041,9 @@ ${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        fo
 
 function genElixir(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Elixir', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeElixir(a.synthesisContext)}`;
+  }
   const mod = className(a);
   return `${h}
 defmodule CMPSBL.${mod} do
@@ -1077,6 +1096,9 @@ end
 
 function genLua(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Lua', '--');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeLua(a.synthesisContext)}`;
+  }
   const mod = className(a);
   return `${h}
 local ${mod} = {}
@@ -1663,6 +1685,9 @@ object ${cls}Driver extends App {
 
 function genC(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'C', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeC(a.synthesisContext)}`;
+  }
   const snake = snakeCase(a);
   return `${h}
 #include <stdio.h>
@@ -1729,6 +1754,9 @@ void ${snake}_info(void) {
 
 function genCpp(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'C++', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeCpp(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 #include <string>
@@ -1802,6 +1830,9 @@ ${a.synthesisContext ? synthesizeCppProcess(a.synthesisContext) : `        for (
 
 function genDart(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Dart', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeDart(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 class ${cls}Config {
@@ -1870,6 +1901,9 @@ ${a.synthesisContext ? synthesizeDartProcess(a.synthesisContext) : `    for (fin
 
 function genZig(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Zig', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeZig(a.synthesisContext)}`;
+  }
   const snake = snakeCase(a);
   return `${h}
 const std = @import("std");
@@ -1928,6 +1962,9 @@ ${a.synthesisContext ? synthesizeZigProcess(a.synthesisContext) : `        // Co
 
 function genScala(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Scala', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeScala(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 package cmpsbl.crownjewels
@@ -1983,6 +2020,9 @@ object ${cls} {
 
 function genHaskell(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Haskell', '--');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeHaskell(a.synthesisContext)}`;
+  }
   const mod = className(a);
   return `${h}
 module CMPSBL.${mod}
