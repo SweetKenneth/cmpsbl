@@ -15,6 +15,7 @@ import {
   Database, Activity, Lock, Users
 } from 'lucide-react';
 import { PublicNav } from '@/components/PublicNav';
+import { PersistentMemoryOnboarding } from '@/components/onboarding/PersistentMemoryOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { SEO } from '@/components/SEO';
@@ -40,6 +41,7 @@ const PersistentMemoryLanding = () => {
         }}
       />
       <PublicNav />
+      <PersistentMemoryOnboarding />
       
       <main className="min-h-screen bg-background">
         {/* ═══ HERO ═══ */}

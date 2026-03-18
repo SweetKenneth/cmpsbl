@@ -10,6 +10,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useNavigate } from 'react-router-dom';
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
+import { WorkspaceOnboarding } from '@/components/onboarding/WorkspaceOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -100,6 +101,7 @@ export default function Workspace() {
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
+      <WorkspaceOnboarding />
 
       <div className="min-h-screen bg-background text-foreground">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">
