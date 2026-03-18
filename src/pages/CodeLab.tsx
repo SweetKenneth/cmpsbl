@@ -104,6 +104,7 @@ export default function CodeLab() {
       />
 
       <PublicNav />
+      <CodeLabOnboarding />
 
       {/* SIGNAL FORGE — Hero Template Generator */}
       <SignalForge />
