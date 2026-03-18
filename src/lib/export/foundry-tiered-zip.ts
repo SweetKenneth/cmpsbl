@@ -10,7 +10,6 @@ import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
 import {
   generateSealedRuntime,
-  generateSealedDiscoveryEngine,
   generateSealedRuntimeReadme,
 } from './sealed-runtime-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
@@ -51,11 +50,10 @@ function getTieredSoftwareLanguages(score: number): ExportLanguage[] {
   return unlocked.length > 0 ? unlocked : RAW_FALLBACK_LANGUAGES;
 }
 
-async function loadRuntimeFiles(): Promise<{ runtime: string; engine: string }> {
-  // Use SEALED versions — never bundle raw source with proprietary internals
+async function loadRuntimeFiles(): Promise<{ runtime: string }> {
+  // Use SEALED version — Discovery Engine is NEVER bundled
   return {
     runtime: generateSealedRuntime(),
-    engine: generateSealedDiscoveryEngine(),
   };
 }
 
@@ -149,7 +147,6 @@ export async function downloadTieredFoundryZip(options: {
 
   const runtimeFolder = root.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
   runtimeFolder.file('README.md', generateSealedRuntimeReadme());
 
   let fileCount = 0;

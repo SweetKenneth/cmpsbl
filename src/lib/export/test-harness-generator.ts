@@ -485,10 +485,10 @@ CONDITIONS:
      entirely by you or any party other than CMPSBL®. The substrate origin
      must be acknowledged.
 
-RUNTIME LICENSE — The CMPSBL® Mini-Runtime™ Engine (standalone-runtime.ts
-and standalone-discovery-engine.ts) is licensed solely for use with software
-exported from the CMPSBL® Substrate. It may not be used, copied, or
-distributed for any other purpose.
+RUNTIME LICENSE — The CMPSBL® Mini-Runtime™ Engine (standalone-runtime.ts)
+is licensed solely for use with software exported from the CMPSBL® Substrate.
+It may not be used, copied, or distributed for any other purpose. The Discovery
+Engine, Memory Stream, and Ascension Reactor are never distributed.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

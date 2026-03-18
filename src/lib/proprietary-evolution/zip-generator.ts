@@ -71,21 +71,16 @@ const LANG_COMMENT: Record<string, [string, string]> = {
 // The Mini-Runtime is included as a compiled, obfuscated sealed runtime.
 // Source is NOT included — only the functional API surface.
 
-async function loadMiniRuntime(): Promise<{ runtime: string; engine: string }> {
+async function loadMiniRuntime(): Promise<{ runtime: string }> {
   try {
-    const [runtimeMod, engineMod] = await Promise.all([
-      import('@/lib/export/standalone-runtime?raw'),
-      import('@/lib/export/standalone-discovery-engine?raw'),
-    ]);
+    const runtimeMod = await import('@/lib/export/standalone-runtime?raw');
     return {
       runtime: (runtimeMod as { default: string }).default,
-      engine: (engineMod as { default: string }).default,
     };
   } catch {
     // Fallback if raw imports fail
     return {
       runtime: generateSealedRuntimeStub(),
-      engine: generateSealedEngineStub(),
     };
   }
 }
@@ -250,37 +245,8 @@ export function createRuntime() {
 }
 
 function generateSealedEngineStub(): string {
-  return `// ═══════════════════════════════════════════════════════════
-//  CMPSBL® Mini-Runtime™ Discovery Engine v1.0.0 — SEALED
-//  Portable discovery reactor for artifact analysis
-//  © 2025–2026 CMPSBL®. All rights reserved.
-// ═══════════════════════════════════════════════════════════
-//
-//  SEALED RUNTIME — Do not modify. Redistribution prohibited.
-//  See LICENSE for terms of use.
-
-import { computeCJPI, tierFromCJPI, type CJPIInput } from './standalone-runtime';
-
-export interface DiscoveryCandidate {
-  name: string;
-  chain: string[];
-  input: CJPIInput;
-}
-
-export function scoreCandidate(candidate: DiscoveryCandidate) {
-  const score = computeCJPI(candidate.input);
-  return {
-    name: candidate.name,
-    score,
-    tier: tierFromCJPI(score),
-    chain: candidate.chain,
-  };
-}
-
-export function createDiscoveryEngine() {
-  return { scoreCandidate };
-}
-`;
+  // Discovery Engine stub removed — substrate-only capability, never distributed
+  return '// Discovery Engine is a substrate-exclusive capability. See https://cmpsbl.com';
 }
 
 function generateCapabilitySource(cap: CapabilityForExport, lang: string): string {
@@ -1444,7 +1410,6 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   // _runtime/ — Sealed Mini-Runtime™ Engine
   const runtimeFolder = zip.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
   runtimeFolder.file('README.md', [
     '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
     '',
@@ -1453,11 +1418,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     '## Components',
     '',
     '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
-    '- **standalone-discovery-engine.ts** — Portable discovery reactor for artifact analysis',
     '',
     '## ⚠️ Sealed Runtime',
     '',
     'This is a sealed proprietary distribution. Redistribution as a standalone product is prohibited.',
+    'The Discovery Engine is NOT included — discovery is a substrate-only capability.',
     'See LICENSE for full terms.',
     '',
     '---',

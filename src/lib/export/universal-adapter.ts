@@ -2416,7 +2416,6 @@ without requiring the full CMPSBL® Substrate infrastructure.
 | File | Purpose |
 |------|---------|
 | \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, and pipeline orchestration |
-| \`standalone-discovery-engine.ts\` | CMPSBL® Mini-Runtime™ Discovery Engine — portable reactor for artifact analysis |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
 | \`*_test.*\` / \`tb_*.*\` | Test harnesses / testbenches for validation |
@@ -2430,11 +2429,14 @@ at the language level.
 The \`standalone-runtime.ts\` file (the **CMPSBL® Mini-Runtime™ Engine**) provides
 **optional** higher-level orchestration if you want to:
 - Score and tier artifacts using the CJPI algorithm
-- Chain multiple Crown Jewels into a discovery pipeline
+- Chain multiple Crown Jewels into an execution pipeline
 - Use the built-in circuit breaker and error recovery strategies
 
 > **TL;DR:** Each source file compiles and runs independently. The Mini-Runtime™ Engine
 > is included for advanced pipeline orchestration but is not required for basic usage.
+
+> **Note:** The Discovery Engine is a substrate-exclusive capability and is not included
+> in any export. For discovery, use the CMPSBL® Substrate at https://cmpsbl.com
 ${hasSW ? `
 ## Quick Start (Software)
 
@@ -2455,13 +2457,9 @@ result = engine.execute({"key": "value"})
 ### Using the CMPSBL® Mini-Runtime™ Engine (Advanced)
 \`\`\`typescript
 import { createRuntime } from './standalone-runtime';
-import { createDiscoveryEngine } from './standalone-discovery-engine';
 
 const runtime = createRuntime();
-const discovery = createDiscoveryEngine(runtime);
-// Pipeline multiple Crown Jewels together
-const pipeline = discovery.createPipeline([${cls}]);
-const result = await pipeline.run({ input: data });
+// Use the runtime for CJPI scoring, FSM, and pipeline orchestration
 \`\`\`
 ` : ''}${hasHDL ? `
 ## Quick Start (Hardware)
