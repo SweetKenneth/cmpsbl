@@ -1830,6 +1830,9 @@ ${a.synthesisContext ? synthesizeCppProcess(a.synthesisContext) : `        for (
 
 function genDart(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Dart', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeDart(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 class ${cls}Config {
