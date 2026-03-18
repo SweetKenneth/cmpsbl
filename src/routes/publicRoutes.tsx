@@ -136,10 +136,10 @@ export const publicRoutes = (
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />
-    <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
-    <Route path="/engine-marketplace" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/intelligence" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/engine-marketplace" element={<Navigate to="/store" replace />} />
+    <Route path="/intelligence" element={<Navigate to="/store" replace />} />
     <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
     <Route path="/licensing" element={<PhaseGateRoute><PackGate packId="pack-self-hosted"><SubstrateLicensingDownload /></PackGate></PhaseGateRoute>} />
     <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
