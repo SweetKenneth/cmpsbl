@@ -34,9 +34,9 @@ const STEPS = [
   },
   {
     icon: Diamond,
-    title: '3. Crystallize',
+    title: '3. Ascend',
     subtitle: 'Lock discoveries',
-    body: 'Review your discoveries, then crystallize them — locking successful interaction chains into deterministic, repeatable memories.',
+    body: 'Review your discoveries, then ascend them — locking successful interaction chains into deterministic, repeatable memories.',
     color: 'neon-magenta',
   },
   {
