@@ -1161,10 +1161,10 @@ serve(async (req: Request) => {
           .select('id, name, metadata, tier, description')
           .in('id', capability_ids)
           .eq('user_id', userId)
-          .eq('category', 'proprietary-crystallized');
+          .eq('category', 'proprietary-ascended');
 
         if (!capabilities || capabilities.length === 0) {
-          return jsonResponse({ success: false, error: 'No crystallized capabilities found for provided IDs' }, 404);
+          return jsonResponse({ success: false, error: 'No ascended capabilities found for provided IDs' }, 404);
         }
 
         const packId = crypto.randomUUID();
