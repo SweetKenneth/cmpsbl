@@ -4,6 +4,7 @@
  */
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
+import { UpgradeOnboarding } from '@/components/onboarding/UpgradeOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { UpgradeContent } from '@/components/store/UpgradeContent';
