@@ -95,7 +95,7 @@ export function ExportPhase() {
   const isBuilderTier = productTier === 'builder';
 
   const capabilities = useMemo(
-    () => allCapabilities.filter(c => c.cjpiScore >= MIN_EXPORT_SCORE),
+    () => allCapabilities,
     [allCapabilities]
   );
 
