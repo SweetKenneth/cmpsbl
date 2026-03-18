@@ -1718,18 +1718,15 @@ ${modules.map((m, i) => `      ("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}
     )
   }
 
+  private def primitiveExecutor(module: String, verb: String, confidence: Double): (Map[String, Any], Double, String) = {
+    val out = Map[String, Any](module.toLowerCase + "_result" -> Map("module" -> module, "verb" -> verb, "confidence" -> confidence))
+    (out, 0.02, verb + "_complete")
+  }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  private def stage${i}${m}(data: Map[String, Any], confidence: Double): (Map[String, Any], Double, String) = {
-    // ${m}: ${ops.desc}
-    val out = data.map { case (k, v) =>
-      val vs = v.toString
-      val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
-      s"${m.toLowerCase()}_$$k" -> Map[String, Any](
-        "module" -> "${m}", "op" -> "${ops.verb}", "score" -> (entropy * confidence), "len" -> vs.length
-      )
-    }
-    (out, 0.03, "${ops.verb}_complete")
+    primitiveExecutor("${m}", "${ops.verb}", confidence)
   }`;
 }).join("\n\n")}
 
