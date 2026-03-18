@@ -8,6 +8,7 @@
  */
 
 import { executePrimitive } from './primitive-executor';
+import { getPrimitive } from './primitive-registry';
 import { recordPrimitiveOutcome } from './primitive-learning';
 
 export interface PrimitiveResult {

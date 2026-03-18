@@ -32,8 +32,8 @@ const learningState = new Map<string, PrimitiveLearningRecord>();
  */
 export function recordPrimitiveOutcome(name: string, success: boolean): void {
   const key = name.toLowerCase().trim();
-  const existing = getPrimitive(key);
-  if (!existing) return;
+
+  // Always track learning state, even for unregistered primitives
 
   // Update learning state
   const record = learningState.get(key) ?? {
