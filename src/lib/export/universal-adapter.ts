@@ -2052,7 +2052,7 @@ defaultConfig = Config { maxRetries = 3, timeoutMs = 30000 }
 execute :: Config -> Map String String -> IO Result
 execute _config input = do
   start <- getTime Monotonic
-${a.synthesisContext ? synthesizeHaskellProcess(a.synthesisContext) : `  let output = process input`}
+${a.synthesisContext ? synthesizeHaskell(a.synthesisContext) : `  let output = process input`}
   let output = process input
   end <- getTime Monotonic
   let elapsed = fromIntegral (toNanoSecs end - toNanoSecs start) / 1e6
