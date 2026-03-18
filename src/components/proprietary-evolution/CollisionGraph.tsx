@@ -443,7 +443,6 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
 
       <canvas
         ref={canvasRef}
-        style={{ width: SIZE, height: SIZE }}
         className="w-full max-w-[440px] mx-auto aspect-square relative z-10"
       />
 
