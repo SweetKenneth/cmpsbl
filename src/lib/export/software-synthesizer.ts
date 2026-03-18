@@ -1543,22 +1543,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeDartProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    // Stage ${i}: ${m} — ${ops.desc}
-    final stage${i} = <String, dynamic>{};
-    for (final entry in currentData.entries) {
-      final vs = entry.value.toString();
-      final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
-      stage${i}['${m.toLowerCase()}_\${entry.key}'] = {
-        'module': '${m}', 'op': '${ops.verb}', 'score': entropy * confidence, 'len': vs.length,
-      };
-    }
-    currentData.addAll(stage${i});
-    confidence = (confidence + 0.03).clamp(0.0, 1.0);`;
-  }).join("\n");
-}
+// synthesizeDartProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Zig Full Synthesizer
