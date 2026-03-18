@@ -861,7 +861,7 @@ module CMPSBL
     def process(input)
       current_data = input.dup
       confidence = 1.0
-${a.synthesisContext ? synthesizeRubyProcess(a.synthesisContext) : `      input.each do |key, val|
+${a.synthesisContext ? synthesizeRuby(a.synthesisContext) : `      input.each do |key, val|
         val_s = val.to_s
         entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
         current_data["processed_\#{key}"] = { score: entropy, len: val_s.length }
@@ -907,7 +907,7 @@ class ${cls} {
     private function process(array $input): array {
         $currentData = $input;
         $confidence = 1.0;
-${a.synthesisContext ? synthesizePHPProcess(a.synthesisContext) : `        foreach ($input as $k => $v) {
+${a.synthesisContext ? synthesizePHP(a.synthesisContext) : `        foreach ($input as $k => $v) {
             $vs = strval($v);
             $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
             $currentData["processed_" . $k] = ['score' => $entropy, 'len' => strlen($vs)];
@@ -968,7 +968,7 @@ class ${cls} {
     private func process(input: [String: Any]) throws -> [String: Any] {
         var currentData = input
         var confidence = 1.0
-${a.synthesisContext ? synthesizeSwiftProcess(a.synthesisContext) : `        for (key, val) in input {
+${a.synthesisContext ? synthesizeSwift(a.synthesisContext) : `        for (key, val) in input {
             let vs = String(describing: val)
             let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
             currentData["processed_\\(key)"] = ["score": entropy, "len": vs.count] as [String: Any]
@@ -1019,7 +1019,7 @@ class ${cls}(private val config: ${cls}Config = ${cls}Config()) {
     private fun process(input: Map<String, Any?>): Map<String, Any?> {
         val currentData = input.toMutableMap()
         var confidence = 1.0
-${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        for ((key, value) in input) {
+${a.synthesisContext ? synthesizeKotlin(a.synthesisContext) : `        for ((key, value) in input) {
             val vs = value.toString()
             val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
             currentData["processed_$key"] = mapOf("score" to entropy, "len" to vs.length)
@@ -1070,7 +1070,7 @@ defmodule CMPSBL.${mod} do
   defp process(_engine, input) do
     current_data = input
     confidence = 1.0
-${a.synthesisContext ? synthesizeElixirProcess(a.synthesisContext) : `    result = input
+${a.synthesisContext ? synthesizeElixir(a.synthesisContext) : `    result = input
       |> Enum.map(fn {k, v} ->
         vs = to_string(v)
         entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
@@ -1124,7 +1124,7 @@ function ${mod}:process(input)
     local current_data = {}
     for k, v in pairs(input) do current_data[k] = v end
     local confidence = 1.0
-${a.synthesisContext ? synthesizeLuaProcess(a.synthesisContext) : `    for k, v in pairs(input) do
+${a.synthesisContext ? synthesizeLua(a.synthesisContext) : `    for k, v in pairs(input) do
         local vs = tostring(v)
         local entropy = 0
         for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
@@ -1723,7 +1723,7 @@ ${snake}_result_t ${snake}_execute(${snake}_t *engine, const char *input_json) {
     ${snake}_result_t result = {0};
     clock_t start = clock();
 
-${a.synthesisContext ? synthesizeCProcess(a.synthesisContext) : `    /* Core processing: entropy analysis per input byte */
+${a.synthesisContext ? synthesizeC(a.synthesisContext) : `    /* Core processing: entropy analysis per input byte */
     {
         size_t len = input_json ? strlen(input_json) : 0;
         unsigned long entropy = 0;
@@ -1808,7 +1808,7 @@ private:
         const std::unordered_map<std::string, std::string>& input) {
         auto current_data = input;
         double confidence = 1.0;
-${a.synthesisContext ? synthesizeCppProcess(a.synthesisContext) : `        for (const auto& [key, val] : input) {
+${a.synthesisContext ? synthesizeCpp(a.synthesisContext) : `        for (const auto& [key, val] : input) {
             unsigned long entropy = 0;
             for (char c : val) entropy += static_cast<unsigned char>(c);
             double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1));
@@ -1878,7 +1878,7 @@ class ${cls} {
   Future<Map<String, dynamic>> _process(Map<String, dynamic> input) async {
     var currentData = Map<String, dynamic>.from(input);
     var confidence = 1.0;
-${a.synthesisContext ? synthesizeDartProcess(a.synthesisContext) : `    for (final entry in input.entries) {
+${a.synthesisContext ? synthesizeDart(a.synthesisContext) : `    for (final entry in input.entries) {
       final vs = entry.value.toString();
       final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
       currentData['processed_\${entry.key}'] = {'score': entropy, 'len': vs.length};
@@ -1932,7 +1932,7 @@ pub const ${className(a)} = struct {
         _ = allocator;
         _ = self;
 
-${a.synthesisContext ? synthesizeZigProcess(a.synthesisContext) : `        // Core processing: entropy accumulation
+${a.synthesisContext ? synthesizeZig(a.synthesisContext) : `        // Core processing: entropy accumulation
         var entropy: u64 = 0;
         var confidence: f64 = 1.0;
         _ = allocator;
@@ -1993,7 +1993,7 @@ class ${cls}(config: ${cls}Config = ${cls}Config()) {
   private def process(input: Map[String, Any]): Map[String, Any] = {
     var currentData = input
     var confidence = 1.0
-${a.synthesisContext ? synthesizeScalaProcess(a.synthesisContext) : `    currentData = input.map { case (k, v) =>
+${a.synthesisContext ? synthesizeScala(a.synthesisContext) : `    currentData = input.map { case (k, v) =>
       val vs = v.toString
       val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
       s"processed_$$k" -> Map("score" -> entropy, "len" -> vs.length)
@@ -2052,7 +2052,7 @@ defaultConfig = Config { maxRetries = 3, timeoutMs = 30000 }
 execute :: Config -> Map String String -> IO Result
 execute _config input = do
   start <- getTime Monotonic
-${a.synthesisContext ? synthesizeHaskellProcess(a.synthesisContext) : `  let output = process input`}
+${a.synthesisContext ? synthesizeHaskell(a.synthesisContext) : `  let output = process input`}
   let output = process input
   end <- getTime Monotonic
   let elapsed = fromIntegral (toNanoSecs end - toNanoSecs start) / 1e6
