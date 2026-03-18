@@ -130,7 +130,7 @@ export function CrystallizationPhase() {
     }
   };
 
-  const ascendedCount = discoveries.filter(d => d.crystallized).length;
+  const ascendedCount = discoveries.filter(d => d.ascended).length;
   const sTier = discoveries.filter(d => d.cjpiScore >= 85);
 
   if (loading) {
