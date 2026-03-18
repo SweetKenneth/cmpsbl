@@ -173,7 +173,7 @@ export function DiscoveryPhase() {
             input: {
               candidate_node: candidateNode,
               target_node: targetNode,
-              permutation_depth: 5,
+              permutation_depth: 7,
             },
           },
         });
