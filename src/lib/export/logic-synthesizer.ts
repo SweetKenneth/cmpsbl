@@ -16,6 +16,8 @@
 
 import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } from './canonical-runtime-contract';
 import { moduleOps } from './bridge-adapter';
+// Note: bridge-adapter uses `import type { SynthesisContext }` from this file,
+// which is erased at runtime, so no circular dependency at execution time.
 
 export interface SynthesisContext {
   name: string;
