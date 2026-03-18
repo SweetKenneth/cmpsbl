@@ -19,15 +19,14 @@ const CANONICAL_ONLY_PATTERNS = [
 ];
 
 describe('Anti-Drift: Canonical Runtime Architecture', () => {
-  it('software-synthesizer should not contain CJPI weights', async () => {
+  const ctx = {
+    name: 'TestPipeline', description: 'test', category: 'cognitive',
+    moduleChain: ['BRAIN', 'MEMORY'], entryCapability: 'analyze',
+    exitCapability: 'persist', errorStrategy: 'retry', maxExecutionMs: 5000, cjpi: 85,
+  };
+
+  it('software-synthesizer bridges should not contain canonical-only patterns', async () => {
     const mod = await import('../software-synthesizer');
-    // Generate a sample bridge
-    const ctx = {
-      name: 'TestPipeline', description: 'test', category: 'cognitive',
-      moduleChain: ['BRAIN', 'MEMORY'], entryCapability: 'analyze',
-      exitCapability: 'persist', errorStrategy: 'retry', maxExecutionMs: 5000, cjpi: 85,
-    };
-    
     const rustCode = mod.synthesizeRust(ctx);
     const javaCode = mod.synthesizeJava(ctx);
     const phpCode = mod.synthesizePHP(ctx);
@@ -36,7 +35,19 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
       for (const pattern of CANONICAL_ONLY_PATTERNS) {
         expect(code).not.toMatch(pattern);
       }
-      // Must identify as bridge
+      expect(code.toLowerCase()).toContain('bridge');
+    }
+  });
+
+  it('Python and Go bridges should not contain canonical-only patterns', async () => {
+    const mod = await import('../logic-synthesizer');
+    const pyCode = mod.synthesizePython(ctx);
+    const goCode = mod.synthesizeGo(ctx);
+    
+    for (const code of [pyCode, goCode]) {
+      for (const pattern of CANONICAL_ONLY_PATTERNS) {
+        expect(code).not.toMatch(pattern);
+      }
       expect(code.toLowerCase()).toContain('bridge');
     }
   });
