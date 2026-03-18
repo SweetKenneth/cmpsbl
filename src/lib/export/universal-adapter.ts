@@ -2416,34 +2416,33 @@ ${fileList}
 
 ${langList}
 
-## Architecture & Runtime
+## Architecture — One Runtime, Many Bridges
 
-This bundle is **self-contained** — it includes everything needed to run standalone,
-without requiring the full CMPSBL® Substrate infrastructure.
+This bundle follows the **CMPSBL® One Runtime, Many Bridges** architecture:
+
+- **TypeScript**: Contains the full canonical Mini-Runtime™ (CJPI, tiering, FSM, saga)
+- **All other languages**: Bridge adapters that route execution to the canonical runtime
+  when configured, with deterministic local fallback for offline operation
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, and pipeline orchestration |
+| \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — the single canonical runtime |
+| \`*.py / *.go / *.rs / etc\` | Bridge adapters — metadata + remote-first + fallback |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
 | \`*_test.*\` / \`tb_*.*\` | Test harnesses / testbenches for validation |
 
-### Pipeline Dependencies
+### Execution Modes
 
-All pipeline logic (state machines, FIFO buffers, transform stages) is **embedded
-directly in each exported source file** — there are no external runtime dependencies
-at the language level.
+All bridge adapters operate in one of three modes:
+- **network**: Canonical runtime remote/central (when configured + stable)
+- **hybrid**: Try canonical runtime first, then deterministic fallback (default)
+- **offline**: Deterministic local fallback only (no endpoint or unavailable)
 
-The \`standalone-runtime.ts\` file (the **CMPSBL® Mini-Runtime™ Engine**) provides
-**optional** higher-level orchestration if you want to:
-- Score and tier artifacts using the CJPI algorithm
-- Chain multiple Crown Jewels into an execution pipeline
-- Use the built-in circuit breaker and error recovery strategies
-
-> **TL;DR:** Each source file compiles and runs independently. The Mini-Runtime™ Engine
-> is included for advanced pipeline orchestration but is not required for basic usage.
+> **TL;DR:** TypeScript exports include the real runtime. All other language exports
+> are thin bridge adapters that delegate to the canonical runtime when available.
 
 > **Note:** The Discovery Engine is a substrate-exclusive capability and is not included
 > in any export. For discovery, use the CMPSBL® Substrate at https://cmpsbl.com
