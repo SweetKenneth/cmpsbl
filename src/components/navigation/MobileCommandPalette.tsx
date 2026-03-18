@@ -105,7 +105,7 @@ const ALL_ROUTES: SearchableRoute[] = [
 ];
 
 // Sections in display order for grouped results
-const SECTION_ORDER = ["Platform", "Product", "Developers", "Tools", "Company", "Solutions", "Resources", "Admin", "Account", "Legal"];
+const SECTION_ORDER = ["Infrastructure", "Product", "Build", "Tools", "Discover", "Solutions", "Resources", "Admin", "Account", "Legal"];
 
 interface Props {
   open: boolean;
