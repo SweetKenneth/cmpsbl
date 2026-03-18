@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
+import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
 import { UpgradeContent } from "@/components/store/UpgradeContent";
