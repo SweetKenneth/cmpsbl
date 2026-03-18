@@ -926,7 +926,7 @@ ${a.synthesisContext ? synthesizePHPProcess(a.synthesisContext) : `        forea
 
 function genSwift(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Swift', '//');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeSwift(a.synthesisContext)}`;
   }
   const cls = className(a);
