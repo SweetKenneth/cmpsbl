@@ -124,7 +124,7 @@ export const publicRoutes = (
     <Route path="/changelog" element={<Changelog />} />
     <Route path="/codelab" element={<CodeLab />} />
     <Route path="/workspace" element={<Workspace />} />
-    <Route path="/templates" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/templates" element={<Navigate to="/store" replace />} />
     <Route path="/forge" element={<Navigate to="/" replace />} />
     <Route path="/forge/catalog" element={<Navigate to="/" replace />} />
     <Route path="/agency" element={<Navigate to="/" replace />} />
