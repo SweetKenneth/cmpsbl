@@ -51,6 +51,10 @@ export function recordPrimitiveOutcome(name: string, success: boolean): void {
   record.lastUpdated = Date.now();
   learningState.set(key, record);
 
+  // Update registry success rate only if primitive is registered
+  const existing = getPrimitive(key);
+  if (!existing) return;
+
   // Compute EMA success rate
   const currentRate = existing.successRate ?? 0.5;
   const observation = success ? 1.0 : 0.0;
