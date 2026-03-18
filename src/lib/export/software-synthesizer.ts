@@ -239,25 +239,7 @@ mod tests {
 function rustStage(mod: string, idx: number, _total: number): string {
   const ops = moduleOps(mod);
   return `    fn stage_${idx}_${mod.toLowerCase()}(data: &HashMap<String, String>, confidence: f64) -> StageResult {
-        let start = Instant::now();
-        // ${mod}: ${ops.desc}
-        let mut output = HashMap::new();
-        for (key, val) in data {
-            let entropy: u64 = val.bytes().fold(0u64, |acc, b| acc.wrapping_add(b as u64));
-            let score = (entropy as f64 / val.len().max(1) as f64) * confidence;
-            output.insert(
-                format!("${mod.toLowerCase()}_{}", key),
-                format!("{{\\"module\\":\\"${mod}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":{:.4},\\"len\\":{}}}", score, val.len()),
-            );
-        }
-        StageResult {
-            stage: "${ops.verb}_${mod.toLowerCase()}".into(),
-            module: "${mod}".into(),
-            success: true,
-            data: output,
-            confidence_delta: 0.03,
-            duration_ms: start.elapsed().as_secs_f64() * 1000.0,
-        }
+        Self::primitive_executor("${mod}", "${ops.verb}", data, confidence)
     }`;
 }
 
