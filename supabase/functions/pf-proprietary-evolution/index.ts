@@ -2,7 +2,7 @@
  * pf-proprietary-evolution — Proprietary Evolution Lifecycle Engine
  * 
  * Handles:
- *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-6 depth)
+ *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-8 depth)
  *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
  *   - crystallize.lock: Lock a discovered capability into deterministic memory
  *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
@@ -573,7 +573,7 @@ function collideNodesMultiChain(
     n !== targetNode && (NODE_SECTOR[n] || 'unknown') === targetSector
   );
 
-  for (let chainLen = 3; chainLen <= Math.min(6, permutationDepth + 2); chainLen++) {
+  for (let chainLen = 3; chainLen <= Math.min(8, permutationDepth + 2); chainLen++) {
     const chainCandidateCount = Math.min(3, chainLen);
     
     for (let ci = 0; ci < chainCandidateCount; ci++) {
@@ -605,7 +605,7 @@ function collideNodesMultiChain(
       
       let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus + variance;
       
-      const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : 96;
+      const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : chainLen === 6 ? 96 : chainLen === 7 ? 98 : 99;
       cjpi = Math.max(30, Math.min(cjpi, maxForDepth));
 
       if (cjpi >= 35) {
@@ -1067,7 +1067,7 @@ serve(async (req: Request) => {
       }
 
       if (action === 'batch-lock') {
-        const min_cjpi = input.min_cjpi != null ? validatePositiveInt(input.min_cjpi, 99) : 70;
+        const min_cjpi = input.min_cjpi != null ? validatePositiveInt(input.min_cjpi, 99) : 1;
 
         const { data: discoveries } = await supabase
           .from('artifact_registry')

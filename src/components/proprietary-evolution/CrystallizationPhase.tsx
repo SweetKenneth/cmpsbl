@@ -96,7 +96,7 @@ export function CrystallizationPhase() {
         body: {
           module: 'crystallize',
           action: 'batch-lock',
-          input: { min_cjpi: 70 },
+          input: { min_cjpi: 1 },
         },
       });
 
@@ -156,7 +156,7 @@ export function CrystallizationPhase() {
       {/* Batch Action */}
       <div className="flex items-center justify-between">
         <p className="text-xs text-muted-foreground font-mono">
-          {discoveries.filter(d => !d.crystallized && d.cjpiScore >= 70).length} eligible for crystallization
+          {discoveries.filter(d => !d.crystallized).length} eligible for crystallization
         </p>
         <Button
           size="sm"
@@ -169,7 +169,7 @@ export function CrystallizationPhase() {
           ) : (
             <Diamond className="w-3 h-3" />
           )}
-          Crystallize All (CJPI≥70)
+          Crystallize All
         </Button>
       </div>
 

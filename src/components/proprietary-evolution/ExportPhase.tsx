@@ -50,7 +50,7 @@ interface UserSourceFile {
   content: string;
 }
 
-const MIN_EXPORT_SCORE = 68;
+// No minimum export score — all crystallized capabilities are exportable
 
 /**
  * Map the ingested language label to the ExportLanguage key.
@@ -95,7 +95,7 @@ export function ExportPhase() {
   const isBuilderTier = productTier === 'builder';
 
   const capabilities = useMemo(
-    () => allCapabilities.filter(c => c.cjpiScore >= MIN_EXPORT_SCORE),
+    () => allCapabilities,
     [allCapabilities]
   );
 
@@ -332,7 +332,7 @@ export function ExportPhase() {
         <Package className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No export-ready capabilities</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Capabilities must reach CJPI 68+ to qualify for export. Complete deeper discovery cycles to raise scores.
+          Crystallize discoveries first to make them available for export.
         </p>
       </div>
     );
@@ -465,7 +465,7 @@ export function ExportPhase() {
       {/* Capability List — Individual export + discard */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          Your Vault ({capabilities.length} at CJPI 68+)
+          Your Vault ({capabilities.length} crystallized)
         </h3>
         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
           {capabilities.map(c => (

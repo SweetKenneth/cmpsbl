@@ -45,7 +45,7 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
-const CJPI_THRESHOLD = 68;
+// No CJPI threshold — all discoveries are surfaced for the user to curate
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
@@ -121,8 +121,8 @@ export function DiscoveryPhase() {
           };
         });
         setResults(mapped);
-        const existing90 = mapped.find(r => r.cjpiScore >= CJPI_THRESHOLD);
-        if (existing90) setDiscoveryHit(existing90);
+        const bestExisting = mapped.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
+        if (bestExisting) setDiscoveryHit(bestExisting);
 
         // Try to get surface from discovery metadata
         if (!candidateSurface && data.length > 0) {
@@ -173,7 +173,7 @@ export function DiscoveryPhase() {
             input: {
               candidate_node: candidateNode,
               target_node: targetNode,
-              permutation_depth: 5,
+              permutation_depth: 7,
             },
           },
         });
@@ -208,8 +208,8 @@ export function DiscoveryPhase() {
             }));
             setResults(prev => [...newResults, ...prev]);
 
-            const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
-            if (hit) {
+            const hit = newResults.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
+            if (hit && hit.cjpiScore >= 70) {
               foundHit = hit;
               setDiscoveryHit(hit);
               toast({
@@ -217,6 +217,8 @@ export function DiscoveryPhase() {
                 description: `${hit.capability} — ${hit.chainDepth}-node chain, CJPI ${hit.cjpiScore}`,
               });
               break;
+            } else if (hit) {
+              setDiscoveryHit(prev => (!prev || hit.cjpiScore > prev.cjpiScore) ? hit : prev);
             }
           }
         }
@@ -225,7 +227,7 @@ export function DiscoveryPhase() {
       if (!abortRef.current && !foundHit) {
         toast({
           title: 'Collision sweep complete',
-          description: `Tested ${shuffledNodes.length} nodes. No CJPI ≥ ${CJPI_THRESHOLD} — try re-ingesting with richer code.`,
+          description: `Tested ${shuffledNodes.length} nodes. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
         });
       }
     } catch (err) {
@@ -387,11 +389,11 @@ export function DiscoveryPhase() {
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
           <div className="w-2 h-2 rounded-full bg-primary" />
           <span className="text-xs font-mono text-primary">Ψ₄₁ {node41DisplayName}</span>
-          <span className="text-[10px] text-muted-foreground">× 40 nodes × 2-6 depth</span>
+          <span className="text-[10px] text-muted-foreground">× 40 nodes × 2-8 depth</span>
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">
-          <span className="text-[9px] font-mono text-muted-foreground">Target: CJPI ≥ {CJPI_THRESHOLD}</span>
+          <span className="text-[9px] font-mono text-muted-foreground">All CJPI levels eligible</span>
         </div>
 
         <div className="flex-1" />
@@ -489,7 +491,7 @@ export function DiscoveryPhase() {
 
                   <span className={cn(
                     "text-xs font-mono font-bold shrink-0",
-                    r.cjpiScore >= CJPI_THRESHOLD ? "text-amber-400" : r.cjpiScore >= 80 ? "text-purple-400" : r.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
+                    r.cjpiScore >= 85 ? "text-amber-400" : r.cjpiScore >= 65 ? "text-purple-400" : r.cjpiScore >= 45 ? "text-primary" : "text-muted-foreground"
                   )}>
                     {r.cjpiScore}
                   </span>
