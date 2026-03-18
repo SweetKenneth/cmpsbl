@@ -1723,7 +1723,7 @@ ${snake}_result_t ${snake}_execute(${snake}_t *engine, const char *input_json) {
     ${snake}_result_t result = {0};
     clock_t start = clock();
 
-${a.synthesisContext ? synthesizeCProcess(a.synthesisContext) : `    /* Core processing: entropy analysis per input byte */
+${a.synthesisContext ? synthesizeC(a.synthesisContext) : `    /* Core processing: entropy analysis per input byte */
     {
         size_t len = input_json ? strlen(input_json) : 0;
         unsigned long entropy = 0;
