@@ -1,10 +1,17 @@
 /**
- * Logic Synthesizer — Generates real, runnable process() implementations
- * for discovered artifacts based on their module chain, category, and capabilities.
+ * CMPSBL® Logic Synthesizer
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates executable implementations for discovered artifacts.
  * 
- * These are NOT stubs. Each category produces a fully functional pipeline
- * that performs real computation: validation, transformation, scoring,
- * state management, and output formatting.
+ * ARCHITECTURE: One Runtime, Many Bridges.
+ *   - TypeScript: CANONICAL RUNTIME — full pipeline with real computation
+ *   - Python: BRIDGE ADAPTER — routes to canonical runtime, deterministic fallback
+ *   - Go: BRIDGE ADAPTER — routes to canonical runtime, deterministic fallback
+ * 
+ * Non-TS languages do NOT duplicate CJPI weights, tier thresholds,
+ * saga orchestration, or dependency graph internals.
+ * 
+ * © CMPSBL® — All rights reserved.
  */
 
 export interface SynthesisContext {
@@ -203,177 +210,196 @@ export function create${cls}(config?: Partial<${cls}Config>): ${cls} {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// Python Logic Generator
+// Python Bridge Adapter
 // ═══════════════════════════════════════════════════════════════════
 
 export function synthesizePython(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
   const snake = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
-  const stages = modules.map((m, i) => buildPyStage(m, i, modules.length, ctx));
+  const CANONICAL_VERSION = '14.3.0';
+  const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
 
   return `"""
-${ctx.name}
+${ctx.name} — CMPSBL® Bridge Adapter (Python)
 ${ctx.description}
 
 Module Chain: ${modules.join(' → ')}
 Category: ${ctx.category} | CJPI: ${ctx.cjpi}
-Entry: ${ctx.entryCapability} → Exit: ${ctx.exitCapability}
-Error Strategy: ${ctx.errorStrategy}
 
-Fully synthesized pipeline — zero external dependencies.
+This is a BRIDGE ADAPTER, not a standalone runtime.
+Runtime logic lives in the canonical TypeScript Mini-Runtime™.
+This adapter routes execution to the canonical runtime when available,
+falling back to deterministic local output when offline.
+
+Canonical Runtime Version: ${CANONICAL_VERSION}
+© CMPSBL® — All rights reserved.
 """
 
 import time
-import hashlib
 import json
-import math
-import statistics
+import urllib.request
+import urllib.error
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Callable
-from enum import Enum
+from typing import Any, Dict, List, Optional
 
-class ErrorStrategy(Enum):
-    RETRY = "retry"
-    SKIP = "skip"
-    ABORT = "abort"
-    ROLLBACK = "rollback"
-    FALLBACK = "fallback"
+BRIDGE_META = {
+    "name": "${ctx.name}",
+    "cjpi": ${ctx.cjpi},
+    "category": "${ctx.category}",
+    "module_chain": ${JSON.stringify(modules)},
+    "bridge_type": "hybrid",
+    "canonical_version": "${CANONICAL_VERSION}",
+    "default_endpoint": "${CANONICAL_ENDPOINT}",
+    "offline_capable": True,
+}
+
+STAGES = [
+${modules.map((m, i) => {
+  const verbs: Record<string, string> = {
+    BRAIN: 'analyze', MEMORY: 'persist', CORTEX: 'orchestrate', DREAM: 'synthesize',
+    DEFENSE: 'validate', ACCESS: 'authorize', ANALYTICS: 'aggregate', VISION: 'observe',
+    ORACLE: 'predict', EVOLUTION: 'evolve', GOVERNANCE: 'enforce', AUDIT: 'log',
+    DECODE: 'transform', NEXUS: 'route', NERVE: 'signal', IDENTITY: 'fingerprint',
+    FORGE: 'compose', LINGUA: 'translate', COMPASS: 'geolocate', ECHO: 'simulate',
+    TREATY: 'negotiate', HARVEST: 'ingest', REFLEX: 'react', SYSTEM: 'monitor',
+    MEDIC: 'heal', RIPPLE: 'propagate',
+  };
+  const verb = verbs[m] || 'process';
+  return `    {"name": "${verb}_${m.toLowerCase()}", "module": "${m}", "verb": "${verb}"}`;
+}).join(',\n')}
+]
+
 
 @dataclass
-class StageResult:
-    stage: str
+class StageTrace:
     module: str
-    success: bool
-    data: Dict[str, Any]
-    confidence_delta: float
+    verb: str
+    status: str
     duration_ms: float
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    depth: str  # "remote" | "local" | "fallback"
+
 
 @dataclass
-class ${cls}Config:
-    max_retries: int = 3
-    timeout_ms: int = ${ctx.maxExecutionMs}
-    confidence_threshold: float = 0.6
-    error_strategy: ErrorStrategy = ErrorStrategy.${ctx.errorStrategy.toUpperCase()}
-    telemetry: bool = False
-    on_stage_complete: Optional[Callable] = None
-    on_error: Optional[Callable] = None
-
-@dataclass
-class ${cls}Result:
+class BridgeResult:
     success: bool
-    data: Optional[Any] = None
+    data: Dict[str, Any] = field(default_factory=dict)
     error: Optional[str] = None
     latency_ms: float = 0.0
     confidence: float = 0.0
-    pipeline_trace: List[StageResult] = field(default_factory=list)
+    trace: List[StageTrace] = field(default_factory=list)
     stages_completed: int = 0
     total_stages: int = 0
-    entry_point: str = "${ctx.entryCapability}"
-    exit_point: str = "${ctx.exitCapability}"
+    runtime_mode: str = "hybrid"
+    bridge_type: str = "hybrid"
 
 
 class ${cls}:
-    """${ctx.description}"""
+    """${ctx.description} — CMPSBL® Bridge Adapter (Python)"""
 
-    def __init__(self, config: Optional[${cls}Config] = None):
-        self.config = config or ${cls}Config()
+    def __init__(self, endpoint: Optional[str] = BRIDGE_META["default_endpoint"]):
+        self._endpoint = endpoint
+        self._runtime_mode = "hybrid" if endpoint else "offline"
         self._execution_count = 0
-        self._total_latency_ms = 0.0
         self._success_count = 0
 
-    def execute(self, input_data: Dict[str, Any]) -> ${cls}Result:
+    def configure_endpoint(self, url: Optional[str]) -> None:
+        self._endpoint = url
+        self._runtime_mode = "hybrid" if url else "offline"
+
+    @property
+    def runtime_mode(self) -> str:
+        return self._runtime_mode
+
+    def execute(self, input_data: Dict[str, Any] = None) -> BridgeResult:
+        if input_data is None:
+            input_data = {}
         self._execution_count += 1
         start = time.perf_counter()
-        trace: List[StageResult] = []
+        data = dict(input_data)
         confidence = 1.0
-        current_data = dict(input_data)
-        stages_completed = 0
+        trace: List[StageTrace] = []
+        completed = 0
 
-        pipeline = self._build_pipeline()
-
-        for stage_name, stage_module, stage_fn in pipeline:
-            stage_start = time.perf_counter()
+        # Attempt remote canonical runtime
+        if self._endpoint and self._runtime_mode != "offline":
             try:
-                result = self._execute_with_retry(stage_fn, current_data, confidence, stage_name)
-                confidence = min(1.0, max(0.0, confidence + result.confidence_delta))
-                current_data.update(result.data)
-                stages_completed += 1
-                trace.append(result)
+                payload = json.dumps({
+                    "name": BRIDGE_META["name"],
+                    "data": data,
+                    "confidence": confidence,
+                    "meta": {
+                        "runtimeType": "portable",
+                        "version": BRIDGE_META["canonical_version"],
+                    },
+                }).encode("utf-8")
+                req = urllib.request.Request(
+                    self._endpoint,
+                    data=payload,
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    if resp.status == 200:
+                        self._success_count += 1
+                        return BridgeResult(**json.loads(resp.read()))
+            except Exception:
+                pass  # Remote unavailable — fall through to local
 
-                if self.config.on_stage_complete:
-                    self.config.on_stage_complete(stage_name, result)
-
-                if confidence < self.config.confidence_threshold:
-                    elapsed = (time.perf_counter() - start) * 1000
-                    return ${cls}Result(
-                        success=False, data=current_data,
-                        error=f"Confidence below threshold at '{stage_name}' ({confidence:.3f})",
-                        latency_ms=elapsed, confidence=confidence,
-                        pipeline_trace=trace, stages_completed=stages_completed,
-                        total_stages=len(pipeline)
-                    )
-            except Exception as e:
-                if self.config.on_error:
-                    self.config.on_error(e, stage_name)
-                trace.append(StageResult(
-                    stage=stage_name, module=stage_module, success=False,
-                    data={}, confidence_delta=-0.2,
-                    duration_ms=(time.perf_counter() - stage_start) * 1000,
-                    metadata={"error": str(e)}
-                ))
-                ${generatePyErrorHandling(ctx.errorStrategy)}
+        # Deterministic local fallback
+        for stage in STAGES:
+            stage_start = time.perf_counter()
+            data[stage["module"].lower() + "_result"] = {
+                "module": stage["module"],
+                "verb": stage["verb"],
+                "confidence": round(confidence, 4),
+                "bridge": "python",
+                "mode": self._runtime_mode,
+            }
+            confidence = min(1.0, confidence + 0.02)
+            trace.append(StageTrace(
+                module=stage["module"], verb=stage["verb"],
+                status="success",
+                duration_ms=round((time.perf_counter() - stage_start) * 1000, 3),
+                depth="fallback",
+            ))
+            completed += 1
 
         self._success_count += 1
         elapsed = (time.perf_counter() - start) * 1000
-        self._total_latency_ms += elapsed
-        return ${cls}Result(
-            success=True, data=current_data, latency_ms=elapsed,
-            confidence=confidence, pipeline_trace=trace,
-            stages_completed=stages_completed, total_stages=len(pipeline)
+
+        return BridgeResult(
+            success=True, data=data, latency_ms=round(elapsed, 2),
+            confidence=confidence, trace=trace,
+            stages_completed=completed, total_stages=len(STAGES),
+            runtime_mode=self._runtime_mode, bridge_type="hybrid",
         )
 
-    def _execute_with_retry(self, fn, data, confidence, stage_name):
-        attempts = 0
-        max_attempts = self.config.max_retries if self.config.error_strategy == ErrorStrategy.RETRY else 1
-        while attempts < max_attempts:
-            try:
-                return fn(data, confidence)
-            except Exception:
-                attempts += 1
-                if attempts >= max_attempts:
-                    raise
-                time.sleep(min(1.0 * (2 ** attempts), 10.0))
-        raise RuntimeError(f"Stage '{stage_name}' exhausted retries")
+    def validate(self) -> bool:
+        return BRIDGE_META["cjpi"] > 0 and len(BRIDGE_META["module_chain"]) > 0
 
-    def _build_pipeline(self):
-        return [
-${stages.join(',\n')}
-        ]
-
-${buildPyStageImpls(modules, ctx)}
+    @property
+    def meta(self) -> Dict[str, Any]:
+        return {**BRIDGE_META, "runtime_mode": self._runtime_mode}
 
     @property
     def stats(self) -> Dict[str, Any]:
         return {
-            "name": "${ctx.name}",
-            "cjpi": ${ctx.cjpi},
-            "category": "${ctx.category}",
-            "module_chain": ${JSON.stringify(modules)},
+            "name": BRIDGE_META["name"],
+            "cjpi": BRIDGE_META["cjpi"],
+            "bridge_type": BRIDGE_META["bridge_type"],
+            "runtime_mode": self._runtime_mode,
             "execution_count": self._execution_count,
             "success_rate": self._success_count / self._execution_count if self._execution_count > 0 else 0,
-            "avg_latency_ms": self._total_latency_ms / self._execution_count if self._execution_count > 0 else 0,
         }
 
     def reset(self):
         self._execution_count = 0
-        self._total_latency_ms = 0.0
         self._success_count = 0
 
 
-def create_${snake}(config=None):
-    return ${cls}(config)
+def create_${snake}(endpoint=None):
+    return ${cls}(endpoint=endpoint)
 
 
 if __name__ == "__main__":
@@ -386,6 +412,8 @@ if __name__ == "__main__":
         "latency_ms": round(result.latency_ms, 2),
         "stages_completed": result.stages_completed,
         "total_stages": result.total_stages,
+        "runtime_mode": result.runtime_mode,
+        "bridge_type": result.bridge_type,
         "data": result.data, "error": result.error,
     }
     print(json.dumps(output, indent=2, default=str))
@@ -394,223 +422,235 @@ if __name__ == "__main__":
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// Go Logic Generator
+// Go Bridge Adapter
 // ═══════════════════════════════════════════════════════════════════
 
 export function synthesizeGo(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
   const pkg = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
+  const CANONICAL_VERSION = '14.3.0';
+  const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
 
-  return `// ${ctx.name}
+  const moduleVerbs: Record<string, string> = {
+    BRAIN: 'analyze', MEMORY: 'persist', CORTEX: 'orchestrate', DREAM: 'synthesize',
+    DEFENSE: 'validate', ACCESS: 'authorize', ANALYTICS: 'aggregate', VISION: 'observe',
+    ORACLE: 'predict', EVOLUTION: 'evolve', GOVERNANCE: 'enforce', AUDIT: 'log',
+    DECODE: 'transform', NEXUS: 'route', NERVE: 'signal', IDENTITY: 'fingerprint',
+    FORGE: 'compose', LINGUA: 'translate', COMPASS: 'geolocate', ECHO: 'simulate',
+    TREATY: 'negotiate', HARVEST: 'ingest', REFLEX: 'react', SYSTEM: 'monitor',
+    MEDIC: 'heal', RIPPLE: 'propagate',
+  };
+
+  return `// ${ctx.name} — CMPSBL® Bridge Adapter (Go)
 // ${ctx.description}
 //
 // Module Chain: ${modules.join(' → ')}
 // Category: ${ctx.category} | CJPI: ${ctx.cjpi}
-// Entry: ${ctx.entryCapability} → Exit: ${ctx.exitCapability}
-// Error Strategy: ${ctx.errorStrategy}
 //
-// Fully synthesized pipeline — zero external dependencies.
+// This is a BRIDGE ADAPTER, not a standalone runtime.
+// Runtime logic lives in the canonical TypeScript Mini-Runtime™.
+// This adapter routes execution to the canonical runtime when available,
+// falling back to deterministic local output when offline.
+//
+// Canonical Runtime Version: ${CANONICAL_VERSION}
+// © CMPSBL® — All rights reserved.
 
 package ${pkg}
 
 import (
-\t"crypto/sha256"
-\t"encoding/hex"
+\t"bytes"
 \t"encoding/json"
 \t"fmt"
 \t"math"
-\t"sort"
-\t"strings"
+\t"net/http"
 \t"sync"
 \t"time"
 )
 
-type ErrorStrategy string
-
-const (
-\tRetry    ErrorStrategy = "retry"
-\tSkip     ErrorStrategy = "skip"
-\tAbort    ErrorStrategy = "abort"
-\tRollback ErrorStrategy = "rollback"
-\tFallback ErrorStrategy = "fallback"
-)
-
-type Config struct {
-\tMaxRetries          int           \`json:"max_retries"\`
-\tTimeoutMs           int           \`json:"timeout_ms"\`
-\tConfidenceThreshold float64       \`json:"confidence_threshold"\`
-\tErrorStrategy       ErrorStrategy \`json:"error_strategy"\`
-\tTelemetry           bool          \`json:"telemetry"\`
+// BridgeMeta — capability metadata for this bridge adapter
+var BridgeMeta = map[string]interface{}{
+\t"name":              "${ctx.name}",
+\t"cjpi":              ${ctx.cjpi},
+\t"category":          "${ctx.category}",
+\t"module_chain":      []string{${modules.map(m => `"${m}"`).join(', ')}},
+\t"bridge_type":       "hybrid",
+\t"canonical_version": "${CANONICAL_VERSION}",
+\t"default_endpoint":  "${CANONICAL_ENDPOINT}",
+\t"offline_capable":   true,
 }
 
-func DefaultConfig() Config {
-\treturn Config{
-\t\tMaxRetries: 3, TimeoutMs: ${ctx.maxExecutionMs},
-\t\tConfidenceThreshold: 0.6, ErrorStrategy: ${goErrorStrategy(ctx.errorStrategy)},
-\t\tTelemetry: false,
-\t}
-}
-
-type StageResult struct {
-\tStage           string                 \`json:"stage"\`
-\tModule          string                 \`json:"module"\`
-\tSuccess         bool                   \`json:"success"\`
-\tData            map[string]interface{} \`json:"data"\`
-\tConfidenceDelta float64                \`json:"confidence_delta"\`
-\tDurationMs      float64                \`json:"duration_ms"\`
-\tMetadata        map[string]interface{} \`json:"metadata"\`
-}
-
-type Result struct {
-\tSuccess         bool           \`json:"success"\`
-\tData            interface{}    \`json:"data,omitempty"\`
-\tError           string         \`json:"error,omitempty"\`
-\tLatencyMs       float64        \`json:"latency_ms"\`
-\tConfidence      float64        \`json:"confidence"\`
-\tPipelineTrace   []StageResult  \`json:"pipeline_trace"\`
-\tStagesCompleted int            \`json:"stages_completed"\`
-\tTotalStages     int            \`json:"total_stages"\`
-\tEntryPoint      string         \`json:"entry_point"\`
-\tExitPoint       string         \`json:"exit_point"\`
-}
-
-type ${cls} struct {
-\tconfig         Config
-\tmu             sync.Mutex
-\texecutionCount int
-\tsuccessCount   int
-\ttotalLatencyMs float64
-}
-
-func New${cls}(config ...Config) *${cls} {
-\tcfg := DefaultConfig()
-\tif len(config) > 0 {
-\t\tcfg = config[0]
-\t}
-\treturn &${cls}{config: cfg}
-}
-
-func (e *${cls}) Execute(input map[string]interface{}) Result {
-\te.mu.Lock()
-\te.executionCount++
-\te.mu.Unlock()
-
-\tstart := time.Now()
-\ttrace := make([]StageResult, 0)
-\tconfidence := 1.0
-\tcurrentData := make(map[string]interface{})
-\tfor k, v := range input {
-\t\tcurrentData[k] = v
-\t}
-\tstagesCompleted := 0
-
-\tpipeline := e.buildPipeline()
-
-\tfor _, stage := range pipeline {
-\t\tstageStart := time.Now()
-\t\tresult, err := e.executeStage(stage, currentData, confidence)
-\t\tif err != nil {
-\t\t\ttrace = append(trace, StageResult{
-\t\t\t\tStage: stage.Name, Module: stage.Module, Success: false,
-\t\t\t\tData: map[string]interface{}{}, ConfidenceDelta: -0.2,
-\t\t\t\tDurationMs: float64(time.Since(stageStart).Milliseconds()),
-\t\t\t\tMetadata: map[string]interface{}{"error": err.Error()},
-\t\t\t})
-\t\t\t${generateGoErrorHandling(ctx.errorStrategy)}
-\t\t}
-\t\tconfidence = math.Min(1.0, math.Max(0, confidence+result.ConfidenceDelta))
-\t\tfor k, v := range result.Data {
-\t\t\tcurrentData[k] = v
-\t\t}
-\t\tstagesCompleted++
-\t\ttrace = append(trace, result)
-
-\t\tif confidence < e.config.ConfidenceThreshold {
-\t\t\treturn Result{
-\t\t\t\tSuccess: false, Data: currentData,
-\t\t\t\tError: fmt.Sprintf("Confidence below threshold at '%s' (%.3f)", stage.Name, confidence),
-\t\t\t\tLatencyMs: float64(time.Since(start).Milliseconds()),
-\t\t\t\tConfidence: confidence, PipelineTrace: trace,
-\t\t\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\t\t\tEntryPoint: "${ctx.entryCapability}", ExitPoint: "${ctx.exitCapability}",
-\t\t\t}
-\t\t}
-\t}
-
-\te.mu.Lock()
-\te.successCount++
-\tlatency := float64(time.Since(start).Milliseconds())
-\te.totalLatencyMs += latency
-\te.mu.Unlock()
-
-\treturn Result{
-\t\tSuccess: true, Data: currentData, LatencyMs: latency,
-\t\tConfidence: confidence, PipelineTrace: trace,
-\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\tEntryPoint: "${ctx.entryCapability}", ExitPoint: "${ctx.exitCapability}",
-\t}
-}
-
-type pipelineStage struct {
+type stage struct {
 \tName   string
 \tModule string
-\tFn     func(map[string]interface{}, float64) (StageResult, error)
+\tVerb   string
 }
 
-func (e *${cls}) buildPipeline() []pipelineStage {
-\treturn []pipelineStage{
-${modules.map((m, i) => `\t\t{Name: "${buildStageName(m, ctx)}", Module: "${m}", Fn: e.stage${i}_${m.toLowerCase()}}`).join(',\n')},
+var stages = []stage{
+${modules.map(m => {
+  const verb = moduleVerbs[m] || 'process';
+  return `\t{Name: "${verb}_${m.toLowerCase()}", Module: "${m}", Verb: "${verb}"}`;
+}).join(',\n')},
+}
+
+// StageTrace — per-stage execution record
+type StageTrace struct {
+\tModule    string  \`json:"module"\`
+\tVerb      string  \`json:"verb"\`
+\tStatus    string  \`json:"status"\`
+\tDurationMs float64 \`json:"duration_ms"\`
+\tDepth     string  \`json:"depth"\`
+}
+
+// BridgeResult — normalized bridge output
+type BridgeResult struct {
+\tSuccess         bool                   \`json:"success"\`
+\tData            map[string]interface{} \`json:"data"\`
+\tError           string                 \`json:"error,omitempty"\`
+\tLatencyMs       float64                \`json:"latency_ms"\`
+\tConfidence      float64                \`json:"confidence"\`
+\tTrace           []StageTrace           \`json:"trace"\`
+\tStagesCompleted int                    \`json:"stages_completed"\`
+\tTotalStages     int                    \`json:"total_stages"\`
+\tRuntimeMode     string                 \`json:"runtime_mode"\`
+\tBridgeType      string                 \`json:"bridge_type"\`
+}
+
+// ${cls} — CMPSBL® Bridge Adapter
+type ${cls} struct {
+\tmu             sync.Mutex
+\tendpoint       string
+\truntimeMode    string
+\texecutionCount int
+\tsuccessCount   int
+}
+
+// New${cls} creates a new bridge adapter
+func New${cls}(endpoint ...string) *${cls} {
+\tep := "${CANONICAL_ENDPOINT}"
+\tif len(endpoint) > 0 {
+\t\tep = endpoint[0]
+\t}
+\tmode := "hybrid"
+\tif ep == "" {
+\t\tmode = "offline"
+\t}
+\treturn &${cls}{endpoint: ep, runtimeMode: mode}
+}
+
+// ConfigureEndpoint sets the canonical runtime endpoint. Pass "" for offline-only.
+func (b *${cls}) ConfigureEndpoint(url string) {
+\tb.mu.Lock()
+\tdefer b.mu.Unlock()
+\tb.endpoint = url
+\tif url == "" {
+\t\tb.runtimeMode = "offline"
+\t} else {
+\t\tb.runtimeMode = "hybrid"
 \t}
 }
 
-func (e *${cls}) executeStage(stage pipelineStage, data map[string]interface{}, confidence float64) (StageResult, error) {
-\tmaxAttempts := 1
-\tif e.config.ErrorStrategy == Retry {
-\t\tmaxAttempts = e.config.MaxRetries
+// RuntimeMode returns the current connectivity mode
+func (b *${cls}) RuntimeMode() string { return b.runtimeMode }
+
+// Execute runs the bridge: remote-first, then deterministic local fallback
+func (b *${cls}) Execute(input map[string]interface{}) BridgeResult {
+\tb.mu.Lock()
+\tb.executionCount++
+\tb.mu.Unlock()
+
+\tstart := time.Now()
+\tdata := make(map[string]interface{})
+\tfor k, v := range input {
+\t\tdata[k] = v
 \t}
-\tvar lastErr error
-\tfor attempt := 0; attempt < maxAttempts; attempt++ {
-\t\tresult, err := stage.Fn(data, confidence)
-\t\tif err == nil {
-\t\t\treturn result, nil
+\tconfidence := 1.0
+\ttrace := make([]StageTrace, 0, len(stages))
+\tcompleted := 0
+
+\t// Attempt remote canonical runtime
+\tif b.endpoint != "" && b.runtimeMode != "offline" {
+\t\tpayload, _ := json.Marshal(map[string]interface{}{
+\t\t\t"name": BridgeMeta["name"], "data": data, "confidence": confidence,
+\t\t\t"meta": map[string]interface{}{"runtimeType": "portable", "version": BridgeMeta["canonical_version"]},
+\t\t})
+\t\tclient := &http.Client{Timeout: 5 * time.Second}
+\t\tresp, err := client.Post(b.endpoint, "application/json", bytes.NewReader(payload))
+\t\tif err == nil && resp.StatusCode == 200 {
+\t\t\tvar result BridgeResult
+\t\t\tif json.NewDecoder(resp.Body).Decode(&result) == nil {
+\t\t\t\tresp.Body.Close()
+\t\t\t\tb.mu.Lock()
+\t\t\t\tb.successCount++
+\t\t\t\tb.mu.Unlock()
+\t\t\t\treturn result
+\t\t\t}
+\t\t\tresp.Body.Close()
 \t\t}
-\t\tlastErr = err
-\t\tif attempt < maxAttempts-1 {
-\t\t\ttime.Sleep(time.Duration(math.Min(float64(1000*int(math.Pow(2, float64(attempt+1)))), 10000)) * time.Millisecond)
+\t\tif resp != nil {
+\t\t\tresp.Body.Close()
 \t\t}
 \t}
-\treturn StageResult{}, lastErr
+
+\t// Deterministic local fallback
+\tfor _, s := range stages {
+\t\tstageStart := time.Now()
+\t\tdata[fmt.Sprintf("%s_result", s.Module)] = map[string]interface{}{
+\t\t\t"module": s.Module, "verb": s.Verb,
+\t\t\t"confidence": confidence, "bridge": "go", "mode": b.runtimeMode,
+\t\t}
+\t\tconfidence = math.Min(1.0, confidence+0.02)
+\t\ttrace = append(trace, StageTrace{
+\t\t\tModule: s.Module, Verb: s.Verb, Status: "success",
+\t\t\tDurationMs: float64(time.Since(stageStart).Microseconds()) / 1000.0,
+\t\t\tDepth: "fallback",
+\t\t})
+\t\tcompleted++
+\t}
+
+\tb.mu.Lock()
+\tb.successCount++
+\tb.mu.Unlock()
+
+\treturn BridgeResult{
+\t\tSuccess: true, Data: data,
+\t\tLatencyMs: float64(time.Since(start).Microseconds()) / 1000.0,
+\t\tConfidence: confidence, Trace: trace,
+\t\tStagesCompleted: completed, TotalStages: len(stages),
+\t\tRuntimeMode: b.runtimeMode, BridgeType: "hybrid",
+\t}
 }
 
-${modules.map((m, i) => buildGoStageImpl(m, i, modules.length, ctx)).join('\n\n')}
+// Validate checks capability metadata integrity
+func (b *${cls}) Validate() bool {
+\treturn BridgeMeta["cjpi"].(int) > 0
+}
 
-func (e *${cls}) Stats() map[string]interface{} {
-\te.mu.Lock()
-\tdefer e.mu.Unlock()
+// Meta returns bridge metadata
+func (b *${cls}) Meta() map[string]interface{} {
+\tm := make(map[string]interface{})
+\tfor k, v := range BridgeMeta {
+\t\tm[k] = v
+\t}
+\tm["runtime_mode"] = b.runtimeMode
+\treturn m
+}
+
+// Stats returns execution statistics
+func (b *${cls}) Stats() map[string]interface{} {
+\tb.mu.Lock()
+\tdefer b.mu.Unlock()
 \trate := 0.0
-\tavg := 0.0
-\tif e.executionCount > 0 {
-\t\trate = float64(e.successCount) / float64(e.executionCount)
-\t\tavg = e.totalLatencyMs / float64(e.executionCount)
+\tif b.executionCount > 0 {
+\t\trate = float64(b.successCount) / float64(b.executionCount)
 \t}
 \treturn map[string]interface{}{
-\t\t"name": "${ctx.name}", "cjpi": ${ctx.cjpi}, "category": "${ctx.category}",
-\t\t"module_chain": ${JSON.stringify(modules)},
-\t\t"execution_count": e.executionCount, "success_rate": rate, "avg_latency_ms": avg,
+\t\t"name": BridgeMeta["name"], "cjpi": BridgeMeta["cjpi"],
+\t\t"bridge_type": BridgeMeta["bridge_type"],
+\t\t"runtime_mode": b.runtimeMode, "executions": b.executionCount,
+\t\t"success_rate": rate,
 \t}
 }
-
-// Utility: hash a string
-func hashStr(s string) string {
-\th := sha256.Sum256([]byte(s))
-\treturn hex.EncodeToString(h[:8])
-}
-
-// Suppress unused import warnings
-var _ = json.Marshal
-var _ = sort.Strings
-var _ = strings.Join
 `;
 }
 
@@ -875,128 +915,11 @@ function generateErrorHandling(strategy: string): string {
   }
 }
 
-function generatePyErrorHandling(strategy: string): string {
-  const abortReturn = [
-    'elapsed = (time.perf_counter() - start) * 1000',
-    '                return type(self)(self.config).execute(input_data)  # Abort and re-raise',
-  ].join('\n                ');
-  switch (strategy) {
-    case 'abort':
-      return `elapsed = (time.perf_counter() - start) * 1000
-                raise`;
-    case 'skip':
-      return `confidence -= 0.1
-                continue`;
-    case 'rollback':
-      return `current_data = dict(input_data)
-                confidence = 1.0
-                elapsed = (time.perf_counter() - start) * 1000
-                raise`;
-    case 'fallback':
-      return `confidence -= 0.15
-                continue  # Fallback: continue degraded`;
-    default:
-      return `raise`;
-  }
-}
-
 // ═══════════════════════════════════════════════════════════════════
-// Python Stage Implementations
+// Legacy Python/Go stage builders REMOVED — these languages are now
+// bridge adapters that don't need per-module stage implementations.
+// See: synthesizePython() and synthesizeGo() above for bridge pattern.
 // ═══════════════════════════════════════════════════════════════════
-
-function buildPyStage(module: string, index: number, total: number, ctx: SynthesisContext): string {
-  const verbs = MODULE_VERBS[module] || ['process'];
-  const stageName = `${verbs[0]}_${module.toLowerCase()}`;
-  return `            ("${stageName}", "${module}", self._stage_${index}_${module.toLowerCase()})`;
-}
-
-function buildPyStageImpls(modules: string[], ctx: SynthesisContext): string {
-  return modules.map((m, i) => {
-    const verbs = MODULE_VERBS[m] || ['process'];
-    return `    def _stage_${i}_${m.toLowerCase()}(self, data, confidence):
-        start = time.perf_counter()
-        # ${m} processing: ${verbs.join(', ')}
-        processed = {}
-        for key, val in data.items():
-            val_str = str(val) if val is not None else ""
-            processed[f"${m.toLowerCase()}_{key}"] = {
-                "original_type": type(val).__name__,
-                "length": len(val_str),
-                "entropy": sum(ord(c) for c in val_str) / max(len(val_str), 1),
-                "module": "${m}",
-                "operation": "${verbs[0]}",
-            }
-        elapsed = (time.perf_counter() - start) * 1000
-        return StageResult(
-            stage="${verbs[0]}_${m.toLowerCase()}", module="${m}",
-            success=True, data={"${m.toLowerCase()}_output": processed, "fields_processed": len(data)},
-            confidence_delta=${(0.02 + Math.random() * 0.05).toFixed(3)}, duration_ms=elapsed,
-            metadata={"phase": ${i}}
-        )`;
-  }).join('\n\n');
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// Go Stage Implementations
-// ═══════════════════════════════════════════════════════════════════
-
-function buildGoStageImpl(module: string, index: number, total: number, ctx: SynthesisContext): string {
-  const verbs = MODULE_VERBS[module] || ['process'];
-  return `func (e *${ctx.name.replace(/[^a-zA-Z0-9]/g, '')}) stage${index}_${module.toLowerCase()}(data map[string]interface{}, confidence float64) (StageResult, error) {
-\tstart := time.Now()
-\t// ${module} processing: ${verbs.join(', ')}
-\tprocessed := make(map[string]interface{})
-\tfor k, v := range data {
-\t\tprocessed[fmt.Sprintf("${module.toLowerCase()}_%s", k)] = map[string]interface{}{
-\t\t\t"module": "${module}", "operation": "${verbs[0]}",
-\t\t\t"value": fmt.Sprintf("%v", v), "processed": true,
-\t\t}
-\t}
-\treturn StageResult{
-\t\tStage: "${verbs[0]}_${module.toLowerCase()}", Module: "${module}",
-\t\tSuccess: true, Data: processed, ConfidenceDelta: ${(0.02 + Math.random() * 0.05).toFixed(3)},
-\t\tDurationMs: float64(time.Since(start).Microseconds()) / 1000.0,
-\t\tMetadata: map[string]interface{}{"phase": ${index}},
-\t}, nil
-}`;
-}
-
-function goErrorStrategy(strategy: string): string {
-  switch (strategy) {
-    case 'retry': return 'Retry';
-    case 'skip': return 'Skip';
-    case 'abort': return 'Abort';
-    case 'rollback': return 'Rollback';
-    case 'fallback': return 'Fallback';
-    default: return 'Retry';
-  }
-}
-
-function generateGoErrorHandling(strategy: string): string {
-  switch (strategy) {
-    case 'abort':
-      return `return Result{
-\t\t\t\tSuccess: false, Data: currentData,
-\t\t\t\tError: fmt.Sprintf("Aborted at '%s': %v", stage.Name, err),
-\t\t\t\tLatencyMs: float64(time.Since(start).Milliseconds()),
-\t\t\t\tConfidence: confidence * 0.5, PipelineTrace: trace,
-\t\t\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\t\t}`;
-    case 'skip':
-      return `confidence -= 0.1
-\t\t\tcontinue`;
-    case 'fallback':
-      return `confidence -= 0.15
-\t\t\tcontinue`;
-    default:
-      return `return Result{
-\t\t\t\tSuccess: false, Error: fmt.Sprintf("Stage '%s' failed: %v", stage.Name, err),
-\t\t\t\tLatencyMs: float64(time.Since(start).Milliseconds()),
-\t\t\t\tConfidence: confidence * 0.5, PipelineTrace: trace,
-\t\t\t\tStagesCompleted: stagesCompleted, TotalStages: len(pipeline),
-\t\t\t}`;
-  }
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // Convenience: get synthesis context from discovery metadata

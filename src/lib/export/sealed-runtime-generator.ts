@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Sealed Runtime Generator
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Generates BLACK-BOXED versions of the Mini-Runtime™ and Discovery Engine
+ * Generates BLACK-BOXED versions of the canonical Mini-Runtime™ and Discovery Engine
  * for inclusion in export ZIPs. All proprietary logic is stripped:
  *   - CJPI weight allocations → opaque scoring function
  *   - Tier thresholds → opaque tiering function
@@ -9,6 +9,13 @@
  *   - Discovery templates → REMOVED entirely
  *   - Module effect handlers → sealed delegation stubs
  *   - Algorithm internals → replaced with interface-only contracts
+ *
+ * ARCHITECTURE: This sealed runtime is the TypeScript canonical runtime in obfuscated form.
+ * Non-TS language exports use bridge adapters (see bridge-adapter.ts, software-synthesizer.ts)
+ * that delegate to this runtime when available, with deterministic local fallback.
+ *
+ * See: canonical-runtime-contract.ts for the universal execution contract.
+ * See: docs/041/07-one-runtime-many-bridges.md for architecture documentation.
  *
  * © CMPSBL® — All rights reserved. Trade secret.
  */
