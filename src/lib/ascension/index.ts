@@ -143,13 +143,21 @@ export {
   type PrimitiveExecutionResult,
 } from './primitive-executor';
 
-// Primitive Executor Bridge (remote → local → fallback)
+// Primitive Executor Bridge (network-first → local → fallback)
 export {
   primitiveExecutor,
   primitiveExecutorSync,
   setRemoteEndpoint,
   getRemoteEndpoint,
+  setRuntimeType,
+  getRuntimeMode,
+  setTelemetrySink,
+  getTelemetryBuffer,
+  flushTelemetry,
   type PrimitiveResult,
+  type RuntimeMode,
+  type ExecutionTelemetry,
+  type RemoteExecutionPayload,
 } from './primitive-executor-bridge';
 
 // Primitive Learning
