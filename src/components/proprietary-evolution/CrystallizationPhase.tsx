@@ -55,7 +55,7 @@ export function CrystallizationPhase() {
           tier: d.tier || 'mint',
           nodeA: String(meta.node_a || ''),
           nodeB: String(meta.node_b || ''),
-          crystallized: meta.crystallized === true,
+          ascended: meta.ascended === true,
           description: d.description || '',
           chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
         };
