@@ -288,7 +288,8 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
   });
 
   it('demotes to offline after consecutive failures', async () => {
-    const { RuntimeHealthTracker, OFFLINE_MODE_THRESHOLD } = await import('../bridge-adapter');
+    const { RuntimeHealthTracker } = await import('../bridge-adapter');
+    const { OFFLINE_MODE_THRESHOLD } = await import('../canonical-runtime-contract');
     const tracker = new RuntimeHealthTracker();
     for (let i = 0; i < OFFLINE_MODE_THRESHOLD; i++) tracker.recordRemoteFailure();
     expect(tracker.getRuntimeMode()).toBe('offline');
