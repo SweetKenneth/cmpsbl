@@ -45,15 +45,6 @@ import { legacyRoutes } from "@/routes/legacyRoutes";
 const ConversionTracker = lazy(() => import("@/components/conversion/ConversionTracker").then(m => ({ default: m.ConversionTracker })));
 const ExitIntentCapture = lazy(() => import("@/components/conversion/ExitIntentCapture").then(m => ({ default: m.ExitIntentCapture })));
 const BackToTop = lazy(() => import("@/components/navigation/BackToTop").then(m => ({ default: m.BackToTop })));
-const OnboardingWrapper = lazy(() => import("@/components/onboarding/OnboardingOverlay").then(m => {
-  const { useOnboarding, OnboardingOverlay } = m;
-  const Wrapper = () => {
-    const { show, dismiss } = useOnboarding();
-    if (!show) return null;
-    return <OnboardingOverlay onDismiss={dismiss} />;
-  };
-  return { default: Wrapper };
-}));
 const KeyboardShortcutsHelp = lazy(() => import("@/components/navigation/KeyboardShortcutsHelp").then(m => ({ default: m.KeyboardShortcutsHelp })));
 const RateLimitFeedback = lazy(() => import("@/components/ui/RateLimitFeedback").then(m => ({ default: m.RateLimitFeedback })));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
@@ -255,9 +246,6 @@ const App = () => {
                           <Suspense fallback={null}>
                            <BackToTop />
                          </Suspense>
-                          <Suspense fallback={null}>
-                            <OnboardingWrapper />
-                          </Suspense>
                           <Suspense fallback={null}>
                             <KeyboardShortcutsHelp />
                           </Suspense>
