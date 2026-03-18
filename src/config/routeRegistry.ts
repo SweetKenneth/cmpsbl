@@ -83,7 +83,7 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/developers", label: "Developer Showcase", section: "developer", priority: 0.85, changefreq: "weekly", description: "Community & integrations" },
   { path: "/developers/guide", label: "Developer Guide", section: "developer", priority: 0.82, changefreq: "monthly", description: "SDK setup & integration" },
   { path: "/devtools", label: "DevTools", section: "developer", priority: 0.75, changefreq: "monthly", description: "Development tools" },
-  { path: "/start-here", label: "Start Here", section: "developer", priority: 0.78, changefreq: "monthly", description: "Getting started onboarding" },
+  { path: "/start-here", label: "Start Here", section: "developer", priority: 0, changefreq: "monthly", redirect: true },
   { path: "/changelog", label: "Changelog", section: "developer", priority: 0.78, changefreq: "weekly", description: "Releases & updates" },
   { path: "/use-cases", label: "Use Cases", section: "developer", priority: 0.80, changefreq: "monthly", description: "Real-world applications" },
   { path: "/lab", label: "Lab", section: "developer", priority: 0.72, changefreq: "monthly", description: "Experimentation sandbox" },
