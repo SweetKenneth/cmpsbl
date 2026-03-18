@@ -1932,7 +1932,7 @@ pub const ${className(a)} = struct {
         _ = allocator;
         _ = self;
 
-${a.synthesisContext ? synthesizeZigProcess(a.synthesisContext) : `        // Core processing: entropy accumulation
+${a.synthesisContext ? synthesizeZig(a.synthesisContext) : `        // Core processing: entropy accumulation
         var entropy: u64 = 0;
         var confidence: f64 = 1.0;
         _ = allocator;
