@@ -22,7 +22,7 @@ function moduleOps(mod: string): { verb: string; desc: string } {
   const MAP: Record<string, { verb: string; desc: string }> = {
     BRAIN: { verb: 'analyze', desc: 'cognitive processing' },
     CORTEX: { verb: 'orchestrate', desc: 'pipeline coordination' },
-    DEFENSE: { verb: 'validate', desc: 'injection detection + sanitization' },
+    DEFENSE: { verb: 'validate', desc: 'security validation' },
     ACCESS: { verb: 'authorize', desc: 'access control' },
     ANALYTICS: { verb: 'aggregate', desc: 'data aggregation' },
     VISION: { verb: 'observe', desc: 'threshold detection + anomaly scoring' },
