@@ -150,29 +150,7 @@ export async function downloadTieredFoundryZip(options: {
   const runtimeFolder = root.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
   runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
-  runtimeFolder.file(
-    'README.md',
-    [
-      '# CMPSBL® Mini-Runtime™ Engine',
-      '',
-      'The official CMPSBL® portable runtime — included with all exported Foundry artifacts.',
-      'Use this runtime to execute generated pipeline bundles without external infrastructure.',
-      '',
-      '## Included Components',
-      '',
-      '- **standalone-runtime.ts** — CMPSBL® Mini-Runtime™ Engine: CJPI scoring, state machine, and pipeline orchestration',
-      '- **standalone-discovery-engine.ts** — CMPSBL® Mini-Runtime™ Discovery Engine: portable discovery reactor',
-      '',
-      '## Usage',
-      '',
-      'Each exported pipeline file is self-contained and runs independently.',
-      'The Mini-Runtime™ Engine provides optional higher-level orchestration for chaining',
-      'multiple pipelines together.',
-      '',
-      '---',
-      '© CMPSBL® — All rights reserved.',
-    ].join('\n')
-  );
+  runtimeFolder.file('README.md', generateSealedRuntimeReadme());
 
   let fileCount = 0;
   let totalLanguageVariants = 0;
