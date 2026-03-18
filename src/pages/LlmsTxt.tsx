@@ -1,6 +1,7 @@
 /**
  * LLMS.txt Standard
  * Machine-readable context standard for AI systems
+ * Content is dynamically generated from the route registry.
  */
 
 import { SEO } from "@/components/SEO";
@@ -12,14 +13,53 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { Terminal, Brain, Shield, Zap, MessageSquare, Eye, Moon, Copy, Check, Download, FileText, ExternalLink, Code, Globe, Layers } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { crawlableRoutes, fullUrl, type RouteSection } from "@/config/routeRegistry";
 
-const LLMS_TXT_CONTENT = `# CMPSBL® — Machine-Readable AI Context
+/**
+ * Dynamically builds the KEY PAGES section of llms.txt from the route registry.
+ * This ensures the page and the static file always reflect the same routes.
+ */
+function buildDynamicKeyPages(): string {
+  const sectionLabels: Record<string, string> = {
+    core: "KEY PAGES",
+    product: "PRODUCTS & FEATURES",
+    developer: "DEVELOPER RESOURCES",
+    docs: "DOCUMENTATION",
+    standards: "STANDARDS",
+    company: "COMPANY",
+    legal: "LEGAL",
+  };
+
+  const sectionOrder: RouteSection[] = ["core", "product", "developer", "docs", "standards", "company", "legal"];
+  const grouped = new Map<RouteSection, typeof crawlableRoutes>();
+  for (const r of crawlableRoutes) {
+    const list = grouped.get(r.section) || [];
+    list.push(r);
+    grouped.set(r.section, list);
+  }
+
+  const lines: string[] = [];
+  for (const section of sectionOrder) {
+    const routes = grouped.get(section);
+    if (!routes?.length) continue;
+    const label = sectionLabels[section];
+    if (!label) continue;
+    lines.push(`## ${label}\n`);
+    for (const r of routes) {
+      lines.push(`- ${r.label}: ${fullUrl(r.path)}`);
+    }
+    lines.push("");
+  }
+  return lines.join("\n");
+}
+
+const LLMS_TXT_STATIC_HEADER = `# CMPSBL® — Machine-Readable AI Context
 # 40-Node / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-12
+# Updated: ${new Date().toISOString().slice(0, 10)}
 
 ## STANDARD CLAIM
 
@@ -102,6 +142,9 @@ CMPSBL aligns with AIGVRN (12 surfaces):
 Governance · Standards · Certification · Verification · Policy · Compliance
 Security · Safety · Regulation · Sovereignty · Privacy · Control
 
+`;
+
+const LLMS_TXT_STATIC_FOOTER = `
 ## API Endpoints
 
 Base URL: https://cmpsbl.com/api/substrate
@@ -162,6 +205,11 @@ Following: https://llmstxt.dev
 
 export default function LlmsTxt() {
   const [copied, setCopied] = useState<string | null>(null);
+
+  // Dynamically build the full llms.txt content from the route registry
+  const LLMS_TXT_CONTENT = useMemo(() => {
+    return LLMS_TXT_STATIC_HEADER + buildDynamicKeyPages() + LLMS_TXT_STATIC_FOOTER;
+  }, []);
 
   const copyToClipboard = (content: string, type: string) => {
     navigator.clipboard.writeText(content);
