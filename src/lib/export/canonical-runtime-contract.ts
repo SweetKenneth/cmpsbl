@@ -379,7 +379,7 @@ export interface BridgeMetadata {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Current canonical runtime version */
-export const CANONICAL_RUNTIME_VERSION = '14.4.0';
+export const CANONICAL_RUNTIME_VERSION = '14.4.1';
 
 /** Default canonical execution endpoint */
 export const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';

@@ -650,6 +650,24 @@ const stratumFormation: Specimen[] = [
 
 const stratumMindgames: Specimen[] = [
   {
+    id: "MNDG-025",
+    fossilized: "2026-03-18",
+    origin: "architecture",
+    stimulus: "The upgrade page was overloaded with redundant sections — capability packs, governance layers, and 'what powers every plan' blocks buried the actual subscription decision behind walls of explanation",
+    adaptations: [
+      "Capability packs by domain section removed entirely — tier cards already communicate what each plan includes",
+      "What Powers Every Plan and Every Plan Includes sections stripped out to eliminate repetitive messaging",
+      "New focused explainer section added above tier cards clarifying exactly what upgrading delivers: slots, vault depth, daily pulls, and export access",
+      "Upgrade content streamlined to a single decision flow: understand the Memory Stream → compare tiers → choose",
+    ],
+    phenotype: [
+      "The upgrade surface is a decision tool, not a capabilities encyclopedia",
+      "Users reach the tier cards faster with clearer context about what they're actually buying",
+      "The subscription page respects attention — every section earns its place or gets removed",
+    ],
+    affectedNodes: ["SYSTEM", "ECONOMY"],
+  },
+  {
     id: "MNDG-024",
     fossilized: "2026-03-17",
     origin: "distribution",

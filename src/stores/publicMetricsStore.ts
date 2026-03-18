@@ -81,7 +81,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '14.3.0',
+  version: '14.4.1',
   codename: 'MINDGAMES',
   epoch: 'MINDGAMES',
   buildDate: new Date().toISOString().split('T')[0],
