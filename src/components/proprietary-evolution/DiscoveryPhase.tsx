@@ -45,7 +45,7 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
-const CJPI_THRESHOLD = 90;
+const CJPI_THRESHOLD = 68;
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);

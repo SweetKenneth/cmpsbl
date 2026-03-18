@@ -1075,7 +1075,7 @@ serve(async (req: Request) => {
           .eq('user_id', userId)
           .eq('category', 'proprietary-discovery')
           .order('created_at', { ascending: false })
-          .limit(100);
+          .limit(500);
 
         const eligible = (discoveries || []).filter((d: any) => {
           const meta = (d.metadata as Record<string, unknown>) || {};
