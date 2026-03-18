@@ -1637,18 +1637,7 @@ ${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowe
 `;
 }
 
-export function synthesizeZigProcess(ctx: SynthesisContext): string {
-  return `        // Full pipeline: ${ctx.moduleChain.join(' → ')}
-        var entropy: u64 = 0;
-        var confidence: f64 = 1.0;
-        _ = allocator;
-        _ = self;
-        ${ctx.moduleChain.map((m, i) => `
-        // Stage ${i}: ${m} — ${moduleOps(m).desc}
-        entropy = entropy +% @as(u64, ${i + 1}) *% 17;
-        confidence = @min(1.0, confidence + 0.03);`).join('')}
-        const elapsed = timer.read();`;
-}
+// synthesizeZigProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Scala Full Synthesizer
