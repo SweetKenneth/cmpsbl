@@ -286,7 +286,7 @@ function OrbitalCanvas() {
 /* ═══ LIFECYCLE PIPELINE DIAGRAM ═══ */
 const LIFECYCLE_STEPS = [
   { step: '01', title: 'INGEST', desc: 'Your code enters as Candidate Node #41', icon: Upload, color: 'neon-cyan' },
-  { step: '02', title: 'ASCENSION', desc: 'Collision cycles against all 40 substrate nodes', icon: Zap, color: 'neon-purple' },
+  { step: '02', title: 'ASCENSION', desc: 'Collision cycles against all 40 substrate nodes (2-8 depth)', icon: Zap, color: 'neon-purple' },
   { step: '03', title: 'CRYSTALLIZE', desc: 'High-scoring chains locked into deterministic memories', icon: Diamond, color: 'neon-magenta' },
   { step: '04', title: 'EXPORT', desc: 'Portable Ascended Memories delivered to your stack', icon: Package, color: 'neon-amber' },
 ] as const;
