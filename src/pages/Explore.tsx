@@ -127,9 +127,6 @@ export default function Explore() {
 
         <SectionDivider />
 
-        {/* ═══ TECHNICAL CREDIBILITY — Governance & Observability ═══ */}
-        <GovernanceSignal />
-
         {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
         <SocialProof />
 
