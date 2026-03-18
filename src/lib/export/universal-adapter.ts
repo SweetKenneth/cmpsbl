@@ -907,7 +907,7 @@ class ${cls} {
     private function process(array $input): array {
         $currentData = $input;
         $confidence = 1.0;
-${a.synthesisContext ? synthesizePHPProcess(a.synthesisContext) : `        foreach ($input as $k => $v) {
+${a.synthesisContext ? synthesizePHP(a.synthesisContext) : `        foreach ($input as $k => $v) {
             $vs = strval($v);
             $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
             $currentData["processed_" . $k] = ['score' => $entropy, 'len' => strlen($vs)];
