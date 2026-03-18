@@ -294,7 +294,7 @@ export function ExportPhase() {
         slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}-${Date.now().toString(36)}`,
         tier: 'candidate',
         category: 'proprietary-evolution',
-        description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
+        description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} ascended capabilities`,
         metadata: {
           phase: 'ingest', language: sourceLanguageLabel || 'TypeScript/Evolved', file_count: capabilities.length,
           // Propagate source_export_language so export lock persists across recursive cycles
