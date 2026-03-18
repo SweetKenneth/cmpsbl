@@ -173,7 +173,7 @@ export function CrystallizationPhase() {
       {/* Actions */}
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground font-mono">
-          {discoveries.filter(d => !d.crystallized).length} eligible for ascension
+          {discoveries.filter(d => !d.ascended).length} eligible for ascension
         </p>
         <div className="flex items-center gap-2">
           <Button
