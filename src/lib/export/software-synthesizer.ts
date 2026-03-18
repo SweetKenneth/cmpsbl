@@ -649,20 +649,18 @@ ${modules.map((m, i) => `            ['${moduleOps(m).verb}_${m.toLowerCase()}',
         ];
     }
 
+    private function primitiveExecutor(string $module, string $verb, array &$ctx, float $confidence): array {
+        return [
+            'data' => [strtolower($module) . '_result' => [
+                'module' => $module, 'verb' => $verb, 'confidence' => round($confidence, 4)]],
+            'confidence_delta' => 0.02, 'signal' => $verb . '_complete'
+        ];
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private function stage${i}${m}(array &$ctx, float $confidence): array {
-        // ${m}: ${ops.desc}
-        $out = [];
-        foreach ($ctx['_data'] as $k => $v) {
-            $vs = strval($v);
-            $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
-            $out["${m.toLowerCase()}_" . $k] = [
-                'module' => '${m}', 'op' => '${ops.verb}',
-                'score' => round($entropy * $confidence, 4), 'len' => strlen($vs)
-            ];
-        }
-        return ['data' => $out, 'confidence_delta' => 0.03, 'signal' => '${ops.verb}_complete'];
+        return $this->primitiveExecutor('${m}', '${ops.verb}', $ctx, $confidence);
     }`;
 }).join("\n\n")}
 
