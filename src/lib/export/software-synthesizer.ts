@@ -881,19 +881,16 @@ ${modules.map((m, i) => `            Triple("${moduleOps(m).verb}_${m.toLowerCas
         )
     }
 
+    private fun primitiveExecutor(module: String, verb: String, data: Map<String, Any?>, confidence: Double): Map<String, Any?> {
+        val out = mutableMapOf<String, Any?>(module.lowercase() + "_result" to
+            mapOf("module" to module, "verb" to verb, "confidence" to confidence))
+        return mapOf("data" to out, "confidence_delta" to 0.02, "signal" to verb + "_complete")
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private fun stage${i}${m}(data: MutableMap<String, Any?>, confidence: Double): Map<String, Any?> {
-        // ${m}: ${ops.desc}
-        val out = mutableMapOf<String, Any?>()
-        for ((key, value) in data) {
-            val vs = value.toString()
-            val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
-            out["${m.toLowerCase()}_$key"] = mapOf(
-                "module" to "${m}", "op" to "${ops.verb}", "score" to entropy * confidence, "len" to vs.length
-            )
-        }
-        return mapOf("data" to out, "confidence_delta" to 0.03, "signal" to "${ops.verb}_complete")
+        return primitiveExecutor("${m}", "${ops.verb}", data, confidence)
     }`;
 }).join("\n\n")}
 
