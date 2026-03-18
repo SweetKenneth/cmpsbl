@@ -155,7 +155,7 @@ export default function Foundry() {
       />
 
       <PublicNav />
-      <MemoryStreamOnboarding />
+      
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
         {/* Substrate ambient background */}
