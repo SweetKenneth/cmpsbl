@@ -160,7 +160,7 @@ export function ExportPhase() {
           name: d.name,
           cjpiScore: Number(meta.cjpi_score || 0),
           tier: d.tier || 'mint',
-          crystallizedAt: String(meta.ascended_at || d.created_at),
+          ascendedAt: String(meta.ascended_at || d.created_at),
           exported: meta.exported === true,
           retired: meta.retired === true,
           chain: (meta.chain as string[]) || [],
