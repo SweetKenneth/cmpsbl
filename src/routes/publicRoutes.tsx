@@ -210,7 +210,7 @@ export const publicRoutes = (
     <Route path="/architecture" element={<Navigate to="/" replace />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
-    <Route path="/upgrade" element={<Upgrade />} />
+    <Route path="/upgrade" element={<Navigate to="/store" replace />} />
     <Route path="/packs" element={<Packs />} />
     <Route path="/start-here" element={<StartHere />} />
     <Route path="/enterprise" element={<Enterprise />} />
