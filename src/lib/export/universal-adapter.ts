@@ -1808,7 +1808,7 @@ private:
         const std::unordered_map<std::string, std::string>& input) {
         auto current_data = input;
         double confidence = 1.0;
-${a.synthesisContext ? synthesizeCppProcess(a.synthesisContext) : `        for (const auto& [key, val] : input) {
+${a.synthesisContext ? synthesizeCpp(a.synthesisContext) : `        for (const auto& [key, val] : input) {
             unsigned long entropy = 0;
             for (char c : val) entropy += static_cast<unsigned char>(c);
             double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1));
