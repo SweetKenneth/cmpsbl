@@ -1041,6 +1041,9 @@ ${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        fo
 
 function genElixir(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Elixir', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeElixir(a.synthesisContext)}`;
+  }
   const mod = className(a);
   return `${h}
 defmodule CMPSBL.${mod} do
