@@ -193,7 +193,7 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
   });
 
   it('integrity validation warns on minor version mismatch', async () => {
-    const { computeCapabilityHash, computeModuleChainHash, CANONICAL_RUNTIME_VERSION } = await import('../canonical-runtime-contract');
+    const { computeCapabilityHash, computeModuleChainHash, CANONICAL_RUNTIME_VERSION, validateIntegrityPayload: validateFn } = await import('../canonical-runtime-contract');
     const [major, minor] = CANONICAL_RUNTIME_VERSION.split('.');
     const minorBumped = `${major}.${parseInt(minor) - 1}.0`;
     const payload = {
@@ -205,7 +205,7 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
       moduleChainHash: computeModuleChainHash(['BRAIN']),
       expectedCJPI: 85,
     };
-    const result = validateIntegrityPayload(payload, 'Test', ['BRAIN'], 'cognitive');
+    const result = validateFn(payload, 'Test', ['BRAIN'], 'cognitive');
     // Minor mismatch → warning, not error
     expect(result.validated).toBe(true);
     expect(result.validationWarnings.length).toBeGreaterThan(0);
