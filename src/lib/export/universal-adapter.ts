@@ -1878,7 +1878,7 @@ class ${cls} {
   Future<Map<String, dynamic>> _process(Map<String, dynamic> input) async {
     var currentData = Map<String, dynamic>.from(input);
     var confidence = 1.0;
-${a.synthesisContext ? synthesizeDartProcess(a.synthesisContext) : `    for (final entry in input.entries) {
+${a.synthesisContext ? synthesizeDart(a.synthesisContext) : `    for (final entry in input.entries) {
       final vs = entry.value.toString();
       final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
       currentData['processed_\${entry.key}'] = {'score': entropy, 'len': vs.length};
