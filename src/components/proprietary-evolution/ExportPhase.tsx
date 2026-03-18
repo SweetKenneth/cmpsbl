@@ -465,7 +465,7 @@ export function ExportPhase() {
       {/* Capability List — Individual export + discard */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          Your Vault ({capabilities.length} at CJPI 68+)
+          Your Vault ({capabilities.length} crystallized)
         </h3>
         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
           {capabilities.map(c => (
