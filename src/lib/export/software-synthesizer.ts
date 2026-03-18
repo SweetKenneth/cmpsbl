@@ -550,23 +550,7 @@ end
 `;
 }
 
-// Keep backward compat — old callers that reference synthesize*Process
-export function synthesizeRubyProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `      # Stage ${i}: ${m} — ${ops.desc}
-      stage_${i}_out = {}
-      current_data.each do |key, val|
-        val_s = val.to_s
-        entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
-        stage_${i}_out["${m.toLowerCase()}_\#{key}"] = {
-          module: '${m}', op: '${ops.verb}', score: entropy * confidence, len: val_s.length
-        }
-      end
-      current_data.merge!(stage_${i}_out)
-      confidence = [1.0, confidence + 0.03].min`;
-  }).join("\n");
-}
+// synthesizeRubyProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // PHP Full Synthesizer
