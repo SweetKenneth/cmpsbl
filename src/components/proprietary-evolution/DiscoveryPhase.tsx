@@ -239,6 +239,38 @@ export function DiscoveryPhase() {
 
   const stopDiscovery = () => { abortRef.current = true; };
 
+  /** Discard a discovery from the database */
+  const discardDiscovery = async (result: CollisionResult, idx: number) => {
+    setDiscardingId(`${idx}`);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // Find and delete matching artifact_registry entry
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: matches } = await (supabase as any)
+        .from('artifact_registry')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('category', 'proprietary-discovery')
+        .eq('name', result.capability)
+        .limit(1);
+      if (matches && matches.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any)
+          .from('artifact_registry')
+          .delete()
+          .eq('id', matches[0].id)
+          .eq('user_id', user.id);
+      }
+      setResults(prev => prev.filter((_, i) => i !== idx));
+      toast({ title: 'Discovery discarded', description: `${result.capability} removed from vault.` });
+    } catch (err) {
+      toast({ title: 'Discard failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setDiscardingId(null);
+    }
+  };
+
   const tierColor = (tier: string) => {
     const colors: Record<string, string> = {
       apex: 'text-amber-400', mythic: 'text-purple-400', relic: 'text-blue-400',
