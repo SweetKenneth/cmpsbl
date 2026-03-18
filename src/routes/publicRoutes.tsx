@@ -155,8 +155,8 @@ export const publicRoutes = (
     <Route path="/runtime" element={<RuntimePage />} />
     <Route path="/capability-map" element={<CapabilityMap />} />
     <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-    <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/capabilities" element={<Navigate to="/store" replace />} />
+    <Route path="/synergies" element={<Navigate to="/store" replace />} />
     <Route path="/store" element={<Store />} />
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
