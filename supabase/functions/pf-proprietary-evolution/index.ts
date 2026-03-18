@@ -451,22 +451,24 @@ function deriveCapabilitySurface(candidateName: string, candidateMeta: Record<st
   };
 }
 
-// ═══ NODE CAPABILITY LABELS (human-readable) ═══
+// ═══ NODE CAPABILITY LABELS — Canonical 40 nodes (human-readable) ═══
 const NODE_CAPABILITY_LABELS: Record<string, string> = {
-  CORE: 'system orchestration', BRAIN: 'autonomous reasoning', MEMORY: 'persistent recall',
-  NERVE: 'signal consensus', DECODE: 'intent parsing', ENCODE: 'code generation',
-  CORTEX: 'workflow orchestration', DEFENSE: 'threat detection', ORACLE: 'predictive forecasting',
-  CONSCIENCE: 'bias detection', PHANTOM: 'stealth anonymization', HARVEST: 'data acquisition',
-  EVOLUTION: 'adaptive optimization', SHADOW: 'divergence testing', IMMUNITY: 'resilience hardening',
-  INTENT: 'action planning', GOVERNANCE: 'policy enforcement', ATLAS: 'capability governance',
-  FORGE: 'artifact scaffolding', LINGUA: 'language translation', ECHO: 'temporal replay',
-  SOVEREIGN: 'data sovereignty', REFLEX: 'edge reaction', TREATY: 'compliance negotiation',
-  ENGINEER: 'performance optimization', COMPASS: 'navigation mapping', OBSERVER: 'telemetry monitoring',
-  GENESIS: 'bootstrap provisioning', ANCHOR: 'checkpoint persistence', PRISM: 'spectral decomposition',
-  SENTRY: 'access gatekeeping', MEDIC: 'diagnostic repair', SIGNAL: 'event broadcasting',
-  TENSOR: 'matrix computation', ARBITER: 'conflict resolution', FLUX: 'stream processing',
-  VECTOR: 'embedding similarity', SYNTH: 'capability synthesis', RELAY: 'webhook dispatch',
-  NEXUS: 'AI routing failover',
+  CORE: 'system orchestration', SYSTEM: 'lifecycle management', BRAIN: 'autonomous reasoning',
+  MEMORY: 'persistent recall', DREAM: 'synthesis imagination',
+  RIPPLE: 'event propagation', ACCESS: 'entitlement control', IDENTITY: 'entity resolution',
+  RELAY: 'webhook dispatch', AUDIT: 'integrity ledger', NERVE: 'signal consensus',
+  DECODE: 'intent parsing', ENCODE: 'code generation', VISION: 'observability rendering',
+  CORTEX: 'workflow orchestration', NEXUS: 'AI routing failover', ECONOMY: 'cost metering',
+  SANDBOX: 'isolated execution', INCLUSIVE: 'accessibility compliance', MEDIC: 'diagnostic repair',
+  INTEGRATION: 'dependency resolution',
+  SOVEREIGN: 'data sovereignty', ORACLE: 'predictive forecasting', CONSCIENCE: 'bias detection',
+  TREATY: 'compliance negotiation',
+  COMPASS: 'navigation mapping', ECHO: 'temporal replay', REFLEX: 'edge reaction',
+  FORGE: 'artifact scaffolding', LINGUA: 'language translation', HARVEST: 'data acquisition',
+  EVOLUTION: 'adaptive optimization', SHADOW: 'divergence testing', PHANTOM: 'stealth anonymization',
+  IMMUNITY: 'resilience hardening', INTENT: 'action planning',
+  GOVERNANCE: 'policy enforcement', ATLAS: 'capability governance', ENGINEER: 'performance optimization',
+  DEFENSE: 'threat detection',
 };
 
 // ═══ MULTI-NODE COLLISION ENGINE (Node 41 = First-Class Participant) ═══
