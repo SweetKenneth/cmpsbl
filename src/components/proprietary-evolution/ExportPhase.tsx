@@ -32,7 +32,7 @@ interface AscendedCapability {
   name: string;
   cjpiScore: number;
   tier: string;
-  crystallizedAt: string;
+  ascendedAt: string;
   exported: boolean;
   retired: boolean;
   chain: string[];
