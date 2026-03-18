@@ -14,6 +14,11 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } from './canonical-runtime-contract';
+import { moduleOps } from './bridge-adapter';
+// Note: bridge-adapter uses `import type { SynthesisContext }` from this file,
+// which is erased at runtime, so no circular dependency at execution time.
+
 export interface SynthesisContext {
   name: string;
   description: string;
@@ -217,8 +222,9 @@ export function synthesizePython(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
   const snake = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
-  const CANONICAL_VERSION = '14.3.0';
-  const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
+
+  const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
+  const chainHash = computeModuleChainHash(modules);
 
   return `"""
 ${ctx.name} — CMPSBL® Bridge Adapter (Python)
@@ -232,12 +238,18 @@ Runtime logic lives in the canonical TypeScript Mini-Runtime™.
 This adapter routes execution to the canonical runtime when available,
 falling back to deterministic local output when offline.
 
-Canonical Runtime Version: ${CANONICAL_VERSION}
+Integrity: capabilityHash + moduleChainHash validated on every request
+Health: rolling health score governs automatic mode switching
+Degraded: integrity failures are explicit, never silently masked
+
+Canonical Runtime Version: ${CANONICAL_RUNTIME_VERSION}
 © CMPSBL® — All rights reserved.
 """
 
 import time
 import json
+import hashlib
+import uuid
 import urllib.request
 import urllib.error
 from dataclasses import dataclass, field
@@ -249,26 +261,23 @@ BRIDGE_META = {
     "category": "${ctx.category}",
     "module_chain": ${JSON.stringify(modules)},
     "bridge_type": "hybrid",
-    "canonical_version": "${CANONICAL_VERSION}",
+    "canonical_version": "${CANONICAL_RUNTIME_VERSION}",
     "default_endpoint": "${CANONICAL_ENDPOINT}",
     "offline_capable": True,
+    "capability_hash": "${capHash}",
+    "module_chain_hash": "${chainHash}",
 }
 
 STAGES = [
-${modules.map((m, i) => {
-  const verbs: Record<string, string> = {
-    BRAIN: 'analyze', MEMORY: 'persist', CORTEX: 'orchestrate', DREAM: 'synthesize',
-    DEFENSE: 'validate', ACCESS: 'authorize', ANALYTICS: 'aggregate', VISION: 'observe',
-    ORACLE: 'predict', EVOLUTION: 'evolve', GOVERNANCE: 'enforce', AUDIT: 'log',
-    DECODE: 'transform', NEXUS: 'route', NERVE: 'signal', IDENTITY: 'fingerprint',
-    FORGE: 'compose', LINGUA: 'translate', COMPASS: 'geolocate', ECHO: 'simulate',
-    TREATY: 'negotiate', HARVEST: 'ingest', REFLEX: 'react', SYSTEM: 'monitor',
-    MEDIC: 'heal', RIPPLE: 'propagate',
-  };
-  const verb = verbs[m] || 'process';
+${modules.map((m) => {
+  const verb = moduleOps(m).verb;
   return `    {"name": "${verb}_${m.toLowerCase()}", "module": "${m}", "verb": "${verb}"}`;
 }).join(',\n')}
 ]
+
+
+def _generate_execution_id() -> str:
+    return f"exec_{uuid.uuid4().hex[:12]}"
 
 
 @dataclass
@@ -277,7 +286,29 @@ class StageTrace:
     verb: str
     status: str
     duration_ms: float
-    depth: str  # "remote" | "local" | "fallback"
+    depth: str  # "remote" | "local" | "fallback" | "degraded"
+    validation: str = "skipped"  # "passed" | "warned" | "failed" | "skipped"
+    stage_source: str = "bridge-fallback"  # "canonical-runtime" | "bridge-fallback"
+    remote_latency_ms: Optional[float] = None
+    local_latency_ms: Optional[float] = None
+
+
+@dataclass
+class ExecutionEnvelopeMetadata:
+    execution_id: str = ""
+    bridge_language: str = "python"
+    bridge_type: str = "hybrid"
+    runtime_mode: str = "hybrid"
+    was_remote_attempted: bool = False
+    was_remote_used: bool = False
+    used_fallback: bool = True
+    fallback_reason: Optional[str] = None  # "normal" | "degraded" | "offline"
+    validation_result: str = "skipped"  # "passed" | "warned" | "failed"
+    health_score_at_execution: float = 50.0
+    mode_before_execution: str = "hybrid"
+    mode_after_execution: str = "hybrid"
+    canonical_version: str = "${CANONICAL_RUNTIME_VERSION}"
+    capability_hash: str = "${capHash}"
 
 
 @dataclass
@@ -292,6 +323,73 @@ class BridgeResult:
     total_stages: int = 0
     runtime_mode: str = "hybrid"
     bridge_type: str = "hybrid"
+    execution_id: str = ""
+    validated: bool = False
+    validation_errors: List[str] = field(default_factory=list)
+    validation_warnings: List[str] = field(default_factory=list)
+    degraded: bool = False
+    degraded_reasons: List[str] = field(default_factory=list)
+    envelope: Optional[ExecutionEnvelopeMetadata] = None
+
+
+class _HealthTracker:
+    """Lightweight rolling health tracker for canonical runtime endpoint."""
+    NETWORK_THRESHOLD = 5
+    OFFLINE_THRESHOLD = 3
+    HYBRID_THRESHOLD = 2
+    VALIDATION_FAILURE_WEIGHT = 2
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.consecutive_successes = 0
+        self.consecutive_failures = 0
+        self.total_remote_attempts = 0
+        self.total_remote_successes = 0
+        self.total_fallbacks = 0
+        self.total_validation_failures = 0
+        self._health_score = 50.0
+
+    @property
+    def health_score(self) -> float:
+        if self.total_remote_attempts == 0:
+            return 50.0
+        success_rate = (self.total_remote_successes / self.total_remote_attempts) * 100
+        val_penalty = (self.total_validation_failures / self.total_remote_attempts) * 100
+        raw = success_rate * 0.6 + (100 - val_penalty * 2) * 0.4
+        return max(0, min(100, round(raw, 1)))
+
+    def record_success(self):
+        self.total_remote_attempts += 1
+        self.total_remote_successes += 1
+        self.consecutive_successes += 1
+        self.consecutive_failures = 0
+
+    def record_failure(self):
+        self.total_remote_attempts += 1
+        self.consecutive_failures += 1
+        self.consecutive_successes = 0
+
+    def record_validation_failure(self):
+        self.total_remote_attempts += 1
+        self.total_validation_failures += 1
+        self.consecutive_failures += self.VALIDATION_FAILURE_WEIGHT
+        self.consecutive_successes = 0
+
+    def record_fallback(self):
+        self.total_fallbacks += 1
+
+    def evaluate_mode(self, current_mode: str) -> str:
+        if self.consecutive_failures >= self.OFFLINE_THRESHOLD:
+            return "offline"
+        if self.consecutive_successes >= self.NETWORK_THRESHOLD:
+            return "network"
+        if current_mode == "offline" and self.consecutive_successes >= self.HYBRID_THRESHOLD:
+            return "hybrid"
+        if current_mode == "network" and self.consecutive_failures > 0:
+            return "hybrid"
+        return current_mode
 
 
 class ${cls}:
@@ -302,32 +400,86 @@ class ${cls}:
         self._runtime_mode = "hybrid" if endpoint else "offline"
         self._execution_count = 0
         self._success_count = 0
+        self._health = _HealthTracker()
+        self._forced_mode: Optional[str] = None
 
     def configure_endpoint(self, url: Optional[str]) -> None:
         self._endpoint = url
         self._runtime_mode = "hybrid" if url else "offline"
 
+    def get_runtime_mode(self) -> str:
+        return self._forced_mode or self._runtime_mode
+
+    def get_health_score(self) -> float:
+        return self._health.health_score
+
+    def get_health_snapshot(self) -> Dict[str, Any]:
+        return {
+            "current_mode": self.get_runtime_mode(),
+            "health_score": self._health.health_score,
+            "consecutive_successes": self._health.consecutive_successes,
+            "consecutive_failures": self._health.consecutive_failures,
+            "total_remote_attempts": self._health.total_remote_attempts,
+            "total_remote_successes": self._health.total_remote_successes,
+            "total_fallbacks": self._health.total_fallbacks,
+            "total_validation_failures": self._health.total_validation_failures,
+            "mode_forced": self._forced_mode is not None,
+        }
+
+    def reset_health_state(self):
+        self._health.reset()
+        self._runtime_mode = "hybrid" if self._endpoint else "offline"
+        self._forced_mode = None
+
+    def force_mode(self, mode: Optional[str]):
+        self._forced_mode = mode
+
     @property
     def runtime_mode(self) -> str:
-        return self._runtime_mode
+        return self.get_runtime_mode()
+
+    def _build_integrity_payload(self) -> Dict[str, Any]:
+        return {
+            "canonicalVersion": BRIDGE_META["canonical_version"],
+            "bridgeType": "hybrid",
+            "runtimeType": "portable",
+            "executionMode": self.get_runtime_mode(),
+            "capabilityHash": BRIDGE_META["capability_hash"],
+            "moduleChainHash": BRIDGE_META["module_chain_hash"],
+            "expectedCJPI": BRIDGE_META["cjpi"],
+        }
 
     def execute(self, input_data: Dict[str, Any] = None) -> BridgeResult:
         if input_data is None:
             input_data = {}
         self._execution_count += 1
+        execution_id = _generate_execution_id()
+        mode_before = self.get_runtime_mode()
         start = time.perf_counter()
         data = dict(input_data)
         confidence = 1.0
         trace: List[StageTrace] = []
         completed = 0
+        was_remote_attempted = False
+        was_remote_used = False
+        used_fallback = False
+        fallback_reason: Optional[str] = None
+        validated = False
+        validation_errors: List[str] = []
+        validation_warnings: List[str] = []
+        degraded = False
+        degraded_reasons: List[str] = []
 
         # Attempt remote canonical runtime
-        if self._endpoint and self._runtime_mode != "offline":
+        current_mode = self.get_runtime_mode()
+        if self._endpoint and current_mode != "offline":
+            was_remote_attempted = True
             try:
                 payload = json.dumps({
                     "name": BRIDGE_META["name"],
                     "data": data,
                     "confidence": confidence,
+                    "integrity": self._build_integrity_payload(),
                     "meta": {
                         "runtimeType": "portable",
                         "version": BRIDGE_META["canonical_version"],
@@ -341,10 +493,43 @@ class ${cls}:
                 )
                 with urllib.request.urlopen(req, timeout=5) as resp:
                     if resp.status == 200:
-                        self._success_count += 1
-                        return BridgeResult(**json.loads(resp.read()))
-            except Exception:
-                pass  # Remote unavailable — fall through to local
+                        remote_result = json.loads(resp.read())
+                        # Validate response integrity
+                        resp_validated = remote_result.get("validated", False)
+                        resp_errors = remote_result.get("validationErrors", [])
+                        if resp_validated and not resp_errors:
+                            self._health.record_success()
+                            was_remote_used = True
+                            validated = True
+                            self._success_count += 1
+                            self._runtime_mode = self._health.evaluate_mode(self._runtime_mode)
+                            envelope = ExecutionEnvelopeMetadata(
+                                execution_id=execution_id,
+                                was_remote_attempted=True, was_remote_used=True,
+                                used_fallback=False, validation_result="passed",
+                                health_score_at_execution=self._health.health_score,
+                                mode_before_execution=mode_before,
+                                mode_after_execution=self.get_runtime_mode(),
+                            )
+                            result = BridgeResult(**remote_result)
+                            result.execution_id = execution_id
+                            result.envelope = envelope
+                            return result
+                        else:
+                            # Validation failed — mark degraded, do NOT silently fallback
+                            self._health.record_validation_failure()
+                            degraded = True
+                            degraded_reasons = [f"Remote validation failed: {e}" for e in resp_errors]
+                            validation_errors = resp_errors
+                            fallback_reason = "degraded"
+            except Exception as e:
+                self._health.record_failure()
+                fallback_reason = fallback_reason or "normal"
+
+        if not was_remote_used:
+            used_fallback = True
+            fallback_reason = fallback_reason or ("offline" if current_mode == "offline" else "normal")
+            self._health.record_fallback()
 
         # Deterministic local fallback
         for stage in STAGES:
@@ -354,25 +539,48 @@ class ${cls}:
                 "verb": stage["verb"],
                 "confidence": round(confidence, 4),
                 "bridge": "python",
-                "mode": self._runtime_mode,
+                "mode": self.get_runtime_mode(),
             }
             confidence = min(1.0, confidence + 0.02)
+            stage_duration = (time.perf_counter() - stage_start) * 1000
             trace.append(StageTrace(
                 module=stage["module"], verb=stage["verb"],
-                status="success",
-                duration_ms=round((time.perf_counter() - stage_start) * 1000, 3),
-                depth="fallback",
+                status="degraded" if degraded else "success",
+                duration_ms=round(stage_duration, 3),
+                depth="degraded" if degraded else "fallback",
+                validation="failed" if degraded else "skipped",
+                stage_source="bridge-fallback",
+                local_latency_ms=round(stage_duration, 3),
             ))
             completed += 1
 
         self._success_count += 1
         elapsed = (time.perf_counter() - start) * 1000
+        self._runtime_mode = self._health.evaluate_mode(self._runtime_mode)
+
+        envelope = ExecutionEnvelopeMetadata(
+            execution_id=execution_id,
+            was_remote_attempted=was_remote_attempted,
+            was_remote_used=was_remote_used,
+            used_fallback=used_fallback,
+            fallback_reason=fallback_reason,
+            validation_result="failed" if degraded else "skipped",
+            health_score_at_execution=self._health.health_score,
+            mode_before_execution=mode_before,
+            mode_after_execution=self.get_runtime_mode(),
+            runtime_mode=self.get_runtime_mode(),
+        )
 
         return BridgeResult(
-            success=True, data=data, latency_ms=round(elapsed, 2),
+            success=not degraded, data=data, latency_ms=round(elapsed, 2),
             confidence=confidence, trace=trace,
             stages_completed=completed, total_stages=len(STAGES),
-            runtime_mode=self._runtime_mode, bridge_type="hybrid",
+            runtime_mode=self.get_runtime_mode(), bridge_type="hybrid",
+            execution_id=execution_id,
+            validated=validated, validation_errors=validation_errors,
+            validation_warnings=validation_warnings,
+            degraded=degraded, degraded_reasons=degraded_reasons,
+            envelope=envelope,
         )
 
     def validate(self) -> bool:
@@ -380,7 +588,7 @@ class ${cls}:
 
     @property
     def meta(self) -> Dict[str, Any]:
-        return {**BRIDGE_META, "runtime_mode": self._runtime_mode}
+        return {**BRIDGE_META, "runtime_mode": self.get_runtime_mode()}
 
     @property
     def stats(self) -> Dict[str, Any]:
@@ -388,14 +596,16 @@ class ${cls}:
             "name": BRIDGE_META["name"],
             "cjpi": BRIDGE_META["cjpi"],
             "bridge_type": BRIDGE_META["bridge_type"],
-            "runtime_mode": self._runtime_mode,
+            "runtime_mode": self.get_runtime_mode(),
             "execution_count": self._execution_count,
             "success_rate": self._success_count / self._execution_count if self._execution_count > 0 else 0,
+            "health_score": self._health.health_score,
         }
 
     def reset(self):
         self._execution_count = 0
         self._success_count = 0
+        self._health.reset()
 
 
 def create_${snake}(endpoint=None):
@@ -414,6 +624,9 @@ if __name__ == "__main__":
         "total_stages": result.total_stages,
         "runtime_mode": result.runtime_mode,
         "bridge_type": result.bridge_type,
+        "execution_id": result.execution_id,
+        "validated": result.validated,
+        "degraded": result.degraded,
         "data": result.data, "error": result.error,
     }
     print(json.dumps(output, indent=2, default=str))
@@ -429,18 +642,9 @@ export function synthesizeGo(ctx: SynthesisContext): string {
   const cls = ctx.name.replace(/[^a-zA-Z0-9]/g, '');
   const pkg = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
-  const CANONICAL_VERSION = '14.3.0';
-  const CANONICAL_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
 
-  const moduleVerbs: Record<string, string> = {
-    BRAIN: 'analyze', MEMORY: 'persist', CORTEX: 'orchestrate', DREAM: 'synthesize',
-    DEFENSE: 'validate', ACCESS: 'authorize', ANALYTICS: 'aggregate', VISION: 'observe',
-    ORACLE: 'predict', EVOLUTION: 'evolve', GOVERNANCE: 'enforce', AUDIT: 'log',
-    DECODE: 'transform', NEXUS: 'route', NERVE: 'signal', IDENTITY: 'fingerprint',
-    FORGE: 'compose', LINGUA: 'translate', COMPASS: 'geolocate', ECHO: 'simulate',
-    TREATY: 'negotiate', HARVEST: 'ingest', REFLEX: 'react', SYSTEM: 'monitor',
-    MEDIC: 'heal', RIPPLE: 'propagate',
-  };
+  const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
+  const chainHash = computeModuleChainHash(modules);
 
   return `// ${ctx.name} — CMPSBL® Bridge Adapter (Go)
 // ${ctx.description}
@@ -453,7 +657,11 @@ export function synthesizeGo(ctx: SynthesisContext): string {
 // This adapter routes execution to the canonical runtime when available,
 // falling back to deterministic local output when offline.
 //
-// Canonical Runtime Version: ${CANONICAL_VERSION}
+// Integrity: capabilityHash + moduleChainHash validated on every request
+// Health: rolling health score governs automatic mode switching
+// Degraded: integrity failures are explicit, never silently masked
+//
+// Canonical Runtime Version: ${CANONICAL_RUNTIME_VERSION}
 // © CMPSBL® — All rights reserved.
 
 package ${pkg}
@@ -466,6 +674,8 @@ import (
 \t"net/http"
 \t"sync"
 \t"time"
+\t"crypto/rand"
+\tencHex "encoding/hex"
 )
 
 // BridgeMeta — capability metadata for this bridge adapter
@@ -475,9 +685,11 @@ var BridgeMeta = map[string]interface{}{
 \t"category":          "${ctx.category}",
 \t"module_chain":      []string{${modules.map(m => `"${m}"`).join(', ')}},
 \t"bridge_type":       "hybrid",
-\t"canonical_version": "${CANONICAL_VERSION}",
+\t"canonical_version": "${CANONICAL_RUNTIME_VERSION}",
 \t"default_endpoint":  "${CANONICAL_ENDPOINT}",
 \t"offline_capable":   true,
+\t"capability_hash":   "${capHash}",
+\t"module_chain_hash": "${chainHash}",
 }
 
 type stage struct {
@@ -488,32 +700,109 @@ type stage struct {
 
 var stages = []stage{
 ${modules.map(m => {
-  const verb = moduleVerbs[m] || 'process';
+  const verb = moduleOps(m).verb;
   return `\t{Name: "${verb}_${m.toLowerCase()}", Module: "${m}", Verb: "${verb}"}`;
 }).join(',\n')},
 }
 
+func generateExecutionID() string {
+\tb := make([]byte, 6)
+\trand.Read(b)
+\treturn "exec_" + encHex.EncodeToString(b)
+}
+
 // StageTrace — per-stage execution record
 type StageTrace struct {
-\tModule    string  \`json:"module"\`
-\tVerb      string  \`json:"verb"\`
-\tStatus    string  \`json:"status"\`
-\tDurationMs float64 \`json:"duration_ms"\`
-\tDepth     string  \`json:"depth"\`
+\tModule        string  \`json:"module"\`
+\tVerb          string  \`json:"verb"\`
+\tStatus        string  \`json:"status"\`
+\tDurationMs    float64 \`json:"duration_ms"\`
+\tDepth         string  \`json:"depth"\`
+\tValidation    string  \`json:"validation"\`
+\tStageSource   string  \`json:"stage_source"\`
+\tRemoteLatency *float64 \`json:"remote_latency_ms,omitempty"\`
+\tLocalLatency  *float64 \`json:"local_latency_ms,omitempty"\`
+}
+
+// ExecutionEnvelope — metadata attached to every result
+type ExecutionEnvelope struct {
+\tExecutionID          string  \`json:"execution_id"\`
+\tBridgeLanguage       string  \`json:"bridge_language"\`
+\tBridgeType           string  \`json:"bridge_type"\`
+\tRuntimeMode          string  \`json:"runtime_mode"\`
+\tWasRemoteAttempted   bool    \`json:"was_remote_attempted"\`
+\tWasRemoteUsed        bool    \`json:"was_remote_used"\`
+\tUsedFallback         bool    \`json:"used_fallback"\`
+\tFallbackReason       string  \`json:"fallback_reason,omitempty"\`
+\tValidationResult     string  \`json:"validation_result"\`
+\tHealthScoreAtExec    float64 \`json:"health_score_at_execution"\`
+\tModeBeforeExecution  string  \`json:"mode_before_execution"\`
+\tModeAfterExecution   string  \`json:"mode_after_execution"\`
+\tCanonicalVersion     string  \`json:"canonical_version"\`
+\tCapabilityHash       string  \`json:"capability_hash"\`
 }
 
 // BridgeResult — normalized bridge output
 type BridgeResult struct {
-\tSuccess         bool                   \`json:"success"\`
-\tData            map[string]interface{} \`json:"data"\`
-\tError           string                 \`json:"error,omitempty"\`
-\tLatencyMs       float64                \`json:"latency_ms"\`
-\tConfidence      float64                \`json:"confidence"\`
-\tTrace           []StageTrace           \`json:"trace"\`
-\tStagesCompleted int                    \`json:"stages_completed"\`
-\tTotalStages     int                    \`json:"total_stages"\`
-\tRuntimeMode     string                 \`json:"runtime_mode"\`
-\tBridgeType      string                 \`json:"bridge_type"\`
+\tSuccess            bool                   \`json:"success"\`
+\tData               map[string]interface{} \`json:"data"\`
+\tError              string                 \`json:"error,omitempty"\`
+\tLatencyMs          float64                \`json:"latency_ms"\`
+\tConfidence         float64                \`json:"confidence"\`
+\tTrace              []StageTrace           \`json:"trace"\`
+\tStagesCompleted    int                    \`json:"stages_completed"\`
+\tTotalStages        int                    \`json:"total_stages"\`
+\tRuntimeMode        string                 \`json:"runtime_mode"\`
+\tBridgeType         string                 \`json:"bridge_type"\`
+\tExecutionID        string                 \`json:"execution_id"\`
+\tValidated          bool                   \`json:"validated"\`
+\tValidationErrors   []string               \`json:"validation_errors"\`
+\tValidationWarnings []string               \`json:"validation_warnings"\`
+\tDegraded           bool                   \`json:"degraded"\`
+\tDegradedReasons    []string               \`json:"degraded_reasons"\`
+\tEnvelope           *ExecutionEnvelope     \`json:"envelope"\`
+}
+
+// healthTracker — lightweight rolling health for canonical endpoint
+type healthTracker struct {
+\tconsecutiveSuccesses    int
+\tconsecutiveFailures     int
+\ttotalRemoteAttempts     int
+\ttotalRemoteSuccesses    int
+\ttotalFallbacks          int
+\ttotalValidationFailures int
+}
+
+func (h *healthTracker) healthScore() float64 {
+\tif h.totalRemoteAttempts == 0 { return 50.0 }
+\tsuccessRate := float64(h.totalRemoteSuccesses) / float64(h.totalRemoteAttempts) * 100
+\tvalPenalty := float64(h.totalValidationFailures) / float64(h.totalRemoteAttempts) * 100
+\traw := successRate*0.6 + (100-valPenalty*2)*0.4
+\treturn math.Max(0, math.Min(100, raw))
+}
+
+func (h *healthTracker) recordSuccess() {
+\th.totalRemoteAttempts++; h.totalRemoteSuccesses++
+\th.consecutiveSuccesses++; h.consecutiveFailures = 0
+}
+
+func (h *healthTracker) recordFailure() {
+\th.totalRemoteAttempts++; h.consecutiveFailures++; h.consecutiveSuccesses = 0
+}
+
+func (h *healthTracker) recordValidationFailure() {
+\th.totalRemoteAttempts++; h.totalValidationFailures++
+\th.consecutiveFailures += 2; h.consecutiveSuccesses = 0
+}
+
+func (h *healthTracker) recordFallback() { h.totalFallbacks++ }
+
+func (h *healthTracker) evaluateMode(current string) string {
+\tif h.consecutiveFailures >= 3 { return "offline" }
+\tif h.consecutiveSuccesses >= 5 { return "network" }
+\tif current == "offline" && h.consecutiveSuccesses >= 2 { return "hybrid" }
+\tif current == "network" && h.consecutiveFailures > 0 { return "hybrid" }
+\treturn current
 }
 
 // ${cls} — CMPSBL® Bridge Adapter
@@ -523,6 +812,8 @@ type ${cls} struct {
 \truntimeMode    string
 \texecutionCount int
 \tsuccessCount   int
+\thealth         healthTracker
+\tforcedMode     string
 }
 
 // New${cls} creates a new bridge adapter
@@ -538,20 +829,59 @@ func New${cls}(endpoint ...string) *${cls} {
 \treturn &${cls}{endpoint: ep, runtimeMode: mode}
 }
 
-// ConfigureEndpoint sets the canonical runtime endpoint. Pass "" for offline-only.
+// ConfigureEndpoint sets the canonical runtime endpoint
 func (b *${cls}) ConfigureEndpoint(url string) {
-\tb.mu.Lock()
-\tdefer b.mu.Unlock()
+\tb.mu.Lock(); defer b.mu.Unlock()
 \tb.endpoint = url
-\tif url == "" {
-\t\tb.runtimeMode = "offline"
-\t} else {
-\t\tb.runtimeMode = "hybrid"
-\t}
+\tif url == "" { b.runtimeMode = "offline" } else { b.runtimeMode = "hybrid" }
 }
 
 // RuntimeMode returns the current connectivity mode
-func (b *${cls}) RuntimeMode() string { return b.runtimeMode }
+func (b *${cls}) RuntimeMode() string {
+\tif b.forcedMode != "" { return b.forcedMode }
+\treturn b.runtimeMode
+}
+
+// GetHealthScore returns the current health score (0-100)
+func (b *${cls}) GetHealthScore() float64 { return b.health.healthScore() }
+
+// GetHealthSnapshot returns full health state
+func (b *${cls}) GetHealthSnapshot() map[string]interface{} {
+\tb.mu.Lock(); defer b.mu.Unlock()
+\treturn map[string]interface{}{
+\t\t"current_mode": b.RuntimeMode(), "health_score": b.health.healthScore(),
+\t\t"consecutive_successes": b.health.consecutiveSuccesses,
+\t\t"consecutive_failures": b.health.consecutiveFailures,
+\t\t"total_remote_attempts": b.health.totalRemoteAttempts,
+\t\t"total_fallbacks": b.health.totalFallbacks,
+\t\t"total_validation_failures": b.health.totalValidationFailures,
+\t\t"mode_forced": b.forcedMode != "",
+\t}
+}
+
+// ResetHealthState clears health to defaults
+func (b *${cls}) ResetHealthState() {
+\tb.mu.Lock(); defer b.mu.Unlock()
+\tb.health = healthTracker{}
+\tb.runtimeMode = "hybrid"; b.forcedMode = ""
+}
+
+// ForceMode overrides automatic mode switching (test/debug only)
+func (b *${cls}) ForceMode(mode string) { b.forcedMode = mode }
+
+// ClearForceMode removes mode override
+func (b *${cls}) ClearForceMode() { b.forcedMode = "" }
+
+func (b *${cls}) buildIntegrityPayload() map[string]interface{} {
+\treturn map[string]interface{}{
+\t\t"canonicalVersion": BridgeMeta["canonical_version"],
+\t\t"bridgeType": "hybrid", "runtimeType": "portable",
+\t\t"executionMode": b.RuntimeMode(),
+\t\t"capabilityHash": BridgeMeta["capability_hash"],
+\t\t"moduleChainHash": BridgeMeta["module_chain_hash"],
+\t\t"expectedCJPI": BridgeMeta["cjpi"],
+\t}
+}
 
 // Execute runs the bridge: remote-first, then deterministic local fallback
 func (b *${cls}) Execute(input map[string]interface{}) BridgeResult {
@@ -559,19 +889,30 @@ func (b *${cls}) Execute(input map[string]interface{}) BridgeResult {
 \tb.executionCount++
 \tb.mu.Unlock()
 
+\texecutionID := generateExecutionID()
+\tmodeBefore := b.RuntimeMode()
 \tstart := time.Now()
 \tdata := make(map[string]interface{})
-\tfor k, v := range input {
-\t\tdata[k] = v
-\t}
+\tfor k, v := range input { data[k] = v }
 \tconfidence := 1.0
 \ttrace := make([]StageTrace, 0, len(stages))
 \tcompleted := 0
+\twasRemoteAttempted := false
+\twasRemoteUsed := false
+\tusedFallback := false
+\tfallbackReason := ""
+\tvalidated := false
+\tvalidationErrors := make([]string, 0)
+\tvalidationWarnings := make([]string, 0)
+\tdegraded := false
+\tdegradedReasons := make([]string, 0)
 
 \t// Attempt remote canonical runtime
-\tif b.endpoint != "" && b.runtimeMode != "offline" {
+\tif b.endpoint != "" && b.RuntimeMode() != "offline" {
+\t\twasRemoteAttempted = true
 \t\tpayload, _ := json.Marshal(map[string]interface{}{
 \t\t\t"name": BridgeMeta["name"], "data": data, "confidence": confidence,
+\t\t\t"integrity": b.buildIntegrityPayload(),
 \t\t\t"meta": map[string]interface{}{"runtimeType": "portable", "version": BridgeMeta["canonical_version"]},
 \t\t})
 \t\tclient := &http.Client{Timeout: 5 * time.Second}
@@ -580,16 +921,48 @@ func (b *${cls}) Execute(input map[string]interface{}) BridgeResult {
 \t\t\tvar result BridgeResult
 \t\t\tif json.NewDecoder(resp.Body).Decode(&result) == nil {
 \t\t\t\tresp.Body.Close()
-\t\t\t\tb.mu.Lock()
-\t\t\t\tb.successCount++
-\t\t\t\tb.mu.Unlock()
-\t\t\t\treturn result
+\t\t\t\tif result.Validated && len(result.ValidationErrors) == 0 {
+\t\t\t\t\tb.health.recordSuccess()
+\t\t\t\t\twasRemoteUsed = true
+\t\t\t\t\tb.mu.Lock(); b.successCount++; b.mu.Unlock()
+\t\t\t\t\tb.runtimeMode = b.health.evaluateMode(b.runtimeMode)
+\t\t\t\t\tresult.ExecutionID = executionID
+\t\t\t\t\tresult.Envelope = &ExecutionEnvelope{
+\t\t\t\t\t\tExecutionID: executionID, BridgeLanguage: "go",
+\t\t\t\t\t\tBridgeType: "hybrid", RuntimeMode: b.RuntimeMode(),
+\t\t\t\t\t\tWasRemoteAttempted: true, WasRemoteUsed: true,
+\t\t\t\t\t\tValidationResult: "passed",
+\t\t\t\t\t\tHealthScoreAtExec: b.health.healthScore(),
+\t\t\t\t\t\tModeBeforeExecution: modeBefore,
+\t\t\t\t\t\tModeAfterExecution: b.RuntimeMode(),
+\t\t\t\t\t\tCanonicalVersion: "${CANONICAL_RUNTIME_VERSION}",
+\t\t\t\t\t\tCapabilityHash: "${capHash}",
+\t\t\t\t\t}
+\t\t\t\t\treturn result
+\t\t\t\t}
+\t\t\t\t// Validation failed — degrade, do NOT silently fallback
+\t\t\t\tb.health.recordValidationFailure()
+\t\t\t\tdegraded = true
+\t\t\t\tfor _, e := range result.ValidationErrors {
+\t\t\t\t\tdegradedReasons = append(degradedReasons, "Remote validation: "+e)
+\t\t\t\t}
+\t\t\t\tvalidationErrors = result.ValidationErrors
+\t\t\t\tfallbackReason = "degraded"
 \t\t\t}
 \t\t\tresp.Body.Close()
+\t\t} else {
+\t\t\tb.health.recordFailure()
+\t\t\tfallbackReason = "normal"
+\t\t\tif resp != nil { resp.Body.Close() }
 \t\t}
-\t\tif resp != nil {
-\t\t\tresp.Body.Close()
+\t}
+
+\tif !wasRemoteUsed {
+\t\tusedFallback = true
+\t\tif fallbackReason == "" {
+\t\t\tif b.RuntimeMode() == "offline" { fallbackReason = "offline" } else { fallbackReason = "normal" }
 \t\t}
+\t\tb.health.recordFallback()
 \t}
 
 \t// Deterministic local fallback
@@ -597,27 +970,47 @@ func (b *${cls}) Execute(input map[string]interface{}) BridgeResult {
 \t\tstageStart := time.Now()
 \t\tdata[fmt.Sprintf("%s_result", s.Module)] = map[string]interface{}{
 \t\t\t"module": s.Module, "verb": s.Verb,
-\t\t\t"confidence": confidence, "bridge": "go", "mode": b.runtimeMode,
+\t\t\t"confidence": confidence, "bridge": "go", "mode": b.RuntimeMode(),
 \t\t}
 \t\tconfidence = math.Min(1.0, confidence+0.02)
+\t\tstageDur := float64(time.Since(stageStart).Microseconds()) / 1000.0
+\t\tstatus := "success"
+\t\tdepth := "fallback"
+\t\tvalStatus := "skipped"
+\t\tif degraded { status = "degraded"; depth = "degraded"; valStatus = "failed" }
 \t\ttrace = append(trace, StageTrace{
-\t\t\tModule: s.Module, Verb: s.Verb, Status: "success",
-\t\t\tDurationMs: float64(time.Since(stageStart).Microseconds()) / 1000.0,
-\t\t\tDepth: "fallback",
+\t\t\tModule: s.Module, Verb: s.Verb, Status: status,
+\t\t\tDurationMs: stageDur, Depth: depth, Validation: valStatus,
+\t\t\tStageSource: "bridge-fallback", LocalLatency: &stageDur,
 \t\t})
 \t\tcompleted++
 \t}
 
-\tb.mu.Lock()
-\tb.successCount++
-\tb.mu.Unlock()
+\tb.mu.Lock(); b.successCount++; b.mu.Unlock()
+\tb.runtimeMode = b.health.evaluateMode(b.runtimeMode)
+
+\tenvelope := &ExecutionEnvelope{
+\t\tExecutionID: executionID, BridgeLanguage: "go",
+\t\tBridgeType: "hybrid", RuntimeMode: b.RuntimeMode(),
+\t\tWasRemoteAttempted: wasRemoteAttempted, WasRemoteUsed: wasRemoteUsed,
+\t\tUsedFallback: usedFallback, FallbackReason: fallbackReason,
+\t\tValidationResult: func() string { if degraded { return "failed" }; return "skipped" }(),
+\t\tHealthScoreAtExec: b.health.healthScore(),
+\t\tModeBeforeExecution: modeBefore, ModeAfterExecution: b.RuntimeMode(),
+\t\tCanonicalVersion: "${CANONICAL_RUNTIME_VERSION}", CapabilityHash: "${capHash}",
+\t}
 
 \treturn BridgeResult{
-\t\tSuccess: true, Data: data,
+\t\tSuccess: !degraded, Data: data,
 \t\tLatencyMs: float64(time.Since(start).Microseconds()) / 1000.0,
 \t\tConfidence: confidence, Trace: trace,
 \t\tStagesCompleted: completed, TotalStages: len(stages),
-\t\tRuntimeMode: b.runtimeMode, BridgeType: "hybrid",
+\t\tRuntimeMode: b.RuntimeMode(), BridgeType: "hybrid",
+\t\tExecutionID: executionID,
+\t\tValidated: validated, ValidationErrors: validationErrors,
+\t\tValidationWarnings: validationWarnings,
+\t\tDegraded: degraded, DegradedReasons: degradedReasons,
+\t\tEnvelope: envelope,
 \t}
 }
 
@@ -629,26 +1022,21 @@ func (b *${cls}) Validate() bool {
 // Meta returns bridge metadata
 func (b *${cls}) Meta() map[string]interface{} {
 \tm := make(map[string]interface{})
-\tfor k, v := range BridgeMeta {
-\t\tm[k] = v
-\t}
-\tm["runtime_mode"] = b.runtimeMode
+\tfor k, v := range BridgeMeta { m[k] = v }
+\tm["runtime_mode"] = b.RuntimeMode()
 \treturn m
 }
 
 // Stats returns execution statistics
 func (b *${cls}) Stats() map[string]interface{} {
-\tb.mu.Lock()
-\tdefer b.mu.Unlock()
+\tb.mu.Lock(); defer b.mu.Unlock()
 \trate := 0.0
-\tif b.executionCount > 0 {
-\t\trate = float64(b.successCount) / float64(b.executionCount)
-\t}
+\tif b.executionCount > 0 { rate = float64(b.successCount) / float64(b.executionCount) }
 \treturn map[string]interface{}{
 \t\t"name": BridgeMeta["name"], "cjpi": BridgeMeta["cjpi"],
 \t\t"bridge_type": BridgeMeta["bridge_type"],
-\t\t"runtime_mode": b.runtimeMode, "executions": b.executionCount,
-\t\t"success_rate": rate,
+\t\t"runtime_mode": b.RuntimeMode(), "executions": b.executionCount,
+\t\t"success_rate": rate, "health_score": b.health.healthScore(),
 \t}
 }
 `;
