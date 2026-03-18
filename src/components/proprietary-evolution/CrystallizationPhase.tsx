@@ -241,15 +241,15 @@ export function CrystallizationPhase() {
               {d.cjpiScore}
             </span>
 
-            {!d.crystallized && (
+            {!d.ascended && (
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => ascend(d)}
-                disabled={!!crystallizing}
+                disabled={!!ascending}
                 className="h-7 text-[10px] gap-1"
               >
-                {crystallizing === d.id ? (
+                {ascending === d.id ? (
                   <Loader2 className="w-3 h-3 animate-spin" />
                 ) : (
                   <Flame className="w-3 h-3" />
