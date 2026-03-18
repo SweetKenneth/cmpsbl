@@ -2,28 +2,22 @@
  * UpgradeContent — Extracted inner content from Upgrade page.
  * Embeddable inside Store tabs or standalone Upgrade page.
  */
-import { useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
 import { SlotPressureModal } from '@/components/slots/SlotPressureModal';
-import { PackActivationCard } from '@/components/slots/PackActivationCard';
 import { cn } from '@/lib/utils';
 import {
-  Check, ArrowRight, Brain, Package, Shield, Zap,
-  Server, Building2, Lock, Unlock, Layers, Eye,
-  Sparkles, Compass, ChevronLeft, ChevronRight,
-  Archive, Download, X,
+  Check, ArrowRight, Package,
+  Building2, Unlock, Layers,
+  Sparkles, Download, X,
 } from 'lucide-react';
-import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
+import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
-import { VAULT_TIER_LIMITS } from '@/lib/substrate/vault-limits';
 import { motion } from 'framer-motion';
 
 /* ─── Tier definitions (public-facing) ─── */
@@ -131,124 +125,6 @@ const TIERS: {
     ],
   },
 ];
-
-/* ─── Value Pillars ─── */
-const PILLARS = [
-  { icon: Brain, title: 'Persistent Memory', description: 'Your agents remember. Every session builds on the last.' },
-  { icon: Layers, title: 'Unified Runtime', description: 'Every module runs for every user. No feature gating.' },
-  { icon: Package, title: 'Equal-Slot Packs', description: 'Every pack = 1 slot. Choose any combination that fits your work.' },
-  { icon: Server, title: 'Deployment Sovereignty', description: 'Cloud-first or self-hosted. Your infrastructure, your rules.' },
-];
-
-/* ─── Domain icons & accent colors ─── */
-const DOMAIN_ICONS: Record<string, React.ElementType> = {
-  'domain-memory': Brain,
-  'domain-coordination': Zap,
-  'domain-intelligence': Compass,
-  'domain-resilience': Shield,
-  'domain-sovereignty': Server,
-  'domain-perception': Eye,
-};
-
-const DOMAIN_ACCENTS: Record<string, { gradient: string; text: string; border: string; bg: string }> = {
-  'domain-memory': { gradient: 'from-cyan-500/20 to-cyan-500/5', text: 'text-cyan-400', border: 'border-cyan-500/20', bg: 'bg-cyan-500/10' },
-  'domain-coordination': { gradient: 'from-violet-500/20 to-violet-500/5', text: 'text-violet-400', border: 'border-violet-500/20', bg: 'bg-violet-500/10' },
-  'domain-intelligence': { gradient: 'from-amber-500/20 to-amber-500/5', text: 'text-amber-400', border: 'border-amber-500/20', bg: 'bg-amber-500/10' },
-  'domain-resilience': { gradient: 'from-emerald-500/20 to-emerald-500/5', text: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/10' },
-  'domain-sovereignty': { gradient: 'from-orange-500/20 to-orange-500/5', text: 'text-orange-400', border: 'border-orange-500/20', bg: 'bg-orange-500/10' },
-  'domain-perception': { gradient: 'from-pink-500/20 to-pink-500/5', text: 'text-pink-400', border: 'border-pink-500/20', bg: 'bg-pink-500/10' },
-};
-
-/* ─── Horizontal Scroll Row ─── */
-function DomainPackRow({
-  domain,
-  packs,
-  slotState,
-  onSlotPressure,
-  onViewDetails,
-}: {
-  domain: typeof STRATEGIC_DOMAINS[0];
-  packs: typeof ARTIFACT_PACKS;
-  slotState: ReturnType<typeof useArtifactSlots>;
-  onSlotPressure: (packName: string) => void;
-  onViewDetails: (pack: ArtifactPack) => void;
-}) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const DIcon = DOMAIN_ICONS[domain.id] || Package;
-  const accent = DOMAIN_ACCENTS[domain.id] || DOMAIN_ACCENTS['domain-memory'];
-
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({
-      left: direction === 'left' ? -360 : 360,
-      behavior: 'smooth',
-    });
-  }, []);
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5 }}
-      className="relative"
-    >
-      <div className="container mx-auto px-4 mb-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", accent.bg)}>
-              <DIcon className={cn("w-5 h-5", accent.text)} />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold tracking-tight">{domain.name}</h3>
-              <p className="text-xs text-muted-foreground max-w-md">{domain.thesis}</p>
-            </div>
-            <Badge variant="outline" className="text-[10px] font-mono ml-2 hidden sm:inline-flex">
-              {packs.length} packs
-            </Badge>
-          </div>
-          <div className="hidden sm:flex items-center gap-1.5">
-            <button
-              onClick={() => scroll('left')}
-              className="w-8 h-8 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-4 h-4 text-muted-foreground" />
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="w-8 h-8 rounded-lg border border-border/50 flex items-center justify-center hover:bg-muted transition-colors"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-4 lg:px-[max(1rem,calc((100vw-80rem)/2+1rem))] no-scrollbar"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {packs.map((pack) => (
-          <div key={pack.id} className="min-w-[300px] max-w-[340px] snap-start shrink-0">
-            <PackActivationCard
-              pack={pack}
-              slotState={slotState}
-              onActivate={async (id) => { await slotState.activate.mutateAsync(id); }}
-              onDeactivate={async (id) => { await slotState.deactivate.mutateAsync(id); }}
-              onSlotPressure={onSlotPressure}
-              onViewDetails={onViewDetails}
-            />
-          </div>
-        ))}
-        <div className="shrink-0 w-4 lg:w-1" aria-hidden />
-      </div>
-    </motion.section>
-  );
-}
-
 export function UpgradeContent() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
@@ -480,113 +356,6 @@ export function UpgradeContent() {
         </div>
       </div>
 
-      {/* Section divider */}
-      <div className="section-divider max-w-4xl mx-auto mt-24 mb-0" />
-
-      {/* ═══ EVERY PLAN INCLUDES ═══ */}
-      <section className="container mx-auto px-4 mt-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-              <Lock className="w-3 h-3 mr-1.5 inline" />
-              Always Active
-            </Badge>
-            <h2 className="text-3xl font-bold tracking-tight">Every Plan Includes</h2>
-            <p className="text-muted-foreground mt-2 max-w-lg mx-auto">The full runtime runs for every user. Plans scale capacity, not capability.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {BASELINE_HIGHLIGHTS.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-1.5 shimmer-on-hover card-lift"
-              >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-1">
-                  <Check className="w-4 h-4 text-primary" />
-                </div>
-                <h4 className="text-sm font-semibold">{item.label}</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-6">
-            <Button variant="link" asChild className="text-primary text-sm">
-              <Link to="/runtime">See full runtime overview →</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ VALUE PILLARS ═══ */}
-      <section className="container mx-auto px-4 mt-20">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight">What Powers Every Plan</h2>
-            <p className="text-muted-foreground mt-2">The full runtime runs for every user. Plans differ in capacity, not capability.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PILLARS.map((p, i) => {
-              const PIcon = p.icon;
-              return (
-                <motion.div
-                  key={p.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <Card className="h-full border-border/50 hover:border-primary/20 transition-all duration-300 card-lift shimmer-on-hover">
-                    <CardContent className="p-5 space-y-3">
-                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <PIcon className="w-5 h-5 text-primary" />
-                      </div>
-                      <h3 className="font-bold">{p.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ CAPABILITY PACKS BY DOMAIN ═══ */}
-      <section className="mt-24">
-        <div className="container mx-auto px-4 text-center mb-12">
-          <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-            <Package className="w-3 h-3 mr-1.5 inline" />
-            All 24 Packs
-          </Badge>
-          <h2 className="text-3xl font-bold">Capability Packs by Domain</h2>
-          <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-            Every pack = 1 slot. All visible to all plans. Scroll each category to explore.
-          </p>
-          <div className="flex justify-center mt-6">
-            <SlotCapacityIndicator slotState={slotState} variant="full" className="max-w-sm w-full" />
-          </div>
-        </div>
-
-        <div className="space-y-12">
-          {STRATEGIC_DOMAINS.map((domain) => {
-            const domainPacks = ARTIFACT_PACKS.filter(p => domain.packIds.includes(p.id));
-            if (domainPacks.length === 0) return null;
-            return (
-              <DomainPackRow
-                key={domain.id}
-                domain={domain}
-                packs={domainPacks}
-                slotState={slotState}
-                onSlotPressure={handleSlotPressure}
-                onViewDetails={(pack) => setDetailPack(pack)}
-              />
-            );
-          })}
-        </div>
-      </section>
 
       {/* Slot Pressure Modal */}
       <SlotPressureModal
