@@ -41,7 +41,7 @@ export function CrystallizationPhase() {
       .from('artifact_registry')
       .select('id, name, metadata, tier, description')
       .eq('user_id', user.id)
-      .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
+      .in('category', ['proprietary-discovery', 'proprietary-ascended'])
       .order('created_at', { ascending: false })
       .limit(500);
 
