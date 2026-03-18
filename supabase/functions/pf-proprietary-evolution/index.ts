@@ -542,13 +542,16 @@ function collideNodesMultiChain(
       const chain = [surface.nodeName, targetNode];
       const archetype = findArchetype([targetNode]);
       
-      // Build capability description using Node 41's real verbs
-      const capName = archetype?.name 
-        || `${surface.nodeName}_x_${targetNode}_${cap}`.toUpperCase();
-      const desc = generateNode41AwareDescription(surface, [targetNode], cap, cjpi);
+      // FILTER: Only surface discoveries with real archetype names.
+      // Generic chain names (NODE_X_NODE_TIER_CHAIN3) are noise — skip them.
+      if (!archetype) continue;
+      
+      const desc = archetype.desc 
+        ? enrichWithNode41(archetype.desc, surface, [targetNode])
+        : generateNode41AwareDescription(surface, [targetNode], cap, cjpi);
       
       results.push({
-        name: capName,
+        name: archetype.name,
         description: desc,
         cjpi_score: cjpi,
         tier: scoreTier(cjpi),
@@ -609,16 +612,19 @@ function collideNodesMultiChain(
         const fullChain = [surface.nodeName, ...partnerChain];
         const archetype = findArchetype(partnerChain);
         
+        // FILTER: Only surface discoveries with real archetype names.
+        // Generic chain names are noise — users want real emergent software, not labels.
+        if (!archetype) continue;
+        
         const capIdx = chainHash % targetCaps.length;
         const primaryCap = targetCaps[capIdx];
         
-        const capName = archetype?.name || generateChainName(surface.nodeName, partnerChain, cjpi);
-        const desc = archetype?.desc 
+        const desc = archetype.desc 
           ? enrichWithNode41(archetype.desc, surface, partnerChain)
           : generateNode41AwareDescription(surface, partnerChain, primaryCap, cjpi);
 
         results.push({
-          name: capName,
+          name: archetype.name,
           description: desc,
           cjpi_score: cjpi,
           tier: scoreTier(cjpi),
@@ -669,15 +675,8 @@ function findArchetype(substrateNodes: string[]): { name: string; desc: string }
   return null;
 }
 
-function generateChainName(candidate: string, nodes: string[], cjpi: number): string {
-  const tierPrefix = cjpi >= 92 ? 'APEX' : cjpi >= 80 ? 'MYTHIC' : cjpi >= 65 ? 'RELIC' : 'PRIME';
-  const primaryNode = nodes[0];
-  const lastNode = nodes[nodes.length - 1];
-  if (nodes.length === 1) {
-    return `${candidate}_x_${primaryNode}_${tierPrefix}`.toUpperCase();
-  }
-  return `${candidate}_x_${primaryNode}_${lastNode}_${tierPrefix}_CHAIN${nodes.length}`.toUpperCase();
-}
+// generateChainName removed — only archetype-matched discoveries are surfaced now.
+// Generic chain names (NODE_X_NODE_TIER_CHAIN3) were noise that diluted real discoveries.
 
 /**
  * Generate descriptions where Node 41 is a PEER — described by its capabilities,
