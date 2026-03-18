@@ -189,10 +189,10 @@ export function CrystallizationPhase() {
           <Button
             size="sm"
             onClick={ascendAll}
-            disabled={!!crystallizing}
+            disabled={!!ascending}
             className="h-7 text-xs gap-1.5"
           >
-            {crystallizing === 'batch' ? (
+            {ascending === 'batch' ? (
               <Loader2 className="w-3 h-3 animate-spin" />
             ) : (
               <Flame className="w-3 h-3" />
