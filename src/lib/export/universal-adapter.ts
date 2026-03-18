@@ -861,7 +861,7 @@ module CMPSBL
     def process(input)
       current_data = input.dup
       confidence = 1.0
-${a.synthesisContext ? synthesizeRubyProcess(a.synthesisContext) : `      input.each do |key, val|
+${a.synthesisContext ? synthesizeRuby(a.synthesisContext) : `      input.each do |key, val|
         val_s = val.to_s
         entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
         current_data["processed_\#{key}"] = { score: entropy, len: val_s.length }
