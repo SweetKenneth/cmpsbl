@@ -141,12 +141,6 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-
-        {/* ═══ SELF-IMPROVEMENT — Evolution CTA ═══ */}
-        <EvolutionCTA />
-
-        {/* ═══ SEALED ENGINES — 20 Engines CTA ═══ */}
-        <EnginesCTA />
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
