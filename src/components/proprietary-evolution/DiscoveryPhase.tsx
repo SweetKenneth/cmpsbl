@@ -121,8 +121,8 @@ export function DiscoveryPhase() {
           };
         });
         setResults(mapped);
-        const existing90 = mapped.find(r => r.cjpiScore >= CJPI_THRESHOLD);
-        if (existing90) setDiscoveryHit(existing90);
+        const bestExisting = mapped.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
+        if (bestExisting) setDiscoveryHit(bestExisting);
 
         // Try to get surface from discovery metadata
         if (!candidateSurface && data.length > 0) {
