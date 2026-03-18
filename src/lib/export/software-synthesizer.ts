@@ -329,6 +329,13 @@ ${modules.map((m, i) => `        // Stage ${i}: ${m} — ${moduleOps(m).desc}
             (System.nanoTime() - start) / 1e6, confidence, trace, completed, ${modules.length});
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> primitiveExecutor(String module, String verb, Map<String, Object> data, double confidence) {
+        Map<String, Object> out = new HashMap<>();
+        out.put(module.toLowerCase() + "_result", Map.of("module", module, "verb", verb, "confidence", confidence));
+        return Map.of("data", out, "confidence_delta", 0.02, "signal", verb + "_complete");
+    }
+
     public Map<String, Object> getStats() {
         return Map.of("name", "${ctx.name}", "cjpi", ${ctx.cjpi}, 
             "executions", executionCount, "successRate",
