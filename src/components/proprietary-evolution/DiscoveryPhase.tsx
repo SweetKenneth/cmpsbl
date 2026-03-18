@@ -101,7 +101,7 @@ export function DiscoveryPhase() {
         .eq('user_id', user.id)
         .eq('category', 'proprietary-discovery')
         .order('created_at', { ascending: false })
-        .limit(50);
+        .limit(500);
 
       if (data) {
         const mapped = (data as any[]).map((d: any) => {
