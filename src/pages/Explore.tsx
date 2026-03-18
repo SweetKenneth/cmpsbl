@@ -32,8 +32,6 @@ const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").t
 const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
 const GovernanceSignal = lazy(() => import("@/components/home/GovernanceSignal").then(m => ({ default: m.GovernanceSignal })));
 const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
-const EvolutionCTA = lazy(() => import("@/components/home/EvolutionCTA").then(m => ({ default: m.EvolutionCTA })));
-const EnginesCTA = lazy(() => import("@/components/home/EnginesCTA").then(m => ({ default: m.EnginesCTA })));
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 
 // Section divider with animated gradient, memory-stream accent, and side flair
@@ -141,12 +139,6 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-
-        {/* ═══ SELF-IMPROVEMENT — Evolution CTA ═══ */}
-        <EvolutionCTA />
-
-        {/* ═══ SEALED ENGINES — 20 Engines CTA ═══ */}
-        <EnginesCTA />
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
