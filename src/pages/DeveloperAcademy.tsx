@@ -1,6 +1,13 @@
-import React from 'react';
+/**
+ * Developer Academy v2 — Interactive Learning Platform for CMPSBL
+ * 8 learning tracks, live sandbox, certifications, AI tools
+ * Updated for v14.4.0 substrate architecture
+ */
+
+import { useState } from 'react';
 import { SEO } from '@/components/SEO';
-import { CmpsblNav } from '@/components/navigation/CmpsblNav';
+import { PublicNav } from '@/components/PublicNav';
+import { AcademyOnboarding } from '@/components/onboarding/AcademyOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { AuthorityLinkBlock } from '@/components/seo/AuthorityLinkBlock';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,83 +16,152 @@ import { SkillTreeProgress } from '@/components/developer/SkillTreeProgress';
 import { SandboxEnvironment } from '@/components/developer/SandboxEnvironment';
 import { CertificationBadges } from '@/components/developer/CertificationBadges';
 import { AIToolsSuite } from '@/components/developer/AIToolsSuite';
-import { 
-  BookOpen, TreeDeciduous, Box, Trophy, Sparkles, 
-  GraduationCap, Rocket, ArrowRight
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  BookOpen, TreeDeciduous, Box, Trophy, Sparkles,
+  GraduationCap, Rocket, ArrowRight, Brain, Zap,
+  Layers, Terminal, Shield, Code, Network, Target,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 30 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6 },
+const LEARNING_TRACKS = [
+  { icon: Brain, title: 'BRAIN Memory API', desc: '4-tier persistent memory, DREAM consolidation, semantic recall', difficulty: 'Beginner', modules: 6, time: '45 min', color: 'text-primary' },
+  { icon: Network, title: 'NEXUS Routing', desc: 'Multi-provider AI routing with failover, budget controls, latency optimization', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
+  { icon: Shield, title: 'DEFENSE & Security', desc: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
+  { icon: Layers, title: 'Resolver Patterns', desc: 'Node.resolver naming, intent routing, receipt logging, mesh telemetry', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
+  { icon: Zap, title: 'Ascension Lifecycle', desc: 'Node 41+ ingestion, primitive extraction, quality gates, delta measurement', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
+  { icon: Target, title: 'CJPI Scoring', desc: 'Novelty, utility, complexity, composability — how the substrate scores discoveries', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
+  { icon: Sparkles, title: 'Memory Stream', desc: 'Crystallization, tiering, vault management, and capability pack export', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
+  { icon: Code, title: 'Production Hardening', desc: 'Error handling, retry logic, Forge protections, VOLVER handicapping', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },
+];
+
+const DIFF_COLORS: Record<string, string> = {
+  Beginner: 'bg-neon-green/10 text-neon-green border-neon-green/20',
+  Intermediate: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20',
+  Advanced: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20',
+  Expert: 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/20',
 };
 
 const DeveloperAcademy = () => {
+  const [activeTrack, setActiveTrack] = useState<number | null>(null);
+
   return (
     <>
       <SEO
-        title="Academy — Learn the Substrate Step by Step | CMPSBL"
-        description="Master CMPSBL with guided tutorials: BRAIN memory API, NEXUS routing, DREAM cycles, resolver patterns, and intent mesh. Progress from beginner to Governor tier with sandbox exercises."
+        title="Academy v2 — 8 Learning Tracks, Live Sandbox | CMPSBL"
+        description="Master CMPSBL v14.4.0 with 8 guided tracks: BRAIN memory, NEXUS routing, Ascension lifecycle, CJPI scoring, resolver patterns, and production hardening. Earn verifiable certifications."
         image="https://cmpsbl.com/og/academy.jpg"
-        keywords={['AI developer academy', 'substrate SDK tutorials', 'interactive AI training', 'agentic AI course']}
+        keywords={['AI developer academy', 'substrate SDK tutorials', 'interactive AI training', 'agentic AI course', 'CMPSBL v14.4.0']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Developers', url: 'https://cmpsbl.com/developers' },
           { name: 'Academy', url: 'https://cmpsbl.com/academy' },
         ]}
       />
-      
-      <div className="min-h-screen flex flex-col bg-background">
-        <CmpsblNav />
 
-        {/* Ambient glow — CSS only */}
+      <div className="min-h-screen flex flex-col bg-background">
+        <PublicNav />
+        <AcademyOnboarding />
+
+        {/* Ambient */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div
-            className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1"
-            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }}
-          />
+          <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }} />
+          <div className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] rounded-full animate-hero-orb-2" style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.03) 0%, transparent 60%)" }} />
         </div>
-        
+
         <main className="flex-grow relative z-10">
-          {/* Hero */}
-          <section className="relative py-12 md:py-16 border-b border-border/40 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
+          {/* ═══ HERO v2 ═══ */}
+          <section className="relative py-16 md:py-24 border-b border-border/40 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-neon-cyan/5" />
             <div className="container mx-auto px-4 relative">
-              <div className="max-w-3xl mx-auto text-center">
-                <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+              <div className="max-w-4xl mx-auto text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
                   <GraduationCap className="w-4 h-4" />
-                  Interactive Learning Platform
-                </motion.div>
-                <motion.h1 {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                  Developer Academy
-                </motion.h1>
-                <motion.p {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="text-lg md:text-xl text-muted-foreground mb-6">
-                  Master the substrate through hands-on tutorials, earn certifications, 
-                  and get AI-powered assistance while you build.
-                </motion.p>
-                <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-primary" />
-                    <span>5 Interactive Modules</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-primary" />
-                    <span>4 Certifications</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-primary" />
-                    <span>5 AI Tools</span>
-                  </div>
-                </motion.div>
+                  Academy v2 — Updated for v14.4.0
+                </div>
+
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight animate-fade-in">
+                  Learn the{' '}
+                  <span className="bg-gradient-to-r from-primary to-neon-cyan bg-clip-text text-transparent">
+                    Cognitive Substrate
+                  </span>
+                </h1>
+
+                <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in">
+                  8 guided learning tracks. Live sandbox. Verifiable certifications.
+                  From your first SDK call to production-grade Ascension pipelines.
+                </p>
+
+                {/* Stats */}
+                <div className="flex flex-wrap justify-center gap-6 md:gap-10 text-sm animate-fade-in">
+                  {[
+                    { icon: BookOpen, label: '8 Learning Tracks', value: '50+ modules' },
+                    { icon: Terminal, label: 'Live Sandbox', value: 'Real SDK' },
+                    { icon: Trophy, label: '6 Certifications', value: 'Verifiable' },
+                    { icon: Sparkles, label: 'AI-Powered', value: '5 Tools' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="flex items-center gap-2.5 text-muted-foreground">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <stat.icon className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="text-left">
+                        <div className="text-xs font-medium text-foreground">{stat.label}</div>
+                        <div className="text-[11px] text-muted-foreground">{stat.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Main Content */}
+          {/* ═══ LEARNING TRACKS v2 ═══ */}
+          <section className="py-12 md:py-16 border-b border-border/40">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Learning Tracks</h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Choose a track based on your experience level. Each track includes interactive tutorials,
+                  code exercises, and real SDK integration patterns.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+                {LEARNING_TRACKS.map((track, i) => (
+                  <Card
+                    key={track.title}
+                    className={cn(
+                      'cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg group',
+                      activeTrack === i && 'ring-2 ring-primary shadow-lg'
+                    )}
+                    onClick={() => setActiveTrack(activeTrack === i ? null : i)}
+                  >
+                    <CardContent className="pt-5 pb-4 px-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className={cn('w-10 h-10 rounded-xl bg-muted/50 border border-border/50 flex items-center justify-center group-hover:scale-110 transition-transform', track.color)}>
+                          <track.icon className="w-5 h-5" />
+                        </div>
+                        <Badge variant="outline" className={cn('text-[10px] px-2 py-0.5', DIFF_COLORS[track.difficulty])}>
+                          {track.difficulty}
+                        </Badge>
+                      </div>
+                      <h3 className="font-semibold text-sm mb-1.5">{track.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-3">{track.desc}</p>
+                      <div className="flex items-center justify-between text-[10px] text-muted-foreground/60 font-mono">
+                        <span>{track.modules} modules</span>
+                        <span>{track.time}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ═══ INTERACTIVE CONTENT ═══ */}
           <section className="py-8 md:py-12">
             <div className="container mx-auto px-4">
               <Tabs defaultValue="tutorial" className="space-y-6 md:space-y-8">
@@ -121,31 +197,34 @@ const DeveloperAcademy = () => {
             </div>
           </section>
 
-          {/* CTA */}
-          <section className="py-12 md:py-16 border-t border-border/40 bg-gradient-to-b from-background to-muted/20">
-            <motion.div {...fadeUp} className="container mx-auto px-4 text-center">
+          {/* ═══ CTA v2 ═══ */}
+          <section className="py-16 md:py-20 border-t border-border/40 bg-gradient-to-b from-background to-muted/20">
+            <div className="container mx-auto px-4 text-center">
               <div className="max-w-2xl mx-auto">
                 <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Rocket className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Build?</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Build on the Substrate?</h2>
                 <p className="text-muted-foreground mb-8">
-                  Complete the tutorials, earn your first certification, 
-                  and start building production-ready agents.
+                  Complete learning tracks, earn certifications, and start building
+                  production-grade agents with persistent memory and Ascension capabilities.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    <Link to="/devtools">
-                      Get API Key
+                    <Link to="/workspace">
+                      Open Workspace
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
-                    <Link to="/documentation">Read Documentation</Link>
+                    <Link to="/codelab">Try CodeLab</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
+                    <Link to="/documentation">Read Docs</Link>
                   </Button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </section>
         </main>
 
