@@ -397,6 +397,7 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     locks: createLockManager(), computeCJPI, autoAssignTier, computeSynergyMultiplier,
     computeStableId, sha256, canonicalize, createStateMachine, createSaga,
     CANONICAL_MODULES, DISCOVERY_CATEGORIES,
+    executePrimitive, configureEndpoint, getRuntimeMode, getExecutionTelemetry,
   };
 }
 `;
