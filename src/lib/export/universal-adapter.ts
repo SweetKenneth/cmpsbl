@@ -1124,7 +1124,7 @@ function ${mod}:process(input)
     local current_data = {}
     for k, v in pairs(input) do current_data[k] = v end
     local confidence = 1.0
-${a.synthesisContext ? synthesizeLuaProcess(a.synthesisContext) : `    for k, v in pairs(input) do
+${a.synthesisContext ? synthesizeLua(a.synthesisContext) : `    for k, v in pairs(input) do
         local vs = tostring(v)
         local entropy = 0
         for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
