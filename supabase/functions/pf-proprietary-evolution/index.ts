@@ -675,15 +675,8 @@ function findArchetype(substrateNodes: string[]): { name: string; desc: string }
   return null;
 }
 
-function generateChainName(candidate: string, nodes: string[], cjpi: number): string {
-  const tierPrefix = cjpi >= 92 ? 'APEX' : cjpi >= 80 ? 'MYTHIC' : cjpi >= 65 ? 'RELIC' : 'PRIME';
-  const primaryNode = nodes[0];
-  const lastNode = nodes[nodes.length - 1];
-  if (nodes.length === 1) {
-    return `${candidate}_x_${primaryNode}_${tierPrefix}`.toUpperCase();
-  }
-  return `${candidate}_x_${primaryNode}_${lastNode}_${tierPrefix}_CHAIN${nodes.length}`.toUpperCase();
-}
+// generateChainName removed — only archetype-matched discoveries are surfaced now.
+// Generic chain names (NODE_X_NODE_TIER_CHAIN3) were noise that diluted real discoveries.
 
 /**
  * Generate descriptions where Node 41 is a PEER — described by its capabilities,
