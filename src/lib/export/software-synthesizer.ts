@@ -1370,23 +1370,21 @@ private:
     int executionCount_ = 0;
     int successCount_ = 0;
 
-${modules.map((m, i) => {
-  const ops = moduleOps(m);
-  return `    StageResult stage${i}${m}(const std::unordered_map<std::string, std::string>& data, double confidence) {
-        // ${m}: ${ops.desc}
+    StageResult primitiveExecutor(const std::string& module, const std::string& verb, double confidence) {
         auto ss = std::chrono::high_resolution_clock::now();
         std::unordered_map<std::string, std::string> out;
-        for (const auto& [key, val] : data) {
-            unsigned long entropy = 0;
-            for (char c : val) entropy += static_cast<unsigned char>(c);
-            double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1)) * confidence;
-            out["${m.toLowerCase()}_" + key] =
-                "{\\"module\\":\\"${m}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":" +
-                std::to_string(score) + ",\\"len\\":" + std::to_string(val.size()) + "}";
-        }
+        std::string key = module; std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+        out[key + "_result"] = "{\\"module\\":\\"" + module + "\\",\\"verb\\":\\"" + verb +
+            "\\",\\"confidence\\":" + std::to_string(confidence) + "}";
         auto dur = std::chrono::duration<double, std::milli>(
             std::chrono::high_resolution_clock::now() - ss).count();
-        return {"${ops.verb}_${m.toLowerCase()}", "${m}", true, out, 0.03, dur, "${ops.verb}_complete"};
+        return {verb + "_" + key, module, true, out, 0.02, dur, verb + "_complete"};
+    }
+
+${modules.map((m, i) => {
+  const ops = moduleOps(m);
+  return `    StageResult stage${i}${m}(const std::unordered_map<std::string, std::string>& /*data*/, double confidence) {
+        return primitiveExecutor("${m}", "${ops.verb}", confidence);
     }`;
 }).join("\n\n")}
 };
