@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu, Trash2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
@@ -45,7 +45,7 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
-const CJPI_THRESHOLD = 90;
+const CJPI_THRESHOLD = 68;
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
@@ -58,6 +58,7 @@ export function DiscoveryPhase() {
   const [currentTarget, setCurrentTarget] = useState<string | null>(null);
   const [discoveryHit, setDiscoveryHit] = useState<CollisionResult | null>(null);
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const [discardingId, setDiscardingId] = useState<string | null>(null);
   const abortRef = useRef(false);
   const { toast } = useToast();
 
@@ -101,7 +102,7 @@ export function DiscoveryPhase() {
         .eq('user_id', user.id)
         .eq('category', 'proprietary-discovery')
         .order('created_at', { ascending: false })
-        .limit(50);
+        .limit(500);
 
       if (data) {
         const mapped = (data as any[]).map((d: any) => {
@@ -237,6 +238,38 @@ export function DiscoveryPhase() {
   };
 
   const stopDiscovery = () => { abortRef.current = true; };
+
+  /** Discard a discovery from the database */
+  const discardDiscovery = async (result: CollisionResult, idx: number) => {
+    setDiscardingId(`${idx}`);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // Find and delete matching artifact_registry entry
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: matches } = await (supabase as any)
+        .from('artifact_registry')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('category', 'proprietary-discovery')
+        .eq('name', result.capability)
+        .limit(1);
+      if (matches && matches.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any)
+          .from('artifact_registry')
+          .delete()
+          .eq('id', matches[0].id)
+          .eq('user_id', user.id);
+      }
+      setResults(prev => prev.filter((_, i) => i !== idx));
+      toast({ title: 'Discovery discarded', description: `${result.capability} removed from vault.` });
+    } catch (err) {
+      toast({ title: 'Discard failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setDiscardingId(null);
+    }
+  };
 
   const tierColor = (tier: string) => {
     const colors: Record<string, string> = {
@@ -420,20 +453,22 @@ export function DiscoveryPhase() {
         ))}
       </div>
 
-      {/* Results List */}
+      {/* Results List — Discovery Vault */}
       {results.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovered Capabilities ({results.length})
+            Discovery Vault ({results.length}) — Keep or discard before crystallization
           </h3>
           <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
             {results.map((r, i) => (
               <div
                 key={i}
-                className={cn("rounded-lg transition-colors cursor-pointer border", tierBorder(r.tier))}
-                onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
+                className={cn("rounded-lg transition-colors border", tierBorder(r.tier))}
               >
-                <div className="flex items-center gap-2 px-3 py-2">
+                <div
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer"
+                  onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
+                >
                   <span className={cn("text-[10px] font-mono font-bold uppercase shrink-0", tierColor(r.tier))}>
                     {r.tier}
                   </span>
@@ -492,6 +527,29 @@ export function DiscoveryPhase() {
                         {r.description}
                       </p>
                     )}
+
+                    {/* Keep / Discard actions */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="flex items-center gap-1 text-[9px] font-mono text-primary/70">
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Kept — will appear in Crystallization</span>
+                      </div>
+                      <div className="flex-1" />
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-6 text-[10px] gap-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        disabled={discardingId === `${i}`}
+                        onClick={(e) => { e.stopPropagation(); discardDiscovery(r, i); }}
+                      >
+                        {discardingId === `${i}` ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3 h-3" />
+                        )}
+                        Discard
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>

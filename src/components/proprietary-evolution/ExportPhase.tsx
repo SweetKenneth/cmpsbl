@@ -150,7 +150,7 @@ export function ExportPhase() {
       .eq('user_id', user.id)
       .eq('category', 'proprietary-crystallized')
       .order('created_at', { ascending: false })
-      .limit(50);
+      .limit(500);
 
     if (data) {
       setAllCapabilities((data as any[]).map((d: any) => {

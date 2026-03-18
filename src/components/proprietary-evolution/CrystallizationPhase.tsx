@@ -43,7 +43,7 @@ export function CrystallizationPhase() {
       .eq('user_id', user.id)
       .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
       .order('created_at', { ascending: false })
-      .limit(100);
+      .limit(500);
 
     if (data) {
       setDiscoveries((data as any[]).map((d: any) => {
