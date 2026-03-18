@@ -79,7 +79,7 @@ export function CrystallizationPhase() {
       if (!data?.success) throw new Error(data?.error || 'Ascension failed');
 
       setDiscoveries(prev =>
-        prev.map(d => d.id === discovery.id ? { ...d, crystallized: true } : d)
+        prev.map(d => d.id === discovery.id ? { ...d, ascended: true } : d)
       );
       toast({ title: 'Memory ascended', description: `${discovery.name} is now locked` });
     } catch (err) {
