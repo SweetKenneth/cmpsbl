@@ -58,6 +58,7 @@ export function DiscoveryPhase() {
   const [currentTarget, setCurrentTarget] = useState<string | null>(null);
   const [discoveryHit, setDiscoveryHit] = useState<CollisionResult | null>(null);
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
+  const [discardingId, setDiscardingId] = useState<string | null>(null);
   const abortRef = useRef(false);
   const { toast } = useToast();
 
