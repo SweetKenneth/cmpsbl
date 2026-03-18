@@ -2,28 +2,22 @@
  * UpgradeContent — Extracted inner content from Upgrade page.
  * Embeddable inside Store tabs or standalone Upgrade page.
  */
-import { useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BASELINE_HIGHLIGHTS } from '@/lib/substrate/baseline-pillars';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { SlotCapacityIndicator } from '@/components/slots/SlotCapacityIndicator';
 import { SlotPressureModal } from '@/components/slots/SlotPressureModal';
-import { PackActivationCard } from '@/components/slots/PackActivationCard';
 import { cn } from '@/lib/utils';
 import {
-  Check, ArrowRight, Brain, Package, Shield, Zap,
-  Server, Building2, Lock, Unlock, Layers, Eye,
-  Sparkles, Compass, ChevronLeft, ChevronRight,
-  Archive, Download, X,
+  Check, ArrowRight, Package,
+  Building2, Unlock, Layers,
+  Sparkles, Download, X,
 } from 'lucide-react';
-import { ARTIFACT_PACKS, PRODUCT_TIERS, STRATEGIC_DOMAINS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
+import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
-import { VAULT_TIER_LIMITS } from '@/lib/substrate/vault-limits';
 import { motion } from 'framer-motion';
 
 /* ─── Tier definitions (public-facing) ─── */
