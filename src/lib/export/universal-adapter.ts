@@ -1092,7 +1092,7 @@ end
 
 function genLua(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Lua', '--');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeLua(a.synthesisContext)}`;
   }
   const mod = className(a);

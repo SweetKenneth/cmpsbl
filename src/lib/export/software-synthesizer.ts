@@ -1869,14 +1869,4 @@ info = Map.fromList
 `;
 }
 
-export function synthesizeHaskellProcess(ctx: SynthesisContext): string {
-  return `  -- Full pipeline: ${ctx.moduleChain.join(' → ')}
-  let stages = ${JSON.stringify(ctx.moduleChain.map(m => [m, moduleOps(m).verb]))}
-  let processStage acc (modName, op) =
-        let entropy k v = fromIntegral (sum (map fromEnum (Map.findWithDefault "" k acc))) / 
-                          fromIntegral (max (length (Map.findWithDefault "" k acc)) 1)
-            newEntries = Map.mapKeys (\\k -> modName ++ "_" ++ k) $
-                         Map.map (\\v -> show (entropy "k" v)) acc
-        in Map.union newEntries acc
-  let output = foldl processStage input stages`;
-}
+// synthesizeHaskellProcess removed — all stages now delegate to primitiveExecutor
