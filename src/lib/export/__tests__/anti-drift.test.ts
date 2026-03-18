@@ -316,7 +316,8 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
   });
 
   it('mode transitions are recorded and inspectable', async () => {
-    const { RuntimeHealthTracker, NETWORK_MODE_THRESHOLD, OFFLINE_MODE_THRESHOLD } = await import('../bridge-adapter');
+    const { RuntimeHealthTracker } = await import('../bridge-adapter');
+    const { NETWORK_MODE_THRESHOLD, OFFLINE_MODE_THRESHOLD } = await import('../canonical-runtime-contract');
     const tracker = new RuntimeHealthTracker();
     for (let i = 0; i < NETWORK_MODE_THRESHOLD; i++) tracker.recordRemoteSuccess(100);
     for (let i = 0; i < OFFLINE_MODE_THRESHOLD; i++) tracker.recordRemoteFailure();
