@@ -122,7 +122,7 @@ export function CrystallizationPhase() {
         .from('artifact_registry')
         .delete()
         .eq('user_id', user.id)
-        .in('category', ['proprietary-discovery', 'proprietary-crystallized']);
+        .in('category', ['proprietary-discovery', 'proprietary-ascended']);
       setDiscoveries([]);
       toast({ title: 'All cleared', description: 'Discoveries and ascended memories removed.' });
     } catch (err) {
