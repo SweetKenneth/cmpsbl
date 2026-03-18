@@ -4,9 +4,9 @@
  * Handles:
  *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-8 depth)
  *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
- *   - crystallize.lock: Lock a discovered capability into deterministic memory
- *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
- *   - export.capability-pack: Generate capability pack from crystallized memories
+ *   - ascend.lock: Lock a discovered capability into deterministic memory
+ *   - ascend.batch-lock: Batch ascend all eligible discoveries
+ *   - export.capability-pack: Generate capability pack from ascended memories
  * 
  * Node 41 Architecture:
  *   The user's code is scanned to derive a CAPABILITY SURFACE — a set of 4 capability
