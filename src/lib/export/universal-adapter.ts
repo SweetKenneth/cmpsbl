@@ -1037,7 +1037,7 @@ ${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        fo
 
 function genElixir(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Elixir', '#');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeElixir(a.synthesisContext)}`;
   }
   const mod = className(a);
