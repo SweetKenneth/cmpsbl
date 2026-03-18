@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
+import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 
 // Above-fold: eager
 import { PublicNav } from "@/components/PublicNav";
@@ -79,6 +80,7 @@ export default function Explore() {
       />
 
       <PublicNav />
+      <CmpsblWelcome />
 
       {/* Ambient animated mesh background — layered for depth */}
       <div className="fixed inset-0 pointer-events-none z-0">

@@ -1,0 +1,189 @@
+/* ═══════════════════════════════════════════════════════════════
+   CMPSBL Welcome Onboarding — CSS Animations
+   Pure CSS, no framer-motion dependency
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Backdrop fade ─────────────────────────────── */
+.cmpsbl-welcome-backdrop {
+  animation: cmpsbl-backdrop-in 0.3s ease-out both;
+}
+
+@keyframes cmpsbl-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.cmpsbl-welcome-fade-in {
+  animation: cmpsbl-backdrop-in 0.4s ease-out both;
+}
+
+/* ── Modal entrance ────────────────────────────── */
+.cmpsbl-welcome-modal-enter {
+  animation: cmpsbl-modal-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cmpsbl-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(24px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Step slide transitions ────────────────────── */
+.cmpsbl-welcome-slide-in-right {
+  animation: cmpsbl-slide-right 0.32s ease-out both;
+}
+
+.cmpsbl-welcome-slide-in-left {
+  animation: cmpsbl-slide-left 0.32s ease-out both;
+}
+
+@keyframes cmpsbl-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cmpsbl-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Icon pop ──────────────────────────────────── */
+.cmpsbl-welcome-icon-pop {
+  animation: cmpsbl-icon-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes cmpsbl-icon-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ── Tag fade ──────────────────────────────────── */
+.cmpsbl-welcome-tag-fade {
+  animation: cmpsbl-tag-fade 0.3s ease-out 0.15s both;
+}
+
+@keyframes cmpsbl-tag-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Title reveal ──────────────────────────────── */
+.cmpsbl-welcome-title-reveal {
+  animation: cmpsbl-title-reveal 0.35s ease-out 0.18s both;
+}
+
+@keyframes cmpsbl-title-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Body fade ─────────────────────────────────── */
+.cmpsbl-welcome-body-fade {
+  animation: cmpsbl-body-fade 0.4s ease-out 0.24s both;
+}
+
+@keyframes cmpsbl-body-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Active progress dot pulse ─────────────────── */
+.cmpsbl-welcome-dot-active {
+  animation: cmpsbl-dot-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes cmpsbl-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+  50%      { box-shadow: 0 0 0 4px hsl(var(--primary) / 0); }
+}
+
+/* ── CTA button glow ──────────────────────────── */
+.cmpsbl-welcome-cta-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.cmpsbl-welcome-cta-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    hsl(var(--primary-foreground) / 0.12) 45%,
+    transparent 60%
+  );
+  animation: cmpsbl-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes cmpsbl-shimmer {
+  0%   { transform: translateX(-120%); }
+  40%  { transform: translateX(120%); }
+  100% { transform: translateX(120%); }
+}
+
+/* ── Background pattern shift ──────────────────── */
+.cmpsbl-welcome-pattern-shift {
+  animation: cmpsbl-pattern-drift 8s ease-in-out infinite alternate;
+}
+
+@keyframes cmpsbl-pattern-drift {
+  from { opacity: 0.6; transform: scale(1); }
+  to   { opacity: 1;   transform: scale(1.15); }
+}
+
+/* ── Scan line ─────────────────────────────────── */
+.cmpsbl-welcome-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    hsl(var(--primary) / 0.15) 20%,
+    hsl(var(--primary) / 0.25) 50%,
+    hsl(var(--primary) / 0.15) 80%,
+    transparent 100%
+  );
+  animation: cmpsbl-scan-sweep 4s ease-in-out infinite;
+}
+
+@keyframes cmpsbl-scan-sweep {
+  0%   { top: -2px;  opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
