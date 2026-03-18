@@ -96,7 +96,7 @@ export function CrystallizationPhase() {
         body: {
           module: 'crystallize',
           action: 'batch-lock',
-          input: { min_cjpi: 70 },
+          input: { min_cjpi: 1 },
         },
       });
 
