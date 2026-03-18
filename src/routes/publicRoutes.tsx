@@ -109,10 +109,10 @@ export const publicRoutes = (
     <Route path="/dream-eater/artifacts" element={<DreamArtifacts />} />
     <Route path="/blog" element={<Blog />} />
     <Route path="/investors" element={<InvestorsPublic />} />
-    <Route path="/substrate" element={<SubstrateDashboard />} />
+    <Route path="/substrate" element={<Navigate to="/" replace />} />
     <Route path="/os" element={<SubstrateOS />} />
-    <Route path="/demo" element={<SubstrateDemo />} />
-    <Route path="/try" element={<TryIt />} />
+    <Route path="/demo" element={<Navigate to="/" replace />} />
+    <Route path="/try" element={<Navigate to="/" replace />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />
@@ -180,7 +180,7 @@ export const publicRoutes = (
     <Route path="/foundations" element={<Foundations />} />
     <Route path="/namespace" element={<Namespace />} />
     <Route path="/insights" element={<Navigate to="/" replace />} />
-    <Route path="/overview" element={<SystemOverview />} />
+    <Route path="/overview" element={<Navigate to="/" replace />} />
     <Route path="/register" element={<Navigate to="/auth" replace />} />
     <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
@@ -207,8 +207,8 @@ export const publicRoutes = (
 
     {/* Misc public */}
     <Route path="/evolution" element={<EvolutionControlCenter />} />
-    <Route path="/architecture" element={<Architecture />} />
-    <Route path="/pricing" element={<Upgrade />} />
+    <Route path="/architecture" element={<Navigate to="/" replace />} />
+    <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Upgrade />} />
     <Route path="/packs" element={<Packs />} />

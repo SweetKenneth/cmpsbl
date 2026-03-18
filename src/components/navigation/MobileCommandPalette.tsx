@@ -20,21 +20,19 @@ interface SearchableRoute {
 
 // All navigable routes — comprehensive, nothing removed
 const ALL_ROUTES: SearchableRoute[] = [
-  // Platform
-  { name: "Home", href: "/", section: "Platform", icon: Layers },
-  { name: "How It Works", href: "/ai-operating-system", section: "Platform", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
-  { name: "Substrate", href: "/substrate", section: "Platform", icon: Cpu, keywords: ["core", "infrastructure", "dashboard"] },
-  { name: "Substrate Demo", href: "/demo", section: "Platform", icon: Sparkles, keywords: ["interactive", "live", "try"] },
-  { name: "All Nodes", href: "/modules", section: "Platform", icon: Layers, keywords: ["nodes", "production", "hub"] },
-  { name: "Runtime", href: "/runtime", section: "Platform", icon: Code, keywords: ["execution", "environment"] },
-  { name: "Dashboard", href: "/os", section: "Platform", icon: Layers, keywords: ["command center", "control"] },
-  { name: "Capability Map", href: "/capability-map", section: "Platform", icon: Network },
-  { name: "Namespace", href: "/namespace", section: "Platform", icon: Layers, keywords: ["terminology", "glossary"] },
-  { name: "Architecture", href: "/ai-operating-system", section: "Platform", icon: Layers, keywords: ["design", "system"] },
-  { name: "System Status", href: "/status", section: "Platform", icon: Shield, keywords: ["health", "uptime", "live"] },
-  { name: "System Integrity", href: "/system-integrity", section: "Platform", icon: Shield, keywords: ["diagnostics"] },
+  // Infrastructure
+  { name: "Home", href: "/", section: "Infrastructure", icon: Layers },
+  { name: "How It Works", href: "/ai-operating-system", section: "Infrastructure", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
+  { name: "All Nodes", href: "/modules", section: "Infrastructure", icon: Layers, keywords: ["nodes", "production", "hub"] },
+  { name: "Runtime", href: "/runtime", section: "Infrastructure", icon: Code, keywords: ["execution", "environment"] },
+  { name: "Dashboard", href: "/os", section: "Infrastructure", icon: Layers, keywords: ["command center", "control"] },
+  { name: "Capability Map", href: "/capability-map", section: "Infrastructure", icon: Network },
+  { name: "Namespace", href: "/namespace", section: "Infrastructure", icon: Layers, keywords: ["terminology", "glossary"] },
+  { name: "System Status", href: "/status", section: "Infrastructure", icon: Shield, keywords: ["health", "uptime", "live"] },
+  { name: "System Integrity", href: "/system-integrity", section: "Infrastructure", icon: Shield, keywords: ["diagnostics"] },
   
   // Product
+  { name: "Store", href: "/store", section: "Product", icon: Sparkles, keywords: ["agents", "engines", "plans"] },
   { name: "Capability Packs", href: "/packs", section: "Product", icon: Package, keywords: ["activate", "capabilities", "slots"] },
   { name: "Runtime Agents", href: "/composable-cognitives", section: "Product", icon: Zap, keywords: ["runtime", "agents", "AI agents", "sealed"] },
   { name: "Persistent Memory", href: "/persistent-memory", section: "Product", icon: Brain, keywords: ["memory", "agent memory", "recall"] },
@@ -44,17 +42,18 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Gaming Substrate", href: "/gaming", section: "Solutions", icon: Layers, keywords: ["games", "NPC", "world engine"] },
 
   // Developers
-  { name: "Start Here", href: "/start-here", section: "Developers", icon: Code, keywords: ["getting started", "quickstart", "onboarding"] },
-  { name: "Documentation", href: "/documentation", section: "Developers", icon: BookOpen, keywords: ["API", "reference", "guides", "docs"] },
-  { name: "Developer Showcase", href: "/developers", section: "Developers", icon: Users, keywords: ["community", "integrations"] },
-  { name: "Academy", href: "/academy", section: "Developers", icon: Code, keywords: ["tutorials", "learning", "courses"] },
-  { name: "CodeLab", href: "/codelab", section: "Developers", icon: Terminal, keywords: ["execute", "test", "sandbox", "playground"] },
-  { name: "API Access", href: "/api-access", section: "Developers", icon: Code, keywords: ["keys", "quotas", "tokens"] },
-  { name: "DevTools", href: "/devtools", section: "Developers", icon: Terminal },
-  { name: "Capabilities Docs", href: "/docs/substrate/capabilities", section: "Developers", icon: BookOpen },
-  { name: "Memory Docs", href: "/docs/persistent-memory", section: "Developers", icon: BookOpen },
-  { name: "Runtime Reference", href: "/docs/runtime", section: "Developers", icon: BookOpen },
-  { name: "Capability Manifest", href: "/docs/manifest", section: "Developers", icon: BookOpen },
+  { name: "Start Here", href: "/start-here", section: "Build", icon: Code, keywords: ["getting started", "quickstart", "onboarding"] },
+  { name: "Documentation", href: "/documentation", section: "Build", icon: BookOpen, keywords: ["API", "reference", "guides", "docs"] },
+  { name: "Builder Workspace", href: "/workspace", section: "Build", icon: Terminal, keywords: ["SDK", "terminal", "build tools"] },
+  { name: "Academy", href: "/academy", section: "Build", icon: Code, keywords: ["tutorials", "learning", "courses"] },
+  { name: "CodeLab", href: "/codelab", section: "Build", icon: Terminal, keywords: ["execute", "test", "sandbox", "playground"] },
+  { name: "API Access", href: "/api-access", section: "Build", icon: Code, keywords: ["keys", "quotas", "tokens"] },
+  { name: "DevTools", href: "/devtools", section: "Build", icon: Terminal },
+  { name: "Developer Guide", href: "/developers/guide", section: "Build", icon: BookOpen },
+  { name: "Capabilities Docs", href: "/docs/substrate/capabilities", section: "Build", icon: BookOpen },
+  { name: "Memory Docs", href: "/docs/persistent-memory", section: "Build", icon: BookOpen },
+  { name: "Runtime Reference", href: "/docs/runtime", section: "Build", icon: BookOpen },
+  { name: "Capability Manifest", href: "/docs/manifest", section: "Build", icon: BookOpen },
 
   // Tools
   { name: "DECODE", href: "/decode", section: "Tools", icon: Terminal, keywords: ["terminal", "natural language", "command"] },
@@ -66,18 +65,19 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "System Feed", href: "/system-feed", section: "Tools", icon: Brain, keywords: ["intelligence", "feed"] },
   { name: "Clockless World Engine", href: "/clockless-world-engine", section: "Tools", icon: Sparkles },
 
-  // Company
-  { name: "Blog", href: "/blog", section: "Company", icon: FileText, keywords: ["research", "updates", "articles"] },
-  { name: "About", href: "/about", section: "Company", icon: Users, keywords: ["mission", "team", "story"] },
-  { name: "Contact", href: "/contact", section: "Company", icon: Users, keywords: ["get in touch", "email"] },
-  { name: "Insights", href: "/insights", section: "Company", icon: FileText, keywords: ["analysis", "thought leadership"] },
-  { name: "Showcase", href: "/showcase", section: "Company", icon: Sparkles, keywords: ["demos", "built with", "S-tier"] },
-  { name: "Changelog", href: "/changelog", section: "Company", icon: Activity, keywords: ["updates", "releases", "what's new"] },
-  { name: "Roadmap", href: "/roadmap", section: "Company", icon: FileText, keywords: ["future", "planned"] },
-  { name: "Foundations", href: "/foundations", section: "Company", icon: FileText },
-  { name: "Careers", href: "/careers", section: "Company", icon: Users, keywords: ["jobs", "hiring"] },
-  { name: "Investors", href: "/investors", section: "Company", icon: BarChart3 },
-  { name: "Current Projects", href: "/projects", section: "Company", icon: Layers },
+  // Discover
+  { name: "Memory Stream", href: "/foundry", section: "Discover", icon: Sparkles, keywords: ["discovery", "crystallize", "memories"] },
+  { name: "Blog", href: "/blog", section: "Discover", icon: FileText, keywords: ["research", "updates", "articles"] },
+  { name: "About", href: "/about", section: "Discover", icon: Users, keywords: ["mission", "team", "story"] },
+  { name: "Contact", href: "/contact", section: "Discover", icon: Users, keywords: ["get in touch", "email"] },
+  { name: "Showcase", href: "/showcase", section: "Discover", icon: Sparkles, keywords: ["demos", "built with", "S-tier"] },
+  { name: "Changelog", href: "/changelog", section: "Discover", icon: Activity, keywords: ["updates", "releases", "what's new"] },
+  { name: "Developers", href: "/developers", section: "Discover", icon: Users, keywords: ["community", "integrations"] },
+  { name: "Roadmap", href: "/roadmap", section: "Discover", icon: FileText, keywords: ["future", "planned"] },
+  { name: "Foundations", href: "/foundations", section: "Discover", icon: FileText },
+  { name: "Careers", href: "/careers", section: "Discover", icon: Users, keywords: ["jobs", "hiring"] },
+  { name: "Investors", href: "/investors", section: "Discover", icon: BarChart3 },
+  { name: "Current Projects", href: "/projects", section: "Discover", icon: Layers },
 
   // Resources
   { name: "Changelog", href: "/changelog", section: "Resources", icon: FileText },
@@ -107,7 +107,7 @@ const ALL_ROUTES: SearchableRoute[] = [
 ];
 
 // Sections in display order for grouped results
-const SECTION_ORDER = ["Platform", "Product", "Developers", "Tools", "Company", "Solutions", "Resources", "Admin", "Account", "Legal"];
+const SECTION_ORDER = ["Infrastructure", "Product", "Build", "Tools", "Discover", "Solutions", "Resources", "Admin", "Account", "Legal"];
 
 interface Props {
   open: boolean;

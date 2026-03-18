@@ -95,14 +95,25 @@ export function CmpsblNav() {
 
   const navSections: NavSection[] = [
     {
-      name: "Platform",
+      name: "Infrastructure",
       icon: Layers,
       items: [
-        { name: "Substrate", href: "/substrate", description: "Core cognitive infrastructure", icon: Cpu },
         { name: "How it works", href: "/ai-operating-system", description: "Architecture & concepts", icon: Globe },
         { name: "All nodes", href: "/modules", description: "Browse every substrate node", icon: Layers },
-        { name: "Architecture", href: "/architecture", description: "System design & topology", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Execution environment", icon: Terminal },
+        { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
+        { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
+      ]
+    },
+    {
+      name: "Build",
+      icon: Code,
+      items: [
+        { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
+        { name: "CodeLab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
+        { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
+        { name: "API access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
+        { name: "Developer guide", href: "/developers/guide", description: "SDK setup & integration", icon: BookOpen },
       ]
     },
     {
@@ -110,32 +121,21 @@ export function CmpsblNav() {
       icon: Sparkles,
       items: [
         { name: "Store", href: "/store", description: "Agents, engines, plans & memories", icon: Sparkles, highlight: true },
-        { name: "Enterprise", href: "/enterprise", description: "Scale with governed orchestration", icon: Building2 },
-        { name: "Persistent memory", href: "/persistent-memory", description: "Add memory to any agent", icon: Brain },
-        { name: "Pricing", href: "/pricing-method", description: "Transparent pricing methodology", icon: CreditCard },
-        { name: "System overview", href: "https://cmpsbl.com/overview", description: "Interactive system explorer", icon: Globe, external: true },
+        { name: "Upgrade", href: "/upgrade", description: "Plans & pricing tiers", icon: Zap },
+        { name: "Pricing methodology", href: "/pricing-method", description: "Transparent pricing model", icon: CreditCard },
+        { name: "Academy", href: "/academy", description: "Tutorials & certification", icon: BookOpen },
+        { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
       ]
     },
     {
-      name: "Developers",
-      icon: Code,
-      items: [
-        { name: "Documentation", href: "/documentation", description: "API reference & guides", icon: FileText },
-        { name: "API access", href: "/api-access", description: "Keys, quotas & usage", icon: Code },
-        { name: "Builder workspace", href: "/workspace", description: "SDK, terminal & build tools", icon: Terminal, highlight: true },
-        { name: "Codelab", href: "/codelab", description: "Execute and test in real-time", icon: Terminal },
-        { name: "Developer guide", href: "/developers/guide", description: "SDK setup & integration", icon: BookOpen },
-      ]
-    },
-    {
-      name: "Explore",
+      name: "Discover",
       icon: Globe,
       items: [
-        { name: "Try it", href: "/try", description: "Live demo — no signup required", icon: Play, badge: "LIVE", highlight: true },
-        { name: "Demo", href: "/demo", description: "Interactive system walkthrough", icon: Activity },
-        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize memories", icon: Sparkles, badge: "LIVE" },
-        { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
+        { name: "Memory Stream", href: "/foundry", description: "Discover & crystallize memories", icon: Sparkles, badge: "LIVE", highlight: true },
         { name: "Blog", href: "/blog", description: "Research & updates", icon: FileText },
+        { name: "About", href: "/about", description: "Mission & team", icon: Users },
+        { name: "Changelog", href: "/changelog", description: "Latest releases & updates", icon: FileText },
+        { name: "Developers", href: "/developers", description: "Community & integrations", icon: Users },
       ]
     },
   ];
