@@ -995,21 +995,7 @@ end
 `;
 }
 
-export function synthesizeElixirProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    # Stage ${i}: ${m} — ${ops.desc}
-    stage_${i}_out = current_data
-      |> Enum.map(fn {k, v} ->
-        vs = to_string(v)
-        entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
-        {"${m.toLowerCase()}_\#{k}", %{module: "${m}", op: "${ops.verb}", score: entropy * confidence, len: String.length(vs)}}
-      end)
-      |> Map.new()
-    current_data = Map.merge(current_data, stage_${i}_out)
-    confidence = min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeElixirProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Lua Full Synthesizer
