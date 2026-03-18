@@ -125,9 +125,7 @@ const TIERS: {
     ],
   },
 ];
-
-
-
+export function UpgradeContent() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
