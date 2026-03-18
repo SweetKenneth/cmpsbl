@@ -350,7 +350,7 @@ export function AscensionHero() {
           >
             Upload pieces of your stack's code — or code discovered in the Memory Stream — and watch
             new capabilities emerge when it collides with the nodes from the CMPSBL Substrate.
-            Successful interaction chains are crystallized into portable{' '}
+            Successful interaction chains are ascended into portable{' '}
             <span className="text-primary font-medium">Ascended Memories</span>{' '}
             you can export as source code, tests, and documentation.{' '}
             <span className="text-foreground/80 font-medium">Endless possibilities. Recursive by design.</span>
