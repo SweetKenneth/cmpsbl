@@ -214,7 +214,7 @@ export function CrystallizationPhase() {
                 : "bg-card/30 border-border/20 hover:border-border/40"
             )}
           >
-            {d.crystallized ? (
+            {d.ascended ? (
               <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
             ) : (
               <Flame className="w-4 h-4 text-muted-foreground shrink-0" />
