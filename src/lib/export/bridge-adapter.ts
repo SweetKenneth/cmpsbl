@@ -18,8 +18,8 @@
  */
 
 import type { SynthesisContext } from './logic-synthesizer';
-import type { BridgeType, RuntimeMode, RuntimeType } from './canonical-runtime-contract';
-import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT } from './canonical-runtime-contract';
+import type { BridgeType, RuntimeMode, RuntimeType, ExecutionIntegrityPayload } from './canonical-runtime-contract';
+import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash } from './canonical-runtime-contract';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — MODULE VERB MAPPING (shared across all bridge generators)
@@ -135,6 +135,7 @@ export function classifyBridge(language: string, runtimeType: RuntimeType): Brid
 
 /** Generate the bridge metadata JSON string that gets embedded in exports */
 export function generateBridgeManifest(ctx: SynthesisContext, language: string, bridgeType: BridgeType): string {
+  const capabilityHash = computeCapabilityHash(ctx.name, ctx.moduleChain, ctx.category);
   return JSON.stringify({
     name: ctx.name,
     description: ctx.description,
@@ -146,11 +147,19 @@ export function generateBridgeManifest(ctx: SynthesisContext, language: string, 
     moduleChain: ctx.moduleChain,
     category: ctx.category,
     cjpi: ctx.cjpi,
+    capabilityHash,
     entryCapability: ctx.entryCapability,
     exitCapability: ctx.exitCapability,
     errorStrategy: ctx.errorStrategy,
     maxExecutionMs: ctx.maxExecutionMs,
     generatedAt: new Date().toISOString(),
+    integrityContract: {
+      canonicalVersion: CANONICAL_RUNTIME_VERSION,
+      bridgeType,
+      capabilityHash,
+      expectedCJPI: ctx.cjpi,
+      executionMode: bridgeType === 'offline-fallback' ? 'offline' : 'hybrid',
+    },
   }, null, 2);
 }
 
@@ -197,5 +206,61 @@ export function getResultShape(): string[] {
     'bridgeType: "network" | "hybrid" | "offline-fallback"',
     'fingerprint: string',
     'executedAt: string',
+    'validated: boolean',
+    'validationErrors: string[]',
+    'degraded: boolean | undefined',
+  ];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §7 — EXECUTION INTEGRITY PAYLOAD BUILDER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Build the execution integrity payload for a bridge outbound request.
+ * Must be included in every request body sent to the canonical runtime.
+ */
+export function buildOutboundIntegrity(
+  ctx: SynthesisContext,
+  bridgeType: BridgeType,
+  executionMode: RuntimeMode,
+): ExecutionIntegrityPayload {
+  return {
+    canonicalVersion: CANONICAL_RUNTIME_VERSION,
+    bridgeType,
+    capabilityHash: computeCapabilityHash(ctx.name, ctx.moduleChain, ctx.category),
+    expectedCJPI: ctx.cjpi,
+    executionMode,
+  };
+}
+
+/**
+ * Generate language-agnostic integrity payload snippet for embedding in bridges.
+ * Returns a JSON-serializable object shape as a string for code generation.
+ */
+export function generateIntegritySnippet(ctx: SynthesisContext, bridgeType: BridgeType): string {
+  const hash = computeCapabilityHash(ctx.name, ctx.moduleChain, ctx.category);
+  return JSON.stringify({
+    canonicalVersion: CANONICAL_RUNTIME_VERSION,
+    bridgeType,
+    capabilityHash: hash,
+    expectedCJPI: ctx.cjpi,
+    executionMode: bridgeType === 'offline-fallback' ? 'offline' : 'hybrid',
+  }, null, 2);
+}
+
+/**
+ * Generate the degraded result shape for when integrity validation fails.
+ * Bridges MUST use this instead of silently falling back.
+ */
+export function generateDegradedResultShape(): string[] {
+  return [
+    'success: false',
+    'degraded: true',
+    'reason: string (integrity validation failure description)',
+    'integrityErrors: string[] (specific validation errors)',
+    'trace: StageTrace[] (preserved for debugging)',
+    'validated: false',
+    'validationErrors: string[]',
   ];
 }
