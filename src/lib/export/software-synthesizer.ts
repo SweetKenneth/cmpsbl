@@ -795,22 +795,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeSwiftProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        var stage${i}: [String: Any] = [:]
-        for (key, val) in currentData {
-            let vs = String(describing: val)
-            let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
-            stage${i}["${m.toLowerCase()}_\\(key)"] = [
-                "module": "${m}", "op": "${ops.verb}", "score": entropy * confidence, "len": vs.count
-            ] as [String: Any]
-        }
-        currentData.merge(stage${i}) { _, new in new }
-        confidence = min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeSwiftProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Kotlin Full Synthesizer
