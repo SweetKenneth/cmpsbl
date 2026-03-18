@@ -8,7 +8,7 @@ const NAV_COLUMNS = [
   {
     title: 'Platform',
     links: [
-      { label: 'Substrate', to: '/substrate' },
+      { label: 'How it works', to: '/ai-operating-system' },
       { label: 'Runtime', to: '/runtime' },
       { label: 'Store', to: '/store' },
       { label: 'Upgrade', to: '/upgrade' },
@@ -19,8 +19,8 @@ const NAV_COLUMNS = [
     links: [
       { label: 'Memory Stream', to: '/foundry' },
       { label: 'Showcase', to: '/showcase' },
-      { label: 'Proof Mode', to: '/proof' },
       { label: 'Blog', to: '/blog' },
+      { label: 'Changelog', to: '/changelog' },
     ],
   },
   {
@@ -28,7 +28,7 @@ const NAV_COLUMNS = [
     links: [
       { label: 'About', to: '/about' },
       { label: 'Investors', to: '/investors' },
-      { label: 'Careers', to: '/careers' },
+      { label: 'Publication', to: '/publication' },
       { label: 'Contact', to: '/contact' },
     ],
   },

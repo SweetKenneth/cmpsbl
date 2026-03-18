@@ -31,47 +31,43 @@ export function EnhancedFooter() {
 
   const footerSections: FooterSection[] = [
     {
-      title: "Platform",
+      title: "Infrastructure",
       links: [
-        { name: "Foundations", href: "/foundations" },
-        { name: "Capability map", href: "/capability-map" },
-        { name: "EVOLUTION", href: "/evolution" },
-        { name: "Proof mode", href: "/proof" },
-        { name: "System status", href: "/status" },
-        { name: "Namespace", href: "/namespace" },
+        { name: "How it works", href: "/ai-operating-system" },
+        { name: "All nodes", href: "/modules" },
+        { name: "Runtime", href: "/runtime" },
+        { name: "Enterprise", href: "/enterprise" },
+        { name: "Persistent memory", href: "/persistent-memory" },
       ]
     },
     {
-      title: "Products",
+      title: "Build",
       links: [
-        { name: "Dream eater", href: "/feed-dream-eater" },
+        { name: "Builder workspace", href: "/workspace" },
+        { name: "CodeLab", href: "/codelab" },
+        { name: "Documentation", href: "/documentation" },
+        { name: "API access", href: "/api-access" },
+        { name: "Experiment Lab", href: "/lab" },
+      ]
+    },
+    {
+      title: "Marketplace",
+      links: [
+        { name: "Store", href: "/store", highlight: true },
+        { name: "Upgrade", href: "/upgrade" },
+        { name: "Showcase", href: "/showcase" },
         { name: "World engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },
-        { name: "Clockless engine", href: "/clockless-world-engine" },
-        { name: "Scanner", href: "/scanner" },
-        { name: "Use cases", href: "/use-cases" },
-      ]
-    },
-    {
-      title: "Developers",
-      links: [
-        { name: "Heritage paper", href: "/heritage-paper", highlight: true },
-        { name: "Academy", href: "/academy" },
-        { name: "Experiment Lab", href: "/lab" },
-        { name: "System integrity", href: "/system-integrity", highlight: true },
-        { name: "Developer showcase", href: "/developers" },
-        { name: "Start here", href: "/start-here" },
       ]
     },
     {
       title: "Company",
       links: [
         { name: "About", href: "/about" },
-        { name: "Roadmap", href: "/roadmap" },
+        { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
         { name: "Publication", href: "/publication" },
-        { name: "Careers", href: "/careers" },
-        { name: "Overview", href: "/overview" },
+        { name: "Heritage paper", href: "/heritage-paper", highlight: true },
       ]
     },
   ];

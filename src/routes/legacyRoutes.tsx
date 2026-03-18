@@ -41,5 +41,19 @@ export const legacyRoutes = (
     <Route path="/demo-admin/*" element={<Navigate to="/" replace />} />
     <Route path="/resources/*" element={<Navigate to="/" replace />} />
     <Route path="/solutions/*" element={<Navigate to="/solutions" replace />} />
+
+    {/* Removed pages — redirect to home */}
+    <Route path="/capability-map" element={<Navigate to="/" replace />} />
+    <Route path="/foundations" element={<Navigate to="/" replace />} />
+    <Route path="/evolution" element={<Navigate to="/" replace />} />
+    <Route path="/proof" element={<Navigate to="/" replace />} />
+    <Route path="/status" element={<Navigate to="/" replace />} />
+    <Route path="/system-integrity" element={<Navigate to="/" replace />} />
+    <Route path="/start-here" element={<Navigate to="/" replace />} />
+    <Route path="/products" element={<Navigate to="/" replace />} />
+    <Route path="/clockless-world-engine" element={<Navigate to="/" replace />} />
+    <Route path="/scanner" element={<Navigate to="/" replace />} />
+    <Route path="/overview" element={<Navigate to="/" replace />} />
+    <Route path="/feed-dream-eater" element={<Navigate to="/" replace />} />
   </>
 );
