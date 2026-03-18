@@ -15,6 +15,7 @@ const CANONICAL_ONLY_PATTERNS = [
   /createDependencyGraph\s*\(/,          // Dep graph factory
   /createPipelineComposer\s*\(/,         // Pipeline composer factory
   /createStateMachine\s*[<(]/,           // FSM factory
+  /Fully synthesized pipeline/,          // Old full-runtime language
 ];
 
 describe('Anti-Drift: Canonical Runtime Architecture', () => {
