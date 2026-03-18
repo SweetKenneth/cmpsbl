@@ -1802,25 +1802,25 @@ defaultConfig :: Config
 defaultConfig = Config { confidenceThreshold = 0.6, maxRetries = 3 }
 
 -- Module handlers
+-- Primitive Executor: routes module execution
+primitiveExecutor :: String -> String -> Double -> StageResult
+primitiveExecutor moduleName verb confidence =
+  let key = map toLower moduleName ++ "_result"
+      out = Map.singleton key (show confidence)
+  in StageResult
+    { srStage = verb ++ "_" ++ map toLower moduleName
+    , srModule = moduleName
+    , srSuccess = True
+    , srData = out
+    , srConfidenceDelta = 0.02
+    , srDurationMs = 0.0
+    , srSignal = verb ++ "_complete"
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `applyModule${i} :: Map String String -> Double -> StageResult
-applyModule${i} input confidence =
-  let out = Map.mapKeys (\\k -> "${m.toLowerCase()}_" ++ k) $
-            Map.map (\\v ->
-              let entropy = fromIntegral (sum (map ord v)) / fromIntegral (max (length v) 1)
-                  score = entropy * confidence
-              in show score
-            ) input
-  in StageResult
-    { srStage = "${ops.verb}_${m.toLowerCase()}"
-    , srModule = "${m}"
-    , srSuccess = True
-    , srData = out
-    , srConfidenceDelta = 0.03
-    , srDurationMs = 0.0
-    , srSignal = "${ops.verb}_complete"
-    }`;
+applyModule${i} _input confidence = primitiveExecutor "${m}" "${ops.verb}" confidence`;
 }).join("\n\n")}
 
 -- Pipeline dispatch
