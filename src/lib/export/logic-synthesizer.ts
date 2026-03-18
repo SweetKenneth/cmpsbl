@@ -642,9 +642,7 @@ export function synthesizeGo(ctx: SynthesisContext): string {
   const pkg = ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+$/, '');
   const modules = ctx.moduleChain;
 
-  // Import shared utilities instead of hardcoding
-  const { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } = require('./canonical-runtime-contract');
-  const { moduleOps } = require('./bridge-adapter');
+  const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
   const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
   const chainHash = computeModuleChainHash(modules);
 
