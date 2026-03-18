@@ -1067,7 +1067,7 @@ serve(async (req: Request) => {
       }
 
       if (action === 'batch-lock') {
-        const min_cjpi = input.min_cjpi != null ? validatePositiveInt(input.min_cjpi, 99) : 70;
+        const min_cjpi = input.min_cjpi != null ? validatePositiveInt(input.min_cjpi, 99) : 1;
 
         const { data: discoveries } = await supabase
           .from('artifact_registry')
