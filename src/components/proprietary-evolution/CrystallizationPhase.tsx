@@ -65,11 +65,11 @@ export function CrystallizationPhase() {
   };
 
   const ascend = async (discovery: Discovery) => {
-    setCrystallizing(discovery.id);
+    setAscending(discovery.id);
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
-          module: 'crystallize',
+          module: 'ascend',
           action: 'lock',
           input: { discovery_id: discovery.id },
         },
