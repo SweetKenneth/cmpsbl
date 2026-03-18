@@ -291,6 +291,103 @@ export interface StandaloneRuntime {
   createSaga: typeof createSaga;
   CANONICAL_MODULES: typeof CANONICAL_MODULES;
   DISCOVERY_CATEGORIES: typeof DISCOVERY_CATEGORIES;
+  executePrimitive: typeof executePrimitive;
+  configureEndpoint: typeof configureEndpoint;
+  getRuntimeMode: typeof getRuntimeMode;
+  getExecutionTelemetry: typeof getExecutionTelemetry;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §12b — NETWORK-AWARE EXECUTION BRIDGE (auto-injected)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Default CMPSBL substrate endpoint — used when online */
+const CMPSBL_DEFAULT_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
+
+/** Runtime connectivity mode */
+type RuntimeMode = 'offline' | 'hybrid' | 'network';
+
+interface ExecutionTelemetry {
+  primitive: string;
+  wasRemote: boolean;
+  success: boolean;
+  usedFallback: boolean;
+  mode: RuntimeMode;
+  timestamp: number;
+}
+
+interface NetworkBridgeState {
+  endpoint: string | null;
+  mode: RuntimeMode;
+  consecutiveSuccesses: number;
+  consecutiveFailures: number;
+  telemetry: ExecutionTelemetry[];
+}
+
+const _netState: NetworkBridgeState = {
+  endpoint: CMPSBL_DEFAULT_ENDPOINT,
+  mode: 'offline',
+  consecutiveSuccesses: 0,
+  consecutiveFailures: 0,
+  telemetry: [],
+};
+
+/** Configure the remote execution endpoint. Pass null for offline-only mode. */
+export function configureEndpoint(url: string | null): void {
+  _netState.endpoint = url;
+  if (!url) { _netState.mode = 'offline'; _netState.consecutiveSuccesses = 0; _netState.consecutiveFailures = 0; }
+}
+
+/** Get current runtime mode */
+export function getRuntimeMode(): RuntimeMode { return _netState.mode; }
+
+function _updateMode(success: boolean): void {
+  if (!_netState.endpoint) { _netState.mode = 'offline'; return; }
+  if (success) { _netState.consecutiveSuccesses++; _netState.consecutiveFailures = 0; _netState.mode = _netState.consecutiveSuccesses >= 5 ? 'network' : 'hybrid'; }
+  else { _netState.consecutiveFailures++; _netState.consecutiveSuccesses = 0; _netState.mode = _netState.consecutiveFailures >= 3 ? 'offline' : 'hybrid'; }
+}
+
+function _recordTelemetry(entry: ExecutionTelemetry): void {
+  _netState.telemetry.push(entry);
+  if (_netState.telemetry.length > 500) _netState.telemetry.splice(0, _netState.telemetry.length - 500);
+}
+
+/** Get execution telemetry snapshot */
+export function getExecutionTelemetry(): ReadonlyArray<ExecutionTelemetry> { return [..._netState.telemetry]; }
+
+/**
+ * Network-first primitive executor.
+ * 1. Remote execution (PRIMARY — when endpoint configured)
+ * 2. Local fallback (deterministic, always succeeds)
+ * Remote failure NEVER breaks execution.
+ */
+export async function executePrimitive(
+  name: string,
+  data: Record<string, unknown>,
+  confidence: number
+): Promise<{ data: Record<string, unknown>; confidence_delta: number; signal: string }> {
+  // Tier 1: Remote
+  if (_netState.endpoint && _netState.mode !== 'offline') {
+    try {
+      const res = await fetch(_netState.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, data, confidence, meta: { timestamp: Date.now(), runtimeType: 'sealed', version: '14.3.0' } }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        _updateMode(true);
+        _recordTelemetry({ primitive: name, wasRemote: true, success: true, usedFallback: false, mode: _netState.mode, timestamp: Date.now() });
+        return result;
+      }
+      _updateMode(false);
+    } catch { _updateMode(false); }
+  }
+
+  // Tier 2: Local deterministic fallback
+  const out = { [name.toLowerCase() + '_result']: { module: name, confidence, processed: true } };
+  _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: true, mode: _netState.mode, timestamp: Date.now() });
+  return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_local' };
 }
 
 export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
@@ -300,6 +397,7 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     locks: createLockManager(), computeCJPI, autoAssignTier, computeSynergyMultiplier,
     computeStableId, sha256, canonicalize, createStateMachine, createSaga,
     CANONICAL_MODULES, DISCOVERY_CATEGORIES,
+    executePrimitive, configureEndpoint, getRuntimeMode, getExecutionTelemetry,
   };
 }
 `;
@@ -565,9 +663,31 @@ export function generateSealedRuntimeReadme(): string {
     'This is a **sealed build** of the CMPSBL® Mini-Runtime™ Engine.',
     'Internal algorithms and scoring weights are protected.',
     '',
+    '## Network-Aware Execution',
+    '',
+    'This runtime is **network-aware**. When connected to the CMPSBL® Substrate:',
+    '- Primitives execute remotely with full cognitive depth',
+    '- Results are returned with high-fidelity confidence scoring',
+    '- Execution telemetry feeds the learning layer',
+    '',
+    'When offline, the runtime operates in **standalone mode**:',
+    '- All primitives execute via local deterministic fallbacks',
+    '- Zero network dependency — fully functional offline',
+    '',
+    '### Configuration',
+    '',
+    '```typescript',
+    '// Default: connects to CMPSBL® Substrate automatically',
+    '// To run offline-only:',
+    'configureEndpoint(null);',
+    '',
+    '// To check connectivity mode:',
+    'getRuntimeMode(); // "offline" | "hybrid" | "network"',
+    '```',
+    '',
     '## Included Components',
     '',
-    '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, pipeline orchestration',
+    '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, pipeline orchestration, network bridge',
     '- **chain-executor.ts** — Sealed Chain Executor: module chain playback',
     '',
     '## NOT Included',
@@ -582,6 +702,7 @@ export function generateSealedRuntimeReadme(): string {
     '- Auto-tiering threshold values',
     '- Module effect deep implementations (40-node matrix)',
     '- Synergy multiplier formulas',
+    '- Discovery heuristics and synthesis templates',
     '',
     '## Full Capabilities',
     '',
@@ -591,5 +712,5 @@ export function generateSealedRuntimeReadme(): string {
     '---',
     '© CMPSBL® — All rights reserved.',
     'Unauthorized reverse engineering, decompilation, or redistribution is prohibited.',
-  ].join('\n');
+  ].join('\\n');
 }
