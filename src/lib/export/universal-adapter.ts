@@ -2437,33 +2437,30 @@ The \`standalone-runtime.ts\` file (the **CMPSBL® Mini-Runtime™ Engine**) pro
 
 > **Note:** The Discovery Engine is a substrate-exclusive capability and is not included
 > in any export. For discovery, use the CMPSBL® Substrate at https://cmpsbl.com
-${hasSW ? \`
+${hasSW ? `
 ## Quick Start (Software)
 
 ### TypeScript/Node
-\\\`\\\`\\\`typescript
+\`\`\`typescript
 import { ${cls} } from './${slug}';
 const engine = new ${cls}();
 const result = await engine.execute({ key: 'value' });
-\\\`\\\`\\\`
+\`\`\`
 
 ### Python
-\\\`\\\`\\\`python
+\`\`\`python
 from ${snake} import ${cls}
 engine = ${cls}()
 result = engine.execute({"key": "value"})
-\\\`\\\`\\\`
+\`\`\`
 
 ### Using the CMPSBL® Mini-Runtime™ Engine (Advanced)
-\\\`\\\`\\\`typescript
+\`\`\`typescript
 import { createRuntime } from './standalone-runtime';
 
 const runtime = createRuntime();
 // Use the runtime for CJPI scoring, FSM, and pipeline orchestration
-const score = runtime.computeCJPI({ novelty: 0.8, utility: 0.9, complexity: 0.7, composability: 0.6 });
-console.log(\\\\\\\`CJPI Score: \\\\\\\${score}\\\\\\\`);
-\\\`\\\`\\\`
-\` : ''}
+\`\`\`
 ` : ''}${hasHDL ? `
 ## Quick Start (Hardware)
 
