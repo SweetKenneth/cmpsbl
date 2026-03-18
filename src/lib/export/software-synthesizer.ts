@@ -775,19 +775,15 @@ ${modules.map((m, i) => `            ("${moduleOps(m).verb}_${m.toLowerCase()}",
         ]
     }
 
+    private func primitiveExecutor(_ module: String, _ verb: String, _ ctx: (data: [String: Any], signals: [[String: Any]], errors: [[String: Any]]), _ confidence: Double) -> (data: [String: Any], confidenceDelta: Double) {
+        let out: [String: Any] = [module.lowercased() + "_result": ["module": module, "verb": verb, "confidence": confidence] as [String: Any]]
+        return (data: out, confidenceDelta: 0.02)
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private func stage${i}${m}(_ ctx: inout (data: [String: Any], signals: [[String: Any]], errors: [[String: Any]]), _ confidence: Double) throws -> (data: [String: Any], confidenceDelta: Double) {
-        // ${m}: ${ops.desc}
-        var out: [String: Any] = [:]
-        for (key, val) in ctx.data {
-            let vs = String(describing: val)
-            let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
-            out["${m.toLowerCase()}_\\(key)"] = [
-                "module": "${m}", "op": "${ops.verb}", "score": entropy * confidence, "len": vs.count
-            ] as [String: Any]
-        }
-        return (data: out, confidenceDelta: 0.03)
+        return primitiveExecutor("${m}", "${ops.verb}", ctx, confidence)
     }`;
 }).join("\n\n")}
 
