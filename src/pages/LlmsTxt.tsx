@@ -206,6 +206,11 @@ Following: https://llmstxt.dev
 export default function LlmsTxt() {
   const [copied, setCopied] = useState<string | null>(null);
 
+  // Dynamically build the full llms.txt content from the route registry
+  const LLMS_TXT_CONTENT = useMemo(() => {
+    return LLMS_TXT_STATIC_HEADER + buildDynamicKeyPages() + LLMS_TXT_STATIC_FOOTER;
+  }, []);
+
   const copyToClipboard = (content: string, type: string) => {
     navigator.clipboard.writeText(content);
     setCopied(type);
