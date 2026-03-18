@@ -393,7 +393,7 @@ export function DiscoveryPhase() {
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">
-          <span className="text-[9px] font-mono text-muted-foreground">Target: CJPI ≥ {CJPI_THRESHOLD}</span>
+          <span className="text-[9px] font-mono text-muted-foreground">All CJPI levels eligible</span>
         </div>
 
         <div className="flex-1" />
