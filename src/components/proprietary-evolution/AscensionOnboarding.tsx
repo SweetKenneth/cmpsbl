@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Upload, Zap, Diamond, Package, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const STORAGE_KEY = 'ascension-onboarded';
+const STORAGE_KEY = 'memory-stream-onboarded';
 
 const STEPS = [
   {
