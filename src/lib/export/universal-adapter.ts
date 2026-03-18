@@ -1901,6 +1901,9 @@ ${a.synthesisContext ? synthesizeDartProcess(a.synthesisContext) : `    for (fin
 
 function genZig(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Zig', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeZig(a.synthesisContext)}`;
+  }
   const snake = snakeCase(a);
   return `${h}
 const std = @import("std");
