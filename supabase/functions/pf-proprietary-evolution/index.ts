@@ -651,6 +651,24 @@ function findArchetype(substrateNodes: string[]): { name: string; desc: string }
     return archetypes[idx];
   }
   
+  // For single-node lookups (2-node chains), find any archetype containing this node
+  if (substrateNodes.length === 1) {
+    const node = substrateNodes[0];
+    const matchingKeys = Object.keys(CHAIN_ARCHETYPES).filter(k => k.split('+').includes(node));
+    if (matchingKeys.length > 0) {
+      const selectedKey = matchingKeys[hashString(`${node}:single`) % matchingKeys.length];
+      const candidates = CHAIN_ARCHETYPES[selectedKey];
+      if (candidates && candidates.length > 0) {
+        const arch = candidates[hashString(selectedKey) % candidates.length];
+        return {
+          name: arch.name,
+          desc: arch.desc,
+        };
+      }
+    }
+    return null;
+  }
+  
   if (substrateNodes.length > 2) {
     for (let len = substrateNodes.length; len >= 2; len--) {
       for (let start = 0; start <= substrateNodes.length - len; start++) {
@@ -667,6 +685,27 @@ function findArchetype(substrateNodes: string[]): { name: string; desc: string }
             };
           }
           return arch;
+        }
+      }
+    }
+  }
+  
+  // For 2-node pairs that don't have a direct archetype, check if either node
+  // appears in any archetype and derive from it
+  if (substrateNodes.length === 2) {
+    for (const node of substrateNodes) {
+      const matchingKeys = Object.keys(CHAIN_ARCHETYPES).filter(k => k.split('+').includes(node));
+      if (matchingKeys.length > 0) {
+        const selectedKey = matchingKeys[hashString(`${key}:derive`) % matchingKeys.length];
+        const candidates = CHAIN_ARCHETYPES[selectedKey];
+        if (candidates && candidates.length > 0) {
+          const arch = candidates[hashString(selectedKey) % candidates.length];
+          const otherNode = substrateNodes.find(n => n !== node) || substrateNodes[1];
+          const otherLabel = NODE_CAPABILITY_LABELS[otherNode] || otherNode.toLowerCase();
+          return {
+            name: `${arch.name}_With_${otherNode}`,
+            desc: `${arch.desc} Enhanced with ${otherLabel} (${otherNode}) for cross-domain reinforcement.`,
+          };
         }
       }
     }
