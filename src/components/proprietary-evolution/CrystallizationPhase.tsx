@@ -258,7 +258,7 @@ export function CrystallizationPhase() {
               </Button>
             )}
 
-            {d.crystallized && (
+            {d.ascended && (
               <ShieldCheck className="w-4 h-4 text-primary/60 shrink-0" />
             )}
           </div>
