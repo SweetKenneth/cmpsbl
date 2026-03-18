@@ -7,6 +7,11 @@ import JSZip from 'jszip';
 import { generateCmpsblManifest, serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { generateReadmeHTML, generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
+import {
+  generateSealedRuntime,
+  generateSealedChainExecutor,
+  generateSealedRuntimeReadme,
+} from '@/lib/export/sealed-runtime-generator';
 
 export interface ProductZipInput {
   id: string;
