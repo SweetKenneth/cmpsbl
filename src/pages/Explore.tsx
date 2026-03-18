@@ -80,6 +80,7 @@ export default function Explore() {
       />
 
       <PublicNav />
+      <CmpsblWelcome />
 
       {/* Ambient animated mesh background — layered for depth */}
       <div className="fixed inset-0 pointer-events-none z-0">

@@ -8,7 +8,6 @@ import { X, ArrowRight, Terminal, Sparkles, Database, ShoppingBag, Zap, Bot, Lay
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
-import { cn } from '@/lib/utils';
 
 const STORAGE_KEY = 'cmpsbl-welcomed';
 
