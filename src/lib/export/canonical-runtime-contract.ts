@@ -89,6 +89,12 @@ export interface ChainResult {
   bridgeType: BridgeType;
   fingerprint: string;
   executedAt: string;
+  /** Integrity validation echoed from canonical runtime */
+  validated: boolean;
+  /** Validation errors (empty = clean) */
+  validationErrors: string[];
+  /** Whether result is degraded due to integrity failure */
+  degraded?: boolean;
 }
 
 /** Stage trace entry — per-module execution record */
