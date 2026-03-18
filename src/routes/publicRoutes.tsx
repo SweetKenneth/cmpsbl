@@ -124,7 +124,7 @@ export const publicRoutes = (
     <Route path="/changelog" element={<Changelog />} />
     <Route path="/codelab" element={<CodeLab />} />
     <Route path="/workspace" element={<Workspace />} />
-    <Route path="/templates" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/templates" element={<Navigate to="/store" replace />} />
     <Route path="/forge" element={<Navigate to="/" replace />} />
     <Route path="/forge/catalog" element={<Navigate to="/" replace />} />
     <Route path="/agency" element={<Navigate to="/" replace />} />
@@ -136,10 +136,10 @@ export const publicRoutes = (
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />
-    <Route path="/marketplace" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
-    <Route path="/engine-marketplace" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/intelligence" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/engine-marketplace" element={<Navigate to="/store" replace />} />
+    <Route path="/intelligence" element={<Navigate to="/store" replace />} />
     <Route path="/substrate/licensing" element={<Navigate to="/licensing" replace />} />
     <Route path="/licensing" element={<PhaseGateRoute><PackGate packId="pack-self-hosted"><SubstrateLicensingDownload /></PackGate></PhaseGateRoute>} />
     <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
@@ -155,8 +155,8 @@ export const publicRoutes = (
     <Route path="/runtime" element={<RuntimePage />} />
     <Route path="/capability-map" element={<CapabilityMap />} />
     <Route path="/persistent-memory" element={<PersistentMemoryLanding />} />
-    <Route path="/capabilities" element={<Navigate to="/upgrade" replace />} />
-    <Route path="/synergies" element={<Navigate to="/upgrade" replace />} />
+    <Route path="/capabilities" element={<Navigate to="/store" replace />} />
+    <Route path="/synergies" element={<Navigate to="/store" replace />} />
     <Route path="/store" element={<Store />} />
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
@@ -210,7 +210,7 @@ export const publicRoutes = (
     <Route path="/architecture" element={<Navigate to="/" replace />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
-    <Route path="/upgrade" element={<Upgrade />} />
+    <Route path="/upgrade" element={<Navigate to="/store" replace />} />
     <Route path="/packs" element={<Packs />} />
     <Route path="/start-here" element={<StartHere />} />
     <Route path="/enterprise" element={<Enterprise />} />
