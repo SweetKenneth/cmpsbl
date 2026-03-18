@@ -17,7 +17,7 @@ interface Discovery {
   tier: string;
   nodeA: string;
   nodeB: string;
-  crystallized: boolean;
+  ascended: boolean;
   description: string;
   chain: string[];
 }
