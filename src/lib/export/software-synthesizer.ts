@@ -534,18 +534,15 @@ ${modules.map((m, i) => `        ['${moduleOps(m).verb}_${m.toLowerCase()}', '${
       ]
     end
 
+    def primitive_executor(mod_name, verb, ctx, confidence)
+      out = { "\#{mod_name.downcase}_result" => { module: mod_name, verb: verb, confidence: confidence.round(4) } }
+      { data: out, confidence_delta: 0.02, signal: "\#{verb}_complete" }
+    end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    def stage_${i}_${m.toLowerCase()}(ctx, confidence)
-      # ${m}: ${ops.desc}
-      out = {}
-      ctx[:_data].each do |key, val|
-        val_s = val.to_s
-        entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
-        score = (entropy * confidence).round(4)
-        out["${m.toLowerCase()}_\#{key}"] = { module: '${m}', op: '${ops.verb}', score: score, len: val_s.length }
-      end
-      { data: out, confidence_delta: 0.03, signal: '${ops.verb}_complete' }
+      primitive_executor('${m}', '${ops.verb}', ctx, confidence)
     end`;
 }).join("\n\n")}
   end
