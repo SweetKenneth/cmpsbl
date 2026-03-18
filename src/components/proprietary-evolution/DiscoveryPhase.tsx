@@ -488,7 +488,7 @@ export function DiscoveryPhase() {
       {results.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovery Vault ({results.length}) — Keep or discard before crystallization
+            Discovery Vault ({results.length}) — Keep or discard before ascension
           </h3>
           <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
             {results.map((r, i) => (
@@ -563,7 +563,7 @@ export function DiscoveryPhase() {
                     <div className="flex items-center gap-2 pt-1">
                       <div className="flex items-center gap-1 text-[9px] font-mono text-primary/70">
                         <CheckCircle2 className="w-3 h-3" />
-                        <span>Kept — will appear in Crystallization</span>
+                        <span>Kept — will appear in Ascension</span>
                       </div>
                       <div className="flex-1" />
                       <Button

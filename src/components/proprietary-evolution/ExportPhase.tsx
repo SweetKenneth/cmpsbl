@@ -27,12 +27,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-interface CrystallizedCapability {
+interface AscendedCapability {
   id: string;
   name: string;
   cjpiScore: number;
   tier: string;
-  crystallizedAt: string;
+  ascendedAt: string;
   exported: boolean;
   retired: boolean;
   chain: string[];
@@ -50,7 +50,7 @@ interface UserSourceFile {
   content: string;
 }
 
-// No minimum export score — all crystallized capabilities are exportable
+// No minimum export score — all ascended capabilities are exportable
 
 /**
  * Map the ingested language label to the ExportLanguage key.
@@ -73,7 +73,7 @@ function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
 }
 
 export function ExportPhase() {
-  const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
+  const [allCapabilities, setAllCapabilities] = useState<AscendedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
@@ -148,7 +148,7 @@ export function ExportPhase() {
       .from('artifact_registry')
       .select('id, name, metadata, tier, created_at, description, category')
       .eq('user_id', user.id)
-      .eq('category', 'proprietary-crystallized')
+      .eq('category', 'proprietary-ascended')
       .order('created_at', { ascending: false })
       .limit(500);
 
@@ -160,7 +160,7 @@ export function ExportPhase() {
           name: d.name,
           cjpiScore: Number(meta.cjpi_score || 0),
           tier: d.tier || 'mint',
-          crystallizedAt: String(meta.crystallized_at || d.created_at),
+          ascendedAt: String(meta.ascended_at || d.created_at),
           exported: meta.exported === true,
           retired: meta.retired === true,
           chain: (meta.chain as string[]) || [],
@@ -294,7 +294,7 @@ export function ExportPhase() {
         slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}-${Date.now().toString(36)}`,
         tier: 'candidate',
         category: 'proprietary-evolution',
-        description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} crystallized capabilities`,
+        description: `Re-ingested Candidate Node #41 — Evolved from ${capabilities.length} ascended capabilities`,
         metadata: {
           phase: 'ingest', language: sourceLanguageLabel || 'TypeScript/Evolved', file_count: capabilities.length,
           // Propagate source_export_language so export lock persists across recursive cycles
@@ -332,7 +332,7 @@ export function ExportPhase() {
         <Package className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No export-ready capabilities</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Crystallize discoveries first to make them available for export.
+          Ascend discoveries first to make them available for export.
         </p>
       </div>
     );
@@ -465,7 +465,7 @@ export function ExportPhase() {
       {/* Capability List — Individual export + discard */}
       <div className="space-y-2">
         <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-          Your Vault ({capabilities.length} crystallized)
+          Your Vault ({capabilities.length} ascended)
         </h3>
         <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
           {capabilities.map(c => (

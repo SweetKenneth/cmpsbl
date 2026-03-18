@@ -4,9 +4,9 @@
  * Handles:
  *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-8 depth)
  *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
- *   - crystallize.lock: Lock a discovered capability into deterministic memory
- *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
- *   - export.capability-pack: Generate capability pack from crystallized memories
+ *   - ascend.lock: Lock a discovered capability into deterministic memory
+ *   - ascend.batch-lock: Batch ascend all eligible discoveries
+ *   - export.capability-pack: Generate capability pack from ascended memories
  * 
  * Node 41 Architecture:
  *   The user's code is scanned to derive a CAPABILITY SURFACE — a set of 4 capability
@@ -58,21 +58,27 @@ function validatePositiveInt(val: unknown, max = 100): number {
   return Math.min(Math.floor(n), max);
 }
 
-// ═══ SUBSTRATE NODE MATRIX (40 nodes) ═══
+// ═══ SUBSTRATE NODE MATRIX — Canonical 40 nodes from matrixNodeRegistry ═══
 const SUBSTRATE_NODES = [
-  'CORE','BRAIN','MEMORY','NERVE','DECODE','ENCODE','CORTEX','DEFENSE','ORACLE',
-  'CONSCIENCE','PHANTOM','HARVEST','EVOLUTION','SHADOW','IMMUNITY','INTENT',
-  'GOVERNANCE','ATLAS','FORGE','LINGUA','ECHO','SOVEREIGN','REFLEX','TREATY',
-  'ENGINEER','COMPASS','OBSERVER','GENESIS','ANCHOR','PRISM','SENTRY','MEDIC',
-  'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
+  'CORE','SYSTEM','BRAIN','MEMORY','DREAM',
+  'RIPPLE','ACCESS','IDENTITY','RELAY','AUDIT','NERVE',
+  'DECODE','ENCODE','VISION','CORTEX','NEXUS','ECONOMY','SANDBOX','INCLUSIVE','MEDIC','INTEGRATION',
+  'SOVEREIGN','ORACLE','CONSCIENCE','TREATY',
+  'COMPASS','ECHO','REFLEX',
+  'FORGE','LINGUA','HARVEST',
+  'EVOLUTION','SHADOW','PHANTOM',
+  'IMMUNITY','INTENT',
+  'GOVERNANCE','ATLAS','ENGINEER',
+  'DEFENSE',
 ];
 
 const VALID_NODES = new Set(SUBSTRATE_NODES);
 
-// ═══ SECTOR MAPPING — Used for cross-sector synergy scoring ═══
+// ═══ SECTOR MAPPING — Canonical 12-sector topology ═══
 const NODE_SECTOR: Record<string, string> = {
-  CORE: 'core', BRAIN: 'ccr', MEMORY: 'ccr', DREAM: 'ccr',
-  NERVE: 'ocg', RIPPLE: 'ocg', ACCESS: 'ocg', IDENTITY: 'ocg', RELAY: 'ocg', AUDIT: 'ocg',
+  CORE: 'core', SYSTEM: 'system',
+  BRAIN: 'ccr', MEMORY: 'ccr', DREAM: 'ccr',
+  RIPPLE: 'ocg', ACCESS: 'ocg', IDENTITY: 'ocg', RELAY: 'ocg', AUDIT: 'ocg', NERVE: 'ocg',
   DECODE: 'execution', ENCODE: 'execution', VISION: 'execution', CORTEX: 'execution',
   NEXUS: 'execution', ECONOMY: 'execution', SANDBOX: 'execution', INCLUSIVE: 'execution',
   MEDIC: 'execution', INTEGRATION: 'execution',
@@ -83,60 +89,56 @@ const NODE_SECTOR: Record<string, string> = {
   IMMUNITY: 'field', INTENT: 'field',
   GOVERNANCE: 'plane', ATLAS: 'plane', ENGINEER: 'plane',
   DEFENSE: 'shell',
-  OBSERVER: 'execution', GENESIS: 'core', ANCHOR: 'core', PRISM: 'execution',
-  SENTRY: 'shell', SIGNAL: 'ocg', TENSOR: 'execution', ARBITER: 'plane',
-  FLUX: 'execution', VECTOR: 'execution', SYNTH: 'emz',
-  SYSTEM: 'core',
 };
 
-// ═══ NODE CAPABILITY SIGNATURES ═══
+// ═══ NODE CAPABILITY SIGNATURES — Canonical 40 nodes ═══
 const NODE_CAPABILITIES: Record<string, string[]> = {
   CORE: ['boot', 'pulse', 'orchestrate', 'config'],
+  SYSTEM: ['lifecycle', 'configure', 'diagnose', 'provision'],
   BRAIN: ['reasoning', 'inference', 'semantic_embed', 'context_window'],
   MEMORY: ['store', 'recall', 'semantic_search', 'consolidate'],
+  DREAM: ['synthesize', 'heuristic_gen', 'compress', 'imagine'],
+  RIPPLE: ['propagate', 'cascade_detect', 'event_bus', 'signal'],
+  ACCESS: ['authenticate', 'authorize', 'entitle', 'api_key'],
+  IDENTITY: ['resolve_user', 'session', 'role_map', 'entity'],
+  RELAY: ['webhook', 'dispatch', 'retry', 'transform'],
+  AUDIT: ['log_immutable', 'chain_custody', 'verify', 'anchor'],
   NERVE: ['signal', 'consensus', 'heartbeat', 'gate'],
   DECODE: ['parse', 'interpret', 'nlp_extract', 'intent_classify'],
   ENCODE: ['code_gen', 'transform', 'compile', 'optimize'],
+  VISION: ['observe', 'telemetry', 'dashboard', 'render'],
   CORTEX: ['orchestrate', 'coordinate', 'priority_queue', 'workflow'],
-  DEFENSE: ['threat_score', 'anomaly_detect', 'rate_limit', 'quarantine'],
+  NEXUS: ['route_ai', 'failover', 'cost_track', 'provider_select'],
+  ECONOMY: ['meter', 'bill', 'roi_calc', 'cost_track'],
+  SANDBOX: ['isolate', 'execute', 'contain', 'teardown'],
+  INCLUSIVE: ['wcag_check', 'accessibility', 'adapt', 'comply'],
+  MEDIC: ['diagnose', 'repair', 'triage', 'health_check'],
+  INTEGRATION: ['connect', 'dependency', 'resolve', 'bind'],
+  SOVEREIGN: ['jurisdiction', 'data_residency', 'encrypt', 'audit_sovereign'],
   ORACLE: ['predict', 'forecast', 'bayesian_update', 'monte_carlo'],
   CONSCIENCE: ['bias_detect', 'ethics_score', 'fairness', 'transparency'],
-  PHANTOM: ['anonymize', 'proxy', 'obfuscate', 'stealth_route'],
+  TREATY: ['negotiate', 'sla_enforce', 'contract', 'compliance'],
+  COMPASS: ['navigate', 'locate', 'map', 'orient'],
+  ECHO: ['replay', 'simulate', 'mirror', 'resonance'],
+  REFLEX: ['react', 'edge_compute', 'preempt', 'cache_warm'],
+  FORGE: ['template', 'scaffold', 'generate', 'instantiate'],
+  LINGUA: ['translate', 'localize', 'detect_lang', 'glossary'],
   HARVEST: ['crawl', 'etl', 'deduplicate', 'enrich'],
   EVOLUTION: ['mutate', 'fitness_score', 'select', 'crossover'],
   SHADOW: ['diverge', 'shadow_mesh', 'verify', 'compare'],
+  PHANTOM: ['anonymize', 'proxy', 'obfuscate', 'stealth_route'],
   IMMUNITY: ['resilience', 'adaptive_threshold', 'quarantine', 'recover'],
   INTENT: ['discover', 'route', 'resolve', 'dag_plan'],
   GOVERNANCE: ['policy', 'approve', 'audit_govern', 'escalate'],
   ATLAS: ['registry', 'control', 'capability_map', 'govern'],
-  FORGE: ['template', 'scaffold', 'generate', 'instantiate'],
-  LINGUA: ['translate', 'localize', 'detect_lang', 'glossary'],
-  ECHO: ['replay', 'simulate', 'mirror', 'resonance'],
-  SOVEREIGN: ['jurisdiction', 'data_residency', 'encrypt', 'audit_sovereign'],
-  REFLEX: ['react', 'edge_compute', 'preempt', 'cache_warm'],
-  TREATY: ['negotiate', 'sla_enforce', 'contract', 'compliance'],
   ENGINEER: ['maintain', 'optimize', 'upgrade', 'benchmark'],
-  COMPASS: ['navigate', 'locate', 'map', 'orient'],
-  OBSERVER: ['monitor', 'telemetry', 'alert', 'dashboard'],
-  GENESIS: ['bootstrap', 'seed', 'initialize', 'provision'],
-  ANCHOR: ['persist', 'checkpoint', 'backup', 'restore'],
-  PRISM: ['decompose', 'spectrum', 'facet', 'refract'],
-  SENTRY: ['guard', 'validate', 'gatekeep', 'authorize'],
-  MEDIC: ['diagnose', 'repair', 'triage', 'health_check'],
-  SIGNAL: ['emit', 'subscribe', 'broadcast', 'filter'],
-  TENSOR: ['compute', 'matrix_op', 'gradient', 'transform'],
-  ARBITER: ['judge', 'arbitrate', 'resolve_conflict', 'consensus'],
-  FLUX: ['stream', 'buffer', 'throttle', 'backpressure'],
-  VECTOR: ['embed', 'similarity', 'cluster', 'dimension_reduce'],
-  SYNTH: ['synthesize', 'compose', 'blend', 'harmonize'],
-  RELAY: ['webhook', 'dispatch', 'retry', 'transform'],
-  NEXUS: ['route_ai', 'failover', 'cost_track', 'provider_select'],
+  DEFENSE: ['threat_score', 'anomaly_detect', 'rate_limit', 'quarantine'],
 };
 
-const VALID_MODULES = new Set(['discovery', 'crystallize', 'export']);
+const VALID_MODULES = new Set(['discovery', 'ascend', 'export']);
 const VALID_ACTIONS: Record<string, Set<string>> = {
   discovery: new Set(['collide', 'batch']),
-  crystallize: new Set(['lock', 'batch-lock']),
+  ascend: new Set(['lock', 'batch-lock']),
   export: new Set(['capability-pack']),
 };
 const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin', 'verilog', 'systemverilog', 'vhdl', 'systemc', 'elixir', 'lua', 'c', 'cpp', 'dart', 'scala', 'haskell', 'php', 'chisel', 'amaranth', 'spice']);
@@ -449,22 +451,24 @@ function deriveCapabilitySurface(candidateName: string, candidateMeta: Record<st
   };
 }
 
-// ═══ NODE CAPABILITY LABELS (human-readable) ═══
+// ═══ NODE CAPABILITY LABELS — Canonical 40 nodes (human-readable) ═══
 const NODE_CAPABILITY_LABELS: Record<string, string> = {
-  CORE: 'system orchestration', BRAIN: 'autonomous reasoning', MEMORY: 'persistent recall',
-  NERVE: 'signal consensus', DECODE: 'intent parsing', ENCODE: 'code generation',
-  CORTEX: 'workflow orchestration', DEFENSE: 'threat detection', ORACLE: 'predictive forecasting',
-  CONSCIENCE: 'bias detection', PHANTOM: 'stealth anonymization', HARVEST: 'data acquisition',
-  EVOLUTION: 'adaptive optimization', SHADOW: 'divergence testing', IMMUNITY: 'resilience hardening',
-  INTENT: 'action planning', GOVERNANCE: 'policy enforcement', ATLAS: 'capability governance',
-  FORGE: 'artifact scaffolding', LINGUA: 'language translation', ECHO: 'temporal replay',
-  SOVEREIGN: 'data sovereignty', REFLEX: 'edge reaction', TREATY: 'compliance negotiation',
-  ENGINEER: 'performance optimization', COMPASS: 'navigation mapping', OBSERVER: 'telemetry monitoring',
-  GENESIS: 'bootstrap provisioning', ANCHOR: 'checkpoint persistence', PRISM: 'spectral decomposition',
-  SENTRY: 'access gatekeeping', MEDIC: 'diagnostic repair', SIGNAL: 'event broadcasting',
-  TENSOR: 'matrix computation', ARBITER: 'conflict resolution', FLUX: 'stream processing',
-  VECTOR: 'embedding similarity', SYNTH: 'capability synthesis', RELAY: 'webhook dispatch',
-  NEXUS: 'AI routing failover',
+  CORE: 'system orchestration', SYSTEM: 'lifecycle management', BRAIN: 'autonomous reasoning',
+  MEMORY: 'persistent recall', DREAM: 'synthesis imagination',
+  RIPPLE: 'event propagation', ACCESS: 'entitlement control', IDENTITY: 'entity resolution',
+  RELAY: 'webhook dispatch', AUDIT: 'integrity ledger', NERVE: 'signal consensus',
+  DECODE: 'intent parsing', ENCODE: 'code generation', VISION: 'observability rendering',
+  CORTEX: 'workflow orchestration', NEXUS: 'AI routing failover', ECONOMY: 'cost metering',
+  SANDBOX: 'isolated execution', INCLUSIVE: 'accessibility compliance', MEDIC: 'diagnostic repair',
+  INTEGRATION: 'dependency resolution',
+  SOVEREIGN: 'data sovereignty', ORACLE: 'predictive forecasting', CONSCIENCE: 'bias detection',
+  TREATY: 'compliance negotiation',
+  COMPASS: 'navigation mapping', ECHO: 'temporal replay', REFLEX: 'edge reaction',
+  FORGE: 'artifact scaffolding', LINGUA: 'language translation', HARVEST: 'data acquisition',
+  EVOLUTION: 'adaptive optimization', SHADOW: 'divergence testing', PHANTOM: 'stealth anonymization',
+  IMMUNITY: 'resilience hardening', INTENT: 'action planning',
+  GOVERNANCE: 'policy enforcement', ATLAS: 'capability governance', ENGINEER: 'performance optimization',
+  DEFENSE: 'threat detection',
 };
 
 // ═══ MULTI-NODE COLLISION ENGINE (Node 41 = First-Class Participant) ═══
@@ -894,7 +898,7 @@ serve(async (req: Request) => {
               sectors_crossed: topResult.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
-              crystallized: false,
+              ascended: false,
               candidate_surface: surface ? {
                 nodeName: surface.nodeName,
                 capabilities: surface.capabilities,
@@ -977,7 +981,7 @@ serve(async (req: Request) => {
               sectors_crossed: result.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
-              crystallized: false,
+              ascended: false,
               candidate_surface: surface ? {
                 nodeName: surface.nodeName,
                 capabilities: surface.capabilities,
@@ -1008,8 +1012,8 @@ serve(async (req: Request) => {
       }
     }
 
-    // ═══ CRYSTALLIZE MODULE ═══
-    if (module === 'crystallize') {
+    // ═══ ASCEND MODULE ═══
+    if (module === 'ascend') {
       
       if (action === 'lock') {
         const discovery_id = validateString(input.discovery_id, 100);
@@ -1029,8 +1033,8 @@ serve(async (req: Request) => {
         }
 
         const meta = (discovery.metadata as Record<string, unknown>) || {};
-        if (meta.crystallized === true) {
-          return jsonResponse({ success: false, error: 'Already crystallized' }, 409);
+        if (meta.ascended === true) {
+          return jsonResponse({ success: false, error: 'Already ascended' }, 409);
         }
 
         const chain = (meta.chain as string[]) || [];
@@ -1040,11 +1044,11 @@ serve(async (req: Request) => {
         const { error } = await supabase
           .from('artifact_registry')
           .update({
-            category: 'proprietary-crystallized',
+            category: 'proprietary-ascended',
             metadata: {
               ...meta,
-              crystallized: true,
-              crystallized_at: new Date().toISOString(),
+              ascended: true,
+              ascended_at: new Date().toISOString(),
               moat_signature: moatSignature,
               structural_fingerprint: fingerprint,
               lock_version: 1,
@@ -1059,7 +1063,7 @@ serve(async (req: Request) => {
 
         return jsonResponse({
           success: true,
-          crystallized: {
+          ascended: {
             id: discovery_id,
             moat_signature: moatSignature,
             fingerprint: fingerprint.slice(0, 12).toUpperCase(),
@@ -1081,33 +1085,33 @@ serve(async (req: Request) => {
 
         const eligible = (discoveries || []).filter((d: any) => {
           const meta = (d.metadata as Record<string, unknown>) || {};
-          return Number(meta.cjpi_score || 0) >= min_cjpi && !meta.crystallized;
+          return Number(meta.cjpi_score || 0) >= min_cjpi && !meta.ascended;
         });
 
-        let crystallized = 0;
+        let ascended = 0;
         for (const d of eligible) {
           const meta = (d.metadata as Record<string, unknown>) || {};
           const chain = (meta.chain as string[]) || [];
           const fingerprint = await generateFingerprint(chain, 'SPARTA');
 
           const { error } = await supabase.from('artifact_registry').update({
-            category: 'proprietary-crystallized',
+            category: 'proprietary-ascended',
             metadata: {
               ...meta,
-              crystallized: true,
-              crystallized_at: new Date().toISOString(),
+              ascended: true,
+              ascended_at: new Date().toISOString(),
               moat_signature: crypto.randomUUID(),
               structural_fingerprint: fingerprint,
               lock_version: 1,
             },
           }).eq('id', d.id).eq('user_id', userId);
 
-          if (!error) crystallized++;
+          if (!error) ascended++;
         }
 
         return jsonResponse({
           success: true,
-          crystallized_count: crystallized,
+          ascended_count: ascended,
           threshold: min_cjpi,
           timestamp: new Date().toISOString(),
         });
@@ -1157,10 +1161,10 @@ serve(async (req: Request) => {
           .select('id, name, metadata, tier, description')
           .in('id', capability_ids)
           .eq('user_id', userId)
-          .eq('category', 'proprietary-crystallized');
+          .eq('category', 'proprietary-ascended');
 
         if (!capabilities || capabilities.length === 0) {
-          return jsonResponse({ success: false, error: 'No crystallized capabilities found for provided IDs' }, 404);
+          return jsonResponse({ success: false, error: 'No ascended capabilities found for provided IDs' }, 404);
         }
 
         const packId = crypto.randomUUID();

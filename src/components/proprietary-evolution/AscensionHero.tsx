@@ -287,7 +287,7 @@ function OrbitalCanvas() {
 const LIFECYCLE_STEPS = [
   { step: '01', title: 'INGEST', desc: 'Your code enters as Candidate Node #41', icon: Upload, color: 'neon-cyan' },
   { step: '02', title: 'ASCENSION', desc: 'Collision cycles against all 40 substrate nodes (2-8 depth)', icon: Zap, color: 'neon-purple' },
-  { step: '03', title: 'CRYSTALLIZE', desc: 'Lock successful chains into deterministic memories', icon: Diamond, color: 'neon-magenta' },
+  { step: '03', title: 'ASCEND', desc: 'Lock successful chains into deterministic memories', icon: Diamond, color: 'neon-magenta' },
   { step: '04', title: 'EXPORT', desc: 'Portable Ascended Memories delivered to your stack', icon: Package, color: 'neon-amber' },
 ] as const;
 
@@ -350,7 +350,7 @@ export function AscensionHero() {
           >
             Upload pieces of your stack's code — or code discovered in the Memory Stream — and watch
             new capabilities emerge when it collides with the nodes from the CMPSBL Substrate.
-            Successful interaction chains are crystallized into portable{' '}
+            Successful interaction chains are ascended into portable{' '}
             <span className="text-primary font-medium">Ascended Memories</span>{' '}
             you can export as source code, tests, and documentation.{' '}
             <span className="text-foreground/80 font-medium">Endless possibilities. Recursive by design.</span>
@@ -438,7 +438,7 @@ export function AscensionHero() {
             <div>
               <p className="text-sm font-semibold text-foreground mb-1">What is an Ascended Memory?</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                A crystallized capability chain — deterministic behavior that emerges{' '}
+                An ascended capability chain — deterministic behavior that emerges{' '}
                 <em>only</em> when your code interacts with the substrate's 40-node matrix.
                 Each Memory encodes the exact interaction path and is fully exportable as a
                 portable Capability Pack: source code, tests, docs, and the Mini-Runtime™ engine.

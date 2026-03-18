@@ -42,8 +42,18 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   },
   "crystallization": {
     term: "Crystallization",
-    short: "The process of turning a discovery into exportable software.",
-    detail: "Sampling → Condensing → Crystallizing. The result is a capability pack with implementation, runtime, docs, and tests.",
+    short: "The process of turning a discovery into exportable software (Memory Stream only).",
+    detail: "Sampling → Condensing → Crystallizing. Used in the Memory Stream. In Ascension, the equivalent process is called 'Ascending'.",
+  },
+  "ascension": {
+    term: "Ascension",
+    short: "The lifecycle where developer software enters the substrate and evolves.",
+    detail: "Your code becomes Candidate Node #41, collides against 40 substrate nodes, and successful chains are ascended into portable Ascended Memories.",
+  },
+  "ascended-memory": {
+    term: "Ascended Memory",
+    short: "A locked capability discovered through Ascension.",
+    detail: "An ascended capability chain — deterministic behavior that emerges only when your code interacts with the substrate's 40-node matrix. Exportable as source code, tests, and documentation.",
   },
   "capability-pack": {
     term: "Capability Pack",

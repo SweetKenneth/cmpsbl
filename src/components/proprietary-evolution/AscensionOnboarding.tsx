@@ -34,16 +34,16 @@ const STEPS = [
   },
   {
     icon: Diamond,
-    title: '3. Crystallize',
+    title: '3. Ascend',
     subtitle: 'Lock discoveries',
-    body: 'Review your discoveries, then crystallize them — locking successful interaction chains into deterministic, repeatable memories.',
+    body: 'Review your discoveries, then ascend them — locking successful interaction chains into deterministic, repeatable memories.',
     color: 'neon-magenta',
   },
   {
     icon: Package,
     title: '4. Export',
     subtitle: 'Ascended Memories',
-    body: 'Export crystallized capabilities as portable packs: source code in your original language, tests, documentation, and a Mini-Runtime™ engine.',
+    body: 'Export ascended capabilities as portable packs: source code in your original language, tests, documentation, and a Mini-Runtime™ engine.',
     color: 'neon-amber',
   },
 ];

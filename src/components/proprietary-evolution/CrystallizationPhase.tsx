@@ -17,7 +17,7 @@ interface Discovery {
   tier: string;
   nodeA: string;
   nodeB: string;
-  crystallized: boolean;
+  ascended: boolean;
   description: string;
   chain: string[];
 }
@@ -25,7 +25,7 @@ interface Discovery {
 export function CrystallizationPhase() {
   const [discoveries, setDiscoveries] = useState<Discovery[]>([]);
   const [loading, setLoading] = useState(true);
-  const [crystallizing, setCrystallizing] = useState<string | null>(null);
+  const [ascending, setAscending] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export function CrystallizationPhase() {
       .from('artifact_registry')
       .select('id, name, metadata, tier, description')
       .eq('user_id', user.id)
-      .in('category', ['proprietary-discovery', 'proprietary-crystallized'])
+      .in('category', ['proprietary-discovery', 'proprietary-ascended'])
       .order('created_at', { ascending: false })
       .limit(500);
 
@@ -55,7 +55,7 @@ export function CrystallizationPhase() {
           tier: d.tier || 'mint',
           nodeA: String(meta.node_a || ''),
           nodeB: String(meta.node_b || ''),
-          crystallized: meta.crystallized === true,
+          ascended: meta.ascended === true,
           description: d.description || '',
           chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
         };
@@ -65,11 +65,11 @@ export function CrystallizationPhase() {
   };
 
   const ascend = async (discovery: Discovery) => {
-    setCrystallizing(discovery.id);
+    setAscending(discovery.id);
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
-          module: 'crystallize',
+          module: 'ascend',
           action: 'lock',
           input: { discovery_id: discovery.id },
         },
@@ -79,22 +79,22 @@ export function CrystallizationPhase() {
       if (!data?.success) throw new Error(data?.error || 'Ascension failed');
 
       setDiscoveries(prev =>
-        prev.map(d => d.id === discovery.id ? { ...d, crystallized: true } : d)
+        prev.map(d => d.id === discovery.id ? { ...d, ascended: true } : d)
       );
       toast({ title: 'Memory ascended', description: `${discovery.name} is now locked` });
     } catch (err) {
       toast({ title: 'Ascension failed', description: String(err), variant: 'destructive' });
     } finally {
-      setCrystallizing(null);
+      setAscending(null);
     }
   };
 
   const ascendAll = async () => {
-    setCrystallizing('batch');
+    setAscending('batch');
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
-          module: 'crystallize',
+          module: 'ascend',
           action: 'batch-lock',
           input: { min_cjpi: 1 },
         },
@@ -103,13 +103,13 @@ export function CrystallizationPhase() {
       if (error) throw error;
       toast({
         title: 'Batch ascension complete',
-        description: `${data?.crystallized_count || 0} memories ascended`,
+        description: `${data?.ascended_count || 0} memories ascended`,
       });
       await loadDiscoveries();
     } catch (err) {
       toast({ title: 'Batch ascension failed', description: String(err), variant: 'destructive' });
     } finally {
-      setCrystallizing(null);
+      setAscending(null);
     }
   };
 
@@ -122,7 +122,7 @@ export function CrystallizationPhase() {
         .from('artifact_registry')
         .delete()
         .eq('user_id', user.id)
-        .in('category', ['proprietary-discovery', 'proprietary-crystallized']);
+        .in('category', ['proprietary-discovery', 'proprietary-ascended']);
       setDiscoveries([]);
       toast({ title: 'All cleared', description: 'Discoveries and ascended memories removed.' });
     } catch (err) {
@@ -130,7 +130,7 @@ export function CrystallizationPhase() {
     }
   };
 
-  const ascendedCount = discoveries.filter(d => d.crystallized).length;
+  const ascendedCount = discoveries.filter(d => d.ascended).length;
   const sTier = discoveries.filter(d => d.cjpiScore >= 85);
 
   if (loading) {
@@ -173,14 +173,14 @@ export function CrystallizationPhase() {
       {/* Actions */}
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground font-mono">
-          {discoveries.filter(d => !d.crystallized).length} eligible for ascension
+          {discoveries.filter(d => !d.ascended).length} eligible for ascension
         </p>
         <div className="flex items-center gap-2">
           <Button
             size="sm"
             variant="destructive"
             onClick={clearAll}
-            disabled={!!crystallizing}
+            disabled={!!ascending}
             className="h-7 text-xs gap-1.5"
           >
             <Trash2 className="w-3 h-3" />
@@ -189,10 +189,10 @@ export function CrystallizationPhase() {
           <Button
             size="sm"
             onClick={ascendAll}
-            disabled={!!crystallizing}
+            disabled={!!ascending}
             className="h-7 text-xs gap-1.5"
           >
-            {crystallizing === 'batch' ? (
+            {ascending === 'batch' ? (
               <Loader2 className="w-3 h-3 animate-spin" />
             ) : (
               <Flame className="w-3 h-3" />
@@ -209,12 +209,12 @@ export function CrystallizationPhase() {
             key={d.id}
             className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-xl border transition-all",
-              d.crystallized
+              d.ascended
                 ? "bg-primary/5 border-primary/20"
                 : "bg-card/30 border-border/20 hover:border-border/40"
             )}
           >
-            {d.crystallized ? (
+            {d.ascended ? (
               <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
             ) : (
               <Flame className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -241,15 +241,15 @@ export function CrystallizationPhase() {
               {d.cjpiScore}
             </span>
 
-            {!d.crystallized && (
+            {!d.ascended && (
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => ascend(d)}
-                disabled={!!crystallizing}
+                disabled={!!ascending}
                 className="h-7 text-[10px] gap-1"
               >
-                {crystallizing === d.id ? (
+                {ascending === d.id ? (
                   <Loader2 className="w-3 h-3 animate-spin" />
                 ) : (
                   <Flame className="w-3 h-3" />
@@ -258,7 +258,7 @@ export function CrystallizationPhase() {
               </Button>
             )}
 
-            {d.crystallized && (
+            {d.ascended && (
               <ShieldCheck className="w-4 h-4 text-primary/60 shrink-0" />
             )}
           </div>
