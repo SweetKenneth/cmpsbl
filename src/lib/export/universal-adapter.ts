@@ -16,6 +16,10 @@ import {
 } from './logic-synthesizer';
 import {
   synthesizeRust, synthesizeJava, synthesizeCSharp,
+  synthesizeRuby, synthesizePHP, synthesizeSwift,
+  synthesizeKotlin, synthesizeElixir, synthesizeLua,
+  synthesizeC, synthesizeCpp, synthesizeDart,
+  synthesizeZig, synthesizeScala, synthesizeHaskell,
   synthesizeRubyProcess, synthesizePHPProcess, synthesizeSwiftProcess,
   synthesizeKotlinProcess, synthesizeElixirProcess, synthesizeLuaProcess,
   synthesizeCProcess, synthesizeCppProcess, synthesizeDartProcess,
