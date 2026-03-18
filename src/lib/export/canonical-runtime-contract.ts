@@ -132,6 +132,53 @@ export interface ValidationResult {
   warnings: string[];
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// §2b — EXECUTION INTEGRITY CONTRACT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Outbound integrity payload — attached to every bridge→canonical request.
+ * The canonical runtime validates these fields before execution.
+ */
+export interface ExecutionIntegrityPayload {
+  /** Canonical runtime version this bridge was built against */
+  canonicalVersion: string;
+  /** Classification of this bridge adapter */
+  bridgeType: BridgeType;
+  /** Stable SHA-256 hash of (name + module_chain + category) */
+  capabilityHash: string;
+  /** Expected CJPI score from bridge metadata */
+  expectedCJPI: number;
+  /** Current execution mode of the bridge */
+  executionMode: RuntimeMode;
+}
+
+/**
+ * Integrity validation response — echoed by canonical runtime.
+ */
+export interface IntegrityValidationResult {
+  /** Whether all integrity checks passed */
+  validated: boolean;
+  /** Specific validation errors (empty if clean) */
+  validationErrors: string[];
+  /** Recomputed capability hash from canonical side */
+  recomputedHash?: string;
+  /** Runtime version that performed validation */
+  runtimeVersion: string;
+}
+
+/**
+ * Degraded result wrapper — used when integrity validation fails.
+ * Bridges MUST NOT silently fall back; they must mark results as degraded.
+ */
+export interface DegradedResult {
+  degraded: true;
+  reason: string;
+  integrityErrors: string[];
+  /** Original trace preserved for debugging */
+  trace: StageTraceEntry[];
+}
+
 /** Telemetry entry — standardized across all bridges */
 export interface ExecutionTelemetryEntry {
   primitive: string;
