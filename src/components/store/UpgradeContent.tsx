@@ -480,17 +480,6 @@ export function UpgradeContent() {
         </div>
       </div>
 
-      {/* Section divider */}
-      <div className="section-divider max-w-4xl mx-auto mt-24 mb-0" />
-
-      {/* ═══ EVERY PLAN INCLUDES ═══ */}
-      <section className="container mx-auto px-4 mt-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-              <Lock className="w-3 h-3 mr-1.5 inline" />
-              Always Active
-            </Badge>
             <h2 className="text-3xl font-bold tracking-tight">Every Plan Includes</h2>
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto">The full runtime runs for every user. Plans scale capacity, not capability.</p>
           </div>
