@@ -6,6 +6,7 @@
  * - Authenticated: crystallize button, vault, stats
  */
 import { useState, useCallback, useEffect } from 'react';
+import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
