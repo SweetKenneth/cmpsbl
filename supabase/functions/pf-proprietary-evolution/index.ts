@@ -542,13 +542,16 @@ function collideNodesMultiChain(
       const chain = [surface.nodeName, targetNode];
       const archetype = findArchetype([targetNode]);
       
-      // Build capability description using Node 41's real verbs
-      const capName = archetype?.name 
-        || `${surface.nodeName}_x_${targetNode}_${cap}`.toUpperCase();
-      const desc = generateNode41AwareDescription(surface, [targetNode], cap, cjpi);
+      // FILTER: Only surface discoveries with real archetype names.
+      // Generic chain names (NODE_X_NODE_TIER_CHAIN3) are noise — skip them.
+      if (!archetype) continue;
+      
+      const desc = archetype.desc 
+        ? enrichWithNode41(archetype.desc, surface, [targetNode])
+        : generateNode41AwareDescription(surface, [targetNode], cap, cjpi);
       
       results.push({
-        name: capName,
+        name: archetype.name,
         description: desc,
         cjpi_score: cjpi,
         tier: scoreTier(cjpi),
