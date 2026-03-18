@@ -149,12 +149,13 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
   const safeName = product.name.replace(/[^a-zA-Z0-9]/g, '_');
   src.file(`${product.slug}.ts`, `/**\n * ${product.name} — CMPSBL® Sealed Runtime\n * ${product.subtitle}\n *\n * This is the sealed runtime entry point.\n * Internal implementation is protected.\n */\n\nexport const ${safeName}_VERSION = '${product.version}';\nexport const ${safeName}_TIER = '${product.tier}';\n\nexport function init(config?: Record<string, unknown>) {\n  return {\n    name: '${product.name}',\n    tier: '${product.tier}',\n    ready: true,\n    config,\n  };\n}\n`);
 
-  // ── Runtime stub (upgraded: includes chain executor + module effects) ──
+  // ── Sealed Runtime (IP-protected — no proprietary logic exposed) ──
   const runtime = folder.folder('_runtime')!;
-  runtime.file('standalone-runtime.ts', `/**\n * CMPSBL® Mini-Runtime™ Engine\n * Provides CJPI scoring, auto-tiering, and pipeline orchestration.\n */\n\nexport const RUNTIME_VERSION = '2.0.0';\n\nexport function computeCJPI(metrics: { novelty: number; utility: number; complexity: number; composability: number }): number {\n  return Math.round((metrics.novelty * 0.3 + metrics.utility * 0.3 + metrics.complexity * 0.2 + metrics.composability * 0.2) * 100);\n}\n\nexport function autoTier(cjpi: number): string {\n  if (cjpi >= 90) return 'Apex';\n  if (cjpi >= 75) return 'Enterprise';\n  if (cjpi >= 55) return 'Architect';\n  if (cjpi >= 35) return 'Creator';\n  return 'Raw';\n}\n`);
+  runtime.file('standalone-runtime.ts', generateSealedRuntime());
+  runtime.file('README.md', generateSealedRuntimeReadme());
 
-  // ── Chain Executor (portable playback engine) ──
-  runtime.file('chain-executor.ts', generatePortableChainExecutor());
+  // ── Sealed Chain Executor (module effects obfuscated) ──
+  runtime.file('chain-executor.ts', generateSealedChainExecutor());
 
   // ── Playback demo / test harness ──
   const test = folder.folder('test')!;
