@@ -453,20 +453,22 @@ export function DiscoveryPhase() {
         ))}
       </div>
 
-      {/* Results List */}
+      {/* Results List — Discovery Vault */}
       {results.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovered Capabilities ({results.length})
+            Discovery Vault ({results.length}) — Keep or discard before crystallization
           </h3>
           <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
             {results.map((r, i) => (
               <div
                 key={i}
-                className={cn("rounded-lg transition-colors cursor-pointer border", tierBorder(r.tier))}
-                onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
+                className={cn("rounded-lg transition-colors border", tierBorder(r.tier))}
               >
-                <div className="flex items-center gap-2 px-3 py-2">
+                <div
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer"
+                  onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
+                >
                   <span className={cn("text-[10px] font-mono font-bold uppercase shrink-0", tierColor(r.tier))}>
                     {r.tier}
                   </span>
@@ -525,6 +527,29 @@ export function DiscoveryPhase() {
                         {r.description}
                       </p>
                     )}
+
+                    {/* Keep / Discard actions */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="flex items-center gap-1 text-[9px] font-mono text-primary/70">
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Kept — will appear in Crystallization</span>
+                      </div>
+                      <div className="flex-1" />
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-6 text-[10px] gap-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        disabled={discardingId === `${i}`}
+                        onClick={(e) => { e.stopPropagation(); discardDiscovery(r, i); }}
+                      >
+                        {discardingId === `${i}` ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3 h-3" />
+                        )}
+                        Discard
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
