@@ -1019,7 +1019,7 @@ class ${cls}(private val config: ${cls}Config = ${cls}Config()) {
     private fun process(input: Map<String, Any?>): Map<String, Any?> {
         val currentData = input.toMutableMap()
         var confidence = 1.0
-${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        for ((key, value) in input) {
+${a.synthesisContext ? synthesizeKotlin(a.synthesisContext) : `        for ((key, value) in input) {
             val vs = value.toString()
             val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
             currentData["processed_$key"] = mapOf("score" to entropy, "len" to vs.length)
