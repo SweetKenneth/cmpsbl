@@ -968,7 +968,7 @@ class ${cls} {
     private func process(input: [String: Any]) throws -> [String: Any] {
         var currentData = input
         var confidence = 1.0
-${a.synthesisContext ? synthesizeSwiftProcess(a.synthesisContext) : `        for (key, val) in input {
+${a.synthesisContext ? synthesizeSwift(a.synthesisContext) : `        for (key, val) in input {
             let vs = String(describing: val)
             let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
             currentData["processed_\\(key)"] = ["score": entropy, "len": vs.count] as [String: Any]
