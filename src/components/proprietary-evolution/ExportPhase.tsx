@@ -73,7 +73,7 @@ function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
 }
 
 export function ExportPhase() {
-  const [allCapabilities, setAllCapabilities] = useState<CrystallizedCapability[]>([]);
+  const [allCapabilities, setAllCapabilities] = useState<AscendedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
