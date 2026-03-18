@@ -307,18 +307,14 @@ public class ${cls} {
 ${modules.map((m, i) => `        // Stage ${i}: ${m} — ${moduleOps(m).desc}
         {
             long ss = System.nanoTime();
-            Map<String, Object> stageOut = new HashMap<>();
-            for (Map.Entry<String, Object> e : currentData.entrySet()) {
-                String val = String.valueOf(e.getValue());
-                long entropy = val.chars().mapToLong(c -> c).sum();
-                double score = (double) entropy / Math.max(val.length(), 1) * confidence;
-                stageOut.put("${m.toLowerCase()}_" + e.getKey(), 
-                    Map.of("module", "${m}", "op", "${moduleOps(m).verb}", "score", score, "len", val.length()));
-            }
+            @SuppressWarnings("unchecked")
+            Map<String, Object> pr = primitiveExecutor("${m}", "${moduleOps(m).verb}", currentData, confidence);
+            Map<String, Object> stageOut = pr.containsKey("data") ? (Map<String, Object>) pr.get("data") : new HashMap<>();
+            double delta = pr.containsKey("confidence_delta") ? ((Number) pr.get("confidence_delta")).doubleValue() : 0.02;
             double elapsed = (System.nanoTime() - ss) / 1e6;
-            StageResult sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, 0.03, elapsed);
-            confidence = Math.min(1.0, Math.max(0, confidence + sr.confidenceDelta));
-            currentData.putAll(sr.data);
+            StageResult sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, delta, elapsed);
+            confidence = Math.min(1.0, Math.max(0, confidence + delta));
+            currentData.putAll(stageOut);
             trace.add(sr);
             completed++;
             if (confidence < confidenceThreshold) {
