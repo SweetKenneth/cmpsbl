@@ -126,7 +126,7 @@ export async function downloadTieredFoundryZip(options: {
     artifactCount: artifacts.length,
     totalValuation: artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0),
     totalValuationFormatted: formatMarketValue(artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0)),
-    valuationMethod: 'CJPI × Category × Complexity internal formula',
+    valuationMethod: 'CMPSBL® proprietary scoring model',
     artifacts: artifacts.map((item) => {
       const estValue = estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length);
       return {
