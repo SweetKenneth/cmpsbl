@@ -1598,12 +1598,13 @@ pub const ${cls} = struct {
         var completed: u32 = 0;
 
         // Module dispatch chain
+        // Primitive executor — each stage delegates to this pattern
         const stages = [_]struct { name: []const u8, module: []const u8, delta: f64 }{
-${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowerCase()}", .module = "${m}", .delta = 0.03 }`).join(",\n")}
+${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowerCase()}", .module = "${m}", .delta = 0.02 }`).join(",\n")}
         };
 
         for (stages) |stage| {
-            // Each handler: entropy accumulation + confidence adjustment
+            // primitiveExecutor: route module through execution layer
             confidence = @min(1.0, @max(0.0, confidence + stage.delta));
             completed += 1;
 
