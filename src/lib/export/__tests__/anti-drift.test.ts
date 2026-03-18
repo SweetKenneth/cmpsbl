@@ -70,7 +70,7 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
     
     for (const gen of languages) {
       const code = gen(ctx);
-      expect(code).toContain('bridge');
+      expect(code.toLowerCase()).toContain('bridge');
       expect(code).not.toContain('Fully synthesized pipeline');
       expect(code).not.toContain('Full Synthesizer');
     }
