@@ -457,10 +457,7 @@ export function SiteAnalyticsSection() {
               title="Traffic Sources"
               icon={ExternalLink}
               iconColor="text-orange-400"
-              items={[
-                { label: 'Direct', value: data.totalSessions - data.topReferrers.reduce((a, r) => a + r.count, 0) },
-                ...data.topReferrers.map(r => ({ label: r.domain, value: r.count })),
-              ].filter(i => i.value > 0).sort((a, b) => b.value - a.value)}
+              items={data.topReferrers.map(r => ({ label: r.domain, value: r.count })).filter(i => i.value > 0)}
             />
             <RankList
               title="Devices"
