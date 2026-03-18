@@ -209,7 +209,7 @@ export function CrystallizationPhase() {
             key={d.id}
             className={cn(
               "flex items-center gap-3 px-4 py-3 rounded-xl border transition-all",
-              d.crystallized
+              d.ascended
                 ? "bg-primary/5 border-primary/20"
                 : "bg-card/30 border-border/20 hover:border-border/40"
             )}
