@@ -208,8 +208,8 @@ export function DiscoveryPhase() {
             }));
             setResults(prev => [...newResults, ...prev]);
 
-            const hit = newResults.find(r => r.cjpiScore >= CJPI_THRESHOLD);
-            if (hit) {
+            const hit = newResults.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
+            if (hit && hit.cjpiScore >= 70) {
               foundHit = hit;
               setDiscoveryHit(hit);
               toast({
@@ -217,6 +217,8 @@ export function DiscoveryPhase() {
                 description: `${hit.capability} — ${hit.chainDepth}-node chain, CJPI ${hit.cjpiScore}`,
               });
               break;
+            } else if (hit) {
+              setDiscoveryHit(prev => (!prev || hit.cjpiScore > prev.cjpiScore) ? hit : prev);
             }
           }
         }
