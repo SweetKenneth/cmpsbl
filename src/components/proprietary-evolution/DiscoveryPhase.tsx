@@ -488,7 +488,7 @@ export function DiscoveryPhase() {
       {results.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovery Vault ({results.length}) — Keep or discard before crystallization
+            Discovery Vault ({results.length}) — Keep or discard before ascension
           </h3>
           <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
             {results.map((r, i) => (
