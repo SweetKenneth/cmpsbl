@@ -63,7 +63,6 @@ export default function ProprietaryEvolution() {
         />
 
         <PublicNav />
-        <AscensionOnboarding />
 
         {/* ═══ COMPACT HERO (only on step 0) ═══ */}
         <AnimatePresence mode="wait">
