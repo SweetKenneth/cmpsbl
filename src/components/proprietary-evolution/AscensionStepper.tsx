@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils';
 
 const STEPS = [
   { id: 'ingest', label: 'Ingest', icon: Upload },
-  { id: 'ascension', label: 'Ascension', icon: Zap },
-  { id: 'crystallize', label: 'Crystallize', icon: Diamond },
+  { id: 'discovery', label: 'Discovery', icon: Zap },
+  { id: 'ascend', label: 'Ascend', icon: Diamond },
   { id: 'export', label: 'Export', icon: Package },
 ] as const;
 
