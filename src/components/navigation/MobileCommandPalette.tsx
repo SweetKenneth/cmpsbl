@@ -20,21 +20,19 @@ interface SearchableRoute {
 
 // All navigable routes — comprehensive, nothing removed
 const ALL_ROUTES: SearchableRoute[] = [
-  // Platform
-  { name: "Home", href: "/", section: "Platform", icon: Layers },
-  { name: "How It Works", href: "/ai-operating-system", section: "Platform", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
-  { name: "Substrate", href: "/substrate", section: "Platform", icon: Cpu, keywords: ["core", "infrastructure", "dashboard"] },
-  { name: "Substrate Demo", href: "/demo", section: "Platform", icon: Sparkles, keywords: ["interactive", "live", "try"] },
-  { name: "All Nodes", href: "/modules", section: "Platform", icon: Layers, keywords: ["nodes", "production", "hub"] },
-  { name: "Runtime", href: "/runtime", section: "Platform", icon: Code, keywords: ["execution", "environment"] },
-  { name: "Dashboard", href: "/os", section: "Platform", icon: Layers, keywords: ["command center", "control"] },
-  { name: "Capability Map", href: "/capability-map", section: "Platform", icon: Network },
-  { name: "Namespace", href: "/namespace", section: "Platform", icon: Layers, keywords: ["terminology", "glossary"] },
-  { name: "Architecture", href: "/ai-operating-system", section: "Platform", icon: Layers, keywords: ["design", "system"] },
-  { name: "System Status", href: "/status", section: "Platform", icon: Shield, keywords: ["health", "uptime", "live"] },
-  { name: "System Integrity", href: "/system-integrity", section: "Platform", icon: Shield, keywords: ["diagnostics"] },
+  // Infrastructure
+  { name: "Home", href: "/", section: "Infrastructure", icon: Layers },
+  { name: "How It Works", href: "/ai-operating-system", section: "Infrastructure", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
+  { name: "All Nodes", href: "/modules", section: "Infrastructure", icon: Layers, keywords: ["nodes", "production", "hub"] },
+  { name: "Runtime", href: "/runtime", section: "Infrastructure", icon: Code, keywords: ["execution", "environment"] },
+  { name: "Dashboard", href: "/os", section: "Infrastructure", icon: Layers, keywords: ["command center", "control"] },
+  { name: "Capability Map", href: "/capability-map", section: "Infrastructure", icon: Network },
+  { name: "Namespace", href: "/namespace", section: "Infrastructure", icon: Layers, keywords: ["terminology", "glossary"] },
+  { name: "System Status", href: "/status", section: "Infrastructure", icon: Shield, keywords: ["health", "uptime", "live"] },
+  { name: "System Integrity", href: "/system-integrity", section: "Infrastructure", icon: Shield, keywords: ["diagnostics"] },
   
   // Product
+  { name: "Store", href: "/store", section: "Product", icon: Sparkles, keywords: ["agents", "engines", "plans"] },
   { name: "Capability Packs", href: "/packs", section: "Product", icon: Package, keywords: ["activate", "capabilities", "slots"] },
   { name: "Runtime Agents", href: "/composable-cognitives", section: "Product", icon: Zap, keywords: ["runtime", "agents", "AI agents", "sealed"] },
   { name: "Persistent Memory", href: "/persistent-memory", section: "Product", icon: Brain, keywords: ["memory", "agent memory", "recall"] },
