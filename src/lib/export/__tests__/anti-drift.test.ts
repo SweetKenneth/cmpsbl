@@ -279,7 +279,8 @@ describe('Anti-Drift: Canonical Runtime Architecture', () => {
   // ── §7 — Automatic mode switching ──
 
   it('promotes to network after consecutive successes', async () => {
-    const { RuntimeHealthTracker, NETWORK_MODE_THRESHOLD } = await import('../bridge-adapter');
+    const { RuntimeHealthTracker } = await import('../bridge-adapter');
+    const { NETWORK_MODE_THRESHOLD } = await import('../canonical-runtime-contract');
     const tracker = new RuntimeHealthTracker();
     expect(tracker.getRuntimeMode()).toBe('hybrid');
     for (let i = 0; i < NETWORK_MODE_THRESHOLD; i++) tracker.recordRemoteSuccess(100);
