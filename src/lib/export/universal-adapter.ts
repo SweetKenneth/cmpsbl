@@ -20,10 +20,6 @@ import {
   synthesizeKotlin, synthesizeElixir, synthesizeLua,
   synthesizeC, synthesizeCpp, synthesizeDart,
   synthesizeZig, synthesizeScala, synthesizeHaskell,
-  synthesizeRubyProcess, synthesizePHPProcess, synthesizeSwiftProcess,
-  synthesizeKotlinProcess, synthesizeElixirProcess, synthesizeLuaProcess,
-  synthesizeCProcess, synthesizeCppProcess, synthesizeDartProcess,
-  synthesizeZigProcess, synthesizeScalaProcess, synthesizeHaskellProcess,
 } from './software-synthesizer';
 import {
   verilogPipelineTransform, vhdlPipelineTransform, svPipelineTransform,
@@ -831,7 +827,7 @@ namespace CMPSBL.CrownJewels
 
 function genRuby(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Ruby', '#');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeRuby(a.synthesisContext)}`;
   }
   const cls = className(a);
@@ -881,7 +877,7 @@ end
 
 function genPHP(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'PHP', '//');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return synthesizePHP(a.synthesisContext);
   }
   const cls = className(a);
@@ -930,7 +926,7 @@ ${a.synthesisContext ? synthesizePHPProcess(a.synthesisContext) : `        forea
 
 function genSwift(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Swift', '//');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeSwift(a.synthesisContext)}`;
   }
   const cls = className(a);
@@ -991,7 +987,7 @@ ${a.synthesisContext ? synthesizeSwiftProcess(a.synthesisContext) : `        for
 
 function genKotlin(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Kotlin', '//');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeKotlin(a.synthesisContext)}`;
   }
   const cls = className(a);
@@ -1041,7 +1037,7 @@ ${a.synthesisContext ? synthesizeKotlinProcess(a.synthesisContext) : `        fo
 
 function genElixir(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Elixir', '#');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeElixir(a.synthesisContext)}`;
   }
   const mod = className(a);
@@ -1096,7 +1092,7 @@ end
 
 function genLua(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Lua', '--');
-  if (a.synthesisContext && adapter === 'standalone') {
+  if (a.synthesisContext) {
     return `${h}\n${synthesizeLua(a.synthesisContext)}`;
   }
   const mod = className(a);

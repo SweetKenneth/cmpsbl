@@ -187,6 +187,19 @@ ${modules.map((m, i) => `            ("${moduleOps(m).verb}_${m.toLowerCase()}",
         }
     }
 
+    fn primitive_executor(module: &str, verb: &str, _data: &HashMap<String, String>, confidence: f64) -> StageResult {
+        let start = Instant::now();
+        let mut output = HashMap::new();
+        output.insert(format!("{}_result", module.to_lowercase()),
+            format!(r#"{{"module":"{}","verb":"{}","confidence":{:.4}}}"#, module, verb, confidence));
+        StageResult {
+            stage: format!("{}_{}", verb, module.to_lowercase()),
+            module: module.to_string(),
+            success: true, data: output, confidence_delta: 0.02,
+            duration_ms: start.elapsed().as_secs_f64() * 1000.0,
+        }
+    }
+
 ${stageImpls}
 
     pub fn stats(&self) -> HashMap<String, String> {
@@ -226,25 +239,7 @@ mod tests {
 function rustStage(mod: string, idx: number, _total: number): string {
   const ops = moduleOps(mod);
   return `    fn stage_${idx}_${mod.toLowerCase()}(data: &HashMap<String, String>, confidence: f64) -> StageResult {
-        let start = Instant::now();
-        // ${mod}: ${ops.desc}
-        let mut output = HashMap::new();
-        for (key, val) in data {
-            let entropy: u64 = val.bytes().fold(0u64, |acc, b| acc.wrapping_add(b as u64));
-            let score = (entropy as f64 / val.len().max(1) as f64) * confidence;
-            output.insert(
-                format!("${mod.toLowerCase()}_{}", key),
-                format!("{{\\"module\\":\\"${mod}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":{:.4},\\"len\\":{}}}", score, val.len()),
-            );
-        }
-        StageResult {
-            stage: "${ops.verb}_${mod.toLowerCase()}".into(),
-            module: "${mod}".into(),
-            success: true,
-            data: output,
-            confidence_delta: 0.03,
-            duration_ms: start.elapsed().as_secs_f64() * 1000.0,
-        }
+        Self::primitive_executor("${mod}", "${ops.verb}", data, confidence)
     }`;
 }
 
@@ -312,18 +307,14 @@ public class ${cls} {
 ${modules.map((m, i) => `        // Stage ${i}: ${m} — ${moduleOps(m).desc}
         {
             long ss = System.nanoTime();
-            Map<String, Object> stageOut = new HashMap<>();
-            for (Map.Entry<String, Object> e : currentData.entrySet()) {
-                String val = String.valueOf(e.getValue());
-                long entropy = val.chars().mapToLong(c -> c).sum();
-                double score = (double) entropy / Math.max(val.length(), 1) * confidence;
-                stageOut.put("${m.toLowerCase()}_" + e.getKey(), 
-                    Map.of("module", "${m}", "op", "${moduleOps(m).verb}", "score", score, "len", val.length()));
-            }
+            @SuppressWarnings("unchecked")
+            Map<String, Object> pr = primitiveExecutor("${m}", "${moduleOps(m).verb}", currentData, confidence);
+            Map<String, Object> stageOut = pr.containsKey("data") ? (Map<String, Object>) pr.get("data") : new HashMap<>();
+            double delta = pr.containsKey("confidence_delta") ? ((Number) pr.get("confidence_delta")).doubleValue() : 0.02;
             double elapsed = (System.nanoTime() - ss) / 1e6;
-            StageResult sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, 0.03, elapsed);
-            confidence = Math.min(1.0, Math.max(0, confidence + sr.confidenceDelta));
-            currentData.putAll(sr.data);
+            StageResult sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, delta, elapsed);
+            confidence = Math.min(1.0, Math.max(0, confidence + delta));
+            currentData.putAll(stageOut);
             trace.add(sr);
             completed++;
             if (confidence < confidenceThreshold) {
@@ -336,6 +327,13 @@ ${modules.map((m, i) => `        // Stage ${i}: ${m} — ${moduleOps(m).desc}
         successCount++;
         return new PipelineResult(true, currentData, null, 
             (System.nanoTime() - start) / 1e6, confidence, trace, completed, ${modules.length});
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> primitiveExecutor(String module, String verb, Map<String, Object> data, double confidence) {
+        Map<String, Object> out = new HashMap<>();
+        out.put(module.toLowerCase() + "_result", Map.of("module", module, "verb", verb, "confidence", confidence));
+        return Map.of("data", out, "confidence_delta", 0.02, "signal", verb + "_complete");
     }
 
     public Map<String, Object> getStats() {
@@ -391,18 +389,13 @@ namespace CMPSBL.CrownJewels
 ${modules.map((m, i) => `            // Stage ${i}: ${m} — ${moduleOps(m).desc}
             {
                 var ss = Stopwatch.StartNew();
-                var stageOut = new Dictionary<string, object>();
-                foreach (var kv in data.ToList())
-                {
-                    var val = kv.Value?.ToString() ?? "";
-                    var entropy = val.Sum(c => (long)c);
-                    var score = (double)entropy / Math.Max(val.Length, 1) * confidence;
-                    stageOut[$"${m.toLowerCase()}_{kv.Key}"] = new { module = "${m}", op = "${moduleOps(m).verb}", score, len = val.Length };
-                }
+                var pr = PrimitiveExecutor("${m}", "${moduleOps(m).verb}", data, confidence);
+                var stageOut = pr.ContainsKey("data") ? (Dictionary<string, object>)pr["data"] : new Dictionary<string, object>();
+                var delta = pr.ContainsKey("confidence_delta") ? Convert.ToDouble(pr["confidence_delta"]) : 0.02;
                 ss.Stop();
-                var sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, 0.03, ss.Elapsed.TotalMilliseconds);
-                confidence = Math.Clamp(confidence + sr.ConfidenceDelta, 0, 1);
-                foreach (var kv in sr.Data) data[kv.Key] = kv.Value;
+                var sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, delta, ss.Elapsed.TotalMilliseconds);
+                confidence = Math.Clamp(confidence + delta, 0, 1);
+                foreach (var kv in stageOut) data[kv.Key] = kv.Value;
                 trace.Add(sr);
                 completed++;
                 if (confidence < ConfidenceThreshold)
@@ -413,6 +406,18 @@ ${modules.map((m, i) => `            // Stage ${i}: ${m} — ${moduleOps(m).desc
             _successCount++;
             sw.Stop();
             return new PipelineResult(true, data, null, sw.Elapsed.TotalMilliseconds, confidence, trace, completed, ${modules.length});
+        }
+
+        private Dictionary<string, object> PrimitiveExecutor(string module, string verb, Dictionary<string, object> data, double confidence)
+        {
+            var result = new Dictionary<string, object>
+            {
+                [module.ToLower() + "_result"] = new { module, verb, confidence }
+            };
+            return new Dictionary<string, object>
+            {
+                ["data"] = result, ["confidence_delta"] = 0.02, ["signal"] = verb + "_complete"
+            };
         }
 
         public Dictionary<string, object> Stats => new()
@@ -529,18 +534,15 @@ ${modules.map((m, i) => `        ['${moduleOps(m).verb}_${m.toLowerCase()}', '${
       ]
     end
 
+    def primitive_executor(mod_name, verb, ctx, confidence)
+      out = { "\#{mod_name.downcase}_result" => { module: mod_name, verb: verb, confidence: confidence.round(4) } }
+      { data: out, confidence_delta: 0.02, signal: "\#{verb}_complete" }
+    end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    def stage_${i}_${m.toLowerCase()}(ctx, confidence)
-      # ${m}: ${ops.desc}
-      out = {}
-      ctx[:_data].each do |key, val|
-        val_s = val.to_s
-        entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
-        score = (entropy * confidence).round(4)
-        out["${m.toLowerCase()}_\#{key}"] = { module: '${m}', op: '${ops.verb}', score: score, len: val_s.length }
-      end
-      { data: out, confidence_delta: 0.03, signal: '${ops.verb}_complete' }
+      primitive_executor('${m}', '${ops.verb}', ctx, confidence)
     end`;
 }).join("\n\n")}
   end
@@ -548,23 +550,7 @@ end
 `;
 }
 
-// Keep backward compat — old callers that reference synthesize*Process
-export function synthesizeRubyProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `      # Stage ${i}: ${m} — ${ops.desc}
-      stage_${i}_out = {}
-      current_data.each do |key, val|
-        val_s = val.to_s
-        entropy = val_s.bytes.sum.to_f / [val_s.length, 1].max
-        stage_${i}_out["${m.toLowerCase()}_\#{key}"] = {
-          module: '${m}', op: '${ops.verb}', score: entropy * confidence, len: val_s.length
-        }
-      end
-      current_data.merge!(stage_${i}_out)
-      confidence = [1.0, confidence + 0.03].min`;
-  }).join("\n");
-}
+// synthesizeRubyProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // PHP Full Synthesizer
@@ -663,20 +649,18 @@ ${modules.map((m, i) => `            ['${moduleOps(m).verb}_${m.toLowerCase()}',
         ];
     }
 
+    private function primitiveExecutor(string $module, string $verb, array &$ctx, float $confidence): array {
+        return [
+            'data' => [strtolower($module) . '_result' => [
+                'module' => $module, 'verb' => $verb, 'confidence' => round($confidence, 4)]],
+            'confidence_delta' => 0.02, 'signal' => $verb . '_complete'
+        ];
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private function stage${i}${m}(array &$ctx, float $confidence): array {
-        // ${m}: ${ops.desc}
-        $out = [];
-        foreach ($ctx['_data'] as $k => $v) {
-            $vs = strval($v);
-            $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
-            $out["${m.toLowerCase()}_" . $k] = [
-                'module' => '${m}', 'op' => '${ops.verb}',
-                'score' => round($entropy * $confidence, 4), 'len' => strlen($vs)
-            ];
-        }
-        return ['data' => $out, 'confidence_delta' => 0.03, 'signal' => '${ops.verb}_complete'];
+        return $this->primitiveExecutor('${m}', '${ops.verb}', $ctx, $confidence);
     }`;
 }).join("\n\n")}
 
@@ -688,23 +672,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizePHPProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        $stage${i} = [];
-        foreach ($currentData as $k => $v) {
-            $vs = strval($v);
-            $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
-            $stage${i}["${m.toLowerCase()}_" . $k] = [
-                'module' => '${m}', 'op' => '${ops.verb}',
-                'score' => $entropy * $confidence, 'len' => strlen($vs)
-            ];
-        }
-        $currentData = array_merge($currentData, $stage${i});
-        $confidence = min(1.0, $confidence + 0.03);`;
-  }).join("\n");
-}
+// synthesizePHPProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Swift Full Synthesizer
@@ -807,19 +775,15 @@ ${modules.map((m, i) => `            ("${moduleOps(m).verb}_${m.toLowerCase()}",
         ]
     }
 
+    private func primitiveExecutor(_ module: String, _ verb: String, _ ctx: (data: [String: Any], signals: [[String: Any]], errors: [[String: Any]]), _ confidence: Double) -> (data: [String: Any], confidenceDelta: Double) {
+        let out: [String: Any] = [module.lowercased() + "_result": ["module": module, "verb": verb, "confidence": confidence] as [String: Any]]
+        return (data: out, confidenceDelta: 0.02)
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private func stage${i}${m}(_ ctx: inout (data: [String: Any], signals: [[String: Any]], errors: [[String: Any]]), _ confidence: Double) throws -> (data: [String: Any], confidenceDelta: Double) {
-        // ${m}: ${ops.desc}
-        var out: [String: Any] = [:]
-        for (key, val) in ctx.data {
-            let vs = String(describing: val)
-            let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
-            out["${m.toLowerCase()}_\\(key)"] = [
-                "module": "${m}", "op": "${ops.verb}", "score": entropy * confidence, "len": vs.count
-            ] as [String: Any]
-        }
-        return (data: out, confidenceDelta: 0.03)
+        return primitiveExecutor("${m}", "${ops.verb}", ctx, confidence)
     }`;
 }).join("\n\n")}
 
@@ -831,22 +795,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeSwiftProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        var stage${i}: [String: Any] = [:]
-        for (key, val) in currentData {
-            let vs = String(describing: val)
-            let entropy = Double(vs.unicodeScalars.reduce(0) { $0 + Int($1.value) }) / Double(max(vs.count, 1))
-            stage${i}["${m.toLowerCase()}_\\(key)"] = [
-                "module": "${m}", "op": "${ops.verb}", "score": entropy * confidence, "len": vs.count
-            ] as [String: Any]
-        }
-        currentData.merge(stage${i}) { _, new in new }
-        confidence = min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeSwiftProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Kotlin Full Synthesizer
@@ -932,19 +881,16 @@ ${modules.map((m, i) => `            Triple("${moduleOps(m).verb}_${m.toLowerCas
         )
     }
 
+    private fun primitiveExecutor(module: String, verb: String, data: Map<String, Any?>, confidence: Double): Map<String, Any?> {
+        val out = mutableMapOf<String, Any?>(module.lowercase() + "_result" to
+            mapOf("module" to module, "verb" to verb, "confidence" to confidence))
+        return mapOf("data" to out, "confidence_delta" to 0.02, "signal" to verb + "_complete")
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `    private fun stage${i}${m}(data: MutableMap<String, Any?>, confidence: Double): Map<String, Any?> {
-        // ${m}: ${ops.desc}
-        val out = mutableMapOf<String, Any?>()
-        for ((key, value) in data) {
-            val vs = value.toString()
-            val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
-            out["${m.toLowerCase()}_$key"] = mapOf(
-                "module" to "${m}", "op" to "${ops.verb}", "score" to entropy * confidence, "len" to vs.length
-            )
-        }
-        return mapOf("data" to out, "confidence_delta" to 0.03, "signal" to "${ops.verb}_complete")
+        return primitiveExecutor("${m}", "${ops.verb}", data, confidence)
     }`;
 }).join("\n\n")}
 
@@ -955,22 +901,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeKotlinProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        val stage${i} = mutableMapOf<String, Any?>()
-        for ((key, value) in currentData) {
-            val vs = value.toString()
-            val entropy = vs.sumOf { it.code.toDouble() } / maxOf(vs.length, 1)
-            stage${i}["${m.toLowerCase()}_$key"] = mapOf(
-                "module" to "${m}", "op" to "${ops.verb}", "score" to entropy * confidence, "len" to vs.length
-            )
-        }
-        currentData.putAll(stage${i})
-        confidence = minOf(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeKotlinProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Elixir Full Synthesizer
@@ -1047,18 +978,15 @@ ${modules.map((m, i) => `      {"${moduleOps(m).verb}_${m.toLowerCase()}", "${m}
     ]
   end
 
+  def primitive_executor(mod_name, verb, _ctx, confidence) do
+    out = %{String.downcase(mod_name) <> "_result" => %{module: mod_name, verb: verb, confidence: confidence}}
+    %{data: out, confidence_delta: 0.02, signal: verb <> "_complete"}
+  end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  def stage_${i}_${m.toLowerCase()}(ctx, confidence) do
-    # ${m}: ${ops.desc}
-    out = ctx._data
-      |> Enum.map(fn {k, v} ->
-        vs = to_string(v)
-        entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
-        {"${m.toLowerCase()}_\#{k}", %{module: "${m}", op: "${ops.verb}", score: entropy * confidence, len: String.length(vs)}}
-      end)
-      |> Map.new()
-    %{data: out, confidence_delta: 0.03, signal: "${ops.verb}_complete"}
+    primitive_executor("${m}", "${ops.verb}", ctx, confidence)
   end`;
 }).join("\n\n")}
 
@@ -1067,21 +995,7 @@ end
 `;
 }
 
-export function synthesizeElixirProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    # Stage ${i}: ${m} — ${ops.desc}
-    stage_${i}_out = current_data
-      |> Enum.map(fn {k, v} ->
-        vs = to_string(v)
-        entropy = vs |> String.to_charlist() |> Enum.sum() |> Kernel./(max(String.length(vs), 1))
-        {"${m.toLowerCase()}_\#{k}", %{module: "${m}", op: "${ops.verb}", score: entropy * confidence, len: String.length(vs)}}
-      end)
-      |> Map.new()
-    current_data = Map.merge(current_data, stage_${i}_out)
-    confidence = min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeElixirProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Lua Full Synthesizer
@@ -1179,21 +1093,18 @@ ${modules.map((m, i) => `        { "${moduleOps(m).verb}_${m.toLowerCase()}", "$
     }
 end
 
+function ${mod}:primitive_executor(mod_name, verb, ctx, confidence)
+    local out = {}
+    out[string.lower(mod_name) .. "_result"] = {
+        module = mod_name, verb = verb, confidence = confidence
+    }
+    return { data = out, confidence_delta = 0.02, signal = verb .. "_complete" }
+end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `function ${mod}:stage_${i}_${m.toLowerCase()}(ctx, confidence)
-    -- ${m}: ${ops.desc}
-    local out = {}
-    for k, v in pairs(ctx._data) do
-        local vs = tostring(v)
-        local entropy = 0
-        for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
-        entropy = entropy / math.max(#vs, 1)
-        out["${m.toLowerCase()}_" .. k] = {
-            module = "${m}", op = "${ops.verb}", score = entropy * confidence, len = #vs
-        }
-    end
-    return { data = out, confidence_delta = 0.03, signal = "${ops.verb}_complete" }
+    return self:primitive_executor("${m}", "${ops.verb}", ctx, confidence)
 end`;
 }).join("\n\n")}
 
@@ -1206,22 +1117,7 @@ return ${mod}
 `;
 }
 
-export function synthesizeLuaProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    -- Stage ${i}: ${m} — ${ops.desc}
-    for k, v in pairs(current_data) do
-        local vs = tostring(v)
-        local entropy = 0
-        for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
-        entropy = entropy / math.max(#vs, 1)
-        current_data["${m.toLowerCase()}_" .. k] = {
-            module = "${m}", op = "${ops.verb}", score = entropy * confidence, len = #vs
-        }
-    end
-    confidence = math.min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeLuaProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // C Full Synthesizer
@@ -1285,26 +1181,23 @@ ${snake}_t *${snake}_new(double threshold) {
 }
 
 /* Module dispatch handlers */
+/* Primitive Executor — routes module execution */
+static int ${snake}_primitive_executor(const char *module, const char *verb, ${snake}_ctx_t *ctx, double confidence, ${snake}_stage_result_t *out) {
+    clock_t ss = clock();
+    (void)ctx; /* ctx available for future remote/local dispatch */
+    snprintf(out->stage, sizeof(out->stage), "%s_%s", verb, module);
+    snprintf(out->module, sizeof(out->module), "%s", module);
+    snprintf(out->signal, sizeof(out->signal), "%s_complete", verb);
+    out->success = 1;
+    out->confidence_delta = 0.02;
+    out->duration_ms = ((double)(clock() - ss) / CLOCKS_PER_SEC) * 1000.0;
+    return 1;
+}
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `static int ${snake}_stage_${i}_${m.toLowerCase()}(${snake}_ctx_t *ctx, double confidence, ${snake}_stage_result_t *out) {
-    /* ${m}: ${ops.desc} */
-    clock_t ss = clock();
-    int j;
-    for (j = 0; j < ctx->count && j < MAX_SIGNALS; j++) {
-        size_t len = ctx->values[j] ? strlen(ctx->values[j]) : 0;
-        unsigned long entropy = 0;
-        size_t c;
-        for (c = 0; c < len; c++) entropy += (unsigned char)ctx->values[j][c];
-        (void)(entropy * confidence); /* score computed in production serialization */
-    }
-    snprintf(out->stage, sizeof(out->stage), "${ops.verb}_${m.toLowerCase()}");
-    snprintf(out->module, sizeof(out->module), "${m}");
-    snprintf(out->signal, sizeof(out->signal), "${ops.verb}_complete");
-    out->success = 1;
-    out->confidence_delta = 0.03;
-    out->duration_ms = ((double)(clock() - ss) / CLOCKS_PER_SEC) * 1000.0;
-    return 1;
+    return ${snake}_primitive_executor("${m.toLowerCase()}", "${ops.verb}", ctx, confidence, out);
 }`;
 }).join("\n\n")}
 
@@ -1373,20 +1266,7 @@ void ${snake}_info(void) {
 `;
 }
 
-export function synthesizeCProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    /* Stage ${i}: ${m} — ${ops.desc} */
-    {
-        size_t len = input_json ? strlen(input_json) : 0;
-        unsigned long entropy = 0;
-        for (size_t j = 0; j < len; j++) entropy += (unsigned char)input_json[j];
-        double score = (double)entropy / (double)(len > 0 ? len : 1) * result.confidence;
-        result.confidence = fmin(1.0, result.confidence + 0.03);
-        (void)score;
-    }`;
-  }).join("\n");
-}
+// synthesizeCProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // C++ Full Synthesizer
@@ -1490,23 +1370,21 @@ private:
     int executionCount_ = 0;
     int successCount_ = 0;
 
-${modules.map((m, i) => {
-  const ops = moduleOps(m);
-  return `    StageResult stage${i}${m}(const std::unordered_map<std::string, std::string>& data, double confidence) {
-        // ${m}: ${ops.desc}
+    StageResult primitiveExecutor(const std::string& module, const std::string& verb, double confidence) {
         auto ss = std::chrono::high_resolution_clock::now();
         std::unordered_map<std::string, std::string> out;
-        for (const auto& [key, val] : data) {
-            unsigned long entropy = 0;
-            for (char c : val) entropy += static_cast<unsigned char>(c);
-            double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1)) * confidence;
-            out["${m.toLowerCase()}_" + key] =
-                "{\\"module\\":\\"${m}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":" +
-                std::to_string(score) + ",\\"len\\":" + std::to_string(val.size()) + "}";
-        }
+        std::string key = module; std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+        out[key + "_result"] = "{\\"module\\":\\"" + module + "\\",\\"verb\\":\\"" + verb +
+            "\\",\\"confidence\\":" + std::to_string(confidence) + "}";
         auto dur = std::chrono::duration<double, std::milli>(
             std::chrono::high_resolution_clock::now() - ss).count();
-        return {"${ops.verb}_${m.toLowerCase()}", "${m}", true, out, 0.03, dur, "${ops.verb}_complete"};
+        return {verb + "_" + key, module, true, out, 0.02, dur, verb + "_complete"};
+    }
+
+${modules.map((m, i) => {
+  const ops = moduleOps(m);
+  return `    StageResult stage${i}${m}(const std::unordered_map<std::string, std::string>& /*data*/, double confidence) {
+        return primitiveExecutor("${m}", "${ops.verb}", confidence);
     }`;
 }).join("\n\n")}
 };
@@ -1515,25 +1393,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeCppProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        {
-            std::unordered_map<std::string, std::string> stage_out;
-            for (const auto& [key, val] : current_data) {
-                unsigned long entropy = 0;
-                for (char c : val) entropy += static_cast<unsigned char>(c);
-                double score = static_cast<double>(entropy) / std::max(val.size(), size_t(1)) * confidence;
-                stage_out["${m.toLowerCase()}_" + key] = 
-                    "{\\"module\\":\\"${m}\\",\\"op\\":\\"${ops.verb}\\",\\"score\\":" + 
-                    std::to_string(score) + ",\\"len\\":" + std::to_string(val.size()) + "}";
-            }
-            for (auto& [k, v] : stage_out) current_data[k] = std::move(v);
-            confidence = std::min(1.0, confidence + 0.03);
-        }`;
-  }).join("\n");
-}
+// synthesizeCppProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Dart Full Synthesizer
@@ -1661,19 +1521,17 @@ class ${cls} {
 ${modules.map((m, i) => `    {'name': '${moduleOps(m).verb}_${m.toLowerCase()}', 'module': '${m}', 'handler': _stage${i}${m}}`).join(",\n")}
   ];
 
+  Future<Map<String, dynamic>> _primitiveExecutor(String module, String verb, double confidence) async {
+    return {
+      'data': {module.toLowerCase() + '_result': {'module': module, 'verb': verb, 'confidence': confidence}},
+      'confidence_delta': 0.02, 'signal': verb + '_complete',
+    };
+  }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  Future<Map<String, dynamic>> _stage${i}${m}(Map<String, dynamic> data, double confidence) async {
-    // ${m}: ${ops.desc}
-    final out = <String, dynamic>{};
-    for (final entry in data.entries) {
-      final vs = entry.value.toString();
-      final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
-      out['${m.toLowerCase()}_\${entry.key}'] = {
-        'module': '${m}', 'op': '${ops.verb}', 'score': entropy * confidence, 'len': vs.length,
-      };
-    }
-    return {'data': out, 'confidence_delta': 0.03, 'signal': '${ops.verb}_complete'};
+    return _primitiveExecutor('${m}', '${ops.verb}', confidence);
   }`;
 }).join("\n\n")}
 
@@ -1685,22 +1543,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizeDartProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    // Stage ${i}: ${m} — ${ops.desc}
-    final stage${i} = <String, dynamic>{};
-    for (final entry in currentData.entries) {
-      final vs = entry.value.toString();
-      final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
-      stage${i}['${m.toLowerCase()}_\${entry.key}'] = {
-        'module': '${m}', 'op': '${ops.verb}', 'score': entropy * confidence, 'len': vs.length,
-      };
-    }
-    currentData.addAll(stage${i});
-    confidence = (confidence + 0.03).clamp(0.0, 1.0);`;
-  }).join("\n");
-}
+// synthesizeDartProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Zig Full Synthesizer
@@ -1755,12 +1598,13 @@ pub const ${cls} = struct {
         var completed: u32 = 0;
 
         // Module dispatch chain
+        // Primitive executor — each stage delegates to this pattern
         const stages = [_]struct { name: []const u8, module: []const u8, delta: f64 }{
-${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowerCase()}", .module = "${m}", .delta = 0.03 }`).join(",\n")}
+${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowerCase()}", .module = "${m}", .delta = 0.02 }`).join(",\n")}
         };
 
         for (stages) |stage| {
-            // Each handler: entropy accumulation + confidence adjustment
+            // primitiveExecutor: route module through execution layer
             confidence = @min(1.0, @max(0.0, confidence + stage.delta));
             completed += 1;
 
@@ -1793,18 +1637,7 @@ ${modules.map((m, i) => `            .{ .name = "${moduleOps(m).verb}_${m.toLowe
 `;
 }
 
-export function synthesizeZigProcess(ctx: SynthesisContext): string {
-  return `        // Full pipeline: ${ctx.moduleChain.join(' → ')}
-        var entropy: u64 = 0;
-        var confidence: f64 = 1.0;
-        _ = allocator;
-        _ = self;
-        ${ctx.moduleChain.map((m, i) => `
-        // Stage ${i}: ${m} — ${moduleOps(m).desc}
-        entropy = entropy +% @as(u64, ${i + 1}) *% 17;
-        confidence = @min(1.0, confidence + 0.03);`).join('')}
-        const elapsed = timer.read();`;
-}
+// synthesizeZigProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Scala Full Synthesizer
@@ -1885,18 +1718,15 @@ ${modules.map((m, i) => `      ("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}
     )
   }
 
+  private def primitiveExecutor(module: String, verb: String, confidence: Double): (Map[String, Any], Double, String) = {
+    val out = Map[String, Any](module.toLowerCase + "_result" -> Map("module" -> module, "verb" -> verb, "confidence" -> confidence))
+    (out, 0.02, verb + "_complete")
+  }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  private def stage${i}${m}(data: Map[String, Any], confidence: Double): (Map[String, Any], Double, String) = {
-    // ${m}: ${ops.desc}
-    val out = data.map { case (k, v) =>
-      val vs = v.toString
-      val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
-      s"${m.toLowerCase()}_$$k" -> Map[String, Any](
-        "module" -> "${m}", "op" -> "${ops.verb}", "score" -> (entropy * confidence), "len" -> vs.length
-      )
-    }
-    (out, 0.03, "${ops.verb}_complete")
+    primitiveExecutor("${m}", "${ops.verb}", confidence)
   }`;
 }).join("\n\n")}
 
@@ -1912,21 +1742,7 @@ object ${cls} {
 `;
 }
 
-export function synthesizeScalaProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `      // Stage ${i}: ${m} — ${ops.desc}
-      val stage${i} = currentData.map { case (k, v) =>
-        val vs = v.toString
-        val entropy = vs.map(_.toInt.toDouble).sum / math.max(vs.length, 1)
-        s"${m.toLowerCase()}_$$k" -> Map[String, Any](
-          "module" -> "${m}", "op" -> "${ops.verb}", "score" -> (entropy * confidence), "len" -> vs.length
-        )
-      }
-      currentData = currentData ++ stage${i}
-      confidence = math.min(1.0, confidence + 0.03)`;
-  }).join("\n");
-}
+// synthesizeScalaProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Haskell Full Synthesizer
@@ -1986,25 +1802,25 @@ defaultConfig :: Config
 defaultConfig = Config { confidenceThreshold = 0.6, maxRetries = 3 }
 
 -- Module handlers
+-- Primitive Executor: routes module execution
+primitiveExecutor :: String -> String -> Double -> StageResult
+primitiveExecutor moduleName verb confidence =
+  let key = map toLower moduleName ++ "_result"
+      out = Map.singleton key (show confidence)
+  in StageResult
+    { srStage = verb ++ "_" ++ map toLower moduleName
+    , srModule = moduleName
+    , srSuccess = True
+    , srData = out
+    , srConfidenceDelta = 0.02
+    , srDurationMs = 0.0
+    , srSignal = verb ++ "_complete"
+    }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `applyModule${i} :: Map String String -> Double -> StageResult
-applyModule${i} input confidence =
-  let out = Map.mapKeys (\\k -> "${m.toLowerCase()}_" ++ k) $
-            Map.map (\\v ->
-              let entropy = fromIntegral (sum (map ord v)) / fromIntegral (max (length v) 1)
-                  score = entropy * confidence
-              in show score
-            ) input
-  in StageResult
-    { srStage = "${ops.verb}_${m.toLowerCase()}"
-    , srModule = "${m}"
-    , srSuccess = True
-    , srData = out
-    , srConfidenceDelta = 0.03
-    , srDurationMs = 0.0
-    , srSignal = "${ops.verb}_complete"
-    }`;
+applyModule${i} _input confidence = primitiveExecutor "${m}" "${ops.verb}" confidence`;
 }).join("\n\n")}
 
 -- Pipeline dispatch
@@ -2053,14 +1869,4 @@ info = Map.fromList
 `;
 }
 
-export function synthesizeHaskellProcess(ctx: SynthesisContext): string {
-  return `  -- Full pipeline: ${ctx.moduleChain.join(' → ')}
-  let stages = ${JSON.stringify(ctx.moduleChain.map(m => [m, moduleOps(m).verb]))}
-  let processStage acc (modName, op) =
-        let entropy k v = fromIntegral (sum (map fromEnum (Map.findWithDefault "" k acc))) / 
-                          fromIntegral (max (length (Map.findWithDefault "" k acc)) 1)
-            newEntries = Map.mapKeys (\\k -> modName ++ "_" ++ k) $
-                         Map.map (\\v -> show (entropy "k" v)) acc
-        in Map.union newEntries acc
-  let output = foldl processStage input stages`;
-}
+// synthesizeHaskellProcess removed — all stages now delegate to primitiveExecutor
