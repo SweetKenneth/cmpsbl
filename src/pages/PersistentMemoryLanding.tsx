@@ -40,6 +40,7 @@ const PersistentMemoryLanding = () => {
         }}
       />
       <PublicNav />
+      <PersistentMemoryOnboarding />
       
       <main className="min-h-screen bg-background">
         {/* ═══ HERO ═══ */}

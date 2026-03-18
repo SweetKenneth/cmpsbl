@@ -101,6 +101,7 @@ export default function Workspace() {
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
+      <WorkspaceOnboarding />
 
       <div className="min-h-screen bg-background text-foreground">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">

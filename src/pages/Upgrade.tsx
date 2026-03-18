@@ -22,6 +22,7 @@ export default function Upgrade() {
         description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, unlimited). Every tier gets full 40-node runtime. Scale vault and Memory Stream pulls."
       />
       <PublicNav />
+      <UpgradeOnboarding />
 
       <main className="pt-28 pb-20">
         <UpgradeContent />
