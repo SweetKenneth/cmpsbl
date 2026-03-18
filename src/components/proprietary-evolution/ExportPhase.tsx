@@ -148,7 +148,7 @@ export function ExportPhase() {
       .from('artifact_registry')
       .select('id, name, metadata, tier, created_at, description, category')
       .eq('user_id', user.id)
-      .eq('category', 'proprietary-crystallized')
+      .eq('category', 'proprietary-ascended')
       .order('created_at', { ascending: false })
       .limit(500);
 
