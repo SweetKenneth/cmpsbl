@@ -332,7 +332,7 @@ export function ExportPhase() {
         <Package className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No export-ready capabilities</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Capabilities must reach CJPI 68+ to qualify for export. Complete deeper discovery cycles to raise scores.
+          Crystallize discoveries first to make them available for export.
         </p>
       </div>
     );

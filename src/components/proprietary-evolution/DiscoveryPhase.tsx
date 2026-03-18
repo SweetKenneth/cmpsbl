@@ -491,7 +491,7 @@ export function DiscoveryPhase() {
 
                   <span className={cn(
                     "text-xs font-mono font-bold shrink-0",
-                    r.cjpiScore >= CJPI_THRESHOLD ? "text-amber-400" : r.cjpiScore >= 80 ? "text-purple-400" : r.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
+                    r.cjpiScore >= 85 ? "text-amber-400" : r.cjpiScore >= 65 ? "text-purple-400" : r.cjpiScore >= 45 ? "text-primary" : "text-muted-foreground"
                   )}>
                     {r.cjpiScore}
                   </span>
