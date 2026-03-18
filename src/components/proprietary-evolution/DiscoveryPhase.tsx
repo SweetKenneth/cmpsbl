@@ -45,7 +45,7 @@ const SUBSTRATE_NODES = [
   'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
 ];
 
-const CJPI_THRESHOLD = 68;
+// No CJPI threshold — all discoveries are surfaced for the user to curate
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
