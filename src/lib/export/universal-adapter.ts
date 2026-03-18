@@ -1962,6 +1962,9 @@ ${a.synthesisContext ? synthesizeZigProcess(a.synthesisContext) : `        // Co
 
 function genScala(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Scala', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeScala(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 package cmpsbl.crownjewels
