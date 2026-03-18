@@ -103,7 +103,7 @@ export function CrystallizationPhase() {
       if (error) throw error;
       toast({
         title: 'Batch ascension complete',
-        description: `${data?.crystallized_count || 0} memories ascended`,
+        description: `${data?.ascended_count || 0} memories ascended`,
       });
       await loadDiscoveries();
     } catch (err) {
