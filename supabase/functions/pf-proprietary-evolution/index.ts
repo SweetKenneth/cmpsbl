@@ -898,7 +898,7 @@ serve(async (req: Request) => {
               sectors_crossed: topResult.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
-              crystallized: false,
+              ascended: false,
               candidate_surface: surface ? {
                 nodeName: surface.nodeName,
                 capabilities: surface.capabilities,
