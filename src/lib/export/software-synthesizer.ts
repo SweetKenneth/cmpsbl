@@ -187,6 +187,19 @@ ${modules.map((m, i) => `            ("${moduleOps(m).verb}_${m.toLowerCase()}",
         }
     }
 
+    fn primitive_executor(module: &str, verb: &str, _data: &HashMap<String, String>, confidence: f64) -> StageResult {
+        let start = Instant::now();
+        let mut output = HashMap::new();
+        output.insert(format!("{}_result", module.to_lowercase()),
+            format!(r#"{{"module":"{}","verb":"{}","confidence":{:.4}}}"#, module, verb, confidence));
+        StageResult {
+            stage: format!("{}_{}", verb, module.to_lowercase()),
+            module: module.to_string(),
+            success: true, data: output, confidence_delta: 0.02,
+            duration_ms: start.elapsed().as_secs_f64() * 1000.0,
+        }
+    }
+
 ${stageImpls}
 
     pub fn stats(&self) -> HashMap<String, String> {
