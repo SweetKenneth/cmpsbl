@@ -27,7 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-interface CrystallizedCapability {
+interface AscendedCapability {
   id: string;
   name: string;
   cjpiScore: number;
