@@ -14,6 +14,9 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } from './canonical-runtime-contract';
+import { moduleOps } from './bridge-adapter';
+
 export interface SynthesisContext {
   name: string;
   description: string;
