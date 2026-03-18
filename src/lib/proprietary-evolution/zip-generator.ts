@@ -245,37 +245,8 @@ export function createRuntime() {
 }
 
 function generateSealedEngineStub(): string {
-  return `// ═══════════════════════════════════════════════════════════
-//  CMPSBL® Mini-Runtime™ Discovery Engine v1.0.0 — SEALED
-//  Portable discovery reactor for artifact analysis
-//  © 2025–2026 CMPSBL®. All rights reserved.
-// ═══════════════════════════════════════════════════════════
-//
-//  SEALED RUNTIME — Do not modify. Redistribution prohibited.
-//  See LICENSE for terms of use.
-
-import { computeCJPI, tierFromCJPI, type CJPIInput } from './standalone-runtime';
-
-export interface DiscoveryCandidate {
-  name: string;
-  chain: string[];
-  input: CJPIInput;
-}
-
-export function scoreCandidate(candidate: DiscoveryCandidate) {
-  const score = computeCJPI(candidate.input);
-  return {
-    name: candidate.name,
-    score,
-    tier: tierFromCJPI(score),
-    chain: candidate.chain,
-  };
-}
-
-export function createDiscoveryEngine() {
-  return { scoreCandidate };
-}
-`;
+  // Discovery Engine stub removed — substrate-only capability, never distributed
+  return '// Discovery Engine is a substrate-exclusive capability. See https://cmpsbl.com';
 }
 
 function generateCapabilitySource(cap: CapabilityForExport, lang: string): string {

@@ -1447,9 +1447,8 @@ export function generateVaultDoc(): string {
   <h3>ZIP Package Structure</h3>
   <pre><code>cmpsbl-vault-export-{timestamp}/
 ├── manifest.json                    # Complete discovery data
-├── _discovery-engine/
-│   ├── standalone-runtime.ts        # CMPSBL® Mini-Runtime™ Engine
-│   ├── standalone-discovery-engine.ts  # Mini-Runtime™ Discovery Engine
+├── _runtime/
+│   ├── standalone-runtime.ts        # CMPSBL® Mini-Runtime™ Engine (sealed)
 │   └── README.md
 └── metadata.json                    # Export metadata + fingerprint</code></pre>
 
