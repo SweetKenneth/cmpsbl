@@ -25,7 +25,7 @@ interface Discovery {
 export function CrystallizationPhase() {
   const [discoveries, setDiscoveries] = useState<Discovery[]>([]);
   const [loading, setLoading] = useState(true);
-  const [crystallizing, setCrystallizing] = useState<string | null>(null);
+  const [ascending, setAscending] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
