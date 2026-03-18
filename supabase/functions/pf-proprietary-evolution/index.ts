@@ -58,21 +58,27 @@ function validatePositiveInt(val: unknown, max = 100): number {
   return Math.min(Math.floor(n), max);
 }
 
-// ═══ SUBSTRATE NODE MATRIX (40 nodes) ═══
+// ═══ SUBSTRATE NODE MATRIX — Canonical 40 nodes from matrixNodeRegistry ═══
 const SUBSTRATE_NODES = [
-  'CORE','BRAIN','MEMORY','NERVE','DECODE','ENCODE','CORTEX','DEFENSE','ORACLE',
-  'CONSCIENCE','PHANTOM','HARVEST','EVOLUTION','SHADOW','IMMUNITY','INTENT',
-  'GOVERNANCE','ATLAS','FORGE','LINGUA','ECHO','SOVEREIGN','REFLEX','TREATY',
-  'ENGINEER','COMPASS','OBSERVER','GENESIS','ANCHOR','PRISM','SENTRY','MEDIC',
-  'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
+  'CORE','SYSTEM','BRAIN','MEMORY','DREAM',
+  'RIPPLE','ACCESS','IDENTITY','RELAY','AUDIT','NERVE',
+  'DECODE','ENCODE','VISION','CORTEX','NEXUS','ECONOMY','SANDBOX','INCLUSIVE','MEDIC','INTEGRATION',
+  'SOVEREIGN','ORACLE','CONSCIENCE','TREATY',
+  'COMPASS','ECHO','REFLEX',
+  'FORGE','LINGUA','HARVEST',
+  'EVOLUTION','SHADOW','PHANTOM',
+  'IMMUNITY','INTENT',
+  'GOVERNANCE','ATLAS','ENGINEER',
+  'DEFENSE',
 ];
 
 const VALID_NODES = new Set(SUBSTRATE_NODES);
 
-// ═══ SECTOR MAPPING — Used for cross-sector synergy scoring ═══
+// ═══ SECTOR MAPPING — Canonical 12-sector topology ═══
 const NODE_SECTOR: Record<string, string> = {
-  CORE: 'core', BRAIN: 'ccr', MEMORY: 'ccr', DREAM: 'ccr',
-  NERVE: 'ocg', RIPPLE: 'ocg', ACCESS: 'ocg', IDENTITY: 'ocg', RELAY: 'ocg', AUDIT: 'ocg',
+  CORE: 'core', SYSTEM: 'system',
+  BRAIN: 'ccr', MEMORY: 'ccr', DREAM: 'ccr',
+  RIPPLE: 'ocg', ACCESS: 'ocg', IDENTITY: 'ocg', RELAY: 'ocg', AUDIT: 'ocg', NERVE: 'ocg',
   DECODE: 'execution', ENCODE: 'execution', VISION: 'execution', CORTEX: 'execution',
   NEXUS: 'execution', ECONOMY: 'execution', SANDBOX: 'execution', INCLUSIVE: 'execution',
   MEDIC: 'execution', INTEGRATION: 'execution',
@@ -83,10 +89,6 @@ const NODE_SECTOR: Record<string, string> = {
   IMMUNITY: 'field', INTENT: 'field',
   GOVERNANCE: 'plane', ATLAS: 'plane', ENGINEER: 'plane',
   DEFENSE: 'shell',
-  OBSERVER: 'execution', GENESIS: 'core', ANCHOR: 'core', PRISM: 'execution',
-  SENTRY: 'shell', SIGNAL: 'ocg', TENSOR: 'execution', ARBITER: 'plane',
-  FLUX: 'execution', VECTOR: 'execution', SYNTH: 'emz',
-  SYSTEM: 'core',
 };
 
 // ═══ NODE CAPABILITY SIGNATURES ═══
