@@ -65,18 +65,19 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "System Feed", href: "/system-feed", section: "Tools", icon: Brain, keywords: ["intelligence", "feed"] },
   { name: "Clockless World Engine", href: "/clockless-world-engine", section: "Tools", icon: Sparkles },
 
-  // Company
-  { name: "Blog", href: "/blog", section: "Company", icon: FileText, keywords: ["research", "updates", "articles"] },
-  { name: "About", href: "/about", section: "Company", icon: Users, keywords: ["mission", "team", "story"] },
-  { name: "Contact", href: "/contact", section: "Company", icon: Users, keywords: ["get in touch", "email"] },
-  { name: "Insights", href: "/insights", section: "Company", icon: FileText, keywords: ["analysis", "thought leadership"] },
-  { name: "Showcase", href: "/showcase", section: "Company", icon: Sparkles, keywords: ["demos", "built with", "S-tier"] },
-  { name: "Changelog", href: "/changelog", section: "Company", icon: Activity, keywords: ["updates", "releases", "what's new"] },
-  { name: "Roadmap", href: "/roadmap", section: "Company", icon: FileText, keywords: ["future", "planned"] },
-  { name: "Foundations", href: "/foundations", section: "Company", icon: FileText },
-  { name: "Careers", href: "/careers", section: "Company", icon: Users, keywords: ["jobs", "hiring"] },
-  { name: "Investors", href: "/investors", section: "Company", icon: BarChart3 },
-  { name: "Current Projects", href: "/projects", section: "Company", icon: Layers },
+  // Discover
+  { name: "Memory Stream", href: "/foundry", section: "Discover", icon: Sparkles, keywords: ["discovery", "crystallize", "memories"] },
+  { name: "Blog", href: "/blog", section: "Discover", icon: FileText, keywords: ["research", "updates", "articles"] },
+  { name: "About", href: "/about", section: "Discover", icon: Users, keywords: ["mission", "team", "story"] },
+  { name: "Contact", href: "/contact", section: "Discover", icon: Users, keywords: ["get in touch", "email"] },
+  { name: "Showcase", href: "/showcase", section: "Discover", icon: Sparkles, keywords: ["demos", "built with", "S-tier"] },
+  { name: "Changelog", href: "/changelog", section: "Discover", icon: Activity, keywords: ["updates", "releases", "what's new"] },
+  { name: "Developers", href: "/developers", section: "Discover", icon: Users, keywords: ["community", "integrations"] },
+  { name: "Roadmap", href: "/roadmap", section: "Discover", icon: FileText, keywords: ["future", "planned"] },
+  { name: "Foundations", href: "/foundations", section: "Discover", icon: FileText },
+  { name: "Careers", href: "/careers", section: "Discover", icon: Users, keywords: ["jobs", "hiring"] },
+  { name: "Investors", href: "/investors", section: "Discover", icon: BarChart3 },
+  { name: "Current Projects", href: "/projects", section: "Discover", icon: Layers },
 
   // Resources
   { name: "Changelog", href: "/changelog", section: "Resources", icon: FileText },
