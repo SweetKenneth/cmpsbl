@@ -1044,11 +1044,11 @@ serve(async (req: Request) => {
         const { error } = await supabase
           .from('artifact_registry')
           .update({
-            category: 'proprietary-crystallized',
+            category: 'proprietary-ascended',
             metadata: {
               ...meta,
-              crystallized: true,
-              crystallized_at: new Date().toISOString(),
+              ascended: true,
+              ascended_at: new Date().toISOString(),
               moat_signature: moatSignature,
               structural_fingerprint: fingerprint,
               lock_version: 1,
