@@ -1266,20 +1266,7 @@ void ${snake}_info(void) {
 `;
 }
 
-export function synthesizeCProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `    /* Stage ${i}: ${m} — ${ops.desc} */
-    {
-        size_t len = input_json ? strlen(input_json) : 0;
-        unsigned long entropy = 0;
-        for (size_t j = 0; j < len; j++) entropy += (unsigned char)input_json[j];
-        double score = (double)entropy / (double)(len > 0 ? len : 1) * result.confidence;
-        result.confidence = fmin(1.0, result.confidence + 0.03);
-        (void)score;
-    }`;
-  }).join("\n");
-}
+// synthesizeCProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // C++ Full Synthesizer
