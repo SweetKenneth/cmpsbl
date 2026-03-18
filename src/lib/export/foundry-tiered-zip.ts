@@ -8,6 +8,11 @@ import {
 } from './universal-adapter';
 import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import {
+  generateSealedRuntime,
+  generateSealedDiscoveryEngine,
+  generateSealedRuntimeReadme,
+} from './sealed-runtime-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
@@ -47,14 +52,10 @@ function getTieredSoftwareLanguages(score: number): ExportLanguage[] {
 }
 
 async function loadRuntimeFiles(): Promise<{ runtime: string; engine: string }> {
-  const [runtimeMod, engineMod] = await Promise.all([
-    import('./standalone-runtime?raw'),
-    import('./standalone-discovery-engine?raw'),
-  ]);
-
+  // Use SEALED versions — never bundle raw source with proprietary internals
   return {
-    runtime: (runtimeMod as { default: string }).default,
-    engine: (engineMod as { default: string }).default,
+    runtime: generateSealedRuntime(),
+    engine: generateSealedDiscoveryEngine(),
   };
 }
 
@@ -125,7 +126,7 @@ export async function downloadTieredFoundryZip(options: {
     artifactCount: artifacts.length,
     totalValuation: artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0),
     totalValuationFormatted: formatMarketValue(artifacts.reduce((sum, item) => sum + estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length), 0)),
-    valuationMethod: 'CJPI × Category × Complexity internal formula',
+    valuationMethod: 'CMPSBL® proprietary scoring model',
     artifacts: artifacts.map((item) => {
       const estValue = estimateMarketValue(item.score, item.category || 'general', (item.systemChain || []).length);
       return {
@@ -149,29 +150,7 @@ export async function downloadTieredFoundryZip(options: {
   const runtimeFolder = root.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
   runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
-  runtimeFolder.file(
-    'README.md',
-    [
-      '# CMPSBL® Mini-Runtime™ Engine',
-      '',
-      'The official CMPSBL® portable runtime — included with all exported Foundry artifacts.',
-      'Use this runtime to execute generated pipeline bundles without external infrastructure.',
-      '',
-      '## Included Components',
-      '',
-      '- **standalone-runtime.ts** — CMPSBL® Mini-Runtime™ Engine: CJPI scoring, state machine, and pipeline orchestration',
-      '- **standalone-discovery-engine.ts** — CMPSBL® Mini-Runtime™ Discovery Engine: portable discovery reactor',
-      '',
-      '## Usage',
-      '',
-      'Each exported pipeline file is self-contained and runs independently.',
-      'The Mini-Runtime™ Engine provides optional higher-level orchestration for chaining',
-      'multiple pipelines together.',
-      '',
-      '---',
-      '© CMPSBL® — All rights reserved.',
-    ].join('\n')
-  );
+  runtimeFolder.file('README.md', generateSealedRuntimeReadme());
 
   let fileCount = 0;
   let totalLanguageVariants = 0;
