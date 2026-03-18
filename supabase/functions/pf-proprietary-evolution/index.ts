@@ -2,7 +2,7 @@
  * pf-proprietary-evolution — Proprietary Evolution Lifecycle Engine
  * 
  * Handles:
- *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-6 depth)
+ *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-8 depth)
  *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
  *   - crystallize.lock: Lock a discovered capability into deterministic memory
  *   - crystallize.batch-lock: Batch crystallize all eligible discoveries
