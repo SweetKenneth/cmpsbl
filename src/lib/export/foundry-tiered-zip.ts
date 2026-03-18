@@ -10,7 +10,6 @@ import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
 import {
   generateSealedRuntime,
-  generateSealedDiscoveryEngine,
   generateSealedRuntimeReadme,
 } from './sealed-runtime-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
