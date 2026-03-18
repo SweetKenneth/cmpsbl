@@ -1521,19 +1521,17 @@ class ${cls} {
 ${modules.map((m, i) => `    {'name': '${moduleOps(m).verb}_${m.toLowerCase()}', 'module': '${m}', 'handler': _stage${i}${m}}`).join(",\n")}
   ];
 
+  Future<Map<String, dynamic>> _primitiveExecutor(String module, String verb, double confidence) async {
+    return {
+      'data': {module.toLowerCase() + '_result': {'module': module, 'verb': verb, 'confidence': confidence}},
+      'confidence_delta': 0.02, 'signal': verb + '_complete',
+    };
+  }
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `  Future<Map<String, dynamic>> _stage${i}${m}(Map<String, dynamic> data, double confidence) async {
-    // ${m}: ${ops.desc}
-    final out = <String, dynamic>{};
-    for (final entry in data.entries) {
-      final vs = entry.value.toString();
-      final entropy = vs.codeUnits.fold<int>(0, (a, b) => a + b) / vs.length.clamp(1, 999999);
-      out['${m.toLowerCase()}_\${entry.key}'] = {
-        'module': '${m}', 'op': '${ops.verb}', 'score': entropy * confidence, 'len': vs.length,
-      };
-    }
-    return {'data': out, 'confidence_delta': 0.03, 'signal': '${ops.verb}_complete'};
+    return _primitiveExecutor('${m}', '${ops.verb}', confidence);
   }`;
 }).join("\n\n")}
 
