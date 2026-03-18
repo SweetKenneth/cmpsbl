@@ -1439,7 +1439,6 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   // _runtime/ — Sealed Mini-Runtime™ Engine
   const runtimeFolder = zip.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
   runtimeFolder.file('README.md', [
     '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
     '',
@@ -1448,11 +1447,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     '## Components',
     '',
     '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
-    '- **standalone-discovery-engine.ts** — Portable discovery reactor for artifact analysis',
     '',
     '## ⚠️ Sealed Runtime',
     '',
     'This is a sealed proprietary distribution. Redistribution as a standalone product is prohibited.',
+    'The Discovery Engine is NOT included — discovery is a substrate-only capability.',
     'See LICENSE for full terms.',
     '',
     '---',

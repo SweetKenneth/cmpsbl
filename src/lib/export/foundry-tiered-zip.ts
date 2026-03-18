@@ -149,7 +149,6 @@ export async function downloadTieredFoundryZip(options: {
 
   const runtimeFolder = root.folder('_runtime')!;
   runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('standalone-discovery-engine.ts', runtimeFiles.engine);
   runtimeFolder.file('README.md', generateSealedRuntimeReadme());
 
   let fileCount = 0;

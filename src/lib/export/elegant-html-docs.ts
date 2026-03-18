@@ -278,10 +278,10 @@ export function generateLicenseHTML(productName: string): string {
 
   <h2><span class="num">§4</span> Runtime License</h2>
   <p>
-    The CMPSBL® Micro-Substrate Runtime (<code>standalone-runtime.ts</code> and 
-    <code>standalone-discovery-engine.ts</code>) is licensed solely for use with software 
-    exported from the CMPSBL® Substrate. It may not be used, copied, or distributed for 
-    any other purpose.
+    The CMPSBL® Micro-Substrate Runtime (<code>standalone-runtime.ts</code>) is licensed 
+    solely for use with software exported from the CMPSBL® Substrate. It may not be used, 
+    copied, or distributed for any other purpose. The Discovery Engine, Memory Stream, and 
+    Ascension Reactor are substrate-exclusive components and are never distributed.
   </p>
 
   <h2><span class="num">§5</span> Disclaimer of Warranty</h2>
