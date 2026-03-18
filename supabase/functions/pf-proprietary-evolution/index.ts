@@ -1085,7 +1085,7 @@ serve(async (req: Request) => {
 
         const eligible = (discoveries || []).filter((d: any) => {
           const meta = (d.metadata as Record<string, unknown>) || {};
-          return Number(meta.cjpi_score || 0) >= min_cjpi && !meta.crystallized;
+          return Number(meta.cjpi_score || 0) >= min_cjpi && !meta.ascended;
         });
 
         let crystallized = 0;
