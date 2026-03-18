@@ -46,12 +46,12 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/ai-operating-system", label: "How It Works", section: "core", priority: 0.95, changefreq: "monthly", description: "Architecture & concepts of the AI Operating System" },
   { path: "/modules", label: "All Nodes", section: "core", priority: 0.92, changefreq: "weekly", description: "Browse every substrate node" },
   { path: "/runtime", label: "Runtime", section: "core", priority: 0.85, changefreq: "monthly", description: "Execution environment" },
-  { path: "/foundations", label: "Foundations", section: "core", priority: 0.90, changefreq: "monthly", description: "CMPSBL Substrate standard" },
+  { path: "/foundations", label: "Foundations", section: "core", priority: 0, changefreq: "monthly", redirect: true },
   { path: "/os", label: "Substrate OS", section: "core", priority: 0.88, changefreq: "weekly", description: "Authenticated substrate command center" },
-  { path: "/capability-map", label: "Capability Map", section: "core", priority: 0.75, changefreq: "monthly", description: "Visual topology of all substrate capabilities" },
-  { path: "/system-integrity", label: "System Integrity", section: "core", priority: 0.70, changefreq: "monthly", description: "Diagnostics and integrity verification" },
-  { path: "/status", label: "System Status", section: "core", priority: 0.70, changefreq: "daily", description: "Real-time system health and uptime" },
-  { path: "/evolution", label: "Evolution", section: "core", priority: 0.78, changefreq: "weekly", description: "Self-improvement lifecycle control center" },
+  { path: "/capability-map", label: "Capability Map", section: "core", priority: 0, changefreq: "monthly", redirect: true },
+  { path: "/system-integrity", label: "System Integrity", section: "core", priority: 0, changefreq: "monthly", redirect: true },
+  { path: "/status", label: "System Status", section: "core", priority: 0, changefreq: "monthly", redirect: true },
+  { path: "/evolution", label: "Evolution", section: "core", priority: 0, changefreq: "monthly", redirect: true },
 
   // ── Product ──
   { path: "/store", label: "Store", section: "product", priority: 0.95, changefreq: "weekly", description: "Agents, engines, plans & memories" },
