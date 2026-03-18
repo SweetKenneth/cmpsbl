@@ -50,11 +50,10 @@ function getTieredSoftwareLanguages(score: number): ExportLanguage[] {
   return unlocked.length > 0 ? unlocked : RAW_FALLBACK_LANGUAGES;
 }
 
-async function loadRuntimeFiles(): Promise<{ runtime: string; engine: string }> {
-  // Use SEALED versions — never bundle raw source with proprietary internals
+async function loadRuntimeFiles(): Promise<{ runtime: string }> {
+  // Use SEALED version — Discovery Engine is NEVER bundled
   return {
     runtime: generateSealedRuntime(),
-    engine: generateSealedDiscoveryEngine(),
   };
 }
 
