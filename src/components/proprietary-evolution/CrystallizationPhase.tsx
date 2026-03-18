@@ -85,7 +85,7 @@ export function CrystallizationPhase() {
     } catch (err) {
       toast({ title: 'Ascension failed', description: String(err), variant: 'destructive' });
     } finally {
-      setCrystallizing(null);
+      setAscending(null);
     }
   };
 
