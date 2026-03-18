@@ -672,23 +672,7 @@ ${modules.map((m, i) => {
 `;
 }
 
-export function synthesizePHPProcess(ctx: SynthesisContext): string {
-  return ctx.moduleChain.map((m, i) => {
-    const ops = moduleOps(m);
-    return `        // Stage ${i}: ${m} — ${ops.desc}
-        $stage${i} = [];
-        foreach ($currentData as $k => $v) {
-            $vs = strval($v);
-            $entropy = array_sum(array_map('ord', str_split($vs ?: ' '))) / max(strlen($vs), 1);
-            $stage${i}["${m.toLowerCase()}_" . $k] = [
-                'module' => '${m}', 'op' => '${ops.verb}',
-                'score' => $entropy * $confidence, 'len' => strlen($vs)
-            ];
-        }
-        $currentData = array_merge($currentData, $stage${i});
-        $confidence = min(1.0, $confidence + 0.03);`;
-  }).join("\n");
-}
+// synthesizePHPProcess removed — all stages now delegate to primitiveExecutor
 
 // ═══════════════════════════════════════════════════════════════════
 // Swift Full Synthesizer
