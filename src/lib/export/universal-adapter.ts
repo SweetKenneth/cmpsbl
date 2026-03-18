@@ -831,6 +831,9 @@ namespace CMPSBL.CrownJewels
 
 function genRuby(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Ruby', '#');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeRuby(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 module CMPSBL
