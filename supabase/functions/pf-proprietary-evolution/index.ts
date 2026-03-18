@@ -573,7 +573,7 @@ function collideNodesMultiChain(
     n !== targetNode && (NODE_SECTOR[n] || 'unknown') === targetSector
   );
 
-  for (let chainLen = 3; chainLen <= Math.min(6, permutationDepth + 2); chainLen++) {
+  for (let chainLen = 3; chainLen <= Math.min(8, permutationDepth + 2); chainLen++) {
     const chainCandidateCount = Math.min(3, chainLen);
     
     for (let ci = 0; ci < chainCandidateCount; ci++) {
