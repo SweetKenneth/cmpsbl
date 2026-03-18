@@ -88,15 +88,37 @@ export async function primitiveExecutor(
 /**
  * Synchronous primitive executor for generated code contexts.
  * Used by exported runtimes where async is unavailable.
+ * Attempts local registry lookup first, falls back to deterministic default.
  */
 export function primitiveExecutorSync(
   name: string,
   data: Record<string, unknown>,
   confidence: number
 ): PrimitiveResult {
+  // Attempt local registry lookup (sync-safe: handler may return sync value)
+  try {
+    const primitive = getPrimitive(name);
+    if (primitive?.handler) {
+      const output = primitive.handler(data, { confidence });
+      // Only use if handler returned synchronously (not a Promise)
+      if (output && typeof output === 'object' && typeof (output as any).then !== 'function') {
+        recordPrimitiveOutcome(name, true);
+        return {
+          data: output as Record<string, unknown>,
+          confidence_delta: 0.02,
+          signal: `${name.toLowerCase()}_executed`,
+        };
+      }
+    }
+  } catch {
+    // Handler failed or returned async — fall through
+  }
+
+  // Deterministic fallback
+  recordPrimitiveOutcome(name, false);
   return {
     data: { [`${name.toLowerCase()}_result`]: { module: name, confidence, processed: true } },
-    confidence_delta: 0.02,
-    signal: `${name.toLowerCase()}_executed`,
+    confidence_delta: 0.01,
+    signal: `${name.toLowerCase()}_fallback`,
   };
 }
