@@ -222,7 +222,6 @@ export function synthesizePython(ctx: SynthesisContext): string {
   const modules = ctx.moduleChain;
 
   const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
-  const capHash = computeCapabilityHash(ctx.name, modules, ctx.category);
   const chainHash = computeModuleChainHash(modules);
 
   return `"""
