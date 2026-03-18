@@ -6,7 +6,7 @@
  * - Authenticated: crystallize button, vault, stats
  */
 import { useState, useCallback, useEffect } from 'react';
-import { MemoryStreamOnboarding } from '@/components/onboarding/MemoryStreamOnboarding';
+
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { SEO } from '@/components/SEO';
@@ -155,7 +155,7 @@ export default function Foundry() {
       />
 
       <PublicNav />
-      <MemoryStreamOnboarding />
+      
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
         {/* Substrate ambient background */}
