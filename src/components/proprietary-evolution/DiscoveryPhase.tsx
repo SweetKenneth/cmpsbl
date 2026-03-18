@@ -434,6 +434,17 @@ export function DiscoveryPhase() {
         >
           <RotateCcw className="w-3 h-3" /> Reset
         </Button>
+
+        {results.length > 0 && !running && (
+          <Button
+            size="sm"
+            variant="destructive"
+            onClick={clearAllDiscoveries}
+            className="h-8 text-xs gap-1.5"
+          >
+            <Trash2 className="w-3 h-3" /> Clear Vault
+          </Button>
+        )}
       </div>
 
       {/* Progress */}

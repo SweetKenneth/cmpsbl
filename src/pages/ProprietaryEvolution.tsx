@@ -20,12 +20,12 @@ import { ExportPhase } from '@/components/proprietary-evolution/ExportPhase';
 import { AscensionStepper } from '@/components/proprietary-evolution/AscensionStepper';
 import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
 
-const PHASE_LABELS = ['Ingest', 'Ascension', 'Crystallize', 'Export'] as const;
+const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Export'] as const;
 
 const PHASE_DESCRIPTIONS = [
   'Upload source files — your code becomes Node #41',
   'Collide against 40 substrate nodes to discover capabilities',
-  'Lock successful interaction chains into deterministic memories',
+  'Ascend discovered capabilities into permanent memories',
   'Export portable Ascended Memory packs',
 ] as const;
 

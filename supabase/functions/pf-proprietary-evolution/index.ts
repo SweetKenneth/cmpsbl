@@ -868,28 +868,30 @@ serve(async (req: Request) => {
         const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
         const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth);
 
-        // Persist results — include capability surface in metadata
+        // Only persist the TOP 1 weighted result per collision run
+        // All results are returned to the client for display, but we avoid DB bloat
         const surface = results[0]?.candidate_surface;
-        for (const result of results) {
-          const fingerprint = await generateFingerprint(result.chain, 'SPARTA');
-          const baseSlug = result.name.toLowerCase().replace(/_/g, '-').slice(0, 180);
-          const slugHash = hashString(`${userId}:${baseSlug}:${result.chain.join(':')}:${result.cjpi_score}`).toString(36);
+        if (results.length > 0) {
+          const topResult = results[0]; // Already sorted by cjpi_score desc
+          const fingerprint = await generateFingerprint(topResult.chain, 'SPARTA');
+          const baseSlug = topResult.name.toLowerCase().replace(/_/g, '-').slice(0, 180);
+          const slugHash = hashString(`${userId}:${baseSlug}:${topResult.chain.join(':')}:${topResult.cjpi_score}`).toString(36);
           await supabase.from('artifact_registry').upsert({
             user_id: userId,
-            name: result.name,
+            name: topResult.name,
             slug: `${baseSlug}-${slugHash}`,
-            tier: result.tier,
+            tier: topResult.tier,
             category: 'proprietary-discovery',
-            description: result.description.slice(0, 500),
+            description: topResult.description.slice(0, 500),
             metadata: {
-              node_a: result.chain[0],
+              node_a: topResult.chain[0],
               node_b: target_node,
-              cjpi_score: result.cjpi_score,
-              capability_type: result.capability_type,
-              chain: result.chain,
-              chain_depth: result.chain_depth,
-              synergy_bonus: result.synergy_bonus,
-              sectors_crossed: result.sectors_crossed,
+              cjpi_score: topResult.cjpi_score,
+              capability_type: topResult.capability_type,
+              chain: topResult.chain,
+              chain_depth: topResult.chain_depth,
+              synergy_bonus: topResult.synergy_bonus,
+              sectors_crossed: topResult.sectors_crossed,
               fingerprint,
               discovered_at: new Date().toISOString(),
               crystallized: false,
