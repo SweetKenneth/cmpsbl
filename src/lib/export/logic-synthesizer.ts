@@ -273,6 +273,8 @@ ${modules.map((m) => {
 }).join(',\n')}
 ]
 
+import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT, computeCapabilityHash, computeModuleChainHash } from './canonical-runtime-contract';
+import { moduleOps } from './bridge-adapter';
 
 def _generate_execution_id() -> str:
     return f"exec_{uuid.uuid4().hex[:12]}"
