@@ -247,9 +247,6 @@ const App = () => {
                            <BackToTop />
                          </Suspense>
                           <Suspense fallback={null}>
-                            <OnboardingWrapper />
-                          </Suspense>
-                          <Suspense fallback={null}>
                             <KeyboardShortcutsHelp />
                           </Suspense>
                           <Suspense fallback={null}>
