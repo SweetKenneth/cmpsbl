@@ -991,6 +991,9 @@ ${a.synthesisContext ? synthesizeSwiftProcess(a.synthesisContext) : `        for
 
 function genKotlin(a: ExportableArtifact, adapter: ExportAdapter): string {
   const h = header(a, 'Kotlin', '//');
+  if (a.synthesisContext && adapter === 'standalone') {
+    return `${h}\n${synthesizeKotlin(a.synthesisContext)}`;
+  }
   const cls = className(a);
   return `${h}
 data class ${cls}Config(val maxRetries: Int = 3, val timeoutMs: Int = 30000)
