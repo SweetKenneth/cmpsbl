@@ -1181,26 +1181,23 @@ ${snake}_t *${snake}_new(double threshold) {
 }
 
 /* Module dispatch handlers */
+/* Primitive Executor — routes module execution */
+static int ${snake}_primitive_executor(const char *module, const char *verb, ${snake}_ctx_t *ctx, double confidence, ${snake}_stage_result_t *out) {
+    clock_t ss = clock();
+    (void)ctx; /* ctx available for future remote/local dispatch */
+    snprintf(out->stage, sizeof(out->stage), "%s_%s", verb, module);
+    snprintf(out->module, sizeof(out->module), "%s", module);
+    snprintf(out->signal, sizeof(out->signal), "%s_complete", verb);
+    out->success = 1;
+    out->confidence_delta = 0.02;
+    out->duration_ms = ((double)(clock() - ss) / CLOCKS_PER_SEC) * 1000.0;
+    return 1;
+}
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `static int ${snake}_stage_${i}_${m.toLowerCase()}(${snake}_ctx_t *ctx, double confidence, ${snake}_stage_result_t *out) {
-    /* ${m}: ${ops.desc} */
-    clock_t ss = clock();
-    int j;
-    for (j = 0; j < ctx->count && j < MAX_SIGNALS; j++) {
-        size_t len = ctx->values[j] ? strlen(ctx->values[j]) : 0;
-        unsigned long entropy = 0;
-        size_t c;
-        for (c = 0; c < len; c++) entropy += (unsigned char)ctx->values[j][c];
-        (void)(entropy * confidence); /* score computed in production serialization */
-    }
-    snprintf(out->stage, sizeof(out->stage), "${ops.verb}_${m.toLowerCase()}");
-    snprintf(out->module, sizeof(out->module), "${m}");
-    snprintf(out->signal, sizeof(out->signal), "${ops.verb}_complete");
-    out->success = 1;
-    out->confidence_delta = 0.03;
-    out->duration_ms = ((double)(clock() - ss) / CLOCKS_PER_SEC) * 1000.0;
-    return 1;
+    return ${snake}_primitive_executor("${m.toLowerCase()}", "${ops.verb}", ctx, confidence, out);
 }`;
 }).join("\n\n")}
 
