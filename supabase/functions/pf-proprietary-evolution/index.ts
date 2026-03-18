@@ -135,10 +135,10 @@ const NODE_CAPABILITIES: Record<string, string[]> = {
   DEFENSE: ['threat_score', 'anomaly_detect', 'rate_limit', 'quarantine'],
 };
 
-const VALID_MODULES = new Set(['discovery', 'crystallize', 'export']);
+const VALID_MODULES = new Set(['discovery', 'ascend', 'export']);
 const VALID_ACTIONS: Record<string, Set<string>> = {
   discovery: new Set(['collide', 'batch']),
-  crystallize: new Set(['lock', 'batch-lock']),
+  ascend: new Set(['lock', 'batch-lock']),
   export: new Set(['capability-pack']),
 };
 const VALID_LANGUAGES = new Set(['typescript', 'python', 'rust', 'go', 'zig', 'java', 'csharp', 'ruby', 'swift', 'kotlin', 'verilog', 'systemverilog', 'vhdl', 'systemc', 'elixir', 'lua', 'c', 'cpp', 'dart', 'scala', 'haskell', 'php', 'chisel', 'amaranth', 'spice']);
