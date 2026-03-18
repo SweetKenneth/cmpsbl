@@ -20,8 +20,8 @@ interface LangConfig {
 
 function moduleOps(mod: string): { verb: string; desc: string } {
   const MAP: Record<string, { verb: string; desc: string }> = {
-    BRAIN: { verb: 'analyze', desc: 'entropy analysis + weighted scoring' },
-    CORTEX: { verb: 'orchestrate', desc: 'priority scheduling + dispatch' },
+    BRAIN: { verb: 'analyze', desc: 'cognitive processing' },
+    CORTEX: { verb: 'orchestrate', desc: 'pipeline coordination' },
     DEFENSE: { verb: 'validate', desc: 'injection detection + sanitization' },
     ACCESS: { verb: 'authorize', desc: 'policy validation + credential check' },
     ANALYTICS: { verb: 'aggregate', desc: 'statistical accumulation + ranking' },
