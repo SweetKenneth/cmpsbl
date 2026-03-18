@@ -389,18 +389,13 @@ namespace CMPSBL.CrownJewels
 ${modules.map((m, i) => `            // Stage ${i}: ${m} — ${moduleOps(m).desc}
             {
                 var ss = Stopwatch.StartNew();
-                var stageOut = new Dictionary<string, object>();
-                foreach (var kv in data.ToList())
-                {
-                    var val = kv.Value?.ToString() ?? "";
-                    var entropy = val.Sum(c => (long)c);
-                    var score = (double)entropy / Math.Max(val.Length, 1) * confidence;
-                    stageOut[$"${m.toLowerCase()}_{kv.Key}"] = new { module = "${m}", op = "${moduleOps(m).verb}", score, len = val.Length };
-                }
+                var pr = PrimitiveExecutor("${m}", "${moduleOps(m).verb}", data, confidence);
+                var stageOut = pr.ContainsKey("data") ? (Dictionary<string, object>)pr["data"] : new Dictionary<string, object>();
+                var delta = pr.ContainsKey("confidence_delta") ? Convert.ToDouble(pr["confidence_delta"]) : 0.02;
                 ss.Stop();
-                var sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, 0.03, ss.Elapsed.TotalMilliseconds);
-                confidence = Math.Clamp(confidence + sr.ConfidenceDelta, 0, 1);
-                foreach (var kv in sr.Data) data[kv.Key] = kv.Value;
+                var sr = new StageResult("${moduleOps(m).verb}_${m.toLowerCase()}", "${m}", true, stageOut, delta, ss.Elapsed.TotalMilliseconds);
+                confidence = Math.Clamp(confidence + delta, 0, 1);
+                foreach (var kv in stageOut) data[kv.Key] = kv.Value;
                 trace.Add(sr);
                 completed++;
                 if (confidence < ConfidenceThreshold)
