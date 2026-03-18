@@ -1033,8 +1033,8 @@ serve(async (req: Request) => {
         }
 
         const meta = (discovery.metadata as Record<string, unknown>) || {};
-        if (meta.crystallized === true) {
-          return jsonResponse({ success: false, error: 'Already crystallized' }, 409);
+        if (meta.ascended === true) {
+          return jsonResponse({ success: false, error: 'Already ascended' }, 409);
         }
 
         const chain = (meta.chain as string[]) || [];
