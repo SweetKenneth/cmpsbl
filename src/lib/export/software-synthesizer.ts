@@ -1093,21 +1093,18 @@ ${modules.map((m, i) => `        { "${moduleOps(m).verb}_${m.toLowerCase()}", "$
     }
 end
 
+function ${mod}:primitive_executor(mod_name, verb, ctx, confidence)
+    local out = {}
+    out[string.lower(mod_name) .. "_result"] = {
+        module = mod_name, verb = verb, confidence = confidence
+    }
+    return { data = out, confidence_delta = 0.02, signal = verb .. "_complete" }
+end
+
 ${modules.map((m, i) => {
   const ops = moduleOps(m);
   return `function ${mod}:stage_${i}_${m.toLowerCase()}(ctx, confidence)
-    -- ${m}: ${ops.desc}
-    local out = {}
-    for k, v in pairs(ctx._data) do
-        local vs = tostring(v)
-        local entropy = 0
-        for c = 1, #vs do entropy = entropy + string.byte(vs, c) end
-        entropy = entropy / math.max(#vs, 1)
-        out["${m.toLowerCase()}_" .. k] = {
-            module = "${m}", op = "${ops.verb}", score = entropy * confidence, len = #vs
-        }
-    end
-    return { data = out, confidence_delta = 0.03, signal = "${ops.verb}_complete" }
+    return self:primitive_executor("${m}", "${ops.verb}", ctx, confidence)
 end`;
 }).join("\n\n")}
 
