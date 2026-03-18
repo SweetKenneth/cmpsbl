@@ -1088,25 +1088,25 @@ serve(async (req: Request) => {
           return Number(meta.cjpi_score || 0) >= min_cjpi && !meta.ascended;
         });
 
-        let crystallized = 0;
+        let ascended = 0;
         for (const d of eligible) {
           const meta = (d.metadata as Record<string, unknown>) || {};
           const chain = (meta.chain as string[]) || [];
           const fingerprint = await generateFingerprint(chain, 'SPARTA');
 
           const { error } = await supabase.from('artifact_registry').update({
-            category: 'proprietary-crystallized',
+            category: 'proprietary-ascended',
             metadata: {
               ...meta,
-              crystallized: true,
-              crystallized_at: new Date().toISOString(),
+              ascended: true,
+              ascended_at: new Date().toISOString(),
               moat_signature: crypto.randomUUID(),
               structural_fingerprint: fingerprint,
               lock_version: 1,
             },
           }).eq('id', d.id).eq('user_id', userId);
 
-          if (!error) crystallized++;
+          if (!error) ascended++;
         }
 
         return jsonResponse({
