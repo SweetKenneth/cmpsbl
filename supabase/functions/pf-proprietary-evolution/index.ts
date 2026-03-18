@@ -1063,7 +1063,7 @@ serve(async (req: Request) => {
 
         return jsonResponse({
           success: true,
-          crystallized: {
+          ascended: {
             id: discovery_id,
             moat_signature: moatSignature,
             fingerprint: fingerprint.slice(0, 12).toUpperCase(),
