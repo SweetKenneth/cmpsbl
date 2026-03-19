@@ -88,7 +88,7 @@ const FAQ_ITEMS = [
   {
     category: "Capability Packs",
     question: "What are Composable Cognitives?",
-    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, automatic self-improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
     category: "Capability Packs",
