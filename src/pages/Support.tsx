@@ -66,7 +66,7 @@ const FAQ_ITEMS = [
   {
     category: "Memories & Foundry",
     question: "What are Memory Packs?",
-    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
+    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect platform modules for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
     category: "Memories & Foundry",
