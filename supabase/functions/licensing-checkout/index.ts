@@ -1,6 +1,7 @@
 /**
- * Licensing Checkout — Create Stripe checkout session for Developer License
- * Supports monthly ($39/mo) and annual ($299/yr) billing
+ * Licensing Checkout — Create Stripe checkout session for subscription tiers
+ * Supports: Creator ($29/mo), Studio ($49/mo), Architect ($79/mo)
+ * Aligned with licensing-products.ts UNIFIED_TIERS
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -12,18 +13,43 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Developer License pricing configuration
-const DEV_LICENSE_PRICES = {
-  monthly: {
-    price_id: 'price_1SyiOSQ7FtTiAL4a0nLYNaww',
-    product_id: 'prod_TwbbSoGvPk62xt',
-    amount: 3900, // $39/month
+// Aligned with src/config/licensing-products.ts UNIFIED_TIERS
+const TIER_PRICES: Record<string, { price_id: string; product_id: string; amount: number }> = {
+  creator: {
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    product_id: 'prod_TzwJfkmkooYhwU',
+    amount: 2900, // $29/mo
   },
-  annual: {
-    price_id: 'price_1SyiOTQ7FtTiAL4ahfSITWgg',
-    product_id: 'prod_TwbbkEwx63DMli',
-    amount: 29900, // $299/year
+  studio: {
+    price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
+    product_id: 'prod_U4vfFrx4XIT6Ah',
+    amount: 4900, // $49/mo
   },
+  architect: {
+    price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
+    product_id: 'prod_TzwJm6Ji4E3Vca',
+    amount: 7900, // $79/mo
+  },
+  // Legacy aliases
+  developer: {
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    product_id: 'prod_TzwJfkmkooYhwU',
+    amount: 2900,
+  },
+  builder: {
+    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
+    product_id: 'prod_TzwJfkmkooYhwU',
+    amount: 2900,
+  },
+  pro: {
+    price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
+    product_id: 'prod_TzwJm6Ji4E3Vca',
+    amount: 7900,
+  },
+};
+
+const logStep = (step: string, details?: Record<string, unknown>) => {
+  console.log(`[LICENSING-CHECKOUT] ${step}`, details ? JSON.stringify(details) : '');
 };
 
 serve(async (req) => {
@@ -32,6 +58,8 @@ serve(async (req) => {
   }
 
   try {
+    logStep('Function started');
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
     });
@@ -53,53 +81,57 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { 
-      license_type, 
-      billing_interval = 'annual', // 'monthly' or 'annual'
-      customer_email, 
-      customer_name, 
-      organization 
+    const {
+      tier,
+      license_type, // Legacy field — maps to tier
+      billing_interval = 'monthly',
+      customer_email,
+      customer_name,
+      organization,
     } = body;
 
-    // Only developer license is available for checkout
-    if (license_type !== 'developer') {
-      throw new Error("Only Developer License is available for online checkout. Contact us for Team/Research/Enterprise/Strategic licenses.");
+    // Resolve tier from either field (backward compat)
+    const resolvedTier = tier || license_type || 'creator';
+    
+    if (!TIER_PRICES[resolvedTier]) {
+      return new Response(
+        JSON.stringify({ error: `Invalid tier: ${resolvedTier}. Valid tiers: creator, studio, architect` }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
     }
 
-    // Get the appropriate price based on billing interval
-    const priceConfig = billing_interval === 'monthly' 
-      ? DEV_LICENSE_PRICES.monthly 
-      : DEV_LICENSE_PRICES.annual;
+    const priceConfig = TIER_PRICES[resolvedTier];
+    logStep('Tier resolved', { resolvedTier, priceId: priceConfig.price_id, amount: priceConfig.amount });
 
-    // Email is optional - Stripe will collect it if not provided
+    // Email is optional — Stripe will collect it if not provided
     const email = userEmail || customer_email;
+    const origin = req.headers.get("origin") || "https://cmpsbl.com";
 
-    const origin = req.headers.get("origin") || "https://promptfluid.com";
-
-    // Check if customer exists (only if we have an email)
+    // Check if customer exists
     let customerId: string | undefined;
     if (email) {
       const customers = await stripe.customers.list({ email, limit: 1 });
       if (customers.data.length > 0) {
         customerId = customers.data[0].id;
+        logStep('Found existing customer', { customerId });
       }
     }
 
-    // Create checkout session for Developer License subscription
+    // Normalize tier name for display
+    const displayTier = resolvedTier === 'developer' || resolvedTier === 'builder' ? 'creator'
+      : resolvedTier === 'pro' ? 'architect'
+      : resolvedTier;
+
+    // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : email || undefined,
-      line_items: [
-        {
-          price: priceConfig.price_id,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: priceConfig.price_id, quantity: 1 }],
       mode: 'subscription',
-      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/substrate/licensing?canceled=true`,
+      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
+      cancel_url: `${origin}/store?tab=plans&canceled=true`,
       metadata: {
-        license_type: 'developer',
+        tier: displayTier,
         billing_interval,
         product_id: priceConfig.product_id,
         user_id: userId || '',
@@ -108,30 +140,25 @@ serve(async (req) => {
       },
       subscription_data: {
         metadata: {
-          license_type: 'developer',
+          tier: displayTier,
           billing_interval,
           user_id: userId || '',
         },
       },
     });
 
-    console.log(`Developer License (${billing_interval}) checkout created: ${session.id}, email: ${email}`);
+    logStep('Checkout session created', { sessionId: session.id, tier: displayTier });
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200,
-      }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error) {
-    console.error("Licensing checkout error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    logStep('ERROR', { message });
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
-      }
+      JSON.stringify({ error: message }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
     );
   }
 });
