@@ -609,7 +609,7 @@ export default function Blog() {
         setAutoPosts(data.map((p: any) => ({
           id: p.id,
           title: p.title,
-          excerpt: p.excerpt || "AI-generated insight from the CMPSBL Substrate.",
+          excerpt: p.excerpt || "AI-generated insight from the CMPSBL platform.",
           href: `/blog/auto/${p.slug}`,
           category: normalizeBlogCategory(p.category),
           date: p.published_at || new Date().toISOString(),
