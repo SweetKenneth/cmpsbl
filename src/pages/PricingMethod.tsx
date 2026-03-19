@@ -91,10 +91,10 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Brain className="h-6 w-6 text-primary" />
-              Multi-Model Consensus Pricing
+              How Multiple AI Models Agree on a Price
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the capability's technical profile, and returns an independent market analysis.
+              Instead of trusting a single AI estimate, we ask <strong className="text-foreground">four independent models</strong> the same question. Each model gets the same technical profile and returns its own market analysis independently.
             </p>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
