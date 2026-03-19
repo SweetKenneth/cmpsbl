@@ -1074,7 +1074,7 @@ const connections = await substrate.integrations.list();
 
       <Callout type="info">
         All integration credentials are encrypted at rest. API calls through integrations are logged to the
-        AUDIT chain and subject to the same rate limiting and governance policies as direct substrate calls.
+        AUDIT chain and subject to the same rate limiting and governance policies as direct platform calls.
       </Callout>
     </div>
   );
