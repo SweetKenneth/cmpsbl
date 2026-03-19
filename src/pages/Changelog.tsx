@@ -1,11 +1,8 @@
 /**
- * CMPSBL — The Fossil Record
+ * CMPSBL — The Evolution Log
  * 
- * Not a changelog. Not a release log. 
- * A geological record of evolutionary pressure and systemic adaptation.
- * 
- * Each stratum documents what forced the substrate to mutate,
- * what the substrate became, and what emerged that didn't exist before.
+ * A chronological record of platform changes and improvements.
+ * Each entry documents what changed, why it changed, and what emerged.
  */
 
 import { PublicNav } from "@/components/PublicNav";
