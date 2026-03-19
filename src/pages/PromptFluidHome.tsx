@@ -53,11 +53,11 @@ const milestones = [
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
-  { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
-  { icon: Layers, title: "Zone Architecture", description: "40 nodes across 12 sectors with 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ) and safety-switch isolation." },
-  { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
-  { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, synergy memories, and a capabilities depot — all orchestrated through a unified terminal." },
-  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },
+  { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI routing with health-weighted selection and automatic failover. Never locked into a single vendor." },
+  { icon: Layers, title: "Modular Architecture", description: "40 modules across 12 groups with 4 shielded expansion zones and circuit-breaker isolation." },
+  { icon: Shield, title: "Self-Evolving Platform", description: "Autonomous scanning, proposals, and patching — the platform continuously improves itself." },
+  { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, reusable workflows, and a full capabilities marketplace — all accessible via unified API." },
+  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, and more — automatically routes to the best model for every task." },
 ];
 
 const services = [
