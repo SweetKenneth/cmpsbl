@@ -121,7 +121,7 @@ export function CmpsblNav() {
       icon: Sparkles,
       items: [
         { name: "Store", href: "/store", description: "Agents, engines, plans & memories", icon: Sparkles, highlight: true },
-        { name: "Upgrade", href: "/upgrade", description: "Plans & pricing tiers", icon: Zap },
+        { name: "Plans & pricing", href: "/store?tab=plans", description: "Compare tiers & upgrade", icon: Zap },
         { name: "Pricing methodology", href: "/pricing-method", description: "Transparent pricing model", icon: CreditCard },
         { name: "Academy", href: "/academy", description: "Tutorials & certification", icon: BookOpen },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
