@@ -538,10 +538,10 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch04-bots', title: "When Bots Found Us First",
-    excerpt: "We didn't plan to build a security node. Then automated attacks found our API endpoints before we'd even launched.",
+    excerpt: "We didn't plan to build a security module. Then automated attacks found our API endpoints before we'd even launched.",
     href: "/blog/when-bots-found-us-first", category: "Security",
     date: "2025-03-05", readTime: "14 min", image: ch04Img,
-    imageAlt: "DEFENSE node security architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "DEFENSE module security architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch03-remember', title: "Teaching Machines to Remember",
