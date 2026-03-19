@@ -430,9 +430,9 @@ export default function AIOperatingSystem() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/30 transition-colors">
-                  <Link to="/architecture">
+                  <Link to="/modules">
                     <Activity className="w-5 h-5" />
-                    Explore All 40 Nodes
+                    Explore All 40 Modules
                   </Link>
                 </Button>
               </div>
