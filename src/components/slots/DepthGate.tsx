@@ -84,7 +84,7 @@ function UpgradeCTA({ feature, compact }: { feature: DepthFeatureKey; compact?: 
   if (compact) {
     return (
       <Button variant="outline" size="sm" asChild className="bg-background/80 backdrop-blur-sm">
-        <Link to="/upgrade">
+        <Link to="/store?tab=plans">
           Unlock {meta.name} <ArrowUpRight className="w-3 h-3 ml-1" />
         </Link>
       </Button>
