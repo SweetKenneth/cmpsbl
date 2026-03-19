@@ -17,7 +17,7 @@ const SUGGESTIONS = [
   { name: "Runtime Agents", href: "/composable-cognitives", description: "Sealed AI runtime agents" },
   { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent" },
   { name: "Blog", href: "/blog", description: "Research & updates" },
-  { name: "Start Here", href: "/start-here", description: "Get oriented fast" },
+  { name: "Developer Guide", href: "/developers/guide", description: "Get oriented fast" },
   { name: "Academy", href: "/academy", description: "Interactive tutorials" },
 ];
 
