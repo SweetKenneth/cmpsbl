@@ -162,18 +162,18 @@ function PillarRow({ category, pillars }: { category: PillarCategory; pillars: B
 const ARCH_CARDS = [
   {
     icon: Layers,
-    title: 'Single Runtime',
-    description: 'One substrate serves all tiers. Nodes compose freely without version fragmentation.',
+    title: 'One Runtime for All',
+    description: 'Every plan runs the same full platform. No stripped-down versions, no feature fragmentation.',
   },
   {
     icon: Package,
-    title: 'Capability Packs Extend',
-    description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
+    title: 'Memory Packs Add Power',
+    description: 'Packs bundle related capabilities into purpose-built workflows. Each pack uses 1 memory slot.',
   },
   {
     icon: Zap,
-    title: 'Capacity, Not Capability',
-    description: 'Plans differ in how many packs you can activate simultaneously — not in what the system can do.',
+    title: 'Plans Scale Capacity',
+    description: 'Higher plans let you activate more packs simultaneously — the platform itself never changes.',
   },
 ];
 
