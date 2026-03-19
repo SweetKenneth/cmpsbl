@@ -138,7 +138,7 @@ export default function StartHere() {
           <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
             The <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
             captures and crystallizes what your systems learn. But the real power is what you build with it — systems that dream, adapt, and improve themselves over time.{" "}
-            Explore the <Link to="/architecture" className="text-primary hover:underline font-medium">40-node topology</Link>{" "}
+            Explore <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">how it works</Link>{" "}
             or browse <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>. Everything below is free.
           </motion.p>
 
