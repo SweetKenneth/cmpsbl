@@ -601,9 +601,47 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
     limits: { maxTokens: 8192, rpm: 60, rpd: 10000 },
     metadata: { tier: 'free', priority: 4 }
   },
+  sambanova: {
+    id: 'sambanova',
+    name: 'SambaNova',
+    type: 'openai-compatible',
+    url: "https://api.sambanova.ai/v1/chat/completions",
+    model: "Meta-Llama-3.1-70B-Instruct",
+    keyEnv: "SAMBANOVA_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
+    limits: { maxTokens: 8192, rpm: 30, rpd: 10000 },
+    metadata: { tier: 'free', priority: 5 }
+  },
+  mistral: {
+    id: 'mistral',
+    name: 'Mistral AI',
+    type: 'openai-compatible',
+    url: "https://api.mistral.ai/v1/chat/completions",
+    model: "mistral-small-latest",
+    keyEnv: "MISTRAL_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0.1, outputPerMTok: 0.3 },
+    limits: { maxTokens: 8192, rpm: 30, rpd: 10000 },
+    metadata: { tier: 'free', priority: 6 }
+  },
+  openrouter: {
+    id: 'openrouter',
+    name: 'OpenRouter',
+    type: 'openai-compatible',
+    url: "https://openrouter.ai/api/v1/chat/completions",
+    model: "meta-llama/llama-3.1-8b-instruct:free",
+    keyEnv: "OPENROUTER_API_KEY",
+    capabilities: { text: true, image: false, embedding: false, streaming: true },
+    pricing: { inputPerMTok: 0, outputPerMTok: 0 },
+    limits: { maxTokens: 8192, rpm: 60, rpd: 50000 },
+    metadata: { tier: 'free', priority: 7 }
+  },
+  // ── PAID PROVIDERS BYPASSED ──────────────────────────────────
+  // OpenAI and Anthropic kept in registry for future re-enable but excluded from PROVIDER_ORDER
   openai: {
     id: 'openai',
-    name: 'OpenAI',
+    name: 'OpenAI (BYPASSED)',
     type: 'openai-compatible',
     url: "https://api.openai.com/v1/chat/completions",
     model: "gpt-4o-mini",
@@ -611,11 +649,11 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
     capabilities: { text: true, image: true, embedding: true, streaming: true },
     pricing: { inputPerMTok: 0.15, outputPerMTok: 0.60 },
     limits: { maxTokens: 16384, rpm: 500, rpd: 10000 },
-    metadata: { tier: 'paid', priority: 5 }
+    metadata: { tier: 'paid', priority: 99, bypassed: true }
   },
   anthropic: {
     id: 'anthropic',
-    name: 'Anthropic',
+    name: 'Anthropic (BYPASSED)',
     type: 'anthropic',
     url: "https://api.anthropic.com/v1/messages",
     model: "claude-3-5-sonnet-20241022",
@@ -623,7 +661,7 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
     capabilities: { text: true, image: true, embedding: false, streaming: true },
     pricing: { inputPerMTok: 3.0, outputPerMTok: 15.0 },
     limits: { maxTokens: 8192, rpm: 60, rpd: 10000 },
-    metadata: { tier: 'paid', priority: 6 }
+    metadata: { tier: 'paid', priority: 99, bypassed: true }
   },
   gemini: {
     id: 'gemini',
@@ -651,8 +689,10 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
   }
 };
 
-// Provider routing order (fallback chain) — Nexus free-tier providers first
-const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
+// Provider routing order (fallback chain) — FREE-TIER ONLY
+// OpenAI & Anthropic BYPASSED — no paid AI calls until re-enabled
+// NO Lovable AI Gateway — all traffic through NEXUS free-tier fleet
+const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "sambanova", "together", "deepseek", "mistral", "openrouter", "gemini", "local"];
 
 // ═══════════════════════════════════════════════════════════════
 // NEXUS ANALYTICS ACCUMULATOR
