@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * Memory Stream · Signal → Silicon
+ * CMPSBL® — Investor Relations
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
