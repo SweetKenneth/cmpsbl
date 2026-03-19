@@ -178,20 +178,19 @@ export default function AIOperatingSystem() {
             </motion.h1>
 
             <motion.p {...fadeUp(0.1)} className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-4">
-              An <strong className="text-foreground">AI Operating System</strong> is a unified platform that provides all the cognitive infrastructure
-              AI agents need to operate in production — persistent memory, intelligent model routing, AI-native security,
-              real-time observability, and autonomous optimization — integrated into a single coherent runtime.
+              An <strong className="text-foreground">AI Operating System</strong> is a platform that gives AI agents everything they need to work in production — persistent memory, smart model routing, built-in security,
+              real-time monitoring, and automatic self-improvement — all in one place.
             </motion.p>
 
             <motion.p {...fadeUp(0.15)} className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl mb-4">
-              Just as traditional operating systems unified file management, process scheduling, and I/O for applications,
-              an AI Operating System unifies the fragmented AI infrastructure stack into one platform where every node
-              communicates, learns, and enhances the others.
+              Just as Windows or macOS unified computing for applications,
+              an AI OS unifies the fragmented AI tool stack into one platform where every component
+              communicates, learns, and makes the others better.
             </motion.p>
 
             <motion.p {...fadeUp(0.18)} className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed max-w-3xl italic">
-              Every interaction flows through the <strong className="text-foreground not-italic">Memory Stream</strong> — where the system autonomously discovers,
-              packages, and exports reusable software memories. The rarest discoveries become specs for silicon computer chips.
+              Every interaction flows through the <strong className="text-foreground not-italic">Memory Stream</strong> — where the system automatically discovers,
+              packages, and exports reusable software. The rarest discoveries become specs for silicon computer chips.
             </motion.p>
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
