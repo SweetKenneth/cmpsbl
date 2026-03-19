@@ -788,7 +788,7 @@ function EvolutionSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION System</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Governed self-improvement. EVOLUTION manages version control, shadow testing, and promotion of
-          system changes — ensuring the substrate improves over time while maintaining integrity guarantees.
+          system changes — ensuring the platform improves over time while maintaining integrity guarantees.
         </p>
       </div>
 
