@@ -327,8 +327,8 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The substrate operates in one of four governance modes, managed by the GOVERNANCE plane.
-          Mode transitions require authorization and are recorded in the audit chain.
+          The platform operates in one of four modes, controlled by the GOVERNANCE module.
+          Switching modes requires authorization and is logged for auditability.
         </p>
         <DocTable
           headers={["Mode", "Description", "Evolution", "Mutations"]}

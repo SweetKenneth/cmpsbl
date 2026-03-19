@@ -98,7 +98,7 @@ export function HowCmpsblWorks() {
           </div>
 
           <p className="text-xs text-muted-foreground/60 text-center mt-6">
-            The substrate manages memory, orchestration, governance, and EVOLUTION automatically.
+            CMPSBL manages memory, orchestration, governance, and continuous improvement automatically.
           </p>
         </motion.div>
       </div>

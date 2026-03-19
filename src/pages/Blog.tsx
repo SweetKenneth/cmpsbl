@@ -764,7 +764,7 @@ export default function Blog() {
               </div>
               <div>
                 <h2 className="font-bold text-xl">Featured</h2>
-                <p className="text-xs text-muted-foreground">Essential reads from the CMPSBL research lab</p>
+                <p className="text-xs text-muted-foreground">Essential reads from the CMPSBL team</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

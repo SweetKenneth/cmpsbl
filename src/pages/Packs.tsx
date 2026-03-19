@@ -28,8 +28,8 @@ export default function Packs() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/packs" title="Capability Packs" faq={[
-        { question: "What are CMPSBL capability packs?", answer: "Capability packs are curated sets of engine capabilities across 6 strategic domains. Each pack uses exactly 1 memory slot. Choose packs that match your workload — swap anytime." },
-        { question: "How many packs can I activate?", answer: "Your plan controls how many memory slots you have: Builder (3), Studio (6), Creator (9), Architect (12). Each active pack uses one slot." },
+        { question: "What are CMPSBL capability packs?", answer: "Capability packs are curated bundles of features across 6 categories. Each pack uses exactly 1 slot. Choose packs that match your needs — swap anytime." },
+        { question: "How many packs can I activate?", answer: "Your plan determines your slot count: Builder (3 free), Studio (6), Creator (9), Architect (12). Each active pack uses one slot." },
       ]} />
       <EnhancedFooter />
     </div>

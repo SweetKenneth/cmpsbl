@@ -30,7 +30,7 @@ export function FoundryFinalCTA() {
           Create Free Account
         </button>
         <p className="mt-6 text-xs font-mono text-muted-foreground/40">
-          No credit card required · Passwordless magic link · Start crystallizing in 30 seconds
+          No credit card required · Passwordless magic link · Start building in 30 seconds
         </p>
       </motion.div>
     </section>
