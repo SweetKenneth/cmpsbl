@@ -227,7 +227,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Indie</div>
                   <div className="text-2xl font-bold text-primary">60%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Solo developers, hobbyists, early-stage teams
+                    Solo developers, hobbyists, side projects
                   </p>
                 </CardContent>
               </Card>
