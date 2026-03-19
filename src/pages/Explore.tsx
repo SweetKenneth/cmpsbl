@@ -192,11 +192,11 @@ export default function Explore() {
               
               {/* Mini stats row */}
               <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
-                 {[
-                   { value: "40", label: "Substrate Nodes" },
-                   { value: "24", label: "Memory Packs" },
-                   { value: "20", label: "Sealed Engines" },
-                   { value: "99.9%", label: "Uptime SLA" },
+                   {[
+                    { value: "40", label: "System Modules" },
+                    { value: "24", label: "Capability Packs" },
+                    { value: "20", label: "Sealed Products" },
+                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
                      <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
