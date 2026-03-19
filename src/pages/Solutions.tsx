@@ -144,7 +144,7 @@ export default function Solutions() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">
-                <Link to="/start-here">
+                <Link to="/auth">
                   Get Started Free <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
