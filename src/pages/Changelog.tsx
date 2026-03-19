@@ -26,7 +26,7 @@ type MutationOrigin =
   | 'cognition'      // The system needed to think differently
   | 'distribution'   // Downstream consumers needed something
   | 'architecture'   // The shape of the system was wrong
-  | 'autonomous'     // SEBA evolution run — no human trigger
+  | 'autonomous'     // Automated evolution run — no human trigger
 
 interface Specimen {
   /** Unique specimen identifier — epoch-serial format */

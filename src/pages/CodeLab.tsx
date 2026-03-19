@@ -59,9 +59,9 @@ const categoryMeta: Record<string, { icon: React.ElementType; color: string; lab
   defense: { icon: Shield, color: "text-rose-500", label: "Defense" },
   nexus: { icon: Network, color: "text-emerald-500", label: "Nexus" },
   vision: { icon: Eye, color: "text-blue-500", label: "Vision" },
-  dream: { icon: Moon, color: "text-purple-500", label: "Dream" },
+  dream: { icon: Moon, color: "text-purple-500", label: "Learning" },
   system: { icon: Settings, color: "text-slate-500", label: "System" },
-  world_engine: { icon: Layers, color: "text-amber-500", label: "Substrate" },
+  world_engine: { icon: Layers, color: "text-amber-500", label: "Platform" },
 };
 
 export default function CodeLab() {
