@@ -9,13 +9,13 @@ import { Lightbulb, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const traditionalStack = ["Models", "Applications"];
-const cmpsblStack = ["Models", "CMPSBL AI Operating System", "Applications"];
+const cmpsblStack = ["Models", "CMPSBL AI Platform", "Applications"];
 
 const explanations = [
-  { label: "Nodes", desc: "are system services" },
-  { label: "Memories", desc: "are crystallized solutions" },
-  { label: "Memory", desc: "stores experience across sessions" },
-  { label: "Dream cycles", desc: "improve the system over time" },
+  { label: "Modules", desc: "handle specialized tasks" },
+  { label: "Memories", desc: "capture proven solutions" },
+  { label: "Persistent Memory", desc: "remembers across sessions" },
+  { label: "Self-Improvement", desc: "gets smarter over time" },
 ];
 
 export function HowCmpsblWorks() {
