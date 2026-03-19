@@ -107,8 +107,8 @@ export default function VanillaDeveloperGuide() {
               </span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              No AI agents required. The CMPSBL SDK is a standard TypeScript library that gives your application
-              persistent memory, intelligent routing, security monitoring, and autonomous self-improvement —
+              No AI framework required. The CMPSBL SDK is a standard TypeScript library that gives your app
+              persistent memory, smart AI routing, security monitoring, and self-improvement —
               all through clean, typed function calls.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
