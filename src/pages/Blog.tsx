@@ -502,11 +502,11 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "Agent memory fading over time", source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch09-building', title: "Building on the Substrate",
-    excerpt: "Eight nodes and no documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure.",
+    id: 'ch09-building', title: "Building on the Platform",
+    excerpt: "Eight modules and no documentation. Making the platform usable meant rethinking how developers interact with cognitive infrastructure.",
     href: "/blog/building-on-the-substrate", category: "Development",
     date: "2025-05-25", readTime: "11 min", image: ch09Img,
-    imageAlt: "Developer building on the substrate", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Developer building on the platform", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch08-dream', title: "What If Software Could Dream",
