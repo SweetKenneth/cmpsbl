@@ -33,12 +33,12 @@ type StoreTab = "store" | "plans" | "memories";
 const TIERS: StoreTier[] = ["free", "starter", "pro", "elite", "apex"];
 
 const SEALED_FEATURES = [
-  { label: "4-Tier Auto Memory", desc: "HOT → WARM → COOL → COLD lifecycle with zero-config tiering", icon: Brain },
-  { label: "RIPPLE Orchestrator", desc: "Internal task delegation, flow routing & priority queuing", icon: Layers },
-  { label: "Always-On CLM", desc: "Continuous learning — even offline, even asleep", icon: Radio },
-  { label: "Sealed Runtime", desc: "Source-blocked, memory-isolated, clone-disabled execution", icon: Shield },
-  { label: "Version Minting", desc: "Unique immutable snapshot frozen at point of acquisition", icon: Sparkles },
-  { label: "DECODE Channel", desc: "Direct owner-to-agent encrypted communication relay", icon: Eye },
+  { label: "4-Tier Auto Memory", desc: "Automatic hot → warm → cool → cold data lifecycle — no configuration needed", icon: Brain },
+  { label: "Task Orchestrator", desc: "Built-in task delegation, workflow routing, and priority queuing", icon: Layers },
+  { label: "Always-On Learning", desc: "Continuous self-improvement — even offline, even idle", icon: Radio },
+  { label: "Sealed Runtime", desc: "Source-protected, memory-isolated, tamper-proof execution environment", icon: Shield },
+  { label: "Version Snapshots", desc: "Each purchase creates a unique, immutable version frozen at that moment", icon: Sparkles },
+  { label: "Encrypted Comms", desc: "Direct owner-to-agent encrypted communication channel", icon: Eye },
 ];
 
 const TAB_CONFIG = [

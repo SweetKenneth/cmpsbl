@@ -187,7 +187,7 @@ export default function Explore() {
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
               <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-                Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 memory slots.
+                Persistent memory, governed evolution, and self-improvement cycles — AI systems that adapt and get better over time. Start free with 3 capability slots.
               </p>
               
               {/* Mini stats row */}

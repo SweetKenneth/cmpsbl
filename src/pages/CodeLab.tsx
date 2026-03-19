@@ -99,9 +99,9 @@ export default function CodeLab() {
     <div className="min-h-screen bg-background">
       <SEO
         title="CodeLab — Free IDE & 30 Templates | CMPSBL"
-        description="CMPSBL's interactive developer playground: 30 free starter templates, live code execution, API testing sandbox, and real-time preview. Build with persistent memory and DREAM cycles instantly."
+        description="CMPSBL's interactive developer playground: 30 free starter templates, live code execution, API testing sandbox, and real-time preview. Build with persistent memory and self-improving AI instantly."
         canonical="https://cmpsbl.com/codelab"
-        keywords={["substrate", "AI development", "codelab", "CMPSBL", "developer tools", "free templates"]}
+        keywords={["AI development", "codelab", "CMPSBL", "developer tools", "free templates", "AI playground"]}
       />
 
       <PublicNav />
