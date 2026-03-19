@@ -1,15 +1,13 @@
 /**
- * LNCHBL Distribution Manifest — SUSPENDED
+ * LNCHBL Distribution Manifest — DISCONTINUED
  * 
- * ⛔ LNCHBL distribution is SUSPENDED pending licensing agreement.
- * All outbound operations (patches, brain sync, downloads) are blocked.
+ * ⛔ LNCHBL self-hosted distribution has been DISCONTINUED.
+ * This feature is no longer offered on any tier.
+ * All outbound operations (patches, brain sync, downloads) are permanently blocked.
  * Edge functions return 503. No new patches will be authored or dispatched.
  * 
- * To re-enable: remove 'LNCHBL' from SUSPENDED_DISTRIBUTIONS in distribution.ts
- * and restore edge function implementations from git history.
- * 
  * @module distribution/lnchbl-manifest
- * @version 11.6.0-suspended
+ * @version 12.0.0-discontinued
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────
@@ -84,10 +82,10 @@ export function isCmpsblOnlyFunction(name: string): boolean {
  * Validate that a patch payload doesn't reference any pf-* functions
  * as dependencies. Returns validation errors if any are found.
  * 
- * ⛔ SUSPENDED: Always rejects with suspension error.
+ * ⛔ DISCONTINUED: Always rejects — LNCHBL is no longer offered.
  */
 export function validatePatchForLnchbl(payload: LnchblPatchPayload): string[] {
   return [
-    'LNCHBL distribution is SUSPENDED. No patches may be authored or dispatched until licensing is resolved.',
+    'LNCHBL distribution is DISCONTINUED. Self-hosted deployment is no longer available.',
   ];
 }

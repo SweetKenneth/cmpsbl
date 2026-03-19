@@ -14,6 +14,7 @@ import {
   Check, ArrowRight, Package,
   Building2, Unlock, Layers,
   Sparkles, Download, X,
+  Zap, Shield, Brain, Globe,
 } from 'lucide-react';
 import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
@@ -108,19 +109,19 @@ const TIERS: {
     price: '$79',
     annualPrice: '$63',
     period: '/mo',
-    tagline: 'Full control. Your infrastructure.',
-    description: 'Self-hosted deployment and full governance authority.',
+    tagline: 'Full control. Maximum capability.',
+    description: 'Unlimited vault, dedicated partitions, and full governance authority.',
     accent: 'from-amber-500 to-orange-500',
     icon: Building2,
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
     features: [
       'Dedicated memory partitions',
-      'Self-hosted deployment (LNCHBL)',
       'Full governance authority',
       'Compliance & audit exports',
       'Organization workspaces',
       'Custom memory slots',
+      'White-glove onboarding',
       'Dedicated support channel',
     ],
   },
@@ -155,27 +156,50 @@ export function UpgradeContent() {
         >
           <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
             <Sparkles className="w-3 h-3 mr-1.5 inline" />
-            Memory Stream
+            Plans
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Memory Stream
+            Scale Your Platform
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto text-center">
-            The system <strong className="text-foreground">discovers memories</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
+            Every tier unlocks <strong className="text-foreground">full runtime access</strong>. Upgrade for more memory, faster routing, and deeper capabilities.
           </p>
         </motion.div>
 
-        {/* Memory Stream Explainer */}
+        {/* What You Get — expanded value prop */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto mt-8 text-center sm:text-left bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
+          transition={{ delay: 0.15 }}
+          className="max-w-3xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            The <strong className="text-foreground">Memory Stream</strong> continuously forms new memories.
-            Each day you can <strong className="text-foreground">crystallize</strong> a limited number of discoveries depending on your plan.
-          </p>
+          {[
+            { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-violet-400' },
+            { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-amber-400' },
+            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code.', color: 'text-emerald-400' },
+            { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
+          ].map((item) => (
+            <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
+              <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
+              <div>
+                <div className="text-sm font-semibold">{item.title}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Memory Stream pull breakdown */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="max-w-2xl mx-auto mt-8 text-center bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Brain className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold">Daily Memory Stream Pulls</span>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { tier: 'Builder', pulls: '3', color: 'text-emerald-400' },
@@ -189,14 +213,9 @@ export function UpgradeContent() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Each crystallization reveals a memory you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.{' '}
-            <strong className="text-foreground">Rare discoveries</strong> occasionally appear. If a <strong className="text-foreground">Mythic memory</strong> is discovered and your vault is full,
-            you will be prompted to upgrade immediately so the discovery is not lost.
-          </p>
-          <p className="text-xs text-muted-foreground/70">
-            <strong className="text-foreground">Slots</strong> control how many memories run simultaneously.{' '}
-            <strong className="text-foreground">Vault capacity</strong> controls how many discoveries you can store.
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
+            Each pull reveals a discovery you can <strong className="text-foreground">keep</strong> or <strong className="text-foreground">discard</strong>.
+            Rare and <strong className="text-foreground">Mythic</strong> discoveries appear occasionally — if your vault is full, you'll be prompted to upgrade.
           </p>
         </motion.div>
 
@@ -398,13 +417,13 @@ export function UpgradeContent() {
         <div className="max-w-2xl mx-auto space-y-8">
           <h2 className="text-2xl font-bold text-center tracking-tight">Common Questions</h2>
           {[
-            { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously forms new memories. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
+            { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously discovers new capabilities. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
             { q: 'What is the vault?', a: 'The vault stores memories you choose to keep after crystallization. Each tier has different vault capacity — from 5 (Builder) to unlimited (Architect). Remove old memories to free space.' },
             { q: 'What happens with Mythic discoveries?', a: 'Mythic memories are among the rarest outcomes. If your vault is full when one appears, you will be prompted to upgrade or manage your vault to keep it.' },
             { q: 'Can I export my discoveries?', a: 'Studio and above can export full capability packs including runtime, memory implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
             { q: 'What are custom memory slots?', a: 'Creator and Architect tiers can equip discovered memories directly into runtime slots. Lower tiers can only activate prebuilt capability packs.' },
+            { q: 'What does priority routing do?', a: 'Higher tiers get faster NEXUS execution, dedicated memory partitions, and priority queue placement. Architect gets the fastest routing with dedicated infrastructure.' },
             { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more.' },
-            { q: 'What is LNCHBL?', a: 'LNCHBL is the self-hosted deployment SDK. Architect plans include deployment rights to run the system on your own infrastructure.' },
           ].map(faq => (
             <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
               <h3 className="font-semibold">{faq.q}</h3>
