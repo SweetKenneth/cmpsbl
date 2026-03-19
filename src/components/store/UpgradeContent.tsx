@@ -14,6 +14,7 @@ import {
   Check, ArrowRight, Package,
   Building2, Unlock, Layers,
   Sparkles, Download, X,
+  Zap, Shield, Brain, Globe,
 } from 'lucide-react';
 import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
