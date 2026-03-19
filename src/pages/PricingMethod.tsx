@@ -113,7 +113,7 @@ export default function PricingMethod() {
               ))}
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Why multiple models? A single model can hallucinate prices or anchor on irrelevant comparisons. When three or four models independently agree on a price range, that estimate is far more trustworthy.
+              Why bother with multiple models? A single AI can hallucinate prices or fixate on the wrong comparison. When three or four models independently land in the same price range, that number is much more trustworthy.
             </p>
           </section>
 
