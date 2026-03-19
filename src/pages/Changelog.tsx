@@ -1159,46 +1159,45 @@ export default function Changelog() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO
-        title="Changelog — Every Update Since Day One | CMPSBL v14.4"
-        description="The complete evolution log for CMPSBL v14.4: every epoch, migration, node addition, and breaking change from IRONCLAD through MINDGAMES. Featuring the Collector Store, Meta-Agents, Engines, FAILSAFE, and SEO-optimized product pages."
-      />
-      <PublicNav />
+       <SEO
+         title="Changelog — Every Update Since Day One | CMPSBL"
+         description="The complete history of CMPSBL: every update, new feature, and architectural change organized by epoch. See what changed, why it changed, and what new capabilities emerged."
+       />
+       <PublicNav />
 
-      <main className="container mx-auto px-4 py-24 max-w-5xl">
-        {/* Header */}
-        <div className="text-center mb-20 space-y-6">
-          <Badge variant="outline" className="px-4 py-1.5 border-primary/20 bg-primary/5 text-primary font-mono text-xs tracking-widest">
-            GEOLOGICAL RECORD
-          </Badge>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight">
-            The{" "}
-            <span style={{
-              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>Fossil Record</span>
-          </h1>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Every mutation in this substrate was forced by pressure.
-            This is the record of those pressures, the adaptations they produced,
-            and the traits that emerged.
-          </p>
-          <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground font-mono pt-2">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-red-500/70" />
-              STIMULUS
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-blue-500/70" />
-              ADAPTATION
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-primary" />
-              PHENOTYPE
-            </span>
-          </div>
-        </div>
+       <main className="container mx-auto px-4 py-24 max-w-5xl">
+         {/* Header */}
+         <div className="text-center mb-20 space-y-6">
+           <Badge variant="outline" className="px-4 py-1.5 border-primary/20 bg-primary/5 text-primary font-mono text-xs tracking-widest">
+             FULL HISTORY
+           </Badge>
+           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight">
+             The{" "}
+             <span style={{
+               background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+               WebkitBackgroundClip: "text",
+               WebkitTextFillColor: "transparent",
+             }}>Changelog</span>
+           </h1>
+           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+             Every change to the platform is recorded here — what triggered it,
+             what we built in response, and what new capabilities emerged as a result.
+           </p>
+           <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground font-mono pt-2">
+             <span className="flex items-center gap-1.5">
+               <span className="w-2 h-2 rounded-full bg-red-500/70" />
+               WHY
+             </span>
+             <span className="flex items-center gap-1.5">
+               <span className="w-2 h-2 rounded-full bg-blue-500/70" />
+               WHAT CHANGED
+             </span>
+             <span className="flex items-center gap-1.5">
+               <span className="w-2 h-2 rounded-full bg-primary" />
+               WHAT'S NEW
+             </span>
+           </div>
+         </div>
 
         {/* Strata */}
         <div className="space-y-20">
