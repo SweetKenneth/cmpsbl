@@ -132,13 +132,13 @@ export default function StartHere() {
             You build on the substrate — adding{" "}
             <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
             DREAM cycles, governed evolution, and{" "}
-            <Link to="/engines" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
+            <Link to="/store" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
             to any AI application.
           </motion.p>
           <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
             The <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
             captures and crystallizes what your systems learn. But the real power is what you build with it — systems that dream, adapt, and improve themselves over time.{" "}
-            Explore the <Link to="/architecture" className="text-primary hover:underline font-medium">40-node topology</Link>{" "}
+            Explore <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">how it works</Link>{" "}
             or browse <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>. Everything below is free.
           </motion.p>
 
@@ -249,7 +249,7 @@ export default function StartHere() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold gap-2 px-6 sm:px-8 h-12 sm:h-13">
-              <Link to="/composable-cognitives">
+              <Link to="/store">
                 <Zap className="w-4 h-4" />
                 Browse Runtime Agents
               </Link>
@@ -265,7 +265,7 @@ export default function StartHere() {
           >
             <p className="text-sm text-muted-foreground italic leading-relaxed">
               The substrate compounds because of the{" "}
-              <Link to="/architecture" className="text-primary hover:underline font-medium">architecture</Link>{" "}
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">platform architecture</Link>{" "}
               — DREAM cycles synthesize, ADAPT governs, EVOLUTION improves, and the Memory Stream captures it all.{" "}
               Read our <Link to="/about" className="text-primary hover:underline font-medium">founding story</Link>{" "}
               or compare <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>. Start with one build. See for yourself.

@@ -276,7 +276,7 @@ export default function Engines() {
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
                 Engines are hosted{" "}
                 <a href="https://en.wikipedia.org/wiki/Runtime_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive runtimes</a>{" "}
-                that power your <strong className="text-foreground">websites, apps, and AI agents</strong> via the <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL substrate</Link>.
+                that power your <strong className="text-foreground">websites, apps, and AI agents</strong> via the <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">CMPSBL platform</Link>.
                 When you purchase an engine, you get an <strong className="text-foreground">API key + copy-paste SDK</strong> to
                 call it from your own stack — any language, any framework.
                 You don't see the source. You see the results.{" "}
@@ -478,7 +478,7 @@ export default function Engines() {
                 </div>
                 <div className="flex gap-3 mt-2">
                   <Button asChild variant="outline" size="sm" className="gap-1">
-                    <Link to="/composable-cognitives">
+                    <Link to="/store">
                       Browse 5 Meta-Agents — 40% off bundled
                     </Link>
                   </Button>

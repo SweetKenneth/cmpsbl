@@ -325,7 +325,7 @@ export default function SubstrateCapabilitiesDocs() {
       {/* Hero */}
       <section className="pt-24 pb-8 sm:pb-12 border-b border-border/50">
         <div className="container mx-auto px-4">
-          <Link to="/explore" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4">
+          <Link to="/store" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4">
             <ArrowLeft className="w-4 h-4" />
             Back to Explore
           </Link>

@@ -443,7 +443,7 @@ interface MemoryContext {
                   Start with the free tier. Upgrade when you need advanced features.
                 </p>
                 <div className="flex gap-4 justify-center flex-wrap">
-                  <Link to="/explore">
+                  <Link to="/store">
                     <Button size="lg">
                       Explore Capabilities
                       <ArrowRight className="w-4 h-4 ml-2" />

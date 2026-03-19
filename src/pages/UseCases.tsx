@@ -438,7 +438,7 @@ export default function UseCases() {
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>,{" "}
-              intelligent routing, and <Link to="/engines" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
+              intelligent routing, and <Link to="/store" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
               CMPSBL powers{" "}
               <a href="https://en.wikipedia.org/wiki/Applications_of_artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
               from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
@@ -482,7 +482,7 @@ export default function UseCases() {
             <p className="text-muted-foreground max-w-2xl mx-auto">
               From self-healing aircraft to kitchens that learn your taste — see what's possible 
               when AI remembers, adapts, and improves over time. Powered by the{" "}
-              <Link to="/architecture" className="text-primary hover:underline font-medium">40-node substrate</Link>{" "}
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">cognitive platform</Link>{" "}
               and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IoT integration</a>.
             </p>
           </motion.div>
@@ -630,7 +630,7 @@ export default function UseCases() {
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    <Link to="/explore">
+                    <Link to="/store">
                       <Play className="w-4 h-4" />
                       Browse Artifacts
                     </Link>

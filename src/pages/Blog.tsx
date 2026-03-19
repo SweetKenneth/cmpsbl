@@ -979,7 +979,7 @@ export default function Blog() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/explore">
+                  <Link to="/store">
                     <Sparkles className="w-4 h-4" />
                     Explore Artifacts
                   </Link>
@@ -995,10 +995,10 @@ export default function Blog() {
               {/* SEO Internal Links */}
               <nav className="mt-10 flex flex-wrap justify-center gap-3" aria-label="Explore more">
                 <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Home</Link>
-                <Link to="/substrate" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Substrate</Link>
+                <Link to="/ai-operating-system" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Platform</Link>
                 <Link to="/persistent-memory" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Persistent Memory</Link>
                 <Link to="/store" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Capability Store</Link>
-                <Link to="/composable-cognitives" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Runtime Agents</Link>
+                <Link to="/store" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Runtime Agents</Link>
                 <Link to="/developers" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Developer Hub</Link>
                 <Link to="/store?tab=plans" className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline">Pricing</Link>
               </nav>

@@ -49,7 +49,7 @@ export const legacyRoutes = (
     <Route path="/proof" element={<Navigate to="/" replace />} />
     <Route path="/status" element={<Navigate to="/" replace />} />
     <Route path="/system-integrity" element={<Navigate to="/" replace />} />
-    <Route path="/start-here" element={<Navigate to="/developers/guide" replace />} />
+     <Route path="/start-here" element={<Navigate to="/developers/guide" replace />} />
     <Route path="/products" element={<Navigate to="/" replace />} />
     <Route path="/clockless-world-engine" element={<Navigate to="/" replace />} />
     <Route path="/scanner" element={<Navigate to="/" replace />} />

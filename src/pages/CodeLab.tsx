@@ -435,7 +435,7 @@ const response = await substrate.nexus.text(
                   </p>
                 </div>
                 <Button asChild size="lg" className="gap-2 shrink-0">
-                  <Link to="/explore">
+                  <Link to="/store">
                     Browse Artifacts
                     <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -562,7 +562,7 @@ const response = await substrate.nexus.text(
                 and the AI Template Generator are available in the Explore section.
               </p>
               <Button asChild className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                <Link to="/explore">
+                <Link to="/store">
                   Browse Artifacts <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
