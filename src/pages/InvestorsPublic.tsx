@@ -93,9 +93,9 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Memory Stream Infrastructure", description: `40 stream nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
-    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + memory marketplace + sealed engine licensing. 90%+ gross margins." },
-    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated crystallization + 12-sector topology = a technical gap that widens daily. Can't be replicated." },
+    { icon: Rocket, title: "Platform Infrastructure", description: `40 modules across 12 groups with 675+ capabilities. Self-improving architecture with cryptographic verification.` },
+    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + self-hosted licensing + capability marketplace + engine licensing. 90%+ gross margins." },
+    { icon: BarChart, title: "Compounding Moat", description: "Self-improvement + accumulated capabilities + deep modular architecture = a technical gap that widens daily." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
 
