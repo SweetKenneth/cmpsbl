@@ -973,7 +973,7 @@ const stratumMindgames: Specimen[] = [
       "Legacy aliases retained at the compatibility layer only — new code references the canonical name exclusively",
     ],
     phenotype: [
-      "The substrate's evolution capability has one name everywhere — consistent identity across all surfaces",
+      "The platform's evolution capability has one name everywhere — consistent identity across all surfaces",
     ],
     affectedNodes: ["EVOLUTION"],
   },
