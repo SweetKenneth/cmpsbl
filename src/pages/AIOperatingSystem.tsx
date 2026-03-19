@@ -278,7 +278,7 @@ export default function AIOperatingSystem() {
                 The 6 Pillars of an AI Operating System
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
-                Every AI Operating System must provide these six core capabilities — integrated and communicating.
+                Every AI OS must provide these six core capabilities — integrated and working together.
               </p>
             </motion.div>
 
