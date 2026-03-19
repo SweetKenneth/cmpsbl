@@ -118,18 +118,18 @@ export default function About() {
     <div className="min-h-screen bg-background">
       <SEO
         title="About — The Team Behind CMPSBL"
-        description="Meet the CMPSBL Collective building the first AI operating system from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — 14 world firsts, Zenodo-verified IP, and open governance."
+        description="Meet the CMPSBL team building composable AI infrastructure from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — persistent memory, self-improvement cycles, and open governance."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'AI operating system', 'cognitive substrate', '40 node architecture', 'Memory Stream', 'Kenneth Sweet']}
+        keywords={['about CMPSBL', 'AI platform', 'composable AI', 'persistent memory', 'Kenneth Sweet']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'What is the CMPSBL substrate?', answer: 'A composable cognitive operating system with persistent memory, dream cycles, intelligent routing, and governed orchestration.' },
-          { question: 'What are DREAM cycles?', answer: 'Offline synthesis periods where the substrate consolidates memory, extracts patterns, and generates novel insights without active compute.' },
-          { question: 'Can I build on the substrate?', answer: 'Yes. Activate memory packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 memory slots.' },
+          { question: 'What is CMPSBL?', answer: 'A composable AI platform with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
+          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the platform consolidates memory, extracts patterns, and generates new insights without active compute.' },
+          { question: 'Can I build on the platform?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
         ]}
       />
 
@@ -170,7 +170,7 @@ export default function About() {
           <motion.div {...stagger(0.05)}>
             <Badge variant="outline" className="mb-5 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
               <Hammer className="w-3 h-3" />
-              <span className="text-[10px] sm:text-xs font-semibold">Build on the Substrate</span>
+              <span className="text-[10px] sm:text-xs font-semibold">Build on the Platform</span>
             </Badge>
           </motion.div>
 
@@ -316,19 +316,19 @@ export default function About() {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Hammer className="w-4.5 h-4.5 text-primary" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Platform</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A cognitive operating system organized across{" "}
-                  <Link to="/architecture" className="text-primary hover:underline font-medium">12 sectors</Link>.{" "}
+                  A composable AI platform organized across{" "}
+                  <Link to="/modules" className="text-primary hover:underline font-medium">specialized modules</Link>.{" "}
                   MEMORY persists context via{" "}
                   <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
-                  DREAM consolidates knowledge. <Link to="/engines" className="text-primary hover:underline font-medium">DEFENSE</Link>{" "}
-                  adapts to threats. NEXUS routes every call to the optimal provider.
+                  Self-improvement cycles consolidate knowledge. <Link to="/engines" className="text-primary hover:underline font-medium">Security</Link>{" "}
+                  adapts to threats. Smart routing sends every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The substrate doesn't just run — it <span className="text-foreground font-medium">evolves</span>.{" "}
-                  <Link to="/packs" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-upgrade cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
+                  The platform doesn't just run — it <span className="text-foreground font-medium">evolves</span>.{" "}
+                  <Link to="/packs" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-improvement cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />

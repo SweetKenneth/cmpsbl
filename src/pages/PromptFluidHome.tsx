@@ -46,18 +46,18 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 40 nodes across 12 sectors, powered by the CMPSBL Substrate." },
-  { year: "2025", title: "200k+ Lines of Code", description: "Grew to 675+ capabilities, 14-provider AI routing, and composable cognitive infrastructure." },
-  { year: "2026", title: "Zone Architecture", description: "Surgically hot-swappable subsystems with safety-switch isolation, 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ), and autonomous evolution." },
+  { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 modules across 12 functional groups, powered by persistent memory." },
+  { year: "2025", title: "200k+ Lines of Code", description: "Grew to 675+ capabilities, 14-provider AI routing, and composable AI infrastructure." },
+  { year: "2026", title: "Modular Architecture", description: "Hot-swappable modules with circuit-breaker isolation, 4 shielded expansion zones, and autonomous evolution." },
 ];
 
 const capabilities = [
   { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
-  { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI fallback chain with health-weighted selection. Never locked into a single vendor." },
-  { icon: Layers, title: "Zone Architecture", description: "40 nodes across 12 sectors with 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ) and safety-switch isolation." },
-  { icon: Shield, title: "Self-Evolving Codebase", description: "SEBA + EVOLUTION mesh continuously scan, propose, and apply patches autonomously." },
-  { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, synergy memories, and a capabilities depot — all orchestrated through a unified terminal." },
-  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, LangChain, and more — route to the best model for every task." },
+  { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI routing with health-weighted selection and automatic failover. Never locked into a single vendor." },
+  { icon: Layers, title: "Modular Architecture", description: "40 modules across 12 groups with 4 shielded expansion zones and circuit-breaker isolation." },
+  { icon: Shield, title: "Self-Evolving Platform", description: "Autonomous scanning, proposals, and patching — the platform continuously improves itself." },
+  { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, reusable workflows, and a full capabilities marketplace — all accessible via unified API." },
+  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, and more — automatically routes to the best model for every task." },
 ];
 
 const services = [

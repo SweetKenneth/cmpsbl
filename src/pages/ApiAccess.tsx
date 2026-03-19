@@ -32,7 +32,7 @@ const MODULES = [
   { icon: Network, name: "NEXUS", desc: "Route to the best AI model automatically with built-in failover" },
   { icon: Shield, name: "DEFENSE", desc: "Detect threats, block bad actors, and filter malicious inputs" },
   { icon: Eye, name: "VISION", desc: "Monitor system health, view metrics, and trace requests" },
-  { icon: Zap, name: "DREAM", desc: "Automatic learning cycles that improve your system over time" },
+  { icon: Zap, name: "EVOLUTION", desc: "Automatic self-improvement cycles that make your system smarter over time" },
 ];
 
 export default function ApiAccess() {
@@ -105,11 +105,11 @@ export default function ApiAccess() {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}>
-                Entire substrate.
+                Entire platform.
               </span>
             </h1>
              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Get instant access to 40 nodes through a single REST endpoint. 
+              Get instant access to 40 modules through a single REST endpoint. 
               Persistent memory, smart AI routing, security monitoring, and automatic improvement — free to start, no credit card needed.
             </p>
           </motion.div>
@@ -226,7 +226,7 @@ export default function ApiAccess() {
           <motion.div {...fadeUp} className="text-center mb-10">
              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">What your key unlocks</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              One API key gives you access to every node through a single endpoint.
+              One API key gives you access to every module through a single endpoint.
             </p>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -296,7 +296,7 @@ await substrate('vision.health', {});`}
             {[
               { value: "60", label: "Requests / min" },
               { value: "1,000", label: "Requests / day" },
-              { value: "40", label: "Nodes accessible" },
+              { value: "40", label: "Modules accessible" },
               { value: "∞", label: "Time limit" },
             ].map((s, i) => (
               <motion.div
@@ -320,7 +320,7 @@ await substrate('vision.health', {});`}
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-30" />
             <h2 className="text-2xl font-black text-foreground mb-3 tracking-tight">Need more?</h2>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Upgrade for higher limits, priority NEXUS routing, and enterprise features.
+              Upgrade for higher limits, priority AI routing, and enterprise features.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">

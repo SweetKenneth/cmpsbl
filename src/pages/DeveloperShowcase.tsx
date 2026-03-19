@@ -122,8 +122,8 @@ export default function DeveloperShowcase() {
   ];
 
   const techCapabilities = [
-    { icon: Database, label: "40", sublabel: "Nodes", description: "Specialized subsystems" },
-    { icon: Clock, label: "12", sublabel: "Sectors", description: "Organized by function" },
+    { icon: Database, label: "40", sublabel: "Modules", description: "Specialized subsystems" },
+    { icon: Clock, label: "12", sublabel: "Groups", description: "Organized by function" },
     { icon: Network, label: "675+", sublabel: "Capabilities", description: "Ready to use" },
     { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple options" },
   ];
@@ -161,7 +161,7 @@ export default function DeveloperShowcase() {
              </h1>
              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
                Add persistent memory, smart AI routing, and self-improvement capabilities 
-               to your applications. 40 specialized nodes across 12 coordinated sectors — all accessible via SDK or REST API.
+               to your applications. 40 specialized modules across 12 coordinated groups — all accessible via SDK or REST API.
              </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
                <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
@@ -200,7 +200,7 @@ export default function DeveloperShowcase() {
             <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />What You Can Build With</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Core Capabilities</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Everything your app needs to think, remember, and improve — built on 40 specialized nodes.
+              Everything your app needs to think, remember, and improve — built on 40 specialized modules.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -295,7 +295,7 @@ await cmpsbl.dream.cycle({
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building for Free</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-              No credit card required. Full access to 40 nodes.
+              No credit card required. Full access to 40 modules.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2">

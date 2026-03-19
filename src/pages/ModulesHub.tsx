@@ -1,5 +1,5 @@
 /**
- * Systems Hub — Central index of all substrate execution surfaces
+ * Systems Hub — Central index of all platform modules
  * 1 Kernel + 9 Systems + 5 Mesh Overlays + 9 Hidden Zones
  */
 
@@ -14,21 +14,21 @@ import { MODULE_REGISTRY, LAYER_COLORS, LAYER_LABELS, getPublicModules, getMeshO
 import { cn } from "@/lib/utils";
 
 const DISPLAY_SECTIONS = [
-  { key: 'public', label: 'Kernel & Systems', desc: 'The public execution surfaces — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
-  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all systems: DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE', getter: getMeshOverlays },
+  { key: 'public', label: 'Kernel & Systems', desc: 'The core modules — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
+  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all systems: security, immunity, evolution, intent routing, and governance', getter: getMeshOverlays },
 ] as const;
 
 export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="All Nodes — Browse the Full Topology | CMPSBL"
-        description="Explore every node in CMPSBL's substrate: BRAIN, MEMORY, DREAM, NEXUS, DEFENSE, ORACLE, PHANTOM, FORGE, and more. Each node is an autonomous subsystem with dedicated resolvers and mesh links."
+        title="All Modules — Browse the Full System Map | CMPSBL"
+        description="Explore every module in CMPSBL: Memory, Reasoning, Routing, Security, Evolution, and more. Each module is a specialized subsystem with dedicated capabilities and connections."
         image="https://cmpsbl.com/og/systems.jpg"
-        keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
+        keywords={['AI platform modules', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
+          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
         ]}
       />
 
@@ -46,16 +46,16 @@ export default function ModulesHub() {
               className="text-center"
             >
               <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-3">
-                Substrate Architecture
+                Platform Architecture
               </span>
                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                Every Node.{" "}
+                Every Module.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One System.
                 </span>
               </h1>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Browse all the specialized subsystems that make up the platform. Each node handles a specific job —
+               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Browse all the specialized modules that make up the platform. Each one handles a specific job —
                 together, they form an AI system that learns, adapts, and evolves on its own.
               </p>
             </motion.div>
@@ -106,7 +106,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'node'} <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'overlay' : 'module'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}
