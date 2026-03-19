@@ -641,7 +641,10 @@ serve(async (req) => {
 
     const totalDuration = Date.now() - startTime;
 
-    const memory = await getMemoryTierState(supabase);
+    const [memory, realCalls] = await Promise.all([
+      getMemoryTierState(supabase),
+      getRealAICallCounts(supabase),
+    ]);
     const hotOverflow = Math.max(0, memory.hot - memory.hotLimit);
     const tierReliefQueued = hotOverflow > 0;
 
@@ -675,7 +678,7 @@ serve(async (req) => {
         hourly_max: MAX_CYCLES_PER_HOUR,
       },
       velocity: {
-        est_daily_at_current_rate: Math.round((budget.todayCycles + cycleResults.length) * 10),
+        est_daily_at_current_rate: realCalls.today,
         target: 25000,
       },
       memory: {

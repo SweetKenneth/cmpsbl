@@ -9433,9 +9433,8 @@ async function routeTextToProvider(
   fallbacksUsed: number;
 }> {
   const startTime = Date.now();
-  const { systemPrompt, temperature = 0.7, maxTokens = 1200, fallbackDepth = 5, reflectionMode = false, proofMode = true } = options;
+  const { systemPrompt, temperature = 0.7, maxTokens = 1200, fallbackDepth = PROVIDER_ORDER.length, reflectionMode = false, proofMode = true } = options;
   
-  // If in reflection mode, add reflection context
   const effectiveSystemPrompt = reflectionMode 
     ? `${systemPrompt || ''}\n[REFLECTION MODE: Analyze and provide thoughtful, considered response]`.trim()
     : systemPrompt;
@@ -9451,24 +9450,19 @@ async function routeTextToProvider(
     const providerName = PROVIDER_ORDER[i];
     const provider = PROVIDERS[providerName];
     
-    if (!provider || !checkProviderAvailability(providerName)) {
-      fallbacksUsed++;
+    if (!provider || provider.type === 'local' || !checkProviderAvailability(providerName)) {
+      if (provider?.type !== 'local') {
+        fallbacksUsed++;
+      }
       continue;
     }
-    
-    // Skip local fallback until last resort
-    if (provider.type === 'local' && i < maxFallbacks - 1) continue;
     
     try {
       let content = '';
       let tokensUsed = 0;
-      
-      if (provider.type === 'local') {
-        // Local fallback response
-        content = `[Substrate Reflection] The cognitive mesh is currently in observation mode. Your prompt: "${prompt.substring(0, 100)}..." has been received. Please retry when providers are available.`;
-        tokensUsed = Math.ceil(content.length / 4);
-      } else if (provider.type === 'anthropic') {
-        // Anthropic Messages API
+      const resolvedModel = options.model || provider.model;
+
+      if (provider.type === 'anthropic') {
         const apiKey = Deno.env.get(provider.keyEnv);
         const response = await fetch(provider.url, {
           method: "POST",
@@ -9478,7 +9472,7 @@ async function routeTextToProvider(
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: options.model || provider.model,
+            model: resolvedModel,
             max_tokens: maxTokens,
             messages: messages.filter(m => m.role !== 'system'),
             system: effectiveSystemPrompt,
@@ -9486,7 +9480,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9495,10 +9498,8 @@ async function routeTextToProvider(
         content = data.content?.[0]?.text || '';
         tokensUsed = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
       } else if (provider.type === 'gemini') {
-        // Google Gemini API
         const apiKey = Deno.env.get(provider.keyEnv);
-        const modelName = options.model || provider.model;
-        const response = await fetch(`${provider.url}/${modelName}:generateContent?key=${apiKey}`, {
+        const response = await fetch(`${provider.url}/${resolvedModel}:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -9508,7 +9509,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9517,7 +9527,6 @@ async function routeTextToProvider(
         content = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
         tokensUsed = data.usageMetadata?.totalTokenCount || Math.ceil((prompt.length + content.length) / 4);
       } else {
-        // OpenAI-compatible providers
         const apiKey = Deno.env.get(provider.keyEnv);
         const response = await fetch(provider.url, {
           method: "POST",
@@ -9526,7 +9535,7 @@ async function routeTextToProvider(
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: options.model || provider.model,
+            model: resolvedModel,
             messages,
             temperature,
             max_tokens: maxTokens,
@@ -9534,7 +9543,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9549,29 +9567,51 @@ async function routeTextToProvider(
         const costUsd = (tokensUsed / 1_000_000) * (provider.pricing.inputPerMTok + provider.pricing.outputPerMTok) / 2;
         
         recordProviderSuccess(providerName);
-        recordNexusCall(providerName, true, tokensUsed, costUsd, latencyMs);
+        await recordNexusCall(providerName, true, tokensUsed, costUsd, latencyMs, resolvedModel, {
+          category: 'router',
+          route: 'text',
+          fallbacks_used: fallbacksUsed,
+        });
         
         return {
           success: true,
           content,
           provider: providerName,
-          model: options.model || provider.model,
+          model: resolvedModel,
           tokens: tokensUsed,
           costUsd: Math.round(costUsd * 1_000_000) / 1_000_000,
           latencyMs,
           fallbacksUsed,
         };
       }
+
+      const latencyMs = Date.now() - startTime;
+      recordProviderFailure(providerName);
+      await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+        category: 'router',
+        route: 'text',
+        reason: 'empty_content',
+      });
+      fallbacksUsed++;
     } catch (error) {
+      const latencyMs = Date.now() - startTime;
       console.error(`[NEXUS] Provider ${providerName} failed:`, error);
       recordProviderFailure(providerName);
+      await recordNexusCall(providerName, false, 0, 0, latencyMs, options.model || provider.model, {
+        category: 'router',
+        route: 'text',
+        error: error instanceof Error ? error.message : 'Unknown provider error',
+      });
       fallbacksUsed++;
     }
   }
   
-  // All providers failed, return local fallback
   const latencyMs = Date.now() - startTime;
-  recordNexusCall('local', false, 0, 0, latencyMs);
+  await recordNexusCall('local', false, 0, 0, latencyMs, 'fallback', {
+    category: 'router',
+    route: 'text',
+    reason: 'all_providers_exhausted',
+  });
   
   return {
     success: false,
