@@ -160,11 +160,11 @@ function OverviewSection() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Memory Stream Substrate</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          A 40-node cognitive substrate organized across 12 sectors, providing routing, memory, learning cycles,
-          observability, defense, and execution coordination for AI systems.{" "}
-          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
+          CMPSBL is a modular AI platform with 40 specialized modules organized into 12 functional groups — covering routing, memory, 
+          self-improvement, monitoring, security, and orchestration for AI applications.{" "}
+          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
 
@@ -177,9 +177,9 @@ function OverviewSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The substrate is organized into layers, each with a distinct responsibility. The <strong className="text-foreground">Spine</strong> (CORE → SYSTEM → CCR) provides the vertical core,
-          the <strong className="text-foreground">OCG</strong> (Operational Compliance Grid) handles boundary enforcement, and the <strong className="text-foreground">Execution tier</strong> runs
-          all user-facing capabilities. Cross-cutting <strong className="text-foreground">Fields</strong> (EVOLUTION, IMMUNITY, INTENT) permeate every layer.
+          The platform is organized into layers, each with a clear job. The <strong className="text-foreground">Spine</strong> handles startup and lifecycle, 
+          the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
+          all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
         </p>
         <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
 │  GOVERNANCE (Plane)        Legitimacy supervision       │
@@ -216,14 +216,14 @@ Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
-            { icon: Brain,   name: "BRAIN",      desc: "Persistent multi-tier memory with automatic tiering and DREAM consolidation" },
-            { icon: Zap,     name: "NEXUS",      desc: "Intelligent multi-provider AI routing with failover and cost optimization" },
-            { icon: Moon,    name: "DREAM",      desc: "Offline synthesis, pattern consolidation, and heuristic generation" },
-            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input sanitization, and WebAuthn" },
-            { icon: Eye,     name: "VISION",     desc: "System observability, health metrics, and performance dashboards" },
-            { icon: Scroll,  name: "AUDIT",      desc: "Immutable append-only ledger with Merkle receipt chains" },
-            { icon: Code,    name: "DECODE",     desc: "Natural language understanding and contract interpretation" },
-            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent orchestration with 5 coordination patterns" },
+            { icon: Brain,   name: "BRAIN",      desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
+            { icon: Zap,     name: "NEXUS",      desc: "Smart AI routing across 13+ providers with automatic failover and cost controls" },
+            { icon: Moon,    name: "DREAM",      desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
+            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input filtering, and authentication" },
+            { icon: Eye,     name: "VISION",     desc: "System health monitoring, metrics dashboards, and performance tracking" },
+            { icon: Scroll,  name: "AUDIT",      desc: "Tamper-proof activity log with cryptographic verification" },
+            { icon: Code,    name: "DECODE",     desc: "Natural language understanding, intent detection, and response generation" },
+            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent teams with 5 built-in coordination patterns" },
           ].map((s, i) => (
             <motion.div
               key={s.name}
@@ -258,8 +258,8 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          The substrate is a 40-node topology organized across 12 sectors. Every node participates in
-          a weighted matrix managed by CORE (Σ = 1.000), which acts as the kernel boot authority.
+          CMPSBL is built from 40 modules organized into 12 functional groups. Each module has a priority weight 
+          managed by the CORE module, which coordinates startup and system health.
         </p>
       </div>
 
@@ -269,28 +269,28 @@ function ArchitectureSection() {
         <DocTable
           headers={["Sector", "Role", "Nodes"]}
           rows={[
-            ["Spine", "Kernel boot authority and lifecycle management", "CORE, SYSTEM"],
-            ["CCR", "Cognitive Core Reality — reasoning and synthesis", "BRAIN, MEMORY, DREAM"],
-            ["OCG", "Operational Compliance Grid — boundary enforcement", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
-            ["Execution", "User-facing capabilities and orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
-            ["ESZ", "Enterprise Safety Zone", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
-            ["EPZ", "Enterprise Performance Zone", "SIMULATE, GEOSPATIAL, EDGE"],
-            ["EMZ", "Enterprise Manufacturing Zone", "FORGE, TRANSLATE, INGEST"],
-            ["CSZ", "Continuous Safety Zone", "EVOLUTION, SHADOW, PHANTOM"],
-            ["Field", "Cross-cutting transformation fabric", "EVOLUTION, IMMUNITY, INTENT"],
-            ["Plane", "Supervisory overlay", "GOVERNANCE"],
-            ["Shell", "Outer containment boundary", "DEFENSE"],
+            ["Spine", "Startup and lifecycle management", "CORE, SYSTEM"],
+            ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],
+            ["Operations", "Access control, auditing, and coordination", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
+            ["Execution", "User-facing features and AI orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
+            ["Enterprise Safety", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
+            ["Enterprise Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
+            ["Enterprise Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
+            ["Continuous Safety", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
+            ["Cross-Cutting", "Systems that span all layers", "EVOLUTION, IMMUNITY, INTENT"],
+            ["Governance", "Supervisory oversight and policy enforcement", "GOVERNANCE"],
+            ["Defense", "Outer security boundary", "DEFENSE"],
           ]}
         />
       </div>
 
       {/* Matrix weighting */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Weighted Matrix</h3>
+        <h3 className="font-semibold text-foreground mb-4">Priority Weights</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Every node in the substrate holds a weight in the system matrix. These weights determine health contribution,
-          failure impact radius, and safety-switch sensitivity. CORE manages the matrix and recalculates weights during
-          boot, evolution promotions, and manual rebalance events.
+          Every module has a priority weight that determines how much it affects overall system health.
+          Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
+          recalculated during startup and after system updates.
         </p>
         <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
 CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
@@ -304,10 +304,10 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
       {/* Safety switches */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Safety Switches</h3>
+        <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Safety switches prevent cascading failures across nodes. When a node's health drops below threshold,
-          the switch isolates it from the rest of the system. MEDIC then initiates self-healing diagnostics.
+          Circuit breakers prevent failures from spreading across modules. When a module's health drops too low,
+          it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
@@ -327,8 +327,8 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The substrate operates in one of four governance modes, managed by the GOVERNANCE plane.
-          Mode transitions require authorization and are recorded in the audit chain.
+          The platform operates in one of four modes, controlled by the GOVERNANCE module.
+          Switching modes requires authorization and is logged for auditability.
         </p>
         <DocTable
           headers={["Mode", "Description", "Evolution", "Mutations"]}

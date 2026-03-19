@@ -9,13 +9,13 @@ import { Lightbulb, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const traditionalStack = ["Models", "Applications"];
-const cmpsblStack = ["Models", "CMPSBL AI Operating System", "Applications"];
+const cmpsblStack = ["Models", "CMPSBL AI Platform", "Applications"];
 
 const explanations = [
-  { label: "Nodes", desc: "are system services" },
-  { label: "Memories", desc: "are crystallized solutions" },
-  { label: "Memory", desc: "stores experience across sessions" },
-  { label: "Dream cycles", desc: "improve the system over time" },
+  { label: "Modules", desc: "handle specialized tasks" },
+  { label: "Memories", desc: "capture proven solutions" },
+  { label: "Persistent Memory", desc: "remembers across sessions" },
+  { label: "Self-Improvement", desc: "gets smarter over time" },
 ];
 
 export function HowCmpsblWorks() {
@@ -85,7 +85,7 @@ export function HowCmpsblWorks() {
           {/* What the OS manages */}
           <div className="text-center mb-4">
             <p className="text-sm text-muted-foreground">
-              The substrate orchestrates intelligence across your application:
+              The platform coordinates intelligence across your application:
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -98,7 +98,7 @@ export function HowCmpsblWorks() {
           </div>
 
           <p className="text-xs text-muted-foreground/60 text-center mt-6">
-            The substrate manages memory, orchestration, governance, and EVOLUTION automatically.
+            CMPSBL manages memory, orchestration, governance, and continuous improvement automatically.
           </p>
         </motion.div>
       </div>

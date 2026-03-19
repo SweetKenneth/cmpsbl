@@ -19,7 +19,7 @@ export default function Upgrade() {
       </div>
       <SEO
         title="Pricing — Free to Architect Plans | CMPSBL"
-        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, unlimited). Every tier gets full 40-node runtime. Scale vault and Memory Stream pulls."
+        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, 12 slots). Every tier gets full platform access. Scale storage and capabilities as you grow."
       />
       <PublicNav />
       <UpgradeOnboarding />
@@ -29,8 +29,8 @@ export default function Upgrade() {
       </main>
 
       <PageSEOBlock path="/upgrade" title="Upgrade & Pricing" faq={[
-        { question: "Is there a free tier for CMPSBL?", answer: "Yes. The Builder tier is completely free with 3 memory slots, full runtime access, and no credit card required. Upgrade anytime to unlock more slots and premium capabilities." },
-        { question: "What plans does CMPSBL offer?", answer: "Four tiers: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($79/mo, 9 slots), and Architect ($199/mo, 12 slots). Enterprise custom plans also available." },
+        { question: "Is there a free tier for CMPSBL?", answer: "Yes. The Builder tier is completely free with 3 capability slots, full platform access, and no credit card required. Upgrade anytime for more slots and features." },
+        { question: "What plans does CMPSBL offer?", answer: "Four tiers: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($79/mo, 9 slots), and Architect ($199/mo, 12 slots). Enterprise plans are also available." },
       ]} />
       <EnhancedFooter />
     </div>

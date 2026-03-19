@@ -1,5 +1,5 @@
 /**
- * MemoryPacksSection — Clear explanation of the pack activation model
+ * CapabilityPacksSection — Clear explanation of the pack activation model
  * Free start → Packs activate capabilities → Slots create structure → Governance enforces boundaries
  */
 

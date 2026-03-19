@@ -20,8 +20,8 @@ export function FoundryFinalCTA() {
         className="max-w-2xl mx-auto text-center relative"
       >
         <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto mb-8 leading-relaxed">
-          The Memory Stream captures raw system behavior and crystallizes it
-          into production-grade software — and when exceptional, into silicon.
+          The Memory Stream captures system behavior and turns it
+          into production-ready capabilities — automatically.
         </p>
         <button
           onClick={() => navigate('/auth?redirect=/foundry')}
@@ -30,7 +30,7 @@ export function FoundryFinalCTA() {
           Create Free Account
         </button>
         <p className="mt-6 text-xs font-mono text-muted-foreground/40">
-          No credit card required · Passwordless magic link · Start crystallizing in 30 seconds
+          No credit card required · Passwordless magic link · Start building in 30 seconds
         </p>
       </motion.div>
     </section>
