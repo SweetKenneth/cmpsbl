@@ -438,9 +438,9 @@ export default function SubstrateDemo() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link to="/intelligence">
-                    View Architecture
-                  </Link>
+                   <Link to="/ai-operating-system">
+                     How It Works
+                   </Link>
                 </Button>
               </div>
             </motion.div>
