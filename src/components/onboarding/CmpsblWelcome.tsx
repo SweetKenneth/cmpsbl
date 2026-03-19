@@ -64,7 +64,7 @@ const STEPS: OnboardingStep[] = [
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
     nextSteps: [
-      { text: 'Read the quick-start guide', href: '/start-here' },
+      { text: 'Read the documentation', href: '/documentation' },
       { text: 'Try the Memory Stream live', href: '/foundry' },
       { text: 'Browse the Store', href: '/store' },
     ],

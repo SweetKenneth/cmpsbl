@@ -28,14 +28,14 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const LEARNING_TRACKS = [
-  { icon: Brain, title: 'BRAIN Memory API', desc: '4-tier persistent memory, DREAM consolidation, semantic recall', difficulty: 'Beginner', modules: 6, time: '45 min', color: 'text-primary' },
-  { icon: Network, title: 'NEXUS Routing', desc: 'Multi-provider AI routing with failover, budget controls, latency optimization', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
-  { icon: Shield, title: 'DEFENSE & Security', desc: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
-  { icon: Layers, title: 'Resolver Patterns', desc: 'Node.resolver naming, intent routing, receipt logging, mesh telemetry', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
-  { icon: Zap, title: 'Ascension Lifecycle', desc: 'Node 41+ ingestion, primitive extraction, quality gates, delta measurement', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
-  { icon: Target, title: 'CJPI Scoring', desc: 'Novelty, utility, complexity, composability — how the substrate scores discoveries', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
-  { icon: Sparkles, title: 'Memory Stream', desc: 'Crystallization, tiering, vault management, and capability pack export', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
-  { icon: Code, title: 'Production Hardening', desc: 'Error handling, retry logic, Forge protections, VOLVER handicapping', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },
+  { icon: Brain, title: 'Memory API Basics', desc: 'Learn the 4-tier memory system: store, recall, search, and automatic cleanup', difficulty: 'Beginner', modules: 6, time: '45 min', color: 'text-primary' },
+  { icon: Network, title: 'AI Routing', desc: 'Route requests across multiple AI providers with automatic failover and cost controls', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
+  { icon: Shield, title: 'Security & Safety', desc: 'Add threat detection, rate limiting, content filtering, and audit logging', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
+  { icon: Layers, title: 'Building with Resolvers', desc: 'Learn the node → resolver pattern: naming, routing, logging, and observability', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
+  { icon: Zap, title: 'Advanced Pipelines', desc: 'Build multi-step processing chains with quality gates and performance tracking', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
+  { icon: Target, title: 'Discovery Scoring', desc: 'Understand how capabilities are scored for novelty, usefulness, and composability', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
+  { icon: Sparkles, title: 'Memory Stream', desc: 'Discover, crystallize, and export capabilities from the live discovery feed', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
+  { icon: Code, title: 'Production Ready', desc: 'Error handling, retry patterns, graceful degradation, and performance tuning', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },
 ];
 
 const DIFF_COLORS: Record<string, string> = {
@@ -80,19 +80,19 @@ const DeveloperAcademy = () => {
               <div className="max-w-4xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
                   <GraduationCap className="w-4 h-4" />
-                  Academy v2 — Updated for v14.4.0
+                  Interactive Learning Platform
                 </div>
 
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight animate-fade-in">
-                  Learn the{' '}
+                  Learn to build with{' '}
                   <span className="bg-gradient-to-r from-primary to-neon-cyan bg-clip-text text-transparent">
-                    Cognitive Substrate
+                    CMPSBL
                   </span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in">
-                  8 guided learning tracks. Live sandbox. Verifiable certifications.
-                  From your first SDK call to production-grade Ascension pipelines.
+                  8 hands-on tracks from beginner to expert. Write real code in a live sandbox.
+                  Earn verifiable certifications when you're done.
                 </p>
 
                 {/* Stats */}
@@ -122,10 +122,10 @@ const DeveloperAcademy = () => {
           <section className="py-12 md:py-16 border-b border-border/40">
             <div className="container mx-auto px-4">
               <div className="text-center mb-10">
-                <h2 className="text-2xl md:text-3xl font-bold mb-3">Learning Tracks</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Pick Your Track</h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                  Choose a track based on your experience level. Each track includes interactive tutorials,
-                  code exercises, and real SDK integration patterns.
+                  Start with the basics or jump straight to advanced topics. Each track includes
+                  step-by-step tutorials, code exercises, and working examples.
                 </p>
               </div>
 
@@ -204,10 +204,10 @@ const DeveloperAcademy = () => {
                 <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Rocket className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Build on the Substrate?</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Start Building?</h2>
                 <p className="text-muted-foreground mb-8">
-                  Complete learning tracks, earn certifications, and start building
-                  production-grade agents with persistent memory and Ascension capabilities.
+                  Finish a track, earn a certification, and start building
+                  production apps with persistent memory and intelligent routing.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">

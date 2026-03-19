@@ -77,55 +77,55 @@ function UseCaseCard({ icon: Icon, title, description, example, color, gradient 
 export default function DeveloperShowcase() {
   const devFeatures = [
     {
-      icon: Brain, title: "Persistent Memory Layer",
-      description: "Give your apps 4-tier memory that survives sessions. Hot cache, warm store, cold archive, and legacy vault with automatic migration.",
-      features: ["Hot/warm/cold/legacy memory tiers", "Cross-session persistence", "Semantic search & recall", "Auto-decay & reinforcement"],
+      icon: Brain, title: "Persistent Memory",
+      description: "Give your apps memory that survives sessions. Four temperature tiers handle hot cache, warm storage, cold archive, and long-term recall automatically.",
+      features: ["4-tier temperature management", "Cross-session persistence", "Meaning-based search & recall", "Automatic cleanup & reinforcement"],
       color: "text-purple-500", gradient: "from-purple-500 to-violet-600",
     },
     {
-      icon: Moon, title: "DREAM Cycles",
-      description: "Offline processing that consolidates learnings, extracts patterns, and evolves your AI during idle periods.",
+      icon: Moon, title: "Self-Improvement Cycles",
+      description: "During idle periods, the system consolidates learnings, extracts patterns, and evolves your AI — without any manual intervention.",
       features: ["Memory consolidation", "Pattern extraction", "Schema evolution", "Scheduled processing"],
       color: "text-violet-500", gradient: "from-violet-500 to-purple-600",
     },
     {
-      icon: MessageSquare, title: "DECODE Node",
-      description: "Intelligent conversation layer with intent extraction, entity recognition, and memory-informed responses.",
-      features: ["Intent classification", "Entity extraction", "Context windowing", "Memory integration"],
+      icon: MessageSquare, title: "Conversation Intelligence",
+      description: "Add intent classification, entity extraction, and memory-informed responses to any conversational interface.",
+      features: ["Intent classification", "Entity extraction", "Context windowing", "Memory-aware responses"],
       color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600",
     },
     {
-      icon: Zap, title: "NEXUS Router",
-      description: "Route requests through optimal AI providers. Balance cost, latency, and capability automatically across 13+ providers.",
-      features: ["Multi-provider routing", "Cost optimization", "Latency-based selection", "BYOK architecture"],
+      icon: Zap, title: "Smart AI Routing",
+      description: "Automatically route requests to the best AI provider based on cost, speed, and capability. Supports 13+ providers with automatic failover.",
+      features: ["Multi-provider routing", "Cost optimization", "Speed-based selection", "Bring your own keys"],
       color: "text-green-500", gradient: "from-green-500 to-emerald-600",
     },
     {
-      icon: Shield, title: "DEFENSE Node",
-      description: "Built-in security with rate limiting, threat detection, and governance for responsible AI.",
+      icon: Shield, title: "Built-In Security",
+      description: "Rate limiting, threat detection, content filtering, and complete audit logging — all included out of the box.",
       features: ["Rate limiting", "Threat scoring", "Content filtering", "Audit logging"],
       color: "text-red-500", gradient: "from-red-500 to-rose-600",
     },
     {
-      icon: Layers, title: "RIPPLE Event Bus",
-      description: "Event-driven messaging system for decoupled architecture. Events flow, nodes react, state propagates.",
+      icon: Layers, title: "Event-Driven Architecture",
+      description: "Decouple your app with pub/sub messaging. Events flow through the system, nodes react, and state propagates automatically.",
       features: ["Pub/sub messaging", "Event sourcing", "Replay capability", "Webhook integration"],
       color: "text-amber-500", gradient: "from-amber-500 to-orange-600",
     },
   ];
 
   const useCases = [
-    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember context across sessions and learn from interactions.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600" },
-    { icon: FileCode, title: "RAG Memories", description: "Intelligent document retrieval with memory-enhanced context augmentation.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-purple-500", gradient: "from-purple-500 to-violet-600" },
-    { icon: Workflow, title: "Agent Workflows", description: "Multi-step autonomous agents with persistent state and learning loops.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-emerald-500", gradient: "from-emerald-500 to-green-600" },
-    { icon: Puzzle, title: "Plugin Systems", description: "Extensible architectures with shared cognitive substrate.", example: "cmpsbl.core.register({ node, config })", color: "text-rose-500", gradient: "from-rose-500 to-pink-600" },
+    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember users across sessions and learn from every conversation.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600" },
+    { icon: FileCode, title: "Smart Document Search", description: "Retrieve documents with memory-enhanced context — not just keyword matching.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-purple-500", gradient: "from-purple-500 to-violet-600" },
+    { icon: Workflow, title: "Autonomous Agents", description: "Multi-step agents with persistent state, self-correction, and continuous learning.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-emerald-500", gradient: "from-emerald-500 to-green-600" },
+    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-rose-500", gradient: "from-rose-500 to-pink-600" },
   ];
 
   const techCapabilities = [
-    { icon: Database, label: "40", sublabel: "Nodes", description: "Full cognitive substrate" },
-    { icon: Clock, label: "12", sublabel: "Sectors", description: "Organized topology" },
-    { icon: Network, label: "675+", sublabel: "Capabilities", description: "Production-ready" },
-    { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple integrations" },
+    { icon: Database, label: "40", sublabel: "Nodes", description: "Specialized subsystems" },
+    { icon: Clock, label: "12", sublabel: "Sectors", description: "Organized by function" },
+    { icon: Network, label: "675+", sublabel: "Capabilities", description: "Ready to use" },
+    { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple options" },
   ];
 
   return (
@@ -152,17 +152,17 @@ export default function DeveloperShowcase() {
               <Terminal className="w-4 h-4 mr-2" />
               For Software Developers
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
-              <span className="text-foreground">Build Apps That </span>
-              <span className="block sm:inline" style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-              }}>Think, Remember, Dream</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-              CMPSBL's 40-node substrate gives your applications persistent memory, 
-              DREAM cycles for autonomous improvement, and intelligent multi-provider AI routing across 12 coordinated sectors.
-            </p>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
+               <span className="text-foreground">Build Apps That </span>
+               <span className="block sm:inline" style={{
+                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+               }}>Think &amp; Remember</span>
+             </h1>
+             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+               Add persistent memory, smart AI routing, and self-improvement capabilities 
+               to your applications. 40 specialized nodes across 12 coordinated sectors — all accessible via SDK or REST API.
+             </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
                <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
                  <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
@@ -197,10 +197,10 @@ export default function DeveloperShowcase() {
        <section className="py-16 sm:py-24">
          <div className="container mx-auto px-3 sm:px-4">
            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-14">
-            <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />Core Capabilities</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Everything Your App Needs</h2>
+            <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />What You Can Build With</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Core Capabilities</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              A complete cognitive infrastructure built on 40 nodes across 12 sectors for building intelligent, adaptive applications.
+              Everything your app needs to think, remember, and improve — built on 40 specialized nodes.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -215,10 +215,10 @@ export default function DeveloperShowcase() {
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <Badge variant="outline" className="mb-4"><Code className="w-3 h-3 mr-1" />Use Cases</Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Build Anything Intelligent</h2>
+            <Badge variant="outline" className="mb-4"><Code className="w-3 h-3 mr-1" />What Developers Build</Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Real-World Use Cases</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              From chatbots to autonomous agents, CMPSBL powers the next generation of AI apps.
+              From chatbots with long-term memory to fully autonomous agent teams.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -233,10 +233,10 @@ export default function DeveloperShowcase() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <Badge variant="outline" className="mb-4"><Terminal className="w-3 h-3 mr-1" />Integration</Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Simple to Integrate</h2>
+            <Badge variant="outline" className="mb-4"><Terminal className="w-3 h-3 mr-1" />Quick Start</Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Integrate in Minutes</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Connect your app to the CMPSBL substrate in minutes. We handle the cognitive complexity.
+              Connect your app with a few lines of code. We handle the infrastructure.
             </p>
           </motion.div>
           <div className="max-w-4xl mx-auto">
@@ -293,9 +293,9 @@ await cmpsbl.dream.cycle({
       <section className="py-24 bg-gradient-to-b from-muted/20 via-primary/5 to-transparent">
         <div className="container mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building Today</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building for Free</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-              Free tier. No credit card. 40 nodes at your fingertips.
+              No credit card required. Full access to 40 nodes.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2">

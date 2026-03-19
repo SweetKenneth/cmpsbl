@@ -26,10 +26,10 @@ export default function PricingMethod() {
           <div className="mb-16">
             <Badge variant="outline" className="mb-4">Methodology</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight mb-6">
-              Our Pricing Method
+              How We Price Things
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-              Every price on this platform is determined by a systematic, transparent methodology — not arbitrary guesswork. Here's exactly how it works.
+              Every price on this platform is calculated using a transparent, repeatable system — not guesswork. Here's exactly how it works.
             </p>
           </div>
 
@@ -37,13 +37,13 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Scale className="h-6 w-6 text-primary" />
-              Why Software Pricing Is Hard
+              Why Pricing Software Is Tricky
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Software doesn't have material costs. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. A single library might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
+              Software has no material cost. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. The same feature might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
+              We don't guess. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market data, then combine those estimates with our own technical analysis to produce a fair, defensible price.
             </p>
           </section>
 
@@ -57,27 +57,27 @@ export default function PricingMethod() {
               <Card className="border-primary/30 bg-primary/5">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-primary mb-1">55%</div>
-                  <div className="font-semibold text-foreground mb-2">Market Consensus</div>
+                  <div className="font-semibold text-foreground mb-2">Market Comparison</div>
                   <p className="text-sm text-muted-foreground">
-                    Multiple AI models independently evaluate the capability against comparable software products, tools, and libraries. We take the median estimate after rejecting outliers.
+                    Multiple AI models independently compare the capability to similar products and tools on the market. We take the middle estimate after removing outliers.
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-foreground mb-1">25%</div>
-                  <div className="font-semibold text-foreground mb-2">CJPI Technical Premium</div>
+                  <div className="font-semibold text-foreground mb-2">Technical Quality Score</div>
                   <p className="text-sm text-muted-foreground">
-                    The Apex Discovery Index measures technical sophistication — node complexity, memory depth, system integration quality. Higher CJPI scores unlock premium multipliers.
+                    Our internal scoring system measures how sophisticated the capability is — including complexity, integration depth, and how well it works with other features. Higher scores earn a premium.
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-foreground mb-1">20%</div>
-                  <div className="font-semibold text-foreground mb-2">Internal Valuation</div>
+                  <div className="font-semibold text-foreground mb-2">Engineering Analysis</div>
                   <p className="text-sm text-muted-foreground">
-                    Engineering-derived value based on component analysis, crystallization depth, and system complexity. This anchors pricing to measurable technical metrics.
+                    Our engineering team's own assessment based on component analysis, build complexity, and system depth. This keeps pricing grounded in measurable technical work.
                   </p>
                 </CardContent>
               </Card>
@@ -91,10 +91,10 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Brain className="h-6 w-6 text-primary" />
-              Multi-Model Consensus Pricing
+              How Multiple AI Models Agree on a Price
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Instead of relying on a single AI model's estimate, we query <strong className="text-foreground">four independent models</strong> simultaneously. Each model receives the same structured prompt containing the capability's technical profile, and returns an independent market analysis.
+              Instead of trusting a single AI estimate, we ask <strong className="text-foreground">four independent models</strong> the same question. Each model gets the same technical profile and returns its own market analysis independently.
             </p>
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
@@ -113,7 +113,7 @@ export default function PricingMethod() {
               ))}
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Why multiple models? A single model can hallucinate prices or anchor on irrelevant comparisons. When three or four models independently agree on a price range, that estimate is far more trustworthy.
+              Why bother with multiple models? A single AI can hallucinate prices or fixate on the wrong comparison. When three or four models independently land in the same price range, that number is much more trustworthy.
             </p>
           </section>
 
@@ -121,13 +121,13 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Shield className="h-6 w-6 text-primary" />
-              Outlier Rejection
+              Removing Bad Estimates
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Before computing the consensus, we apply <strong className="text-foreground">modified IQR (Interquartile Range) analysis</strong> to detect and exclude outlier estimates. If one model suggests $5 while three others suggest $40–$60, the $5 estimate is flagged and excluded.
+              Before calculating the final price, we run <strong className="text-foreground">statistical outlier detection</strong> to catch and exclude wild estimates. If one model says $5 while three others say $40–$60, the $5 gets flagged and removed.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              This prevents a single unreliable or confused model from skewing the final price. Excluded estimates are still recorded in the pricing evidence — we're transparent about what was included and what wasn't.
+              This prevents a single confused model from throwing off the price. Excluded estimates are still recorded — we're transparent about what was used and what wasn't.
             </p>
           </section>
 
@@ -135,18 +135,18 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Target className="h-6 w-6 text-primary" />
-              What CJPI Contributes
+              The Technical Quality Score
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The Apex Discovery Index (CJPI) is our proprietary technical scoring system. It evaluates:
+              Every capability gets a quality score that reflects how sophisticated it is. This score looks at:
             </p>
             <ul className="space-y-2 mb-4">
               {[
-                'Node count and integration depth',
-                'Memory crystallization quality',
-                'System chain complexity',
-                'Export target breadth',
-                'Hardware compatibility signals',
+                'How many systems are involved',
+                'Depth of memory and learning integration',
+                'Overall system complexity',
+                'Number of supported output formats',
+                'Hardware compatibility',
               ].map(item => (
                 <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
@@ -155,7 +155,7 @@ export default function PricingMethod() {
               ))}
             </ul>
             <div className="bg-muted/30 rounded-lg p-4">
-              <div className="text-sm font-medium text-foreground mb-2">CJPI Premium Multipliers</div>
+              <div className="text-sm font-medium text-foreground mb-2">Quality Score → Price Multiplier</div>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-xs">
                 {[
                   { score: '100', mult: '2.5×' },
@@ -178,17 +178,17 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <BarChart3 className="h-6 w-6 text-primary" />
-              How Confidence Is Determined
+              How We Measure Confidence
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every price includes a confidence score reflecting how much trust to place in the estimate. Confidence considers:
+              Every price comes with a confidence rating so you know how reliable the estimate is. It considers:
             </p>
             <div className="space-y-2 mb-4">
               {[
-                'Number of successful provider estimates (more = better)',
-                'Degree of price agreement between providers',
-                'Marketplace recommendation overlap',
-                'Strength of internal metadata signals (CJPI, module count, valuation)',
+                'How many AI models returned valid estimates (more = better)',
+                'How closely the models agreed with each other',
+                'Whether market comparisons overlap',
+                'Strength of our own technical signals',
               ].map(item => (
                 <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
@@ -216,10 +216,10 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Zap className="h-6 w-6 text-primary" />
-              Indie / Standard / Enterprise Ranges
+              Three Price Tiers for Different Users
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every capability receives three pricing tiers derived from the recommended price:
+              Every capability comes with three price points based on who's buying:
             </p>
             <div className="grid sm:grid-cols-3 gap-3">
               <Card>
@@ -227,7 +227,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Indie</div>
                   <div className="text-2xl font-bold text-primary">60%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Solo developers, hobbyists, early-stage teams
+                    Solo developers, hobbyists, side projects
                   </p>
                 </CardContent>
               </Card>
@@ -236,7 +236,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Standard</div>
                   <div className="text-2xl font-bold text-primary">100%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Professional teams, commercial use
+                    Professional teams and commercial products
                   </p>
                 </CardContent>
               </Card>
@@ -245,7 +245,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Enterprise</div>
                   <div className="text-2xl font-bold text-primary">350%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Large organizations, custom licensing, SLA
+                    Large organizations with SLA requirements
                   </p>
                 </CardContent>
               </Card>
@@ -254,12 +254,12 @@ export default function PricingMethod() {
 
           {/* Fairness */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Fairness & Consistency</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Consistent & Reproducible</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every capability, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
+              Every product on this platform — capabilities, agents, engines — goes through the exact same pricing process. The same inputs always produce the same price. There's no manual price manipulation — the formula is deterministic and auditable.
             </p>
             <div className="bg-muted/30 border border-border/50 rounded-lg p-4 text-sm text-muted-foreground">
-              <strong className="text-foreground">Important:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair market value, not guaranteed sale prices. Actual market outcomes depend on demand, distribution, packaging, and timing.
+              <strong className="text-foreground">Note:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair value, not guaranteed sale prices. Actual outcomes depend on demand, distribution, packaging, and timing.
             </div>
           </section>
 
