@@ -17,8 +17,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ─── Taxonomy ──────────────────────────────────────────────────────────────────
-// Every mutation in the substrate is classified by its origin pressure.
-// This is how the system remembers WHY it changed — not what buttons were pushed.
+// Every change is classified by what motivated it.
+// This is how the system tracks WHY things changed — not just what changed.
 
 type MutationOrigin = 
   | 'survival'       // The system would have degraded without this
