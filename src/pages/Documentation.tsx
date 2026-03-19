@@ -306,7 +306,7 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Circuit breakers prevent failures from spreading across modules. When a module's health drops too low,
+          Circuit breakers prevent failures from spreading across modules. When a module's health drops below threshold,
           it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
