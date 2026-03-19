@@ -129,6 +129,7 @@ export default function AgentDetail() {
 
     setLoading(true);
     try {
+      const { data, error } = await supabase.functions.invoke("agent-checkout", {
         body: { agent_id: agent.id },
       });
       if (error) throw error;
