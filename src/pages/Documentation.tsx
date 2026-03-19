@@ -181,33 +181,33 @@ function OverviewSection() {
           the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
           all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
         </p>
-        <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
-│  GOVERNANCE (Plane)        Legitimacy supervision       │
+        <CodeBlock title="40-module / 12-group platform topology">{`┌─────────────────────────────────────────────────────────┐
+│  GOVERNANCE                Policy enforcement & oversight│
 ├─────────────────────────────────────────────────────────┤
-│  DEFENSE (Shell)           Terminal boundary enforcement │
+│  DEFENSE                   Security boundary layer      │
 ├─────────────────────────────────────────────────────────┤
 │  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
 │                            VISION · CORTEX · ECONOMY    │
 │                            SANDBOX · INCLUSIVE · MEDIC  │
 │                            INTEGRATION                  │
 ├─────────────────────────────────────────────────────────┤
-│  OCG                       RIPPLE · ACCESS · IDENTITY   │
+│  OPERATIONS                RIPPLE · ACCESS · IDENTITY   │
 │                            RELAY · AUDIT · NERVE        │
 ├─────────────────────────────────────────────────────────┤
-│  CCR (Cognitive Core)      BRAIN · MEMORY · DREAM       │
+│  COGNITIVE CORE            BRAIN · MEMORY · DREAM       │
 ├─────────────────────────────────────────────────────────┤
 │  SPINE                     CORE → SYSTEM                │
 ├─────────────────────────────────────────────────────────┤
-│  ESZ                       COMPLIANCE · PREDICT ·       │
+│  SAFETY                    COMPLIANCE · PREDICT ·       │
 │                            ETHICS · CONTRACT            │
-│  EPZ                       SIMULATE · GEOSPATIAL · EDGE │
-│  EMZ                       FORGE · TRANSLATE · INGEST   │
-│  CSZ                       EVOLUTION · SHADOW · PHANTOM │
+│  PERFORMANCE               SIMULATE · GEOSPATIAL · EDGE │
+│  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
+│  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
 ├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Node 40)      │
+│  ATLAS                     Control plane (Module 40)    │
 └─────────────────────────────────────────────────────────┘
-Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)
-Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
+Cross-cutting: EVOLUTION · IMMUNITY · INTENT
+Total: 40 modules · 12 groups · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
