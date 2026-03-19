@@ -1031,7 +1031,7 @@ const stratumMindgames: Specimen[] = [
     origin: "architecture",
     stimulus: "The platform's 40 modules existed without a unified discovery surface — users couldn't explore what the system actually contained",
     adaptations: [
-      "Interactive node explorer with sector-grouped topology view",
+      "Interactive module explorer with group-organized topology view",
       "Each node displays its generation tag, sector assignment, and real-time health status",
       "Search and filter across all 40 nodes by name, sector, or capability",
     ],
